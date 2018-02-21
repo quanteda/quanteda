@@ -53,7 +53,12 @@
 #'   # old and new
 #'   textplot_wordcloudold(mydfm, random.order = FALSE)
 #'   textplot_wordcloud(mydfm)
-#'
+#'   
+#'   # more graphical
+#'   col <- sapply(seq(0.3, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+#'   textplot_wordcloud(mydfm, adjust = 0.5, random_order = FALSE, color = col,
+#'                      rotation = FALSE)
+#'   
 #'   \dontrun{
 #'   # comparison plot of Irish government vs opposition
 #'   docvars(data_corpus_irishbudget2010, "govtopp") <-
@@ -72,7 +77,7 @@ textplot_wordcloud <- function(x,
                                min_size = 0.5, 
                                max_size = 4,
                                max_words = 1000,
-                               color = "skyblue",
+                               color = "#1F78B4",
                                font = NULL,
                                adjust = 0,
                                rotation = 0.1,
@@ -81,7 +86,7 @@ textplot_wordcloud <- function(x,
                                ordered_color = FALSE,
                                labelcolor = 'black',
                                labelsize = 1,
-                               labeloffset = 0.1,
+                               labeloffset = 0,
                                fixed_aspect = TRUE,
                                ...,
                                comparison = FALSE) {
@@ -98,7 +103,7 @@ textplot_wordcloud.dfm <- function(x,
                                    min_size = 0.5, 
                                    max_size = 4,
                                    max_words = 1000,
-                                   color = "skyblue",
+                                   color = "#1F78B4",
                                    font = NULL,
                                    adjust = 0,
                                    rotation = 0.1,
@@ -107,7 +112,7 @@ textplot_wordcloud.dfm <- function(x,
                                    ordered_color = FALSE,
                                    labelcolor = 'black',
                                    labelsize = 1,
-                                   labeloffset = 0.1,
+                                   labeloffset = 0.05,
                                    fixed_aspect = TRUE,
                                    ...,
                                    comparison = FALSE) {
@@ -243,7 +248,6 @@ wordcloud <- function(x, min_size, max_size, max_words,
     freq <- freq / max(freq)
     size <- (max_size - min_size) * freq + min_size
     boxes <- list()
-    words <- data.frame()
     for (i in seq_along(word)) {
         rot <- stats::runif(1) < rotation
         r <- 0
@@ -251,21 +255,21 @@ wordcloud <- function(x, min_size, max_size, max_words,
         x1 <- 0.5
         y1 <- 0.5
 
-        wid <- graphics::strwidth(word[i], cex = size[i], ...)
+        wd <- graphics::strwidth(word[i], cex = size[i], ...)
         ht <- graphics::strheight(word[i], cex = size[i], ...)
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rot) {
-            tmp <- ht
-            ht <- wid
-            wid <- tmp
+            tp <- ht
+            ht <- wd
+            wd <- tp
         }
         
         is_overlaped <- TRUE
         while (is_overlaped) {
-            if (!qatd_cpp_is_overlap(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht, boxes) &&
-                x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
-                x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
+            if (!qatd_cpp_is_overlap(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht, boxes) &&
+                x1 - 0.5 * wd > 0 && y1 - 0.5 * ht > 0 &&
+                x1 + 0.5 * wd < 1 && y1 + 0.5 * ht < 1) {
                 if (!random_color) {
                     if (ordered_color) {
                         cc <- color[i]
@@ -276,10 +280,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
                 } else {
                     cc <- color[sample(seq(nc), 1)]
                 }
-                text(x1, y1, word[i], cex = size[i], offset = 0, srt = rot * 90, col = cc,  ...)
-                words <- rbind(words, data.frame(x = x1, y = y1, word = word[i], size = size[i], 
-                                                 offset = 0, srt = rot * 90, col = cc))
-                boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
+                text(x1, y1, word[i], cex = (1 + adjust) * size[i], offset = 0, srt = rot * 90, col = cc,  ...)
+                boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
                 is_overlaped <- FALSE
             } else {
                 if (r > sqrt(0.5)) {
@@ -293,31 +295,9 @@ wordcloud <- function(x, min_size, max_size, max_words,
             }
         }
     }
-    # abline(v=c(0, 1), h=c(0, 1))
-    # abline(v=c(0.25, 0.75), h=c(0.25, 0.75), col=2:3)
+    #abline(v=c(0, 1), h=c(0, 1))
+    #abline(v=c(0.25, 0.75), h=c(0.25, 0.75), col=2:3)
     graphics::par(op)
-    grDevices::dev.off()
-    
-    x <- y <- label <- NULL
-    plot <- ggplot() + 
-        geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
-                  size = words$size * 4 * (1 + adjust), angle = words$srt, 
-                  lineheight = 1, vjust = "center") +
-        # geom_vline(xintercept = c(0, 0.25, 0.75, 1)) + # for debug
-        # geom_hline(yintercept = c(0, 0.25, 0.75, 1)) + # for debug
-        coord_fixed() + 
-        scale_x_continuous(limits = c(0, 1), breaks = NULL) + 
-        scale_y_continuous(limits = c(0, 1), breaks = NULL) +
-        theme(
-            plot.margin = margin(0, 0, 0, 0),
-            panel.background = element_blank(), 
-            axis.title.x = element_blank(), 
-            axis.title.y = element_blank(),
-            legend.position = "none",
-            panel.grid.minor = element_blank(), 
-            panel.grid.major = element_blank())
-    
-    return(plot)
 }
 
 #' Internal function for textplot_wordcloud
@@ -388,10 +368,10 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     x <- t(as.matrix(x))
 
     ndoc <- ncol(x)
-    thetaBins <- seq(0, 2 * pi, length = ndoc + 1)
+    theta_bins <- seq(0, 2 * pi, length = ndoc + 1)
 
     if (is.null(color) < ndoc)
-        color <- RColorBrewer::brewer.pal(8, "Dark2")
+        color <- RColorBrewer::brewer.pal(8, "Paired")
     group <- apply(x, 1, which.max)
     word <- rownames(x)
     freq <- apply(x, 1, max)
@@ -418,30 +398,27 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     graphics::plot.new()
     op <- graphics::par(no.readonly = TRUE)
     graphics::par(mar = c(0, 0, 0, 0), family = font)
-    graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
-    
+    if (labelsize > 0) {
+        graphics::plot.window(c(-0.1, 1.1), c(-0.1, 1.1), asp = 1)
+    } else {
+        graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
+    }
     freq <- freq / max(freq)
     size <- (max_size - min_size) * freq + min_size
     boxes <- list()
     
-    #add titles
     docnames <- colnames(x)
-    words <- data.frame()
-    
     for (i in seq(ncol(x))) {
-        th <- mean(thetaBins[seq(i, i + 1)])
+        theta <- mean(theta_bins[seq(i, i + 1)])
         label <- docnames[i]
         if (labelsize > 0) {
-            wid <- graphics::strwidth(label, cex = labelsize)
+            wd <- graphics::strwidth(label, cex = labelsize)
             ht <- graphics::strheight(label, cex = labelsize)
     
-            # leaves 5% margin around the cloud
-            x1 <- 0.5 + ((0.45 + labeloffset) * cos(th))
-            y1 <- 0.5 + ((0.45 + labeloffset) * sin(th))
-    
-            words <- rbind(words, data.frame(x = x1, y = y1, word = label, size = labelsize, 
-                                             offset = 0, srt = 0, col = labelcolor))
-            boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
+            x1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * cos(theta)
+            y1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * sin(theta)
+            text(x1, y1, label, cex = labelsize, offset = 0, col = labelcolor, ...)
+            boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
         }
     }
     
@@ -451,28 +428,26 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        wid <- graphics::strwidth(word[i], cex = size[i], ...)
+        wd <- graphics::strwidth(word[i], cex = size[i], ...)
         ht <- graphics::strheight(word[i], cex = size[i], ...)
         
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rot) {
-            tmp <- ht
-            ht <- wid
-            wid <- tmp
+            tm <- ht
+            ht <- wd
+            wd <- tm
         }
         is_overlaped <- TRUE
         while (is_overlaped) {
-            in_correct_region <- theta > thetaBins[group[i]] && theta < thetaBins[group[i] + 1]
+            in_correct_region <- theta > theta_bins[group[i]] && theta < theta_bins[group[i] + 1]
             if (in_correct_region && !qatd_cpp_is_overlap(
-                x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht, boxes) &&
-                x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
-                x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
+                x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht, boxes) &&
+                x1 - 0.5 * wd > 0 && y1 - 0.5 * ht > 0 &&
+                x1 + 0.5 * wd < 1 && y1 + 0.5 * ht < 1) {
                 
-                # text(x1, y1, word[i], cex = size[i], offset = 0, srt = rot * 90, col = color[group[i]], ...)
-                words <- rbind(words, data.frame(x = x1, y = y1, word = word[i], size = size[i], 
-                                                 offset = 0, srt = rot * 90, col = color[group[i]]))
-                boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
+                text(x1, y1, word[i], cex = (1 + adjust) * size[i], offset = 0, srt = rot * 90, col = color[group[i]], ...)
+                boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
                 is_overlaped <- FALSE
                 
             } else {
@@ -484,34 +459,12 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                 if (theta > 2 * pi)
                     theta <- theta - 2 * pi
                 r <- r + r_step * theta_step / (2 * pi)
-                x1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * cos(theta)
-                y1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * sin(theta)
+                x1 <- 0.5 + r * cos(theta)
+                y1 <- 0.5 + r * sin(theta)
             }
         }
     }
-    # abline(v=0:1, h=0:1)
-    # abline(v=c(0.25, 0,75), h=c(0.25, 0,75), col='red')
+    #abline(v=0:1, h=0:1)
+    #abline(v=c(0.25, 0,75), h=c(0.25, 0,75))
     graphics::par(op)
-    grDevices::dev.off()
-    
-    x <- y <- label <- NULL
-    plot <- ggplot() + 
-        geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
-                  size = words$size * 4 * (1 + adjust), angle = words$srt, 
-                  lineheight = 1, vjust = "center") +
-        coord_fixed() + 
-        #geom_vline(xintercept = c(0, 0.25, 0.75, 1)) + # for debug
-        #geom_hline(yintercept = c(0, 0.25, 0.75, 1)) + # for debug
-        scale_x_continuous(limits = if (labelsize > 0) c(-0.1, 1.1) else c(0, 1), breaks = NULL) + 
-        scale_y_continuous(limits = if (labelsize > 0) c(-0.1, 1.1) else c(0, 1), breaks = NULL) +
-        theme(
-            plot.margin = margin(0, 0, 0, 0),
-            panel.background = element_blank(), 
-            axis.title.x = element_blank(), 
-            axis.title.y = element_blank(),
-            legend.position = "none",
-            panel.grid.minor = element_blank(), 
-            panel.grid.major = element_blank())
-    
-    return(plot)
 }
