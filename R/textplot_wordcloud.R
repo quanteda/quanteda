@@ -484,8 +484,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                 if (theta > 2 * pi)
                     theta <- theta - 2 * pi
                 r <- r + r_step * theta_step / (2 * pi)
-                x1 <- 0.5 + r * cos(theta)
-                y1 <- 0.5 + r * sin(theta)
+                x1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * cos(theta)
+                y1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * sin(theta)
             }
         }
     }
@@ -502,8 +502,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         coord_fixed() + 
         #geom_vline(xintercept = c(0, 0.25, 0.75, 1)) + # for debug
         #geom_hline(yintercept = c(0, 0.25, 0.75, 1)) + # for debug
-        scale_x_continuous(limits = c(0, 1), breaks = NULL) + 
-        scale_y_continuous(limits = c(0, 1), breaks = NULL) +
+        scale_x_continuous(limits = if (labelsize > 0) c(-0.1, 1.1) else c(0, 1), breaks = NULL) + 
+        scale_y_continuous(limits = if (labelsize > 0) c(-0.1, 1.1) else c(0, 1), breaks = NULL) +
         theme(
             plot.margin = margin(0, 0, 0, 0),
             panel.background = element_blank(), 

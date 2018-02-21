@@ -2,40 +2,39 @@
 using namespace Rcpp;
 
 /*
- * Detect if a box at position (x11,y11), with width sw11 and height sh11 overlaps
- * with any of the boxes in boxes1
+ * Detect if a box at position (x1_,y1_), with width w1_ and height h1_ overlaps
+ * with any of the boxes in boxe_
  */
 
 // [[Rcpp::export]]
-RcppExport SEXP qatd_cpp_is_overlap(SEXP x11,SEXP y11,SEXP sw11,SEXP sh11,SEXP boxes1) {
+bool qatd_cpp_is_overlap(SEXP x1_, SEXP y1_, SEXP w1_, SEXP h1_, SEXP boxe_) {
     
-	double x1 = as<double>(x11);
-	double y1 =as<double>(y11);
-	double sw1 = as<double>(sw11);
-	double sh1 = as<double>(sh11);
-	Rcpp::List boxes(boxes1);
-	Rcpp::NumericVector bnds;
-	double x2, y2, sw2, sh2;
+	double x1 = as<double>(x1_);
+	double y1 =as<double>(y1_);
+	double sw1 = as<double>(w1_);
+	double sh1 = as<double>(h1_);
+	Rcpp::List boxes(boxe_);
+	Rcpp::NumericVector box_;
+	double x2, y2, w2, h2;
 	bool overlap= true;
 	for (int i = 0; i < boxes.size(); i++) {
-		bnds = boxes(i);
-		x2 = bnds(0);
-		y2 = bnds(1);
-		sw2 = bnds(2);
-		sh2 = bnds(3);
+		box_ = boxes[i];
+		x2 = box_[0];
+		y2 = box_[1];
+		w2 = box_[2];
+		h2 = box_[3];
 		if (x1 < x2) {
 			overlap = (x1 + sw1) > x2;
 		} else {
-			overlap = (x2 + sw2) > x1;
+			overlap = (x2 + w2) > x1;
 		}
 		if (y1 < y2) {
 			overlap = (overlap && ((y1 + sh1) > y2));
 		} else {
-			overlap = (overlap && ((y2 + sh2) > y1));
+			overlap = (overlap && ((y2 + h2) > y1));
 		}
 		if(overlap)
-			return Rcpp::wrap(true);
+			return true;
 	}
-
-	return Rcpp::wrap(false);
+	return false;
 }
