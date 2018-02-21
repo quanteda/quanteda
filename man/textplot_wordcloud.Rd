@@ -7,7 +7,7 @@
 textplot_wordcloud(x, min_size = 0.5, max_size = 4, max_words = 1000,
   color = "#1F78B4", font = NULL, adjust = 0, rotation = 0.1,
   random_order = TRUE, random_color = FALSE, ordered_color = FALSE,
-  labelcolor = "black", labelsize = 1, labeloffset = 0,
+  labelcolor = "#4D4D4D", labelsize = 1, labeloffset = 0,
   fixed_aspect = TRUE, ..., comparison = FALSE)
 }
 \arguments{
