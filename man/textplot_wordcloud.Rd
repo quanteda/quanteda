@@ -5,9 +5,9 @@
 \title{Plot features as a wordcloud}
 \usage{
 textplot_wordcloud(x, min_size = 0.5, max_size = 4, max_words = 1000,
-  color = "skyblue", font = NULL, adjust = 0, rotation = 0.1,
+  color = "#1F78B4", font = NULL, adjust = 0, rotation = 0.1,
   random_order = TRUE, random_color = FALSE, ordered_color = FALSE,
-  labelcolor = "black", labelsize = 1, labeloffset = 0.1,
+  labelcolor = "black", labelsize = 1, labeloffset = 0,
   fixed_aspect = TRUE, ..., comparison = FALSE)
 }
 \arguments{
@@ -84,7 +84,12 @@ The default is to plot the word cloud of all features, summed across
   # old and new
   textplot_wordcloudold(mydfm, random.order = FALSE)
   textplot_wordcloud(mydfm)
-
+  
+  # more graphical
+  col <- sapply(seq(0.3, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+  textplot_wordcloud(mydfm, adjust = 0.5, random_order = FALSE, color = col,
+                     rotation = FALSE)
+  
   \dontrun{
   # comparison plot of Irish government vs opposition
   docvars(data_corpus_irishbudget2010, "govtopp") <-
