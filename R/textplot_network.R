@@ -44,9 +44,9 @@
 #' @import network ggplot2 ggrepel
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                             edge_color = 'skyblue', edge_alpha = 0.5, 
+                             edge_color = '#1F78B4', edge_alpha = 0.5, 
                              edge_size = 2, 
-                             vertex_color = 'gray40', vertex_size = 2,
+                             vertex_color = 'gray30', vertex_size = 2,
                              vertex_labelcolor = NULL,
                              offset = NULL, 
                              vertex_labelfont = NULL, ...) {
@@ -55,9 +55,9 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 
 #' @export
 textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = 'skyblue', edge_alpha = 0.5, 
+                                 edge_color = '#1F78B4', edge_alpha = 0.5, 
                                  edge_size = 2, 
-                                 vertex_color = 'gray40', vertex_size = 2,
+                                 vertex_color = 'gray30', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
                                  vertex_labelfont = NULL, ...) {
@@ -74,7 +74,7 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
 #' @export
 textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = 'skyblue', edge_alpha = 0.5, 
+                                 edge_color = '#1F78B4', edge_alpha = 0.5, 
                                  edge_size = 2, 
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
