@@ -258,6 +258,17 @@ test_that("summary.corpus with verbose prints warning", {
     )        
 })
 
+test_that("summary.corpus works with longer corpora n > default (#1242)", {
+    longcorp <- corpus(
+        rep(LETTERS, 4), 
+        docvars = data.frame(label = rep(paste("document", 1:26), 4),
+                             stringsAsFactors = FALSE)
+    )
+    expect_equal(ndoc(longcorp), 104)
+    expect_is(summary(longcorp, n = 101), "data.frame")
+    expect_equal(nrow(summary(longcorp, n = 101)), 101)
+})
+
 test_that("head, tail.corpus work as expected", {
     crp <- corpus_subset(data_corpus_inaugural, Year < 2018)
     
@@ -314,5 +325,21 @@ test_that("print.summary.corpus work", {
     expect_output(
         print(summ1[, c("Types", "Tokens")]),
         "^\\s+Types Tokens\\n1\\s+625\\s+1538"
+    )
+})
+
+test_that("corpus works on dplyr grouped data.frames (#1232)", {
+    skip_if_not_installed("dplyr")
+    mydf_grouped <- 
+        data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+                   some_ints = 1L:6L,
+                   text = paste0("This is text number ", 1:6, "."),
+                   stringsAsFactors = FALSE,
+                   row.names = paste0("fromDf_", 1:6)) %>%
+        dplyr::group_by(letter_factor) %>% 
+        dplyr::mutate(n_group = n())
+    expect_output(
+        quanteda::print(corpus(mydf_grouped)),
+        "^Corpus consisting of 6 documents and 3 docvars\\.$"
     )
 })

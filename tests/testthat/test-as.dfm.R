@@ -97,3 +97,36 @@ test_that("as.dfm for tm matrix objects", {
     )
 })
 
+test_that("as.data.frame for dfm objects", {
+    d <- data_dfm_lbgexample[, 1:5]
+    expect_equal(
+        as.data.frame(d),
+        data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
+    )
+    expect_equal(
+        as.data.frame(d, document = NULL),
+        data.frame(as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
+    )
+    expect_equal(
+        as.data.frame(d, row.names = docnames(d)),
+        data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
+    )
+    expect_error(
+        as.data.frame(d, document = TRUE),
+        "document must be character or NULL"
+    )
+})
+
+test_that("as.matrix for dfm objects", {
+    d <- data_dfm_lbgexample[1:2, 1:5]
+    expect_equal(
+        as.matrix(d),
+        matrix(c(2, 0, 3, 0, 10, 0, 22, 0, 45, 0), nrow = ndoc(d), 
+               dimnames = list(docs = c("R1", "R2"), features = LETTERS[1:5]))
+    )
+    expect_equal(
+        as.matrix(d[1, ]),
+        matrix(c(2, 3, 10, 22, 45), nrow = 1,
+               dimnames = list(docs = c("R1"), features = LETTERS[1:5]))
+    )
+})

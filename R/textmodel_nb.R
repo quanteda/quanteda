@@ -14,7 +14,7 @@
 #'   \code{"docfreq"}, or \code{"termfreq"}.  See Prior Distributions below.
 #' @param distribution count model for text features, can be \code{multinomial}
 #'   or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert
-#'   the dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.
+#'   the dfm to a binary matrix using \code{\link{dfm_weight}(x, scheme = "boolean")}.
 #' @return 
 #' \code{textmodel_nb()} returns a list consisting of the following (where
 #' \eqn{I} is the total number of documents, \eqn{J} is the total number of
