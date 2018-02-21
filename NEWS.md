@@ -11,6 +11,7 @@
 
 * Eliminated unnecessary dependency on the **digest** package.
 * Updated the vignette title to be less generic.
+* Fixed a problem in `summary.corpus(x, n = 101)` when `ndoc(x) > 100` (#1242). 
 
 ### Performance improvements
 
