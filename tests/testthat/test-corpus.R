@@ -258,6 +258,17 @@ test_that("summary.corpus with verbose prints warning", {
     )        
 })
 
+test_that("summary.corpus works with longer corpora n > default (#1242)", {
+    longcorp <- corpus(
+        rep(LETTERS, 4), 
+        docvars = data.frame(label = rep(paste("document", 1:26), 4),
+                             stringsAsFactors = FALSE)
+    )
+    expect_equal(ndoc(longcorp), 104)
+    expect_is(summary(longcorp, n = 101), "data.frame")
+    expect_equal(nrow(summary(longcorp, n = 101)), 101)
+})
+
 test_that("head, tail.corpus work as expected", {
     crp <- corpus_subset(data_corpus_inaugural, Year < 2018)
     
