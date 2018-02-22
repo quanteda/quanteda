@@ -117,6 +117,20 @@ test_that("as.data.frame for dfm objects", {
     )
 })
 
+test_that("as.data.frame.dfm handles irregular feature names correctly", {
+    mydfm <- dfm(data_char_sampletext, 
+                 dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
+                                              "飛機" = "if", "spec+ial" = "of")))
+    expect_equal(
+        names(as.data.frame(mydfm)),
+        c("document", "字", "spe cial", "飛機", "spec+ial")
+    )
+    expect_equal(
+        names(as.data.frame(mydfm, check.names = TRUE)),
+        c("document", "字", "spe.cial", "飛機", "spec.ial")
+    )
+})
+
 test_that("as.matrix for dfm objects", {
     d <- data_dfm_lbgexample[1:2, 1:5]
     expect_equal(
