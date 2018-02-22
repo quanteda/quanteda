@@ -118,6 +118,8 @@ test_that("as.data.frame for dfm objects", {
 })
 
 test_that("as.data.frame.dfm handles irregular feature names correctly", {
+    skip_on_os("windows")
+    skip_on_appveyor()
     mydfm <- dfm(data_char_sampletext, 
                  dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
                                               "飛機" = "if", "spec+ial" = "of")))
