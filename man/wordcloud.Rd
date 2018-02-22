@@ -24,9 +24,9 @@ dropped.}
 \item{font}{font-family of words and labels. Use default font if \code{NULL}.}
 
 \item{adjust}{ajust sizes of words by a constant. Useful for non-Engish words
-for which R failes to obtaine sizes correctly.}
+for which R fails to obtain correct sizes.}
 
-\item{rotation}{proportion words with 90 degree rotation colors}
+\item{rotation}{proportion of words with 90 degree rotation}
 
 \item{random_order}{plot words in random order. If \code{FALSE}, they will be
 plotted in decreasing frequency.}
@@ -42,7 +42,7 @@ order.}
 \item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
 
 \item{labeloffset}{position of group labels. Only used when
-\code{compariosn=TRUE}.}
+\code{comparison=TRUE}.}
 
 \item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
 aspect ratio only supported if rotation = 0}

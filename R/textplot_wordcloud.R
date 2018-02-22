@@ -6,13 +6,13 @@
 #' @details The default is to plot the word cloud of all features, summed across
 #'   documents.  To produce word cloud plots for specific document or set of
 #'   documents, you need to slice out the document(s) from the dfm object.
-#'
+#'   
 #'   Comparison wordcloud plots may be plotted by setting \code{comparison =
 #'   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
 #'   This means that you will need to slice out just a few documents from the
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
-#'
+#'   
 #' @param x a dfm object
 #' @param min_size size of the smallest word
 #' @param max_size size of the largest word
@@ -21,8 +21,8 @@
 #' @param color color of words from least to most frequent
 #' @param font font-family of words and labels. Use default font if \code{NULL}.
 #' @param adjust ajust sizes of words by a constant. Useful for non-Engish words
-#'   for which R failes to obtaine sizes correctly.
-#' @param rotation proportion words with 90 degree rotation colors
+#'   for which R fails to obtain correct sizes.
+#' @param rotation proportion of words with 90 degree rotation
 #' @param random_order plot words in random order. If \code{FALSE}, they will be
 #'   plotted in decreasing frequency.
 #' @param random_color choose colors randomly from the colors. If \code{FALSE},
@@ -32,7 +32,7 @@
 #' @param labelcolor color of group labels. Only used when \code{compariosn=TRUE}.
 #' @param labelsize size of group labels. Only used when \code{compariosn=TRUE}.
 #' @param labeloffset  position of group labels. Only used when
-#'   \code{compariosn=TRUE}.
+#'   \code{comparison=TRUE}.
 #' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable
 #'   aspect ratio only supported if rotation = 0
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
@@ -40,48 +40,48 @@
 #' @param ... additional parameters passed to \link{text} (and \link{strheight},
 #'   \link{strwidth})
 #' @examples
-#'   # plot the features (without stopwords) from Obama's two inaugural addresses
-#'   mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
-#'                remove = stopwords("english"), remove_punct = TRUE)
-#'   mydfm <- dfm_trim(mydfm, min_count = 3)
-#'   textplot_wordcloud(mydfm)
-#'
-#'   # plot in colors with some additional options passed to wordcloud
-#'   textplot_wordcloud(mydfm, random_color = TRUE, rotation = 0.25,
-#'                      color = sample(colors()[2:128], 5))
-#'
-#'   # old and new
-#'   textplot_wordcloudold(mydfm, random.order = FALSE)
-#'   textplot_wordcloud(mydfm)
+#' # plot the features (without stopwords) from Obama's inaugural addresses
+#' set.seed(10)
+#' obama_dfm <- 
+#'     dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
+#'         remove = stopwords("english"), remove_punct = TRUE) %>%
+#'     dfm_trim(min_count = 3)
+#'     
+#' # basic wordcloud
+#' textplot_wordcloud(obama_dfm)
+#' 
+#' # plot in colors with some additional options
+#' textplot_wordcloud(obama_dfm, max_words = 500, rotation = 0.25, 
+#'                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
 #'   
-#'   # more graphical
-#'   col <- sapply(seq(0.3, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
-#'   textplot_wordcloud(mydfm, adjust = 0.5, random_order = FALSE, color = col,
-#'                      rotation = FALSE)
+#' # other display options
+#' col <- sapply(seq(0.4, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+#' textplot_wordcloud(obama_dfm, adjust = 0.15, random_order = FALSE, 
+#'                    color = col, rotation = FALSE)
 #'   
-#'   \dontrun{
-#'   # comparison plot of Irish government vs opposition
-#'   docvars(data_corpus_irishbudget2010, "govtopp") <-
-#'           factor(ifelse(data_corpus_irishbudget2010[, "party"] %in%
-#'                  c("FF", "Green"), "Govt", "Opp"))
-#'   govtopp_dfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp",
-#'                      remove_punct = TRUE)
-#'   textplot_wordcloud(dfm_tfidf(govtopp_dfm), comparison = TRUE)
-#'   # compare to non-tf-idf version
-#'   textplot_wordcloud(govtopp_dfm, comparison = TRUE)
-#'   }
+#' \dontrun{
+#' # comparison plot of Obama v. Trump
+#' obama_trump_dfm <- 
+#'     dfm(corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump")),
+#'         remove = stopwords("english"), remove_punct = TRUE, groups = "President") %>%
+#'     dfm_trim(min_count = 3)
+#' 
+#' textplot_wordcloud(obama_trump_dfm, comparison = TRUE)
+#' # compare to tf-idf version
+#' textplot_wordcloud(dfm_tfidf(obama_trump_dfm), comparison = TRUE)
+#' }
 #' @export
 #' @keywords textplot
 #' @import ggplot2
 textplot_wordcloud <- function(x, 
                                min_size = 0.5, 
                                max_size = 4,
-                               max_words = 1000,
+                               max_words = 500,
                                color = "#1F78B4",
                                font = NULL,
                                adjust = 0,
                                rotation = 0.1,
-                               random_order = TRUE,
+                               random_order = FALSE,
                                random_color = FALSE,
                                ordered_color = FALSE,
                                labelcolor = '#4D4D4D',
@@ -102,12 +102,12 @@ textplot_wordcloud.default <- function(x, ..., comparison = FALSE) {
 textplot_wordcloud.dfm <- function(x, 
                                    min_size = 0.5, 
                                    max_size = 4,
-                                   max_words = 1000,
+                                   max_words = 500,
                                    color = "#1F78B4",
                                    font = NULL,
                                    adjust = 0,
                                    rotation = 0.1,
-                                   random_order = TRUE,
+                                   random_order = FALSE,
                                    random_color = FALSE,
                                    ordered_color = FALSE,
                                    labelcolor = '#4D4D4D',
@@ -132,6 +132,8 @@ textplot_wordcloud.dfm <- function(x,
                   labelcolor, labelsize, labeloffset, fixed_aspect, ...)
     }
 }
+
+
 
 #' Internal function for textplot_wordcloud
 #'
