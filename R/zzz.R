@@ -1,6 +1,6 @@
 .onAttach <- function(...) {
     # startup message
-    packageStartupMessage("Initializing package: ‘quanteda‘")
+    #packageStartupMessage("Initializing package: ", sQuote('quanteda'))
     packageStartupMessage("Package version: ", as.character(utils::packageVersion("quanteda")))
     
     # initialize options
@@ -15,7 +15,8 @@
     }
     
     # wesite link
-    packageStartupMessage('To learn how to use ‘quanteda‘ through examples and tutorials, go to https://quanteda.io')
+    packageStartupMessage('To learn how to use ', sQuote('quanteda'), 
+                          ' through examples and tutorials, go to https://quanteda.io')
 }
 
 .onUnload <- function (libpath) {
