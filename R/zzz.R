@@ -1,17 +1,21 @@
 .onAttach <- function(...) {
     # startup message
-    packageStartupMessage("quanteda version ", as.character(utils::packageVersion("quanteda")))
+    #packageStartupMessage("Initializing package: ", sQuote('quanteda'))
+    packageStartupMessage("Package version: ", as.character(utils::packageVersion("quanteda")))
     
     # initialize options
     quanteda_options(initialize = TRUE)
     
     # threads message
     if (qatd_cpp_tbb_enabled()) {
-        packageStartupMessage("Using ", quanteda_options("threads"), " of ", 
-                              RcppParallel::defaultNumThreads(), " threads for parallel computing")
+        packageStartupMessage("Parallel computing: ", quanteda_options("threads"), " of ", 
+                              RcppParallel::defaultNumThreads(), " threads used.")
     } else {
-        packageStartupMessage("Parallel computing is disabled") 
+        packageStartupMessage("Parallel computing: disabled") 
     }
+    
+    # wesite link
+    packageStartupMessage("See https://quanteda.io for tutorials and examples.")
 }
 
 .onUnload <- function (libpath) {
