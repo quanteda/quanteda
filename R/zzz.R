@@ -9,14 +9,13 @@
     # threads message
     if (qatd_cpp_tbb_enabled()) {
         packageStartupMessage("Parallel computing: ", quanteda_options("threads"), " of ", 
-                              RcppParallel::defaultNumThreads(), " threads")
+                              RcppParallel::defaultNumThreads(), " threads used.")
     } else {
         packageStartupMessage("Parallel computing: disabled") 
     }
     
     # wesite link
-    packageStartupMessage('To learn how to use ', sQuote('quanteda'), 
-                          ' through examples and tutorials, go to https://quanteda.io')
+    packageStartupMessage("See https://quanteda.io for tutorials and examples.")
 }
 
 .onUnload <- function (libpath) {
