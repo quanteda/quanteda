@@ -32,103 +32,72 @@ textplot_keyness <-  function(x, show_reference = TRUE, n = 20L, min_count = 2L)
 }
 
 #' @export
-textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_count = 2L,
+                                     color = c("#A6CEE3", "#1F78B4"), font = NULL) {
     stop(friendly_class_undefined_message(class(x), "textplot_keyness"))
 }
 
-#' @importFrom stats reorder aggregate
-#' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
-#' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
-#' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
+#' @import ggplot2
 #' @export
-textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L,
+                                     color = c("#A6CEE3", "#1F78B4"), font = NULL) {
+    
+    
+    font <- check_font(font)
     
     # extract attribute befor subsetting
-    doc <- attr(x, "documents")[1]
+    docname <- attr(x, "documents")
+    measure <- colnames(x)[2]
     
     # drop infrequent words
-    x <- x[(x$n_target + x$n_reference) >= min_count, ]
+    data <- x[(x$n_target + x$n_reference) >= min_count,,drop = FALSE]
     
-    if (nrow(x) < 1) {
+    if (nrow(data) < 1) {
         stop ("Too few words in the documents.")
     }
     
-    measure <- colnames(x)[2]
-    n <- min(n, nrow(x))
-    if (!show_reference) {
-        x <- head(x, n)
-        x <- data.frame(words = x$feature, val = x[[2]])
-        x$words <- factor(x$words, levels = x$words[order(x$val)])
-        
-        p <- ggplot(data = x, aes(x = x$words, y = x$val)) +
-             coord_flip() +
-             geom_bar(stat = "identity") +
-             ylab(measure) +
-             geom_text(aes(label= x$words), hjust = -0.2, vjust = 0.5, size = 3) + 
-             theme_bw() +
-             theme(axis.line = ggplot2::element_blank(),
-                   axis.title.y = ggplot2::element_blank(),
-                   axis.text.y = ggplot2::element_blank(),
-                   axis.ticks.y = ggplot2::element_blank(),
-                   panel.grid.minor.y = ggplot2::element_blank(), 
-                   plot.background = ggplot2::element_blank(),
-                   panel.grid.major.y = element_line(linetype = "dotted"))
+    
+    data$keyness <- data[[2]]
+    if (measure == "pmi") {
+        limit <- 1
     } else {
-        if (measure == "pmi") {
-            pos_n <- min(n, nrow(x) / 2)
-            neg_n <- min(n, nrow(x) / 2)
-            feat_top <- head(x, pos_n)
-            feat_bottom <- tail(x, neg_n)
-            max_y <- max(feat_top[[2]])
-            min_y <- min(feat_bottom[[2]])
-        } else {
-            pos_n <- min(n, sum(x[[2]] >= 0))
-            neg_n <- min(n, sum(x[[2]] < 0))
-            if ((pos_n == 0) || (neg_n == 0)) 
-                stop (" Better plot for one Doc.")
-            feat_top <- head(x, pos_n)
-            feat_bottom <- tail(x, neg_n)
-            max_y <- max(feat_top[[2]])
-            min_y <- min(feat_bottom[[2]])
-        }
-        
-        feat_top  <- feat_top[order(feat_top[[2]], decreasing = TRUE), ]
-        feat_bottom <- feat_bottom[order(feat_bottom[[2]]), ]
-        
-        tars <- doc[1]
-        if (length(doc) == 2) {
-            refs <- doc[2]
-        } else {
-            refs <- "Reference"
-        }
-        p1 <- data.frame(x = seq(neg_n + pos_n, 1 + neg_n), y = feat_top[[2]])
-        p2 <- data.frame(x = seq(1, neg_n), y = feat_bottom[[2]])
-        p <- melt(list(refs = p2, tars = p1), id.vars = "x")
-        colnames(p)[4] <- "Document"
-        p[p == "refs"] <- refs
-        p[p == "tars"] <- tars
-
-        
-        ggplot(p, aes_(x = ~x, y = p$value, fill = ~Document)) +  
-            geom_bar(stat="identity") + 
-            ggplot2::scale_fill_manual("Document", values = c("#003366", "#CC3333")) +
-            coord_flip() + 
-            # allow extra space for displaying text next to the point
-            ylim(min_y * 1.1 , max_y * 1.1) +  
-            ylab(measure) +
-            geom_text(aes(label = c(feat_bottom$feature, feat_top$feature)), 
-                      hjust = ifelse(p$Document == tars, -0.2, 1.2),
-                      vjust = 0.5, 
-                      colour = ifelse(p$Document == tars, "#CC3333", "#003366"), 
-                      size = 3) +
-            theme_bw() +
-            theme(axis.line = ggplot2::element_blank(),
-                  axis.title.y = ggplot2::element_blank(),
-                  axis.text.y = ggplot2::element_blank(),
-                  axis.ticks.y = ggplot2::element_blank(),
-                  panel.grid.minor.y = ggplot2::element_blank(),
-                  plot.background = ggplot2::element_blank(),
-                  panel.grid.major.y = element_line(linetype = "dotted"))
-        
+        limit <- 0
     }
+    data$right <- data$keyness >= limit
+    if (show_reference) {
+        t <- intersect(which(data$right), head(seq(nrow(data)), n / 2))
+        r <- intersect(which(!data$right), head(seq(nrow(data), n / 2)))
+        i <- union(t, r)
+    } else {
+        i <- intersect(which(data$right), head(seq(nrow(data)), n))
+    }
+    data <- data[i,,drop = FALSE]
+    data$width <- stri_width(data$feature)
+    data$color <- color[2 - data$right]
+    
+    if (length(docname) < 2) {
+        docname <- c("Target", "Reference")
+    } else if (length(docname) > 2) {
+        docname <- c(docname[1], "Reference")
+    }
+
+    data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
+    data$y1 <- rank(data$keyness, ties.method = "first")
+    data$x2 <- rep(limit, nrow(data))
+    data$y2 <- data$y
+    ggplot() +  
+        #geom_point(aes(x1, y1)) + 
+        geom_segment(data = data, aes(x = x1, y = y1, xend = x2, yend = y2)) +
+        #scale_fill_manual("Document", values = color) +
+        xlim(min(data$x1) * 1.1 , max(data$x1) * 1.1) +  
+        xlab(measure) +
+        geom_label(data = data, aes(x = x1, y = y1, label = feature), label.size = 0, fill = NA,
+                   vjust = 'center', hjust = 'outward', color = '#4D4D4D', size = 4) +
+        theme_bw() +
+        theme(axis.line = element_blank(),
+              axis.title.y = element_blank(),
+              axis.text.y = element_blank(),
+              axis.ticks.y = element_blank(),
+              plot.background = element_blank(),
+              panel.grid.major.y = element_line(linetype = "dotted"))
 } 
