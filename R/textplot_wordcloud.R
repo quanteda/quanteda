@@ -399,7 +399,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     
     graphics::plot.new()
     op <- graphics::par(no.readonly = TRUE)
-    graphics::par(mar = c(0, 0, 0, 0), family = font)
+    graphics::par(mar = c(0, 0, 0, 0), usr = c(-1, 1, -1, 1), family = font)
     if (labelsize > 0) {
         graphics::plot.window(c(-0.1, 1.1), c(-0.1, 1.1), asp = 1)
     } else {
@@ -467,6 +467,6 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         }
     }
     #abline(v=0:1, h=0:1)
-    #abline(v=c(0.25, 0,75), h=c(0.25, 0,75))
+    #abline(v=c(0.25, 0.75), h=c(0.25, 0.75))
     graphics::par(op)
 }
