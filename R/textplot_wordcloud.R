@@ -239,9 +239,9 @@ wordcloud <- function(x, min_size, max_size, max_words,
     theta_step <- 0.1
     r_step <- 0.05
     
-    graphics::plot.new()
     op <- graphics::par(no.readonly = TRUE)
     graphics::par(mar = c(0, 0, 0, 0), usr = c(-1, 1, -1, 1), family = font)
+    graphics::plot.new()
     if (fixed_aspect) {
         graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     } else {
@@ -297,8 +297,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
             }
         }
     }
-    #abline(v=c(0, 1), h=c(0, 1))
-    #abline(v=c(0.25, 0.75), h=c(0.25, 0.75), col=2:3)
+    #abline(v=c(0, 0.25, 0.75, 1), h=c(0, 0.25, 0.75, 1))
     graphics::par(op)
 }
 
@@ -397,9 +396,9 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     theta_step <- 0.05
     r_step <- 0.05
     
-    graphics::plot.new()
     op <- graphics::par(no.readonly = TRUE)
     graphics::par(mar = c(0, 0, 0, 0), usr = c(-1, 1, -1, 1), family = font)
+    graphics::plot.new()
     if (labelsize > 0) {
         graphics::plot.window(c(-0.1, 1.1), c(-0.1, 1.1), asp = 1)
     } else {
@@ -466,7 +465,6 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
             }
         }
     }
-    #abline(v=0:1, h=0:1)
-    #abline(v=c(0.25, 0.75), h=c(0.25, 0.75))
+    #abline(v=c(0, 0.25, 0.75, 1), h=c(0, 0.25, 0.75, 1))
     graphics::par(op)
 }
