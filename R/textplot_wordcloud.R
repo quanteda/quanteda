@@ -67,8 +67,6 @@
 #'     dfm_trim(min_count = 3)
 #' 
 #' textplot_wordcloud(obama_trump_dfm, comparison = TRUE)
-#' # compare to tf-idf version
-#' textplot_wordcloud(dfm_tfidf(obama_trump_dfm), comparison = TRUE)
 #' }
 #' @export
 #' @keywords textplot
@@ -364,9 +362,9 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     }
     
     font <- check_font(font)
-    x <- x / rowSums(x)
-    x <- x - rowMeans(x)
-    x <- t(as.matrix(x))
+    x <- dfm_weight(x, 'prop')
+    x <- t(x) - Matrix::colMeans(x)
+    x <- as.matrix(x)
 
     ndoc <- ncol(x)
     theta_bins <- seq(0, 2 * pi, length = ndoc + 1)
