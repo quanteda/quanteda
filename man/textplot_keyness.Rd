@@ -4,7 +4,9 @@
 \alias{textplot_keyness}
 \title{Plot word keyness}
 \usage{
-textplot_keyness(x, show_reference = TRUE, n = 20L, min_count = 2L)
+textplot_keyness(x, show_reference = TRUE, show_legend = TRUE, n = 20L,
+  min_count = 2L, margin = 0.05, color = c("#1F78B4", "#A6CEE3"),
+  labelcolor = "#4D4D4D", labelsize = 4, font = NULL)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
@@ -12,10 +14,23 @@ textplot_keyness(x, show_reference = TRUE, n = 20L, min_count = 2L)
 \item{show_reference}{logical; if \code{TRUE}, show key reference features in
 addition to key target features}
 
+\item{show_legend}{logical; if \code{TRUE}, show legend}
+
 \item{n}{integer; number of features to plot}
 
 \item{min_count}{numeric; minimum total count of feature across the target 
 and reference categories, for a feature to be included in the plot}
+
+\item{margin}{numeric; size of margin where feature labels are shown}
+
+\item{color}{character; colors of bars for target and reference documents.
+\code{color} must have two elements when \code{show_reference = TRUE}.}
+
+\item{labelcolor}{character; color of feature labels.}
+
+\item{labelsize}{numeric; size of feature labels and bars.}
+
+\item{font}{character; font-family of texts. Use default font if \code{NULL}.}
 }
 \value{
 a \pkg{ggplot2} object
@@ -26,18 +41,25 @@ associations with a target and a reference group, after calculating keyness
 using \code{\link{textstat_keyness}}.
 }
 \examples{
-\dontrun{
-# compare Trump v. Obama speeches
-prescorpus <- corpus_subset(data_corpus_inaugural, 
-                            President \%in\% c("Obama", "Trump"))
-presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-               remove_punct = TRUE)
-result <- textstat_keyness(presdfm, target = "Trump")
 
-# plot estimated word keyness
-textplot_keyness(result) 
-textplot_keyness(result, show_reference = FALSE)
-}
+# compare Trump v. all other speeches
+pres_corp <- data_corpus_inaugural
+pres_dfm <- dfm(pres_corp, groups = "President", remove = stopwords("english"),
+                remove_punct = TRUE)
+pres_key <- textstat_keyness(pres_dfm, target = "Trump")               
+textplot_keyness(pres_key)
+textplot_keyness(pres_key, show_reference = FALSE) 
+
+# compare Trump v. Obama speeches by PMI
+to_corp <- corpus_subset(data_corpus_inaugural, 
+                         President \%in\% c("Obama", "Trump"))
+to_dfm <- dfm(to_corp, groups = "President", remove = stopwords("english"),
+              remove_punct = TRUE)
+to_key <- textstat_keyness(to_dfm, target = "Trump", measure = 'pmi')
+
+textplot_keyness(to_key, margin = 0.2)
+textplot_keyness(to_key, show_reference = FALSE, margin = 0.2) 
+
 }
 \seealso{
 \code{\link{textstat_keyness}}

@@ -6,7 +6,7 @@
 #' @param x a return object from \code{\link{textstat_keyness}}
 #' @param show_reference logical; if \code{TRUE}, show key reference features in
 #'   addition to key target features
-#' @param show_reference logical; if \code{TRUE}, show legend
+#' @param show_legend logical; if \code{TRUE}, show legend
 #' @param n integer; number of features to plot
 #' @param min_count numeric; minimum total count of feature across the target 
 #'   and reference categories, for a feature to be included in the plot
@@ -82,8 +82,8 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     data$keyness <- data[[2]]
     data$right <- data$keyness >= 0
     if (show_reference) {
-        t <- intersect(which(data$right), head(seq(nrow(data)), n / 2))
-        r <- intersect(which(!data$right), head(seq(nrow(data), n / 2)))
+        t <- intersect(which(data$right), head(seq(nrow(data)), n))
+        r <- intersect(which(!data$right), tail(seq(nrow(data)), n))
         i <- union(t, r)
     } else {
         i <- intersect(which(data$right), head(seq(nrow(data)), n))
@@ -104,20 +104,21 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
 
     data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
     data$y1 <- rank(data$keyness, ties.method = "first")
-    data$x2 <- rep(0, nrow(data))
+    data$x2 <- 0
     data$y2 <- data$y
     margin <- margin * max(abs(data$x1)) * 2
     
+    x1 <- y1 <- x2 <- y2 <- feature <- NULL
     ggplot(data) +  
          xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) + 
          geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
                       size = labelsize) +
-        scale_colour_identity(NULL, labels = docname, 
+         scale_colour_identity(NULL, labels = docname, 
                               guide = if (show_legend) 'legend' else FALSE) + 
-        xlab(measure) +
+         xlab(measure) +
          geom_label(aes(x = x1, y = y1, label = feature), label.size = 0, fill = NA,
                     vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
-                    color = labelcolor, size = labelsize) +
+                    color = labelcolor, size = labelsize, family = font) +
          theme_bw() +
          theme(axis.line = element_blank(),
                axis.title.y = element_blank(),
