@@ -8,7 +8,7 @@
 \method{as.matrix}{dfm}(x, ...)
 
 \method{as.data.frame}{dfm}(x, row.names = NULL, ...,
-  document = docnames(x))
+  document = docnames(x), check.names = FALSE)
 }
 \arguments{
 \item{x}{dfm to be coerced}
@@ -20,6 +20,12 @@
 
 \item{document}{optional first column of mode \code{character} in the
 data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
+
+\item{check.names}{logical.  If \code{TRUE} then the names of the
+    variables in the data frame are checked to ensure that they are
+    syntactically valid variable names and are not duplicated.
+    If necessary they are adjusted (by \code{\link{make.names}})
+    so that they are.}
 }
 \description{
 Methods for coercing a \link{dfm} object to a matrix or data.frame object.
