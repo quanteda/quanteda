@@ -6,44 +6,68 @@
 #' @param x a return object from \code{\link{textstat_keyness}}
 #' @param show_reference logical; if \code{TRUE}, show key reference features in
 #'   addition to key target features
+#' @param show_reference logical; if \code{TRUE}, show legend
 #' @param n integer; number of features to plot
 #' @param min_count numeric; minimum total count of feature across the target 
 #'   and reference categories, for a feature to be included in the plot
+#' @param margin numeric; size of margin where feature labels are shown 
+#' @param color character; colors of bars for target and reference documents.
+#'   \code{color} must have two elements when \code{show_reference = TRUE}.
+#' @param labelcolor character; color of feature labels.
+#' @param labelsize numeric; size of feature labels and bars.
+#' @param font character; font-family of texts. Use default font if \code{NULL}.
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Haiyan Wang
 #' @seealso \code{\link{textstat_keyness}}
 #' @keywords textplot
 #' @examples
-#' \dontrun{
-#' # compare Trump v. Obama speeches
-#' prescorpus <- corpus_subset(data_corpus_inaugural, 
-#'                             President %in% c("Obama", "Trump"))
-#' presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-#'                remove_punct = TRUE)
-#' result <- textstat_keyness(presdfm, target = "Trump")
 #' 
-#' # plot estimated word keyness
-#' textplot_keyness(result) 
-#' textplot_keyness(result, show_reference = FALSE)
-#' }
-textplot_keyness <-  function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+#' # compare Trump v. all other speeches
+#' pres_corp <- data_corpus_inaugural
+#' pres_dfm <- dfm(pres_corp, groups = "President", remove = stopwords("english"),
+#'                 remove_punct = TRUE)
+#' pres_key <- textstat_keyness(pres_dfm, target = "Trump")               
+#' textplot_keyness(pres_key)
+#' textplot_keyness(pres_key, show_reference = FALSE) 
+#' 
+#' # compare Trump v. Obama speeches by PMI
+#' to_corp <- corpus_subset(data_corpus_inaugural, 
+#'                          President %in% c("Obama", "Trump"))
+#' to_dfm <- dfm(to_corp, groups = "President", remove = stopwords("english"),
+#'               remove_punct = TRUE)
+#' to_key <- textstat_keyness(to_dfm, target = "Trump", measure = 'pmi')
+#' 
+#' textplot_keyness(to_key, margin = 0.2)
+#' textplot_keyness(to_key, show_reference = FALSE, margin = 0.2) 
+#' 
+textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE, 
+                              n = 20L, min_count = 2L, margin = 0.05,
+                              color = c("#1F78B4", "#A6CEE3"), labelcolor = '#4D4D4D',
+                              labelsize = 4, font = NULL) {
     UseMethod("textplot_keyness")
 }
 
 #' @export
-textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_count = 2L,
-                                     color = c("#A6CEE3", "#1F78B4"), font = NULL) {
+textplot_keyness.default <- function(x, show_reference = TRUE, show_legend = TRUE, 
+                                     n = 20L, min_count = 2L, margin = 0.05,
+                                     color = c("#1F78B4", "#A6CEE3"), labelcolor = '#4D4D4D',
+                                     labelsize = 4, font = NULL) {
     stop(friendly_class_undefined_message(class(x), "textplot_keyness"))
 }
 
 #' @import ggplot2
 #' @export
-textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L,
-                                     color = c("#A6CEE3", "#1F78B4"), font = NULL) {
+textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRUE,
+                                     n = 20L, min_count = 2L, margin = 0.05,
+                                     color = c("#1F78B4", "#A6CEE3"), labelcolor = '#4D4D4D',
+                                     labelsize = 4, font = NULL) {
     
     
     font <- check_font(font)
+    if (show_reference)
+        if (length(color) != 2)
+            stop('color must have two values when show_reference is TRUE.')
     
     # extract attribute befor subsetting
     docname <- attr(x, "documents")
@@ -52,18 +76,11 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_coun
     # drop infrequent words
     data <- x[(x$n_target + x$n_reference) >= min_count,,drop = FALSE]
     
-    if (nrow(data) < 1) {
+    if (nrow(data) < 1)
         stop ("Too few words in the documents.")
-    }
-    
     
     data$keyness <- data[[2]]
-    if (measure == "pmi") {
-        limit <- 1
-    } else {
-        limit <- 0
-    }
-    data$right <- data$keyness >= limit
+    data$right <- data$keyness >= 0
     if (show_reference) {
         t <- intersect(which(data$right), head(seq(nrow(data)), n / 2))
         r <- intersect(which(!data$right), head(seq(nrow(data), n / 2)))
@@ -72,8 +89,12 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_coun
         i <- intersect(which(data$right), head(seq(nrow(data)), n))
     }
     data <- data[i,,drop = FALSE]
-    data$width <- stri_width(data$feature)
-    data$color <- color[2 - data$right]
+    #data$width <- stri_width(data$feature)
+    if (show_reference) {
+        data$color <- color[2 - data$right]
+    } else {
+        data$color <- color[1]
+    }
     
     if (length(docname) < 2) {
         docname <- c("Target", "Reference")
@@ -83,21 +104,25 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_coun
 
     data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
     data$y1 <- rank(data$keyness, ties.method = "first")
-    data$x2 <- rep(limit, nrow(data))
+    data$x2 <- rep(0, nrow(data))
     data$y2 <- data$y
-    ggplot() +  
-        #geom_point(aes(x1, y1)) + 
-        geom_segment(data = data, aes(x = x1, y = y1, xend = x2, yend = y2)) +
-        #scale_fill_manual("Document", values = color) +
-        xlim(min(data$x1) * 1.1 , max(data$x1) * 1.1) +  
+    margin <- margin * max(abs(data$x1)) * 2
+    
+    ggplot(data) +  
+         xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) + 
+         geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
+                      size = labelsize) +
+        scale_colour_identity(NULL, labels = docname, 
+                              guide = if (show_legend) 'legend' else FALSE) + 
         xlab(measure) +
-        geom_label(data = data, aes(x = x1, y = y1, label = feature), label.size = 0, fill = NA,
-                   vjust = 'center', hjust = 'outward', color = '#4D4D4D', size = 4) +
-        theme_bw() +
-        theme(axis.line = element_blank(),
-              axis.title.y = element_blank(),
-              axis.text.y = element_blank(),
-              axis.ticks.y = element_blank(),
-              plot.background = element_blank(),
-              panel.grid.major.y = element_line(linetype = "dotted"))
+         geom_label(aes(x = x1, y = y1, label = feature), label.size = 0, fill = NA,
+                    vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
+                    color = labelcolor, size = labelsize) +
+         theme_bw() +
+         theme(axis.line = element_blank(),
+               axis.title.y = element_blank(),
+               axis.text.y = element_blank(),
+               axis.ticks.y = element_blank(),
+               plot.background = element_blank(),
+               panel.grid.major.y = element_line(linetype = "dotted"))
 } 
