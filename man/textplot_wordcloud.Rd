@@ -84,7 +84,7 @@ obama_dfm <-
 textplot_wordcloud(obama_dfm)
 
 # plot in colors with some additional options
-textplot_wordcloud(obama_dfm, max_words = 500, rotation = 0.25, 
+textplot_wordcloud(obama_dfm, rotation = 0.25, 
                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
   
 # other display options
@@ -101,5 +101,8 @@ obama_trump_dfm <-
 
 textplot_wordcloud(obama_trump_dfm, comparison = TRUE)
 }
+}
+\author{
+Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 }
 \keyword{textplot}

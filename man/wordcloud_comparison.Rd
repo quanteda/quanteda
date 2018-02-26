@@ -75,6 +75,7 @@ This function impliments wordcloud that compares documents. Code is adopted from
 \code{\link[wordcloud]{comparison.cloud}}.
 }
 \author{
-Ian Fellows
+Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 }
 \keyword{internal}
+\keyword{textplot_internal}
