@@ -51,7 +51,7 @@
 #' textplot_wordcloud(obama_dfm)
 #' 
 #' # plot in colors with some additional options
-#' textplot_wordcloud(obama_dfm, max_words = 500, rotation = 0.25, 
+#' textplot_wordcloud(obama_dfm, rotation = 0.25, 
 #'                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
 #'   
 #' # other display options
@@ -70,6 +70,7 @@
 #' }
 #' @export
 #' @keywords textplot
+#' @author Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 #' @import ggplot2
 textplot_wordcloud <- function(x, 
                                min_size = 0.5, 
@@ -148,7 +149,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
 #' @keywords internal
-#' @author Ian Fellows
+#' @author Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, max_words,
                       color, font, adjust, rotation,
                       random_order, random_color, ordered_color,
@@ -265,8 +266,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
             wd <- tp
         }
         
-        is_overlaped <- TRUE
-        while (is_overlaped) {
+        is_overlapped <- TRUE
+        while (is_overlapped) {
             if (!qatd_cpp_is_overlap(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht, boxes) &&
                 x1 - 0.5 * wd > 0 && y1 - 0.5 * ht > 0 &&
                 x1 + 0.5 * wd < 1 && y1 + 0.5 * ht < 1) {
@@ -282,11 +283,11 @@ wordcloud <- function(x, min_size, max_size, max_words,
                 }
                 text(x1, y1, word[i], cex = (1 + adjust) * size[i], offset = 0, srt = rot * 90, col = cc,  ...)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
-                is_overlaped <- FALSE
+                is_overlapped <- FALSE
             } else {
                 if (r > sqrt(0.5)) {
                     warning(paste(word[i], "could not be fit on page. It will not be plotted."))
-                    is_overlaped <- FALSE
+                    is_overlapped <- FALSE
                 }
                 theta <- theta + theta_step
                 r <- r + r_step * theta_step / (2 * pi)
@@ -313,8 +314,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
 #' @param ordered.colors deprecated argument
 #' @param use.r.layout deprecated argument
 #' @param title.size deprecated argument
-#' @keywords internal
-#' @author Ian Fellows
+#' @keywords textplot_internal
+#' @author Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud_comparison <- function(x, min_size, max_size, max_words,
                                  color, font, adjust, rotation,
                                  random_order, random_color, ordered_color,
@@ -437,8 +438,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
             ht <- wd
             wd <- tm
         }
-        is_overlaped <- TRUE
-        while (is_overlaped) {
+        is_overlapped <- TRUE
+        while (is_overlapped) {
             in_correct_region <- theta > theta_bins[group[i]] && theta < theta_bins[group[i] + 1]
             if (in_correct_region && !qatd_cpp_is_overlap(
                 x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht, boxes) &&
@@ -447,12 +448,12 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                 
                 text(x1, y1, word[i], cex = (1 + adjust) * size[i], offset = 0, srt = rot * 90, col = color[group[i]], ...)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
-                is_overlaped <- FALSE
+                is_overlapped <- FALSE
                 
             } else {
                 if (r > sqrt(0.5)) {
                     warning(paste(word[i], "could not be fit on page. It will not be plotted."))
-                    is_overlaped <- FALSE
+                    is_overlapped <- FALSE
                 }
                 theta <- theta + theta_step
                 if (theta > 2 * pi)
