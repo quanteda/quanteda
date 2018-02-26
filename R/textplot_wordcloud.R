@@ -255,8 +255,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
         x1 <- 0.5
         y1 <- 0.5
 
-        wd <- graphics::strwidth(word[i], cex = size[i], ...)
-        ht <- graphics::strheight(word[i], cex = size[i], ...)
+        wd <- graphics::strwidth(word[i], cex = size[i])
+        ht <- graphics::strheight(word[i], cex = size[i])
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rot) {
@@ -369,8 +369,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     ndoc <- ncol(x)
     theta_bins <- seq(0, 2 * pi, length = ndoc + 1)
 
-    if (is.null(color) < ndoc)
-        color <- RColorBrewer::brewer.pal(8, "Paired")
+    #if (is.null(color) < ndoc)
+    #    color <- RColorBrewer::brewer.pal(8, "Paired")
     group <- apply(x, 1, which.max)
     word <- rownames(x)
     freq <- apply(x, 1, max)
@@ -416,7 +416,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     
             x1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * cos(theta)
             y1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * sin(theta)
-            text(x1, y1, label, cex = labelsize, offset = 0, col = labelcolor, ...)
+            text(x1, y1, label, cex = labelsize, offset = 0, col = labelcolor)
             boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
         }
     }
@@ -427,8 +427,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        wd <- graphics::strwidth(word[i], cex = size[i], ...)
-        ht <- graphics::strheight(word[i], cex = size[i], ...)
+        wd <- graphics::strwidth(word[i], cex = size[i])
+        ht <- graphics::strheight(word[i], cex = size[i])
         
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
