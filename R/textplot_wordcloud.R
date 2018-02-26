@@ -38,7 +38,7 @@
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
 #'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
 #' @param ... additional parameters. Only used to make it compatible with
-#'   \code{\link[wordcloud]}
+#'   \pkg{wordcloud}
 #' @examples
 #' # plot the features (without stopwords) from Obama's inaugural addresses
 #' set.seed(10)
@@ -55,8 +55,8 @@
 #'                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
 #'   
 #' # other display options
-#' col <- sapply(seq(0.4, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
-#' textplot_wordcloud(obama_dfm, adjust = 0.15, random_order = FALSE, 
+#' col <- sapply(seq(0.1, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+#' textplot_wordcloud(obama_dfm, adjust = 0.5, random_order = FALSE, 
 #'                    color = col, rotation = FALSE)
 #'   
 #' \dontrun{
@@ -148,7 +148,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
 #' @keywords internal
-#' @author Ian Fellows
+#' @author Kohei Watanabe, built on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, max_words,
                       color, font, adjust, rotation,
                       random_order, random_color, ordered_color,

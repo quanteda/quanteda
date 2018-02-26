@@ -65,14 +65,14 @@ aspect ratio only supported if rotation = 0}
 
 \item{fixed.asp}{deprecated argument}
 
-\item{...}{additional parameters passed to \link{text} (and \link{strheight},
-\link{strwidth})}
+\item{...}{additional parameters. Only used to make it compatible with
+\pkg{wordcloud}}
 }
 \description{
 This function impliments wordcloud without dependecies. Code is adopted from 
 \code{\link[wordcloud]{wordcloud}}.
 }
 \author{
-Ian Fellows
+Kohei Watanabe, built on code from Ian Fellows's \pkg{wordcloud} package.
 }
 \keyword{internal}

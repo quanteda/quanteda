@@ -7,7 +7,7 @@
 textplot_wordcloud(x, min_size = 0.5, max_size = 4, max_words = 500,
   color = "#1F78B4", font = NULL, adjust = 0, rotation = 0.1,
   random_order = FALSE, random_color = FALSE, ordered_color = FALSE,
-  labelcolor = "#4D4D4D", labelsize = 1, labeloffset = 0,
+  labelcolor = "#4D4D4D", labelsize = 1.5, labeloffset = 0,
   fixed_aspect = TRUE, ..., comparison = FALSE)
 }
 \arguments{
@@ -48,8 +48,8 @@ order.}
 \item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
 aspect ratio only supported if rotation = 0}
 
-\item{...}{additional parameters passed to \link{text} (and \link{strheight},
-\link{strwidth})}
+\item{...}{additional parameters. Only used to make it compatible with
+\pkg{wordcloud}}
 
 \item{comparison}{if \code{TRUE}, plot a wordclound that compares documents
 in the same way as \code{\link[wordcloud]{comparison.cloud}}}
@@ -79,13 +79,13 @@ obama_dfm <-
     dfm_trim(min_count = 3)
     
 # basic wordcloud
-textplot_wordcloud(obama_dfm, max_words = 500)
+textplot_wordcloud(obama_dfm)
 
 # plot in colors with some additional options
 textplot_wordcloud(obama_dfm, max_words = 500, rotation = 0.25, 
                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
   
-# more graphical
+# other display options
 col <- sapply(seq(0.4, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
 textplot_wordcloud(obama_dfm, adjust = 0.15, random_order = FALSE, 
                    color = col, rotation = FALSE)
@@ -98,8 +98,6 @@ obama_trump_dfm <-
     dfm_trim(min_count = 3)
 
 textplot_wordcloud(obama_trump_dfm, comparison = TRUE)
-# compare to tf-idf version
-textplot_wordcloud(dfm_tfidf(obama_trump_dfm), comparison = TRUE)
 }
 }
 \keyword{textplot}

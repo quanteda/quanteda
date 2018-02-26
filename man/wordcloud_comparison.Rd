@@ -61,8 +61,8 @@ aspect ratio only supported if rotation = 0}
 
 \item{title.size}{deprecated argument}
 
-\item{...}{additional parameters passed to \link{text} (and \link{strheight},
-\link{strwidth})}
+\item{...}{additional parameters. Only used to make it compatible with
+\pkg{wordcloud}}
 
 \item{random.color}{deprecated argument}
 
