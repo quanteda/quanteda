@@ -37,8 +37,8 @@
 #'   aspect ratio only supported if rotation = 0
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
 #'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
-#' @param ... additional parameters passed to \link{text} (and \link{strheight},
-#'   \link{strwidth})
+#' @param ... additional parameters. Only used to make it compatible with
+#'   \pkg{wordcloud}
 #' @examples
 #' # plot the features (without stopwords) from Obama's inaugural addresses
 #' set.seed(10)
@@ -55,8 +55,8 @@
 #'                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
 #'   
 #' # other display options
-#' col <- sapply(seq(0.4, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
-#' textplot_wordcloud(obama_dfm, adjust = 0.15, random_order = FALSE, 
+#' col <- sapply(seq(0.1, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+#' textplot_wordcloud(obama_dfm, adjust = 0.5, random_order = FALSE, 
 #'                    color = col, rotation = FALSE)
 #'   
 #' \dontrun{
@@ -149,15 +149,14 @@ textplot_wordcloud.dfm <- function(x,
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
 #' @keywords internal
-#' @author Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
+#' @author Kohei Watanabe, built on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, max_words,
                       color, font, adjust, rotation,
                       random_order, random_color, ordered_color,
                       labelcolor, labelsize, labeloffset, fixed_aspect,
                       # deprecated arguments
                       colors, scale, min.freq, max.words, random.order, 
-                      random.color, rot.per, ordered.colors, use.r.layout, fixed.asp,
-                      ...) {
+                      random.color, rot.per, ordered.colors, use.r.layout, fixed.asp, ...) {
     
     if (!missing(min.freq)) {
         warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
@@ -256,8 +255,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
         x1 <- 0.5
         y1 <- 0.5
 
-        wd <- graphics::strwidth(word[i], cex = size[i], ...)
-        ht <- graphics::strheight(word[i], cex = size[i], ...)
+        wd <- graphics::strwidth(word[i], cex = size[i])
+        ht <- graphics::strheight(word[i], cex = size[i])
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rot) {
@@ -322,8 +321,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                                  labelcolor, labelsize, labeloffset, fixed_aspect,
                                  # deprecated arguments
                                  colors, scale, min.freq, max.words, 
-                                 random.order, rot.per, use.r.layout, title.size,
-                                 ...) {
+                                 random.order, rot.per, use.r.layout, title.size, ...) {
     
     if (!missing(min.freq)) {
         warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
@@ -370,7 +368,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     ndoc <- ncol(x)
     theta_bins <- seq(0, 2 * pi, length = ndoc + 1)
 
-    if (is.null(color) < ndoc)
+    if (length(color) < ndoc)
         color <- RColorBrewer::brewer.pal(8, "Paired")
     group <- apply(x, 1, which.max)
     word <- rownames(x)
@@ -417,7 +415,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     
             x1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * cos(theta)
             y1 <- 0.5 + (0.5 + (labeloffset / 0.5)) * sin(theta)
-            text(x1, y1, label, cex = labelsize, offset = 0, col = labelcolor, ...)
+            text(x1, y1, label, cex = labelsize, offset = 0, col = labelcolor)
             boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wd, y1 - 0.5 * ht, wd, ht)
         }
     }
@@ -428,8 +426,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        wd <- graphics::strwidth(word[i], cex = size[i], ...)
-        ht <- graphics::strheight(word[i], cex = size[i], ...)
+        wd <- graphics::strwidth(word[i], cex = size[i])
+        ht <- graphics::strheight(word[i], cex = size[i])
         
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y

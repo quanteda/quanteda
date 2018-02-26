@@ -61,8 +61,8 @@ aspect ratio only supported if rotation = 0}
 
 \item{title.size}{deprecated argument}
 
-\item{...}{additional parameters passed to \link{text} (and \link{strheight},
-\link{strwidth})}
+\item{...}{additional parameters. Only used to make it compatible with
+\pkg{wordcloud}}
 
 \item{random.color}{deprecated argument}
 
@@ -73,6 +73,6 @@ This function impliments wordcloud that compares documents. Code is adopted from
 \code{\link[wordcloud]{comparison.cloud}}.
 }
 \author{
-Ian Fellows
+Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 }
-\keyword{internal}
+\keyword{textplot_internal}
