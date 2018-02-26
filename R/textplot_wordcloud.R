@@ -37,8 +37,8 @@
 #'   aspect ratio only supported if rotation = 0
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
 #'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
-#' @param ... additional parameters passed to \link{text} (and \link{strheight},
-#'   \link{strwidth})
+#' @param ... additional parameters. Only used to make it compatible with
+#'   \code{\link[wordcloud]}
 #' @examples
 #' # plot the features (without stopwords) from Obama's inaugural addresses
 #' set.seed(10)
@@ -155,8 +155,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
                       labelcolor, labelsize, labeloffset, fixed_aspect,
                       # deprecated arguments
                       colors, scale, min.freq, max.words, random.order, 
-                      random.color, rot.per, ordered.colors, use.r.layout, fixed.asp,
-                      ...) {
+                      random.color, rot.per, ordered.colors, use.r.layout, fixed.asp, ...) {
     
     if (!missing(min.freq)) {
         warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
@@ -321,8 +320,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                                  labelcolor, labelsize, labeloffset, fixed_aspect,
                                  # deprecated arguments
                                  colors, scale, min.freq, max.words, 
-                                 random.order, rot.per, use.r.layout, title.size,
-                                 ...) {
+                                 random.order, rot.per, use.r.layout, title.size, ...) {
     
     if (!missing(min.freq)) {
         warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
@@ -369,8 +367,8 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     ndoc <- ncol(x)
     theta_bins <- seq(0, 2 * pi, length = ndoc + 1)
 
-    #if (is.null(color) < ndoc)
-    #    color <- RColorBrewer::brewer.pal(8, "Paired")
+    if (length(color) < ndoc)
+        color <- RColorBrewer::brewer.pal(8, "Paired")
     group <- apply(x, 1, which.max)
     word <- rownames(x)
     freq <- apply(x, 1, max)
