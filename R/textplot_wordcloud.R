@@ -16,6 +16,7 @@
 #' @param x a dfm object
 #' @param min_size size of the smallest word
 #' @param max_size size of the largest word
+#' @param min_count words with frequency below min_count will not be plotted
 #' @param max_words maximum number of words to be plotted. least frequent terms
 #'   dropped.
 #' @param color color of words from least to most frequent
@@ -74,6 +75,7 @@
 textplot_wordcloud <- function(x, 
                                min_size = 0.5, 
                                max_size = 4,
+                               min_count = 3,
                                max_words = 500,
                                color = "#1F78B4",
                                font = NULL,
@@ -100,6 +102,7 @@ textplot_wordcloud.default <- function(x, ..., comparison = FALSE) {
 textplot_wordcloud.dfm <- function(x, 
                                    min_size = 0.5, 
                                    max_size = 4,
+                                   min_count = 3,
                                    max_words = 500,
                                    color = "#1F78B4",
                                    font = NULL,
@@ -119,12 +122,12 @@ textplot_wordcloud.dfm <- function(x,
     if (comparison) {
         if (ndoc(x) > 8) 
             stop("Too many documents to plot comparison, use 8 or fewer documents.")
-        wordcloud_comparison(x, min_size , max_size, max_words,
+        wordcloud_comparison(x, min_size , max_size, min_count, max_words,
                              color, font, adjust, rotation,
                              random_order, random_color, ordered_color,
                              labelcolor, labelsize, labeloffset, fixed_aspect, ...)
     } else {
-        wordcloud(x, min_size, max_size, max_words,
+        wordcloud(x, min_size, max_size, min_count, max_words,
                   color, font, adjust, rotation,
                   random_order, random_color, ordered_color,
                   labelcolor, labelsize, labeloffset, fixed_aspect, ...)
@@ -149,7 +152,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param fixed.asp deprecated argument
 #' @keywords internal
 #' @author Kohei Watanabe, built on code from Ian Fellows's \pkg{wordcloud} package.
-wordcloud <- function(x, min_size, max_size, max_words,
+wordcloud <- function(x, min_size, max_size, min_count, max_words, 
                       color, font, adjust, rotation,
                       random_order, random_color, ordered_color,
                       labelcolor, labelsize, labeloffset, fixed_aspect,
@@ -157,11 +160,11 @@ wordcloud <- function(x, min_size, max_size, max_words,
                       colors, scale, min.freq, max.words, random.order, 
                       random.color, rot.per, ordered.colors, use.r.layout, fixed.asp, ...) {
     
-    if (!missing(min.freq)) {
-        warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
-        x <- dfm_trim(x, min_count = min.freq)
-    }
     arg_dep <- character()
+    if (!missing(min.freq)) {
+        min_count <- min.freq
+        arg_dep <- c(arg_dep, 'min_count' = 'min.freq')
+    }
     if (!missing(colors)) {
         color <- colors
         arg_dep <- c(arg_dep, 'color' = 'colors')
@@ -208,6 +211,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
     nc <- length(color)
     
     font <- check_font(font)
+    x <- dfm_trim(x, min_count = min_count)
     freq <- Matrix::colSums(x)
     word <- names(freq)
     freq <- unname(freq)
@@ -314,7 +318,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
 #' @param title.size deprecated argument
 #' @keywords internal
 #' @author Ian Fellows
-wordcloud_comparison <- function(x, min_size, max_size, max_words,
+wordcloud_comparison <- function(x, min_size, max_size, min_count, max_words,
                                  color, font, adjust, rotation,
                                  random_order, random_color, ordered_color,
                                  labelcolor, labelsize, labeloffset, fixed_aspect,
@@ -322,11 +326,11 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                                  colors, scale, min.freq, max.words, 
                                  random.order, rot.per, use.r.layout, title.size, ...) {
     
-    if (!missing(min.freq)) {
-        warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
-        x <- dfm_trim(x, min_count = min.freq)
-    }
     arg_dep <- character()
+    if (!missing(min.freq)) {
+        min_count <- min.freq
+        arg_dep <- c(arg_dep, 'min_count' = 'min.freq')
+    }
     if (!missing(colors)) {
         color <- colors
         arg_dep <- c(arg_dep, 'color' = 'colors')
@@ -360,6 +364,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     }
     
     font <- check_font(font)
+    x <- dfm_trim(x, min_count = min_count)
     x <- dfm_weight(x, 'prop')
     x <- t(x) - Matrix::colMeans(x)
     x <- as.matrix(x)

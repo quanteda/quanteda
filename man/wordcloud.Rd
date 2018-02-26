@@ -4,10 +4,10 @@
 \alias{wordcloud}
 \title{Internal function for textplot_wordcloud}
 \usage{
-wordcloud(x, min_size, max_size, max_words, color, font, adjust, rotation,
-  random_order, random_color, ordered_color, labelcolor, labelsize, labeloffset,
-  fixed_aspect, colors, scale, min.freq, max.words, random.order, random.color,
-  rot.per, ordered.colors, use.r.layout, fixed.asp, ...)
+wordcloud(x, min_size, max_size, min_count, max_words, color, font, adjust,
+  rotation, random_order, random_color, ordered_color, labelcolor, labelsize,
+  labeloffset, fixed_aspect, colors, scale, min.freq, max.words, random.order,
+  random.color, rot.per, ordered.colors, use.r.layout, fixed.asp, ...)
 }
 \arguments{
 \item{x}{a dfm object}
@@ -15,6 +15,8 @@ wordcloud(x, min_size, max_size, max_words, color, font, adjust, rotation,
 \item{min_size}{size of the smallest word}
 
 \item{max_size}{size of the largest word}
+
+\item{min_count}{words with frequency below min_count will not be plotted}
 
 \item{max_words}{maximum number of words to be plotted. least frequent terms
 dropped.}

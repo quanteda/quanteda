@@ -4,11 +4,11 @@
 \alias{textplot_wordcloud}
 \title{Plot features as a wordcloud}
 \usage{
-textplot_wordcloud(x, min_size = 0.5, max_size = 4, max_words = 500,
-  color = "#1F78B4", font = NULL, adjust = 0, rotation = 0.1,
-  random_order = FALSE, random_color = FALSE, ordered_color = FALSE,
-  labelcolor = "#4D4D4D", labelsize = 1.5, labeloffset = 0,
-  fixed_aspect = TRUE, ..., comparison = FALSE)
+textplot_wordcloud(x, min_size = 0.5, max_size = 4, min_count = 3,
+  max_words = 500, color = "#1F78B4", font = NULL, adjust = 0,
+  rotation = 0.1, random_order = FALSE, random_color = FALSE,
+  ordered_color = FALSE, labelcolor = "#4D4D4D", labelsize = 1.5,
+  labeloffset = 0, fixed_aspect = TRUE, ..., comparison = FALSE)
 }
 \arguments{
 \item{x}{a dfm object}
@@ -16,6 +16,8 @@ textplot_wordcloud(x, min_size = 0.5, max_size = 4, max_words = 500,
 \item{min_size}{size of the smallest word}
 
 \item{max_size}{size of the largest word}
+
+\item{min_count}{words with frequency below min_count will not be plotted}
 
 \item{max_words}{maximum number of words to be plotted. least frequent terms
 dropped.}
@@ -86,8 +88,8 @@ textplot_wordcloud(obama_dfm, max_words = 500, rotation = 0.25,
                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
   
 # other display options
-col <- sapply(seq(0.4, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
-textplot_wordcloud(obama_dfm, adjust = 0.15, random_order = FALSE, 
+col <- sapply(seq(0.1, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+textplot_wordcloud(obama_dfm, adjust = 0.5, random_order = FALSE, 
                    color = col, rotation = FALSE)
   
 \dontrun{
