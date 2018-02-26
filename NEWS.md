@@ -11,6 +11,7 @@
 
 * Eliminated unnecessary dependency on the **digest** package.
 * Updated the vignette title to be less generic.
+* Improved the robustness of `dfm_trim()` and `dfm_weight()` for previously weighted dfm objects and when supplied thresholds are proportions instead of counts.  (#1237)
 * Fixed a problem in `summary.corpus(x, n = 101)` when `ndoc(x) > 100` (#1242). 
 
 ### Performance improvements

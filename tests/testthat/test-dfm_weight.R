@@ -273,3 +273,12 @@ test_that("deprecated dfm_weight argument values still work", {
     
 })
 
+test_that("docfreq works previously a weighted dfm (#1237)", {
+    df1 <- dfm(data_dfm_lbgexample) %>% dfm_tfidf(scheme_tf = "prop")
+    computed <- c(rep(1, 5), 2, 2, 3, 3, 3, 4)
+    names(computed) <- letters[1:11]
+    expect_equal(
+        docfreq(df1)[1:11],
+        computed
+    )
+})

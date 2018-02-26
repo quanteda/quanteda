@@ -85,4 +85,24 @@ test_that("dfm_trim works with min_count larger than total number (#1181)", {
 
 })
 
-
+test_that("dfm_trim works on previously weighted dfms (#1237)", {
+    dfm1 <- dfm(c("the quick brown fox jumps over the lazy dog", 
+                  "the quick brown foxy ox jumps over the lazy god"))
+    dfm2 <- dfm_tfidf(dfm1)
+    expect_equal(
+        dfm_trim(dfm2, min_count = 0, min_docfreq = .5) %>% as.matrix(),
+        matrix(c(.30103, 0, .30103, 0, 0, .30103, 0, .30103, 0, .30103), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), 
+                               features = c("fox", "dog", "foxy", "ox", "god"))),
+        tol = .0001
+    )
+    expect_warning(
+        dfm_trim(dfm2, min_docfreq = .5),
+        "dfm has been previously weighted; consider changing default min_count"
+    )    
+    expect_silent(dfm_trim(dfm2, min_count = 1, min_docfreq = .5))
+    expect_equal(
+        dim(dfm_trim(dfm2, min_count = 1, min_docfreq = .5)),
+        c(2, 0)
+    )
+})
