@@ -18,28 +18,27 @@
 #' @param font character; font-family of texts. Use default font if \code{NULL}.
 #' @return a \pkg{ggplot2} object
 #' @export
-#' @author Haiyan Wang
+#' @author Haiyan Wang and Kohei Watanabe
 #' @seealso \code{\link{textstat_keyness}}
 #' @keywords textplot
 #' @examples
+#' # compare Trump speeches to other Presidents by chi^2
+#' dem_dfm <- data_corpus_inaugural %>%
+#'      corpus_subset(Year > 1980) %>%
+#'      dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
+#' dem_key <- textstat_keyness(dem_dfm, target = "Trump")
+#' textplot_keyness(dem_key, margin = 0.2)
 #' 
-#' # compare Trump v. all other speeches
-#' pres_corp <- data_corpus_inaugural
-#' pres_dfm <- dfm(pres_corp, groups = "President", remove = stopwords("english"),
+#' # compare contemporary Democrats v. Republicans
+#' pres_corp <- data_corpus_inaugural %>%
+#'     corpus_subset(Year > 1960)
+#' docvars(pres_corp, "party") <- 
+#'     ifelse(docvars(pres_corp, "President") %in% c("Nixon", "Reagan", "Bush", "Trump"),
+#'            "Republican", "Democrat")
+#' pres_dfm <- dfm(pres_corp, groups = "party", remove = stopwords("english"),
 #'                 remove_punct = TRUE)
-#' pres_key <- textstat_keyness(pres_dfm, target = "Trump")               
-#' textplot_keyness(pres_key)
-#' textplot_keyness(pres_key, show_reference = FALSE) 
-#' 
-#' # compare Trump v. Obama speeches by PMI
-#' to_corp <- corpus_subset(data_corpus_inaugural, 
-#'                          President %in% c("Obama", "Trump"))
-#' to_dfm <- dfm(to_corp, groups = "President", remove = stopwords("english"),
-#'               remove_punct = TRUE)
-#' to_key <- textstat_keyness(to_dfm, target = "Trump", measure = 'pmi')
-#' 
-#' textplot_keyness(to_key, margin = 0.2)
-#' textplot_keyness(to_key, show_reference = FALSE, margin = 0.2) 
+#' pres_key <- textstat_keyness(pres_dfm, target = "Democrat", measure = "lr")
+#' textplot_keyness(pres_key, color = c("blue", "red"))
 #' 
 textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE, 
                               n = 20L, min_count = 2L, margin = 0.05,

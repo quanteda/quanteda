@@ -41,30 +41,26 @@ associations with a target and a reference group, after calculating keyness
 using \code{\link{textstat_keyness}}.
 }
 \examples{
+# compare Obama speeches to other Democrats by chi^2
+dem_dfm <- data_corpus_inaugural \%>\%
+     corpus_subset(President \%in\% c("Carter", "Clinton", "Obama")) \%>\%
+     dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
+dem_key <- textstat_keyness(dem_dfm, target = "Obama")
+textplot_keyness(dem_key, margin = 0.2)
 
-# compare Trump v. all other speeches
-pres_corp <- data_corpus_inaugural
+# compare Trump v. Obama using likelihood ratio
+pres_corp <- data_corpus_inaugural \%>\%
+    corpus_subset(President \%in\% c("Obama", "Trump"))
 pres_dfm <- dfm(pres_corp, groups = "President", remove = stopwords("english"),
                 remove_punct = TRUE)
-pres_key <- textstat_keyness(pres_dfm, target = "Trump")               
+pres_key <- textstat_keyness(pres_dfm, target = "Trump", measure = "lr")
 textplot_keyness(pres_key)
-textplot_keyness(pres_key, show_reference = FALSE) 
-
-# compare Trump v. Obama speeches by PMI
-to_corp <- corpus_subset(data_corpus_inaugural, 
-                         President \%in\% c("Obama", "Trump"))
-to_dfm <- dfm(to_corp, groups = "President", remove = stopwords("english"),
-              remove_punct = TRUE)
-to_key <- textstat_keyness(to_dfm, target = "Trump", measure = 'pmi')
-
-textplot_keyness(to_key, margin = 0.2)
-textplot_keyness(to_key, show_reference = FALSE, margin = 0.2) 
 
 }
 \seealso{
 \code{\link{textstat_keyness}}
 }
 \author{
-Haiyan Wang
+Haiyan Wang and Kohei Watanabe
 }
 \keyword{textplot}
