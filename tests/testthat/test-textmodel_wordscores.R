@@ -78,6 +78,19 @@ test_that("test wordscores predict output without reftexts, but with standard er
     expect_true(!is.null(ws_predict$se.fit))
 })
 
+test_that("predict.textmodel_wordscores with rescaling works with additional reference texts (#1251)", {
+    refscores <- rep(NA, ndoc(data_dfm_lbgexample))
+    refscores[which(docnames(data_dfm_lbgexample) == "R1")] <- -1
+    refscores[which(docnames(data_dfm_lbgexample) == "R5")] <- 1
+
+    ws1999 <- textmodel_wordscores(data_dfm_lbgexample, refscores, 
+                                   scale = "linear", smooth = 1)
+    expect_identical(
+        predict(ws1999, rescaling = "mv")[c(1, 5)],
+        c(R1 = -1, R5 = 1)
+    )
+})
+
 test_that("test wordscores predict is same for virgin texts with and without ref texts", {
     y <- c(seq(-1.5, 1.5, .75), NA)
     ws <- textmodel_wordscores(data_dfm_lbgexample, y)

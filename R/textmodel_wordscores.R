@@ -19,10 +19,14 @@
 #'   LBG linear posterior weighted word class differences, or \code{"logit"}
 #'   for log posterior differences
 #' @details The \code{textmodel_wordscores()} function and the associated
-#'   \code{predict()} method are designed to function in the same manner as
-#'   \code{\link[stats]{predict.lm}}.  \code{coef()} can also be used to extract
-#'   the word coefficients from the fitted \code{textmodel_wordscore} object,
-#'   and \code{summary()} will print a nice summary of the fitted object.
+#'   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
+#'   to function in the same manner as \code{\link[stats]{predict.lm}}.
+#'   \code{coef()} can also be used to extract the word coefficients from the
+#'   fitted \code{textmodel_wordscore} object, and \code{summary()} will print a
+#'   nice summary of the fitted object.
+#' @seealso \code{\link{predict.textmodel_wordscores}} for methods of applying a
+#'   fitted \link{textmodel_wordscores} model object to predict quantities from
+#'   (other) documents.
 #' @author Kenneth Benoit
 #' @examples 
 #' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
@@ -257,10 +261,10 @@ rescaler <- function(x, scale.min = -1, scale.max = 1) {
 
 ## Internal function for MV rescaling
 mv_transform <- function(x, y, z) {
-    y <- y[!is.na(y)]
-    i_low <- which(y == min(y))
-    i_high <- which(y == max(y))
-    return((x - z[i_low]) * (max(y) - min(y)) / (z[i_high] - z[i_low]) + min(y))
+    i_low <- which(y == min(y, na.rm = TRUE))
+    i_high <- which(y == max(y, na.rm = TRUE))
+    return((x - z[i_low]) * (max(y, na.rm = TRUE) - min(y, na.rm = TRUE)) / 
+               (z[i_high] - z[i_low]) + min(y, na.rm = TRUE))
 }
 
 # redefined generic methods -----------

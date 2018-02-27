@@ -48,7 +48,7 @@ Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
 }
 \seealso{
 \code{\link{predict.textmodel_affinity}} for methods of applying a
-  fitted \link{textmodel_affinity} model. object to predict quantities from
+  fitted \link{textmodel_affinity} model object to predict quantities from
   (other) documents.
 }
 \author{
