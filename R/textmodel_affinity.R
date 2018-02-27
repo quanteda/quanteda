@@ -33,7 +33,7 @@
 #' @importFrom methods as
 #' @importFrom stats sd predict
 #' @seealso \code{\link{predict.textmodel_affinity}} for methods of applying a
-#'   fitted \link{textmodel_affinity} model. object to predict quantities from
+#'   fitted \link{textmodel_affinity} model object to predict quantities from
 #'   (other) documents.
 textmodel_affinity <- function(x, y, exclude = NULL,
                                smooth = 0.5, ref_smooth = 0.5,
