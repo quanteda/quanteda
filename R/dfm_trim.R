@@ -75,6 +75,12 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1,
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     
+    # warning if already fractional
+    if (missing(min_count) && 
+        (x@weightTf$scheme != "count" | x@weightDf$scheme != "unary")) {
+        warning("dfm has been previously weighted; consider changing default min_count")
+    }
+    
     freq <- colSums(x)
     freq_doc <- docfreq(x)
     
@@ -87,25 +93,26 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1,
                  sparsity, "=", format(min_docfreq, big.mark=","), ".\n")
         min_docfreq <- 1.0 - sparsity
     }             
-    
-    if (is.null(max_count))
-        max_count <- max(freq, min_count)
-    if (is.null(max_docfreq))
-        max_docfreq <- max(freq_doc, min_docfreq)
 
     # convert fractions into counts
     if (min_count < 1.0)
         min_count <- quantile(freq, min_count, names = FALSE, type = 1)
  
-    if (max_count < 1.0)
+    if (!is.null(max_count) && max_count < 1.0)
         max_count <- quantile(freq, max_count, names = FALSE, type = 1)
     
     if (min_docfreq < 1.0)
         min_docfreq <- min_docfreq * ndoc(x)
     
-    if (max_docfreq < 1.0)
+    if (!is.null(max_docfreq) && max_docfreq < 1.0)
         max_docfreq <- max_docfreq * ndoc(x)
 
+    # set maximums appropriately if not provided
+    if (is.null(max_count))
+        max_count <- max(freq, min_count)
+    if (is.null(max_docfreq))
+        max_docfreq <- max(freq_doc, min_docfreq)
+    
     # checks that min is less than max
     if (max_count < min_count)
         stop("max_count must be >= min_count")

@@ -30,10 +30,11 @@ documents from a fitted \code{textmodel_wordscores} object.
 }
 \details{
 The \code{textmodel_wordscores()} function and the associated
-  \code{predict()} method are designed to function in the same manner as
-  \code{\link[stats]{predict.lm}}.  \code{coef()} can also be used to extract
-  the word coefficients from the fitted \code{textmodel_wordscore} object,
-  and \code{summary()} will print a nice summary of the fitted object.
+  \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
+  to function in the same manner as \code{\link[stats]{predict.lm}}.
+  \code{coef()} can also be used to extract the word coefficients from the
+  fitted \code{textmodel_wordscore} object, and \code{summary()} will print a
+  nice summary of the fitted object.
 }
 \examples{
 (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
@@ -57,6 +58,11 @@ Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
   
   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
+}
+\seealso{
+\code{\link{predict.textmodel_wordscores}} for methods of applying a
+  fitted \link{textmodel_wordscores} model object to predict quantities from
+  (other) documents.
 }
 \author{
 Kenneth Benoit
