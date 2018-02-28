@@ -41,9 +41,9 @@
 #' @import network ggplot2 ggrepel
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                             edge_color = 'skyblue', edge_alpha = 0.5, 
+                             edge_color = '#1F78B4', edge_alpha = 0.5, 
                              edge_size = 2, 
-                             vertex_color = 'gray40', vertex_size = 2,
+                             vertex_color = '#4D4D4D', vertex_size = 2,
                              vertex_labelcolor = NULL,
                              offset = NULL, 
                              vertex_labelfont = NULL, ...) {
@@ -52,9 +52,9 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 
 #' @export
 textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = 'skyblue', edge_alpha = 0.5, 
+                                 edge_color = '#1F78B4', edge_alpha = 0.5, 
                                  edge_size = 2, 
-                                 vertex_color = 'gray40', vertex_size = 2,
+                                 vertex_color = '#4D4D4D', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
                                  vertex_labelfont = NULL, ...) {
@@ -71,28 +71,16 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
 #' @export
 textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = 'skyblue', edge_alpha = 0.5, 
+                                 edge_color = '#1F78B4', edge_alpha = 0.5, 
                                  edge_size = 2, 
-                                 vertex_color = 'gray40', vertex_size = 2,
+                                 vertex_color = '#4D4D4D', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
                                  vertex_labelfont = NULL, ...) {
     
     label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
     
-    if (is.null(vertex_labelfont)) {
-        vertex_labelfont <- ""
-    } else {
-        msg <- paste0(vertex_labelfont, ' is not found on your system.')
-        if (Sys.info()['sysname'] == 'Windows') {
-            if (!vertex_labelfont %in% names(grDevices::windowsFonts()))
-                stop(msg, ' Run extrafont::import_font() and extrafont::loadfonts(device = "win") to use custom fonts.')
-        } else {
-            if (!vertex_labelfont %in% c('sans', 'serif', 'mono', extrafont::fonts()))
-                stop(msg, ' Run extrafont::import_font() to use custom fonts.')
-        }
-    }
-    
+    vertex_labelfont <- check_font(vertex_labelfont)
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
@@ -143,13 +131,16 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
         }
 
     plot <- plot + 
-        scale_x_continuous(breaks = NULL) + scale_y_continuous(breaks = NULL) +
-        theme(panel.background = element_blank()) + 
-        theme(legend.position = "none") +
-        theme(axis.title.x = element_blank(), axis.title.y = element_blank()) +
-        theme(legend.background = element_rect(color = NA)) + 
-        theme(panel.background = element_rect(fill = "white", color = NA)) +
-        theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank())
+        scale_x_continuous(breaks = NULL) + 
+        scale_y_continuous(breaks = NULL) +
+        theme(
+            plot.margin = margin(0, 0, 0, 0),
+            panel.background = element_blank(), 
+            axis.title.x = element_blank(), 
+            axis.title.y = element_blank(),
+            legend.position = "none",
+            panel.grid.minor = element_blank(), 
+            panel.grid.major = element_blank())
     
     return(plot)
 }

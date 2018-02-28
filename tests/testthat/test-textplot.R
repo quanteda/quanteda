@@ -85,11 +85,42 @@ test_that("test plot.kwic keeps order of keywords passed", {
 })
 
 test_that("test textplot_wordcloud works for dfm objects", {
-    expect_silent(textplot_wordcloud(dfm(data_corpus_inaugural[1:5]), min.freq = 10))
+    mt <- dfm(data_corpus_inaugural[1:5])
+    mt <- dfm_trim(mt, min_count = 10)
+    expect_silent(textplot_wordcloud(mt))
 })
 
-test_that("test textplot_wordcloud works for tokens objects", {
-    expect_silent(textplot_wordcloud(tokens(data_corpus_inaugural[1:5]), min.freq = 10))
+test_that("test textplot_wordcloud comparison works", {
+    skip_on_travis()
+    testcorp <- corpus_reshape(corpus(data_char_sampletext))
+    set.seed(1)
+    docvars(testcorp, "label") <- sample(c("A", "B"), size = ndoc(testcorp), replace = TRUE)
+    docnames(testcorp) <- paste0("text", 1:ndoc(testcorp))
+    testdfm <- dfm(testcorp, remove = stopwords("english"))
+    testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
+    
+    expect_silent(
+        textplot_wordcloud(testdfm_grouped, comparison = TRUE)
+    )
+    expect_silent(
+        textplot_wordcloud(testdfm_grouped, random_order = FALSE)
+    )
+    expect_silent(
+        textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
+    )
+    expect_error(
+        textplot_wordcloud(testdfm, comparison = TRUE),
+        "Too many documents to plot comparison, use 8 or fewer documents\\."
+    )
+    
+})
+
+test_that("test textplot_wordcloud raise deprecation message", {
+    
+    mt <- dfm(data_corpus_inaugural[1:5])
+    mt <- dfm_trim(mt, min_count = 10)
+    expect_warning(textplot_wordcloud(mt, min.freq = 10), 'min.freq is deprecated')
+    expect_warning(textplot_wordcloud(mt, use.r.layout = 10), 'use.r.layout is no longer use')
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {
