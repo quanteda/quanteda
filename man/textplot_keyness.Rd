@@ -5,7 +5,7 @@
 \title{Plot word keyness}
 \usage{
 textplot_keyness(x, show_reference = TRUE, show_legend = TRUE, n = 20L,
-  min_count = 2L, margin = 0.05, color = c("gray", "darkblue"),
+  min_count = 2L, margin = 0.05, color = c("darkblue", "gray"),
   labelcolor = "gray30", labelsize = 4, font = NULL)
 }
 \arguments{
