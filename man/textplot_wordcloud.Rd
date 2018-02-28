@@ -5,9 +5,9 @@
 \title{Plot features as a wordcloud}
 \usage{
 textplot_wordcloud(x, min_size = 0.5, max_size = 4, min_count = 3,
-  max_words = 500, color = "#1F78B4", font = NULL, adjust = 0,
+  max_words = 500, color = "darkblue", font = NULL, adjust = 0,
   rotation = 0.1, random_order = FALSE, random_color = FALSE,
-  ordered_color = FALSE, labelcolor = "#4D4D4D", labelsize = 1.5,
+  ordered_color = FALSE, labelcolor = "gray20", labelsize = 1.5,
   labeloffset = 0, fixed_aspect = TRUE, ..., comparison = FALSE)
 }
 \arguments{
@@ -88,19 +88,18 @@ textplot_wordcloud(obama_dfm, rotation = 0.25,
                    color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
   
 # other display options
-col <- sapply(seq(0.1, 1, 0.1), function(x) adjustcolor('#1F78B4', x))
+col <- sapply(seq(0.1, 1, 0.1), function(x) adjustcolor("#1F78B4", x))
 textplot_wordcloud(obama_dfm, adjust = 0.5, random_order = FALSE, 
                    color = col, rotation = FALSE)
   
-\dontrun{
 # comparison plot of Obama v. Trump
 obama_trump_dfm <- 
     dfm(corpus_subset(data_corpus_inaugural, President \%in\% c("Obama", "Trump")),
         remove = stopwords("english"), remove_punct = TRUE, groups = "President") \%>\%
     dfm_trim(min_count = 3)
 
-textplot_wordcloud(obama_trump_dfm, comparison = TRUE)
-}
+textplot_wordcloud(obama_trump_dfm, comparison = TRUE, max_words = 300,
+                   color = c("blue", "red"))
 }
 \author{
 Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
