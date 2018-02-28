@@ -24,6 +24,9 @@ API_notes.md
 __MACOSX
 .DS_Store
 
+# Linux
+.directory
+
 # Vignette
 **_cache/
 /inst/doc

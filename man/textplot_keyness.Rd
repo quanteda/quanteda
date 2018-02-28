@@ -4,7 +4,9 @@
 \alias{textplot_keyness}
 \title{Plot word keyness}
 \usage{
-textplot_keyness(x, show_reference = TRUE, n = 20L, min_count = 2L)
+textplot_keyness(x, show_reference = TRUE, show_legend = TRUE, n = 20L,
+  min_count = 2L, margin = 0.05, color = c("darkblue", "gray"),
+  labelcolor = "gray30", labelsize = 4, font = NULL)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
@@ -12,37 +14,58 @@ textplot_keyness(x, show_reference = TRUE, n = 20L, min_count = 2L)
 \item{show_reference}{logical; if \code{TRUE}, show key reference features in
 addition to key target features}
 
+\item{show_legend}{logical; if \code{TRUE}, show legend}
+
 \item{n}{integer; number of features to plot}
 
-\item{min_count}{numeric; minimum total count of feature across the target 
+\item{min_count}{numeric; minimum total count of feature across the target
 and reference categories, for a feature to be included in the plot}
+
+\item{margin}{numeric; size of margin where feature labels are shown}
+
+\item{color}{character or integer; colors of bars for target and reference documents.
+\code{color} must have two elements when \code{show_reference = TRUE}.  See
+\link[ggplot2]{color}.}
+
+\item{labelcolor}{character; color of feature labels.}
+
+\item{labelsize}{numeric; size of feature labels and bars.  See
+\link[ggplot2]{size}.}
+
+\item{font}{character; font-family of texts. Use default font if \code{NULL}.}
 }
 \value{
 a \pkg{ggplot2} object
 }
 \description{
-Plot the results of a "keyword" of features comparing their differential 
+Plot the results of a "keyword" of features comparing their differential
 associations with a target and a reference group, after calculating keyness
 using \code{\link{textstat_keyness}}.
 }
 \examples{
-\dontrun{
-# compare Trump v. Obama speeches
-prescorpus <- corpus_subset(data_corpus_inaugural, 
-                            President \%in\% c("Obama", "Trump"))
-presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-               remove_punct = TRUE)
-result <- textstat_keyness(presdfm, target = "Trump")
+# compare Trump speeches to other Presidents by chi^2
+dem_dfm <- data_corpus_inaugural \%>\%
+     corpus_subset(Year > 1980) \%>\%
+     dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
+dem_key <- textstat_keyness(dem_dfm, target = "Trump")
+textplot_keyness(dem_key, margin = 0.2, n = 10)
 
-# plot estimated word keyness
-textplot_keyness(result) 
-textplot_keyness(result, show_reference = FALSE)
-}
+# compare contemporary Democrats v. Republicans
+pres_corp <- data_corpus_inaugural \%>\%
+    corpus_subset(Year > 1960)
+docvars(pres_corp, "party") <-
+    ifelse(docvars(pres_corp, "President") \%in\% c("Nixon", "Reagan", "Bush", "Trump"),
+           "Republican", "Democrat")
+pres_dfm <- dfm(pres_corp, groups = "party", remove = stopwords("english"),
+                remove_punct = TRUE)
+pres_key <- textstat_keyness(pres_dfm, target = "Democrat", measure = "lr")
+textplot_keyness(pres_key, color = c("blue", "red"), n = 10)
+
 }
 \seealso{
 \code{\link{textstat_keyness}}
 }
 \author{
-Haiyan Wang
+Haiyan Wang and Kohei Watanabe
 }
 \keyword{textplot}
