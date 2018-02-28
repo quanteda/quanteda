@@ -164,7 +164,11 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     # number of words plotted doubled when show_reference = TRUE
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
     expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2 * k)
-   
+    
+    # works with integer color 
+    expect_silent(
+        textplot_keyness(result, color = 1:2)
+    )
 
 })
 
@@ -176,6 +180,10 @@ test_that("test textplot_network", {
     expect_silent(textplot_network(testdfm, offset = 0.1))
     expect_error(textplot_network(testfcm, min_freq = 100), 
                  'There is no co-occurence higher than the threshold')
+    
+    # works with interger color
+    expect_silent(textplot_network(testfcm, vertex_color = 2))
+    expect_silent(textplot_network(testfcm, edge_color = 2))
 })
 
 test_that("test textplot_affinity", {
