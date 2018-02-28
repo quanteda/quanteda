@@ -11,7 +11,7 @@
 #' @param min_count numeric; minimum total count of feature across the target
 #'   and reference categories, for a feature to be included in the plot
 #' @param margin numeric; size of margin where feature labels are shown
-#' @param color character; colors of bars for target and reference documents.
+#' @param color character or integer; colors of bars for target and reference documents.
 #'   \code{color} must have two elements when \code{show_reference = TRUE}.  See
 #'   \link[ggplot2]{color}.
 #' @param labelcolor character; color of feature labels.
@@ -65,6 +65,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
                                      labelsize = 4, font = NULL) {
     
     font <- check_font(font)
+    color <- as.factor(color)
     if (show_reference) {
         if (length(color) > 2) { 
             color <- color[1:2] 
@@ -118,7 +119,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
          geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
                       size = labelsize) +
          scale_colour_identity(NULL, labels = docname, breaks = color,
-                            guide = if (show_legend) 'legend' else FALSE) + 
+                               guide = if (show_legend) 'legend' else FALSE) + 
          xlab(measure) +
          geom_label(aes(x = x1, y = y1, label = feature), label.size = NA, fill = NA,
                     vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
