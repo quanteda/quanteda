@@ -90,6 +90,30 @@ test_that("test textplot_wordcloud works for dfm objects", {
     expect_silent(textplot_wordcloud(mt))
 })
 
+test_that("test textplot_wordcloud comparison works", {
+    testcorp <- corpus_reshape(corpus(data_char_sampletext))
+    set.seed(1)
+    docvars(testcorp, "label") <- sample(c("A", "B"), size = ndoc(testcorp), replace = TRUE)
+    docnames(testcorp) <- paste0("text", 1:ndoc(testcorp))
+    testdfm <- dfm(testcorp, remove = stopwords("english"))
+    testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
+    
+    expect_silent(
+        textplot_wordcloud(testdfm_grouped, comparison = TRUE, color = c("blue", "red"))
+    )
+    expect_silent(
+        textplot_wordcloud(testdfm_grouped, random_order = FALSE)
+    )
+    expect_silent(
+        textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
+    )
+    expect_error(
+        textplot_wordcloud(testdfm, comparison = TRUE),
+        "Too many documents to plot comparison, use 8 or fewer documents\\."
+    )
+    
+})
+
 test_that("test textplot_wordcloud raise deprecation message", {
     
     mt <- dfm(data_corpus_inaugural[1:5])
