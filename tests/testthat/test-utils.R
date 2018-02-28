@@ -100,3 +100,15 @@ test_that("pattern2id is working with empty patterns", {
     expect_silent(quanteda:::pattern2id(pat, types(toks), 'fixed', TRUE))
     
 })
+
+test_that("check_font is working", {
+    # skip_on_os('windows')
+    # skip_on_os('mac')
+    skip_on_cran()
+    expect_error(quanteda:::check_font('XXXXX'), 'XXXXX is not found on your system') 
+    # expect_equal(quanteda:::check_font('Ubuntu'), 'Ubuntu')
+    expect_equal(quanteda:::check_font('sans'), 'sans')
+    expect_equal(quanteda:::check_font('serif'), 'serif')
+    expect_equal(quanteda:::check_font('mono'), 'mono')
+})
+
