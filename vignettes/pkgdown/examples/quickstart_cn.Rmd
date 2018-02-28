@@ -154,13 +154,13 @@ summary(data_corpus_irishbudget2010)
 我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(data_corpus_inaugural)
+token_info <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+    ggplot(data = token_info, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+        scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
 
 # 最长的就职演说: William Henry Harrison
-tokenInfo[which.max(tokenInfo$Tokens), ] 
+token_info[which.max(token_info$Tokens), ] 
 ```
 
 
@@ -369,8 +369,8 @@ obamaSimil
 
 我们可以用这些距离来绘制树状图，聚类分析总统：
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quanteda.corpora")
-presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
+data(data_corpus_sotu, package = "quanteda.corpora")
+presDfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
 presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
