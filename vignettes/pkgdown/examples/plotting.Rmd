@@ -96,8 +96,9 @@ g <- textplot_xray(
     kwic(data_corpus_inaugural_subset, "people"),
     kwic(data_corpus_inaugural_subset, "communist")
 )
-g + aes(color = keyword) + scale_color_manual(values = c("blue", "red", "green"))
-
+g + aes(color = keyword) + 
+    scale_color_manual(values = c("blue", "red", "green")) +
+    theme(legend.position = "none")
 ```
 
 
@@ -265,7 +266,7 @@ textplot_scale1d(wf, doclabels = doclab,
 
 You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).
 
-```{r}
+```{r eval=TRUE, fig.width=8, fig.height=6}
 # Transform corpus to dfm
 ie_dfm <- dfm(data_corpus_irishbudget2010)
 
