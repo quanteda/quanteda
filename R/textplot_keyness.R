@@ -1,6 +1,6 @@
 #' Plot word keyness
-#' 
-#' Plot the results of a "keyword" of features comparing their differential 
+#'
+#' Plot the results of a "keyword" of features comparing their differential
 #' associations with a target and a reference group, after calculating keyness
 #' using \code{\link{textstat_keyness}}.
 #' @param x a return object from \code{\link{textstat_keyness}}
@@ -8,13 +8,15 @@
 #'   addition to key target features
 #' @param show_legend logical; if \code{TRUE}, show legend
 #' @param n integer; number of features to plot
-#' @param min_count numeric; minimum total count of feature across the target 
+#' @param min_count numeric; minimum total count of feature across the target
 #'   and reference categories, for a feature to be included in the plot
-#' @param margin numeric; size of margin where feature labels are shown 
+#' @param margin numeric; size of margin where feature labels are shown
 #' @param color character; colors of bars for target and reference documents.
-#'   \code{color} must have two elements when \code{show_reference = TRUE}.
+#'   \code{color} must have two elements when \code{show_reference = TRUE}.  See
+#'   \link[ggplot2]{color}.
 #' @param labelcolor character; color of feature labels.
-#' @param labelsize numeric; size of feature labels and bars.
+#' @param labelsize numeric; size of feature labels and bars.  See
+#'   \link[ggplot2]{size}.
 #' @param font character; font-family of texts. Use default font if \code{NULL}.
 #' @return a \pkg{ggplot2} object
 #' @export
@@ -27,22 +29,22 @@
 #'      corpus_subset(Year > 1980) %>%
 #'      dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
 #' dem_key <- textstat_keyness(dem_dfm, target = "Trump")
-#' textplot_keyness(dem_key, margin = 0.2)
-#' 
+#' textplot_keyness(dem_key, margin = 0.2, n = 10)
+#'
 #' # compare contemporary Democrats v. Republicans
 #' pres_corp <- data_corpus_inaugural %>%
 #'     corpus_subset(Year > 1960)
-#' docvars(pres_corp, "party") <- 
+#' docvars(pres_corp, "party") <-
 #'     ifelse(docvars(pres_corp, "President") %in% c("Nixon", "Reagan", "Bush", "Trump"),
 #'            "Republican", "Democrat")
 #' pres_dfm <- dfm(pres_corp, groups = "party", remove = stopwords("english"),
 #'                 remove_punct = TRUE)
 #' pres_key <- textstat_keyness(pres_dfm, target = "Democrat", measure = "lr")
-#' textplot_keyness(pres_key, color = c("blue", "red"))
+#' textplot_keyness(pres_key, color = c("blue", "red"), n = 10)
 #' 
 textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE, 
                               n = 20L, min_count = 2L, margin = 0.05,
-                              color = c("#1F78B4", "#A6CEE3"), labelcolor = '#4D4D4D',
+                              color = c("darkblue", "gray"), labelcolor = "gray30",
                               labelsize = 4, font = NULL) {
     UseMethod("textplot_keyness")
 }
@@ -50,7 +52,7 @@ textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE,
 #' @export
 textplot_keyness.default <- function(x, show_reference = TRUE, show_legend = TRUE, 
                                      n = 20L, min_count = 2L, margin = 0.05,
-                                     color = c("#1F78B4", "#A6CEE3"), labelcolor = '#4D4D4D',
+                                     color = c("darkblue", "gray"), labelcolor = "gray30",
                                      labelsize = 4, font = NULL) {
     stop(friendly_class_undefined_message(class(x), "textplot_keyness"))
 }
@@ -59,15 +61,18 @@ textplot_keyness.default <- function(x, show_reference = TRUE, show_legend = TRU
 #' @export
 textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRUE,
                                      n = 20L, min_count = 2L, margin = 0.05,
-                                     color = c("#1F78B4", "#A6CEE3"), labelcolor = '#4D4D4D',
+                                     color = c("darkblue", "gray"), labelcolor = "gray30",
                                      labelsize = 4, font = NULL) {
     
-    
     font <- check_font(font)
-    if (show_reference)
-        if (length(color) != 2)
-            stop('color must have two unique values when show_reference is TRUE.')
-    
+    if (show_reference) {
+        if (length(color) > 2) { 
+            color <- color[1:2] 
+        } else if (length(color) == 1) {
+            color <- rep(color, 2)
+        }
+    }
+
     # extract attribute befor subsetting
     docname <- attr(x, "documents")
     measure <- colnames(x)[2]

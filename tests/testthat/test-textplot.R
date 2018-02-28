@@ -165,7 +165,9 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
     expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2 * k)
    
-
+    # test that textplot_keyness works with pallette (vector > 2 colors)
+    expect_silent(textplot_keyness(result, show_reference = TRUE, 
+                                   color = RColorBrewer::brewer.pal(6,"Dark2")))
 })
 
 test_that("test textplot_network", {
