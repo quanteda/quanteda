@@ -157,6 +157,10 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
     p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
     
+    # raises error when min_count is too high
+    expect_error(textplot_keyness(result, show_reference = FALSE, min_count = 100),
+                 'Too few words in the documents')
+    
     # plot with two different fills when show_reference = TRUE
     expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$colour)), 1)
     expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$colour)), 2)
