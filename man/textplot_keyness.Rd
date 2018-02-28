@@ -5,7 +5,7 @@
 \title{Plot word keyness}
 \usage{
 textplot_keyness(x, show_reference = TRUE, show_legend = TRUE, n = 20L,
-  min_count = 2L, margin = 0.05, color = c("gray", "darkblue"),
+  min_count = 2L, margin = 0.05, color = c("darkblue", "gray"),
   labelcolor = "gray30", labelsize = 4, font = NULL)
 }
 \arguments{
@@ -23,7 +23,7 @@ and reference categories, for a feature to be included in the plot}
 
 \item{margin}{numeric; size of margin where feature labels are shown}
 
-\item{color}{character; colors of bars for target and reference documents.
+\item{color}{character or integer; colors of bars for target and reference documents.
 \code{color} must have two elements when \code{show_reference = TRUE}.  See
 \link[ggplot2]{color}.}
 

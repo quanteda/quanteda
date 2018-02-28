@@ -189,7 +189,13 @@ friendly_class_undefined_message <- function(object_class, function_name) {
          " objects.")
 }
 
-# Internal function to check if font is available
+#' Check if font is available on the system
+#' 
+#' This function checks if custom font is available to \pkg{ggplot} and
+#' \pkg{graphics} APIs.
+#' @param font name of a font to be checked if available on the system.
+#' @return character string
+#' @keywords internal
 check_font <- function(font) {
     
     if (is.null(font)) {
