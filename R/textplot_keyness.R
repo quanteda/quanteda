@@ -1,134 +1,134 @@
 #' Plot word keyness
-#' 
-#' Plot the results of a "keyword" of features comparing their differential 
+#'
+#' Plot the results of a "keyword" of features comparing their differential
 #' associations with a target and a reference group, after calculating keyness
 #' using \code{\link{textstat_keyness}}.
 #' @param x a return object from \code{\link{textstat_keyness}}
 #' @param show_reference logical; if \code{TRUE}, show key reference features in
 #'   addition to key target features
+#' @param show_legend logical; if \code{TRUE}, show legend
 #' @param n integer; number of features to plot
-#' @param min_count numeric; minimum total count of feature across the target 
+#' @param min_count numeric; minimum total count of feature across the target
 #'   and reference categories, for a feature to be included in the plot
+#' @param margin numeric; size of margin where feature labels are shown
+#' @param color character or integer; colors of bars for target and reference documents.
+#'   \code{color} must have two elements when \code{show_reference = TRUE}.  See
+#'   \link[ggplot2]{color}.
+#' @param labelcolor character; color of feature labels.
+#' @param labelsize numeric; size of feature labels and bars.  See
+#'   \link[ggplot2]{size}.
+#' @param font character; font-family of texts. Use default font if \code{NULL}.
 #' @return a \pkg{ggplot2} object
 #' @export
-#' @author Haiyan Wang
+#' @author Haiyan Wang and Kohei Watanabe
 #' @seealso \code{\link{textstat_keyness}}
 #' @keywords textplot
 #' @examples
-#' \dontrun{
-#' # compare Trump v. Obama speeches
-#' prescorpus <- corpus_subset(data_corpus_inaugural, 
-#'                             President %in% c("Obama", "Trump"))
-#' presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-#'                remove_punct = TRUE)
-#' result <- textstat_keyness(presdfm, target = "Trump")
+#' # compare Trump speeches to other Presidents by chi^2
+#' dem_dfm <- data_corpus_inaugural %>%
+#'      corpus_subset(Year > 1980) %>%
+#'      dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
+#' dem_key <- textstat_keyness(dem_dfm, target = "Trump")
+#' textplot_keyness(dem_key, margin = 0.2, n = 10)
+#'
+#' # compare contemporary Democrats v. Republicans
+#' pres_corp <- data_corpus_inaugural %>%
+#'     corpus_subset(Year > 1960)
+#' docvars(pres_corp, "party") <-
+#'     ifelse(docvars(pres_corp, "President") %in% c("Nixon", "Reagan", "Bush", "Trump"),
+#'            "Republican", "Democrat")
+#' pres_dfm <- dfm(pres_corp, groups = "party", remove = stopwords("english"),
+#'                 remove_punct = TRUE)
+#' pres_key <- textstat_keyness(pres_dfm, target = "Democrat", measure = "lr")
+#' textplot_keyness(pres_key, color = c("blue", "red"), n = 10)
 #' 
-#' # plot estimated word keyness
-#' textplot_keyness(result) 
-#' textplot_keyness(result, show_reference = FALSE)
-#' }
-textplot_keyness <-  function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE, 
+                              n = 20L, min_count = 2L, margin = 0.05,
+                              color = c("darkblue", "gray"), labelcolor = "gray30",
+                              labelsize = 4, font = NULL) {
     UseMethod("textplot_keyness")
 }
 
 #' @export
-textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+textplot_keyness.default <- function(x, show_reference = TRUE, show_legend = TRUE, 
+                                     n = 20L, min_count = 2L, margin = 0.05,
+                                     color = c("darkblue", "gray"), labelcolor = "gray30",
+                                     labelsize = 4, font = NULL) {
     stop(friendly_class_undefined_message(class(x), "textplot_keyness"))
 }
 
-#' @importFrom stats reorder aggregate
-#' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
-#' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
-#' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
+#' @import ggplot2
 #' @export
-textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRUE,
+                                     n = 20L, min_count = 2L, margin = 0.05,
+                                     color = c("darkblue", "gray"), labelcolor = "gray30",
+                                     labelsize = 4, font = NULL) {
     
+    font <- check_font(font)
+    color <- as.factor(color)
+    if (show_reference) {
+        if (length(color) > 2) { 
+            color <- color[1:2] 
+        } else if (length(color) == 1) {
+            color <- rep(color, 2)
+        }
+    }
+
     # extract attribute befor subsetting
-    doc <- attr(x, "documents")[1]
+    docname <- attr(x, "documents")
+    measure <- colnames(x)[2]
     
     # drop infrequent words
-    x <- x[(x$n_target + x$n_reference) >= min_count, ]
+    data <- x[(x$n_target + x$n_reference) >= min_count,,drop = FALSE]
     
-    if (nrow(x) < 1) {
+    if (nrow(data) < 1)
         stop ("Too few words in the documents.")
+    
+    data$keyness <- data[[2]]
+    data$right <- data$keyness >= 0
+    if (show_reference) {
+        t <- intersect(which(data$right), head(seq(nrow(data)), n))
+        r <- intersect(which(!data$right), tail(seq(nrow(data)), n))
+        i <- union(t, r)
+    } else {
+        i <- intersect(which(data$right), head(seq(nrow(data)), n))
+    }
+    data <- data[i,,drop = FALSE]
+    #data$width <- stri_width(data$feature)
+    if (show_reference) {
+        if (length(docname) < 2) {
+            docname <- c("Target", "Reference")
+        } else if (length(docname) > 2) {
+            docname <- c(docname[1], "Reference")
+        }
+        data$color <- color[2 - data$right]
+    } else {
+        data$color <- color[1]
+        color <- docname <- NULL
     }
     
-    measure <- colnames(x)[2]
-    n <- min(n, nrow(x))
-    if (!show_reference) {
-        x <- head(x, n)
-        x <- data.frame(words = x$feature, val = x[[2]])
-        x$words <- factor(x$words, levels = x$words[order(x$val)])
-        
-        p <- ggplot(data = x, aes(x = x$words, y = x$val)) +
-             coord_flip() +
-             geom_bar(stat = "identity") +
-             ylab(measure) +
-             geom_text(aes(label= x$words), hjust = -0.2, vjust = 0.5, size = 3) + 
-             theme_bw() +
-             theme(axis.line = ggplot2::element_blank(),
-                   axis.title.y = ggplot2::element_blank(),
-                   axis.text.y = ggplot2::element_blank(),
-                   axis.ticks.y = ggplot2::element_blank(),
-                   panel.grid.minor.y = ggplot2::element_blank(), 
-                   plot.background = ggplot2::element_blank(),
-                   panel.grid.major.y = element_line(linetype = "dotted"))
-    } else {
-        if (measure == "pmi") {
-            pos_n <- min(n, nrow(x) / 2)
-            neg_n <- min(n, nrow(x) / 2)
-            feat_top <- head(x, pos_n)
-            feat_bottom <- tail(x, neg_n)
-            max_y <- max(feat_top[[2]])
-            min_y <- min(feat_bottom[[2]])
-        } else {
-            pos_n <- min(n, sum(x[[2]] >= 0))
-            neg_n <- min(n, sum(x[[2]] < 0))
-            if ((pos_n == 0) || (neg_n == 0)) 
-                stop (" Better plot for one Doc.")
-            feat_top <- head(x, pos_n)
-            feat_bottom <- tail(x, neg_n)
-            max_y <- max(feat_top[[2]])
-            min_y <- min(feat_bottom[[2]])
-        }
-        
-        feat_top  <- feat_top[order(feat_top[[2]], decreasing = TRUE), ]
-        feat_bottom <- feat_bottom[order(feat_bottom[[2]]), ]
-        
-        tars <- doc[1]
-        if (length(doc) == 2) {
-            refs <- doc[2]
-        } else {
-            refs <- "Reference"
-        }
-        p1 <- data.frame(x = seq(neg_n + pos_n, 1 + neg_n), y = feat_top[[2]])
-        p2 <- data.frame(x = seq(1, neg_n), y = feat_bottom[[2]])
-        p <- melt(list(refs = p2, tars = p1), id.vars = "x")
-        colnames(p)[4] <- "Document"
-        p[p == "refs"] <- refs
-        p[p == "tars"] <- tars
-
-        
-        ggplot(p, aes_(x = ~x, y = p$value, fill = ~Document)) +  
-            geom_bar(stat="identity") + 
-            ggplot2::scale_fill_manual("Document", values = c("#003366", "#CC3333")) +
-            coord_flip() + 
-            # allow extra space for displaying text next to the point
-            ylim(min_y * 1.1 , max_y * 1.1) +  
-            ylab(measure) +
-            geom_text(aes(label = c(feat_bottom$feature, feat_top$feature)), 
-                      hjust = ifelse(p$Document == tars, -0.2, 1.2),
-                      vjust = 0.5, 
-                      colour = ifelse(p$Document == tars, "#CC3333", "#003366"), 
-                      size = 3) +
-            theme_bw() +
-            theme(axis.line = ggplot2::element_blank(),
-                  axis.title.y = ggplot2::element_blank(),
-                  axis.text.y = ggplot2::element_blank(),
-                  axis.ticks.y = ggplot2::element_blank(),
-                  panel.grid.minor.y = ggplot2::element_blank(),
-                  plot.background = ggplot2::element_blank(),
-                  panel.grid.major.y = element_line(linetype = "dotted"))
-        
-    }
+    data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
+    data$y1 <- rank(data$keyness, ties.method = "first")
+    data$x2 <- 0
+    data$y2 <- data$y
+    margin <- margin * max(abs(data$x1)) * 2
+    
+    x1 <- y1 <- x2 <- y2 <- feature <- NULL
+    ggplot(data) +  
+         xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) + 
+         geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
+                      size = labelsize) +
+         scale_colour_identity(NULL, labels = docname, breaks = color,
+                               guide = if (show_legend) 'legend' else FALSE) + 
+         xlab(measure) +
+         geom_label(aes(x = x1, y = y1, label = feature), label.size = NA, fill = NA,
+                    vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
+                    color = labelcolor, size = labelsize, family = font) +
+         theme_bw() +
+         theme(axis.line = element_blank(),
+               axis.title.y = element_blank(),
+               axis.text.y = element_blank(),
+               axis.ticks.y = element_blank(),
+               plot.background = element_blank(),
+               panel.grid.major.y = element_line(linetype = "dotted"))
 } 

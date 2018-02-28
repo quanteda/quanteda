@@ -136,16 +136,16 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     )
 })
 
-test_that("test textplot_keyness ", {
-    prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
-    presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-                   remove_punct = TRUE)
-    result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
-    
-    # shows the correct statistic measure 
-    p3 <- textplot_keyness(result, show_reference = TRUE)
-    expect_equal(p3$labels$y, colnames(result)[2])
-})
+# test_that("test textplot_keyness ", {
+#     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
+#     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+#                    remove_punct = TRUE)
+#     result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
+#     
+#     # shows the correct statistic measure 
+#     p3 <- textplot_keyness(result, show_reference = TRUE)
+#     expect_equal(p3$labels$y, colnames(result)[2])
+# })
 
 test_that("test textplot_keyness: show_reference works correctly ", {
     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
@@ -157,14 +157,24 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
     p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
     
-    # Plot with two different fills when show_reference = TRUE
-    expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$fill)), 1)
-    expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$fill)), 2)
+    # raises error when min_count is too high
+    expect_error(textplot_keyness(result, show_reference = FALSE, min_count = 100),
+                 'Too few words in the documents')
+    
+    # plot with two different fills when show_reference = TRUE
+    expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$colour)), 1)
+    expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$colour)), 2)
 
     # number of words plotted doubled when show_reference = TRUE
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
     expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2 * k)
+
+    # works with integer color 
+    expect_silent(textplot_keyness(result, color = 1:2))
     
+    # test that textplot_keyness works with pallette (vector > 2 colors)
+    expect_silent(textplot_keyness(result, show_reference = TRUE, 
+                                   color = RColorBrewer::brewer.pal(6,"Dark2")))
 
 })
 
@@ -176,6 +186,10 @@ test_that("test textplot_network", {
     expect_silent(textplot_network(testdfm, offset = 0.1))
     expect_error(textplot_network(testfcm, min_freq = 100), 
                  'There is no co-occurence higher than the threshold')
+    
+    # works with interger color
+    expect_silent(textplot_network(testfcm, vertex_color = 2))
+    expect_silent(textplot_network(testfcm, edge_color = 2))
 })
 
 test_that("test textplot_affinity", {
