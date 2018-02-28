@@ -8,9 +8,12 @@
 <title>快速入门指南 • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><meta property="og:title" content="快速入门指南">
+<meta property="og:description" content="">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -205,8 +208,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:37:37 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by stefan
+## Created: Wed Feb 28 13:38:32 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -226,8 +229,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:37:37 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by stefan
+## Created: Wed Feb 28 13:38:32 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -256,8 +259,8 @@
 ##           SNP 2010
 ##          UKIP 2010
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:37:37 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by stefan
+## Created: Wed Feb 28 13:38:32 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -349,8 +352,8 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <p>我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
 <span class="cf">if</span> (<span class="kw">require</span>(ggplot2))
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
-<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) </code></pre></div>
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
+<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>) ) </code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 最长的就职演说: William Henry Harrison</span>
@@ -387,7 +390,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Mon Feb 12 14:37:38 2018
+## Created: Wed Feb 28 13:38:34 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -774,8 +777,8 @@ obamaSimil</code></pre></div>
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>我们可以用这些距离来绘制树状图，聚类分析总统：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
                <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
@@ -824,30 +827,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2      Topic 3       Topic 4        Topic 5    
-## [1,] "failed"    "million"    "alternative" "system"       "taoiseach"
-## [2,] "strategy"  "investment" "citizenship" "much"         "fine"     
-## [3,] "needed"    "global"     "wealth"      "taken"        "gael"     
-## [4,] "ministers" "enterprise" "adjustment"  "government's" "may"      
-## [5,] "system"    "innovation" "breaks"      "want"         "irish"    
-##      Topic 6       Topic 7    Topic 8      Topic 9     Topic 10  Topic 11
-## [1,] "kind"        "fianna"   "million"    "taoiseach" "benefit" "fianna"
-## [2,] "imagination" "fáil"     "support"    "employees" "day"     "fáil"  
-## [3,] "policies"    "national" "back"       "rate"      "child"   "side"  
-## [4,] "wit"         "irish"    "confidence" "referred"  "today"   "level" 
-## [5,] "create"      "support"  "investment" "debate"    "bank"    "third" 
-##      Topic 12   Topic 13    Topic 14       Topic 15   Topic 16    
-## [1,] "welfare"  "welfare"   "society"      "local"    "million"   
-## [2,] "system"   "education" "enterprising" "help"     "spending"  
-## [3,] "fianna"   "stimulus"  "sense"        "taxes"    "scheme"    
-## [4,] "taxation" "order"     "equal"        "tourism"  "investment"
-## [5,] "high"     "system"    "nation"       "measures" "measures"  
-##      Topic 17  Topic 18   Topic 19    Topic 20    
-## [1,] "child"   "welfare"  "care"      "levy"      
-## [2,] "million" "scheme"   "welfare"   "carbon"    
-## [3,] "benefit" "support"  "per"       "million"   
-## [4,] "fáil"    "energy"   "allowance" "paid"      
-## [5,] "irish"   "national" "hit"       "colleagues"</code></pre>
+<pre><code>##      Topic 1    Topic 2    Topic 3     Topic 4     Topic 5       
+## [1,] "system"   "welfare"  "taoiseach" "taoiseach" "equal"       
+## [2,] "fianna"   "high"     "gael"      "employees" "society"     
+## [3,] "fáil"     "taxation" "credit"    "rate"      "side"        
+## [4,] "stimulus" "earning"  "bank"      "referred"  "enterprising"
+## [5,] "recovery" "already"  "back"      "debate"    "nation"      
+##      Topic 6    Topic 7   Topic 8     Topic 9     Topic 10     
+## [1,] "irish"    "levy"    "welfare"   "review"    "support"    
+## [2,] "family"   "million" "care"      "scheme"    "million"    
+## [3,] "care"     "carbon"  "per"       "reduction" "investment" 
+## [4,] "hospital" "change"  "allowance" "measures"  "development"
+## [5,] "carers"   "welfare" "hit"       "spending"  "future"     
+##      Topic 11    Topic 12  Topic 13     Topic 14   Topic 15 
+## [1,] "failed"    "fianna"  "irish"      "stimulus" "fáil"   
+## [2,] "strategy"  "fáil"    "national"   "may"      "benefit"
+## [3,] "needed"    "support" "fianna"     "fine"     "cutting"
+## [4,] "ministers" "child"   "fáil"       "cases"    "recent" 
+## [5,] "system"    "benefit" "adjustment" "gael"     "per"    
+##      Topic 16       Topic 17      Topic 18  Topic 19   Topic 20   
+## [1,] "unemployment" "alternative" "child"   "million"  "welfare"  
+## [2,] "savings"      "citizenship" "benefit" "level"    "million"  
+## [3,] "employment"   "wealth"      "day"     "system"   "level"    
+## [4,] "million"      "adjustment"  "today"   "measures" "measures" 
+## [5,] "energy"       "breaks"      "bank"    "reduced"  "increased"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -1057,7 +1060,7 @@ ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../referen
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

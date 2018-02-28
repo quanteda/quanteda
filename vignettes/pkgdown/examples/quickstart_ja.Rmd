@@ -158,13 +158,13 @@ summary(data_corpus_irishbudget2010)
 `summary()`の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができる．
 
 ```{r, fig.width = 8}
-token_info <- summary(data_corpus_inaugural)
+tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data = token_info, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+    ggplot(data = tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
         scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
 
 # Longest inaugural address: William Henry Harrison
-token_info[which.max(token_info$Tokens), ] 
+tokenInfo[which.max(tokenInfo$Tokens), ] 
 ```
 
 

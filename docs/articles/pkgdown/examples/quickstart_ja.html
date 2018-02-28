@@ -8,9 +8,12 @@
 <title>クイック・スタートガイド • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><meta property="og:title" content="クイック・スタートガイド">
+<meta property="og:description" content="">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -210,8 +213,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:38:00 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by stefan
+## Created: Wed Feb 28 13:39:12 2018
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -231,8 +234,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:38:00 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by stefan
+## Created: Wed Feb 28 13:39:12 2018
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -261,8 +264,8 @@
 ##           SNP 2010
 ##          UKIP 2010
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:38:00 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by stefan
+## Created: Wed Feb 28 13:39:12 2018
 ## Notes:</code></pre>
 <p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -354,8 +357,8 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <p><code>summary()</code>の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
 <span class="cf">if</span> (<span class="kw">require</span>(ggplot2))
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
-<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) </code></pre></div>
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
+<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>) ) </code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Longest inaugural address: William Henry Harrison</span>
@@ -392,7 +395,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Mon Feb 12 14:38:01 2018
+## Created: Wed Feb 28 13:39:14 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -763,8 +766,8 @@ obamaSimil</code></pre></div>
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
                <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
@@ -811,30 +814,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2       Topic 3      Topic 4   Topic 5    
-## [1,] "child"   "million"     "confidence" "fine"    "level"    
-## [2,] "benefit" "support"     "increasing" "gael"    "measures" 
-## [3,] "day"     "welfare"     "million"    "irish"   "reduction"
-## [4,] "today"   "investment"  "irish"      "believe" "scheme"   
-## [5,] "bank"    "development" "investment" "banks"   "per"      
-##      Topic 6      Topic 7    Topic 8  Topic 9     Topic 10   Topic 11  
-## [1,] "review"     "fianna"   "child"  "taoiseach" "welfare"  "welfare" 
-## [2,] "million"    "fáil"     "fianna" "may"       "support"  "system"  
-## [3,] "investment" "national" "set"    "day"       "hospital" "taxation"
-## [4,] "spending"   "irish"    "irish"  "stimulus"  "level"    "worst"   
-## [5,] "measures"   "support"  "banks"  "gael"      "areas"    "stimulus"
-##      Topic 12      Topic 13       Topic 14  Topic 15    Topic 16   
-## [1,] "kind"        "society"      "levy"    "taoiseach" "failed"   
-## [2,] "imagination" "enterprising" "million" "employees" "strategy" 
-## [3,] "policies"    "sense"        "carbon"  "rate"      "needed"   
-## [4,] "wit"         "equal"        "change"  "referred"  "ministers"
-## [5,] "create"      "nation"       "welfare" "debate"    "system"   
-##      Topic 17   Topic 18 Topic 19    Topic 20     
-## [1,] "fianna"   "fianna" "care"      "alternative"
-## [2,] "per"      "fáil"   "welfare"   "citizenship"
-## [3,] "policies" "side"   "per"       "wealth"     
-## [4,] "workers"  "level"  "allowance" "adjustment" 
-## [5,] "much"     "third"  "hit"       "breaks"</code></pre>
+<pre><code>##      Topic 1   Topic 2   Topic 3      Topic 4        Topic 5 Topic 6     
+## [1,] "irish"   "child"   "million"    "society"      "gael"  "reduce"    
+## [2,] "world"   "fianna"  "welfare"    "enterprising" "may"   "investment"
+## [3,] "poor"    "welfare" "support"    "sense"        "fine"  "efficiency"
+## [4,] "benefit" "person"  "investment" "equal"        "irish" "making"    
+## [5,] "welfare" "benefit" "confidence" "nation"       "day"   "increased" 
+##      Topic 7   Topic 8       Topic 9      Topic 10   Topic 11  
+## [1,] "benefit" "alternative" "national"   "system"   "rate"    
+## [2,] "child"   "citizenship" "increasing" "welfare"  "referred"
+## [3,] "day"     "wealth"      "fine"       "fianna"   "debate"  
+## [4,] "society" "adjustment"  "creating"   "stimulus" "change"  
+## [5,] "bank"    "breaks"      "job"        "taxation" "prsi"    
+##      Topic 12    Topic 13   Topic 14      Topic 15    Topic 16   Topic 17
+## [1,] "taoiseach" "carers"   "kind"        "failed"    "fianna"   "fianna"
+## [2,] "stimulus"  "care"     "imagination" "strategy"  "fáil"     "fáil"  
+## [3,] "problem"   "benefit"  "policies"    "needed"    "national" "side"  
+## [4,] "banks"     "hospital" "wit"         "ministers" "support"  "level" 
+## [5,] "benefit"   "back"     "create"      "system"    "strategy" "third" 
+##      Topic 18  Topic 19   Topic 20   
+## [1,] "welfare" "million"  "allowance"
+## [2,] "high"    "measures" "welfare"  
+## [3,] "earners" "spending" "million"  
+## [4,] "per"     "review"   "hit"      
+## [5,] "deficit" "scheme"   "care"</code></pre>
 </div>
 </div>
 </div>
@@ -883,7 +886,7 @@ quantdfm</code></pre></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

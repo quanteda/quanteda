@@ -160,8 +160,8 @@ summary(data_corpus_irishbudget2010)
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+    ggplot(data = tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+        scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
 
 # Longest inaugural address: William Henry Harrison
 tokenInfo[which.max(tokenInfo$Tokens), ] 
@@ -368,8 +368,8 @@ obamaSimil
 
 上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quanteda.corpora")
-presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
+data(data_corpus_sotu, package = "quanteda.corpora")
+presDfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
 presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)

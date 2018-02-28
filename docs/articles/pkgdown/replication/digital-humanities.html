@@ -8,9 +8,12 @@
 <title>Replication: Text Analysis with R for Students of Literature • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><meta property="og:title" content="Replication: Text Analysis with R for Students of Literature">
+<meta property="og:description" content="">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -393,8 +396,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##   mobydick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:38:29 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by stefan
+## Created: Wed Feb 28 13:39:59 2018
 ## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -406,8 +409,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Mon Feb 12 14:38:29 2018
+## Source: /Users/stefan/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by stefan
+## Created: Wed Feb 28 13:39:59 2018
 ## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -698,30 +701,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1   Topic 2   Topic 3       Topic 4   Topic 5  Topic 6       
-## [1,] "levy"    "child"   "alternative" "welfare" "fianna" "society"     
-## [2,] "million" "benefit" "citizenship" "system"  "fáil"   "enterprising"
-## [3,] "carbon"  "day"     "wealth"      "fianna"  "side"   "sense"       
-## [4,] "change"  "bank"    "adjustment"  "much"    "level"  "equal"       
-## [5,] "welfare" "today"   "breaks"      "earners" "third"  "nation"      
-##      Topic 7     Topic 8     Topic 9   Topic 10   Topic 11   Topic 12 
-## [1,] "taoiseach" "failed"    "private" "fáil"     "fianna"   "society"
-## [2,] "fine"      "strategy"  "future"  "welfare"  "fáil"     "fianna" 
-## [3,] "gael"      "needed"    "seen"    "taxation" "national" "never"  
-## [4,] "may"       "ministers" "better"  "per"      "irish"    "equal"  
-## [5,] "irish"     "vision"    "asked"   "high"     "support"  "high"   
-##      Topic 13     Topic 14     Topic 15    Topic 16      Topic 17   
-## [1,] "million"    "support"    "taoiseach" "development" "care"     
-## [2,] "spending"   "million"    "employees" "even"        "welfare"  
-## [3,] "investment" "welfare"    "rate"      "global"      "per"      
-## [4,] "recent"     "investment" "referred"  "programme"   "allowance"
-## [5,] "months"     "back"       "debate"    "million"     "hit"      
-##      Topic 18      Topic 19    Topic 20 
-## [1,] "kind"        "scheme"    "system" 
-## [2,] "imagination" "welfare"   "welfare"
-## [3,] "policies"    "review"    "already"
-## [4,] "wit"         "measures"  "deficit"
-## [5,] "create"      "reduction" "worst"</code></pre>
+<pre><code>##      Topic 1      Topic 2       Topic 3  Topic 4    Topic 5    Topic 6  
+## [1,] "failed"     "kind"        "fianna" "million"  "million"  "benefit"
+## [2,] "expected"   "imagination" "fáil"   "families" "welfare"  "child"  
+## [3,] "confront"   "policies"    "side"   "child"    "level"    "day"    
+## [4,] "employment" "wit"         "level"  "low"      "system"   "today"  
+## [5,] "face"       "create"      "third"  "care"     "spending" "bank"   
+##      Topic 7    Topic 8     Topic 9     Topic 10    Topic 11   
+## [1,] "strategy" "taoiseach" "measures"  "taoiseach" "per"      
+## [2,] "needed"   "employees" "pension"   "fine"      "allowance"
+## [3,] "address"  "rate"      "reduction" "gael"      "welfare"  
+## [4,] "system"   "referred"  "review"    "may"       "hospital" 
+## [5,] "sort"     "debate"    "scheme"    "irish"     "care"     
+##      Topic 12       Topic 13     Topic 14  Topic 15   Topic 16  
+## [1,] "society"      "million"    "levy"    "welfare"  "fáil"    
+## [2,] "enterprising" "support"    "million" "system"   "fianna"  
+## [3,] "sense"        "investment" "carbon"  "taxation" "child"   
+## [4,] "equal"        "back"       "change"  "stimulus" "measures"
+## [5,] "nation"       "continue"   "welfare" "high"     "benefit" 
+##      Topic 17      Topic 18      Topic 19   Topic 20  
+## [1,] "alternative" "development" "million"  "fianna"  
+## [2,] "citizenship" "welfare"     "measures" "fáil"    
+## [3,] "wealth"      "support"     "recovery" "national"
+## [4,] "adjustment"  "earners"     "child"    "irish"   
+## [5,] "breaks"      "making"      "payments" "support"</code></pre>
 </div>
 </div>
   </div>
@@ -786,7 +789,7 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
