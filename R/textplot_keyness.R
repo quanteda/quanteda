@@ -90,18 +90,17 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     data <- data[i,,drop = FALSE]
     #data$width <- stri_width(data$feature)
     if (show_reference) {
+        if (length(docname) < 2) {
+            docname <- c("Target", "Reference")
+        } else if (length(docname) > 2) {
+            docname <- c(docname[1], "Reference")
+        }
         data$color <- color[2 - data$right]
     } else {
-        if (length(color) != 2)
         data$color <- color[1]
+        color <- docname <- NULL
     }
     
-    if (length(docname) < 2) {
-        docname <- c("Target", "Reference")
-    } else if (length(docname) > 2) {
-        docname <- c(docname[1], "Reference")
-    }
-
     data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
     data$y1 <- rank(data$keyness, ties.method = "first")
     data$x2 <- 0
