@@ -99,7 +99,7 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
     expect_silent(
-        textplot_wordcloud(testdfm_grouped, comparison = TRUE, color = c("blue", "red"))
+        textplot_wordcloud(testdfm_grouped, comparison = TRUE)
     )
     expect_silent(
         textplot_wordcloud(testdfm_grouped, random_order = FALSE)
