@@ -66,7 +66,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     font <- check_font(font)
     if (show_reference)
         if (length(color) != 2)
-            stop('color must have two values when show_reference is TRUE.')
+            stop('color must have two unique values when show_reference is TRUE.')
     
     # extract attribute befor subsetting
     docname <- attr(x, "documents")
@@ -92,6 +92,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     if (show_reference) {
         data$color <- color[2 - data$right]
     } else {
+        if (length(color) != 2)
         data$color <- color[1]
     }
     
@@ -112,10 +113,10 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
          xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) + 
          geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
                       size = labelsize) +
-         scale_colour_identity(NULL, labels = docname, 
-                              guide = if (show_legend) 'legend' else FALSE) + 
+         scale_colour_identity(NULL, labels = docname, breaks = color,
+                            guide = if (show_legend) 'legend' else FALSE) + 
          xlab(measure) +
-         geom_label(aes(x = x1, y = y1, label = feature), label.size = 0, fill = NA,
+         geom_label(aes(x = x1, y = y1, label = feature), label.size = NA, fill = NA,
                     vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
                     color = labelcolor, size = labelsize, family = font) +
          theme_bw() +
