@@ -5,8 +5,8 @@
 \title{Plot word keyness}
 \usage{
 textplot_keyness(x, show_reference = TRUE, show_legend = TRUE, n = 20L,
-  min_count = 2L, margin = 0.05, color = c("#1F78B4", "#A6CEE3"),
-  labelcolor = "#4D4D4D", labelsize = 4, font = NULL)
+  min_count = 2L, margin = 0.05, color = c("gray", "darkblue"),
+  labelcolor = "gray30", labelsize = 4, font = NULL)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
@@ -18,17 +18,19 @@ addition to key target features}
 
 \item{n}{integer; number of features to plot}
 
-\item{min_count}{numeric; minimum total count of feature across the target 
+\item{min_count}{numeric; minimum total count of feature across the target
 and reference categories, for a feature to be included in the plot}
 
 \item{margin}{numeric; size of margin where feature labels are shown}
 
 \item{color}{character; colors of bars for target and reference documents.
-\code{color} must have two elements when \code{show_reference = TRUE}.}
+\code{color} must have two elements when \code{show_reference = TRUE}.  See
+\link[ggplot2]{color}.}
 
 \item{labelcolor}{character; color of feature labels.}
 
-\item{labelsize}{numeric; size of feature labels and bars.}
+\item{labelsize}{numeric; size of feature labels and bars.  See
+\link[ggplot2]{size}.}
 
 \item{font}{character; font-family of texts. Use default font if \code{NULL}.}
 }
@@ -36,7 +38,7 @@ and reference categories, for a feature to be included in the plot}
 a \pkg{ggplot2} object
 }
 \description{
-Plot the results of a "keyword" of features comparing their differential 
+Plot the results of a "keyword" of features comparing their differential
 associations with a target and a reference group, after calculating keyness
 using \code{\link{textstat_keyness}}.
 }
@@ -46,18 +48,18 @@ dem_dfm <- data_corpus_inaugural \%>\%
      corpus_subset(Year > 1980) \%>\%
      dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
 dem_key <- textstat_keyness(dem_dfm, target = "Trump")
-textplot_keyness(dem_key, margin = 0.2)
+textplot_keyness(dem_key, margin = 0.2, n = 10)
 
 # compare contemporary Democrats v. Republicans
 pres_corp <- data_corpus_inaugural \%>\%
     corpus_subset(Year > 1960)
-docvars(pres_corp, "party") <- 
+docvars(pres_corp, "party") <-
     ifelse(docvars(pres_corp, "President") \%in\% c("Nixon", "Reagan", "Bush", "Trump"),
            "Republican", "Democrat")
 pres_dfm <- dfm(pres_corp, groups = "party", remove = stopwords("english"),
                 remove_punct = TRUE)
 pres_key <- textstat_keyness(pres_dfm, target = "Democrat", measure = "lr")
-textplot_keyness(pres_key, color = c("blue", "red"))
+textplot_keyness(pres_key, color = c("blue", "red"), n = 10)
 
 }
 \seealso{
