@@ -470,3 +470,15 @@ wordcloud_comparison <- function(x, min_size, max_size, min_count, max_words,
     #abline(v=c(0, 0.25, 0.75, 1), h=c(0, 0.25, 0.75, 1))
     graphics::par(op)
 }
+
+# textplot_wordcloudold.dfm <- function(x, comparison = FALSE, ...) {
+#     
+#     x <- as.dfm(x)
+#     if (comparison) {
+#         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
+#         wordcloud::comparison.cloud(t(as.matrix(x)), ...)
+#     } else {
+#         wordcloud::wordcloud(featnames(x), colSums(x), ...)
+#     }
+# }
+
