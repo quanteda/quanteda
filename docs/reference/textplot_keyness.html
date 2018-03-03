@@ -156,12 +156,14 @@
     </div>
 
     
-    <p>Plot the results of a "keyword" of features comparing their differential 
+    <p>Plot the results of a "keyword" of features comparing their differential
 associations with a target and a reference group, after calculating keyness
 using <code><a href='textstat_keyness.html'>textstat_keyness</a></code>.</p>
     
 
-    <pre class="usage"><span class='fu'>textplot_keyness</span>(<span class='no'>x</span>, <span class='kw'>show_reference</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20L</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2L</span>)</pre>
+    <pre class="usage"><span class='fu'>textplot_keyness</span>(<span class='no'>x</span>, <span class='kw'>show_reference</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>show_legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20L</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"darkblue"</span>, <span class='st'>"gray"</span>),
+  <span class='kw'>labelcolor</span> <span class='kw'>=</span> <span class='st'>"gray30"</span>, <span class='kw'>labelsize</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -176,13 +178,40 @@ using <code><a href='textstat_keyness.html'>textstat_keyness</a></code>.</p>
 addition to key target features</p></td>
     </tr>
     <tr>
+      <th>show_legend</th>
+      <td><p>logical; if <code>TRUE</code>, show legend</p></td>
+    </tr>
+    <tr>
       <th>n</th>
       <td><p>integer; number of features to plot</p></td>
     </tr>
     <tr>
       <th>min_count</th>
-      <td><p>numeric; minimum total count of feature across the target 
+      <td><p>numeric; minimum total count of feature across the target
 and reference categories, for a feature to be included in the plot</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p>numeric; size of margin where feature labels are shown</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>character or integer; colors of bars for target and reference documents.
+<code>color</code> must have two elements when <code>show_reference = TRUE</code>.  See
+<a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes_colour_fill_alpha'>color</a>.</p></td>
+    </tr>
+    <tr>
+      <th>labelcolor</th>
+      <td><p>character; color of feature labels.</p></td>
+    </tr>
+    <tr>
+      <th>labelsize</th>
+      <td><p>numeric; size of feature labels and bars.  See
+<a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes_linetype_size_shape'>size</a>.</p></td>
+    </tr>
+    <tr>
+      <th>font</th>
+      <td><p>character; font-family of texts. Use default font if <code>NULL</code>.</p></td>
     </tr>
     </table>
     
@@ -196,18 +225,23 @@ and reference categories, for a feature to be included in the plot</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># compare Trump v. Obama speeches</span>
-<span class='no'>prescorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>,
-                            <span class='no'>President</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Obama"</span>, <span class='st'>"Trump"</span>))
-<span class='no'>presdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>prescorpus</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>),
-               <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>presdfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Trump"</span>)
-
-<span class='co'># plot estimated word keyness</span>
-<span class='fu'>textplot_keyness</span>(<span class='no'>result</span>)
-<span class='fu'>textplot_keyness</span>(<span class='no'>result</span>, <span class='kw'>show_reference</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='co'># compare Trump speeches to other Presidents by chi^2</span>
+<span class='no'>dem_dfm</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
+     <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>) <span class='kw'>%&gt;%</span>
+     <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>dem_key</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>dem_dfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Trump"</span>)
+<span class='fu'>textplot_keyness</span>(<span class='no'>dem_key</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='textplot_keyness-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='co'># compare contemporary Democrats v. Republicans</span>
+<span class='no'>pres_corp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1960</span>)
+<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>pres_corp</span>, <span class='st'>"party"</span>) <span class='kw'>&lt;-</span>
+    <span class='fu'>ifelse</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>pres_corp</span>, <span class='st'>"President"</span>) <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Nixon"</span>, <span class='st'>"Reagan"</span>, <span class='st'>"Bush"</span>, <span class='st'>"Trump"</span>),
+           <span class='st'>"Republican"</span>, <span class='st'>"Democrat"</span>)
+<span class='no'>pres_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>pres_corp</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"party"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>),
+                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>pres_key</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>pres_dfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Democrat"</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>)
+<span class='fu'>textplot_keyness</span>(<span class='no'>pres_key</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='textplot_keyness-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -223,7 +257,7 @@ and reference categories, for a feature to be included in the plot</p></td>
 
     <h2>Author</h2>
     
-Haiyan Wang
+Haiyan Wang and Kohei Watanabe
 
   </div>
 </div>

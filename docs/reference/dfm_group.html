@@ -156,8 +156,8 @@
     </div>
 
     
-    <p>Combine documents in a <a href='dfm.html'>dfm</a> by a grouping variable, which can also be 
-one of the <a href='docvars.html'>docvars</a> attached to the dfm. This is identical in 
+    <p>Combine documents in a <a href='dfm.html'>dfm</a> by a grouping variable, which can also be
+one of the <a href='docvars.html'>docvars</a> attached to the dfm. This is identical in
 functionality to using the <code>"groups"</code> argument in <code><a href='dfm.html'>dfm</a></code>.</p>
     
 
@@ -179,8 +179,8 @@ See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     <tr>
       <th>fill</th>
-      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use 
-all levels of the factor when forming the new "documents" of the grouped 
+      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use
+all levels of the factor when forming the new "documents" of the grouped
 dfm.  This will result in documents with zero feature counts for levels not
 observed.  Has no effect if the <code>groups</code> variable(s) are not factors.</p></td>
     </tr>
@@ -188,10 +188,10 @@ observed.  Has no effect if the <code>groups</code> variable(s) are not factors.
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to 
-  the unique group combinations, and whose cell values are the sums of the 
-  previous values summed by group.  This currently erases any docvars in the 
-  dfm.</p>  
+    <p><code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to
+  the unique group combinations, and whose cell values are the sums of the
+  previous values summed by group. Document-level variables that have no
+  variation within groups are saved in <a href='docvars.html'>docvars</a>.</p>
 <p>Setting the <code>fill = TRUE</code> offers a way to "pad" a dfm with document
   groups that may not have been observed, but for which an empty document is
   needed, for various reasons.  If <code>groups</code> is a factor of dates, for

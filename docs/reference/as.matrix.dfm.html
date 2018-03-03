@@ -163,7 +163,8 @@
 <span class='fu'>as.matrix</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'>as.data.frame</span>(<span class='no'>x</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>as.data.frame</span>(<span class='no'>x</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>,
+  <span class='kw'>document</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>x</span>), <span class='kw'>check.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -178,39 +179,56 @@
     </tr>
     <tr>
       <th>row.names</th>
-      <td><p>if <code>FALSE</code>, do not set the row names of the data.frame
-to the docnames of the dfm (default); or a vector of values to which the
-row names will be set.</p></td>
+      <td><p><code>NULL</code> or a character vector giving the row
+    names for the data frame.  Missing values are not allowed.</p></td>
+    </tr>
+    <tr>
+      <th>document</th>
+      <td><p>optional first column of mode <code>character</code> in the
+data.frame, defaults <code><a href='docnames.html'>docnames(x)</a></code>.  Set to <code>NULL</code> to exclude.</p></td>
+    </tr>
+    <tr>
+      <th>check.names</th>
+      <td><p>logical.  If <code>TRUE</code> then the names of the
+    variables in the data frame are checked to ensure that they are
+    syntactically valid variable names and are not duplicated.
+    If necessary they are adjusted (by <code>make.names</code>)
+    so that they are.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># coercion to matrix</span>
-<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'>str</span>(<span class='fu'>as.matrix</span>(<span class='no'>mydfm</span>))</div><div class='output co'>#&gt;  num [1:58, 1:9357] 1 0 3 2 0 1 1 5 1 0 ...
-#&gt;  - attr(*, "dimnames")=List of 2
-#&gt;   ..$ docs    : chr [1:58] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...
-#&gt;   ..$ features: chr [1:9357] "fellow-citizens" "of" "the" "senate" ...</div><div class='input'>
+<span class='fu'>as.matrix</span>(<span class='no'>data_dfm_lbgexample</span>[, <span class='fl'>1</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt;     features
+#&gt; docs A B  C  D  E  F   G   H   I   J
+#&gt;   R1 2 3 10 22 45 78 115 146 158 146
+#&gt;   R2 0 0  0  0  0  2   3  10  22  45
+#&gt;   R3 0 0  0  0  0  0   0   0   0   0
+#&gt;   R4 0 0  0  0  0  0   0   0   0   0
+#&gt;   R5 0 0  0  0  0  0   0   0   0   0
+#&gt;   V1 0 0  0  0  0  0   0   2   3  10</div><div class='input'>
 <span class='co'># coercion to a data.frame</span>
-<span class='no'>inaugDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
-<span class='fu'>as.data.frame</span>(<span class='no'>inaugDfm</span>[, <span class='fl'>1</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt;                 fellow-citizens  of the senate and house representatives :
-#&gt; 1789-Washington               1  71 116      1  48     2               2 1
-#&gt; 1793-Washington               0  11  13      0   2     0               0 1
-#&gt; 1797-Adams                    3 140 163      1 130     0               2 0
-#&gt; 1801-Jefferson                2 104 130      0  81     0               0 1
-#&gt; 1805-Jefferson                0 101 143      0  93     0               0 0
-#&gt;                 among vicissitudes
-#&gt; 1789-Washington     1            1
-#&gt; 1793-Washington     0            0
-#&gt; 1797-Adams          4            0
-#&gt; 1801-Jefferson      1            0
-#&gt; 1805-Jefferson      7            0</div><div class='input'><span class='fu'>as.data.frame</span>(<span class='no'>inaugDfm</span>[, <span class='fl'>1</span>:<span class='fl'>10</span>], <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;   fellow-citizens  of the senate and house representatives : among vicissitudes
-#&gt; 1               1  71 116      1  48     2               2 1     1            1
-#&gt; 2               0  11  13      0   2     0               0 1     0            0
-#&gt; 3               3 140 163      1 130     0               2 0     4            0
-#&gt; 4               2 104 130      0  81     0               0 1     1            0
-#&gt; 5               0 101 143      0  93     0               0 0     7            0</div></pre>
+<span class='fu'>as.data.frame</span>(<span class='no'>data_dfm_lbgexample</span>[, <span class='fl'>1</span>:<span class='fl'>15</span>])</div><div class='output co'>#&gt;   document A B  C  D  E  F   G   H   I   J   K   L   M   N   O
+#&gt; 1       R1 2 3 10 22 45 78 115 146 158 146 115  78  45  22  10
+#&gt; 2       R2 0 0  0  0  0  2   3  10  22  45  78 115 146 158 146
+#&gt; 3       R3 0 0  0  0  0  0   0   0   0   0   2   3  10  22  45
+#&gt; 4       R4 0 0  0  0  0  0   0   0   0   0   0   0   0   0   0
+#&gt; 5       R5 0 0  0  0  0  0   0   0   0   0   0   0   0   0   0
+#&gt; 6       V1 0 0  0  0  0  0   0   2   3  10  22  45  78 115 146</div><div class='input'><span class='fu'>as.data.frame</span>(<span class='no'>data_dfm_lbgexample</span>[, <span class='fl'>1</span>:<span class='fl'>15</span>], <span class='kw'>document</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;   A B  C  D  E  F   G   H   I   J   K   L   M   N   O
+#&gt; 1 2 3 10 22 45 78 115 146 158 146 115  78  45  22  10
+#&gt; 2 0 0  0  0  0  2   3  10  22  45  78 115 146 158 146
+#&gt; 3 0 0  0  0  0  0   0   0   0   0   2   3  10  22  45
+#&gt; 4 0 0  0  0  0  0   0   0   0   0   0   0   0   0   0
+#&gt; 5 0 0  0  0  0  0   0   0   0   0   0   0   0   0   0
+#&gt; 6 0 0  0  0  0  0   0   2   3  10  22  45  78 115 146</div><div class='input'><span class='fu'>as.data.frame</span>(<span class='no'>data_dfm_lbgexample</span>[, <span class='fl'>1</span>:<span class='fl'>15</span>], <span class='kw'>document</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+              <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>data_dfm_lbgexample</span>))</div><div class='output co'>#&gt;    A B  C  D  E  F   G   H   I   J   K   L   M   N   O
+#&gt; R1 2 3 10 22 45 78 115 146 158 146 115  78  45  22  10
+#&gt; R2 0 0  0  0  0  2   3  10  22  45  78 115 146 158 146
+#&gt; R3 0 0  0  0  0  0   0   0   0   0   2   3  10  22  45
+#&gt; R4 0 0  0  0  0  0   0   0   0   0   0   0   0   0   0
+#&gt; R5 0 0  0  0  0  0   0   0   0   0   0   0   0   0   0
+#&gt; V1 0 0  0  0  0  0   0   2   3  10  22  45  78 115 146</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
