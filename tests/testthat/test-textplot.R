@@ -1,5 +1,7 @@
 context('test plots.R')
 
+dev.new(width = 10, height = 10)
+
 test_that("test plot.kwic scale argument default", {
 
     sda <- kwic(texts(data_corpus_inaugural)[[1]], 'american')
@@ -99,21 +101,15 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm <- dfm(testcorp, remove = stopwords("english"))
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
-    expect_silent({
-        dev.new(width = 10, height = 10)
+    expect_silent(
         textplot_wordcloud(testdfm_grouped, comparison = TRUE)
-        dev.off()
-    })
-    expect_silent({
-        dev.new(width = 10, height = 10)
+    )
+    expect_silent(
         textplot_wordcloud(testdfm_grouped, random_order = FALSE)
-        dev.off()
-    })
-    expect_silent({
-        dev.new(width = 10, height = 10)
+    )
+    expect_silent(
         textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
-        dev.off()
-    })
+    )
     expect_error(
         textplot_wordcloud(testdfm, comparison = TRUE),
         "Too many documents to plot comparison, use 8 or fewer documents\\."
@@ -263,4 +259,5 @@ test_that("test textplot_network font-selection", {
                "not_a_real_font is not found on your system")
 })
 
+dev.off()
 
