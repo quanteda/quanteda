@@ -99,20 +99,25 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm <- dfm(testcorp, remove = stopwords("english"))
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
-    expect_silent(
+    expect_silent({
+        dev.new(width = 10, height = 10)
         textplot_wordcloud(testdfm_grouped, comparison = TRUE)
-    )
-    expect_silent(
+        dev.off()
+    })
+    expect_silent({
+        dev.new(width = 10, height = 10)
         textplot_wordcloud(testdfm_grouped, random_order = FALSE)
-    )
-    expect_silent(
+        dev.off()
+    })
+    expect_silent({
+        dev.new(width = 10, height = 10)
         textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
-    )
+        dev.off()
+    })
     expect_error(
         textplot_wordcloud(testdfm, comparison = TRUE),
         "Too many documents to plot comparison, use 8 or fewer documents\\."
     )
-    
 })
 
 test_that("test textplot_wordcloud raise deprecation message", {

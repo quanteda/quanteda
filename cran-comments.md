@@ -4,14 +4,15 @@
 ## Purpose
 
 - Minor bug fixes and improvements. 
-- Removed unnecessary import of the **digest** package.
+- Removed dependency on the **wordcloud** package.
+- Reduced R dependency to version >= 3.1.0.
 
 ## Test environments
 
-* local OS X install, R 3.4.3
-* ubuntu Ubuntu 14.04.5 LTS (on travis-ci), R 3.4.2
-* Windows Server 2012 R2 x64 (build 9600), R 3.4.2 (on Appveyor)
-* local Windows 10, R 3.4.2
+* local macOS 10.13.3 install, R 3.4.3
+* ubuntu Ubuntu 14.04.5 LTS (on travis-ci), R 3.4.3
+* Windows Server 2012 R2 x64 (build 9600), R 3.4.3 (on Appveyor)
+* local Windows 10, R 3.4.3
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -28,19 +29,19 @@ None, although see above re: UBSAN.
 
 ### NOTES
 
-None (on macOS Sierra 10.13.2).
+None (on macOS Sierra 10.13.3).
 
 Only this from the results of testing on win-builder.r-project.org:
 
 * checking installed package size ... NOTE
-  installed size is  5.4Mb
+  installed size is  5.8Mb
   sub-directories of 1Mb or more:
     data   1.2Mb
-    libs   3.1Mb
+    libs   3.0Mb
 
 
 ## Downstream dependencies
 
-No errors, warnings, or NOTES were caused in other packages, using `devtools::revdep_check()` to confirm.
+No errors, warnings, or notes were caused in other packages, using `devtools::revdep_check()` to confirm.
 
 
