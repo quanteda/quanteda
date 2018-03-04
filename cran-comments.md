@@ -1,6 +1,11 @@
 ## Submission notes
 
 
+## Resubmission
+
+- Fixes plot tests on Ubuntu related to the graphics device size required to produce the wordcloud plots.
+- Removes the changes to the thread options after testing for the CRAN environment for tests.
+
 ## Purpose
 
 - Minor bug fixes and improvements. 

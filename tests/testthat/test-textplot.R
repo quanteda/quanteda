@@ -101,6 +101,7 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm <- dfm(testcorp, remove = stopwords("english"))
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
+    dev.new(width = 10, height = 10)
     expect_silent(
         textplot_wordcloud(testdfm_grouped, comparison = TRUE)
     )
@@ -110,6 +111,7 @@ test_that("test textplot_wordcloud comparison works", {
     expect_silent(
         textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
     )
+    dev.off()
     expect_error(
         textplot_wordcloud(testdfm, comparison = TRUE),
         "Too many documents to plot comparison, use 8 or fewer documents\\."
