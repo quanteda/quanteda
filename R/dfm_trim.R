@@ -51,24 +51,24 @@
 #' }
 #' 
 #' @export
-dfm_trim <- function(x, min_count = 1, min_docfreq = 1, 
-                     max_count = NULL, max_docfreq = NULL, 
+dfm_trim <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw", "prop", "pctile", "invrank"),
+                     min_docfreq = 0, max_docfreq = NULL, docfreq_fun = c("raw", "prop", "pctile", "invrank"),
                      sparsity = NULL, 
                      verbose = quanteda_options("verbose")) {
     UseMethod("dfm_trim")
 }
 
 #' @export
-dfm_trim.default <- function(x, min_count = 1, min_docfreq = 1, 
-                             max_count = NULL, max_docfreq = NULL, 
+dfm_trim.default <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw", "prop", "pctile", "invrank"),
+                             min_docfreq = 0, max_docfreq = NULL, docfreq_fun = c("raw", "prop", "pctile", "invrank"),
                              sparsity = NULL, 
                              verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "dfm_trim"))
 }
     
 #' @export
-dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, 
-                         max_count = NULL, max_docfreq = NULL, 
+dfm_trim.dfm <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw", "prop", "pctile", "invrank"),
+                         min_docfreq = 0, max_docfreq = NULL, docfreq_fun = c("raw", "prop", "pctile", "invrank"),
                          sparsity = NULL, 
                          verbose = quanteda_options("verbose")) {
     
@@ -93,20 +93,43 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1,
                  sparsity, "=", format(min_docfreq, big.mark=","), ".\n")
         min_docfreq <- 1.0 - sparsity
     }             
-
-    # convert fractions into counts
-    if (min_count < 1.0)
+    
+    s <- sum(freq)
+    if (count_fun == "prop") {
+        min_count <- min_count * s
+        if (is.null(max_count))
+            max_count <- 1
+        max_count <- max_count * s
+    } else if (count_fun ==  "pctile")  {
         min_count <- quantile(freq, min_count, names = FALSE, type = 1)
- 
-    if (!is.null(max_count) && max_count < 1.0)
+        if (is.null(max_count))
+            max_count <- 1
         max_count <- quantile(freq, max_count, names = FALSE, type = 1)
+    } else if (count_fun == "invrank") {
+        min_count <- min(rank(freq * -1) >= min_count)
+        if (is.null(max_count))
+            max_count <- nfeat(x)
+        max_count <- max(rank(freq * -1) <= max_count)
+    }
     
-    if (min_docfreq < 1.0)
-        min_docfreq <- min_docfreq * ndoc(x)
+    n <- ndoc(x)
+    if (docfreq_fun ==  "prop") {
+        min_docfreq <- min_docfreq * n
+        if (is.null(max_docfreq))
+            max_docfreq <- 1
+        max_docfreq <- max_docfreq * n
+    } else if (docfreq_fun ==  "pctile")  {
+        min_docfreq <- quantile(freq_doc, min_docfreq, names = FALSE, type = 1)
+        if (is.null(max_docfreq))
+            max_docfreq <- 1
+        max_docfreq <- quantile(freq_doc, max_docfreq, names = FALSE, type = 1)
+    } else if (docfreq_fun == "invrank") {
+        min_docfreq <- min(rank(freq_doc * -1) >= min_docfreq)
+        if (is.null(max_docfreq))
+            max_docfreq <- 1
+        max_docfreq <- max(rank(freq_doc * -1) <= max_docfreq)
+    }
     
-    if (!is.null(max_docfreq) && max_docfreq < 1.0)
-        max_docfreq <- max_docfreq * ndoc(x)
-
     # set maximums appropriately if not provided
     if (is.null(max_count))
         max_count <- max(freq, min_count)
