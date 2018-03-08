@@ -71,8 +71,8 @@ library(quanteda)
 一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（`data_char_ukimmig2010`）中提取的有关移民政策的文本为例：
 
 ```{r}
-myCorpus <- corpus(data_char_ukimmig2010)  # 从文本构建语料库
-summary(myCorpus)
+my_corpus <- corpus(data_char_ukimmig2010)  # 从文本构建语料库
+summary(my_corpus)
 ```
 
 我们也可以添加一些文档变量-- **quanteda** 称之为此语料库的`docvars()`。
@@ -80,17 +80,17 @@ summary(myCorpus)
 我们可以使用R的`names()`函数来读取字符向量`data_char_ukimmig2010`的名称，并且将其给文档变量赋值。
 
 ```{r}
-docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
-docvars(myCorpus, "Year") <- 2010
-summary(myCorpus)
+docvars(my_corpus, "Party") <- names(data_char_ukimmig2010)
+docvars(my_corpus, "Year") <- 2010
+summary(my_corpus)
 ```
 
 如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。
 
 ```{r}
-metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpus), sep = "_")
-summary(myCorpus, showmeta = TRUE)
+metadoc(my_corpus, "language") <- "english"
+metadoc(my_corpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(my_corpus), sep = "_")
+summary(my_corpus, showmeta = TRUE)
 ```
 
 上面的命令`metadoc()`允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域`docsource`创建一个简单的标签时，我们使用了quanteda函数`ndoc()`来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如`nrow()`和`ncol()`。
@@ -102,8 +102,8 @@ require(readtext)
 
 # Twitter json
 mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-myCorpusTwitter <- corpus(mytf1)
-summary(myCorpusTwitter, 5)
+my_corpusTwitter <- corpus(mytf1)
+summary(my_corpusTwitter, 5)
 # 通用json - 需要“textfield”说明符
 mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
                   textfield = "text")
@@ -172,10 +172,10 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 
 ```{r}
 library(quanteda)
-mycorpus1 <- corpus(data_corpus_inaugural[1:5])
-mycorpus2 <- corpus(data_corpus_inaugural[53:58])
-mycorpus3 <- mycorpus1 + mycorpus2
-summary(mycorpus3)
+my_corpus1 <- corpus(data_corpus_inaugural[1:5])
+my_corpus2 <- corpus(data_corpus_inaugural[53:58])
+my_corpus3 <- my_corpus1 + my_corpus2
+summary(my_corpus3)
 ```
 
 ### 提取语料库的子集 {#subsetting-corpus-objects}
@@ -259,10 +259,10 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能`dfm()`，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于`tokens()`所采用的保守方法，`dfm()`函数默认某些应用选项，比如`toLower()` - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过`tokens()`的所有选项都可以传递给`dfm()`。
 
 ```{r}
-myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
+my_corpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # 构建dfm
-myDfm <- dfm(myCorpus)
+myDfm <- dfm(my_corpus)
 myDfm[, 1:5]
 ```
 
@@ -271,7 +271,7 @@ myDfm[, 1:5]
 ```{r}
 # 构建dfm, 去除停用词以及提取词干
 
-myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+myStemMat <- dfm(my_corpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 myStemMat[, 1:5]
 ```
 
@@ -359,35 +359,35 @@ liwcdfm[, 1:10]
 ## 文本之间的相似度 {#similarities-between-texts}
 
 ```{r fig.width = 6}
-presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), 
+obama_simil <- textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), 
                              margin = "documents", method = "cosine")
-obamaSimil
-# dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
+obama_simil
+# dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")
 ```
 
 我们可以用这些距离来绘制树状图，聚类分析总统：
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_sotu, package = "quanteda.corpora")
-presDfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
+pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
-presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
+pres_dfm <- dfm_trim(pres_dfm, min_count = 5, min_docfreq = 3)
 
 #分层聚类 -  在归一化dfm上计算距离
-presDistMat <- textstat_dist(dfm_weight(presDfm, "prop"))
+pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
 # 聚类分析文本距离
-presCluster <- hclust(presDistMat)
+pres_cluster <- hclust(pres_dist_mat)
 # 按文档名标注
-presCluster$labels <- docnames(presDfm)
+pres_cluster$labels <- docnames(pres_dfm)
 # 绘制树状图
-plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 我们也可查看特征相似度:
 ```{r}
-sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
@@ -397,8 +397,8 @@ lapply(as.list(sim), head, 10)
 
 ```{r}
 # make prettier document names
-ieDfm <- dfm(data_corpus_irishbudget2010)
-textmodel_wordfish(ieDfm, dir = c(2, 1))
+ie_dfm <- dfm(data_corpus_irishbudget2010)
+textmodel_wordfish(ie_dfm, dir = c(2, 1))
 ```
 
 ## 主题模型 {#topic-models}
@@ -406,14 +406,14 @@ textmodel_wordfish(ieDfm, dir = c(2, 1))
 **quanteda**可以很轻松训练主题模型：
 
 ```{r}
-quantdfm <- dfm(data_corpus_irishbudget2010, 
+quant_dfm <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quantdfm <- dfm_trim(quantdfm, min_count = 4, max_docfreq = 10)
-quantdfm
+quant_dfm <- dfm_trim(quant_dfm, min_count = 4, max_docfreq = 10)
+quant_dfm
 
 if (require(topicmodels)) {
-    myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)
-    get_terms(myLDAfit20, 5)
+    my_lda_fit20 <- LDA(convert(quant_dfm, to = "topicmodels"), k = 20)
+    get_terms(my_lda_fit20, 5)
 }
 ```
 注：以上这个指南翻译于英文版[quickstart](http://docs.quanteda.io/articles/pkgdown/quickstart.html).
