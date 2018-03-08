@@ -143,8 +143,7 @@ toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = '')
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 
 ```{r}
-speech_dfm <- 
-    dfm(toks, remove = '') %>% 
+speech_dfm <- dfm(toks, remove = '') %>% 
     dfm_remove('^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2) %>% 
     dfm_trim(min_count = 0.50, max_count = 0.99)
 ```
@@ -184,6 +183,7 @@ textplot_network(speech_fcm, min_freq = 0.85, edge_alpha = 0.9, vertex_size = si
 **quanteda**のdfmを`convert()`で変換し，**topicmodels**をパッケージを用いて潜在的な話題を推定する．
 
 ```{r, cache=TRUE}
+set.seed(100)
 lda <- LDA(convert(speech_dfm, to = "topicmodels"), k = 10)
 get_terms(lda, 10) %>% knitr::kable()
 get_topics(lda) %>% table() %>% barplot(xlab = 'Topic', ylab = "Frequency") 

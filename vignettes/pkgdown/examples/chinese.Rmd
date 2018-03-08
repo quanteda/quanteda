@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, message=FALSE}
+```{r, message=FALSE, warnings=FALSE}
 library(quanteda)
 ```
 
@@ -21,9 +21,13 @@ library(quanteda)
 
 Download corpus constructed from *Report on the Work of the Government* published by Premier of the State Council between 1954 and 2017. You can download the corpus using the **quanteda.corpora** package.
 
-```{r, message=FALSE}
+```{r, message=FALSE,eval=FALSE}
 # read text files
 devtools::install_github("quanteda/quanteda.corpora")
+```
+
+```{r}
+library(quanteda.corpora)
 corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1")
 ```
 
@@ -53,10 +57,9 @@ set.seed(100)
 
 # to set the font correctly for macOS
 if (Sys.info()['sysname'] == "Darwin") par(family = "STSong") 
-dfm_trim(ch_dfm, min_count = 500) %>% 
-textplot_wordcloud(min.freq = 6, random.order = FALSE,
-                   rot.per = .25, max.words = 100, scale = c(2.8, .5),
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+dfm_trim(ch_dfm, min_count = 500) %>%
+    textplot_wordcloud(min_count = 6, random_order = FALSE,
+                   rotation = .25, max_words = 100, scale = c(2.8, .5))
 ```
 
 ## Feature co-occurrence matrix

@@ -93,8 +93,7 @@ textplot_network(fcm_select(tag_fcm,  feat), min_freq = 0.8)
 ツイートのメッセージを分析するためには，`dfm_remove()`でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．
 
 ```{r}
-msg_fcm <- 
-    tweet_dfm %>% 
+msg_fcm <- tweet_dfm %>% 
     dfm_remove(c('#*', '@*')) %>% 
     dfm_remove('^[ぁ-ん]+$', 'regex', min_nchar = 2) %>% 
     dfm_trim(min_count = 10) %>% 
