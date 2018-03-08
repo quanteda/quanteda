@@ -1,11 +1,10 @@
-# quanteda v1.0.2
-
-## Changes since v1.0.0.
+# quanteda v1.1.0
 
 ### New Features
 
 * Added `as.dfm()` methods for **tm** `DocumentTermMatrix` and `TermDocumentMatrix` objects. (#1222)
 * `predict.textmodel_wordscores()` nows includes an `include_reftexts` argument to exclude training texts from the predicted model object (#1229).  The default behaviour is `include_reftexts = TRUE`, producing the same behaviour as existed before the introduction of this argument.  This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.
+* `textplot_wordcloud()` now uses code entirely internal to **quanteda**, instead of using the **wordcloud** package.
 
 ### Bug fixes and stability enhancements
 
@@ -14,15 +13,18 @@
 * Improved the robustness of `dfm_trim()` and `dfm_weight()` for previously weighted dfm objects and when supplied thresholds are proportions instead of counts.  (#1237)
 * Fixed a problem in `summary.corpus(x, n = 101)` when `ndoc(x) > 100` (#1242). 
 * Fixed a problem in `predict.textmodel_wordscores(x, rescaling = "mv")` that always reset the reference values for rescaling to the first and second documents (#1251).
+* Issues in the color generation and labels for `textplot_keyness()` are now resolved (#1233, #1233).
+
 
 ### Performance improvements
 
-* textmodel-methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
+* textmodel methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
 
 ### Behaviour changes
 
 * Changed the default in `textmodel_wordfish()` to `sparse = FALSE`, in response to #1216.
 * `dfm_group()` now preserves docvars that are constant for the group aggregation (#1228).
+* The default threads is now 2, to comply with CRAN policies.  (The user can increase this via `quanteda_options(threads = ...)`.
 
 
 # quanteda v1.0.0

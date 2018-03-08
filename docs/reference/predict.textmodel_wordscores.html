@@ -162,7 +162,7 @@
     <pre class="usage"><span class='co'># S3 method for textmodel_wordscores</span>
 <span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"confidence"</span>), <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"lbg"</span>, <span class='st'>"mv"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"lbg"</span>, <span class='st'>"mv"</span>), <span class='kw'>include_reftexts</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -192,6 +192,10 @@
       <td><p><code>"none"</code> for "raw" scores; <code>"lbg"</code> for LBG (2003) 
 rescaling; or <code>"mv"</code> for the rescaling proposed by Martin and Vanberg 
 (2007).  See References.</p></td>
+    </tr>
+    <tr>
+      <th>include_reftexts</th>
+      <td><p>if <code>FALSE</code>, reference texts are removed from the prediction</p></td>
     </tr>
     <tr>
       <th>...</th>

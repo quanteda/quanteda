@@ -6,8 +6,8 @@
 \title{Plot a network of feature co-occurrences}
 \usage{
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
-  edge_color = "skyblue", edge_alpha = 0.5, edge_size = 2,
-  vertex_color = "gray40", vertex_size = 2, vertex_labelcolor = NULL,
+  edge_color = "#1F78B4", edge_alpha = 0.5, edge_size = 2,
+  vertex_color = "#4D4D4D", vertex_size = 2, vertex_labelcolor = NULL,
   offset = NULL, vertex_labelfont = NULL, ...)
 
 \method{as.network}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)

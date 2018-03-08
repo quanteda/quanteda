@@ -4,29 +4,67 @@
 \alias{textplot_wordcloud}
 \title{Plot features as a wordcloud}
 \usage{
-textplot_wordcloud(x, comparison = FALSE, ...)
+textplot_wordcloud(x, min_size = 0.5, max_size = 4, min_count = 3,
+  max_words = 500, color = "darkblue", font = NULL, adjust = 0,
+  rotation = 0.1, random_order = FALSE, random_color = FALSE,
+  ordered_color = FALSE, labelcolor = "gray20", labelsize = 1.5,
+  labeloffset = 0, fixed_aspect = TRUE, ..., comparison = FALSE)
 }
 \arguments{
 \item{x}{a dfm object}
 
-\item{comparison}{if \code{TRUE}, plot a 
-\code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
-one grouping per document}
+\item{min_size}{size of the smallest word}
 
-\item{...}{additional parameters passed to \link[wordcloud]{wordcloud} or 
-to \link{text} (and \link{strheight}, \link{strwidth})}
+\item{max_size}{size of the largest word}
+
+\item{min_count}{words with frequency below min_count will not be plotted}
+
+\item{max_words}{maximum number of words to be plotted. least frequent terms
+dropped.}
+
+\item{color}{color of words from least to most frequent}
+
+\item{font}{font-family of words and labels. Use default font if \code{NULL}.}
+
+\item{adjust}{ajust sizes of words by a constant. Useful for non-Engish words
+for which R fails to obtain correct sizes.}
+
+\item{rotation}{proportion of words with 90 degree rotation}
+
+\item{random_order}{plot words in random order. If \code{FALSE}, they will be
+plotted in decreasing frequency.}
+
+\item{random_color}{choose colors randomly from the colors. If \code{FALSE},
+the color is chosen based on the frequency}
+
+\item{ordered_color}{if \code{TRUE}, then colors are assigned to words in
+order.}
+
+\item{labelcolor}{color of group labels. Only used when \code{compariosn=TRUE}.}
+
+\item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
+
+\item{labeloffset}{position of group labels. Only used when
+\code{comparison=TRUE}.}
+
+\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
+aspect ratio only supported if rotation = 0}
+
+\item{...}{additional parameters. Only used to make it compatible with
+\pkg{wordcloud}}
+
+\item{comparison}{if \code{TRUE}, plot a wordclound that compares documents
+in the same way as \code{\link[wordcloud]{comparison.cloud}}}
 }
 \description{
-Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature 
-labels are plotted with their sizes proportional to their numerical values in
-the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by 
-document.
+Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted
+with their sizes proportional to their numerical values in the dfm.  When
+\code{comparison = TRUE}, it plots comparison word clouds by document.
 }
 \details{
 The default is to plot the word cloud of all features, summed across
-  documents.  To produce word cloud plots for specific document or set of 
-  documents, you need to slice out the document(s) from the dfm or tokens
-  object.
+  documents.  To produce word cloud plots for specific document or set of
+  documents, you need to slice out the document(s) from the dfm object.
   
   Comparison wordcloud plots may be plotted by setting \code{comparison =
   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
@@ -35,27 +73,35 @@ The default is to plot the word cloud of all features, summed across
   grouping of documents by some document variable.
 }
 \examples{
-# plot the features (without stopwords) from Obama's two inaugural addresses
-mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
-             remove = stopwords("english"), remove_punct = TRUE)
-textplot_wordcloud(mydfm)
+# plot the features (without stopwords) from Obama's inaugural addresses
+set.seed(10)
+obama_dfm <- 
+    dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
+        remove = stopwords("english"), remove_punct = TRUE) \%>\%
+    dfm_trim(min_count = 3)
+    
+# basic wordcloud
+textplot_wordcloud(obama_dfm)
 
-# plot in colors with some additional options passed to wordcloud
-textplot_wordcloud(mydfm, random.color = TRUE, rot.per = .25, 
-                   colors = sample(colors()[2:128], 5))
+# plot in colors with some additional options
+textplot_wordcloud(obama_dfm, rotation = 0.25, 
+                   color = rev(RColorBrewer::brewer.pal(10, "RdBu")))
+  
+# other display options
+col <- sapply(seq(0.1, 1, 0.1), function(x) adjustcolor("#1F78B4", x))
+textplot_wordcloud(obama_dfm, adjust = 0.5, random_order = FALSE, 
+                   color = col, rotation = FALSE)
+  
+# comparison plot of Obama v. Trump
+obama_trump_dfm <- 
+    dfm(corpus_subset(data_corpus_inaugural, President \%in\% c("Obama", "Trump")),
+        remove = stopwords("english"), remove_punct = TRUE, groups = "President") \%>\%
+    dfm_trim(min_count = 3)
 
-\dontrun{
-# comparison plot of Irish government vs opposition
-docvars(data_corpus_irishbudget2010, "govtopp") <- 
-    factor(ifelse(data_corpus_irishbudget2010[, "party"] \%in\% c("FF", "Green"), "Govt", "Opp"))
-govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", remove_punct = TRUE)
-textplot_wordcloud(dfm_tfidf(govtoppDfm), comparison = TRUE)
-# compare to non-tf-idf version
-textplot_wordcloud(govtoppDfm, comparison = TRUE)
+textplot_wordcloud(obama_trump_dfm, comparison = TRUE, max_words = 300,
+                   color = c("blue", "red"))
 }
-}
-\seealso{
-\code{\link[wordcloud]{wordcloud}}, 
-  \code{\link[wordcloud]{comparison.cloud}}
+\author{
+Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
 }
 \keyword{textplot}

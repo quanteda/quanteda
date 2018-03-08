@@ -67,11 +67,10 @@ test_that("quanteda_options reset works correctly", {
 })
 
 test_that("quanteda_options works with threads", {
-    
     quanteda_options(reset = TRUE)
     expect_equal(
         as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
-        max(1L, RcppParallel::defaultNumThreads() - 1)
+        min(2L, RcppParallel::defaultNumThreads())
     )
     expect_equal(
         as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),

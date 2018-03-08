@@ -209,230 +209,230 @@ syntactic segmenter uses this function)</p></td>
 #&gt;  textone     8     11         3      UK 1990
 #&gt;   textwo     4      6         2     USA 2000
 #&gt; 
-#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Thu Jan 25 11:42:14 2018
-#&gt; Notes:   Example showing how corpus_reshape() works. </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
+#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
+#&gt; Created: Sat Mar  3 08:17:36 2018
+#&gt; Notes: Example showing how corpus_reshape() works.</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
 #&gt; 
-#&gt;       Text Types Tokens Sentences country year _document _docid _segid
-#&gt;  textone.1     5      5         1      UK 1990   textone      1      1
-#&gt;  textone.2     3      3         1      UK 1990   textone      1      2
-#&gt;  textone.3     3      3         1      UK 1990   textone      1      3
-#&gt;   textwo.1     3      3         1     USA 2000    textwo      2      1
-#&gt;   textwo.2     3      3         1     USA 2000    textwo      2      2
+#&gt;       Text Types Tokens Sentences _document _docid _segid country year
+#&gt;  textone.1     5      5         1   textone      1      1      UK 1990
+#&gt;  textone.2     3      3         1   textone      1      2      UK 1990
+#&gt;  textone.3     3      3         1   textone      1      3      UK 1990
+#&gt;   textwo.1     3      3         1    textwo      2      1     USA 2000
+#&gt;   textwo.2     3      3         1    textwo      2      2     USA 2000
 #&gt; 
-#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Thu Jan 25 11:42:14 2018
-#&gt; Notes:   corpus_reshape.corpus(corp, to = "sentences") </div><div class='input'>
+#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
+#&gt; Created: Sat Mar  3 08:17:36 2018
+#&gt; Notes: corpus_reshape.corpus(corp, to = "sentences")</div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
 (<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>corp2_para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"paragraphs"</span>)
 <span class='no'>corp2_para</span></div><div class='output co'>#&gt; Corpus consisting of 138 documents and 3 docvars.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>corp2_para</span>, <span class='fl'>100</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 138 documents, showing 100 documents:
 #&gt; 
-#&gt;           Text Types Tokens Sentences Year President FirstName  _document
-#&gt;    2005-Bush.1   773   2319       100 2005      Bush George W.  2005-Bush
-#&gt;   2009-Obama.1     4      4         1 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.2    42     53         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.3    62     86         4 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.4    12     15         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.5    76    108         5 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.6    39     47         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.7    36     47         4 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.8    19     22         1 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.9    29     33         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.10    56     82         2 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.11    71    106         5 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.12    21     21         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.13    20     24         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.14    17     20         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.15    43     51         2 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.16    73    108         7 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.17    85    144         8 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.18    52     62         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.19    97    150         5 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.20    76    117         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.21    90    137         4 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.22    60     83         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.23    92    142         5 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.24    82    126         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.25    65    103         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.26    63     84         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.27    81    115         4 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.28    69     96         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.29    95    158         7 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.30     9     10         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.31    20     22         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.32    53     65         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.33    67     95         6 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.34    34     53         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.35    75    106         4 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.36    11     16         3 2009     Obama    Barack 2009-Obama
-#&gt;   2013-Obama.1    20     23         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.2    56     82         4 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.3    33     41         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.4    76    111         4 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.5    10     10         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.6    34     42         2 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.7    22     26         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.8    21     21         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.9    23     24         1 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.10    44     54         2 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.11    89    130         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.12    68     93         5 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.13    90    131         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.14    68     97         5 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.15    66     97         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.16    72    109         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.17    54     76         3 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.18    69    102         6 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.19    81    122         5 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.20    44     56         2 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.21    92    140         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.22    66     98         1 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.23   110    189         6 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.24    61     99         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.25    63     93         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.26    75    109         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.27    45     72         3 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.28    39     52         2 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.29    15     18         2 2013     Obama    Barack 2013-Obama
-#&gt;   2017-Trump.1    20     28         1 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.2    26     29         1 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.3    17     20         1 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.4    13     18         3 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.5    40     48         3 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.6    35     49         2 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.7    23     25         1 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.8    13     13         1 2017     Trump Donald J. 2017-Trump
-#&gt;   2017-Trump.9    12     13         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.10    13     13         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.11    30     38         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.12    21     24         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.13    13     14         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.14     6     10         2 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.15    12     13         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.16    18     21         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.17    18     21         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.18    13     14         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.19     7      7         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.20    21     25         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.21    19     20         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.22    16     20         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.23    12     14         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.24    60     82         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.25     9     11         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.26    23     39         3 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.27    14     16         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.28    47     63         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.29    20     22         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.30    25     30         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.31    20     20         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.32    14     16         2 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.33    23     28         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.34    13     13         1 2017     Trump Donald J. 2017-Trump
-#&gt;  _docid _segid
-#&gt;       1      1
-#&gt;       2      1
-#&gt;       2      2
-#&gt;       2      3
-#&gt;       2      4
-#&gt;       2      5
-#&gt;       2      6
-#&gt;       2      7
-#&gt;       2      8
-#&gt;       2      9
-#&gt;       2     10
-#&gt;       2     11
-#&gt;       2     12
-#&gt;       2     13
-#&gt;       2     14
-#&gt;       2     15
-#&gt;       2     16
-#&gt;       2     17
-#&gt;       2     18
-#&gt;       2     19
-#&gt;       2     20
-#&gt;       2     21
-#&gt;       2     22
-#&gt;       2     23
-#&gt;       2     24
-#&gt;       2     25
-#&gt;       2     26
-#&gt;       2     27
-#&gt;       2     28
-#&gt;       2     29
-#&gt;       2     30
-#&gt;       2     31
-#&gt;       2     32
-#&gt;       2     33
-#&gt;       2     34
-#&gt;       2     35
-#&gt;       2     36
-#&gt;       3      1
-#&gt;       3      2
-#&gt;       3      3
-#&gt;       3      4
-#&gt;       3      5
-#&gt;       3      6
-#&gt;       3      7
-#&gt;       3      8
-#&gt;       3      9
-#&gt;       3     10
-#&gt;       3     11
-#&gt;       3     12
-#&gt;       3     13
-#&gt;       3     14
-#&gt;       3     15
-#&gt;       3     16
-#&gt;       3     17
-#&gt;       3     18
-#&gt;       3     19
-#&gt;       3     20
-#&gt;       3     21
-#&gt;       3     22
-#&gt;       3     23
-#&gt;       3     24
-#&gt;       3     25
-#&gt;       3     26
-#&gt;       3     27
-#&gt;       3     28
-#&gt;       3     29
-#&gt;       4      1
-#&gt;       4      2
-#&gt;       4      3
-#&gt;       4      4
-#&gt;       4      5
-#&gt;       4      6
-#&gt;       4      7
-#&gt;       4      8
-#&gt;       4      9
-#&gt;       4     10
-#&gt;       4     11
-#&gt;       4     12
-#&gt;       4     13
-#&gt;       4     14
-#&gt;       4     15
-#&gt;       4     16
-#&gt;       4     17
-#&gt;       4     18
-#&gt;       4     19
-#&gt;       4     20
-#&gt;       4     21
-#&gt;       4     22
-#&gt;       4     23
-#&gt;       4     24
-#&gt;       4     25
-#&gt;       4     26
-#&gt;       4     27
-#&gt;       4     28
-#&gt;       4     29
-#&gt;       4     30
-#&gt;       4     31
-#&gt;       4     32
-#&gt;       4     33
-#&gt;       4     34
+#&gt;           Text Types Tokens Sentences  _document _docid _segid Year President
+#&gt;    2005-Bush.1   773   2319       100  2005-Bush      1      1 2005      Bush
+#&gt;   2009-Obama.1     4      4         1 2009-Obama      2      1 2009     Obama
+#&gt;   2009-Obama.2    42     53         2 2009-Obama      2      2 2009     Obama
+#&gt;   2009-Obama.3    62     86         4 2009-Obama      2      3 2009     Obama
+#&gt;   2009-Obama.4    12     15         2 2009-Obama      2      4 2009     Obama
+#&gt;   2009-Obama.5    76    108         5 2009-Obama      2      5 2009     Obama
+#&gt;   2009-Obama.6    39     47         2 2009-Obama      2      6 2009     Obama
+#&gt;   2009-Obama.7    36     47         4 2009-Obama      2      7 2009     Obama
+#&gt;   2009-Obama.8    19     22         1 2009-Obama      2      8 2009     Obama
+#&gt;   2009-Obama.9    29     33         1 2009-Obama      2      9 2009     Obama
+#&gt;  2009-Obama.10    56     82         2 2009-Obama      2     10 2009     Obama
+#&gt;  2009-Obama.11    71    106         5 2009-Obama      2     11 2009     Obama
+#&gt;  2009-Obama.12    21     21         1 2009-Obama      2     12 2009     Obama
+#&gt;  2009-Obama.13    20     24         1 2009-Obama      2     13 2009     Obama
+#&gt;  2009-Obama.14    17     20         1 2009-Obama      2     14 2009     Obama
+#&gt;  2009-Obama.15    43     51         2 2009-Obama      2     15 2009     Obama
+#&gt;  2009-Obama.16    73    108         7 2009-Obama      2     16 2009     Obama
+#&gt;  2009-Obama.17    85    144         8 2009-Obama      2     17 2009     Obama
+#&gt;  2009-Obama.18    52     62         3 2009-Obama      2     18 2009     Obama
+#&gt;  2009-Obama.19    97    150         5 2009-Obama      2     19 2009     Obama
+#&gt;  2009-Obama.20    76    117         3 2009-Obama      2     20 2009     Obama
+#&gt;  2009-Obama.21    90    137         4 2009-Obama      2     21 2009     Obama
+#&gt;  2009-Obama.22    60     83         3 2009-Obama      2     22 2009     Obama
+#&gt;  2009-Obama.23    92    142         5 2009-Obama      2     23 2009     Obama
+#&gt;  2009-Obama.24    82    126         3 2009-Obama      2     24 2009     Obama
+#&gt;  2009-Obama.25    65    103         3 2009-Obama      2     25 2009     Obama
+#&gt;  2009-Obama.26    63     84         3 2009-Obama      2     26 2009     Obama
+#&gt;  2009-Obama.27    81    115         4 2009-Obama      2     27 2009     Obama
+#&gt;  2009-Obama.28    69     96         3 2009-Obama      2     28 2009     Obama
+#&gt;  2009-Obama.29    95    158         7 2009-Obama      2     29 2009     Obama
+#&gt;  2009-Obama.30     9     10         1 2009-Obama      2     30 2009     Obama
+#&gt;  2009-Obama.31    20     22         1 2009-Obama      2     31 2009     Obama
+#&gt;  2009-Obama.32    53     65         1 2009-Obama      2     32 2009     Obama
+#&gt;  2009-Obama.33    67     95         6 2009-Obama      2     33 2009     Obama
+#&gt;  2009-Obama.34    34     53         1 2009-Obama      2     34 2009     Obama
+#&gt;  2009-Obama.35    75    106         4 2009-Obama      2     35 2009     Obama
+#&gt;  2009-Obama.36    11     16         3 2009-Obama      2     36 2009     Obama
+#&gt;   2013-Obama.1    20     23         1 2013-Obama      3      1 2013     Obama
+#&gt;   2013-Obama.2    56     82         4 2013-Obama      3      2 2013     Obama
+#&gt;   2013-Obama.3    33     41         1 2013-Obama      3      3 2013     Obama
+#&gt;   2013-Obama.4    76    111         4 2013-Obama      3      4 2013     Obama
+#&gt;   2013-Obama.5    10     10         1 2013-Obama      3      5 2013     Obama
+#&gt;   2013-Obama.6    34     42         2 2013-Obama      3      6 2013     Obama
+#&gt;   2013-Obama.7    22     26         1 2013-Obama      3      7 2013     Obama
+#&gt;   2013-Obama.8    21     21         1 2013-Obama      3      8 2013     Obama
+#&gt;   2013-Obama.9    23     24         1 2013-Obama      3      9 2013     Obama
+#&gt;  2013-Obama.10    44     54         2 2013-Obama      3     10 2013     Obama
+#&gt;  2013-Obama.11    89    130         4 2013-Obama      3     11 2013     Obama
+#&gt;  2013-Obama.12    68     93         5 2013-Obama      3     12 2013     Obama
+#&gt;  2013-Obama.13    90    131         4 2013-Obama      3     13 2013     Obama
+#&gt;  2013-Obama.14    68     97         5 2013-Obama      3     14 2013     Obama
+#&gt;  2013-Obama.15    66     97         4 2013-Obama      3     15 2013     Obama
+#&gt;  2013-Obama.16    72    109         4 2013-Obama      3     16 2013     Obama
+#&gt;  2013-Obama.17    54     76         3 2013-Obama      3     17 2013     Obama
+#&gt;  2013-Obama.18    69    102         6 2013-Obama      3     18 2013     Obama
+#&gt;  2013-Obama.19    81    122         5 2013-Obama      3     19 2013     Obama
+#&gt;  2013-Obama.20    44     56         2 2013-Obama      3     20 2013     Obama
+#&gt;  2013-Obama.21    92    140         4 2013-Obama      3     21 2013     Obama
+#&gt;  2013-Obama.22    66     98         1 2013-Obama      3     22 2013     Obama
+#&gt;  2013-Obama.23   110    189         6 2013-Obama      3     23 2013     Obama
+#&gt;  2013-Obama.24    61     99         4 2013-Obama      3     24 2013     Obama
+#&gt;  2013-Obama.25    63     93         4 2013-Obama      3     25 2013     Obama
+#&gt;  2013-Obama.26    75    109         4 2013-Obama      3     26 2013     Obama
+#&gt;  2013-Obama.27    45     72         3 2013-Obama      3     27 2013     Obama
+#&gt;  2013-Obama.28    39     52         2 2013-Obama      3     28 2013     Obama
+#&gt;  2013-Obama.29    15     18         2 2013-Obama      3     29 2013     Obama
+#&gt;   2017-Trump.1    20     28         1 2017-Trump      4      1 2017     Trump
+#&gt;   2017-Trump.2    26     29         1 2017-Trump      4      2 2017     Trump
+#&gt;   2017-Trump.3    17     20         1 2017-Trump      4      3 2017     Trump
+#&gt;   2017-Trump.4    13     18         3 2017-Trump      4      4 2017     Trump
+#&gt;   2017-Trump.5    40     48         3 2017-Trump      4      5 2017     Trump
+#&gt;   2017-Trump.6    35     49         2 2017-Trump      4      6 2017     Trump
+#&gt;   2017-Trump.7    23     25         1 2017-Trump      4      7 2017     Trump
+#&gt;   2017-Trump.8    13     13         1 2017-Trump      4      8 2017     Trump
+#&gt;   2017-Trump.9    12     13         1 2017-Trump      4      9 2017     Trump
+#&gt;  2017-Trump.10    13     13         1 2017-Trump      4     10 2017     Trump
+#&gt;  2017-Trump.11    30     38         1 2017-Trump      4     11 2017     Trump
+#&gt;  2017-Trump.12    21     24         1 2017-Trump      4     12 2017     Trump
+#&gt;  2017-Trump.13    13     14         1 2017-Trump      4     13 2017     Trump
+#&gt;  2017-Trump.14     6     10         2 2017-Trump      4     14 2017     Trump
+#&gt;  2017-Trump.15    12     13         1 2017-Trump      4     15 2017     Trump
+#&gt;  2017-Trump.16    18     21         1 2017-Trump      4     16 2017     Trump
+#&gt;  2017-Trump.17    18     21         1 2017-Trump      4     17 2017     Trump
+#&gt;  2017-Trump.18    13     14         1 2017-Trump      4     18 2017     Trump
+#&gt;  2017-Trump.19     7      7         1 2017-Trump      4     19 2017     Trump
+#&gt;  2017-Trump.20    21     25         1 2017-Trump      4     20 2017     Trump
+#&gt;  2017-Trump.21    19     20         1 2017-Trump      4     21 2017     Trump
+#&gt;  2017-Trump.22    16     20         1 2017-Trump      4     22 2017     Trump
+#&gt;  2017-Trump.23    12     14         1 2017-Trump      4     23 2017     Trump
+#&gt;  2017-Trump.24    60     82         1 2017-Trump      4     24 2017     Trump
+#&gt;  2017-Trump.25     9     11         1 2017-Trump      4     25 2017     Trump
+#&gt;  2017-Trump.26    23     39         3 2017-Trump      4     26 2017     Trump
+#&gt;  2017-Trump.27    14     16         1 2017-Trump      4     27 2017     Trump
+#&gt;  2017-Trump.28    47     63         1 2017-Trump      4     28 2017     Trump
+#&gt;  2017-Trump.29    20     22         1 2017-Trump      4     29 2017     Trump
+#&gt;  2017-Trump.30    25     30         1 2017-Trump      4     30 2017     Trump
+#&gt;  2017-Trump.31    20     20         1 2017-Trump      4     31 2017     Trump
+#&gt;  2017-Trump.32    14     16         2 2017-Trump      4     32 2017     Trump
+#&gt;  2017-Trump.33    23     28         1 2017-Trump      4     33 2017     Trump
+#&gt;  2017-Trump.34    13     13         1 2017-Trump      4     34 2017     Trump
+#&gt;  FirstName
+#&gt;  George W.
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;     Barack
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
+#&gt;  Donald J.
 #&gt; 
-#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
-#&gt; Created: Thu Jan 25 11:42:14 2018
-#&gt; Notes:   corpus_reshape.corpus(corp2, to = "paragraphs") </div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text 
+#&gt; Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Sat Mar  3 08:17:36 2018
+#&gt; Notes: corpus_reshape.corpus(corp2, to = "paragraphs")</div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text 
 ## used a single \n to mark the end of a paragraph.
 </div></pre>
   </div>
