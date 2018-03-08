@@ -36,27 +36,27 @@
 #' @seealso \code{\link{dfm_tfidf}}, \code{\link{docfreq}}
 #' @keywords dfm
 #' @examples
-#' dtm <- dfm(data_corpus_inaugural)
+#' my_dfm <- dfm(data_corpus_inaugural)
 #' 
-#' x <- apply(dtm, 1, function(tf) tf/max(tf))
-#' topfeatures(dtm)
-#' normDtm <- dfm_weight(dtm, "prop")
-#' topfeatures(normDtm)
-#' maxTfDtm <- dfm_weight(dtm, scheme = "propmax")
-#' topfeatures(maxTfDtm)
-#' logTfDtm <- dfm_weight(dtm, scheme = "logcount")
-#' topfeatures(logTfDtm)
-#' logaveDtm <- dfm_weight(dtm, scheme = "logave")
-#' topfeatures(logaveDtm)
+#' x <- apply(my_dfm, 1, function(tf) tf/max(tf))
+#' topfeatures(my_dfm)
+#' norm_dfm <- dfm_weight(my_dfm, "prop")
+#' topfeatures(norm_dfm)
+#' max_tf_dfm <- dfm_weight(my_dfm)
+#' topfeatures(max_tf_dfm)
+#' log_tf_dfm <- dfm_weight(my_dfm, scheme = "logcount")
+#' topfeatures(log_tf_dfm)
+#' log_ave_dfm <- dfm_weight(my_dfm, scheme = "logave")
+#' topfeatures(log_ave_dfm)
 #' 
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
-#' head(dfm_tfidf(dtm, scheme_tf = "logcount"))
+#' head(dfm_tfidf(my_dfm, scheme_tf = "logcount"))
 #' 
 #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
-#' (mydfm <- dfm(str, remove = stopwords("english")))
-#' dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))
+#' (my_dfm <- dfm(str, remove = stopwords("english")))
+#' dfm_weight(my_dfm, weights = c(apple = 5, banana = 3, much = 0.5))
 #' 
 #' \dontshow{
 #' testdfm <- dfm(data_corpus_inaugural[1:5])
