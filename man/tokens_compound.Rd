@@ -49,18 +49,18 @@ myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("in
 dfm(cw)
 
 # when used as a dictionary for dfm creation
-mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
-(cw2 <- tokens_compound(mytoks, mydict))
+mydict1 <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
+(cw2 <- tokens_compound(mytoks, mydict1))
 
 # to pick up "taxes" in the second text, set valuetype = "regex"
-(cw3 <- tokens_compound(mytoks, mydict, valuetype = "regex"))
+(cw3 <- tokens_compound(mytoks, mydict1, valuetype = "regex"))
 
 # dictionaries w/glob matches
-myDict <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
+mydict2 <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
                           positive = c("good stuff", "like? th??")))
 toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
                  txt2 = "Some damn good stuff, like the text, she likes that too."))
-tokens_compound(toks, myDict)
+tokens_compound(toks, mydict2)
 
 # with collocations
 cols <- 
