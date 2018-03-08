@@ -14,19 +14,20 @@ This vignette walks through various plot options available in **quanteda** throu
 
 # Wordcloud 
 
-Plotting a `dfm` object will create a wordcloud using the **wordcloud** pacakge.
+The frequency of features can be plotted as a wordcloud using `textplot_wordcloud()`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
     dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
     dfm_trim(min_count = 10, verbose = FALSE)
 
+set.seed(100)
 textplot_wordcloud(dfm_inaug)
 ```
 
 You can also plot a "comparison cloud", but this can only be done with fewer than eight documents:
 
-```{r eval=TRUE, fig.width=8, fig.height=8}
+```{r eval=TRUE, fig.width=10, fig.height=8}
 corpus_subset(data_corpus_inaugural, 
               President %in% c("Washington", "Jefferson", "Madison")) %>%
     dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE) %>%
@@ -36,7 +37,7 @@ corpus_subset(data_corpus_inaugural,
 
 Plot will pass through additional arguments to the underlying call to `wordcloud`.
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-textplot_wordcloud(dfm_inaug, min.freq = 10,
+textplot_wordcloud(dfm_inaug, min_count = 10,
      colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 ```
 
@@ -65,10 +66,13 @@ If you're only plotting a single document, but with multiple keywords, then the 
 ```{r eval=TRUE, fig.width=8, fig.height=1.25}
 require(readtext)
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+
+names(data_char_mobydick) <- "Moby Dick"
+
 textplot_xray(
     kwic(data_char_mobydick, "whale"),
     kwic(data_char_mobydick, "ahab")
-)
+) 
 ```
 
 You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:
