@@ -89,7 +89,7 @@ for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "lo
     head(testw)
 }}
 # smooth the dfm
-dfm_smooth(mydfm, 0.5)
+dfm_smooth(my_dfm, 0.5)
 }
 \references{
 Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.

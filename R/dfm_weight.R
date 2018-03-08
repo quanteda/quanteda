@@ -216,7 +216,7 @@ tf <- function(...) {
 #' @export
 #' @examples 
 #' # smooth the dfm
-#' dfm_smooth(mydfm, 0.5)
+#' dfm_smooth(my_dfm, 0.5)
 dfm_smooth <- function(x, smoothing = 1) {
     UseMethod("dfm_smooth")
 }
