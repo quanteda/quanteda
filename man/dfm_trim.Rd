@@ -30,6 +30,8 @@ intepreted.}
 \pkg{tm}}
 
 \item{verbose}{print messages}
+
+\item{...}{not used}
 }
 \value{
 A \link{dfm} reduced in features (with the same number of documents)

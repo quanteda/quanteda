@@ -18,6 +18,7 @@
 #' @param sparsity equivalent to 1 - min_docfreq, included for comparison with
 #'   \pkg{tm}
 #' @param verbose print messages
+#' @param ... not used
 #' @return A \link{dfm} reduced in features (with the same number of documents)
 #' @export
 #' @note Trimming a \link{dfm} object is an operation based on the \emph{values}
