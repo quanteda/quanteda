@@ -5,11 +5,16 @@
 #' terms of maximum frequencies.  Setting a combination of minimum and maximum
 #' frequencies will select features based on a range.
 #' @param x a \link{dfm} object
-#' @param min_count,max_count minimum/maximum count or percentile frequency of
-#'   features across all documents, below/above which features will be removed
+#' @param min_termfreq,max_termfreq minimum/maximum count or percentile
+#'   frequency of features across all documents, below/above which features will
+#'   be removed
+#' @param termfreq_type specify how \code{min_termfreq} and \code{max_termfreq}
+#'   are intepreted.
 #' @param min_docfreq,max_docfreq minimum/maximum number or fraction of
 #'   documents in which a feature appears, below/above which features will be
 #'   removed
+#' @param docfreq_type specify how \code{min_docfreq} and \code{max_docfreq} are
+#'   intepreted.
 #' @param sparsity equivalent to 1 - min_docfreq, included for comparison with
 #'   \pkg{tm}
 #' @param verbose print messages
@@ -25,22 +30,22 @@
 #' (myDfm <- dfm(data_corpus_inaugural[1:5]))
 #'
 #' # keep only words occurring >=10 times and in >=2 documents
-#' dfm_trim(myDfm, min_count = 10, min_docfreq = 2)
+#' dfm_trim(myDfm, min_termfreq = 10, min_docfreq = 2)
 #'
 #' # keep only words occurring >=10 times and in at least 0.4 of the documents
-#' dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
+#' dfm_trim(myDfm, min_termfreq = 10, min_docfreq = 0.4)
 #'
 #' # keep only words occurring <=10 times and in <=2 documents
-#' dfm_trim(myDfm, max_count = 10, max_docfreq = 2)
+#' dfm_trim(myDfm, max_termfreq = 10, max_docfreq = 2)
 #'
 #' # keep only words occurring <=10 times and in at most 3/4 of the documents
-#' dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
-#'
-#' # keep only words occurring frequently (top 20%) and in <=2 documents
-#' dfm_trim(myDfm, min_count = 0.8, max_docfreq = 2)
+#' dfm_trim(myDfm, max_termfreq = 10, max_docfreq = 0.75)
 #'
 #' # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
-#' dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
+#' dfm_trim(myDfm, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
+#'
+#' # keep only words occurring frequently (top 20%) and in <=2 documents
+#' dfm_trim(myDfm, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")
 #'
 #' \dontrun{
 #' # compare to removeSparseTerms from the tm package
@@ -49,104 +54,143 @@
 #' dfm_trim(myDfm, min_docfreq = 0.3)
 #' dfm_trim(myDfm, sparsity = 0.7)
 #' }
-#' 
+#'
 #' @export
-dfm_trim <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw", "prop", "pctile", "invrank"),
-                     min_docfreq = 0, max_docfreq = NULL, docfreq_fun = c("raw", "prop", "pctile", "invrank"),
+dfm_trim <- function(x, 
+                     min_termfreq = NULL, max_termfreq = NULL, termfreq_type = c("count", "rank", "quantile"),
+                     min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count", "rank", "quantile"),
                      sparsity = NULL, 
-                     verbose = quanteda_options("verbose")) {
+                     verbose = quanteda_options("verbose"),
+                     ...) {
     UseMethod("dfm_trim")
 }
 
 #' @export
-dfm_trim.default <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw", "prop", "pctile", "invrank"),
-                             min_docfreq = 0, max_docfreq = NULL, docfreq_fun = c("raw", "prop", "pctile", "invrank"),
+dfm_trim.default <- function(x, 
+                             min_termfreq = NULL, max_termfreq = NULL, termfreq_type = c("count", "prop", "rank", "quantile"),
+                             min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count", "prop", "rank", "quantile"),
                              sparsity = NULL, 
-                             verbose = quanteda_options("verbose")) {
+                             verbose = quanteda_options("verbose"),
+                             ...) {
     stop(friendly_class_undefined_message(class(x), "dfm_trim"))
 }
     
 #' @export
-dfm_trim.dfm <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw", "prop", "pctile", "invrank"),
-                         min_docfreq = 0, max_docfreq = NULL, docfreq_fun = c("raw", "prop", "pctile", "invrank"),
+dfm_trim.dfm <- function(x,  
+                         min_termfreq = NULL, max_termfreq = NULL, termfreq_type = c("count", "prop", "rank", "quantile"),
+                         min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count", "prop", "rank", "quantile"),
                          sparsity = NULL, 
-                         verbose = quanteda_options("verbose")) {
+                         verbose = quanteda_options("verbose"),
+                         ...) {
     
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     
-    # warning if already fractional
-    if (missing(min_count) && 
-        (x@weightTf$scheme != "count" | x@weightDf$scheme != "unary")) {
-        warning("dfm has been previously weighted; consider changing default min_count")
+    dots <- list(...)
+    if ('min_count' %in% names(dots)) {
+        warning('min_count is deprecated, use min_termfreq')
+        min_termfreq <- dots[['min_count']]
+    }
+    if ('max_count' %in% names(dots)) {
+        warning('max_count is deprecated, use max_termfreq')
+        max_termfreq <- dots[['max_count']]
     }
     
-    freq <- colSums(x)
-    freq_doc <- docfreq(x)
+    termfreq_type <- match.arg(termfreq_type)
+    docfreq_type <- match.arg(docfreq_type)
+    
+    # warning if already fractional
+    if ((!is.null(min_termfreq) && !is.null(max_termfreq)) &&
+        x@weightTf$scheme != "count" || x@weightDf$scheme != "unary") {
+        warning("dfm has been previously weighted")
+    }
+    
+    freq <- unname(colSums(x))
+    freq_doc <- unname(docfreq(x))
     
     if (!is.null(sparsity)) {
-        if ((min_docfreq > 1 || !is.null(max_docfreq)) && !is.null(sparsity))
+        if (!is.null(max_docfreq) && !is.null(sparsity))
             stop("min/max_docfreq and sparsity both refer to a document ",
                  "threshold, both should not be specified")
         if (verbose) 
             catm("Note: converting sparsity into min_docfreq = 1 -", 
                  sparsity, "=", format(min_docfreq, big.mark=","), ".\n")
         min_docfreq <- 1.0 - sparsity
+        docfreq_type <- "prop"
     }             
     
     s <- sum(freq)
-    if (count_fun == "prop") {
-        min_count <- min_count * s
-        if (is.null(max_count))
-            max_count <- 1
-        max_count <- max_count * s
-    } else if (count_fun ==  "pctile")  {
-        min_count <- quantile(freq, min_count, names = FALSE, type = 1)
-        if (is.null(max_count))
-            max_count <- 1
-        max_count <- quantile(freq, max_count, names = FALSE, type = 1)
-    } else if (count_fun == "invrank") {
-        min_count <- min(rank(freq * -1) >= min_count)
-        if (is.null(max_count))
-            max_count <- nfeat(x)
-        max_count <- max(rank(freq * -1) <= max_count)
+    if (termfreq_type == "count") {
+        if (is.null(min_termfreq))
+            min_termfreq <- 1
+        if (is.null(max_termfreq))
+            max_termfreq <- max(freq)
+    } else if (termfreq_type == "prop") {
+        if (is.null(min_termfreq))
+            min_termfreq <- 0
+        if (is.null(max_termfreq))
+            max_termfreq <- 1
+        min_termfreq <- min_termfreq * s
+        max_termfreq <- max_termfreq * s
+    } else if (termfreq_type ==  "quantile")  {
+        if (is.null(min_termfreq))
+            min_termfreq <- 0
+        if (is.null(max_termfreq))
+            max_termfreq <- 1
+        min_termfreq <- quantile(freq, min_termfreq, names = FALSE, type = 1)
+        max_termfreq <- quantile(freq, max_termfreq, names = FALSE, type = 1)
+    } else if (termfreq_type == "rank") {
+        if (is.null(min_termfreq))
+            min_termfreq <- nfeat(x)
+        if (is.null(max_termfreq))
+            max_termfreq <- 1
+        r <- rank(freq * -1, ties.method = 'min')
+        min_termfreq <- min(freq[r <= min_termfreq])
+        max_termfreq <- max(freq[r >= max_termfreq])
     }
     
     n <- ndoc(x)
-    if (docfreq_fun ==  "prop") {
+    if (docfreq_type == "count") {
+        if (is.null(min_docfreq))
+            min_docfreq <- 1
+        if (is.null(max_docfreq))
+            max_docfreq <- max(freq_doc)
+    } else if (docfreq_type == "prop") {
+        if (is.null(min_docfreq))
+            min_docfreq <- 0
+        if (is.null(max_docfreq))
+            max_docfreq <- 1
         min_docfreq <- min_docfreq * n
-        if (is.null(max_docfreq))
-            max_docfreq <- 1
         max_docfreq <- max_docfreq * n
-    } else if (docfreq_fun ==  "pctile")  {
+    } else if (docfreq_type ==  "quantile")  {
+        if (is.null(min_docfreq))
+            min_docfreq <- 0
+        if (is.null(max_docfreq))
+            max_docfreq <- 1
         min_docfreq <- quantile(freq_doc, min_docfreq, names = FALSE, type = 1)
-        if (is.null(max_docfreq))
-            max_docfreq <- 1
         max_docfreq <- quantile(freq_doc, max_docfreq, names = FALSE, type = 1)
-    } else if (docfreq_fun == "invrank") {
-        min_docfreq <- min(rank(freq_doc * -1) >= min_docfreq)
+    } else if (docfreq_type == "rank") {
+        if (is.null(min_docfreq))
+            min_docfreq <- nfeat(x)
         if (is.null(max_docfreq))
             max_docfreq <- 1
-        max_docfreq <- max(rank(freq_doc * -1) <= max_docfreq)
+        r <- rank(freq_doc * -1, ties.method = 'min')
+        min_docfreq <- min(freq_doc[r <= min_docfreq])
+        max_docfreq <- max(freq_doc[r >= max_docfreq])
     }
     
-    # set maximums appropriately if not provided
-    if (is.null(max_count))
-        max_count <- max(freq, min_count)
-    if (is.null(max_docfreq))
-        max_docfreq <- max(freq_doc, min_docfreq)
-    
+
     # checks that min is less than max
-    if (max_count < min_count)
-        stop("max_count must be >= min_count")
-    if (max_docfreq < min_docfreq)
-        stop("max_docfreq must be >= min_docfreq")
+    # if (max_termfreq < min_termfreq)
+    #     stop("max_termfreq must be >= min_termfreq")
+    # if (max_docfreq < min_docfreq)
+    #     stop("max_docfreq must be >= min_docfreq")
     
-    flag_min_count <- freq < min_count
-    flag_max_count <- freq > max_count
+    flag_min_term <- freq < min_termfreq
+    flag_max_term <- freq > max_termfreq
     flag_min_doc <- freq_doc < min_docfreq
     flag_max_doc <- freq_doc > max_docfreq
-    flag_all <- flag_min_count | flag_max_count | flag_min_doc | flag_max_doc
+    flag_all <- flag_min_term | flag_max_term | flag_min_doc | flag_max_doc
     
     # in case no features were removed as a result of filtering conditions
     if (!sum(flag_all)) {
@@ -157,17 +201,17 @@ dfm_trim.dfm <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw"
     if (verbose) catm("Removing features occurring: ", appendLF = TRUE)
     
     # print messages about frequency count removal
-    if (verbose && (sum(flag_min_count) || sum(flag_max_count))) {
-        if (sum(flag_min_count)) {
-            catm("  - fewer than ", min_count, " time",
-                 if (min_count != 1L) "s" else "", ": ", 
-                 format(sum(flag_min_count), big.mark = ","), 
+    if (verbose && (sum(flag_min_term) || sum(flag_max_term))) {
+        if (sum(flag_min_term)) {
+            catm("  - fewer than ", min_termfreq, " time",
+                 if (min_termfreq != 1L) "s" else "", ": ", 
+                 format(sum(flag_min_term), big.mark = ","), 
                  sep = "", appendLF = TRUE)
         }
-        if (sum(flag_max_count)) {
-            catm("  - more than ", max_count, " time",
-                 if (max_count != 1L) "s" else "", ": ", 
-                 format(sum(flag_max_count), big.mark = ","), 
+        if (sum(flag_max_term)) {
+            catm("  - more than ", max_termfreq, " time",
+                 if (max_termfreq != 1L) "s" else "", ": ", 
+                 format(sum(flag_max_term), big.mark = ","), 
                  sep = "", appendLF = TRUE)
         }
     }
@@ -176,7 +220,7 @@ dfm_trim.dfm <- function(x, min_count = 0, max_count = NULL, count_fun = c("raw"
     if (verbose && (sum(flag_min_doc) || sum(flag_max_doc))) {
         if (sum(flag_min_doc)) {
             catm("  - in fewer than ", min_docfreq, " document", 
-                 ifelse(min_count != 1, "s", ""), ": ", 
+                 ifelse(min_docfreq != 1, "s", ""), ": ", 
                  format(sum(flag_min_doc), big.mark = ","), 
                  sep = "", appendLF = TRUE)
         }

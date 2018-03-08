@@ -4,19 +4,27 @@
 \alias{dfm_trim}
 \title{Trim a dfm using frequency threshold-based feature selection}
 \usage{
-dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
-  max_docfreq = NULL, sparsity = NULL,
-  verbose = quanteda_options("verbose"))
+dfm_trim(x, min_termfreq = NULL, max_termfreq = NULL,
+  termfreq_type = c("count", "rank", "quantile"), min_docfreq = NULL,
+  max_docfreq = NULL, docfreq_type = c("count", "rank", "quantile"),
+  sparsity = NULL, verbose = quanteda_options("verbose"), ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{min_count, max_count}{minimum/maximum count or percentile frequency of
-features across all documents, below/above which features will be removed}
+\item{min_termfreq, max_termfreq}{minimum/maximum count or percentile
+frequency of features across all documents, below/above which features will
+be removed}
+
+\item{termfreq_type}{specify how \code{min_termfreq} and \code{max_termfreq}
+are intepreted.}
 
 \item{min_docfreq, max_docfreq}{minimum/maximum number or fraction of
 documents in which a feature appears, below/above which features will be
 removed}
+
+\item{docfreq_type}{specify how \code{min_docfreq} and \code{max_docfreq} are
+intepreted.}
 
 \item{sparsity}{equivalent to 1 - min_docfreq, included for comparison with
 \pkg{tm}}
@@ -43,22 +51,22 @@ Trimming a \link{dfm} object is an operation based on the \emph{values}
 (myDfm <- dfm(data_corpus_inaugural[1:5]))
 
 # keep only words occurring >=10 times and in >=2 documents
-dfm_trim(myDfm, min_count = 10, min_docfreq = 2)
+dfm_trim(myDfm, min_termfreq = 10, min_docfreq = 2)
 
 # keep only words occurring >=10 times and in at least 0.4 of the documents
-dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
+dfm_trim(myDfm, min_termfreq = 10, min_docfreq = 0.4)
 
 # keep only words occurring <=10 times and in <=2 documents
-dfm_trim(myDfm, max_count = 10, max_docfreq = 2)
+dfm_trim(myDfm, max_termfreq = 10, max_docfreq = 2)
 
 # keep only words occurring <=10 times and in at most 3/4 of the documents
-dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
-
-# keep only words occurring frequently (top 20\%) and in <=2 documents
-dfm_trim(myDfm, min_count = 0.8, max_docfreq = 2)
+dfm_trim(myDfm, max_termfreq = 10, max_docfreq = 0.75)
 
 # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
-dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
+dfm_trim(myDfm, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
+
+# keep only words occurring frequently (top 20\%) and in <=2 documents
+dfm_trim(myDfm, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")
 
 \dontrun{
 # compare to removeSparseTerms from the tm package
