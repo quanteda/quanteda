@@ -53,7 +53,7 @@ set.seed(100)
 
 # to set the font correctly for macOS
 if (Sys.info()['sysname'] == "Darwin") par(family = "STSong") 
-dfm_trim(ch_dfm, min_count = 500) %>% 
+dfm_trim(ch_dfm, min_termfreq = 500) %>% 
 textplot_wordcloud(min.freq = 6, random.order = FALSE,
                    rot.per = .25, max.words = 100, scale = c(2.8, .5),
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))

@@ -136,9 +136,16 @@
     
 <div class="contents">
 <p>See <a href="http://docs.quanteda.io" class="uri">http://docs.quanteda.io</a> for additional tutorials, examples, and general documentation.</p>
-<section id="introduction" class="level1"><h1>Introduction</h1>
-</section><section id="the-logic-of-quantedas-design" class="level1"><h1>The logic of Quanteda’s design</h1>
-<section id="grammatical-rules" class="level2"><h2>Grammatical rules</h2>
+<div id="introduction" class="section level1">
+<h1 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h1>
+</div>
+<div id="the-logic-of-quantedas-design" class="section level1">
+<h1 class="hasAnchor">
+<a href="#the-logic-of-quantedas-design" class="anchor"></a>The logic of Quanteda’s design</h1>
+<div id="grammatical-rules" class="section level2">
+<h2 class="hasAnchor">
+<a href="#grammatical-rules" class="anchor"></a>Grammatical rules</h2>
 <p>The “grammar” of the package is split between three basic types of functions and data objects:</p>
 <ul>
 <li><p><em>object</em>: a constructor function named <code>object()</code> that returns an object of class <em>object</em>. Example: <code><a href="../reference/corpus.html">corpus()</a></code> constructs a <code>corpus</code> class object.</p></li>
@@ -160,7 +167,11 @@
 <code><a href="../reference/topfeatures.html">topfeatures()</a></code>: returns a named vector of the counts of the most frequently occurring features in a <code>dfm</code>.</li>
 </ul>
 </li>
-</ul></section><section id="constructors-for-core-data-types" class="level2"><h2>Constructors for core data types</h2>
+</ul>
+</div>
+<div id="constructors-for-core-data-types" class="section level2">
+<h2 class="hasAnchor">
+<a href="#constructors-for-core-data-types" class="anchor"></a>Constructors for core data types</h2>
 <p>The <strong>quanteda</strong> package consists of a few core data types, created by calling constructors with identical names. These are all “nouns” in the sense of declaring what they construct. This follows very similar R behaviour in many of the core R objects, such as <code>data.frame()</code>, <code>list()</code>, etc.</p>
 <p>Core object types and their constructor functions:</p>
 <ul>
@@ -176,30 +187,58 @@
 <li><code>dictionary</code></li>
 </ul>
 <p>Note that a core object class in <strong>quanteda</strong> is also the <code>character</code> atomic type, for which there is no constructor function, and is abbreviated as <code>char</code> in the function nomenclature.</p>
-</section><section id="functions-for-manipulating-core-data-types" class="level2"><h2>Functions for manipulating core data types</h2>
-<section id="naming-convention" class="level3"><h3>Naming convention</h3>
+</div>
+<div id="functions-for-manipulating-core-data-types" class="section level2">
+<h2 class="hasAnchor">
+<a href="#functions-for-manipulating-core-data-types" class="anchor"></a>Functions for manipulating core data types</h2>
+<div id="naming-convention" class="section level3">
+<h3 class="hasAnchor">
+<a href="#naming-convention" class="anchor"></a>Naming convention</h3>
 <p>All functions that begin with the name of a core object class will both <em>input</em> and <em>output</em> an object of this class, without exception.</p>
 <p>This replaces the approach in versions up to 0.9.8.5 where a general methods such as <code>selectFeatures()</code> was defined for each applicable class of core object. This approach made the specific function behaviour unpredictable from the description of the general behaviour. It also made it difficult to get an overview of the functionality available for each object class. By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.</p>
-</section><section id="advantages" class="level3"><h3>Advantages</h3>
+</div>
+<div id="advantages" class="section level3">
+<h3 class="hasAnchor">
+<a href="#advantages" class="anchor"></a>Advantages</h3>
 <p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code><a href="../reference/corpus_sample.html">corpus_sample()</a></code>, <code>tokens_sample()</code>, and <code><a href="../reference/dfm_sample.html">dfm_sample()</a></code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code>sample()</code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code>sample()</code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
-</section><section id="why-are-some-operations-unavailable-for-specific-object-types" class="level3"><h3>Why are some operations unavailable for specific object types?</h3>
+</div>
+<div id="why-are-some-operations-unavailable-for-specific-object-types" class="section level3">
+<h3 class="hasAnchor">
+<a href="#why-are-some-operations-unavailable-for-specific-object-types" class="anchor"></a>Why are some operations unavailable for specific object types?</h3>
 <p>Because not every operation makes sense for every object type. Take the example of a “feature co-occurrence matrix”, or <code>fcm</code>. Construction of a feature co-occurrence matrix is be slightly different from constructing a dfm. Unlike the “Swiss-army” knife approach of <code><a href="../reference/dfm.html">dfm()</a></code>, which can operate directly on texts, <code><a href="../reference/fcm.html">fcm()</a></code> works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options. In addition, <code><a href="../reference/fcm.html">fcm()</a></code> is likely to be used a lot less frequently, and primarily by more expert users.</p>
 <p>Furthermore, many functions defined for <code><a href="../reference/fcm.html">fcm()</a></code> objects <em>should</em> be unavailable, because they violate the principles of the object. For instance, <code>fcm_wordstem()</code> and <code><a href="../reference/dfm_tolower.html">fcm_tolower()</a></code> should not be applied to <code><a href="../reference/fcm.html">fcm()</a></code> objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.</p>
-</section></section><section id="extensions-of-core-r-functions" class="level2"><h2>Extensions of core R functions</h2>
+</div>
+</div>
+<div id="extensions-of-core-r-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#extensions-of-core-r-functions" class="anchor"></a>Extensions of core R functions</h2>
 <p>Many simple base R functions – simpler at least than the example of <code>sample()</code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code>cbind()</code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code>cbind()</code> combining two dfm objects by joining columns. Similar functions extended in this way include <code>print()</code>, <code>head()</code>, <code>tail()</code>, and <code>t()</code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
-</section><section id="additions-to-core-r-like-functions" class="level2"><h2>Additions to core R(-like) functions</h2>
+</div>
+<div id="additions-to-core-r-like-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#additions-to-core-r-like-functions" class="anchor"></a>Additions to core R(-like) functions</h2>
 <p>Additional functions have been defined for <strong>quanteda</strong> objects that are <a href="#r-like-functions">very similar to simple base R functions</a>, but are not named using the <code>class_action</code> format because they do not return a modified object of the same class. These follow as closely as possible the naming conventions found in the base R functions that are similar. For instance, <code><a href="../reference/docnames.html">docnames()</a></code> and <code><a href="../reference/featnames.html">featnames()</a></code> return the document names of various <strong>quanteda</strong> objects, in the same way that <code>rownames()</code> does for matrix-like objects (a matrix, data.frame, data.table, etc.). The abbreviation of <code><a href="../reference/featnames.html">featnames()</a></code> is intentionally modeled on <code>colnames()</code>. Likewise, <code><a href="../reference/ndoc.html">ndoc()</a></code> returns the number of documents, using the singular form similar to <code>nrow()</code> and <code>ncol()</code>.</p>
-</section></section><section id="workflow-principles" class="level1"><h1>Workflow principles</h1>
+</div>
+</div>
+<div id="workflow-principles" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflow-principles" class="anchor"></a>Workflow principles</h1>
 <p><strong>quanteda</strong> is designed both to facilitate and to enforce a “best-practice” workflow. This includes the following basic principles.</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li><p><strong>Corpus texts should remain <em>unchanged</em> during subsequent analysis and processing.</strong> In other words, after <em>loading</em> and <em>encoding</em>, we should discourage users from modifying a corpus of texts as a form of processing, so that the corpus can act as a library and record of the original texts, prior to any downstream processing. This not only aids in replication, but also means that a corpus presents the unmodified texts to which any processing, feature selection, transformations, or sampling may be applied or reapplied, without hard-coding any changes made as part of the process of analyzing the texts. The only exception is to reshape the units of text in a corpus, but we will record the details of this reshaping to make it relatively easy to reverse unit changes. Since the definition of a “document” is part of the process of loading texts into a corpus, however, rather than processing, we will take a less stringent line on this aspect of changing a corpus.</p></li>
 <li><p><strong>A corpus should be capable of holding additional objects that will be associated with the corpus, such as dictionaries, stopword, and phrase lists.</strong> These will be named objects, that can be invoked when using (for instance) <code><a href="../reference/dfm.html">dfm()</a></code>. This allows a corpus to contain all of the additional objects that would normally be associated with it, rather than requiring a set of separate, extra-corpus objects.</p></li>
 <li><p><strong>Objects should record histories of the operations applied to them.</strong> This is for purposes of analytic transparency. A tokens object and a dfm object, for instance, should have settings that record the processing options applied to the texts or corpus from which they were created. These provide a record of what was done to the text, and where it came from. Examples are <code><a href="../reference/tokens_tolower.html">tokens_tolower()</a></code>, <code><a href="../reference/tokens_wordstem.html">dfm_wordstem()</a></code>, and settings such as <code>remove_twitter</code>. They also include any objects used in feature selection, such as dictionaries or stopword lists.</p></li>
 <li><p><strong>A dfm should always be a <em>documents</em> (or document groups) in rows by <em>features</em> in columns.</strong> A <code>dfm</code> object may be transposed but then it is no longer a <code>dfm</code> class object.</p></li>
 <li><p><strong>Encoding of texts</strong> should always be UTF-8.</p></li>
-</ol></section><section id="basic-text-analysis-workflow" class="level1"><h1>Basic text analysis workflow</h1>
-<section id="working-with-a-corpus-documents-and-features" class="level2"><h2>Working with a corpus, documents, and features</h2>
-<ol type="1">
+</ol>
+</div>
+<div id="basic-text-analysis-workflow" class="section level1">
+<h1 class="hasAnchor">
+<a href="#basic-text-analysis-workflow" class="anchor"></a>Basic text analysis workflow</h1>
+<div id="working-with-a-corpus-documents-and-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#working-with-a-corpus-documents-and-features" class="anchor"></a>Working with a corpus, documents, and features</h2>
+<ol style="list-style-type: decimal">
 <li>
 <p><strong>Creating the corpus</strong></p>
 <p>Reading files, probably using <code>readtext()</code> from the <strong>readtext</strong> package, then creating a corpus using <code><a href="../reference/corpus.html">corpus()</a></code>, making sure the texts have a common encoding, and adding document variables (<code><a href="../reference/docvars.html">docvars()</a></code>) and metadata (<code>metadoc</code> and <code>metacorpus</code>).</p>
@@ -255,7 +294,7 @@ Once features have been identified and separated from the texts in the tokenizat
 </li>
 <li>
 <p><strong>Analysis of the documents and features</strong></p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>
 <p>From a corpus.</p>
 These steps don’t necessarily require the processing steps above.
@@ -268,27 +307,22 @@ These steps don’t necessarily require the processing steps above.
 <li><p>From a <code>dfm</code> – after <code><a href="../reference/dfm.html">dfm()</a></code> on the processed document and features.</p></li>
 </ol>
 </li>
-</ol></section><section id="dfm-the-swiss-army-knife" class="level2"><h2>dfm, the Swiss Army knife</h2>
+</ol>
+</div>
+<div id="dfm-the-swiss-army-knife" class="section level2">
+<h2 class="hasAnchor">
+<a href="#dfm-the-swiss-army-knife" class="anchor"></a>dfm, the Swiss Army knife</h2>
 <p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code><a href="../reference/dfm.html">dfm()</a></code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available in <code><a href="../reference/dfm.html">dfm()</a></code>.</p>
 <p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code>%&gt;%</code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/texts.html">texts</a></span>(mycorpus, <span class="dt">group =</span> <span class="st">"party"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb1-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/texts.html">texts</a></span>(mycorpus, <span class="dt">group =</span> <span class="st">"party"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/char_tolower.html">char_tolower</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb1-3" data-line-number="3">
 <span class="st">    </span><span class="kw"><a href="../reference/tokens.html">tokens</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb1-4" data-line-number="4">
 <span class="st">    </span><span class="kw"><a href="../reference/tokens_wordstem.html">tokens_wordstem</a></span>() <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb1-5" data-line-number="5">
 <span class="st">    </span><span class="kw"><a href="../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb1-6" data-line-number="6">
-<span class="st">    </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>()</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>()</code></pre></div>
 <p>We recognize however that not all sequences will make sense, for instance <code><a href="../reference/tokens_wordstem.html">tokens_wordstem()</a></code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p>
-</section></section>
+</div>
+</div>
 </div>
   </div>
 

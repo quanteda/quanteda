@@ -82,7 +82,7 @@ tag_fcm <-
     tweet_dfm %>% 
     dfm_select('#*') %>% 
     dfm_remove(c('*選挙*', '*衆院選*', '*衆議院*', '*投票*'), min_nchar = 2) %>% 
-    dfm_trim(min_count = 10) %>% 
+    dfm_trim(min_termfreq = 10) %>% 
     fcm()
 feat <- names(topfeatures(tag_fcm, 100))
 textplot_network(fcm_select(tag_fcm,  feat), min_freq = 0.8)
@@ -97,7 +97,7 @@ msg_fcm <-
     tweet_dfm %>% 
     dfm_remove(c('#*', '@*')) %>% 
     dfm_remove('^[ぁ-ん]+$', 'regex', min_nchar = 2) %>% 
-    dfm_trim(min_count = 10) %>% 
+    dfm_trim(min_termfreq = 10) %>% 
     dfm_toupper() %>% 
     fcm()
 feat <- names(topfeatures(msg_fcm, 50))

@@ -131,14 +131,23 @@
     
     
 <div class="contents">
-<section id="overview" class="level1"><div class="page-header"><h1>Overview</h1></div>
-<section id="introduction" class="level2"><h2>Introduction</h2>
+<div id="overview" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h1></div>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 <p><strong>quanteda</strong> is an R package for managing and analyzing text. This package makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. <strong>quanteda</strong> includes tools to make it easy and fast to manuipulate the texts in a corpus, by performing the most common natural language processing tasks simply and quickly, such as tokenizing, stemming, or forming ngrams. <strong>quanteda</strong>’s functions for tokenizing texts and forming multiple tokenized documents into a <em>document-feature matrix</em> are both extremely fast and extremely simple to use. <strong>quanteda</strong> can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
 <p>Built on the text processing functions in the <strong>stringi</strong> package, which is in turn built on C++ implementation of the <a href="http://www.icu-project.org/">ICU</a> libraries for Unicode text handling, <strong>quanteda</strong> pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.</p>
 <p><strong>quanteda</strong> is built for efficiency and speed, through its design around three infrastructures: the <strong>stringi</strong> package for text processing, the <strong>data.table</strong> package for indexing large documents efficiently, and the <strong>Matrix</strong> package for sparse matrix objects. If you can fit it into memory, <strong>quanteda</strong> will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)</p>
 <p><strong>quanteda</strong> is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining what the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined “thesaurus”, and trimming and weighting features based on document frequency, feature frequency, and related measures such as <em>tf-idf</em>.</p>
-</section><section id="features" class="level2"><h2>Features</h2>
-<section id="corpus-management-tools" class="level3"><h3>Corpus Management Tools</h3>
+</div>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
+<div id="corpus-management-tools" class="section level3">
+<h3 class="hasAnchor">
+<a href="#corpus-management-tools" class="anchor"></a>Corpus Management Tools</h3>
 <p>The tools for getting texts into a corpus object include:</p>
 <ul>
 <li>loading texts from directories of individual files</li>
@@ -154,7 +163,11 @@
 <li>adding to or extracting subsets of a corpus</li>
 <li>resampling texts of the corpus, for example for use in non-parametric bootstrapping of the texts</li>
 <li>Easy extraction and saving, as a new data frame or corpus, key words in context (KWIC)</li>
-</ul></section><section id="natural-language-processing-tools" class="level3"><h3>Natural-Language Processing tools</h3>
+</ul>
+</div>
+<div id="natural-language-processing-tools" class="section level3">
+<h3 class="hasAnchor">
+<a href="#natural-language-processing-tools" class="anchor"></a>Natural-Language Processing tools</h3>
 <p>For extracting features from a corpus, <strong>quanteda</strong> provides the following tools:</p>
 <ul>
 <li>extraction of word types</li>
@@ -169,14 +182,22 @@
 </ul>
 </li>
 <li>and a variety of options for cleaning word types, such as capitalization and rules for handling punctuation.</li>
-</ul></section><section id="document-feature-matrix-analysis-tools" class="level3"><h3>Document-Feature Matrix analysis tools</h3>
+</ul>
+</div>
+<div id="document-feature-matrix-analysis-tools" class="section level3">
+<h3 class="hasAnchor">
+<a href="#document-feature-matrix-analysis-tools" class="anchor"></a>Document-Feature Matrix analysis tools</h3>
 <p>For analyzing the resulting <em>document-feature</em> matrix created when features are abstracted from a corpus, <strong>quanteda</strong> provides:</p>
 <ul>
 <li>scaling methods, such as correspondence analysis, Wordfish, and Wordscores</li>
 <li>topic models, such as LDA</li>
 <li>classifiers, such as Naive Bayes or k-nearest neighbour</li>
 <li>sentiment analysis, using dictionaries</li>
-</ul></section><section id="additional-and-planned-features" class="level3"><h3>Additional and Planned Features</h3>
+</ul>
+</div>
+<div id="additional-and-planned-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#additional-and-planned-features" class="anchor"></a>Additional and Planned Features</h3>
 <p><strong>Additional features</strong> of quanteda include:</p>
 <ul>
 <li>the ability to explore texts using <em>key-words-in-context</em>
@@ -185,7 +206,11 @@
 <li>fast computation of a variety of lexical diversity measures</li>
 <li>quick computation of word or document association measures, for clustering or to compute similarity scores for other purposes</li>
 <li>a comprehensive suite of descriptive statistics on text such as the number of sentences, words, characters, or syllables per document</li>
-</ul></section><section id="working-with-other-packages" class="level3"><h3>Working with other packages</h3>
+</ul>
+</div>
+<div id="working-with-other-packages" class="section level3">
+<h3 class="hasAnchor">
+<a href="#working-with-other-packages" class="anchor"></a>Working with other packages</h3>
 <p><strong>quanteda</strong> is hardly unique in providing facilities for working with text – the excellent <em>tm</em> package already provides many of the features we have described. <strong>quanteda</strong> is designed to complement those packages, as well to simplify the implementation of the text-to-analysis workflow. <strong>quanteda</strong> corpus structures are simpler objects than in <em>tm</em>s, as are the document-feature matrix objects from <strong>quanteda</strong>, compared to the sparse matrix implementation found in <em>tm</em>. However, there is no need to choose only one package, since we provide translator functions from one matrix or corpus object to the other in <strong>quanteda</strong>.</p>
 <p>Once constructed, a <strong>quanteda</strong> dfm can be easily passed to other text-analysis packages for additional analysis of topic models or scaling, such as:</p>
 <ul>
@@ -194,37 +219,44 @@
 <li>document classification methods, using (for example) Naive Bayes, k-nearest neighbour, or Support Vector Machines</li>
 <li>more sophisticated machine learning through a variety of other packages that take matrix or matrix-like inputs.</li>
 <li>graphical analysis, including word clouds and strip plots for selected themes or words.</li>
-</ul></section></section><section id="system-requirements" class="level2"><h2>System Requirements</h2>
+</ul>
+</div>
+</div>
+<div id="system-requirements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#system-requirements" class="anchor"></a>System Requirements</h2>
 <p><strong>quanteda</strong> is cross-platform but we recommend MacOS or Linux as an operating system for their better support for Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same).</p>
 <table class="table">
 <thead><tr class="header">
 <th></th>
-<th style="text-align: center;">Minimum</th>
-<th style="text-align: center;">Recommended</th>
+<th align="center">Minimum</th>
+<th align="center">Recommended</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>OS</td>
-<td style="text-align: center;">Windows/MacOS/Linux</td>
-<td style="text-align: center;">MacOS/Linux</td>
+<td align="center">Windows/MacOS/Linux</td>
+<td align="center">MacOS/Linux</td>
 </tr>
 <tr class="even">
 <td>CPU</td>
-<td style="text-align: center;">1 core</td>
-<td style="text-align: center;">4 cores or more</td>
+<td align="center">1 core</td>
+<td align="center">4 cores or more</td>
 </tr>
 <tr class="odd">
 <td>RAM</td>
-<td style="text-align: center;">2GB</td>
-<td style="text-align: center;">8GB or more</td>
+<td align="center">2GB</td>
+<td align="center">8GB or more</td>
 </tr>
 <tr class="even">
 <td>IDE</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">R Studio</td>
+<td align="center"></td>
+<td align="center">R Studio</td>
 </tr>
 </tbody>
-</table></section></section>
+</table>
+</div>
+</div>
 </div>
   </div>
 

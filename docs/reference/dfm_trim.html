@@ -162,9 +162,10 @@ terms of maximum frequencies.  Setting a combination of minimum and maximum
 frequencies will select features based on a range.</p>
     
 
-    <pre class="usage"><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
+    <pre class="usage"><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>), <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docfreq_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
+  <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -174,15 +175,26 @@ frequencies will select features based on a range.</p>
       <td><p>a <a href='dfm.html'>dfm</a> object</p></td>
     </tr>
     <tr>
-      <th>min_count, max_count</th>
-      <td><p>minimum/maximum count or percentile frequency of
-features across all documents, below/above which features will be removed</p></td>
+      <th>min_termfreq, max_termfreq</th>
+      <td><p>minimum/maximum count or percentile
+frequency of features across all documents, below/above which features will
+be removed</p></td>
+    </tr>
+    <tr>
+      <th>termfreq_type</th>
+      <td><p>specify how <code>min_termfreq</code> and <code>max_termfreq</code>
+are intepreted.</p></td>
     </tr>
     <tr>
       <th>min_docfreq, max_docfreq</th>
       <td><p>minimum/maximum number or fraction of
 documents in which a feature appears, below/above which features will be
 removed</p></td>
+    </tr>
+    <tr>
+      <th>docfreq_type</th>
+      <td><p>specify how <code>min_docfreq</code> and <code>max_docfreq</code> are
+intepreted.</p></td>
     </tr>
     <tr>
       <th>sparsity</th>
@@ -192,6 +204,10 @@ removed</p></td>
     <tr>
       <th>verbose</th>
       <td><p>print messages</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
     </tr>
     </table>
     
@@ -215,17 +231,25 @@ removed</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring &gt;=10 times and in &gt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring &gt;=10 times and in at least 0.4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring &lt;=10 times and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring &lt;=10 times and in at most 3/4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,799 features (74% sparse).</div><div class='input'>
-<span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 150 features (63.6% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 0 features.
+#&gt; 5 x 0 sparse Matrix of class "dfm"
+#&gt;                  features
+#&gt; docs             
+#&gt;   1789-Washington
+#&gt;   1793-Washington
+#&gt;   1797-Adams     
+#&gt;   1801-Jefferson 
+#&gt;   1805-Jefferson </div><div class='input'>
 <span class='co'># keep only words occurring 5 times in 1000, and in 2 of 5 of documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 569 features (44.2% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.005</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 30 features (7.33% sparse).</div><div class='input'>
+<span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,676 features (76.5% sparse).</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># compare to removeSparseTerms from the tm package</span>
 (<span class='no'>myDfmTM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>myDfm</span>, <span class='st'>"tm"</span>))

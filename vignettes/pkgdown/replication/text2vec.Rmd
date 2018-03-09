@@ -32,7 +32,7 @@ Trimming the features before constructing the fcm:
 ```{r}
 wiki_toks <- tokens(wiki_corp)
 feats <- dfm(wiki_toks, verbose = TRUE) %>% 
-    dfm_trim(min_count = 5) %>%
+    dfm_trim(min_termfreq = 5) %>%
     featnames()
 
 # leave the pads so that non-adjacent words will not become adjacent
