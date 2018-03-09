@@ -348,15 +348,12 @@
 <div class="sourceLine" id="cb15-20" data-line-number="20">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, any_col[any_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">''</span>)</div></code></pre>
 </section><section id="create-dfm" class="level2"><h2>文書行列の作成</h2>
 <p><code><a href="../../../reference/dfm.html">dfm()</a></code>によって文書行列を作成した後でも，<code>dfm_*()</code>と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>によって，頻度が極端に低い語もしくは高い語を<code><a href="../../../reference/dfm_trim.html">dfm_trim()</a></code>によって削除している．</p>
-<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><div class="sourceLine" id="cb16-1" data-line-number="1">speech_dfm &lt;-<span class="st"> </span>
+<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><div class="sourceLine" id="cb16-1" data-line-number="1">speech_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks, <span class="dt">remove =</span> <span class="st">''</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div class="sourceLine" id="cb16-2" data-line-number="2">
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks, <span class="dt">remove =</span> <span class="st">''</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb16-3" data-line-number="3">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="st">'^[ぁ-ん]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
-<div class="sourceLine" id="cb16-4" data-line-number="4">
+<div class="sourceLine" id="cb16-3" data-line-number="3">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="fl">0.50</span>, <span class="dt">max_count =</span> <span class="fl">0.99</span>)</div></code></pre>
 </section></section><section id="analysis" class="level1"><h1>分析</h1>
 <section id="keyness" class="level2"><h2>相対頻度分析</h2>
@@ -700,8 +697,10 @@
 <p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </section><section id="topicmodel" class="level2"><h2>トピックモデル</h2>
 <p><strong>quanteda</strong>のdfmを<code><a href="../../../reference/convert.html">convert()</a></code>で変換し，<strong>topicmodels</strong>をパッケージを用いて潜在的な話題を推定する．</p>
-<pre class="sourceCode r" id="cb20"><code class="sourceCode r"><div class="sourceLine" id="cb20-1" data-line-number="1">lda &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../../reference/convert.html">convert</a></span>(speech_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">10</span>)</div>
-<div class="sourceLine" id="cb20-2" data-line-number="2">
+<pre class="sourceCode r" id="cb20"><code class="sourceCode r"><div class="sourceLine" id="cb20-1" data-line-number="1">
+<span class="kw">set.seed</span>(<span class="dv">100</span>)</div>
+<div class="sourceLine" id="cb20-2" data-line-number="2">lda &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../../reference/convert.html">convert</a></span>(speech_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">10</span>)</div>
+<div class="sourceLine" id="cb20-3" data-line-number="3">
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(lda, <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</div></code></pre>
 <table class="table">
 <thead><tr class="header">
@@ -718,124 +717,124 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">及び</td>
-<td style="text-align: left;">言葉</td>
-<td style="text-align: left;">発言</td>
-<td style="text-align: left;">交渉</td>
-<td style="text-align: left;">国民</td>
-<td style="text-align: left;">受け</td>
-<td style="text-align: left;">大きな</td>
-<td style="text-align: left;">お答え</td>
-<td style="text-align: left;">事実</td>
-<td style="text-align: left;">重要</td>
+<td style="text-align: left;">日本国</td>
+<td style="text-align: left;">児童</td>
+<td style="text-align: left;">ミャンマー</td>
+<td style="text-align: left;">軽減</td>
+<td style="text-align: left;">悪い</td>
+<td style="text-align: left;">パキスタン</td>
+<td style="text-align: left;">質疑</td>
+<td style="text-align: left;">出席</td>
+<td style="text-align: left;">完全</td>
+<td style="text-align: left;">法案</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">締結</td>
-<td style="text-align: left;">沖縄</td>
-<td style="text-align: left;">言う</td>
-<td style="text-align: left;">大きな</td>
-<td style="text-align: left;">時間</td>
-<td style="text-align: left;">大きな</td>
-<td style="text-align: left;">国民</td>
-<td style="text-align: left;">説明</td>
-<td style="text-align: left;">合意</td>
-<td style="text-align: left;">発言</td>
+<td style="text-align: left;">租税条約</td>
+<td style="text-align: left;">子ども</td>
+<td style="text-align: left;">教育</td>
+<td style="text-align: left;">現時点</td>
+<td style="text-align: left;">計上</td>
+<td style="text-align: left;">武力行使</td>
+<td style="text-align: left;">ポル</td>
+<td style="text-align: left;">手段</td>
+<td style="text-align: left;">地雷</td>
+<td style="text-align: left;">公開</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">に関する</td>
-<td style="text-align: left;">特に</td>
-<td style="text-align: left;">現在</td>
-<td style="text-align: left;">調査</td>
-<td style="text-align: left;">解決</td>
-<td style="text-align: left;">今まで</td>
-<td style="text-align: left;">お話</td>
-<td style="text-align: left;">確認</td>
-<td style="text-align: left;">十分</td>
-<td style="text-align: left;">説明</td>
+<td style="text-align: left;">防止</td>
+<td style="text-align: left;">首脳会談</td>
+<td style="text-align: left;">一生懸命</td>
+<td style="text-align: left;">促進</td>
+<td style="text-align: left;">経費</td>
+<td style="text-align: left;">武力</td>
+<td style="text-align: left;">ポト派</td>
+<td style="text-align: left;">ヨーロッパ</td>
+<td style="text-align: left;">廃棄</td>
+<td style="text-align: left;">経済的</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">協定</td>
-<td style="text-align: left;">外交</td>
-<td style="text-align: left;">事実</td>
-<td style="text-align: left;">大事</td>
-<td style="text-align: left;">大事</td>
-<td style="text-align: left;">現在</td>
-<td style="text-align: left;">当然</td>
-<td style="text-align: left;">重要</td>
-<td style="text-align: left;">お願い</td>
-<td style="text-align: left;">沖縄</td>
+<td style="text-align: left;">両国間</td>
+<td style="text-align: left;">近く</td>
+<td style="text-align: left;">改定</td>
+<td style="text-align: left;">密約</td>
+<td style="text-align: left;">果たす</td>
+<td style="text-align: left;">集団的自衛権</td>
+<td style="text-align: left;">ケニア</td>
+<td style="text-align: left;">個人</td>
+<td style="text-align: left;">進める</td>
+<td style="text-align: left;">比べ</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">承認</td>
-<td style="text-align: left;">部分</td>
-<td style="text-align: left;">感じ</td>
-<td style="text-align: left;">言う</td>
-<td style="text-align: left;">当然</td>
-<td style="text-align: left;">国連</td>
-<td style="text-align: left;">国連</td>
-<td style="text-align: left;">部分</td>
-<td style="text-align: left;">特に</td>
-<td style="text-align: left;">世界</td>
+<td style="text-align: left;">同様</td>
+<td style="text-align: left;">特定</td>
+<td style="text-align: left;">グアム</td>
+<td style="text-align: left;">効果的</td>
+<td style="text-align: left;">トン</td>
+<td style="text-align: left;">行使</td>
+<td style="text-align: left;">中東</td>
+<td style="text-align: left;">五年</td>
+<td style="text-align: left;">査察</td>
+<td style="text-align: left;">竹島</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">次第</td>
-<td style="text-align: left;">考え方</td>
-<td style="text-align: left;">韓国</td>
-<td style="text-align: left;">時間</td>
-<td style="text-align: left;">お話</td>
-<td style="text-align: left;">実は</td>
-<td style="text-align: left;">考え方</td>
-<td style="text-align: left;">検討</td>
-<td style="text-align: left;">国連</td>
-<td style="text-align: left;">承知</td>
+<td style="text-align: left;">提案理由</td>
+<td style="text-align: left;">学校</td>
+<td style="text-align: left;">ページ</td>
+<td style="text-align: left;">資金</td>
+<td style="text-align: left;">図る</td>
+<td style="text-align: left;">操業</td>
+<td style="text-align: left;">完全</td>
+<td style="text-align: left;">雇用</td>
+<td style="text-align: left;">コメント</td>
+<td style="text-align: left;">留保</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">求める</td>
-<td style="text-align: left;">お願い</td>
-<td style="text-align: left;">受け</td>
-<td style="text-align: left;">承知</td>
-<td style="text-align: left;">説明</td>
-<td style="text-align: left;">全く</td>
-<td style="text-align: left;">確認</td>
-<td style="text-align: left;">その後</td>
-<td style="text-align: left;">当然</td>
-<td style="text-align: left;">特に</td>
+<td style="text-align: left;">速やか</td>
+<td style="text-align: left;">指示</td>
+<td style="text-align: left;">テーマ</td>
+<td style="text-align: left;">部隊</td>
+<td style="text-align: left;">彼ら</td>
+<td style="text-align: left;">資源</td>
+<td style="text-align: left;">難民</td>
+<td style="text-align: left;">行い</td>
+<td style="text-align: left;">四月</td>
+<td style="text-align: left;">最大</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">改正</td>
-<td style="text-align: left;">説明</td>
-<td style="text-align: left;">交渉</td>
-<td style="text-align: left;">外交</td>
-<td style="text-align: left;">アジア</td>
-<td style="text-align: left;">発言</td>
-<td style="text-align: left;">言葉</td>
-<td style="text-align: left;">内容</td>
-<td style="text-align: left;">お話</td>
-<td style="text-align: left;">報道</td>
+<td style="text-align: left;">並びに</td>
+<td style="text-align: left;">攻撃</td>
+<td style="text-align: left;">安保条約</td>
+<td style="text-align: left;">イスラエル</td>
+<td style="text-align: left;">ペルー</td>
+<td style="text-align: left;">核実験</td>
+<td style="text-align: left;">プロセス</td>
+<td style="text-align: left;">空港</td>
+<td style="text-align: left;">前回</td>
+<td style="text-align: left;">ルール</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">目的</td>
-<td style="text-align: left;">判断</td>
-<td style="text-align: left;">沖縄</td>
-<td style="text-align: left;">部分</td>
-<td style="text-align: left;">基本的</td>
-<td style="text-align: left;">大事</td>
-<td style="text-align: left;">現在</td>
-<td style="text-align: left;">全く</td>
-<td style="text-align: left;">言う</td>
-<td style="text-align: left;">判断</td>
+<td style="text-align: left;">資する</td>
+<td style="text-align: left;">与党</td>
+<td style="text-align: left;">ヨーロッパ</td>
+<td style="text-align: left;">貿易</td>
+<td style="text-align: left;">被害</td>
+<td style="text-align: left;">現場</td>
+<td style="text-align: left;">過程</td>
+<td style="text-align: left;">現場</td>
+<td style="text-align: left;">周辺</td>
+<td style="text-align: left;">成立</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">交渉</td>
-<td style="text-align: left;">お話</td>
-<td style="text-align: left;">検討</td>
-<td style="text-align: left;">同じ</td>
-<td style="text-align: left;">全く</td>
-<td style="text-align: left;">重要</td>
-<td style="text-align: left;">意見</td>
-<td style="text-align: left;">当然</td>
-<td style="text-align: left;">お答え</td>
-<td style="text-align: left;">言う</td>
+<td style="text-align: left;">運営</td>
+<td style="text-align: left;">ドル</td>
+<td style="text-align: left;">土地</td>
+<td style="text-align: left;">与える</td>
+<td style="text-align: left;">定員</td>
+<td style="text-align: left;">経済協力</td>
+<td style="text-align: left;">プロジェクト</td>
+<td style="text-align: left;">外相</td>
+<td style="text-align: left;">会合</td>
+<td style="text-align: left;">場所</td>
 </tr>
 </tbody>
 </table>

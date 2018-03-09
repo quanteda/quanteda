@@ -178,10 +178,10 @@
 <section id="building-a-corpus-from-a-character-vector" class="level3"><h3>Building a corpus from a character vector</h3>
 <p>The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.</p>
 <p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called <code>data_char_ukimmig2010</code>).</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><div class="sourceLine" id="cb5-1" data-line-number="1">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># build a new corpus from the texts</span>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><div class="sourceLine" id="cb5-1" data-line-number="1">my_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># build a new corpus from the texts</span>
 </div>
 <div class="sourceLine" id="cb5-2" data-line-number="2">
-<span class="kw">summary</span>(myCorpus)</div></code></pre>
+<span class="kw">summary</span>(my_corpus)</div></code></pre>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences
@@ -196,17 +196,17 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Mar  8 10:02:01 2018
+## Created: Fri Mar  9 10:33:56 2018
 ## Notes:</code></pre>
-<p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
-<p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
+<p>If we wanted, we could add some document-level variables – what quanteda calls <em>docvars</em> – to this corpus.</p>
+<p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<em>docvar</em>).</p>
 <pre class="sourceCode r" id="cb7"><code class="sourceCode r"><div class="sourceLine" id="cb7-1" data-line-number="1">
-<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)</div>
+<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(my_corpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)</div>
 <div class="sourceLine" id="cb7-2" data-line-number="2">
-<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
+<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(my_corpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
 </div>
 <div class="sourceLine" id="cb7-3" data-line-number="3">
-<span class="kw">summary</span>(myCorpus)</div></code></pre>
+<span class="kw">summary</span>(my_corpus)</div></code></pre>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year
@@ -221,16 +221,16 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Mar  8 10:02:01 2018
+## Created: Fri Mar  9 10:33:56 2018
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1">
-<span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
+<span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
 </div>
 <div class="sourceLine" id="cb9-2" data-line-number="2">
-<span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)</div>
+<span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../reference/ndoc.html">ndoc</a></span>(my_corpus), <span class="dt">sep =</span> <span class="st">"_"</span>)</div>
 <div class="sourceLine" id="cb9-3" data-line-number="3">
-<span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</div></code></pre>
+<span class="kw">summary</span>(my_corpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</div></code></pre>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences _language              _docsource
@@ -255,7 +255,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Mar  8 10:02:01 2018
+## Created: Fri Mar  9 10:33:56 2018
 ## Notes:</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </section><section id="loading-in-files-using-the-readtext-package" class="level3"><h3>Loading in files using the readtext package</h3>
@@ -264,9 +264,9 @@
 <div class="sourceLine" id="cb11-2" data-line-number="2"></div>
 <div class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># Twitter json</span></div>
 <div class="sourceLine" id="cb11-4" data-line-number="4">mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)</div>
-<div class="sourceLine" id="cb11-5" data-line-number="5">myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf1)</div>
+<div class="sourceLine" id="cb11-5" data-line-number="5">my_corpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf1)</div>
 <div class="sourceLine" id="cb11-6" data-line-number="6">
-<span class="kw">summary</span>(myCorpusTwitter, <span class="dv">5</span>)</div>
+<span class="kw">summary</span>(my_corpusTwitter, <span class="dv">5</span>)</div>
 <div class="sourceLine" id="cb11-7" data-line-number="7"><span class="co"># generic json - needs a textfield specifier</span></div>
 <div class="sourceLine" id="cb11-8" data-line-number="8">mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</div>
 <div class="sourceLine" id="cb11-9" data-line-number="9">                  <span class="dt">textfield =</span> <span class="st">"text"</span>)</div>
@@ -300,7 +300,7 @@
 <span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</div></code></pre>
 </section></section><section id="how-a-quanteda-corpus-works" class="level2"><h2>How a quanteda corpus works</h2>
 <section id="corpus-principles" class="level3"><h3>Corpus principles</h3>
-<p>A corpus is designed to be a “library” of original documents that have been converted to plain, UTF-8 encoded text, and stored along with meta-data at the corpus level and at the document-level. We have a special name for document-level meta-data: <code><a href="../../reference/docvars.html">docvars()</a></code>. These are variables or features that describe attributes of each document.</p>
+<p>A corpus is designed to be a “library” of original documents that have been converted to plain, UTF-8 encoded text, and stored along with meta-data at the corpus level and at the document-level. We have a special name for document-level meta-data: <em>docvars</em>. These are variables or features that describe attributes of each document.</p>
 <p>A corpus is designed to be a more or less static container of texts with respect to processing and analysis. This means that the texts in corpus are not designed to be changed internally through (for example) cleaning or pre-processing steps, such as stemming or removing punctuation. Rather, texts can be extracted from the corpus as part of processing, and assigned to new objects, but the idea is that the corpus will remain as an original reference copy so that other analyses – for instance those in which stems and punctuation were required, such as analyzing a reading ease index – can be performed on the same corpus.</p>
 <p>To extract texts from a corpus, we use an extractor, called <code><a href="../../reference/texts.html">texts()</a></code>.</p>
 <pre class="sourceCode r" id="cb12"><code class="sourceCode r"><div class="sourceLine" id="cb12-1" data-line-number="1">
@@ -353,7 +353,10 @@
 <div class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
 </div>
 <div class="sourceLine" id="cb16-4" data-line-number="4">
-<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) </div></code></pre>
+<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span>
+</div>
+<div class="sourceLine" id="cb16-5" data-line-number="5">
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_bw</a></span>()</div></code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <pre class="sourceCode r" id="cb18"><code class="sourceCode r"><div class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Longest inaugural address: William Henry Harrison</span></div>
@@ -365,11 +368,11 @@
 <p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level medata data is also concatenated.</p>
 <pre class="sourceCode r" id="cb20"><code class="sourceCode r"><div class="sourceLine" id="cb20-1" data-line-number="1">
 <span class="kw">library</span>(quanteda)</div>
-<div class="sourceLine" id="cb20-2" data-line-number="2">mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</div>
-<div class="sourceLine" id="cb20-3" data-line-number="3">mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])</div>
-<div class="sourceLine" id="cb20-4" data-line-number="4">mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span class="st"> </span>mycorpus2</div>
+<div class="sourceLine" id="cb20-2" data-line-number="2">my_corpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</div>
+<div class="sourceLine" id="cb20-3" data-line-number="3">my_corpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])</div>
+<div class="sourceLine" id="cb20-4" data-line-number="4">my_corpus3 &lt;-<span class="st"> </span>my_corpus1 <span class="op">+</span><span class="st"> </span>my_corpus2</div>
 <div class="sourceLine" id="cb20-5" data-line-number="5">
-<span class="kw">summary</span>(mycorpus3)</div></code></pre>
+<span class="kw">summary</span>(my_corpus3)</div></code></pre>
 <pre><code>## Corpus consisting of 11 documents:
 ## 
 ##             Text Types Tokens Sentences
@@ -385,11 +388,11 @@
 ##       2013-Obama   814   2317        88
 ##       2017-Trump   582   1660        88
 ## 
-## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu Mar  8 10:02:03 2018
+## Source: Combination of corpuses my_corpus1 and my_corpus2
+## Created: Fri Mar  9 10:33:57 2018
 ## Notes:</code></pre>
 </section><section id="subsetting-corpus-objects" class="level3"><h3>Subsetting corpus objects</h3>
-<p>There is a method of the <code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code> function defined for corpus objects, where a new corpus can be extracted based on logical conditions applied to docvars:</p>
+<p>There is a method of the <code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code> function defined for corpus objects, where a new corpus can be extracted based on logical conditions applied to <em>docvars</em>:</p>
 <pre class="sourceCode r" id="cb22"><code class="sourceCode r"><div class="sourceLine" id="cb22-1" data-line-number="1">
 <span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</div></code></pre>
 <pre><code>## Corpus consisting of 7 documents:
@@ -623,11 +626,11 @@
 ## [1] "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</code></pre>
 </section><section id="constructing-a-document-feature-matrix" class="level2"><h2>Constructing a document-feature matrix</h2>
 <p>Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing a document-feature matrix. For this, we have a Swiss-army knife function, called <code><a href="../../reference/dfm.html">dfm()</a></code>, which performs tokenization and tabulates the extracted features into a matrix of documents by features. Unlike the conservative approach taken by <code><a href="../../reference/tokens.html">tokens()</a></code>, the <code><a href="../../reference/dfm.html">dfm()</a></code> function applies certain options by default, such as <code>tolower()</code> – a separate function for lower-casing texts – and removes punctuation. All of the options to <code><a href="../../reference/tokens.html">tokens()</a></code> can be passed to <code><a href="../../reference/dfm.html">dfm()</a></code>, however.</p>
-<pre class="sourceCode r" id="cb54"><code class="sourceCode r"><div class="sourceLine" id="cb54-1" data-line-number="1">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)</div>
+<pre class="sourceCode r" id="cb54"><code class="sourceCode r"><div class="sourceLine" id="cb54-1" data-line-number="1">my_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)</div>
 <div class="sourceLine" id="cb54-2" data-line-number="2"></div>
 <div class="sourceLine" id="cb54-3" data-line-number="3"><span class="co"># make a dfm</span></div>
-<div class="sourceLine" id="cb54-4" data-line-number="4">myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus)</div>
-<div class="sourceLine" id="cb54-5" data-line-number="5">myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</div></code></pre>
+<div class="sourceLine" id="cb54-4" data-line-number="4">my_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(my_corpus)</div>
+<div class="sourceLine" id="cb54-5" data-line-number="5">my_dfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</div></code></pre>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (0% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
 ##               features
@@ -641,7 +644,7 @@
 ##   2017-Trump    1      1        4  96     4</code></pre>
 <p>Other options for a <code><a href="../../reference/dfm.html">dfm()</a></code> include removing stopwords, and stemming the tokens.</p>
 <pre class="sourceCode r" id="cb56"><code class="sourceCode r"><div class="sourceLine" id="cb56-1" data-line-number="1"><span class="co"># make a dfm, removing stopwords and applying stemming</span></div>
-<div class="sourceLine" id="cb56-2" data-line-number="2">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
+<div class="sourceLine" id="cb56-2" data-line-number="2">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(my_corpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
 <div class="sourceLine" id="cb56-3" data-line-number="3">myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</div></code></pre>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -671,13 +674,13 @@
 ## See help("Deprecated")</code></pre>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <section id="viewing-the-document-feature-matrix" class="level3"><h3>Viewing the document-feature matrix</h3>
-<p>The dfm can be inspected in the Enviroment pane in RStudio, or by calling R’s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud using the <a href="https://cran.r-project.org/web/packages/wordcloud">wordcloud package</a></p>
-<pre class="sourceCode r" id="cb65"><code class="sourceCode r"><div class="sourceLine" id="cb65-1" data-line-number="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
-<div class="sourceLine" id="cb65-2" data-line-number="2">mydfm</div></code></pre>
+<p>The dfm can be inspected in the Enviroment pane in RStudio, or by calling R’s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud.</p>
+<pre class="sourceCode r" id="cb65"><code class="sourceCode r"><div class="sourceLine" id="cb65-1" data-line-number="1">my_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
+<div class="sourceLine" id="cb65-2" data-line-number="2">my_dfm</div></code></pre>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>To access a list of the most frequently occurring features, we can use <code><a href="../../reference/topfeatures.html">topfeatures()</a></code>:</p>
 <pre class="sourceCode r" id="cb67"><code class="sourceCode r"><div class="sourceLine" id="cb67-1" data-line-number="1">
-<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span>
+<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(my_dfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span>
 </div></code></pre>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
@@ -691,17 +694,17 @@
 <pre class="sourceCode r" id="cb69"><code class="sourceCode r"><div class="sourceLine" id="cb69-1" data-line-number="1">
 <span class="kw">set.seed</span>(<span class="dv">100</span>)</div>
 <div class="sourceLine" id="cb69-2" data-line-number="2">
-<span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,</div>
-<div class="sourceLine" id="cb69-3" data-line-number="3">                   <span class="dt">rot.per =</span> <span class="fl">.25</span>, </div>
+<span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(my_dfm, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</div>
+<div class="sourceLine" id="cb69-3" data-line-number="3">                   <span class="dt">rotation =</span> <span class="fl">.25</span>, </div>
 <div class="sourceLine" id="cb69-4" data-line-number="4">                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</div></code></pre>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </section><section id="grouping-documents-by-document-variable" class="level3"><h3>Grouping documents by document variable</h3>
 <p>Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:</p>
-<pre class="sourceCode r" id="cb70"><code class="sourceCode r"><div class="sourceLine" id="cb70-1" data-line-number="1">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </div>
+<pre class="sourceCode r" id="cb70"><code class="sourceCode r"><div class="sourceLine" id="cb70-1" data-line-number="1">by_party_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </div>
 <div class="sourceLine" id="cb70-2" data-line-number="2">                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div></code></pre>
 <p>We can sort this dfm, and inspect it:</p>
 <pre class="sourceCode r" id="cb71"><code class="sourceCode r"><div class="sourceLine" id="cb71-1" data-line-number="1">
-<span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</div></code></pre>
+<span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(by_party_dfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</div></code></pre>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
 ##        features
@@ -721,13 +724,13 @@
 </section><section id="grouping-words-by-dictionary-or-equivalence-class" class="level3"><h3>Grouping words by dictionary or equivalence class</h3>
 <p>For some applications we have prior knowledge of sets of words that are indicative of traits we would like to measure from the text. For example, a general list of positive words might indicate positive sentiment in a movie review, or we might have a dictionary of political terms which are associated with a particular ideological stance. In these cases, it is sometimes useful to treat these groups of words as equivalent for the purposes of analysis, and sum their counts into classes.</p>
 <p>For example, let’s look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:</p>
-<pre class="sourceCode r" id="cb73"><code class="sourceCode r"><div class="sourceLine" id="cb73-1" data-line-number="1">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</div></code></pre>
+<pre class="sourceCode r" id="cb73"><code class="sourceCode r"><div class="sourceLine" id="cb73-1" data-line-number="1">recent_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</div></code></pre>
 <p>Now we define a demonstration dictionary:</p>
-<pre class="sourceCode r" id="cb74"><code class="sourceCode r"><div class="sourceLine" id="cb74-1" data-line-number="1">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</div>
+<pre class="sourceCode r" id="cb74"><code class="sourceCode r"><div class="sourceLine" id="cb74-1" data-line-number="1">my_dict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</div>
 <div class="sourceLine" id="cb74-2" data-line-number="2">                          <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</div></code></pre>
 <p>We can use the dictionary when making the dfm:</p>
-<pre class="sourceCode r" id="cb75"><code class="sourceCode r"><div class="sourceLine" id="cb75-1" data-line-number="1">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)</div>
-<div class="sourceLine" id="cb75-2" data-line-number="2">byPresMat</div></code></pre>
+<pre class="sourceCode r" id="cb75"><code class="sourceCode r"><div class="sourceLine" id="cb75-1" data-line-number="1">by_pres_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recent_corpus, <span class="dt">dictionary =</span> my_dict)</div>
+<div class="sourceLine" id="cb75-2" data-line-number="2">by_pres_mat</div></code></pre>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
 ## 7 x 2 sparse Matrix of class "dfm"
 ##               features
@@ -746,11 +749,11 @@
 <div class="sourceLine" id="cb77-4" data-line-number="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</div></code></pre>
 </section></section></section><section id="further-examples" class="level1"><h1>Further Examples</h1>
 <section id="similarities-between-texts" class="level2"><h2>Similarities between texts</h2>
-<pre class="sourceCode r" id="cb78"><code class="sourceCode r"><div class="sourceLine" id="cb78-1" data-line-number="1">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </div>
+<pre class="sourceCode r" id="cb78"><code class="sourceCode r"><div class="sourceLine" id="cb78-1" data-line-number="1">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </div>
 <div class="sourceLine" id="cb78-2" data-line-number="2">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
-<div class="sourceLine" id="cb78-3" data-line-number="3">obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </div>
+<div class="sourceLine" id="cb78-3" data-line-number="3">obama_simil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </div>
 <div class="sourceLine" id="cb78-4" data-line-number="4">                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</div>
-<div class="sourceLine" id="cb78-5" data-line-number="5">obamaSimil</div></code></pre>
+<div class="sourceLine" id="cb78-5" data-line-number="5">obama_simil</div></code></pre>
 <pre><code>##              2009-Obama 2013-Obama
 ## 2009-Obama    1.0000000  0.6815711
 ## 2013-Obama    0.6815711  1.0000000
@@ -766,21 +769,21 @@
 <p>We can use these distances to plot a dendrogram, clustering presidents:</p>
 <pre class="sourceCode r" id="cb81"><code class="sourceCode r"><div class="sourceLine" id="cb81-1" data-line-number="1">
 <span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</div>
-<div class="sourceLine" id="cb81-2" data-line-number="2">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </div>
+<div class="sourceLine" id="cb81-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </div>
 <div class="sourceLine" id="cb81-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</div>
 <div class="sourceLine" id="cb81-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</div>
-<div class="sourceLine" id="cb81-5" data-line-number="5">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb81-5" data-line-number="5">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(pres_dfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</div>
 <div class="sourceLine" id="cb81-6" data-line-number="6"><span class="co"># hierarchical clustering - get distances on normalized dfm</span></div>
-<div class="sourceLine" id="cb81-7" data-line-number="7">presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"prop"</span>))</div>
+<div class="sourceLine" id="cb81-7" data-line-number="7">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))</div>
 <div class="sourceLine" id="cb81-8" data-line-number="8"><span class="co"># hiarchical clustering the distance object</span></div>
-<div class="sourceLine" id="cb81-9" data-line-number="9">presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)</div>
+<div class="sourceLine" id="cb81-9" data-line-number="9">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</div>
 <div class="sourceLine" id="cb81-10" data-line-number="10"><span class="co"># label with document names</span></div>
-<div class="sourceLine" id="cb81-11" data-line-number="11">presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(presDfm)</div>
+<div class="sourceLine" id="cb81-11" data-line-number="11">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(pres_dfm)</div>
 <div class="sourceLine" id="cb81-12" data-line-number="12"><span class="co"># plot as a dendrogram</span></div>
 <div class="sourceLine" id="cb81-13" data-line-number="13">
-<span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</div></code></pre>
+<span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</div></code></pre>
 <p>We can also look at term similarities:</p>
-<pre class="sourceCode r" id="cb82"><code class="sourceCode r"><div class="sourceLine" id="cb82-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</div>
+<pre class="sourceCode r" id="cb82"><code class="sourceCode r"><div class="sourceLine" id="cb82-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</div>
 <div class="sourceLine" id="cb82-2" data-line-number="2">
 <span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</div></code></pre>
 <pre><code>## $fair
@@ -791,51 +794,53 @@
 </section><section id="scaling-document-positions" class="level2"><h2>Scaling document positions</h2>
 <p>Here is a demonstration of unsupervised document scaling comparing the “wordfish” model:</p>
 <pre class="sourceCode r" id="cb84"><code class="sourceCode r"><div class="sourceLine" id="cb84-1" data-line-number="1"><span class="co"># make prettier document names</span></div>
-<div class="sourceLine" id="cb84-2" data-line-number="2">ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</div>
+<div class="sourceLine" id="cb84-2" data-line-number="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</div>
 <div class="sourceLine" id="cb84-3" data-line-number="3">
-<span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</div></code></pre>
+<span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ie_dfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</div></code></pre>
 <pre><code>## 
 ## Call:
-## textmodel_wordfish.dfm(x = ieDfm, dir = c(2, 1))
+## textmodel_wordfish.dfm(x = ie_dfm, dir = c(2, 1))
 ## 
 ## Dispersion: poisson; direction: 2 &lt; 1; 14 documents; 5140 features.</code></pre>
 </section><section id="topic-models" class="level2"><h2>Topic models</h2>
 <p><strong>quanteda</strong> makes it very easy to fit topic models as well, e.g.:</p>
-<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </div>
+<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </div>
 <div class="sourceLine" id="cb86-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</div>
-<div class="sourceLine" id="cb86-3" data-line-number="3">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</div>
-<div class="sourceLine" id="cb86-4" data-line-number="4">quantdfm</div></code></pre>
+<div class="sourceLine" id="cb86-3" data-line-number="3">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quant_dfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</div>
+<div class="sourceLine" id="cb86-4" data-line-number="4">quant_dfm</div></code></pre>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
 <pre class="sourceCode r" id="cb88"><code class="sourceCode r"><div class="sourceLine" id="cb88-1" data-line-number="1">
+<span class="kw">set.seed</span>(<span class="dv">100</span>)</div>
+<div class="sourceLine" id="cb88-2" data-line-number="2">
 <span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {</div>
-<div class="sourceLine" id="cb88-2" data-line-number="2">    myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</div>
-<div class="sourceLine" id="cb88-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)</div>
-<div class="sourceLine" id="cb88-4" data-line-number="4">}</div></code></pre>
+<div class="sourceLine" id="cb88-3" data-line-number="3">    my_lda_fit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quant_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</div>
+<div class="sourceLine" id="cb88-4" data-line-number="4">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</div>
+<div class="sourceLine" id="cb88-5" data-line-number="5">}</div></code></pre>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1    Topic 2    Topic 3       Topic 4    Topic 5     Topic 6   
-## [1,] "million"  "fianna"   "support"     "welfare"  "result"    "measures"
-## [2,] "rate"     "fáil"     "million"     "system"   "million"   "review"  
-## [3,] "welfare"  "national" "key"         "mortgage" "continue"  "spending"
-## [4,] "sinn"     "irish"    "employment"  "pensions" "programme" "scheme"  
-## [5,] "hospital" "support"  "development" "rates"    "earning"   "reduced" 
-##      Topic 7      Topic 8    Topic 9   Topic 10      Topic 11   
-## [1,] "welfare"    "welfare"  "benefit" "kind"        "failed"   
-## [2,] "investment" "system"   "day"     "imagination" "strategy" 
-## [3,] "back"       "fianna"   "welfare" "policies"    "needed"   
-## [4,] "million"    "taxation" "today"   "wit"         "ministers"
-## [5,] "support"    "fáil"     "banks"   "create"      "system"   
-##      Topic 12     Topic 13     Topic 14  Topic 15  Topic 16      Topic 17
-## [1,] "million"    "million"    "levy"    "child"   "alternative" "fianna"
-## [2,] "recent"     "back"       "million" "benefit" "citizenship" "fáil"  
-## [3,] "welfare"    "scheme"     "carbon"  "just"    "wealth"      "side"  
-## [4,] "pensions"   "confidence" "change"  "bank"    "adjustment"  "level" 
-## [5,] "reductions" "welfare"    "welfare" "fianna"  "breaks"      "third" 
-##      Topic 18    Topic 19    Topic 20      
-## [1,] "taoiseach" "care"      "taoiseach"   
-## [2,] "fine"      "allowance" "debate"      
-## [3,] "gael"      "per"       "society"     
-## [4,] "may"       "hit"       "enterprising"
-## [5,] "irish"     "families"  "difficult"</code></pre>
+<pre><code>##      Topic 1       Topic 2     Topic 3       Topic 4     Topic 5       
+## [1,] "kind"        "taoiseach" "alternative" "pension"   "government's"
+## [2,] "imagination" "fine"      "citizenship" "order"     "féin"        
+## [3,] "policies"    "gael"      "wealth"      "recent"    "rate"        
+## [4,] "wit"         "may"       "adjustment"  "million"   "worst"       
+## [5,] "create"      "irish"     "breaks"      "increased" "taxation"    
+##      Topic 6     Topic 7    Topic 8     Topic 9     Topic 10      
+## [1,] "failed"    "welfare"  "taoiseach" "care"      "enterprising"
+## [2,] "strategy"  "benefit"  "employees" "allowance" "sense"       
+## [3,] "needed"    "families" "referred"  "hospital"  "say"         
+## [4,] "ministers" "fáil"     "debate"    "per"       "nation"      
+## [5,] "system"    "system"   "problem"   "million"   "stay"        
+##      Topic 11   Topic 12  Topic 13   Topic 14   Topic 15  Topic 16 
+## [1,] "fianna"   "society" "measures" "stimulus" "million" "child"  
+## [2,] "fáil"     "equal"   "spending" "rate"     "level"   "benefit"
+## [3,] "national" "change"  "review"   "thinking" "reduced" "day"    
+## [4,] "irish"    "nation"  "million"  "three"    "scheme"  "today"  
+## [5,] "support"  "call"    "system"   "costs"    "recent"  "bank"   
+##      Topic 17 Topic 18   Topic 19     Topic 20 
+## [1,] "fianna" "welfare"  "million"    "levy"   
+## [2,] "fáil"   "system"   "support"    "million"
+## [3,] "side"   "fáil"     "welfare"    "carbon" 
+## [4,] "level"  "fianna"   "investment" "change" 
+## [5,] "third"  "taxation" "back"       "welfare"</code></pre>
 </section></section>
 </div>
   </div>

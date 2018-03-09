@@ -210,27 +210,24 @@
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </section><section id="network-word" class="level2"><h2>語の共起ネットワーク</h2>
 <p>ツイートのメッセージを分析するためには，<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．</p>
-<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1">msg_fcm &lt;-<span class="st"> </span>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1">msg_fcm &lt;-<span class="st"> </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div class="sourceLine" id="cb9-2" data-line-number="2">
-<span class="st">    </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb9-3" data-line-number="3">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="kw">c</span>(<span class="st">'#*'</span>, <span class="st">'@*'</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
-<div class="sourceLine" id="cb9-4" data-line-number="4">
+<div class="sourceLine" id="cb9-3" data-line-number="3">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="st">'^[ぁ-ん]+$'</span>, <span class="st">'regex'</span>, <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
-<div class="sourceLine" id="cb9-5" data-line-number="5">
+<div class="sourceLine" id="cb9-4" data-line-number="4">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
-<div class="sourceLine" id="cb9-6" data-line-number="6">
+<div class="sourceLine" id="cb9-5" data-line-number="5">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
-<div class="sourceLine" id="cb9-7" data-line-number="7">
+<div class="sourceLine" id="cb9-6" data-line-number="6">
 <span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()</div>
-<div class="sourceLine" id="cb9-8" data-line-number="8">feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(msg_fcm, <span class="dv">50</span>))</div>
-<div class="sourceLine" id="cb9-9" data-line-number="9">
+<div class="sourceLine" id="cb9-7" data-line-number="7">feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(msg_fcm, <span class="dv">50</span>))</div>
+<div class="sourceLine" id="cb9-8" data-line-number="8">
 <span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(msg_fcm,  feat), <span class="dt">min_freq =</span> <span class="fl">0.3</span>)</div></code></pre>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </section></section>

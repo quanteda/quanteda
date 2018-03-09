@@ -139,7 +139,7 @@
 <span class="kw">library</span>(quanteda)</div></code></pre>
 <p>This vignette walks through various plot options available in <strong>quanteda</strong> through the <code>textplot_*</code> functions.</p>
 <section id="wordcloud" class="level1"><h1>Wordcloud</h1>
-<p>Plotting a <code>dfm</code> object will create a wordcloud using the <strong>wordcloud</strong> pacakge.</p>
+<p>The frequency of features can be plotted as a wordcloud using <code><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>.</p>
 <pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1">dfm_inaug &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1826</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div class="sourceLine" id="cb2-2" data-line-number="2">
@@ -149,6 +149,8 @@
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">10</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</div>
 <div class="sourceLine" id="cb2-4" data-line-number="4"></div>
 <div class="sourceLine" id="cb2-5" data-line-number="5">
+<span class="kw">set.seed</span>(<span class="dv">100</span>)</div>
+<div class="sourceLine" id="cb2-6" data-line-number="6">
 <span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_inaug)</div></code></pre>
 <p><img src="plotting_files/figure-html/unnamed-chunk-2-1.png" width="768"></p>
 <p>You can also plot a “comparison cloud”, but this can only be done with fewer than eight documents:</p>
@@ -164,12 +166,12 @@
 </div>
 <div class="sourceLine" id="cb3-5" data-line-number="5">
 <span class="st">    </span><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="dt">comparison =</span> <span class="ot">TRUE</span>)</div></code></pre>
-<p><img src="plotting_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-3-1.png" width="960"></p>
 <p>Plot will pass through additional arguments to the underlying call to <code>wordcloud</code>.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><div class="sourceLine" id="cb4-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_inaug, <span class="dt">min.freq =</span> <span class="dv">10</span>,</div>
+<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_inaug, <span class="dt">min_count =</span> <span class="dv">10</span>,</div>
 <div class="sourceLine" id="cb4-2" data-line-number="2">     <span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">'red'</span>, <span class="st">'pink'</span>, <span class="st">'green'</span>, <span class="st">'purple'</span>, <span class="st">'orange'</span>, <span class="st">'blue'</span>))</div></code></pre>
-<pre><code>## Warning: min.freqcolors is deprecated; use min_countcolor instead</code></pre>
+<pre><code>## Warning: colors is deprecated; use color instead</code></pre>
 <p><img src="plotting_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 </section><section id="lexical-dispersion-plot" class="level1"><h1>Lexical dispersion plot</h1>
 <p>Plotting a <code>kwic</code> object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text. We call these “x-ray” plots due to their similarity to the data produced by <a href="https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)">Amazon’s “x-ray” feature for Kindle books</a>.</p>
@@ -196,11 +198,16 @@
 <span class="kw">require</span>(readtext)</div></code></pre>
 <pre><code>## Loading required package: readtext</code></pre>
 <pre class="sourceCode r" id="cb10"><code class="sourceCode r"><div class="sourceLine" id="cb10-1" data-line-number="1">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</div>
-<div class="sourceLine" id="cb10-2" data-line-number="2">
+<div class="sourceLine" id="cb10-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb10-3" data-line-number="3">
+<span class="kw">names</span>(data_char_mobydick) &lt;-<span class="st"> "Moby Dick"</span>
+</div>
+<div class="sourceLine" id="cb10-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb10-5" data-line-number="5">
 <span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</div>
-<div class="sourceLine" id="cb10-3" data-line-number="3">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),</div>
-<div class="sourceLine" id="cb10-4" data-line-number="4">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"ahab"</span>)</div>
-<div class="sourceLine" id="cb10-5" data-line-number="5">)</div></code></pre>
+<div class="sourceLine" id="cb10-6" data-line-number="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),</div>
+<div class="sourceLine" id="cb10-7" data-line-number="7">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"ahab"</span>)</div>
+<div class="sourceLine" id="cb10-8" data-line-number="8">) </div></code></pre>
 <p><img src="plotting_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:</p>
 <pre class="sourceCode r" id="cb11"><code class="sourceCode r"><div class="sourceLine" id="cb11-1" data-line-number="1">

@@ -179,10 +179,10 @@
 <section id="building-a-corpus-from-a-character-vector" class="level3"><h3>从字符向量构建语料库</h3>
 <p>最简单的方式是从R中已经存在的文本向量创建一个语料库。这使得高级R用户可以灵活地选择文本输入，因为R有很多可以读取文本向量的方法。</p>
 <p>一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（<code>data_char_ukimmig2010</code>）中提取的有关移民政策的文本为例：</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><div class="sourceLine" id="cb5-1" data-line-number="1">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># 从文本构建语料库</span>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><div class="sourceLine" id="cb5-1" data-line-number="1">my_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># 从文本构建语料库</span>
 </div>
 <div class="sourceLine" id="cb5-2" data-line-number="2">
-<span class="kw">summary</span>(myCorpus)</div></code></pre>
+<span class="kw">summary</span>(my_corpus)</div></code></pre>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences
@@ -197,17 +197,17 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Mar  8 10:01:08 2018
+## Created: Fri Mar  9 10:33:05 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
 <pre class="sourceCode r" id="cb7"><code class="sourceCode r"><div class="sourceLine" id="cb7-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)</div>
+<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(my_corpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)</div>
 <div class="sourceLine" id="cb7-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
+<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(my_corpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
 </div>
 <div class="sourceLine" id="cb7-3" data-line-number="3">
-<span class="kw">summary</span>(myCorpus)</div></code></pre>
+<span class="kw">summary</span>(my_corpus)</div></code></pre>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year
@@ -222,16 +222,16 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Mar  8 10:01:08 2018
+## Created: Fri Mar  9 10:33:05 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
+<span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
 </div>
 <div class="sourceLine" id="cb9-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)</div>
+<span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(my_corpus), <span class="dt">sep =</span> <span class="st">"_"</span>)</div>
 <div class="sourceLine" id="cb9-3" data-line-number="3">
-<span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</div></code></pre>
+<span class="kw">summary</span>(my_corpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</div></code></pre>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences _language              _docsource
@@ -256,7 +256,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Mar  8 10:01:08 2018
+## Created: Fri Mar  9 10:33:05 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </section><section id="loading-in-files-using-the-readtext-package" class="level3"><h3>readtext软件包加载文件</h3>
@@ -265,9 +265,9 @@
 <div class="sourceLine" id="cb11-2" data-line-number="2"></div>
 <div class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># Twitter json</span></div>
 <div class="sourceLine" id="cb11-4" data-line-number="4">mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)</div>
-<div class="sourceLine" id="cb11-5" data-line-number="5">myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf1)</div>
+<div class="sourceLine" id="cb11-5" data-line-number="5">my_corpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf1)</div>
 <div class="sourceLine" id="cb11-6" data-line-number="6">
-<span class="kw">summary</span>(myCorpusTwitter, <span class="dv">5</span>)</div>
+<span class="kw">summary</span>(my_corpusTwitter, <span class="dv">5</span>)</div>
 <div class="sourceLine" id="cb11-7" data-line-number="7"><span class="co"># 通用json - 需要“textfield”说明符</span></div>
 <div class="sourceLine" id="cb11-8" data-line-number="8">mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</div>
 <div class="sourceLine" id="cb11-9" data-line-number="9">                  <span class="dt">textfield =</span> <span class="st">"text"</span>)</div>
@@ -366,11 +366,11 @@
 <p><code>+</code>运算符提供了一个连接两个语料库对象的简单方法。如果它们包含了不同的文档级别的变量，这些也将被合并起来以保证不丢失任何信息。语料库级别的元数据也被连接在一起。</p>
 <pre class="sourceCode r" id="cb20"><code class="sourceCode r"><div class="sourceLine" id="cb20-1" data-line-number="1">
 <span class="kw">library</span>(quanteda)</div>
-<div class="sourceLine" id="cb20-2" data-line-number="2">mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</div>
-<div class="sourceLine" id="cb20-3" data-line-number="3">mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])</div>
-<div class="sourceLine" id="cb20-4" data-line-number="4">mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span class="st"> </span>mycorpus2</div>
+<div class="sourceLine" id="cb20-2" data-line-number="2">my_corpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</div>
+<div class="sourceLine" id="cb20-3" data-line-number="3">my_corpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])</div>
+<div class="sourceLine" id="cb20-4" data-line-number="4">my_corpus3 &lt;-<span class="st"> </span>my_corpus1 <span class="op">+</span><span class="st"> </span>my_corpus2</div>
 <div class="sourceLine" id="cb20-5" data-line-number="5">
-<span class="kw">summary</span>(mycorpus3)</div></code></pre>
+<span class="kw">summary</span>(my_corpus3)</div></code></pre>
 <pre><code>## Corpus consisting of 11 documents:
 ## 
 ##             Text Types Tokens Sentences
@@ -386,8 +386,8 @@
 ##       2013-Obama   814   2317        88
 ##       2017-Trump   582   1660        88
 ## 
-## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu Mar  8 10:01:10 2018
+## Source: Combination of corpuses my_corpus1 and my_corpus2
+## Created: Fri Mar  9 10:33:07 2018
 ## Notes:</code></pre>
 </section><section id="subsetting-corpus-objects" class="level3"><h3>提取语料库的子集</h3>
 <p><code><a href="../../../reference/corpus_subset.html">corpus_subset()</a></code>是为语料库定义的一个函数，用于根据基于<code><a href="../../../reference/docvars.html">docvars()</a></code>的逻辑条件提取语料库子集：</p>
@@ -624,10 +624,10 @@
 ## [1] "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</code></pre>
 </section><section id="constructing-a-document-feature-matrix" class="level2"><h2>构建文档特征矩阵</h2>
 <p>分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能<code><a href="../../../reference/dfm.html">dfm()</a></code>，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于<code><a href="../../../reference/tokens.html">tokens()</a></code>所采用的保守方法，<code><a href="../../../reference/dfm.html">dfm()</a></code>函数默认某些应用选项，比如<code>toLower()</code> - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过<code><a href="../../../reference/tokens.html">tokens()</a></code>的所有选项都可以传递给<code><a href="../../../reference/dfm.html">dfm()</a></code>。</p>
-<pre class="sourceCode r" id="cb54"><code class="sourceCode r"><div class="sourceLine" id="cb54-1" data-line-number="1">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)</div>
+<pre class="sourceCode r" id="cb54"><code class="sourceCode r"><div class="sourceLine" id="cb54-1" data-line-number="1">my_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)</div>
 <div class="sourceLine" id="cb54-2" data-line-number="2"></div>
 <div class="sourceLine" id="cb54-3" data-line-number="3"><span class="co"># 构建dfm</span></div>
-<div class="sourceLine" id="cb54-4" data-line-number="4">myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus)</div>
+<div class="sourceLine" id="cb54-4" data-line-number="4">myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(my_corpus)</div>
 <div class="sourceLine" id="cb54-5" data-line-number="5">myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</div></code></pre>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (0% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -643,7 +643,7 @@
 <p><code><a href="../../../reference/dfm.html">dfm()</a></code>的其他选项还包括去除停用词和分词的词干提取。</p>
 <pre class="sourceCode r" id="cb56"><code class="sourceCode r"><div class="sourceLine" id="cb56-1" data-line-number="1"><span class="co"># 构建dfm, 去除停用词以及提取词干</span></div>
 <div class="sourceLine" id="cb56-2" data-line-number="2"></div>
-<div class="sourceLine" id="cb56-3" data-line-number="3">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
+<div class="sourceLine" id="cb56-3" data-line-number="3">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(my_corpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
 <div class="sourceLine" id="cb56-4" data-line-number="4">myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</div></code></pre>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -749,11 +749,11 @@
 <div class="sourceLine" id="cb77-4" data-line-number="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</div></code></pre>
 </section></section></section><section id="further-examples" class="level1"><h1>更多范例</h1>
 <section id="similarities-between-texts" class="level2"><h2>文本之间的相似度</h2>
-<pre class="sourceCode r" id="cb78"><code class="sourceCode r"><div class="sourceLine" id="cb78-1" data-line-number="1">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </div>
+<pre class="sourceCode r" id="cb78"><code class="sourceCode r"><div class="sourceLine" id="cb78-1" data-line-number="1">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </div>
 <div class="sourceLine" id="cb78-2" data-line-number="2">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
-<div class="sourceLine" id="cb78-3" data-line-number="3">obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </div>
+<div class="sourceLine" id="cb78-3" data-line-number="3">obama_simil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </div>
 <div class="sourceLine" id="cb78-4" data-line-number="4">                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</div>
-<div class="sourceLine" id="cb78-5" data-line-number="5">obamaSimil</div></code></pre>
+<div class="sourceLine" id="cb78-5" data-line-number="5">obama_simil</div></code></pre>
 <pre><code>##              2009-Obama 2013-Obama
 ## 2009-Obama    1.0000000  0.6815711
 ## 2013-Obama    0.6815711  1.0000000
@@ -765,26 +765,26 @@
 ## 2001-Bush     0.6018113  0.6193608
 ## 2005-Bush     0.5266249  0.5867178
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
-<pre class="sourceCode r" id="cb80"><code class="sourceCode r"><div class="sourceLine" id="cb80-1" data-line-number="1"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></div></code></pre>
+<pre class="sourceCode r" id="cb80"><code class="sourceCode r"><div class="sourceLine" id="cb80-1" data-line-number="1"><span class="co"># dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")</span></div></code></pre>
 <p>我们可以用这些距离来绘制树状图，聚类分析总统：</p>
 <pre class="sourceCode r" id="cb81"><code class="sourceCode r"><div class="sourceLine" id="cb81-1" data-line-number="1">
 <span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</div>
-<div class="sourceLine" id="cb81-2" data-line-number="2">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </div>
+<div class="sourceLine" id="cb81-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </div>
 <div class="sourceLine" id="cb81-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</div>
 <div class="sourceLine" id="cb81-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</div>
-<div class="sourceLine" id="cb81-5" data-line-number="5">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb81-5" data-line-number="5">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(pres_dfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</div>
 <div class="sourceLine" id="cb81-6" data-line-number="6"></div>
 <div class="sourceLine" id="cb81-7" data-line-number="7"><span class="co">#分层聚类 -  在归一化dfm上计算距离</span></div>
-<div class="sourceLine" id="cb81-8" data-line-number="8">presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"prop"</span>))</div>
+<div class="sourceLine" id="cb81-8" data-line-number="8">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))</div>
 <div class="sourceLine" id="cb81-9" data-line-number="9"><span class="co"># 聚类分析文本距离</span></div>
-<div class="sourceLine" id="cb81-10" data-line-number="10">presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)</div>
+<div class="sourceLine" id="cb81-10" data-line-number="10">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</div>
 <div class="sourceLine" id="cb81-11" data-line-number="11"><span class="co"># 按文档名标注</span></div>
-<div class="sourceLine" id="cb81-12" data-line-number="12">presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(presDfm)</div>
+<div class="sourceLine" id="cb81-12" data-line-number="12">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(pres_dfm)</div>
 <div class="sourceLine" id="cb81-13" data-line-number="13"><span class="co"># 绘制树状图</span></div>
 <div class="sourceLine" id="cb81-14" data-line-number="14">
-<span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</div></code></pre>
+<span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</div></code></pre>
 <p>我们也可查看特征相似度:</p>
-<pre class="sourceCode r" id="cb82"><code class="sourceCode r"><div class="sourceLine" id="cb82-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</div>
+<pre class="sourceCode r" id="cb82"><code class="sourceCode r"><div class="sourceLine" id="cb82-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</div>
 <div class="sourceLine" id="cb82-2" data-line-number="2">
 <span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</div></code></pre>
 <pre><code>## $fair
@@ -795,51 +795,51 @@
 </section><section id="scaling-document-positions" class="level2"><h2>文档位置的缩放分析</h2>
 <p>我们在<code><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
 <pre class="sourceCode r" id="cb84"><code class="sourceCode r"><div class="sourceLine" id="cb84-1" data-line-number="1"><span class="co"># make prettier document names</span></div>
-<div class="sourceLine" id="cb84-2" data-line-number="2">ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</div>
+<div class="sourceLine" id="cb84-2" data-line-number="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</div>
 <div class="sourceLine" id="cb84-3" data-line-number="3">
-<span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</div></code></pre>
+<span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ie_dfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</div></code></pre>
 <pre><code>## 
 ## Call:
-## textmodel_wordfish.dfm(x = ieDfm, dir = c(2, 1))
+## textmodel_wordfish.dfm(x = ie_dfm, dir = c(2, 1))
 ## 
 ## Dispersion: poisson; direction: 2 &lt; 1; 14 documents; 5140 features.</code></pre>
 </section><section id="topic-models" class="level2"><h2>主题模型</h2>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
-<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </div>
+<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </div>
 <div class="sourceLine" id="cb86-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</div>
-<div class="sourceLine" id="cb86-3" data-line-number="3">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</div>
-<div class="sourceLine" id="cb86-4" data-line-number="4">quantdfm</div></code></pre>
+<div class="sourceLine" id="cb86-3" data-line-number="3">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(quant_dfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</div>
+<div class="sourceLine" id="cb86-4" data-line-number="4">quant_dfm</div></code></pre>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
 <pre class="sourceCode r" id="cb88"><code class="sourceCode r"><div class="sourceLine" id="cb88-1" data-line-number="1">
 <span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {</div>
-<div class="sourceLine" id="cb88-2" data-line-number="2">    myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</div>
-<div class="sourceLine" id="cb88-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)</div>
+<div class="sourceLine" id="cb88-2" data-line-number="2">    my_lda_fit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../../reference/convert.html">convert</a></span>(quant_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</div>
+<div class="sourceLine" id="cb88-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</div>
 <div class="sourceLine" id="cb88-4" data-line-number="4">}</div></code></pre>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2        Topic 3       Topic 4       Topic 5    
-## [1,] "taoiseach" "stimulus"     "kind"        "alternative" "taoiseach"
-## [2,] "employees" "rate"         "imagination" "citizenship" "fine"     
-## [3,] "rate"      "taken"        "policies"    "wealth"      "gael"     
-## [4,] "referred"  "government's" "wit"         "adjustment"  "may"      
-## [5,] "debate"    "taxation"     "create"      "breaks"      "irish"    
-##      Topic 6    Topic 7   Topic 8   Topic 9      Topic 10   Topic 11 
-## [1,] "welfare"  "society" "system"  "support"    "fianna"   "benefit"
-## [2,] "taxation" "schools" "welfare" "million"    "fáil"     "child"  
-## [3,] "fianna"   "world"   "fáil"    "welfare"    "national" "day"    
-## [4,] "deficit"  "help"    "package" "investment" "irish"    "fianna" 
-## [5,] "system"   "home"    "job"     "back"       "support"  "society"
-##      Topic 12 Topic 13       Topic 14   Topic 15    Topic 16   Topic 17
-## [1,] "bank"   "enterprising" "per"      "allowance" "spending" "fianna"
-## [2,] "child"  "sense"        "welfare"  "care"      "review"   "fáil"  
-## [3,] "case"   "equal"        "hit"      "child"     "measures" "side"  
-## [4,] "fáil"   "going"        "fianna"   "workers"   "recent"   "level" 
-## [5,] "face"   "nation"       "policies" "hospital"  "details"  "third" 
-##      Topic 18  Topic 19     Topic 20   
-## [1,] "levy"    "million"    "failed"   
-## [2,] "million" "level"      "strategy" 
-## [3,] "carbon"  "measures"   "needed"   
-## [4,] "change"  "investment" "ministers"
-## [5,] "welfare" "scheme"     "system"</code></pre>
+<pre><code>##      Topic 1  Topic 2     Topic 3    Topic 4     Topic 5      
+## [1,] "fianna" "taoiseach" "measures" "taoiseach" "alternative"
+## [2,] "fáil"   "employees" "review"   "fine"      "citizenship"
+## [3,] "side"   "rate"      "spending" "gael"      "wealth"     
+## [4,] "level"  "referred"  "million"  "may"       "adjustment" 
+## [5,] "third"  "debate"    "reduce"   "irish"     "breaks"     
+##      Topic 6       Topic 7       Topic 8    Topic 9  Topic 10   Topic 11  
+## [1,] "kind"        "million"     "million"  "care"   "hospital" "fianna"  
+## [2,] "imagination" "continue"    "pension"  "hit"    "fianna"   "child"   
+## [3,] "policies"    "development" "level"    "system" "family"   "irish"   
+## [4,] "wit"         "confidence"  "welfare"  "per"    "carers"   "ensure"  
+## [5,] "create"      "back"        "spending" "child"  "modest"   "measures"
+##      Topic 12   Topic 13   Topic 14    Topic 15  Topic 16  Topic 17    
+## [1,] "face"     "welfare"  "measures"  "child"   "levy"    "support"   
+## [2,] "welfare"  "system"   "pension"   "benefit" "million" "investment"
+## [3,] "fianna"   "taxation" "allowance" "day"     "carbon"  "welfare"   
+## [4,] "top"      "fianna"   "scheme"    "bank"    "change"  "scheme"    
+## [5,] "building" "fáil"     "rate"      "banks"   "welfare" "measures"  
+##      Topic 18       Topic 19   Topic 20   
+## [1,] "society"      "fáil"     "failed"   
+## [2,] "enterprising" "national" "strategy" 
+## [3,] "sense"        "support"  "needed"   
+## [4,] "equal"        "irish"    "ministers"
+## [5,] "nation"       "benefit"  "system"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </section></section><section id="processing-chinese-documentation" class="level1"><h1>Quanteda处理中文文档</h1>
 <section id="chinese-stop-words" class="level2"><h2>中文停用词：取自百度停用词</h2>
