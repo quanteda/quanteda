@@ -30,6 +30,13 @@
 #' g <- textplot_xray(kwic(data_corpus_inauguralPost70, "american"), 
 #'                    kwic(data_corpus_inauguralPost70, "people"))
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
+#' 
+#' # adjust the names of the document names
+#' docnames(data_corpus_inauguralPost70) <- apply(docvars(data_corpus_inauguralPost70, 
+#'                                                        c("Year", "President")), 
+#'                                               1, paste, collapse = ", ")
+#' textplot_xray(kwic(data_corpus_inauguralPost70, "america*"), 
+#'               kwic(data_corpus_inauguralPost70, "people"))
 #' }
 #' @export
 #' @keywords textplot

@@ -105,31 +105,31 @@ dfm(corpus_post1900inaug, dictionary = mydict)
 
 
 # removing stopwords
-testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
+test_text <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a boy named Seamus, in his mouth."
-testCorpus <- corpus(testText)
+test_corpus <- corpus(test_text)
 # note: "also" is not in the default stopwords("english")
-featnames(dfm(testCorpus, select = stopwords("english")))
+featnames(dfm(test_corpus, select = stopwords("english")))
 # for ngrams
-featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), remove_punct = TRUE))
-featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), remove_punct = TRUE))
+featnames(dfm(test_corpus, ngrams = 2, select = stopwords("english"), remove_punct = TRUE))
+featnames(dfm(test_corpus, ngrams = 1:2, select = stopwords("english"), remove_punct = TRUE))
 
 # removing stopwords before constructing ngrams
-tokensAll <- tokens(char_tolower(testText), remove_punct = TRUE)
-tokensNoStopwords <- tokens_remove(tokensAll, stopwords("english"))
-tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
-featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
+tokens_all <- tokens(char_tolower(test_text), remove_punct = TRUE)
+tokens_no_stopwords <- tokens_remove(tokens_all, stopwords("english"))
+tokens_ngrams_no_stopwords <- tokens_ngrams(tokens_no_stopwords, 2)
+featnames(dfm(tokens_ngrams_no_stopwords, verbose = FALSE))
 
 # keep only certain words
-dfm(testCorpus, select = "*s", verbose = FALSE)  # keep only words ending in "s"
-dfm(testCorpus, select = "s$", valuetype = "regex", verbose = FALSE)
+dfm(test_corpus, select = "*s", verbose = FALSE)  # keep only words ending in "s"
+dfm(test_corpus, select = "s$", valuetype = "regex", verbose = FALSE)
 
 # testing Twitter functions
-testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
+test_tweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
-dfm(testTweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
+dfm(test_tweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
+dfm(test_tweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
 
 # for a dfm
 dfm1 <- dfm(data_corpus_irishbudget2010)

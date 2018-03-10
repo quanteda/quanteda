@@ -6,10 +6,10 @@
 #' @keywords internal 
 #' @examples
 #' # summarize texts
-#' summary(c("Testing this text.  Second sentence.", "And this one."))
+#' summary(c("Testing this text. Second sentence.", "And this one."))
 #' summary(data_char_ukimmig2010)
-#' myTextSummaryDF <- summary(data_char_ukimmig2010)
-#' head(myTextSummaryDF)
+#' mysummary_ukimmig2010 <- summary(data_char_ukimmig2010)
+#' head(mysummary_ukimmig2010)
 summary.character <- function(object, n = 100, tolower = FALSE, ...) {
     
     # trap the verbose argument and ignore
