@@ -56,11 +56,11 @@ topfeatures(ch_dfm)
 set.seed(100)
 
 # to set the font correctly for macOS
-if (Sys.info()['sysname'] == "Darwin") par(family = "STSong") 
-dfm_trim(ch_dfm, min_count = 500) %>%
-    textplot_wordcloud(min_count = 6, random_order = FALSE,
-                       rotation = .25, max_words = 100,
-                       min_size = 0.5, max_size = 2.8)
+textplot_wordcloud(ch_dfm, min_count = 500, random_order = FALSE,
+                   rotation = .25, max_words = 100,
+                   min_size = 0.5, max_size = 2.8,
+                   font = if (Sys.info()['sysname'] == "Darwin") "SimHei" else NULL,
+                   color = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ## Feature co-occurrence matrix

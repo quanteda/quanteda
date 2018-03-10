@@ -373,7 +373,7 @@ data(data_corpus_sotu, package = "quanteda.corpora")
 pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
-pres_dfm <- dfm_trim(pres_dfm, min_count = 5, min_docfreq = 3)
+pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
 
 #分层聚类 -  在归一化dfm上计算距离
 pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
@@ -408,7 +408,7 @@ textmodel_wordfish(ie_dfm, dir = c(2, 1))
 ```{r}
 quant_dfm <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quant_dfm <- dfm_trim(quant_dfm, min_count = 4, max_docfreq = 10)
+quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
 
 if (require(topicmodels)) {
@@ -455,12 +455,13 @@ topfeatures(chdfm)
 
 # 绘制词云图
 set.seed(100)
-chdfm_tf <- dfm_trim(chdfm, min_count = 500)
+chdfm_tf <- dfm_trim(chdfm, min_termfreq = 500)
 # 设置适用于MacOS的字体
-if (Sys.info()['sysname'] == "Darwin") par(family = "STSong") 
-textplot_wordcloud(chdfm_tf, min.freq = 6, random.order = FALSE,
-                   rot.per = .25, max.words = 100, scale = c(2.8, .5),
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+textplot_wordcloud(chdfm_tf, min_count = 6, random_order = FALSE,
+                   rot_per = .25, max_words = 100, 
+                   min_size = .5, max_size = 2.8,
+                   font = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL,
+                   color = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 

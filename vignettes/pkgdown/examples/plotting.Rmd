@@ -19,7 +19,7 @@ The frequency of features can be plotted as a wordcloud using `textplot_wordclou
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
     dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
-    dfm_trim(min_count = 10, verbose = FALSE)
+    dfm_trim(min_termfreq = 10, verbose = FALSE)
 
 set.seed(100)
 textplot_wordcloud(dfm_inaug)
@@ -31,7 +31,7 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 corpus_subset(data_corpus_inaugural, 
               President %in% c("Washington", "Jefferson", "Madison")) %>%
     dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE) %>%
-    dfm_trim(min_count = 5, verbose = FALSE) %>%
+    dfm_trim(min_termfreq = 5, verbose = FALSE) %>%
     textplot_wordcloud(comparison = TRUE)
 ```
 

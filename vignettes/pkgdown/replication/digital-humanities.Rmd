@@ -447,14 +447,14 @@ textplot_xray(dogkwic, scale = "absolute")
 
 # 11 Clustering
 
-Chapter 11 describes how to detect clusters in a corpus. While the book uses the `XMLAuthorCorpus`, we describe clustering using U.S. State of the Union addresses included in the **quantedaData** package. We trim the corpus with `dfm_trim()` by keeping only those words that occur at least five times in the corpus and in at least three speeches.
+Chapter 11 describes how to detect clusters in a corpus. While the book uses the `XMLAuthorCorpus`, we describe clustering using U.S. State of the Union addresses included in the **quanteda.corpora** package. We trim the corpus with `dfm_trim()` by keeping only those words that occur at least five times in the corpus and in at least three speeches.
 
 ```{r}
-library(quantedaData)
-pres_dfm <- dfm(corpus_subset(data_corpus_SOTU, Date > "1980-01-01"), 
+library(quanteda.corpora)
+pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english")) %>% 
-    dfm_trim(min_count = 5, min_docfreq = 3)
+    dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
@@ -479,7 +479,7 @@ Finally, Jockers' book introduces topic modeling of a corpus and the visualisati
 ```{r}
 dfm_speeches <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english")) %>% 
-    dfm_trim(min_count = 4, max_docfreq = 10)
+    dfm_trim(min_termfreq = 4, max_docfreq = 10)
 
 library(topicmodels)
 LDA_fit_20 <- convert(dfm_speeches, to = "topicmodels") %>% 

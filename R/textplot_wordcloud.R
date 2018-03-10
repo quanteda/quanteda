@@ -46,7 +46,7 @@
 #' obama_dfm <- 
 #'     dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
 #'         remove = stopwords("english"), remove_punct = TRUE) %>%
-#'     dfm_trim(min_count = 3)
+#'     dfm_trim(min_termfreq = 3)
 #'     
 #' # basic wordcloud
 #' textplot_wordcloud(obama_dfm)
@@ -64,7 +64,7 @@
 #' obama_trump_dfm <- 
 #'     dfm(corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump")),
 #'         remove = stopwords("english"), remove_punct = TRUE, groups = "President") %>%
-#'     dfm_trim(min_count = 3)
+#'     dfm_trim(min_termfreq = 3)
 #' 
 #' textplot_wordcloud(obama_trump_dfm, comparison = TRUE, max_words = 300,
 #'                    color = c("blue", "red"))
@@ -211,7 +211,7 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
     nc <- length(color)
     
     font <- check_font(font)
-    x <- dfm_trim(x, min_count = min_count)
+    x <- dfm_trim(x, min_termfreq = min_count)
     freq <- Matrix::colSums(x)
     word <- names(freq)
     freq <- unname(freq)
@@ -365,7 +365,7 @@ wordcloud_comparison <- function(x, min_size, max_size, min_count, max_words,
     }
     
     font <- check_font(font)
-    x <- dfm_trim(x, min_count = min_count)
+    x <- dfm_trim(x, min_termfreq = min_count)
     x <- dfm_weight(x, 'prop')
     x <- t(x) - Matrix::colMeans(x)
     x <- as.matrix(x)

@@ -375,7 +375,8 @@ data(data_corpus_sotu, package = "quanteda.corpora")
 pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
-pres_dfm <- dfm_trim(pres_dfm, min_count = 5, min_docfreq = 3)
+pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
+
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
 # hiarchical clustering the distance object
@@ -408,7 +409,7 @@ textmodel_wordfish(ie_dfm, dir = c(2, 1))
 ```{r}
 quant_dfm <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quant_dfm <- dfm_trim(quant_dfm, min_count = 4, max_docfreq = 10)
+quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
 
 set.seed(100)

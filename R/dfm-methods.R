@@ -262,7 +262,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 #' @examples 
 #' inaug_dfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 #' sparsity(inaug_dfm)
-#' sparsity(dfm_trim(inaug_dfm, min_count = 5))
+#' sparsity(dfm_trim(inaug_dfm, min_termfreq = 5))
 #' @export
 sparsity <- function(x) {
     UseMethod("sparsity")

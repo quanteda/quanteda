@@ -4,33 +4,58 @@
 \alias{dfm_trim}
 \title{Trim a dfm using frequency threshold-based feature selection}
 \usage{
-dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
-  max_docfreq = NULL, sparsity = NULL,
-  verbose = quanteda_options("verbose"))
+dfm_trim(x, min_termfreq = NULL, max_termfreq = NULL,
+  termfreq_type = c("count", "rank", "quantile"), min_docfreq = NULL,
+  max_docfreq = NULL, docfreq_type = c("count", "rank", "quantile"),
+  sparsity = NULL, verbose = quanteda_options("verbose"), ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{min_count, max_count}{minimum/maximum count or percentile frequency of
-features across all documents, below/above which features will be removed}
+\item{min_termfreq, max_termfreq}{minimum/maximum values of feature frequencies
+across all documents, below/above which features will
+  be removed}
 
-\item{min_docfreq, max_docfreq}{minimum/maximum number or fraction of
-documents in which a feature appears, below/above which features will be
-removed}
+\item{termfreq_type}{how \code{min_termfreq} and \code{max_termfreq} are
+intepreted.  \code{"count"} sums the frequencies; \code{"rank"} is matched
+against the inverted ranking of features in terms of overall frequency, so
+that 1, 2, ... are the highest and second highest frequency features, and
+so on; \code{"quantile"} sets the cutoffs according to the quantiles (see
+\code{\link{quantile}}) of term frequencies.}
 
-\item{sparsity}{equivalent to 1 - min_docfreq, included for comparison with
-\pkg{tm}}
+\item{min_docfreq, max_docfreq}{minimum/maximum values of a feature's document
+frequency, below/above which features will be removed}
+
+\item{docfreq_type}{specify how \code{min_docfreq} and \code{max_docfreq} are
+intepreted.   \code{"count"} is the same as \code{\link{docfreq}(x, scheme
+= "count")}; \code{"rank"} is matched against the inverted ranking of
+document frequency, so that 1, 2, ... are the features with the highest and
+second highest document frequencies, and so on; \code{"quantile"} sets the
+cutoffs according to the quantiles (see \code{\link{quantile}}) of document
+frequencies.}
+
+\item{sparsity}{equivalent to \code{1 - min_docfreq}, included for comparison
+with \pkg{tm}}
 
 \item{verbose}{print messages}
+
+\item{...}{not used}
 }
 \value{
 A \link{dfm} reduced in features (with the same number of documents)
 }
 \description{
-Returns a document by feature matrix reduced in size based on document and
-term frequency, usually in terms of a minimum frequencies, but may also be in
-terms of maximum frequencies.  Setting a combination of minimum and maximum
-frequencies will select features based on a range.
+Returns a document by feature matrix reduced in size based on
+  document and term frequency, usually in terms of a minimum frequency, but
+  may also be in terms of maximum frequencies.  Setting a combination of
+  minimum and maximum frequencies will select features based on a range.
+
+Feature selection is implemented by considering features across
+  all documents, by summing them for term frequency, or counting the
+  documents in which they occur for document frequency. Rank and quantile
+  versions of these are also implemented, for taking the first \eqn{n}
+  features in terms of descending order of overall global counts or document
+  frequencies, or as a quantile of all frequencies.
 }
 \note{
 Trimming a \link{dfm} object is an operation based on the \emph{values}
@@ -40,32 +65,32 @@ Trimming a \link{dfm} object is an operation based on the \emph{values}
   removing features matching a stopword list, use \code{\link{dfm_select}}.
 }
 \examples{
-(my_dfm <- dfm(data_corpus_inaugural[1:5]))
+(mydfm <- dfm(data_corpus_inaugural[1:5]))
 
-# keep only words occurring >=10 times and in >=2 documents
-dfm_trim(my_dfm, min_count = 10, min_docfreq = 2)
+# keep only words occurring >= 10 times and in >= 2 documents
+dfm_trim(mydfm, min_termfreq = 10, min_docfreq = 2)
 
-# keep only words occurring >=10 times and in at least 0.4 of the documents
-dfm_trim(my_dfm, min_count = 10, min_docfreq = 0.4)
+# keep only words occurring >= 10 times and in at least 0.4 of the documents
+dfm_trim(mydfm, min_termfreq = 10, min_docfreq = 0.4)
 
-# keep only words occurring <=10 times and in <=2 documents
-dfm_trim(my_dfm, max_count = 10, max_docfreq = 2)
+# keep only words occurring <= 10 times and in <=2 documents
+dfm_trim(mydfm, max_termfreq = 10, max_docfreq = 2)
 
-# keep only words occurring <=10 times and in at most 3/4 of the documents
-dfm_trim(my_dfm, max_count = 10, max_docfreq = 0.75)
-
-# keep only words occurring frequently (top 20\%) and in <=2 documents
-dfm_trim(my_dfm, min_count = 0.8, max_docfreq = 2)
+# keep only words occurring <= 10 times and in at most 3/4 of the documents
+dfm_trim(mydfm, max_termfreq = 10, max_docfreq = 0.75)
 
 # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
-dfm_trim(my_dfm, min_docfreq = 0.4, min_count = 0.005)
+dfm_trim(mydfm, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
+
+# keep only words occurring frequently (top 20\%) and in <=2 documents
+dfm_trim(mydfm, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")
 
 \dontrun{
 # compare to removeSparseTerms from the tm package
-(my_dfm_tm <- convert(my_dfm, "tm"))
-tm::removeSparseTerms(my_dfm_tm, 0.7)
-dfm_trim(my_dfm, min_docfreq = 0.3)
-dfm_trim(my_dfm, sparsity = 0.7)
+(mydfm_tm <- convert(mydfm, "tm"))
+tm::removeSparseTerms(mydfm_tm, 0.7)
+dfm_trim(mydfm, min_docfreq = 0.3)
+dfm_trim(mydfm, sparsity = 0.7)
 }
 
 }
