@@ -95,21 +95,21 @@ This function selects features based on their labels.  To select
   \code{\link{dfm_trim}}.
 }
 \examples{
-myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
+my_dfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
              tolower = FALSE, verbose = FALSE)
-mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
+my_dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))
-dfm_select(myDfm, mydict)
-dfm_select(myDfm, mydict, case_insensitive = FALSE)
-dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
-dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
-dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
-dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
+dfm_select(my_dfm, my_dict)
+dfm_select(my_dfm, my_dict, case_insensitive = FALSE)
+dfm_select(my_dfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(my_dfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(my_dfm, stopwords("english"), selection = "keep", valuetype = "fixed")
+dfm_select(my_dfm, stopwords("english"), selection = "remove", valuetype = "fixed")
 
 # select based on character length
-dfm_select(myDfm, min_nchar = 5)
+dfm_select(my_dfm, min_nchar = 5)
 
 # selecting on a dfm
 txts <- c("This is text one", "The second text", "This is text three")

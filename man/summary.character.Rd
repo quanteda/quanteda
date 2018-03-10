@@ -20,9 +20,9 @@ Internal-only function to compute summary statistics on a character object.
 }
 \examples{
 # summarize texts
-summary(c("Testing this text.  Second sentence.", "And this one."))
+summary(c("Testing this text. Second sentence.", "And this one."))
 summary(data_char_ukimmig2010)
-myTextSummaryDF <- summary(data_char_ukimmig2010)
-head(myTextSummaryDF)
+mysummary_ukimmig2010 <- summary(data_char_ukimmig2010)
+head(mysummary_ukimmig2010)
 }
 \keyword{internal}
