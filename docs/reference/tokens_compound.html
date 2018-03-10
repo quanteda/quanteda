@@ -236,8 +236,8 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt;   text1          0                 1               1
 #&gt;   text2          1                 0               0</div><div class='input'>
 <span class='co'># when used as a dictionary for dfm creation</span>
-<span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax*"</span>)))
-(<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='no'>mydict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax*"</span>)))
+(<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict1</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
@@ -250,7 +250,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt; [10] "inheritance_taxes"
 #&gt; </div><div class='input'>
 <span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
-(<span class='no'>cw3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+(<span class='no'>cw3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict1</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
@@ -263,11 +263,11 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt; [10] "inheritance_taxes"
 #&gt; </div><div class='input'>
 <span class='co'># dictionaries w/glob matches</span>
-<span class='no'>myDict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>negative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"bad* word*"</span>, <span class='st'>"negative"</span>, <span class='st'>"awful text"</span>),
+<span class='no'>mydict2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>negative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"bad* word*"</span>, <span class='st'>"negative"</span>, <span class='st'>"awful text"</span>),
                           <span class='kw'>positive</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"good stuff"</span>, <span class='st'>"like? th??"</span>)))
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"I liked this, when we can use bad words, in awful text."</span>,
                  <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"Some damn good stuff, like the text, she likes that too."</span>))
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>myDict</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; txt1 :
 #&gt;  [1] "I"          "liked_this" ","          "when"       "we"        
 #&gt;  [6] "can"        "use"        "bad_words"  ","          "in"        

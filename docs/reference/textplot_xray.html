@@ -207,6 +207,13 @@ name</p></td>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inauguralPost70</span>, <span class='st'>"american"</span>),
                    <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inauguralPost70</span>, <span class='st'>"people"</span>))
 <span class='no'>g</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>keyword</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual'>scale_color_manual</a></span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>))
+
+<span class='co'># adjust the names of the document names</span>
+<span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>data_corpus_inauguralPost70</span>) <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inauguralPost70</span>,
+                                                       <span class='fu'>c</span>(<span class='st'>"Year"</span>, <span class='st'>"President"</span>)),
+                                              <span class='fl'>1</span>, <span class='no'>paste</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>", "</span>)
+<span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inauguralPost70</span>, <span class='st'>"america*"</span>),
+              <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inauguralPost70</span>, <span class='st'>"people"</span>))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -75,8 +75,8 @@ library(quanteda)
 次の例では，**quanteda**パッケージに含まれているイギリスの政党が2010年の総選挙のために発行したマニフェストのテキストデータ（`data_char_ukimmig2010`）からコーパスを作成している．
 
 ```{r}
-myCorpus <- corpus(data_char_ukimmig2010)  # テキストからコーパスを作成
-summary(myCorpus)
+my_corpus <- corpus(data_char_ukimmig2010)  # テキストからコーパスを作成
+summary(my_corpus)
 ```
 
 コーパスを作成したあとでも，`docvars`を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．
@@ -84,17 +84,17 @@ summary(myCorpus)
 たとえば，Rの`names()`関数を使って文字ベクトル（`data_char_ukimmig2010`）の名前を取得し，これを文書変数（`docvar()`）に追加することができる．
 
 ```{r}
-docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
-docvars(myCorpus, "Year") <- 2010
-summary(myCorpus)
+docvars(my_corpus, "Party") <- names(data_char_ukimmig2010)
+docvars(my_corpus, "Year") <- 2010
+summary(my_corpus)
 ```
 
 分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，`docvars()`を使って，コーパスに追加することができる．
 
 ```{r}
-metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpus), sep = "_")
-summary(myCorpus, showmeta = TRUE)
+metadoc(my_corpus, "language") <- "english"
+metadoc(my_corpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(my_corpus), sep = "_")
+summary(my_corpus, showmeta = TRUE)
 ```
 
 `metadoc()`を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（"english"）を文書変数（"language"）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．
@@ -108,8 +108,8 @@ require(readtext)
 
 # Twitter json
 mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-myCorpusTwitter <- corpus(mytf1)
-summary(myCorpusTwitter, 5)
+my_corpusTwitter <- corpus(mytf1)
+summary(my_corpusTwitter, 5)
 # generic json - needs a textfield specifier
 mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
                   textfield = "text")
@@ -160,8 +160,9 @@ summary(data_corpus_irishbudget2010)
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+    ggplot(data = tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+        scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) + 
+    theme_bw()
 
 # Longest inaugural address: William Henry Harrison
 tokenInfo[which.max(tokenInfo$Tokens), ] 
@@ -176,10 +177,10 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 
 ```{r}
 library(quanteda)
-mycorpus1 <- corpus(data_corpus_inaugural[1:5])
-mycorpus2 <- corpus(data_corpus_inaugural[53:58])
-mycorpus3 <- mycorpus1 + mycorpus2
-summary(mycorpus3)
+my_corpus1 <- corpus(data_corpus_inaugural[1:5])
+my_corpus2 <- corpus(data_corpus_inaugural[53:58])
+my_corpus3 <- my_corpus1 + my_corpus2
+summary(my_corpus3)
 ```
 
 ### コーパスから文書を抽出 {#subsetting-corpus-objects}
@@ -259,15 +260,15 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 データからすぐに文書行列を作成したい場合は、`dfm()`に直接文字列ベクトルもしくはコーパスを渡すと、自動的にトークン化が行われ。`dfm()`は、デフォルトで大文字から小文字への置換や，句読点を除去などの操作を適用する．また，`dfm()`から`tokens()`の全てのオプションを利用できる．
 
 ```{r}
-myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
-myDfm <- dfm(myCorpus)
-myDfm[, 1:5]
+my_corpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
+my_dfm <- dfm(my_corpus)
+my_dfm[, 1:5]
 ```
 
 以下の例では`dfm()`の追加のオプションを用いて、ストップワードの削除（`remove`）と語のステミング（`stem`）を行っている．
 
 ```{r}
-myStemMat <- dfm(myCorpus, remove = stopwords("english"), 
+myStemMat <- dfm(my_corpus, remove = stopwords("english"), 
                  stem = TRUE, remove_punct = TRUE)
 myStemMat[, 1:5]
 ```
@@ -282,26 +283,26 @@ head(stopwords("arabic"), 10)
 
 ### 文書行列の表示 {#viewing-the-document-feature-matrix}
 
-RStudioの"Environment"パネル，またはRの`View()`を用いることで，dfmに格納された値を見ることができる．dfmに対して`plot()`を用いると，[**wordcloud**](https://cran.r-project.org/web/packages/wordcloud)を使ってワードクラウドが表示される．
+RStudioの"Environment"パネル，またはRの`View()`を用いることで，dfmに格納された値を見ることができる．
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
-mydfm
+my_dfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+my_dfm
 ```
 
 頻度が最も高い特長を見るには，`topfeatures()`を用いる．
 
 ```{r}
-topfeatures(mydfm, 20)  # 20 top words
+topfeatures(my_dfm, 20)  # 20 top words
 ```
 
 dfmを`textplot_wordcloud()`に渡すことで，ワードクラウドを描画できる．この関数は，オブジェクトや引数を**wordcloud**パッケージの`wordcloud()`に渡すので，ワードクラウドの表示を変更できる．
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
-textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
-                   rot.per = .25, 
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+textplot_wordcloud(my_dfm, min_count = 6, random_order = FALSE,
+                   rotation = .25, 
+                   color = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ### 変数による文書のグループ化 {#grouping-documents-by-document-variable}
@@ -309,14 +310,14 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
 **quanteda**では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．
 
 ```{r}
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
+by_party_dfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
                   remove = stopwords("english"), remove_punct = TRUE)
 ```
 
 また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられる．
 
 ```{r}
-dfm_sort(byPartyDfm)[, 1:10]
+dfm_sort(by_party_dfm)[, 1:10]
 ```
 
 
@@ -358,34 +359,35 @@ liwcdfm[, 1:10]
 ## 文書の類似性 {#similarities-between-texts}
 
 ```{r fig.width = 6}
-presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), 
+obama_simil <- textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), 
                              margin = "documents", method = "cosine")
-obamaSimil
-# dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
+obama_simil
+# dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")
 ```
 
 上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quanteda.corpora")
-presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
+data(data_corpus_sotu, package = "quanteda.corpora")
+pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
-presDfm <- dfm_trim(presDfm, min_termfreq = 5, min_docfreq = 3)
+pres_dfm <- dfm_trim(pres_dfm, min_count = 5, min_docfreq = 3)
+
 # hierarchical clustering - get distances on normalized dfm
-presDistMat <- textstat_dist(dfm_weight(presDfm, "prop"))
+pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
 # hiarchical clustering the distance object
-presCluster <- hclust(presDistMat)
+pres_cluster <- hclust(pres_dist_mat)
 # label with document names
-presCluster$labels <- docnames(presDfm)
+pres_cluster$labels <- docnames(pres_dfm)
 # plot as a dendrogram
-plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 文書間と同様に用語間の類似性も測定できる．
 ```{r}
-sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
@@ -394,8 +396,8 @@ lapply(as.list(sim), head, 10)
 **quanteda**には多数のテキスト分析のためのモデルが含まれている．ここでは，ワードフィッシュ（`textmodel_wordfish()`）による教師なしの文書のスケーリングを2010年のアイルランドの予算討論の分析に用いている．
 
 ```{r}
-ieDfm <- dfm(data_corpus_irishbudget2010)
-textmodel_wordfish(ieDfm, dir = c(2, 1))
+ie_dfm <- dfm(data_corpus_irishbudget2010)
+textmodel_wordfish(ie_dfm, dir = c(2, 1))
 ```
 
 ## トピックモデル {#topic-models}
@@ -403,13 +405,14 @@ textmodel_wordfish(ieDfm, dir = c(2, 1))
 `convert()`を用いると，dfmを**topicmodels**の`LDA()`形式のデータに転換し，簡単にトピックモデルを適用できる．
 
 ```{r}
-quantdfm <- dfm(data_corpus_irishbudget2010, 
+quant_dfm <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quantdfm <- dfm_trim(quantdfm, min_termfreq = 4, max_docfreq = 10)
-quantdfm
+quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
+quant_dfm
 
+set.seed(100)
 if (require(topicmodels)) {
-    myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)
-    get_terms(myLDAfit20, 5)
+    my_lda_fit20 <- LDA(convert(quant_dfm, to = "topicmodels"), k = 20)
+    get_terms(my_lda_fit20, 5)
 }
 ```
