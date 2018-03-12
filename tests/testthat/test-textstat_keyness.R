@@ -48,10 +48,17 @@ test_that("keyness_chi2 internal methods are equivalent", {
 test_that("basic textstat_keyness works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
-    expect_equal(textstat_keyness(mydfm)$feature,
+    key1 <- textstat_keyness(mydfm)
+    expect_equal(key1$feature,
                  c("g", "c", "b", "h", "a", "e", "f", "d"))
-    expect_equal(textstat_keyness(mydfm, target = 2)$feature,
+    expect_equal(attr(key1, 'groups'),
+                 c("d1", "d2"))
+    key2 <- textstat_keyness(mydfm, target = 2)
+    expect_equal(key2$feature,
                  c("d", "e", "f", "a", "b", "h", "c", "g"))
+    expect_equal(attr(key2, 'groups'),
+                 c("d2", "d1"))
+
 })
 
 test_that("textstat_keyness works with different targets", {
@@ -71,8 +78,11 @@ test_that("textstat_keyness works with different targets", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h", 
                    d3 = "a a a a b b c c d d d d d d"))
-    expect_equal(textstat_keyness(mydfm, 3),
-                 textstat_keyness(mydfm, target = "d3"))    
+    key1 <- textstat_keyness(mydfm, 3)
+    key2 <- textstat_keyness(mydfm, target = "d3")
+    expect_equal(key1, key2)
+    expect_equal(attr(key1, 'groups'), c("target", "reference"))
+    expect_equal(attr(key2, 'groups'), c("target", "reference"))
 })
 
 test_that("textstat_keyness combines non-target rows correctly", {
