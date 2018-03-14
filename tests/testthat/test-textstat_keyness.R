@@ -1,3 +1,4 @@
+context("test textstat_keyness()")
 
 test_that("keyness_textstat chi2 computation is correct", {
     mydfm <- dfm(c(d1 = "b b b b b b b a a a",
@@ -17,6 +18,34 @@ test_that("keyness_textstat chi2 computation is correct", {
     expect_equivalent(
         result$statistic,
         textstat_keyness(mydfm, sort = FALSE, correction = "none")[[1, 2]]
+    )
+})
+
+test_that("keyness_textstat chi2 computation is correct for three rows", {
+    txt <- c(d1 = "b b b b b b b a a a",
+             d2 = "a a a a a a a b b",
+             d3 = "a a a b b b")
+    mydfm <- dfm(txt)
+    mydfm_grouped <- dfm(txt, groups = c("target", "zref", "zref"))
+    suppressWarnings(
+        result <- stats::chisq.test(as.matrix(mydfm_grouped), correct = TRUE)
+    )
+    expect_equal(
+        as.numeric(result$statistic),
+        as.numeric(textstat_keyness(mydfm, sort = FALSE, correction = "default")[1, "chi2"])
+    )
+    expect_equal(
+        as.numeric(textstat_keyness(mydfm, sort = FALSE, correction = "default")[1, "chi2"]),
+        as.numeric(textstat_keyness(mydfm, sort = FALSE, correction = "yates")[1, "chi2"])
+    )
+    
+    # uncorrected
+    suppressWarnings(
+        result <- stats::chisq.test(as.matrix(mydfm_grouped), correct = FALSE)
+    )
+    expect_equal(
+        as.numeric(result$statistic),
+        as.numeric(textstat_keyness(mydfm, sort = FALSE, correction = "none")[1, "chi2"])
     )
 })
 
