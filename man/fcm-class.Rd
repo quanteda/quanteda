@@ -19,6 +19,8 @@ The fcm class of object is a special type of \link{dfm}
 
 \item{\code{weights}}{context weighting for distance from target feature, equal in length to \code{window}}
 
+\item{\code{margin}}{frequencies of features in the original \link{dfm} or \link{tokens}}
+
 \item{\code{tri}}{whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded}
 
 \item{\code{ordered}}{whether a term appears before or after the target feature 

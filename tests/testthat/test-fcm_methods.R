@@ -9,30 +9,33 @@ test_that("fcm_compress works as expected, not working for 'window' context",{
 })
 
 myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
+
 test_that("fcm_tolower and fcm_compress work as expected",{
     lc_fcm <- fcm_tolower(myfcm)
     expect_equivalent(rownames(lc_fcm), 
                       c("b", "a", "d", "c", "e"))
-    aMat <- matrix(c(1, 3, 1, 2, 2, 
+    mt <- matrix(c(1, 3, 1, 2, 2, 
                      0, 1, 2, 0, 1, 
                      0, 0, 0, 0, 0, 
                      0, 0, 0, 1, 2, 
                      0, 0, 0, 0, 0),
                    nrow = 5, ncol = 5, byrow = TRUE)
-    expect_true(all(as.vector(Matrix::triu(lc_fcm)) == as.vector(aMat)))
+    expect_true(all(as.vector(Matrix::triu(lc_fcm)) == as.vector(mt)))
+    expect_equal(lc_fcm@margin, myfcm@margin)
 })
 
 test_that("fcm_toupper and fcm_compress work as expected",{
     uc_fcm <- fcm_toupper(myfcm)
     expect_equivalent(rownames(uc_fcm), 
                       c("B", "A", "D", "C", "E"))
-    aMat <- matrix(c(1, 3, 1, 2, 2, 
+    mt <- matrix(c(1, 3, 1, 2, 2, 
                      0, 1, 2, 0, 1, 
                      0, 0, 0, 0, 0, 
                      0, 0, 0, 1, 2, 
                      0, 0, 0, 0, 0),
                    nrow = 5, ncol = 5, byrow = TRUE)
-    expect_true(all(as.vector(Matrix::triu(uc_fcm)) == as.vector(aMat)))
+    expect_true(all(as.vector(Matrix::triu(uc_fcm)) == as.vector(mt)))
+    expect_equal(uc_fcm@margin, myfcm@margin)
 })
 
 
