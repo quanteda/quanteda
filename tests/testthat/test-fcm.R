@@ -179,8 +179,8 @@ test_that("ordered setting: boolean",{
 
 # Testing "count" with multiple documents
 test_that("counting the frequency of the co-occurrences",{
-    txts <- c("a a a b b c", "a a c e", "a c e f g")
-    fcm <- fcm(txts, context = "document", count = "frequency", tri = TRUE)           
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    fcm <- fcm(txt, context = "document", count = "frequency", tri = TRUE)           
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c(4, 6, 6, 3, 1, 1,
                      0, 1, 2, 0, 0, 0,
@@ -190,21 +190,23 @@ test_that("counting the frequency of the co-occurrences",{
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_true(all(round(fcm, 2) == round(aMat, 2)))
+    expect_equal(fcm@margin, colSums(dfm(txt)))
 })
 
 test_that("counting the co-occurrences in 'boolean' way",{
-    txts <- c("a a a b b c", "a a c e", "a c e f g")
-    fcm <- fcm(txts, context = "document", count = "boolean")           
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    fcm <- fcm(txt, context = "document", count = "boolean")           
     fcm <- fcm_sort(fcm)
     
-    aMat <- matrix(c(2, 1, 3, 2, 1, 1,
+    mt <- matrix(c(2, 1, 3, 2, 1, 1,
                      0, 1, 1, 0, 0, 0,
                      0, 0, 0, 2, 1, 1,
                      0, 0, 0, 0, 1, 1,
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(aMat, 2)))
+    expect_true(all(round(fcm, 2) == round(mt, 2)))
+    expect_equal(fcm@margin, colSums(dfm(txt)))
 })
 
 # Testing the setting of window size
@@ -217,7 +219,7 @@ test_that("window = 2",{
     fcmTexts <- fcm(toks, context = "window", count = "boolean", window = 2) 
     expect_equivalent(as.matrix(fcm), as.matrix(fcmTexts))
     
-    aMat <- matrix(c(2, 1, 2, 2, 0, 0,
+    mt <- matrix(c(2, 1, 2, 2, 0, 0,
                      0, 1, 1, 0, 0, 0,
                      0, 0, 0, 2, 1, 0,
                      0, 0, 0, 0, 1, 1,
@@ -225,7 +227,8 @@ test_that("window = 2",{
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     fcm <- fcm_sort(fcm)
-    expect_equivalent(aMat, as.matrix(fcm))
+    expect_equivalent(mt, as.matrix(fcm))
+    expect_equal(fcm@margin, colSums(dfm(toks)))
 })
 
 test_that("window = 3",{

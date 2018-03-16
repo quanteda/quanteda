@@ -39,6 +39,7 @@ fcm_compress.fcm <- function(x) {
     x <- dfm_compress(x, margin = "both")
     result <- new("fcm", as(x, 'dgCMatrix'), count = attrs$count,
                   context = attrs$context, window = attrs$window,
+                  margin =  attrs$margin,
                   weights = attrs$weights, tri = attrs$tri)
     names(result@Dimnames) <- c("features", "features")
     return(result)
@@ -81,12 +82,15 @@ fcm_sort.fcm <- function(x) {
     x <- x[order(rownames(x)), order(colnames(x))]
     if (x@tri) {
         # make a triplet
-        tmp <- as(x, "dgTMatrix")
-        swap <- which(tmp@i > tmp@j)
-        i <- tmp@i[swap]
-        tmp@i[swap] <- tmp@j[swap]
-        tmp@j[swap] <- i
-        x <- new("fcm", as(tmp, "dgCMatrix")) 
+        temp <- as(x, "dgTMatrix")
+        swap <- which(temp@i > temp@j)
+        i <- temp@i[swap]
+        temp@i[swap] <- temp@j[swap]
+        temp@j[swap] <- i
+        x <- new("fcm", as(temp, "dgCMatrix"), count = attrs$count,
+                 context = attrs$context, 
+                 window = attrs$window, margin = attrs$margin,
+                 weights = attrs$weights, tri = attrs$tri) 
         slots(x) <- attrs
     }
     return(x)
@@ -131,7 +135,7 @@ fcm_select.fcm <- function(x, pattern = NULL,
                       case_insensitive, verbose = FALSE, ...))
     result <- new("fcm", as(x, 'dgCMatrix'), count = attrs$count,
                   context = attrs$context, 
-                  window = attrs$window, 
+                  window = attrs$window, margin = attrs$margin,
                   weights = attrs$weights, tri = attrs$tri)
     names(result@Dimnames) <- c("features", "features")
     return(result)
