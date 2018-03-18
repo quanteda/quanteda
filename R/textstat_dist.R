@@ -200,9 +200,10 @@ as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
     
     if (!is.null(attr(x, "Labels"))) label <- attr(x, "Labels")
     result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
+    names(result) <- colnames(x)
     attributes(x) <- NULL
-    names(result) <- if (!is.null(label)) label[seq_len(ncol(as.matrix(x)))]
-    
+    # names(result) <- if (!is.null(label)) label[seq_len(ncol(as.matrix(x)))]
+
     # remove the element of each similarity vector equal to the item itself
     for (m in names(result)) {
         result[[m]] <- result[[m]][m != names(result[[m]])]

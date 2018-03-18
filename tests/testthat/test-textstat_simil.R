@@ -1,4 +1,5 @@
-context('test textstat_simil.R')
+context("test textstat_simil.R")
+
 # correlation
 test_that("test textstat_simil method = \"correlation\" against proxy simil(): documents", {
     skip_if_not_installed("proxy")
