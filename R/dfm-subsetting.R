@@ -22,6 +22,10 @@
 setMethod("[", 
           signature = c("dfm", i = "index", j = "index", drop = "missing"),
           function(x, i, j, ..., drop = FALSE) {
+              if (any(i > nrow(x)))
+                  stop("Row index is too large.")
+              if (any(j > ncol(x)))
+                  stop("Column index is too large.")
               xnew <-  "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
               x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
