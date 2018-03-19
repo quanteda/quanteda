@@ -6,14 +6,11 @@
 #' selected).  They are fast and robust because they operate directly on the sparse
 #' \link{dfm} objects.
 #' @param x a \link{dfm} object
-#' @param selection character vector of document names or feature labels from
-#'   \code{x}; or, a numeric vector or matrix which is conforms to \code{x}. A
-#'   \code{"dist"} object is returned if selection is \code{NULL}, otherwise, a
-#'   matrix is returned matching distances to the documents or features identified
-#'   in the selection.
-#' @param margin identifies the margin of the dfm on which similarity or 
+#' @param selection a valid index for document or feature names from \code{x},
+#'   to be selected for comparison
+#' @param margin identifies the margin of the dfm on which similarity or
 #'   difference will be computed:  \code{"documents"} for documents or 
-#'   \code{"features"} for word/term features.
+#'   \code{"features"} for word/term features
 #' @param method method the similarity or distance measure to be used; see
 #'   Details
 #' @param upper  whether the upper triangle of the symmetric \eqn{V \times V} 
@@ -27,7 +24,10 @@
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in 
 #'   \code{\link{dfm_weight}(x, "prop")}.
-#' @return \code{textstat_simil} and \code{textstat_dist} return \code{dist} class objects.
+#' @return \code{textstat_simil} and \code{textstat_dist} return
+#'   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
+#'   matrix is returned matching distances to the documents or features
+#'   identified in the selection.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
 #'   \code{\link{dist}}
@@ -74,47 +74,18 @@ textstat_simil.dfm <- function(x, selection = NULL,
     margin <- match.arg(margin)
     
     if (!is.null(selection)) {
-        if (!is.character(selection)) {
-            if (!is.dfm(selection)) selection_dfm <- as.dfm(as.matrix(selection))
-            if (margin == "features") {
-                if (ndoc(selection_dfm) != ndoc(x))
-                    stop("The vector/matrix specified by 'selection' must be conform to the object x in rows.")
-                y <- selection_dfm
-            } else {
-                if (nfeat(selection_dfm) != nfeat(x))
-                    stop("The vector/matrix specified by 'selection' must be conform to the object x in columns.")
-                y <- selection_dfm
-            }
-        } else {    
-            if (margin == "features") {
-                selection <- intersect(selection, featnames(x))
-                if (!length(selection))
-                    stop("The features specified by 'selection' do not exist.")
-                y <- x[, selection, drop = FALSE]
-            } else {
-                selection <- intersect(selection, docnames(x))
-                if (!length(selection))
-                    stop("The documents specified by 'selection' do not exist.")
-                y <- x[selection, , drop = FALSE]
-            }
-        }
+        y <- if (margin == "documents") x[selection, ] else x[, selection]
     } else {
         y <- NULL
     }
     
-    methods <- c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", "simple matching", "hamann", "faith")
-    
+    methods <- c("cosine", "correlation", "jaccard", "ejaccard", "dice", 
+                 "edice", "simple matching", "hamann", "faith")
     if (method %in% methods) {
         if (method == "simple matching") method <- "smc"
         temp <- get(paste0(method, "_simil"))(x, y, margin = if (margin == "documents") 1 else 2)
     } else {
         stop(method, " is not implemented; consider trying proxy::simil().")
-    }
-    
-    if (is.character(selection)) {
-        name <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-        # NOTE dense matrix does not accept "" as rowname
-        temp <- temp[match(name, rownames(temp)), , drop = FALSE] # sort for as.dist()
     }
     
     # create a new dist object
