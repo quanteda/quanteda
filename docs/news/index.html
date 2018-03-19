@@ -74,10 +74,13 @@
       <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+      <a href="../articles/pkgdown/quickstart_es.html">Guía de Inicio Rápido</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+      <a href="../articles/pkgdown/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
   </ul>
 </li>
@@ -157,40 +160,6 @@
     </div>
 
     <div class="contents">
-    <div id="quanteda-0-9-4" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quanteda-0-9-4" class="anchor"></a>quanteda 0.9.4</h1>
-<ul>
-<li><p>Added presidents’ first names to inaugCorpus</p></li>
-<li><p>Added textmodel implementation of multinomial and Bernoulli Naive Bayes.</p></li>
-<li><p>Improved documentation.</p></li>
-<li><p>Added <code><a href="../reference/corpus-class.html">c.corpus()</a></code> method for concatenating arbitarily large sets of corpus objects.</p></li>
-<li><p>Default for <code>similarity()</code> is now <code>margin = "documents"</code> – prevents overly massive results if <code>selection = NULL</code>.</p></li>
-<li><p>Defined <code>rowMeans()</code> and <code>colMeans()</code> methods for dfm objects.</p></li>
-<li><p>Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.</p></li>
-<li><p>Enhancements to corpus object indexing, including [[ and [[&lt;-.</p></li>
-</ul>
-<div id="bug-fixes-5" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li><p>Fixed a bug preventing <code>smoother()</code> from working.</p></li>
-<li><p>Fixed a bug in segment.corpus(x, what = “tag”) that was failing to recover the tag values after the first text.</p></li>
-<li><p>Fix bug in <code>plot.dfm(x, comparison = TRUE)</code> method causing warning about rowMeans() failing.</p></li>
-<li><p>Fixed an issue for <code>mfdict &lt;- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")</code> causing it to fail because of the irregular combination of tabs and spaces in the dictionary file.</p></li>
-<li><p>Fixed an exception thrown by wordstem.character(x) if one element of x was NA.</p></li>
-<li><p>dfm() on a text or tokenized text containing an NA element now returns a row with 0 feature counts. Previously it returned a count of 1 for an NA feature.</p></li>
-<li><p>Fix issue #91 removeHyphens = FALSE not working in tokenise for some multiple intra-word hyphens, such as “one-of-a-kind”</p></li>
-<li><p>Fixed a bug in <code>as.matrix.similMatrix()</code> that caused scrambled conversion when feature sets compared were unequal, which normally occurs when setting <code>similarity(x, n = &lt;something&gt;)</code> when n &lt; nfeature(x)</p></li>
-<li><p>Fixed a bug in which a corpusSource object (from <code>textfile()</code>) with empty docvars prevented this argument from being supplied to <code><a href="../reference/corpus.html">corpus(corpusSourceObject, docvars = something)</a></code>.</p></li>
-<li><p>Fixed inaccurate documentation for <code>weight()</code>, which previously listed unavailable options.</p></li>
-<li><p>More accurate and complete documentation for <code>tokenize()</code>.</p></li>
-<li><p>traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.</p></li>
-<li><p>Fixed a bug in <code>textfile()</code> that prevented passthrough arguments in …, such as <code>fileEncoding =</code> or <code>encoding =</code></p></li>
-<li><p>Fixed a bug in <code>textfile()</code> that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)</p></li>
-</ul>
-</div>
-</div>
     <div id="quanteda-0-9-2" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-2" class="anchor"></a>quanteda 0.9.2</h1>
@@ -640,6 +609,7 @@ Mostly these related to documentation.</p></li>
 </div>
     NA
     NA
+    NA
     </div>
   </div>
 
@@ -647,7 +617,6 @@ Mostly these related to documentation.</p></li>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-0-9-4">0.9.4</a></li>
         <li><a href="#quanteda-0-9-2">0.9.2</a></li>
         <li><a href="#quanteda-0-9-0">0.9.0</a></li>
         <li><a href="#quanteda-0-8-6">0.8.6</a></li>
@@ -674,6 +643,7 @@ Mostly these related to documentation.</p></li>
         <li><a href="#quanteda-0-5-2">0.5.2</a></li>
         <li><a href="#quanteda-0-5-1">0.5.1</a></li>
         <li><a href="#quanteda-0-5-0">0.5.0</a></li>
+        <li><a href="#NA">NA</a></li>
         <li><a href="#NA">NA</a></li>
         <li><a href="#NA">NA</a></li>
       </ul>
