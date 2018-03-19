@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guía de inicio rápido • quanteda</title>
+<title>Guía de Inicio Rápido • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
@@ -130,7 +130,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Guía de inicio rápido</h1>
+      <h1>Guía de Inicio Rápido</h1>
             
           </div>
 
@@ -153,10 +153,14 @@
 <li>
 <a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP usando la librería <a href="http://spacy.io">spaCy</a>, incluyendo etiquetado part-of-speech, entity recognition y dependency parsing.</li>
 <li>
-<a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: data textual adicional para uso con <strong>quanteda</strong>.</li>
+<p><a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: data textual adicional para uso con <strong>quanteda</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</code></pre></div>
+</li>
+<li>
+<p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: una implementación en R del abordaje de análisis de texto <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
+</li>
 </ul>
-<p><code>r    devtools::install_github("quanteda/quanteda.corpora")</code> * <a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: una implementación en R del abordaje de análisis de texto <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a>.</p>
-<p><code>r    devtools::install_github("kbenoit/LIWCalike")</code></p>
 </div>
 </div>
 <div id="creando-un-corpus" class="section level1">
@@ -167,7 +171,7 @@
 <div id="fuentes-disponibles-de-corpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fuentes-disponibles-de-corpus" class="anchor"></a>Fuentes disponibles de corpus</h2>
-<p><strong>quanteda</strong> tiene un simple y poderoso paquete adicional para cargar textos: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>. La función principal en este paquete, <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>, toma un archivo o set de archivos de un disco o una dirección de URL y devuelve un tipo de data.frame que puede ser usado directamente con la función de construcción de corpus (‘corpus()’) para crear un objeto corpus en <strong>quanteda</strong>. <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code> funciona con:</p>
+<p><strong>quanteda</strong> tiene un simple y poderoso paquete adicional para cargar textos: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>. La función principal en este paquete, <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>, toma un archivo o set de archivos de un disco o una dirección de URL y devuelve un tipo de data.frame que puede ser usado directamente con la función de construcción de corpus (<code><a href="../../reference/corpus.html">corpus()</a></code>) para crear un objeto corpus en <strong>quanteda</strong>. <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code> funciona con:</p>
 <ul>
 <li>archivos de texto (<code>.txt</code>);</li>
 <li>archivos de valores separados por comas (<code>.csv</code>);</li>
@@ -176,7 +180,7 @@
 <li>data de la API de Twitter, en formato JSON; y</li>
 <li>data en formato JSON en general.</li>
 </ul>
-<p>El comando constructor de corpus llamado ‘corpus()’ funciona directamente sobre:</p>
+<p>El comando constructor de corpus llamado <code><a href="../../reference/corpus.html">corpus()</a></code> funciona directamente sobre:</p>
 <ul>
 <li>un vector de objetos de tipo character, por ejemplo aquellos que ya has cargado al workspace usando otras herramientas;</li>
 <li>un objeto corpus <code>VCorpus</code> del paquete <strong>tm</strong>.</li>
@@ -203,9 +207,9 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 17:56:37 2018
+## Created: Mon Mar 19 18:44:29 2018
 ## Notes:</code></pre>
-<p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <code>docvars</code>.</p>
+<p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <em>docvars</em>.</p>
 <p>Esto lo hacemos utilizando la función de R llamada <code>names()</code> para obtener los nombres del vector de tipo character de <code>data_char_ukimmig2010</code> y asignárselos a una variable de documento (<code>docvar</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)
 <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
@@ -224,7 +228,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 17:56:37 2018
+## Created: Mon Mar 19 18:44:29 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -254,9 +258,9 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 17:56:37 2018
+## Created: Mon Mar 19 18:44:29 2018
 ## Notes:</code></pre>
-<p>El último comando, ‘metadoc’, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor “inglés”, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento ‘docsource’, hemos usado la función de quanteda llamada ‘ndoc()’ para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como ‘nrow()’y ’ncol()’.</p>
+<p>El último comando, <code>metadoc</code>, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor <code>"english"</code>, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento <code>docsource</code>, hemos usado la función de quanteda llamada <code><a href="../../reference/ndoc.html">ndoc()</a></code> para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como <code>nrow()</code> y <code>ncol()</code>.</p>
 </div>
 <div id="cargando-archivos-usando-el-paquete-readtext" class="section level3">
 <h3 class="hasAnchor">
@@ -301,11 +305,11 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <a href="#principios-del-corpus" class="anchor"></a>Principios del Corpus</h3>
 <p>Un corpus está diseñado para ser una “librería” original de documentos que han sido convertidos a formato plano, texto codificado en UTF-8, y guardado junto con meta-data en a nivel de corpus y a nivel de documento. Tenemos un nombre especial para meta-data a nivel de documento: <em>docvars</em>. Estas son variables o características que describen atributos de cada documento.</p>
 <p>Un corpus está diseñado para ser un contenedor de textos más o menos estático en lo que respecta a su procesamiento y análisis. Esto significa que los textos en el corpus no están disenado para ser cambiados internamente a través de (por ejemplo) limpieza o preprocesamiento, como stemming o removiendo la puntuación. Más que nada, los textos pueden ser extraídos del corpus como parte del procesamiento y asignados a objetos nuevos, pero la idea es que los corpus se conserven como una copia de referencia original para que otros análisis, por ejemplo aquellos en que stems y puntuación son necesarios, como analizar un índice, pueden ser realizados sobre el mismo corpus.</p>
-<p>Para extraer texto de un corpus, es posible utilizar el extractor llamado ‘texts()’</p>
+<p>Para extraer texto de un corpus, es posible utilizar el extractor llamado <code><a href="../../reference/texts.html">texts()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</code></pre></div>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
-<p>Para obtener la data resumida de textos de un corpus, se puede llamar al método ‘summary()’ definido para un corpus.</p>
+<p>Para obtener la data resumida de textos de un corpus, se puede llamar al método <code>summary()</code> definido para un corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(data_corpus_irishbudget2010)</code></pre></div>
 <pre><code>## Corpus consisting of 14 documents:
 ## 
@@ -362,7 +366,7 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>To
 <div id="juntando-dos-objetos-de-corpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#juntando-dos-objetos-de-corpus" class="anchor"></a>Juntando dos objetos de corpus</h3>
-<p>El operador ‘+’ provee un método simple para concatenar dos objetos corpus. Si contenían diferentes sets de variables a nivel documento las unirá de manera que no se pierda nada de información. La meta-data a nivel corpus también queda concatenada.</p>
+<p>El operador <code>+</code> provee un método simple para concatenar dos objetos corpus. Si contenían diferentes sets de variables a nivel documento las unirá de manera que no se pierda nada de información. La meta-data a nivel corpus también queda concatenada.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
 mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])
@@ -384,13 +388,13 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Mon Mar 19 17:56:39 2018
+## Created: Mon Mar 19 18:44:31 2018
 ## Notes:</code></pre>
 </div>
 <div id="armando-subsets-dentro-de-objetos-corpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#armando-subsets-dentro-de-objetos-corpus" class="anchor"></a>Armando subsets dentro de objetos corpus</h3>
-<p>Hay un método de la función ‘corpus_subset()’ definida por objetos corpus, donde un nuevo corpus puede ser extraído en base a condiciones lógicas aplicadas a docvars:</p>
+<p>Hay un método de la función <code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code> definida por objetos corpus, donde un nuevo corpus puede ser extraído en base a condiciones lógicas aplicadas a docvars:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</code></pre></div>
 <pre><code>## Corpus consisting of 7 documents:
 ## 
@@ -421,7 +425,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <div id="explorando-textos-de-corpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#explorando-textos-de-corpus" class="anchor"></a>Explorando textos de corpus</h2>
-<p>La función ‘kwic’ (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:</p>
+<p>La función <code>kwic</code> (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</code></pre></div>
 <pre><code>##                                                                     
 ##     [1797-Adams, 1325]              fraud or violence, by | terror |
@@ -473,7 +477,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##                            
 ##  philosophy are a threat to
 ##  may be doing it,</code></pre>
-<p>En el summary de arriba, las variables ‘Year’ (año) y ‘President’ (presidente) son variables asociadas a cada documento. Es posible acceder a dichas variables con la función ‘docvars()’</p>
+<p>En el summary de arriba, las variables <code>Year</code> (año) y <code>President</code> (presidente) son variables asociadas a cada documento. Es posible acceder a dichas variables con la función ‘docvars()’</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
 <span class="kw">head</span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))</code></pre></div>
 <pre><code>##                 Year  President FirstName
@@ -620,7 +624,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <div id="construyendo-una-matriz-de-documentos-y-atributos" class="section level2">
 <h2 class="hasAnchor">
 <a href="#construyendo-una-matriz-de-documentos-y-atributos" class="anchor"></a>Construyendo una matriz de documentos y atributos</h2>
-<p>Convertir los textos en tokens es una opción intermedia y la mayoría de los usuarios querrán directamente construir la matriz de documentos y atributos. Para hacer esto existe la función de navaja suiza llamada <code><a href="../../reference/dfm.html">dfm()</a></code>, que realiza la tokenización y tabula los atributos extraídos dentro de una matriz de documentos por atributos. A diferencia del enfoque conservador de <code><a href="../../reference/tokens.html">tokens()</a></code>, la función <code><a href="../../reference/dfm.html">dfm()</a></code> aplica ciertas opciones por default, como <code>tolower()</code>- una función separada para transformar textos a minúsculas- y remueve puntuación. De todos modos, todas las opciones de <code><a href="../../reference/tokens.html">tokens()</a></code> se pueden pasar a <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
+<p>Convertir los textos en tokens es una opción intermedia y la mayoría de los usuarios querrán directamente construir la matriz de documentos y atributos. Para hacer esto existe la función de navaja suiza llamada <code><a href="../../reference/dfm.html">dfm()</a></code>, que realiza la tokenización y tabula los atributos extraídos dentro de una matriz de documentos por atributos. A diferencia del enfoque conservador de <code><a href="../../reference/tokens.html">tokens()</a></code>, la función <code><a href="../../reference/dfm.html">dfm()</a></code> aplica ciertas opciones por default, como <code>tolower()</code> – una función separada para transformar textos a minúsculas – y remueve puntuación. De todos modos, todas las opciones de <code><a href="../../reference/tokens.html">tokens()</a></code> se pueden pasar a <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
 
 <span class="co"># make a dfm</span>
@@ -668,7 +672,7 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 <div id="visualizando-la-matriz-de-documentos-y-atributos" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualizando-la-matriz-de-documentos-y-atributos" class="anchor"></a>Visualizando la matriz de documentos y atributos</h3>
-<p>El dfm puede ser inspeccionado en el panel de ‘Environment’ en Rstudio o llamando la función ‘View’ en R. Llamando la función ‘plot’ en un dfm se presentará una nube de palabras usando el paquete <a href="https://cran.r-project.org/web/packages/wordcloud">wordcloud package</a></p>
+<p>El dfm puede ser inspeccionado en el panel de ‘Environment’ en Rstudio o llamando la función <code>View</code> en R. Llamando la función <code>plot</code> en un dfm se presentará una nube de palabras usando el paquete <a href="https://cran.r-project.org/web/packages/wordcloud">wordcloud package</a></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
@@ -682,7 +686,7 @@ mydfm</code></pre></div>
 ##          17          16          14          14          13          13 
 ##        work     percent 
 ##          13          12</code></pre>
-<p>Para un objeto <code>dfm</code> se puede graficar una nube de palabras usando <code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>. Esta función pasa argumentos a wordcloud()` del paquete <strong>wordcloud</strong> y puede embellecer el gráfico usando los mismos argumentos:</p>
+<p>Para un objeto <code>dfm</code> se puede graficar una nube de palabras usando <code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>. Esta función pasa argumentos a <code><a href="../../reference/wordcloud.html">wordcloud()</a></code> del paquete <strong>wordcloud</strong> y puede embellecer el gráfico usando los mismos argumentos:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                   <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
@@ -718,7 +722,7 @@ mydfm</code></pre></div>
 <h3 class="hasAnchor">
 <a href="#agrupando-palabras-por-diccionario-o-clase-de-equivalencia" class="anchor"></a>Agrupando palabras por diccionario o clase de equivalencia</h3>
 <p>Para algunas aplicaciones se tiene conocimiento previo del conjunto de palabras que son indicativas de rasgos que quisiéramos medir. Por ejemplo, una lista general de palabras positivas puede indicar sentimiento positivo en un reseña de una película tal tenemos un diccionario de términos políticos asociados a una tendencia ideológica en particular. En estos casos, a veces es útil tratar estos grupos de palabras como equivalentes para los propósitos del análisis y sumar las veces en que se utiliza agregándolas por clase.</p>
-<p>Por ejemplo, observemos cómo palabras asociadas al terrorismo y palabras asociadas con la economía varían por presidente en el corpus de discursos inaugurales de presidentes de Estados Unidos. Del corpus original seleccionamos los presidentes desde Clinton: For example, let’s look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus.</p>
+<p>Por ejemplo, observemos cómo palabras asociadas al terrorismo y palabras asociadas con la economía varían por presidente en el corpus de discursos inaugurales de presidentes de Estados Unidos. Del corpus original seleccionamos los presidentes desde Clinton:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
 <p>Ahora definimos un diccionario de muestra:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
@@ -834,30 +838,30 @@ quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1       Topic 2        Topic 3   Topic 4   Topic 5   
-## [1,] "alternative" "society"      "benefit" "child"   "fianna"  
-## [2,] "citizenship" "enterprising" "irish"   "day"     "fáil"    
-## [3,] "wealth"      "sense"        "credit"  "benefit" "national"
-## [4,] "adjustment"  "equal"        "better"  "bank"    "irish"   
-## [5,] "breaks"      "nation"       "debt"    "today"   "ted"     
-##      Topic 6      Topic 7      Topic 8        Topic 9     Topic 10    
-## [1,] "support"    "confront"   "system"       "failed"    "million"   
-## [2,] "price"      "strong"     "government's" "strategy"  "support"   
-## [3,] "child"      "per"        "stimulus"     "ministers" "welfare"   
-## [4,] "everything" "debt"       "welfare"      "needed"    "investment"
-## [5,] "wealthy"    "businesses" "education"    "vision"    "back"      
-##      Topic 11    Topic 12    Topic 13  Topic 14    Topic 15  Topic 16   
-## [1,] "review"    "employees" "welfare" "taoiseach" "levy"    "care"     
-## [2,] "million"   "stimulus"  "fáil"    "fine"      "million" "welfare"  
-## [3,] "spending"  "banks"     "fianna"  "gael"      "carbon"  "per"      
-## [4,] "reduce"    "taoiseach" "deficit" "may"       "change"  "allowance"
-## [5,] "reduction" "nama"      "high"    "irish"     "welfare" "hit"      
-##      Topic 17      Topic 18    Topic 19        Topic 20
-## [1,] "kind"        "taoiseach" "scheme"        "fianna"
-## [2,] "imagination" "referred"  "welfare"       "fáil"  
-## [3,] "policies"    "rate"      "measures"      "side"  
-## [4,] "wit"         "problem"   "investment"    "level" 
-## [5,] "create"      "debate"    "international" "third"</code></pre>
+<pre><code>##      Topic 1     Topic 2  Topic 3    Topic 4       Topic 5   Topic 6   
+## [1,] "taoiseach" "fianna" "measures" "alternative" "levy"    "fáil"    
+## [2,] "fine"      "fáil"   "million"  "citizenship" "million" "fianna"  
+## [3,] "gael"      "side"   "scheme"   "wealth"      "carbon"  "national"
+## [4,] "may"       "level"  "review"   "adjustment"  "change"  "support" 
+## [5,] "irish"     "third"  "welfare"  "breaks"      "welfare" "irish"   
+##      Topic 7     Topic 8        Topic 9      Topic 10     Topic 11
+## [1,] "taoiseach" "society"      "spending"   "support"    "bank"  
+## [2,] "employees" "enterprising" "investment" "welfare"    "fáil"  
+## [3,] "rate"      "sense"        "taxes"      "confidence" "day"   
+## [4,] "referred"  "equal"        "million"    "employment" "child" 
+## [5,] "debate"    "nation"       "world"      "back"       "may"   
+##      Topic 12   Topic 13     Topic 14      Topic 15     Topic 16      
+## [1,] "welfare"  "investment" "kind"        "confidence" "welfare"     
+## [2,] "system"   "million"    "imagination" "fianna"     "care"        
+## [3,] "taxation" "forward"    "policies"    "irish"      "workers"     
+## [4,] "fianna"   "welfare"    "wit"         "families"   "unemployment"
+## [5,] "fáil"     "increased"  "create"      "fáil"       "million"     
+##      Topic 17    Topic 18    Topic 19   Topic 20 
+## [1,] "failed"    "allowance" "fianna"   "child"  
+## [2,] "strategy"  "per"       "benefit"  "benefit"
+## [3,] "needed"    "policies"  "national" "today"  
+## [4,] "ministers" "hit"       "face"     "society"
+## [5,] "system"    "child"     "welfare"  "per"</code></pre>
 </div>
 </div>
 </div>
