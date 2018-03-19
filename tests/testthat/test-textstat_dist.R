@@ -241,11 +241,13 @@ test_that("as.list.dist works as expected",{
     )
 })
 
-test_that("as.list.dist.selection works as expected",{
+test_that("as.list.dist_selection works as expected", {
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    ddist_list <- as.list(textstat_dist(presDfm, c("2017-Trump", "2013-Obama"), margin = "documents"))
-    expect_null(ddist_list$'1985-Reagan')
+    ddist <- textstat_dist(presDfm, c("2017-Trump", "2013-Obama"), margin = "documents")
+    ddist_list <- as.list(ddist)
+    expect_equal(names(ddist_list), c("2017-Trump", "2013-Obama"))
+    expect_null(ddist_list$"1985-Reagan")
     expect_equal(names(ddist_list$`2017-Trump`)[1:3], c("1985-Reagan", "1981-Reagan", "1989-Bush"))
 })
 
@@ -256,22 +258,22 @@ test_that("textstat_dist stops as expected for methods not supported",{
                  "yule is not implemented; consider trying proxy::dist\\(\\)")
 })
 
-test_that("textstat_dist stops as expected for wrong selections",{
-    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    expect_error(textstat_dist(presDfm, 5), 
-                 "The vector/matrix specified by 'selection' must be conform to the object x in columns")
-    expect_error(textstat_dist(presDfm, 5, margin = "features"), 
-                 "The vector/matrix specified by 'selection' must be conform to the object x in rows")
-    
-    
-    
-    expect_error(textstat_dist(presDfm, margin = "documents", "2009-Obamaa"), 
-                 "The documents specified by 'selection' do not exist.")
-    expect_error(textstat_dist(presDfm, margin = "features", "Obamaa"), 
-                 "The features specified by 'selection' do not exist.")
-    
-})
+# test_that("textstat_dist stops as expected for wrong selections",{
+#     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
+#                    stem = TRUE, verbose = FALSE)
+#     expect_error(textstat_dist(presDfm, 5), 
+#                  "The vector/matrix specified by 'selection' must be conform to the object x in columns")
+#     expect_error(textstat_dist(presDfm, 5, margin = "features"), 
+#                  "The vector/matrix specified by 'selection' must be conform to the object x in rows")
+#     
+#     
+#     
+#     expect_error(textstat_dist(presDfm, margin = "documents", "2009-Obamaa"), 
+#                  "The documents specified by 'selection' do not exist.")
+#     expect_error(textstat_dist(presDfm, margin = "features", "Obamaa"), 
+#                  "The features specified by 'selection' do not exist.")
+#     
+# })
 
 test_that("as.dist on a dist returns a dist", {
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
@@ -295,11 +297,11 @@ test_that("selection offers option to enable an alien vector/matrix", {
 
 test_that("selection works with dfm with padding", {
     
-    toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e'), remove_punct = TRUE)
-    toks <- tokens_remove(toks, 'b', padding = TRUE)
+    toks <- tokens(c(doc1 = "a b c d e", doc2 = "b c f e"), remove_punct = TRUE)
+    toks <- tokens_remove(toks, "b", padding = TRUE)
     mt <- dfm(toks)
-    expect_silent(textstat_dist(mt, selection = c('c'), margin = 'features'))
-    expect_silent(textstat_dist(mt, selection = c(''), margin = 'features'))
-    expect_silent(textstat_dist(mt, selection = c('doc2'), margin = 'documents'))
+    expect_silent(textstat_dist(mt, selection = c("c"), margin = "features"))
+    expect_silent(textstat_dist(mt, selection = c(""), margin = "features"))
+    expect_silent(textstat_dist(mt, selection = c("doc2"), margin = "documents"))
     
 })
