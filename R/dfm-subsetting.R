@@ -22,10 +22,14 @@
 setMethod("[", 
           signature = c("dfm", i = "index", j = "index", drop = "missing"),
           function(x, i, j, ..., drop = FALSE) {
-              if (any(i > nrow(x)))
-                  stop("Row index is too large.")
-              if (any(j > ncol(x)))
-                  stop("Column index is too large.")
+              
+              error <- FALSE
+              if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
+              if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
+              if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+              if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+              if (error) stop("Subscript out of bounds")
+
               xnew <-  "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
               x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
@@ -36,6 +40,14 @@ setMethod("[",
 setMethod("[",
           signature = c("dfm", i = "index", j = "index", drop = "logical"),
           function(x, i, j, ..., drop = FALSE) {
+              
+              error <- FALSE
+              if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
+              if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
+              if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+              if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+              if (error) stop("Subscript out of bounds")
+              
               if (drop) warning("drop = TRUE not supported")
               xnew <-  "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
               x@docvars <- x@docvars[i, , drop = FALSE]
@@ -64,6 +76,12 @@ setMethod("[",
 setMethod("[",
           signature = c("dfm", i = "index", j = "missing", drop = "missing"),
           function(x, i, j, ..., drop = FALSE) {
+              
+              error <- FALSE
+              if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
+              if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+              if (error) stop("Subscript out of bounds")
+              
               xnew <-  "["(as(x, "Matrix"), i, , ..., drop = FALSE)
               x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
@@ -74,6 +92,12 @@ setMethod("[",
 setMethod("[",
           signature = c("dfm", i = "index", j = "missing", drop = "logical"),
           function(x, i, j, ..., drop = FALSE) {
+             
+              error <- FALSE
+              if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
+              if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+              if (error) stop("Subscript out of bounds")
+              
               if (drop) warning("drop = TRUE not supported")
               xnew <-  "["(as(x, "Matrix"), i, , ..., drop = FALSE)
               x@docvars <- x@docvars[i, , drop = FALSE]
@@ -85,6 +109,12 @@ setMethod("[",
 setMethod("[",
           signature = c("dfm", i = "missing", j = "index", drop = "missing"),
           function(x, i, j, ..., drop = FALSE) {
+              
+              error <- FALSE
+              if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
+              if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+              if (error) stop("Subscript out of bounds")
+              
               xnew <-  "["(as(x, "Matrix"), , j, ..., drop = FALSE)
               reassign_slots(as(xnew, class(x)), x)
           })
@@ -94,6 +124,12 @@ setMethod("[",
 setMethod("[",
           signature = c("dfm", i = "missing", j = "index", drop = "logical"),
           function(x, i, j, ..., drop = FALSE) {
+              
+              error <- FALSE
+              if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
+              if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+              if (error) stop("Subscript out of bounds")
+              
               if (drop) warning("drop = TRUE not supported")
               xnew <-  "["(as(x, "Matrix"), , j, ..., drop = FALSE)
               reassign_slots(as(xnew, class(x)), x)

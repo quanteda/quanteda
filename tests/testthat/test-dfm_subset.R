@@ -70,3 +70,4 @@ test_that("dfm_subset works with subset as a dfm", {
                dimnames = list(docs = paste0("d", c(3,4,1,2)), features = letters[1:4]))
     )
 })
+
