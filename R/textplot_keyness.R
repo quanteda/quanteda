@@ -75,7 +75,6 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     }
 
     # extract attribute befor subsetting
-    docname <- attr(x, "documents")
     measure <- colnames(x)[2]
     
     # drop infrequent words
@@ -96,15 +95,11 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     data <- data[i,,drop = FALSE]
     #data$width <- stri_width(data$feature)
     if (show_reference) {
-        if (length(docname) < 2) {
-            docname <- c("Target", "Reference")
-        } else if (length(docname) > 2) {
-            docname <- c(docname[1], "Reference")
-        }
+        group <- attr(x, "groups")
         data$color <- color[2 - data$right]
     } else {
         data$color <- color[1]
-        color <- docname <- NULL
+        color <- group <- NULL
     }
     
     data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
@@ -118,7 +113,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
          xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) + 
          geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
                       size = labelsize) +
-         scale_colour_identity(NULL, labels = docname, breaks = color,
+         scale_colour_identity(NULL, labels = group, breaks = color,
                                guide = if (show_legend) 'legend' else FALSE) + 
          xlab(measure) +
          geom_label(aes(x = x1, y = y1, label = feature), label.size = NA, fill = NA,
