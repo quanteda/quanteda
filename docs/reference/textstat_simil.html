@@ -74,10 +74,13 @@
       <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+      <a href="../articles/pkgdown/quickstart_es.html">Guía de Inicio Rápido</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+      <a href="../articles/pkgdown/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
   </ul>
 </li>
@@ -178,17 +181,14 @@ selected).  They are fast and robust because they operate directly on the sparse
     </tr>
     <tr>
       <th>selection</th>
-      <td><p>character vector of document names or feature labels from
-<code>x</code>; or, a numeric vector or matrix which is conforms to <code>x</code>. A
-<code>"dist"</code> object is returned if selection is <code>NULL</code>, otherwise, a
-matrix is returned matching distances to the documents or features identified
-in the selection.</p></td>
+      <td><p>a valid index for document or feature names from <code>x</code>,
+to be selected for comparison</p></td>
     </tr>
     <tr>
       <th>margin</th>
-      <td><p>identifies the margin of the dfm on which similarity or 
+      <td><p>identifies the margin of the dfm on which similarity or
 difference will be computed:  <code>"documents"</code> for documents or 
-<code>"features"</code> for word/term features.</p></td>
+<code>"features"</code> for word/term features</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -212,7 +212,10 @@ matrix is recorded</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>textstat_simil</code> and <code>textstat_dist</code> return <code>dist</code> class objects.</p>
+    <p><code>textstat_simil</code> and <code>textstat_dist</code> return
+  <code>dist</code> class objects if selection is <code>NULL</code>, otherwise, a
+  matrix is returned matching distances to the documents or features
+  identified in the selection.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -296,26 +299,26 @@ matrix is recorded</p></td>
 #&gt; 2017-Trump     55.21775    0.00000</div><div class='input'>
 <span class='co'># distances for specific documents</span>
 <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
-#&gt; 2017-Trump      0.00000
 #&gt; 1993-Clinton   52.14403
 #&gt; 1997-Clinton   65.85590
 #&gt; 2001-Bush      48.79549
 #&gt; 2005-Bush      58.00000
 #&gt; 2009-Obama     55.65968
-#&gt; 2013-Obama     55.21775</div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"jaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush
-#&gt; 2005-Bush    1.0000000
+#&gt; 2013-Obama     55.21775
+#&gt; 2017-Trump      0.00000</div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"jaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush
 #&gt; 1993-Clinton 0.2216867
 #&gt; 1997-Clinton 0.2392503
 #&gt; 2001-Bush    0.2591195
+#&gt; 2005-Bush    1.0000000
 #&gt; 2009-Obama   0.2502483
 #&gt; 2013-Obama   0.2505353
 #&gt; 2017-Trump   0.1852761</div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
-#&gt; 2009-Obama      0.00000   48.48711
-#&gt; 2013-Obama     48.48711    0.00000
 #&gt; 1993-Clinton   51.66237   51.30302
 #&gt; 1997-Clinton   59.95832   60.81118
 #&gt; 2001-Bush      50.70503   49.03060
 #&gt; 2005-Bush      62.33779   57.90509
+#&gt; 2009-Obama      0.00000   48.48711
+#&gt; 2013-Obama     48.48711    0.00000
 #&gt; 2017-Trump     55.65968   55.21775</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; $`1993-Clinton`
 #&gt;    2005-Bush 1997-Clinton    2001-Bush   2017-Trump   2009-Obama   2013-Obama 
 #&gt;     62.79331     58.90671     52.82045     52.14403     51.66237     51.30302 
@@ -2324,7 +2327,6 @@ matrix is recorded</p></td>
 #&gt; </div><div class='input'>
 <span class='co'># similarities for for specific documents</span>
 <span class='fu'>textstat_simil</span>(<span class='no'>pres_dfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;                 2017-Trump
-#&gt; 2017-Trump       1.0000000
 #&gt; 1789-Washington  0.2690870
 #&gt; 1793-Washington  0.1852174
 #&gt; 1797-Adams       0.3317497
@@ -2381,8 +2383,8 @@ matrix is recorded</p></td>
 #&gt; 2001-Bush        0.4353474
 #&gt; 2005-Bush        0.4178703
 #&gt; 2009-Obama       0.4289817
-#&gt; 2013-Obama       0.4372527</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>pres_dfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;                 2017-Trump
-#&gt; 2017-Trump       1.0000000
+#&gt; 2013-Obama       0.4372527
+#&gt; 2017-Trump       1.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>pres_dfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;                 2017-Trump
 #&gt; 1789-Washington  0.2920311
 #&gt; 1793-Washington  0.1945727
 #&gt; 1797-Adams       0.3526032
@@ -2439,9 +2441,8 @@ matrix is recorded</p></td>
 #&gt; 2001-Bush        0.4518935
 #&gt; 2005-Bush        0.4349030
 #&gt; 2009-Obama       0.4481950
-#&gt; 2013-Obama       0.4546945</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>pres_dfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;                 2009-Obama 2013-Obama
-#&gt; 2009-Obama       1.0000000  0.6217273
-#&gt; 2013-Obama       0.6217273  1.0000000
+#&gt; 2013-Obama       0.4546945
+#&gt; 2017-Trump       1.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>pres_dfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;                 2009-Obama 2013-Obama
 #&gt; 1789-Washington  0.2898156  0.3001697
 #&gt; 1793-Washington  0.1254676  0.1580668
 #&gt; 1797-Adams       0.3121088  0.3295999
@@ -2497,23 +2498,37 @@ matrix is recorded</p></td>
 #&gt; 1997-Clinton     0.6177234  0.6002095
 #&gt; 2001-Bush        0.5228251  0.5399960
 #&gt; 2005-Bush        0.4357955  0.4987423
+#&gt; 2009-Obama       1.0000000  0.6217273
+#&gt; 2013-Obama       0.6217273  1.0000000
 #&gt; 2017-Trump       0.4289817  0.4372527</div><div class='input'>
 <span class='co'># compute some term similarities</span>
 <span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>pres_dfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
                       <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)
 <span class='fu'>head</span>(<span class='fu'>as.matrix</span>(<span class='no'>s2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                      fair     health     terror
-#&gt; fair            1.0000000 0.26457513 0.15118579
-#&gt; health          0.2645751 1.00000000 0.20000000
-#&gt; terror          0.1511858 0.20000000 1.00000000
 #&gt; fellow-citizens 0.5036169 0.26882663 0.07012869
 #&gt; senate          0.4106594 0.32101212 0.04938648
 #&gt; house           0.2898855 0.23008950 0.15339300
 #&gt; representatives 0.4040610 0.32071349 0.10690450
 #&gt; among           0.5027607 0.26294250 0.12373764
 #&gt; vicissitudes    0.1603567 0.07071068 0.00000000
-#&gt; incident        0.3450328 0.13693064 0.00000000</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
+#&gt; incident        0.3450328 0.13693064 0.00000000
+#&gt; life            0.3913624 0.48410541 0.34963168
+#&gt; event           0.4714540 0.08134892 0.10846523
+#&gt; filled          0.1690309 0.39131190 0.11180340</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
 #&gt;    united     great      best      thus   present  preserve cultivate     every 
 #&gt; 0.7283118 0.7260643 0.7148319 0.7037316 0.7018624 0.6920211 0.6872565 0.6830623 
+#&gt; 
+#&gt; $health
+#&gt;         culture instrumentality          ideals          denial      heightened 
+#&gt;       0.7378648       0.7378648       0.7361216       0.7071068       0.6708204 
+#&gt;    associations      discourage       insidious 
+#&gt;       0.6708204       0.6708204       0.6708204 
+#&gt; 
+#&gt; $terror
+#&gt;      plague     tragedy    mystical       split        atom commonplace 
+#&gt;   0.6708204   0.6708204   0.6708204   0.6708204   0.6708204   0.6708204 
+#&gt;   guarantee      martin 
+#&gt;   0.6708204   0.6708204 
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
