@@ -159,7 +159,7 @@ feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 1 seconds.</code></pre>
+## Elapsed time: 1.13 seconds.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span>
 wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
@@ -177,26 +177,26 @@ wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../refer
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glove &lt;-<span class="st"> </span>GlobalVectors<span class="op">$</span><span class="kw">new</span>(<span class="dt">word_vectors_size =</span> <span class="dv">50</span>, <span class="dt">vocabulary =</span> <span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(wiki_fcm), <span class="dt">x_max =</span> <span class="dv">10</span>)
 wiki_main &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/text2vec/topics/reexports">fit_transform</a></span>(wiki_fcm, glove, <span class="dt">n_iter =</span> <span class="dv">20</span>)</code></pre></div>
-<pre><code>## INFO [2017-12-18 17:37:01] 2017-12-18 17:37:01 - epoch 1, expected cost 0.0843
-## INFO [2017-12-18 17:37:06] 2017-12-18 17:37:06 - epoch 2, expected cost 0.0614
-## INFO [2017-12-18 17:37:11] 2017-12-18 17:37:11 - epoch 3, expected cost 0.0544
-## INFO [2017-12-18 17:37:16] 2017-12-18 17:37:16 - epoch 4, expected cost 0.0503
-## INFO [2017-12-18 17:37:21] 2017-12-18 17:37:21 - epoch 5, expected cost 0.0478
-## INFO [2017-12-18 17:37:26] 2017-12-18 17:37:26 - epoch 6, expected cost 0.0460
-## INFO [2017-12-18 17:37:31] 2017-12-18 17:37:31 - epoch 7, expected cost 0.0446
-## INFO [2017-12-18 17:37:36] 2017-12-18 17:37:36 - epoch 8, expected cost 0.0435
-## INFO [2017-12-18 17:37:41] 2017-12-18 17:37:41 - epoch 9, expected cost 0.0427
-## INFO [2017-12-18 17:37:46] 2017-12-18 17:37:46 - epoch 10, expected cost 0.0419
-## INFO [2017-12-18 17:37:51] 2017-12-18 17:37:51 - epoch 11, expected cost 0.0413
-## INFO [2017-12-18 17:37:56] 2017-12-18 17:37:56 - epoch 12, expected cost 0.0408
-## INFO [2017-12-18 17:38:01] 2017-12-18 17:38:01 - epoch 13, expected cost 0.0403
-## INFO [2017-12-18 17:38:06] 2017-12-18 17:38:06 - epoch 14, expected cost 0.0399
-## INFO [2017-12-18 17:38:11] 2017-12-18 17:38:11 - epoch 15, expected cost 0.0395
-## INFO [2017-12-18 17:38:16] 2017-12-18 17:38:16 - epoch 16, expected cost 0.0392
-## INFO [2017-12-18 17:38:21] 2017-12-18 17:38:21 - epoch 17, expected cost 0.0389
-## INFO [2017-12-18 17:38:26] 2017-12-18 17:38:26 - epoch 18, expected cost 0.0386
-## INFO [2017-12-18 17:38:31] 2017-12-18 17:38:31 - epoch 19, expected cost 0.0384
-## INFO [2017-12-18 17:38:36] 2017-12-18 17:38:36 - epoch 20, expected cost 0.0381</code></pre>
+<pre><code>## INFO [2018-01-12 17:18:50] 2018-01-12 17:18:50 - epoch 1, expected cost 0.0827
+## INFO [2018-01-12 17:19:06] 2018-01-12 17:19:06 - epoch 2, expected cost 0.0612
+## INFO [2018-01-12 17:19:22] 2018-01-12 17:19:22 - epoch 3, expected cost 0.0542
+## INFO [2018-01-12 17:19:39] 2018-01-12 17:19:39 - epoch 4, expected cost 0.0501
+## INFO [2018-01-12 17:19:56] 2018-01-12 17:19:56 - epoch 5, expected cost 0.0477
+## INFO [2018-01-12 17:20:13] 2018-01-12 17:20:13 - epoch 6, expected cost 0.0459
+## INFO [2018-01-12 17:20:30] 2018-01-12 17:20:30 - epoch 7, expected cost 0.0445
+## INFO [2018-01-12 17:20:46] 2018-01-12 17:20:46 - epoch 8, expected cost 0.0434
+## INFO [2018-01-12 17:21:03] 2018-01-12 17:21:03 - epoch 9, expected cost 0.0426
+## INFO [2018-01-12 17:21:22] 2018-01-12 17:21:22 - epoch 10, expected cost 0.0418
+## INFO [2018-01-12 17:21:43] 2018-01-12 17:21:43 - epoch 11, expected cost 0.0412
+## INFO [2018-01-12 17:22:05] 2018-01-12 17:22:05 - epoch 12, expected cost 0.0407
+## INFO [2018-01-12 17:22:26] 2018-01-12 17:22:25 - epoch 13, expected cost 0.0402
+## INFO [2018-01-12 17:22:44] 2018-01-12 17:22:44 - epoch 14, expected cost 0.0398
+## INFO [2018-01-12 17:23:03] 2018-01-12 17:23:03 - epoch 15, expected cost 0.0394
+## INFO [2018-01-12 17:23:23] 2018-01-12 17:23:23 - epoch 16, expected cost 0.0391
+## INFO [2018-01-12 17:23:45] 2018-01-12 17:23:45 - epoch 17, expected cost 0.0388
+## INFO [2018-01-12 17:24:11] 2018-01-12 17:24:11 - epoch 18, expected cost 0.0386
+## INFO [2018-01-12 17:24:31] 2018-01-12 17:24:31 - epoch 19, expected cost 0.0384
+## INFO [2018-01-12 17:24:50] 2018-01-12 17:24:50 - epoch 20, expected cost 0.0381</code></pre>
 </div>
 <div id="averaging-learned-word-vectors" class="section level2">
 <h2 class="hasAnchor">
@@ -220,8 +220,8 @@ wiki_vector_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../..
 cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_berlin"</span>, 
                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
 <span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
-<pre><code>## new_berlin      paris     berlin     munich    germany 
-##  1.0000000  0.7687160  0.7206902  0.7009724  0.6550815</code></pre>
+<pre><code>## new_berlin      paris     vienna     berlin     venice 
+##  1.0000000  0.7262135  0.7034734  0.6633230  0.6567316</code></pre>
 <p>Here is another example for <code>london = paris - france + uk + england</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new_london &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, ] <span class="op">-</span><span class="st"> </span>
 <span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, ] <span class="op">+</span><span class="st"> </span>
@@ -232,8 +232,8 @@ wiki_vector_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../..
 cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_london"</span>, 
                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)
 <span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
-<pre><code>## new_london       york     london      press    england 
-##  1.0000000  0.7821334  0.7789820  0.7310818  0.7303934</code></pre>
+<pre><code>## new_london    england       york         at     london 
+##  1.0000000  0.7500928  0.7385764  0.7339735  0.7263999</code></pre>
 </div>
 </div>
   </div>

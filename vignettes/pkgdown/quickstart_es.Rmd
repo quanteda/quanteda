@@ -336,11 +336,11 @@ byPresMat <- dfm(recentCorpus, dictionary = myDict)
 byPresMat
 ```
 
-El constructor de la función `dictionary()` también funciona con el formato de dos diccionarios comunes en "foreign": los formatos LIWC y Provalis Research's Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:
+El constructor de la función `dictionary()` también funciona con el formato de dos diccionarios externos comunes: los formatos LIWC y Provalis Research's Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:
 
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
-                      format = "LIWC")
+                       format = "LIWC")
 liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict)
 liwcdfm[, 1:10]
 ```

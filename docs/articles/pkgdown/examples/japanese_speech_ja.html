@@ -166,7 +166,7 @@ committee &lt;-<span class="st"> "外務"</span>
 
 <span class="cf">for</span> (year <span class="cf">in</span> <span class="dv">1947</span><span class="op">:</span><span class="dv">2017</span>) {
   <span class="kw">cat</span>(<span class="kw">as.character</span>(<span class="kw">Sys.time</span>()), year, committee, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-  temp &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/kaigiroku/topics/get_meeting">get_meeting</a></span>(<span class="dt">meetingName =</span> committee, <span class="dt">year =</span> year)
+  temp &lt;-<span class="st"> </span><span class="kw">get_meeting</span>(<span class="dt">meetingName =</span> committee, <span class="dt">year =</span> year)
   <span class="cf">if</span> (<span class="kw">is.null</span>(temp)) <span class="cf">next</span>
   <span class="kw">saveRDS</span>(temp, <span class="dt">file =</span> <span class="kw">sprintf</span>(<span class="st">"%s/%s_%s.rds"</span>, folder_download, year, committee))
   <span class="kw">Sys.sleep</span>(<span class="dv">10</span>)
@@ -722,124 +722,124 @@ lda &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">密約</td>
-<td align="left">日米安保体制</td>
-<td align="left">に対し</td>
-<td align="left">児童</td>
-<td align="left">人権</td>
-<td align="left">沖縄県民</td>
-<td align="left">経費</td>
-<td align="left">目標</td>
-<td align="left">パキスタン</td>
-<td align="left">日本国</td>
-</tr>
-<tr class="even">
-<td align="left">宣言</td>
-<td align="left">判決</td>
-<td align="left">ミャンマー</td>
-<td align="left">女性</td>
-<td align="left">漁業</td>
-<td align="left">部隊</td>
 <td align="left">計上</td>
-<td align="left">センター</td>
-<td align="left">演説</td>
-<td align="left">防止</td>
-</tr>
-<tr class="odd">
-<td align="left">イラン</td>
-<td align="left">抑止力</td>
-<td align="left">経過</td>
-<td align="left">前回</td>
-<td align="left">大きい</td>
-<td align="left">成果</td>
-<td align="left">果たす</td>
-<td align="left">成果</td>
-<td align="left">大量破壊兵器</td>
-<td align="left">両国間</td>
-</tr>
-<tr class="even">
-<td align="left">信頼</td>
-<td align="left">核実験</td>
-<td align="left">ドル</td>
-<td align="left">被害</td>
-<td align="left">ポト派</td>
-<td align="left">小泉総理</td>
-<td align="left">準備</td>
 <td align="left">彼ら</td>
-<td align="left">被害</td>
-<td align="left">議題</td>
-</tr>
-<tr class="odd">
-<td align="left">正確</td>
-<td align="left">経済協力</td>
-<td align="left">進める</td>
-<td align="left">留保</td>
-<td align="left">ポル</td>
-<td align="left">批判</td>
-<td align="left">図る</td>
-<td align="left">タイ</td>
-<td align="left">武力行使</td>
 <td align="left">租税条約</td>
+<td align="left">脅威</td>
+<td align="left">業務</td>
+<td align="left">質疑</td>
+<td align="left">イギリス</td>
+<td align="left">地雷</td>
+<td align="left">期間</td>
+<td align="left">公開</td>
 </tr>
 <tr class="even">
-<td align="left">回答</td>
-<td align="left">配慮</td>
-<td align="left">必要性</td>
-<td align="left">印象</td>
-<td align="left">一般的</td>
-<td align="left">農業</td>
-<td align="left">定員</td>
-<td align="left">随分</td>
-<td align="left">ある程度</td>
-<td align="left">提案理由</td>
+<td align="left">根拠</td>
+<td align="left">規制</td>
+<td align="left">日本国</td>
+<td align="left">目標</td>
+<td align="left">整理</td>
+<td align="left">広島</td>
+<td align="left">漁業</td>
+<td align="left">採択</td>
+<td align="left">常任理事国</td>
+<td align="left">事前</td>
 </tr>
 <tr class="odd">
-<td align="left">メッセージ</td>
-<td align="left">現場</td>
-<td align="left">防衛</td>
-<td align="left">ドル</td>
-<td align="left">やり方</td>
-<td align="left">意義</td>
-<td align="left">願い</td>
-<td align="left">防衛庁</td>
-<td align="left">共通</td>
-<td align="left">同様</td>
-</tr>
-<tr class="even">
-<td align="left">マスコミ</td>
-<td align="left">出る</td>
-<td align="left">やり方</td>
-<td align="left">自身</td>
-<td align="left">手段</td>
-<td align="left">慎重</td>
-<td align="left">規模</td>
-<td align="left">会合</td>
-<td align="left">経験</td>
-<td align="left">土地</td>
-</tr>
-<tr class="odd">
-<td align="left">出る</td>
-<td align="left">効果</td>
-<td align="left">在日米軍</td>
-<td align="left">コメント</td>
-<td align="left">禁止</td>
-<td align="left">重要性</td>
-<td align="left">対人地雷</td>
-<td align="left">インドネシア</td>
-<td align="left">真剣</td>
-<td align="left">作成</td>
-</tr>
-<tr class="even">
-<td align="left">制裁</td>
-<td align="left">進める</td>
-<td align="left">自身</td>
-<td align="left">意義</td>
-<td align="left">何度</td>
-<td align="left">任務</td>
+<td align="left">アフガニスタン</td>
+<td align="left">外相</td>
+<td align="left">防止</td>
 <td align="left">経過</td>
-<td align="left">難民</td>
-<td align="left">以降</td>
-<td align="left">資する</td>
+<td align="left">一層</td>
+<td align="left">竹島</td>
+<td align="left">教育</td>
+<td align="left">検証</td>
+<td align="left">軽減</td>
+<td align="left">警察</td>
+</tr>
+<tr class="even">
+<td align="left">警察</td>
+<td align="left">ミャンマー</td>
+<td align="left">土地</td>
+<td align="left">パキスタン</td>
+<td align="left">被害</td>
+<td align="left">宣言</td>
+<td align="left">禁止</td>
+<td align="left">移動</td>
+<td align="left">会合</td>
+<td align="left">判決</td>
+</tr>
+<tr class="odd">
+<td align="left">主権</td>
+<td align="left">イスラエル</td>
+<td align="left">両国間</td>
+<td align="left">圧力</td>
+<td align="left">支出</td>
+<td align="left">経験</td>
+<td align="left">国内法</td>
+<td align="left">センター</td>
+<td align="left">行使</td>
+<td align="left">皆様</td>
+</tr>
+<tr class="even">
+<td align="left">原因</td>
+<td align="left">日米安保条約</td>
+<td align="left">相手国</td>
+<td align="left">日米関係</td>
+<td align="left">航空協定</td>
+<td align="left">写真</td>
+<td align="left">仮に</td>
+<td align="left">並びに</td>
+<td align="left">ヨーロッパ</td>
+<td align="left">防衛省</td>
+</tr>
+<tr class="odd">
+<td align="left">ヨーロッパ</td>
+<td align="left">四島</td>
+<td align="left">提案理由</td>
+<td align="left">児童</td>
+<td align="left">国内法</td>
+<td align="left">ケニア</td>
+<td align="left">比べ</td>
+<td align="left">準備</td>
+<td align="left">戦略</td>
+<td align="left">二国間</td>
+</tr>
+<tr class="even">
+<td align="left">完全</td>
+<td align="left">香港</td>
+<td align="left">課税</td>
+<td align="left">疑問</td>
+<td align="left">幾ら</td>
+<td align="left">ポーランド</td>
+<td align="left">外相</td>
+<td align="left">電話</td>
+<td align="left">学校</td>
+<td align="left">前向き</td>
+</tr>
+<tr class="odd">
+<td align="left">基づく</td>
+<td align="left">イラン</td>
+<td align="left">排除</td>
+<td align="left">普天間</td>
+<td align="left">与党</td>
+<td align="left">会合</td>
+<td align="left">農業</td>
+<td align="left">入る</td>
+<td align="left">利用</td>
+<td align="left">仮に</td>
+</tr>
+<tr class="even">
+<td align="left">見通し</td>
+<td align="left">インドネシア</td>
+<td align="left">議題</td>
+<td align="left">周辺事態</td>
+<td align="left">運営</td>
+<td align="left">利用</td>
+<td align="left">スタート</td>
+<td align="left">民主党</td>
+<td align="left">否定</td>
+<td align="left">経過</td>
 </tr>
 </tbody>
 </table>

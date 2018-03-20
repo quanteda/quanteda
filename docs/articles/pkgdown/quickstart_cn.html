@@ -209,7 +209,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 18:43:54 2018
+## Created: Tue Mar 20 11:32:38 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -230,7 +230,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 18:43:54 2018
+## Created: Tue Mar 20 11:32:38 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -260,7 +260,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 18:43:54 2018
+## Created: Tue Mar 20 11:32:38 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -390,7 +390,7 @@ my_corpus3 &lt;-<span class="st"> </span>my_corpus1 <span class="op">+</span><sp
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Mon Mar 19 18:43:56 2018
+## Created: Tue Mar 20 11:32:40 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -839,30 +839,30 @@ quant_dfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1       Topic 2      Topic 3     Topic 4    Topic 5     
-## [1,] "kind"        "million"    "care"      "welfare"  "spending"  
-## [2,] "imagination" "investment" "welfare"   "measures" "review"    
-## [3,] "policies"    "scheme"     "per"       "recent"   "investment"
-## [4,] "wit"         "confidence" "allowance" "apply"    "million"   
-## [5,] "create"      "welfare"    "hit"       "energy"   "measures"  
-##      Topic 6   Topic 7       Topic 8     Topic 9    Topic 10      
-## [1,] "child"   "citizenship" "taoiseach" "fianna"   "society"     
-## [2,] "benefit" "alternative" "employees" "fáil"     "enterprising"
-## [3,] "day"     "adjustment"  "rate"      "national" "sense"       
-## [4,] "today"   "matter"      "referred"  "irish"    "equal"       
-## [5,] "bank"    "wealth"      "debate"    "support"  "nation"      
-##      Topic 11    Topic 12   Topic 13   Topic 14   Topic 15  Topic 16   
-## [1,] "taoiseach" "example"  "system"   "support"  "levy"    "failed"   
-## [2,] "fine"      "breaks"   "growth"   "million"  "million" "strategy" 
-## [3,] "gael"      "position" "problems" "welfare"  "carbon"  "needed"   
-## [4,] "may"       "property" "per"      "continue" "change"  "ministers"
-## [5,] "irish"     "society"  "change"   "future"   "welfare" "vision"   
-##      Topic 17      Topic 18  Topic 19 Topic 20  
-## [1,] "million"     "fáil"    "fianna" "welfare" 
-## [2,] "system"      "child"   "fáil"   "system"  
-## [3,] "authorities" "low"     "side"   "taxation"
-## [4,] "per"         "system"  "level"  "worst"   
-## [5,] "increase"    "welfare" "third"  "stimulus"</code></pre>
+<pre><code>##      Topic 1    Topic 2     Topic 3      Topic 4      Topic 5   Topic 6   
+## [1,] "welfare"  "taoiseach" "measures"   "spending"   "high"    "fianna"  
+## [2,] "system"   "employees" "pension"    "million"    "system"  "fáil"    
+## [3,] "recovery" "rate"      "per"        "welfare"    "package" "irish"   
+## [4,] "order"    "referred"  "reductions" "investment" "fine"    "national"
+## [5,] "job"      "debate"    "today"      "scheme"     "sense"   "support" 
+##      Topic 7     Topic 8        Topic 9     Topic 10     Topic 11 
+## [1,] "failed"    "society"      "taoiseach" "million"    "levy"   
+## [2,] "brought"   "enterprising" "change"    "support"    "million"
+## [3,] "credit"    "sense"        "christmas" "welfare"    "carbon" 
+## [4,] "million"   "equal"        "financial" "investment" "change" 
+## [5,] "ministers" "nation"       "fáil"      "back"       "welfare"
+##      Topic 12      Topic 13  Topic 14    Topic 15 Topic 16      Topic 17  
+## [1,] "alternative" "day"     "taoiseach" "fianna" "kind"        "strategy"
+## [2,] "citizenship" "bank"    "fine"      "fáil"   "imagination" "needed"  
+## [3,] "wealth"      "benefit" "gael"      "side"   "policies"    "failed"  
+## [4,] "adjustment"  "fianna"  "may"       "level"  "wit"         "system"  
+## [5,] "breaks"      "society" "irish"     "third"  "create"      "vision"  
+##      Topic 18  Topic 19   Topic 20   
+## [1,] "child"   "welfare"  "care"     
+## [2,] "benefit" "system"   "welfare"  
+## [3,] "irish"   "stimulus" "per"      
+## [4,] "welfare" "taxation" "allowance"
+## [5,] "today"   "fianna"   "hit"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>

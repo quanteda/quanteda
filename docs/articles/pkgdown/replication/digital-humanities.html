@@ -397,7 +397,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
-## Created: Mon Mar 19 18:45:24 2018
+## Created: Tue Mar 20 11:34:18 2018
 ## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -410,7 +410,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
-## Created: Mon Mar 19 18:45:24 2018
+## Created: Tue Mar 20 11:34:18 2018
 ## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -664,8 +664,13 @@ litcorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../refer
 <h1 class="hasAnchor">
 <a href="#clustering" class="anchor"></a>11 Clustering</h1>
 <p>Chapter 11 describes how to detect clusters in a corpus. While the book uses the <code>XMLAuthorCorpus</code>, we describe clustering using U.S. State of the Union addresses included in the <strong>quanteda.corpora</strong> package. We trim the corpus with <code><a href="../../../reference/dfm_trim.html">dfm_trim()</a></code> by keeping only those words that occur at least five times in the corpus and in at least three speeches.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda.corpora)
-pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> "1980-01-01"</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda.corpora)</code></pre></div>
+<pre><code>## 
+## Attaching package: 'quanteda.corpora'</code></pre>
+<pre><code>## The following object is masked from 'package:readtext':
+## 
+##     download</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> "1980-01-01"</span>), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
                <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
@@ -701,30 +706,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1  Topic 2   Topic 3   Topic 4        Topic 5   Topic 6     
-## [1,] "fianna" "may"     "benefit" "welfare"      "levy"    "employment"
-## [2,] "fáil"   "local"   "child"   "system"       "million" "change"    
-## [3,] "side"   "credit"  "day"     "fianna"       "carbon"  "failed"    
-## [4,] "level"  "courses" "banks"   "worst"        "change"  "needed"    
-## [5,] "third"  "fine"    "today"   "government's" "welfare" "bigger"    
-##      Topic 7       Topic 8     Topic 9        Topic 10   Topic 11     
-## [1,] "adjustment"  "strategy"  "society"      "spending" "kind"       
-## [2,] "alternative" "system"    "enterprising" "measures" "imagination"
-## [3,] "citizenship" "face"      "sense"        "review"   "policies"   
-## [4,] "yesterday"   "vision"    "equal"        "welfare"  "wit"        
-## [5,] "instead"     "ministers" "nation"       "pension"  "create"     
-##      Topic 12    Topic 13    Topic 14     Topic 15     Topic 16    
-## [1,] "taoiseach" "care"      "million"    "support"    "parties"   
-## [2,] "fine"      "welfare"   "level"      "million"    "welfare"   
-## [3,] "stimulus"  "per"       "reductions" "welfare"    "proposals" 
-## [4,] "back"      "allowance" "scheme"     "investment" "reduce"    
-## [5,] "gael"      "hit"       "investment" "back"       "investment"
-##      Topic 17  Topic 18      Topic 19   Topic 20   
-## [1,] "child"   "benefit"     "welfare"  "taoiseach"
-## [2,] "benefit" "child"       "stimulus" "fianna"   
-## [3,] "society" "carers"      "per"      "fáil"     
-## [4,] "million" "gael"        "side"     "national" 
-## [5,] "bank"    "opportunity" "members"  "irish"</code></pre>
+<pre><code>##      Topic 1     Topic 2      Topic 3    Topic 4       Topic 5      
+## [1,] "taoiseach" "spending"   "failed"   "alternative" "kind"       
+## [2,] "road"      "measures"   "strategy" "citizenship" "carbon"     
+## [3,] "say"       "scheme"     "system"   "wealth"      "imagination"
+## [4,] "yesterday" "million"    "vision"   "adjustment"  "change"     
+## [5,] "pockets"   "investment" "needed"   "breaks"      "levy"       
+##      Topic 6    Topic 7  Topic 8     Topic 9     Topic 10   
+## [1,] "welfare"  "fianna" "credit"    "taoiseach" "taoiseach"
+## [2,] "system"   "fáil"   "ministers" "fine"      "employees"
+## [3,] "taxation" "side"   "know"      "may"       "rate"     
+## [4,] "fianna"   "level"  "change"    "gael"      "referred" 
+## [5,] "fáil"     "third"  "interests" "irish"     "debate"   
+##      Topic 11       Topic 12    Topic 13     Topic 14   Topic 15 
+## [1,] "society"      "million"   "reduction"  "child"    "benefit"
+## [2,] "enterprising" "welfare"   "million"    "welfare"  "day"    
+## [3,] "sense"        "support"   "recent"     "recovery" "today"  
+## [4,] "equal"        "including" "investment" "fáil"     "bank"   
+## [5,] "nation"       "measures"  "pension"    "society"  "burden" 
+##      Topic 16   Topic 17    Topic 18      Topic 19    Topic 20  
+## [1,] "fianna"   "care"      "support"     "welfare"   "review"  
+## [2,] "fáil"     "welfare"   "investment"  "million"   "pensions"
+## [3,] "national" "per"       "confidence"  "reduction" "details" 
+## [4,] "irish"    "allowance" "development" "measures"  "recent"  
+## [5,] "support"  "hit"       "welfare"     "deficit"   "months"</code></pre>
 </div>
 </div>
   </div>

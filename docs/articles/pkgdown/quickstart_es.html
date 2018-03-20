@@ -207,7 +207,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 18:44:29 2018
+## Created: Tue Mar 20 11:33:20 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <em>docvars</em>.</p>
 <p>Esto lo hacemos utilizando la función de R llamada <code>names()</code> para obtener los nombres del vector de tipo character de <code>data_char_ukimmig2010</code> y asignárselos a una variable de documento (<code>docvar</code>).</p>
@@ -228,7 +228,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 18:44:29 2018
+## Created: Tue Mar 20 11:33:20 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -258,7 +258,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Mon Mar 19 18:44:29 2018
+## Created: Tue Mar 20 11:33:20 2018
 ## Notes:</code></pre>
 <p>El último comando, <code>metadoc</code>, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor <code>"english"</code>, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento <code>docsource</code>, hemos usado la función de quanteda llamada <code><a href="../../reference/ndoc.html">ndoc()</a></code> para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como <code>nrow()</code> y <code>ncol()</code>.</p>
 </div>
@@ -388,7 +388,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Mon Mar 19 18:44:31 2018
+## Created: Tue Mar 20 11:33:22 2018
 ## Notes:</code></pre>
 </div>
 <div id="armando-subsets-dentro-de-objetos-corpus" class="section level3">
@@ -497,7 +497,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 
 ## $created
 ## [1] "Tue Jun 13 14:51:47 2017"</code></pre>
-<p>Más corpora están disponibles en el repositorio [quanteda.corpora] (<a href="http://github.com/quanteda/quanteda.corpora" class="uri">http://github.com/quanteda/quanteda.corpora</a>).</p>
+<p>Más corpora están disponibles en el repositorio <a href="http://github.com/quanteda/quanteda.corpora">quanteda.corpora</a>.</p>
 </div>
 </div>
 <div id="extrayendo-atributos-de-un-corpus" class="section level1">
@@ -698,7 +698,7 @@ mydfm</code></pre></div>
 <a href="#agrupando-documentos-por-variable" class="anchor"></a>Agrupando documentos por variable</h3>
 <p>Frecuentemente estamos interesados en analizar cómo textos difieren según factores sustantivos que pueden estar codificados en las variables de documento en vez de simplemente por los límites de los archivos. En esos casos es posible agrupar los documentos que comparten el mismo valor por variable de documento cuando se crea un dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
-                 <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
@@ -741,9 +741,9 @@ byPresMat</code></pre></div>
 ##   2009-Obama        1      10
 ##   2013-Obama        1       6
 ##   2017-Trump        1       5</code></pre>
-<p>El constructor de la función <code><a href="../../reference/dictionary.html">dictionary()</a></code> también funciona con el formato de dos diccionarios comunes en “foreign”: los formatos LIWC y Provalis Research’s Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:</p>
+<p>El constructor de la función <code><a href="../../reference/dictionary.html">dictionary()</a></code> también funciona con el formato de dos diccionarios externos comunes: los formatos LIWC y Provalis Research’s Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
-                      <span class="dt">format =</span> <span class="st">"LIWC"</span>)
+                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)
 liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)
 liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 </div>
@@ -780,7 +780,6 @@ presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 
 <span class="co"># Clustering jerárquico- obtener distancias en dfm normalizado</span>
-
 presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"prop"</span>))
 <span class="co"># Clustering jerárquico de los objetos de distancia</span>
 presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)
@@ -838,30 +837,30 @@ quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2  Topic 3    Topic 4       Topic 5   Topic 6   
-## [1,] "taoiseach" "fianna" "measures" "alternative" "levy"    "fáil"    
-## [2,] "fine"      "fáil"   "million"  "citizenship" "million" "fianna"  
-## [3,] "gael"      "side"   "scheme"   "wealth"      "carbon"  "national"
-## [4,] "may"       "level"  "review"   "adjustment"  "change"  "support" 
-## [5,] "irish"     "third"  "welfare"  "breaks"      "welfare" "irish"   
-##      Topic 7     Topic 8        Topic 9      Topic 10     Topic 11
-## [1,] "taoiseach" "society"      "spending"   "support"    "bank"  
-## [2,] "employees" "enterprising" "investment" "welfare"    "fáil"  
-## [3,] "rate"      "sense"        "taxes"      "confidence" "day"   
-## [4,] "referred"  "equal"        "million"    "employment" "child" 
-## [5,] "debate"    "nation"       "world"      "back"       "may"   
-##      Topic 12   Topic 13     Topic 14      Topic 15     Topic 16      
-## [1,] "welfare"  "investment" "kind"        "confidence" "welfare"     
-## [2,] "system"   "million"    "imagination" "fianna"     "care"        
-## [3,] "taxation" "forward"    "policies"    "irish"      "workers"     
-## [4,] "fianna"   "welfare"    "wit"         "families"   "unemployment"
-## [5,] "fáil"     "increased"  "create"      "fáil"       "million"     
-##      Topic 17    Topic 18    Topic 19   Topic 20 
-## [1,] "failed"    "allowance" "fianna"   "child"  
-## [2,] "strategy"  "per"       "benefit"  "benefit"
-## [3,] "needed"    "policies"  "national" "today"  
-## [4,] "ministers" "hit"       "face"     "society"
-## [5,] "system"    "child"     "welfare"  "per"</code></pre>
+<pre><code>##      Topic 1   Topic 2    Topic 3   Topic 4     Topic 5    Topic 6   
+## [1,] "levy"    "million"  "local"   "strategy"  "system"   "fianna"  
+## [2,] "million" "measures" "irish"   "ministers" "welfare"  "fáil"    
+## [3,] "carbon"  "spending" "system"  "vision"    "taxation" "national"
+## [4,] "change"  "system"   "gael"    "face"      "fáil"     "irish"   
+## [5,] "welfare" "details"  "arrived" "adopted"   "high"     "support" 
+##      Topic 7      Topic 8      Topic 9     Topic 10  Topic 11   
+## [1,] "million"    "welfare"    "per"       "child"   "taoiseach"
+## [2,] "support"    "scheme"     "care"      "benefit" "fine"     
+## [3,] "investment" "forward"    "allowance" "day"     "may"      
+## [4,] "continue"   "level"      "child"     "bank"    "gael"     
+## [5,] "welfare"    "confidence" "families"  "today"   "stimulus" 
+##      Topic 12     Topic 13       Topic 14  Topic 15     Topic 16     
+## [1,] "scheme"     "society"      "welfare" "welfare"    "kind"       
+## [2,] "bill"       "enterprising" "workers" "system"     "imagination"
+## [3,] "investment" "sense"        "still"   "back"       "policies"   
+## [4,] "reduced"    "equal"        "real"    "gael"       "wit"        
+## [5,] "level"      "nation"       "private" "employment" "create"     
+##      Topic 17      Topic 18  Topic 19    Topic 20       
+## [1,] "fianna"      "benefit" "taoiseach" "fáil"         
+## [2,] "fáil"        "poverty" "failed"    "strategy"     
+## [3,] "citizenship" "society" "needed"    "society"      
+## [4,] "side"        "fianna"  "problem"   "international"
+## [5,] "alternative" "child"   "system"    "person"</code></pre>
 </div>
 </div>
 </div>
