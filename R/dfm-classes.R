@@ -22,7 +22,7 @@ setClassUnion("dframe", members = c("data.frame", "NULL"))
 #'   simple feature counts. To change this, use the \code{\link{dfm_weight}}
 #'   method.
 #' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using
-#'   either the \code{\link{smooth}} or the \code{\link{dfm_weight}} methods.
+#'   the \code{\link{dfm_smooth}} method.
 #' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are
 #'   named \code{docs} and \code{features} respectively.
 #' @details The \code{dfm} class is a virtual class that will contain
