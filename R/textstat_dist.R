@@ -70,42 +70,14 @@ textstat_dist.dfm <- function(x, selection = NULL,
     method <- char_tolower(method)
     
     if (!is.null(selection)) {
-        if (!is.character(selection)) {
-            if (!is.dfm(selection)) selection_dfm <- as.dfm(as.matrix(selection))
-            if (margin == "features") {
-                if (ndoc(selection_dfm) != ndoc(x))
-                    stop("The vector/matrix specified by 'selection' must be conform to the object x in rows.")
-                y <- selection_dfm
-            } else {
-                if (nfeat(selection_dfm) != nfeat(x))
-                    stop("The vector/matrix specified by 'selection' must be conform to the object x in columns.")
-                y <- selection_dfm
-            }
-        } else {    
-            if (margin == "features") {
-                selection <- intersect(selection, featnames(x))
-                if (!length(selection))
-                    stop("The features specified by 'selection' do not exist.")
-                y <- x[, selection, drop = FALSE]
-            } else {
-                selection <- intersect(selection, docnames(x))
-                if (!length(selection))
-                    stop("The documents specified by 'selection' do not exist.")
-                y <- x[selection, , drop = FALSE]
-            }
-        }
+        y <- if (margin == "documents") x[selection, ] else x[, selection]
     } else {
         y <- NULL
     }
     
     m <- if (margin == "documents") 1 else 2
-    
     methods1 <- c("euclidean", "hamming", "chisquared", "chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "ejaccard", "simple matching")
-    
-    # methods1 <- char_tolower(methods1)
-    # methods1 <- char_tolower(methods2)
-    # method <- char_tolower(method)
     
     if (method %in% methods1) {
         temp <- get(paste0(method, "_dist"))(x, y, margin = m)
@@ -116,12 +88,6 @@ textstat_dist.dfm <- function(x, selection = NULL,
         temp <- get(paste0(method, "_simil"))(x, y, margin = m)
     } else {
         stop(method, " is not implemented; consider trying proxy::dist().")
-    }
-    
-    if (is.character(selection)) {
-        name <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-        # NOTE dense matrix does not accept "" as rowname
-        temp <- temp[match(name, rownames(temp)), , drop = FALSE] # sort for as.dist()
     }
     
     # create a new dist object
@@ -234,9 +200,10 @@ as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
     
     if (!is.null(attr(x, "Labels"))) label <- attr(x, "Labels")
     result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
+    names(result) <- colnames(x)
     attributes(x) <- NULL
-    names(result) <- if (!is.null(label)) label[seq_len(ncol(as.matrix(x)))]
-    
+    # names(result) <- if (!is.null(label)) label[seq_len(ncol(as.matrix(x)))]
+
     # remove the element of each similarity vector equal to the item itself
     for (m in names(result)) {
         result[[m]] <- result[[m]][m != names(result[[m]])]

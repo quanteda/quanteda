@@ -44,7 +44,7 @@ library(quanteda)
 
 ## Currently available corpus sources
 
-**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/kbenoit/readtext).  The main function in this package, `readtext()`,  takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
+**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/kbenoit/readtext). The main function in this package, `readtext()`, takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
 
 `readtext()` works on:
 
@@ -63,9 +63,9 @@ The corpus constructor command `corpus()` works directly on:
 
 ### Building a corpus from a character vector
 
-The simplest case is to create a corpus from a vector of texts already in memory in R.  This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.
+The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.
 
-If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called `data_char_ukimmig2010`).
+If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called `data_char_ukimmig2010`).
 
 ```{r}
 my_corpus <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
@@ -219,9 +219,8 @@ More corpora are available from the [quanteda.corpora](http://github.com/quanted
 
 # Extracting Features from a Corpus
 
-In order to perform statistical analysis such as document scaling, we must extract a matrix associating values for certain features with each document. In quanteda, we use the `dfm` function to produce such a matrix.  "dfm" is short for *document-feature matrix*, and always refers to documents in rows and "features" as columns.  We fix this dimensional orientation because it is standard in data analysis to have a unit of analysis as a row, and features or variables
-pertaining to each unit as columns.  We call them "features" rather than terms, because features are more general than terms: they can be defined as raw terms, stemmed terms, the parts of speech of terms, terms after stopwords have been removed,
-or a dictionary class to which a term belongs.  Features can be entirely general, such as ngrams or syntactic dependencies, and we leave this open-ended.
+In order to perform statistical analysis such as document scaling, we must extract a matrix associating values for certain features with each document. In quanteda, we use the `dfm` function to produce such a matrix. "dfm" is short for *document-feature matrix*, and always refers to documents in rows and "features" as columns.  We fix this dimensional orientation because it is standard in data analysis to have a unit of analysis as a row, and features or variables
+pertaining to each unit as columns.  We call them "features" rather than terms, because features are more general than terms: they can be defined as raw terms, stemmed terms, the parts of speech of terms, terms after stopwords have been removed, or a dictionary class to which a term belongs.  Features can be entirely general, such as ngrams or syntactic dependencies, and we leave this open-ended.
 
 ## Tokenizing texts
 
