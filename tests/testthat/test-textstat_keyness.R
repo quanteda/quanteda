@@ -103,17 +103,6 @@ test_that("textstat_keyness works with different targets", {
                  textstat_keyness(mydfm, target = c(FALSE, TRUE)))
 })
 
-test_that("textstat_keyness works with different targets", {
-    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
-                   d2 = "a a b c c d d d d e f h", 
-                   d3 = "a a a a b b c c d d d d d d"))
-    key1 <- textstat_keyness(mydfm, 3)
-    key2 <- textstat_keyness(mydfm, target = "d3")
-    expect_equal(key1, key2)
-    expect_equal(attr(key1, 'groups'), c("target", "reference"))
-    expect_equal(attr(key2, 'groups'), c("target", "reference"))
-})
-
 test_that("textstat_keyness combines non-target rows correctly", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h", 
