@@ -113,7 +113,11 @@ textstat_keyness.dfm <- function(x, target = 1L,
     if (ndoc(x) == 2) {
         label <- docnames(x)[order(target, decreasing = TRUE)]
     } else {
-        label <- c("target", "reference")
+        if (sum(target) == 1 && !is.null(docnames(x)[target])) {
+            label <- c(docnames(x)[target], "reference")
+        } else {
+            label <- c("target", "reference")
+        }
     }
     grouping <- factor(target, levels = c(TRUE, FALSE), labels = label)
     temp <- dfm_group(x, groups = grouping)

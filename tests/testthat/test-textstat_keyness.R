@@ -322,3 +322,21 @@ test_that("textstat_keyness correction warnings for pmi and exact", {
 })
 
 
+test_that("group labels are correct, #1257", {
+  
+    mt <- dfm(c(d1 = 'a b c', d2 = 'a b f g', d3 = 'c h i j', d4 = 'i j'))
+
+    key1 <- textstat_keyness(mt, target = 'd1')
+    expect_identical(attr(key1, 'groups'), c("d1", "reference"))
+    
+    key2 <- textstat_keyness(mt, target = 'd4')
+    expect_identical(attr(key2, 'groups'), c("d4", "reference"))
+    
+    key3 <- textstat_keyness(mt, target = c('d1', 'd2'))
+    expect_identical(attr(key3, 'groups'), c("target", "reference"))
+    
+    key4 <- textstat_keyness(mt[1:2,], target = 'd1')
+    expect_identical(attr(key4, 'groups'), c("d1", "d2"))
+    
+})
+
