@@ -409,7 +409,7 @@ test_that("dfm works with relational operators", {
     expect_is(testdfm < -1, "lgCMatrix")
 })
 
-test_that("dfm addition (+) keeps attributes", {
+test_that("dfm addition (+) keeps attributes #1279", {
     tmp <- head(data_dfm_lbgexample, 4, nf = 3)
 
     # @settings slot
