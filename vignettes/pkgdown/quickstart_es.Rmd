@@ -34,7 +34,7 @@ Los siguientes paquetes funcionan bien con con **quanteda** o lo complementan y 
     devtools::install_github("kbenoit/LIWCalike")
     ```
 
-# Creando un Corpus
+# Creando un corpus
 
 Cargas el paquete para acceder a funciones y data en el paquete.
 
@@ -347,7 +347,7 @@ liwcdfm[, 1:10]
 
 # Más ejemplos
 
-## Similaridades entre textos
+## Similitudes entre textos
 
 ```{r fig.width = 6}
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
