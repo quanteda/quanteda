@@ -165,7 +165,7 @@
 </div>
 <div id="creando-un-corpus" class="section level1">
 <h1 class="hasAnchor">
-<a href="#creando-un-corpus" class="anchor"></a>Creando un Corpus</h1>
+<a href="#creando-un-corpus" class="anchor"></a>Creando un corpus</h1>
 <p>Cargas el paquete para acceder a funciones y data en el paquete.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <div id="fuentes-disponibles-de-corpus" class="section level2">
@@ -207,7 +207,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Tue Mar 20 11:33:20 2018
+## Created: Wed Mar 21 17:23:23 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <em>docvars</em>.</p>
 <p>Esto lo hacemos utilizando la función de R llamada <code>names()</code> para obtener los nombres del vector de tipo character de <code>data_char_ukimmig2010</code> y asignárselos a una variable de documento (<code>docvar</code>).</p>
@@ -228,7 +228,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Tue Mar 20 11:33:20 2018
+## Created: Wed Mar 21 17:23:23 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -258,7 +258,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Tue Mar 20 11:33:20 2018
+## Created: Wed Mar 21 17:23:23 2018
 ## Notes:</code></pre>
 <p>El último comando, <code>metadoc</code>, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor <code>"english"</code>, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento <code>docsource</code>, hemos usado la función de quanteda llamada <code><a href="../../reference/ndoc.html">ndoc()</a></code> para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como <code>nrow()</code> y <code>ncol()</code>.</p>
 </div>
@@ -388,7 +388,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Tue Mar 20 11:33:22 2018
+## Created: Wed Mar 21 17:23:25 2018
 ## Notes:</code></pre>
 </div>
 <div id="armando-subsets-dentro-de-objetos-corpus" class="section level3">
@@ -752,9 +752,9 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 <div id="mas-ejemplos" class="section level1">
 <h1 class="hasAnchor">
 <a href="#mas-ejemplos" class="anchor"></a>Más ejemplos</h1>
-<div id="similaridades-entre-textos" class="section level2">
+<div id="similitudes-entre-textos" class="section level2">
 <h2 class="hasAnchor">
-<a href="#similaridades-entre-textos" class="anchor"></a>Similaridades entre textos</h2>
+<a href="#similitudes-entre-textos" class="anchor"></a>Similitudes entre textos</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
@@ -837,30 +837,30 @@ quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2    Topic 3   Topic 4     Topic 5    Topic 6   
-## [1,] "levy"    "million"  "local"   "strategy"  "system"   "fianna"  
-## [2,] "million" "measures" "irish"   "ministers" "welfare"  "fáil"    
-## [3,] "carbon"  "spending" "system"  "vision"    "taxation" "national"
-## [4,] "change"  "system"   "gael"    "face"      "fáil"     "irish"   
-## [5,] "welfare" "details"  "arrived" "adopted"   "high"     "support" 
-##      Topic 7      Topic 8      Topic 9     Topic 10  Topic 11   
-## [1,] "million"    "welfare"    "per"       "child"   "taoiseach"
-## [2,] "support"    "scheme"     "care"      "benefit" "fine"     
-## [3,] "investment" "forward"    "allowance" "day"     "may"      
-## [4,] "continue"   "level"      "child"     "bank"    "gael"     
-## [5,] "welfare"    "confidence" "families"  "today"   "stimulus" 
-##      Topic 12     Topic 13       Topic 14  Topic 15     Topic 16     
-## [1,] "scheme"     "society"      "welfare" "welfare"    "kind"       
-## [2,] "bill"       "enterprising" "workers" "system"     "imagination"
-## [3,] "investment" "sense"        "still"   "back"       "policies"   
-## [4,] "reduced"    "equal"        "real"    "gael"       "wit"        
-## [5,] "level"      "nation"       "private" "employment" "create"     
-##      Topic 17      Topic 18  Topic 19    Topic 20       
-## [1,] "fianna"      "benefit" "taoiseach" "fáil"         
-## [2,] "fáil"        "poverty" "failed"    "strategy"     
-## [3,] "citizenship" "society" "needed"    "society"      
-## [4,] "side"        "fianna"  "problem"   "international"
-## [5,] "alternative" "child"   "system"    "person"</code></pre>
+<pre><code>##      Topic 1    Topic 2    Topic 3      Topic 4       Topic 5    
+## [1,] "continue" "welfare"  "fáil"       "alternative" "taoiseach"
+## [2,] "support"  "fianna"   "confidence" "citizenship" "employees"
+## [3,] "areas"    "system"   "irish"      "wealth"      "rate"     
+## [4,] "hospital" "taxation" "whether"    "adjustment"  "referred" 
+## [5,] "national" "fáil"     "families"   "breaks"      "debate"   
+##      Topic 6      Topic 7     Topic 8       Topic 9     Topic 10  
+## [1,] "spending"   "million"   "kind"        "taoiseach" "care"    
+## [2,] "investment" "scheme"    "imagination" "fine"      "families"
+## [3,] "review"     "measures"  "policies"    "gael"      "per"     
+## [4,] "details"    "reduction" "wit"         "may"       "million" 
+## [5,] "million"    "welfare"   "create"      "irish"     "fianna"  
+##      Topic 11  Topic 12    Topic 13 Topic 14   Topic 15  Topic 16      
+## [1,] "child"   "failed"    "fianna" "taxation" "system"  "society"     
+## [2,] "benefit" "strategy"  "fáil"   "system"   "child"   "enterprising"
+## [3,] "day"     "needed"    "side"   "taken"    "deficit" "sense"       
+## [4,] "today"   "ministers" "level"  "earning"  "high"    "equal"       
+## [5,] "bank"    "system"    "third"  "worst"    "much"    "nation"      
+##      Topic 17     Topic 18  Topic 19   Topic 20   
+## [1,] "million"    "levy"    "fianna"   "workers"  
+## [2,] "investment" "million" "fáil"     "hospital" 
+## [3,] "welfare"    "carbon"  "national" "welfare"  
+## [4,] "back"       "change"  "support"  "allowance"
+## [5,] "support"    "welfare" "irish"    "child"</code></pre>
 </div>
 </div>
 </div>
@@ -877,7 +877,7 @@ quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
       </ul>
 </li>
       <li>
-<a href="#creando-un-corpus">Creando un Corpus</a><ul class="nav nav-pills nav-stacked">
+<a href="#creando-un-corpus">Creando un corpus</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#fuentes-disponibles-de-corpus">Fuentes disponibles de corpus</a></li>
       <li><a href="#como-funciona-un-corpus-de-quanteda">Cómo funciona un corpus de quanteda</a></li>
       <li><a href="#herramientas-para-manejar-objetos-de-corpus">Herramientas para manejar objetos de corpus</a></li>
@@ -892,7 +892,7 @@ quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
 </li>
       <li>
 <a href="#mas-ejemplos">Más ejemplos</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#similaridades-entre-textos">Similaridades entre textos</a></li>
+<li><a href="#similitudes-entre-textos">Similitudes entre textos</a></li>
       <li><a href="#escalamiento-de-posiciones-de-documentos">Escalamiento de posiciones de documentos</a></li>
       <li><a href="#topic-models">Topic models</a></li>
       </ul>
