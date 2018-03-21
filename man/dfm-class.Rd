@@ -95,7 +95,7 @@ simple feature counts. To change this, use the \code{\link{dfm_weight}}
 method.}
 
 \item{\code{smooth}}{a smoothing parameter, defaults to zero.  Can be changed using
-either the \code{\link{smooth}} or the \code{\link{dfm_weight}} methods.}
+the \code{\link{dfm_smooth}} method.}
 
 \item{\code{Dimnames}}{These are inherited from \link[Matrix]{Matrix-class} but are
 named \code{docs} and \code{features} respectively.}
