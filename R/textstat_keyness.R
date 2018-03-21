@@ -93,33 +93,47 @@ textstat_keyness.dfm <- function(x, target = 1L,
         stop("x must have at least two documents")
     if (is.character(target) && !(target %in% docnames(x)))
         stop("target not found in docnames(x)")
-    if (is.numeric(target) && (target < 1 | target > ndoc(x)))
+    if (is.numeric(target) && (target < 1 || target > ndoc(x)))
         stop("target index outside range of documents")
     if (is.logical(target) && length(target) != ndoc(x))
         stop("target must be the same length as the number of documents")
-    if (is.logical(target))
-        target <- which(target)
+
+    # convert all inputs into logical vector
+    if (is.numeric(target)) {
+        target <- seq(ndoc(x)) %in% target
+    } else if (is.character(target)) {
+        target <- docnames(x) %in% target
+    } else if (is.logical(target)) {
+        target <- target
+    } else {
+        stop("target must be numeric, character or logical")
+    }
     
-    # get the target and reference documents by concatenating all non-target docs
-    grouping <- rep(2, ndoc(x))
-    names(grouping) <- docnames(x)
-    grouping[target] <- 1
-    rownames(x) <- grouping
-    x <- dfm_compress(x, margin = 'documents')
-    x <- x[order(docnames(x)), ]
-    
+    # use original docnames only when there are two documents
+    if (ndoc(x) == 2) {
+        label <- docnames(x)[order(target, decreasing = TRUE)]
+    } else {
+        if (sum(target) == 1 && !is.null(docnames(x)[target])) {
+            label <- c(docnames(x)[target], "reference")
+        } else {
+            label <- c("target", "reference")
+        }
+    }
+    grouping <- factor(target, levels = c(TRUE, FALSE), labels = label)
+    temp <- dfm_group(x, groups = grouping)
+
     if (measure == "chi2") {
-        result <- keyness_chi2_dt(x, correction)
+        result <- keyness_chi2_dt(temp, correction)
     } else if (measure == "lr") {
-        result <- keyness_lr(x, correction)
+        result <- keyness_lr(temp, correction)
     } else if (measure == "exact") {
         if (!correction %in% c("default", "none"))
             warning("correction is always none for measure exact")
-        result <- keyness_exact(x)
+        result <- keyness_exact(temp)
     } else if (measure == "pmi") {
         if (!correction %in% c("default", "none"))
             warning("correction is always none for measure pmi")
-        result <- keyness_pmi(x)
+        result <- keyness_pmi(temp)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
@@ -127,7 +141,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
     if (sort)
         result <- result[order(result[, 2], decreasing = TRUE), ]
     
-    attr(result, "documents") <- names(grouping[order(grouping)])
+    attr(result, "groups") <- docnames(temp)
     class(result) <- c('keyness', 'textstat', 'data.frame')
     rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
