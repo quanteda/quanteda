@@ -448,36 +448,36 @@ test_that("dfm addition (+) keeps attributes", {
     )
 
     # @smooth slot
-    tmp@smooth <- 10
+    tmp@smooth <- 5.5
     expect_equal(
         (tmp + 1)@smooth,
-        10
+        5.5
     )
     expect_equal(
         (1 + tmp)@smooth,
-        10
+        5.5
     )
 
     # @ngrams slot
-    tmp@ngrams <- 5
+    tmp@ngrams <- 5L
     expect_equal(
         (tmp + 1)@ngrams,
-        5
+        5L
     )
     expect_equal(
         (1 + tmp)@ngrams,
-        5
+        5L
     )
 
     # @skip slot
-    tmp@skip <- 5
+    tmp@skip <- 5L
     expect_equal(
         (tmp + 1)@skip,
-        5
+        5L
     )
     expect_equal(
         (1 + tmp)@skip,
-        5
+        5L
     )
 
     # @concatenator slot
