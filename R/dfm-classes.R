@@ -102,12 +102,12 @@ setMethod("rowMeans",
 #' @rdname dfm-class
 setMethod("+", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
-              as.dfm(as(e1, "dgCMatrix") + e2)
+            reassign_slots(as.dfm(as(e1, "dgCMatrix") + e2), e1)
           })
 #' @rdname dfm-class
 setMethod("+", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
-              as.dfm(e1 + as(e2, "dgCMatrix"))
+            reassign_slots(as.dfm(e1 + as(e2, "dgCMatrix")), e2)
           })
 
 
