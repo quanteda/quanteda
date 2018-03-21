@@ -295,6 +295,6 @@ test_that("smooth slot is correctly set (#1274)", {
     expect_equal(dfms0.5@smooth, 0.5)
     
     # smoothed by 1 and then by another 2
-    dfms1_2 <- dfm_smooth(data_dfm_lbgexample, smoothing = 2)
+    dfms1_2 <- dfm_smooth(dfms1, smoothing = 2)
     expect_equal(dfms1_2@smooth, 3)
 })
