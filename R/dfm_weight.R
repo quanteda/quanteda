@@ -230,7 +230,7 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 dfm_smooth.dfm <- function(x, smoothing = 1) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    x@smooth <- smoothing
+    x@smooth <- x@smooth + smoothing
     x + smoothing
 }
 
