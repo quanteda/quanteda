@@ -22,7 +22,7 @@ tokens_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
     types(x) <- lowercase_types(types(x), keep_acronyms)
-    tokens_recompile(x)
+    tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
 
 lowercase_types <- function(type, keep_acronyms) {
@@ -51,7 +51,7 @@ tokens_toupper.default <- function(x, ...) {
 #' @export
 tokens_toupper.tokens <- function(x, ...) {
     types(x) <- char_toupper(types(x), ...)
-    tokens_recompile(x)
+    tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
 
 
