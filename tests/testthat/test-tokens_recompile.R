@@ -161,7 +161,7 @@ test_that("non-ascii types are UTF8 encoded", {
 test_that("keep gap and dupli argument works, #1278", {
     
     toks <- list(c(2, 3, 4))
-    attr(toks, 'types') <- c('a', 'b', 'c', 'c', 'd') # Shorter than 10
+    attr(toks, 'types') <- c('a', 'b', 'c', 'c', 'd')
     attr(toks, 'class') <- 'tokens'
     
     toks2 <- quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = TRUE)
@@ -180,8 +180,20 @@ test_that("keep gap and dupli argument works, #1278", {
     expect_equal(attr(toks5, 'padding'), FALSE)
     expect_equal(attr(toks5, 'types'), c("a", "b", "c", "c", "d"))
     
+    expect_equal(quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = TRUE),
+                 quanteda:::tokens_recompile(toks, 'R', gap = TRUE, dup = TRUE))
+
+    expect_equal(quanteda:::tokens_recompile(toks, 'C++', gap = FALSE, dup = TRUE),
+                 quanteda:::tokens_recompile(toks, 'R', gap = FALSE, dup = TRUE))
+    
+    expect_equal(quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = FALSE),
+                 quanteda:::tokens_recompile(toks, 'R', gap = TRUE, dup = FALSE))
+    
+    expect_equal(quanteda:::tokens_recompile(toks, 'C++', gap = FALSE, dup = FALSE),
+                 quanteda:::tokens_recompile(toks, 'R', gap = FALSE, dup = FALSE))
+    
     toks_pad <- list(c(0, 2, 3, 4))
-    attr(toks_pad, 'types') <- c('a', 'b', 'c', 'c', 'd') # Shorter than 10
+    attr(toks_pad, 'types') <- c('a', 'b', 'c', 'c', 'd')
     attr(toks_pad, 'class') <- 'tokens'
     
     toks_pad2 <- quanteda:::tokens_recompile(toks_pad, 'C++', gap = TRUE, dup = TRUE)
@@ -200,4 +212,15 @@ test_that("keep gap and dupli argument works, #1278", {
     expect_equal(attr(toks_pad5, 'padding'), TRUE)
     expect_equal(attr(toks_pad5, 'types'), c("a", "b", "c", "c", "d"))
     
+    expect_equal(quanteda:::tokens_recompile(toks_pad, 'C++', gap = TRUE, dup = TRUE),
+                 quanteda:::tokens_recompile(toks_pad, 'R', gap = TRUE, dup = TRUE))
+    
+    expect_equal(quanteda:::tokens_recompile(toks_pad, 'C++', gap = FALSE, dup = TRUE),
+                 quanteda:::tokens_recompile(toks_pad, 'R', gap = FALSE, dup = TRUE))
+    
+    expect_equal(quanteda:::tokens_recompile(toks_pad, 'C++', gap = TRUE, dup = FALSE),
+                 quanteda:::tokens_recompile(toks_pad, 'R', gap = TRUE, dup = FALSE))
+    
+    expect_equal(quanteda:::tokens_recompile(toks_pad, 'C++', gap = FALSE, dup = FALSE),
+                 quanteda:::tokens_recompile(toks_pad, 'R', gap = FALSE, dup = FALSE))
 })

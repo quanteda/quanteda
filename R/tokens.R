@@ -803,18 +803,24 @@ tokens_character <- function(txt,
 tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) {
     
     method <- match.arg(method)
-    attrs_input <- attributes(x)
+    attrs <- attributes(x)
     
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
-        attributes(x, FALSE) <- attrs_input
+        attributes(x, FALSE) <- attrs
         return(x)
     }
     
+    # Check for padding
     index_unique <- unique(unlist(unclass(x), use.names = FALSE))
     padding <- (index_unique == 0)
-    attrs_input$padding <- any(padding) # add padding flag
+    attrs$padding <- any(padding) # add padding flag
     index_unique <- index_unique[!padding] # exclude padding
+    
+    if (!gap && !dup) {
+        attributes(x) <- attrs
+        return(x)
+    }
     
     # Remove gaps in the type index, if any, remap index
     if (gap) {
@@ -822,8 +828,8 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
             types_new <- types(x)[index_unique]
             index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
             index_unique <- c(0, index_unique) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)]) # shift index for padding
-            attributes(x) <- attrs_input
+            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)]) 
+            attributes(x) <- attrs
             types(x) <- types_new
         }
     }
@@ -836,7 +842,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
             index_mapping <- match(types, types_unique)
             index_mapping <- c(0, index_mapping) # padding index is zero but not in types
             x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-            attributes(x) <- attrs_input
+            attributes(x) <- attrs
             types(x) <- types_unique
         }
     }
