@@ -2,6 +2,7 @@
 
 ### Behaviour changes
 
+* `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types. Solves #1278.
 * `dfm_trim()` now takes more options, and these are implemented more consistently.  `min_termfreq` and `max_termfreq` have replaced `min_count` and `max_count`, and these can be modified using a `termfreq_type` argument.  (Similar options are implemented for `docfreq_type`.)  Solves #1253, #1254.
 * `textstat_simil()` and `textstat_dist()` now take valid dfm indexes for the relevant margin for the `selection` argument.  Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed.  Solves #1266.
 
