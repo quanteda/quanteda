@@ -871,3 +871,19 @@ test_that("dfm raise nicer error message, #1267", {
     expect_error(mx[1:4,1:5,TRUE], 'Subscript out of bounds')
     
 })
+
+test_that("dfm keeps non-existent types, #1278", {
+    
+    toks <- tokens("a b c")
+    dict <- dictionary(list(A = "a", B = "b", Z = "z"))
+    
+    toks_key <- tokens_lookup(toks, dict)
+    expect_equal(types(toks_key), c('A', 'B', 'Z'))
+     
+    expect_equal(featnames(dfm(toks_key, tolower = TRUE)),
+                 c('a', 'b', 'z'))
+    
+    expect_equal(featnames(dfm(toks_key, tolower = FALSE)),
+                 c('A', 'B', 'Z'))
+    
+})

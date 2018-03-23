@@ -66,9 +66,9 @@ struct recompile_mt : public Worker{
 
 inline Tokens recompile(Texts texts, 
                         Types types, 
-                        bool flag_gap = true, 
-                        bool flag_dupli = true,
-                        bool flag_encode = true){
+                        const bool flag_gap = true, 
+                        const bool flag_dup = true,
+                        const bool flag_encode = true){
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
@@ -97,13 +97,23 @@ inline Tokens recompile(Texts texts,
         all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
         // dev::stop_timer("Check gaps", timer);
     } else {
-        std::fill(flags_used.begin(), flags_used.end(), true);
+        // Mark all types but padding are used
+        std::fill(flags_used.begin() + 1, flags_used.end(), true);
+        
+        // Only check for padding
+        for (std::size_t h = 0; h < texts.size() && !flags_used[0]; h++) {
+            for (std::size_t i = 0; i < texts[h].size() && !flags_used[0]; i++) {
+                if (texts[h][i] == 0) {
+                    flags_used[0] = true;
+                }
+            }
+        }
         all_used = true;
     }
     
     // Check if types are duplicated
     bool all_unique;
-    if (flag_dupli && is_duplicated(types)) {
+    if (flag_dup && is_duplicated(types)) {
         // dev::start_timer("Check duplication", timer);
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
