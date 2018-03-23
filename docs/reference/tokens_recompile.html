@@ -168,7 +168,7 @@ through a procedure such as stemming or lowercasing; or the addition of new
 tokens through compounding.</p>
     
 
-    <pre class="usage"><span class='fu'>tokens_recompile</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"C++"</span>, <span class='st'>"R"</span>))</pre>
+    <pre class="usage"><span class='fu'>tokens_recompile</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"C++"</span>, <span class='st'>"R"</span>), <span class='kw'>gap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -181,6 +181,14 @@ tokens through compounding.</p>
       <th>method</th>
       <td><p><code>"C++"</code> for C++ implementation or <code>"R"</code> for an older
 R-based method</p></td>
+    </tr>
+    <tr>
+      <th>gap</th>
+      <td><p>if <code>TRUE</code>, remove gaps between token IDs</p></td>
+    </tr>
+    <tr>
+      <th>dup</th>
+      <td><p>if <code>TRUE</code>, merge duplicated token types into the same ID</p></td>
     </tr>
     </table>
     
