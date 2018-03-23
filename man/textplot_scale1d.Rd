@@ -61,7 +61,7 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
                 1, paste, collapse = " ")
 
 ## wordscores
-refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
 ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
 # plot estimated word positions
 textplot_scale1d(ws, highlighted = c("minister", "have", "our", "budget"))
