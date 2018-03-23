@@ -215,7 +215,7 @@ Wordscores is a scaling procedure for estimating policy positions or scores (Lav
 ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
 
 # Set reference scores
-refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
 
 # Predict Wordscores model
 ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
