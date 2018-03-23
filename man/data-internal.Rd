@@ -17,10 +17,8 @@ data_char_wordlists
 Data sets used for mainly internal purposes by the \pkg{quanteda} package.
 }
 \details{
-\code{data_int_syllables} provides an English-language syllables dictionary; it is
-an integer vector whose element names correspond to English words. Built from
-the freely available CMU pronunciation dictionary at 
-\code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
+\code{data_int_syllables} provides an English-language syllables dictionary;
+it is an integer vector whose element names correspond to English words.
 
 \code{data_char_wordlists} provides word lists used in some readability indexes; 
 it is a named list of character vectors where each list element 
