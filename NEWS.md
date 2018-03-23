@@ -1,5 +1,10 @@
 # Changes since quanteda v1.1.1
 
+### Bug fixes
+
+* Fix bug in `nsyllable()` that incorrectly handled cased words, and returned wrong names with `use.names = TRUE`. (#1282)
+
+
 ### Behaviour changes
 
 * `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types. Solves #1278.
