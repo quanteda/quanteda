@@ -145,6 +145,8 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     return(plot)
 }
 
+# as.network ----------
+
 #' redefinition of network::as.network()
 #' @param x input object
 #' @param ... additional arguments
@@ -190,4 +192,17 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     
     network::network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
             ignore.eval = FALSE, names.eval = 'weight', ...)
+}
+
+#' summary.character method to override the network::summary.character()
+#' 
+#' Necessary to prevent the \pkg{network} package's \code{summary.character} method 
+#' from causing inconsistent behaviour with other summary methods.
+#' @param object the character input
+#' @param ... for additional passing of arguments to default method
+#' @keywords internal
+#' @method summary character
+#' @export
+summary.character <- function(object, ...) {
+    base::summary.default(object, ...)
 }

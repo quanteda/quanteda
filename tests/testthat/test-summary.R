@@ -58,4 +58,9 @@ test_that("summary.character works as expected (#1285)",  {
         as.character(summary(txt)),
         c("2", "character", "character")
     )
+    df <- data.frame(txt, other = 1:2, stringsAsFactors = FALSE)
+    expect_equal(
+        as.character(summary(df))[1:3],
+        c("Length:2          ", "Class :character  ", "Mode  :character  ")
+    )
 })
