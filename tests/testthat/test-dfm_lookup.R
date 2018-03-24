@@ -208,6 +208,14 @@ test_that("dfm_lookup works with zero count features, #958", {
     expect_equal(as.matrix(dfm_lookup(mx2, dict, exclusive = FALSE)),
                  matrix(c(4, 5 , 0, 0, 0, 0), nrow = 2, 
                         dimnames = list(docs = c("doc1", "doc2"), features = c("A", "B", "cc"))))
-    
+})
 
+test_that("dfm_lookup works on a weighted dfm", {
+    dict <- dictionary(list(first = LETTERS[1:5], second = LETTERS[6:10]))
+    d <- dfm_weight(data_dfm_lbgexample, "prop")
+    expect_equal(
+        colSums(dfm_lookup(d, dictionary = dict)),
+        c(first = 0.082, second = .740),
+        tol = .001
+    )
 })

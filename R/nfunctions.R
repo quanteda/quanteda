@@ -160,8 +160,8 @@ ntoken.dfm <- function(x, ...) {
     x <- as.dfm(x)
     if (length(list(...)) > 0)
         warning("additional arguments not used for ntoken.dfm()")
-    if (!(x@weightTf == "count" && x@weightDf == "unary")) 
-        stop("cannot count the tokens in a weighted dfm - use colSums() instead")
+    # if (!(x@weightTf == "count" && x@weightDf == "unary")) 
+    #     stop("cannot count the tokens in a weighted dfm - use colSums() instead")
     result <- as.integer(rowSums(x))
     names(result) <- docnames(x)
     result
