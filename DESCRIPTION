@@ -27,7 +27,6 @@ Imports:
     data.table (>= 1.9.6),
     SnowballC,
     sna,
-    network,
     ggrepel,
     Rcpp (>= 0.12.12),
     RcppParallel,
@@ -55,6 +54,7 @@ Suggests:
     xtable,
     DT,
     ca,
+    network,
     purrr
 URL: http://quanteda.io
 Encoding: UTF-8
