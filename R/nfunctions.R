@@ -96,7 +96,7 @@ nfeature <- function(x) {
 #'   texts from which the dfm was generated.  Because the method tokenizes the 
 #'   text in order to count the tokens, your results will depend on the options 
 #'   passed through to \code{\link{tokens}}.
-#' @return count of the total tokens or types
+#' @return named integer vector of the counts of the total tokens or types
 #' @details
 #' The precise definition of "tokens" for objects not yet tokenized (e.g.
 #' \link{character} or \link{corpus} objects) can be controlled through optional
@@ -160,7 +160,11 @@ ntoken.dfm <- function(x, ...) {
     x <- as.dfm(x)
     if (length(list(...)) > 0)
         warning("additional arguments not used for ntoken.dfm()")
-    rowSums(x)
+    # if (!(x@weightTf == "count" && x@weightDf == "unary")) 
+    #     stop("cannot count the tokens in a weighted dfm - use colSums() instead")
+    result <- as.integer(rowSums(x))
+    names(result) <- docnames(x)
+    result
 }
 
 #' @export
@@ -173,17 +177,18 @@ ntype.corpus <- function(x, ...) {
     ntype(texts(x), ...)
 }
 
-
 #' @export
 ntype.dfm <- function(x, ...) {
     x <- as.dfm(x)
     ## only returns total non-zero features
-    rowSums(x > 0)
+    result <- as.integer(rowSums(x > 0))
+    names(result) <- docnames(x)
+    result
 }
 
 #' @export
 ntype.tokens <- function(x, ...) {
-    vapply(unclass(x), function(y) length(unique(y[y > 0])), numeric(1))
+    vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
 
 #' Count the number of sentences

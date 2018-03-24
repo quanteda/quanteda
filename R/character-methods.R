@@ -1,22 +1,21 @@
 #' Summary statistics on a character vector
 #' 
 #' Internal-only function to compute summary statistics on a character object.
-#' @method summary character
 #' @inheritParams summary.corpus
-#' @keywords internal 
+#' @keywords char internal 
 #' @examples
 #' # summarize texts
-#' summary(c("Testing this text. Second sentence.", "And this one."))
-#' summary(data_char_ukimmig2010)
-#' mysummary_ukimmig2010 <- summary(data_char_ukimmig2010)
+#' quanteda:::summary_character(c("Testing this text. Second sentence.", "And this one."))
+#' quanteda:::summary_character(data_char_ukimmig2010)
+#' mysummary_ukimmig2010 <- quanteda:::summary_character(data_char_ukimmig2010)
 #' head(mysummary_ukimmig2010)
-summary.character <- function(object, n = 100, tolower = FALSE, ...) {
+summary_character <- function(object, n = 100, tolower = FALSE, ...) {
     
     # trap the verbose argument and ignore
     thecall <- as.list(match.call())[-1]
     if (!is.na(verbose_index <- match("verbose", names(thecall)))) {
         warning("verbose argument is defunct")
-        return(do.call(summary.character, thecall[-verbose_index]))
+        return(do.call(summary_character, thecall[-verbose_index]))
     }
     
     object <- object[1 : min(c(n, length(object)))]
@@ -35,5 +34,3 @@ summary.character <- function(object, n = 100, tolower = FALSE, ...) {
                           row.names = NULL)
     results
 }
-
-

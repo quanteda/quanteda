@@ -219,10 +219,6 @@ test_that("corpus_subset works", {
 
 })
 
-test_that("summary method works for corpus", {
-    expect_output(summary(print(data_corpus_irishbudget2010)), regexp = "^Corpus consisting of 14 documents")
-})
-
 test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
     cor <- corpus(txt)
@@ -249,24 +245,6 @@ test_that("create a corpus on a corpus", {
                metacorpus = metacorpus(data_corpus_irishbudget2010),
                compress = TRUE)
     )
-})
-
-test_that("summary.corpus with verbose prints warning", {
-    expect_warning(
-        summary(data_corpus_irishbudget2010, verbose = FALSE),
-        "verbose argument is defunct"
-    )        
-})
-
-test_that("summary.corpus works with longer corpora n > default (#1242)", {
-    longcorp <- corpus(
-        rep(LETTERS, 4), 
-        docvars = data.frame(label = rep(paste("document", 1:26), 4),
-                             stringsAsFactors = FALSE)
-    )
-    expect_equal(ndoc(longcorp), 104)
-    expect_is(summary(longcorp, n = 101), "data.frame")
-    expect_equal(nrow(summary(longcorp, n = 101)), 101)
 })
 
 test_that("head, tail.corpus work as expected", {
@@ -309,22 +287,6 @@ test_that("corpus constructor works with tibbles", {
     expect_equal(
         texts(corpus(dd)),
         c(text1 = "Hello", text2 = "quanteda", text3 = "world")
-    )
-})
-
-test_that("print.summary.corpus work", {
-    summ1 <- summary(data_corpus_inaugural + data_corpus_inaugural)
-    expect_output(
-        print(summ1),
-        "Corpus consisting of 116 documents, showing 100 documents:"
-    )
-    expect_output(
-        print(summ1[1:5, ]),
-        "\\s+Text Types Tokens"
-    )
-    expect_output(
-        print(summ1[, c("Types", "Tokens")]),
-        "^\\s+Types Tokens\\n1\\s+625\\s+1538"
     )
 })
 
