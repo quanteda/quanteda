@@ -60,7 +60,7 @@ test_that("summary.character works as expected (#1285)",  {
     )
     df <- data.frame(txt, other = 1:2, stringsAsFactors = FALSE)
     expect_equal(
-        as.character(summary(df))[1:3],
-        c("Length:2          ", "Class :character  ", "Mode  :character  ")
+        stringi::stri_trim_right(as.character(summary(df))[1:3]),
+        c("Length:2", "Class :character", "Mode  :character")
     )
 })
