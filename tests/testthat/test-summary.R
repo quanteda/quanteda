@@ -52,12 +52,19 @@ test_that("summary_character works as expected",  {
     )
 })
 
-test_that("summary.character works as expected (#1285)",  {
+test_that("summary.character works with character objects (#1285)",  {
     txt <- c("Testing this text. Second sentence.", "And this one.")
     expect_equal(
         as.character(summary(txt)),
         c("2", "character", "character")
     )
+})
+
+test_that("summary.character works with data.frames containing character (#1285)",  {
+    skip_on_appveyor()
+    skip_on_travis()
+    skip_on_cran()
+    txt <- c("Testing this text. Second sentence.", "And this one.")
     df <- data.frame(txt, other = 1:2, stringsAsFactors = FALSE)
     expect_equal(
         stringi::stri_trim_right(as.character(summary(df))[1:3]),
