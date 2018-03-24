@@ -51,3 +51,11 @@ test_that("summary_character works as expected",  {
                    Sentences = c(2L, 1L))
     )
 })
+
+test_that("summary.character works as expected (#1285)",  {
+    txt <- c("Testing this text. Second sentence.", "And this one.")
+    expect_equal(
+        as.character(summary(txt)),
+        c("2", "character", "character")
+    )
+})
