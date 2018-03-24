@@ -1,5 +1,9 @@
 # Changes since quanteda v1.1.1
 
+### Bug fixes
+
+* Fix the overwriting of `summary.character()` caused by previous import of the **network** package namespace. (#1285)
+
 ### Behaviour changes
 
 * `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types. Solves #1278.
