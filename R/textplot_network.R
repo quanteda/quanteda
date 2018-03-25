@@ -38,7 +38,7 @@
 #'         textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
 #' @export
 #' @seealso \code{\link{fcm}}
-#' @import network ggplot2 ggrepel
+#' @import ggplot2 
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
                              edge_color = '#1F78B4', edge_alpha = 0.5, 
@@ -85,12 +85,12 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
     colnames(vertex) <- c('x', 'y')
-    vertex$label <- network.vertex.names(n)
+    vertex$label <- network::network.vertex.names(n)
 
-    weight <- get.edge.attribute(n, "weight")
+    weight <- network::get.edge.attribute(n, "weight")
     weight <- weight / max(weight)
     
-    index <- as.edgelist(n)
+    index <- network::as.edgelist(n)
     edge <- data.frame(x1 = vertex[,1][index[,1]], 
                        y1 = vertex[,2][index[,1]],
                        x2 = vertex[,1][index[,2]], 
@@ -101,7 +101,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
         vertex_labelcolor <- vertex_color
     
     # drop colors of omitted vertices
-    l <- featnames(x) %in% network.vertex.names(n)
+    l <- featnames(x) %in% network::network.vertex.names(n)
     if (length(vertex_labelcolor) > 1) vertex_labelcolor <- vertex_labelcolor[l]
     if (length(vertex_color) > 1) vertex_color <- vertex_color[l]
     if (length(vertex_size) > 1) vertex_size <- vertex_size[l]
@@ -116,18 +116,18 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
         if (is.null(offset)) {
             plot <- plot + 
-                    geom_text_repel(data = vertex, 
-                                    aes(x, y, label = label),
-                                    segment.color = vertex_color, 
-                                    segment.size = 0.2,
-                                    color = vertex_labelcolor,
-                                    family = vertex_labelfont)
+                ggrepel::geom_text_repel(data = vertex, 
+                                         aes(x, y, label = label),
+                                         segment.color = vertex_color, 
+                                         segment.size = 0.2,
+                                         color = vertex_labelcolor,
+                                         family = vertex_labelfont)
         } else {
             plot <- plot + 
-                    geom_text(data = vertex, aes(x, y, label = label),
-                              nudge_y = offset, 
-                              color = vertex_labelcolor,
-                              family = vertex_labelfont)
+                geom_text(data = vertex, aes(x, y, label = label),
+                          nudge_y = offset, 
+                          color = vertex_labelcolor,
+                          family = vertex_labelfont)
         }
 
     plot <- plot + 
@@ -145,8 +145,21 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     return(plot)
 }
 
+# as.network ----------
+
+#' redefinition of network::as.network()
+#' @param x input object
+#' @param ... additional arguments
+#' @keywords internal
+#' @export 
+as.network <- function(x, ...) {
+    UseMethod("as.network")
+}
+
 #' @export
-network::as.network
+as.network.default <- function(x, ...) {
+    network::as.network(x, ...)
+}
 
 #' @rdname textplot_network
 #' @method as.network fcm
@@ -179,4 +192,17 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     
     network::network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
             ignore.eval = FALSE, names.eval = 'weight', ...)
+}
+
+#' summary.character method to override the network::summary.character()
+#' 
+#' Necessary to prevent the \pkg{network} package's \code{summary.character} method 
+#' from causing inconsistent behaviour with other summary methods.
+#' @param object the character input
+#' @param ... for additional passing of arguments to default method
+#' @keywords internal
+#' @method summary character
+#' @export
+summary.character <- function(object, ...) {
+    base::summary.default(object, ...)
 }

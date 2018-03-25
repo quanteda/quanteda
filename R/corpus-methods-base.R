@@ -73,7 +73,7 @@ summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, .
     
     n_all <- ndoc(object)
     object <- head(object, n)
-    result <- data.frame(summary(texts(object), n = n, tolower = tolower, ...))
+    result <- data.frame(summary_character(texts(object), n = n, tolower = tolower, ...))
     dvars <- docvars_internal(object)
     if (!is.null(dvars)) { 
         if (showmeta) {
