@@ -2,6 +2,7 @@
 
 ### Bug fixes
 
+* Fix bug in `nsyllable()` that incorrectly handled cased words, and returned wrong names with `use.names = TRUE`. (#1282)
 * Fix the overwriting of `summary.character()` caused by previous import of the **network** package namespace. (#1285)
 
 ### Behaviour changes
