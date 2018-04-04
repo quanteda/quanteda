@@ -105,11 +105,11 @@ Collate:
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
+    'pattern2fixed.R'
     'phrases.R'
     'quanteda-documentation.R'
     'quanteda_options.R'
     'readtext-methods.R'
-    'regex2fixed.R'
     'settings.R'
     'spacyr-methods.R'
     'stopwords.R'
@@ -146,6 +146,5 @@ Collate:
     'utils.R'
     'wordstem.R'
     'zzz.R'
-RcppModules: ngramMaker
 RoxygenNote: 6.0.1
 SystemRequirements: C++11
