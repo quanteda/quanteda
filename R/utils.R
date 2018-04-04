@@ -108,9 +108,9 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param concatenator concatenator that join multi-word expression in tokens object
 #' @param remove_unigram ignore single-word patterns if \code{TRUE}
-#' @seealso regex2id
+#' @seealso pattern2id
 #' @keywords internal
-pattern2id <- function(pattern, types, valuetype, case_insensitive, 
+pattern2list <- function(pattern, types, valuetype, case_insensitive, 
                        concatenator = '_', remove_unigram = FALSE) {
     
     if (is.dfm(pattern)) 
@@ -131,7 +131,7 @@ pattern2id <- function(pattern, types, valuetype, case_insensitive,
         }
         if (remove_unigram)
             pattern <- pattern[lengths(pattern) > 1] # drop single-word pattern
-        pattern_id <- regex2id(pattern, types, valuetype, case_insensitive)
+        pattern_id <- pattern2id(pattern, types, valuetype, case_insensitive)
     }
     attr(pattern_id, 'pattern') <- stri_c_list(pattern, sep = ' ')
     return(pattern_id)

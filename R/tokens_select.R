@@ -130,7 +130,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
             ids <- list()
         }
     } else {
-        ids <- pattern2id(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
+        ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
         if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     }
     

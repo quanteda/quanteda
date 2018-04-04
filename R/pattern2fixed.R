@@ -1,19 +1,19 @@
-#' @rdname regex2id
-#' @description \code{regex2fixed} converts regex and glob patterns to fixed patterns.
-#' @inherit regex2id
-#' @return \code{regex2fixed} returns a list of character vectors containing
+#' @rdname pattern2id
+#' @description \code{pattern2fixed} converts regex and glob patterns to fixed patterns.
+#' @inherit pattern2id
+#' @return \code{pattern2fixed} returns a list of character vectors containing
 #'   types
 #' @keywords internal
 #' @export
 #' @examples
 #' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-#' quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive = TRUE)
+#' quanteda:::pattern2fixed(pattern, types, 'regex', case_insensitive = TRUE)
 #' index <- quanteda:::index_types(types, 'regex', case_insensitive = TRUE)
-#' quanteda:::regex2fixed(pattern, index = index)
-regex2fixed <- function(pattern, types = NULL, valuetype = NULL, 
+#' quanteda:::pattern2fixed(pattern, index = index)
+pattern2fixed <- function(pattern, types = NULL, valuetype = NULL, 
                         case_insensitive = NULL, index = NULL) {
-    id <- regex2id(pattern, types, valuetype, case_insensitive, index)
+    id <- pattern2id(pattern, types, valuetype, case_insensitive, index)
     if (!is.null(index))
         types <- attr(index, 'types')
     fixed <- lapply(id, function(x) types[x])
@@ -22,7 +22,7 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL,
 
 #' Convert regex and glob patterns to type IDs or fixed patterns
 #'
-#' @description \code{regex2id} converts regex or glob to type IDs to allow C++
+#' @description \code{pattern2id} converts regex or glob to type IDs to allow C++
 #'   function to perform fast searches in tokens object. C++ functions use a
 #'   list of type IDs to construct a hash table, against which sub-vectors of
 #'   tokens object are matched. This function constructs index of glob patterns
@@ -33,7 +33,7 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param index If TRUE, index is constructed automatically. It also accept
 #'   index constructed by index_types().
-#' @return  \code{regex2id} returns a list of integer vectors containing type
+#' @return  \code{pattern2id} returns a list of integer vectors containing type
 #'   IDs
 #' @keywords internal
 #' @export
@@ -41,12 +41,12 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 #' 
 #' pats_regex <- list(c('^a$', '^b'), c('c'), c('d'))
-#' quanteda:::regex2id(pats_regex, types, 'regex', case_insensitive = TRUE)
+#' quanteda:::pattern2id(pats_regex, types, 'regex', case_insensitive = TRUE)
 #'
 #' pats_glob <- list(c('a*', 'b*'), c('c'), c('d'))
-#' quanteda:::regex2id(pats_glob, types, 'glob', case_insensitive = TRUE)
+#' quanteda:::pattern2id(pats_glob, types, 'glob', case_insensitive = TRUE)
 #' 
-regex2id <- function(pattern, types = NULL, valuetype = NULL, 
+pattern2id <- function(pattern, types = NULL, valuetype = NULL, 
                      case_insensitive = NULL, index = NULL) {
     
     if (!length(pattern)) return(list())
@@ -117,9 +117,9 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL,
 
 #' Select types without performing slow regex search
 #' 
-#' This is an internal function for \code{regex2id()} that select types using an
+#' This is an internal function for \code{pattern2id()} that select types using an
 #' index of types by regular expressions.
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @param patterns a list of regular expressions
 #' @param types_search lowercased types when \code{case_insensitive=TRUE}, but
 #'   not used in glob and fixed matching as types are in the index.
@@ -150,7 +150,7 @@ search_glob <- function(patterns, types_search, index) {
     }, types_search, index)
 }
 
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @keywords internal
 search_regex <- function(patterns, types_search, case_insensitive) {
     lapply(patterns, function(pattern, types_search, case_insensitive) {
@@ -163,7 +163,7 @@ search_regex <- function(patterns, types_search, case_insensitive) {
     }, types_search, case_insensitive)
 }
 
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @keywords internal
 search_fixed <- function(patterns, types_search, index) {
     lapply(patterns, function(pattern, types_search, index) {
@@ -177,10 +177,10 @@ search_fixed <- function(patterns, types_search, index) {
 
 #' Index types for fastest regular expression matches
 #'
-#' An internal function for \code{\link{regex2id}} that constructs an index of
+#' An internal function for \code{\link{pattern2id}} that constructs an index of
 #' regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
 #' expensive sequential search by \link[stringi]{stri_detect_regex}.
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @inheritParams valuetype
 #' @param types types of tokens to index 
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
@@ -268,7 +268,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
 
 #' Internal function for \code{select_types()} to search the index using
 #' fastmatch.
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @param regex a glob expression to search
 #' @param index an index object created by \code{index_types()}
 #' @seealso index_types
@@ -279,7 +279,7 @@ search_index <- function(pattern, index){
 }
 
 #' Simpler and faster version of expand.grid() in base package
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @param elem list of elements to be combined
 #' @keywords internal
 #' @examples
@@ -308,7 +308,7 @@ expand <- function(elem){
 #' 
 #' Internal function for select_types() to check if a glob pattern is indexed by
 #' \code{index_types()}.
-#' @rdname regex2id
+#' @rdname pattern2id
 #' @param x a glob pattern to be tested
 #' @keywords internal
 is_indexed <- function(pattern){
@@ -327,4 +327,10 @@ is_indexed <- function(pattern){
     
 }
 
-
+# aliases for backword compatibility
+regex2id <- function(...) {
+    pattern2id(...)
+}
+regex2fixed <- function(...) {
+    pattern2fixed(...)
+}
