@@ -4,6 +4,7 @@
 #' @return \code{regex2fixed} returns a list of character vectors containing
 #'   types
 #' @keywords internal
+#' @export
 #' @examples
 #' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
@@ -35,6 +36,7 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #' @return  \code{regex2id} returns a list of integer vectors containing type
 #'   IDs
 #' @keywords internal
+#' @export
 #' @examples
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 #' 
