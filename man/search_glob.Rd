@@ -24,6 +24,7 @@ not used in glob and fixed matching as types are in the index.}
 used in glob and fixed matching as types are lowercased in the index.}
 }
 \description{
-This is an internal function for \code{pattern2id} that select types using keys in index when available.
+This is an internal function for \code{pattern2id} that select types using
+keys in index when available.
 }
 \keyword{internal}

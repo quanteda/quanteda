@@ -145,7 +145,7 @@ group_docvars <- function(x, group) {
     return(result)
 }
 
-# check if there is not within group variance
+# check if values are uniform within groups
 is_grouped <- function(x, group) {
     if (is.character(x)) {
         qatd_cpp_is_grouped_character(x, group)
