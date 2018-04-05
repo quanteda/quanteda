@@ -79,7 +79,17 @@ ntoken.spacyr_parsed <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.spacyr_parsed <- function(x, ...) {
-    vapply(split(x$token, x$doc_id), function(y) length(unique(y)), numeric(1))
+    vapply(split(x$token, x$doc_id), function(y) length(unique(y)), integer(1))
+}
+
+#' @rdname spacyr-methods
+#' @details
+#' \code{nsentence} returns the number of sentences by document
+#' 
+#' @noRd
+#' @export
+nsentence.spacyr_parsed <- function(x, ...) {
+    sapply(split(x, x$doc_id), function(y) length(unique(y$sentence_id)))
 }
 
 #' @export
