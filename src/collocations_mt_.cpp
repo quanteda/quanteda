@@ -405,7 +405,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
 require(quanteda)
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-id_mark <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+id_mark <- unlist(pattern2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
 if (is.null(id_mark)) id_mark <- integer(0)
 (out <- qatd_cpp_collocations(toks, types(toks), id_mark, 2, 2:3, "lambda", 0.5))
 (out <- out[order(out$lambda, decreasing = TRUE),])

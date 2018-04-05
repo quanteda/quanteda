@@ -110,7 +110,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     for (h in seq_along(dictionary)) {
         values <- as.list(stri_replace_all_fixed(dictionary[[h]], ' ', 
                                                  attr(x, 'concatenator')))
-        values_temp <- unlist(regex2id(values, index = index))
+        values_temp <- unlist(pattern2id(values, index = index))
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }

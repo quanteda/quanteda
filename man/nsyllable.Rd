@@ -9,7 +9,9 @@ nsyllable(x, syllable_dictionary = quanteda::data_int_syllables,
 }
 \arguments{
 \item{x}{character vector or \code{tokens} object  whose 
-syllables will be counted}
+syllables will be counted.  This will count all syllables in a character 
+vector without regard to separating tokens, so it is recommended that x be 
+individual terms.}
 
 \item{syllable_dictionary}{optional named integer vector of syllable counts where 
 the names are lower case tokens.  When set to \code{NULL} (default), then 
@@ -42,6 +44,12 @@ Returns a count of the number of syllables in texts. For English
 All tokens are automatically converted to lowercase to perform the
   matching with the syllable dictionary, so there is no need to perform this
   step prior to calling \code{nsyllable()}.
+
+  `nsyllable()` only works reliably for English, as the only syllable count
+  dictionary we could find is the freely available CMU pronunciation
+  dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.  If you
+  have a dictionary for another language, please email the package
+  maintainer as we would love to include it.
 }
 \examples{
 # character

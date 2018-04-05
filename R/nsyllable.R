@@ -1,9 +1,7 @@
 #' @rdname data-internal
 #' @details
-#' \code{data_int_syllables} provides an English-language syllables dictionary; it is
-#' an integer vector whose element names correspond to English words. Built from
-#' the freely available CMU pronunciation dictionary at 
-#' \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
+#' \code{data_int_syllables} provides an English-language syllables dictionary;
+#' it is an integer vector whose element names correspond to English words.
 "data_int_syllables"
 
 #' Count syllables in a text
@@ -21,7 +19,9 @@
 #'   through the \code{nsyllable()} wrapper function.
 #'   
 #' @param x character vector or \code{tokens} object  whose 
-#'   syllables will be counted
+#'   syllables will be counted.  This will count all syllables in a character 
+#'   vector without regard to separating tokens, so it is recommended that x be 
+#'   individual terms.
 #' @param syllable_dictionary optional named integer vector of syllable counts where 
 #'   the names are lower case tokens.  When set to \code{NULL} (default), then 
 #'   the function will use the quanteda data object \code{data_int_syllables}, an 
@@ -36,6 +36,12 @@
 #' @note All tokens are automatically converted to lowercase to perform the
 #'   matching with the syllable dictionary, so there is no need to perform this
 #'   step prior to calling \code{nsyllable()}.
+#'
+#'   `nsyllable()` only works reliably for English, as the only syllable count
+#'   dictionary we could find is the freely available CMU pronunciation
+#'   dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.  If you
+#'   have a dictionary for another language, please email the package
+#'   maintainer as we would love to include it.
 #' @name nsyllable
 #' @export
 #' @examples
@@ -66,15 +72,17 @@ nsyllable.default <- function(x, syllable_dictionary = quanteda::data_int_syllab
 nsyllable.character <- function(x, syllable_dictionary = quanteda::data_int_syllables, 
                                 use.names = FALSE) { 
     # look up syllables
-    result <- syllable_dictionary[char_tolower(x)]
+    result <- syllable_dictionary[char_tolower(x, keep_acronyms = FALSE)]
+    # keep or discard names
     if (use.names) {
-        # replace NAs with original terms
-        names(result)[is.na(names(result))] <- x[is.na(names(result))]
-        # estimate syllables by counting vowels
+        names(result) <- x
     } else {
         result <- unname(result)
     }
-    result[is.na(result)] <- stringi::stri_count_regex(x[is.na(result)], "[aeiouy]+")
+    # count vowels if the word did not match the syllable dictionary
+    result[is.na(result)] <- 
+        stringi::stri_count_regex(x[is.na(result)], "[aeiouy]+", case_insensitive = TRUE)
+    # so we don't words with no vowels as having syllables
     result[which(result == 0)] <- NA
     result
 }
@@ -103,42 +111,3 @@ nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllabl
         lapply(unclass(x), function(y) vocab_sylls[y]) 
     }
 }
-
-# nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
-#     word <- serial <- syllables <- NULL
-#     
-#     # retrieve or validate syllable list
-#     data_int_syllables <- NULL
-#     if (is.null(syllable_dictionary)) {
-#         #data(data_int_syllables, envir = environment())
-#         #syllable_dictionary <- data_int_syllables
-#     } else {
-#         if (!is.integer(syllable_dictionary))
-#             stop("user-supplied syllable_dictionary must be named integer vector.")
-#     }
-#     
-#     # make syllable list into a data table
-#     syllable_dictionaryDT <- data.table(word = names(syllable_dictionary), syllables = syllable_dictionary)
-#     setkey(syllable_dictionaryDT, word)
-#     
-#     # lowercase the tokens object, needed for the matching in the next step
-#     x[, word := char_tolower(word)]
-# 
-#     # set the key for x
-#     setkey(x, word)
-#     
-#     # merge words to get syllables
-#     # suppressWarnings so it won't complain about mixed encodings
-#     suppressWarnings(syllDT <- syllable_dictionaryDT[x])
-#     
-#     # look up vowel counts for those not in the syllables list
-#     syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]+")]
-#     # put back into original order
-#     syllDT <- syllDT[order(serial)]
-#     # split back to a list
-#     syllcount <- split(syllDT[, syllables], syllDT$docIndex)
-# 
-#     syllcount
-# }
-
-

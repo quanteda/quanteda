@@ -16,7 +16,7 @@ ntype(x, ...)
 \item{...}{additional arguments passed to \code{\link{tokens}}}
 }
 \value{
-count of the total tokens or types
+named integer vector of the counts of the total tokens or types
 }
 \description{
 Get the count of tokens (total features) or types (unique tokens).

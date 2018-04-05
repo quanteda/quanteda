@@ -69,7 +69,8 @@
 #' @section Source code and additional information:
 #' 
 #' \url{http://github.com/quanteda/quanteda}
-#' @useDynLib quanteda, .registration = TRUE  
+#' @import stringi data.table methods Matrix ggplot2
+#' @useDynLib quanteda, .registration = TRUE
 "_PACKAGE"
 
 #' Pattern matching using valuetype

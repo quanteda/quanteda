@@ -1,5 +1,14 @@
 # Changes since quanteda v1.1.1
 
+### New Features
+
+* Added an `nsentence()` method for **spacyr** parsed objects.  (#1289)
+
+### Bug fixes
+
+* Fix bug in `nsyllable()` that incorrectly handled cased words, and returned wrong names with `use.names = TRUE`. (#1282)
+* Fix the overwriting of `summary.character()` caused by previous import of the **network** package namespace. (#1285)
+
 ### Behaviour changes
 
 * `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types. Solves #1278.
@@ -16,6 +25,7 @@
 
 ### Bug fixes and stability enhancements
 
+* Fixed a problem in the examples for `textplot_scale1d()` by adjusting the refscores for `data_corpus_irishbudget2010`.
 * Eliminated unnecessary dependency on the **digest** package.
 * Updated the vignette title to be less generic.
 * Improved the robustness of `dfm_trim()` and `dfm_weight()` for previously weighted dfm objects and when supplied thresholds are proportions instead of counts.  (#1237)

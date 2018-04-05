@@ -69,7 +69,7 @@ test_that("friendly_class_undefined_message", {
 })
 
 
-test_that("pattern2id is working with collocations", {
+test_that("pattern2list is working with collocations", {
     
     txt <- c(". . . . a b c . . a b c . . . c d e",
              "a b . . a b . . a b . . a b . a b",
@@ -77,27 +77,27 @@ test_that("pattern2id is working with collocations", {
     toks <- tokens(txt)
     type <- types(toks)
     col <- textstat_collocations(toks, size = 2:3)
-    ids <- quanteda:::pattern2id(col, type, 'fixed', TRUE)
+    ids <- quanteda:::pattern2list(col, type, 'fixed', TRUE)
     expect_equal(col$collocation, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
     
 })
 
-test_that("pattern2id is working with a list", {
+test_that("pattern2list is working with a list", {
     
     type <- letters
     pat <- c('a b', 'c d', 'e f g')
-    ids <- quanteda:::pattern2id(phrase(pat), type, 'fixed', TRUE)
+    ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', TRUE)
     expect_equal(pat, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
     
 })
 
-test_that("pattern2id is working with empty patterns", {
+test_that("pattern2list is working with empty patterns", {
     
     col <- data.frame()
     class(col) <- c('collocations', 'data.frame')
     pat <- list()
-    expect_silent(quanteda:::pattern2id(col, types(toks), 'fixed', TRUE))
-    expect_silent(quanteda:::pattern2id(pat, types(toks), 'fixed', TRUE))
+    expect_silent(quanteda:::pattern2list(col, types(toks), 'fixed', TRUE))
+    expect_silent(quanteda:::pattern2list(pat, types(toks), 'fixed', TRUE))
     
 })
 
