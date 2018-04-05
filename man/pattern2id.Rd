@@ -108,9 +108,9 @@ Internal function for select_types() to check if a glob pattern is indexed by
 \examples{
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-quanteda:::pattern2fixed(pattern, types, 'regex', case_insensitive = TRUE)
-index <- quanteda:::index_types(types, 'regex', case_insensitive = TRUE)
-quanteda:::pattern2fixed(pattern, index = index)
+pattern2fixed(pattern, types, 'regex', case_insensitive = TRUE)
+index <- index_types(types, 'regex', case_insensitive = TRUE)
+pattern2fixed(pattern, index = index)
 types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 
 pats_regex <- list(c('^a$', '^b'), c('c'), c('d'))

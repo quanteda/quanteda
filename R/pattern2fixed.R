@@ -8,11 +8,11 @@
 #' @examples
 #' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-#' quanteda:::pattern2fixed(pattern, types, 'regex', case_insensitive = TRUE)
-#' index <- quanteda:::index_types(types, 'regex', case_insensitive = TRUE)
-#' quanteda:::pattern2fixed(pattern, index = index)
+#' pattern2fixed(pattern, types, 'regex', case_insensitive = TRUE)
+#' index <- index_types(types, 'regex', case_insensitive = TRUE)
+#' pattern2fixed(pattern, index = index)
 pattern2fixed <- function(pattern, types = NULL, valuetype = NULL, 
-                        case_insensitive = NULL, index = NULL) {
+                          case_insensitive = NULL, index = NULL) {
     id <- pattern2id(pattern, types, valuetype, case_insensitive, index)
     if (!is.null(index))
         types <- attr(index, 'types')
@@ -41,10 +41,10 @@ pattern2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 #' 
 #' pats_regex <- list(c('^a$', '^b'), c('c'), c('d'))
-#' quanteda:::pattern2id(pats_regex, types, 'regex', case_insensitive = TRUE)
+#' pattern2id(pats_regex, types, 'regex', case_insensitive = TRUE)
 #'
 #' pats_glob <- list(c('a*', 'b*'), c('c'), c('d'))
-#' quanteda:::pattern2id(pats_glob, types, 'glob', case_insensitive = TRUE)
+#' pattern2id(pats_glob, types, 'glob', case_insensitive = TRUE)
 #' 
 pattern2id <- function(pattern, types = NULL, valuetype = NULL, 
                      case_insensitive = NULL, index = NULL) {
@@ -188,8 +188,9 @@ search_fixed <- function(patterns, types_search, index) {
 #' @return a list of integer vectors containing type IDs with index keys as an
 #'   attribute
 #' @keywords internal
+#' @export
 #' @examples
-#' index <- quanteda:::index_types(c('xxx', 'yyyy', 'ZZZ'), 'glob', FALSE, 3)
+#' index <- index_types(c('xxx', 'yyyy', 'ZZZ'), 'glob', FALSE, 3)
 #' quanteda:::search_glob('yy*', attr(index, 'type_search'), index)
 index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     

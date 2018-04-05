@@ -111,7 +111,7 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @seealso pattern2id
 #' @keywords internal
 pattern2list <- function(pattern, types, valuetype, case_insensitive, 
-                       concatenator = '_', remove_unigram = FALSE) {
+                         concatenator = '_', remove_unigram = FALSE) {
     
     if (is.dfm(pattern)) 
         stop('dfm cannot be used as pattern')
