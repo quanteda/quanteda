@@ -305,3 +305,16 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
         "^Corpus consisting of 6 documents and 3 docvars\\.$"
     )
 })
+
+test_that("corpus + operator works", {
+    corp1 <- corpus(LETTERS[1:3], docvars = data.frame(one = 1:3, two = 4:6))
+    corp2 <- corpus(LETTERS[1:3], docvars = data.frame(one = 7:9, three = 10:12))
+    sm <- summary(corp1 + corp2)
+    expect_identical(sm$one, c(1:3, 7:9))
+    expect_identical(sm$two, c(4:6, NA, NA, NA))
+    expect_identical(sm$three, c(NA, NA, NA, 10:12))
+    expect_identical(
+        texts(corpus(LETTERS[1:3]) + corpus(LETTERS[3:5])),
+        c(text1 = "A", text2 = "B", text3 = "C", text11 = "C", text21= "D", text31 = "E")
+    )
+})
