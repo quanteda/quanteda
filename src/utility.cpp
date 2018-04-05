@@ -42,12 +42,12 @@ List qatd_cpp_chars_remove(List input_, String char_remove) {
 // [[Rcpp::export]]
 bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
     
-    
     if (min(groups_) < 1 || values_.size() != groups_.size())
         throw std::range_error("Invalid groups");
     
-    LogicalVector init_(max(groups_));
-    CharacterVector values_init_(max(groups_));
+    unsigned int n = max(groups_);
+    LogicalVector init_(n);
+    CharacterVector values_init_(n);
     for (unsigned int i = 0; i < (unsigned int)groups_.size(); i++) {
         unsigned int g = groups_[i] - 1;
         if (!init_[g]) {
@@ -68,8 +68,9 @@ bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups
     if (min(groups_) < 1 || values_.size() != groups_.size())
         throw std::range_error("Invalid groups");
     
-    LogicalVector init_(max(groups_));
-    CharacterVector values_init_(max(groups_));
+    unsigned int n = max(groups_);
+    LogicalVector init_(n);
+    CharacterVector values_init_(n);
     for (unsigned int i = 0; i < (unsigned int)groups_.size(); i++) {
         unsigned int g = groups_[i] - 1;
         if (!init_[g]) {
