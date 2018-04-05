@@ -73,10 +73,6 @@ qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding, window
     .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding, window_left, window_right)
 }
 
-qatd_cpp_chars_remove <- function(input_, char_remove) {
-    .Call(`_quanteda_qatd_cpp_chars_remove`, input_, char_remove)
-}
-
 qatd_cpp_is_grouped_numeric <- function(values_, groups_) {
     .Call(`_quanteda_qatd_cpp_is_grouped_numeric`, values_, groups_)
 }

@@ -9,6 +9,7 @@ using namespace quanteda;
  * @param char_remove a string to remove
  */
 
+/*
 // [[Rcpp::export]]
 List qatd_cpp_chars_remove(List input_, String char_remove) {
     List output_ = clone(input_);
@@ -30,7 +31,8 @@ List qatd_cpp_chars_remove(List input_, String char_remove) {
     }
     return output_;
 }
-
+*/
+ 
 /* 
  * This function checks values in values_ is uniform within groups specified by groups_
  * @used dfm_group()

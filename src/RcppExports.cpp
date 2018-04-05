@@ -261,18 +261,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_chars_remove
-List qatd_cpp_chars_remove(List input_, String char_remove);
-RcppExport SEXP _quanteda_qatd_cpp_chars_remove(SEXP input_SEXP, SEXP char_removeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type input_(input_SEXP);
-    Rcpp::traits::input_parameter< String >::type char_remove(char_removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_chars_remove(input_, char_remove));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_is_grouped_numeric
 bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_);
 RcppExport SEXP _quanteda_qatd_cpp_is_grouped_numeric(SEXP values_SEXP, SEXP groups_SEXP) {
@@ -378,7 +366,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 7},
-    {"_quanteda_qatd_cpp_chars_remove", (DL_FUNC) &_quanteda_qatd_cpp_chars_remove, 2},
     {"_quanteda_qatd_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_numeric, 2},
     {"_quanteda_qatd_cpp_is_grouped_character", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_character, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
