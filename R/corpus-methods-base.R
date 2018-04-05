@@ -208,9 +208,10 @@ tail.corpus <- function(x, n = 6L, ...) {
                 paste(metacorpus(c1, field), metacorpus(c2, field))
     }
     
-    #rowname <- c(rownames(c1$documents), rownames(c2$documents))
-    c1$documents <- rbind(c1$documents, c2$documents)
-
+    r_names <-  make.unique(c(rownames(c1$documents), rownames(c2$documents)), sep='')
+    c1$documents <- data.table::setDF(data.table::rbindlist(list(c1$documents, c2$documents), fill = TRUE))
+    rownames(c1$documents) <- r_names
+    
     #  Put rownames back in because the hadleyverse discards them
     #rownames(c1$documents) <- make.unique(rowname, sep='')
     
