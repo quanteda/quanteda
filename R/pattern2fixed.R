@@ -28,11 +28,12 @@ pattern2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #'   tokens object are matched. This function constructs index of glob patterns
 #'   for faster matching.
 #' @inheritParams pattern
-#' @param types unique types of tokens obtained by \code{quanteda:::types()}
+#' @param types unique types of tokens obtained by \code{\link{types}}
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param index If TRUE, index is constructed automatically. It also accept
-#'   index constructed by index_types().
+#' @param case_insensitive if \code{TRUE}, ignores case when matching
+#' @param index If \code{NULL}, index is constructed automatically. It also
+#'   accept index constructed by \code{index_types}. In that case, \code{types},
+#'   \code{valuetype} and \code{case_insensitive} should be NULL.
 #' @return  \code{pattern2id} returns a list of integer vectors containing type
 #'   IDs
 #' @keywords internal
@@ -47,7 +48,7 @@ pattern2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #' pattern2id(pats_glob, types, 'glob', case_insensitive = TRUE)
 #' 
 pattern2id <- function(pattern, types = NULL, valuetype = NULL, 
-                     case_insensitive = NULL, index = NULL) {
+                       case_insensitive = NULL, index = NULL) {
     
     if (!length(pattern)) return(list())
     pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
@@ -59,6 +60,8 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
         
         # glob is treated as fixed if neither * or ? is found
         pattern_unlist <- unlist(pattern, use.names = FALSE)
+        if (!valuetype %in% c("glob", "fixed", "regex")) 
+            stop('valuetype should be "glob", "fixed" or "regex"')
         if (valuetype == 'glob' &&
             !any(stri_detect_fixed(pattern_unlist, '*')) &&
             !any(stri_detect_fixed(pattern_unlist, '?'))) {
@@ -117,15 +120,13 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
 
 #' Select types without performing slow regex search
 #' 
-#' This is an internal function for \code{pattern2id()} that select types using an
-#' index of types by regular expressions.
-#' @rdname pattern2id
-#' @param patterns a list of regular expressions
+#' This is an internal function for \code{pattern2id} that select types using keys in index when available.
+#' @param patterns a list of "glob", "fixed" or "regex" patterns
 #' @param types_search lowercased types when \code{case_insensitive=TRUE}, but
 #'   not used in glob and fixed matching as types are in the index.
 #' @param case_insensitive ignore case when matching, if \code{TRUE}, but not
 #'   used in glob and fixed matching as types are lowercased in the index.
-#' @param index index object created by \code{index_types()}
+#' @param index index object created by \code{index_types}
 #' @keywords internal
 search_glob <- function(patterns, types_search, index) {
     lapply(patterns, function(pattern, types_search, index) {
@@ -150,7 +151,7 @@ search_glob <- function(patterns, types_search, index) {
     }, types_search, index)
 }
 
-#' @rdname pattern2id
+#' @rdname search_glob
 #' @keywords internal
 search_regex <- function(patterns, types_search, case_insensitive) {
     lapply(patterns, function(pattern, types_search, case_insensitive) {
@@ -163,7 +164,7 @@ search_regex <- function(patterns, types_search, case_insensitive) {
     }, types_search, case_insensitive)
 }
 
-#' @rdname pattern2id
+#' @rdname search_glob
 #' @keywords internal
 search_fixed <- function(patterns, types_search, index) {
     lapply(patterns, function(pattern, types_search, index) {
@@ -175,15 +176,14 @@ search_fixed <- function(patterns, types_search, index) {
     }, types_search, index)
 }
 
-#' Index types for fastest regular expression matches
+#' Index types for fastest "glob" or "fixed" pattern matches
 #'
-#' An internal function for \code{\link{pattern2id}} that constructs an index of
-#' regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
-#' expensive sequential search by \link[stringi]{stri_detect_regex}.
+#' \code{index_types} is an auxiliary function for \code{pattern2id} that
+#' constructs an index of "glob" or "fixed" patterns to avoid expensive sequential
+#' search. For example, a type 'cars' is index by keys 'cars', 'car?', 'c*',
+#' 'ca*', 'car*' and 'cars*' when \code{valuetype="glob"}.
 #' @rdname pattern2id
 #' @inheritParams valuetype
-#' @param types types of tokens to index 
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param max_len maximum length of types to be indexed
 #' @return a list of integer vectors containing type IDs with index keys as an
 #'   attribute
@@ -201,6 +201,8 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     # normalize unicode
     types <- stri_trans_nfc(types)
     
+    if (!valuetype %in% c("glob", "fixed", "regex")) 
+        stop('valuetype should be "glob", "fixed" or "regex"')
     if (valuetype == 'regex' || length(types) == 0) {
         index <- list()
         attr(index, 'types_search') <- types
@@ -267,11 +269,10 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     return(index)
 }
 
-#' Internal function for \code{select_types()} to search the index using
+#' Internal function for \code{select_types} to search the index using
 #' fastmatch.
-#' @rdname pattern2id
 #' @param regex a glob expression to search
-#' @param index an index object created by \code{index_types()}
+#' @param index an index object created by \code{index_types}
 #' @seealso index_types
 #' @keywords internal
 search_index <- function(pattern, index){
@@ -280,7 +281,6 @@ search_index <- function(pattern, index){
 }
 
 #' Simpler and faster version of expand.grid() in base package
-#' @rdname pattern2id
 #' @param elem list of elements to be combined
 #' @keywords internal
 #' @examples
@@ -307,9 +307,8 @@ expand <- function(elem){
 
 #' Check if a glob pattern is indexed by index_types
 #' 
-#' Internal function for select_types() to check if a glob pattern is indexed by
-#' \code{index_types()}.
-#' @rdname pattern2id
+#' Internal function for \code{select_types} to check if a glob pattern is indexed by
+#' \code{index_types}.
 #' @param x a glob pattern to be tested
 #' @keywords internal
 is_indexed <- function(pattern){
@@ -328,7 +327,8 @@ is_indexed <- function(pattern){
     
 }
 
-# aliases for backword compatibility
+# aliases for backward compatibility
+# TODO: this should be removed with in a year (by April 2019).
 regex2id <- function(...) {
     pattern2id(...)
 }

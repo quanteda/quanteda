@@ -3,13 +3,7 @@
 \name{pattern2fixed}
 \alias{pattern2fixed}
 \alias{pattern2id}
-\alias{search_glob}
-\alias{search_regex}
-\alias{search_fixed}
 \alias{index_types}
-\alias{search_index}
-\alias{expand}
-\alias{is_indexed}
 \title{Convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
 pattern2fixed(pattern, types = NULL, valuetype = NULL,
@@ -18,58 +12,25 @@ pattern2fixed(pattern, types = NULL, valuetype = NULL,
 pattern2id(pattern, types = NULL, valuetype = NULL,
   case_insensitive = NULL, index = NULL)
 
-search_glob(patterns, types_search, index)
-
-search_regex(patterns, types_search, case_insensitive)
-
-search_fixed(patterns, types_search, index)
-
 index_types(types, valuetype, case_insensitive, max_len = NULL)
-
-search_index(pattern, index)
-
-expand(elem)
-
-is_indexed(pattern)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{types}{unique types of tokens obtained by \code{quanteda:::types()}}
+\item{types}{unique types of tokens obtained by \code{\link{types}}}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{if \code{TRUE}, ignores case when matching}
 
-\item{index}{If TRUE, index is constructed automatically. It also accept
-index constructed by index_types().}
-
-\item{patterns}{a list of regular expressions}
-
-\item{types_search}{lowercased types when \code{case_insensitive=TRUE}, but
-not used in glob and fixed matching as types are in the index.}
+\item{index}{If \code{NULL}, index is constructed automatically. It also
+accept index constructed by \code{index_types}. In that case, \code{types},
+\code{valuetype} and \code{case_insensitive} should be NULL.}
 
 \item{max_len}{maximum length of types to be indexed}
-
-\item{elem}{list of elements to be combined}
-
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}, but not
-used in glob and fixed matching as types are lowercased in the index.}
-
-\item{index}{index object created by \code{index_types()}}
-
-\item{types}{types of tokens to index}
-
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
-
-\item{regex}{a glob expression to search}
-
-\item{index}{an index object created by \code{index_types()}}
-
-\item{x}{a glob pattern to be tested}
 }
 \value{
 \code{pattern2fixed} returns a list of character vectors containing
@@ -90,20 +51,10 @@ a list of integer vectors containing type IDs with index keys as an
   tokens object are matched. This function constructs index of glob patterns
   for faster matching.
 
-This is an internal function for \code{pattern2id()} that select types using an
-index of types by regular expressions.
-
-An internal function for \code{\link{pattern2id}} that constructs an index of
-regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
-expensive sequential search by \link[stringi]{stri_detect_regex}.
-
-Internal function for \code{select_types()} to search the index using
-fastmatch.
-
-Simpler and faster version of expand.grid() in base package
-
-Internal function for select_types() to check if a glob pattern is indexed by
-\code{index_types()}.
+\code{index_types} is an auxiliary function for \code{pattern2id} that
+constructs an index of "glob" or "fixed" patterns to avoid expensive sequential
+search. For example, a type 'cars' is index by keys 'cars', 'car?', 'c*',
+'ca*', 'car*' and 'cars*' when \code{valuetype="glob"}.
 }
 \examples{
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))
@@ -114,16 +65,12 @@ pattern2fixed(pattern, index = index)
 types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 
 pats_regex <- list(c('^a$', '^b'), c('c'), c('d'))
-quanteda:::pattern2id(pats_regex, types, 'regex', case_insensitive = TRUE)
+pattern2id(pats_regex, types, 'regex', case_insensitive = TRUE)
 
 pats_glob <- list(c('a*', 'b*'), c('c'), c('d'))
-quanteda:::pattern2id(pats_glob, types, 'glob', case_insensitive = TRUE)
+pattern2id(pats_glob, types, 'glob', case_insensitive = TRUE)
 
-index <- quanteda:::index_types(c('xxx', 'yyyy', 'ZZZ'), 'glob', FALSE, 3)
+index <- index_types(c('xxx', 'yyyy', 'ZZZ'), 'glob', FALSE, 3)
 quanteda:::search_glob('yy*', attr(index, 'type_search'), index)
-quanteda:::expand(list(c('a', 'b', 'c'), c('x', 'y')))
-}
-\seealso{
-index_types
 }
 \keyword{internal}
