@@ -107,7 +107,7 @@ kwic.tokens <- function(x, pattern, window = 5,
         names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
     
-    keywords_id <- pattern2id(pattern, types, 
+    keywords_id <- pattern2list(pattern, types, 
                               valuetype, case_insensitive, attr(x, 'concatenator'))
     temp <- qatd_cpp_kwic(x, types, keywords_id, window)
     

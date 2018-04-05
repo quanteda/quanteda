@@ -60,7 +60,7 @@ textstat_select.textstat <- function(x, pattern = NULL,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     
-    id <- unlist(regex2id(pattern, x[[1]], valuetype, case_insensitive))
+    id <- unlist(pattern2id(pattern, x[[1]], valuetype, case_insensitive))
     if (selection == 'keep') {
         x <- x[id,]
     } else {

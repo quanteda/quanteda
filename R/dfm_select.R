@@ -125,8 +125,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                                        ' ', 
                                        attr(x, 'concatenator'))
         }
-        features_id <- unlist(regex2id(pattern, featnames(x), valuetype, 
-                                       case_insensitive), use.names = FALSE)
+        features_id <- unlist(pattern2id(pattern, featnames(x), valuetype, 
+                                         case_insensitive), use.names = FALSE)
         
         if (!is.null(features_id)) 
             features_id <- sort(features_id) # keep the original column order
