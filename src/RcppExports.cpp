@@ -273,6 +273,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_is_grouped_numeric
+bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_);
+RcppExport SEXP _quanteda_qatd_cpp_is_grouped_numeric(SEXP values_SEXP, SEXP groups_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type values_(values_SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type groups_(groups_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_is_grouped_numeric(values_, groups_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_is_grouped_character
+bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups_);
+RcppExport SEXP _quanteda_qatd_cpp_is_grouped_character(SEXP values_SEXP, SEXP groups_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type values_(values_SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type groups_(groups_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_is_grouped_character(values_, groups_));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tbb_enabled
 bool qatd_cpp_tbb_enabled();
 RcppExport SEXP _quanteda_qatd_cpp_tbb_enabled() {
@@ -355,6 +379,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 7},
     {"_quanteda_qatd_cpp_chars_remove", (DL_FUNC) &_quanteda_qatd_cpp_chars_remove, 2},
+    {"_quanteda_qatd_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_numeric, 2},
+    {"_quanteda_qatd_cpp_is_grouped_character", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_character, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
     {"_quanteda_qatd_cpp_is_overlap", (DL_FUNC) &_quanteda_qatd_cpp_is_overlap, 5},
     {"_quanteda_qatd_cpp_wordfish_dense", (DL_FUNC) &_quanteda_qatd_cpp_wordfish_dense, 7},
