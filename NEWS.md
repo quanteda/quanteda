@@ -1,5 +1,9 @@
 # Changes since quanteda v1.1.1
 
+### New Features
+
+* Added an `nsentence()` method for **spacyr** parsed objects.  (#1289)
+
 ### Bug fixes
 
 * Fix bug in `nsyllable()` that incorrectly handled cased words, and returned wrong names with `use.names = TRUE`. (#1282)
