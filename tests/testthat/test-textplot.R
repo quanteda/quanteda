@@ -95,6 +95,7 @@ test_that("test textplot_wordcloud works for dfm objects", {
 test_that("test textplot_wordcloud comparison works", {
     skip_on_travis()
     skip_on_cran()
+    skip_on_os('linux')
     testcorp <- corpus_reshape(corpus(data_char_sampletext))
     set.seed(1)
     docvars(testcorp, "label") <- sample(c("A", "B"), size = ndoc(testcorp), replace = TRUE)
