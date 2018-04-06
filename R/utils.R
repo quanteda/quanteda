@@ -39,6 +39,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
+
 ##
 ## reassign the slots to an S4 dfm-like object
 ## necessary when some operation from the Matrix class obliterates them

@@ -108,9 +108,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     attrs <- attributes(x)
     is_dfm <- FALSE
     padding <- FALSE
+    nfeat_org <- nfeat(x)
     
-    # select features based on "pattern"
-    features_keep <- seq_len(nfeat(x))
+    feature_keep <- seq_len(nfeat(x))
     if (!is.null(pattern)) {
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
@@ -123,52 +123,52 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             pattern <- 
                 stri_replace_all_fixed(unlist(pattern, use.names = FALSE), 
                                        ' ', 
-                                       attr(x, 'concatenator'))
+                                       attr(x, "concatenator"))
         }
-        features_id <- unlist(pattern2id(pattern, featnames(x), valuetype, 
+        feature_id <- unlist(pattern2id(pattern, featnames(x), valuetype, 
                                          case_insensitive), use.names = FALSE)
         
-        if (!is.null(features_id)) 
-            features_id <- sort(features_id) # keep the original column order
+        if (!is.null(feature_id)) 
+            feature_id <- sort(feature_id) # keep the original column order
     } else {
         if (selection == "keep") {
-            features_id <- seq_len(nfeat(x))
+            feature_id <- seq_len(nfeat(x))
         } else {
-            features_id <- NULL
+            feature_id <- NULL
         }
     }
     
     if (selection == "keep") {
-        features_keep <- features_id
+        feature_keep <- feature_id
     } else {
-        features_keep <- setdiff(features_keep, features_id)
+        feature_keep <- setdiff(feature_keep, feature_id)
     }
     
     # select features based on feature length
     if (!padding) {
-        features_keep <- intersect(features_keep, which(stri_length(featnames(x)) >= min_nchar & 
-                                                        stri_length(featnames(x)) <= max_nchar))
+        feature_keep <- intersect(feature_keep, which(stri_length(featnames(x)) >= min_nchar & 
+                                                      stri_length(featnames(x)) <= max_nchar))
     }
     
-    if (!length(features_keep)) features_keep <- 0
-    temp <- x[, features_keep]    
+    if (!length(feature_keep)) feature_keep <- 0
+    x <- x[, feature_keep]    
 
-    if (valuetype == 'fixed' && padding) {
-        temp <- pad_dfm(temp, pattern)
-        temp <- reassign_slots(temp, x)
+    if (valuetype == "fixed" && padding) {
+        x <- pad_dfm(x, pattern)
+        x <- set_dfm_slots(x, attrs)
     }
     if (is_dfm) {
-        result <- temp[, pattern] # sort features into original order
+        x <- x[, pattern] # sort features into original order
     } else {
-        result <- temp
+        x <- x
     }
     
     if (verbose) {
         message_select(selection, 
-                       length(features_id), 0, nfeat(temp) - nfeat(x), 0)
+                       length(feature_id), 0, nfeat(x) - nfeat_org, 0)
     }
-    attributes(x, FALSE) <- attrs
-    return(result)
+    #attributes(x, FALSE) <- attrs
+    return(x)
 }
 
 #' @rdname dfm_select

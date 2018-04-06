@@ -78,12 +78,12 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     result[['dfm_0']] <- dfm_group(x, groups = docvars(x, '_document'))
     
     # randomly resample dfm
-    docID <- index <- NULL
+    id <- index <- NULL
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        dt <- data.table(index = seq_len(ndoc(x)), docID = docvars(x, "_document"))
-        dt[, temp := sample(1:.N, replace = TRUE), by = docID]
-        dt[, sample_index := index[temp], by = docID]
+        dt <- data.table(index = seq_len(ndoc(x)), id = docvars(x, "_document"))
+        dt[, temp := sample(1:.N, replace = TRUE), by = id]
+        dt[, sample_index := index[temp], by = id]
         sample_index <- dt[, sample_index]
         temp <- x[sample_index, ]
         temp <- dfm_group(temp, groups = docvars(temp, '_document'))

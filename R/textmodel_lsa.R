@@ -131,8 +131,8 @@ predict.textmodel_lsa <- function(object, newdata = NULL, ...) {
 #' @rdname textmodel_lsa-postestimation
 #' @method as.dfm textmodel_lsa
 #' @export
-as.dfm.textmodel_lsa <- function(x) {
-    as.dfm(x$matrix_low_rank)
+as.dfm.textmodel_lsa <- function(x, slots = NULL) {
+    as.dfm(x$matrix_low_rank, slots)
 }
 
 #' @rdname textmodel_lsa-postestimation

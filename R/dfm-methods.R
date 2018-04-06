@@ -67,85 +67,111 @@ docnames.NULL <- function(x) {
 #' (sparse) \link[Matrix]{Matrix}, \link[tm]{TermDocumentMatrix},
 #' \link[tm]{DocumentTermMatrix}, \link{data.frame}, and other \link{dfm}
 #' objects.
-#' @param x a candidate object for checking or coercion to \link{dfm} 
+#' @param x a candidate object for checking or coercion to \link{dfm}
+#' @param slots slots a list of values to be assigned to slots. Ignored when
+#'   \code{x} is a dfm.
 #' @return \code{as.dfm} converts an input object into a \link{dfm}.  Row names
 #'   are used for docnames, and column names for featnames, of the resulting
 #'   dfm.
 #' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}},
 #'   \code{\link{convert}}
 #' @export
-as.dfm <- function(x) {
+as.dfm <- function(x, slots = NULL) {
     UseMethod("as.dfm")
 }
 
 #' @export
-as.dfm.default <- function(x) {
+as.dfm.default <- function(x, slots = NULL) {
     stop(friendly_class_undefined_message(class(x), "as.dfm"))
 }
 
 #' @noRd
 #' @method as.dfm dfm
 #' @export
-as.dfm.dfm <- function(x) {
+as.dfm.dfm <- function(x, slots = NULL) {
     x
 }
 
 #' @noRd
 #' @method as.dfm matrix
 #' @export
-as.dfm.matrix <- function(x) {
-    as_dfm_constructor(x)
+as.dfm.matrix <- function(x, slots = NULL) {
+    matrix2dfm(x, slots)
 }
 
 #' @noRd
 #' @method as.dfm Matrix
 #' @export
-as.dfm.Matrix <- function(x) {
-    as_dfm_constructor(x)
+as.dfm.Matrix <- function(x, slots = NULL) {
+    matrix2dfm(x, slots)
 }
 
 #' @noRd
 #' @method as.dfm data.frame
 #' @export
-as.dfm.data.frame <- function(x) {
-    as_dfm_constructor(as.matrix(x, rownames.force = TRUE))
+as.dfm.data.frame <- function(x, slots = NULL) {
+    matrix2dfm(as.matrix(x, rownames.force = TRUE), slots)
 }
 
 #' @noRd
 #' @method as.dfm dfmSparse
 #' @export
-as.dfm.dfmSparse <- function(x) {
-    as.dfm(as(x, 'dgCMatrix'))
+as.dfm.dfmSparse <- function(x, slots = NULL) {
+    as.dfm(as(x, 'dgCMatrix'), slots)
 }
 
 #' @noRd
 #' @method as.dfm DocumentTermMatrix
 #' @export
-as.dfm.DocumentTermMatrix <- function(x){
+as.dfm.DocumentTermMatrix <- function(x, slots = NULL){
     as.dfm(
         sparseMatrix(i = x$i, j = x$j, x = x$v, 
-                     dimnames = list(rownames(x), colnames(x)))
-    )
+                     dimnames = list(rownames(x), colnames(x))), 
+        slots)
 }
 
 #' @noRd
 #' @method as.dfm TermDocumentMatrix
 #' @export
-as.dfm.TermDocumentMatrix <- function(x){
+as.dfm.TermDocumentMatrix <- function(x, slots = NULL){
     as.dfm(
         sparseMatrix(i = x$j, j = x$i, x = x$v, 
-                     dimnames = list(colnames(x), rownames(x)))
-    )
+                     dimnames = list(colnames(x), rownames(x))),
+        slots)
 }
 
-as_dfm_constructor <- function(x) {
+#' Conversts a Matrix to a dfm
+#' @param x a Matrix
+#' @param slots slots a list of values to be assigned to slots
+#' @keywords internal
+matrix2dfm <- function(x, slots = NULL) {
     x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
     names(dimnames(x)) <- c("docs", "features")
     if (nrow(x) > 0 && is.null(rownames(x))) 
         rownames(x) <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
     if (ncol(x) > 0 && is.null(colnames(x)))
         colnames(x) <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
-    new("dfm", x, docvars = data.frame(row.names = rownames(x)))
+    #x <- new("dfm", x, docvars = data.frame(row.names = make.unique(rownames(x))))
+    x <- new("dfm", x, docvars = data.frame(row.names = rownames(x)))
+    set_dfm_slots(x, slots)
+    
+}
+
+#' Set values to a dfm's S4 slots
+#' @param x a dfm 
+#' @param slots a list of values extracted using \code{attributes} and to be assigned to slots 
+#' @param exceptions names of slots to be ignored
+#' @keywords internal
+set_dfm_slots <- function(x, slots = NULL, exceptions = NULL) {
+    if (is.null(slots)) return(x)
+    sname <- slotNames("dfm")
+    sname <- setdiff(sname, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+    for (s in sname) {
+        try({
+            slot(x, s) <- slots[[s]]
+        }, silent = TRUE)
+    }
+    return(x)
 }
 
 #' @rdname as.dfm
