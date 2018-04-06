@@ -95,7 +95,7 @@ Other contributors:
   \item Paul Nulty \email{paul.nulty@gmail.com} [contributor]
   \item Adam Obeng \email{quanteda@binaryeagle.com} [contributor]
   \item Haiyan Wang \email{h.wang52@lse.ac.uk} [contributor]
-  \item Stefan M<U+FF83><U+FF7C>ller \email{mullers@tcd.ie} [contributor]
+  \item Stefan Müller \email{mullers@tcd.ie} [contributor]
   \item Benjamin Lauderdale \email{B.E.lauderdale@lse.ac.uk} [contributor]
   \item Will Lowe \email{wlowe@princeton.edu} [contributor]
 }
