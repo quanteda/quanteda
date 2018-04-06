@@ -16,13 +16,22 @@ b, strong, th {
     font-weight: 500;
 }
 
-.navbar-inverse .navbar-brand {
+.navbar-brand {
     background-image: url(https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo_small.svg);
     background-repeat: no-repeat;
-    background-position: 15px 10px;
+    background-position: 12.5px 12.5px;
     background-size: 150px auto;
-    text-indent: -9999px;
-    padding-left: 155px;
+    width: 230px;
+}
+.navbar-brand > .navbar-link {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    padding: 0 60px 0 0;
+}
+
+.navbar .navbar-nav > li > a {
+    padding: 8px 8px;
 }
 
 div#overview div.page-header h1 {
