@@ -1,32 +1,3 @@
-#' @include dfm-classes.R
-
-#' @title Virtual class "fcm" for a feature co-occurrence matrix
-#' 
-#' @description The fcm class of object is a special type of \link{dfm}
-#'   object with additional slots, described below.  
-#'     
-#' @slot context the context definition
-#' @slot window the size of the window, if \code{context = "window"}
-#' @slot count how co-occurrences are counted
-#' @slot weights context weighting for distance from target feature, equal in length to \code{window}
-#' @slot margin frequencies of features in the original \link{dfm} or \link{tokens}
-#' @slot tri whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded
-#' @slot ordered whether a term appears before or after the target feature 
-#'      are counted separately
-#' @seealso \link{fcm}
-#' @export
-#' @import methods
-#' @docType class
-#' @name fcm-class
-#' @keywords internal
-setClass("fcm",
-         slots = c(context = "character", window = "integer", 
-                   count = "character", weights = "numeric", 
-                   ordered = "logical", tri = "logical",
-                   margin = "numeric"),
-         # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
-         #contains = c("dfm", "dgCMatrix", "dtCMatrix"))
-         contains = c("dfm", "dgCMatrix"))
 
 #' Create a feature co-occurrence matrix
 #' 
