@@ -124,19 +124,18 @@ test_that("test corpus constructors works for data.frame", {
     expect_error(corpus(mydf, text_field = "notfound"),
                  "column name notfound not found")
     
-    expect_error(corpus(mydf, text_field = "some_text", docid_field = "some_ints"),
-                 "docid_field must refer to a character mode column")
+    # expect_error(corpus(mydf, text_field = "some_text", docid_field = "some_ints"),
+    #              "docid_field must refer to a character mode column")
     expect_error(corpus(mydf, text_field = "some_text", docid_field = c(1,3)),
                  "docid_field must refer to a single column")
     expect_error(corpus(mydf, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
                  "docid_field must refer to a single column")
     expect_error(corpus(mydf, text_field = "some_text", docid_field = 0),
-                 "docid_field index refers to an invalid column")
+                 "docid_field column not found or invalid")
     expect_error(corpus(mydf, text_field = "some_text", docid_field = -1),
-                 "docid_field index refers to an invalid column")
+                 "docid_field column not found or invalid")
     expect_error(corpus(mydf, text_field = "some_text", docid_field = "notfound"),
-                 "column name notfound not found")
-
+                 "docid_field column not found or invalid")
 })
 
 
@@ -317,4 +316,61 @@ test_that("corpus + operator works", {
         texts(corpus(LETTERS[1:3]) + corpus(LETTERS[3:5])),
         c(text1 = "A", text2 = "B", text3 = "C", text11 = "C", text21= "D", text31 = "E")
     )
+})
+
+test_that("corpus.data.frame sets docnames correctly", {
+    txt <- c("Text one.", "Text two.  Sentence two.", "Third text is here.")
+    dnames <- paste(LETTERS[1:3], "dn", sep = "-")
+    rnames <- paste(LETTERS[1:3], "rn", sep = "-")
+    df_with_text_docid_rownames <- 
+        data.frame(text = txt,  doc_id = dnames, row.names = rnames, stringsAsFactors = FALSE)
+    df_with_NOtext_docid_rownames <- 
+        data.frame(other = txt, doc_id = dnames, row.names = rnames, stringsAsFactors = FALSE)
+    df_with_text_docid_NOrownames <- 
+        data.frame(text = txt,  doc_id = dnames, row.names = NULL, stringsAsFactors = FALSE)
+    df_with_NOtext_docid_NOrownames <- 
+        data.frame(other = txt, doc_id = dnames, row.names = NULL, stringsAsFactors = FALSE)
+    df_with_NOtext_NOdocid_NOrownames <- 
+        data.frame(other = txt,                  row.names = NULL, stringsAsFactors = FALSE)
+    df_with_text_NOdocid_rownames <- 
+        data.frame(text = txt,                   row.names = rnames, stringsAsFactors = FALSE)
+    df_with_text_NOdocid_NOrownames <- 
+        data.frame(text = txt,                   row.names = NULL, stringsAsFactors = FALSE)
+    df_with_NOtext_NOdocid_rownames <- 
+        data.frame(other = txt,                  row.names = rnames, stringsAsFactors = FALSE)
+
+    expect_identical(
+        docnames(corpus(df_with_text_docid_rownames)),
+        c("A-dn", "B-dn", "C-dn")
+    )
+    expect_error(
+        corpus(df_with_text_docid_rownames, docid_field = "notfound"),
+        "docid_field column not found or invalid"
+    )
+    expect_identical(
+        docnames(corpus(df_with_text_NOdocid_rownames)),
+        c("A-rn", "B-rn", "C-rn")
+    )
+    expect_identical(
+        docnames(corpus(df_with_text_NOdocid_NOrownames)),
+        paste0(quanteda_options("base_docname"), seq_len(nrow(df_with_text_NOdocid_NOrownames)))
+    )
+    
+    newdf <- data.frame(df_with_text_docid_rownames, new = c(99, 100, 101))
+    expect_identical(
+        docnames(corpus(newdf, docid_field = "new")),
+        c("99", "100", "101")
+    )
+    
+    newdf <- data.frame(df_with_text_NOdocid_NOrownames, new = c(99, 100, 101))
+    expect_identical(
+        docnames(corpus(newdf, docid_field = "new")),
+        c("99", "100", "101")
+    )        
+
+    newdf <- data.frame(df_with_text_NOdocid_NOrownames, new = c(TRUE, FALSE, TRUE))
+    expect_identical(
+        docnames(corpus(newdf, docid_field = "new")),
+        c("TRUE", "FALSE", "TRUE.1")
+    )        
 })

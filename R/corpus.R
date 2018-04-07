@@ -242,13 +242,14 @@ corpus.character <- function(x, docnames = NULL,
 }
 
 #' @rdname corpus
-#' @param docid_field optional column index of a document identifier; if
-#'   \code{NULL}, the constructor will use the row.names of the data.frame (if
-#'   found)
+#' @param docid_field optional column index of a document identifier; defaults
+#'   to "doc_id", but if this is not found, then will use the rownames of the
+#'   data.frame; if the rownames are not set, it will use the default sequence
+#'   based on \code{(\link{quanteda_options}("base_docname")}.
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                               metacorpus = NULL, compress = FALSE, ...) {
 
     if (length(addedArgs <- list(...)))
@@ -260,7 +261,7 @@ corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
     # coerce data.frame variants to data.frame - for #1232
     x <- as.data.frame(x)
     
-    # text field
+    # text_field handling ---------
     if (length(text_field) != 1)
         stop("text_field must refer to a single column")
     if (is.numeric(text_field)) {
@@ -277,30 +278,40 @@ corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
     if (!is.character(x[[text_field]]))
         stop("text_field must refer to a character mode column")
 
-    # docname field
-    if (is.null(docid_field)) {
-        if (identical(row.names(x), as.character(seq_len(nrow(x))))) {
-            docname <- paste0(quanteda_options("base_docname"), row.names(x))
-        } else {
-            docname <- row.names(x)
-        }
+    # docid_field handling --------
+    # start by using quanteda defaults
+    docname_source <- "default"
+    
+    # use docfield if if supplied
+    if (missing(docid_field)) {
+        # if not supplied, use default docfield_id if exists, else leave default
+        if (docid_field %in% names(x)) docname_source <- "docid_field"
     } else {
         if (length(docid_field) != 1)
             stop("docid_field must refer to a single column")
-        if (is.numeric(docid_field)) {
-            if (1 <= docid_field && docid_field <= length(x)) {
-                docid_field <- names(x)[docid_field]
-            } else {
-                stop("docid_field index refers to an invalid column")
-            }
+        # if supplied, throw error if column does not exist
+        if (docid_field %in% names(x) || docid_field %in% seq_len(ncol(x))) {
+            docname_source <- "docid_field"
+        } else {
+            stop("docid_field column not found or invalid")
         }
-        if (!docid_field %in% names(x))
-            stop("column name ", docid_field, " not found")
-        if (!is.character(x[[docid_field]]))
-            stop("docid_field must refer to a character mode column")
-        docname <- x[[docid_field]]
     }
-
+    
+    # try using row.names if docid_field not already set
+    if (docname_source == "default" && 
+        !identical(row.names(x), as.character(seq_len(nrow(x))))) {
+        docname_source <- "row.names"
+    }
+    
+    docname <-
+        switch(docname_source,
+               docid_field =  as.character(x[[docid_field]]),
+               row.names = row.names(x),
+               default = paste0(quanteda_options("base_docname"), seq_len(nrow(x))))
+    
+    # to make the exclusion below work using match()
+    if (docname_source != docid_field) docid_field <- NULL
+    
     corpus(x[[text_field]],
            docvars = x[, match(c(text_field, docid_field), 
                                names(x)) * -1, drop = FALSE],
