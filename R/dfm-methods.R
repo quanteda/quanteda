@@ -162,7 +162,7 @@ matrix2dfm <- function(x, slots = NULL) {
     # x <- new("dfm", x, docvars = data.frame(row.names = make.unique(rownames(x))))
     # x <- new("dfm", x, docvars = data.frame(row.names = rownames(x)))
     
-    x <- new("dfm", x)
+    x <- new("dfm", as(x, 'dgCMatrix'))
     set_dfm_slots(x, slots)
 }
 

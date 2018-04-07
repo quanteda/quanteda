@@ -156,3 +156,51 @@ fcm_keep.default <- function(x, pattern = NULL, ...) {
 fcm_keep.fcm <- function(x, pattern = NULL, ...) {
     fcm_select(x, pattern, selection = "keep", ...)
 }
+
+
+#' Coercion functions for fcm objects
+#' @param x an object coerced to \link{fcm}. Currently only support
+#'   \link{Matrix} objects.
+#' @param slots a list of values to be assigned to slots
+#' @keywords internal
+as.fcm <- function(x, slots = NULL) {
+    matrix2fcm(x, slots)
+}
+
+#' Conversts a Matrix to a fcm
+#' @param x a Matrix
+#' @param slots slots a list of values to be assigned to slots
+#' @keywords internal
+matrix2fcm <- function(x, slots = NULL) {
+    
+    rowname <- rownames(x)
+    if (nrow(x) > length(rowname))
+        rowname <- paste0(quanteda_options("base_featname"), seq_len(nrow(x)))
+    
+    colname <- colnames(x)
+    if (ncol(x) > length(colname))
+        colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    
+    x <- Matrix(x, sparse = TRUE, dimnames = list(features = rowname, 
+                                                  features = colname))
+    
+    x <- new("fcm", as(x, 'dgCMatrix'))
+    set_fcm_slots(x, slots)
+}
+
+#' Set values to a fcm's S4 slots
+#' @param x a fcm 
+#' @param slots a list of values extracted using \code{attributes} and to be assigned to slots 
+#' @param exceptions names of slots to be ignored
+#' @keywords internal
+set_fcm_slots <- function(x, slots = NULL, exceptions = NULL) {
+    if (is.null(slots)) return(x)
+    sname <- slotNames("fcm")
+    sname <- setdiff(sname, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+    for (s in sname) {
+        try({
+            slot(x, s) <- slots[[s]]
+        }, silent = TRUE)
+    }
+    return(x)
+}

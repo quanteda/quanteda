@@ -57,17 +57,3 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "fcm"),
                  `^` = as.fcm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
               )
           })
-
-#' Coercion functions for fcm objects
-#' @param x an object coerced to \link{fcm}. Currently only support
-#'   \link{Matrix} objects.
-#' @param slots a list of values to be assigned to slots
-#' @keywords internal
-as.fcm <- function(x, slots) {
-    x <- new("fcm", as(x, 'dgCMatrix'), count = slots$count,
-             context = slots$context, 
-             window = slots$window, margin = slots$margin,
-             weights = slots$weights, tri = slots$tri)
-    names(x@Dimnames) <- c("features", "features")
-    return(x)
-}
