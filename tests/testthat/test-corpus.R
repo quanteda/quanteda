@@ -301,7 +301,7 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
         dplyr::group_by(letter_factor) %>% 
         dplyr::mutate(n_group = n())
     expect_output(
-        quanteda::print(corpus(mydf_grouped)),
+        print(corpus(mydf_grouped)),
         "^Corpus consisting of 6 documents and 3 docvars\\.$"
     )
 })
