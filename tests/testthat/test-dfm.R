@@ -888,7 +888,7 @@ test_that("dfm keeps non-existent types, #1278", {
     
 })
 
-test_that("arithmetic operation works with dfm", {
+test_that("arithmetic/linear operation works with dfm", {
     
     mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
     expect_true(is.dfm(mt + 2))
@@ -901,6 +901,7 @@ test_that("arithmetic operation works with dfm", {
     expect_true(is.dfm(2 * mt))
     expect_true(is.dfm(2 / mt))
     expect_true(is.dfm(2 ^ mt))
-    
+    expect_true(is.dfm(t(mt)))
+    expect_equal(rowSums(mt), colSums(t(mt)))
 })
 

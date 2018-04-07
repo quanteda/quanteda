@@ -334,7 +334,7 @@ test_that("test empty object is handled properly", {
     expect_true(is.fcm(fcm(toks)))
 })
 
-test_that("arithmetic operation works with dfm", {
+test_that("arithmetic/linear operation works with dfm", {
     
     mt <- fcm(dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d")))
     expect_true(is.fcm(mt + 2))
@@ -347,6 +347,8 @@ test_that("arithmetic operation works with dfm", {
     expect_true(is.fcm(2 * mt))
     expect_true(is.fcm(2 / mt))
     expect_true(is.fcm(2 ^ mt))
+    expect_true(is.fcm(t(mt)))
+    expect_equal(rowSums(mt), colSums(t(mt)))
     
 })
 
