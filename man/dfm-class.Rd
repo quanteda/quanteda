@@ -9,8 +9,8 @@
 \alias{rowSums,dfm-method}
 \alias{colMeans,dfm-method}
 \alias{rowMeans,dfm-method}
-\alias{+,dfm,numeric-method}
-\alias{+,numeric,dfm-method}
+\alias{Arith,dfm,numeric-method}
+\alias{Arith,numeric,dfm-method}
 \alias{[,dfm,index,index,missing-method}
 \alias{[,dfm,index,index,logical-method}
 \alias{[,dfm,missing,missing,missing-method}
@@ -31,9 +31,9 @@
 
 \S4method{rowMeans}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
 
-\S4method{+}{dfm,numeric}(e1, e2)
+\S4method{Arith}{dfm,numeric}(e1, e2)
 
-\S4method{+}{numeric,dfm}(e1, e2)
+\S4method{Arith}{numeric,dfm}(e1, e2)
 
 \S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = TRUE)
 

@@ -4,8 +4,8 @@
 \name{fcm-class}
 \alias{fcm-class}
 \alias{t,fcm-method}
-\alias{+,fcm,numeric-method}
-\alias{+,numeric,fcm-method}
+\alias{Arith,fcm,numeric-method}
+\alias{Arith,numeric,fcm-method}
 \alias{[,fcm,index,index,missing-method}
 \alias{[,fcm,index,index,logical-method}
 \alias{[,fcm,missing,missing,missing-method}
@@ -20,9 +20,9 @@ additional slots, described below.}
 \usage{
 \S4method{t}{fcm}(x)
 
-\S4method{+}{fcm,numeric}(e1, e2)
+\S4method{Arith}{fcm,numeric}(e1, e2)
 
-\S4method{+}{numeric,fcm}(e1, e2)
+\S4method{Arith}{numeric,fcm}(e1, e2)
 
 \S4method{[}{fcm,index,index,missing}(x, i, j, ..., drop = TRUE)
 
