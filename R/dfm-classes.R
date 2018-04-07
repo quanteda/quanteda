@@ -1,11 +1,3 @@
-####################################################################
-## dfm class definition and methods for primitives, ops, etc.
-##
-## Ken Benoit
-####################################################################
-
-setClassUnion("dframe", members = c("data.frame", "NULL")) 
-
 #' Virtual class "dfm" for a document-feature matrix
 #' 
 #' The dfm class of object is a type of \link[Matrix]{Matrix-class} object with
@@ -37,18 +29,19 @@ setClass("dfm",
                    smooth = "numeric", 
                    ngrams = "integer", skip = "integer", 
                    concatenator = "character", version = "integer",
-                   docvars = "dframe"),
-         prototype = list(settings = list(NULL),
+                   docvars = "data.frame"),
+         prototype = list(settings = list(),
                           Dim = integer(2), 
-                          Dimnames = list(docs = NULL, features = NULL),
+                          Dimnames = list(docs = character(), features = character()),
                           weightTf = list(scheme = "count", base = NULL, K = NULL),
                           weightDf = list(scheme = "unary", base = NULL, c = NULL,
                                           smoothing = NULL, threshold = NULL),
                           smooth = 0,
                           ngrams = 1L,
                           skip = 0L,
+                          concatenator = "_",
                           version = unlist(packageVersion("quanteda")),
-                          concatenator = "_"),
+                          docvars = data.frame()),
          contains = "dgCMatrix")
 
 # deprecated dfmSparse class for backward compatibility
@@ -57,7 +50,7 @@ setClass("dfm",
 setClass("dfmSparse", contains = "dfm")
 
 
-## S4 Method for the S3 class dfm
+## S4 method dfm objects
 #' @export
 #' @param x the dfm object
 #' @rdname dfm-class
@@ -100,14 +93,27 @@ setMethod("rowMeans",
 #' @param e1 first quantity in "+" operation for dfm
 #' @param e2 second quantity in "+" operation for dfm
 #' @rdname dfm-class
-setMethod("+", signature(e1 = "dfm", e2 = "numeric"),
+setMethod("Arith", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
               as.dfm(as(e1, "dgCMatrix") + e2, attributes(e1))
+              switch(.Generic[[1]],
+                     `+` = as.dfm(as(e1, "dgCMatrix") + e2, attributes(e1)),
+                     `-` = as.dfm(as(e1, "dgCMatrix") - e2, attributes(e1)),
+                     `*` = as.dfm(as(e1, "dgCMatrix") * e2, attributes(e1)),
+                     `/` = as.dfm(as(e1, "dgCMatrix") / e2, attributes(e1)),
+                     `^` = as.dfm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
+              )
           })
 #' @rdname dfm-class
-setMethod("+", signature(e1 = "numeric", e2 = "dfm"),
+setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
-              as.dfm(e1 + as(e2, "dgCMatrix"), attributes(e2))
+              switch(.Generic[[1]],
+                     `+` = as.dfm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
+                     `-` = as.dfm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
+                     `*` = as.dfm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
+                     `/` = as.dfm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
+                     `^` = as.dfm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
+              )
           })
 
 
