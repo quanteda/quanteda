@@ -155,8 +155,8 @@ matrix2dfm <- function(x, slots = NULL) {
     if (ncol(x) > length(colname))
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     
-    x <- Matrix(x, sparse = TRUE, dimnames = list(docs = rowname, 
-                                                  features = colname))
+    x <- Matrix(x, sparse = TRUE)
+    dimnames(x) <- list(docs = rowname, features = colname)
     
     # Force dfm to have docvars
     # x <- new("dfm", x, docvars = data.frame(row.names = make.unique(rownames(x))))
