@@ -126,7 +126,8 @@ as.dfm.dfmSparse <- function(x, slots = NULL) {
 as.dfm.DocumentTermMatrix <- function(x, slots = NULL){
     as.dfm(
         sparseMatrix(i = x$i, j = x$j, x = x$v, 
-                     dimnames = list(rownames(x), colnames(x))), 
+                     dimnames = list(docs = rownames(x), 
+                                     features = colnames(x))), 
         slots)
 }
 
@@ -145,16 +146,24 @@ as.dfm.TermDocumentMatrix <- function(x, slots = NULL){
 #' @param slots slots a list of values to be assigned to slots
 #' @keywords internal
 matrix2dfm <- function(x, slots = NULL) {
-    x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
-    names(dimnames(x)) <- c("docs", "features")
-    if (nrow(x) > 0 && is.null(rownames(x))) 
-        rownames(x) <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
-    if (ncol(x) > 0 && is.null(colnames(x)))
-        colnames(x) <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
-    #x <- new("dfm", x, docvars = data.frame(row.names = make.unique(rownames(x))))
-    x <- new("dfm", x, docvars = data.frame(row.names = rownames(x)))
-    set_dfm_slots(x, slots)
+   
+    rowname <- rownames(x)
+    if (nrow(x) > length(rowname))
+        rowname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
     
+    colname <- colnames(x)
+    if (ncol(x) > length(colname))
+        colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    
+    x <- Matrix(x, sparse = TRUE, dimnames = list(docs = rowname, 
+                                                  features = colname))
+    
+    # Force dfm to have docvars
+    # x <- new("dfm", x, docvars = data.frame(row.names = make.unique(rownames(x))))
+    # x <- new("dfm", x, docvars = data.frame(row.names = rownames(x)))
+    
+    x <- new("dfm", x)
+    set_dfm_slots(x, slots)
 }
 
 #' Set values to a dfm's S4 slots
