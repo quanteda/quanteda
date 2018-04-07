@@ -35,21 +35,21 @@
 
 \S4method{+}{numeric,dfm}(e1, e2)
 
-\S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,index,index,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,index,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,missing,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,missing,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,index,missing,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,index,missing,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,index,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,index,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,index,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,index,logical}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{the dfm object}
@@ -109,13 +109,6 @@ x <- dfm(tokens(c("this contains lots of stopwords",
                 remove_punct = TRUE))
 x[1:2, ]
 x[1:2, 1:5]
-
-# fcm subsetting
-y <- fcm(tokens(c("this contains lots of stopwords",
-                  "no if, and, or but about it: lots"),
-                remove_punct = TRUE))
-y[1:3, ]
-y[4:5, 1:5]
 }
 \seealso{
 \link{dfm}
