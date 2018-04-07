@@ -130,7 +130,7 @@ docvars.kwic <- function(x) {
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, "docvars") <- value
     } else {
-        if (!is.data.frame(attr(x, "docvars"))) {
+        if (!is.data.frame(attr(x, "docvars")) || !nrow(attr(x, "docvars"))) {
             meta <- data.frame(value, stringsAsFactors = FALSE)
             colnames(meta) <- field
             attr(x, "docvars") <- meta
@@ -147,7 +147,7 @@ docvars.kwic <- function(x) {
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         x@docvars <- value
     } else {
-        if (!is.data.frame(x@docvars)) {
+        if (!is.data.frame(x@docvars) || !nrow(x@docvars)) {
             meta <- data.frame(value, stringsAsFactors = FALSE)
             colnames(meta) <- field
             x@docvars <- meta
