@@ -108,15 +108,36 @@ test_that("dfm_trim works on previously weighted dfms (#1237)", {
         tol = .0001
     )
     expect_warning(
-        dfm_trim(dfm2, min_docfreq = .5, docfreq_type = 'prop'),
+        dfm_trim(dfm2, min_docfreq = .5, docfreq_type = "prop"),
         "dfm has been previously weighted"
     )
     expect_warning(
-        dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = 'prop'),
+        dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = "prop"),
         "dfm has been previously weighted"
     )
+    
     expect_equal(
-        dim(dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = 'prop')),
+        dim(dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = "prop")),
         c(2, 0)
     )
+})
+
+test_that("dfm_trim warn when termfreq is termfreq_type = 'count' (#1254)", {
+    dfm1 <- dfm(c("the quick brown fox jumps over the lazy dog", 
+                  "the quick brown foxy ox jumps over the lazy god"))
+    #dfm2 <- dfm_tfidf(dfm1)
+    expect_warning(
+        dfm_trim(dfm1, min_termfreq = 0.001, termfreq_type = "count"),
+        "use termfreq_type = 'prop' for fractional term frequency"
+    )
+    #expect_silent(
+    #    dfm_trim(dfm2, min_termfreq = 0.001, termfreq_type = "count")
+    #)
+    expect_warning(
+        dfm_trim(dfm1, max_termfreq = 0.001, termfreq_type = "count"),
+        "use termfreq_type = 'prop' for fractional term frequency"
+    )
+    #expect_silent(
+    #    dfm_trim(dfm2, max_termfreq = 0.001, termfreq_type = "count")
+    #)
 })

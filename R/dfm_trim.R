@@ -16,19 +16,21 @@
 #' across all documents, below/above which features will
 #'   be removed
 #' @param termfreq_type how \code{min_termfreq} and \code{max_termfreq} are
-#'   intepreted.  \code{"count"} sums the frequencies; \code{"rank"} is matched
-#'   against the inverted ranking of features in terms of overall frequency, so
-#'   that 1, 2, ... are the highest and second highest frequency features, and
-#'   so on; \code{"quantile"} sets the cutoffs according to the quantiles (see
+#'   intepreted.  \code{"count"} sums the frequencies; \code{"prop"} devides the
+#'   term frequences by the total sum; \code{"rank"} is matched against the inverted
+#'   ranking of features in terms of overall frequency, so that 1, 2, ... are
+#'   the highest and second highest frequency features, and so on;
+#'   \code{"quantile"} sets the cutoffs according to the quantiles (see
 #'   \code{\link{quantile}}) of term frequencies.
 #' @param min_docfreq,max_docfreq minimum/maximum values of a feature's document
 #'   frequency, below/above which features will be removed
 #' @param docfreq_type specify how \code{min_docfreq} and \code{max_docfreq} are
 #'   intepreted.   \code{"count"} is the same as \code{\link{docfreq}(x, scheme
-#'   = "count")}; \code{"rank"} is matched against the inverted ranking of
-#'   document frequency, so that 1, 2, ... are the features with the highest and
-#'   second highest document frequencies, and so on; \code{"quantile"} sets the
-#'   cutoffs according to the quantiles (see \code{\link{quantile}}) of document
+#'   = "count")}; \code{"prop"} devides the document frequences by the total sum;
+#'   \code{"rank"} is matched against the inverted ranking of document
+#'   frequency, so that 1, 2, ... are the features with the highest and second
+#'   highest document frequencies, and so on; \code{"quantile"} sets the cutoffs
+#'   according to the quantiles (see \code{\link{quantile}}) of document
 #'   frequencies.
 #' @param sparsity equivalent to \code{1 - min_docfreq}, included for comparison
 #'   with \pkg{tm}
@@ -73,8 +75,8 @@
 #'
 #' @export
 dfm_trim <- function(x, 
-                     min_termfreq = NULL, max_termfreq = NULL, termfreq_type = c("count", "rank", "quantile"),
-                     min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count", "rank", "quantile"),
+                     min_termfreq = NULL, max_termfreq = NULL, termfreq_type = c("count", "prop", "rank", "quantile"),
+                     min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count", "prop", "rank", "quantile"),
                      sparsity = NULL, 
                      verbose = quanteda_options("verbose"),
                      ...) {
@@ -103,12 +105,12 @@ dfm_trim.dfm <- function(x,
     if (!nfeat(x) || !ndoc(x)) return(x)
     
     dots <- list(...)
-    if ('min_count' %in% names(dots)) {
-        warning('min_count is deprecated, use min_termfreq')
+    if ("min_count" %in% names(dots)) {
+        warning("min_count is deprecated, use min_termfreq")
         min_termfreq <- dots[['min_count']]
     }
-    if ('max_count' %in% names(dots)) {
-        warning('max_count is deprecated, use max_termfreq')
+    if ("max_count" %in% names(dots)) {
+        warning("max_count is deprecated, use max_termfreq")
         max_termfreq <- dots[['max_count']]
     }
     
@@ -116,9 +118,16 @@ dfm_trim.dfm <- function(x,
     docfreq_type <- match.arg(docfreq_type)
     
     # warning if already fractional
-    if ((!is.null(min_termfreq) && !is.null(max_termfreq)) &&
+    if ((!is.null(min_termfreq) || !is.null(max_termfreq)) &&
         x@weightTf$scheme != "count" || x@weightDf$scheme != "unary") {
         warning("dfm has been previously weighted")
+    }
+    # warning for fractional term frequency
+    if (x@weightTf$scheme == "count" && termfreq_type == "count") {
+        if (!is.null(max_termfreq) && max_termfreq < 1)
+            warning("use termfreq_type = 'prop' for fractional term frequency")
+        if (!is.null(min_termfreq) && min_termfreq < 1)
+            warning("use termfreq_type = 'prop' for fractional term frequency")
     }
     
     freq <- unname(colSums(x))
@@ -160,7 +169,7 @@ dfm_trim.dfm <- function(x,
             min_termfreq <- nfeat(x)
         if (is.null(max_termfreq))
             max_termfreq <- 1
-        r <- rank(freq * -1, ties.method = 'min')
+        r <- rank(freq * -1, ties.method = "min")
         min_termfreq <- min(freq[r <= min_termfreq])
         max_termfreq <- max(freq[r >= max_termfreq])
     }
@@ -190,7 +199,7 @@ dfm_trim.dfm <- function(x,
             min_docfreq <- nfeat(x)
         if (is.null(max_docfreq))
             max_docfreq <- 1
-        r <- rank(freq_doc * -1, ties.method = 'min')
+        r <- rank(freq_doc * -1, ties.method = "min")
         min_docfreq <- min(freq_doc[r <= min_docfreq])
         max_docfreq <- max(freq_doc[r >= max_docfreq])
     }

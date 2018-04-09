@@ -1,7 +1,11 @@
+url: http://docs.quanteda.io
 template:
   params:
     bootswatch: readable
     ganalytics: UA-144616-24
+    docsearch:
+      api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
+      index_name: quanteda
 figures:
   dev: grDevices::png
   dpi: 96
@@ -18,7 +22,7 @@ navbar:
         - text: "Quick Start Guide"
           href: articles/pkgdown/quickstart.html
         - text: "Guía de Inicio Rápido"
-          href: articles/pkgdown/quickstart_es.html
+-         href: articles/pkgdown/quickstart_es.html
         - text: "快速入门指南"
           href: articles/pkgdown/quickstart_cn.html
         - text: "クイック・スタートガイド"
@@ -47,8 +51,6 @@ navbar:
           href: articles/pkgdown/replication/text2vec.html
         - text: "Quantitative Social Science Ch. 5.1"
           href: articles/pkgdown/replication/qss.html
-    - text: "Design"
-      href: articles/design.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/quanteda/quanteda

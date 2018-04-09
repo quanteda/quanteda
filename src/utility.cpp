@@ -9,26 +9,84 @@ using namespace quanteda;
  * @param char_remove a string to remove
  */
 
+/*
 // [[Rcpp::export]]
-List qatd_cpp_chars_remove(List input_, String char_remove){
+List qatd_cpp_chars_remove(List input_, String char_remove) {
     List output_ = clone(input_);
-    for (unsigned int h = 0; h < (unsigned int)output_.size(); h++){
-        CharacterVector elems = output_[h];
-        CharacterVector elems_new(elems.size());
+    for (unsigned int h = 0; h < (unsigned int)output_.size(); h++) {
+        CharacterVector elems_ = output_[h];
+        CharacterVector elems_new_(elems_.size());
         size_t j = 0;
-        for (unsigned int i = 0; i < (unsigned int)elems.size(); i++){
-            if(elems[i] != char_remove){
-                elems_new[j] = elems[i];
+        for (unsigned int i = 0; i < (unsigned int)elems_.size(); i++) {
+            if(elems_[i] != char_remove) {
+                elems_new_[j] = elems_[i];
                 j++;
             }
         }
         if (j > 0){
-            output_[h] = elems_new[seq(0, j - 1)];
+            output_[h] = elems_new_[seq(0, j - 1)];
         }else{
             output_[h] = CharacterVector(0);
         }
     }
     return output_;
+}
+*/
+ 
+/* 
+ * This function checks values in values_ is uniform within groups specified by groups_
+ * @used dfm_group()
+ * @creator Kohei Watanabe
+ * @param values_ a numeric vector for values
+ * @param groups_ a integer vector for groups
+ */
+
+// [[Rcpp::export]]
+bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
+    
+    if (values_.size() == 0) return(true);
+    if (min(groups_) < 1 || values_.size() != groups_.size())
+        throw std::range_error("Invalid groups");
+    
+    unsigned int n = max(groups_);
+    LogicalVector init_(n);
+    CharacterVector values_init_(n);
+    for (unsigned int i = 0; i < (unsigned int)groups_.size(); i++) {
+        unsigned int g = groups_[i] - 1;
+        if (!init_[g]) {
+            init_[g] = true;
+            values_init_[g] = values_[i];
+        } else {
+            if (values_init_[g] != values_[i]) {
+                return(false);
+            }
+        }
+    }
+    return(true);
+}
+
+// [[Rcpp::export]]
+bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups_) {
+    
+    if (values_.size() == 0) return(true);
+    if (min(groups_) < 1 || values_.size() != groups_.size())
+        throw std::range_error("Invalid groups");
+    
+    unsigned int n = max(groups_);
+    LogicalVector init_(n);
+    CharacterVector values_init_(n);
+    for (unsigned int i = 0; i < (unsigned int)groups_.size(); i++) {
+        unsigned int g = groups_[i] - 1;
+        if (!init_[g]) {
+            init_[g] = true;
+            values_init_[g] = values_[i];
+        } else {
+            if (values_init_[g] != values_[i]) {
+                return(false);
+            }
+        }
+    }
+    return(true);
 }
 
 // [[Rcpp::export]]
