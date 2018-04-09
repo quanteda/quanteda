@@ -46,7 +46,7 @@
 #' obama_dfm <- 
 #'     dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
 #'         remove = stopwords("english"), remove_punct = TRUE) %>%
-#'     dfm_trim(min_termfreq = 5)
+#'     dfm_trim(min_termfreq = 3)
 #'     
 #' # basic wordcloud
 #' textplot_wordcloud(obama_dfm)
@@ -64,7 +64,7 @@
 #' obama_trump_dfm <- 
 #'     dfm(corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump")),
 #'         remove = stopwords("english"), remove_punct = TRUE, groups = "President") %>%
-#'     dfm_trim(min_termfreq = 5)
+#'     dfm_trim(min_termfreq = 3)
 #' 
 #' textplot_wordcloud(obama_trump_dfm, comparison = TRUE, max_words = 300,
 #'                    color = c("blue", "red"))
