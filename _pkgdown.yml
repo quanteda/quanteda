@@ -2,6 +2,13 @@ template:
   params:
     bootswatch: readable
     ganalytics: UA-144616-24
+figures:
+  dev: grDevices::png
+  dpi: 96
+  fig.ext: png
+  fig.width: 10
+  fig.height: 7
+  fig.retina: 2
 navbar:
   title: "Quanteda"
   type: inverse
