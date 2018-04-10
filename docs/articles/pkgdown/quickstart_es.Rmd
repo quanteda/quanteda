@@ -1,0 +1,410 @@
+---
+title: "Guía de Inicio Rápido"
+output: 
+ html_document:
+   toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, 
+                     comment = "##")
+```
+
+# Instalando el paquete
+
+Desde que **quanteda** está disponible en [CRAN](https://CRAN.R-project.org/package=quanteda), lo puedes instalar usando tu instalador de paquetes en R GUI's o ejecutar las siguientes líneas:
+
+```{r, eval = FALSE}
+install.packages("quanteda") 
+```
+Ver instrucciones (en inglés) en https://github.com/quanteda/quanteda para instalar la versión de GitHub.
+
+## Paquetes adicionales recomendados:
+
+Los siguientes paquetes funcionan bien con con **quanteda** o lo complementan y por eso recomendamos que también los instaleis:
+
+*  [**readtext**](https://github.com/kbenoit/readtext):  una manera sencilla de leer data de texto casi con cualquier formato con R,.
+*  [**spacyr**](https://github.com/kbenoit/spacyr): NLP usando la librería [spaCy](http://spacy.io), incluyendo etiquetado part-of-speech, entity recognition y dependency parsing.
+*  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): data textual adicional para uso con **quanteda**.
+    ```{r, eval = FALSE}
+    devtools::install_github("quanteda/quanteda.corpora")
+    ```
+*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): una implementación en R del abordaje de análisis de texto [Linguistic Inquiry and Word Count](http://liwc.wpengine.com).
+    ```{r, eval = FALSE}
+    devtools::install_github("kbenoit/LIWCalike")
+    ```
+
+# Creando un corpus
+
+Cargas el paquete para acceder a funciones y data en el paquete.
+
+```{r, message = FALSE}
+library(quanteda)
+```
+
+## Fuentes disponibles de corpus
+
+**quanteda** tiene un simple y poderoso paquete adicional para cargar textos: [**readtext**](https://github.com/kbenoit/readtext). La función principal en este paquete, `readtext()`,  toma un archivo o set de archivos de un disco o una dirección de URL y devuelve un tipo de data.frame que puede ser usado directamente con la función de construcción de corpus (`corpus()`) para crear un objeto corpus en **quanteda**.
+`readtext()` funciona con:
+
+* archivos de texto (`.txt`);
+* archivos de valores separados por comas (`.csv`);
+* data en formato XML;
+* data del API de Facebook API, en formato JSON;
+* data de la API de Twitter, en formato JSON; y
+* data en formato JSON en general.
+
+El comando constructor de corpus llamado `corpus()` funciona directamente sobre:
+
+* un vector de objetos de tipo character, por ejemplo aquellos que ya has cargado al workspace usando otras herramientas;
+* un objeto corpus `VCorpus` del paquete **tm**.
+* un data.frame que contenga una columna de texto y cualquier otro documento de metadata.
+
+### Construyendo un corpus de un vector de tipo character
+
+El caso más simple sería crear un corpus de un vector de textos que ya estén en la memoria en R. De esta manera, el usuario avanzado de R obtiene completa flexibilidad con su elección de textos dado que hay virtualmente infinitas posibilidades de obtener un vector de textos en R.
+
+Si ya se disponen de textos en este formato es posible llamar a la función de constructor de corpus directamente. Es posible demostrarlo en el objeto de tipo character integrado de los textos sobre políticas de inmigración extraídos de los manifiestos de partidos políticos compitiendo en la elección del Reino Unido en 2010 (llamado `data_char_ukimmig2010`).
+
+```{r}
+myCorpus <- corpus(data_char_ukimmig2010)  # construye un corpus nuevo a partir de los textos
+summary(myCorpus)
+```
+
+Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento -- lo que quanteda llama *docvars*.
+
+Esto lo hacemos utilizando la función de R llamada `names()` para obtener los nombres del vector de tipo character de `data_char_ukimmig2010` y asignárselos a una variable de documento (`docvar`).
+```{r}
+docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
+docvars(myCorpus, "Year") <- 2010
+summary(myCorpus)
+```
+
+Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.
+
+```{r}
+metadoc(myCorpus, "language") <- "english"
+metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpus), sep = "_")
+summary(myCorpus, showmeta = TRUE)
+```
+
+El último comando, `metadoc`, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor `"english"`, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento `docsource`, hemos usado la función de quanteda llamada `ndoc()` para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como `nrow()` y `ncol()`. 
+
+### Cargando archivos usando el paquete readtext
+
+```{r, eval=FALSE}
+require(readtext)
+
+# Twitter json
+mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+myCorpusTwitter <- corpus(mytf1)
+summary(myCorpusTwitter, 5)
+# generic json - needs a textfield specifier
+mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+                 textfield = "text")
+summary(corpus(mytf2), 5)
+# text file
+mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+summary(corpus(mytf3), 5)
+# multiple text files
+mytf4 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+summary(corpus(mytf4), 5)
+# multiple text files with docvars from filenames
+mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
+                 docvarsfrom = "filenames", sep = "-", docvarnames = c("Year", "President"))
+summary(corpus(mytf5), 5)
+# XML data
+mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+                 textfield = "COMMON")
+summary(corpus(mytf6), 5)
+# csv file
+write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), 
+                    docvars(data_corpus_inaugural)),
+         file = "/tmp/inaug_texts.csv", row.names = FALSE)
+mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
+summary(corpus(mytf7), 5)
+```
+
+
+## Cómo funciona un corpus de quanteda
+
+### Principios del Corpus
+
+Un corpus está diseñado para ser una "librería" original de documentos que han sido convertidos a formato plano, texto codificado en UTF-8, y guardado junto con meta-data en a nivel de corpus y a nivel de documento. Tenemos un nombre especial para meta-data a nivel de documento: *docvars*. Estas son variables o características que describen atributos de cada documento.
+
+Un corpus está diseñado para ser un contenedor de textos más o menos estático en lo que respecta a su procesamiento y análisis. Esto significa que los textos en el corpus no están disenado para ser cambiados internamente a través de (por ejemplo) limpieza o preprocesamiento, como stemming o removiendo la puntuación. Más que nada, los textos pueden ser extraídos del corpus como parte del procesamiento y asignados a objetos nuevos, pero la idea es que los corpus se conserven como una copia de referencia original para que otros análisis, por ejemplo aquellos en que stems y puntuación son necesarios, como analizar un índice, pueden ser realizados sobre el mismo corpus.
+
+Para extraer texto de un corpus, es posible utilizar el extractor llamado `texts()`.
+
+```{r}
+texts(data_corpus_inaugural)[2]
+```
+
+Para obtener la data resumida de textos de un corpus, se puede llamar al método `summary()` definido para un corpus.
+
+```{r}
+summary(data_corpus_irishbudget2010)
+```
+
+Se puede guardar el output del comando summary como un data frame y graficar algunos estadísticos descriptivos con esta información:
+
+```{r, fig.width = 8}
+tokenInfo <- summary(data_corpus_inaugural)
+if (require(ggplot2))
+   ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+       scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+
+# El discurso inaugural más largo: William Henry Harrison
+tokenInfo[which.max(tokenInfo$Tokens), ] 
+```
+
+## Herramientas para manejar objetos de corpus
+
+### Juntando dos objetos de corpus
+
+El operador `+` provee un método simple para concatenar dos objetos corpus. Si contenían diferentes sets de variables a nivel documento las unirá de manera que no se pierda nada de información. La meta-data a nivel corpus también queda concatenada.
+
+```{r}
+library(quanteda)
+mycorpus1 <- corpus(data_corpus_inaugural[1:5])
+mycorpus2 <- corpus(data_corpus_inaugural[53:58])
+mycorpus3 <- mycorpus1 + mycorpus2
+summary(mycorpus3)
+```
+
+### Armando subsets dentro de objetos corpus
+
+Hay un método de la función `corpus_subset()` definida por objetos corpus, donde un nuevo corpus puede ser extraído en base a condiciones lógicas aplicadas a docvars:
+
+```{r}
+summary(corpus_subset(data_corpus_inaugural, Year > 1990))
+summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
+```
+
+## Explorando textos de corpus
+
+La función `kwic` (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:
+
+```{r, tidy=TRUE}
+kwic(data_corpus_inaugural, "terror")
+```
+
+```{r}
+kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+```
+
+```{r}
+kwic(data_corpus_inaugural, "communist*")
+```
+
+En el summary de arriba, las variables `Year` (año) y `President` (presidente) son variables asociadas a cada documento. Es posible acceder a dichas variables con la función 'docvars()'
+
+```{r}
+# inspect the document-level variables
+head(docvars(data_corpus_inaugural))
+
+# inspect the corpus-level metadata
+metacorpus(data_corpus_inaugural)
+```
+
+Más corpora están disponibles en el repositorio [quanteda.corpora](http://github.com/quanteda/quanteda.corpora).
+
+# Extrayendo atributos de un corpus
+
+Para realizar análisis estadísticos tales como document scaling, es necesario extraer una matriz asociando valores de ciertos atributos con cada documento. En quanteda, se utiliza la función 'dfm' para producir dicha matriz. 'dfm', por sus siglas en inglés *document-feature matrix* o matriz documento-atributo en castellano, siempre se refiere a los documentos como filas y a los atributos como columnas. Se determinó esta orientación de las dimensiones dado que es estándar en el campo de análisis de datos que las unidades de análisis se computen en las filas y los atributos o variables se computen en las columnas. Se denominan "atributos" en vez de términos porque los atributos son más generales que los términos: pueden ser definidos como términos crudos, términos stemmed, términos de partes de discurso, términos luego de la remoción de las stopwords o una clase de diccionario al que pertenece un término. Los atributos pueden ser enteramente generales, como ngrams o dependencias sintácticas y dejamos esto abierto.
+
+## Convirtiendo textos en tokens
+
+Para convertir un texto en tokens de manera simple, quanteda provee un poderoso comando denominado`tokens()`. Produce un objeto intermedio que consiste en una lista de tokens en forma de vectores de caracteres, donde cada elemento de la lista corresponde con un documento de input.
+
+El comando `tokens()` es deliberadamente conservador, es decir, que no remueve nada del texto excepto que se le especifique explícitamente que lo haga.
+
+```{r}
+txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
+        text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
+tokens(txt)
+tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
+tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
+tokens(txt, remove_numbers = TRUE,  remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
+```
+
+También existe la opción de convertir en token los caracteres:
+
+```{r}
+tokens("Great website: http://textasdata.com?page=123.", what = "character")
+tokens("Great website: http://textasdata.com?page=123.", what = "character", 
+        remove_separators = FALSE)
+```
+
+y las oraciones:
+
+```{r}
+# sentence level         
+tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
+          "Today is Thursday in Canberra:  It is yesterday in London.", 
+          "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
+         what = "sentence")
+```
+
+## Construyendo una matriz de documentos y atributos
+
+Convertir los textos en tokens es una opción intermedia y la mayoría de los usuarios querrán directamente construir la matriz de documentos y atributos. Para hacer esto existe la función de navaja suiza llamada `dfm()`, que realiza la tokenización y tabula los atributos extraídos dentro de una matriz de documentos por atributos. A diferencia del enfoque conservador de `tokens()`, la función `dfm()` aplica ciertas opciones por default, como `tolower()` -- una función separada para transformar textos a minúsculas -- y remueve puntuación. De todos modos, todas las opciones de `tokens()` se pueden pasar a `dfm()`.
+
+```{r}
+myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
+
+# make a dfm
+myDfm <- dfm(myCorpus)
+myDfm[, 1:5]
+```
+
+Otras opciones para incluyen remover las stopwords y realizar stemming de los tokens.
+
+```{r}
+# make a dfm, removing stopwords and applying stemming
+myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+myStemMat[, 1:5]
+```
+La opción 'remove' provee una lista de tokens a ser ignorados. La mayoría de los usuarios proveerán una lista de 'stop words' predefinidas para varios idiomas, accediendo a través de la función `stopwords()`:
+
+```{r}
+head(stopwords("english"), 20)
+head(stopwords("russian"), 10)
+head(stopwords("arabic"), 10)
+```
+
+### Visualizando la matriz de documentos y atributos
+
+El dfm puede ser inspeccionado en el panel de 'Environment' en Rstudio o llamando la función `View` en R. Llamando la función `plot` en un dfm se presentará una nube de palabras usando el paquete [wordcloud package](https://cran.r-project.org/web/packages/wordcloud)
+
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
+mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+mydfm
+```
+
+Para acceder a la lista de los atributos más frecuentes es posible utilizar `topfeatures()`:
+
+```{r}
+topfeatures(mydfm, 20)  # 20 top words
+```
+Para un objeto `dfm` se puede graficar una nube de palabras usando `textplot_wordcloud()`. Esta función pasa argumentos a `wordcloud()` del paquete **wordcloud** y puede embellecer el gráfico usando los mismos argumentos:
+
+```{r warning=FALSE, fig.width = 7, fig.height = 7}
+set.seed(100)
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+                  rot.per = .25, 
+                  colors = RColorBrewer::brewer.pal(8,"Dark2"))
+```
+
+### Agrupando documentos por variable 
+
+Frecuentemente estamos interesados en analizar cómo textos difieren según factores sustantivos que pueden estar codificados en las variables de documento en vez de simplemente por los límites de los archivos. En esos casos es posible agrupar los documentos que comparten el mismo valor por variable de documento cuando se crea un dfm:
+
+```{r}
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
+                  remove = stopwords("english"), remove_punct = TRUE)
+```
+
+We can sort this dfm, and inspect it:
+```{r}
+dfm_sort(byPartyDfm)[, 1:10]
+```
+
+### Agrupando palabras por diccionario o clase de equivalencia
+
+Para algunas aplicaciones se tiene conocimiento previo del conjunto de palabras que son indicativas de rasgos que quisiéramos medir. Por ejemplo, una lista general de palabras positivas puede indicar sentimiento positivo en un reseña de una película tal tenemos un diccionario de términos políticos asociados a una tendencia ideológica en particular. En estos casos, a veces es útil tratar estos grupos de palabras como equivalentes para los propósitos del análisis y sumar las veces en que se utiliza agregándolas por clase.
+
+Por ejemplo, observemos cómo palabras asociadas al terrorismo y palabras asociadas con la economía varían por presidente en el corpus de discursos inaugurales de presidentes de Estados Unidos. Del corpus original seleccionamos los presidentes desde Clinton:
+
+```{r}
+recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
+```
+
+Ahora definimos un diccionario de muestra:
+
+```{r}
+myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
+                         economy = c("jobs", "business", "grow", "work")))
+```
+
+Se puede usar el diccionario cuando creamos el dfm:
+
+```{r}
+byPresMat <- dfm(recentCorpus, dictionary = myDict)
+byPresMat
+```
+
+El constructor de la función `dictionary()` también funciona con el formato de dos diccionarios externos comunes: los formatos LIWC y Provalis Research's Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:
+
+```{r, eval = FALSE}
+liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
+                       format = "LIWC")
+liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict)
+liwcdfm[, 1:10]
+```
+
+# Más ejemplos
+
+## Similitudes entre textos
+
+```{r fig.width = 6}
+presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+              remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), 
+                            margin = "documents", method = "cosine")
+obamaSimil
+# dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
+```
+
+Se puede utilizar estas distancias para graficar un dendrograma, armando clusters por presidente:
+
+```{r, fig.width = 10, fig.height = 7, eval = FALSE}
+data(data_corpus_SOTU, package = "quanteda.corpora")
+presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
+              stem = TRUE, remove_punct = TRUE,
+              remove = stopwords("english"))
+presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
+
+# Clustering jerárquico- obtener distancias en dfm normalizado
+presDistMat <- textstat_dist(dfm_weight(presDfm, "prop"))
+# Clustering jerárquico de los objetos de distancia
+presCluster <- hclust(presDistMat)
+# etiqueta con nombres de documentos
+presCluster$labels <- docnames(presDfm)
+# graficar como dendrograma
+lot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+```
+También se puede observar similitudes de los términos:
+
+```{r}
+sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+lapply(as.list(sim), head, 10)
+```
+
+## Escalamiento de posiciones de documentos
+
+Aquí realizamos una demostración de escalamiento de documentos unsupervised comparado con el modelo "wordfish":
+
+```{r}
+# make prettier document names
+ieDfm <- dfm(data_corpus_irishbudget2010)
+textmodel_wordfish(ieDfm, dir = c(2, 1))
+```
+
+## Topic models
+
+**quanteda** hace muy sencillo ajustar topic models también. Por ejemplo:
+
+```{r}
+quantdfm <- dfm(data_corpus_irishbudget2010, 
+               remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+quantdfm <- dfm_trim(quantdfm, min_count = 4, max_docfreq = 10)
+quantdfm
+
+if (require(topicmodels)) {
+   myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)
+   get_terms(myLDAfit20, 5)
+}
+```

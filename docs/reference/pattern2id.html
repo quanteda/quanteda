@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert various input as pattern to a vector used in tokens_select, 
-tokens_compound and kwic. — pattern2id • quanteda</title>
+<title>Convert regex and glob patterns to type IDs or fixed patterns — pattern2id • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -19,6 +18,8 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -26,6 +27,21 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Convert regex and glob patterns to type IDs or fixed patterns — pattern2id" />
+
+<meta property="og:description" content="pattern2id converts regex or glob to type IDs to allow
+  C++ function to perform fast searches in tokens object. C++ functions use a
+  list of type IDs to construct a hash table, against which sub-vectors of
+  tokens object are matched. This function constructs an index of glob
+  patterns for faster matching.
+pattern2fixed converts regex and glob patterns to fixed patterns.
+index_types is an auxiliary function for pattern2id that
+constructs an index of "glob" or "fixed" patterns to avoid expensive
+sequential search. For example, a type "cars" is index by keys "cars",
+"car?", "c*", "ca*", "car*" and "cars*" when valuetype="glob"." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,6 +63,11 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -60,8 +81,12 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -133,9 +158,6 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -146,6 +168,13 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -153,28 +182,46 @@ tokens_compound and kwic. — pattern2id • quanteda</title>
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert various input as pattern to a vector used in tokens_select, 
-tokens_compound and kwic.</h1>
+    <h1>Convert regex and glob patterns to type IDs or fixed patterns</h1>
+    
+    <div class="hidden name"><code>pattern2id.Rd</code></div>
     </div>
 
     
-    <p>Convert various input as pattern to a vector used in tokens_select, 
-tokens_compound and kwic.</p>
+    <p><code>pattern2id</code> converts regex or glob to type IDs to allow
+  C++ function to perform fast searches in tokens object. C++ functions use a
+  list of type IDs to construct a hash table, against which sub-vectors of
+  tokens object are matched. This function constructs an index of glob
+  patterns for faster matching.</p>
+<p><code>pattern2fixed</code> converts regex and glob patterns to fixed patterns.</p>
+<p><code>index_types</code> is an auxiliary function for <code>pattern2id</code> that
+constructs an index of "glob" or "fixed" patterns to avoid expensive
+sequential search. For example, a type "cars" is index by keys "cars",
+"car?", "c*", "ca*", "car*" and "cars*" when <code>valuetype="glob"</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>pattern2id</span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='no'>valuetype</span>, <span class='no'>case_insensitive</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>,
-  <span class='kw'>remove_unigram</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>pattern2id</span>(<span class='no'>pattern</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>pattern2fixed</span>(<span class='no'>pattern</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>index_types</span>(<span class='no'>types</span>, <span class='no'>valuetype</span>, <span class='no'>case_insensitive</span>, <span class='kw'>max_len</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pattern</th>
       <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
 <a href='textstat_collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>types</th>
+      <td><p>unique types of tokens obtained by <code><a href='types.html'>types</a></code></p></td>
     </tr>
     <tr>
       <th>valuetype</th>
@@ -184,31 +231,116 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore the case of dictionary values if <code>TRUE</code></p></td>
+      <td><p>if <code>TRUE</code>, ignores case when matching</p></td>
     </tr>
     <tr>
-      <th>concatenator</th>
-      <td><p>concatenator that join multi-word expression in tokens object</p></td>
+      <th>index</th>
+      <td><p>If <code>NULL</code>, index is constructed automatically. It also
+accept index constructed by <code>index_types</code>. In that case, <code>types</code>,
+<code>valuetype</code> and <code>case_insensitive</code> should be NULL.</p></td>
     </tr>
     <tr>
-      <th>remove_unigram</th>
-      <td><p>ignore single-word patterns if <code>TRUE</code></p></td>
+      <th>max_len</th>
+      <td><p>maximum length of types to be indexed</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>regex2id</p>
+    <p><code>pattern2id</code> returns a list of integer vectors containing type
+  IDs</p>
+<p><code>pattern2fixed</code> returns a list of character vectors containing
+  types</p>
+<p><code>index_types</code> returns a list of integer vectors containing type
+  IDs with index keys as an attribute</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
+
+<span class='no'>pats_regex</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"^a$"</span>, <span class='st'>"^b"</span>), <span class='fu'>c</span>(<span class='st'>"c"</span>), <span class='fu'>c</span>(<span class='st'>"d"</span>))
+<span class='fu'>pattern2id</span>(<span class='no'>pats_regex</span>, <span class='no'>types</span>, <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 1 3
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 1 4
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 1 5
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 6
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 7
+#&gt; </div><div class='input'>
+<span class='no'>pats_glob</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"a*"</span>, <span class='st'>"b*"</span>), <span class='fu'>c</span>(<span class='st'>"c"</span>), <span class='fu'>c</span>(<span class='st'>"d"</span>))
+<span class='fu'>pattern2id</span>(<span class='no'>pats_glob</span>, <span class='no'>types</span>, <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 1 3
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 2 3
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 1 4
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 2 4
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 1 5
+#&gt; 
+#&gt; [[6]]
+#&gt; [1] 2 5
+#&gt; 
+#&gt; [[7]]
+#&gt; [1] 6
+#&gt; </div><div class='input'>
+<span class='no'>pattern</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"^a$"</span>, <span class='st'>"^b"</span>), <span class='fu'>c</span>(<span class='st'>"c"</span>), <span class='fu'>c</span>(<span class='st'>"d"</span>))
+<span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
+<span class='fu'>pattern2fixed</span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "A" "B"
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "A"  "BB"
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] "A"   "BBB"
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] "C"
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] "CC"
+#&gt; </div><div class='input'><span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='fu'>index_types</span>(<span class='no'>types</span>, <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>pattern2fixed</span>(<span class='no'>pattern</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>index</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "A" "B"
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "A"  "BB"
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] "A"   "BBB"
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] "C"
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] "CC"
+#&gt; </div><div class='input'><span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='fu'>index_types</span>(<span class='fu'>c</span>(<span class='st'>"xxx"</span>, <span class='st'>"yyyy"</span>, <span class='st'>"ZZZ"</span>), <span class='st'>"glob"</span>, <span class='fl'>FALSE</span>, <span class='fl'>3</span>)
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/search_glob'>search_glob</a></span>(<span class='st'>"yy*"</span>, <span class='fu'>attr</span>(<span class='no'>index</span>, <span class='st'>"type_search"</span>), <span class='no'>index</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 2
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
@@ -219,11 +351,25 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

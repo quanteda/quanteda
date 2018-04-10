@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,15 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Segment texts on a pattern match — corpus_segment" />
+
+<meta property="og:description" content="Segment corpus text(s) or a character vector, splitting
+on a pattern match.  This is useful for breaking the texts into smaller
+documents based on a regular pattern (such as a speaker identifier in a
+transcript) or a user-supplied annotation (a "tag")." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +57,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +75,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +152,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +162,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +176,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Segment texts on a pattern match</h1>
+    
+    <div class="hidden name"><code>corpus_segment.Rd</code></div>
     </div>
 
     
@@ -172,7 +198,7 @@ transcript) or a user-supplied annotation (a "tag").</p>
 <span class='fu'>char_segment</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
   <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -216,9 +242,8 @@ are not desired for the segmented corpus.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>corpus_segment</code> returns a corpus of segmented texts
-
-<code>char_segment</code> returns a character vector of segmented texts</p>
+    <p><code>corpus_segment</code> returns a corpus of segmented texts</p>
+<p><code>char_segment</code> returns a character vector of segmented texts</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -259,7 +284,7 @@ semi-colons (phrase delimiters within a sentence),
   of the pattern.</p>  
 <p>For more advanced pattern matches that could include whitespace or 
   newlines, a regex pattern type can be used, for instance a text such as</p>  
-<p><code>Mr. Smith: Text</code>  <code>Mrs. Jones: More text</code></p>  
+<p><code>Mr. Smith: Text</code> <br /> <code>Mrs. Jones: More text</code></p>  
 <p>could have as <code>pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"</code>, which
   would catch the title, the name, and the colon.</p>  
 <p>For custom boundary delimitation using punctuation characters that come 
@@ -272,8 +297,8 @@ semi-colons (phrase delimiters within a sentence),
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='corpus_reshape.html'>corpus_reshape</a></code>, for segmenting texts into pre-defined 
-  syntactic units such as sentences, paragraphs, or fixed-length chunks</p>
+    <div class='dont-index'><p><code><a href='corpus_reshape.html'>corpus_reshape</a></code>, for segmenting texts into pre-defined 
+  syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -412,11 +437,25 @@ semi-colons (phrase delimiters within a sentence),
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

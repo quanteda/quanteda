@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,27 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Construct a corpus object — corpus" />
+
+<meta property="og:description" content="Creates a corpus object from available sources.  The currently available
+sources are:
+a character vector, consisting of one document per element; if
+  the elements are named, these names will be used as document names.
+a data.frame (or a tibble tbl_df), whose default
+document id is a variable identified by docid_field; the text of the
+document is a variable identified by textid_field; and other variables
+are imported as document-level meta-data.  This matches the format of
+data.frames constructed by the the readtext package.
+a kwic object constructed by kwic.
+a tm VCorpus or SimpleCorpus class  object,
+  with the fixed metadata
+  fields imported as docvars and corpus-level metadata imported
+  as metacorpus information.
+a corpus object.
+" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +69,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +87,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +164,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +174,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +188,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Construct a corpus object</h1>
+    
+    <div class="hidden name"><code>corpus.Rd</code></div>
     </div>
 
     
@@ -189,7 +227,7 @@ data.frames constructed by the the <span class="pkg">readtext</span> package.</p
   <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for data.frame</span>
-<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='st'>"doc_id"</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
   <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for kwic</span>
@@ -198,7 +236,7 @@ data.frames constructed by the the <span class="pkg">readtext</span> package.</p
 <span class='co'># S3 method for Corpus</span>
 <span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -242,9 +280,10 @@ extracted.</p></td>
     </tr>
     <tr>
       <th>docid_field</th>
-      <td><p>optional column index of a document identifier; if
-<code>NULL</code>, the constructor will use the row.names of the data.frame (if
-found)</p></td>
+      <td><p>optional column index of a document identifier; defaults
+to "doc_id", but if this is not found, then will use the rownames of the
+data.frame; if the rownames are not set, it will use the default sequence
+based on <code>(<a href='quanteda_options.html'>quanteda_options</a>("base_docname")</code>.</p></td>
     </tr>
     <tr>
       <th>text_field</th>
@@ -288,10 +327,10 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='corpus-class.html'>corpus-class</a>, <code><a href='docvars.html'>docvars</a></code>, <code><a href='metadoc.html'>metadoc</a></code>,
+    <div class='dont-index'><p><a href='corpus-class.html'>corpus-class</a>, <code><a href='docvars.html'>docvars</a></code>, <code><a href='metadoc.html'>metadoc</a></code>,
   <code><a href='metacorpus.html'>metacorpus</a></code>,
   <code><a href='settings.html'>settings</a></code>, <code><a href='texts.html'>texts</a></code>, <code><a href='ndoc.html'>ndoc</a></code>,
-  <code><a href='docnames.html'>docnames</a></code></p>
+  <code><a href='docnames.html'>docnames</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -308,8 +347,8 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;        Greens   322    679        21       Greens
 #&gt;        Labour   298    683        29       Labour
 #&gt; 
-#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Fri Mar 23 15:06:13 2018
+#&gt; Source: /home/kohei/packages/quanteda/docs/reference/* on x86_64 by kohei
+#&gt; Created: Tue Apr 10 10:04:12 2018
 #&gt; Notes: </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
@@ -327,18 +366,18 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 }</div><div class='output co'>#&gt; Corpus consisting of 9 documents:
 #&gt; 
 #&gt;   Text Types Tokens Sentences       datetimestamp id language
-#&gt;  text1  1125   3280        88 2018-03-23 15:06:13  1       en
-#&gt;  text2   142    260         4 2018-03-23 15:06:13  2       en
-#&gt;  text3   251    499        15 2018-03-23 15:06:13  3       en
-#&gt;  text4   322    679        21 2018-03-23 15:06:13  4       en
-#&gt;  text5   298    683        29 2018-03-23 15:06:13  5       en
-#&gt;  text6   251    483        14 2018-03-23 15:06:13  6       en
-#&gt;  text7    77    114         5 2018-03-23 15:06:13  7       en
-#&gt;  text8    88    134         4 2018-03-23 15:06:13  8       en
-#&gt;  text9   346    723        27 2018-03-23 15:06:13  9       en
+#&gt;  text1  1125   3280        88 2018-04-10 09:04:13  1       en
+#&gt;  text2   142    260         4 2018-04-10 09:04:13  2       en
+#&gt;  text3   251    499        15 2018-04-10 09:04:13  3       en
+#&gt;  text4   322    679        21 2018-04-10 09:04:13  4       en
+#&gt;  text5   298    683        29 2018-04-10 09:04:13  5       en
+#&gt;  text6   251    483        14 2018-04-10 09:04:13  6       en
+#&gt;  text7    77    114         5 2018-04-10 09:04:13  7       en
+#&gt;  text8    88    134         4 2018-04-10 09:04:13  8       en
+#&gt;  text9   346    723        27 2018-04-10 09:04:13  9       en
 #&gt; 
 #&gt; Source: Converted from tm Corpus 'tmCorp'
-#&gt; Created: Fri Mar 23 15:06:13 2018
+#&gt; Created: Tue Apr 10 10:04:13 2018
 #&gt; Notes: </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
 <span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>letter_factor</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
@@ -364,7 +403,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source: From a data.frame called mydf.
-#&gt; Created: Fri Mar 23 15:06:13 2018
+#&gt; Created: Tue Apr 10 10:04:13 2018
 #&gt; Notes: </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
@@ -401,7 +440,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source: Corpus created from kwic(x, keywords = "southern")
-#&gt; Created: Fri Mar 23 15:06:13 2018
+#&gt; Created: Tue Apr 10 10:04:13 2018
 #&gt; Notes: </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -433,11 +472,25 @@ Kenneth Benoit and Paul Nulty
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

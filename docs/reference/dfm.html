@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,13 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Create a document-feature matrix — dfm" />
+
+<meta property="og:description" content="Construct a sparse document-feature matrix, from a character, corpus, 
+tokens, or even other dfm object." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +55,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +73,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +150,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +160,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +174,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a document-feature matrix</h1>
+    
+    <div class="hidden name"><code>dfm.Rd</code></div>
     </div>
 
     
@@ -167,7 +191,7 @@
   <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>thesaurus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
   <span class='st'>"fixed"</span>), <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -264,7 +288,7 @@ is a dfm</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='dfm_select.html'>dfm_select</a></code>, <a href='dfm-class.html'>dfm-class</a></p>
+    <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select</a></code>, <a href='dfm-class.html'>dfm-class</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -274,11 +298,11 @@ is a dfm</p></td>
 <span class='co'># grouping documents by docvars in a corpus</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,260 features</span></div><div class='output co'>#&gt; <span class='message'>   ... grouping texts</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 5 x 3,260 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.064 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,260 features (64.2% sparse).</div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.087 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,260 features (64.2% sparse).</div><div class='input'>
 <span class='co'># with English stopwords and stemming</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,260 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>removed 131 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; <span class='message'>, trimmed 826 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 10 x 2,303 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.091 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,303 features (75.1% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
+#&gt; <span class='message'>Elapsed time: 0.17 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,303 features (75.1% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
 <span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0% sparse).
 #&gt; 1 x 1 sparse Matrix of class "dfm"
 #&gt;        features
@@ -353,7 +377,7 @@ is a dfm</p></td>
                             <span class='st'>"Govt"</span>, <span class='st'>"Opposition"</span>),
             <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a dfm input...</span></div><div class='output co'>#&gt; <span class='message'>   ... grouping texts</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 2 x 5,140 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.013 seconds.</span></div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.007 seconds.</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -381,11 +405,25 @@ is a dfm</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+
