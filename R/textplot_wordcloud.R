@@ -152,7 +152,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
 #' @keywords internal
-#' @author Kohei Watanabe, built on code from Ian Fellows's \pkg{wordcloud} package.
+#' @author Kohei Watanabe, builting on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, min_count, max_words, 
                       color, font, adjust, rotation,
                       random_order, random_color, ordered_color,
@@ -244,6 +244,8 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
     op <- graphics::par(no.readonly = TRUE)
     graphics::par(mar = c(0, 0, 0, 0), usr = c(-1, 1, -1, 1), family = font)
     graphics::plot.new()
+    print(grDevices::dev.size("in"))
+    
     if (fixed_aspect) {
         graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     } else {
@@ -251,6 +253,7 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
     }
     freq <- freq / max(freq)
     size <- (max_size - min_size) * freq + min_size
+    size <- size * (min(grDevices::dev.size("in")) / 7) # default window size is 7 in
     boxes <- list()
     for (i in seq_along(word)) {
         rot <- stats::runif(1) < rotation
@@ -261,6 +264,7 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
 
         wd <- graphics::strwidth(word[i], cex = size[i])
         ht <- graphics::strheight(word[i], cex = size[i])
+        
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rot) {
@@ -409,6 +413,7 @@ wordcloud_comparison <- function(x, min_size, max_size, min_count, max_words,
     }
     freq <- freq / max(freq)
     size <- (max_size - min_size) * freq + min_size
+    size <- size * (min(grDevices::dev.size("in")) / 7) # default window size is 7 in
     boxes <- list()
     
     docnames <- colnames(x)
