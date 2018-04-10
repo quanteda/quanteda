@@ -47,7 +47,7 @@ order.}
 \code{comparison=TRUE}.}
 
 \item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
-aspect ratio only supported if rotation = 0}
+aspect ratio only supported if rotation = 0.}
 
 \item{scale}{deprecated argument}
 

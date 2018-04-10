@@ -35,7 +35,7 @@
 #' @param labeloffset  position of group labels. Only used when
 #'   \code{comparison=TRUE}.
 #' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable
-#'   aspect ratio only supported if rotation = 0
+#'   aspect ratio only supported if rotation = 0.
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
 #'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
 #' @param ... additional parameters. Only used to make it compatible with
