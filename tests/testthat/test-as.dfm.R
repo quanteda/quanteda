@@ -146,3 +146,13 @@ test_that("as.matrix for dfm objects", {
                dimnames = list(docs = c("R1"), features = LETTERS[1:5]))
     )
 })
+
+test_that("as.dfm to and from a matrix works with docvars", {
+    txt <- c(docA = "a a a b c c f",
+             docB = "a b b b c d",
+             docC = "c c c f f")
+    expect_equal(
+        dfm(txt),
+        as.dfm(as.matrix(dfm(txt)))
+    )
+})
