@@ -244,7 +244,6 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
     op <- graphics::par(no.readonly = TRUE)
     graphics::par(mar = c(0, 0, 0, 0), usr = c(-1, 1, -1, 1), family = font)
     graphics::plot.new()
-    print(grDevices::dev.size("in"))
     
     if (fixed_aspect) {
         graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
