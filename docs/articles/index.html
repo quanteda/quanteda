@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,9 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Articles" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,10 +51,15 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
-    <div class="container template-vignette-index">
+    <div class="container template-article-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -59,8 +69,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +146,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +156,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,12 +170,12 @@
       
       </header>
 
-      <div class="page-header">
-  <h1>Articles <small>version&nbsp;1.1.4</small></h1>
-</div>
-
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+      <h1>Articles</h1>
+    </div>
+
     <div class="section ">
       <h3>All vignettes</h3>
       <p class="section-desc"></p>
@@ -172,10 +190,10 @@
         <li><a href="pkgdown/examples/phrase.html">Working with multi-word expressions</a></li>
         <li><a href="pkgdown/examples/plotting.html">Example: textual data visualization</a></li>
         <li><a href="pkgdown/examples/twitter.html">Example: Social media analysis (Twitter)</a></li>
+        <li><a href="pkgdown/quickstart.html">Quick Start Guide</a></li>
         <li><a href="pkgdown/quickstart_cn.html">快速入门指南</a></li>
         <li><a href="pkgdown/quickstart_es.html">Guía de Inicio Rápido</a></li>
         <li><a href="pkgdown/quickstart_ja.html">クイック・スタートガイド</a></li>
-        <li><a href="pkgdown/quickstart.html">Quick Start Guide</a></li>
         <li><a href="pkgdown/replication/digital-humanities.html">Replication: Text Analysis with R for Students of Literature</a></li>
         <li><a href="pkgdown/replication/qss.html">Replication of Chapter 5 of _Quantitative Social Science: An Introduction_</a></li>
         <li><a href="pkgdown/replication/text2vec.html">Replication: word embedding (gloVe/word2vec)</a></li>
@@ -190,11 +208,25 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

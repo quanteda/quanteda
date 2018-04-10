@@ -1,0 +1,21 @@
+{
+  "index_name": "quanteda",
+  "start_urls": [
+    "http://docs.quanteda.io"
+  ],
+  "stop_urls": ["index.html", "authors.html", "/LICENSE", "/news/"],
+  "sitemap_urls": [
+    "http://docs.quanteda.io/sitemap.xml"
+  ],
+  "selectors": {
+    "lvl0": ".contents h1",
+    "lvl1": ".contents .name",
+    "lvl2": ".contents h2",
+    "lvl3": ".contents h3, .contents th",
+    "lvl4": ".contents h4",
+    "text": ".contents p, .contents li, .usage, .template-article .contents .pre"
+  },
+  "selectors_exclude": [
+    ".dont-index"
+  ]
+}

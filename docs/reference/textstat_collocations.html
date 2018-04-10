@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,12 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Identify and score multi-word expressions — textstat_collocations" />
+
+<meta property="og:description" content="Identify and score multi-word expressions, or adjacent fixed-length collocations, from text." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +54,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +72,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +149,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +159,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +173,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Identify and score multi-word expressions</h1>
+    
+    <div class="hidden name"><code>textstat_collocations.Rd</code></div>
     </div>
 
     
@@ -167,7 +190,7 @@
 
 <span class='fu'>is.collocations</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -217,9 +240,8 @@ is not a <a href='tokens.html'>tokens</a> object already</p></td>
   counts, length, and \(\lambda\) and \(z\) statistics.  When <code>size</code>
   is a vector, then <code>count_nested</code> counts the lower-order collocations
   that occur within a higher-order collocation (but this does not affect the
-  statistics).
-
-<code>is.collocation</code> returns <code>TRUE</code> if the object is of class
+  statistics).</p>
+<p><code>is.collocation</code> returns <code>TRUE</code> if the object is of class
   <code>collocations</code>, <code>FALSE</code> otherwise.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -248,14 +270,14 @@ otherwise. Let \(c_{i}=(j_{i1}, \dots, j_{iK})\), \(i=1, \dots,
 denote the number of the \(c(x,z_{r})\) which equal \(c_{i}\), plus the
 smoothing constant <code>smoothing</code>. The \(n_{i}\) are the counts in a
 \(2^{K}\) contingency table whose dimensions are defined by the
-\(c_{i}\).
-    \(\lambda\): The \(K\)-way interaction parameter in the saturated
-loglinear model fitted to the \(n_{i}\). It can be calculated as
-    $$\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} * log n_{i}$$</p>
+\(c_{i}\).</p>
+<p>\(\lambda\): The \(K\)-way interaction parameter in the saturated
+loglinear model fitted to the \(n_{i}\). It can be calculated as</p>
+<p>$$\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} * log n_{i}$$</p>
 <p>where \(b_{i}\) is the number of the elements of \(c_{i}\) which are
 equal to 1.</p>
-<p>Wald test \(z\)-statistic \(z\) is calculated as:
-    $$z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}$$</p>
+<p>Wald test \(z\)-statistic \(z\) is calculated as:</p>
+<p>$$z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}$$</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -342,11 +364,25 @@ Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

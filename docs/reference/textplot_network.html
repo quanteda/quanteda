@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,13 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Plot a network of feature co-occurrences — textplot_network" />
+
+<meta property="og:description" content="Plot an fcm object as a network, where edges show co-occurrences of
+features." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +55,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +73,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +150,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +160,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +174,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot a network of feature co-occurrences</h1>
+    
+    <div class="hidden name"><code>textplot_network.Rd</code></div>
     </div>
 
     
@@ -169,9 +193,9 @@ features.</p>
   <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vertex_labelfont</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for fcm</span>
-<span class='fu'><a href='http://www.rdocumentation.org/packages/network/topics/network'>as.network</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='as.network.html'>as.network</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -239,7 +263,7 @@ determined automatically.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='fcm.html'>fcm</a></code></p>
+    <div class='dont-index'><p><code><a href='fcm.html'>fcm</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -249,8 +273,8 @@ determined automatically.</p></td>
     <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>feat</span> <span class='kw'>&lt;-</span> <span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>myfcm</span>, <span class='fl'>30</span>))
-<span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='img'><img src='textplot_network-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='img'><img src='textplot_network-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
-        <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))</div><div class='img'><img src='textplot_network-3.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='img'><img src='textplot_network-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='img'><img src='textplot_network-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+        <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))</div><div class='img'><img src='textplot_network-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -277,11 +301,25 @@ Kohei Watanabe and Stefan Müller
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

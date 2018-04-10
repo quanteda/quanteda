@@ -48,7 +48,7 @@ order.}
 \code{comparison=TRUE}.}
 
 \item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
-aspect ratio only supported if rotation = 0}
+aspect ratio only supported if rotation = 0.}
 
 \item{...}{additional parameters. Only used to make it compatible with
 \pkg{wordcloud}}
@@ -78,7 +78,7 @@ set.seed(10)
 obama_dfm <- 
     dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
         remove = stopwords("english"), remove_punct = TRUE) \%>\%
-    dfm_trim(min_termfreq = 5)
+    dfm_trim(min_termfreq = 3)
     
 # basic wordcloud
 textplot_wordcloud(obama_dfm)
@@ -96,7 +96,7 @@ textplot_wordcloud(obama_dfm, adjust = 0.5, random_order = FALSE,
 obama_trump_dfm <- 
     dfm(corpus_subset(data_corpus_inaugural, President \%in\% c("Obama", "Trump")),
         remove = stopwords("english"), remove_punct = TRUE, groups = "President") \%>\%
-    dfm_trim(min_termfreq = 5)
+    dfm_trim(min_termfreq = 3)
 
 textplot_wordcloud(obama_trump_dfm, comparison = TRUE, max_words = 300,
                    color = c("blue", "red"))

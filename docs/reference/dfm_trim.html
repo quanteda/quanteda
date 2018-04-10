@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,21 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Trim a dfm using frequency threshold-based feature selection — dfm_trim" />
+
+<meta property="og:description" content="Returns a document by feature matrix reduced in size based on
+  document and term frequency, usually in terms of a minimum frequency, but
+  may also be in terms of maximum frequencies.  Setting a combination of
+  minimum and maximum frequencies will select features based on a range.
+Feature selection is implemented by considering features across
+  all documents, by summing them for term frequency, or counting the
+  documents in which they occur for document frequency. Rank and quantile
+  versions of these are also implemented, for taking the first \(n\)
+  features in terms of descending order of overall global counts or document
+  frequencies, or as a quantile of all frequencies." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +63,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +81,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +158,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +168,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +182,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Trim a dfm using frequency threshold-based feature selection</h1>
+    
+    <div class="hidden name"><code>dfm_trim.Rd</code></div>
     </div>
 
     
@@ -172,11 +204,12 @@
     
 
     <pre class="usage"><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>), <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docfreq_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
-  <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
+  <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docfreq_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>,
+  <span class='st'>"prop"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>), <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -192,10 +225,11 @@ across all documents, below/above which features will
     <tr>
       <th>termfreq_type</th>
       <td><p>how <code>min_termfreq</code> and <code>max_termfreq</code> are
-intepreted.  <code>"count"</code> sums the frequencies; <code>"rank"</code> is matched
-against the inverted ranking of features in terms of overall frequency, so
-that 1, 2, ... are the highest and second highest frequency features, and
-so on; <code>"quantile"</code> sets the cutoffs according to the quantiles (see
+intepreted.  <code>"count"</code> sums the frequencies; <code>"prop"</code> devides the
+term frequences by the total sum; <code>"rank"</code> is matched against the inverted
+ranking of features in terms of overall frequency, so that 1, 2, ... are
+the highest and second highest frequency features, and so on;
+<code>"quantile"</code> sets the cutoffs according to the quantiles (see
 <code>quantile</code>) of term frequencies.</p></td>
     </tr>
     <tr>
@@ -207,10 +241,11 @@ frequency, below/above which features will be removed</p></td>
       <th>docfreq_type</th>
       <td><p>specify how <code>min_docfreq</code> and <code>max_docfreq</code> are
 intepreted.   <code>"count"</code> is the same as <code><a href='docfreq.html'>docfreq</a>(x, scheme
-= "count")</code>; <code>"rank"</code> is matched against the inverted ranking of
-document frequency, so that 1, 2, ... are the features with the highest and
-second highest document frequencies, and so on; <code>"quantile"</code> sets the
-cutoffs according to the quantiles (see <code>quantile</code>) of document
+= "count")</code>; <code>"prop"</code> devides the document frequences by the total sum;
+<code>"rank"</code> is matched against the inverted ranking of document
+frequency, so that 1, 2, ... are the features with the highest and second
+highest document frequencies, and so on; <code>"quantile"</code> sets the cutoffs
+according to the quantiles (see <code>quantile</code>) of document
 frequencies.</p></td>
     </tr>
     <tr>
@@ -242,7 +277,7 @@ with <span class="pkg">tm</span></p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='dfm_select.html'>dfm_select</a></code>, <code><a href='dfm_sample.html'>dfm_sample</a></code></p>
+    <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select</a></code>, <code><a href='dfm_sample.html'>dfm_sample</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -299,11 +334,25 @@ with <span class="pkg">tm</span></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

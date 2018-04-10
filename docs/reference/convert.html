@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,15 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Convert a dfm to a non-quanteda format — convert" />
+
+<meta property="og:description" content="Convert a quanteda dfm object to a format useable by other text
+analysis packages.  The general function convert provides easy
+conversion from a dfm to the document-term representations used in all other
+text analysis packages for which conversions are defined." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +57,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +75,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +152,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +162,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +176,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert a dfm to a non-quanteda format</h1>
+    
+    <div class="hidden name"><code>convert.Rd</code></div>
     </div>
 
     
@@ -168,7 +194,7 @@ text analysis packages for which conversions are defined.</p>
     <pre class="usage"><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
   <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -215,19 +241,19 @@ documents with non-zero counts.</p></td>
 <span class='no'>stmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)
 <span class='fu'>str</span>(<span class='no'>stmdfm</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
-#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 1 34 2 96 3 1 4 5 6 3 ...
-#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 18 2 65 3 7 4 4 7 52 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 1 19 2 174 3 7 4 3 6 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 1 24 2 177 3 13 4 7 6 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 1 15 2 166 3 14 4 16 6 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 2 139 3 6 4 5 7 81 9 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 1 26 2 131 3 13 4 7 6 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 1 4 2 110 3 4 4 7 6 1 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:735] 1 2 2 120 3 3 4 8 6 2 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 1 44 2 130 3 22 4 4 5 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...
-#&gt;  $ vocab    : chr [1:3462] "-" "," ";" ":" ...
+#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 2 34 3 96 4 1 5 5 7 3 ...
+#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 2 18 3 65 4 7 5 4 8 52 ...
+#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 2 19 3 174 4 7 5 3 7 5 ...
+#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 2 24 3 177 4 13 5 7 7 3 ...
+#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 2 15 3 166 4 14 5 16 7 5 ...
+#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 3 139 4 6 5 5 8 81 10 4 ...
+#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 2 26 3 131 4 13 5 7 7 3 ...
+#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 2 4 3 110 4 4 5 7 7 1 ...
+#&gt;   ..$ 2005-Bush   : int [1:2, 1:735] 1 1 2 2 3 120 4 3 5 8 ...
+#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 2 44 3 130 4 22 5 4 6 1 ...
+#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 2 13 3 99 4 14 5 5 8 89 ...
+#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 2 11 3 96 4 9 5 8 8 88 ...
+#&gt;  $ vocab    : chr [1:3462] "&gt;" "-" "," ";" ...
 #&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
 #&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
 #&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
@@ -239,19 +265,19 @@ documents with non-zero counts.</p></td>
 #&gt;         2449         1808         2319         2711         2317         1660 </div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
 <span class='fu'>str</span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
-#&gt;   ..$ punctOnly   : int [1:2, 1] 5 3
-#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 18 2 65 3 7 4 4 7 52 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 1 19 2 174 3 7 4 3 6 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 1 24 2 177 3 13 4 7 6 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 1 15 2 166 3 14 4 16 6 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 2 139 3 6 4 5 7 81 9 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 1 26 2 131 3 13 4 7 6 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 1 4 2 110 3 4 4 7 6 1 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:735] 1 2 2 120 3 3 4 8 6 2 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 1 44 2 130 3 22 4 4 5 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...
-#&gt;  $ vocab    : chr [1:3376] "-" "," ";" ":" ...
+#&gt;   ..$ punctOnly   : int [1:2, 1] 6 3
+#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 2 18 3 65 4 7 5 4 8 52 ...
+#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 2 19 3 174 4 7 5 3 7 5 ...
+#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 2 24 3 177 4 13 5 7 7 3 ...
+#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 2 15 3 166 4 14 5 16 7 5 ...
+#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 3 139 4 6 5 5 8 81 10 4 ...
+#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 2 26 3 131 4 13 5 7 7 3 ...
+#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 2 4 3 110 4 4 5 7 7 1 ...
+#&gt;   ..$ 2005-Bush   : int [1:2, 1:735] 1 1 2 2 3 120 4 3 5 8 ...
+#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 2 44 3 130 4 22 5 4 6 1 ...
+#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 2 13 3 99 4 14 5 5 8 89 ...
+#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 2 11 3 96 4 9 5 8 8 88 ...
+#&gt;  $ vocab    : chr [1:3376] "&gt;" "-" "," ";" ...
 #&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
 #&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
 #&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
@@ -288,11 +314,25 @@ documents with non-zero counts.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+
