@@ -6,6 +6,13 @@ template:
     docsearch:
       api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
       index_name: quanteda
+figures:
+  dev: grDevices::png
+  dpi: 96
+  fig.ext: png
+  fig.width: 10
+  fig.height: 7
+  fig.retina: 2
 navbar:
   title: "Quanteda"
   type: inverse

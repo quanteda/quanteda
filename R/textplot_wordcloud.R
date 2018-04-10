@@ -70,7 +70,8 @@
 #'                    color = c("blue", "red"))
 #' @export
 #' @keywords textplot
-#' @author Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.
+#' @author Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud}
+#'   package.
 #' @import ggplot2
 textplot_wordcloud <- function(x, 
                                min_size = 0.5, 
