@@ -164,7 +164,6 @@
 <span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_inaug)</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-2-1.png" width="768"></p>
-<pre><code>## [1] 8 8</code></pre>
 <p>You can also plot a “comparison cloud”, but this can only be done with fewer than eight documents:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, 
               President <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"Washington"</span>, <span class="st">"Jefferson"</span>, <span class="st">"Madison"</span>)) <span class="op">%&gt;%</span>
@@ -177,7 +176,6 @@
      <span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">'red'</span>, <span class="st">'pink'</span>, <span class="st">'green'</span>, <span class="st">'purple'</span>, <span class="st">'orange'</span>, <span class="st">'blue'</span>))</code></pre></div>
 <pre><code>## Warning: colors is deprecated; use color instead</code></pre>
 <p><img src="plotting_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
-<pre><code>## [1] 8 8</code></pre>
 </div>
 <div id="lexical-dispersion-plot" class="section level1">
 <h1 class="hasAnchor">
