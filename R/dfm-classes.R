@@ -41,7 +41,7 @@ setClass("dfm",
                           skip = 0L,
                           concatenator = "_",
                           version = unlist(packageVersion("quanteda")),
-                          docvars = data.frame()),
+                          docvars = data.frame(row.names = character())),
          contains = "dgCMatrix")
 
 # deprecated dfmSparse class for backward compatibility

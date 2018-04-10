@@ -64,10 +64,11 @@ test_that("summary.character works with data.frames containing character (#1285)
     skip_on_appveyor()
     skip_on_travis()
     skip_on_cran()
+    skip_on_linux()
     txt <- c("Testing this text. Second sentence.", "And this one.")
-    dframe <- data.frame(txt, other = 1:2, stringsAsFactors = FALSE)
+    df <- data.frame(txt, other = 1:2, stringsAsFactors = FALSE)
     expect_equal(
-        stringi::stri_trim_right(as.character(summary(dframe))[1:3]),
+        stringi::stri_trim_right(as.character(summary(df))[1:3]),
         c("Length:2", "Class :character", "Mode  :character")
     )
 })

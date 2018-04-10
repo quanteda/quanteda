@@ -159,10 +159,14 @@ matrix2dfm <- function(x, slots = NULL) {
     dimnames(x) <- list(docs = rowname, features = colname)
     
     # Force dfm to have docvars
-    # x <- new("dfm", x, docvars = data.frame(row.names = make.unique(rownames(x))))
-    # x <- new("dfm", x, docvars = data.frame(row.names = rownames(x)))
+    if (is.character(rownames(x))) {
+        x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = make.unique(rownames(x))))
+    } else {
+        x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = character()))
+    }
+    # x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = rownames(x)))
+    # x <- new("dfm", as(x, 'dgCMatrix'))
     
-    x <- new("dfm", as(x, 'dgCMatrix'))
     set_dfm_slots(x, slots)
 }
 
