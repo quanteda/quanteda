@@ -34,7 +34,7 @@ fcm_compress.fcm <- function(x) {
         stop("compress_fcm only works on a fcm object")
     if (x@context != "document")
         stop("compress_fcm invalid if fcm was created with a window context")
-    as.fcm(dfm_compress(x, margin = "both"), attributes(x))
+    matrix2fcm(dfm_compress(x, margin = "both"), attributes(x))
 } 
 
 #' Sort an fcm in alphabetical order of the features
@@ -78,7 +78,7 @@ fcm_sort.fcm <- function(x) {
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
-        x <- as.fcm(x, attrs)
+        x <- matrix2fcm(x, attrs)
     }
     return(x)
 }
@@ -120,7 +120,7 @@ fcm_select.fcm <- function(x, pattern = NULL,
                       case_insensitive, verbose = verbose, ...))
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = FALSE, ...))
-    as.fcm(x, attrs)
+    matrix2fcm(x, attrs)
 }
 
 
@@ -161,10 +161,9 @@ fcm_keep.fcm <- function(x, pattern = NULL, ...) {
 #' Coercion functions for fcm objects
 #' @param x an object coerced to \link{fcm}. Currently only support
 #'   \link{Matrix} objects.
-#' @param slots a list of values to be assigned to slots
 #' @keywords internal
-as.fcm <- function(x, slots = NULL) {
-    matrix2fcm(x, slots)
+as.fcm <- function(x) {
+    matrix2fcm(x)
 }
 
 #' Conversts a Matrix to a fcm

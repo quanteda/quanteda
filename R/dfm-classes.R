@@ -32,7 +32,7 @@ setClass("dfm",
                    docvars = "data.frame"),
          prototype = list(settings = list(),
                           Dim = integer(2), 
-                          Dimnames = list(docs = character(), features = character()),
+                          Dimnames = list(docs = NULL, features = NULL),
                           weightTf = list(scheme = "count", base = NULL, K = NULL),
                           weightDf = list(scheme = "unary", base = NULL, c = NULL,
                                           smoothing = NULL, threshold = NULL),
@@ -95,24 +95,23 @@ setMethod("rowMeans",
 #' @rdname dfm-class
 setMethod("Arith", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
-              as.dfm(as(e1, "dgCMatrix") + e2, attributes(e1))
               switch(.Generic[[1]],
-                     `+` = as.dfm(as(e1, "dgCMatrix") + e2, attributes(e1)),
-                     `-` = as.dfm(as(e1, "dgCMatrix") - e2, attributes(e1)),
-                     `*` = as.dfm(as(e1, "dgCMatrix") * e2, attributes(e1)),
-                     `/` = as.dfm(as(e1, "dgCMatrix") / e2, attributes(e1)),
-                     `^` = as.dfm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
+                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, attributes(e1)),
+                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, attributes(e1)),
+                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, attributes(e1)),
+                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, attributes(e1)),
+                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
               )
           })
 #' @rdname dfm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = as.dfm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
-                     `-` = as.dfm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
-                     `*` = as.dfm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
-                     `/` = as.dfm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
-                     `^` = as.dfm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
+                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
+                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
+                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
+                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
+                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
               )
           })
 

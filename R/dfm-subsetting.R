@@ -24,7 +24,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
     
     if (!missing(i))
         attrs$docvars <- attrs$docvars[i, , drop = FALSE]
-    as.dfm(x, attrs)
+    matrix2dfm(x, attrs)
 }
 
 #' @param i index for documents

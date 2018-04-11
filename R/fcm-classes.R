@@ -30,30 +30,29 @@ setClass("fcm",
 #' @rdname fcm-class
 setMethod("t",
           signature = (x = "fcm"),
-          function(x) as.fcm(t(as(x, "dgCMatrix"))))
+          function(x) matrix2fcm(t(as(x, "dgCMatrix"))))
 
 #' @param e1 first quantity in "+" operation for fcm
 #' @param e2 second quantity in "+" operation for fcm
 #' @rdname fcm-class
 setMethod("Arith", signature(e1 = "fcm", e2 = "numeric"),
           function(e1, e2) {
-              as.fcm(as(e1, "dgCMatrix") + e2, attributes(e1))
               switch(.Generic[[1]],
-                 `+` = as.fcm(as(e1, "dgCMatrix") + e2, attributes(e1)),
-                 `-` = as.fcm(as(e1, "dgCMatrix") - e2, attributes(e1)),
-                 `*` = as.fcm(as(e1, "dgCMatrix") * e2, attributes(e1)),
-                 `/` = as.fcm(as(e1, "dgCMatrix") / e2, attributes(e1)),
-                 `^` = as.fcm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
+                 `+` = matrix2fcm(as(e1, "dgCMatrix") + e2, attributes(e1)),
+                 `-` = matrix2fcm(as(e1, "dgCMatrix") - e2, attributes(e1)),
+                 `*` = matrix2fcm(as(e1, "dgCMatrix") * e2, attributes(e1)),
+                 `/` = matrix2fcm(as(e1, "dgCMatrix") / e2, attributes(e1)),
+                 `^` = matrix2fcm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
               )
           })
 #' @rdname fcm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "fcm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                 `+` = as.fcm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
-                 `-` = as.fcm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
-                 `*` = as.fcm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
-                 `/` = as.fcm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
-                 `^` = as.fcm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
+                 `+` = matrix2fcm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
+                 `-` = matrix2fcm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
+                 `*` = matrix2fcm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
+                 `/` = matrix2fcm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
+                 `^` = matrix2fcm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
               )
           })

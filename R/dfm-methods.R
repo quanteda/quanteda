@@ -68,77 +68,73 @@ docnames.NULL <- function(x) {
 #' \link[tm]{DocumentTermMatrix}, \link{data.frame}, and other \link{dfm}
 #' objects.
 #' @param x a candidate object for checking or coercion to \link{dfm}
-#' @param slots slots a list of values to be assigned to slots. Ignored when
-#'   \code{x} is a dfm.
 #' @return \code{as.dfm} converts an input object into a \link{dfm}.  Row names
 #'   are used for docnames, and column names for featnames, of the resulting
 #'   dfm.
 #' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}},
 #'   \code{\link{convert}}
 #' @export
-as.dfm <- function(x, slots = NULL) {
+as.dfm <- function(x) {
     UseMethod("as.dfm")
 }
 
 #' @export
-as.dfm.default <- function(x, slots = NULL) {
+as.dfm.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "as.dfm"))
 }
 
 #' @noRd
 #' @method as.dfm dfm
 #' @export
-as.dfm.dfm <- function(x, slots = NULL) {
+as.dfm.dfm <- function(x) {
     x
 }
 
 #' @noRd
 #' @method as.dfm matrix
 #' @export
-as.dfm.matrix <- function(x, slots = NULL) {
-    matrix2dfm(x, slots)
+as.dfm.matrix <- function(x) {
+    matrix2dfm(x)
 }
 
 #' @noRd
 #' @method as.dfm Matrix
 #' @export
-as.dfm.Matrix <- function(x, slots = NULL) {
-    matrix2dfm(x, slots)
+as.dfm.Matrix <- function(x) {
+    matrix2dfm(x)
 }
 
 #' @noRd
 #' @method as.dfm data.frame
 #' @export
-as.dfm.data.frame <- function(x, slots = NULL) {
-    matrix2dfm(as.matrix(x, rownames.force = TRUE), slots)
+as.dfm.data.frame <- function(x) {
+    matrix2dfm(as.matrix(x, rownames.force = TRUE))
 }
 
 #' @noRd
 #' @method as.dfm dfmSparse
 #' @export
-as.dfm.dfmSparse <- function(x, slots = NULL) {
-    as.dfm(as(x, 'dgCMatrix'), slots)
+as.dfm.dfmSparse <- function(x) {
+    as.dfm(as(x, 'dgCMatrix'))
 }
 
 #' @noRd
 #' @method as.dfm DocumentTermMatrix
 #' @export
-as.dfm.DocumentTermMatrix <- function(x, slots = NULL){
+as.dfm.DocumentTermMatrix <- function(x){
     as.dfm(
         sparseMatrix(i = x$i, j = x$j, x = x$v, 
                      dimnames = list(docs = rownames(x), 
-                                     features = colnames(x))), 
-        slots)
+                                     features = colnames(x))))
 }
 
 #' @noRd
 #' @method as.dfm TermDocumentMatrix
 #' @export
-as.dfm.TermDocumentMatrix <- function(x, slots = NULL){
+as.dfm.TermDocumentMatrix <- function(x){
     as.dfm(
         sparseMatrix(i = x$j, j = x$i, x = x$v, 
-                     dimnames = list(colnames(x), rownames(x))),
-        slots)
+                     dimnames = list(colnames(x), rownames(x))))
 }
 
 #' Conversts a Matrix to a dfm
@@ -162,10 +158,8 @@ matrix2dfm <- function(x, slots = NULL) {
     if (is.character(rownames(x))) {
         x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = make.unique(rownames(x))))
     } else {
-        x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = character()))
+        x <- new("dfm", as(x, 'dgCMatrix'))
     }
-    # x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = rownames(x)))
-    # x <- new("dfm", as(x, 'dgCMatrix'))
     
     set_dfm_slots(x, slots)
 }

@@ -22,7 +22,7 @@ subset_fcm <- function(x, i, j, ..., drop) {
     } else {
         x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
     }
-    as.fcm(x, attrs)
+    matrix2fcm(x, attrs)
 }
 
 #' @param i index for features
