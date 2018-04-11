@@ -34,15 +34,7 @@ fcm_compress.fcm <- function(x) {
         stop("compress_fcm only works on a fcm object")
     if (x@context != "document")
         stop("compress_fcm invalid if fcm was created with a window context")
-    
-    attrs <- attributes(x)
-    x <- dfm_compress(x, margin = "both")
-    result <- new("fcm", as(x, 'dgCMatrix'), count = attrs$count,
-                  context = attrs$context, window = attrs$window,
-                  margin =  attrs$margin,
-                  weights = attrs$weights, tri = attrs$tri)
-    names(result@Dimnames) <- c("features", "features")
-    return(result)
+    matrix2fcm(dfm_compress(x, margin = "both"), attributes(x))
 } 
 
 #' Sort an fcm in alphabetical order of the features
@@ -79,19 +71,14 @@ fcm_sort.default <- function(x) {
 #' @export
 fcm_sort.fcm <- function(x) {
     attrs <- attributes(x)
+    x <- as(x, "dgTMatrix") # make a triplet
     x <- x[order(rownames(x)), order(colnames(x))]
-    if (x@tri) {
-        # make a triplet
-        temp <- as(x, "dgTMatrix")
-        swap <- which(temp@i > temp@j)
-        i <- temp@i[swap]
-        temp@i[swap] <- temp@j[swap]
-        temp@j[swap] <- i
-        x <- new("fcm", as(temp, "dgCMatrix"), count = attrs$count,
-                 context = attrs$context, 
-                 window = attrs$window, margin = attrs$margin,
-                 weights = attrs$weights, tri = attrs$tri) 
-        slots(x) <- attrs
+    if (attrs$tri) {
+        swap <- which(x@i > x@j)
+        i <- x@i[swap]
+        x@i[swap] <- x@j[swap]
+        x@j[swap] <- i
+        x <- matrix2fcm(x, attrs)
     }
     return(x)
 }
@@ -133,14 +120,9 @@ fcm_select.fcm <- function(x, pattern = NULL,
                       case_insensitive, verbose = verbose, ...))
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = FALSE, ...))
-    result <- new("fcm", as(x, 'dgCMatrix'), count = attrs$count,
-                  context = attrs$context, 
-                  window = attrs$window, margin = attrs$margin,
-                  weights = attrs$weights, tri = attrs$tri)
-    names(result@Dimnames) <- c("features", "features")
-    return(result)
+    matrix2fcm(x, attrs)
 }
-    
+
 
 #' @rdname dfm_select
 #' @export
@@ -173,4 +155,51 @@ fcm_keep.default <- function(x, pattern = NULL, ...) {
 #' @export
 fcm_keep.fcm <- function(x, pattern = NULL, ...) {
     fcm_select(x, pattern, selection = "keep", ...)
+}
+
+
+#' Coercion functions for fcm objects
+#' @param x an object coerced to \link{fcm}. Currently only support
+#'   \link{Matrix} objects.
+#' @keywords internal
+as.fcm <- function(x) {
+    matrix2fcm(x)
+}
+
+#' Conversts a Matrix to a fcm
+#' @param x a Matrix
+#' @param slots slots a list of values to be assigned to slots
+#' @keywords internal
+matrix2fcm <- function(x, slots = NULL) {
+    
+    rowname <- rownames(x)
+    if (nrow(x) > length(rowname))
+        rowname <- paste0(quanteda_options("base_featname"), seq_len(nrow(x)))
+    
+    colname <- colnames(x)
+    if (ncol(x) > length(colname))
+        colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    
+    x <- Matrix(x, sparse = TRUE)
+    dimnames(x) <- list(features = rowname, features = colname)
+    
+    x <- new("fcm", as(x, 'dgCMatrix'))
+    set_fcm_slots(x, slots)
+}
+
+#' Set values to a fcm's S4 slots
+#' @param x a fcm 
+#' @param slots a list of values extracted using \code{attributes} and to be assigned to slots 
+#' @param exceptions names of slots to be ignored
+#' @keywords internal
+set_fcm_slots <- function(x, slots = NULL, exceptions = NULL) {
+    if (is.null(slots)) return(x)
+    sname <- slotNames("fcm")
+    sname <- setdiff(sname, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+    for (s in sname) {
+        try({
+            slot(x, s) <- slots[[s]]
+        }, silent = TRUE)
+    }
+    return(x)
 }

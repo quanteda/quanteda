@@ -146,3 +146,67 @@ test_that("as.matrix for dfm objects", {
                dimnames = list(docs = c("R1"), features = LETTERS[1:5]))
     )
 })
+
+test_that("as.dfm to and from a matrix works with docvars", {
+    txt <- c(docA = "a a a b c c f",
+             docB = "a b b b c d",
+             docC = "c c c f f")
+    expect_identical(
+        attributes(dfm(txt)@docvars)$row.names,
+        attributes(as.dfm(as.matrix(dfm(txt)))@docvars)$row.names
+    )
+    expect_equal(
+        dfm(txt),
+        as.dfm(as.matrix(dfm(txt)))
+    )
+})
+
+test_that("repeat row index for dfm makes unique row.names for @docvars", {
+    txt <- c(docA = "a a a b c c f",
+             docB = "a b b b c d",
+             docC = "c c c f f")
+    crp <- corpus(txt, 
+                  docvars = data.frame(y = 1:3))
+    d <- dfm(crp)
+    expect_identical(
+        row.names(docvars(d[c(1,2,2), ])),
+        c("docA", "docB", "docB.1")
+    )
+    expect_identical(
+        attributes(d[c(1,2,2), ]@docvars)$row.names,
+        c("docA", "docB", "docB.1")
+    )
+})
+
+# test_that("rbind duplicates docvars", {
+#     txt <- c(docA = "a a a b c c f",
+#              docB = "a b b b c d",
+#              docC = "c c c f f")
+#     crp <- corpus(txt, 
+#                   docvars = data.frame(y = 1:3))
+#     d <- dfm(crp)
+#     expect_identical(
+#         attributes(rbind(d, d)@docvars)$row.names,
+#         c("docA", "docB", "docC",
+#           "docA.1", "docB.1", "docC.1")
+#     )
+#     expect_identical(
+#         attributes(d[c(1:3, 1:3)]@docvars)$row.names,
+#         c("docA", "docB", "docC",
+#           "docA.1", "docB.1", "docC.1")
+#     )
+#     expect_identical(
+#         attributes(d[c(1:3, 1:3)]@docvars)$row.names,
+#         attributes(rbind(d, d)@docvars)$row.names
+#     )
+# })
+# 
+# test_that("cbind correctly handles docvars", {
+#     txt <- c(docA = "a a a b c c f",
+#              docB = "a b b b c d",
+#              docC = "c c c f f")
+#     crp <- corpus(txt, 
+#                   docvars = data.frame(y = 1:3))
+#     d <- dfm(crp)
+#     # ADD TESTS
+# })

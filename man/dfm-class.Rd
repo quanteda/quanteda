@@ -9,8 +9,8 @@
 \alias{rowSums,dfm-method}
 \alias{colMeans,dfm-method}
 \alias{rowMeans,dfm-method}
-\alias{+,dfm,numeric-method}
-\alias{+,numeric,dfm-method}
+\alias{Arith,dfm,numeric-method}
+\alias{Arith,numeric,dfm-method}
 \alias{[,dfm,index,index,missing-method}
 \alias{[,dfm,index,index,logical-method}
 \alias{[,dfm,missing,missing,missing-method}
@@ -31,25 +31,25 @@
 
 \S4method{rowMeans}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
 
-\S4method{+}{dfm,numeric}(e1, e2)
+\S4method{Arith}{dfm,numeric}(e1, e2)
 
-\S4method{+}{numeric,dfm}(e1, e2)
+\S4method{Arith}{numeric,dfm}(e1, e2)
 
-\S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,index,index,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,index,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,missing,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,missing,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,index,missing,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,index,missing,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,index,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,index,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{dfm,missing,index,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,missing,index,logical}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{the dfm object}
@@ -95,7 +95,7 @@ simple feature counts. To change this, use the \code{\link{dfm_weight}}
 method.}
 
 \item{\code{smooth}}{a smoothing parameter, defaults to zero.  Can be changed using
-either the \code{\link{smooth}} or the \code{\link{dfm_weight}} methods.}
+the \code{\link{dfm_smooth}} method.}
 
 \item{\code{Dimnames}}{These are inherited from \link[Matrix]{Matrix-class} but are
 named \code{docs} and \code{features} respectively.}
@@ -109,13 +109,6 @@ x <- dfm(tokens(c("this contains lots of stopwords",
                 remove_punct = TRUE))
 x[1:2, ]
 x[1:2, 1:5]
-
-# fcm subsetting
-y <- fcm(tokens(c("this contains lots of stopwords",
-                  "no if, and, or but about it: lots"),
-                remove_punct = TRUE))
-y[1:3, ]
-y[4:5, 1:5]
 }
 \seealso{
 \link{dfm}

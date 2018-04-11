@@ -282,3 +282,19 @@ test_that("docfreq works previously a weighted dfm (#1237)", {
         computed
     )
 })
+
+test_that("smooth slot is correctly set (#1274)", {
+    expect_equal(data_dfm_lbgexample@smooth, 0)
+    
+    # smoothed by 1
+    dfms1 <- dfm_smooth(data_dfm_lbgexample, smoothing = 1)
+    expect_equal(dfms1@smooth, 1)
+    
+    # smoothed by 0.5
+    dfms0.5 <- dfm_smooth(data_dfm_lbgexample, smoothing = 0.5)
+    expect_equal(dfms0.5@smooth, 0.5)
+    
+    # smoothed by 1 and then by another 2
+    dfms1_2 <- dfm_smooth(dfms1, smoothing = 2)
+    expect_equal(dfms1_2@smooth, 3)
+})

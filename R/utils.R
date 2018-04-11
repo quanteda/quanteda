@@ -39,20 +39,21 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
+
 ##
 ## reassign the slots to an S4 dfm-like object
 ## necessary when some operation from the Matrix class obliterates them
 ## Ken B
-reassign_slots <- function(x_new, x_org, exceptions = NULL) {
-    snames <- slotNames(class(x_org))
-    snames <- setdiff(snames, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
-    for (sname in snames) {
-        try({
-            slot(x_new, sname) <- slot(x_org, sname)
-        }, silent = TRUE)
-    }
-    x_new
-}
+# reassign_slots <- function(x_new, x_org, exceptions = NULL) {
+#     snames <- slotNames(class(x_org))
+#     snames <- setdiff(snames, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+#     for (sname in snames) {
+#         try({
+#             slot(x_new, sname) <- slot(x_org, sname)
+#         }, silent = TRUE)
+#     }
+#     x_new
+# }
 
 
 #' Function extending base::attributes()
