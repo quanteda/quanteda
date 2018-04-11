@@ -64,7 +64,7 @@ test_that("summary.character works with data.frames containing character (#1285)
     skip_on_appveyor()
     skip_on_travis()
     skip_on_cran()
-    skip_on_linux()
+    skip_on_os("linux")
     txt <- c("Testing this text. Second sentence.", "And this one.")
     df <- data.frame(txt, other = 1:2, stringsAsFactors = FALSE)
     expect_equal(

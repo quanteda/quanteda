@@ -10,7 +10,7 @@
 \usage{
 \method{predict}{textmodel_lsa}(object, newdata = NULL, ...)
 
-\method{as.dfm}{textmodel_lsa}(x, slots = NULL)
+\method{as.dfm}{textmodel_lsa}(x)
 
 \method{coef}{textmodel_lsa}(object, doc_dim = 1, feat_dim = 1, ...)
 

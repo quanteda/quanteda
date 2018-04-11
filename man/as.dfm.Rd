@@ -5,15 +5,12 @@
 \alias{is.dfm}
 \title{Coercion and checking functions for dfm objects}
 \usage{
-as.dfm(x, slots = NULL)
+as.dfm(x)
 
 is.dfm(x)
 }
 \arguments{
 \item{x}{a candidate object for checking or coercion to \link{dfm}}
-
-\item{slots}{slots a list of values to be assigned to slots. Ignored when
-\code{x} is a dfm.}
 }
 \value{
 \code{as.dfm} converts an input object into a \link{dfm}.  Row names

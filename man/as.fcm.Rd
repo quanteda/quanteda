@@ -4,13 +4,11 @@
 \alias{as.fcm}
 \title{Coercion functions for fcm objects}
 \usage{
-as.fcm(x, slots = NULL)
+as.fcm(x)
 }
 \arguments{
 \item{x}{an object coerced to \link{fcm}. Currently only support
 \link{Matrix} objects.}
-
-\item{slots}{a list of values to be assigned to slots}
 }
 \description{
 Coercion functions for fcm objects
