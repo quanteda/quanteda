@@ -47,7 +47,7 @@ order.}
 \code{comparison=TRUE}.}
 
 \item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
-aspect ratio only supported if rotation = 0}
+aspect ratio only supported if rotation = 0.}
 
 \item{scale}{deprecated argument}
 
@@ -75,6 +75,6 @@ This function impliments wordcloud without dependecies. Code is adopted from
 \code{\link[wordcloud]{wordcloud}}.
 }
 \author{
-Kohei Watanabe, built on code from Ian Fellows's \pkg{wordcloud} package.
+Kohei Watanabe, builting on code from Ian Fellows's \pkg{wordcloud} package.
 }
 \keyword{internal}

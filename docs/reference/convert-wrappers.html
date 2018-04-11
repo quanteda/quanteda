@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,15 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Convenience wrappers for dfm convert — convert-wrappers" />
+
+<meta property="og:description" content="To make the usage as consistent as possible with other packages, quanteda
+also provides shortcut wrappers to convert, designed to be
+similar in syntax to analogous commands in the packages to whose format they
+are converting." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +57,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +75,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -132,9 +152,6 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/design.html">Design</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -145,6 +162,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -152,10 +176,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convenience wrappers for dfm convert</h1>
+    
+    <div class="hidden name"><code>convert-wrappers.Rd</code></div>
     </div>
 
     
@@ -171,7 +197,7 @@ are converting.</p>
 
 <span class='fu'>dfm2lda</span>(<span class='no'>x</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -193,8 +219,8 @@ are converting.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>as.wfm</code> converts a quanteda <a href='dfm.html'>dfm</a> into the
-<code>wfm</code> format used by the <code>austin</code> package.
-    <code>as.DocumentTermMatrix</code> will convert a quanteda <a href='dfm.html'>dfm</a> into
+<code>wfm</code> format used by the <code>austin</code> package.</p>
+<p><code>as.DocumentTermMatrix</code> will convert a quanteda <a href='dfm.html'>dfm</a> into
   the <span class="pkg">tm</span> package's <a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a> format. Note: The
   <span class="pkg">tm</span> package version of <code>as.TermDocumentMatrix</code> allows a
   <code>weighting</code> argument, which supplies a weighting function for 
@@ -202,8 +228,8 @@ are converting.</p>
   weighting. If you want a different weighting, apply the weights after
   converting using one of the <span class="pkg">tm</span> functions. For other available
   weighting functions from the <span class="pkg">tm</span> package, see 
-  <code><a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>TermDocumentMatrix</a></code>.
-    <code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
+  <code><a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>TermDocumentMatrix</a></code>.</p>
+<p><code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
 of terms in documents used by the <span class="pkg">lda</span> package (a list with components 
 "documents" and "vocab" as needed by 
   <code><a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a></code>).</p>
@@ -256,11 +282,25 @@ of terms in documents used by the <span class="pkg">lda</span> package (a list w
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+
