@@ -436,7 +436,7 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
-    attrs <- attributes(x)
+    
     if (length(x) == 1 && is.null(x[[1]])) return(x)
     
     error <- FALSE
@@ -444,6 +444,7 @@ print.tokens <- function(x, ...) {
     if (is.numeric(i) && any(i > length(x))) error <- TRUE
     if (error) stop("Subscript out of bounds")
     
+    attrs <- attributes(x)
     x <- unclass(x)[i]
     if (is.data.frame(attrs$docvars)) {
         attrs$docvars <- attrs$docvars[i,,drop = FALSE]
