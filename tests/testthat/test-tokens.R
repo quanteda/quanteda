@@ -21,6 +21,12 @@ test_that("tokens indexing works as expected", {
     # issue #370
     expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
     expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
+    
+    # issue #1308
+    expect_error(toks[4], "Subscript out of bounds")
+    expect_error(toks[1:4], "Subscript out of bounds")
+    expect_error(toks["d4"], "Subscript out of bounds")
+    expect_error(toks[c("d1", "d4")], "Subscript out of bounds")
 })
 
 test_that("tokens_recompile combine duplicates is working", {
