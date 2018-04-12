@@ -860,10 +860,10 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
 dictionary_depth <- function(dict, depth = -1) {
     # http://stackoverflow.com/a/13433689/1270695
     dict <- unclass(dict)
-    if (!is.list(dict)) {
-        return(depth)
-    } else {
+    if (is.list(dict) && length(dict) > 0) {
         return(max(unlist(lapply(dict, dictionary_depth, depth = depth + 1))))    
+    } else {
+        return(depth)
     }
 }
 
