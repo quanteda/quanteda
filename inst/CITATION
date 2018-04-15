@@ -4,5 +4,5 @@ bibentry(bibtype = "Manual",
          year = format(Sys.Date(), "%Y"),
          doi = "10.5281/zenodo.1004683",
          url = "http://quanteda.io",
-         note = "R package version 0.99.22"
+         note = paste("R package version", packageVersion("quanteda"))
 )
