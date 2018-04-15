@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,14 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Plot features as a wordcloud — textplot_wordcloud" />
+
+<meta property="og:description" content="Plot a dfm object as a wordcloud, where the feature labels are plotted
+with their sizes proportional to their numerical values in the dfm.  When
+comparison = TRUE, it plots comparison word clouds by document." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +56,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +74,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -142,6 +161,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -149,10 +175,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot features as a wordcloud</h1>
+    
+    <div class="hidden name"><code>textplot_wordcloud.Rd</code></div>
     </div>
 
     
@@ -167,7 +195,7 @@ with their sizes proportional to their numerical values in the dfm.  When
   <span class='kw'>ordered_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>labelcolor</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>labelsize</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
   <span class='kw'>labeloffset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>fixed_aspect</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>, <span class='kw'>comparison</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -274,14 +302,14 @@ in the same way as <code><a href='http://www.rdocumentation.org/packages/wordclo
     <span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
 <span class='co'># basic wordcloud</span>
-<span class='fu'>textplot_wordcloud</span>(<span class='no'>obama_dfm</span>)</div><div class='img'><img src='textplot_wordcloud-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>textplot_wordcloud</span>(<span class='no'>obama_dfm</span>)</div><div class='img'><img src='textplot_wordcloud-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot in colors with some additional options</span>
 <span class='fu'>textplot_wordcloud</span>(<span class='no'>obama_dfm</span>, <span class='kw'>rotation</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-                   <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>rev</span>(<span class='kw pkg'>RColorBrewer</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer'>brewer.pal</a></span>(<span class='fl'>10</span>, <span class='st'>"RdBu"</span>)))</div><div class='img'><img src='textplot_wordcloud-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+                   <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>rev</span>(<span class='kw pkg'>RColorBrewer</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer'>brewer.pal</a></span>(<span class='fl'>10</span>, <span class='st'>"RdBu"</span>)))</div><div class='img'><img src='textplot_wordcloud-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># other display options</span>
 <span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'>sapply</span>(<span class='fu'>seq</span>(<span class='fl'>0.1</span>, <span class='fl'>1</span>, <span class='fl'>0.1</span>), <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>adjustcolor</span>(<span class='st'>"#1F78B4"</span>, <span class='no'>x</span>))
 <span class='fu'>textplot_wordcloud</span>(<span class='no'>obama_dfm</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>random_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-                   <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>col</span>, <span class='kw'>rotation</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='textplot_wordcloud-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+                   <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>col</span>, <span class='kw'>rotation</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='textplot_wordcloud-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># comparison plot of Obama v. Trump</span>
 <span class='no'>obama_trump_dfm</span> <span class='kw'>&lt;-</span>
     <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>President</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Obama"</span>, <span class='st'>"Trump"</span>)),
@@ -289,7 +317,7 @@ in the same way as <code><a href='http://www.rdocumentation.org/packages/wordclo
     <span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
 <span class='fu'>textplot_wordcloud</span>(<span class='no'>obama_trump_dfm</span>, <span class='kw'>comparison</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>max_words</span> <span class='kw'>=</span> <span class='fl'>300</span>,
-                   <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: national could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: victories could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: every could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: americans could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: land could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: action could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: success could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: nations could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pledge could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: brave could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: created could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: knowing could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: require could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: together could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: workers could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: always could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: strength could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: made could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: meaning could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: nation could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: forward could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prosperity could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: schools could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: america's could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: come could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: understand could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: blood could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: government could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: today could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: throughout could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: gather could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: politics could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: interests could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: roads could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: restore could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: harness could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: alliances could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: protect could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: celebration could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: patriots could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: shores could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: justice could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: today's could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: middle could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pride could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: poverty could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: forever could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: hear could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: different could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: women could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: moment could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: children could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: challenges could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: demands could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: remember could not be fit on page. It will not be plotted.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: knowledge could not be fit on page. It will not be plotted.</span></div><div class='img'><img src='textplot_wordcloud-4.png' alt='' width='700' height='432.632880098887' /></div></pre>
+                   <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='textplot_wordcloud-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -315,11 +343,25 @@ Kohei Watanabe, building on code from Ian Fellows's <span class="pkg">wordcloud<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+

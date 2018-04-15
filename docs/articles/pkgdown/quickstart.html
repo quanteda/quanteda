@@ -221,7 +221,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Tue Apr 10 20:47:58 2018
+## Created: Sun Apr 15 15:57:44 2018
 ## Notes:</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<em>docvar</em>).</p>
@@ -242,7 +242,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Tue Apr 10 20:47:58 2018
+## Created: Sun Apr 15 15:57:44 2018
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -272,7 +272,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Tue Apr 10 20:47:58 2018
+## Created: Sun Apr 15 15:57:44 2018
 ## Notes:</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -403,7 +403,7 @@ my_corpus3 &lt;-<span class="st"> </span>my_corpus1 <span class="op">+</span><sp
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Tue Apr 10 20:48:00 2018
+## Created: Sun Apr 15 15:57:46 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -851,30 +851,30 @@ quant_dfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1       Topic 2        Topic 3    Topic 4    Topic 5   
-## [1,] "imagination" "society"      "million"  "fáil"     "families"
-## [2,] "wit"         "enterprising" "measures" "fianna"   "welfare" 
-## [3,] "kind"        "sense"        "spending" "national" "care"    
-## [4,] "policies"    "equal"        "welfare"  "families" "policies"
-## [5,] "face"        "nation"       "review"   "benefit"  "workers" 
-##      Topic 6      Topic 7     Topic 8     Topic 9     Topic 10 
-## [1,] "reduction"  "taoiseach" "taoiseach" "kind"      "child"  
-## [2,] "investment" "employees" "fine"      "debt"      "benefit"
-## [3,] "scheme"     "rate"      "gael"      "servicing" "day"    
-## [4,] "energy"     "referred"  "may"       "comes"     "today"  
-## [5,] "future"     "debate"    "irish"     "making"    "bank"   
-##      Topic 11     Topic 12     Topic 13   Topic 14   Topic 15  
-## [1,] "million"    "welfare"    "level"    "welfare"  "nama"    
-## [2,] "support"    "forward"    "scheme"   "system"   "national"
-## [3,] "investment" "confidence" "million"  "taxation" "policy"  
-## [4,] "back"       "rates"      "bill"     "fianna"   "hear"    
-## [5,] "employment" "energy"     "spending" "fáil"     "fianna"  
-##      Topic 16    Topic 17  Topic 18   Topic 19  Topic 20     
-## [1,] "failed"    "levy"    "per"      "fianna"  "fianna"     
-## [2,] "strategy"  "million" "hospital" "irish"   "fáil"       
-## [3,] "needed"    "carbon"  "child"    "fáil"    "citizenship"
-## [4,] "ministers" "change"  "benefit"  "support" "side"       
-## [5,] "system"    "welfare" "measures" "whether" "alternative"</code></pre>
+<pre><code>##      Topic 1    Topic 2     Topic 3     Topic 4    Topic 5     Topic 6   
+## [1,] "million"  "recent"    "side"      "order"    "gael"      "measures"
+## [2,] "support"  "providing" "kind"      "irish"    "back"      "million" 
+## [3,] "continue" "bill"      "education" "stimulus" "system"    "spending"
+## [4,] "back"     "pensions"  "fianna"    "welfare"  "taoiseach" "scheme"  
+## [5,] "energy"   "million"   "fáil"      "believe"  "set"       "welfare" 
+##      Topic 7     Topic 8   Topic 9      Topic 10  Topic 11     Topic 12   
+## [1,] "taoiseach" "child"   "welfare"    "benefit" "failed"     "taoiseach"
+## [2,] "fine"      "benefit" "support"    "fianna"  "strategy"   "employees"
+## [3,] "irish"     "bank"    "investment" "today"   "face"       "rate"     
+## [4,] "may"       "banks"   "level"      "burden"  "system"     "referred" 
+## [5,] "gael"      "day"     "million"    "day"     "employment" "debate"   
+##      Topic 13      Topic 14       Topic 15  Topic 16   Topic 17   
+## [1,] "alternative" "society"      "levy"    "system"   "care"     
+## [2,] "citizenship" "enterprising" "million" "welfare"  "welfare"  
+## [3,] "wealth"      "sense"        "carbon"  "fianna"   "per"      
+## [4,] "adjustment"  "equal"        "change"  "policies" "allowance"
+## [5,] "breaks"      "nation"       "welfare" "worst"    "hit"      
+##      Topic 18   Topic 19   Topic 20   
+## [1,] "fianna"   "welfare"  "change"   
+## [2,] "fáil"     "fáil"     "modern"   
+## [3,] "national" "system"   "needed"   
+## [4,] "irish"    "recovery" "strategy" 
+## [5,] "support"  "taxation" "ministers"</code></pre>
 </div>
 </div>
   </div>
