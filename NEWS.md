@@ -1,17 +1,18 @@
-# Changes since quanteda v1.1.1
+# quanteda v1.2.0
 
 ### New Features
 
 * Added an `nsentence()` method for **spacyr** parsed objects.  (#1289)
 
-### Bug fixes
+### Bug fixes and stability enhancements
 
 * Fix bug in `nsyllable()` that incorrectly handled cased words, and returned wrong names with `use.names = TRUE`. (#1282)
 * Fix the overwriting of `summary.character()` caused by previous import of the **network** package namespace. (#1285)
+* `dfm_smooth()` now correctly sets the smooth value in the dfm (#1274).  Arithmetic operations on dfm objects are now much more consistent and do not drop attributes of the dfm, as sometimes happened with earlier versions.
 
 ### Behaviour changes
 
-* `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types. Solves #1278.
+* `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types.  Solves #1278.
 * `dfm_trim()` now takes more options, and these are implemented more consistently.  `min_termfreq` and `max_termfreq` have replaced `min_count` and `max_count`, and these can be modified using a `termfreq_type` argument.  (Similar options are implemented for `docfreq_type`.)  Solves #1253, #1254.
 * `textstat_simil()` and `textstat_dist()` now take valid dfm indexes for the relevant margin for the `selection` argument.  Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed.  Solves #1266.
 * Improved performance for `dfm_group()` (#1295).
