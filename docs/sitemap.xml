@@ -25,6 +25,9 @@
     <loc>http://docs.quanteda.io/reference/as.dist.dist.html</loc>
   </url>
   <url>
+    <loc>http://docs.quanteda.io/reference/as.fcm.html</loc>
+  </url>
+  <url>
     <loc>http://docs.quanteda.io/reference/as.list.dist.html</loc>
   </url>
   <url>
@@ -247,6 +250,12 @@
     <loc>http://docs.quanteda.io/reference/list2dictionary.html</loc>
   </url>
   <url>
+    <loc>http://docs.quanteda.io/reference/matrix2dfm.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/reference/matrix2fcm.html</loc>
+  </url>
+  <url>
     <loc>http://docs.quanteda.io/reference/merge_dictionary_values.html</loc>
   </url>
   <url>
@@ -344,6 +353,12 @@
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/search_index.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/reference/set_dfm_slots.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/reference/set_fcm_slots.html</loc>
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/settings.html</loc>

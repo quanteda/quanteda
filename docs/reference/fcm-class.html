@@ -6,7 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Virtual class "fcm" for a feature co-occurrence matrix — fcm-class • quanteda</title>
+<title>Virtual class "fcm" for a feature co-occurrence matrix
+The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
+additional slots, described below. — fcm-class • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,6 +20,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +29,16 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Virtual class "fcm" for a feature co-occurrence matrix
+The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
+additional slots, described below. — fcm-class" />
+
+<meta property="og:description" content="Virtual class "fcm" for a feature co-occurrence matrix
+The fcm class of object is a special type of fcm object with
+additional slots, described below." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -46,6 +60,11 @@
 
 </script>
 
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
   </head>
 
   <body>
@@ -59,8 +78,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">quanteda</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="dropdown">
@@ -142,6 +165,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -149,18 +179,88 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Virtual class "fcm" for a feature co-occurrence matrix</h1>
+    <h1>Virtual class "fcm" for a feature co-occurrence matrix
+The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
+additional slots, described below.</h1>
+    
+    <div class="hidden name"><code>fcm-class.Rd</code></div>
     </div>
 
     
-    <p>The fcm class of object is a special type of <a href='dfm.html'>dfm</a>
-  object with additional slots, described below.</p>
+    <p>Virtual class "fcm" for a feature co-occurrence matrix
+The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
+additional slots, described below.</p>
     
 
-        
+    <pre class="usage"># S4 method for fcm
+t(x)
+
+# S4 method for fcm,numeric
+Arith(e1, e2)
+
+# S4 method for numeric,fcm
+Arith(e1, e2)
+
+# S4 method for fcm,index,index,missing
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,index,index,logical
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,missing,missing,missing
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,missing,missing,logical
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,index,missing,missing
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,index,missing,logical
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,missing,index,missing
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for fcm,missing,index,logical
+[(x, i, j, ..., drop = TRUE)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the fcm object</p></td>
+    </tr>
+    <tr>
+      <th>e1</th>
+      <td><p>first quantity in "+" operation for fcm</p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>second quantity in "+" operation for fcm</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>index for features</p></td>
+    </tr>
+    <tr>
+      <th>j</th>
+      <td><p>index for features</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments not used here</p></td>
+    </tr>
+    <tr>
+      <th>drop</th>
+      <td><p>always set to <code>FALSE</code></p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
@@ -177,18 +277,40 @@ are counted separately</p></dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='fcm.html'>fcm</a></p>
+    <div class='dont-index'><p><a href='fcm.html'>fcm</a></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># fcm subsetting</span>
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"this contains lots of stopwords"</span>,
+                  <span class='st'>"no if, and, or but about it: lots"</span>),
+                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+<span class='no'>y</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
+#&gt; 3 x 12 sparse Matrix of class "fcm"
+#&gt;           features
+#&gt; features   this contains lots of stopwords no if and or but about it
+#&gt;   this        0        1    1  1         1  0  0   0  0   0     0  0
+#&gt;   contains    0        0    1  1         1  0  0   0  0   0     0  0
+#&gt;   lots        0        0    0  1         1  1  1   1  1   1     1  1</div><div class='input'><span class='no'>y</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
+#&gt; 2 x 5 sparse Matrix of class "fcm"
+#&gt;            features
+#&gt; features    this contains lots of stopwords
+#&gt;   of           0        0    0  0         1
+#&gt;   stopwords    0        0    0  0         0</div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#slots">Slots</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
@@ -199,11 +321,25 @@ are counted separately</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
+    indexName: 'quanteda',
+    inputSelector: 'input#search-input.form-control',
+    debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+
   </body>
 </html>
+
