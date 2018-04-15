@@ -310,11 +310,11 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                default = paste0(quanteda_options("base_docname"), seq_len(nrow(x))))
     
     # to make the exclusion below work using match()
-    if (docname_source != docid_field) docid_field <- NULL
+    if (docname_source != "docid_field") docid_field <- NULL
     
     corpus(x[[text_field]],
-           docvars = x[, match(c(text_field, docid_field), 
-                               names(x)) * -1, drop = FALSE],
+           docvars = x[, match(c(text_field, docid_field), names(x)) * -1, 
+                       drop = FALSE],
            docnames = docname,
            metacorpus = metacorpus, compress = compress)
 }

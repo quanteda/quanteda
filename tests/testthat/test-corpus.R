@@ -361,7 +361,31 @@ test_that("corpus.data.frame sets docnames correctly", {
         docnames(corpus(newdf, docid_field = "new")),
         c("99", "100", "101")
     )
-    
+    expect_identical(
+        docvars(corpus(newdf, docid_field = "new")),
+        data.frame(doc_id = c("A-dn", "B-dn", "C-dn"), row.names = as.character(99:101), 
+                   stringsAsFactors = FALSE)
+    )
+    expect_identical(
+        docvars(corpus(newdf)),
+        data.frame(new = as.numeric(99:101), row.names = c("A-dn", "B-dn", "C-dn"), 
+                   stringsAsFactors = FALSE)
+    )
+
+    newdf2 <- newdf
+    names(newdf2)[2] <- "notdoc_id"
+    row.names(newdf2) <- NULL
+    expect_identical(
+        docvars(corpus(newdf2)),
+        data.frame(
+            notdoc_id = c("A-dn", "B-dn", "C-dn"),
+            new = c(99, 100, 101),
+            row.names = paste0(quanteda_options("base_docname"), 
+                               seq_len(nrow(df_with_text_NOdocid_NOrownames))),
+            stringsAsFactors = FALSE
+        )
+    )
+
     newdf <- data.frame(df_with_text_NOdocid_NOrownames, new = c(99, 100, 101))
     expect_identical(
         docnames(corpus(newdf, docid_field = "new")),
