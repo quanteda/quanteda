@@ -1,3 +1,11 @@
+# Since quanteda v1.2.0
+
+### New Features
+
+* Improved `corpus.kwic()` by adding new arguments `split_context` and `extract_keyword`.
+
+
+
 # quanteda v1.2.0
 
 ### New Features

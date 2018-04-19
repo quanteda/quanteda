@@ -75,11 +75,69 @@ test_that("test c.corpus", {
 })
 
 test_that("test corpus constructors works for kwic", {
+    kw <- kwic(data_char_sampletext, "econom*")
     
-    kwiccorpus <- corpus(kwic(data_corpus_inaugural, "christmas"))
+    # split_context = TRUE, extract_keyword = TRUE
+    kwiccorpus <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)
     expect_that(kwiccorpus, is_a("corpus"))
     expect_equal(names(docvars(kwiccorpus)),
                  c("docname", "from", "to", "keyword", "context"))
+    
+    # split_context = FALSE, extract_keyword = TRUE
+    expect_identical(docvars(corpus(kwic(data_char_sampletext, "econom*"),
+                                    split_context = FALSE, extract_keyword = TRUE)),
+                     data.frame(keyword = rep("economy", 5), stringsAsFactors = FALSE,
+                                row.names = paste0("text1.L", as.character(kw[["from"]])))
+    )
+    # split_context = FALSE, extract_keyword = FALSE
+    expect_identical(docvars(corpus(kwic(data_char_sampletext, "econom*"),
+                                    split_context = FALSE, extract_keyword = FALSE)),
+                     data.frame(stringsAsFactors = FALSE,
+                                row.names = paste0("text1.L", as.character(kw[["from"]])))
+    )
+    # split_context = TRUE, extract_keyword = FALSE
+    expect_identical(docvars(corpus(kwic(data_char_sampletext, "econom*"),
+                                    split_context = FALSE, extract_keyword = FALSE)),
+                     data.frame(stringsAsFactors = FALSE,
+                                row.names = paste0("text1.L", as.character(kw[["from"]])))
+    )
+    
+    # test text handling for punctuation - there should be no space before the ?
+    kwiccorpus <- corpus(kwic(data_char_sampletext, "econom*"),
+                         split_context = FALSE, extract_keyword = FALSE)
+    expect_identical(
+        texts(kwiccorpus)[2],
+        c(text1.L202 = "it is decimating the domestic economy? As we are tired")
+    )
+    
+    # ; and !
+    txt <- c("This is; a test!")
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a"), split_context = FALSE)),
+        txt
+    )
+    
+    # quotes
+    txt <- "This 'is' only a test!"
+    expect_equivalent(
+         texts(corpus(kwic(txt, "a"), split_context = FALSE)),
+         txt
+    )
+    txt <- "This \"is\" only a test!"
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a"), split_context = FALSE)),
+        txt
+    )
+    txt <- 'This "is" only (a) test!'
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
+        txt
+    )
+    txt <- 'This is only (a) test!'
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
+        txt
+    )    
 })
 
 
