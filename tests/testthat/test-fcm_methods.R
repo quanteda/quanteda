@@ -173,7 +173,7 @@ test_that("test fcm_select with features from a dfm,  fixed", {
     )
     expect_equal(
         featnames(fcm_select(testfcm, mx, selection = "remove", valuetype = "fixed", verbose = FALSE)),
-        featnames(mx)
+        setdiff(featnames(testfcm), featnames(mx))
     )
 })
 

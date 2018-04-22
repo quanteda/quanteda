@@ -117,15 +117,14 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     feature_keep <- seq_len(nfeat(x))
     if (!is.null(pattern)) {
         # special handling if pattern is a dfm
-        if (is.dfm(pattern) && selection == "remove") {
-            pattern <- featnames(pattern)
-        }
-        if (is.dfm(pattern) && selection == "keep") {
-            is_dfm <- TRUE
+        if (is.dfm(pattern)) {
             pattern <- featnames(pattern)
             valuetype <- "fixed"
-            padding <- TRUE
             case_insensitive <- FALSE
+            if (selection == "keep") {
+                is_dfm <- TRUE
+                padding <- TRUE
+            }
         } else if (is.dictionary(pattern)) {
             pattern <- 
                 stri_replace_all_fixed(unlist(pattern, use.names = FALSE), 
