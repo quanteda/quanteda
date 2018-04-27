@@ -187,38 +187,36 @@ test_that("test dfm_group keeps group-level variables", {
 })
 
 test_that("is_grouped is working", {
-    expect_false(is_grouped(c(1, 2, 3, 4), 
+    expect_false(quanteda:::is_grouped(c(1, 2, 3, 4), 
                             c(1L, 1L, 2L, 2L)))
-    expect_false(is_grouped(c(1, 2, 2, 2), 
+    expect_false(quanteda:::is_grouped(c(1, 2, 2, 2), 
                             c(1L, 1L, 2L, 2L)))
-    expect_false(is_grouped(as.factor(c(1, 2, 2, 2)),
+    expect_false(quanteda:::is_grouped(as.factor(c(1, 2, 2, 2)),
                             c(1L, 1L, 2L, 2L)))
-    expect_true(is_grouped(numeric(), 
+    expect_true(quanteda:::is_grouped(numeric(), 
                            integer()))
     
-    expect_true(is_grouped(c(1, 1, 2, 2), 
+    expect_true(quanteda:::is_grouped(c(1, 1, 2, 2), 
                            c(1L, 1L, 2L, 2L)))
-    expect_true(is_grouped(c(0, 0, 1, 1), 
+    expect_true(quanteda:::is_grouped(c(0, 0, 1, 1), 
                            c(1L, 1L, 2L, 2L)))
-    expect_true(is_grouped(c(0, 0, 0, 0), 
-                           c(1L, 1L, 2L, 2L)))
-    
-    expect_false(is_grouped(c("a", "b", "c", "d"), 
-                            c(1L, 1L, 2L, 2L)))
-    expect_false(is_grouped(c("a", "b", "b", "b"), 
-                            c(1L, 1L, 2L, 2L)))
-    expect_true(is_grouped(c("a", "a", "b", "b"), 
+    expect_true(quanteda:::is_grouped(c(0, 0, 0, 0), 
                            c(1L, 1L, 2L, 2L)))
     
-    expect_true(is_grouped(character(), 
+    expect_false(quanteda:::is_grouped(c("a", "b", "c", "d"), 
+                            c(1L, 1L, 2L, 2L)))
+    expect_false(quanteda:::is_grouped(c("a", "b", "b", "b"), 
+                            c(1L, 1L, 2L, 2L)))
+    expect_true(quanteda:::is_grouped(c("a", "a", "b", "b"), 
+                           c(1L, 1L, 2L, 2L)))
+    
+    expect_true(quanteda:::is_grouped(character(), 
                            integer()))
-    expect_true(is_grouped(c("a", "a", "a", "a"), 
+    expect_true(quanteda:::is_grouped(c("a", "a", "a", "a"), 
                            c(1L, 1L, 2L, 2L)))
-    expect_true(is_grouped(c("", "", "b", "b"), 
+    expect_true(quanteda:::is_grouped(c("", "", "b", "b"), 
                            c(1L, 1L, 2L, 2L)))
-    expect_true(is_grouped(c("", "", "", ""), 
+    expect_true(quanteda:::is_grouped(c("", "", "", ""), 
                            c(1L, 1L, 2L, 2L)))
     
 })
-
-
