@@ -21,7 +21,7 @@ corpus(x, ...)
 \method{corpus}{data.frame}(x, docid_field = "doc_id", text_field = "text",
   metacorpus = NULL, compress = FALSE, ...)
 
-\method{corpus}{kwic}(x, ...)
+\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE, ...)
 
 \method{corpus}{Corpus}(x, metacorpus = NULL, compress = FALSE, ...)
 }
@@ -64,6 +64,14 @@ based on \code{(\link{quanteda_options}("base_docname")}.}
 be a character vector. All other variables in the data.frame will be
 imported as docvars.  This argument is only used for \code{data.frame}
 objects (including those created by \pkg{readtext}).}
+
+\item{split_context}{logical; if \code{TRUE}, split each kwic row into two
+"documents", one for "pre" and one for "post", with this designation saved
+in a new docvar \code{context} and with the new number of documents
+therefore being twice the number of rows in the kwic.}
+
+\item{extract_keyword}{logical; if  \code{TRUE}, save the keyword matching
+\code{pattern} as a new docvar \code{keyword}}
 }
 \value{
 A \link{corpus-class} class object containing the original texts,
@@ -152,6 +160,12 @@ summary(corpus(mydf, text_field = "some_text",
 # construct a corpus from a kwic object
 mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
+# from a kwic
+kw <- kwic(data_char_sampletext, "econom*")
+summary(corpus(kw))
+summary(corpus(kw, split_context = FALSE))
+texts(corpus(kw, split_context = FALSE))
+
 }
 \seealso{
 \link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}},

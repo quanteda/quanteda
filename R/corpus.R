@@ -321,9 +321,21 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 
 
 #' @rdname corpus
-#' @keywords corpus
+#' @param split_context logical; if \code{TRUE}, split each kwic row into two
+#'   "documents", one for "pre" and one for "post", with this designation saved
+#'   in a new docvar \code{context} and with the new number of documents
+#'   therefore being twice the number of rows in the kwic.
+#' @param extract_keyword logical; if  \code{TRUE}, save the keyword matching
+#'   \code{pattern} as a new docvar \code{keyword}
+#' @examples 
+#' # from a kwic
+#' kw <- kwic(data_char_sampletext, "econom*")
+#' summary(corpus(kw))
+#' summary(corpus(kw, split_context = FALSE))
+#' texts(corpus(kw, split_context = FALSE))
+#' 
 #' @export
-corpus.kwic <- function(x, ...) {
+corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
                 names(addedArgs), " not used.", sep = "")
@@ -333,15 +345,36 @@ corpus.kwic <- function(x, ...) {
     # convert docnames to a factor, as in original kwic
     x$docname <- factor(x$docname)
 
-    pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], text_field = "pre")
-    docvars(pre, 'context') <- "pre"
-    docnames(pre) <- paste0(docnames(pre), ".pre")
+    if (split_context) {
+        pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], text_field = "pre")
+        docvars(pre, "context") <- "pre"
+        docnames(pre) <- paste0(docnames(pre), ".pre")
+        
+        post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], text_field = "post")
+        docvars(post, "context") <- "post"
+        docnames(post) <- paste0(docnames(post), ".post")
+        
+        result <- pre + post
+        if (!extract_keyword) docvars(result, "keyword") <- NULL
 
-    post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], text_field = "post")
-    docvars(post, 'context') <- "post"
-    docnames(post) <- paste0(docnames(post), ".post")
+    } else {
+        result <- corpus(
+            apply(x[, c("pre", "keyword", "post")], 1, paste, collapse = " "),
+            docnames = paste0(x[["docname"]], ".L", x[["from"]])
+        )
+        if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
+    }
 
-    result <- pre + post
+    # handle disassociated brackets, quotes, parens, etc
+    texts(result) <-
+        stringi::stri_replace_all_regex(texts(result), 
+                                        "([\\b\\s][\\p{Pi}\\p{Ps}\"\'])\\s(\\S+)\\s([\\p{Pf}\\p{Pe}\"\'][\\b\\s])", 
+                                        "$1$2$3")
+
+    # remove spaces before punctuation that should not have it
+    texts(result) <-
+        stringi::stri_replace_all_regex(texts(result), "\\s([!%*?;:,.]{1})", "$1")
+    
     metacorpus(result, "source") <- 
         paste0("Corpus created from kwic(x, keywords = \"",
                paste(attr(x, "keywords"), collapse = ", "),
