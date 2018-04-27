@@ -60,7 +60,7 @@ removed}
 A \link{dfm} or \link{fcm} object, after the feature selection has
   been applied.
 
-  When \code{pattern} is a \link{dfm} object, then the returned object will
+  When \code{pattern} is a \link{dfm} object and \code{selection = "keep"}, then the returned object will
   be identical in its feature set to the dfm supplied as the \code{pattern}
   argument. This means that any features in \code{x} not in the dfm provided
   as \code{pattern} will be discarded, and that any features in found in the
@@ -69,10 +69,14 @@ A \link{dfm} or \link{fcm} object, after the feature selection has
   selected dfm with an exact feature match, when \code{pattern} is a
   \link{dfm} object, then the following settings are always used:
   \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
-
+  
   Selecting on a \link{dfm} is useful when you have trained a model on one
   dfm, and need to project this onto a test set whose features must be
   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
+
+  When \code{pattern} is a \link{dfm} object and \code{selection = "keep"},
+  the returned object will simply be the dfm without the featnames matching
+  those of the selection dfm.
 }
 \description{
 This function selects or removes features from a \link{dfm} or \link{fcm},
