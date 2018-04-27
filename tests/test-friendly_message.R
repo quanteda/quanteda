@@ -1,3 +1,5 @@
+context("test friendly_class_undefined_message")
+
 test_that("friendly_class_undefined_message for as.tokes()", {
     expect_error(
         as.tokens(data_dfm_lbgexample),
