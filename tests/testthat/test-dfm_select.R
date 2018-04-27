@@ -323,3 +323,16 @@ test_that("dfm_remove/keep fail if selection argument is used", {
         "dfm_keep cannot include selection argument"
     )
 })
+
+test_that("dfm_remove works when selection is a dfm (#1320)", {
+    d1 <- dfm("a b b c c c d d d d")
+    d2 <- dfm("d d d a a")
+    expect_identical(
+        featnames(dfm_remove(d1, d2)),
+        c("b", "c")
+    )
+    expect_identical(
+        featnames(dfm_select(d1, pattern = d2, selection = "remove")),
+        c("b", "c")
+    )
+})

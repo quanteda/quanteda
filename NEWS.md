@@ -1,10 +1,7 @@
 # Since quanteda v1.2.0
 
-### New Features
-
 * Improved `corpus.kwic()` by adding new arguments `split_context` and `extract_keyword`.
-
-
+* `dfm_remove(x, selection = anydfm)` is now equivalent to `dfm_remove(x, selection = featnames(anydfm))`.  (#1320)
 
 # quanteda v1.2.0
 

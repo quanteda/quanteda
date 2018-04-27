@@ -40,3 +40,6 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+environment:
+  R_VERSION: 3.4.4

@@ -101,14 +101,7 @@ char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
             x[i] <- stri_replace_all_regex(x[i], paste0('\\b', m, '\\b'), 
                                                  paste0('\uE000', m, '\uE001'), 
                                            vectorize_all = FALSE)
-            x[i] <- stri_trans_tolower(x[i]
-                                       
-                                       
-                                       
-                                       
-                                       
-                                       
-                                       )
+            x[i] <- stri_trans_tolower(x[i])
             x[i] <- stri_replace_all_regex(x[i], paste0('\uE000', stri_trans_tolower(m), '\uE001'), 
                                                  m, vectorize_all = FALSE)
         }
