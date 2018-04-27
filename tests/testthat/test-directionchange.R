@@ -1,9 +1,8 @@
 context("test direction change functions")
 
 # Note: the line below does not appear correctly in R Studio
-txt <- c("a b c d.") 
+txt <- "מדינת ישראל נוסדה בשנת 1948."
 
 test_that("char_tortl works.", {
-    expect_equal(char_tolower(txt), "a b c d.\U200F")
-    utf8ToInt('a b c d.\U200F')
+    expect_equal(char_tortl(txt), "מדינת ישראל נוסדה בשנת 1948.\u200F")
 })
