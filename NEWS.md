@@ -1,3 +1,11 @@
+# Since quanteda v1.2.0
+
+### Bug fixes and stability enhancements
+
+* `dfm_remove(x, selection = anydfm)` is now equivalent to `dfm_remove(x, selection = featnames(anydfm))`.  (#1320)
+
+
+
 # quanteda v1.2.0
 
 ### New Features
