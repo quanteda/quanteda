@@ -5,9 +5,11 @@ txt <- "מדינת ישראל נוסדה בשנת 1948."
 toks <- tokens(txt)
 
 test_that("char_tortl works.", {
+    skip_on_os("windows")
     expect_equal(char_tortl(txt), "מדינת ישראל נוסדה בשנת 1948.\u200F")
 })
 
 test_that("tokens_tortl works.", {
+    skip_on_os("windows")
     expect_equal(types(tokens_tortl(toks)), types(tokens(char_tortl(txt))))
 })
