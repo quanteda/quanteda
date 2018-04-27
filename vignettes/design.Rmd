@@ -64,7 +64,7 @@ Note that a core object class in **quanteda** is also the `character` atomic typ
 
 All functions that begin with the name of a core object class will both _input_ and _output_ an object of this class, without exception.
 
-This replaces the approach in versions up to 0.9.8.5 where a general methods such as `selectFeatures()` was defined for each applicable class of core object.  This approach made the specific function behaviour unpredictable from the description of the general behaviour.  It also made it difficult to get an overview of the functionality available for each object class.  By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.  
+This replaces the approach in versions up to 0.9.8.5 where a general method such as `selectFeatures()` was defined for each applicable class of core object.  This approach made the specific function behaviour unpredictable from the description of the general behaviour.  It also made it difficult to get an overview of the functionality available for each object class.  By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.  
 
 ### Advantages
 
@@ -72,7 +72,7 @@ In our view, the advantages of this clarity outweigh whatever advantages might b
 
 ### Why are some operations unavailable for specific object types?
 
-Because not every operation makes sense for every object type.  Take the example of a "feature co-occurrence matrix", or `fcm`.  Construction of a feature co-occurrence matrix is be slightly different from constructing a dfm. Unlike the "Swiss-army" knife approach of `dfm()`, which can operate directly on texts, `fcm()` works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options.  In addition, `fcm()` is likely to be used a lot less frequently, and primarily by more expert users.
+Because not every operation makes sense for every object type.  Take the example of a "feature co-occurrence matrix", or `fcm`.  Construction of a feature co-occurrence matrix is slightly different from constructing a dfm. Unlike the "Swiss-army" knife approach of `dfm()`, which can operate directly on texts, `fcm()` works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options.  In addition, `fcm()` is likely to be used a lot less frequently, and primarily by more expert users.
 
 Furthermore, many functions defined for `fcm()` objects _should_ be unavailable, because they violate the principles of the object.  For instance, `fcm_wordstem()` and `fcm_tolower()` should not be applied to `fcm()` objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.
 
@@ -132,7 +132,7 @@ Additional functions have been defined for **quanteda** objects that are [very s
     
     **By default**, `tokens()` extracts word tokens, and only `remove_separators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokens()`.
 
-    For converting to lowercase, it is actually faster to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for `character`,`tokens`, and `dfm` objects.
+    For converting to lowercase, it is actually faster to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for `character`, `tokens`, and `dfm` objects.
     
     Since the tokenizer we will use may not distinguish the punctuation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters.  This will slow down processing but will only be active by explicit user request for this type of handling to take place. 
     
@@ -144,10 +144,10 @@ Additional functions have been defined for **quanteda** objects that are [very s
     Once features have been identified and separated from the texts in the tokenization step, features may be removed from token lists, or 
     handled as part of `dfm` construction.  Features may be:
     *   *eliminated* through use of predefined lists or patterns of *stop words*, using `dfm(x, remove = )` or `tokens_remove()`
-    *   *kept* through through use of predefined lists or patterns of *stop words*, using `dfm(x, select = )` or `tokens_select()`
+    *   *kept* through use of predefined lists or patterns of *stop words*, using `dfm(x, select = )` or `tokens_select()`
     *   *collapsed* by:
         *   considering morphological variations as equivalent to a stem or lemma, through `stem` option in `dfm` (or `dfm_wordstem()`)
-        *   considering lists of features as equivalent to a *dictionary* key, either exclusively using `dfm(x, `dictionary = )` or as a supplement to uncollapsed features through `dfm(x, `thesaurus = )`
+        *   considering lists of features as equivalent to a *dictionary* key, either exclusively using `dfm(x, dictionary = )` or as a supplement to uncollapsed features through `dfm(x, thesaurus = )`
         *   `tokens_tolower()` or `dfm_tolower()` to consider as equivalent the same word features despite having different cases, by converting all features to lower case
         
     It will be sometimes possible to perform these steps separately from the `dfm` creation stage, but in most cases these steps will be performed as options to the `dfm()` function.
