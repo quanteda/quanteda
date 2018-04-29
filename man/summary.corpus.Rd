@@ -20,9 +20,8 @@ meta-data}
 \item{...}{additional arguments passed through to \code{\link{tokens}}}
 }
 \description{
-Displays information about a corpus, including
-includes attributes and metadata such as date of number of texts, creation 
-and source.
+Displays information about a corpus, including attributes and metadata such
+as date of number of texts, creation and source.
 }
 \examples{
 summary(data_corpus_inaugural)
