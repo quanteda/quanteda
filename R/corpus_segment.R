@@ -3,7 +3,7 @@
 #' Segment corpus text(s) or a character vector, splitting
 #' on a pattern match.  This is useful for breaking the texts into smaller
 #' documents based on a regular pattern (such as a speaker identifier in a
-#' transcript) or a user-supplied annotation (a "tag").
+#' transcript) or a user-supplied annotation.
 #' 
 #' For segmentation into syntactic units defined by the locale (such as 
 #' sentences), use \code{\link{corpus_reshape}} instead.  In cases where more 
@@ -16,9 +16,10 @@
 #' @inheritParams valuetype
 #' @param extract_pattern extracts matched patterns from the texts and save in docvars if
 #'   \code{TRUE}
-#' @param pattern_position either \code{"before"} or \code{"after"}, depending 
-#'   on whether the pattern precedes the text (as with a tag) or follows the 
-#'   text (as with punctuation delimiters)
+#' @param pattern_position either \code{"before"} or \code{"after"}, depending
+#'   on whether the pattern precedes the text (as with a user-supplied tag, such
+#'   as \code{##INTRO} in the examples below) or follows the text (as with
+#'   punctuation delimiters)
 #' @param use_docvars if \code{TRUE}, repeat the docvar values for each 
 #'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
 #'   Dropping the docvars might be useful in order to conserve space or if these

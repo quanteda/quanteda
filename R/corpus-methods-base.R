@@ -48,9 +48,8 @@ is.corpuszip <- function(x) {
 
 #' Summarize a corpus
 #' 
-#' Displays information about a corpus, including
-#' includes attributes and metadata such as date of number of texts, creation 
-#' and source.  
+#' Displays information about a corpus, including attributes and metadata such
+#' as date of number of texts, creation and source.
 #' 
 #' @param object corpus to be summarized
 #' @param n maximum number of texts to describe, default=100

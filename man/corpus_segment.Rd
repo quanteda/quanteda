@@ -25,9 +25,10 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{extract_pattern}{extracts matched patterns from the texts and save in docvars if
 \code{TRUE}}
 
-\item{pattern_position}{either \code{"before"} or \code{"after"}, depending 
-on whether the pattern precedes the text (as with a tag) or follows the 
-text (as with punctuation delimiters)}
+\item{pattern_position}{either \code{"before"} or \code{"after"}, depending
+on whether the pattern precedes the text (as with a user-supplied tag, such
+as \code{##INTRO} in the examples below) or follows the text (as with
+punctuation delimiters)}
 
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
 segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
@@ -45,7 +46,7 @@ are not desired for the segmented corpus.}
 Segment corpus text(s) or a character vector, splitting
 on a pattern match.  This is useful for breaking the texts into smaller
 documents based on a regular pattern (such as a speaker identifier in a
-transcript) or a user-supplied annotation (a "tag").
+transcript) or a user-supplied annotation.
 }
 \details{
 For segmentation into syntactic units defined by the locale (such as 
