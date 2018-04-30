@@ -225,18 +225,15 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     } else {
         data <- as.dfm(object$x)
     }
-    
-    # remove any words for which zero probabilities
+
+    # remove any words with zero probabilities (this should be done in fitting)
     is_zero <- colSums(object$PwGc) == 0
     if (any(is_zero)) {
-        object$PwGc <- object$PwGc[!is_zero]
-        object$PcGw <- object$PcGw[!is_zero]
-        object$Pw <- object$Pw[!is_zero]
-        object$x <- object$x[,!is_zero]
-        data <- data[,!is_zero] 
+        object$PwGc <- object$PwGc[,!is_zero,drop = FALSE]
+        object$PcGw <- object$PcGw[,!is_zero,drop = FALSE]
+        object$Pw <- object$Pw[!is_zero,,drop = FALSE]
     }
-
-    data <- dfm_select(data, as.dfm(object$PwGc))
+    data <- dfm_select(data, as.dfm(object$PcGw))
     
     if (object$distribution == "multinomial") {
         

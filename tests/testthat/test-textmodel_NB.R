@@ -110,3 +110,10 @@ test_that("Works with newdata with different features from the model (#1329)", {
     
 })
 
+test_that("Works with features with zero probability", {
+  
+    mt <- as.dfm(matrix(c(0, 0, 3, 1, 4, 2), nrow = 2))
+    nb <- textmodel_nb(mt, factor(1:2), smooth = 0)
+    expect_silent(predict(nb))
+})
+
