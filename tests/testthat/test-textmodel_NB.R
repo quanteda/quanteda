@@ -100,4 +100,13 @@ test_that("Bernoulli nb predicted values are correct", {
     )
 })
 
+test_that("Works with newdata with different features from the model (#1329)", {
+    
+    mt1 <- dfm(c(text1 = "a b c", text2 = "d e f"))
+    mt2 <- dfm(c(text3 = "a b c", text4 = "d e f g"))
+    
+    nb <- textmodel_nb(mt1, factor(1:2))
+    expect_silent(predict(nb, newdata = mt2))
+    
+})
 

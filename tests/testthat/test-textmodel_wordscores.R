@@ -217,3 +217,13 @@ test_that("additional quanteda methods", {
     expect_equal(docnames(ws), docnames(data_dfm_lbgexample))
     expect_equal(featnames(ws), featnames(data_dfm_lbgexample))
 })
+
+test_that("Works with newdata with different features from the model (#1329)", {
+    
+    mt1 <- dfm(c(text1 = "a b c", text2 = "d e f"))
+    mt2 <- dfm(c(text3 = "a b c", text4 = "d e f g"))
+    
+    ws <- textmodel_wordscores(mt1, 1:2)
+    expect_silent(predict(ws, newdata = mt2))
+
+})

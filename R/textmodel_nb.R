@@ -219,52 +219,46 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
-    if (is.null(newdata)) newdata <- as.dfm(object$x)
-
-    # remove any words for which zero probabilities exist in training set --
-    # would happen if smooth=0
-    # the condition assigns the index of zero occurring words to vector 
-    # "notinref" and only trims the objects if this index has length > 0
-    if (length(notinref <- which(colSums(object$PwGc) == 0))) {
-        object$PwGc <- object$PwGc[-notinref]
-        object$PcGw <- object$PcGw[-notinref]
-        object$Pw   <- object$Pw[-notinref]
-        object$x <- object$x[, -notinref]
-        newdata <- newdata[, -notinref] 
-    }
-
-    # make sure feature set is ordered the same in test and training set (#490)
-    if (ncol(object$PcGw) != ncol(newdata))
-        stop("feature set in newdata different from that in training set")
-    if (!identical(colnames(object$PcGw), colnames(newdata)) || 
-        setequal(colnames(object$PcGw), colnames(newdata))) {
-        # if feature names are the same but diff order, reorder
-        newdata <- newdata[, colnames(object$PcGw)]
+    
+    if (!is.null(newdata)) {
+        data <- as.dfm(newdata)
     } else {
-        stop("feature set in newdata different from that in training set")
+        data <- as.dfm(object$x)
     }
+    
+    # remove any words for which zero probabilities
+    is_zero <- colSums(object$PwGc) == 0
+    if (any(is_zero)) {
+        object$PwGc <- object$PwGc[!is_zero]
+        object$PcGw <- object$PcGw[!is_zero]
+        object$Pw <- object$Pw[!is_zero]
+        object$x <- object$x[,!is_zero]
+        data <- data[,!is_zero] 
+    }
+
+    data <- dfm_select(data, as.dfm(object$PwGc))
     
     if (object$distribution == "multinomial") {
         
         # log P(d|c) class conditional document likelihoods
-        log.lik <- newdata %*% t(log(object$PwGc))
+        log.lik <- data %*% t(log(object$PwGc))
         # weight by class priors
         log.posterior.lik <- t(apply(log.lik, 1, "+", log(object$Pc)))
         
     } else if (object$distribution == "Bernoulli") {
         
-        newdata <- dfm_weight(newdata, "boolean")
+        data <- dfm_weight(data, "boolean")
         Nc <- length(object$Pc)
         
         # initialize log posteriors with class priors
         log.posterior.lik <- matrix(log(object$Pc), byrow = TRUE, 
-                                    ncol = Nc, nrow = nrow(newdata),
-                                    dimnames = list(rownames(newdata), names(object$Pc)))
+                                    ncol = Nc, nrow = nrow(data),
+                                    dimnames = list(rownames(data), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
         for (c in seq_len(Nc)) {
-            tmp1 <- log(t(newdata) * object$PwGc[c, ])
+            tmp1 <- log(t(data) * object$PwGc[c, ])
             tmp1[is.infinite(tmp1)] <- 0
-            tmp0 <- log(t(!newdata) * (1 - object$PwGc[c, ]))
+            tmp0 <- log(t(!data) * (1 - object$PwGc[c, ]))
             tmp0[is.infinite(tmp0)] <- 0
             log.posterior.lik[, c] <- log.posterior.lik[, c] + colSums(tmp0) + colSums(tmp1)
         }
