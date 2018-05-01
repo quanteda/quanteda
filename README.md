@@ -47,20 +47,22 @@ Or for the latest development version:
 devtools::install_github("quanteda/quanteda") 
 ```
 
-Because this compiles some C++ source code, you will need a compiler
-installed. **If you are using a Windows platform**, this means you will
-need also to install the
-[Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software
-available from CRAN. **If you are using macOS**, you will need to to
-install XCode, available for free from the App Store, or if you prefer a
-lighter footprint set of tools, [just the Xcode command line
-tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/),
-using the command `xcode-select --install` from the Terminal.
+Because this compiles some C++ and Fortran source code, you will need to
+have installed the appropriate compilers.
+
+**If you are using a Windows platform**, this means you will need also
+to install the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/)
+software available from CRAN.
+
+**If you are using macOS**, you should install the [macOS
+tools](https://cran.r-project.org/bin/macosx/tools/), namely the Clang
+6.x compiler and the GNU Fortran compiler (as **quanteda** requires
+gfortran to build).
 
 ## How to Use
 
 See the [quick start
-quide](http://docs.quanteda.io/articles/pkgdown/quickstart.html) to
+guide](http://docs.quanteda.io/articles/pkgdown/quickstart.html) to
 learn how to use **quanteda**.
 
 ## Leaving Feedback
@@ -84,5 +86,5 @@ are most welcome. How to contribute:
   - Issues, bug reports, and wish lists: [File a GitHub
     issue](https://github.com/quanteda/quanteda/issues).
   - Usage questions: Submit a question on the [**quanteda** channel on
-    StackOverflow](http://stackoverflow.com/questions/tagged/quanteda).
-  - Contact [the maintainer](kbenoit@lse.ac.uk) by email.
+    StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+  - Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
