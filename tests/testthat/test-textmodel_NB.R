@@ -89,14 +89,14 @@ test_that("Bernoulli likelihoods and class posteriors are correct", {
 test_that("Bernoulli nb predicted values are correct", {
     book_lik_Y <- 3/4 * 4/5 * 1/5 * 1/5 * (1-2/5) * (1-2/5) * (1-2/5)  # 0.005184 
     book_lik_N <- 1/4 * 2/3 * 2/3 * 2/3 * (1-1/3) * (1-1/3) * (1-1/3)  # 0.02194787
-    nb_bern_smooth_pred <- predict(nb_bern_smooth, type = "posterior.prob")
+    nb_bern_smooth_pred <- predict(nb_bern_smooth, type = "prob")
     expect_equal( 
         book_lik_Y / (book_lik_Y + book_lik_N),
-        nb_bern_smooth_pred$posterior.prob["d5", "Y"]
+        nb_bern_smooth_pred$prob["d5", "Y"]
     )
     expect_equal( 
         book_lik_N / (book_lik_Y + book_lik_N),
-        nb_bern_smooth_pred$posterior.prob["d5", "N"]
+        nb_bern_smooth_pred$prob["d5", "N"]
     )
 })
 
@@ -107,10 +107,10 @@ test_that("Works with newdata with different features from the model (#1329 and 
     
     nb <- textmodel_nb(mt1, factor(1:2))
     
-    expect_silent(predict(ws, newdata = mt, force = TRUE))
-    expect_warning(predict(ws, newdata = mt2, force = TRUE),
+    expect_silent(predict(nb, newdata = mt1, force = TRUE))
+    expect_warning(predict(nb, newdata = mt2, force = TRUE),
                    "1 features are added to make the feature set conformant.")
-    expect_error(predict(ws, newdata = mt2),
+    expect_error(predict(nb, newdata = mt2),
                  "newdata's feature set is not conformant to model terms\\.")
 })
 
@@ -127,12 +127,12 @@ test_that("types wokrs (#1322)", {
     expect_identical(names(pr), docnames(nb_multi_smooth))
     expect_is(pr, "factor")
     
-    pr_prob <- predict(nb_multi_smooth, type = "posterior.prob")
-    expect_identical(names(pr_prob), "posterior.prob")
-    expect_is(pr_prob$posterior.prob, "matrix")
+    pr_prob <- predict(nb_multi_smooth, type = "prob")
+    expect_identical(names(pr_prob), "prob")
+    expect_is(pr_prob$prob, "matrix")
     
-    pr_lik <- predict(nb_multi_smooth, type = "log.posterior.lik")
-    expect_identical(names(pr_lik), "log.posterior.lik")
-    expect_is(pr_lik$log.posterior.lik, "matrix")
+    pr_lik <- predict(nb_multi_smooth, type = "link")
+    expect_identical(names(pr_lik), "link")
+    expect_is(pr_lik$link, "matrix")
     
 })

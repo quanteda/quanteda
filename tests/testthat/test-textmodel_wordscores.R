@@ -224,7 +224,7 @@ test_that("Works with newdata with different features from the model (#1329)", {
     mt2 <- dfm(c(text3 = "a b c", text4 = "e f g"))
     
     ws <- textmodel_wordscores(mt1, 1:2)
-    expect_silent(predict(ws, newdata = mt, force = TRUE))
+    expect_silent(predict(ws, newdata = mt1, force = TRUE))
     expect_warning(predict(ws, newdata = mt2, force = TRUE),
                   "1 features are added to make the feature set conformant.")
     expect_error(predict(nb, newdata = mt2),
