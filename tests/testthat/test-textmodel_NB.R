@@ -6,24 +6,24 @@ txt <- c(d1 = "Chinese Beijing Chinese",
          d3 = "Chinese Macao",
          d4 = "Tokyo Japan Chinese",
          d5 = "Chinese Chinese Chinese Tokyo Japan")
-trainingset <- dfm(txt, tolower = FALSE)
-trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
+nb_dfm <- dfm(txt, tolower = FALSE)
+nb_class <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 
 nb_multi_smooth <- 
-    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "multinomial", smooth = 1)
+    textmodel_nb(nb_dfm, nb_class, prior = "docfreq", distribution = "multinomial", smooth = 1)
 nb_multi_nosmooth <- 
-    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "multinomial", smooth = 0)
+    textmodel_nb(nb_dfm, nb_class, prior = "docfreq", distribution = "multinomial", smooth = 0)
 nb_bern_smooth <- 
-    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "Bernoulli", smooth = 1)
+    textmodel_nb(nb_dfm, nb_class, prior = "docfreq", distribution = "Bernoulli", smooth = 1)
 nb_bern_nosmooth <- 
-    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "Bernoulli", smooth = 0)
+    textmodel_nb(nb_dfm, nb_class, prior = "docfreq", distribution = "Bernoulli", smooth = 0)
 
 test_that("class priors are preserved in correct order", {
-    expect_equal(textmodel_nb(trainingset, trainingclass, prior = "uniform")$Pc,
+    expect_equal(textmodel_nb(nb_dfm, nb_class, prior = "uniform")$Pc,
                  c(Y = 0.5, N = 0.5))
-    expect_equal(textmodel_nb(trainingset, trainingclass, prior = "docfreq")$Pc,
+    expect_equal(textmodel_nb(nb_dfm, nb_class, prior = "docfreq")$Pc,
                  c(Y = 0.75, N = 0.25))
-    expect_equal(round(textmodel_nb(trainingset, trainingclass, prior = "termfreq")$Pc, 2),
+    expect_equal(round(textmodel_nb(nb_dfm, nb_class, prior = "termfreq")$Pc, 2),
                  c(Y = 0.73, N = 0.27))
 })
 
@@ -89,7 +89,7 @@ test_that("Bernoulli likelihoods and class posteriors are correct", {
 test_that("Bernoulli nb predicted values are correct", {
     book_lik_Y <- 3/4 * 4/5 * 1/5 * 1/5 * (1-2/5) * (1-2/5) * (1-2/5)  # 0.005184 
     book_lik_N <- 1/4 * 2/3 * 2/3 * 2/3 * (1-1/3) * (1-1/3) * (1-1/3)  # 0.02194787
-    nb_bern_smooth_pred <- predict(nb_bern_smooth, type = "prob")
+    nb_bern_smooth_pred <- predict(nb_bern_smooth, nb_dfm, type = "prob")
     expect_equal( 
         book_lik_Y / (book_lik_Y + book_lik_N),
         nb_bern_smooth_pred$prob["d5", "Y"]
