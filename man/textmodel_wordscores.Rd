@@ -41,7 +41,6 @@ The \code{textmodel_wordscores()} function and the associated
 summary(ws)
 coef(ws)
 predict(ws)
-predict(ws, include_reftexts = FALSE)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
 predict(ws, se.fit = TRUE)

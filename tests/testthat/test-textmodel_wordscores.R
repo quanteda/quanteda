@@ -183,9 +183,10 @@ test_that("textmodel_wordscores print methods work", {
 test_that("additional quanteda methods", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(-1.5, NA, NA, NA, .75, NA))
     expect_equal(ndoc(ws), 2)
-    expect_equal(nfeat(ws), 37)
+    expect_equal(nfeat(ws), 34)
     expect_equal(docnames(ws), c("R1", "R5"))
-    expect_equal(featnames(ws), featnames(data_dfm_lbgexample))
+    expect_equal(featnames(ws), 
+                 featnames(dfm_trim(data_dfm_lbgexample[c(1, 5),], 1)))
 })
 
 test_that("Works with newdata with different features from the model (#1329)", {
@@ -197,7 +198,7 @@ test_that("Works with newdata with different features from the model (#1329)", {
     expect_silent(predict(ws, newdata = mt1, force = TRUE))
     expect_warning(predict(ws, newdata = mt2, force = TRUE),
                   "1 features are added to make the feature set conformant.")
-    expect_error(predict(nb, newdata = mt2),
+    expect_error(predict(ws, newdata = mt2),
                  "newdata's feature set is not conformant to model terms\\.")
 
 })
