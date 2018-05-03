@@ -123,6 +123,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
 #' @param include_reftexts if \code{FALSE}, reference texts are removed from the prediction
+#' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
 #' @return 
 #'   \code{textmodel_wordscores()} returns a list that is also classed as a
@@ -149,6 +150,7 @@ predict.textmodel_wordscores <- function(object,
                                          interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
                                          include_reftexts = TRUE,
+                                         force = FALSE,
                                          ...) {
     
     if (length(list(...)) > 0) stop("Arguments: ", names(list(...)), " not supported.\n")
@@ -164,10 +166,10 @@ predict.textmodel_wordscores <- function(object,
     
     # Compute text scores as weighted mean of word scores in "virgin" document
     sw <- coef(object)
-    data <- dfm_select(data, as.dfm(rbind(sw)))
+    data <- force_conformance(data, names(sw), force)
+    
     # This is different from computing term weights on only the scorable words.
     # It take rowSums() only to generates named vector.
-    sw <- sw[intersect(featnames(data), names(sw))]
     raw <- rowSums(dfm_weight(data, "prop") %*% sw)
     
     # if (verbose)

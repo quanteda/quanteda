@@ -100,14 +100,18 @@ test_that("Bernoulli nb predicted values are correct", {
     )
 })
 
-test_that("Works with newdata with different features from the model (#1329)", {
+test_that("Works with newdata with different features from the model (#1329 and #1322)", {
     
     mt1 <- dfm(c(text1 = "a b c", text2 = "d e f"))
-    mt2 <- dfm(c(text3 = "a b c", text4 = "d e f g"))
+    mt2 <- dfm(c(text3 = "a b c", text4 = "e f g"))
     
     nb <- textmodel_nb(mt1, factor(1:2))
-    expect_silent(predict(nb, newdata = mt2))
     
+    expect_silent(predict(ws, newdata = mt, force = TRUE))
+    expect_warning(predict(ws, newdata = mt2, force = TRUE),
+                   "1 features are added to make the feature set conformant.")
+    expect_error(predict(ws, newdata = mt2),
+                 "newdata's feature set is not conformant to model terms\\.")
 })
 
 test_that("Works with features with zero probability", {

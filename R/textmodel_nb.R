@@ -200,6 +200,8 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' Naive Bayes model. using trained Naive Bayes examples
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
+#' @param type the type of predicted values to be returned
+#' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
 #' @return \code{predict.textmodel_nb} returns a list of two data frames, named
 #'   \code{docs} and \code{words} corresponding to word- and document-level
@@ -216,9 +218,11 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' predict(nb)
 #' @keywords textmodel internal
 #' @export
-predict.textmodel_nb <- function(object, newdata = NULL, ...) {
+predict.textmodel_nb <- function(object, newdata = NULL, 
+                                 type = c("class", "posterior.prob", "log.posterior.lik"),
+                                 force = FALSE, ...) {
     
-    call <- match.call()
+    type <- match.arg(type)
     
     if (!is.null(newdata)) {
         data <- as.dfm(newdata)
@@ -233,7 +237,7 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
         object$PcGw <- object$PcGw[,!is_zero,drop = FALSE]
         object$Pw <- object$Pw[!is_zero,,drop = FALSE]
     }
-    data <- dfm_select(data, as.dfm(object$PcGw))
+    data <- force_conformance(data, colnames(object$PwGc), force)
     
     if (object$distribution == "multinomial") {
         
@@ -261,31 +265,35 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
         }
     } 
 
-    
     # predict MAP class
     nb.predicted <- colnames(log.posterior.lik)[apply(log.posterior.lik, 1, which.max)]
     
-    ## now compute class posterior probabilities
-    # initialize posterior probabilities matrix
-    posterior.prob <- matrix(NA, ncol = ncol(log.posterior.lik), 
-                             nrow = nrow(log.posterior.lik),
-                             dimnames = dimnames(log.posterior.lik))
-
-    # compute posterior probabilities
-    for (j in seq_len(ncol(log.posterior.lik))) {
-        base.lpl <- log.posterior.lik[, j]
-        posterior.prob[, j] <- 1 / 
-            (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
+    
+    if (type == "class") {
+        names(nb.predicted) <- docnames(data)
+        return(factor(nb.predicted, levels = names(object$Pc)))
+    } else if (type == "posterior.prob") {
+        
+        ## compute class posterior probabilities
+        posterior.prob <- matrix(NA, ncol = ncol(log.posterior.lik), 
+                                 nrow = nrow(log.posterior.lik),
+                                 dimnames = dimnames(log.posterior.lik))
+        
+        # compute posterior probabilities
+        for (j in seq_len(ncol(log.posterior.lik))) {
+            base.lpl <- log.posterior.lik[, j]
+            posterior.prob[, j] <- 1 / 
+                (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
+        }
+        
+        result <- list(posterior.prob = posterior.prob,
+                       classlabels = names(object$Pc))
+        
+    } else if (type == "log.posterior.lik") {
+        
+        result <- list(log.posterior.lik = log.posterior.lik,
+                       classlabels = names(object$Pc))
     }
-
-    result <- list(
-        log.posterior.lik = log.posterior.lik,
-        posterior.prob = posterior.prob,
-        nb.predicted = nb.predicted,
-        Pc = object$Pc,
-        classlabels = names(object$Pc),
-        call = call
-    )
     class(result) <- c("predict.textmodel_nb", "list")
     result
 }
