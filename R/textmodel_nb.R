@@ -286,13 +286,11 @@ predict.textmodel_nb <- function(object, newdata = NULL,
                 (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
         }
         
-        result <- list(posterior.prob = posterior.prob,
-                       classlabels = names(object$Pc))
+        result <- list(posterior.prob = posterior.prob)
         
     } else if (type == "log.posterior.lik") {
         
-        result <- list(log.posterior.lik = log.posterior.lik,
-                       classlabels = names(object$Pc))
+        result <- list(log.posterior.lik = log.posterior.lik)
     }
     class(result) <- c("predict.textmodel_nb", "list")
     result
