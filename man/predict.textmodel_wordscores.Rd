@@ -6,7 +6,8 @@
 \usage{
 \method{predict}{textmodel_wordscores}(object, newdata = NULL,
   se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
-  rescaling = c("none", "lbg", "mv"), include_reftexts = TRUE, ...)
+  rescaling = c("none", "lbg", "mv"), include_reftexts = TRUE,
+  force = FALSE, ...)
 }
 \arguments{
 \item{object}{a fitted Wordscores textmodel}
@@ -24,6 +25,8 @@ rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg
 (2007).  See References.}
 
 \item{include_reftexts}{if \code{FALSE}, reference texts are removed from the prediction}
+
+\item{force}{make newdata's feature set conformant to the model terms}
 
 \item{...}{not used}
 }

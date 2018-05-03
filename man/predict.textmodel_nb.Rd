@@ -4,12 +4,17 @@
 \alias{predict.textmodel_nb}
 \title{Prediction from a fitted textmodel_nb object}
 \usage{
-\method{predict}{textmodel_nb}(object, newdata = NULL, ...)
+\method{predict}{textmodel_nb}(object, newdata = NULL, type = c("class",
+  "prob", "link"), force = FALSE, ...)
 }
 \arguments{
 \item{object}{a fitted Naive Bayes textmodel}
 
 \item{newdata}{dfm on which prediction should be made}
+
+\item{type}{the type of predicted values to be returned}
+
+\item{force}{make newdata's feature set conformant to the model terms}
 
 \item{...}{not used}
 }
