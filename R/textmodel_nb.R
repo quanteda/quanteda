@@ -115,7 +115,6 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     y <- factor(y)
     x <- dfm_trim(x[!is.na(y),], min_termfreq = 1)
     y <- y[!is.na(y)]
-    level <- levels(y)
     
     ## distribution
     if (distribution == "Bernoulli") {
@@ -123,37 +122,25 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     } else {
         temp <- x
     }
-    rownames(temp) <- y
+    temp <- dfm_group(temp, y)
     
-    ## prior
-    if (prior=="uniform") {
-        Pc <- rep(1 / length(level), length(level))
-        names(Pc) <- level
+    freq <- rowSums(as.matrix(table(y)))
+    if (prior == "uniform") {
+        Pc <- rep(1 / ndoc(temp), ndoc(temp))
+        names(Pc) <- docnames(temp)
     } else if (prior == "docfreq") {
-        Pc <- prop.table(table(y))
-        Pc_names <- names(Pc)
-        attributes(Pc) <- NULL
-        names(Pc) <- Pc_names
+        Pc <- freq
+        Pc <- Pc / sum(Pc)
     } else if (prior == "termfreq") {
-        # weighted means the priors are by total words in each class
-        # (the probability that any given word is in a particular class)
-        colnames(temp) <- rep("all_same", nfeat(temp))
-        temp <- dfm_compress(temp)
-        Pc <- prop.table(as.matrix(temp))
-        Pc_names <- rownames(Pc)
-        attributes(Pc) <- NULL
-        names(Pc) <- Pc_names
+        Pc <- rowSums(temp)
+        Pc <- Pc / sum(Pc)
     }
     
-    ## multinomial ikelihood: class x words, rows sum to 1
-    # combine all of the class counts
-    temp <- dfm_compress(temp, margin = "both")
-
     if (distribution == "multinomial") {
         PwGc <- dfm_weight(dfm_smooth(temp, smooth), scheme = "prop")
     } else if (distribution == "Bernoulli") {
         # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
-        PwGc <- (temp + smooth) / (as.numeric(table(y))[docnames(temp)] + smooth * ndoc(temp))
+        PwGc <- (temp + smooth) / (freq + smooth * ndoc(temp))
         PwGc <- as(PwGc, "dgeMatrix")
     }
     

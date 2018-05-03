@@ -20,11 +20,11 @@ nb_bern_nosmooth <-
 
 test_that("class priors are preserved in correct order", {
     expect_equal(textmodel_nb(nb_dfm, nb_class, prior = "uniform")$Pc,
-                 c(Y = 0.5, N = 0.5))
+                 c(N = 0.5, Y = 0.5))
     expect_equal(textmodel_nb(nb_dfm, nb_class, prior = "docfreq")$Pc,
-                 c(Y = 0.75, N = 0.25))
+                 c(N = 0.25, Y = 0.75))
     expect_equal(round(textmodel_nb(nb_dfm, nb_class, prior = "termfreq")$Pc, 2),
-                 c(Y = 0.73, N = 0.27))
+                 c(N = 0.27, Y = 0.73))
 })
 
 
