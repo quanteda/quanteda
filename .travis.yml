@@ -7,8 +7,6 @@ latex: false
 r_packages:
   - covr
   - ExPosition
-r_binary_packages:
-  - topicmodels
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
