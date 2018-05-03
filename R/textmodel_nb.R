@@ -219,7 +219,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' @keywords textmodel internal
 #' @export
 predict.textmodel_nb <- function(object, newdata = NULL, 
-                                 type = c("class", "posterior.prob", "log.posterior.lik"),
+                                 type = c("class", "prob", "link"),
                                  force = FALSE, ...) {
     
     type <- match.arg(type)
@@ -230,21 +230,21 @@ predict.textmodel_nb <- function(object, newdata = NULL,
         data <- as.dfm(object$x)
     }
 
-    # remove any words with zero probabilities (this should be done in fitting)
-    is_zero <- colSums(object$PwGc) == 0
-    if (any(is_zero)) {
-        object$PwGc <- object$PwGc[,!is_zero,drop = FALSE]
-        object$PcGw <- object$PcGw[,!is_zero,drop = FALSE]
-        object$Pw <- object$Pw[!is_zero,,drop = FALSE]
-    }
+    # # remove any words with zero probabilities (this should be done in fitting)
+    # is_zero <- colSums(object$PwGc) == 0
+    # if (any(is_zero)) {
+    #     object$PwGc <- object$PwGc[,!is_zero,drop = FALSE]
+    #     object$PcGw <- object$PcGw[,!is_zero,drop = FALSE]
+    #     object$Pw <- object$Pw[!is_zero,,drop = FALSE]
+    # }
     data <- force_conformance(data, colnames(object$PwGc), force)
     
     if (object$distribution == "multinomial") {
         
         # log P(d|c) class conditional document likelihoods
-        log.lik <- data %*% t(log(object$PwGc))
+        log_link <- data %*% t(log(object$PwGc))
         # weight by class priors
-        log.posterior.lik <- t(apply(log.lik, 1, "+", log(object$Pc)))
+        post_link <- t(apply(log_link, 1, "+", log(object$Pc)))
         
     } else if (object$distribution == "Bernoulli") {
         
@@ -252,7 +252,7 @@ predict.textmodel_nb <- function(object, newdata = NULL,
         Nc <- length(object$Pc)
         
         # initialize log posteriors with class priors
-        log.posterior.lik <- matrix(log(object$Pc), byrow = TRUE, 
+        post_link <- matrix(log(object$Pc), byrow = TRUE, 
                                     ncol = Nc, nrow = nrow(data),
                                     dimnames = list(rownames(data), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
@@ -261,36 +261,34 @@ predict.textmodel_nb <- function(object, newdata = NULL,
             tmp1[is.infinite(tmp1)] <- 0
             tmp0 <- log(t(!data) * (1 - object$PwGc[c, ]))
             tmp0[is.infinite(tmp0)] <- 0
-            log.posterior.lik[, c] <- log.posterior.lik[, c] + colSums(tmp0) + colSums(tmp1)
+            post_link[, c] <- post_link[, c] + colSums(tmp0) + colSums(tmp1)
         }
     } 
 
     # predict MAP class
-    nb.predicted <- colnames(log.posterior.lik)[apply(log.posterior.lik, 1, which.max)]
+    nb.predicted <- colnames(post_link)[apply(post_link, 1, which.max)]
     
     
     if (type == "class") {
         names(nb.predicted) <- docnames(data)
         return(factor(nb.predicted, levels = names(object$Pc)))
-    } else if (type == "posterior.prob") {
+    } else if (type == "prob") {
         
         ## compute class posterior probabilities
-        posterior.prob <- matrix(NA, ncol = ncol(log.posterior.lik), 
-                                 nrow = nrow(log.posterior.lik),
-                                 dimnames = dimnames(log.posterior.lik))
+        post_prob <- matrix(NA, ncol = ncol(post_link), nrow = nrow(post_link),
+                            dimnames = dimnames(post_link))
         
         # compute posterior probabilities
-        for (j in seq_len(ncol(log.posterior.lik))) {
-            base.lpl <- log.posterior.lik[, j]
-            posterior.prob[, j] <- 1 / 
-                (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
+        for (j in seq_len(ncol(post_link))) {
+            base_lpl <- post_link[, j]
+            post_prob[, j] <- 1 / (1 + rowSums(exp(post_link[, -j, drop = FALSE] - base_lpl)))
         }
         
-        result <- list(posterior.prob = posterior.prob)
+        result <- list(prob = post_prob)
         
-    } else if (type == "log.posterior.lik") {
+    } else if (type == "link") {
         
-        result <- list(log.posterior.lik = log.posterior.lik)
+        result <- list(link = post_link)
     }
     class(result) <- c("predict.textmodel_nb", "list")
     result
