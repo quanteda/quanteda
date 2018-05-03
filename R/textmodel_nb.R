@@ -147,17 +147,13 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     
     ## multinomial ikelihood: class x words, rows sum to 1
     # combine all of the class counts
-    d <- dfm_compress(temp, margin = "both")
+    temp <- dfm_compress(temp, margin = "both")
 
     if (distribution == "multinomial") {
-        PwGc <- dfm_weight(dfm_smooth(d, smooth), scheme = "prop")
+        PwGc <- dfm_weight(dfm_smooth(temp, smooth), scheme = "prop")
     } else if (distribution == "Bernoulli") {
-        # if (smooth != 1) {
-        #     warning("smoothing of 0 makes little sense for Bernoulli NB", 
-        #             call. = FALSE, noBreaks. = TRUE)
-        # }
         # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
-        PwGc <- (d + smooth) / (as.vector(table(docnames(temp))[docnames(d)]) + smooth * ndoc(d))
+        PwGc <- (temp + smooth) / (as.numeric(table(y))[docnames(temp)] + smooth * ndoc(temp))
         PwGc <- as(PwGc, "dgeMatrix")
     }
     
