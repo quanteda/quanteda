@@ -89,7 +89,7 @@ test_that("Bernoulli likelihoods and class posteriors are correct", {
 test_that("Bernoulli nb predicted values are correct", {
     book_lik_Y <- 3/4 * 4/5 * 1/5 * 1/5 * (1-2/5) * (1-2/5) * (1-2/5)  # 0.005184 
     book_lik_N <- 1/4 * 2/3 * 2/3 * 2/3 * (1-1/3) * (1-1/3) * (1-1/3)  # 0.02194787
-    nb_bern_smooth_pred <- predict(nb_bern_smooth)
+    nb_bern_smooth_pred <- predict(nb_bern_smooth, type = "posterior.prob")
     expect_equal( 
         book_lik_Y / (book_lik_Y + book_lik_N),
         nb_bern_smooth_pred$posterior.prob["d5", "Y"]
@@ -121,3 +121,18 @@ test_that("Works with features with zero probability", {
     expect_silent(predict(nb))
 })
 
+test_that("types wokrs (#1322)", {
+    
+    pr <- predict(nb_multi_smooth)
+    expect_identical(names(pr), docnames(nb_multi_smooth))
+    expect_is(pr, "factor")
+    
+    pr_prob <- predict(nb_multi_smooth, type = "posterior.prob")
+    expect_identical(names(pr_prob), "posterior.prob")
+    expect_is(pr_prob$posterior.prob, "matrix")
+    
+    pr_lik <- predict(nb_multi_smooth, type = "log.posterior.lik")
+    expect_identical(names(pr_lik), "log.posterior.lik")
+    expect_is(pr_lik$log.posterior.lik, "matrix")
+    
+})
