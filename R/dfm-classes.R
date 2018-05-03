@@ -217,7 +217,7 @@ cbind.dfm <- function(...) {
     }
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!nfeat(y)) return(x)
     if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
@@ -274,7 +274,7 @@ rbind.dfm <- function(...) {
     attrs <- attributes(x)
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!ndoc(y)) return(x)
     
     feature <- union(featnames(x), featnames(y))
     result <- 
