@@ -112,35 +112,31 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     distribution <- match.arg(distribution)
     call <- match.call()
     
-    y <- factor(y) # no effect if already a factor    
-    x.trset <- x[which(!is.na(y)), ]
-    y.trclass <- y[!is.na(y)]
-    types <- colnames(x)
-    docs <- rownames(x)  
-    levs <- levels(y.trclass)
+    y <- factor(y)
+    x <- x[!is.na(y)]
+    y <- y[!is.na(y)]
+    level <- levels(y)
     
     ## distribution
     if (distribution == "Bernoulli") {
-        x.trset <- dfm_weight(x.trset, "boolean")
+        temp <- dfm_weight(x, "boolean")
     } else {
-        if (distribution != "multinomial")
-            stop("Distribution can only be multinomial or Bernoulli.")
+        temp <- x
     }
+    rownames(temp) <- y
     
     ## prior
     if (prior=="uniform") {
-        Pc <- rep(1/length(levs), length(levs))
-        names(Pc) <- levs
-    } else if (prior=="docfreq") {
-        Pc <- prop.table(table(y.trclass))
+        Pc <- rep(1 / length(level), length(level))
+        names(Pc) <- level
+    } else if (prior == "docfreq") {
+        Pc <- prop.table(table(y))
         Pc_names <- names(Pc)
         attributes(Pc) <- NULL
         names(Pc) <- Pc_names
-    } else if (prior=="termfreq") {
+    } else if (prior == "termfreq") {
         # weighted means the priors are by total words in each class
         # (the probability that any given word is in a particular class)
-        temp <- x.trset
-        rownames(temp) <- y.trclass
         colnames(temp) <- rep("all_same", nfeat(temp))
         temp <- dfm_compress(temp)
         Pc <- prop.table(as.matrix(temp))
@@ -151,19 +147,17 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     
     ## multinomial ikelihood: class x words, rows sum to 1
     # combine all of the class counts
-    rownames(x.trset) <- y.trclass
-    d <- dfm_compress(x.trset, margin = "both")
+    d <- dfm_compress(temp, margin = "both")
 
     if (distribution == "multinomial") {
-        PwGc <- dfm_smooth(d, smooth) %>% dfm_weight(scheme = "prop")
+        PwGc <- dfm_weight(dfm_smooth(d, smooth), scheme = "prop")
     } else if (distribution == "Bernoulli") {
         # if (smooth != 1) {
         #     warning("smoothing of 0 makes little sense for Bernoulli NB", 
         #             call. = FALSE, noBreaks. = TRUE)
         # }
         # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
-        PwGc <- (d + smooth) / 
-            (as.vector(table(docnames(x.trset))[docnames(d)]) + smooth * ndoc(d))
+        PwGc <- (d + smooth) / (as.vector(table(docnames(x))[docnames(d)]) + smooth * ndoc(d))
         PwGc <- as(PwGc, "dgeMatrix")
     }
     
@@ -180,7 +174,6 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     Pw <- t(PwGc) %*% as.numeric(Pc)
 
     result <- list(
-        call = call,
         PwGc = as.matrix(PwGc),
         Pc = Pc,
         PcGw = as.matrix(PcGw),
@@ -188,7 +181,8 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         x = x, y = y,
         distribution = distribution,
         prior = prior,
-        smooth = smooth
+        smooth = smooth,
+        call = call
     )
     class(result) <- c("textmodel_nb", "textmodel", "list")
     result
@@ -253,8 +247,8 @@ predict.textmodel_nb <- function(object, newdata = NULL,
         
         # initialize log posteriors with class priors
         post_link <- matrix(log(object$Pc), byrow = TRUE, 
-                                    ncol = Nc, nrow = nrow(data),
-                                    dimnames = list(rownames(data), names(object$Pc)))
+                            ncol = Nc, nrow = nrow(data),
+                            dimnames = list(rownames(data), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
         for (c in seq_len(Nc)) {
             tmp1 <- log(t(data) * object$PwGc[c, ])
