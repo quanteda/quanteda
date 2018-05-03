@@ -113,7 +113,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     call <- match.call()
     
     y <- factor(y)
-    x <- x[!is.na(y)]
+    x <- dfm_trim(x[!is.na(y),], min_termfreq = 1)
     y <- y[!is.na(y)]
     level <- levels(y)
     
@@ -157,7 +157,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         #             call. = FALSE, noBreaks. = TRUE)
         # }
         # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
-        PwGc <- (d + smooth) / (as.vector(table(docnames(x))[docnames(d)]) + smooth * ndoc(d))
+        PwGc <- (d + smooth) / (as.vector(table(docnames(temp))[docnames(d)]) + smooth * ndoc(d))
         PwGc <- as(PwGc, "dgeMatrix")
     }
     

@@ -71,11 +71,11 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     if (!is.numeric(y))
         stop("wordscores model requires numeric scores.")
     
-    x <- x[!is.na(y)]
+    x <- dfm_trim(x[!is.na(y),], min_termfreq = 1)
     y <- y[!is.na(y)]
     
     if (smooth) 
-        x <- x + 1 # smooth if not 0
+        x <- dfm_smooth(x, smooth)
 
     tFwr <- t(dfm_weight(x, "prop"))
     Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
@@ -90,18 +90,12 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
             warning("\nFor logit scale, training scores are automatically rescaled to -1 and 1.")
             y <- rescaler(y)
         }
-        lower <- 1
-        upper <- 2
         if (y[1] > y[2]) { 
-            lower <- 2
-            upper <- 1
+            Sw <- log(Pwr[, 1]) - log(Pwr[, 2])
+        } else {
+            Sw <- log(Pwr[, 2]) - log(Pwr[, 1])
         }
-        Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
     }
-    
-    namesTemp <- names(Sw)
-    Sw <- as.vector(Sw[which(colSums(x) > 0)])  # remove words with zero counts in ref set
-    names(Sw) <- namesTemp[which(colSums(x) > 0)]
     
     result <- list(
         wordscores = Sw,
