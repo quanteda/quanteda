@@ -1,9 +1,9 @@
 ---
 title: 'quanteda: R package for quantitative analysis of textual data'
 tags:
-  - example
-  - tags
-  - for the paper
+  - text analysis
+  - NLP
+  - R
 authors:
  - name: Kenneth Benoit
    orcid: 0000-0000-0000-0000
@@ -37,7 +37,7 @@ affiliations:
    index: 3
  - name: Facebook inc.
    index: 4
- - name: Trinity Col ledge Dublin
+ - name: Trinity Colledge Dublin
    index: 5
 
 date: 14 February 2016
