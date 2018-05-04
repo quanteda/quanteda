@@ -1,0 +1,17 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+
+  ],
+  "identifier": "https://zenodo.org/record/1219063#.WuxZzdbTUUQ",
+  "codeRepository": "https://github.com/quanteda/quanteda.git",
+  "datePublished": "2018-05-04",
+  "dateModified": "2018-05-04",
+  "dateCreated": "2018-05-04",
+  "description": "R package for quantitative analysis of textual data",
+  "keywords": "text analysis, NLP, R",
+  "license": "GPL v3.0",
+  "title": "quanteda",
+  "version": "v1.2.0"
+}
