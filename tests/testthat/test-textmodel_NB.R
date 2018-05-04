@@ -127,8 +127,8 @@ test_that("types wokrs (#1322)", {
     expect_identical(names(pr), docnames(nb_multi_smooth))
     expect_is(pr, "factor")
     
-    pr_prob <- predict(nb_multi_smooth, type = "prob")
-    expect_identical(names(pr_prob), "prob")
+    pr_prob <- predict(nb_multi_smooth, type = "probability")
+    expect_identical(names(pr_prob), "probability")
     expect_is(pr_prob$prob, "matrix")
     
     pr_lik <- predict(nb_multi_smooth, type = "link")
@@ -150,3 +150,9 @@ test_that("textmodel_nb print methods work", {
         "^\\nCall:\\ntextmodel_nb.dfm\\(x = data_dfm_lbgexample, y = c\\(seq\\(-1\\.5,"
     )
 })
+
+test_that("raise warning of unused dots", {
+    expect_warning(predict(nb_multi_smooth, something = TRUE),
+                   "\\.\\.\\. is not used")
+})
+

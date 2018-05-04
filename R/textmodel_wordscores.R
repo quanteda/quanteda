@@ -146,7 +146,7 @@ predict.textmodel_wordscores <- function(object,
                                          force = FALSE,
                                          ...) {
     
-    if (length(list(...)) > 0) stop("Arguments: ", names(list(...)), " not supported.\n")
+    unused_dots(...)
     
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)

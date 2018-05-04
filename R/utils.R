@@ -213,3 +213,13 @@ check_font <- function(font) {
     }
     return(font)
 }
+
+#' Raise warning of unused dots
+#' @param fun_name name of the function in which dots are not used 
+#' @param ... dots to check
+#' @keywords internal
+unused_dots <- function(...) {
+    if (length(list(...))) {
+        warning(paste("... is not used in", paste0(sys.call(2)[1], "()")))
+    }
+}

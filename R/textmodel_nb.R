@@ -194,8 +194,10 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' @keywords textmodel internal
 #' @export
 predict.textmodel_nb <- function(object, newdata = NULL, 
-                                 type = c("class", "prob", "link"),
+                                 type = c("class", "probability", "logposterior"),
                                  force = FALSE, ...) {
+    
+    unused_dots(...)
     
     type <- match.arg(type)
     
@@ -247,7 +249,7 @@ predict.textmodel_nb <- function(object, newdata = NULL,
     if (type == "class") {
         names(nb.predicted) <- docnames(data)
         return(factor(nb.predicted, levels = names(object$Pc)))
-    } else if (type == "prob") {
+    } else if (type == "probability") {
         
         ## compute class posterior probabilities
         post_prob <- matrix(NA, ncol = ncol(post_link), nrow = nrow(post_link),
@@ -261,9 +263,9 @@ predict.textmodel_nb <- function(object, newdata = NULL,
         
         result <- list(prob = post_prob)
         
-    } else if (type == "link") {
+    } else if (type == "logposterior") {
         
-        result <- list(link = post_link)
+        result <- list(logposterior = post_link)
     }
     class(result) <- c("predict.textmodel_nb", "list")
     result

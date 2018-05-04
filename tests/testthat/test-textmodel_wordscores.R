@@ -202,3 +202,9 @@ test_that("Works with newdata with different features from the model (#1329)", {
                  "newdata's feature set is not conformant to model terms\\.")
 
 })
+
+test_that("raise warning of unused dots", {
+    ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+    expect_warning(predict(ws, something = TRUE),
+                   "\\.\\.\\. is not used")
+})
