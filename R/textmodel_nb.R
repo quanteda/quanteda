@@ -113,18 +113,16 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     call <- match.call()
     
     y <- factor(y)
-    x <- dfm_trim(x[!is.na(y),], min_termfreq = 1)
-    y <- y[!is.na(y)]
+    temp <- x[!is.na(y),]
+    class <- y[!is.na(y)]
     
     ## distribution
-    if (distribution == "Bernoulli") {
-        temp <- dfm_weight(x, "boolean")
-    } else {
-        temp <- x
-    }
-    temp <- dfm_group(temp, y)
+    if (distribution == "Bernoulli")
+        temp <- dfm_weight(temp, "boolean")
+
+    temp <- dfm_group(temp, class)
     
-    freq <- rowSums(as.matrix(table(y)))
+    freq <- rowSums(as.matrix(table(class)))
     if (prior == "uniform") {
         Pc <- rep(1 / ndoc(temp), ndoc(temp))
         names(Pc) <- docnames(temp)

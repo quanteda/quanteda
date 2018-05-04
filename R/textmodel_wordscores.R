@@ -71,17 +71,17 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     if (!is.numeric(y))
         stop("wordscores model requires numeric scores.")
     
-    x <- dfm_trim(x[!is.na(y),], min_termfreq = 1)
-    y <- y[!is.na(y)]
+    temp <- x[!is.na(y),]
+    ref <- y[!is.na(y)]
     
     if (smooth) 
-        x <- dfm_smooth(x, smooth)
+        temp <- dfm_smooth(temp, smooth)
 
-    tFwr <- t(dfm_weight(x, "prop"))
+    tFwr <- t(dfm_weight(temp, "prop"))
     Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
     # compute likelihoods "Pwr" Pr(this word | document)
     if (scale == "linear") {
-        Sw <- Pwr %*% y
+        Sw <- Pwr %*% ref
         Sw <- Sw[,1]
     } else if (scale == "logit") {
         if (length(y) > 2)

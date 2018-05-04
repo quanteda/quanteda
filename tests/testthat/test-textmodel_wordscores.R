@@ -37,8 +37,8 @@ test_that("test wordscores on LBG data, LBG rescaling", {
 test_that("test wordscores fitted and predicted", {
     y <- c(seq(-1.5, 1.5, .75), NA)
     ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    expect_equal(ws$x, data_dfm_lbgexample[1:5,])
-    expect_equal(ws$y, y[1:5])
+    expect_equal(ws$x, data_dfm_lbgexample)
+    expect_equal(ws$y, y)
     expect_equal("textmodel_wordscores.dfm", as.character(ws$call)[1])
 })
 
@@ -56,7 +56,7 @@ test_that("predict.textmodel_wordscores with rescaling works with additional ref
     ws1999 <- textmodel_wordscores(data_dfm_lbgexample, refscores, 
                                    scale = "linear", smooth = 1)
     expect_identical(
-        unclass(predict(ws1999, rescaling = "mv")),
+        unclass(predict(ws1999, rescaling = "mv"))[c("R1", "R5")],
         c(R1 = -1, R5 = 1)
     )
 })
@@ -182,11 +182,11 @@ test_that("textmodel_wordscores print methods work", {
 
 test_that("additional quanteda methods", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(-1.5, NA, NA, NA, .75, NA))
-    expect_equal(ndoc(ws), 2)
-    expect_equal(nfeat(ws), 34)
-    expect_equal(docnames(ws), c("R1", "R5"))
+    expect_equal(ndoc(ws), 6)
+    expect_equal(nfeat(ws), 37)
+    expect_equal(docnames(ws), docnames(data_dfm_lbgexample))
     expect_equal(featnames(ws), 
-                 featnames(dfm_trim(data_dfm_lbgexample[c(1, 5),], 1)))
+                 featnames(data_dfm_lbgexample))
 })
 
 test_that("Works with newdata with different features from the model (#1329)", {
