@@ -34,12 +34,17 @@
 #' # stm package format
 #' stmdfm <- convert(quantdfm, to = "stm")
 #' str(stmdfm)
+#' 
+#' #' # triplet
+#' triplet <- convert(quantdfm, to = "tripletlist")
+#' str(triplet)
+#' 
 #' # illustrate what happens with zero-length documents
 #' quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
 #' rowSums(quantdfm2)
 #' stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
 #' str(stmdfm2)
-#'  
+#' 
 #' \dontrun{
 #' # tm's DocumentTermMatrix format
 #' tmdfm <- convert(quantdfm, to = "tm")
@@ -51,9 +56,10 @@
 #' # lda package format
 #' ldadfm <- convert(quantdfm, to = "lda")
 #' str(ldadfm)
+#' 
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
-                              "lsa", "matrix", "data.frame"), docvars = NULL) {
+                              "lsa", "matrix", "data.frame", "tripletlist"), docvars = NULL) {
     UseMethod("convert")
 }
 
@@ -65,7 +71,7 @@ convert.default <- function(x, ...) {
 #' @noRd
 #' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
-                                  "lsa", "matrix", "data.frame"), 
+                                  "lsa", "matrix", "data.frame", "tripletlist"), 
                         docvars = NULL) {
     x <- as.dfm(x)
     to <- match.arg(to)
@@ -98,6 +104,8 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
         return(as.data.frame(x))
     else if (to == "matrix")
         return(as.matrix(x))
+    else if (to == "tripletlist")
+        return(dfm2tripletlist(x))
     else
         stop("invalid \"to\" format")
         
@@ -339,4 +347,16 @@ dfm2lsa <- function(x) {
     names(dimnames(result)) <- c("docs", "terms") 
     class(result) <- "textmatrix"
     t(result)
+}
+
+#' @keywords internal
+dfm2tripletlist <- function(x) {
+    feat <- featnames(x)
+    doc <- docnames(x)
+    x <- as(x, "dgTMatrix")
+    list(
+        document = doc[x@i + 1],
+        feature = feat[x@j + 1],
+        frequency = x@x
+    )
 }

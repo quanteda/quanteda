@@ -5,7 +5,7 @@
 \title{Convert a dfm to a non-quanteda format}
 \usage{
 convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-  "matrix", "data.frame"), docvars = NULL)
+  "matrix", "data.frame", "tripletlist"), docvars = NULL)
 }
 \arguments{
 \item{x}{a \link{dfm} to be converted}
@@ -48,12 +48,17 @@ identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
 # stm package format
 stmdfm <- convert(quantdfm, to = "stm")
 str(stmdfm)
+
+#' # triplet
+triplet <- convert(quantdfm, to = "tripletlist")
+str(triplet)
+
 # illustrate what happens with zero-length documents
 quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
 rowSums(quantdfm2)
 stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
 str(stmdfm2)
- 
+
 \dontrun{
 # tm's DocumentTermMatrix format
 tmdfm <- convert(quantdfm, to = "tm")
@@ -65,5 +70,6 @@ str(convert(quantdfm, to = "topicmodels"))
 # lda package format
 ldadfm <- convert(quantdfm, to = "lda")
 str(ldadfm)
+
 }
 }
