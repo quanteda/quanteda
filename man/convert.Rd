@@ -5,7 +5,7 @@
 \title{Convert a dfm to a non-quanteda format}
 \usage{
 convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-  "matrix", "data.frame"), docvars = NULL)
+  "matrix", "data.frame", "tripletlist"), docvars = NULL)
 }
 \arguments{
 \item{x}{a \link{dfm} to be converted}
@@ -20,7 +20,11 @@ package} \item{\code{"austin"}}{the \code{wfm} format from the
 \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
 used by the \pkg{topicmodels} package} 
 \item{\code{"lsa"}}{the "textmatrix" format as 
-used by the \pkg{lsa} package} }}
+used by the \pkg{lsa} package}
+\item{\code{"data.frame"}}{a data.frame where each feature is a variable} 
+\item{\code{"tripletlist"}}{a named "triplet" format list consisting of 
+\code{document}, \code{feature}, and \code{frequency}} 
+}}
 
 \item{docvars}{optional data.frame of document variables used as the
 \code{meta} information in conversion to the \pkg{stm} package format.
@@ -48,12 +52,17 @@ identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
 # stm package format
 stmdfm <- convert(quantdfm, to = "stm")
 str(stmdfm)
+
+#' # triplet
+triplet <- convert(quantdfm, to = "tripletlist")
+str(triplet)
+
 # illustrate what happens with zero-length documents
 quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
 rowSums(quantdfm2)
 stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
 str(stmdfm2)
- 
+
 \dontrun{
 # tm's DocumentTermMatrix format
 tmdfm <- convert(quantdfm, to = "tm")
@@ -65,5 +74,6 @@ str(convert(quantdfm, to = "topicmodels"))
 # lda package format
 ldadfm <- convert(quantdfm, to = "lda")
 str(ldadfm)
+
 }
 }
