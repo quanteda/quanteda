@@ -1,10 +1,19 @@
 #' [Experimental] Change direction of words in tokens
 #' 
-#' This function adds Unicode direction mark to tokens types for punctuations
+#' This function adds a Unicode direction mark to tokens types for punctuations
 #' and symbols to correct how right-to-left languages (e.g. Arabic, Hebrew,
-#' Urdu) are printed in HTML-based consoles (e.g. R Studio). This is an
-#' experimental function subjects to future changes.
-#' @param x the input object whose punctuation marks will be modified by direction mark
+#' Persian, and Urdu) are printed in HTML-based consoles (e.g. R Studio). This
+#' is an experimental function subject to future change.
+#' @param x the input object whose punctuation marks will be modified by the
+#'   direction mark
+#' @keywords experimental tokens character
+#' @examples 
+#' txt <- "מדינת ישראל נוסדה בשנת 1948."
+#' txt
+#' char_tortl(txt)
+#' toks <- tokens(txt)
+#' toks
+#' tokens_tortl(toks)
 #' @export
 tokens_tortl <- function(x) {
     UseMethod("tokens_tortl")
