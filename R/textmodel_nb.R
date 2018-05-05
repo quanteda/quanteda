@@ -112,58 +112,33 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     distribution <- match.arg(distribution)
     call <- match.call()
     
-    y <- factor(y) # no effect if already a factor    
-    x.trset <- x[which(!is.na(y)), ]
-    y.trclass <- y[!is.na(y)]
-    types <- colnames(x)
-    docs <- rownames(x)  
-    levs <- levels(y.trclass)
+    y <- factor(y)
+    temp <- x[!is.na(y),]
+    class <- y[!is.na(y)]
     
     ## distribution
-    if (distribution == "Bernoulli") {
-        x.trset <- dfm_weight(x.trset, "boolean")
-    } else {
-        if (distribution != "multinomial")
-            stop("Distribution can only be multinomial or Bernoulli.")
-    }
-    
-    ## prior
-    if (prior=="uniform") {
-        Pc <- rep(1/length(levs), length(levs))
-        names(Pc) <- levs
-    } else if (prior=="docfreq") {
-        Pc <- prop.table(table(y.trclass))
-        Pc_names <- names(Pc)
-        attributes(Pc) <- NULL
-        names(Pc) <- Pc_names
-    } else if (prior=="termfreq") {
-        # weighted means the priors are by total words in each class
-        # (the probability that any given word is in a particular class)
-        temp <- x.trset
-        rownames(temp) <- y.trclass
-        colnames(temp) <- rep("all_same", nfeat(temp))
-        temp <- dfm_compress(temp)
-        Pc <- prop.table(as.matrix(temp))
-        Pc_names <- rownames(Pc)
-        attributes(Pc) <- NULL
-        names(Pc) <- Pc_names
-    }
-    
-    ## multinomial ikelihood: class x words, rows sum to 1
-    # combine all of the class counts
-    rownames(x.trset) <- y.trclass
-    d <- dfm_compress(x.trset, margin = "both")
+    if (distribution == "Bernoulli")
+        temp <- dfm_weight(temp, "boolean")
 
+    temp <- dfm_group(temp, class)
+    
+    freq <- rowSums(as.matrix(table(class)))
+    if (prior == "uniform") {
+        Pc <- rep(1 / ndoc(temp), ndoc(temp))
+        names(Pc) <- docnames(temp)
+    } else if (prior == "docfreq") {
+        Pc <- freq
+        Pc <- Pc / sum(Pc)
+    } else if (prior == "termfreq") {
+        Pc <- rowSums(temp)
+        Pc <- Pc / sum(Pc)
+    }
+    
     if (distribution == "multinomial") {
-        PwGc <- dfm_smooth(d, smooth) %>% dfm_weight(scheme = "prop")
+        PwGc <- dfm_weight(dfm_smooth(temp, smooth), scheme = "prop")
     } else if (distribution == "Bernoulli") {
-        # if (smooth != 1) {
-        #     warning("smoothing of 0 makes little sense for Bernoulli NB", 
-        #             call. = FALSE, noBreaks. = TRUE)
-        # }
         # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
-        PwGc <- (d + smooth) / 
-            (as.vector(table(docnames(x.trset))[docnames(d)]) + smooth * ndoc(d))
+        PwGc <- (temp + smooth) / (freq + smooth * ndoc(temp))
         PwGc <- as(PwGc, "dgeMatrix")
     }
     
@@ -180,7 +155,6 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     Pw <- t(PwGc) %*% as.numeric(Pc)
 
     result <- list(
-        call = call,
         PwGc = as.matrix(PwGc),
         Pc = Pc,
         PcGw = as.matrix(PcGw),
@@ -188,11 +162,14 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         x = x, y = y,
         distribution = distribution,
         prior = prior,
-        smooth = smooth
+        smooth = smooth,
+        call = call
     )
     class(result) <- c("textmodel_nb", "textmodel", "list")
     result
 }
+
+# helper methods ----------------
 
 #' Prediction from a fitted textmodel_nb object
 #' 
@@ -200,102 +177,99 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' Naive Bayes model. using trained Naive Bayes examples
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
+#' @param type the type of predicted values to be returned; see Value
+#' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
-#' @return \code{predict.textmodel_nb} returns a list of two data frames, named
-#'   \code{docs} and \code{words} corresponding to word- and document-level
-#'   predicted quantities
-#' @return \item{docs}{data frame with document-level predictive quantities:
-#'   nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
-#'   bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
-#'   quantities are currently implemented only for two-class solutions.}
-#' @return \item{words}{data-frame with word-level predictive quantities: 
-#' wordscore.word, bayesscore.word}
+#' @return \code{predict.textmodel_nb} returns either a vector of class
+#'   predictions for each row of \code{newdata} (when \code{type = "class"}), or
+#'   a document-by-class matrix of class probabilities (when \code{type =
+#'   "probability"}) or log posterior likelihoods (when \code{type =
+#'   "logposterior"}).
+#' @seealso \code{\link{textmodel_nb}}
 #' @examples 
 #' # application to LBG (2003) example data
 #' (nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 #' predict(nb)
+#' predict(nb, type = "logposterior")
 #' @keywords textmodel internal
 #' @export
-predict.textmodel_nb <- function(object, newdata = NULL, ...) {
+predict.textmodel_nb <- function(object, newdata = NULL, 
+                                 type = c("class", "probability", "logposterior"),
+                                 force = FALSE, ...) {
     
-    call <- match.call()
-    if (is.null(newdata)) newdata <- as.dfm(object$x)
-
-    # remove any words for which zero probabilities exist in training set --
-    # would happen if smooth=0
-    # the condition assigns the index of zero occurring words to vector 
-    # "notinref" and only trims the objects if this index has length > 0
-    if (length(notinref <- which(colSums(object$PwGc) == 0))) {
-        object$PwGc <- object$PwGc[-notinref]
-        object$PcGw <- object$PcGw[-notinref]
-        object$Pw   <- object$Pw[-notinref]
-        object$x <- object$x[, -notinref]
-        newdata <- newdata[, -notinref] 
-    }
-
-    # make sure feature set is ordered the same in test and training set (#490)
-    if (ncol(object$PcGw) != ncol(newdata))
-        stop("feature set in newdata different from that in training set")
-    if (!identical(colnames(object$PcGw), colnames(newdata)) || 
-        setequal(colnames(object$PcGw), colnames(newdata))) {
-        # if feature names are the same but diff order, reorder
-        newdata <- newdata[, colnames(object$PcGw)]
+    unused_dots(...)
+    
+    type <- match.arg(type)
+    
+    if (!is.null(newdata)) {
+        data <- as.dfm(newdata)
     } else {
-        stop("feature set in newdata different from that in training set")
+        data <- as.dfm(object$x)
     }
+
+    # # remove any words with zero probabilities (this should be done in fitting)
+    # is_zero <- colSums(object$PwGc) == 0
+    # if (any(is_zero)) {
+    #     object$PwGc <- object$PwGc[,!is_zero,drop = FALSE]
+    #     object$PcGw <- object$PcGw[,!is_zero,drop = FALSE]
+    #     object$Pw <- object$Pw[!is_zero,,drop = FALSE]
+    # }
+    data <- force_conformance(data, colnames(object$PwGc), force)
     
     if (object$distribution == "multinomial") {
         
         # log P(d|c) class conditional document likelihoods
-        log.lik <- newdata %*% t(log(object$PwGc))
+        log_lik <- data %*% t(log(object$PwGc))
         # weight by class priors
-        log.posterior.lik <- t(apply(log.lik, 1, "+", log(object$Pc)))
+        logpos <- t(apply(log_lik, 1, "+", log(object$Pc)))
         
     } else if (object$distribution == "Bernoulli") {
         
-        newdata <- dfm_weight(newdata, "boolean")
+        data <- dfm_weight(data, "boolean")
         Nc <- length(object$Pc)
         
         # initialize log posteriors with class priors
-        log.posterior.lik <- matrix(log(object$Pc), byrow = TRUE, 
-                                    ncol = Nc, nrow = nrow(newdata),
-                                    dimnames = list(rownames(newdata), names(object$Pc)))
+        logpos <- matrix(log(object$Pc), byrow = TRUE, 
+                            ncol = Nc, nrow = nrow(data),
+                            dimnames = list(rownames(data), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
         for (c in seq_len(Nc)) {
-            tmp1 <- log(t(newdata) * object$PwGc[c, ])
+            tmp1 <- log(t(data) * object$PwGc[c, ])
             tmp1[is.infinite(tmp1)] <- 0
-            tmp0 <- log(t(!newdata) * (1 - object$PwGc[c, ]))
+            tmp0 <- log(t(!data) * (1 - object$PwGc[c, ]))
             tmp0[is.infinite(tmp0)] <- 0
-            log.posterior.lik[, c] <- log.posterior.lik[, c] + colSums(tmp0) + colSums(tmp1)
+            logpos[, c] <- logpos[, c] + colSums(tmp0) + colSums(tmp1)
         }
     } 
 
-    
     # predict MAP class
-    nb.predicted <- colnames(log.posterior.lik)[apply(log.posterior.lik, 1, which.max)]
+    nb.predicted <- colnames(logpos)[apply(logpos, 1, which.max)]
     
-    ## now compute class posterior probabilities
-    # initialize posterior probabilities matrix
-    posterior.prob <- matrix(NA, ncol = ncol(log.posterior.lik), 
-                             nrow = nrow(log.posterior.lik),
-                             dimnames = dimnames(log.posterior.lik))
-
-    # compute posterior probabilities
-    for (j in seq_len(ncol(log.posterior.lik))) {
-        base.lpl <- log.posterior.lik[, j]
-        posterior.prob[, j] <- 1 / 
-            (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
+    
+    if (type == "class") {
+        names(nb.predicted) <- docnames(data)
+        return(factor(nb.predicted, levels = names(object$Pc)))
+    } else if (type == "probability") {
+        
+        ## compute class posterior probabilities
+        post_prob <- matrix(NA, ncol = ncol(logpos), nrow = nrow(logpos),
+                            dimnames = dimnames(logpos))
+        
+        # compute posterior probabilities
+        for (j in seq_len(ncol(logpos))) {
+            base_lpl <- logpos[, j]
+            post_prob[, j] <- 1 / (1 + rowSums(exp(logpos[, -j, drop = FALSE] - base_lpl)))
+        }
+        
+        # result <- list(probability = post_prob)
+        result <- post_prob
+        
+    } else if (type == "logposterior") {
+        
+        # result <- list(logposterior = logpos)
+        result <- logpos
     }
-
-    result <- list(
-        log.posterior.lik = log.posterior.lik,
-        posterior.prob = posterior.prob,
-        nb.predicted = nb.predicted,
-        Pc = object$Pc,
-        classlabels = names(object$Pc),
-        call = call
-    )
-    class(result) <- c("predict.textmodel_nb", "list")
+    # class(result) <- c("predict.textmodel_nb", "list")
     result
 }
 

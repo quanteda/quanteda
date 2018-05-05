@@ -4,27 +4,26 @@
 \alias{predict.textmodel_nb}
 \title{Prediction from a fitted textmodel_nb object}
 \usage{
-\method{predict}{textmodel_nb}(object, newdata = NULL, ...)
+\method{predict}{textmodel_nb}(object, newdata = NULL, type = c("class",
+  "probability", "logposterior"), force = FALSE, ...)
 }
 \arguments{
 \item{object}{a fitted Naive Bayes textmodel}
 
 \item{newdata}{dfm on which prediction should be made}
 
+\item{type}{the type of predicted values to be returned; see Value}
+
+\item{force}{make newdata's feature set conformant to the model terms}
+
 \item{...}{not used}
 }
 \value{
-\code{predict.textmodel_nb} returns a list of two data frames, named
-  \code{docs} and \code{words} corresponding to word- and document-level
-  predicted quantities
-
-\item{docs}{data frame with document-level predictive quantities:
-  nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
-  bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
-  quantities are currently implemented only for two-class solutions.}
-
-\item{words}{data-frame with word-level predictive quantities: 
-wordscore.word, bayesscore.word}
+\code{predict.textmodel_nb} returns either a vector of class
+  predictions for each row of \code{newdata} (when \code{type = "class"}), or
+  a document-by-class matrix of class probabilities (when \code{type =
+  "probability"}) or log posterior likelihoods (when \code{type =
+  "logposterior"}).
 }
 \description{
 \code{predict.textmodel_nb()} implements class predictions from a fitted
@@ -34,6 +33,10 @@ Naive Bayes model. using trained Naive Bayes examples
 # application to LBG (2003) example data
 (nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 predict(nb)
+predict(nb, type = "logposterior")
+}
+\seealso{
+\code{\link{textmodel_nb}}
 }
 \keyword{internal}
 \keyword{textmodel}

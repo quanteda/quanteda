@@ -129,25 +129,26 @@ test_that("test textplot_wordcloud raise deprecation message", {
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {
-    wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
-    expect_false(identical(textplot_scale1d(wfm, sort = TRUE), 
-                           textplot_scale1d(wfm, sort = FALSE)))
-    expect_silent(textplot_scale1d(wfm, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
-    expect_silent(textplot_scale1d(wfm, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
+    wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+    expect_false(identical(textplot_scale1d(wf, sort = TRUE), 
+                           textplot_scale1d(wf, sort = FALSE)))
+    expect_silent(textplot_scale1d(wf, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
+    expect_silent(textplot_scale1d(wf, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
     
-    expect_silent(textplot_scale1d(wfm, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+    expect_silent(textplot_scale1d(wf, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                                                           1, paste, collapse = " ")))
     
-    p1 <- textplot_scale1d(wfm, margin = "features", sort = TRUE)
-    p2 <- textplot_scale1d(wfm, margin = "features", sort = FALSE)
+    p1 <- textplot_scale1d(wf, margin = "features", sort = TRUE)
+    p2 <- textplot_scale1d(wf, margin = "features", sort = FALSE)
     p1$plot_env <- NULL
     p2$plot_env <- NULL
     expect_equivalent(p1, p2)
 })
 
 test_that("test textplot_scale1d wordscores in the most basic way", {
-    ws <- textmodel_wordscores(dfm(data_corpus_irishbudget2010), c(rep(NA, 4), -1, 1, rep(NA, 8)))
-    pr <- predict(ws)
+    mt <- dfm(data_corpus_irishbudget2010)
+    ws <- textmodel_wordscores(mt, c(rep(NA, 4), -1, 1, rep(NA, 8)))
+    pr <- predict(ws, mt, force = TRUE)
     expect_false(identical(textplot_scale1d(pr, sort = TRUE), 
                            textplot_scale1d(pr, sort = FALSE)))
     expect_silent(textplot_scale1d(pr, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
