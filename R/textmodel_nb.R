@@ -169,28 +169,28 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     result
 }
 
+# helper methods ----------------
+
 #' Prediction from a fitted textmodel_nb object
 #' 
 #' \code{predict.textmodel_nb()} implements class predictions from a fitted
 #' Naive Bayes model. using trained Naive Bayes examples
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
-#' @param type the type of predicted values to be returned
+#' @param type the type of predicted values to be returned; see Value
 #' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
-#' @return \code{predict.textmodel_nb} returns a list of two data frames, named
-#'   \code{docs} and \code{words} corresponding to word- and document-level
-#'   predicted quantities
-#' @return \item{docs}{data frame with document-level predictive quantities:
-#'   nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
-#'   bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
-#'   quantities are currently implemented only for two-class solutions.}
-#' @return \item{words}{data-frame with word-level predictive quantities: 
-#' wordscore.word, bayesscore.word}
+#' @return \code{predict.textmodel_nb} returns either a vector of class
+#'   predictions for each row of \code{newdata} (when \code{type = "class"}), or
+#'   a document-by-class matrix of class probabilities (when \code{type =
+#'   "probability"}) or log posterior likelihoods (when \code{type =
+#'   "logposterior"}).
+#' @seealso \code{\link{textmodel_nb}}
 #' @examples 
 #' # application to LBG (2003) example data
 #' (nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 #' predict(nb)
+#' predict(nb, type = "logposterior")
 #' @keywords textmodel internal
 #' @export
 predict.textmodel_nb <- function(object, newdata = NULL, 

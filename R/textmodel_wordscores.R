@@ -22,7 +22,7 @@
 #'   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
 #'   to function in the same manner as \code{\link[stats]{predict.lm}}.
 #'   \code{coef()} can also be used to extract the word coefficients from the
-#'   fitted \code{textmodel_wordscore} object, and \code{summary()} will print a
+#'   fitted \code{textmodel_wordscores} object, and \code{summary()} will print a
 #'   nice summary of the fitted object.
 #' @seealso \code{\link{predict.textmodel_wordscores}} for methods of applying a
 #'   fitted \link{textmodel_wordscores} model object to predict quantities from
@@ -33,10 +33,7 @@
 #' summary(ws)
 #' coef(ws)
 #' predict(ws)
-#' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
-#' predict(ws, se.fit = TRUE)
-#' predict(ws, se.fit = TRUE, interval = "confidence")
 #' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
@@ -120,21 +117,20 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
 #' @return 
-#'   \code{textmodel_wordscores()} returns a list that is also classed as a
-#'   \code{textmodel_wordscores} object, containing the following elements:
-#' @return \item{wordscores}{the scores computed for each word in the training set
-#' (\eqn{S_{wd}} from Laver, Benoit and Garry 2003)}
-#' @return \item{scale}{either \code{linear} or \code{logit}, according to the value of \code{scale}}
-#' @return \item{x}{the dfm on which the wordscores model was called}
-#' @return \item{y}{the vector of document reference values}
-#' @return \item{call}{the function call that fitted the model}
-#'
 #' \code{predict.textmodel_wordscores()} returns a named vector of predicted
 #' document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
 #' \code{se.fit = TRUE} consisting of the predicted scores (\code{$fit}) and the
 #' associated standard errors (\code{$se.fit}). When \code{interval =
 #' "confidence"}, the predicted values will be a matrix.  This behaviour matches
 #' that of \code{\link[stats]{predict.lm}}.
+#' @examples 
+#' ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+#' predict(ws)
+#' predict(ws, rescaling = "mv")
+#' predict(ws, rescaling = "lbg")
+#' predict(ws, se.fit = TRUE)
+#' predict(ws, se.fit = TRUE, interval = "confidence")
+#' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "lbg")
 #' @keywords textmodel internal
 #' @export
 #' @importFrom stats qnorm median sd
