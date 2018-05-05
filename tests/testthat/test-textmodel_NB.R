@@ -92,11 +92,11 @@ test_that("Bernoulli nb predicted values are correct", {
     nb_bern_smooth_pred <- predict(nb_bern_smooth, nb_dfm, type = "prob")
     expect_equal( 
         book_lik_Y / (book_lik_Y + book_lik_N),
-        nb_bern_smooth_pred$prob["d5", "Y"]
+        nb_bern_smooth_pred["d5", "Y"]
     )
     expect_equal( 
         book_lik_N / (book_lik_Y + book_lik_N),
-        nb_bern_smooth_pred$prob["d5", "N"]
+        nb_bern_smooth_pred["d5", "N"]
     )
 })
 
@@ -121,20 +121,22 @@ test_that("Works with features with zero probability", {
     expect_silent(predict(nb))
 })
 
-test_that("types wokrs (#1322)", {
-    
+test_that("types works (#1322)", {
     pr <- predict(nb_multi_smooth)
     expect_identical(names(pr), docnames(nb_multi_smooth))
     expect_is(pr, "factor")
     
     pr_prob <- predict(nb_multi_smooth, type = "probability")
-    expect_identical(names(pr_prob), "probability")
-    expect_is(pr_prob$prob, "matrix")
+    expect_identical(colnames(pr_prob), c("N", "Y"))
+    expect_identical(rownames(pr_prob), c("d1", "d2", "d3", "d4", "d5"))
+    expect_equal(pr_prob[1, ], c(N = .065, Y = .935), tol = .001)
+    expect_is(pr_prob, "matrix")
     
-    pr_lik <- predict(nb_multi_smooth, type = "link")
-    expect_identical(names(pr_lik), "link")
-    expect_is(pr_lik$link, "matrix")
-    
+    pr_lp <- predict(nb_multi_smooth, type = "logposterior")
+    expect_identical(colnames(pr_lp), c("N", "Y"))
+    expect_identical(rownames(pr_lp), c("d1", "d2", "d3", "d4", "d5"))
+    expect_equal(pr_lp[1, ], c(N = -6.59, Y = -3.93), tol = .01)
+    expect_is(pr_lp, "matrix")
 })
 
 test_that("textmodel_nb print methods work", {

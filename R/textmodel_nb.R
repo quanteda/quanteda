@@ -219,9 +219,9 @@ predict.textmodel_nb <- function(object, newdata = NULL,
     if (object$distribution == "multinomial") {
         
         # log P(d|c) class conditional document likelihoods
-        log_link <- data %*% t(log(object$PwGc))
+        log_lik <- data %*% t(log(object$PwGc))
         # weight by class priors
-        post_link <- t(apply(log_link, 1, "+", log(object$Pc)))
+        logpos <- t(apply(log_lik, 1, "+", log(object$Pc)))
         
     } else if (object$distribution == "Bernoulli") {
         
@@ -229,7 +229,7 @@ predict.textmodel_nb <- function(object, newdata = NULL,
         Nc <- length(object$Pc)
         
         # initialize log posteriors with class priors
-        post_link <- matrix(log(object$Pc), byrow = TRUE, 
+        logpos <- matrix(log(object$Pc), byrow = TRUE, 
                             ncol = Nc, nrow = nrow(data),
                             dimnames = list(rownames(data), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
@@ -238,12 +238,12 @@ predict.textmodel_nb <- function(object, newdata = NULL,
             tmp1[is.infinite(tmp1)] <- 0
             tmp0 <- log(t(!data) * (1 - object$PwGc[c, ]))
             tmp0[is.infinite(tmp0)] <- 0
-            post_link[, c] <- post_link[, c] + colSums(tmp0) + colSums(tmp1)
+            logpos[, c] <- logpos[, c] + colSums(tmp0) + colSums(tmp1)
         }
     } 
 
     # predict MAP class
-    nb.predicted <- colnames(post_link)[apply(post_link, 1, which.max)]
+    nb.predicted <- colnames(logpos)[apply(logpos, 1, which.max)]
     
     
     if (type == "class") {
@@ -252,22 +252,24 @@ predict.textmodel_nb <- function(object, newdata = NULL,
     } else if (type == "probability") {
         
         ## compute class posterior probabilities
-        post_prob <- matrix(NA, ncol = ncol(post_link), nrow = nrow(post_link),
-                            dimnames = dimnames(post_link))
+        post_prob <- matrix(NA, ncol = ncol(logpos), nrow = nrow(logpos),
+                            dimnames = dimnames(logpos))
         
         # compute posterior probabilities
-        for (j in seq_len(ncol(post_link))) {
-            base_lpl <- post_link[, j]
-            post_prob[, j] <- 1 / (1 + rowSums(exp(post_link[, -j, drop = FALSE] - base_lpl)))
+        for (j in seq_len(ncol(logpos))) {
+            base_lpl <- logpos[, j]
+            post_prob[, j] <- 1 / (1 + rowSums(exp(logpos[, -j, drop = FALSE] - base_lpl)))
         }
         
-        result <- list(prob = post_prob)
+        # result <- list(probability = post_prob)
+        result <- post_prob
         
     } else if (type == "logposterior") {
         
-        result <- list(logposterior = post_link)
+        # result <- list(logposterior = logpos)
+        result <- logpos
     }
-    class(result) <- c("predict.textmodel_nb", "list")
+    # class(result) <- c("predict.textmodel_nb", "list")
     result
 }
 
