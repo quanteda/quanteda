@@ -9,7 +9,7 @@
 \item{\code{negative}}{2,858 word patterns indicating negative sentiment}
 \item{\code{positive}}{1,709 word patterns indicating positive sentiment}
 \item{\code{neg_positive}}{1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)}
-\item{\code{negative}}{2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)}
+\item{\code{neg_negative}}{2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)}
 }}
 \usage{
 data_dictionary_LSD2015
@@ -53,6 +53,11 @@ tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, exclusive = FAL
 # on larger examples - notice that few negations are used
 dfm(data_char_ukimmig2010, dictionary = data_dictionary_LSD2015)
 kwic(data_char_ukimmig2010, "not")
+
+# compound neg_negative and neg_positive tokens before creating a dfm object
+toks <- tokens_compound(tokens(txt), data_dictionary_LSD2015)
+
+dfm_lookup(dfm(toks), data_dictionary_LSD2015)
 }
 \references{
 The objectives, development and reliability of the dictionary are discussed

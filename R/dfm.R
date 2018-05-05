@@ -441,3 +441,16 @@ pad_dfm <- function(x, feature = NULL) {
     return(x)
 }
 
+# foce dfm conformat for prediction with new data
+force_conformance <- function(x, feature, force) {
+    if (force) {
+        n <- length(featnames(x)) - length(intersect(featnames(x), feature))
+        if (n)
+            warning(n, " features are added to make the feature set conformant.")
+        return(dfm_select(x, make_null_dfm(feature)))
+    } else {
+        if (!identical(featnames(x), feature))
+            stop("newdata's feature set is not conformant to model terms.")
+        return(x)
+    }
+}

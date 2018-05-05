@@ -121,6 +121,7 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
 #' Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 #' @rdname as.matrix.dfm
 #' @param x dfm to be coerced
+#' @param ... unused
 #' @export
 #' @keywords dfm
 #' @method as.matrix dfm
@@ -131,25 +132,24 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
 as.matrix.dfm <- function(x, ...) {
     as(x, "matrix")
 }
-# setMethod("as.matrix", signature(x = "dfm"),
-#           function(x) as(x, "matrix"))
 
-#' @rdname as.matrix.dfm
+
+#' Convert a dfm to a data.frame
+#' 
+#' Deprecated function to convert a dfm into a data.frame.
+#' Recommended that you use \code{convert(x, to = "data.frame")} instead.
 #' @param document optional first column of mode \code{character} in the
 #'   data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.
 #' @inheritParams base::as.data.frame
 #' @inheritParams base::data.frame
 #' @param ... unused
 #' @method as.data.frame dfm
+#' @keywords internal dfm
+#' @seealso \code{\link{convert}}
 #' @export
-#' @examples
-#' # coercion to a data.frame
-#' as.data.frame(data_dfm_lbgexample[, 1:15])
-#' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL)
-#' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, 
-#'               row.names = docnames(data_dfm_lbgexample))
 as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
                               check.names = FALSE) {
+    .Deprecated("convert(x, to \"data.frame\")")
     if (!(is.character(document) || is.null(document)))
         stop("document must be character or NULL")
     df <- data.frame(as.matrix(x), row.names = row.names, 
@@ -217,7 +217,7 @@ cbind.dfm <- function(...) {
     }
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!nfeat(y)) return(x)
     if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
@@ -274,7 +274,7 @@ rbind.dfm <- function(...) {
     attrs <- attributes(x)
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!ndoc(y)) return(x)
     
     feature <- union(featnames(x), featnames(y))
     result <- 
