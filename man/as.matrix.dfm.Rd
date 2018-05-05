@@ -2,30 +2,14 @@
 % Please edit documentation in R/dfm-classes.R
 \name{as.matrix.dfm}
 \alias{as.matrix.dfm}
-\alias{as.data.frame.dfm}
 \title{Coerce a dfm to a matrix or data.frame}
 \usage{
 \method{as.matrix}{dfm}(x, ...)
-
-\method{as.data.frame}{dfm}(x, row.names = NULL, ...,
-  document = docnames(x), check.names = FALSE)
 }
 \arguments{
 \item{x}{dfm to be coerced}
 
 \item{...}{unused}
-
-\item{row.names}{\code{NULL} or a character vector giving the row
-    names for the data frame.  Missing values are not allowed.}
-
-\item{document}{optional first column of mode \code{character} in the
-data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
-
-\item{check.names}{logical.  If \code{TRUE} then the names of the
-    variables in the data frame are checked to ensure that they are
-    syntactically valid variable names and are not duplicated.
-    If necessary they are adjusted (by \code{\link{make.names}})
-    so that they are.}
 }
 \description{
 Methods for coercing a \link{dfm} object to a matrix or data.frame object.
@@ -34,10 +18,5 @@ Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 # coercion to matrix
 as.matrix(data_dfm_lbgexample[, 1:10])
 
-# coercion to a data.frame
-as.data.frame(data_dfm_lbgexample[, 1:15])
-as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL)
-as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, 
-              row.names = docnames(data_dfm_lbgexample))
 }
 \keyword{dfm}
