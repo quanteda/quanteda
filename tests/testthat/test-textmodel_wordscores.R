@@ -5,12 +5,12 @@ test_that("test wordscores on LBG data", {
     pr <- predict(ws, newdata = data_dfm_lbgexample[6, ], interval = "none")
     expect_equal(unclass(pr), c(V1 = -.45), tolerance = .01)
     
-    pr2 <- predict(ws, interval = "none")
+    pr2 <- predict(ws, data_dfm_lbgexample, interval = "none")
     expect_is(pr2, "numeric")
     expect_equal(names(pr2), docnames(data_dfm_lbgexample))
     expect_equal(pr2["V1"], c(V1 = -.45), tolerance = .01)
     
-    pr3 <- predict(ws, se.fit = TRUE, interval = "none")
+    pr3 <- predict(ws, data_dfm_lbgexample, se.fit = TRUE, interval = "none")
     expect_is(pr3, "list")
     expect_equal(names(pr3), c("fit", "se.fit"))
     expect_equal(pr3$se.fit[6], 0.01, tolerance = .01)
@@ -24,13 +24,13 @@ test_that("a warning occurs for mv with multiple ref scores", {
 
 test_that("test wordscores on LBG data, MV rescaling", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- suppressWarnings(predict(ws, rescaling = "mv", interval = "none"))
+    pr <- suppressWarnings(predict(ws, data_dfm_lbgexample, rescaling = "mv", interval = "none"))
     expect_equal(pr["V1"], c(V1 = -.51), tolerance = .001)
 })
 
 test_that("test wordscores on LBG data, LBG rescaling", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- predict(ws, rescaling = "lbg", interval = "none")
+    pr <- predict(ws, data_dfm_lbgexample, rescaling = "lbg", interval = "none")
     expect_equal(pr["V1"], c(V1 = -.53), tolerance = .01)
 })
 
@@ -48,87 +48,57 @@ test_that("coef works for wordscores fitted", {
     expect_equal(coef(ws), coefficients(ws))
 })
 
-test_that("test wordscores prediction without reftexts", {
-    y <- c(seq(-1.5, 1.5, .75), NA)
-    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    ws_predict <- predict(ws, include_reftexts = FALSE)
-    expect_equal(length(ws_predict), 1)
-})
-
-test_that("test wordscores predict output without reftexts, standard errors and intervals", {
-    y <- c(seq(-1.5, 1.5, .75), NA)
-    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    ws_predict <- predict(ws, include_reftexts = FALSE, se.fit = FALSE, interval = "none")
-    expect_equal(length(ws_predict), 1)
-})
-
-test_that("test wordscores predict output without reftexts and interval, but with standard error", {
-    y <- c(seq(-1.5, 1.5, .75), NA)
-    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    ws_predict <- predict(ws, include_reftexts = FALSE, se.fit = TRUE, interval = "none")
-    expect_equal(length(ws_predict), 2)
-    expect_true(!is.null(ws_predict$se.fit))
-})
-
-test_that("test wordscores predict output without reftexts, but with standard error and confidence interval", {
-    y <- c(seq(-1.5, 1.5, .75), NA)
-    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    ws_predict <- predict(ws, include_reftexts = FALSE, se.fit = TRUE, interval = "confidence")
-    expect_equal(length(ws_predict$fit), 3)
-    expect_true(!is.null(ws_predict$se.fit))
-})
-
 test_that("predict.textmodel_wordscores with rescaling works with additional reference texts (#1251)", {
     refscores <- rep(NA, ndoc(data_dfm_lbgexample))
-    refscores[which(docnames(data_dfm_lbgexample) == "R1")] <- -1
-    refscores[which(docnames(data_dfm_lbgexample) == "R5")] <- 1
+    refscores[docnames(data_dfm_lbgexample) == "R1"] <- -1
+    refscores[docnames(data_dfm_lbgexample) == "R5"] <- 1
 
     ws1999 <- textmodel_wordscores(data_dfm_lbgexample, refscores, 
                                    scale = "linear", smooth = 1)
     expect_identical(
-        predict(ws1999, rescaling = "mv")[c(1, 5)],
+        unclass(predict(ws1999, rescaling = "mv"))[c("R1", "R5")],
         c(R1 = -1, R5 = 1)
     )
 })
 
-test_that("test wordscores predict is same for virgin texts with and without ref texts", {
-    y <- c(seq(-1.5, 1.5, .75), NA)
-    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    
-    expect_equal(
-        predict(ws, include_reftexts = FALSE)["V1"],
-        predict(ws, include_reftexts = TRUE)["V1"]
-    )
-    expect_equal(
-        suppressWarnings(predict(ws, include_reftexts = FALSE, rescaling = "mv")["V1"]),
-        suppressWarnings(predict(ws, include_reftexts = TRUE, rescaling = "mv")["V1"])
-    )
-    expect_equal(
-        suppressWarnings(predict(ws, include_reftexts = FALSE, rescaling = "lbg")["V1"]),
-        suppressWarnings(predict(ws, include_reftexts = TRUE, rescaling = "lbg")["V1"])
-    )
-    
-    expect_equal(
-        predict(ws, include_reftexts = FALSE, se.fit = TRUE)["V1"],
-        predict(ws, include_reftexts = TRUE, se.fit = TRUE)["V1"]
-    )
-    expect_equal(
-        predict(ws, include_reftexts = FALSE, interval = "confidence", se.fit = TRUE)$fit["V1", , drop = FALSE],
-        predict(ws, include_reftexts = TRUE, interval = "confidence", se.fit = TRUE)$fit["V1", , drop = FALSE]
-    )
-    expect_equal(
-        predict(ws, include_reftexts = FALSE, interval = "confidence", 
-                se.fit = TRUE)$se.fit,
-        predict(ws, include_reftexts = TRUE, interval = "confidence", 
-                se.fit = TRUE)$se.fit[which(docnames(ws) == "V1")]
-    )
-    expect_equal(
-        predict(ws, include_reftexts = FALSE, interval = "confidence", 
-                rescaling = "lbg", se.fit = TRUE)$se.fit,
-        predict(ws, include_reftexts = TRUE, interval = "confidence", 
-                rescaling = "lbg", se.fit = TRUE)$se.fit[which(docnames(ws) == "V1")]
-    )
-})
+# test_that("test wordscores predict is same for virgin texts with and without ref texts", {
+#     y <- c(seq(-1.5, 1.5, .75), NA)
+#     ws <- textmodel_wordscores(data_dfm_lbgexample, y)
+#     
+#     expect_equal(
+#         predict(ws)["V1"],
+#         predict(ws, data_dfm_lbgexample)["V1"]
+#     )
+#     expect_equal(
+#         suppressWarnings(predict(ws, include_reftexts = FALSE, rescaling = "mv")["V1"]),
+#         suppressWarnings(predict(ws, include_reftexts = TRUE, rescaling = "mv")["V1"])
+#     )
+#     expect_equal(
+#         suppressWarnings(predict(ws, include_reftexts = FALSE, rescaling = "lbg")["V1"]),
+#         suppressWarnings(predict(ws, include_reftexts = TRUE, rescaling = "lbg")["V1"])
+#     )
+#     
+#     expect_equal(
+#         predict(ws, include_reftexts = FALSE, se.fit = TRUE)["V1"],
+#         predict(ws, include_reftexts = TRUE, se.fit = TRUE)["V1"]
+#     )
+#     expect_equal(
+#         predict(ws, include_reftexts = FALSE, interval = "confidence", se.fit = TRUE)$fit["V1", , drop = FALSE],
+#         predict(ws, include_reftexts = TRUE, interval = "confidence", se.fit = TRUE)$fit["V1", , drop = FALSE]
+#     )
+#     expect_equal(
+#         predict(ws, include_reftexts = FALSE, interval = "confidence", 
+#                 se.fit = TRUE)$se.fit,
+#         predict(ws, include_reftexts = TRUE, interval = "confidence", 
+#                 se.fit = TRUE)$se.fit[which(docnames(ws) == "V1")]
+#     )
+#     expect_equal(
+#         predict(ws, include_reftexts = FALSE, interval = "confidence", 
+#                 rescaling = "lbg", se.fit = TRUE)$se.fit,
+#         predict(ws, include_reftexts = TRUE, interval = "confidence", 
+#                 rescaling = "lbg", se.fit = TRUE)$se.fit[which(docnames(ws) == "V1")]
+#     )
+# })
 
 
 # test_that("coef works for wordscores predicted, rescaling = none", {
@@ -215,5 +185,26 @@ test_that("additional quanteda methods", {
     expect_equal(ndoc(ws), 6)
     expect_equal(nfeat(ws), 37)
     expect_equal(docnames(ws), docnames(data_dfm_lbgexample))
-    expect_equal(featnames(ws), featnames(data_dfm_lbgexample))
+    expect_equal(featnames(ws), 
+                 featnames(data_dfm_lbgexample))
+})
+
+test_that("Works with newdata with different features from the model (#1329)", {
+    
+    mt1 <- dfm(c(text1 = "a b c", text2 = "d e f"))
+    mt2 <- dfm(c(text3 = "a b c", text4 = "e f g"))
+    
+    ws <- textmodel_wordscores(mt1, 1:2)
+    expect_silent(predict(ws, newdata = mt1, force = TRUE))
+    expect_warning(predict(ws, newdata = mt2, force = TRUE),
+                  "1 features are added to make the feature set conformant.")
+    expect_error(predict(ws, newdata = mt2),
+                 "newdata's feature set is not conformant to model terms\\.")
+
+})
+
+test_that("raise warning of unused dots", {
+    ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+    expect_warning(predict(ws, something = TRUE),
+                   "\\.\\.\\. is not used")
 })

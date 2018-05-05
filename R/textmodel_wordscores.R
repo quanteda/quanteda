@@ -22,7 +22,7 @@
 #'   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
 #'   to function in the same manner as \code{\link[stats]{predict.lm}}.
 #'   \code{coef()} can also be used to extract the word coefficients from the
-#'   fitted \code{textmodel_wordscore} object, and \code{summary()} will print a
+#'   fitted \code{textmodel_wordscores} object, and \code{summary()} will print a
 #'   nice summary of the fitted object.
 #' @seealso \code{\link{predict.textmodel_wordscores}} for methods of applying a
 #'   fitted \link{textmodel_wordscores} model object to predict quantities from
@@ -33,11 +33,7 @@
 #' summary(ws)
 #' coef(ws)
 #' predict(ws)
-#' predict(ws, include_reftexts = FALSE)
-#' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
-#' predict(ws, se.fit = TRUE)
-#' predict(ws, se.fit = TRUE, interval = "confidence")
 #' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
@@ -61,53 +57,49 @@ textmodel_wordscores.default <- function(x, y, scale = c("linear", "logit"), smo
 #' @export
 textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     
-    data <- as.dfm(x)
-    scores <- y
+    x <- as.dfm(x)
     scale <- match.arg(scale)
+    call <- match.call()
     
-    if (nrow(data) < 2)
+    if (nrow(x) < 2)
         stop("wordscores model requires at least two training documents.")
-    if (nrow(data) != length(scores))
+    if (nrow(x) != length(y))
         stop("trainingdata and scores vector must refer to same number of documents.")
-    
-    inRefSet <- which(!is.na(scores))
-    if (!is.numeric(scores[inRefSet]))
+    if (!is.numeric(y))
         stop("wordscores model requires numeric scores.")
     
-    setscores <- scores[inRefSet] # only non-NA reference texts
-    if (smooth) data <- data + 1 # smooth if not 0
-    x <- data[inRefSet, ]         # select only the reference texts
+    temp <- x[!is.na(y),]
+    ref <- y[!is.na(y)]
     
-    Fwr <- dfm_weight(x, "prop")          # normalize words to term frequencies "Fwr"
-    tFwr <- t(Fwr)
+    if (smooth) 
+        temp <- dfm_smooth(temp, smooth)
+
+    tFwr <- t(dfm_weight(temp, "prop"))
     Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
     # compute likelihoods "Pwr" Pr(this word | document)
     if (scale == "linear") {
-        Sw <- Pwr %*% setscores
+        Sw <- Pwr %*% ref
         Sw <- Sw[,1]
     } else if (scale == "logit") {
-        if (length(setscores) > 2)
+        if (length(y) > 2)
             stop("\nFor logit scale, only two training texts can be used.")
-        if (!identical(c(-1,1), sort(setscores))) {
+        if (!identical(c(-1,1), range(y))) {
             warning("\nFor logit scale, training scores are automatically rescaled to -1 and 1.")
-            scores <- rescaler(setscores)
+            y <- rescaler(y)
         }
-        lower <- 1
-        upper <- 2
-        if (setscores[1] > setscores[2]) { lower <- 2; upper <- 1 }
-        Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
+        if (y[1] > y[2]) { 
+            Sw <- log(Pwr[, 1]) - log(Pwr[, 2])
+        } else {
+            Sw <- log(Pwr[, 2]) - log(Pwr[, 1])
+        }
     }
-    
-    namesTemp <- names(Sw)
-    Sw <- as.vector(Sw[which(colSums(x) > 0)])  # remove words with zero counts in ref set
-    names(Sw) <- namesTemp[which(colSums(x) > 0)]
     
     result <- list(
         wordscores = Sw,
-        x = data,
-        y = scores,
+        x = x,
+        y = y,
         scale = scale,
-        call = match.call()
+        call = call
     )
     class(result) <- c("textmodel_wordscores", "textmodel", "list")
     result
@@ -122,24 +114,23 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #'   (2007).  See References.
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
-#' @param include_reftexts if \code{FALSE}, reference texts are removed from the prediction
+#' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
 #' @return 
-#'   \code{textmodel_wordscores()} returns a list that is also classed as a
-#'   \code{textmodel_wordscores} object, containing the following elements:
-#' @return \item{wordscores}{the scores computed for each word in the training set
-#' (\eqn{S_{wd}} from Laver, Benoit and Garry 2003)}
-#' @return \item{scale}{either \code{linear} or \code{logit}, according to the value of \code{scale}}
-#' @return \item{x}{the dfm on which the wordscores model was called}
-#' @return \item{y}{the vector of document reference values}
-#' @return \item{call}{the function call that fitted the model}
-#'
 #' \code{predict.textmodel_wordscores()} returns a named vector of predicted
 #' document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
 #' \code{se.fit = TRUE} consisting of the predicted scores (\code{$fit}) and the
 #' associated standard errors (\code{$se.fit}). When \code{interval =
 #' "confidence"}, the predicted values will be a matrix.  This behaviour matches
 #' that of \code{\link[stats]{predict.lm}}.
+#' @examples 
+#' ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+#' predict(ws)
+#' predict(ws, rescaling = "mv")
+#' predict(ws, rescaling = "lbg")
+#' predict(ws, se.fit = TRUE)
+#' predict(ws, se.fit = TRUE, interval = "confidence")
+#' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "lbg")
 #' @keywords textmodel internal
 #' @export
 #' @importFrom stats qnorm median sd
@@ -148,10 +139,10 @@ predict.textmodel_wordscores <- function(object,
                                          se.fit = FALSE,
                                          interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
-                                         include_reftexts = TRUE,
+                                         force = FALSE,
                                          ...) {
     
-    if (length(list(...)) > 0) stop("Arguments: ", names(list(...)), " not supported.\n")
+    unused_dots(...)
     
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)
@@ -164,10 +155,10 @@ predict.textmodel_wordscores <- function(object,
     
     # Compute text scores as weighted mean of word scores in "virgin" document
     sw <- coef(object)
-    data <- dfm_select(data, as.dfm(rbind(sw)))
+    data <- force_conformance(data, names(sw), force)
+    
     # This is different from computing term weights on only the scorable words.
     # It take rowSums() only to generates named vector.
-    sw <- sw[intersect(featnames(data), names(sw))]
     raw <- rowSums(dfm_weight(data, "prop") %*% sw)
     
     # if (verbose)
@@ -189,7 +180,6 @@ predict.textmodel_wordscores <- function(object,
     }
     
     if (!se.fit && interval == "none") {
-        if (!include_reftexts) fit <- fit[is.na(object$y)]
         class(fit) <- c("predict.textmodel_wordscores", "numeric")
         return(fit)
     }
@@ -211,8 +201,6 @@ predict.textmodel_wordscores <- function(object,
         } else {
             result$se.fit <- raw_se
         }
-        
-        if (!include_reftexts) result$se.fit <- result$se.fit[is.na(object$y)]
     } 
     
     if (interval == "confidence") {
@@ -240,11 +228,6 @@ predict.textmodel_wordscores <- function(object,
             result$fit[, "upr"] <- raw + z * raw_se
         }
     } 
-    
-    # drop the reference texts if needed - handles both vector and matrix case 
-    if (!include_reftexts) {
-        result$fit <- as.matrix(result$fit)[is.na(object$y), , drop = interval == "none"]
-    }
     
     class(result) <- c("predict.textmodel_wordscores", class(result))
     result

@@ -251,3 +251,15 @@ test_that("weighted dfm is not convertible to a topic model format (#1091)", {
     
     expect_error(convert(dfm_tfidf(d), to = "stm"), err_msg)
 })
+
+test_that("triplet converter works", {
+    
+    mt <- dfm(c("a b c", "c c d")) 
+    expect_identical(convert(mt, to = "tripletlist"),
+                     list(document = c(rep("text1", 3), rep("text2", 2)),
+                          feature = c("a", "b", "c", "c", "d"),
+                          frequency = c(1, 1, 1, 2, 1)
+                     ))
+
+})
+

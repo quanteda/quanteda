@@ -102,7 +102,7 @@ test_that("test rbind.dfm with the same columns", {
         rbind(dfm1, dfm1),
         is_a('dfm')
     )
-
+    
 })
 
 # TODO: Add function for testing the equality of dfms
@@ -903,5 +903,20 @@ test_that("arithmetic/linear operation works with dfm", {
     expect_true(is.dfm(2 ^ mt))
     expect_true(is.dfm(t(mt)))
     expect_equal(rowSums(mt), colSums(t(mt)))
+})
+
+test_that("rbind and cbind wokrs with empty dfm", {
+    
+    mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
+    
+    expect_identical(docnames(rbind(mt, quanteda:::make_null_dfm())),
+                     docnames(mt))
+    expect_identical(docnames(mt),
+                     docnames(rbind(mt, quanteda:::make_null_dfm())))
+
+    expect_identical(docnames(cbind(mt, quanteda:::make_null_dfm())),
+                     docnames(mt))
+    expect_identical(docnames(mt),
+                     docnames(cbind(mt, quanteda:::make_null_dfm())))
 })
 

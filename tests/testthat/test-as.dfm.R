@@ -117,6 +117,26 @@ test_that("as.data.frame for dfm objects", {
     )
 })
 
+test_that("dfm2dataframe same as as.data.frame.dfm", {
+    d <- data_dfm_lbgexample[, 1:5]
+    expect_identical(
+        as.data.frame(d),
+        convert(d, to = "data.frame")
+    )
+    expect_equal(
+        quanteda:::dfm2dataframe(d, document = NULL),
+        data.frame(as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
+    )
+    expect_equal(
+        quanteda:::dfm2dataframe(d, row.names = docnames(d)),
+        data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
+    )
+    expect_error(
+        quanteda:::dfm2dataframe(d, document = TRUE),
+        "document must be character or NULL"
+    )
+})
+
 test_that("as.data.frame.dfm handles irregular feature names correctly", {
     skip_on_os("windows")
     skip_on_appveyor()
@@ -129,6 +149,14 @@ test_that("as.data.frame.dfm handles irregular feature names correctly", {
     )
     expect_equal(
         names(as.data.frame(mydfm, check.names = TRUE)),
+        c("document", "字", "spe.cial", "飛機", "spec.ial")
+    )
+    expect_equal(
+        names(quanteda:::dfm2dataframe(mydfm)),
+        c("document", "字", "spe cial", "飛機", "spec+ial")
+    )
+    expect_equal(
+        names(quanteda:::dfm2dataframe(mydfm, check.names = TRUE)),
         c("document", "字", "spe.cial", "飛機", "spec.ial")
     )
 })

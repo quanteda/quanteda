@@ -33,7 +33,7 @@ The \code{textmodel_wordscores()} function and the associated
   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
   to function in the same manner as \code{\link[stats]{predict.lm}}.
   \code{coef()} can also be used to extract the word coefficients from the
-  fitted \code{textmodel_wordscore} object, and \code{summary()} will print a
+  fitted \code{textmodel_wordscores} object, and \code{summary()} will print a
   nice summary of the fitted object.
 }
 \examples{
@@ -41,11 +41,7 @@ The \code{textmodel_wordscores()} function and the associated
 summary(ws)
 coef(ws)
 predict(ws)
-predict(ws, include_reftexts = FALSE)
-predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
-predict(ws, se.fit = TRUE)
-predict(ws, se.fit = TRUE, interval = "confidence")
 predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 }
 \references{
