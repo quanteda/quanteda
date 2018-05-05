@@ -92,12 +92,11 @@ Useful links:
 Other contributors:
 \itemize{
   \item Kohei Watanabe \email{watanabe.kohei@gmail.com} [contributor]
+  \item Haiyan Wang \email{h.wang52@lse.ac.uk} [contributor]
   \item Paul Nulty \email{paul.nulty@gmail.com} [contributor]
   \item Adam Obeng \email{quanteda@binaryeagle.com} [contributor]
-  \item Haiyan Wang \email{h.wang52@lse.ac.uk} [contributor]
   \item Stefan Müller \email{mullers@tcd.ie} [contributor]
-  \item Benjamin Lauderdale \email{B.E.lauderdale@lse.ac.uk} [contributor]
-  \item Will Lowe \email{wlowe@princeton.edu} [contributor]
+  \item Matsuo Akitaka \email{A.Matsuo@lse.ac.uk} [contributor]
 }
 
 }
