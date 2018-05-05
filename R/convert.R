@@ -15,7 +15,11 @@
 #'   \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
 #'   used by the \pkg{topicmodels} package} 
 #'   \item{\code{"lsa"}}{the "textmatrix" format as 
-#'   used by the \pkg{lsa} package} }
+#'   used by the \pkg{lsa} package}
+#'   \item{\code{"data.frame"}}{a data.frame where each feature is a variable} 
+#'   \item{\code{"tripletlist"}}{a named "triplet" format list consisting of 
+#'   \code{document}, \code{feature}, and \code{frequency}} 
+#'   }
 #' @param docvars optional data.frame of document variables used as the
 #'   \code{meta} information in conversion to the \pkg{stm} package format.
 #'   This aids in selecting the document variables only corresponding to the
@@ -101,7 +105,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
     else if (to == "lsa")
         return(dfm2lsa(x))
     else if (to == "data.frame")
-        return(as.data.frame(x))
+        return(dfm2dataframe(x))
     else if (to == "matrix")
         return(as.matrix(x))
     else if (to == "tripletlist")
@@ -349,7 +353,6 @@ dfm2lsa <- function(x) {
     t(result)
 }
 
-#' @keywords internal
 dfm2tripletlist <- function(x) {
     feat <- featnames(x)
     doc <- docnames(x)
@@ -359,4 +362,14 @@ dfm2tripletlist <- function(x) {
         feature = feat[x@j + 1],
         frequency = x@x
     )
+}
+
+dfm2dataframe <- function(x, row.names = NULL, ..., document = docnames(x),
+                          check.names = FALSE) {
+    if (!(is.character(document) || is.null(document)))
+        stop("document must be character or NULL")
+    df <- data.frame(as.matrix(x), row.names = row.names, 
+                     check.names = check.names)
+    if (!is.null(document)) df <- cbind(document, df, stringsAsFactors = FALSE)
+    df    
 }

@@ -20,7 +20,11 @@ package} \item{\code{"austin"}}{the \code{wfm} format from the
 \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
 used by the \pkg{topicmodels} package} 
 \item{\code{"lsa"}}{the "textmatrix" format as 
-used by the \pkg{lsa} package} }}
+used by the \pkg{lsa} package}
+\item{\code{"data.frame"}}{a data.frame where each feature is a variable} 
+\item{\code{"tripletlist"}}{a named "triplet" format list consisting of 
+\code{document}, \code{feature}, and \code{frequency}} 
+}}
 
 \item{docvars}{optional data.frame of document variables used as the
 \code{meta} information in conversion to the \pkg{stm} package format.
