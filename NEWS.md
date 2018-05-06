@@ -1,9 +1,9 @@
 # Since quanteda v1.2.0
 
-
 ### New Features
 
 * Added `to = "tripletlist"` output type for `convert()`, to convert a dfm into a simple triplet list. (#1321) 
+* Added `tokens_tortl()` and `char_tortl()` to add markers for right-to-left language tokens and character objects. (#1322)
 
 ### Behaviour changes
 
