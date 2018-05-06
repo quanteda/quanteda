@@ -1,7 +1,7 @@
 
 context("test direction change functions")
 
-txt <- readLines("data/hebrew.txt", encoding = "utf-8")
+txt <- readLines("../data/hebrew.txt", encoding = "utf-8")
 txt <- stringi::stri_trim_both(txt)
 
 test_that("char_tortl works.", {
