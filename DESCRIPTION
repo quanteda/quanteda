@@ -65,6 +65,7 @@ Collate:
     'View.R'
     'bootstrap_dfm.R'
     'casechange-functions.R'
+    'directionchange-functions.R'
     'character-methods.R'
     'convert.R'
     'corpus-methods-base.R'
