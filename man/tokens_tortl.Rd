@@ -20,12 +20,14 @@ Persian, and Urdu) are printed in HTML-based consoles (e.g. R Studio). This
 is an experimental function subject to future change.
 }
 \examples{
+\dontrun{
 txt <- "מדינת ישראל נוסדה בשנת 1948."
 txt
 char_tortl(txt)
 toks <- tokens(txt)
 toks
 tokens_tortl(toks)
+}
 }
 \keyword{character}
 \keyword{experimental}
