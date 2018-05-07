@@ -49,7 +49,7 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
 
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
-pred <- predict(ws)
+pred <- predict(ws, se.fit = TRUE)
 
 # plot estimated word positions
 textplot_scale1d(ws, margin = "features", 
