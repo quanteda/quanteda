@@ -1,15 +1,19 @@
-# Since quanteda v1.2.0
-
+# quanteda v1.2.2
 
 ### New Features
 
 * Added `to = "tripletlist"` output type for `convert()`, to convert a dfm into a simple triplet list. (#1321) 
+* Added `tokens_tortl()` and `char_tortl()` to add markers for right-to-left language tokens and character objects. (#1322)
 
 ### Behaviour changes
 
 * Improved `corpus.kwic()` by adding new arguments `split_context` and `extract_keyword`.
 * `dfm_remove(x, selection = anydfm)` is now equivalent to `dfm_remove(x, selection = featnames(anydfm))`.  (#1320)
 * Improved consistency of `predict.textmodel_nb()` returns, and added `type = ` argument. (#1329)
+
+### Bug fixes
+
+* Fixed a bug in `textmodel_affinity()` that caused failure when the input dfm had been compiled with `tolower = FALSE`.  (#1338)
 
 # quanteda v1.2.0
 

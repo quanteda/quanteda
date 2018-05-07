@@ -3,7 +3,7 @@
 
 ## Purpose
 
-- Minor bug fixes and improvements.
+- Minor bug fixes and improvements, improvements to documentation.
 - Some feature additions.
 
 ## Test environments

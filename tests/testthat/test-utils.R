@@ -61,13 +61,6 @@ test_that("pipes work", {
     )
 })
 
-test_that("friendly_class_undefined_message", {
-    expect_error(
-        as.tokens(data_dfm_lbgexample),
-        "as.tokens\\(\\) only works on.*list.*spacyr_parsed.*objects"
-    )
-})
-
 
 test_that("pattern2list is working with collocations", {
     
