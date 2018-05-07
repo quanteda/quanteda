@@ -45,7 +45,7 @@
 #' # plot estimated word positions
 #' textplot_scale1d(ws, highlighted = c("minister", "have", "our", "budget"))
 #' # plot estimated document positions
-#' textplot_scale1d(predict(ws), doclabels = doclab,
+#' textplot_scale1d(predict(ws, se.fit = TRUE), doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
 #'
 #' ## wordfish
