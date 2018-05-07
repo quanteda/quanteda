@@ -7,15 +7,6 @@
 #' @param x the input object whose punctuation marks will be modified by the
 #'   direction mark
 #' @keywords experimental tokens character
-#' @examples 
-#' \dontrun{
-#' txt <- "מדינת ישראל נוסדה בשנת 1948."
-#' txt
-#' char_tortl(txt)
-#' toks <- tokens(txt)
-#' toks
-#' tokens_tortl(toks)
-#' }
 #' @export
 tokens_tortl <- function(x) {
     UseMethod("tokens_tortl")
