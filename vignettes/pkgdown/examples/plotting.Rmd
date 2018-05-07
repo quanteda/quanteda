@@ -204,7 +204,7 @@ textplot_keyness(result_keyness, show_reference = FALSE)
 
 # Plot fitted scaling models
 
-You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of **quanteda**.
+You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008).
 
 ## Wordscores
 
@@ -230,7 +230,7 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
                 1, paste, collapse = " ")
 
 # Get predictions
-pred <- predict(ws)
+pred <- predict(ws, se.fit = TRUE)
 
 # Plot estimated document positions and group by "party" variable
 textplot_scale1d(pred, margin = "documents",
@@ -239,7 +239,7 @@ textplot_scale1d(pred, margin = "documents",
 
 # Plot estimated document positions using the LBG transformation and group by "party" variable
 
-pred_lbg <- predict(ws, rescaling = "lbg")
+pred_lbg <- predict(ws, se.fit = TRUE, rescaling = "lbg")
 
 textplot_scale1d(pred_lbg, margin = "documents",
                  doclabels = doclab,
