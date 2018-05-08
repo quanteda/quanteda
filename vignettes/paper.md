@@ -21,7 +21,7 @@ authors:
   orcid: 0000-0002-6315-4125
 - affiliation: 1
   name: Akitaka Matsuo
-  orcid: 0000-0000-0000-0000
+  orcid: 0000-0002-3323-6330
 date: "4 May 2018"
 bibliography: paper.bib
 tags:
