@@ -50,7 +50,8 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     
     if (nd > min(nrow(x), ncol(x))) nd <- min(nrow(x), ncol(x))
     if (nd < 2) nd <- 2
-
+    
+    x <- as(x, "dgCMatrix")
     if (margin == "documents") {
         dec <- RSpectra::svds(x, k = nd, nu = 0, nv = nd)
     } else if (margin == "features") {
