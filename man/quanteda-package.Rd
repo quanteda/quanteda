@@ -96,7 +96,7 @@ Other contributors:
   \item Paul Nulty \email{paul.nulty@gmail.com} [contributor]
   \item Adam Obeng \email{quanteda@binaryeagle.com} [contributor]
   \item Stefan Müller \email{mullers@tcd.ie} [contributor]
-  \item Matsuo Akitaka \email{A.Matsuo@lse.ac.uk} [contributor]
+  \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} [contributor]
 }
 
 }

@@ -19,15 +19,13 @@ status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/mast
 An R package for managing and analyzing text, created by [Kenneth
 Benoit](http://kenbenoit.net) in collaboration with a team of core
 [contributors](https://github.com/quanteda/quanteda/graphs/contributors):
-[Kohei Watanabe](https://github.com/koheiw), [Paul
+[Kohei Watanabe](https://github.com/koheiw), [Haiyan
+Wang](https://github.com/HaiyanLW), [Paul
 Nulty](https://github.com/pnulty), [Adam
 Obeng](https://github.com/adamobeng), [Stefan
-Müller](http://muellerstefan.net), [Haiyan
-Wang](https://github.com/HaiyanLW), [Ben
-Lauderdale](https://github.com/lauderdale), and [Will
-Lowe](https://github.com/conjugateprior).  
-Supported by the European Research Council grant ERC-2011-StG
-283794-QUANTESS.
+Müller](http://muellerstefan.net), and [Akitaka
+Matuso](http://amatsuo.net). Supported by the European Research Council
+grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see <http://docs.quanteda.io> and the **quanteda**
 [vignettes](https://quanteda.io/help/).
