@@ -419,7 +419,6 @@ test_that("tokens_lookup works when there is a key with non-existent values and 
 })
 
 test_that("tokens_lookup with nomatch works with key that do not appear in the text, #1347", {
-    
     txt <- c("12032 Musgrave rd red hill", 
              "13 rad street windermore park queensland",
              "130 right road", 
@@ -429,8 +428,12 @@ test_that("tokens_lookup with nomatch works with key that do not appear in the t
                             CB = c("street", "feet"), 
                             CA = c("parl", "dark"))) # CA does not appear at all
     toks_dict <- tokens_lookup(toks, dict, nomatch = "NONE")
+    expect_identical(as.list(toks_dict), 
+                      list(text1 = c("NONE", "NONE", "CR", "CR", "NONE"), 
+                           text2 = c("NONE", "NONE", "CB", "NONE", "NONE", "NONE"), 
+                           text3 = c("NONE", "NONE", "NONE"),
+                           text4 = c("NONE", "NONE", "NONE")))
     expect_equivalent(unclass(toks_dict), 
                       list(c(4, 4, 1, 1, 4), c(4, 4, 2, 4, 4, 4), c(4, 4, 4), c(4, 4, 4)))
     expect_identical(types(toks_dict), c("CR", "CB", "CA", "NONE"))
-    
 })

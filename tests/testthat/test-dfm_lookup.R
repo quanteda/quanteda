@@ -231,9 +231,8 @@ test_that("dfm_lookup with nomatch works with key that do not appear in the text
                             CB = c("street", "feet"), 
                             CA = c("parl", "dark"))) # CA does not appear at all
     dfm_dict <- dfm_lookup(dfm(toks), dict, nomatch = "NONE")
-    expect_equivalent(as.matrix(dfm_dict),
+    expect_identical(as.matrix(dfm_dict),
                       matrix(c(2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 5, 3, 3), 
-                             nrow = 4, dimnames = list(c("text1", "text2", "text3", "text4"),
-                                                       c("CR", "CB", "CA", "NONE"))))
-    
+                             nrow = 4, dimnames = list(docs = c("text1", "text2", "text3", "text4"),
+                                                       features = c("CR", "CB", "CA", "NONE"))))
 })
