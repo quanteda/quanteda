@@ -60,8 +60,8 @@ Text lookup(Text tokens,
             // return empty vector
             return {}; 
         } else if (nomatch == 1) {
-            // return tokens with no-match ID
-            Text keys_flat(tokens.size(), id_max + 1); 
+            // return tokens with no-match
+            Text keys_flat(tokens.size(), id_max); 
             return keys_flat;
         } else if (nomatch == 2) {
             // return shifted tokens in exclusive mode
@@ -89,7 +89,7 @@ Text lookup(Text tokens,
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
             if (nomatch == 1) {
-                keys_flat.push_back(id_max + 1); // pad with a new ID
+                keys_flat.push_back(id_max); // pad with no-match
             } else if (nomatch == 2) {
                 keys_flat.push_back(id_max + tokens[i]); // keep original token
             }
@@ -133,7 +133,7 @@ struct lookup_mt : public Worker{
 * @param words_ list of patterns to find
 * @param ids_ IDs of patterns
 * @param overlap count overlapped words if true
-* @param nomatch determine how to treat unmached words: 0=remove, 1=keep; 2=pad
+* @param nomatch determine how to treat unmached words: 0=remove, 1=pad; 2=keep
 */
 
 
@@ -148,8 +148,12 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     unsigned int id_max(0);
-    if (ids_.size() > 0) id_max = Rcpp::max(ids_);
-    // Rcout << id_max << "\n";
+    if (nomatch == 2) {
+        id_max = ids_.size() > 0 ? Rcpp::max(ids_) : 0;
+    } else {
+        id_max = types_.size();
+    }
+    //Rcout << id_max << "\n";
     
     //dev::Timer timer;
     
