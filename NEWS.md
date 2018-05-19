@@ -1,3 +1,9 @@
+# quanteda v1.2.3
+
+### Bug fixes
+
+* Fixed a bug affecting `tokens_lookup()` and `dfm_lookup()` when `nomatch` is used. (#1347)
+
 # quanteda v1.2.2
 
 ### New Features
