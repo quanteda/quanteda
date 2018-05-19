@@ -219,3 +219,20 @@ test_that("dfm_lookup works on a weighted dfm", {
         tol = .001
     )
 })
+
+test_that("dfm_lookup with nomatch works with key that do not appear in the text, #1347", {
+    
+    txt <- c("12032 Musgrave rd red hill", 
+             "13 rad street windermore park queensland",
+             "130 right road", 
+             "130 rtn road")
+    toks <- tokens(txt)
+    dict <- dictionary(list(CR = c("rd", "red"), 
+                            CB = c("street", "feet"), 
+                            CA = c("parl", "dark"))) # CA does not appear at all
+    dfm_dict <- dfm_lookup(dfm(toks), dict, nomatch = "NONE")
+    expect_identical(as.matrix(dfm_dict),
+                      matrix(c(2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 5, 3, 3), 
+                             nrow = 4, dimnames = list(docs = c("text1", "text2", "text3", "text4"),
+                                                       features = c("CR", "CB", "CA", "NONE"))))
+})

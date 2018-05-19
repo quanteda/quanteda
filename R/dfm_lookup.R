@@ -122,7 +122,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             if (!is.null(nomatch)) {
                 values_id_nomatch <- setdiff(seq_len(nfeat(x)), values_id)
                 values_id <- c(values_id, values_id_nomatch)
-                keys_id <- c(keys_id, rep(max(keys_id) + 1, 
+                keys_id <- c(keys_id, rep(length(dictionary) + 1, 
                                           length(values_id_nomatch)))
                 keys <- c(keys, nomatch[1])
             }

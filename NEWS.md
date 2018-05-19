@@ -1,4 +1,4 @@
-# quanteda v1.2.2
+# quanteda v1.2.3
 
 ### New Features
 
@@ -14,6 +14,7 @@
 ### Bug fixes
 
 * Fixed a bug in `textmodel_affinity()` that caused failure when the input dfm had been compiled with `tolower = FALSE`.  (#1338)
+* Fixed a bug affecting `tokens_lookup()` and `dfm_lookup()` when `nomatch` is used. (#1347)
 
 # quanteda v1.2.0
 
