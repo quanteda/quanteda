@@ -17,7 +17,7 @@ undefined for the supplied object type.
 }
 \examples{
 # as.tokens.default <- function(x, concatenator = "", ...) {
-#     stop(friendly_class_undefined_message(class(x), "as.tokens"))
+#     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
 # }
 }
 \keyword{internal}
