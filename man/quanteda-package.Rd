@@ -97,6 +97,8 @@ Other contributors:
   \item Adam Obeng \email{quanteda@binaryeagle.com} [contributor]
   \item Stefan Müller \email{mullers@tcd.ie} [contributor]
   \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} [contributor]
+  \item Patrick O. Perry \email{patperry@gmail.com} [contributor]
+  \item Jouni Kuha \email{j.kuha@lse.ac.uk} [contributor]
 }
 
 }
