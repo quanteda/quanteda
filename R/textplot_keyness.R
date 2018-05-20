@@ -119,7 +119,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
          geom_label(aes(x = x1, y = y1, label = feature), label.size = NA, fill = NA,
                     vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
                     color = labelcolor, size = labelsize, family = font) +
-         theme_bw() +
+         theme_bw(base_family = font) +
          theme(axis.line = element_blank(),
                axis.title.y = element_blank(),
                axis.text.y = element_blank(),
