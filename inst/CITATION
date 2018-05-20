@@ -6,3 +6,24 @@ bibentry(bibtype = "Manual",
          url = "http://quanteda.io",
          note = paste("R package version", packageVersion("quanteda"))
 )
+
+
+citHeader("To cite package 'quanteda' in publications please use the following.")
+
+## R >= 2.8.0 passes package metadata to citation().
+if (!exists("meta") || is.null(meta)) 
+    meta <- packageDescription("quanteda")
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+citEntry(
+    entry = "Manual",
+    title = "quanteda: Quantitative Analysis of Textual Data",
+    author = c(person("Kenneth", "Benoit")),
+    year = year,
+    note = note,
+    doi = "10.5281/zenodo.1004683",
+    url = "http://quanteda.io",
+    textVersion = 
+    sprintf("Kenneth Benoit, et. al. (%s). quanteda: Quantitative Analysis of Textual Data. URL http://quanteda.io.", year)
+)
