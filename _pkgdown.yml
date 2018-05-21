@@ -91,6 +91,7 @@ reference:
     - tokens_subset
     - tokens_tolower
     - tokens_toupper
+    - tokens_tortl
     - tokens_wordstem
     - types
     - as.character.tokens

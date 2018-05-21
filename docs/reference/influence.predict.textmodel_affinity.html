@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Compute feature influence from a predicted textmodel_affinity object — influence.predict.textmodel_affinity" />
@@ -43,22 +51,15 @@ applications." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -75,7 +76,7 @@ applications." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -105,8 +106,20 @@ applications." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -163,7 +176,7 @@ applications." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -182,10 +195,12 @@ applications." />
     <div class="hidden name"><code>influence.predict.textmodel_affinity.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Computes the influence of features on scaled <a href='textmodel_affinity.html'>textmodel_affinity</a>
 applications.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for predict.textmodel_affinity</span>
 <span class='fu'>influence</span>(<span class='no'>model</span>, <span class='kw'>subset</span> <span class='kw'>=</span> !<span class='no'>train</span>, <span class='no'>...</span>)</pre>
@@ -215,41 +230,7 @@ training set)</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>af</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_affinity.html'>textmodel_affinity</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"L"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='st'>"R"</span>, <span class='fl'>NA</span>))
-<span class='no'>afpred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>af</span>)
-<span class='fu'>influence</span>(<span class='no'>afpred</span>)</div><div class='output co'>#&gt; Top 30 influential words:
-#&gt; 
-#&gt;    count       median          max direction
-#&gt; Y      2 7.576025e-03 1.505203e-02         R
-#&gt; Z      2 2.272671e-03 4.466192e-03         R
-#&gt; ZA     2 1.517405e-03 2.981017e-03         R
-#&gt; O      3 4.847547e-04 6.879185e-02         L
-#&gt; N      3 3.919919e-04 3.346596e-02         L
-#&gt; X      3 2.928133e-04 3.346596e-02         R
-#&gt; P      4 2.701610e-04 1.006349e-01         L
-#&gt; M      3 2.688997e-04 1.505203e-02         L
-#&gt; Q      4 2.251359e-04 1.352534e-01         L
-#&gt; W      3 2.042000e-04 6.879185e-02         R
-#&gt; U      4 1.741103e-04 1.352534e-01         R
-#&gt; L      3 1.558427e-04 4.466192e-03         L
-#&gt; V      4 1.378416e-04 1.006349e-01         R
-#&gt; K      3 7.634040e-05 2.981017e-03         L
-#&gt; J      2 3.289667e-05 3.473071e-05         L
-#&gt; ZB     1 3.106263e-05 3.106263e-05         R
-#&gt; ZC     1 1.518987e-05 1.518987e-05         R
-#&gt; I      2 1.280577e-05 1.518987e-05         L
-#&gt; H      2 6.924294e-06 6.945949e-06         L
-#&gt; ZD     1 6.902639e-06 6.902639e-06         R
-#&gt; G      1 2.068877e-06 2.068877e-06         L
-#&gt; ZE     1 2.068877e-06 2.068877e-06         R
-#&gt; F      1 1.376422e-06 1.376422e-06         L
-#&gt; ZF     1 1.376422e-06 1.376422e-06         R
-#&gt; A      0 0.000000e+00 0.000000e+00      &lt;NA&gt;
-#&gt; B      0 0.000000e+00 0.000000e+00      &lt;NA&gt;
-#&gt; C      0 0.000000e+00 0.000000e+00      &lt;NA&gt;
-#&gt; D      0 0.000000e+00 0.000000e+00      &lt;NA&gt;
-#&gt; E      0 0.000000e+00 0.000000e+00      &lt;NA&gt;
-#&gt; R      0 0.000000e+00 0.000000e+00      &lt;NA&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>af</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_affinity.html'>textmodel_affinity</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"L"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='st'>"R"</span>, <span class='fl'>NA</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>afpred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>af</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(af): object 'af' not found</span></div><div class='input'><span class='fu'>influence</span>(<span class='no'>afpred</span>)</div><div class='output co'>#&gt; <span class='error'>Error in influence(afpred): object 'afpred' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -281,10 +262,16 @@ training set)</p></td>
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Apply a dictionary to a dfm — dfm_lookup" />
@@ -48,22 +56,15 @@ the document)." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -80,7 +81,7 @@ the document)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -110,8 +111,20 @@ the document)." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -168,7 +181,7 @@ the document)." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -187,6 +200,7 @@ the document)." />
     <div class="hidden name"><code>dfm_lookup.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Apply a dictionary to a dfm by looking up all dfm features for matches in a a
 set of <a href='dictionary.html'>dictionary</a> values, and replace those features with a count of
@@ -196,6 +210,7 @@ key, converted to capitals if <code>capkeys = TRUE</code> (so that the replaceme
 are easily distinguished from features that were terms found originally in
 the document).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>dfm_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -284,48 +299,13 @@ the counts of features of <code>x</code> not matched to a dictionary key.  If
 #&gt;   text1        0 0
 #&gt;   text2        1 1</div><div class='input'>
 <span class='co'># glob format</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       2        1       2</div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># fixed format: no pattern matching</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       0        0       0
-#&gt;   text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       0        0       0
-#&gt;   text2         0          0       0        0       2</div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># show unmatched tokens</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country _UNMATCHED
-#&gt;   text1         1          1       1        0       0          3
-#&gt;   text2         0          0       1        0       2          2</div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>my_dfm</span>, <span class='no'>my_dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -360,10 +340,16 @@ the counts of features of <code>x</code> not matched to a dictionary key.  If
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

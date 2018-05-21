@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Wordscores text model — textmodel_wordscores" />
@@ -48,22 +56,15 @@ documents from a fitted textmodel_wordscores object." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -80,7 +81,7 @@ documents from a fitted textmodel_wordscores object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -110,8 +111,20 @@ documents from a fitted textmodel_wordscores object." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -168,7 +181,7 @@ documents from a fitted textmodel_wordscores object." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -187,6 +200,7 @@ documents from a fitted textmodel_wordscores object." />
     <div class="hidden name"><code>textmodel_wordscores.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>textmodel_wordscores</code> implements Laver, Benoit and Garry's (2003)
 "Wordscores" method for scaling texts on a single dimension, given a set of
@@ -196,6 +210,7 @@ the logit space (as per Beauchamp 2012).  Estimates of <em>virgin</em> or
 unknown texts are obtained using the <code>predict()</code> method to score
 documents from a fitted <code>textmodel_wordscores</code> object.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>textmodel_wordscores</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
@@ -230,7 +245,7 @@ to match the LBG (2003) method.</p></td>
   <code><a href='predict.textmodel_wordscores.html'>predict()</a></code> method are designed
   to function in the same manner as <code><a href='http://www.rdocumentation.org/packages/stats/topics/predict.lm'>predict.lm</a></code>.
   <code>coef()</code> can also be used to extract the word coefficients from the
-  fitted <code>textmodel_wordscore</code> object, and <code>summary()</code> will print a
+  fitted <code>textmodel_wordscores</code> object, and <code>summary()</code> will print a
   nice summary of the fitted object.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -251,81 +266,7 @@ to match the LBG (2003) method.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; textmodel_wordscores.dfm(x = data_dfm_lbgexample, y = c(seq(-1.5, 
-#&gt;     1.5, 0.75), NA))
-#&gt; 
-#&gt; Scale: linear; 5 reference scores; 37 scored features.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; textmodel_wordscores.dfm(x = data_dfm_lbgexample, y = c(seq(-1.5, 
-#&gt;     1.5, 0.75), NA))
-#&gt; 
-#&gt; Reference Document Statistics:
-#&gt;    score total min max  mean median
-#&gt; R1 -1.50  1000   0 158 27.03      0
-#&gt; R2 -0.75  1000   0 158 27.03      0
-#&gt; R3  0.00  1000   0 158 27.03      0
-#&gt; R4  0.75  1000   0 158 27.03      0
-#&gt; R5  1.50  1000   0 158 27.03      0
-#&gt; V1    NA  1000   0 158 27.03      0
-#&gt; 
-#&gt; Wordscores:
-#&gt; (showing first 30 elements)
-#&gt;       A       B       C       D       E       F       G       H       I       J 
-#&gt; -1.5000 -1.5000 -1.5000 -1.5000 -1.5000 -1.4812 -1.4809 -1.4519 -1.4083 -1.3233 
-#&gt;       K       L       M       N       O       P       Q       R       S       T 
-#&gt; -1.1846 -1.0370 -0.8806 -0.7500 -0.6194 -0.4508 -0.2992 -0.1306  0.0000  0.1306 
-#&gt;       U       V       W       X       Y       Z      ZA      ZB      ZC      ZD 
-#&gt;  0.2992  0.4508  0.6194  0.7500  0.8806  1.0370  1.1846  1.3233  1.4083  1.4519 </div><div class='input'><span class='fu'>coef</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt;          A          B          C          D          E          F          G 
-#&gt; -1.5000000 -1.5000000 -1.5000000 -1.5000000 -1.5000000 -1.4812500 -1.4809322 
-#&gt;          H          I          J          K          L          M          N 
-#&gt; -1.4519231 -1.4083333 -1.3232984 -1.1846154 -1.0369898 -0.8805970 -0.7500000 
-#&gt;          O          P          Q          R          S          T          U 
-#&gt; -0.6194030 -0.4507576 -0.2992424 -0.1305970  0.0000000  0.1305970  0.2992424 
-#&gt;          V          W          X          Y          Z         ZA         ZB 
-#&gt;  0.4507576  0.6194030  0.7500000  0.8805970  1.0369898  1.1846154  1.3232984 
-#&gt;         ZC         ZD         ZE         ZF         ZG         ZH         ZI 
-#&gt;  1.4083333  1.4519231  1.4809322  1.4812500  1.5000000  1.5000000  1.5000000 
-#&gt;         ZJ         ZK 
-#&gt;  1.5000000  1.5000000 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt;            R1            R2            R3            R4            R5 
-#&gt; -1.317931e+00 -7.395598e-01 -8.673617e-18  7.395598e-01  1.317931e+00 
-#&gt;            V1 
-#&gt; -4.480591e-01 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>include_reftexts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;         V1 
-#&gt; -0.4480591 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt;         R1         R2         R3         R4         R5         V1 
-#&gt; -1.5000000 -0.8417280  0.0000000  0.8417280  1.5000000 -0.5099572 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
-#&gt; -1.58967683 -0.88488724  0.01632248  0.91753220  1.62232179 -0.52967149 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $fit
-#&gt;            R1            R2            R3            R4            R5 
-#&gt; -1.317931e+00 -7.395598e-01 -8.673617e-18  7.395598e-01  1.317931e+00 
-#&gt;            V1 
-#&gt; -4.480591e-01 
-#&gt; 
-#&gt; $se.fit
-#&gt; [1] 0.006699613 0.011433605 0.012005250 0.011433605 0.006699613 0.011897667
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>)</div><div class='output co'>#&gt; $fit
-#&gt;              fit         lwr         upr
-#&gt; R1 -1.317931e+00 -1.33106234 -1.30480034
-#&gt; R2 -7.395598e-01 -0.76196925 -0.71715035
-#&gt; R3 -8.673617e-18 -0.02352986  0.02352986
-#&gt; R4  7.395598e-01  0.71715035  0.76196925
-#&gt; R5  1.317931e+00  1.30480034  1.33106234
-#&gt; V1 -4.480591e-01 -0.47137808 -0.42474008
-#&gt; 
-#&gt; $se.fit
-#&gt; [1] 0.006699613 0.011433605 0.012005250 0.011433605 0.006699613 0.011897667
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt; $fit
-#&gt;           fit         lwr         upr
-#&gt; R1 -1.5000000 -1.51494501 -1.48505499
-#&gt; R2 -0.8417280 -0.86723325 -0.81622274
-#&gt; R3  0.0000000 -0.02678045  0.02678045
-#&gt; R4  0.8417280  0.81622274  0.86723325
-#&gt; R5  1.5000000  1.48505499  1.51494501
-#&gt; V1 -0.5099572 -0.53649769 -0.48341678
-#&gt; 
-#&gt; $se.fit
-#&gt;          R1          R2          R3          R4          R5          V1 
-#&gt; 0.007625147 0.013013126 0.013663743 0.013013126 0.007625147 0.013541297 
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>summary</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; <span class='error'>Error in summary(ws): object 'ws' not found</span></div><div class='input'><span class='fu'>coef</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; <span class='error'>Error in coef(ws): object 'ws' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws): object 'ws' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws, rescaling = "lbg"): object 'ws' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv"): object 'ws' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -365,10 +306,16 @@ Kenneth Benoit
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://docs.quanteda.io/index.html</loc>
+  </url>
+  <url>
     <loc>http://docs.quanteda.io/reference/View.html</loc>
   </url>
   <url>
@@ -14,6 +17,9 @@
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/as.corpus.corpuszip.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/reference/as.data.frame.dfm.html</loc>
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/as.dfm.html</loc>
@@ -499,6 +505,9 @@
     <loc>http://docs.quanteda.io/reference/tokens_tolower.html</loc>
   </url>
   <url>
+    <loc>http://docs.quanteda.io/reference/tokens_tortl.html</loc>
+  </url>
+  <url>
     <loc>http://docs.quanteda.io/reference/tokens_wordstem.html</loc>
   </url>
   <url>
@@ -506,6 +515,9 @@
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/types.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/reference/unused_dots.html</loc>
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/valuetype.html</loc>
@@ -517,10 +529,10 @@
     <loc>http://docs.quanteda.io/reference/wordcloud_comparison.html</loc>
   </url>
   <url>
-    <loc>http://docs.quanteda.io/articles/design.html</loc>
+    <loc>http://docs.quanteda.io/articles/pkgdown/comparison.html</loc>
   </url>
   <url>
-    <loc>http://docs.quanteda.io/articles/pkgdown/comparison.html</loc>
+    <loc>http://docs.quanteda.io/articles/pkgdown/design.html</loc>
   </url>
   <url>
     <loc>http://docs.quanteda.io/articles/pkgdown/examples/chinese.html</loc>
