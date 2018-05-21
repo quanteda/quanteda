@@ -6,12 +6,15 @@
 \title{Confidence debate from 1991 Irish Parliament}
 \format{\code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
   including docvars for \code{name}, \code{party}, and \code{position}.}
+\source{
+\url{https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/}
+}
 \usage{
 data_corpus_dailnoconf1991
 }
 \description{
-Texts of speeches from a no-confidence motion debated in the Irish Dáil in
-October 1991 over the future of the Fianna Fail-Progressive Democrat
+Texts of speeches from a no-confidence motion debated in the Irish Dáil from
+16-18 October 1991 over the future of the Fianna Fail-Progressive Democrat
 coalition.  (See Laver and Benoit 2002 for details.)
 }
 \examples{
