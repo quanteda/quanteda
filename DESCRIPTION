@@ -58,7 +58,18 @@ Suggests:
     xtable,
     DT,
     ca,
-    purrr
+    purrr,
+    ExPosition,     
+    dplyr,     
+    e1071,     
+    koRpus,     
+    lsa,     
+    stm,     
+    svs,     
+    tibble,     
+    e1071,     
+    lsa,     
+    text2vec
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
