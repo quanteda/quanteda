@@ -171,8 +171,8 @@ NULL
 
 #' Confidence debate from 1991 Irish Parliament
 #' 
-#' Texts of speeches from a no-confidence motion debated in the Irish Dáil in
-#' October 1991 over the future of the Fianna Fail-Progressive Democrat
+#' Texts of speeches from a no-confidence motion debated in the Irish Dáil from
+#' 16-18 October 1991 over the future of the Fianna Fail-Progressive Democrat
 #' coalition.  (See Laver and Benoit 2002 for details.)
 #' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
 #'   including docvars for \code{name}, \code{party}, and \code{position}.
@@ -185,6 +185,7 @@ NULL
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
 #'   positions from political text using words as data.}" \emph{American 
 #'   Political Science Review} 97(2): 311-331.
+#' @source \url{https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/}
 #' @keywords data
 #' @examples
 #' \dontrun{
@@ -206,4 +207,3 @@ NULL
 #' text(c(0.9, 0.9), c(8.5, 6.5), c("Goverment", "Opposition"))
 #' }
 "data_corpus_dailnoconf1991"
-

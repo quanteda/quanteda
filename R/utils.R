@@ -177,7 +177,7 @@ check_dots <-  function(dots, permissible_args = NULL) {
 #' @keywords internal
 #' @examples 
 #' # as.tokens.default <- function(x, concatenator = "", ...) {
-#' #     stop(friendly_class_undefined_message(class(x), "as.tokens"))
+#' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
 friendly_class_undefined_message <- function(object_class, function_name) {
     valid_object_types <- 
