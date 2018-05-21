@@ -32,3 +32,4 @@ __MACOSX
 ^pkgdown$
 ^index.html$
 ^index.Rmd$
+^paper
