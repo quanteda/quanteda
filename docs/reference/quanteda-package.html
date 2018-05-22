@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="An R package for the quantitative analysis of textual data — quanteda-package" />
@@ -100,22 +108,15 @@ flexible, easy to use graphical tools to portray many of the analyses available 
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -132,7 +133,7 @@ flexible, easy to use graphical tools to portray many of the analyses available 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -162,8 +163,20 @@ flexible, easy to use graphical tools to portray many of the analyses available 
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -220,7 +233,7 @@ flexible, easy to use graphical tools to portray many of the analyses available 
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -239,6 +252,7 @@ flexible, easy to use graphical tools to portray many of the analyses available 
     <div class="hidden name"><code>quanteda-package.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>A set of functions for creating and managing text corpora, extracting
 features from text corpora, and analyzing those features using quantitative
@@ -300,6 +314,7 @@ methods.</p>
 <li><p>flexible, easy to use graphical tools to portray many of the analyses available in the package.</p></li>
 </ul>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="source-code-and-additional-information"><a class="anchor" href="#source-code-and-additional-information"></a>Source code and additional information</h2>
@@ -332,12 +347,15 @@ methods.</p>
 Other contributors:
 <ul>
 <li><p>Kohei Watanabe <a href='mailto:watanabe.kohei@gmail.com'>watanabe.kohei@gmail.com</a> [contributor]</p></li>
+<li><p>Haiyan Wang <a href='mailto:h.wang52@lse.ac.uk'>h.wang52@lse.ac.uk</a> [contributor]</p></li>
 <li><p>Paul Nulty <a href='mailto:paul.nulty@gmail.com'>paul.nulty@gmail.com</a> [contributor]</p></li>
 <li><p>Adam Obeng <a href='mailto:quanteda@binaryeagle.com'>quanteda@binaryeagle.com</a> [contributor]</p></li>
-<li><p>Haiyan Wang <a href='mailto:h.wang52@lse.ac.uk'>h.wang52@lse.ac.uk</a> [contributor]</p></li>
 <li><p>Stefan Müller <a href='mailto:mullers@tcd.ie'>mullers@tcd.ie</a> [contributor]</p></li>
-<li><p>Benjamin Lauderdale <a href='mailto:B.E.lauderdale@lse.ac.uk'>B.E.lauderdale@lse.ac.uk</a> [contributor]</p></li>
-<li><p>Will Lowe <a href='mailto:wlowe@princeton.edu'>wlowe@princeton.edu</a> [contributor]</p></li>
+<li><p>Akitaka Matsuo <a href='mailto:a.matsuo@lse.ac.uk'>a.matsuo@lse.ac.uk</a> [contributor]</p></li>
+<li><p>Patrick O. Perry <a href='mailto:patperry@gmail.com'>patperry@gmail.com</a> [contributor]</p></li>
+<li><p>Jouni Kuha <a href='mailto:j.kuha@lse.ac.uk'>j.kuha@lse.ac.uk</a> [contributor]</p></li>
+<li><p>William Lowe <a href='mailto:wlowe@princeton.edu'>wlowe@princeton.edu</a> [contributor]</p></li>
+<li><p>Ian Fellows <a href='mailto:ian@fellstat.com'>ian@fellstat.com</a> [copyright holder]</p></li>
 </ul>
 
 
@@ -361,10 +379,16 @@ Other contributors:
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

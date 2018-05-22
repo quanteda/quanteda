@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Create a feature co-occurrence matrix — fcm" />
@@ -45,22 +53,15 @@ vector of weights applied to the co-occurrence counts." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -77,7 +78,7 @@ vector of weights applied to the co-occurrence counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -107,8 +108,20 @@ vector of weights applied to the co-occurrence counts." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -165,7 +178,7 @@ vector of weights applied to the co-occurrence counts." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -184,12 +197,14 @@ vector of weights applied to the co-occurrence counts." />
     <div class="hidden name"><code>fcm.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Create a sparse feature co-occurrence matrix, measuring co-occurrences of
 features within a user-defined context. The context can be defined as a
 document or a window within a collection of documents, with an optional
 vector of weights applied to the co-occurrence counts.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>fcm</span>(<span class='no'>x</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document"</span>, <span class='st'>"window"</span>), <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"frequency"</span>, <span class='st'>"boolean"</span>,
   <span class='st'>"weighted"</span>), <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5L</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -300,97 +315,17 @@ sentences</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># see http://bit.ly/29b2zOA</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"A D A C E A D F E B A C E D"</span>
-<span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
-#&gt; 6 x 6 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features A D C E F B
-#&gt;        A 1 3 3 4 1 1
-#&gt;        D 0 0 2 3 1 0
-#&gt;        C 0 0 0 2 0 1
-#&gt;        E 0 0 0 0 1 1
-#&gt;        F 0 0 0 0 0 1
-#&gt;        B 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
-#&gt; 6 x 6 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features         A        D        C        E         F         B
-#&gt;        A 0.8333333 3.333333 2.833333 2.833333 0.8333333 1.0000000
-#&gt;        D 0         0        1.333333 2.333333 1.0000000 0.3333333
-#&gt;        C 0         0        0        2.333333 0         0.5000000
-#&gt;        E 0         0        0        0        1.3333333 1.3333333
-#&gt;        F 0         0        0        0        0         0.5000000
-#&gt;        B 0         0        0        0        0         0        </div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-             <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
-#&gt; 6 x 6 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features A D C E F B
-#&gt;        A 3 7 7 5 2 0
-#&gt;        D 3 0 2 3 3 1
-#&gt;        C 2 3 0 6 0 0
-#&gt;        E 5 5 1 0 1 3
-#&gt;        F 1 0 0 3 0 2
-#&gt;        B 3 0 2 1 0 0</div><div class='input'>
+<span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+             <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># with multiple documents</span>
 <span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span>)
-<span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"frequency"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
-#&gt; 6 x 6 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features a b c e f g
-#&gt;        a 4 6 6 3 1 1
-#&gt;        b 0 1 2 0 0 0
-#&gt;        c 0 0 0 2 1 1
-#&gt;        e 0 0 0 0 1 1
-#&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"boolean"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
-#&gt; 6 x 6 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features a b c e f g
-#&gt;        a 2 1 3 2 1 1
-#&gt;        b 0 1 1 0 0 0
-#&gt;        c 0 0 0 2 1 1
-#&gt;        e 0 0 0 0 1 1
-#&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
-#&gt; 6 x 6 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features a b c e f g
-#&gt;        a 4 3 3 2 0 0
-#&gt;        b 0 1 2 0 0 0
-#&gt;        c 0 0 0 2 1 0
-#&gt;        e 0 0 0 0 1 1
-#&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'>
+<span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"frequency"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"boolean"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 
 <span class='co'># from tokens</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The quick brown fox jumped over the lazy dog."</span>,
          <span class='st'>"The dog jumped and ate the fox."</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
-#&gt; 10 x 10 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features the quick brown fox jumped over lazy dog and ate
-#&gt;   the      2     2     2   4      4    2    2   4   2   2
-#&gt;   quick    0     0     1   1      1    1    1   1   0   0
-#&gt;   brown    0     0     0   1      1    1    1   1   0   0
-#&gt;   fox      0     0     0   0      2    1    1   2   1   1
-#&gt;   jumped   0     0     0   0      0    1    1   2   1   1
-#&gt;   over     0     0     0   0      0    0    1   1   0   0
-#&gt;   lazy     0     0     0   0      0    0    0   1   0   0
-#&gt;   dog      0     0     0   0      0    0    0   0   1   1
-#&gt;   and      0     0     0   0      0    0    0   0   0   1
-#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
-#&gt; 10 x 10 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features the quick brown fox jumped over lazy dog and ate
-#&gt;   the      0     1     1   3      3    1    1   2   2   1
-#&gt;   quick    0     0     1   1      1    0    0   0   0   0
-#&gt;   brown    0     0     0   1      1    1    0   0   0   0
-#&gt;   fox      0     0     0   0      1    1    0   0   1   1
-#&gt;   jumped   0     0     0   0      0    1    1   1   1   1
-#&gt;   over     0     0     0   0      0    0    1   1   0   0
-#&gt;   lazy     0     0     0   0      0    0    0   1   0   0
-#&gt;   dog      0     0     0   0      0    0    0   0   1   1
-#&gt;   and      0     0     0   0      0    0    0   0   0   1
-#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div></pre>
+<span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -428,10 +363,16 @@ Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

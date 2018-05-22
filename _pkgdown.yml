@@ -23,7 +23,11 @@ navbar:
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
-      href: articles/pkgdown/comparison.html
+      menu:
+        - text: "Feature comparison"
+          href: articles/pkgdown/comparison.html
+        - text: "Package design"
+          href: articles/pkgdown/design.html
     - text: "Examples"
       menu:
         - text: "Multi-word expressions"
@@ -87,6 +91,7 @@ reference:
     - tokens_subset
     - tokens_tolower
     - tokens_toupper
+    - tokens_tortl
     - tokens_wordstem
     - types
     - as.character.tokens
