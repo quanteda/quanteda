@@ -63,12 +63,12 @@ sentences, or even user-supplied delimiters and tags, or group them into larger
 documents by document-level variables, or to subset them based on logical
 conditions or combinations of document-level variables.
 
-# Natural languages processing
+# Natural language processing
 
 **quanteda** is principally designed to allow users a fast and convenient method
 to construct a document-feature matrix from a corpus with an ability to perform
 the most common natural language processing tasks such as tokenizing, stemming,
-forming n-grams, selecting and weighting features . With these functions, users
+forming n-grams, selecting and weighting features. With these functions, users
 can easily remove stop words and stem words in numerous languages, select words
 in a dictionary, and convert frequency counts into _tf-idf_ scores.
 
@@ -119,7 +119,7 @@ examplefcm <-
     fcm(context = "window", window = 5, tri = FALSE)
 
 # choose 30 most frequency features
-topfeats <- names(topfeatures(myfcm, 30))
+topfeats <- names(topfeatures(examplefcm, 30))
 
 # select the top 30 features only, plot the network
 set.seed(100)
