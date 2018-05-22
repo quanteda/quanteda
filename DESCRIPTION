@@ -21,7 +21,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "ctb"),
     person("Ian", "Fellows", email = "ian@fellstat.com", role = "cph", 
            comment = "wordcloud source code (modified)"))
-License: GPL-3 + file LICENSE
+License: GPL-3
 Depends:
     R (>= 3.1.0),
     methods

@@ -100,7 +100,7 @@ Other contributors:
   \item Patrick O. Perry \email{patperry@gmail.com} [contributor]
   \item Jouni Kuha \email{j.kuha@lse.ac.uk} [contributor]
   \item William Lowe \email{wlowe@princeton.edu} [contributor]
-  \item Ian Fellows \email{ian@fellstat.com} [copyright holder]
+  \item Ian Fellows \email{ian@fellstat.com} (wordcloud source code (modified)) [copyright holder]
 }
 
 }
