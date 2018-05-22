@@ -73,11 +73,11 @@ can easily remove stop words and stem words in numerous languages, select words
 in a dictionary, and convert frequency counts into _tf-idf_ scores.
 
 Using the ICU library in the **stringi** package [@stringi] for text processing,
-**quanteda** correctly can handle Unicode character set and regular expression
-in any character set. Once texts are tokenized, **quanteda** serializes tokens
-into integers to increase processing speed while reducing memory usage. Many of
-the text processing functions are parallelized using the Intel TBB library via
-the **RcppParallel** package [@RcppParallel].
+**quanteda** can correctly handle Unicode character set for regular expression
+matches and detect word boundaries for tokenization. Once texts are tokenized,
+**quanteda** serializes tokens into integers to increase processing speed while
+reducing memory usage. Many of the text processing functions are parallelized
+using the Intel TBB library via the **RcppParallel** package [@RcppParallel].
 
 # Models and statistics texts
 
