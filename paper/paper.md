@@ -79,7 +79,7 @@ matches and detect word boundaries for tokenization. Once texts are tokenized,
 reducing memory usage. Many of the text processing functions are parallelized
 using the Intel TBB library via the **RcppParallel** package [@RcppParallel].
 
-# Models and statistics texts
+# Models and textual statistics
 
 **quanteda** is especially suited to research because it was designed from the
 outset for the social scientific analysis of textual data. Its "textmodel"
@@ -93,9 +93,8 @@ analysis [@deerwester1990]. **quanteda** also works flexibly and efficiently
 with dictionaries, and is distributed with the 2015 version of the Lexicoder
 Sentiment Dictionary [@youngsoroka2012].
 
-In addition to models, the package provides a variety of statistics textual
-data, such as frequency, "keyness", lexical diversity, readability, and
-similarity and distance of documents or features.  These make use of the
+In addition to models, the package provides a variety of text statistics, such as frequency analysis, "keyness", lexical diversity, readability, and
+similarity and distance of documents or features. These make use of the
 sparseness document-feature matrices -- often over 90% sparse -- and parallelism
 for efficient, fast computation. It also provides methods for statistically
 scoring collocations, useful in identifying multi-word expressions.
@@ -171,7 +170,7 @@ packages such as **spacyr**, an R wrapper to the spaCy [@spacy2], and
 Created at the London School of Economics in 2013 with funding from the European
 Research Council funding (ERC-2011-StG 283794-QUANTESS), **quanteda** is now
 supported by the Quanteda Initiative, a non-profit organization founded in 2018
-to provide ongoing support for the “quanteda ecosystem” of open-source text
+to provide ongoing support for the "quanteda ecosystem" of open-source text
 analysis software.
 
 # References
