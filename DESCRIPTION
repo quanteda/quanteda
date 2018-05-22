@@ -67,8 +67,6 @@ Suggests:
     stm,     
     svs,     
     tibble,     
-    e1071,     
-    lsa,     
     text2vec
 URL: http://quanteda.io
 Encoding: UTF-8
