@@ -19,7 +19,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Patrick O.", "Perry", email = "patperry@gmail.com", role = "ctb"),
     person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "ctb"),
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "ctb"),
-    person("Ian", "Fellows", email = "ian@fellstat.com", role = "cph"))
+    person("Ian", "Fellows", email = "ian@fellstat.com", role = "cph", 
+           comment = "wordcloud source code (modified)"))
 License: GPL-3 + file LICENSE
 Depends:
     R (>= 3.1.0),
