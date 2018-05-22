@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Get the feature labels from a dfm — featnames" />
@@ -43,22 +51,15 @@ column names of the dfm object." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -75,7 +76,7 @@ column names of the dfm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -105,8 +106,20 @@ column names of the dfm object." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -163,7 +176,7 @@ column names of the dfm object." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -182,10 +195,12 @@ column names of the dfm object." />
     <div class="hidden name"><code>featnames.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Get the features from a document-feature matrix, which are stored as the
 column names of the <a href='dfm.html'>dfm</a> object.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>featnames</span>(<span class='no'>x</span>)</pre>
     
@@ -221,10 +236,10 @@ column names of the <a href='dfm.html'>dfm</a> object.</p>
 #&gt; [45] "country"         "whose"           "voice"           "can"            
 #&gt; [49] "never"           "hear"           </div><div class='input'>
 <span class='co'># first 50 features alphabetically</span>
-<span class='fu'>head</span>(<span class='fu'>sort</span>(<span class='fu'>featnames</span>(<span class='no'>inaugDfm</span>)), <span class='fl'>50</span>)</div><div class='output co'>#&gt;  [1] "&gt;"           "-"           ","           ";"           ":"          
-#&gt;  [6] "!"           "?"           "."           "'"           "\""         
-#&gt; [11] "("           ")"           "["           "]"           "$"          
-#&gt; [16] "\\"          "1"           "100"         "1,000"       "100,000,000"
+<span class='fu'>head</span>(<span class='fu'>sort</span>(<span class='fu'>featnames</span>(<span class='no'>inaugDfm</span>)), <span class='fl'>50</span>)</div><div class='output co'>#&gt;  [1] "-"           ","           ";"           ":"           "!"          
+#&gt;  [6] "?"           "."           "'"           "\""          "("          
+#&gt; [11] ")"           "["           "]"           "\\"          "&gt;"          
+#&gt; [16] "$"           "1"           "1,000"       "100"         "100,000,000"
 #&gt; [21] "120,000,000" "125"         "13"          "14th"        "15th"       
 #&gt; [26] "16"          "1774"        "1776"        "1778"        "1780"       
 #&gt; [31] "1787"        "1789"        "1790"        "1800"        "1801"       
@@ -232,16 +247,7 @@ column names of the <a href='dfm.html'>dfm</a> object.</p>
 #&gt; [41] "1826"        "1850"        "1861"        "1868"        "1873"       
 #&gt; [46] "1880"        "1886"        "1890"        "1893"        "1896"       </div><div class='input'>
 <span class='co'># contrast with descending total frequency order from topfeatures()</span>
-<span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>inaugDfm</span>, <span class='fl'>50</span>))</div><div class='output co'>#&gt;  [1] "the"        "of"         ","          "and"        "."         
-#&gt;  [6] "to"         "in"         "a"          "our"        "that"      
-#&gt; [11] "we"         "be"         "is"         "it"         "for"       
-#&gt; [16] "by"         "have"       "which"      "with"       "not"       
-#&gt; [21] "as"         "will"       "i"          "this"       "all"       
-#&gt; [26] "are"        "-"          "their"      "but"        "has"       
-#&gt; [31] "people"     "from"       "its"        ";"          "government"
-#&gt; [36] "or"         "on"         "my"         "been"       "us"        
-#&gt; [41] "can"        "no"         "they"       "an"         "so"        
-#&gt; [46] "upon"       "who"        "must"       "at"         "great"     </div></pre>
+<span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>inaugDfm</span>, <span class='fl'>50</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -273,10 +279,16 @@ column names of the <a href='dfm.html'>dfm</a> object.</p>
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

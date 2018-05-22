@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Latent Semantic Analysis — textmodel_lsa" />
@@ -43,22 +51,15 @@ weighted (for instance using dfm_tfidf)." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -75,7 +76,7 @@ weighted (for instance using dfm_tfidf)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -105,8 +106,20 @@ weighted (for instance using dfm_tfidf)." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -163,7 +176,7 @@ weighted (for instance using dfm_tfidf)." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -182,10 +195,12 @@ weighted (for instance using dfm_tfidf)." />
     <div class="hidden name"><code>textmodel_lsa.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Fit the Latent Semantic Analysis scaling model to a <a href='dfm.html'>dfm</a>, which may be
 weighted (for instance using <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code>).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))</pre>
     
@@ -261,15 +276,15 @@ weighted (for instance using <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code>
 <span class='co'># matrix in low_rank LSA space</span>
 <span class='no'>ie_lsa</span>$<span class='no'>matrix_low_rank</span>[,<span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt;                                    when  i     presented the supplementary
 #&gt; 2010_BUDGET_01_Brian_Lenihan_FF       5 73  1.000000e+00 539  7.000000e+00
-#&gt; 2010_BUDGET_02_Richard_Bruton_FG      2  6  1.242458e-16 305  8.627818e-16
-#&gt; 2010_BUDGET_03_Joan_Burton_LAB       11 40 -2.408516e-14 428  6.777831e-15
-#&gt; 2010_BUDGET_04_Arthur_Morgan_SF      21 26 -5.587490e-14 501  1.000000e+00
-#&gt; 2010_BUDGET_05_Brian_Cowen_FF         4 17 -1.474158e-14 394  3.018880e-14
+#&gt; 2010_BUDGET_02_Richard_Bruton_FG      2  6  1.725749e-14 305  1.214406e-13
+#&gt; 2010_BUDGET_03_Joan_Burton_LAB       11 40  1.110657e-14 428  1.812092e-13
+#&gt; 2010_BUDGET_04_Arthur_Morgan_SF      21 26 -2.171103e-12 501  1.000000e+00
+#&gt; 2010_BUDGET_05_Brian_Cowen_FF         4 17 -1.101752e-12 394  7.704948e-14
 #&gt; 2010_BUDGET_06_Enda_Kenny_FG         12 25  1.000000e+00 304  1.000000e+00
-#&gt; 2010_BUDGET_07_Kieran_ODonnell_FG     5 11 -1.704008e-15 193 -3.192983e-15
-#&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB      6 10  3.994574e-13 270  9.632551e-15
-#&gt; 2010_BUDGET_09_Michael_Higgins_LAB    3  7  1.119369e-13  78  1.236932e-14
-#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       5 19  8.858290e-14  80  4.510847e-15</div><div class='input'>
+#&gt; 2010_BUDGET_07_Kieran_ODonnell_FG     5 11 -2.284291e-12 193  5.337258e-13
+#&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB      6 10  2.470182e-12 270 -8.729094e-13
+#&gt; 2010_BUDGET_09_Michael_Higgins_LAB    3  7 -1.068381e-13  78 -4.569123e-13
+#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       5 19  1.203898e-13  80  3.574918e-14</div><div class='input'>
 <span class='co'># fold queries into the space generated by ie_dfm[1:10,]</span>
 <span class='co'># and return its truncated versions of its representation in the new low-rank space</span>
 <span class='no'>new_lsa</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>ie_lsa</span>, <span class='no'>ie_dfm</span>[<span class='fl'>11</span>:<span class='fl'>14</span>, ])
@@ -336,10 +351,16 @@ Haiyan Wang and Kohei Watanabe
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

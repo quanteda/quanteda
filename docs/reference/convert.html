@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Convert a dfm to a non-quanteda format — convert" />
@@ -45,22 +53,15 @@ text analysis packages for which conversions are defined." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -77,7 +78,7 @@ text analysis packages for which conversions are defined." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -107,8 +108,20 @@ text analysis packages for which conversions are defined." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -165,7 +178,7 @@ text analysis packages for which conversions are defined." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -184,15 +197,17 @@ text analysis packages for which conversions are defined." />
     <div class="hidden name"><code>convert.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Convert a quanteda <a href='dfm.html'>dfm</a> object to a format useable by other text
 analysis packages.  The general function <code>convert</code> provides easy
 conversion from a dfm to the document-term representations used in all other
 text analysis packages for which conversions are defined.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
-  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>, <span class='st'>"tripletlist"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,7 +228,11 @@ package</p></dd> <dt><code>"austin"</code></dt><dd><p>the <code>wfm</code> forma
 <strong>austin</strong> package</p></dd> <dt><code>"topicmodels"</code></dt><dd><p>the "dtm" format as 
 used by the <span class="pkg">topicmodels</span> package</p></dd> 
 <dt><code>"lsa"</code></dt><dd><p>the "textmatrix" format as 
-used by the <span class="pkg">lsa</span> package</p></dd> </dl></td>
+used by the <span class="pkg">lsa</span> package</p></dd>
+<dt><code>"data.frame"</code></dt><dd><p>a data.frame where each feature is a variable</p></dd> 
+<dt><code>"tripletlist"</code></dt><dd><p>a named "triplet" format list consisting of 
+<code>document</code>, <code>feature</code>, and <code>frequency</code></p></dd> 
+</dl></td>
     </tr>
     <tr>
       <th>docvars</th>
@@ -238,50 +257,16 @@ documents with non-zero counts.</p></td>
 <span class='co'># austin's wfm format</span>
 <span class='fu'>identical</span>(<span class='fu'>dim</span>(<span class='no'>quantdfm</span>), <span class='fu'>dim</span>(<span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># stm package format</span>
-<span class='no'>stmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)
-<span class='fu'>str</span>(<span class='no'>stmdfm</span>)</div><div class='output co'>#&gt; List of 3
-#&gt;  $ documents:List of 12
-#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 2 34 3 96 4 1 5 5 7 3 ...
-#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 2 18 3 65 4 7 5 4 8 52 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 2 19 3 174 4 7 5 3 7 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 2 24 3 177 4 13 5 7 7 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 2 15 3 166 4 14 5 16 7 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 3 139 4 6 5 5 8 81 10 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 2 26 3 131 4 13 5 7 7 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 2 4 3 110 4 4 5 7 7 1 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:735] 1 1 2 2 3 120 4 3 5 8 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 2 44 3 130 4 22 5 4 6 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 2 13 3 99 4 14 5 5 8 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 2 11 3 96 4 9 5 8 8 88 ...
-#&gt;  $ vocab    : chr [1:3462] "&gt;" "-" "," ";" ...
-#&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
-#&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
-#&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
-#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'><span class='co'># illustrate what happens with zero-length documents</span>
+<span class='no'>stmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>stmdfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(stmdfm): object 'stmdfm' not found</span></div><div class='input'>
+<span class='co'>#' # triplet</span>
+<span class='no'>triplet</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tripletlist"</span>)
+<span class='fu'>str</span>(<span class='no'>triplet</span>)</div><div class='output co'>#&gt; List of 3
+#&gt;  $ document : chr [1:8389] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
+#&gt;  $ feature  : chr [1:8389] "mr" "mr" "mr" "mr" ...
+#&gt;  $ frequency: num [1:8389] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
+<span class='co'># illustrate what happens with zero-length documents</span>
 <span class='no'>quantdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>punctOnly</span> <span class='kw'>=</span> <span class='st'>"!!!"</span>, <span class='no'>mycorpus</span>[-<span class='fl'>1</span>]), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt;    punctOnly  1977-Carter  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 
-#&gt;            3         1376         2790         2921         2681         1833 
-#&gt; 1997-Clinton    2001-Bush    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;         2449         1808         2319         2711         2317         1660 </div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
-<span class='fu'>str</span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; List of 3
-#&gt;  $ documents:List of 12
-#&gt;   ..$ punctOnly   : int [1:2, 1] 6 3
-#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 2 18 3 65 4 7 5 4 8 52 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 2 19 3 174 4 7 5 3 7 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 2 24 3 177 4 13 5 7 7 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 2 15 3 166 4 14 5 16 7 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 3 139 4 6 5 5 8 81 10 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 2 26 3 131 4 13 5 7 7 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 2 4 3 110 4 4 5 7 7 1 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:735] 1 1 2 2 3 120 4 3 5 8 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 2 44 3 130 4 22 5 4 6 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 2 13 3 99 4 14 5 5 8 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 2 11 3 96 4 9 5 8 8 88 ...
-#&gt;  $ vocab    : chr [1:3376] "&gt;" "-" "," ";" ...
-#&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
-#&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
-#&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
-#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'> 
+<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in rowSums(quantdfm2): 'x' must be an array of at least two dimensions</span></div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(stmdfm2): object 'stmdfm2' not found</span></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># tm's DocumentTermMatrix format</span>
 <span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
@@ -293,6 +278,7 @@ documents with non-zero counts.</p></td>
 <span class='co'># lda package format</span>
 <span class='no'>ldadfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>)
 <span class='fu'>str</span>(<span class='no'>ldadfm</span>)
+
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -325,10 +311,16 @@ documents with non-zero counts.</p></td>
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Naive Bayes classifier for texts — textmodel_nb" />
@@ -43,22 +51,15 @@ training labels." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -75,7 +76,7 @@ training labels." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -105,8 +106,20 @@ training labels." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -163,7 +176,7 @@ training labels." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -182,10 +195,12 @@ training labels." />
     <div class="hidden name"><code>textmodel_nb.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
 training labels.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>textmodel_nb</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"uniform"</span>, <span class='st'>"docfreq"</span>, <span class='st'>"termfreq"</span>),
   <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"multinomial"</span>, <span class='st'>"Bernoulli"</span>))</pre>
@@ -298,143 +313,15 @@ the same, then "uniform" and "termfreq" would be the same.</p>
 <span class='no'>trainingclass</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='fl'>NA</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>## replicate IIR p261 prediction for test set (document 5)</span>
-(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; textmodel_nb.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
-#&gt; 
-#&gt; Distribution: multinomial; prior: docfreq; smoothing value: 1; 4 training documents; 6 fitted features.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; textmodel_nb.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
-#&gt; 
-#&gt; Class Priors:
-#&gt; (showing first 2 elements)
-#&gt;    Y    N 
-#&gt; 0.75 0.25 
-#&gt; 
-#&gt; Estimated Feature Scores:
-#&gt;   Chinese Beijing Shanghai  Macao  Tokyo  Japan
-#&gt; Y  0.8526  0.7941   0.7941 0.7941 0.4909 0.4909
-#&gt; N  0.1474  0.2059   0.2059 0.2059 0.5091 0.5091</div><div class='input'><span class='fu'>coef</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt;           classes
-#&gt; features           Y         N
-#&gt;   Chinese  0.8526316 0.1473684
-#&gt;   Beijing  0.7941176 0.2058824
-#&gt;   Shanghai 0.7941176 0.2058824
-#&gt;   Macao    0.7941176 0.2058824
-#&gt;   Tokyo    0.4909091 0.5090909
-#&gt;   Japan    0.4909091 0.5090909</div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; $log.posterior.lik
-#&gt;            Y         N
-#&gt; d1 -3.928188 -6.591674
-#&gt; d2 -3.928188 -6.591674
-#&gt; d3 -3.080890 -5.087596
-#&gt; d4 -6.413095 -5.898527
-#&gt; d5 -8.107690 -8.906681
-#&gt; 
-#&gt; $posterior.prob
-#&gt;            Y          N
-#&gt; d1 0.9348373 0.06516267
-#&gt; d2 0.9348373 0.06516267
-#&gt; d3 0.8814994 0.11850060
-#&gt; d4 0.3741233 0.62587672
-#&gt; d5 0.6897586 0.31024139
-#&gt; 
-#&gt; $nb.predicted
-#&gt; [1] "Y" "Y" "Y" "N" "Y"
-#&gt; 
-#&gt; $Pc
-#&gt;    Y    N 
-#&gt; 0.75 0.25 
-#&gt; 
-#&gt; $classlabels
-#&gt; [1] "Y" "N"
-#&gt; 
-#&gt; $call
-#&gt; predict.textmodel_nb(object = nb)
-#&gt; </div><div class='input'>
+(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>summary</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in summary(nb): object 'nb' not found</span></div><div class='input'><span class='fu'>coef</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in coef(nb): object 'nb' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb): object 'nb' not found</span></div><div class='input'>
 <span class='co'># contrast with other priors</span>
-<span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; $log.posterior.lik
-#&gt;            Y         N
-#&gt; d1 -4.333653 -5.898527
-#&gt; d2 -4.333653 -5.898527
-#&gt; d3 -3.486355 -4.394449
-#&gt; d4 -6.818560 -5.205379
-#&gt; d5 -8.513155 -8.213534
-#&gt; 
-#&gt; $posterior.prob
-#&gt;            Y         N
-#&gt; d1 0.8270516 0.1729484
-#&gt; d2 0.8270516 0.1729484
-#&gt; d3 0.7126100 0.2873900
-#&gt; d4 0.1661475 0.8338525
-#&gt; d5 0.4256501 0.5743499
-#&gt; 
-#&gt; $nb.predicted
-#&gt; [1] "Y" "Y" "Y" "N" "N"
-#&gt; 
-#&gt; $Pc
-#&gt;   Y   N 
-#&gt; 0.5 0.5 
-#&gt; 
-#&gt; $classlabels
-#&gt; [1] "Y" "N"
-#&gt; 
-#&gt; $call
-#&gt; predict.textmodel_nb(object = textmodel_nb(trainingset, trainingclass, 
-#&gt;     prior = "uniform"))
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; $log.posterior.lik
-#&gt;            Y         N
-#&gt; d1 -3.958960 -6.504662
-#&gt; d2 -3.958960 -6.504662
-#&gt; d3 -3.111662 -5.000585
-#&gt; d4 -6.443866 -5.811515
-#&gt; d5 -8.138462 -8.819670
-#&gt; 
-#&gt; $posterior.prob
-#&gt;            Y          N
-#&gt; d1 0.9272843 0.07271571
-#&gt; d2 0.9272843 0.07271571
-#&gt; d3 0.8686327 0.13136729
-#&gt; d4 0.3469776 0.65302237
-#&gt; d5 0.6640083 0.33599174
-#&gt; 
-#&gt; $nb.predicted
-#&gt; [1] "Y" "Y" "Y" "N" "Y"
-#&gt; 
-#&gt; $Pc
-#&gt;         Y         N 
-#&gt; 0.7272727 0.2727273 
-#&gt; 
-#&gt; $classlabels
-#&gt; [1] "Y" "N"
-#&gt; 
-#&gt; $call
-#&gt; predict.textmodel_nb(object = textmodel_nb(trainingset, trainingclass, 
-#&gt;     prior = "termfreq"))
-#&gt; </div><div class='input'>
+<span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'>## replicate IIR p264 Bernoulli Naive Bayes</span>
 <span class='no'>nb_bern</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"Bernoulli"</span>,
                         <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>)
-<span class='fu'>predict</span>(<span class='no'>nb_bern</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; $log.posterior.lik
-#&gt;            Y         N
-#&gt; d5 -5.262178 -3.819085
-#&gt; 
-#&gt; $posterior.prob
-#&gt;            Y         N
-#&gt; d5 0.1910668 0.8089332
-#&gt; 
-#&gt; $nb.predicted
-#&gt; [1] "N"
-#&gt; 
-#&gt; $Pc
-#&gt;    Y    N 
-#&gt; 0.75 0.25 
-#&gt; 
-#&gt; $classlabels
-#&gt; [1] "Y" "N"
-#&gt; 
-#&gt; $call
-#&gt; predict.textmodel_nb(object = nb_bern, newdata = trainingset[5, 
-#&gt;     ])
-#&gt; </div></pre>
+<span class='fu'>predict</span>(<span class='no'>nb_bern</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; d5 
+#&gt;  N 
+#&gt; Levels: N Y</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -476,10 +363,16 @@ Kenneth Benoit
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

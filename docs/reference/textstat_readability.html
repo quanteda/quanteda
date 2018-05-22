@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Calculate readability — textstat_readability" />
@@ -43,22 +51,15 @@ indexes." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -75,7 +76,7 @@ indexes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -105,8 +106,20 @@ indexes." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -163,7 +176,7 @@ indexes." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -182,10 +195,12 @@ indexes." />
     <div class="hidden name"><code>textstat_readability.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Calculate the readability of text(s) using one of a variety of computed 
 indexes.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>textstat_readability</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"ARI"</span>, <span class='st'>"ARI.simple"</span>, <span class='st'>"Bormuth"</span>,
   <span class='st'>"Bormuth.GP"</span>, <span class='st'>"Coleman"</span>, <span class='st'>"Coleman.C2"</span>, <span class='st'>"Coleman.Liau"</span>, <span class='st'>"Coleman.Liau.grade"</span>,
@@ -246,316 +261,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
 #&gt; 1    text1      13.705000
 #&gt; 2    text2       8.383333</div><div class='input'><span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='fu'>c</span>(<span class='st'>"FOG"</span>, <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>))</div><div class='output co'>#&gt;   document       FOG  FOG.PSK FOG.NRI
 #&gt; 1    text1 17.000000 4.608659 -1.3875
-#&gt; 2    text2  9.066667 3.254382 -1.2600</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)
-<span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt;                               ARI   ARI.simple     Bormuth  Bormuth.GP
-#&gt; ARI                    1.00000000  0.999985813 -0.99188017  0.90232231
-#&gt; ARI.simple             0.99998581  1.000000000 -0.99254312  0.90363285
-#&gt; Bormuth               -0.99188017 -0.992543125  1.00000000 -0.92665498
-#&gt; Bormuth.GP             0.90232231  0.903632850 -0.92665498  1.00000000
-#&gt; Coleman               -0.57842561 -0.574425719  0.47841665 -0.34186891
-#&gt; Coleman.C2            -0.76781514 -0.764705749  0.68780777 -0.51669363
-#&gt; Coleman.Liau          -0.80785899 -0.804736665  0.72721217 -0.55936385
-#&gt; Coleman.Liau.grade     0.80785899  0.804736665 -0.72721217  0.55936385
-#&gt; Coleman.Liau.short     0.80788731  0.804765212 -0.72724574  0.55939187
-#&gt; Dale.Chall            -0.99099423 -0.991693434  0.99996713 -0.92746308
-#&gt; Dale.Chall.old         0.99099423  0.991693434 -0.99996713  0.92746308
-#&gt; Dale.Chall.PSK         0.99099423  0.991693434 -0.99996713  0.92746308
-#&gt; Danielson.Bryan        0.99708146  0.996677212 -0.97962805  0.88486422
-#&gt; Danielson.Bryan.2     -0.31030344 -0.305238155  0.18706023 -0.04006627
-#&gt; Dickes.Steiwer        -0.99844204 -0.998703929  0.99691688 -0.91329434
-#&gt; DRP                    0.99188017  0.992543125 -1.00000000  0.92665498
-#&gt; ELF                    0.99594813  0.995835853 -0.98541527  0.89837506
-#&gt; Farr.Jenkins.Paterson -0.99154201 -0.992219215  0.99998536 -0.92696268
-#&gt; Flesch                -0.96831214 -0.967086924  0.93162624 -0.82257543
-#&gt; Flesch.PSK             0.98543988  0.984630595 -0.95852762  0.85630865
-#&gt; Flesch.Kincaid         0.99828644  0.998096618 -0.98602857  0.89508980
-#&gt;                          Coleman Coleman.C2 Coleman.Liau Coleman.Liau.grade
-#&gt; ARI                   -0.5784256 -0.7678151   -0.8078590          0.8078590
-#&gt; ARI.simple            -0.5744257 -0.7647057   -0.8047367          0.8047367
-#&gt; Bormuth                0.4784167  0.6878078    0.7272122         -0.7272122
-#&gt; Bormuth.GP            -0.3418689 -0.5166936   -0.5593638          0.5593638
-#&gt; Coleman                1.0000000  0.9578621    0.9027073         -0.9027073
-#&gt; Coleman.C2             0.9578621  1.0000000    0.9676044         -0.9676044
-#&gt; Coleman.Liau           0.9027073  0.9676044    1.0000000         -1.0000000
-#&gt; Coleman.Liau.grade    -0.9027073 -0.9676044   -1.0000000          1.0000000
-#&gt; Coleman.Liau.short    -0.9026909 -0.9676038   -1.0000000          1.0000000
-#&gt; Dale.Chall             0.4728710  0.6830083    0.7223808         -0.7223808
-#&gt; Dale.Chall.old        -0.4728710 -0.6830083   -0.7223808          0.7223808
-#&gt; Dale.Chall.PSK        -0.4728710 -0.6830083   -0.7223808          0.7223808
-#&gt; Danielson.Bryan       -0.6320177 -0.8068048   -0.8471402          0.8471402
-#&gt; Danielson.Bryan.2      0.8922077  0.7931428    0.8066665         -0.8066665
-#&gt; Dickes.Steiwer         0.5390065  0.7368282    0.7764052         -0.7764052
-#&gt; DRP                   -0.4784167 -0.6878078   -0.7272122          0.7272122
-#&gt; ELF                   -0.6127006 -0.7903882   -0.8134246          0.8134246
-#&gt; Farr.Jenkins.Paterson  0.4768093  0.6862258    0.7252233         -0.7252233
-#&gt; Flesch                 0.7524555  0.8921701    0.9145879         -0.9145879
-#&gt; Flesch.PSK            -0.6991742 -0.8564052   -0.8829007          0.8829007
-#&gt; Flesch.Kincaid        -0.6124186 -0.7933597   -0.8255002          0.8255002
-#&gt;                       Coleman.Liau.short  Dale.Chall Dale.Chall.old
-#&gt; ARI                            0.8078873 -0.99099423     0.99099423
-#&gt; ARI.simple                     0.8047652 -0.99169343     0.99169343
-#&gt; Bormuth                       -0.7272457  0.99996713    -0.99996713
-#&gt; Bormuth.GP                     0.5593919 -0.92746308     0.92746308
-#&gt; Coleman                       -0.9026909  0.47287100    -0.47287100
-#&gt; Coleman.C2                    -0.9676038  0.68300831    -0.68300831
-#&gt; Coleman.Liau                  -1.0000000  0.72238083    -0.72238083
-#&gt; Coleman.Liau.grade             1.0000000 -0.72238083     0.72238083
-#&gt; Coleman.Liau.short             1.0000000 -0.72241463     0.72241463
-#&gt; Dale.Chall                    -0.7224146  1.00000000    -1.00000000
-#&gt; Dale.Chall.old                 0.7224146 -1.00000000     1.00000000
-#&gt; Dale.Chall.PSK                 0.7224146 -1.00000000     1.00000000
-#&gt; Danielson.Bryan                0.8471650 -0.97829531     0.97829531
-#&gt; Danielson.Bryan.2             -0.8066351  0.18028533    -0.18028533
-#&gt; Dickes.Steiwer                -0.7764357  0.99638999    -0.99638999
-#&gt; DRP                            0.7272457 -0.99996713     0.99996713
-#&gt; ELF                            0.8134514 -0.98451149     0.98451149
-#&gt; Farr.Jenkins.Paterson         -0.7252569  0.99998999    -0.99998999
-#&gt; Flesch                        -0.9146054  0.92913685    -0.92913685
-#&gt; Flesch.PSK                     0.8829221 -0.95657238     0.95657238
-#&gt; Flesch.Kincaid                 0.8255270 -0.98488025     0.98488025
-#&gt;                       Dale.Chall.PSK Danielson.Bryan Danielson.Bryan.2
-#&gt; ARI                       0.99099423      0.99708146       -0.31030344
-#&gt; ARI.simple                0.99169343      0.99667721       -0.30523815
-#&gt; Bormuth                  -0.99996713     -0.97962805        0.18706023
-#&gt; Bormuth.GP                0.92746308      0.88486422       -0.04006627
-#&gt; Coleman                  -0.47287100     -0.63201768        0.89220768
-#&gt; Coleman.C2               -0.68300831     -0.80680483        0.79314280
-#&gt; Coleman.Liau             -0.72238083     -0.84714024        0.80666655
-#&gt; Coleman.Liau.grade        0.72238083      0.84714024       -0.80666655
-#&gt; Coleman.Liau.short        0.72241463      0.84716497       -0.80663507
-#&gt; Dale.Chall               -1.00000000     -0.97829531        0.18028533
-#&gt; Dale.Chall.old            1.00000000      0.97829531       -0.18028533
-#&gt; Dale.Chall.PSK            1.00000000      0.97829531       -0.18028533
-#&gt; Danielson.Bryan           0.97829531      1.00000000       -0.37865977
-#&gt; Danielson.Bryan.2        -0.18028533     -0.37865977        1.00000000
-#&gt; Dickes.Steiwer           -0.99638999     -0.99178586        0.26101392
-#&gt; DRP                       0.99996713      0.97962805       -0.18706023
-#&gt; ELF                       0.98451149      0.99535015       -0.32598561
-#&gt; Farr.Jenkins.Paterson    -0.99998999     -0.97914589        0.18438177
-#&gt; Flesch                   -0.92913685     -0.98231683        0.51737927
-#&gt; Flesch.PSK                0.95657238      0.99363576       -0.44828841
-#&gt; Flesch.Kincaid            0.98488025      0.99786963       -0.34148774
-#&gt;                       Dickes.Steiwer         DRP         ELF
-#&gt; ARI                      -0.99844204  0.99188017  0.99594813
-#&gt; ARI.simple               -0.99870393  0.99254312  0.99583585
-#&gt; Bormuth                   0.99691688 -1.00000000 -0.98541527
-#&gt; Bormuth.GP               -0.91329434  0.92665498  0.89837506
-#&gt; Coleman                   0.53900648 -0.47841665 -0.61270055
-#&gt; Coleman.C2                0.73682822 -0.68780777 -0.79038825
-#&gt; Coleman.Liau              0.77640516 -0.72721217 -0.81342458
-#&gt; Coleman.Liau.grade       -0.77640516  0.72721217  0.81342458
-#&gt; Coleman.Liau.short       -0.77643567  0.72724574  0.81345135
-#&gt; Dale.Chall                0.99638999 -0.99996713 -0.98451149
-#&gt; Dale.Chall.old           -0.99638999  0.99996713  0.98451149
-#&gt; Dale.Chall.PSK           -0.99638999  0.99996713  0.98451149
-#&gt; Danielson.Bryan          -0.99178586  0.97962805  0.99535015
-#&gt; Danielson.Bryan.2         0.26101392 -0.18706023 -0.32598561
-#&gt; Dickes.Steiwer            1.00000000 -0.99691688 -0.99345440
-#&gt; DRP                      -0.99691688  1.00000000  0.98541527
-#&gt; ELF                      -0.99345440  0.98541527  1.00000000
-#&gt; Farr.Jenkins.Paterson     0.99672456 -0.99998536 -0.98524897
-#&gt; Flesch                    0.95524130 -0.93162624 -0.97375531
-#&gt; Flesch.PSK               -0.97634394  0.95852762  0.98827872
-#&gt; Flesch.Kincaid           -0.99512741  0.98602857  0.99727425
-#&gt;                       Farr.Jenkins.Paterson     Flesch  Flesch.PSK
-#&gt; ARI                             -0.99154201 -0.9683121  0.98543988
-#&gt; ARI.simple                      -0.99221922 -0.9670869  0.98463060
-#&gt; Bormuth                          0.99998536  0.9316262 -0.95852762
-#&gt; Bormuth.GP                      -0.92696268 -0.8225754  0.85630865
-#&gt; Coleman                          0.47680930  0.7524555 -0.69917416
-#&gt; Coleman.C2                       0.68622584  0.8921701 -0.85640522
-#&gt; Coleman.Liau                     0.72522331  0.9145879 -0.88290067
-#&gt; Coleman.Liau.grade              -0.72522331 -0.9145879  0.88290067
-#&gt; Coleman.Liau.short              -0.72525694 -0.9146054  0.88292206
-#&gt; Dale.Chall                       0.99998999  0.9291368 -0.95657238
-#&gt; Dale.Chall.old                  -0.99998999 -0.9291368  0.95657238
-#&gt; Dale.Chall.PSK                  -0.99998999 -0.9291368  0.95657238
-#&gt; Danielson.Bryan                 -0.97914589 -0.9823168  0.99363576
-#&gt; Danielson.Bryan.2                0.18438177  0.5173793 -0.44828841
-#&gt; Dickes.Steiwer                   0.99672456  0.9552413 -0.97634394
-#&gt; DRP                             -0.99998536 -0.9316262  0.95852762
-#&gt; ELF                             -0.98524897 -0.9737553  0.98827872
-#&gt; Farr.Jenkins.Paterson            1.00000000  0.9307176 -0.95781641
-#&gt; Flesch                           0.93071764  1.0000000 -0.99656281
-#&gt; Flesch.PSK                      -0.95781641 -0.9965628  1.00000000
-#&gt; Flesch.Kincaid                  -0.98561541 -0.9791403  0.99260681
-#&gt;                       Flesch.Kincaid         FOG    FOG.PSK    FOG.NRI
-#&gt; ARI                       0.99828644  0.99534334  0.9980495  0.4905310
-#&gt; ARI.simple                0.99809662  0.99501238  0.9983218  0.4892834
-#&gt; Bormuth                  -0.98602857 -0.97973311 -0.9967939 -0.4571761
-#&gt; Bormuth.GP                0.89508980  0.88272558  0.9136641  0.3361798
-#&gt; Coleman                  -0.61241856 -0.62791369 -0.5401789 -0.4679026
-#&gt; Coleman.C2               -0.79335974 -0.80512019 -0.7376615 -0.5350724
-#&gt; Coleman.Liau             -0.82550024 -0.83906193 -0.7749720 -0.5426918
-#&gt; Coleman.Liau.grade        0.82550024  0.83906193  0.7749720  0.5426918
-#&gt; Coleman.Liau.short        0.82552702  0.83908765  0.7750026  0.5426992
-#&gt; Dale.Chall               -0.98488025 -0.97841468 -0.9962621 -0.4549252
-#&gt; Dale.Chall.old            0.98488025  0.97841468  0.9962621  0.4549252
-#&gt; Dale.Chall.PSK            0.98488025  0.97841468  0.9962621  0.4549252
-#&gt; Danielson.Bryan           0.99786963  0.99695239  0.9912643  0.5028375
-#&gt; Danielson.Bryan.2        -0.34148774 -0.36653699 -0.2590925 -0.3671130
-#&gt; Dickes.Steiwer           -0.99512741 -0.99112313 -0.9994543 -0.4649778
-#&gt; DRP                       0.98602857  0.97973311  0.9967939  0.4571761
-#&gt; ELF                       0.99727425  0.99443432  0.9938624  0.4952706
-#&gt; Farr.Jenkins.Paterson    -0.98561541 -0.97924413 -0.9966030 -0.4562044
-#&gt; Flesch                   -0.97914032 -0.98344165 -0.9567470 -0.5313693
-#&gt; Flesch.PSK                0.99260681  0.99454929  0.9775024  0.5208520
-#&gt; Flesch.Kincaid            1.00000000  0.99846226  0.9957626  0.4989686
-#&gt;                          FORCAST FORCAST.RGL        Fucks Linsear.Write
-#&gt; ARI                    0.5784256   0.5784256  0.997730647    0.98324412
-#&gt; ARI.simple             0.5744257   0.5744257  0.998049346    0.98272675
-#&gt; Bormuth               -0.4784167  -0.4784167 -0.997515204   -0.96316927
-#&gt; Bormuth.GP             0.3418689   0.3418689  0.919893732    0.88236447
-#&gt; Coleman               -1.0000000  -1.0000000 -0.530595415   -0.65408730
-#&gt; Coleman.C2            -0.9578621  -0.9578621 -0.727965258   -0.81398206
-#&gt; Coleman.Liau          -0.9027073  -0.9027073 -0.768184772   -0.84460735
-#&gt; Coleman.Liau.grade     0.9027073   0.9027073  0.768184772    0.84460735
-#&gt; Coleman.Liau.short     0.9026909   0.9026909  0.768215251    0.84462952
-#&gt; Dale.Chall            -0.4728710  -0.4728710 -0.997112805   -0.96173384
-#&gt; Dale.Chall.old         0.4728710   0.4728710  0.997112805    0.96173384
-#&gt; Dale.Chall.PSK         0.4728710   0.4728710  0.997112805    0.96173384
-#&gt; Danielson.Bryan        0.6320177   0.6320177  0.990775706    0.98940268
-#&gt; Danielson.Bryan.2     -0.8922077  -0.8922077 -0.249745678   -0.39525523
-#&gt; Dickes.Steiwer        -0.5390065  -0.5390065 -0.999407002   -0.97750750
-#&gt; DRP                    0.4784167   0.4784167  0.997515204    0.96316927
-#&gt; ELF                    0.6127006   0.6127006  0.993623225    0.98844709
-#&gt; Farr.Jenkins.Paterson -0.4768093  -0.4768093 -0.997402917   -0.96273644
-#&gt; Flesch                -0.7524555  -0.7524555 -0.951964715   -0.98424870
-#&gt; Flesch.PSK             0.6991742   0.6991742  0.973922677    0.99144816
-#&gt; Flesch.Kincaid         0.6124186   0.6124186  0.993989409    0.98967358
-#&gt;                               LIW        nWS       nWS.2       nWS.3
-#&gt; ARI                    0.99534363  0.9716012  0.97550799  0.98501356
-#&gt; ARI.simple             0.99493616  0.9704382  0.97443531  0.98427247
-#&gt; Bormuth               -0.97782198 -0.9362833 -0.94231463 -0.95970981
-#&gt; Bormuth.GP             0.88013733  0.8218265  0.82921349  0.85402853
-#&gt; Coleman               -0.64151385 -0.7435480 -0.72971888 -0.68262459
-#&gt; Coleman.C2            -0.81448329 -0.8869623 -0.87759182 -0.84444185
-#&gt; Coleman.Liau          -0.84663781 -0.9108590 -0.90420615 -0.87578843
-#&gt; Coleman.Liau.grade     0.84663781  0.9108590  0.90420615  0.87578843
-#&gt; Coleman.Liau.short     0.84666264  0.9108773  0.90422529  0.87581059
-#&gt; Dale.Chall            -0.97649153 -0.9339636 -0.94010518 -0.95786413
-#&gt; Dale.Chall.old         0.97649153  0.9339636  0.94010518  0.95786413
-#&gt; Dale.Chall.PSK         0.97649153  0.9339636  0.94010518  0.95786413
-#&gt; Danielson.Bryan        0.99817496  0.9848656  0.98751970  0.99235519
-#&gt; Danielson.Bryan.2     -0.37953455 -0.5077365 -0.49287612 -0.43696629
-#&gt; Dickes.Steiwer        -0.99028645 -0.9594714 -0.96426773 -0.97697873
-#&gt; DRP                    0.97782198  0.9362833  0.94231463  0.95970981
-#&gt; ELF                    0.99591724  0.9767864  0.97966902  0.98635632
-#&gt; Farr.Jenkins.Paterson -0.97739468 -0.9354875 -0.94154405 -0.95902099
-#&gt; Flesch                -0.98395156 -0.9980699 -0.99747205 -0.99333954
-#&gt; Flesch.PSK             0.99452041  0.9961226  0.99702731  0.99774824
-#&gt; Flesch.Kincaid         0.99764432  0.9808885  0.98398342  0.99180645
-#&gt;                             nWS.4         RIX      Scrabble        SMOG
-#&gt; ARI                    0.99487148  0.99222014 -0.0112182516  0.97393941
-#&gt; ARI.simple             0.99451326  0.99191614 -0.0093650938  0.97295999
-#&gt; Bormuth               -0.97861519 -0.97704126 -0.0333496851 -0.94303306
-#&gt; Bormuth.GP             0.88101179  0.89115856 -0.0158199992  0.82113760
-#&gt; Coleman               -0.63167564 -0.62921060  0.3522407942 -0.71333148
-#&gt; Coleman.C2            -0.80789970 -0.79924879  0.2472067525 -0.86811865
-#&gt; Coleman.Liau          -0.84167664 -0.82960560  0.1918831342 -0.89524825
-#&gt; Coleman.Liau.grade     0.84167664  0.82960560 -0.1918831342  0.89524825
-#&gt; Coleman.Liau.short     0.84170213  0.82963012 -0.1918617971  0.89526894
-#&gt; Dale.Chall            -0.97726151 -0.97599601 -0.0354646177 -0.94089430
-#&gt; Dale.Chall.old         0.97726151  0.97599601  0.0354646177  0.94089430
-#&gt; Dale.Chall.PSK         0.97726151  0.97599601  0.0354646177  0.94089430
-#&gt; Danielson.Bryan        0.99686096  0.99500484 -0.0367962483  0.98460337
-#&gt; Danielson.Bryan.2     -0.37128519 -0.35912065  0.3211432536 -0.47640589
-#&gt; Dickes.Steiwer        -0.99039744 -0.98825075 -0.0143478880 -0.96367176
-#&gt; DRP                    0.97861519  0.97704126  0.0333496851  0.94303306
-#&gt; ELF                    0.99411156  0.99677384 -0.0411360767  0.97747350
-#&gt; Farr.Jenkins.Paterson -0.97811285 -0.97683788 -0.0335901823 -0.94224804
-#&gt; Flesch                -0.98430842 -0.97797435  0.1056725636 -0.99453689
-#&gt; Flesch.PSK             0.99497427  0.98969704 -0.0753648675  0.99489006
-#&gt; Flesch.Kincaid         0.99823466  0.99457144 -0.0300226725  0.98304183
-#&gt;                            SMOG.C SMOG.simple     SMOG.de      Spache
-#&gt; ARI                    0.97457741  0.97393941  0.97393941  0.99099423
-#&gt; ARI.simple             0.97361454  0.97295999  0.97295999  0.99169343
-#&gt; Bormuth               -0.94405248 -0.94303306 -0.94303306 -0.99996713
-#&gt; Bormuth.GP             0.82339465  0.82113760  0.82113760  0.92746308
-#&gt; Coleman               -0.71131513 -0.71333148 -0.71333148 -0.47287100
-#&gt; Coleman.C2            -0.86636103 -0.86811865 -0.86811865 -0.68300831
-#&gt; Coleman.Liau          -0.89368168 -0.89524825 -0.89524825 -0.72238083
-#&gt; Coleman.Liau.grade     0.89368168  0.89524825  0.89524825  0.72238083
-#&gt; Coleman.Liau.short     0.89370243  0.89526894  0.89526894  0.72241463
-#&gt; Dale.Chall            -0.94194286 -0.94089430 -0.94089430 -1.00000000
-#&gt; Dale.Chall.old         0.94194286  0.94089430  0.94089430  1.00000000
-#&gt; Dale.Chall.PSK         0.94194286  0.94089430  0.94089430  1.00000000
-#&gt; Danielson.Bryan        0.98509384  0.98460337  0.98460337  0.97829531
-#&gt; Danielson.Bryan.2     -0.47358728 -0.47640589 -0.47640589 -0.18028533
-#&gt; Dickes.Steiwer        -0.96447120 -0.96367176 -0.96367176 -0.99638999
-#&gt; DRP                    0.94405248  0.94303306  0.94303306  0.99996713
-#&gt; ELF                    0.97820253  0.97747350  0.97747350  0.98451149
-#&gt; Farr.Jenkins.Paterson -0.94328383 -0.94224804 -0.94224804 -0.99998999
-#&gt; Flesch                -0.99442699 -0.99453689 -0.99453689 -0.92913685
-#&gt; Flesch.PSK             0.99503836  0.99489006  0.99489006  0.95657238
-#&gt; Flesch.Kincaid         0.98356657  0.98304183  0.98304183  0.98488025
-#&gt;                        Spache.old        Strain Traenkle.Bailer
-#&gt; ARI                    0.99099423  0.9976064239    -0.999223850
-#&gt; ARI.simple             0.99169343  0.9978635733    -0.999411499
-#&gt; Bormuth               -0.99996713 -0.9959605646     0.995931694
-#&gt; Bormuth.GP             0.92746308  0.9201367937    -0.910151256
-#&gt; Coleman               -0.47287100 -0.5461292792     0.549146837
-#&gt; Coleman.C2            -0.68300831 -0.7394040240     0.745171965
-#&gt; Coleman.Liau          -0.72238083 -0.7744192348     0.785328440
-#&gt; Coleman.Liau.grade     0.72238083  0.7744192348    -0.785328440
-#&gt; Coleman.Liau.short     0.72241463  0.7744490784    -0.785358433
-#&gt; Dale.Chall            -1.00000000 -0.9954423736     0.995298661
-#&gt; Dale.Chall.old         1.00000000  0.9954423736    -0.995298661
-#&gt; Dale.Chall.PSK         1.00000000  0.9954423736    -0.995298661
-#&gt; Danielson.Bryan        0.97829531  0.9916468644    -0.993491902
-#&gt; Danielson.Bryan.2     -0.18028533 -0.2608961180     0.274099704
-#&gt; Dickes.Steiwer        -0.99638999 -0.9987560895     0.999594489
-#&gt; DRP                    0.99996713  0.9959605646    -0.995931694
-#&gt; ELF                    0.98451149  0.9957646921    -0.994372531
-#&gt; Farr.Jenkins.Paterson -0.99998999 -0.9958154056     0.995687365
-#&gt; Flesch                -0.92913685 -0.9579641510     0.959086871
-#&gt; Flesch.PSK             0.95657238  0.9782782859    -0.979131224
-#&gt; Flesch.Kincaid         0.98488025  0.9958824210    -0.996329486
-#&gt;                       Traenkle.Bailer.2 Wheeler.Smith meanSentenceLength
-#&gt; ARI                          -0.7549178    0.99594813         0.99099423
-#&gt; ARI.simple                   -0.7514487    0.99583585         0.99169343
-#&gt; Bormuth                       0.6663152   -0.98541527        -0.99996713
-#&gt; Bormuth.GP                   -0.5147186    0.89837506         0.92746308
-#&gt; Coleman                       0.9206771   -0.61270055        -0.47287100
-#&gt; Coleman.C2                    0.9574552   -0.79038825        -0.68300831
-#&gt; Coleman.Liau                  0.9904793   -0.81342458        -0.72238083
-#&gt; Coleman.Liau.grade           -0.9904793    0.81342458         0.72238083
-#&gt; Coleman.Liau.short           -0.9904734    0.81345135         0.72241463
-#&gt; Dale.Chall                    0.6611792   -0.98451149        -1.00000000
-#&gt; Dale.Chall.old               -0.6611792    0.98451149         1.00000000
-#&gt; Dale.Chall.PSK               -0.6611792    0.98451149         1.00000000
-#&gt; Danielson.Bryan              -0.7999586    0.99535015         0.97829531
-#&gt; Danielson.Bryan.2             0.8509255   -0.32598561        -0.18028533
-#&gt; Dickes.Steiwer                0.7195290   -0.99345440        -0.99638999
-#&gt; DRP                          -0.6663152    0.98541527         0.99996713
-#&gt; ELF                          -0.7636349    1.00000000         0.98451149
-#&gt; Farr.Jenkins.Paterson         0.6642605   -0.98524897        -0.99998999
-#&gt; Flesch                        0.8800874   -0.97375531        -0.92913685
-#&gt; Flesch.PSK                   -0.8419885    0.98827872         0.95657238
-#&gt; Flesch.Kincaid               -0.7757025    0.99727425         0.98488025
-#&gt;                       meanWordSyllables
-#&gt; ARI                           0.6762172
-#&gt; ARI.simple                    0.6724762
-#&gt; Bormuth                      -0.5818750
-#&gt; Bormuth.GP                    0.4479544
-#&gt; Coleman                      -0.9645525
-#&gt; Coleman.C2                   -0.9629188
-#&gt; Coleman.Liau                 -0.9543023
-#&gt; Coleman.Liau.grade            0.9543023
-#&gt; Coleman.Liau.short            0.9542911
-#&gt; Dale.Chall                   -0.5763242
-#&gt; Dale.Chall.old                0.5763242
-#&gt; Dale.Chall.PSK                0.5763242
-#&gt; Danielson.Bryan               0.7259320
-#&gt; Danielson.Bryan.2            -0.8772134
-#&gt; Dickes.Steiwer               -0.6393556
-#&gt; DRP                           0.5818750
-#&gt; ELF                           0.6978253
-#&gt; Farr.Jenkins.Paterson        -0.5798330
-#&gt; Flesch                       -0.8376402
-#&gt; Flesch.PSK                    0.7895116
-#&gt; Flesch.Kincaid                0.7091829
-#&gt;  [ reached getOption("max.print") -- omitted 26 rows ]</div><div class='input'>
+#&gt; 2    text2  9.066667 3.254382 -1.2600</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'inaugReadability' not found</span></div><div class='input'>
 <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch.Kincaid"</span>)</div><div class='output co'>#&gt;           document Flesch.Kincaid
 #&gt; 1  1789-Washington      28.432155
 #&gt; 2  1793-Washington      17.151759
@@ -614,316 +320,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
 #&gt; 55       2005-Bush      11.036277
 #&gt; 56      2009-Obama      10.229426
 #&gt; 57      2013-Obama      11.734767
-#&gt; 58      2017-Trump       9.163084</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)
-<span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt;                               ARI   ARI.simple     Bormuth  Bormuth.GP
-#&gt; ARI                    1.00000000  0.999985813 -0.99188017  0.90232231
-#&gt; ARI.simple             0.99998581  1.000000000 -0.99254312  0.90363285
-#&gt; Bormuth               -0.99188017 -0.992543125  1.00000000 -0.92665498
-#&gt; Bormuth.GP             0.90232231  0.903632850 -0.92665498  1.00000000
-#&gt; Coleman               -0.57842561 -0.574425719  0.47841665 -0.34186891
-#&gt; Coleman.C2            -0.76781514 -0.764705749  0.68780777 -0.51669363
-#&gt; Coleman.Liau          -0.80785899 -0.804736665  0.72721217 -0.55936385
-#&gt; Coleman.Liau.grade     0.80785899  0.804736665 -0.72721217  0.55936385
-#&gt; Coleman.Liau.short     0.80788731  0.804765212 -0.72724574  0.55939187
-#&gt; Dale.Chall            -0.99099423 -0.991693434  0.99996713 -0.92746308
-#&gt; Dale.Chall.old         0.99099423  0.991693434 -0.99996713  0.92746308
-#&gt; Dale.Chall.PSK         0.99099423  0.991693434 -0.99996713  0.92746308
-#&gt; Danielson.Bryan        0.99708146  0.996677212 -0.97962805  0.88486422
-#&gt; Danielson.Bryan.2     -0.31030344 -0.305238155  0.18706023 -0.04006627
-#&gt; Dickes.Steiwer        -0.99844204 -0.998703929  0.99691688 -0.91329434
-#&gt; DRP                    0.99188017  0.992543125 -1.00000000  0.92665498
-#&gt; ELF                    0.99594813  0.995835853 -0.98541527  0.89837506
-#&gt; Farr.Jenkins.Paterson -0.99154201 -0.992219215  0.99998536 -0.92696268
-#&gt; Flesch                -0.96831214 -0.967086924  0.93162624 -0.82257543
-#&gt; Flesch.PSK             0.98543988  0.984630595 -0.95852762  0.85630865
-#&gt; Flesch.Kincaid         0.99828644  0.998096618 -0.98602857  0.89508980
-#&gt;                          Coleman Coleman.C2 Coleman.Liau Coleman.Liau.grade
-#&gt; ARI                   -0.5784256 -0.7678151   -0.8078590          0.8078590
-#&gt; ARI.simple            -0.5744257 -0.7647057   -0.8047367          0.8047367
-#&gt; Bormuth                0.4784167  0.6878078    0.7272122         -0.7272122
-#&gt; Bormuth.GP            -0.3418689 -0.5166936   -0.5593638          0.5593638
-#&gt; Coleman                1.0000000  0.9578621    0.9027073         -0.9027073
-#&gt; Coleman.C2             0.9578621  1.0000000    0.9676044         -0.9676044
-#&gt; Coleman.Liau           0.9027073  0.9676044    1.0000000         -1.0000000
-#&gt; Coleman.Liau.grade    -0.9027073 -0.9676044   -1.0000000          1.0000000
-#&gt; Coleman.Liau.short    -0.9026909 -0.9676038   -1.0000000          1.0000000
-#&gt; Dale.Chall             0.4728710  0.6830083    0.7223808         -0.7223808
-#&gt; Dale.Chall.old        -0.4728710 -0.6830083   -0.7223808          0.7223808
-#&gt; Dale.Chall.PSK        -0.4728710 -0.6830083   -0.7223808          0.7223808
-#&gt; Danielson.Bryan       -0.6320177 -0.8068048   -0.8471402          0.8471402
-#&gt; Danielson.Bryan.2      0.8922077  0.7931428    0.8066665         -0.8066665
-#&gt; Dickes.Steiwer         0.5390065  0.7368282    0.7764052         -0.7764052
-#&gt; DRP                   -0.4784167 -0.6878078   -0.7272122          0.7272122
-#&gt; ELF                   -0.6127006 -0.7903882   -0.8134246          0.8134246
-#&gt; Farr.Jenkins.Paterson  0.4768093  0.6862258    0.7252233         -0.7252233
-#&gt; Flesch                 0.7524555  0.8921701    0.9145879         -0.9145879
-#&gt; Flesch.PSK            -0.6991742 -0.8564052   -0.8829007          0.8829007
-#&gt; Flesch.Kincaid        -0.6124186 -0.7933597   -0.8255002          0.8255002
-#&gt;                       Coleman.Liau.short  Dale.Chall Dale.Chall.old
-#&gt; ARI                            0.8078873 -0.99099423     0.99099423
-#&gt; ARI.simple                     0.8047652 -0.99169343     0.99169343
-#&gt; Bormuth                       -0.7272457  0.99996713    -0.99996713
-#&gt; Bormuth.GP                     0.5593919 -0.92746308     0.92746308
-#&gt; Coleman                       -0.9026909  0.47287100    -0.47287100
-#&gt; Coleman.C2                    -0.9676038  0.68300831    -0.68300831
-#&gt; Coleman.Liau                  -1.0000000  0.72238083    -0.72238083
-#&gt; Coleman.Liau.grade             1.0000000 -0.72238083     0.72238083
-#&gt; Coleman.Liau.short             1.0000000 -0.72241463     0.72241463
-#&gt; Dale.Chall                    -0.7224146  1.00000000    -1.00000000
-#&gt; Dale.Chall.old                 0.7224146 -1.00000000     1.00000000
-#&gt; Dale.Chall.PSK                 0.7224146 -1.00000000     1.00000000
-#&gt; Danielson.Bryan                0.8471650 -0.97829531     0.97829531
-#&gt; Danielson.Bryan.2             -0.8066351  0.18028533    -0.18028533
-#&gt; Dickes.Steiwer                -0.7764357  0.99638999    -0.99638999
-#&gt; DRP                            0.7272457 -0.99996713     0.99996713
-#&gt; ELF                            0.8134514 -0.98451149     0.98451149
-#&gt; Farr.Jenkins.Paterson         -0.7252569  0.99998999    -0.99998999
-#&gt; Flesch                        -0.9146054  0.92913685    -0.92913685
-#&gt; Flesch.PSK                     0.8829221 -0.95657238     0.95657238
-#&gt; Flesch.Kincaid                 0.8255270 -0.98488025     0.98488025
-#&gt;                       Dale.Chall.PSK Danielson.Bryan Danielson.Bryan.2
-#&gt; ARI                       0.99099423      0.99708146       -0.31030344
-#&gt; ARI.simple                0.99169343      0.99667721       -0.30523815
-#&gt; Bormuth                  -0.99996713     -0.97962805        0.18706023
-#&gt; Bormuth.GP                0.92746308      0.88486422       -0.04006627
-#&gt; Coleman                  -0.47287100     -0.63201768        0.89220768
-#&gt; Coleman.C2               -0.68300831     -0.80680483        0.79314280
-#&gt; Coleman.Liau             -0.72238083     -0.84714024        0.80666655
-#&gt; Coleman.Liau.grade        0.72238083      0.84714024       -0.80666655
-#&gt; Coleman.Liau.short        0.72241463      0.84716497       -0.80663507
-#&gt; Dale.Chall               -1.00000000     -0.97829531        0.18028533
-#&gt; Dale.Chall.old            1.00000000      0.97829531       -0.18028533
-#&gt; Dale.Chall.PSK            1.00000000      0.97829531       -0.18028533
-#&gt; Danielson.Bryan           0.97829531      1.00000000       -0.37865977
-#&gt; Danielson.Bryan.2        -0.18028533     -0.37865977        1.00000000
-#&gt; Dickes.Steiwer           -0.99638999     -0.99178586        0.26101392
-#&gt; DRP                       0.99996713      0.97962805       -0.18706023
-#&gt; ELF                       0.98451149      0.99535015       -0.32598561
-#&gt; Farr.Jenkins.Paterson    -0.99998999     -0.97914589        0.18438177
-#&gt; Flesch                   -0.92913685     -0.98231683        0.51737927
-#&gt; Flesch.PSK                0.95657238      0.99363576       -0.44828841
-#&gt; Flesch.Kincaid            0.98488025      0.99786963       -0.34148774
-#&gt;                       Dickes.Steiwer         DRP         ELF
-#&gt; ARI                      -0.99844204  0.99188017  0.99594813
-#&gt; ARI.simple               -0.99870393  0.99254312  0.99583585
-#&gt; Bormuth                   0.99691688 -1.00000000 -0.98541527
-#&gt; Bormuth.GP               -0.91329434  0.92665498  0.89837506
-#&gt; Coleman                   0.53900648 -0.47841665 -0.61270055
-#&gt; Coleman.C2                0.73682822 -0.68780777 -0.79038825
-#&gt; Coleman.Liau              0.77640516 -0.72721217 -0.81342458
-#&gt; Coleman.Liau.grade       -0.77640516  0.72721217  0.81342458
-#&gt; Coleman.Liau.short       -0.77643567  0.72724574  0.81345135
-#&gt; Dale.Chall                0.99638999 -0.99996713 -0.98451149
-#&gt; Dale.Chall.old           -0.99638999  0.99996713  0.98451149
-#&gt; Dale.Chall.PSK           -0.99638999  0.99996713  0.98451149
-#&gt; Danielson.Bryan          -0.99178586  0.97962805  0.99535015
-#&gt; Danielson.Bryan.2         0.26101392 -0.18706023 -0.32598561
-#&gt; Dickes.Steiwer            1.00000000 -0.99691688 -0.99345440
-#&gt; DRP                      -0.99691688  1.00000000  0.98541527
-#&gt; ELF                      -0.99345440  0.98541527  1.00000000
-#&gt; Farr.Jenkins.Paterson     0.99672456 -0.99998536 -0.98524897
-#&gt; Flesch                    0.95524130 -0.93162624 -0.97375531
-#&gt; Flesch.PSK               -0.97634394  0.95852762  0.98827872
-#&gt; Flesch.Kincaid           -0.99512741  0.98602857  0.99727425
-#&gt;                       Farr.Jenkins.Paterson     Flesch  Flesch.PSK
-#&gt; ARI                             -0.99154201 -0.9683121  0.98543988
-#&gt; ARI.simple                      -0.99221922 -0.9670869  0.98463060
-#&gt; Bormuth                          0.99998536  0.9316262 -0.95852762
-#&gt; Bormuth.GP                      -0.92696268 -0.8225754  0.85630865
-#&gt; Coleman                          0.47680930  0.7524555 -0.69917416
-#&gt; Coleman.C2                       0.68622584  0.8921701 -0.85640522
-#&gt; Coleman.Liau                     0.72522331  0.9145879 -0.88290067
-#&gt; Coleman.Liau.grade              -0.72522331 -0.9145879  0.88290067
-#&gt; Coleman.Liau.short              -0.72525694 -0.9146054  0.88292206
-#&gt; Dale.Chall                       0.99998999  0.9291368 -0.95657238
-#&gt; Dale.Chall.old                  -0.99998999 -0.9291368  0.95657238
-#&gt; Dale.Chall.PSK                  -0.99998999 -0.9291368  0.95657238
-#&gt; Danielson.Bryan                 -0.97914589 -0.9823168  0.99363576
-#&gt; Danielson.Bryan.2                0.18438177  0.5173793 -0.44828841
-#&gt; Dickes.Steiwer                   0.99672456  0.9552413 -0.97634394
-#&gt; DRP                             -0.99998536 -0.9316262  0.95852762
-#&gt; ELF                             -0.98524897 -0.9737553  0.98827872
-#&gt; Farr.Jenkins.Paterson            1.00000000  0.9307176 -0.95781641
-#&gt; Flesch                           0.93071764  1.0000000 -0.99656281
-#&gt; Flesch.PSK                      -0.95781641 -0.9965628  1.00000000
-#&gt; Flesch.Kincaid                  -0.98561541 -0.9791403  0.99260681
-#&gt;                       Flesch.Kincaid         FOG    FOG.PSK    FOG.NRI
-#&gt; ARI                       0.99828644  0.99534334  0.9980495  0.4905310
-#&gt; ARI.simple                0.99809662  0.99501238  0.9983218  0.4892834
-#&gt; Bormuth                  -0.98602857 -0.97973311 -0.9967939 -0.4571761
-#&gt; Bormuth.GP                0.89508980  0.88272558  0.9136641  0.3361798
-#&gt; Coleman                  -0.61241856 -0.62791369 -0.5401789 -0.4679026
-#&gt; Coleman.C2               -0.79335974 -0.80512019 -0.7376615 -0.5350724
-#&gt; Coleman.Liau             -0.82550024 -0.83906193 -0.7749720 -0.5426918
-#&gt; Coleman.Liau.grade        0.82550024  0.83906193  0.7749720  0.5426918
-#&gt; Coleman.Liau.short        0.82552702  0.83908765  0.7750026  0.5426992
-#&gt; Dale.Chall               -0.98488025 -0.97841468 -0.9962621 -0.4549252
-#&gt; Dale.Chall.old            0.98488025  0.97841468  0.9962621  0.4549252
-#&gt; Dale.Chall.PSK            0.98488025  0.97841468  0.9962621  0.4549252
-#&gt; Danielson.Bryan           0.99786963  0.99695239  0.9912643  0.5028375
-#&gt; Danielson.Bryan.2        -0.34148774 -0.36653699 -0.2590925 -0.3671130
-#&gt; Dickes.Steiwer           -0.99512741 -0.99112313 -0.9994543 -0.4649778
-#&gt; DRP                       0.98602857  0.97973311  0.9967939  0.4571761
-#&gt; ELF                       0.99727425  0.99443432  0.9938624  0.4952706
-#&gt; Farr.Jenkins.Paterson    -0.98561541 -0.97924413 -0.9966030 -0.4562044
-#&gt; Flesch                   -0.97914032 -0.98344165 -0.9567470 -0.5313693
-#&gt; Flesch.PSK                0.99260681  0.99454929  0.9775024  0.5208520
-#&gt; Flesch.Kincaid            1.00000000  0.99846226  0.9957626  0.4989686
-#&gt;                          FORCAST FORCAST.RGL        Fucks Linsear.Write
-#&gt; ARI                    0.5784256   0.5784256  0.997730647    0.98324412
-#&gt; ARI.simple             0.5744257   0.5744257  0.998049346    0.98272675
-#&gt; Bormuth               -0.4784167  -0.4784167 -0.997515204   -0.96316927
-#&gt; Bormuth.GP             0.3418689   0.3418689  0.919893732    0.88236447
-#&gt; Coleman               -1.0000000  -1.0000000 -0.530595415   -0.65408730
-#&gt; Coleman.C2            -0.9578621  -0.9578621 -0.727965258   -0.81398206
-#&gt; Coleman.Liau          -0.9027073  -0.9027073 -0.768184772   -0.84460735
-#&gt; Coleman.Liau.grade     0.9027073   0.9027073  0.768184772    0.84460735
-#&gt; Coleman.Liau.short     0.9026909   0.9026909  0.768215251    0.84462952
-#&gt; Dale.Chall            -0.4728710  -0.4728710 -0.997112805   -0.96173384
-#&gt; Dale.Chall.old         0.4728710   0.4728710  0.997112805    0.96173384
-#&gt; Dale.Chall.PSK         0.4728710   0.4728710  0.997112805    0.96173384
-#&gt; Danielson.Bryan        0.6320177   0.6320177  0.990775706    0.98940268
-#&gt; Danielson.Bryan.2     -0.8922077  -0.8922077 -0.249745678   -0.39525523
-#&gt; Dickes.Steiwer        -0.5390065  -0.5390065 -0.999407002   -0.97750750
-#&gt; DRP                    0.4784167   0.4784167  0.997515204    0.96316927
-#&gt; ELF                    0.6127006   0.6127006  0.993623225    0.98844709
-#&gt; Farr.Jenkins.Paterson -0.4768093  -0.4768093 -0.997402917   -0.96273644
-#&gt; Flesch                -0.7524555  -0.7524555 -0.951964715   -0.98424870
-#&gt; Flesch.PSK             0.6991742   0.6991742  0.973922677    0.99144816
-#&gt; Flesch.Kincaid         0.6124186   0.6124186  0.993989409    0.98967358
-#&gt;                               LIW        nWS       nWS.2       nWS.3
-#&gt; ARI                    0.99534363  0.9716012  0.97550799  0.98501356
-#&gt; ARI.simple             0.99493616  0.9704382  0.97443531  0.98427247
-#&gt; Bormuth               -0.97782198 -0.9362833 -0.94231463 -0.95970981
-#&gt; Bormuth.GP             0.88013733  0.8218265  0.82921349  0.85402853
-#&gt; Coleman               -0.64151385 -0.7435480 -0.72971888 -0.68262459
-#&gt; Coleman.C2            -0.81448329 -0.8869623 -0.87759182 -0.84444185
-#&gt; Coleman.Liau          -0.84663781 -0.9108590 -0.90420615 -0.87578843
-#&gt; Coleman.Liau.grade     0.84663781  0.9108590  0.90420615  0.87578843
-#&gt; Coleman.Liau.short     0.84666264  0.9108773  0.90422529  0.87581059
-#&gt; Dale.Chall            -0.97649153 -0.9339636 -0.94010518 -0.95786413
-#&gt; Dale.Chall.old         0.97649153  0.9339636  0.94010518  0.95786413
-#&gt; Dale.Chall.PSK         0.97649153  0.9339636  0.94010518  0.95786413
-#&gt; Danielson.Bryan        0.99817496  0.9848656  0.98751970  0.99235519
-#&gt; Danielson.Bryan.2     -0.37953455 -0.5077365 -0.49287612 -0.43696629
-#&gt; Dickes.Steiwer        -0.99028645 -0.9594714 -0.96426773 -0.97697873
-#&gt; DRP                    0.97782198  0.9362833  0.94231463  0.95970981
-#&gt; ELF                    0.99591724  0.9767864  0.97966902  0.98635632
-#&gt; Farr.Jenkins.Paterson -0.97739468 -0.9354875 -0.94154405 -0.95902099
-#&gt; Flesch                -0.98395156 -0.9980699 -0.99747205 -0.99333954
-#&gt; Flesch.PSK             0.99452041  0.9961226  0.99702731  0.99774824
-#&gt; Flesch.Kincaid         0.99764432  0.9808885  0.98398342  0.99180645
-#&gt;                             nWS.4         RIX      Scrabble        SMOG
-#&gt; ARI                    0.99487148  0.99222014 -0.0112182516  0.97393941
-#&gt; ARI.simple             0.99451326  0.99191614 -0.0093650938  0.97295999
-#&gt; Bormuth               -0.97861519 -0.97704126 -0.0333496851 -0.94303306
-#&gt; Bormuth.GP             0.88101179  0.89115856 -0.0158199992  0.82113760
-#&gt; Coleman               -0.63167564 -0.62921060  0.3522407942 -0.71333148
-#&gt; Coleman.C2            -0.80789970 -0.79924879  0.2472067525 -0.86811865
-#&gt; Coleman.Liau          -0.84167664 -0.82960560  0.1918831342 -0.89524825
-#&gt; Coleman.Liau.grade     0.84167664  0.82960560 -0.1918831342  0.89524825
-#&gt; Coleman.Liau.short     0.84170213  0.82963012 -0.1918617971  0.89526894
-#&gt; Dale.Chall            -0.97726151 -0.97599601 -0.0354646177 -0.94089430
-#&gt; Dale.Chall.old         0.97726151  0.97599601  0.0354646177  0.94089430
-#&gt; Dale.Chall.PSK         0.97726151  0.97599601  0.0354646177  0.94089430
-#&gt; Danielson.Bryan        0.99686096  0.99500484 -0.0367962483  0.98460337
-#&gt; Danielson.Bryan.2     -0.37128519 -0.35912065  0.3211432536 -0.47640589
-#&gt; Dickes.Steiwer        -0.99039744 -0.98825075 -0.0143478880 -0.96367176
-#&gt; DRP                    0.97861519  0.97704126  0.0333496851  0.94303306
-#&gt; ELF                    0.99411156  0.99677384 -0.0411360767  0.97747350
-#&gt; Farr.Jenkins.Paterson -0.97811285 -0.97683788 -0.0335901823 -0.94224804
-#&gt; Flesch                -0.98430842 -0.97797435  0.1056725636 -0.99453689
-#&gt; Flesch.PSK             0.99497427  0.98969704 -0.0753648675  0.99489006
-#&gt; Flesch.Kincaid         0.99823466  0.99457144 -0.0300226725  0.98304183
-#&gt;                            SMOG.C SMOG.simple     SMOG.de      Spache
-#&gt; ARI                    0.97457741  0.97393941  0.97393941  0.99099423
-#&gt; ARI.simple             0.97361454  0.97295999  0.97295999  0.99169343
-#&gt; Bormuth               -0.94405248 -0.94303306 -0.94303306 -0.99996713
-#&gt; Bormuth.GP             0.82339465  0.82113760  0.82113760  0.92746308
-#&gt; Coleman               -0.71131513 -0.71333148 -0.71333148 -0.47287100
-#&gt; Coleman.C2            -0.86636103 -0.86811865 -0.86811865 -0.68300831
-#&gt; Coleman.Liau          -0.89368168 -0.89524825 -0.89524825 -0.72238083
-#&gt; Coleman.Liau.grade     0.89368168  0.89524825  0.89524825  0.72238083
-#&gt; Coleman.Liau.short     0.89370243  0.89526894  0.89526894  0.72241463
-#&gt; Dale.Chall            -0.94194286 -0.94089430 -0.94089430 -1.00000000
-#&gt; Dale.Chall.old         0.94194286  0.94089430  0.94089430  1.00000000
-#&gt; Dale.Chall.PSK         0.94194286  0.94089430  0.94089430  1.00000000
-#&gt; Danielson.Bryan        0.98509384  0.98460337  0.98460337  0.97829531
-#&gt; Danielson.Bryan.2     -0.47358728 -0.47640589 -0.47640589 -0.18028533
-#&gt; Dickes.Steiwer        -0.96447120 -0.96367176 -0.96367176 -0.99638999
-#&gt; DRP                    0.94405248  0.94303306  0.94303306  0.99996713
-#&gt; ELF                    0.97820253  0.97747350  0.97747350  0.98451149
-#&gt; Farr.Jenkins.Paterson -0.94328383 -0.94224804 -0.94224804 -0.99998999
-#&gt; Flesch                -0.99442699 -0.99453689 -0.99453689 -0.92913685
-#&gt; Flesch.PSK             0.99503836  0.99489006  0.99489006  0.95657238
-#&gt; Flesch.Kincaid         0.98356657  0.98304183  0.98304183  0.98488025
-#&gt;                        Spache.old        Strain Traenkle.Bailer
-#&gt; ARI                    0.99099423  0.9976064239    -0.999223850
-#&gt; ARI.simple             0.99169343  0.9978635733    -0.999411499
-#&gt; Bormuth               -0.99996713 -0.9959605646     0.995931694
-#&gt; Bormuth.GP             0.92746308  0.9201367937    -0.910151256
-#&gt; Coleman               -0.47287100 -0.5461292792     0.549146837
-#&gt; Coleman.C2            -0.68300831 -0.7394040240     0.745171965
-#&gt; Coleman.Liau          -0.72238083 -0.7744192348     0.785328440
-#&gt; Coleman.Liau.grade     0.72238083  0.7744192348    -0.785328440
-#&gt; Coleman.Liau.short     0.72241463  0.7744490784    -0.785358433
-#&gt; Dale.Chall            -1.00000000 -0.9954423736     0.995298661
-#&gt; Dale.Chall.old         1.00000000  0.9954423736    -0.995298661
-#&gt; Dale.Chall.PSK         1.00000000  0.9954423736    -0.995298661
-#&gt; Danielson.Bryan        0.97829531  0.9916468644    -0.993491902
-#&gt; Danielson.Bryan.2     -0.18028533 -0.2608961180     0.274099704
-#&gt; Dickes.Steiwer        -0.99638999 -0.9987560895     0.999594489
-#&gt; DRP                    0.99996713  0.9959605646    -0.995931694
-#&gt; ELF                    0.98451149  0.9957646921    -0.994372531
-#&gt; Farr.Jenkins.Paterson -0.99998999 -0.9958154056     0.995687365
-#&gt; Flesch                -0.92913685 -0.9579641510     0.959086871
-#&gt; Flesch.PSK             0.95657238  0.9782782859    -0.979131224
-#&gt; Flesch.Kincaid         0.98488025  0.9958824210    -0.996329486
-#&gt;                       Traenkle.Bailer.2 Wheeler.Smith meanSentenceLength
-#&gt; ARI                          -0.7549178    0.99594813         0.99099423
-#&gt; ARI.simple                   -0.7514487    0.99583585         0.99169343
-#&gt; Bormuth                       0.6663152   -0.98541527        -0.99996713
-#&gt; Bormuth.GP                   -0.5147186    0.89837506         0.92746308
-#&gt; Coleman                       0.9206771   -0.61270055        -0.47287100
-#&gt; Coleman.C2                    0.9574552   -0.79038825        -0.68300831
-#&gt; Coleman.Liau                  0.9904793   -0.81342458        -0.72238083
-#&gt; Coleman.Liau.grade           -0.9904793    0.81342458         0.72238083
-#&gt; Coleman.Liau.short           -0.9904734    0.81345135         0.72241463
-#&gt; Dale.Chall                    0.6611792   -0.98451149        -1.00000000
-#&gt; Dale.Chall.old               -0.6611792    0.98451149         1.00000000
-#&gt; Dale.Chall.PSK               -0.6611792    0.98451149         1.00000000
-#&gt; Danielson.Bryan              -0.7999586    0.99535015         0.97829531
-#&gt; Danielson.Bryan.2             0.8509255   -0.32598561        -0.18028533
-#&gt; Dickes.Steiwer                0.7195290   -0.99345440        -0.99638999
-#&gt; DRP                          -0.6663152    0.98541527         0.99996713
-#&gt; ELF                          -0.7636349    1.00000000         0.98451149
-#&gt; Farr.Jenkins.Paterson         0.6642605   -0.98524897        -0.99998999
-#&gt; Flesch                        0.8800874   -0.97375531        -0.92913685
-#&gt; Flesch.PSK                   -0.8419885    0.98827872         0.95657238
-#&gt; Flesch.Kincaid               -0.7757025    0.99727425         0.98488025
-#&gt;                       meanWordSyllables
-#&gt; ARI                           0.6762172
-#&gt; ARI.simple                    0.6724762
-#&gt; Bormuth                      -0.5818750
-#&gt; Bormuth.GP                    0.4479544
-#&gt; Coleman                      -0.9645525
-#&gt; Coleman.C2                   -0.9629188
-#&gt; Coleman.Liau                 -0.9543023
-#&gt; Coleman.Liau.grade            0.9543023
-#&gt; Coleman.Liau.short            0.9542911
-#&gt; Dale.Chall                   -0.5763242
-#&gt; Dale.Chall.old                0.5763242
-#&gt; Dale.Chall.PSK                0.5763242
-#&gt; Danielson.Bryan               0.7259320
-#&gt; Danielson.Bryan.2            -0.8772134
-#&gt; Dickes.Steiwer               -0.6393556
-#&gt; DRP                           0.5818750
-#&gt; ELF                           0.6978253
-#&gt; Farr.Jenkins.Paterson        -0.5798330
-#&gt; Flesch                       -0.8376402
-#&gt; Flesch.PSK                    0.7895116
-#&gt; Flesch.Kincaid                0.7091829
-#&gt;  [ reached getOption("max.print") -- omitted 26 rows ]</div></pre>
+#&gt; 58      2017-Trump       9.163084</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'inaugReadability' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -960,10 +357,16 @@ Kenneth Benoit, re-engineered from the function of the same name by
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

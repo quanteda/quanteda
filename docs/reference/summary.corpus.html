@@ -25,13 +25,20 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Summarize a corpus — summary.corpus" />
 
-<meta property="og:description" content="Displays information about a corpus, including
-includes attributes and metadata such as date of number of texts, creation 
-and source." />
+<meta property="og:description" content="Displays information about a corpus, including attributes and metadata such
+as date of number of texts, creation and source." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -44,22 +51,15 @@ and source." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-144616-24');
 </script>
-
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
   </head>
 
@@ -76,7 +76,7 @@ and source." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -106,8 +106,20 @@ and source." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/pkgdown/comparison.html">Features</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -164,7 +176,7 @@ and source." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -183,11 +195,12 @@ and source." />
     <div class="hidden name"><code>summary.corpus.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Displays information about a corpus, including
-includes attributes and metadata such as date of number of texts, creation 
-and source.</p>
+    <p>Displays information about a corpus, including attributes and metadata such
+as date of number of texts, creation and source.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for corpus</span>
 <span class='fu'>summary</span>(<span class='no'>object</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -316,8 +329,8 @@ meta-data</p></td>
 #&gt;           SNP    88    134         4          SNP
 #&gt;          UKIP   346    723        27         UKIP
 #&gt; 
-#&gt; Source: /home/kohei/packages/quanteda/docs/reference/* on x86_64 by kohei
-#&gt; Created: Sun Apr 15 15:51:09 2018
+#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
+#&gt; Created: Mon May 21 15:42:49 2018
 #&gt; Notes: </div><div class='input'><span class='no'>mysummary</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mycorpus</span>) <span class='co'># (quietly) assign the results</span>
 <span class='no'>mysummary</span>$<span class='no'>Types</span> / <span class='no'>mysummary</span>$<span class='no'>Tokens</span> <span class='co'># crude type-token ratio</span></div><div class='output co'>#&gt; [1] 0.3429878 0.5461538 0.5030060 0.4742268 0.4363104 0.5196687 0.6754386
 #&gt; [8] 0.6567164 0.4785615</div></pre>
@@ -350,10 +363,16 @@ meta-data</p></td>
 <script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 
