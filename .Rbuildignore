@@ -2,14 +2,8 @@
 ^\.Rproj\.user$
 ^\.Rd2pdf
 ^README\.Rmd$
-^README-*\.png$
 ^cran-comments\.md$
-^README-quanteda_example-1.png$
-^README-quanteda_example.png$
-^vignettes/figure
-^\.httr-oauth$
 ^\.travis*
-^README-.*\.png$
 ^\.git
 __MACOSX
 \.DS_Store
@@ -17,7 +11,6 @@ __MACOSX
 ^quanteda\.pdf$
 ^images
 ^CONDUCT\.md$
-^API\.md$
 ^benchmarks
 ^codecov\.yml$
 ^appveyor\.yml$

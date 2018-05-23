@@ -8,25 +8,20 @@
 .Rd2pdf*
 quanteda.pdf
 API_notes.md
-
-
 # Tests
 /revdep/.cache.rds
 *Rcheck*
-
 # R or RStudio
 *.Rproj
 .Rproj.user
 .Rhistory
 .RData
-
 # OS
 __MACOSX
 .DS_Store
-
 # Linux
 .directory
-
 # Vignette
 **_cache/
 /inst/doc
+inst/doc
