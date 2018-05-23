@@ -1,18 +1,5 @@
 
-[![quanteda: quantitative analysis of textual
-data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
-
-[![CRAN
-Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![Total
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
-[![Travis-CI Build
-Status](https://travis-ci.org/quanteda/quanteda.svg?branch=master)](https://travis-ci.org/quanteda/quanteda)
-[![Appveyor Build
-status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master)
-[![codecov](https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg)](https://codecov.io/gh/quanteda/quanteda)
-[![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
+# quanteda: Quantitative Analysis of Textual Data
 
 ## About
 
@@ -26,8 +13,6 @@ Obeng](https://github.com/adamobeng), [Stefan
 Müller](http://muellerstefan.net), and [Akitaka
 Matsuo](http://amatsuo.net). Supported by the European Research Council
 grant ERC-2011-StG 283794-QUANTESS.
-
-For more details, see <http://docs.quanteda.io>.
 
 ## How to Install
 

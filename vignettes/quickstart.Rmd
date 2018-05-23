@@ -31,7 +31,7 @@ The following packages work well with or extend **quanteda** and we recommend th
     ```{r eval = FALSE}
     devtools::install_github("quanteda/quanteda.corpora")
     ```
-*  [**quanteda.dictionaries**](https://github.com/kbenoit/quanteda.dictionaries): Various dictionaries for use qieh **quanteda**, including the function `liwcalike()`, an R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+*  [**quanteda.dictionaries**](https://github.com/kbenoit/quanteda.dictionaries): Various dictionaries for use with **quanteda**, including the function `liwcalike()`, an R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/quanteda.dictionaries")
     ```

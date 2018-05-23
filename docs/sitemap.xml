@@ -556,9 +556,6 @@
     <loc>http://docs.quanteda.io/articles/pkgdown/examples/twitter.html</loc>
   </url>
   <url>
-    <loc>http://docs.quanteda.io/articles/pkgdown/quickstart.html</loc>
-  </url>
-  <url>
     <loc>http://docs.quanteda.io/articles/pkgdown/quickstart_cn.html</loc>
   </url>
   <url>
@@ -575,5 +572,8 @@
   </url>
   <url>
     <loc>http://docs.quanteda.io/articles/pkgdown/replication/text2vec.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/articles/quickstart.html</loc>
   </url>
 </urlset>
