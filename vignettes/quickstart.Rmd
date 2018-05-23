@@ -1,8 +1,10 @@
 ---
 title: "Quick Start Guide"
-output: 
-  html_document:
-    toc: true
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The Structure of quanteda}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, echo = FALSE}
@@ -23,15 +25,15 @@ See an instructions at https://github.com/quanteda/quanteda to install the GitHu
 
 The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
-*  [**readtext**](https://github.com/kbenoit/readtext):  An easy way to read text data into R, from almost any input format.
-*  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
+*  [**readtext**](https://github.com/quanteda/readtext):  An easy way to read text data into R, from almost any input format.
+*  [**spacyr**](https://github.com/quanteda/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
 *  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): Additional textual data for use with **quanteda**.
     ```{r eval = FALSE}
     devtools::install_github("quanteda/quanteda.corpora")
     ```
-*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+*  [**quanteda.dictionaries**](https://github.com/kbenoit/quanteda.dictionaries): Various dictionaries for use qieh **quanteda**, including the function `liwcalike()`, an R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
     ```{r eval = FALSE}
-    devtools::install_github("kbenoit/LIWCalike")
+    devtools::install_github("kbenoit/quanteda.dictionaries")
     ```
 
 # Creating a Corpus
@@ -44,7 +46,7 @@ library(quanteda)
 
 ## Currently available corpus sources
 
-**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/kbenoit/readtext). The main function in this package, `readtext()`, takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
+**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/quanteda/readtext). The main function in this package, `readtext()`, takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
 
 `readtext()` works on:
 
@@ -306,7 +308,7 @@ Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class ob
 set.seed(100)
 textplot_wordcloud(my_dfm, min_count = 6, random_order = FALSE,
                    rotation = .25, 
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+                   color = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ### Grouping documents by document variable 

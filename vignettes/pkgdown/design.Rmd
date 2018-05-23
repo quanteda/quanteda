@@ -1,11 +1,9 @@
 ---
 title: "The Structure of quanteda"
 author: Kenneth Benoit
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{The Structure of quanteda}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output:  
+  html_document:
+    toc: true
 ---
 
 ```{r setup, include = FALSE}

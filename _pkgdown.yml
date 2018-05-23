@@ -13,7 +13,7 @@ navbar:
     - text: "Quick Start"
       menu:
         - text: "Quick Start Guide"
-          href: articles/pkgdown/quickstart.html
+          href: articles/quickstart.html
         - text: "Guía de Inicio Rápido"
           href: articles/pkgdown/quickstart_es.html
         - text: "快速入门指南"
