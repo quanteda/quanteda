@@ -3,12 +3,11 @@
 ^\.Rd2pdf
 ^README\.Rmd$
 ^cran-comments\.md$
-^\.travis*
+^\.travis
 ^\.git
 __MACOSX
 \.DS_Store
 \.Rproj\.user
-^quanteda\.pdf$
 ^images
 ^CONDUCT\.md$
 ^benchmarks
@@ -23,6 +22,5 @@ __MACOSX
 ^revdep$
 ^CNAME$
 ^pkgdown$
-^index.html$
-^index.Rmd$
+^index.(html|md|Rmd)$
 ^paper
