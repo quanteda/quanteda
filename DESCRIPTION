@@ -8,19 +8,25 @@ Description: A fast, flexible, and comprehensive framework for
     of documents by features and feature co-occurrences, analyzing keywords, computing feature similarities and
     distances, applying content dictionaries, applying supervised and unsupervised machine learning, 
     visually representing text and text analyses, and more. 
-Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
-    c("aut", "cre", "cph")), 
-    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
-    person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
-    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 
-    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
-    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "ctb"),
-    person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "ctb"),
-    person("Patrick O.", "Perry", email = "patperry@gmail.com", role = "ctb"),
-    person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "ctb"),
-    person("William", "Lowe", email = "wlowe@princeton.edu", role = "ctb"),
+Authors@R: c( 
+    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("cre", "aut", "cph"), comment = c(ORCID = "0000-0002-0797-564X")), 
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-6519-5265")), 
+    person("Haiyan", "Wang", email = "whyinsa@yahoo.com", role = "aut"),
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut"), 
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "aut", comment = c(ORCID = "0000-0002-2906-4775")),
+    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
+    person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
+    person("Patrick O.", "Perry", email = "patperry@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-7460-127X")),
+    person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-1156-8465")),
+    person("Benjamin", "Lauderdale", email = "b.e.lauderdale@lse.ac.uk", role = "aut", comment = "0000-0003-3090-0969; wordfish C++ code"),    
+    person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
+    person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
+    person("Lori", "Young", role = "dtc", comment = "Lexicoder Sentiment Dictionary 2015"),
+    person("Stuart", "Soroka", role = "dtc", comment = "Lexicoder Sentiment Dictionary 2015"),
     person("Ian", "Fellows", email = "ian@fellstat.com", role = "cph", 
-           comment = "wordcloud source code (modified)"))
+           comment = "authored wordcloud C source code (modified)"),
+    person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
+    )
 License: GPL-3
 Depends:
     R (>= 3.1.0),

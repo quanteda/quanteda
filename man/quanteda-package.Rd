@@ -87,20 +87,29 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Kenneth Benoit \email{kbenoit@lse.ac.uk} [copyright holder]
+\strong{Maintainer}: Kenneth Benoit \email{kbenoit@lse.ac.uk} (0000-0002-0797-564X) [copyright holder]
+
+Authors:
+\itemize{
+  \item Kohei Watanabe \email{watanabe.kohei@gmail.com} (0000-0001-6519-5265)
+  \item Haiyan Wang \email{whyinsa@yahoo.com}
+  \item Paul Nulty \email{paul.nulty@gmail.com}
+  \item Adam Obeng \email{quanteda@binaryeagle.com} (0000-0002-2906-4775)
+  \item Stefan Müller \email{mullers@tcd.ie} (0000-0002-6315-4125)
+  \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (0000-0002-3323-6330)
+  \item Patrick O. Perry \email{patperry@gmail.com} (0000-0001-7460-127X)
+  \item Jouni Kuha \email{j.kuha@lse.ac.uk} (0000-0002-1156-8465)
+  \item Benjamin Lauderdale \email{b.e.lauderdale@lse.ac.uk} (0000-0003-3090-0969; wordfish C++ code)
+  \item William Lowe \email{wlowe@princeton.edu} (0000-0002-1549-6163)
+}
 
 Other contributors:
 \itemize{
-  \item Kohei Watanabe \email{watanabe.kohei@gmail.com} [contributor]
-  \item Haiyan Wang \email{h.wang52@lse.ac.uk} [contributor]
-  \item Paul Nulty \email{paul.nulty@gmail.com} [contributor]
-  \item Adam Obeng \email{quanteda@binaryeagle.com} [contributor]
-  \item Stefan Müller \email{mullers@tcd.ie} [contributor]
-  \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} [contributor]
-  \item Patrick O. Perry \email{patperry@gmail.com} [contributor]
-  \item Jouni Kuha \email{j.kuha@lse.ac.uk} [contributor]
-  \item William Lowe \email{wlowe@princeton.edu} [contributor]
-  \item Ian Fellows \email{ian@fellstat.com} (wordcloud source code (modified)) [copyright holder]
+  \item Christian Müller \email{C.Mueller@lse.ac.uk} [contributor]
+  \item Lori Young (Lexicoder Sentiment Dictionary 2015) [data contributor]
+  \item Stuart Soroka (Lexicoder Sentiment Dictionary 2015) [data contributor]
+  \item Ian Fellows \email{ian@fellstat.com} (authored wordcloud C source code (modified)) [copyright holder]
+  \item European Research Council (ERC-2011-StG 283794-QUANTESS) [funder]
 }
 
 }

@@ -18,8 +18,8 @@
 #'   For finer-grained control, consider filtering sentences prior first, 
 #'   including through pattern-matching, using \code{\link{corpus_trim}}.
 #' @param ... not used
-#' @author Kenneth Benoit, re-engineered from the function of the same name by
-#'   Meik Michalke in the \pkg{koRpus} package.
+#' @author Kenneth Benoit, re-engineered from Meik Michalke's \pkg{koRpus}
+#'   package.
 #' @return \code{textstat_readability} returns a data.frame of documents and
 #'   their readability scores.
 #' @export
