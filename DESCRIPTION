@@ -39,7 +39,7 @@ Imports:
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
-    XML,
+    xml2,
     yaml,
     lubridate,
     magrittr,

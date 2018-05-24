@@ -782,23 +782,27 @@ read_dict_liwc <- function(path, encoding = 'auto') {
 # dict <- read_dict_yoshikoder('/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd')
 read_dict_yoshikoder <- function(path){
     
-    xml <- XML::xmlParse(path)
-    root <- XML::xpathSApply(xml, "/dictionary")
-    dict <- nodes2list(root[[1]])
+    # xml <- XML::xmlParse(path)
+    # root <- XML::xpathSApply(xml, "/dictionary")
+    # dict <- nodes2list(root[[1]])
+    xml <- xml2::read_xml(path)
+    root <- xml2::xml_find_first(xml, '/dictionary')
+    dict <- nodes2list(root)
     dict <- list2dictionary(dict)
     return(dict)
 }
 
 # Internal function for read_dict_yoshikoder
 nodes2list <- function(node, dict = list()){
-    nodes <- XML::xpathSApply(node, "cnode")
+    # nodes <- XML::xpathSApply(node, "cnode")
+    nodes <- xml2::xml_find_all(node, "cnode")
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
-            key <- XML::xmlGetAttr(nodes[[i]], name = "name")
+            key <- xml2::xml_attrs(nodes[[i]])["name"]
             dict[[key]] <- nodes2list(nodes[[i]], dict)
         }
     } else {
-        dict <- unname(XML::xpathSApply(node, "pnode/@name"))
+        dict <-  unname(unlist(xml2::xml_attrs(xml2::xml_find_all(node, "pnode"), "name")))
     }
     return(dict)
 }
