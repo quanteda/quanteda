@@ -9,10 +9,9 @@ authors:
   orcid: 0000-0001-6519-5265
 - affiliation: 2
   name: Haiyan Wang
-  orcid: 0000-0000-0000-0000
 - affiliation: 3
   name: Paul Nulty
-  orcid: 0000-0000-0000-0000
+  orcid: 0000-0002-7214-4666
 - affiliation: 4
   name: Adam Obeng
   orcid: 0000-0002-2906-4775
