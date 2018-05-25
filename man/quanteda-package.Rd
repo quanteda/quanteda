@@ -92,8 +92,8 @@ Useful links:
 Authors:
 \itemize{
   \item Kohei Watanabe \email{watanabe.kohei@gmail.com} (0000-0001-6519-5265)
-  \item Haiyan Wang \email{whyinsa@yahoo.com}
-  \item Paul Nulty \email{paul.nulty@gmail.com}
+  \item Haiyan Wang \email{whyinsa@yahoo.com} (0000-0003-4992-4311)
+  \item Paul Nulty \email{paul.nulty@gmail.com} (0000-0002-7214-4666)
   \item Adam Obeng \email{quanteda@binaryeagle.com} (0000-0002-2906-4775)
   \item Stefan Müller \email{mullers@tcd.ie} (0000-0002-6315-4125)
   \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (0000-0002-3323-6330)
