@@ -59,8 +59,8 @@ other R and Python packages in processing large textual data.
 defined as a collection of texts that includes document-level variables specific
 to each text, as well as meta-data for documents and for the collection as a
 whole. With the package, users can easily segment texts by words, paragraphs,
-sentences, or even user-supplied delimiters and tags, or group them into larger
-documents by document-level variables, or to subset them based on logical
+sentences, or even user-supplied delimiters and tags, group them into larger
+documents by document-level variables, or subset them based on logical
 conditions or combinations of document-level variables.
 
 # Natural language processing
@@ -68,13 +68,14 @@ conditions or combinations of document-level variables.
 **quanteda** is principally designed to allow users a fast and convenient method
 to construct a document-feature matrix from a corpus with an ability to perform
 the most common natural language processing tasks such as tokenizing, stemming,
-forming n-grams, selecting and weighting features. With these functions, users
+forming n-grams, selecting and weighting features.  With these functions, users
 can easily remove stop words and stem words in numerous languages, select words
-in a dictionary, and convert frequency counts into _tf-idf_ scores.
+in a dictionary, and convert frequency counts into weights, for instance using 
+_tf-idf_ scoring.
 
 Using the ICU library in the **stringi** package [@stringi] for text processing,
-**quanteda** can correctly handle Unicode character set for regular expression
-matches and detect word boundaries for tokenization. Once texts are tokenized,
+**quanteda** correctly handles Unicode character sets for regular expression
+matching and detecting word boundaries for tokenization. Once texts are tokenized,
 **quanteda** serializes tokens into integers to increase processing speed while
 reducing memory usage. Many of the text processing functions are parallelized
 using the Intel TBB library via the **RcppParallel** package [@RcppParallel].
@@ -93,10 +94,11 @@ analysis [@deerwester1990]. **quanteda** also works flexibly and efficiently
 with dictionaries, and is distributed with the 2015 version of the Lexicoder
 Sentiment Dictionary [@youngsoroka2012].
 
-In addition to models, the package provides a variety of text statistics, such as frequency analysis, "keyness", lexical diversity, readability, and
+In addition to models, the package provides a variety of text statistics, 
+such as frequency analysis, "keyness", lexical diversity, readability, and
 similarity and distance of documents or features. These make use of the
 sparseness document-feature matrices -- often over 90% sparse -- and parallelism
-for efficient, fast computation. It also provides methods for statistically
+for efficient, fast computation. **quanteda**  also provides methods for statistically
 scoring collocations, useful in identifying multi-word expressions.
 
 # Text visualization
@@ -136,32 +138,35 @@ textplot_network(fcm_select(examplefcm, topfeats), min_freq = 0.8)
 _Consistency_.  **quanteda** functions and objects are named systematically such
 that `corpus()`, `tokens()` and `dfm()` construct those object types, and that
 `corpus_*()`, `tokens_*()` and `dfm_*()` return a modified version of these
-objects. This even applies to the extensive built-in data objects in the
+objects. Naming consistency applies also to the extensive built-in data objects in the
 package, whose names always start with `data_*` followed by object types. This
 not only gives the users a clear overview of the package, but also makes the
 package more reliable for other packages that depend on it.
 
 _Accessibility_.  **quanteda** contains extensive manual pages structured around
-the naming rule. Furthermore, there are references, package vignettes, examples,
+the naming rules. Furthermore, there are references, package vignettes, examples,
 and tutorials on the website at http://docs.quanteda.io. These materials help
 beginner users to understand how to use these functions for basic operations,
-and expert users to combine the functions for advanced text processing.
+and expert users to combine the functions for advanced text processing and analysis.
 
-_Performance_.  Entirely based on sparse data structure, **quanteda** can
-process large textual data that are difficult for other R packages. Its high
+_Performance_.  Built around on sparse data structures, **quanteda** can
+process large textual data that are difficult for other R packages (such as computing
+distances or scoring collocations).  Its high
 performance further enhanced by data serialization and parallel computation
-implemented in C++. Owing to the efficient design of the package, users can
-handle up to 1GB of texts on laptop computers.
+implemented in C++, permitting large and fast text analysis even on computers with
+relatively limited resources (such as laptop computers). 
 
-_Transparency and reproducibility_.  **quanteda** is designed to be rigorous,
+_Transparency and reproducibility_.  **quanteda** is designed to facilitate rigorous,
 transparent, and reproducible scientific analysis of text. Being open-source
 software, its source code can be scrutinized and corrected by other experts. Its
-functions are designed to encourage a reproducible workflow.
+functions are designed to encourage a reproducible workflow by linking successive 
+processing tasks in a clear, readable manner.
 
 _Compatibility with other packages_.  For analysis not provided by built-in
-functions, users can move its objects seamlessly to other packages such as the
+functions, users can move **quanteda** objects seamlessly to other packages,
+such as the
 **stm** package for structural topic models [@STM] or word embedding packages
-like **text2vec** [@text2vec].  The package also works well with companion
+like **text2vec** [@text2vec].  **quanteda** also works well with companion
 packages such as **spacyr**, an R wrapper to the spaCy [@spacy2], and
 **readtext**, a package for importing text files into R.
 
