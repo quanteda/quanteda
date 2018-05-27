@@ -174,7 +174,7 @@ packages such as **spacyr**, an R wrapper to the spaCy [@spacy2], and
 
 Created at the London School of Economics in 2013 with funding from the European
 Research Council funding (ERC-2011-StG 283794-QUANTESS), **quanteda** is now
-supported by the Quanteda Initiative, a non-profit organization founded in 2018
+supported by the [Quanteda Initiative](http://quanteda.org), a non-profit organization founded in 2018
 to provide ongoing support for the "quanteda ecosystem" of open-source text
 analysis software.
 
