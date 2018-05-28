@@ -58,6 +58,6 @@ inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 cor(inaugReadability[,-1])
 }
 \author{
-Kenneth Benoit, re-engineered from the function of the same name by
-  Meik Michalke in the \pkg{koRpus} package.
+Kenneth Benoit, re-engineered from Meik Michalke's \pkg{koRpus}
+  package.
 }
