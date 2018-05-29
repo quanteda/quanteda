@@ -52,14 +52,19 @@ test_that("test plot.kwic facet order parameter", {
 
     p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), sort=TRUE)
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
+    if(identical(plot_docnames, character(0))) {
+        plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$layout$docname))
+    }
     expect_true(
         all(
             plot_docnames[order(plot_docnames)] == plot_docnames
         )
     )
-
     p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'), sort=TRUE)
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
+    if(identical(plot_docnames, character(0))) {
+        plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$layout$docname))
+    }
     expect_true(
         all(
             plot_docnames[order(plot_docnames)] == plot_docnames
@@ -70,6 +75,9 @@ test_that("test plot.kwic facet order parameter", {
     p <- textplot_xray(kwic(data_corpus_inaugural[c(53:54, 1:2)], 'american'), 
                        kwic(data_corpus_inaugural[c(53:54, 1:2)], 'people'))
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
+    if(identical(plot_docnames, character(0))) {
+        plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$layout$docname))
+    }
     expect_false(
         all(
             plot_docnames[order(plot_docnames)] == plot_docnames
@@ -80,8 +88,13 @@ test_that("test plot.kwic facet order parameter", {
 
 test_that("test plot.kwic keeps order of keywords passed", {
     p <- textplot_xray(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort=TRUE)
+    keywords <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword))
+    if(identical(keywords, character(0))) {
+        keywords <- as.character(unique(ggplot2::ggplot_build(p)$layout$layout$keyword))
+    }
+    
     expect_equal(
-        as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword)),
+        keywords,
         c('people', 'american')
     )
 })
@@ -197,7 +210,6 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     # raises error when min_count is too high
     expect_error(textplot_keyness(result, show_reference = FALSE, min_count = 100),
                  'Too few words in the documents')
-    
     # plot with two different fills when show_reference = TRUE
     expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$colour)), 1)
     expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$colour)), 2)
