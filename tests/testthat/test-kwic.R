@@ -2,39 +2,36 @@ context('test kwic.R')
 
 test_that("test attr(kwic, 'ntoken') with un-named texts", {
     testkwic <- kwic(c(
-        'The quick brown fox jumped over the lazy dog',
-        'The quick brown fox',
-        'The quick brown dog jumped over the lazy dog',
+        "The quick brown fox jumped over the lazy dog",
+        "The quick brown fox",
+        "The quick brown dog jumped over the lazy dog",
         NA
-    ), 'fox')
-    
-    testntokens <- c(9, 4, 9, 1)
-    names(testntokens) <- c('text1', 'text2', 'text3', 'text4')
+    ), "fox")
     
     expect_equal(
-        attr(testkwic, 'ntoken'),
-        testntokens
+        attr(testkwic, "ntoken"),
+        c("text1" = 9, "text2" = 4, "text3" = 9, "text4" = 0)
     )
 })
 
 test_that("test attr(kwic, 'ntoken') text names", {
-    testkwic <- kwic(data_corpus_inaugural, 'american')
+    testkwic <- kwic(data_corpus_inaugural, "american")
     expect_equal(
-        names(attr(testkwic, 'ntoken')),
+        names(attr(testkwic, "ntoken")),
         names(texts(data_corpus_inaugural))
     )
 })
     
 test_that("test kwic general", {
-    testkwic <- kwic(paste(LETTERS, collapse=' '), 'D')
+    testkwic <- kwic(paste(LETTERS, collapse = " "), "D")
     
     dtf <- data.frame(
-        docname = c('text1'),
+        docname = c("text1"),
         from = 4L,
         to = 4L,
-        pre = 'A B C',
-        keyword = 'D',
-        post = 'E F G H I',
+        pre = "A B C",
+        keyword = "D",
+        post = "E F G H I",
         stringsAsFactors = FALSE)
     
     expect_equal(
@@ -44,16 +41,16 @@ test_that("test kwic general", {
 
 
 test_that("test kwic on first token", {
-    testkwic <- kwic(paste(LETTERS, collapse=' '), 'A')
+    testkwic <- kwic(paste(LETTERS, collapse = " "), "A")
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = c('text1'),
+            docname = c("text1"),
             from = 1L,
             to = 1L,
-            pre = '',
-            keyword = 'A',
-            post = 'B C D E F',
+            pre = "",
+            keyword = "A",
+            post = "B C D E F",
             stringsAsFactors = FALSE
         ))
     )
@@ -61,16 +58,16 @@ test_that("test kwic on first token", {
 
 
 test_that("test kwic on last token", {
-    testkwic <- kwic(paste(LETTERS, collapse=' '), 'Z')
+    testkwic <- kwic(paste(LETTERS, collapse = " "), "Z")
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = c('text1'),
+            docname = c("text1"),
             from = 26L,
             to = 26L,
-            pre = 'U V W X Y',
-            keyword = 'Z',
-            post = '',
+            pre = "U V W X Y",
+            keyword = "Z",
+            post = "",
             stringsAsFactors = FALSE
         ))
     )
@@ -79,7 +76,7 @@ test_that("test kwic on last token", {
 test_that("test kwic on two tokens", {
 
     txt <- "A B C D E F G D H"
-    testkwic <- kwic(txt, c('D', 'E'), 3)
+    testkwic <- kwic(txt, c("D", "E"), 3)
     expect_equivalent(
         testkwic,
         data.frame(

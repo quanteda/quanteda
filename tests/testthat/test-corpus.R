@@ -456,3 +456,12 @@ test_that("corpus.data.frame sets docnames correctly", {
         c("TRUE", "FALSE", "TRUE.1")
     )        
 })
+
+test_that("corpus handles NA correctly (#1372)", {
+    expect_true(!any(
+        is.na(texts(corpus(c("a b c", NA, "d e f"))))
+    ))
+    expect_true(!any(
+        is.na(texts(corpus(data.frame(text = c("a b c", NA, "d e f"), stringsAsFactors = FALSE))))
+    ))
+})

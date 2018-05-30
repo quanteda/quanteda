@@ -149,7 +149,8 @@ corpus.character <- function(x, docnames = NULL,
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
                 names(addedArgs), " not used.", sep = "")
 
-    x_names <- names(x)
+    name <- names(x)
+    x <- ifelse(is.na(x), "", x)
 
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
@@ -169,11 +170,11 @@ corpus.character <- function(x, docnames = NULL,
     if (!is.null(docnames)) {
         stopifnot(length(docnames) == length(x))
         names(x) <- docnames
-    } else if (is.null(x_names)) {
+    } else if (is.null(name)) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } else if (is.null(names(x))) {
         # if they previously existed, but got obliterated by a stringi function
-        names(x) <- x_names
+        names(x) <- name
     }
 
     # ensure that docnames are unique
