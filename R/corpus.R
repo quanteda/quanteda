@@ -150,8 +150,8 @@ corpus.character <- function(x, docnames = NULL,
                 names(addedArgs), " not used.", sep = "")
 
     name <- names(x)
-    x <- ifelse(is.na(x), "", x)
-
+    x[is.na(x)] <- ""
+    
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
                                 c("\u201C", "\u201D", "\u201F",
