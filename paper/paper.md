@@ -13,10 +13,9 @@ authors:
 - affiliation: 3
   name: Paul Nulty
   orcid: 0000-0002-7214-4666
-- affiliation: 4
-  name: Adam Obeng
+- name: Adam Obeng
   orcid: 0000-0002-2906-4775
-- affiliation: 5
+- affiliation: 4
   name: Stefan Müller
   orcid: 0000-0002-6315-4125
 - affiliation: 1
@@ -35,8 +34,6 @@ affiliations:
 - index: 3
   name: Centre for Research in Arts, Social Science and Humanities, University of Cambridge
 - index: 4
-  name: Facebook Inc.
-- index: 5
   name: Department of Political Science, Trinity College Dublin
 ---
 
