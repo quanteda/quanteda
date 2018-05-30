@@ -145,10 +145,8 @@ corpus.character <- function(x, docnames = NULL,
                              docvars = NULL, 
                              metacorpus = NULL, 
                              compress = FALSE, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
-                names(addedArgs), " not used.", sep = "")
-
+    
+    unused_dots(...)
     name <- names(x)
     x[is.na(x)] <- ""
     
@@ -253,11 +251,7 @@ corpus.character <- function(x, docnames = NULL,
 corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                               metacorpus = NULL, compress = FALSE, ...) {
 
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
-                names(addedArgs), " not used.", sep = "")
-
-    args <- list(...)
+    unused_dots(...)
 
     # coerce data.frame variants to data.frame - for #1232
     x <- as.data.frame(x)
@@ -272,8 +266,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
             stop("text_field index refers to an invalid column")
         }
     }
-    if ("docvars" %in% names(args))
-        stop("docvars are assigned automatically for data.frames")
+
     if (!text_field %in% names(x))
         stop("column name ", text_field, " not found")
     if (!is.character(x[[text_field]]))
@@ -337,10 +330,8 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #' 
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
-                names(addedArgs), " not used.", sep = "")
 
+    unused_dots(...)
     class(x) <- "data.frame"
 
     # convert docnames to a factor, as in original kwic
@@ -368,13 +359,12 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
 
     # handle disassociated brackets, quotes, parens, etc
     texts(result) <-
-        stringi::stri_replace_all_regex(texts(result), 
-                                        "([\\b\\s][\\p{Pi}\\p{Ps}\"\'])\\s(\\S+)\\s([\\p{Pf}\\p{Pe}\"\'][\\b\\s])", 
-                                        "$1$2$3")
+        stri_replace_all_regex(texts(result), 
+                               "([\\b\\s][\\p{Pi}\\p{Ps}\"\'])\\s(\\S+)\\s([\\p{Pf}\\p{Pe}\"\'][\\b\\s])", 
+                               "$1$2$3")
 
     # remove spaces before punctuation that should not have it
-    texts(result) <-
-        stringi::stri_replace_all_regex(texts(result), "\\s([!%*?;:,.]{1})", "$1")
+    texts(result) <- stri_replace_all_regex(texts(result), "\\s([!%*?;:,.]{1})", "$1")
     
     metacorpus(result, "source") <- 
         paste0("Corpus created from kwic(x, keywords = \"",
@@ -390,9 +380,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
 #' @export
 corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
 
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
-                names(addedArgs), " not used.", sep = "")
+    unused_dots(...)
 
     # special handling for VCorpus meta-data
     if (inherits(x, what = "VCorpus")) {
