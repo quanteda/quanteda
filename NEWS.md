@@ -1,4 +1,4 @@
-# quanteda v1.2.3
+# quanteda v1.3.0
 
 ### New Features
 
@@ -15,6 +15,7 @@
 
 * Fixed a bug in `textmodel_affinity()` that caused failure when the input dfm had been compiled with `tolower = FALSE`.  (#1338)
 * Fixed a bug affecting `tokens_lookup()` and `dfm_lookup()` when `nomatch` is used. (#1347)
+* Fixed a problem whereby NA texts created a "document" (or tokens) containing `"NA"` (#1372)
 
 # quanteda v1.2.0
 
