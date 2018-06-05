@@ -80,7 +80,7 @@ dimensions of the dfm, e.g. dfm_tolower." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
       </span>
     </div>
 
@@ -287,9 +287,7 @@ document context.</p>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The fox JUMPED over the dog."</span>,
          <span class='st'>"The dog jumped over the fox."</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>colnames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>tolower</span>(<span class='fu'>colnames</span>(<span class='no'>myfcm</span>))
-<span class='fu'>colnames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='st'>"fox"</span>
-<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5,008 by 5,008 features.</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress.fcm(myfcm): compress_fcm invalid if fcm was created with a window context</span></div></pre>
+<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>colnames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>tolower</span>(<span class='fu'>colnames</span>(<span class='no'>myfcm</span>))</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'myfcm' not found</span></div><div class='input'><span class='fu'>colnames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='st'>"fox"</span></div><div class='output co'>#&gt; <span class='error'>Error in rownames(myfcm)[5] &lt;- "fox": object 'myfcm' not found</span></div><div class='input'><span class='no'>myfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress(myfcm): object 'myfcm' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -308,7 +306,7 @@ document context.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

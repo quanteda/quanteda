@@ -9,23 +9,22 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
-<script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
+<script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+<link href="../../../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../../extra.css" rel="stylesheet">
 <script src="../../../extra.js"></script><meta property="og:title" content="事例: 衆議院外務委員会の議事録">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Google analytics --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script><script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-144616-24', 'auto');
-  ga('send', 'pageview');
-
-</script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+  gtag('config', 'UA-144616-24');
+</script>
 </head>
 <body>
     <div class="container template-article">
@@ -39,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
       </span>
     </div>
 
@@ -53,7 +52,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+      <a href="../../../articles/quickstart.html">Quick Start Guide</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/quickstart_es.html">Guía de Inicio Rápido</a>
@@ -69,8 +68,20 @@
 <li>
   <a href="../../../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Features
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../../../articles/pkgdown/comparison.html">Features</a>
+      <a href="../../../articles/pkgdown/comparison.html">Feature comparison</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/design.html">Package design</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -125,7 +136,7 @@
       </ul>
 <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
       
@@ -179,7 +190,7 @@ committee &lt;-<span class="st"> "外務"</span>
 
 <span class="cf">for</span> (year <span class="cf">in</span> <span class="dv">1947</span><span class="op">:</span><span class="dv">2017</span>) {
   <span class="kw">cat</span>(<span class="kw">as.character</span>(<span class="kw">Sys.time</span>()), year, committee, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-  temp &lt;-<span class="st"> </span><span class="kw">get_meeting</span>(<span class="dt">meetingName =</span> committee, <span class="dt">year =</span> year)
+  temp &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/kaigiroku/topics/get_meeting">get_meeting</a></span>(<span class="dt">meetingName =</span> committee, <span class="dt">year =</span> year)
   <span class="cf">if</span> (<span class="kw">is.null</span>(temp)) <span class="cf">next</span>
   <span class="kw">saveRDS</span>(temp, <span class="dt">file =</span> <span class="kw">sprintf</span>(<span class="st">"%s/%s_%s.rds"</span>, folder_download, year, committee))
   <span class="kw">Sys.sleep</span>(<span class="dv">10</span>)
@@ -217,8 +228,10 @@ capacity &lt;-<span class="st"> </span>full_corp <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_sub">str_sub</a></span>(<span class="dv">1</span>, <span class="dv">20</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_replace">str_replace_all</a></span>(<span class="st">"</span><span class="ch">\\</span><span class="st">s+.+|</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">""</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># 冒頭の名前部分の取り出し</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_replace">str_replace</a></span>( <span class="st">"^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)"</span>, <span class="st">"</span><span class="ch">\\</span><span class="st">1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># 冒頭の○から，名前部分までを消去</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_replace">str_replace</a></span>(<span class="st">"（.+）"</span>, <span class="st">""</span>)
-capacity &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_replace">str_replace</a></span>(capacity, <span class="st">"^○.+"</span>, <span class="st">"Other"</span>) <span class="co"># マイナーな役職名は一括して"Other"に</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_replace">str_replace</a></span>(<span class="st">"（.+）"</span>, <span class="st">""</span>)</code></pre></div>
+<pre><code>## Warning in stri_sub(string, from = start, to = end): argument is not an
+## atomic vector; coercing</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">capacity &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_replace">str_replace</a></span>(capacity, <span class="st">"^○.+"</span>, <span class="st">"Other"</span>) <span class="co"># マイナーな役職名は一括して"Other"に</span>
 knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">as.data.frame</span>(<span class="kw">table</span>(capacity)))</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -735,124 +748,124 @@ lda &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">武力行使</td>
-<td align="left">中東</td>
-<td align="left">漁業</td>
-<td align="left">公開</td>
-<td align="left">防止</td>
-<td align="left">根拠</td>
-<td align="left">写真</td>
-<td align="left">平和条約</td>
-<td align="left">パキスタン</td>
-<td align="left">公表</td>
+<td align="left">局長</td>
+<td align="left">記事</td>
+<td align="left">攻撃</td>
+<td align="left">日本国</td>
+<td align="left">旅券</td>
+<td align="left">経費</td>
+<td align="left">建設</td>
+<td align="left">専門家</td>
+<td align="left">密約</td>
+<td align="left">ドル</td>
 </tr>
 <tr class="even">
-<td align="left">センター</td>
-<td align="left">旅券</td>
-<td align="left">危険</td>
-<td align="left">出る</td>
-<td align="left">一層</td>
-<td align="left">批判</td>
-<td align="left">常任理事国</td>
-<td align="left">イラン</td>
-<td align="left">人権</td>
-<td align="left">基本</td>
-</tr>
-<tr class="odd">
+<td align="left">現時点</td>
 <td align="left">被害</td>
-<td align="left">配慮</td>
-<td align="left">操業</td>
-<td align="left">捜査</td>
-<td align="left">採択</td>
-<td align="left">経験</td>
-<td align="left">抑止力</td>
-<td align="left">昨日</td>
-<td align="left">第一</td>
+<td align="left">在日米軍</td>
+<td align="left">租税条約</td>
+<td align="left">お互い</td>
+<td align="left">計上</td>
+<td align="left">違反</td>
+<td align="left">抗議</td>
+<td align="left">ミャンマー</td>
 <td align="left">地雷</td>
 </tr>
-<tr class="even">
-<td align="left">進める</td>
-<td align="left">常任理事国</td>
-<td align="left">石油</td>
-<td align="left">やり方</td>
-<td align="left">業務</td>
-<td align="left">配慮</td>
-<td align="left">基づく</td>
-<td align="left">判決</td>
-<td align="left">引き</td>
-<td align="left">極東</td>
-</tr>
 <tr class="odd">
-<td align="left">大きい</td>
-<td align="left">行き</td>
-<td align="left">漁船</td>
-<td align="left">否定</td>
-<td align="left">日本国</td>
-<td align="left">難民</td>
-<td align="left">広島</td>
-<td align="left">イスラエル</td>
-<td align="left">皆様</td>
+<td align="left">漁業</td>
+<td align="left">漁業</td>
 <td align="left">引き渡し</td>
-</tr>
-<tr class="even">
-<td align="left">ある程度</td>
-<td align="left">見通し</td>
-<td align="left">現場</td>
-<td align="left">生活</td>
-<td align="left">議題</td>
-<td align="left">意義</td>
-<td align="left">会合</td>
-<td align="left">竹島</td>
-<td align="left">脅威</td>
-<td align="left">軽減</td>
-</tr>
-<tr class="odd">
-<td align="left">入る</td>
-<td align="left">ルール</td>
-<td align="left">発効</td>
-<td align="left">大きい</td>
-<td align="left">促進</td>
-<td align="left">日本語</td>
-<td align="left">インドネシア</td>
-<td align="left">再開</td>
+<td align="left">防止</td>
+<td align="left">利用</td>
+<td align="left">比べ</td>
 <td align="left">ケニア</td>
-<td align="left">沖縄県民</td>
+<td align="left">期間</td>
+<td align="left">コメント</td>
+<td align="left">真剣</td>
 </tr>
 <tr class="even">
-<td align="left">構想</td>
-<td align="left">過程</td>
-<td align="left">質疑</td>
-<td align="left">経過</td>
-<td align="left">経費</td>
-<td align="left">日米関係</td>
-<td align="left">全然</td>
-<td align="left">ある程度</td>
-<td align="left">唯一</td>
-<td align="left">先に</td>
+<td align="left">悪い</td>
+<td align="left">イギリス</td>
+<td align="left">又は</td>
+<td align="left">両国間</td>
+<td align="left">言い方</td>
+<td align="left">首脳会談</td>
+<td align="left">脅威</td>
+<td align="left">役所</td>
+<td align="left">否定</td>
+<td align="left">行使</td>
 </tr>
 <tr class="odd">
-<td align="left">認定</td>
-<td align="left">疑問</td>
-<td align="left">根拠</td>
-<td align="left">自身</td>
-<td align="left">図る</td>
-<td align="left">幾ら</td>
-<td align="left">ドル</td>
-<td align="left">変更</td>
-<td align="left">今申</td>
-<td align="left">身柄</td>
+<td align="left">広島</td>
+<td align="left">局長</td>
+<td align="left">過程</td>
+<td align="left">香港</td>
+<td align="left">行使</td>
+<td align="left">果たす</td>
+<td align="left">学校</td>
+<td align="left">判決</td>
+<td align="left">批判</td>
+<td align="left">関係者</td>
 </tr>
 <tr class="even">
-<td align="left">効果</td>
-<td align="left">全然</td>
-<td align="left">進める</td>
-<td align="left">移民</td>
+<td align="left">彼ら</td>
+<td align="left">視点</td>
+<td align="left">身柄</td>
 <td align="left">提案理由</td>
+<td align="left">民主党</td>
+<td align="left">否定</td>
+<td align="left">何度</td>
 <td align="left">前回</td>
+<td align="left">定義</td>
+<td align="left">紛争</td>
+</tr>
+<tr class="odd">
+<td align="left">パキスタン</td>
+<td align="left">何度</td>
+<td align="left">沖縄県民</td>
+<td align="left">促進</td>
+<td align="left">進める</td>
+<td align="left">脅威</td>
+<td align="left">戦略</td>
+<td align="left">五年</td>
+<td align="left">長い</td>
+<td align="left">進める</td>
+</tr>
+<tr class="even">
+<td align="left">案件</td>
+<td align="left">比べ</td>
+<td align="left">早期</td>
 <td align="left">イスラエル</td>
-<td align="left">日米関係</td>
-<td align="left">貿易</td>
-<td align="left">に対し</td>
+<td align="left">何ら</td>
+<td align="left">自身</td>
+<td align="left">活用</td>
+<td align="left">決まって</td>
+<td align="left">視点</td>
+<td align="left">除去</td>
+</tr>
+<tr class="odd">
+<td align="left">やり方</td>
+<td align="left">国内法</td>
+<td align="left">発効</td>
+<td align="left">相手国</td>
+<td align="left">何で</td>
+<td align="left">準備</td>
+<td align="left">宣言</td>
+<td align="left">国会議員</td>
+<td align="left">出る</td>
+<td align="left">抗議</td>
+</tr>
+<tr class="even">
+<td align="left">社会</td>
+<td align="left">三年</td>
+<td align="left">部隊</td>
+<td align="left">資する</td>
+<td align="left">武力</td>
+<td align="left">出る</td>
+<td align="left">軽減</td>
+<td align="left">プロジェクト</td>
+<td align="left">目標</td>
+<td align="left">法案</td>
 </tr>
 </tbody>
 </table>
@@ -892,7 +905,7 @@ lda &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
@@ -906,10 +919,16 @@ lda &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocument
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script><script>
   docsearch({
     
+    
     apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
     indexName: 'quanteda',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 </body>
