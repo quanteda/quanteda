@@ -165,16 +165,16 @@
 <p>In this vignette, we show how to perform Latent Semantic Analysis using the <strong>quanteda</strong> package based on Grossman and Frieder’s <a href="http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf"><em>Information Retrieval, Algorithms and Heuristics</em></a>.</p>
 <p>LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.</p>
 <p>New documents or queries can be ‘folded-in’ to this constructed latent semantic space for downstream tasks.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(quanteda)</a></code></pre></div>
 <div id="create-a-document-feature-matrix" class="section level1">
 <h1 class="hasAnchor">
 <a href="#create-a-document-feature-matrix" class="anchor"></a>Create a document-feature matrix</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">d1=</span><span class="st">"Shipment of gold damaged in a fire"</span>,
-         <span class="dt">d2=</span><span class="st">"Delivery of silver arrived in a silver truck"</span>,
-         <span class="dt">d3=</span><span class="st">"Shipment of gold arrived in a truck"</span> )
-
-mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(txt)
-mydfm</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">d1=</span><span class="st">"Shipment of gold damaged in a fire"</span>,</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">         <span class="dt">d2=</span><span class="st">"Delivery of silver arrived in a silver truck"</span>,</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">         <span class="dt">d3=</span><span class="st">"Shipment of gold arrived in a truck"</span> )</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(txt)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">mydfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 3 documents, 11 features (36.4% sparse).
 ## 3 x 11 sparse Matrix of class "dfm"
 ##     features
@@ -186,11 +186,11 @@ mydfm</code></pre></div>
 <div id="construct-the-lsa-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#construct-the-lsa-model" class="anchor"></a>Construct the LSA model</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylsa &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_lsa.html">textmodel_lsa</a></span>(mydfm)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">mylsa &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_lsa.html">textmodel_lsa</a></span>(mydfm)</a></code></pre></div>
 <pre><code>## Warning in fun(A, k, nu, nv, opts, mattype = "dgCMatrix"): all singular
 ## values are requested, svd() is used instead</code></pre>
 <p>the new document vector coordinates in the reduced 2-dimensional space is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylsa<span class="op">$</span>docs[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">mylsa<span class="op">$</span>docs[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
 <pre><code>##          [,1]       [,2]
 ## d1 -0.4944666  0.6491758
 ## d2 -0.6458224 -0.7194469
@@ -200,16 +200,16 @@ mydfm</code></pre></div>
 <h1 class="hasAnchor">
 <a href="#apply-the-constructed-lsa-model-to-new-data" class="anchor"></a>Apply the constructed LSA model to new data</h1>
 <p>Now the new unseen document can be represented in the reduced 2-dimensional space. The unseen query document:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">querydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw">c</span>(<span class="st">"gold silver truck"</span>)) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> mydfm)
-querydfm</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">querydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw">c</span>(<span class="st">"gold silver truck"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> mydfm)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">querydfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 11 features (72.7% sparse).
 ## 1 x 11 sparse Matrix of class "dfm"
 ##        features
 ## docs    shipment of gold damaged in a fire delivery silver arrived truck
 ##   text1        0  0    1       0  0 0    0        0      1       0     1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newq &lt;-<span class="st"> </span><span class="kw">predict</span>(mylsa, querydfm)
-newq<span class="op">$</span>docs_newspace[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">newq &lt;-<span class="st"> </span><span class="kw">predict</span>(mylsa, querydfm)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">newq<span class="op">$</span>docs_newspace[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
 <pre><code>## [1] -0.2140026 -0.1820571</code></pre>
 </div>
   </div>

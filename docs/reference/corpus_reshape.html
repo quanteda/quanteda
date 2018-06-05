@@ -254,8 +254,8 @@ syntactic segmenter uses this function)</p></td>
 #&gt;  textone     8     11         3      UK 1990
 #&gt;   textwo     4      6         2     USA 2000
 #&gt; 
-#&gt; Source: /home/kohei/packages/quanteda/docs/reference/* on x86_64 by kohei
-#&gt; Created: Tue Jun  5 10:22:24 2018
+#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
+#&gt; Created: Tue Jun  5 19:20:06 2018
 #&gt; Notes: Example showing how corpus_reshape() works.</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
 #&gt; 
 #&gt;       Text Types Tokens Sentences _document _docid _segid country year
@@ -265,8 +265,8 @@ syntactic segmenter uses this function)</p></td>
 #&gt;   textwo.1     3      3         1    textwo      2      1     USA 2000
 #&gt;   textwo.2     3      3         1    textwo      2      2     USA 2000
 #&gt; 
-#&gt; Source: /home/kohei/packages/quanteda/docs/reference/* on x86_64 by kohei
-#&gt; Created: Tue Jun  5 10:22:25 2018
+#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
+#&gt; Created: Tue Jun  5 19:20:06 2018
 #&gt; Notes: corpus_reshape.corpus(corp, to = "sentences")</div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
 (<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>corp2_para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"paragraphs"</span>)
@@ -476,7 +476,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;  Donald J.
 #&gt; 
 #&gt; Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
-#&gt; Created: Tue Jun  5 10:22:25 2018
+#&gt; Created: Tue Jun  5 19:20:06 2018
 #&gt; Notes: corpus_reshape.corpus(corp2, to = "paragraphs")</div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text 
 ## used a single \n to mark the end of a paragraph.
 </div></pre>

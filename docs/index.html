@@ -172,10 +172,10 @@
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
 <p>The normal way from CRAN, using your R GUI or</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </a></code></pre></div>
 <p>Or for the latest development version:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools package required to install quanteda from Github </span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) </code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># devtools package required to install quanteda from Github </span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) </a></code></pre></div>
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
 <p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
 <p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build).</p>

@@ -216,11 +216,14 @@
 <li>yoshikoder,</li>
 <li>lexicoder v2 and v3 (#228)</li>
 <li>Autodetect dictionary file format from file extension, so no longer require <code>format</code> keyword for loading dictionaries (#227)</li>
-<li>Improved compatibility with rOpenSci guidelines (#218):</li>
+<li>Improved compatibility with rOpenSci guidelines (#218):
+<ul>
 <li>Use httr to get remote files</li>
 <li>Use <code>messages()</code> to display messages rather than <code>print</code> or <code>cat</code>
 </li>
 <li>Reorganise sections in README file<br>
+</li>
+</ul>
 </li>
 <li>Added new <code>punctuation</code> argument to <code><a href="../reference/textstat_collocations.html">collocations()</a></code> to provide new options for handling collocations separated by punctuation characters (#220).</li>
 </ul>
@@ -822,7 +825,7 @@ Mostly these related to documentation.</p></li>
 <ul>
 <li><p>the corpus object has been redesigned with more flexible components, including a settings list, better corpus-level metadata, and smarter implementation of document-level attributes including user-defined variables (docvars) and document- level meta-data (metadoc)</p></li>
 <li><p>the dfm now has a proper class definition, including additional attributes that hold the settings used to produce the dfm.</p></li>
-<li><p>all important functions are now defined as methods for classes of built-in (e.g. character) objects, or quanteda objects such as a corpus or dfm. Lots of functions operate on both, for instance dfm.corpus(x) and dfm.character(x).</p></li>
+<li><p>all important functions are now defined as methods for classes of built-in ( e.g. character) objects, or quanteda objects such as a corpus or dfm. Lots of functions operate on both, for instance dfm.corpus(x) and dfm.character(x).</p></li>
 </ul>
 </div>
 <div id="more-complete-documentation" class="section level2">
