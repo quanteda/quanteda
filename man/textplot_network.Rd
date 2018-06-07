@@ -3,6 +3,7 @@
 \name{textplot_network}
 \alias{textplot_network}
 \alias{as.network.fcm}
+\alias{as.igraph.fcm}
 \title{Plot a network of feature co-occurrences}
 \usage{
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
@@ -11,6 +12,8 @@ textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   offset = NULL, vertex_labelfont = NULL, ...)
 
 \method{as.network}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)
+
+\method{as.igraph}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)
 }
 \arguments{
 \item{x}{a \link{fcm} or \link{dfm}  object}
