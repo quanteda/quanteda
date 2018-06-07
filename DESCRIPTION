@@ -75,7 +75,7 @@ Suggests:
     tm (>= 0.6),
     topicmodels,
     xtable,
-    knitr
+    knitr,
     igraph
 URL: http://quanteda.io
 Encoding: UTF-8
