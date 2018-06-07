@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 An R package for managing and analyzing text, created by [Kenneth Benoit](http://kenbenoit.net).
  Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
-For more details, see http://docs.quanteda.io/index.html.
+For more details, see https://docs.quanteda.io/index.html.
 
 ## How to Install
 
@@ -53,7 +53,7 @@ namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requ
 
 ## How to Use 
 
-See the [quick start guide](http://docs.quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
+See the [quick start guide](https://docs.quanteda.io/articles/pkgdown/quickstart.html) to learn how to use **quanteda**.
 
 ## Leaving Feedback
 
