@@ -18,7 +18,8 @@
 #' @param offset if \code{NULL}, the distance between vertices and texts are
 #'   determined automatically.
 #' @param vertex_labelfont font-family of texts. Use default font if \code{NULL}.
-#' @param ... additional arguments passed to \link[network]{network}.
+#' @param ... additional arguments passed to \link[network]{network} or
+#'   \link[igraph]{graph_from_adjacency_matrix}.
 #' @details Currently the size of the network is limited to 1000, because of the
 #'   computationally intensive nature of network formation for larger matrices.
 #'   When the \link{fcm} is large, users should select features using
@@ -45,8 +46,8 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                              edge_size = 2, 
                              vertex_color = "#4D4D4D", vertex_size = 2,
                              vertex_labelcolor = NULL,
-                             offset = NULL, 
-                             vertex_labelfont = NULL, ...) {
+                             vertex_labelfont = NULL, 
+                             offset = NULL, ...) {
     UseMethod("textplot_network")
 }
 
@@ -56,16 +57,16 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  edge_size = 2, 
                                  vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
-                                 offset = NULL, 
-                                 vertex_labelfont = NULL, ...) {
+                                 vertex_labelfont = NULL, 
+                                 offset = NULL, ...) {
 
     textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
                      edge_color = edge_color, edge_alpha = edge_alpha, 
                      edge_size = edge_size, 
                      vertex_color = vertex_color, vertex_size = vertex_size,
                      vertex_labelcolor = vertex_labelcolor,
-                     offset = NULL, 
-                     vertex_labelfont = vertex_labelfont, ...)
+                     vertex_labelfont = vertex_labelfont, 
+                     offset = NULL, ...)
 }
 
     
@@ -75,22 +76,21 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  edge_size = 2, 
                                  vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
+                                 vertex_labelfont = NULL, 
                                  offset = NULL, 
-                                 vertex_labelfont = NULL, ...) {
+                                 ...) {
     
-    label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
-    
-    vertex_labelfont <- check_font(vertex_labelfont)
-    n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
+    font <- check_font(vertex_labelfont)
+    net <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
-    vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
+    vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(net, NULL))
     colnames(vertex) <- c("x", "y")
-    vertex$label <- network::network.vertex.names(n)
+    vertex$label <- network::network.vertex.names(net)
 
-    weight <- network::get.edge.attribute(n, "weight")
+    weight <- network::get.edge.attribute(net, "weight")
     weight <- weight / max(weight)
     
-    index <- network::as.edgelist(n)
+    index <- network::as.edgelist(net)
     edge <- data.frame(x1 = vertex[,1][index[,1]], 
                        y1 = vertex[,2][index[,1]],
                        x2 = vertex[,1][index[,2]], 
@@ -101,49 +101,22 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
         vertex_labelcolor <- vertex_color
     
     # drop colors of omitted vertices
-    l <- featnames(x) %in% network::network.vertex.names(n)
+    l <- featnames(x) %in% network::network.vertex.names(net)
     if (length(vertex_labelcolor) > 1) vertex_labelcolor <- vertex_labelcolor[l]
     if (length(vertex_color) > 1) vertex_color <- vertex_color[l]
     if (length(vertex_size) > 1) vertex_size <- vertex_size[l]
     
-    plot <- ggplot() + 
-        geom_curve(data = edge, aes(x = x1, y = y1, xend = x2, yend = y2), 
-                   color = edge_color, curvature = 0.2, 
-                   alpha = edge_alpha, lineend = "round",
-                   angle = 90, size = weight * edge_size) + 
-        geom_point(data = vertex, aes(x, y), color = vertex_color, 
-                   size = vertex_size, shape = 19)
+    edge$color <- edge_color
+    edge$alpha <- edge_alpha
+    edge$size <- edge_size
+    vertex$color <- vertex_color
+    vertex$size <- vertex_size
+    vertex$labelcolor <- vertex_labelcolor
     
-        if (is.null(offset)) {
-            plot <- plot + 
-                ggrepel::geom_text_repel(data = vertex, 
-                                         aes(x, y, label = label),
-                                         segment.color = vertex_color, 
-                                         segment.size = 0.2,
-                                         color = vertex_labelcolor,
-                                         family = vertex_labelfont)
-        } else {
-            plot <- plot + 
-                geom_text(data = vertex, aes(x, y, label = label),
-                          nudge_y = offset, 
-                          color = vertex_labelcolor,
-                          family = vertex_labelfont)
-        }
-
-    plot <- plot + 
-        scale_x_continuous(breaks = NULL) + 
-        scale_y_continuous(breaks = NULL) +
-        theme(
-            plot.margin = margin(0, 0, 0, 0),
-            panel.background = element_blank(), 
-            axis.title.x = element_blank(), 
-            axis.title.y = element_blank(),
-            legend.position = "none",
-            panel.grid.minor = element_blank(), 
-            panel.grid.major = element_blank())
-    
-    return(plot)
+    plot_network(edge, vertex, font, offset)
 }
+
+
 
 # as.network ----------
 
@@ -164,6 +137,7 @@ as.network.default <- function(x, ...) {
 #' @rdname textplot_network
 #' @method as.network fcm
 #' @export
+#' @seealso \code{\link[network]{network}}
 as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
 
     if (nfeat(x) > 1000) stop('fcm is too large for a network plot')
@@ -173,33 +147,6 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     x <- network::network(as.matrix(x), matrix.type = "adjacency", directed = FALSE, 
                           ignore.eval = FALSE, names.eval = "weight", ...)
     network::set.vertex.attribute(x, "frequency", f[network::network.vertex.names(x)])
-}
-
-remove_edges <- function(x, min_freq, omit_isolated) {
-    
-    x <- as(x, "dgTMatrix")
-    
-    # drop weak edges
-    if (min_freq > 0) {
-        if (min_freq < 1) {
-            min_freq <- quantile(x@x, min_freq)
-        }
-        l <- x@x >= min_freq
-        x@i <- x@i[l]
-        x@j <- x@j[l]
-        x@x <- x@x[l]
-    }
-    
-    # drop isolated vertices 
-    if (omit_isolated) {
-        i <- which(rowSums(x) > 0)
-        x <- x[i, i, drop = FALSE]
-    }
-    
-    if (length(x@x) == 0 || all(x@x == 0))
-        stop("There is no co-occurence higher than the threshold")
-    
-    return(x)
 }
 
 #' summary.character method to override the network::summary.character()
@@ -229,9 +176,84 @@ as.igraph <- function(x, ...) {
 #' @rdname textplot_network
 #' @method as.igraph fcm
 #' @export
+#' @seealso \code{\link[igraph]{graph_from_adjacency_matrix}}
 as.igraph.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     f <- x@margin
     x <- remove_edges(x, min_freq, omit_isolated)
-    x <- igraph::graph_from_adjacency_matrix(x)
+    x <- igraph::graph_from_adjacency_matrix(x, ...)
     igraph::set_vertex_attr(x, "frequency", value = f[igraph::vertex_attr(x, "name")])
+}
+
+# internal ----------
+
+remove_edges <- function(x, min_freq, omit_isolated) {
+    
+    x <- as(x, "dgTMatrix")
+    
+    # drop weak edges
+    if (min_freq > 0) {
+        if (min_freq < 1) {
+            min_freq <- quantile(x@x, min_freq)
+        }
+        l <- x@x >= min_freq
+        x@i <- x@i[l]
+        x@j <- x@j[l]
+        x@x <- x@x[l]
+    }
+    
+    # drop isolated vertices 
+    if (omit_isolated) {
+        i <- which(rowSums(x) > 0)
+        x <- x[i, i, drop = FALSE]
+    }
+    
+    if (length(x@x) == 0 || all(x@x == 0))
+        stop("There is no co-occurence higher than the threshold")
+    
+    return(x)
+}
+
+plot_network <- function(edge, vertex, font, offset) {
+    
+    label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
+    
+    plot <- ggplot() + 
+        geom_curve(data = edge, aes(x = x1, y = y1, xend = x2, yend = y2), 
+                   color = edge$color, curvature = 0.2, 
+                   alpha = edge$alpha, lineend = "round",
+                   size = edge$weight * edge$size,
+                   angle = 90) + 
+        geom_point(data = vertex, aes(x, y), color = vertex$color, 
+                   size = vertex$size, shape = 19)
+    
+    if (is.null(offset)) {
+        plot <- plot + 
+            ggrepel::geom_text_repel(data = vertex, 
+                                     aes(x, y, label = label),
+                                     segment.color = vertex$color, 
+                                     segment.size = 0.2,
+                                     color = vertex$labelcolor,
+                                     family = font)
+    } else {
+        plot <- plot + 
+            geom_text(data = vertex, aes(x, y, label = label),
+                      nudge_y = offset, 
+                      color = vertex$labelcolor,
+                      family = font)
+    }
+    
+    plot <- plot + 
+        scale_x_continuous(breaks = NULL) + 
+        scale_y_continuous(breaks = NULL) +
+        theme_bw(base_family = font) + 
+        theme(
+            plot.margin = margin(0, 0, 0, 0),
+            panel.background = element_blank(), 
+            axis.title.x = element_blank(), 
+            axis.title.y = element_blank(),
+            legend.position = "none",
+            panel.grid.minor = element_blank(), 
+            panel.grid.major = element_blank())
+    
+    return(plot)
 }
