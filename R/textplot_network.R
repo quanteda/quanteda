@@ -41,9 +41,9 @@
 #' @import ggplot2 
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                             edge_color = '#1F78B4', edge_alpha = 0.5, 
+                             edge_color = "#1F78B4", edge_alpha = 0.5, 
                              edge_size = 2, 
-                             vertex_color = '#4D4D4D', vertex_size = 2,
+                             vertex_color = "#4D4D4D", vertex_size = 2,
                              vertex_labelcolor = NULL,
                              offset = NULL, 
                              vertex_labelfont = NULL, ...) {
@@ -52,9 +52,9 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 
 #' @export
 textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = '#1F78B4', edge_alpha = 0.5, 
+                                 edge_color = "#1F78B4", edge_alpha = 0.5, 
                                  edge_size = 2, 
-                                 vertex_color = '#4D4D4D', vertex_size = 2,
+                                 vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
                                  vertex_labelfont = NULL, ...) {
@@ -71,9 +71,9 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
 #' @export
 textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = '#1F78B4', edge_alpha = 0.5, 
+                                 edge_color = "#1F78B4", edge_alpha = 0.5, 
                                  edge_size = 2, 
-                                 vertex_color = '#4D4D4D', vertex_size = 2,
+                                 vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
                                  vertex_labelfont = NULL, ...) {
@@ -84,7 +84,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
-    colnames(vertex) <- c('x', 'y')
+    colnames(vertex) <- c("x", "y")
     vertex$label <- network::network.vertex.names(n)
 
     weight <- network::get.edge.attribute(n, "weight")
@@ -167,8 +167,17 @@ as.network.default <- function(x, ...) {
 as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
 
     if (nfeat(x) > 1000) stop('fcm is too large for a network plot')
+    
+    f <- x@margin
+    x <- remove_edges(x, min_freq, omit_isolated)
+    x <- network::network(as.matrix(x), matrix.type = "adjacency", directed = FALSE, 
+                          ignore.eval = FALSE, names.eval = "weight", ...)
+    network::set.vertex.attribute(x, "frequency", f[network::network.vertex.names(x)])
+}
 
-    x <- as(x, 'dgTMatrix')
+remove_edges <- function(x, min_freq, omit_isolated) {
+    
+    x <- as(x, "dgTMatrix")
     
     # drop weak edges
     if (min_freq > 0) {
@@ -184,14 +193,13 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     # drop isolated vertices 
     if (omit_isolated) {
         i <- which(rowSums(x) > 0)
-        x <- x[i, i]
+        x <- x[i, i, drop = FALSE]
     }
     
-    if (all(x@x == 0))
-        stop('There is no co-occurence higher than the threshold')
+    if (length(x@x) == 0 || all(x@x == 0))
+        stop("There is no co-occurence higher than the threshold")
     
-    network::network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
-            ignore.eval = FALSE, names.eval = 'weight', ...)
+    return(x)
 }
 
 #' summary.character method to override the network::summary.character()
@@ -205,4 +213,25 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
 #' @export
 summary.character <- function(object, ...) {
     base::summary.default(object, ...)
+}
+
+# as.igraph ----------
+
+#' redefinition of igraph::as.igraph()
+#' @param x input object
+#' @param ... additional arguments
+#' @keywords internal
+#' @export 
+as.igraph <- function(x, ...) {
+    UseMethod("as.igraph")
+}
+
+#' @rdname textplot_network
+#' @method as.igraph fcm
+#' @export
+as.igraph.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
+    f <- x@margin
+    x <- remove_edges(x, min_freq, omit_isolated)
+    x <- igraph::graph_from_adjacency_matrix(x)
+    igraph::set_vertex_attr(x, "frequency", value = f[igraph::vertex_attr(x, "name")])
 }

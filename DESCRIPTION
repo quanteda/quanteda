@@ -74,7 +74,8 @@ Suggests:
     stm,     
     svs,     
     tibble,     
-    text2vec
+    text2vec,
+    igraph
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
