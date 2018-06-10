@@ -27,7 +27,12 @@ b, strong, th {
     opacity: 0;
     width: 0;
     height: 0;
-    padding: 0 60px 0 0;
+    display: block;
+
+}
+
+.navbar-brand > .label {
+    margin-left: 150px;
 }
 
 .navbar .navbar-nav > li > a {
