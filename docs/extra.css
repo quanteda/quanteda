@@ -17,7 +17,7 @@ b, strong, th {
 }
 
 .navbar-brand {
-    background-image: url(https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo_small.svg);
+    background-image: url(https://cdn.rawgit.com/quanteda/quanteda/0489b2dd/images/quanteda_logo_small.svg);
     background-repeat: no-repeat;
     background-position: 12.5px 12.5px;
     background-size: 150px auto;
