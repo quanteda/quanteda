@@ -28,7 +28,8 @@ b, strong, th {
     width: 0;
     height: 0;
     display: block;
-
+    font-size: 1.7em;
+    line-height: 1em;
 }
 
 .navbar-brand > .label {
