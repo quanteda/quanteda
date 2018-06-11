@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 [![Travis-CI Build Status](https://travis-ci.org/quanteda/quanteda.svg?branch=master)](https://travis-ci.org/quanteda/quanteda)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master)
 [![codecov](https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg)](https://codecov.io/gh/quanteda/quanteda) [![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
-
+[![status](http://joss.theoj.org/papers/40b988ba4827f8fdc07a29351c2f74b8/status.svg)](http://joss.theoj.org/papers/40b988ba4827f8fdc07a29351c2f74b8)
 
 ## About
 
