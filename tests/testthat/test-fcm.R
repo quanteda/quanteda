@@ -320,7 +320,41 @@ test_that("as.network.fcm works", {
     mat <- fcm(txt)
     net <- as.network(mat, min_freq = 1, omit_isolated = FALSE)
     expect_true(network::is.network(net))
-    expect_equal(network::network.vertex.names(net), featnames(mat))
+    expect_identical(network::network.vertex.names(net), featnames(mat))
+    expect_identical(network::get.vertex.attribute(net, "frequency"), unname(mat@margin))
+    expect_silent(as.network(mat, min_freq = 3, omit_isolated = TRUE))
+})
+
+test_that("as.network.fcm works with window", {
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    mat <- fcm(txt, contex = "window", window = 2)
+    net <- as.network(mat, min_freq = 1, omit_isolated = FALSE)
+    expect_true(network::is.network(net))
+    expect_identical(network::network.vertex.names(net), featnames(mat))
+    expect_identical(network::get.vertex.attribute(net, "frequency"), unname(mat@margin))
+    expect_silent(as.network(mat, min_freq = 3, omit_isolated = TRUE))
+})
+
+test_that("as.igraph.fcm works", {
+    skip_if_not_installed("igraph")
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    mat <- fcm(txt)
+    net <- as.igraph(mat, min_freq = 1, omit_isolated = FALSE)
+    expect_true(igraph::is.igraph(net))
+    expect_identical(igraph::vertex_attr(net, "name"), featnames(mat))
+    expect_identical(igraph::vertex_attr(net, "frequency"), unname(mat@margin))
+    expect_silent(as.igraph(mat, min_freq = 3, omit_isolated = TRUE))
+})
+
+test_that("as.igraph.fcm works with window", {
+    skip_if_not_installed("igraph")
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    mat <- fcm(txt, contex = "window", window = 2)
+    net <- as.igraph(mat, min_freq = 1, omit_isolated = FALSE)
+    expect_true(igraph::is.igraph(net))
+    expect_identical(igraph::vertex_attr(net, "name"), featnames(mat))
+    expect_identical(igraph::vertex_attr(net, "frequency"), unname(mat@margin))
+    expect_silent(as.igraph(mat, min_freq = 3, omit_isolated = TRUE))
 })
 
 test_that("test empty object is handled properly", {

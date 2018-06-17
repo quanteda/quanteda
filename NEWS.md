@@ -1,3 +1,10 @@
+# Since quanteda v1.3.0
+
+### New Features
+
+* Added `as.igraph.fcm()` method for converting an fcm object into an **igraph** graph object.
+
+
 # quanteda v1.3.0
 
 ### New Features
