@@ -4,9 +4,9 @@
 #' features.
 #' @param x a \link{fcm} or \link{dfm}  object
 #' @param min_freq a frequency count threshold or proportion for co-occurrence
-#'   frequencies of features to be plotted.
+#'   frequencies of features to be included.
 #' @param omit_isolated if \code{TRUE}, features do not occur more frequent than
-#'   \code{min_freq} will be omitted from the plot
+#'   \code{min_freq} will be omitted.
 #' @param edge_color color of edges that connect vertices.
 #' @param edge_alpha opacity of edges ranging from 0 to 1.0.
 #' @param edge_size size of edges for most frequent co-occurrence The size of
@@ -17,9 +17,10 @@
 #'   \code{vertex_color}. If \code{NA} is given, texts are not rendered.
 #' @param offset if \code{NULL}, the distance between vertices and texts are
 #'   determined automatically.
-#' @param vertex_labelfont font-family of texts. Use default font if \code{NULL}.
+#' @param vertex_labelfont font-family of texts. Use default font if
+#'   \code{NULL}.
 #' @param ... additional arguments passed to \link[network]{network} or
-#'   \link[igraph]{graph_from_adjacency_matrix}.
+#'   \link[igraph]{graph_from_adjacency_matrix}.  Not used for \code{as.igraph}.
 #' @details Currently the size of the network is limited to 1000, because of the
 #'   computationally intensive nature of network formation for larger matrices.
 #'   When the \link{fcm} is large, users should select features using
@@ -33,10 +34,12 @@
 #'     tokens_remove(stopwords("english"), padding = FALSE)
 #' myfcm <- fcm(toks, context = "window", tri = FALSE)
 #' feat <- names(topfeatures(myfcm, 30))
-#' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network(min_freq = 0.5)
-#' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network(min_freq = 0.8)
+#' fcm_select(myfcm, feat, verbose = FALSE) %>% 
+#'     textplot_network(min_freq = 0.5)
+#' fcm_select(myfcm, feat, verbose = FALSE) %>% 
+#'     textplot_network(min_freq = 0.8)
 #' fcm_select(myfcm, feat, verbose = FALSE) %>%
-#'         textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
+#'     textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
 #' @export
 #' @seealso \code{\link{fcm}}
 #' @import ggplot2 
@@ -164,19 +167,25 @@ summary.character <- function(object, ...) {
 
 # as.igraph ----------
 
-#' redefinition of igraph::as.igraph()
-#' @param x input object
-#' @param ... additional arguments
+#' Convert an fcm to an igraph object
+#' 
+#' Convert an \link{fcm} object to an \pkg{igraph} graph object.
 #' @keywords internal
 #' @export 
-as.igraph <- function(x, ...) {
-    UseMethod("as.igraph")
-}
+as.igraph <- function(x, ...) UseMethod("as.igraph")
 
 #' @rdname textplot_network
 #' @method as.igraph fcm
 #' @export
 #' @seealso \code{\link[igraph]{graph_from_adjacency_matrix}}
+#' @examples
+#' 
+#' # as.igraph
+#' if (requireNamespace("igraph", quietly = TRUE)) {
+#'     txt <- c("a a a b b c", "a a c e", "a c e f g")
+#'     mat <- fcm(txt)
+#'     as.igraph(mat, min_freq = 1, omit_isolated = FALSE)
+#' }
 as.igraph.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     f <- x@margin
     x <- remove_edges(x, min_freq, omit_isolated)

@@ -19,10 +19,10 @@ textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
 \item{x}{a \link{fcm} or \link{dfm}  object}
 
 \item{min_freq}{a frequency count threshold or proportion for co-occurrence
-frequencies of features to be plotted.}
+frequencies of features to be included.}
 
 \item{omit_isolated}{if \code{TRUE}, features do not occur more frequent than
-\code{min_freq} will be omitted from the plot}
+\code{min_freq} will be omitted.}
 
 \item{edge_color}{color of edges that connect vertices.}
 
@@ -38,13 +38,14 @@ other edges are determined proportionally to the highest frequency.}
 \item{vertex_labelcolor}{color of texts. Defaults to the same as
 \code{vertex_color}. If \code{NA} is given, texts are not rendered.}
 
-\item{vertex_labelfont}{font-family of texts. Use default font if \code{NULL}.}
+\item{vertex_labelfont}{font-family of texts. Use default font if
+\code{NULL}.}
 
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}
 
 \item{...}{additional arguments passed to \link[network]{network} or
-\link[igraph]{graph_from_adjacency_matrix}.}
+\link[igraph]{graph_from_adjacency_matrix}.  Not used for \code{as.igraph}.}
 }
 \description{
 Plot an \link{fcm} object as a network, where edges show co-occurrences of
@@ -64,10 +65,19 @@ toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens_remove(stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = "window", tri = FALSE)
 feat <- names(topfeatures(myfcm, 30))
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.5)
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.8)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% 
+    textplot_network(min_freq = 0.5)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% 
+    textplot_network(min_freq = 0.8)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\%
-        textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
+    textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
+
+# as.igraph
+if (requireNamespace("igraph", quietly = TRUE)) {
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    mat <- fcm(txt)
+    as.igraph(mat, min_freq = 1, omit_isolated = FALSE)
+}
 }
 \seealso{
 \code{\link{fcm}}

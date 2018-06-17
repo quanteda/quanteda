@@ -2,16 +2,11 @@
 % Please edit documentation in R/textplot_network.R
 \name{as.igraph}
 \alias{as.igraph}
-\title{redefinition of igraph::as.igraph()}
+\title{Convert an fcm to an igraph object}
 \usage{
 as.igraph(x, ...)
 }
-\arguments{
-\item{x}{input object}
-
-\item{...}{additional arguments}
-}
 \description{
-redefinition of igraph::as.igraph()
+Convert an \link{fcm} object to an \pkg{igraph} graph object.
 }
 \keyword{internal}
