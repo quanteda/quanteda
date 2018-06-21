@@ -254,7 +254,7 @@ plot_network <- function(edge, vertex, font, offset) {
     plot <- plot + 
         scale_x_continuous(breaks = NULL) + 
         scale_y_continuous(breaks = NULL) +
-        theme_bw(base_family = font) + 
+        theme_void(base_family = font) + 
         theme(
             plot.margin = margin(0, 0, 0, 0),
             panel.background = element_blank(), 
