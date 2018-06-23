@@ -942,7 +942,7 @@ types.tokens <- function(x) {
     class(t1) <- "tokens"
     types(t1) <- c(types1, types2)
     t1 <- tokens_recompile(t1)
-    attributes(t1) <- c(attributes(t1), attrs)
+    attributes(t1, FALSE) <- attrs
     return(t1)
 }
 
