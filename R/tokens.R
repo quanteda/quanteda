@@ -953,7 +953,7 @@ c.tokens <- function(...) {
     if (length(x) == 1) return(x[[1]])
     result <- x[[1]] + x[[2]]
     if (length(x) == 2) return(result)
-    for (i in 3:length(x))
+    for (i in seq(3, length(x)))
         result <- result + x[[i]]
     return(result)
 }
