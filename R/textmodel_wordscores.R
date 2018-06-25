@@ -73,29 +73,28 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     
     if (smooth) 
         temp <- dfm_smooth(temp, smooth)
-
-    tFwr <- t(dfm_weight(temp, "prop"))
-    Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
-    # compute likelihoods "Pwr" Pr(this word | document)
+    
+    temp <- t(dfm_weight(temp, "prop"))
+    posterior <- temp / rowSums(temp)  # posterior word probability
+    
     if (scale == "linear") {
-        Sw <- Pwr %*% ref
-        Sw <- Sw[,1]
+        score <- rowSums(posterior %*% ref)
     } else if (scale == "logit") {
         if (length(y) > 2)
-            stop("\nFor logit scale, only two training texts can be used.")
-        if (!identical(c(-1,1), range(y))) {
-            warning("\nFor logit scale, training scores are automatically rescaled to -1 and 1.")
+            stop("For logit scale, only two training texts can be used.")
+        if (!identical(c(-1, 1), range(y))) {
+            warning("For logit scale, training scores are automatically rescaled to -1 and 1.")
             y <- rescaler(y)
         }
         if (y[1] > y[2]) { 
-            Sw <- log(Pwr[, 1]) - log(Pwr[, 2])
+            score <- log(posterior[, 1]) - log(posterior[, 2])
         } else {
-            Sw <- log(Pwr[, 2]) - log(Pwr[, 1])
+            score <- log(posterior[, 2]) - log(posterior[, 1])
         }
     }
     
     result <- list(
-        wordscores = Sw,
+        wordscores = score,
         x = x,
         y = y,
         scale = scale,
@@ -154,16 +153,12 @@ predict.textmodel_wordscores <- function(object,
     }
     
     # Compute text scores as weighted mean of word scores in "virgin" document
-    sw <- coef(object)
-    data <- force_conformance(data, names(sw), force)
+    score <- coef(object)
+    data <- force_conformance(data, names(score), force)
     
     # This is different from computing term weights on only the scorable words.
-    # It take rowSums() only to generates named vector.
-    raw <- rowSums(dfm_weight(data, "prop") %*% sw)
-    
-    # if (verbose)
-    #    catm(sprintf('%d of %d features (%.2f%%) can be scored\n\n', 
-    #         length(sw), nfeat(data), 100 * length(sw) / nfeat(data)))
+    score[is.na(score)] <- 0
+    raw <- rowSums(dfm_weight(data, "prop") %*% score)
     
     if (rescaling == "mv") {
         if (sum(!is.na(object$y)) > 2)
@@ -186,9 +181,10 @@ predict.textmodel_wordscores <- function(object,
     
     # Compute standard error
     raw_se <- rep(NA, length(raw))
-    fwv <- dfm_weight(data, "prop")
+    n <- ntoken(data)
+    data <- dfm_weight(data, "prop")
     for (i in seq_along(raw_se))
-        raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
+        raw_se[i] <- sqrt(sum(as.numeric(data[i,]) * (raw[i] - score) ^ 2)) / sqrt(n[i])
     
     result <- list(fit = fit)
     if (se.fit) {
