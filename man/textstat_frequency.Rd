@@ -64,6 +64,7 @@ ggplot(freq[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
 dfm_weight_pres <- data_corpus_inaugural \%>\% 
     corpus_subset(Year > 2000) \%>\% 
     dfm(remove = stopwords("english"), remove_punct = TRUE) \%>\% 
+    dfm_group(groups = "President") \%>\%
     dfm_weight(scheme = "prop")
 
 # calculate relative frequency by president
