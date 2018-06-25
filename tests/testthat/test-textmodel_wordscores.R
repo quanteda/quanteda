@@ -208,3 +208,12 @@ test_that("raise warning of unused dots", {
     expect_warning(predict(ws, something = TRUE),
                    "\\.\\.\\. is not used")
 })
+
+test_that("raise warning of unused dots (#1380)", {
+    ws <- textmodel_wordscores(data_dfm_lbgexample, c(NA, 1.5, 1.0, NA, NA, NA))
+    expect_true(!any(is.na(predict(ws))))
+    pred <- predict(ws, se.fit = TRUE)
+    expect_true(!any(is.na(pred$fit)))
+    expect_true(!any(is.na(pred$se.fit)))
+})
+
