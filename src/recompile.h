@@ -144,13 +144,15 @@ inline Tokens recompile(Texts texts,
     // Do nothing if all used and unique
     //Rcout << all_used << " " << all_unique << "\n";
     if (all_used && all_unique) {
+        CharacterVector types_;
+        if (flag_encode) {
+            types_ = encode(types);
+        } else {
+            types_ = Rcpp::wrap(types);
+        }
         Tokens texts_ = Rcpp::wrap(texts);
         texts_.attr("padding") = (bool)flags_used[0];
-        if (flag_encode) {
-            texts_.attr("types") = encode(types);
-        } else {
-            texts_.attr("types") = Rcpp::wrap(types);
-        }
+        texts_.attr("types") = types_;
         return texts_;
     }
     
