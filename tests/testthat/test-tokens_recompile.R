@@ -224,3 +224,12 @@ test_that("keep gap and dupli argument works, #1278", {
     expect_equal(quanteda:::tokens_recompile(toks_pad, 'C++', gap = FALSE, dup = FALSE),
                  quanteda:::tokens_recompile(toks_pad, 'R', gap = FALSE, dup = FALSE))
 })
+
+test_that("set encoding when no gap or duplication is found, #1387", {
+    
+    toks <- tokens("привет tschüß bye")
+    toks <- quanteda:::tokens_recompile(toks)
+    expect_equal(Encoding(types(toks)), 
+                 c("UTF-8", "UTF-8", "unknown")) 
+})
+

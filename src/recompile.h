@@ -146,7 +146,11 @@ inline Tokens recompile(Texts texts,
     if (all_used && all_unique) {
         Tokens texts_ = Rcpp::wrap(texts);
         texts_.attr("padding") = (bool)flags_used[0];
-        texts_.attr("types") = types;
+        if (flag_encode) {
+            texts_.attr("types") = encode(types);
+        } else {
+            texts_.attr("types") = Rcpp::wrap(types);
+        }
         return texts_;
     }
     
