@@ -42,3 +42,10 @@ test_that("tokens_tolower/tokens_toupper works", {
 })
 
 
+test_that("set encoding when no gap or duplication is found, #1387", {
+    
+    toks <- tokens("привет tschüß bye")
+    toks <- tokens_tolower(toks)
+    expect_equal(Encoding(types(toks)), 
+                 c("UTF-8", "UTF-8", "unknown")) 
+})
