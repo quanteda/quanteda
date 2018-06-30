@@ -1,5 +1,9 @@
 # Since quanteda v1.3.0
 
+### Bug fixes
+
+* Keep encodings of types when a tokens object is recompiled. (#1387)
+
 ### New Features
 
 * Added `as.igraph.fcm()` method for converting an fcm object into an **igraph** graph object.
