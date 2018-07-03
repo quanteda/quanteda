@@ -446,7 +446,9 @@ force_conformance <- function(x, feature, force) {
     if (force) {
         n <- length(featnames(x)) - length(intersect(featnames(x), feature))
         if (n)
-            warning(n, " features are added to make the feature set conformant.")
+            warning(n, " feature", if (n == 1) "" else "s",
+                    " in newdata not used in prediction.", 
+                    call. = FALSE, noBreaks. = TRUE)
         return(dfm_select(x, make_null_dfm(feature)))
     } else {
         if (!identical(featnames(x), feature))
