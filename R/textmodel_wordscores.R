@@ -95,7 +95,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     }
     
     result <- list(
-        wordscores = Sw,
+        wordscores = Sw[!is.na(Sw)],
         x = x,
         y = y,
         scale = scale,
@@ -114,7 +114,10 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #'   (2007).  See References.
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
-#' @param force make newdata's feature set conformant to the model terms
+#' @param force make the feature set of \code{newdata} conform to the model
+#'   terms.  The default of \code{TRUE} means that a fitted model can be applied
+#'   to scale a dfm that doesn't contain a 1:1 match of features in the training
+#'   and prediction data.
 #' @param ... not used
 #' @return 
 #' \code{predict.textmodel_wordscores()} returns a named vector of predicted
@@ -139,7 +142,7 @@ predict.textmodel_wordscores <- function(object,
                                          se.fit = FALSE,
                                          interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
-                                         force = FALSE,
+                                         force = TRUE,
                                          ...) {
     
     unused_dots(...)

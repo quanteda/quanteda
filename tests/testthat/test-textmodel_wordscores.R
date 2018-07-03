@@ -197,8 +197,8 @@ test_that("Works with newdata with different features from the model (#1329)", {
     ws <- textmodel_wordscores(mt1, 1:2)
     expect_silent(predict(ws, newdata = mt1, force = TRUE))
     expect_warning(predict(ws, newdata = mt2, force = TRUE),
-                  "1 features are added to make the feature set conformant.")
-    expect_error(predict(ws, newdata = mt2),
+                  "1 feature in newdata not used in prediction\\.")
+    expect_error(predict(ws, newdata = mt2, force = FALSE),
                  "newdata's feature set is not conformant to model terms\\.")
 
 })
@@ -207,4 +207,23 @@ test_that("raise warning of unused dots", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
     expect_warning(predict(ws, something = TRUE),
                    "\\.\\.\\. is not used")
+})
+
+test_that("textmodel_wordscores does not use NA wordscores scores", {
+    thedfm <- data_dfm_lbgexample[, c("A", "B", "S", "ZJ", "ZK")]
+    thedfm["V1", "ZJ"] <- 1
+    thedfm <- as.dfm(thedfm)
+    ws <- textmodel_wordscores(thedfm, c(-1, NA, NA, NA, 1, NA))
+    
+    expect_identical(ws$wordscores, c(A = -1, B = -1, ZJ = 1, ZK = 1))
+    pws <- suppressWarnings(predict(ws))
+    class(pws) <- class(pws)[-1]
+    expect_identical(
+        pws, 
+        c(R1 = -1, R2 = 0, R3 = 0, R4 = 0, R5 = 1, V1 = 1)
+    )
+    expect_warning(
+        predict(ws),
+        "1 feature in newdata not used in prediction\\."
+    )
 })

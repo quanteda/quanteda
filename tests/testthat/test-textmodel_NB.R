@@ -109,7 +109,7 @@ test_that("Works with newdata with different features from the model (#1329 and 
     
     expect_silent(predict(nb, newdata = mt1, force = TRUE))
     expect_warning(predict(nb, newdata = mt2, force = TRUE),
-                   "1 features are added to make the feature set conformant.")
+                   "1 feature in newdata not used in prediction\\.")
     expect_error(predict(nb, newdata = mt2),
                  "newdata's feature set is not conformant to model terms\\.")
 })
