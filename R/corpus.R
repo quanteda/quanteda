@@ -255,8 +255,6 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 
     # coerce data.frame variants to data.frame - for #1232
     x <- as.data.frame(x)
-    if (any(is.na(colnames(x))))
-        stop("columns of data.frame must be named")
     
     # text_field handling ---------
     if (length(text_field) != 1)

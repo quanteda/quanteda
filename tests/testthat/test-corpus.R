@@ -465,16 +465,3 @@ test_that("corpus handles NA correctly (#1372)", {
         is.na(texts(corpus(data.frame(text = c("a b c", NA, "d e f"), stringsAsFactors = FALSE))))
     ))
 })
-
-test_that("raise error when data.frame has NA in col names (#1388)", {
-    df <- data.frame(text = letters, 
-                     var1 = 1:26, 
-                     var2 = 1:26, 
-                     stringsAsFactors = F)
-    colnames(df) <- c("text", "docvar1")
-    expect_error(
-        corpus(df),
-        "columns of data.frame must be named"
-    )
-})
-
