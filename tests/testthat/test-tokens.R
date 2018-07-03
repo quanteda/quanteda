@@ -212,7 +212,7 @@ test_that("c() works with tokens", {
     
     expect_error(
         c(tokens(txt1), tokens(txt4)),
-        'Document names are duplicated'
+        'Cannot combine tokens with duplicated document names'
     )
 })
 
@@ -480,5 +480,40 @@ test_that("empty tokens are removed correctly", {
     expect_equal(as.list(tokens(txt, what = 'word'))[[1]], tok)
     expect_equal(as.list(tokens(txt, what = 'fasterword'))[[1]], tok)
     expect_equal(as.list(tokens(txt, what = 'fastestword'))[[1]], tok)
+})
+
+test_that("combined tokens objects have all the attributes", {
+    
+    toks1 <- tokens(c(text1 = "a b c"))
+    toks2 <- tokens_compound(tokens(c(text2 = "d e f")), phrase("e f"), concatenator = "+")
+    toks3<- tokens(c(text3 = "d e f"), what = "sentence")
+    toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2)
+    toks5 <- tokens(c(text5 = "d e f"))
+    
+    expect_error(c(toks1, toks1),
+                 "Cannot combine tokens with duplicated document names")
+    expect_error(c(toks1, toks2),
+                 "Cannot combine tokens with different concatenators")
+    expect_error(c(toks1, toks3),
+                 "Cannot combine tokens in different units")
+    
+    expect_identical(names(attributes(c(toks1, toks4))), 
+                     names(attributes(toks1)))
+    expect_identical(attr(c(toks1, toks4), "what"), "word")
+    expect_identical(attr(c(toks1, toks4), "concatenator"), "_")
+    expect_identical(attr(c(toks1, toks4), "ngram"), c(1L, 2L))
+    expect_identical(attr(c(toks1, toks4), "skip"), c(0L, 2L))
+    expect_identical(docnames(dfm(c(toks1, toks4))), c("text1", "text4"))
+    expect_identical(docvars(c(toks1, toks4)), data.frame(row.names = c("text1", "text4")))
+    
+    expect_identical(names(attributes(c(toks1, toks5))), 
+                     names(attributes(toks1)))
+    expect_identical(attr(c(toks1, toks5), "what"), "word")
+    expect_identical(attr(c(toks1, toks5), "concatenator"), "_")
+    expect_identical(attr(c(toks1, toks5), "ngram"), 1L)
+    expect_identical(attr(c(toks1, toks5), "skip"), 0L)
+    expect_identical(docnames(dfm(c(toks1, toks5))), c("text1", "text5"))
+    expect_identical(docvars(c(toks1, toks5)), data.frame(row.names = c("text1", "text5")))
+    
 })
 
