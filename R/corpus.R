@@ -253,10 +253,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 
     unused_dots(...)
 
-    # coerce data.frame variants to data.frame - for #1232
-    x <- as.data.frame(x)
-    
-    # text_field handling ---------
+    # text_field handling 
     if (length(text_field) != 1)
         stop("text_field must refer to a single column")
     if (is.numeric(text_field)) {
@@ -272,7 +269,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     if (!is.character(x[[text_field]]))
         stop("text_field must refer to a character mode column")
 
-    # docid_field handling --------
+    # docid_field handling 
     # start by using quanteda defaults
     docname_source <- "default"
     
@@ -290,6 +287,20 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
             stop("docid_field column not found or invalid")
         }
     }
+
+    # fix the variable names for missing or NA - for #1388
+    # will not affect tibbles since these conditions can never exist for tibbles
+    docvar_logical <- (!(names(x) %in% c(docid_field, text_field)))
+    empty_or_na_docvarnames_logical <- docvar_logical &   
+                                       (!nzchar(names(x)) | is.na(names(x)))
+    if (any(docvar_logical & empty_or_na_docvarnames_logical)) {
+        docvar_index <- which(docvar_logical)
+        emptyna_index <- which(empty_or_na_docvarnames_logical)
+        names(x)[emptyna_index] <- paste0("V", match(emptyna_index, docvar_index))
+    }
+
+    # coerce data.frame variants to data.frame - for #1232
+    x <- as.data.frame(x)
     
     # try using row.names if docid_field not already set
     if (docname_source == "default" && 

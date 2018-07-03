@@ -465,3 +465,55 @@ test_that("corpus handles NA correctly (#1372)", {
         is.na(texts(corpus(data.frame(text = c("a b c", NA, "d e f"), stringsAsFactors = FALSE))))
     ))
 })
+
+test_that("correctly handle data.frame with improper column names (#1388)", {
+    df <- data.frame(text = LETTERS[1:5],
+                     dvar1 = 1:5,
+                     dvar2 = letters[22:26],
+                     dvar3 = 6:10,
+                     stringsAsFactors = FALSE)
+    
+    # when one column name is NA
+    names(df)[3] <- NA
+    expect_equal(
+        corpus(df) %>% docvars() %>% names(),
+        c("dvar1", "V2", "dvar3")
+    )
+    
+    # when two column names are NA
+    names(df)[3:4] <- NA
+    expect_equal(
+        corpus(df) %>% docvars() %>% names(),
+        c("dvar1", "V2", "V3")
+    )
+    
+    # when one column name is blank
+    names(df)[3:4] <- c("dv", "")
+    expect_equal(
+        corpus(df) %>% docvars() %>% names(),
+        c("dvar1", "dv", "V3")
+    )
+    
+    # when two column names are blank
+    names(df)[3:4] <- ""
+    expect_equal(
+        corpus(df) %>% docvars() %>% names(),
+        c("dvar1", "V2", "V3")
+    )
+})
+
+test_that("handle data.frame with improper column names and text and doc_id fields", {
+    df <- data.frame(thetext = LETTERS[1:5],
+                     docID = paste0("txt", 1:5),
+                     dvar1 = 1:5,
+                     dvar2 = letters[22:26],
+                     dvar3 = 6:10,
+                     stringsAsFactors = FALSE)
+    
+    names(df)[c(3, 5)] <- c(NA, "")
+    crp <- corpus(df, text_field = "thetext", docid_field = "docID")
+    
+    expect_equal(names(docvars(crp)), c("V1", "dvar2", "V3"))
+    expect_equal(docnames(crp), paste0("txt", 1:5))
+    expect_equivalent(texts(crp), LETTERS[1:5])
+})
