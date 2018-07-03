@@ -920,7 +920,18 @@ types.tokens <- function(x) {
 #' @export
 `+.tokens` <- function(t1, t2) {
     if (length(intersect(docnames(t1), docnames(t2))))
-        stop('Document names are duplicated')
+        stop("Cannot combine tokens with duplicated document names")
+    if (!identical(attr(t1, "what"), attr(t2, "what")))
+        stop("Cannot combine tokens in different units")
+    if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
+        stop("Cannot combine tokens with different concatenators")
+    
+    attrs <- list(what = attr(t1, "what"),
+                  ngrams = sort(unique(c(attr(t1, "ngrams"), attr(t2, "ngrams")))),
+                  skip = sort(unique(c(attr(t1, "skip"), attr(t2, "skip")))),
+                  concatenator = attr(t1, "concatenator"),
+                  docvars = data.frame(row.names = c(docnames(t1), docnames(t2))))
+    
     docvars(t1) <- docvars(t2) <- NULL
     types2 <- types(t2)
     types1 <- types(t1)
@@ -930,7 +941,9 @@ types.tokens <- function(x) {
     t1 <- c(t1, t2)
     class(t1) <- "tokens"
     types(t1) <- c(types1, types2)
-    tokens_recompile(t1)
+    t1 <- tokens_recompile(t1)
+    attributes(t1, FALSE) <- attrs
+    return(t1)
 }
 
 #' @rdname as.tokens
@@ -940,7 +953,7 @@ c.tokens <- function(...) {
     if (length(x) == 1) return(x[[1]])
     result <- x[[1]] + x[[2]]
     if (length(x) == 2) return(result)
-    for (i in 3:length(x))
+    for (i in seq(3, length(x)))
         result <- result + x[[i]]
     return(result)
 }
