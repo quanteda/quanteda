@@ -517,3 +517,15 @@ test_that("handle data.frame with improper column names and text and doc_id fiel
     expect_equal(docnames(crp), paste0("txt", 1:5))
     expect_equivalent(texts(crp), LETTERS[1:5])
 })
+
+test_that("handle data.frame variable renaming when one already exists", {
+    df <- data.frame(thetext = LETTERS[1:5],
+                     docID = paste0("txt", 1:5),
+                     x = 1:5,
+                     V3 = letters[22:26],
+                     x = 6:10,
+                     stringsAsFactors = FALSE)
+    names(df)[c(3, 5)] <- c(NA, "")
+    crp <- corpus(df, text_field = "thetext", docid_field = "docID")
+    expect_equal(names(docvars(crp)), c("V1", "V3", "V3.1"))
+})
