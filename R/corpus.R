@@ -288,17 +288,6 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
         }
     }
 
-    # fix the variable names for missing or NA - for #1388
-    # will not affect tibbles since these conditions can never exist for tibbles
-    docvar_logical <- (!(names(x) %in% c(docid_field, text_field)))
-    empty_or_na_docvarnames_logical <- docvar_logical &   
-                                       (!nzchar(names(x)) | is.na(names(x)))
-    if (any(docvar_logical & empty_or_na_docvarnames_logical)) {
-        docvar_index <- which(docvar_logical)
-        emptyna_index <- which(empty_or_na_docvarnames_logical)
-        names(x)[emptyna_index] <- paste0("V", match(emptyna_index, docvar_index))
-    }
-
     # coerce data.frame variants to data.frame - for #1232
     x <- as.data.frame(x)
     
@@ -310,17 +299,19 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     
     docname <-
         switch(docname_source,
-               docid_field =  as.character(x[[docid_field]]),
+               docid_field = as.character(x[[docid_field]]),
                row.names = row.names(x),
                default = paste0(quanteda_options("base_docname"), seq_len(nrow(x))))
     
     # to make the exclusion below work using match()
     if (docname_source != "docid_field") docid_field <- NULL
     
-    corpus(x[[text_field]],
-           docvars = x[, match(c(text_field, docid_field), names(x)) * -1, 
-                       drop = FALSE],
-           docnames = docname,
+    # fix the variable names for missing or NA - for #1388
+    vars <- x[!names(x) %in% c(text_field, docid_field), drop = FALSE]
+    names(vars) <- make.unique(ifelse(!nzchar(names(vars)) | is.na(names(vars)), 
+                                      paste0("V", seq(length(vars))), names(vars)))
+    
+    corpus(x[[text_field]], docvars = vars, docnames = docname,
            metacorpus = metacorpus, compress = compress)
 }
 
