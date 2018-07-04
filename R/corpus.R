@@ -159,11 +159,11 @@ corpus.character <- function(x, docnames = NULL,
     
     # replace all hyphens with simple hyphen
     x <- stri_replace_all_regex(x, "\\p{Pd}", "-")
-
+    
     # normalize EOL
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
-
+    
     # name the texts vector
     if (!is.null(docnames)) {
         stopifnot(length(docnames) == length(x))
@@ -174,11 +174,11 @@ corpus.character <- function(x, docnames = NULL,
         # if they previously existed, but got obliterated by a stringi function
         names(x) <- name
     }
-
+    
     # ensure that docnames are unique
     if (any(duplicated(names(x))))
         names(x) <- make.unique(names(x))
-
+    
     # create document-meta-data
     if (is.null(metacorpus$source)) {
         metacorpus$source <- paste(getwd(), "/* ", "on ",  
@@ -188,13 +188,13 @@ corpus.character <- function(x, docnames = NULL,
     if (is.null(metacorpus$created)) {
         metacorpus$created <- date()
     }
-
+    
     # create the documents dframe starting with the texts, using an empty field
     # this saves space if it needs to be separated later
     documents <- data.frame(texts = rep(NA, length(x)),
                             row.names = names(x),
                             check.rows = TRUE, stringsAsFactors = FALSE)
-
+    
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
         if (nrow(docvars) > 0) {
@@ -202,10 +202,10 @@ corpus.character <- function(x, docnames = NULL,
             documents <- cbind(documents, docvars)
         }
     }
-
+    
     # initialize results corpus
     temp <- list()
-
+    
     ## compress and separate texts if compress == TRUE
     # paste delimiters into object to be compressed
     if (compress) {
@@ -218,13 +218,13 @@ corpus.character <- function(x, docnames = NULL,
         # otherwise replace NA placeholder with the actual text
         documents$texts <- x
     }
-
+    
     # build and return the corpus object
     temp <- c(temp, list(documents = documents,
                          metadata = metacorpus,
                          settings = settings(),
                          tokens = NULL))
-
+    
     ## add some elements if compress
     if (compress) {
         temp$docnames <- names(x)
@@ -232,7 +232,7 @@ corpus.character <- function(x, docnames = NULL,
         temp$compression_rate <- utils::object.size(temp$texts) / 
             utils::object.size(unname(x)) * 100
     }
-
+    
     class(temp) <- c("corpus", class(temp))
     if (compress) {
         class(temp) <- c("corpuszip", class(temp))
@@ -250,15 +250,10 @@ corpus.character <- function(x, docnames = NULL,
 #' @export
 corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                               metacorpus = NULL, compress = FALSE, ...) {
-
-    unused_dots(...)
-
-    # coerce data.frame variants to data.frame - for #1232
-    x <- as.data.frame(x)
-    if (any(is.na(colnames(x))))
-        stop("columns of data.frame must be named")
     
-    # text_field handling ---------
+    unused_dots(...)
+    
+    # text_field handling 
     if (length(text_field) != 1)
         stop("text_field must refer to a single column")
     if (is.numeric(text_field)) {
@@ -268,13 +263,13 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
             stop("text_field index refers to an invalid column")
         }
     }
-
+    
     if (!text_field %in% names(x))
         stop("column name ", text_field, " not found")
     if (!is.character(x[[text_field]]))
         stop("text_field must refer to a character mode column")
-
-    # docid_field handling --------
+    
+    # docid_field handling 
     # start by using quanteda defaults
     docname_source <- "default"
     
@@ -292,6 +287,20 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
             stop("docid_field column not found or invalid")
         }
     }
+    
+    # fix the variable names for missing or NA - for #1388
+    # will not affect tibbles since these conditions can never exist for tibbles
+    docvar_logical <- (!(names(x) %in% c(docid_field, text_field)))
+    empty_or_na_docvarnames_logical <- docvar_logical &   
+        (!nzchar(names(x)) | is.na(names(x)))
+    if (any(docvar_logical & empty_or_na_docvarnames_logical)) {
+        docvar_index <- which(docvar_logical)
+        emptyna_index <- which(empty_or_na_docvarnames_logical)
+        names(x)[emptyna_index] <- paste0("V", match(emptyna_index, docvar_index))
+    }
+    
+    # coerce data.frame variants to data.frame - for #1232
+    x <- as.data.frame(x)
     
     # try using row.names if docid_field not already set
     if (docname_source == "default" && 
@@ -332,13 +341,13 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #' 
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
-
+    
     unused_dots(...)
     class(x) <- "data.frame"
-
+    
     # convert docnames to a factor, as in original kwic
     x$docname <- factor(x$docname)
-
+    
     if (split_context) {
         pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], text_field = "pre")
         docvars(pre, "context") <- "pre"
@@ -350,7 +359,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
         
         result <- pre + post
         if (!extract_keyword) docvars(result, "keyword") <- NULL
-
+        
     } else {
         result <- corpus(
             apply(x[, c("pre", "keyword", "post")], 1, paste, collapse = " "),
@@ -358,13 +367,13 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
         )
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
-
+    
     # handle disassociated brackets, quotes, parens, etc
     texts(result) <-
         stri_replace_all_regex(texts(result), 
                                "([\\b\\s][\\p{Pi}\\p{Ps}\"\'])\\s(\\S+)\\s([\\p{Pf}\\p{Pe}\"\'][\\b\\s])", 
                                "$1$2$3")
-
+    
     # remove spaces before punctuation that should not have it
     texts(result) <- stri_replace_all_regex(texts(result), "\\s([!%*?;:,.]{1})", "$1")
     
@@ -381,16 +390,16 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
 #' @importFrom lubridate is.POSIXlt
 #' @export
 corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
-
+    
     unused_dots(...)
-
+    
     # special handling for VCorpus meta-data
     if (inherits(x, what = "VCorpus")) {
         # remove the classes that mess parsing this list
         x <- unclass(x)
         x <- lapply(x, unclass)
         x$content <- lapply(x$content, unclass)
-
+        
         # texts and associated docvars
         if (is.data.frame(x$content[[1]][["content"]])) {
             df <- as.data.frame(data.table::rbindlist(lapply(x$content, "[[", "content"), fill = TRUE))
@@ -405,7 +414,7 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
             df <- data.frame(text = texts, stringsAsFactors = FALSE, 
                              row.names = names_tmCorpus(x))
         }
-
+        
         # document-level metadata
         metad <- unclass(lapply(x$content, "[[", "meta"))
         # flatten any elements that are themselves lists, into pasted vectors
@@ -415,7 +424,7 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
         metad <- data.table::rbindlist(metad, fill = TRUE)
         # add metad to df, where meta is repeated as appropriate for content
         df <- cbind(df, metad[rep(seq_len(nrow(metad)), times = doc_lengths), ])
-
+        
     } else if (inherits(x, what = "SimpleCorpus")) {
         df <- data.frame(text = as.character(x$content), 
                          stringsAsFactors = FALSE,
@@ -424,14 +433,14 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     } else {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
-
+    
     # corpus-level meta-data
     if (is.null(metacorpus)) metacorpus <- x$meta
     metacorpus <- c(metacorpus,
                     list(source = paste("Converted from tm Corpus \'", 
                                         as.character(match.call())[2], 
                                         "\'", sep="")))
-
+    
     corpus(df, metacorpus = metacorpus, compress = compress)
 }
 
