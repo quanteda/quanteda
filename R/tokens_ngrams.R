@@ -107,6 +107,8 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
         stop("ngram length has to be greater than zero")
     
     attrs <- attributes(x)
+    if (identical(n, 1) && identical(skip, 0))
+        return(x)
     x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
     attributes(x, FALSE) <- attrs
     attr(x, "ngrams") <- as.integer(n)
