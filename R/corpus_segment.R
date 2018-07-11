@@ -14,6 +14,7 @@
 #' @param x character or \link{corpus} object whose texts will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
+#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param extract_pattern extracts matched patterns from the texts and save in docvars if
 #'   \code{TRUE}
 #' @param pattern_position either \code{"before"} or \code{"after"}, depending
@@ -96,6 +97,7 @@
 #' @export
 corpus_segment <- function(x, pattern = "##*",
                            valuetype = c("glob", "regex", "fixed"),
+                           case_insensitive = TRUE,
                            extract_pattern = TRUE,
                            pattern_position = c("before", "after"),
                            use_docvars = TRUE) {
@@ -105,6 +107,7 @@ corpus_segment <- function(x, pattern = "##*",
 #' @export    
 corpus_segment.default <- function(x, pattern = "##*",
                                   valuetype = c("glob", "regex", "fixed"),
+                                  case_insensitive = TRUE,
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
@@ -114,6 +117,7 @@ corpus_segment.default <- function(x, pattern = "##*",
 #' @export    
 corpus_segment.corpus <- function(x, pattern = "##*",
                                   valuetype = c("glob", "regex", "fixed"),
+                                  case_insensitive = TRUE,
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
@@ -125,9 +129,8 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     commands <- as.character(sys.calls())
     commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
     
-    temp <- segment_texts(texts(x), pattern = pattern, valuetype = valuetype, 
-                          extract_pattern = extract_pattern, 
-                          pattern_position = pattern_position)
+    temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
+                          extract_pattern, pattern_position)
 
     # create the new corpus
     result <- corpus(temp$texts, docnames = rownames(temp),
@@ -170,6 +173,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 #' @return \code{char_segment} returns a character vector of segmented texts
 char_segment <- function(x, pattern = "##*",
                          valuetype = c("glob", "regex", "fixed"),
+                         case_insensitive = TRUE,
                          remove_pattern = TRUE,
                          pattern_position = c("before", "after")) {
     UseMethod("char_segment")
@@ -178,6 +182,7 @@ char_segment <- function(x, pattern = "##*",
 #' @export
 char_segment.default <- function(x, pattern = "##*",
                                  valuetype = c("glob", "regex", "fixed"),
+                                 case_insensitive = TRUE,
                                  remove_pattern = TRUE,
                                  pattern_position = c("before", "after")) {
     stop(friendly_class_undefined_message(class(x), "char_segment"))
@@ -186,13 +191,15 @@ char_segment.default <- function(x, pattern = "##*",
 #' @export
 char_segment.character <- function(x, pattern = "##*",
                                    valuetype = c("glob", "regex", "fixed"),
+                                   case_insensitive = TRUE,
                                    remove_pattern = TRUE,
                                    pattern_position = c("before", "after")) {
     
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     
-    temp <- segment_texts(x, pattern, valuetype, remove_pattern, 
+    temp <- segment_texts(x, pattern, valuetype, 
+                          case_insensitive, remove_pattern, 
                           pattern_position)
     result <- temp$texts
     if (!is.null(names(x)))
@@ -203,7 +210,8 @@ char_segment.character <- function(x, pattern = "##*",
 # internal functions ----------
 
 # internal function for char_segment and corpus_segment
-segment_texts <- function(x, pattern = NULL, valuetype = "regex", 
+segment_texts <- function(x, pattern = NULL, valuetype = "regex",
+                          case_insensitive = TRUE,
                           extract_pattern = FALSE, pattern_position = "after", 
                           omit_empty = TRUE, what = "other", ...){
     
@@ -239,21 +247,23 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         x <- stri_trim_both(x)
         if (valuetype == "fixed") {
             if (pattern_position == "after") {
-                x <- stri_replace_all_fixed(x, pattern, 
-                                            stri_c(pattern, "\uE000"),
+                x <- stri_replace_all_fixed(x, pattern, stri_c(pattern, "\uE000"),
+                                            case_insensitive = case_insensitive,
                                             vectorize_all = FALSE)
             } else {
-                x <- stri_replace_all_fixed(x, pattern, 
-                                            stri_c("\uE000", pattern),
+                x <- stri_replace_all_fixed(x, pattern, stri_c("\uE000", pattern),
+                                            case_insensitive = case_insensitive,
                                             vectorize_all = FALSE)
             }
         } else {
             if (pattern_position == "after") {
                 x <- stri_replace_all_regex(x, pattern, "$0\uE000",
-                                               vectorize_all = FALSE)
+                                            case_insensitive = case_insensitive,
+                                            vectorize_all = FALSE)
             } else {
                 x <- stri_replace_all_regex(x, pattern, "\uE000$0",
-                                               vectorize_all = FALSE)
+                                            case_insensitive = case_insensitive,
+                                            vectorize_all = FALSE)
             }
         }
         # keep empty document for corpus_reshape
@@ -267,15 +277,15 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         for (pat in pattern) {
             if (valuetype == "fixed") {
                 if (pattern_position == "after") {
-                    temp <- stri_locate_last_fixed(x, pat)
+                    temp <- stri_locate_last_fixed(x, pat, case_insensitive = case_insensitive)
                 } else {
-                    temp <- stri_locate_first_fixed(x, pat)
+                    temp <- stri_locate_first_fixed(x, pat, case_insensitive = case_insensitive)
                 }
             } else {
                 if (pattern_position == "after") {
-                    temp <- stri_locate_last_regex(x, pat)
+                    temp <- stri_locate_last_regex(x, pat, case_insensitive = case_insensitive)
                 } else {
-                    temp <- stri_locate_first_regex(x, pat)
+                    temp <- stri_locate_first_regex(x, pat, case_insensitive = case_insensitive)
                 }
             }
             pos[,1] <- pmin(pos[,1], temp[,1], na.rm = TRUE)
