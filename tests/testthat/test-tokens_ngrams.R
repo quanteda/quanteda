@@ -87,25 +87,31 @@ test_that("test `tokens_ngrams` on skipgrams", {
     )
 })
 
-# FAILLING (issue #469)
-# test_that("test there is not competition between the thread", {
-#     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
-#              two = "A B C D E")
-#     toks <- tokens(txt, remove_punct = TRUE)
-#     
-#     for(k in 1:1000) {
-#         out <- tokens_ngrams(toks, n = 2:3)
-#         expect_equivalent(as.list(out),
-#                           list(c("insurgents_killed", "killed_in", "in_ongoing", "ongoing_fighting", 
-#                                  "insurgents_killed_in", "killed_in_ongoing", "in_ongoing_fighting"),
-#                                c("A_B", "B_C", "C_D", "D_E", "A_B_C", "B_C_D", "C_D_E")))
-#     }
-# })
+
+test_that("tokens_ngrams does nothing when n = 1 and skip = 0 (#1395)", {
     
-# FAILLING
-# test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
-#     ## issue #392
-#     expect_equivalent(unclass(tokens_ngrams(tokens("a"), n = 2))[[1]],
-#                       char_ngrams("a", n = 2))
-# })
+    toks <- tokens("insurgents killed in ongoing fighting")
+    expect_identical(tokens_ngrams(toks, n = 1, skip = 0, concatenator = " "), toks)
+    
+})
+
+test_that("test there is not competition between the thread", {
+    txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
+             two = "A B C D E")
+    toks <- tokens(txt, remove_punct = TRUE)
+
+    for(k in 1:1000) {
+        out <- tokens_ngrams(toks, n = 2:3)
+        expect_equivalent(as.list(out),
+                          list(c("insurgents_killed", "killed_in", "in_ongoing", "ongoing_fighting",
+                                 "insurgents_killed_in", "killed_in_ongoing", "in_ongoing_fighting"),
+                               c("A_B", "B_C", "C_D", "D_E", "A_B_C", "B_C_D", "C_D_E")))
+    }
+})
+    
+test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
+    ## issue #392
+    expect_equivalent(unclass(as.list(tokens_ngrams(tokens("a"), n = 2)))[[1]],
+                      char_ngrams("a", n = 2))
+})
 
