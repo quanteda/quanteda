@@ -96,6 +96,11 @@ test_that("tokens_ngrams does nothing when n = 1 and skip = 0 (#1395)", {
 })
 
 test_that("test there is not competition between the thread", {
+    
+    skip_on_cran()
+    skip_on_travis()
+    skip_on_appveyor()
+    
     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
              two = "A B C D E")
     toks <- tokens(txt, remove_punct = TRUE)
