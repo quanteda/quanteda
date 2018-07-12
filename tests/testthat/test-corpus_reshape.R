@@ -78,3 +78,4 @@ test_that("corpus_reshape produces error message for non-available to values", {
         "reshape to sentences or paragraphs only goes from documents"
     )
 })
+

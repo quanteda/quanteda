@@ -1,9 +1,10 @@
 library(quanteda)
 quanteda_options(threads = 7)
 
-load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
-docvars(data_corpus_guardian, 'year') <- format(docvars(data_corpus_guardian, 'date'), '%Y')
-txts <- texts(corpus_subset(data_corpus_guardian, year == 2015))
+corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian.RDS")
+docvars(corp, 'year') <- format(docvars(corp, 'date'), '%Y')
+corp <- corpus_reshape(corp)
+txts <- texts(corpus_subset(corp, year == 2015))
 
 microbenchmark::microbenchmark(
     tokenizers = tokenizers::tokenize_ngrams(txts, n = 2),

@@ -197,3 +197,26 @@ test_that("corpus_segment works for begining and end tags", {
     expect_equal(tail(texts(corp_seg4), 1), c(d2.4 = "Three. ##END"))
     
 })
+
+test_that("corpus_segment works with multiple patterns (#1394)", {
+    
+    txt <- "Some text, more text\\nINTRODUCTION This is a test\\nCONTACT John Doe SOURCE Library of Congress"
+    
+    expect_identical(char_segment(txt, c("INTRODUCTION*", "CONTACT", "SOURCE"), valuetype = "glob"),
+                     c("This is a test\\n", "John Doe", "Library of Congress"))
+    
+    expect_identical(char_segment(txt, c("INTRODUCTION", "CONTACT", "SOURCE"), valuetype = "fixed"),
+                     c("This is a test\\n", "John Doe", "Library of Congress"))
+    
+    
+    expect_identical(texts(corpus_segment(corpus(txt), c("INTRODUCTION*", "CONTACT", "SOURCE"), valuetype = "glob")),
+                     c(text1.1 = "This is a test\\n", text1.2 = "John Doe", text1.3 = "Library of Congress"))
+    
+    expect_identical(texts(corpus_segment(corpus(txt), c("INTRODUCTION", "CONTACT", "SOURCE"), valuetype = "fixed")),
+                     c(text1.1 = "This is a test\\n", text1.2 = "John Doe", text1.3 = "Library of Congress"))
+    
+})
+
+
+
+
