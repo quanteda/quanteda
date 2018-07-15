@@ -8,8 +8,8 @@
 <title>クイック・スタートガイド • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<script src="../../pkgdown.js"></script><!-- docsearch --><script src="../../docsearch.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../extra.css" rel="stylesheet">
 <script src="../../extra.js"></script><meta property="og:title" content="クイック・スタートガイド">
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
       </span>
     </div>
 
@@ -163,8 +163,8 @@
     
 <p>本ページは<a href="../quickstart.html">Quic Start Guide</a>の日本語訳であり，英語のテキスト分析を通じて<strong>quanteda</strong>の基本的な使い方を説明する．日本語の分析法に関しては，以下のページを参照．</p>
 <ul>
-<li><a href="japanese_speech_ja.html">事例: 衆議院外務委員会の議事録</a></li>
-<li><a href="japanese_twitter_ja.html">事例: 2017年総選挙に関するツイート</a></li>
+<li><a href="examples/japanese_speech_ja.html">事例: 衆議院外務委員会の議事録</a></li>
+<li><a href="examples/japanese_twitter_ja.html">事例: 2017年総選挙に関するツイート</a></li>
 </ul>
 <div id="installing-the-package" class="section level1">
 <h1 class="hasAnchor">
@@ -238,7 +238,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Sun Jun 10 03:31:15 2018
+## Created: Sun Jul 15 21:15:23 2018
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -259,7 +259,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Sun Jun 10 03:31:15 2018
+## Created: Sun Jul 15 21:15:23 2018
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -289,7 +289,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Sun Jun 10 03:31:15 2018
+## Created: Sun Jul 15 21:15:23 2018
 ## Notes:</code></pre>
 <p><code><a href="../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -420,7 +420,7 @@ my_corpus3 &lt;-<span class="st"> </span>my_corpus1 <span class="op">+</span><sp
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Sun Jun 10 03:31:17 2018
+## Created: Sun Jul 15 21:15:25 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -853,30 +853,30 @@ quant_dfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2    Topic 3     Topic 4    Topic 5  Topic 6       
-## [1,] "million"   "review"   "taoiseach" "strategy" "fianna" "society"     
-## [2,] "per"       "spending" "fine"      "failed"   "fáil"   "equal"       
-## [3,] "measures"  "level"    "gael"      "face"     "side"   "enterprising"
-## [4,] "reduction" "measures" "may"       "vision"   "level"  "sense"       
-## [5,] "spending"  "million"  "irish"     "confront" "third"  "nation"      
-##      Topic 7       Topic 8    Topic 9   Topic 10    Topic 11  Topic 12    
-## [1,] "kind"        "review"   "levy"    "taoiseach" "child"   "continue"  
-## [2,] "imagination" "measures" "million" "employees" "benefit" "welfare"   
-## [3,] "policies"    "million"  "carbon"  "debate"    "day"     "scheme"    
-## [4,] "wit"         "european" "change"  "referred"  "bank"    "support"   
-## [5,] "create"      "scheme"   "welfare" "problem"   "burden"  "investment"
-##      Topic 13    Topic 14   Topic 15   Topic 16  Topic 17   Topic 18   
-## [1,] "ministers" "fianna"   "today"    "workers" "welfare"  "rate"     
-## [2,] "cycle"     "fáil"     "welfare"  "fianna"  "system"   "terms"    
-## [3,] "system"    "national" "fairness" "care"    "taxation" "benefit"  
-## [4,] "modern"    "irish"    "person"   "earners" "fianna"   "taoiseach"
-## [5,] "failed"    "support"  "irish"    "private" "fáil"     "employers"
-##      Topic 19   Topic 20   
-## [1,] "million"  "per"      
-## [2,] "back"     "welfare"  
-## [3,] "support"  "million"  
-## [4,] "measures" "hospital" 
-## [5,] "key"      "allowance"</code></pre>
+<pre><code>##      Topic 1     Topic 2     Topic 3       Topic 4    Topic 5    
+## [1,] "taoiseach" "credit"    "kind"        "million"  "care"     
+## [2,] "employees" "local"     "creating"    "measures" "welfare"  
+## [3,] "rate"      "may"       "imagination" "spending" "allowance"
+## [4,] "referred"  "taoiseach" "policies"    "scheme"   "per"      
+## [5,] "debate"    "day"       "face"        "welfare"  "families" 
+##      Topic 6    Topic 7     Topic 8     Topic 9       Topic 10 
+## [1,] "fianna"   "system"    "taoiseach" "alternative" "day"    
+## [2,] "fáil"     "education" "gael"      "citizenship" "bank"   
+## [3,] "national" "back"      "irish"     "wealth"      "benefit"
+## [4,] "irish"    "parties"   "fine"      "adjustment"  "child"  
+## [5,] "support"  "involved"  "real"      "breaks"      "hear"   
+##      Topic 11    Topic 12     Topic 13    Topic 14 Topic 15  Topic 16  
+## [1,] "ministers" "million"    "taoiseach" "fianna" "child"   "welfare" 
+## [2,] "strategy"  "support"    "reducing"  "fáil"   "benefit" "system"  
+## [3,] "face"      "welfare"    "stated"    "side"   "today"   "fáil"    
+## [4,] "vision"    "investment" "less"      "level"  "society" "fianna"  
+## [5,] "failed"    "back"       "problem"   "third"  "welfare" "taxation"
+##      Topic 17 Topic 18  Topic 19       Topic 20 
+## [1,] "failed" "irish"   "society"      "levy"   
+## [2,] "system" "still"   "enterprising" "million"
+## [3,] "asking" "savings" "sense"        "carbon" 
+## [4,] "cycle"  "million" "equal"        "change" 
+## [5,] "needed" "single"  "nation"       "welfare"</code></pre>
 </div>
 </div>
   </div>
