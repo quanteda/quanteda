@@ -8,8 +8,8 @@
 <title>Guía de Inicio Rápido • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<script src="../../pkgdown.js"></script><!-- docsearch --><script src="../../docsearch.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../extra.css" rel="stylesheet">
 <script src="../../extra.js"></script><meta property="og:title" content="Guía de Inicio Rápido">
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
       </span>
     </div>
 
@@ -231,7 +231,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Sun Jun 10 03:31:00 2018
+## Created: Sun Jul 15 21:15:08 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <em>docvars</em>.</p>
 <p>Esto lo hacemos utilizando la función de R llamada <code>names()</code> para obtener los nombres del vector de tipo character de <code>data_char_ukimmig2010</code> y asignárselos a una variable de documento (<code>docvar</code>).</p>
@@ -252,7 +252,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Sun Jun 10 03:31:00 2018
+## Created: Sun Jul 15 21:15:08 2018
 ## Notes:</code></pre>
 <p>Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -282,7 +282,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /home/kohei/packages/quanteda/vignettes/pkgdown/* on x86_64 by kohei
-## Created: Sun Jun 10 03:31:00 2018
+## Created: Sun Jul 15 21:15:08 2018
 ## Notes:</code></pre>
 <p>El último comando, <code>metadoc</code>, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor <code>"english"</code>, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento <code>docsource</code>, hemos usado la función de quanteda llamada <code><a href="../../reference/ndoc.html">ndoc()</a></code> para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como <code>nrow()</code> y <code>ncol()</code>.</p>
 </div>
@@ -412,7 +412,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Sun Jun 10 03:31:01 2018
+## Created: Sun Jul 15 21:15:09 2018
 ## Notes:</code></pre>
 </div>
 <div id="armando-subsets-dentro-de-objetos-corpus" class="section level3">
@@ -861,30 +861,30 @@ quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1       Topic 2    Topic 3   Topic 4      Topic 5       
-## [1,] "alternative" "needed"   "much"    "million"    "society"     
-## [2,] "citizenship" "vision"   "benefit" "welfare"    "enterprising"
-## [3,] "wealth"      "failed"   "child"   "back"       "sense"       
-## [4,] "adjustment"  "expected" "per"     "investment" "equal"       
-## [5,] "breaks"      "sort"     "fianna"  "forward"    "nation"      
-##      Topic 6         Topic 7  Topic 8        Topic 9     Topic 10 
-## [1,] "reduction"     "fianna" "system"       "care"      "levy"   
-## [2,] "welfare"       "fáil"   "worst"        "welfare"   "million"
-## [3,] "local"         "side"   "government's" "per"       "carbon" 
-## [4,] "approximately" "level"  "high"         "allowance" "change" 
-## [5,] "benefit"       "third"  "vulnerable"   "hospital"  "welfare"
-##      Topic 11    Topic 12   Topic 13     Topic 14   Topic 15    
-## [1,] "taoiseach" "measures" "support"    "welfare"  "ministers" 
-## [2,] "employees" "spending" "welfare"    "taxation" "strategy"  
-## [3,] "rate"      "million"  "future"     "fianna"   "radical"   
-## [4,] "referred"  "scheme"   "including"  "stimulus" "employment"
-## [5,] "debate"    "review"   "investment" "fáil"     "welfare"   
-##      Topic 16    Topic 17    Topic 18   Topic 19      Topic 20 
-## [1,] "taoiseach" "taoiseach" "fianna"   "kind"        "child"  
-## [2,] "record"    "fine"      "fáil"     "imagination" "day"    
-## [3,] "members"   "gael"      "national" "policies"    "benefit"
-## [4,] "five"      "may"       "irish"    "wit"         "today"  
-## [5,] "election"  "irish"     "support"  "create"      "bank"</code></pre>
+<pre><code>##      Topic 1     Topic 2     Topic 3      Topic 4       Topic 5      
+## [1,] "care"      "taoiseach" "failed"     "alternative" "kind"       
+## [2,] "welfare"   "employees" "strategy"   "citizenship" "imagination"
+## [3,] "per"       "rate"      "vision"     "wealth"      "policies"   
+## [4,] "allowance" "referred"  "employment" "adjustment"  "wit"        
+## [5,] "hospital"  "debate"    "system"     "breaks"      "create"     
+##      Topic 6    Topic 7     Topic 8    Topic 9        Topic 10    
+## [1,] "welfare"  "education" "per"      "society"      "support"   
+## [2,] "system"   "banks"     "recovery" "enterprising" "million"   
+## [3,] "fianna"   "policies"  "benefit"  "sense"        "welfare"   
+## [4,] "fáil"     "system"    "taxes"    "equal"        "investment"
+## [5,] "taxation" "welfare"   "working"  "nation"       "back"      
+##      Topic 11  Topic 12    Topic 13  Topic 14   Topic 15  Topic 16
+## [1,] "irish"   "needed"    "levy"    "million"  "benefit" "fianna"
+## [2,] "benefit" "banks"     "million" "spending" "child"   "fáil"  
+## [3,] "child"   "face"      "carbon"  "measures" "fianna"  "side"  
+## [4,] "charge"  "per"       "change"  "scheme"   "fáil"    "level" 
+## [5,] "place"   "ministers" "welfare" "review"   "just"    "third" 
+##      Topic 17    Topic 18 Topic 19        Topic 20  
+## [1,] "taoiseach" "day"    "research"      "fianna"  
+## [2,] "fine"      "banks"  "help"          "fáil"    
+## [3,] "gael"      "face"   "international" "national"
+## [4,] "may"       "today"  "providing"     "irish"   
+## [5,] "irish"     "child"  "assist"        "support"</code></pre>
 </div>
 </div>
   </div>
