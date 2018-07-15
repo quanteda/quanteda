@@ -2,30 +2,14 @@
 
 ## Purpose
 
-- Fixed problem wherein reading the CITATION file fails with package ‘quanteda’ not found when package is not installed.  
+- Bug fixes and stability enhancements (noted in NEWS).  
 
-- Fixed this problem:
-    > You have examples for unexported function "friendly_class_undefined_message" in friendly_class_undefined_message.Rd.
-    > Please either add quanteda::: to the function calls in the examples or omit these examples or export these functions.
-    
-- Added more contributors to DESCRIPTION, in response to a request from Swetlana Herbrandt.  We did not add either "Dáil Éireann Debate" or Meik Michalke, however.  The first is a source, and we have now documented that better in the data object it comes from.  The second is a package whose manual we cite, but who did not contribute any code and whose code was not used or modified in our package.  
-
-- Added numerous other packages used only in unit tests to `Suggests:`, following an email note from Kurt Hornik.
-
-- Bug fixes and stability enhancements.  
-
-- Improvements to documentation.  
-
-- Some feature additions.  
-
-- On UBSAN issues, please see below.
- 
 ## Test environments
 
-* local macOS 10.13.4 install, R 3.4.4
-* ubuntu Ubuntu 14.04.5 LTS (on travis-ci), R 3.4.4
-* Windows Server 2012 R2 x64 (build 9600), R 3.4.4 (on Appveyor)
-* local Windows 10, R 3.4.4
+* local macOS 10.13.6
+* ubuntu Ubuntu 16.04.5 LTS, R 3.5
+* Windows Server 2012 R2 x64 (build 9600), R 3.5 (on Appveyor)
+* local Windows 10, R 3.5
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -42,15 +26,7 @@ None, although see above re: UBSAN.
 
 ### NOTES
 
-None (on macOS Sierra 10.13.4).
-
-Only this from the results of testing on win-builder.r-project.org:
-
-* checking installed package size ... NOTE
-  installed size is  5.9Mb
-  sub-directories of 1Mb or more:
-    data   1.2Mb
-    libs   3.0Mb
+None.
 
 ## Downstream dependencies
 
