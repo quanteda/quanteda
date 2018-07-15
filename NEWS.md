@@ -1,12 +1,18 @@
 # Since quanteda v1.3.0
 
-### Bug fixes
+### Bug fixes and stability enhancements
 
 * Keep encodings of types when a tokens object is recompiled. (#1387)
+* More robust handling in `predict.textmodel_worscores()` when training and test feature sets are difference (#1380).  
+* `char_segment()` and `corpus_segment()` are more robust to whitespace characters preceding a pattern (#1394).  
+* `tokens_ngrams()` is more robust to handling large numbers of documents (#1395).  
+* `corpus.data.frame()` is now robust to handling data.frame inputs with improper or missing variable names (#1388).  
+
 
 ### New Features
 
 * Added `as.igraph.fcm()` method for converting an fcm object into an **igraph** graph object.
+* Added a `case_insensitive` argument to `char_segment()` and `corpus_segment()`.  
 
 
 # quanteda v1.3.0
