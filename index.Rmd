@@ -1,5 +1,5 @@
 ---
-output: github_document
+output: md_document
 ---
 
 
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 # quanteda: Quantitative Analysis of Textual Data
 
-**quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
+**quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 ## How to Install
 
