@@ -163,11 +163,7 @@
 <div id="quanteda-quantitative-analysis-of-textual-data" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#quanteda-quantitative-analysis-of-textual-data" class="anchor"></a>quanteda: Quantitative Analysis of Textual Data</h1></div>
-<div id="about" class="section level2">
-<h2 class="hasAnchor">
-<a href="#about" class="anchor"></a>About</h2>
-<p>An R package for managing and analyzing text, created by <a href="http://kenbenoit.net">Kenneth Benoit</a>. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
-</div>
+<p><strong>quanteda</strong> is an R package for managing and analyzing textual data developed by <a href="http://kenbenoit.net">Kenneth Benoit</a> and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
@@ -179,6 +175,40 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
 <p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
 <p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build).</p>
+</div>
+<div id="system-requirements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#system-requirements" class="anchor"></a>System Requirements</h2>
+<p><strong>quanteda</strong> is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same).</p>
+<table class="table">
+<thead><tr class="header">
+<th></th>
+<th align="center">Minimum</th>
+<th align="center">Recommended</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>OS</td>
+<td align="center">Windows/MacOS/Linux</td>
+<td align="center">MacOS/Linux</td>
+</tr>
+<tr class="even">
+<td>CPU</td>
+<td align="center">1 core</td>
+<td align="center">4 cores or more</td>
+</tr>
+<tr class="odd">
+<td>RAM</td>
+<td align="center">2GB</td>
+<td align="center">8GB more more</td>
+</tr>
+<tr class="even">
+<td>IDE</td>
+<td align="center"></td>
+<td align="center">R Studio</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="how-to-use" class="section level2">
 <h2 class="hasAnchor">
