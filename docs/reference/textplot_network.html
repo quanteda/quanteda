@@ -21,13 +21,16 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
@@ -40,6 +43,7 @@
 <meta property="og:description" content="Plot an fcm object as a network, where edges show co-occurrences of
 features." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -76,7 +80,7 @@ features." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
       </span>
     </div>
 
@@ -205,10 +209,13 @@ features.</p>
     <pre class="usage"><span class='fu'>textplot_network</span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>edge_color</span> <span class='kw'>=</span> <span class='st'>"#1F78B4"</span>, <span class='kw'>edge_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>edge_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>vertex_color</span> <span class='kw'>=</span> <span class='st'>"#4D4D4D"</span>, <span class='kw'>vertex_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vertex_labelfont</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+  <span class='kw'>vertex_labelfont</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for fcm</span>
-<span class='fu'><a href='as.network.html'>as.network</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='as.network.html'>as.network</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for fcm</span>
+<span class='fu'><a href='as.igraph.html'>as.igraph</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -220,12 +227,12 @@ features.</p>
     <tr>
       <th>min_freq</th>
       <td><p>a frequency count threshold or proportion for co-occurrence
-frequencies of features to be plotted.</p></td>
+frequencies of features to be included.</p></td>
     </tr>
     <tr>
       <th>omit_isolated</th>
       <td><p>if <code>TRUE</code>, features do not occur more frequent than
-<code>min_freq</code> will be omitted from the plot</p></td>
+<code>min_freq</code> will be omitted.</p></td>
     </tr>
     <tr>
       <th>edge_color</th>
@@ -254,17 +261,19 @@ other edges are determined proportionally to the highest frequency.</p></td>
 <code>vertex_color</code>. If <code>NA</code> is given, texts are not rendered.</p></td>
     </tr>
     <tr>
+      <th>vertex_labelfont</th>
+      <td><p>font-family of texts. Use default font if
+<code>NULL</code>.</p></td>
+    </tr>
+    <tr>
       <th>offset</th>
       <td><p>if <code>NULL</code>, the distance between vertices and texts are
 determined automatically.</p></td>
     </tr>
     <tr>
-      <th>vertex_labelfont</th>
-      <td><p>font-family of texts. Use default font if <code>NULL</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <a href='http://www.rdocumentation.org/packages/network/topics/network'>network</a>.</p></td>
+      <td><p>additional arguments passed to <a href='http://www.rdocumentation.org/packages/network/topics/network'>network</a> or
+<a href='http://www.rdocumentation.org/packages/igraph/topics/graph_from_adjacency_matrix'>graph_from_adjacency_matrix</a>.  Not used for <code>as.igraph</code>.</p></td>
     </tr>
     </table>
     
@@ -278,7 +287,9 @@ determined automatically.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='fcm.html'>fcm</a></code></p></div>
+    <div class='dont-index'><p><code><a href='fcm.html'>fcm</a></code></p>
+<p><code><a href='http://www.rdocumentation.org/packages/network/topics/network'>network</a></code></p>
+<p><code><a href='http://www.rdocumentation.org/packages/igraph/topics/graph_from_adjacency_matrix'>graph_from_adjacency_matrix</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -286,8 +297,16 @@ determined automatically.</p></td>
     <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='tokens_tolower.html'>tokens_tolower</a></span>() <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>feat</span> <span class='kw'>&lt;-</span> <span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>myfcm</span>, <span class='fl'>30</span>))</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(myfcm, 30): object 'myfcm' not found</span></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_select(myfcm, feat, verbose = FALSE): object 'myfcm' not found</span></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_select(myfcm, feat, verbose = FALSE): object 'myfcm' not found</span></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
-        <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))</div><div class='output co'>#&gt; <span class='error'>Error in fcm_select(myfcm, feat, verbose = FALSE): object 'myfcm' not found</span></div></pre>
+<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>feat</span> <span class='kw'>&lt;-</span> <span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>myfcm</span>, <span class='fl'>30</span>))</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(myfcm, 30): object 'myfcm' not found</span></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_select(myfcm, feat, verbose = FALSE): object 'myfcm' not found</span></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_select(myfcm, feat, verbose = FALSE): object 'myfcm' not found</span></div><div class='input'><span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))</div><div class='output co'>#&gt; <span class='error'>Error in fcm_select(myfcm, feat, verbose = FALSE): object 'myfcm' not found</span></div><div class='input'>
+<span class='co'># as.igraph</span>
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"igraph"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+    <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span>)
+    <span class='no'>mat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>txt</span>)
+    <span class='fu'><a href='as.igraph.html'>as.igraph</a></span>(<span class='no'>mat</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+}</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

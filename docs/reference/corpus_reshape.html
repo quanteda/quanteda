@@ -21,13 +21,16 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
@@ -39,10 +42,11 @@
 
 <meta property="og:description" content="For a corpus, reshape (or recast) the documents to a different level of aggregation.  
 Units of aggregation can be defined as documents, paragraphs, or sentences.
-Because the corpus object records its current "units" status, it is possible
+Because the corpus object records its current &quot;units&quot; status, it is possible
 to move from recast units back to original units, for example from documents,
 to sentences, and then back to documents (possibly after modifying the sentences)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -79,7 +83,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
       </span>
     </div>
 
@@ -255,7 +259,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;   textwo     4      6         2     USA 2000
 #&gt; 
 #&gt; Source: /home/kohei/packages/quanteda/docs/reference/* on x86_64 by kohei
-#&gt; Created: Sun Jun 10 03:24:58 2018
+#&gt; Created: Sun Jul 15 21:08:48 2018
 #&gt; Notes: Example showing how corpus_reshape() works.</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
 #&gt; 
 #&gt;       Text Types Tokens Sentences _document _docid _segid country year
@@ -266,7 +270,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;   textwo.2     3      3         1    textwo      2      2     USA 2000
 #&gt; 
 #&gt; Source: /home/kohei/packages/quanteda/docs/reference/* on x86_64 by kohei
-#&gt; Created: Sun Jun 10 03:24:58 2018
+#&gt; Created: Sun Jul 15 21:08:48 2018
 #&gt; Notes: corpus_reshape.corpus(corp, to = "sentences")</div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
 (<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>corp2_para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"paragraphs"</span>)
@@ -476,7 +480,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;  Donald J.
 #&gt; 
 #&gt; Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
-#&gt; Created: Sun Jun 10 03:24:58 2018
+#&gt; Created: Sun Jul 15 21:08:48 2018
 #&gt; Notes: corpus_reshape.corpus(corp2, to = "paragraphs")</div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text 
 ## used a single \n to mark the end of a paragraph.
 </div></pre>

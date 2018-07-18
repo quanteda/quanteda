@@ -6,11 +6,12 @@
 \title{Segment texts on a pattern match}
 \usage{
 corpus_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
-  extract_pattern = TRUE, pattern_position = c("before", "after"),
-  use_docvars = TRUE)
+  case_insensitive = TRUE, extract_pattern = TRUE,
+  pattern_position = c("before", "after"), use_docvars = TRUE)
 
 char_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
-  remove_pattern = TRUE, pattern_position = c("before", "after"))
+  case_insensitive = TRUE, remove_pattern = TRUE,
+  pattern_position = c("before", "after"))
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
@@ -21,6 +22,8 @@ char_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
 \item{extract_pattern}{extracts matched patterns from the texts and save in docvars if
 \code{TRUE}}
