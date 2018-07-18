@@ -91,7 +91,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     vertex$label <- network::network.vertex.names(net)
 
     weight <- network::get.edge.attribute(net, "weight")
-    weight <- weight / max(weight)
+    weight <- weight / quantile(weight, 0.9)
     
     index <- network::as.edgelist(net)
     edge <- data.frame(x1 = vertex[,1][index[,1]], 
