@@ -10,7 +10,8 @@
 #' @param edge_color color of edges that connect vertices.
 #' @param edge_alpha opacity of edges ranging from 0 to 1.0.
 #' @param edge_size size of edges for most frequent co-occurrence The size of
-#'   other edges are determined proportionally to the highest frequency.
+#'   other edges are determined proportionally to the 99th percentile frequency
+#'   instead of the maximum to reduce the impact of outliers.
 #' @param vertex_size size of vertices.
 #' @param vertex_color color of vertices.
 #' @param vertex_labelcolor color of texts. Defaults to the same as
@@ -91,7 +92,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     vertex$label <- network::network.vertex.names(net)
 
     weight <- network::get.edge.attribute(net, "weight")
-    weight <- weight / quantile(weight, 0.9)
+    weight <- weight / quantile(weight, 0.99)
     
     index <- network::as.edgelist(net)
     edge <- data.frame(x1 = vertex[,1][index[,1]], 
