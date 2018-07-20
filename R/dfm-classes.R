@@ -149,7 +149,7 @@ as.matrix.dfm <- function(x, ...) {
 #' @export
 as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
                               check.names = FALSE) {
-    .Deprecated("convert(x, to \"data.frame\")")
+    .Deprecated("convert(x, to = \"data.frame\")")
     if (!(is.character(document) || is.null(document)))
         stop("document must be character or NULL")
     df <- data.frame(as.matrix(x), row.names = row.names, 
