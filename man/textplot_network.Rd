@@ -29,7 +29,8 @@ frequencies of features to be included.}
 \item{edge_alpha}{opacity of edges ranging from 0 to 1.0.}
 
 \item{edge_size}{size of edges for most frequent co-occurrence The size of
-other edges are determined proportionally to the highest frequency.}
+other edges are determined proportionally to the 99th percentile frequency
+instead of the maximum to reduce the impact of outliers.}
 
 \item{vertex_color}{color of vertices.}
 
