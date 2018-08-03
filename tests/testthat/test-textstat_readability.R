@@ -49,3 +49,26 @@ test_that("readability works as koRpus", {
     expect_equal(round(q_rdb$SMOG, 2), round(k_rdb@SMOG$grade, 2))
 })
 
+test_that("Test Dale-Chall readability", {
+    # from Jeanne Chall and Edgar Dale’s Readability Revisited: 
+    # The New Dale-Chall Readability Formula featured the following text samples, 
+    # with the difficult words not found on their new word list underlined (pp. 135-140).
+    # see http://www.impact-information.com/scales.pdf
+    txt <- "Once upon a time a very small witch was walking in the woods. The cold wind was blowing the dry leaves all around her. The little witch was frantically searching for a house for the winter. She could not find one. Suddenly a piece of orange paper, blown by the wind, landed at her feet. She picked it up. The little witch looked closely at the paper and then she said, “I shall make myself a little house from this piece of orange paper.”
+She folded the paper in half. then she took her scissors (she always carried a pair..."
+    
+    dale.chall <- textstat_readability(txt, measure = c("Dale.Chall.old"))
+    dale.chall
+    
+    # from http://www.readabilityformulas.com/dalechallformula/dale-chall-formula.php
+    # (show words NOT on Dale-Chall Word List) # of words NOT found on Dale-Chall Word List : 3 
+    # Percent of words NOT found on Dale-Chall Word List: : 14% 
+    # 
+    # Dale-Chall Formula worksheet 
+    # Raw score 2.7765 [ ? ]
+    # Adjusted Score: (3.6365 + 2.7765) [ ? ]
+    # Final Score: 6.4 [ ? ]
+    
+    
+    
+})

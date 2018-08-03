@@ -157,7 +157,7 @@ textstat_readability.corpus <- function(x,
         Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <-
         FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <-
         RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <-
-        data_char_wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
+        Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
     
     # common statistics required by (nearly all) indexes
@@ -172,7 +172,6 @@ textstat_readability.corpus <- function(x,
                        W6C = vapply(len_token, function(x) sum(x >= 6), numeric(1)), # number of words with at least 6 letters
                        W7C = vapply(len_token, function(x) sum(x >= 7), numeric(1))) # number of words with at least 7 letters
     
-    temp[, W_wl.Dale.Chall := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
     temp[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
     
     if ("ARI" %in% measure)
@@ -218,12 +217,20 @@ textstat_readability.corpus <- function(x,
     if ("Coleman.Liau.short" %in% measure)
         temp[, Coleman.Liau.short := 5.88 * C / W - 29.6 * St / W - 15.8]
     
-    if ("Dale.Chall" %in% measure)
+    # look up D-C words if needed
+    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK") %in% measure))
+        temp[, W_wl.Dale.Chall := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
+    
+    if ("Dale.Chall" %in% measure) {
         temp[, Dale.Chall := 64 - 0.95 * 100 * W_wl.Dale.Chall / W - 0.69 * W / St]
+    }
     
-    if ("Dale.Chall.old" %in% measure)
-        temp[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + 3.6365]
+    if ("Dale.Chall.old" %in% measure) {
+        DC_constant <- (W_wl.Dale.Chall / W > .05) * 3.6365
+        temp[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + DC_constant]
+    }
     
+    # Powers-Sumner-Kearl (1958) variation
     if ("Dale.Chall.PSK" %in% measure)
         temp[, Dale.Chall.PSK := 0.1155 * 100 * W_wl.Dale.Chall / W + 0.0596 * W / St + 3.2672]
     
