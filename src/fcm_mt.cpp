@@ -51,34 +51,32 @@ void count_col(const Text &text,
         
         for(unsigned int j = j_ini; j < j_lim; j++) {
             if (text[j] == 0) continue; // skip padding
-            if (ordered){
-                if (!tri || ((text[i] <= text[j])&& tri) ){// only include upper triangular element (diagonal inclusive) if tri = TRUE
-                    if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
-                        fcm_tri.push_back(mat_triplet);
-                    }
+            if (ordered) {
+                if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
+                    Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
+                    fcm_tri.push_back(mat_triplet);
                 }
-            }else{
-                if (text[i] <= text[j]){
+            } else {
+                if (text[i] <= text[j]) {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
                         Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
                     
-                    if (!tri && (text[i] != text[j]) ) { // add symmetric elements
+                    if (!tri && (text[i] != text[j])) { // add symmetric elements
                         if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
                             Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, window_weights[j - i - 1]);
                             fcm_tri.push_back(mat_triplet);
                         }
                     }
-                }else{
+                } else {
                     // because it is not ordered, for locations (x,y)(x>y) counts for location (y,x)
                     if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
                         Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
                     
-                    if (!tri && (text[i] != text[j]) ) {
+                    if (!tri && (text[i] != text[j])) {
                         if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
                             Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                             fcm_tri.push_back(mat_triplet);
@@ -133,12 +131,12 @@ S4 qatd_cpp_fcm(const Rcpp::List &texts_,
     bool boolean = false;
     if (count == "boolean") {
         boolean = true;
-    }else if(count == "weighted"){ 
+    } else if (count == "weighted") { 
         if (weights.size() == 1) {
             for (unsigned int i = 1; i <= window; i++){
                 window_weights[i-1] = 1.0 / i;
             }
-        }else{
+        } else {
             window_weights = Rcpp::as< std::vector<double> >(weights);
         }
     }

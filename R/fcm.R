@@ -33,7 +33,8 @@
 #'   context = "window".
 #' @param span_sentence if \code{FALSE}, then word windows will not span
 #'   sentences
-#' @param tri if \code{TRUE} return only upper triangle (including diagonal)
+#' @param tri if \code{TRUE} return only upper triangle (including diagonal).
+#'   Ignored if \code{ordered = TRUE}
 #' @param ... not used here
 #' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 #' @import Matrix
@@ -206,9 +207,10 @@ fcm.tokens <- function(x, context = c("document", "window"),
                        span_sentence = TRUE, tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
-    window <- as.integer(window) 
+    window <- as.integer(window)
     # TODO could add a warning if not roundly coerced to integer
     
+    if (ordered) tri <- FALSE
     if (!span_sentence) 
         warning("spanSentence = FALSE not yet implemented")
     
@@ -216,7 +218,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
         
     if (context == "window") { 
-        try (if (window < 2) stop("The window size is too small.")) 
+        if (any(window < 1L)) stop("The window size is too small.")
         if (count == "weighted") {
             if (!missing(weights) && length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
