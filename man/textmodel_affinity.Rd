@@ -4,8 +4,8 @@
 \alias{textmodel_affinity}
 \title{Class affinity maximum likelihood text scaling model}
 \usage{
-textmodel_affinity(x, y, exclude = NULL, smooth = 0.5, ref_smooth = 0.5,
-  verbose = TRUE)
+textmodel_affinity(x, y, exclude = NULL, smooth = 0.5,
+  ref_smooth = 0.5, verbose = TRUE)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{bootstrap_dfm} object on which the model

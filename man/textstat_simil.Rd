@@ -8,8 +8,8 @@
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = "euclidean", upper = FALSE, diag = FALSE, p = 2)
 
-textstat_simil(x, selection = NULL, margin = c("documents", "features"),
-  method = "correlation", upper = FALSE, diag = FALSE)
+textstat_simil(x, selection = NULL, margin = c("documents",
+  "features"), method = "correlation", upper = FALSE, diag = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}

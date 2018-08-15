@@ -15,10 +15,6 @@
 }
 \description{
 Internal function documentation for \link{dfm} objects.
-
-The \code{Compare} methods enable relational operators to be use with dfm. 
-Relational operations on a dfm with a numeric will return a
-\link[Matrix]{dgCMatrix-class} object.
 }
 \seealso{
 \link{Comparison} operators

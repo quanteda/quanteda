@@ -4,7 +4,8 @@
 \alias{influence.predict.textmodel_affinity}
 \title{Compute feature influence from a predicted textmodel_affinity object}
 \usage{
-\method{influence}{predict.textmodel_affinity}(model, subset = !train, ...)
+\method{influence}{predict.textmodel_affinity}(model, subset = !train,
+  ...)
 }
 \arguments{
 \item{model}{a predicted

@@ -5,9 +5,10 @@
 \title{Internal function for textplot_wordcloud}
 \usage{
 wordcloud(x, min_size, max_size, min_count, max_words, color, font, adjust,
-  rotation, random_order, random_color, ordered_color, labelcolor, labelsize,
-  labeloffset, fixed_aspect, colors, scale, min.freq, max.words, random.order,
-  random.color, rot.per, ordered.colors, use.r.layout, fixed.asp, ...)
+  rotation, random_order, random_color, ordered_color, labelcolor,
+  labelsize, labeloffset, fixed_aspect, colors, scale, min.freq, max.words,
+  random.order, random.color, rot.per, ordered.colors, use.r.layout,
+  fixed.asp, ...)
 }
 \arguments{
 \item{x}{a dfm object}

@@ -4,8 +4,8 @@
 \alias{predict.textmodel_nb}
 \title{Prediction from a fitted textmodel_nb object}
 \usage{
-\method{predict}{textmodel_nb}(object, newdata = NULL, type = c("class",
-  "probability", "logposterior"), force = FALSE, ...)
+\method{predict}{textmodel_nb}(object, newdata = NULL,
+  type = c("class", "probability", "logposterior"), force = FALSE, ...)
 }
 \arguments{
 \item{object}{a fitted Naive Bayes textmodel}

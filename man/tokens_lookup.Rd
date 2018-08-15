@@ -4,9 +4,10 @@
 \alias{tokens_lookup}
 \title{Apply a dictionary to a tokens object}
 \usage{
-tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
-  exclusive = TRUE, nomatch = NULL, verbose = quanteda_options("verbose"))
+tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob",
+  "regex", "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
+  exclusive = TRUE, nomatch = NULL,
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}

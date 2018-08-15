@@ -5,8 +5,8 @@
 \title{Convert various input as pattern to a vector used in tokens_select, 
 tokens_compound and kwic.}
 \usage{
-pattern2list(pattern, types, valuetype, case_insensitive, concatenator = "_",
-  remove_unigram = FALSE)
+pattern2list(pattern, types, valuetype, case_insensitive,
+  concatenator = "_", remove_unigram = FALSE)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},

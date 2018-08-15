@@ -4,9 +4,7 @@
 \name{reexports}
 \alias{reexports}
 \alias{spacy_parse}
-\alias{reexports}
 \alias{stopwords}
-\alias{reexports}
 \alias{\%>\%}
 \title{Objects exported from other packages}
 \section{Stopwords}{
