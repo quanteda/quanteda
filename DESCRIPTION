@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.3.4
+Version: 1.3.5
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -170,5 +170,5 @@ Collate:
     'utils.R'
     'wordstem.R'
     'zzz.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 SystemRequirements: C++11

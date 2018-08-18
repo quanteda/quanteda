@@ -33,13 +33,7 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
 test_that("not weighted",{
     txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", window = 3) 
-    
-    # serial implementation of cpp function
-    toks <- tokens(txt)
-    n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'frequency', 3, 1, FALSE, TRUE, n)
-    expect_equivalent(fcm,fcm_s)
-    
+
     aMat <- matrix(c(2, 1, 4, 4, 5, 2,
                      0, 0, 1, 1, 2, 1,
                      0, 0, 0, 3, 3, 0,
@@ -54,14 +48,7 @@ test_that("not weighted",{
 test_that("weighted by default",{
     txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", count = "weighted", window = 3)           
-    
-    # serial implementation of cpp function
-    toks <- tokens(txt)
-    n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'weighted', 3, 1, FALSE, TRUE, n)
-    expect_equivalent(fcm,fcm_s)
-    
-    
+
     toks <- tokens(txt)
     fcmTexts <- fcm(toks, context = "window", count = "weighted", window = 3) 
     expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
@@ -80,14 +67,7 @@ test_that("weighted by default",{
 test_that("customized weighting function",{
     txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
-    
-    # serial implementation of cpp function
-    toks <- tokens(txt)
-    n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'weighted', 3, c(3,2,1), FALSE, TRUE, n)
-    expect_equivalent(fcm,fcm_s)
-    
-    
+
     toks <- tokens(txt)
     fcmTexts <- fcm(toks, context = "window", count = "weighted",  weights = c(3,2,1), window = 3) 
     expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
@@ -107,13 +87,6 @@ test_that("customized weighting function",{
 test_that("ordered setting: window",{
     txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)           
-    
-    # serial implementation of cpp function
-    toks <- tokens(txt)
-    n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'weighted', 3, 1, TRUE, FALSE, n)
-    expect_equivalent(fcm,fcm_s)
-    
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c( 2, 0, 3, 3, 3, 1,
                       1, 0, 1, 0, 1, 0,
@@ -140,18 +113,10 @@ test_that("ordered setting: window",{
 test_that("ordered setting: boolean",{
     txts <- c("b a b c", "a a c b e", "a c e f g")
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = TRUE, tri = TRUE)           
-    
-    # serial implementation of cpp function
-    toks <- tokens(txts)
-    n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'boolean', 2, 1, TRUE, TRUE, n)
-    expect_equivalent(fcm,fcm_s)
-    
-    # parallel version
     fcm <- fcm_sort(fcm)
-    aMat <- matrix(c(1, 1, 3, 1, 0, 0,
-                     0, 1, 1, 1, 0, 0,
-                     0, 0, 0, 2, 1, 0,
+    aMat <- matrix(c(1, 2, 3, 1, 0, 0,
+                     1, 1, 1, 1, 0, 0,
+                     0, 1, 0, 2, 1, 0,
                      0, 0, 0, 0, 1, 1,
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
@@ -160,11 +125,7 @@ test_that("ordered setting: boolean",{
     
     #**** not ordered********************
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = FALSE, tri = TRUE)           
-    
-    # serial version
-    fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'boolean', 2, 1, FALSE, TRUE, n)
-    expect_equivalent(fcm,fcm_s)
-    
+
     # parallal version
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c(1, 2, 3, 1, 0, 0,
@@ -199,11 +160,11 @@ test_that("counting the co-occurrences in 'boolean' way",{
     fcm <- fcm_sort(fcm)
     
     mt <- matrix(c(2, 1, 3, 2, 1, 1,
-                     0, 1, 1, 0, 0, 0,
-                     0, 0, 0, 2, 1, 1,
-                     0, 0, 0, 0, 1, 1,
-                     0, 0, 0, 0, 0, 1,
-                     0, 0, 0, 0, 0, 0),
+                   0, 1, 1, 0, 0, 0,
+                   0, 0, 0, 2, 1, 1,
+                   0, 0, 0, 0, 1, 1,
+                   0, 0, 0, 0, 0, 1,
+                   0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_true(all(round(fcm, 2) == round(mt, 2)))
     expect_equal(fcm@margin, colSums(dfm(txt)))
@@ -220,11 +181,11 @@ test_that("window = 2",{
     expect_equivalent(as.matrix(fcm), as.matrix(fcmTexts))
     
     mt <- matrix(c(2, 1, 2, 2, 0, 0,
-                     0, 1, 1, 0, 0, 0,
-                     0, 0, 0, 2, 1, 0,
-                     0, 0, 0, 0, 1, 1,
-                     0, 0, 0, 0, 0, 1,
-                     0, 0, 0, 0, 0, 0),
+                   0, 1, 1, 0, 0, 0,
+                   0, 0, 0, 2, 1, 0,
+                   0, 0, 0, 0, 1, 1,
+                   0, 0, 0, 0, 0, 1,
+                   0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     fcm <- fcm_sort(fcm)
     expect_equivalent(mt, as.matrix(fcm))
@@ -386,3 +347,28 @@ test_that("arithmetic/linear operation works with dfm", {
     
 })
 
+test_that("ordered is working correctly (#1413)", {
+    expect_equivalent(
+        as.matrix(fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE)),
+        matrix(c(0, 2, 0, 0, 0, 2, 0, 0, 0),
+               nrow = 3, ncol = 3, byrow = TRUE))
+    
+    expect_equivalent(
+        as.matrix(fcm(c("a b c", "a b c"), "window", window = 2, ordered = TRUE)),
+        matrix(c(0, 2, 2, 0, 0, 2, 0, 0, 0),
+               nrow = 3, ncol = 3, byrow = TRUE))
+
+    expect_equivalent(
+        as.matrix(fcm(c("a b c", "c b a"), "window", window = 1, ordered = TRUE)),
+        matrix(c(0, 1, 0, 1, 0, 1, 0, 1, 0),
+               nrow = 3, ncol = 3, byrow = TRUE))
+    
+    expect_equivalent(
+        as.matrix(fcm(c("a b c", "c b a"), "window", window = 2, ordered = TRUE)),
+        matrix(c(0, 1, 1, 1, 0, 1, 1, 1, 0),
+               nrow = 3, ncol = 3, byrow = TRUE))
+    
+    expect_equal(fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE, tri = TRUE),
+                 fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE, tri = FALSE))
+    
+})
