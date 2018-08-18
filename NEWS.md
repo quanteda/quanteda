@@ -1,4 +1,11 @@
-# Since quanteda v1.3.0
+# Since quanteda v1.3.4
+
+### Bug fixes and stability enhancements
+
+* Fixed a bug causing incorrect counting in `fcm(x, ordered = TRUE)`. (#1413)  Also set the condition that `window` can be of size 1 (formerly the limit was 2 or greater).
+
+
+# quanteda v1.3.4
 
 ### Bug fixes and stability enhancements
 
