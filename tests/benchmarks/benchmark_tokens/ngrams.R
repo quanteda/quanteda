@@ -8,7 +8,7 @@ txt <- texts(corpus_subset(corp, year == 2015))
 microbenchmark::microbenchmark(
     tokenizers = tokenizers::tokenize_ngrams(txt, n = 2),
     quanteda = tokens_ngrams(as.tokens(tokenizers::tokenize_words(txt)), n = 2),
-    unit='relative', times = 1
+    unit='relative', times = 10
 )
 
 object.size(tokenizers::tokenize_ngrams(txt, n = 2), 'MB')
