@@ -142,7 +142,7 @@ docvars.kwic <- function(x) {
             attr(x, "docvars")[[field]] <- value
         }
     }
-    row.names(attr(x, "docvars")) <- docnames(x)
+    # row.names(attr(x, "docvars")) <- docnames(x)
     return(x)
 }
 
@@ -161,7 +161,7 @@ docvars.kwic <- function(x) {
             x@docvars[[field]] <- value
         }
     }
-    row.names(attr(x, "docvars")) <- docnames(x)
+    # row.names(attr(x, "docvars")) <- docnames(x)
     return(x)
 }
 

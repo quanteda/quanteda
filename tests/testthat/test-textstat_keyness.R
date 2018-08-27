@@ -259,13 +259,13 @@ test_that("textstat_keyness returns raw frequency counts", {
                    d2 = "a a b c c d d d d e f h"))
     
     expect_equivalent(textstat_keyness(mydfm, measure = "chi2", sort = FALSE)[,c(4,5)], 
-                      as.data.frame(t(mydfm), document = NULL))
+                      suppressWarnings(as.data.frame(t(mydfm), document = NULL)))
     
     expect_equivalent(textstat_keyness(mydfm, measure = "exact", sort = FALSE)[,c(4,5)], 
-                      as.data.frame(t(mydfm), document = NULL))
+                      suppressWarnings(as.data.frame(t(mydfm), document = NULL)))
     
     expect_equivalent(textstat_keyness(mydfm, measure = "lr", sort = FALSE)[,c(4,5)], 
-                      as.data.frame(t(mydfm), document = NULL))
+                      suppressWarnings(as.data.frame(t(mydfm), document = NULL)))
     
 })
 
