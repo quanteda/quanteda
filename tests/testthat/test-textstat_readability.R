@@ -54,11 +54,20 @@ test_that("Test Dale-Chall readability", {
     # The New Dale-Chall Readability Formula featured the following text samples, 
     # with the difficult words not found on their new word list underlined (pp. 135-140).
     # see http://www.impact-information.com/scales.pdf
+    
+
+    # Readability Data
+    # Number of Words in Sample ........................100 
+    # Number of Whole Sentences...........................8 
+    # Number of Unfamiliar Words..........................3 
+    # Cloze Score .......................................53 
+    # Reading Level ..................................... 3
     txt <- "Once upon a time a very small witch was walking in the woods. The cold wind was blowing the dry leaves all around her. The little witch was frantically searching for a house for the winter. She could not find one. Suddenly a piece of orange paper, blown by the wind, landed at her feet. She picked it up. The little witch looked closely at the paper and then she said, “I shall make myself a little house from this piece of orange paper.”
 She folded the paper in half. then she took her scissors (she always carried a pair..."
+    expect_equal(textstat_readability(txt, measure = c("Dale.Chall.old"))$Dale.Chall.old, 3)
     
-    dale.chall <- textstat_readability(txt, measure = c("Dale.Chall.old"))
-    dale.chall
+    toks[[1]][which(!as.character(tokens_wordstem(toks)) %in% 
+                    c(char_wordstem(data_char_wordlists$dalechall), data_char_wordlists$dalechall))]
     
     # from http://www.readabilityformulas.com/dalechallformula/dale-chall-formula.php
     # (show words NOT on Dale-Chall Word List) # of words NOT found on Dale-Chall Word List : 3 
@@ -70,5 +79,24 @@ She folded the paper in half. then she took her scissors (she always carried a p
     # Final Score: 6.4 [ ? ]
     
     
-    
 })
+
+# add UK spellings
+dc_wordlist <- c(
+    data_char_wordlists$dalechall,
+    # and the UK spellings of words that are different
+    as.tokens(list(dc = data_char_wordlists$dalechall)) %>%
+        tokens_replace(data_dictionary_us2uk) %>%
+        tokens_select(names(data_dictionary_us2uk)) %>%
+        as.character()
+)
+
+dc <- data.frame(word = dc_wordlist,
+                 stem = char_wordstem(dc_wordlist), 
+                 stringsAsFactors = FALSE)
+dc$diff <- dc$word != dc$stem
+library(quanteda.dictionaries)
+
+
+
+

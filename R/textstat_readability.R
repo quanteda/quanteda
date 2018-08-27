@@ -76,6 +76,7 @@ textstat_readability.default <- function(x,
     stop(friendly_class_undefined_message(class(x), "textstat_readability"))
 }    
 
+#' @importFrom stringi stri_length
 #' @export
 textstat_readability.corpus <- function(x,
                                         measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
@@ -147,7 +148,7 @@ textstat_readability.corpus <- function(x,
     n_syll <- lapply(n_syll, function(y) ifelse(is.na(y), 1, y))
     
     # lengths in characters of the words
-    len_token <- lapply(toks, stri_length)
+    len_token <- lapply(toks, stringi::stri_length)
     
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
@@ -226,8 +227,9 @@ textstat_readability.corpus <- function(x,
     }
     
     if ("Dale.Chall.old" %in% measure) {
-        DC_constant <- (W_wl.Dale.Chall / W > .05) * 3.6365
+        temp[, DC_constant := ((W_wl.Dale.Chall / W) > .05) * 3.6365]
         temp[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + DC_constant]
+        temp[, DC_constant := NULL]
     }
     
     # Powers-Sumner-Kearl (1958) variation
