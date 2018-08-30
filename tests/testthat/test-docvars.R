@@ -268,7 +268,13 @@ test_that("object always have docvars in the same rows as documents", {
     dfm6 <- dfm_subset(dfm1, rep(c(TRUE, TRUE, FALSE), 3))
     expect_true(nrow(docvars(dfm6)) == ndoc(dfm6))
     expect_true(all(rownames(docvars(dfm6)) == docnames(dfm6)))
-
+    
+    dfm7 <- rbind(dfm1, dfm1)
+    expect_true(nrow(docvars(dfm7)) == ndoc(dfm7))
+    
+    dfm8 <- cbind(dfm1, dfm1)
+    expect_true(nrow(docvars(dfm8)) == ndoc(dfm8))
+    
 })
 
 test_that("error when nrow and ndoc mismatch", {
