@@ -37,7 +37,7 @@ test_that("test wordscores on LBG data, LBG rescaling", {
 test_that("test wordscores fitted and predicted", {
     y <- c(seq(-1.5, 1.5, .75), NA)
     ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-    expect_equal(ws$x, data_dfm_lbgexample)
+    expect_equal(ws$x, as.dfm(data_dfm_lbgexample))
     expect_equal(ws$y, y)
     expect_equal("textmodel_wordscores.dfm", as.character(ws$call)[1])
 })
@@ -227,3 +227,12 @@ test_that("textmodel_wordscores does not use NA wordscores scores", {
         "1 feature in newdata not used in prediction\\."
     )
 })
+
+test_that("raises error when dfm is empty (#1419)",  {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textmodel_wordscores(mx, y = c(-1, NA, NA, NA, 1, NA)),
+                 quanteda:::message_error("dfm_empty"))
+    
+})
+

@@ -58,6 +58,7 @@ textmodel_wordscores.default <- function(x, y, scale = c("linear", "logit"), smo
 textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
     scale <- match.arg(scale)
     call <- match.call()
     
