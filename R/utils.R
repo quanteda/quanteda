@@ -223,3 +223,17 @@ unused_dots <- function(...) {
         warning(paste("... is not used in", paste0(sys.call(2)[1], "()")))
     }
 }
+
+
+#' Return an error message
+#' @param key type of erro message
+#' @keywords internal
+message_error <- function(key = NULL) {
+    msg <- c("dfm_empty" = "dfm must have at least one non-zero feature",
+             "docvar_mismatch" = "data.frame must have the same number of rows as documents")
+    if (is.null(key) || !key %in% names(msg)) {
+        return("")
+    }
+    return(unname(msg[key]))
+}    
+
