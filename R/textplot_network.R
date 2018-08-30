@@ -63,7 +63,8 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_labelcolor = NULL,
                                  vertex_labelfont = NULL, 
                                  offset = NULL, ...) {
-
+    
+    if (!sum(x)) stop(message_error("dfm_empty"))
     textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
                      edge_color = edge_color, edge_alpha = edge_alpha, 
                      edge_size = edge_size, 
@@ -84,6 +85,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  offset = NULL, 
                                  ...) {
     
+    if (!sum(x)) stop(message_error("fcm_empty"))
     font <- check_font(vertex_labelfont)
     net <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 

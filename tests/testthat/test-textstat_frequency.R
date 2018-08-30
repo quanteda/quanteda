@@ -75,3 +75,11 @@ test_that("test textstat_frequency works with weights", {
     )
 })
 
+test_that("raises error when dfm is empty (#1419)", {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textstat_frequency(mx),
+                 quanteda:::message_error("dfm_empty"))
+    
+})
+

@@ -120,6 +120,7 @@ textplot_wordcloud.dfm <- function(x,
                                    comparison = FALSE) {
 
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
     if (comparison) {
         if (ndoc(x) > 8) 
             stop("Too many documents to plot comparison, use 8 or fewer documents.")
