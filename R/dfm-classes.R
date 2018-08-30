@@ -242,7 +242,7 @@ cbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
-    result@docvars <- data.frame(matrix(ncol = 0, nrow = ndoc(result)))
+    result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
     return(result)
 
 }
@@ -292,6 +292,6 @@ rbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
-    result@docvars <- data.frame(matrix(ncol = 0, nrow = ndoc(result)))
+    result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
     return(result)
 }

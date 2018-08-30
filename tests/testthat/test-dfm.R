@@ -799,9 +799,12 @@ test_that("test sparsity", {
 })
 
 
-test_that("test empty dfm is handled properly", {
+test_that("test null dfm is handled properly", {
     
-    mx <- quanteda:::make_null_dfm()
+    mx <- as.dfm(quanteda:::make_null_dfm())
+    
+    # constructor
+    expect_equal(dfm(mx), mx)
     
     # selection/grouping
     expect_equal(dfm_select(mx), mx)
@@ -817,6 +820,9 @@ test_that("test empty dfm is handled properly", {
     expect_equal(dfm_sort(mx, 'documents'), mx)
     expect_equal(dfm_lookup(mx, dictionary(list(A ='a'))), mx)
     expect_equal(dfm_group(mx), mx)
+    expect_equal(dfm_replace(mx, "A", "a"), mx)
+    expect_equal(head(mx), mx)
+    expect_equal(tail(mx), mx)
     
     # weighting
     expect_equal(topfeatures(mx), numeric())
@@ -832,17 +838,69 @@ test_that("test empty dfm is handled properly", {
     expect_equal(docfreq(mx), numeric())
     expect_equal(dfm_smooth(mx), mx)
     
-    
+    # transformation
     expect_equal(dfm_tolower(mx), mx)
     expect_equal(dfm_toupper(mx), mx)
+    expect_equal(dfm_wordstem(mx), mx)
     
+    # binding
     expect_equal(rbind(mx, mx), mx)
     expect_equal(cbind(mx, mx), mx)
     
+    expect_output(print(mx), 'Document-feature matrix of: 0 documents, 0 features.')
+})
+
+
+test_that("test empty dfm is handled properly (#1419)", {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    docvars(mx) <- data.frame(var = c(1, 5, 3, 6, 6, 4))
+    
+    # constructor
+    expect_equal(dfm(mx), mx)
+    
+    # selection/grouping
+    expect_equal(dfm_select(mx), mx)
+    expect_equal(dfm_select(mx, 'a'), mx)
+    expect_equal(dfm_trim(mx), mx)
+    expect_equal(ndoc(dfm_sample(mx)), ndoc(mx))
+    expect_equal(dfm_subset(mx, var > 5), mx[4:5,])
+    expect_equal(dfm_compress(mx, 'both'), mx)
+    expect_equal(dfm_compress(mx, 'features'), mx)
+    expect_equal(dfm_compress(mx, 'documents'), mx)
+    expect_equal(dfm_sort(mx, 'both'), mx)
+    expect_equal(dfm_sort(mx, 'features'), mx)
+    expect_equal(dfm_sort(mx, 'documents'), mx)
+    expect_equal(dfm_lookup(mx, dictionary(list(A ='a'))), mx)
+    expect_equal(dfm_group(mx), mx)
+    expect_equal(dfm_replace(mx, "A", "a"), mx)
     expect_equal(head(mx), mx)
     expect_equal(tail(mx), mx)
     
-    expect_output(print(mx), 'Document-feature matrix of: 0 documents, 0 features.')
+    # weighting
+    expect_equal(topfeatures(mx), numeric())
+    expect_equal(dfm_weight(mx, 'count'), mx)
+    expect_equal(dfm_weight(mx, 'prop'), mx)
+    expect_equal(dfm_weight(mx, 'propmax'), mx)
+    expect_equal(dfm_weight(mx, 'logcount'), mx)
+    expect_equal(dfm_weight(mx), mx)
+    expect_equal(dfm_weight(mx, 'augmented'), mx)
+    expect_equal(dfm_weight(mx, 'boolean'), mx)
+    expect_equal(dfm_weight(mx, 'logave'), mx)
+    expect_equal(dfm_tfidf(mx), mx)
+    expect_equal(docfreq(mx), numeric())
+    expect_equal(dfm_smooth(mx), mx)
+    
+    # transformation
+    expect_equal(dfm_tolower(mx), mx)
+    expect_equal(dfm_toupper(mx), mx)
+    expect_equal(dfm_wordstem(mx), mx)
+    
+    # binding
+    expect_equal(ndoc(rbind(mx, mx)), ndoc(mx) * 2)
+    expect_equal(ndoc(cbind(mx, mx)), ndoc(mx))
+    
+    expect_output(print(mx), 'Document-feature matrix of: 6 documents, 0 features.')
 })
 
 test_that("dfm raise nicer error message, #1267", {
