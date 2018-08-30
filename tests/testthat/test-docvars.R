@@ -271,6 +271,32 @@ test_that("object always have docvars in the same rows as documents", {
 
 })
 
+test_that("error when nrow and ndoc mismatch", {
+    
+    toks <- tokens(c("a b c", "b c d", "c d e"))
+    expect_error(docvars(toks) <- data.frame(var = c(1, 5)))
+    expect_silent(docvars(toks) <- data.frame(var = c(1, 5, 6)))
+    expect_error(docvars(toks) <- data.frame(var = c(1, 5, 6, 3)))
+    
+    mt <- dfm(toks)
+    expect_error(docvars(mt) <- data.frame(var = c(1, 5)))
+    expect_silent(docvars(mt) <- data.frame(var = c(1, 5, 6)))
+    expect_error(docvars(mt) <- data.frame(var = c(1, 5, 6, 3)))
+    
+})
+
+test_that("assignment of NULL only drop columns", {
+    
+    toks <- tokens(data_corpus_irishbudget2010)
+    docvars(toks) <- NULL
+    expect_identical(dim(docvars(toks)), c(14L, 0L))
+    
+    mt <- dfm(data_corpus_irishbudget2010)
+    docvars(mt) <- NULL
+    expect_identical(dim(docvars(mt)), c(14L, 0L))
+    
+})
+
 test_that("can assign docvars when value is a dfm (#1417)", {
     mycorp <- corpus(data_char_ukimmig2010)
 
