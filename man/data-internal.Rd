@@ -33,6 +33,12 @@ These are:
 \references{
 Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
 
+Dale, Edgar, and Jeanne Sternlicht Chall. 1948. "A Formula for Predicting
+Readability". \emph{Educational Research Bulletin} 27(1): 11-20.
+
+Dale, Edgar, and Jeanne S Chall. 1948. "A Formula for Predicting Readability:
+Instructions." \emph{Educational Research Bulletin} 27(2): 37–54.
+
 Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62-102.
 
 Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.

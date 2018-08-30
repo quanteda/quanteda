@@ -219,9 +219,12 @@ textstat_readability.corpus <- function(x,
         temp[, Coleman.Liau.short := 5.88 * C / W - 29.6 * St / W - 15.8]
     
     # look up D-C words if needed
-    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK") %in% measure))
-        temp[, W_wl.Dale.Chall := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
-    
+    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK") %in% measure)) {
+        temp[, W_wl.Dale.Chall := lengths(tokens_setdiff(toks, 
+                                                         char_tolower(data_char_wordlists$dalechall),
+                                                         pattern = "fixed", unique = FALSE))]
+    }
+
     if ("Dale.Chall" %in% measure) {
         temp[, Dale.Chall := 64 - 0.95 * 100 * W_wl.Dale.Chall / W - 0.69 * W / St]
     }
@@ -337,7 +340,9 @@ textstat_readability.corpus <- function(x,
     
     if ("Spache" %in% measure) {
         # number of words which are not in the Spache word list
-        temp[, W_wl.Spache := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
+        temp[, W_wl.Spache := lengths(tokens_setdiff(toks, 
+                                                     char_tolower(data_char_wordlists$spache),
+                                                     pattern = "fixed", unique = FALSE))]
         temp[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         temp[, W_wl.Spache := NULL]
     }
@@ -439,6 +444,12 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 #' }
 #' @references
 #' Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
+#'
+#' Dale, Edgar, and Jeanne Sternlicht Chall. 1948. "A Formula for Predicting
+#' Readability". \emph{Educational Research Bulletin} 27(1): 11-20.
+#' 
+#' Dale, Edgar, and Jeanne S Chall. 1948. "A Formula for Predicting Readability:
+#' Instructions." \emph{Educational Research Bulletin} 27(2): 37–54.
 #'
 #' Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62-102.
 #'

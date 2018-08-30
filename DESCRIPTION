@@ -166,6 +166,7 @@ Collate:
     'tokens_replace.R'
     'tokens_segment.R'
     'tokens_select.R'
+    'tokens_setdiff.R'
     'tokens_subset.R'
     'utils.R'
     'wordstem.R'
