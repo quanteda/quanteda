@@ -100,19 +100,19 @@ test_that("as.dfm for tm matrix objects", {
 test_that("as.data.frame for dfm objects", {
     d <- data_dfm_lbgexample[, 1:5]
     expect_equal(
-        as.data.frame(d),
+        suppressWarnings(as.data.frame(d)),
         data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
     )
     expect_equal(
-        as.data.frame(d, document = NULL),
+        suppressWarnings(as.data.frame(d, document = NULL)),
         data.frame(as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
     )
     expect_equal(
-        as.data.frame(d, row.names = docnames(d)),
+        suppressWarnings(as.data.frame(d, row.names = docnames(d))),
         data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
     )
     expect_error(
-        as.data.frame(d, document = TRUE),
+        suppressWarnings(as.data.frame(d, document = TRUE)),
         "document must be character or NULL"
     )
 })
@@ -120,7 +120,7 @@ test_that("as.data.frame for dfm objects", {
 test_that("dfm2dataframe same as as.data.frame.dfm", {
     d <- data_dfm_lbgexample[, 1:5]
     expect_identical(
-        as.data.frame(d),
+        suppressWarnings(as.data.frame(d)),
         convert(d, to = "data.frame")
     )
     expect_equal(
@@ -144,11 +144,11 @@ test_that("as.data.frame.dfm handles irregular feature names correctly", {
                  dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
                                               "飛機" = "if", "spec+ial" = "of")))
     expect_equal(
-        names(as.data.frame(mydfm)),
+        names(convert(mydfm, to = "data.frame")),
         c("document", "字", "spe cial", "飛機", "spec+ial")
     )
     expect_equal(
-        names(as.data.frame(mydfm, check.names = TRUE)),
+        suppressWarnings(names(as.data.frame(mydfm, check.names = TRUE))),
         c("document", "字", "spe.cial", "飛機", "spec.ial")
     )
     expect_equal(

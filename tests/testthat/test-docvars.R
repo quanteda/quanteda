@@ -270,3 +270,28 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(all(rownames(docvars(dfm6)) == docnames(dfm6)))
 
 })
+
+test_that("can assign docvars when value is a dfm (#1417)", {
+    mycorp <- corpus(data_char_ukimmig2010)
+
+    thedfm <- dfm(mycorp)[, "the"]
+    docvars(mycorp) <- thedfm
+    expect_identical(
+        docvars(mycorp),
+        data.frame(the = as.vector(thedfm), row.names = docnames(mycorp))
+    )
+    
+    anddfm <- dfm(mycorp)[, "and"]
+    docvars(anddfm) <- anddfm
+    expect_identical(
+        docvars(anddfm),
+        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+    )
+
+    toks <- tokens(mycorp)
+    docvars(toks) <- anddfm
+    expect_identical(
+        docvars(toks),
+        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+    )
+})

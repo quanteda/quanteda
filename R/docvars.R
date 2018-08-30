@@ -113,6 +113,8 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
+    if (is.dfm(value))
+        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
     if ("texts" %in% field) 
         stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
@@ -127,6 +129,8 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
+    if (is.dfm(value)) 
+        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, "docvars") <- value
     } else {
@@ -138,12 +142,14 @@ docvars.kwic <- function(x) {
             attr(x, "docvars")[[field]] <- value
         }
     }
+    # row.names(attr(x, "docvars")) <- docnames(x)
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
-    
+    if (is.dfm(value)) 
+        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         x@docvars <- value
     } else {
@@ -155,6 +161,7 @@ docvars.kwic <- function(x) {
             x@docvars[[field]] <- value
         }
     }
+    # row.names(attr(x, "docvars")) <- docnames(x)
     return(x)
 }
 
