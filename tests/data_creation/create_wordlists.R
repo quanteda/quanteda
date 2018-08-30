@@ -1,7 +1,6 @@
 makeWordList <- function(filename) {
-    wordList <- readtext::readtext(filename)[["text"]]
-    wordList <- tokens(wordList, remove_hyphens = FALSE, what = "fasterword") %>%
-        as.character() %>%
+    wordList <- readtext::readtext(filename)[["text"]] %>%
+        stringi::stri_split_regex(pattern = "\\p{WHITE_SPACE}+", simplify = TRUE) %>%
         stringi::stri_trim_both() %>%
         sort()
     wordList
@@ -12,5 +11,5 @@ dalechall_extended <- makeWordList("~/Dropbox (Personal)/QUANTESS/quanteda_worki
 
 
 spache    <- makeWordList("~/Dropbox (Personal)/QUANTESS/quanteda_working_files/readability/Spache.txt")
-wordlists <- list(dalechall = dalechall_extended, spache = spache)
-devtools::use_data(wordlists)
+data_char_wordlists <- list(dalechall = dalechall_extended, spache = spache)
+devtools::use_data(data_char_wordlists, overwrite = TRUE)
