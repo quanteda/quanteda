@@ -10,21 +10,6 @@ test_that("textstat_lexdiv computation is correct", {
     )
 })
 
-test_that("textstat_lexdiv drop works", {
-    mydfm <- dfm(c(d1 = "b a b a b a b a",
-                   d2 = "a a b b"))
-
-    results <- textstat_lexdiv(mydfm, "TTR", drop = FALSE)
-    expect_equivalent(
-        c(0.25, 0.5),
-        results$TTR
-    )
-    
-    expect_equal(
-        results$document[1], "d1"
-    )
-})
-
 test_that("textstat_lexdiv CTTR works correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
