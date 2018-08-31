@@ -66,9 +66,6 @@ test_that("Test Dale-Chall readability", {
 She folded the paper in half. then she took her scissors (she always carried a pair..."
     expect_equal(textstat_readability(txt, measure = c("Dale.Chall.old"))$Dale.Chall.old, 3)
     
-    toks[[1]][which(!as.character(tokens_wordstem(toks)) %in% 
-                    c(char_wordstem(data_char_wordlists$dalechall), data_char_wordlists$dalechall))]
-    
     # from http://www.readabilityformulas.com/dalechallformula/dale-chall-formula.php
     # (show words NOT on Dale-Chall Word List) # of words NOT found on Dale-Chall Word List : 3 
     # Percent of words NOT found on Dale-Chall Word List: : 14% 
@@ -80,23 +77,3 @@ She folded the paper in half. then she took her scissors (she always carried a p
     
     
 })
-
-# add UK spellings
-dc_wordlist <- c(
-    data_char_wordlists$dalechall,
-    # and the UK spellings of words that are different
-    as.tokens(list(dc = data_char_wordlists$dalechall)) %>%
-        tokens_replace(data_dictionary_us2uk) %>%
-        tokens_select(names(data_dictionary_us2uk)) %>%
-        as.character()
-)
-
-dc <- data.frame(word = dc_wordlist,
-                 stem = char_wordstem(dc_wordlist), 
-                 stringsAsFactors = FALSE)
-dc$diff <- dc$word != dc$stem
-library(quanteda.dictionaries)
-
-
-
-
