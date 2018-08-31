@@ -221,8 +221,8 @@ textstat_readability.corpus <- function(x,
     # look up D-C words if needed
     if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK") %in% measure)) {
         temp[, W_wl.Dale.Chall := lengths(tokens_setdiff(toks, 
-                                                         char_tolower(data_char_wordlists$dalechall),
-                                                         pattern = "fixed", unique = FALSE))]
+                                                         pattern = char_tolower(data_char_wordlists$dalechall),
+                                                         valuetype = "fixed", unique = FALSE))]
     }
 
     if ("Dale.Chall" %in% measure) {
@@ -341,8 +341,8 @@ textstat_readability.corpus <- function(x,
     if ("Spache" %in% measure) {
         # number of words which are not in the Spache word list
         temp[, W_wl.Spache := lengths(tokens_setdiff(toks, 
-                                                     char_tolower(data_char_wordlists$spache),
-                                                     pattern = "fixed", unique = FALSE))]
+                                                     pattern = char_tolower(data_char_wordlists$spache),
+                                                     valuetype = "fixed", unique = FALSE))]
         temp[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         temp[, W_wl.Spache := NULL]
     }
