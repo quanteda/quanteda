@@ -55,6 +55,30 @@ test_that("Test Dale-Chall readability", {
     # with the difficult words not found on their new word list underlined (pp. 135-140).
     # see http://www.impact-information.com/scales.pdf
     
+    dc1 <- 'One morning Toad sat in bed.
+    “I have many things to do,” he said.
+    “I will write them all down on a list so that I can remember them.”
+    Toad wrote on a piece of paper: A list of things to do today.
+    Then he wrote: Wake up.
+    “I have done that,” said Toad, and he crossed it out.'
+    expect_identical(
+        lengths(tokens_setdiff(tokens(dc1, remove_punct = TRUE), char_tolower(data_char_wordlists$dalechall))),
+        c(text1 = 0L)
+    )
+    toks <- tokens(dc1, remove_punct = TRUE)
+    textstat_readability(dc1, "Dale.Chall.old")
+        
+    dc2 <- 'You said you didn’t want it,” said Thelma. “And anyhow, I don’t want to sell it now.” “Why not?” said Frances.
+    “Well,” said Thelma, “it is a very good tea set. It is plastic that does not break.
+    It has pretty red flowers on it. It has all the cups and saucers.
+    It has the sugar bowl and the cream pitcher and the teapot.
+    It is almost new, and I think it cost a lot of money.”
+    “I have two dollars and seventeen cents,” said Frances.
+    “That’s a lot of money.”
+    “I don’t know,” said Thelma. “If I sell you..."'
+    toks <- tokens(dc2, remove_punct = TRUE)
+    textstat_readability(dc2, "Dale.Chall.old")
+    
 
     # Readability Data
     # Number of Words in Sample ........................100 
@@ -62,9 +86,9 @@ test_that("Test Dale-Chall readability", {
     # Number of Unfamiliar Words..........................3 
     # Cloze Score .......................................53 
     # Reading Level ..................................... 3
-    txt <- "Once upon a time a very small witch was walking in the woods. The cold wind was blowing the dry leaves all around her. The little witch was frantically searching for a house for the winter. She could not find one. Suddenly a piece of orange paper, blown by the wind, landed at her feet. She picked it up. The little witch looked closely at the paper and then she said, “I shall make myself a little house from this piece of orange paper.”
-She folded the paper in half. then she took her scissors (she always carried a pair..."
-    expect_equal(textstat_readability(txt, measure = c("Dale.Chall.old"))$Dale.Chall.old, 3)
+    dc3 <- "Once upon a time a very small witch was walking in the woods. The cold wind was blowing the dry leaves all around her. The little witch was frantically searching for a house for the winter. She could not find one. Suddenly a piece of orange paper, blown by the wind, landed at her feet. She picked it up. The little witch looked closely at the paper and then she said, “I shall make myself a little house from this piece of orange paper.”
+    She folded the paper in half. then she took her scissors (she always carried a pair..."
+    expect_equal(textstat_readability(dc3, measure = c("Dale.Chall.old"))$Dale.Chall.old, 3)
     
     # from http://www.readabilityformulas.com/dalechallformula/dale-chall-formula.php
     # (show words NOT on Dale-Chall Word List) # of words NOT found on Dale-Chall Word List : 3 
