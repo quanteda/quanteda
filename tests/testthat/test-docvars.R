@@ -268,7 +268,39 @@ test_that("object always have docvars in the same rows as documents", {
     dfm6 <- dfm_subset(dfm1, rep(c(TRUE, TRUE, FALSE), 3))
     expect_true(nrow(docvars(dfm6)) == ndoc(dfm6))
     expect_true(all(rownames(docvars(dfm6)) == docnames(dfm6)))
+    
+    dfm7 <- rbind(dfm1, dfm1)
+    expect_true(nrow(docvars(dfm7)) == ndoc(dfm7))
+    
+    dfm8 <- cbind(dfm1, dfm1)
+    expect_true(nrow(docvars(dfm8)) == ndoc(dfm8))
+    
+})
 
+test_that("error when nrow and ndoc mismatch", {
+    
+    toks <- tokens(c("a b c", "b c d", "c d e"))
+    expect_error(docvars(toks) <- data.frame(var = c(1, 5)))
+    expect_silent(docvars(toks) <- data.frame(var = c(1, 5, 6)))
+    expect_error(docvars(toks) <- data.frame(var = c(1, 5, 6, 3)))
+    
+    mt <- dfm(toks)
+    expect_error(docvars(mt) <- data.frame(var = c(1, 5)))
+    expect_silent(docvars(mt) <- data.frame(var = c(1, 5, 6)))
+    expect_error(docvars(mt) <- data.frame(var = c(1, 5, 6, 3)))
+    
+})
+
+test_that("assignment of NULL only drop columns", {
+    
+    toks <- tokens(data_corpus_irishbudget2010)
+    docvars(toks) <- NULL
+    expect_identical(dim(docvars(toks)), c(14L, 0L))
+    
+    mt <- dfm(data_corpus_irishbudget2010)
+    docvars(mt) <- NULL
+    expect_identical(dim(docvars(mt)), c(14L, 0L))
+    
 })
 
 test_that("can assign docvars when value is a dfm (#1417)", {

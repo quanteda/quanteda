@@ -86,6 +86,8 @@ textstat_keyness.dfm <- function(x, target = 1L,
     
     
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
+    
     measure <- match.arg(measure)
     correction <- match.arg(correction)
     # error checking

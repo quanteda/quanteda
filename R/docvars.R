@@ -131,7 +131,11 @@ docvars.kwic <- function(x) {
 "docvars<-.tokens" <- function(x, field = NULL, value) {
     if (is.dfm(value)) 
         value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
+    if (is.null(value)) {
+        attr(x, "docvars") <- attr(x, "docvars")[, seq(ncol(attr(x, "docvars"))) * -1, drop = FALSE]
+    } else if (is.null(field) && (is.data.frame(value))) {
+        if (nrow(value) != ndoc(x))
+            stop(message_error("docvar_mismatch"))
         attr(x, "docvars") <- value
     } else {
         if (!is.data.frame(attr(x, "docvars")) || !nrow(attr(x, "docvars"))) {
@@ -150,7 +154,11 @@ docvars.kwic <- function(x) {
 "docvars<-.dfm" <- function(x, field = NULL, value) {
     if (is.dfm(value)) 
         value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
+    if (is.null(value)) {
+        x@docvars <- x@docvars[, seq(ncol(x@docvars)) * -1, drop = FALSE]
+    } else if (is.null(field) && (is.data.frame(value))) {
+        if (nrow(value) != ndoc(x))
+            stop(message_error("docvar_mismatch"))
         x@docvars <- value
     } else {
         if (!is.data.frame(x@docvars) || !nrow(x@docvars)) {

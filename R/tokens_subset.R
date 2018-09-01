@@ -43,9 +43,7 @@ tokens_subset.default <- function(x, subset, select, ...) {
 #' @export
 tokens_subset.tokens <- function(x, subset, select, ...) {
     
-    if (length(args_added <- list(...)))
-        warning("Argument", if (length(args_added) > 1L) "s " else " ",
-                names(args_added), " not used.", sep = "")
+    unused_dots(...)
     
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(docvars(x)))

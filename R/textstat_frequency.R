@@ -78,11 +78,10 @@ textstat_frequency.default <- function(x, n = NULL, groups = NULL) {
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) { 
     
     x <- as.dfm(x)
-    x@weightTf[["scheme"]] <- "count" # reset for docfreq
+    if (!sum(x)) stop(message_error("dfm_empty"))
     
-    if (is.null(groups))
-        groups <- rep("all", ndoc(x))
-
+    if (is.null(groups)) groups <- rep("all", ndoc(x))
+    x@weightTf[["scheme"]] <- "count" # reset for docfreq
     docfreq <- dfm_group(dfm_weight(x, "boolean"), groups)@x
     x <- as(dfm_group(x, groups), "dgTMatrix")
     temp <- data.table(feature = colnames(x)[x@j + 1],
