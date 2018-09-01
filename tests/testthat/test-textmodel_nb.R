@@ -158,3 +158,11 @@ test_that("raise warning of unused dots", {
                    "\\.\\.\\. is not used")
 })
 
+test_that("raises error when dfm is empty (#1419)",  {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textmodel_nb(mx, factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)),
+                 quanteda:::message_error("dfm_empty"))
+    
+})
+

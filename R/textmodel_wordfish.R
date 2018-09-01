@@ -134,6 +134,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
                                    residual_floor = 0.5) {
     
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
     dispersion <- match.arg(dispersion)
     dispersion_level <- match.arg(dispersion_level)
     

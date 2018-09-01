@@ -46,6 +46,8 @@ textmodel_lsa <- function(x, nd = 10, margin = c("both", "documents", "features"
 #' @export
 textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "features")) {
     
+    x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
     
     if (nd > min(nrow(x), ncol(x))) nd <- min(nrow(x), ncol(x))
@@ -60,9 +62,8 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
         dec <- RSpectra::svds(x, nd)
     }
     
-    if (any(dec$d <= sqrt(.Machine$double.eps))) {
-        warning("[lsa] - there are singular values which are zero.")
-    }
+    if (any(dec$d <= sqrt(.Machine$double.eps)))
+        warning("[lsa] - there are singular values which are zero")
     
     result <- list(sk = dec$d, docs = NULL, features = NULL)
     

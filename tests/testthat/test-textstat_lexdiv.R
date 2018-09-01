@@ -10,21 +10,6 @@ test_that("textstat_lexdiv computation is correct", {
     )
 })
 
-test_that("textstat_lexdiv drop works", {
-    mydfm <- dfm(c(d1 = "b a b a b a b a",
-                   d2 = "a a b b"))
-
-    results <- textstat_lexdiv(mydfm, "TTR", drop = FALSE)
-    expect_equivalent(
-        c(0.25, 0.5),
-        results$TTR
-    )
-    
-    expect_equal(
-        results$document[1], "d1"
-    )
-})
-
 test_that("textstat_lexdiv CTTR works correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
@@ -79,3 +64,12 @@ test_that("textstat_lexdiv works with a single document dfm (#706)", {
         tolerance = 0.01
     )
 })
+
+test_that("raises error when dfm is empty (#1419)", {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textstat_lexdiv(mx, c("TTR", "C")),
+                 quanteda:::message_error("dfm_empty"))
+    
+})
+

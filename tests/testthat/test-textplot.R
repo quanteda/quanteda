@@ -276,5 +276,17 @@ test_that("test textplot_network font-selection", {
                "not_a_real_font is not found on your system")
 })
 
+test_that("raises error when dfm is empty (#1419)", {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textplot_network(mx),
+                 quanteda:::message_error("dfm_empty"))
+    expect_error(textplot_network(fcm(mx)),
+                 quanteda:::message_error("fcm_empty"))
+    expect_error(textplot_wordcloud(mx),
+                 quanteda:::message_error("dfm_empty"))
+    
+})
+
 dev.off()
 

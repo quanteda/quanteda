@@ -50,18 +50,16 @@ dfm_subset.default <- function(x, subset, select, ...) {
 dfm_subset.dfm <- function(x, subset, select, ...) {
     
     x <- as.dfm(x)
-    if (length(args_added <- list(...)))
-        warning("Argument", if (length(args_added) > 1L) "s " else " ",
-                names(args_added), " not used.", sep = "")
-    
+    unused_dots(...)
+
     r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(docvars(x)))
+        rep(TRUE, ndoc(x))
     } else {
         e <- substitute(subset)
         r <- eval(e, docvars(x), parent.frame())
         if (is.dfm(r)) {
             if (!missing(select)) stop("cannot select docvars if subset is a dfm")
-            x <- x[which(docnames(x) %in% docnames(r)), ]
+            x <- x[docnames(x) %in% docnames(r), ]
             return(dfm_group(dfm_trim(x, min_termfreq = 1, min_docfreq = 1, 
                                       verbose = FALSE), 
                              groups = factor(docnames(x), levels = docnames(r)),
@@ -71,15 +69,15 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
         }
     }
     
-    vars <- if (missing(select)) {
-        TRUE
+    s <- if (missing(select)) {
+        rep(TRUE, ncol(docvars(x)))
     } else {
         nl <- as.list(seq_along(docvars(x)))
         names(nl) <- names(docvars(x))
         eval(substitute(select), nl, parent.frame())
     }
     if (ncol(docvars(x)))
-        docvars(x) <- docvars(x)[, vars, drop = FALSE]
+        docvars(x) <- docvars(x)[, s, drop = FALSE]
     
-    x[which(r), ]
+    x[r, ]
 }
