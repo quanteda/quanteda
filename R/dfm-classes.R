@@ -242,6 +242,7 @@ cbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
+    result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
     return(result)
 
 }
@@ -272,13 +273,16 @@ rbind.dfm <- function(...) {
     x <- args[[1]]
     y <- args[[2]]
     attrs <- attributes(x)
-    
+
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
     if (!ndoc(y)) return(x)
     
-    feature <- union(featnames(x), featnames(y))
-    result <- 
-        new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))
+    if (identical(featnames(x), featnames(y))) {
+        result <- new("dfm", Matrix::rbind2(x, y))
+    } else {
+        feature <- union(featnames(x), featnames(y))
+        result <- new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))
+    }
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- rbind(result, args[[i]])
@@ -288,5 +292,6 @@ rbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
+    result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
     return(result)
 }

@@ -53,9 +53,12 @@ textmodel_affinity.default <- function(x, y, exclude = NULL,
 textmodel_affinity.dfm <- function(x, y, exclude = NULL,
                                    smooth = 0.5, ref_smooth = 0.5,
                                    verbose = TRUE) {
+    
+    x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
+        
     # estimate reference distributions
-    yna <- is.na(y)
-    counts <- dfm(x[which(!yna),], groups = y[!yna], tolower = FALSE)
+    counts <- dfm(x[!is.na(y),], groups = y[!is.na(y)], tolower = FALSE)
 
     # determine support set
     support <- colSums(counts) > 0

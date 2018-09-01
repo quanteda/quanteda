@@ -52,6 +52,8 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE,
                              residual_floor = 0.1) {
     
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
+    
     x <- x + smooth  # smooth by the specified amount
     
     I <- dim(x)[1] 
