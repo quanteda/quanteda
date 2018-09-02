@@ -4,7 +4,9 @@
 
 * Fixed a bug causing incorrect counting in `fcm(x, ordered = TRUE)`. (#1413)  Also set the condition that `window` can be of size 1 (formerly the limit was 2 or greater).
 * Fixed deprecation warnings from adding a dfm as docvars, and this now inmports the feature names as docvar names automatically. (related to #1417)
+* Fixed behaviour from `tokens(x, what = "fasterword", remove_separators = TRUE)` so that it correctly splits words separated by `\n` and `\t` characters.  (#1420)
 * Add error checking for functions taking dfm inputs in case a dfm has empty features (#1419).
+
 
 # quanteda v1.3.4
 
