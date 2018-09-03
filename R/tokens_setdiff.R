@@ -7,10 +7,10 @@
 #' @inheritParams pattern
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param remove_duplicates if \code{TRUE}, do not return duplicates
+#' @param unique if \code{TRUE}, do not return duplicates
 #' @return tokens not found in \code{pattern}
 #' @seealso \code{\link{textstat_readability}}, \code{\link{data_char_wordlist}}
-#' @keywords tokens
+#' @keywords tokens internal
 #' @export
 #' @examples 
 #' toks <- tokens(c(d1 = "This sentence is extremely brief.", 
@@ -21,22 +21,19 @@
 #' tokens_setdiff(tokens(txt), c("c", "d"))
 #' tokens_setdiff(tokens(txt), c("c", "d"), unique = TRUE)
 tokens_setdiff <- function(x, pattern, valuetype = c("fixed", "glob", "regex"),
-                           case_insensitive = FALSE, remove_possessives = FALSE,
-                           unique = FALSE) {
+                           case_insensitive = FALSE, unique = FALSE) {
     UseMethod("tokens_setdiff")
 }
 
 #' @export
 tokens_setdiff.default <- function(x, pattern, valuetype = c("fixed", "glob", "regex"),
-                                   case_insensitive = FALSE, remove_possessives = FALSE,
-                                   unique = FALSE) {
+                                   case_insensitive = FALSE, unique = FALSE) {
     stop(friendly_class_undefined_message(class(x), "tokens_setdiff"))
 }
     
 #' @export
 tokens_setdiff.tokens <- function(x, pattern, valuetype = c("fixed", "glob", "regex"),
-                                  case_insensitive = FALSE, remove_possessives = FALSE,
-                                  unique = FALSE) {
+                                  case_insensitive = FALSE, unique = FALSE) {
     
     valuetype <- match.arg(valuetype)
     pattern <- as.character(pattern)
@@ -46,15 +43,13 @@ tokens_setdiff.tokens <- function(x, pattern, valuetype = c("fixed", "glob", "re
             x <- tokens_tolower(x)
             pattern <- char_tolower(pattern)
         }
-        if (remove_possessives) {
-            x <- stringi::stri_replace_last_charclass(x, "['’]", "")  
-            pattern <- stringi::stri_replace_last_charclass(pattern, "['’]", "")
-        }
         ret <- lapply(tokens_tolower(x), function(y) y[!(y %in% pattern)])
         
     } else {
         stop("glob and regex patterns are not yet implemented for this function")
     }
     
-    if (unique) lapply(ret, unique) else ret
+    if (unique) ret <- lapply(ret, unique)
+    as.tokens(ret)
 }
+

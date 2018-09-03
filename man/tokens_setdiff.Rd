@@ -5,7 +5,7 @@
 \title{Return the set difference of tokens}
 \usage{
 tokens_setdiff(x, pattern, valuetype = c("fixed", "glob", "regex"),
-  unique = FALSE)
+  case_insensitive = FALSE, unique = FALSE)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
@@ -15,7 +15,9 @@ tokens_setdiff(x, pattern, valuetype = c("fixed", "glob", "regex"),
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{remove_duplicates}{if \code{TRUE}, do not return duplicates}
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+
+\item{unique}{if \code{TRUE}, do not return duplicates}
 }
 \value{
 tokens not found in \code{pattern}
@@ -37,4 +39,5 @@ tokens_setdiff(tokens(txt), c("c", "d"), unique = TRUE)
 \seealso{
 \code{\link{textstat_readability}}, \code{\link{data_char_wordlist}}
 }
+\keyword{internal}
 \keyword{tokens}
