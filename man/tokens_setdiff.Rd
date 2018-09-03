@@ -37,7 +37,7 @@ tokens_setdiff(tokens(txt), c("c", "d"))
 tokens_setdiff(tokens(txt), c("c", "d"), unique = TRUE)
 }
 \seealso{
-\code{\link{textstat_readability}}, \code{\link{data_char_wordlist}}
+\code{\link{textstat_readability}}, \code{\link{data_char_wordlists}}
 }
 \keyword{internal}
 \keyword{tokens}

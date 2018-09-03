@@ -9,7 +9,7 @@
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param unique if \code{TRUE}, do not return duplicates
 #' @return tokens not found in \code{pattern}
-#' @seealso \code{\link{textstat_readability}}, \code{\link{data_char_wordlist}}
+#' @seealso \code{\link{textstat_readability}}, \code{\link{data_char_wordlists}}
 #' @keywords tokens internal
 #' @export
 #' @examples 
