@@ -341,24 +341,23 @@ textstat_readability.corpus <- function(x,
     if ("SMOG.de" %in% measure)
         temp[, SMOG.de := sqrt(W3Sy * 30 / St) - 2]
     
-    if ("Spache" %in% measure) {
+    if (any(c("Spache", "Spache.old") %in% measure)) {
         # number of words which are not in the Spache word list
         temp[, W_wl.Spache := lengths(tokens_setdiff(toks, 
                                                      pattern = quanteda::data_char_wordlists$spache,
                                                      valuetype = "fixed", 
                                                      case_insensitive = TRUE,
                                                      unique = FALSE))]
+    }
+    
+    if ("Spache" %in% measure)
         temp[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
-        temp[, W_wl.Spache := NULL]
-    }
-    
-    if ("Spache.old" %in% measure) {
-        # number of words which are not in the Spache word list
-        temp[, W_wl.Spache := vapply(toks, function(x) sum(!(x %in% quanteda::data_char_wordlists$spache)), numeric(1))]
+
+    if ("Spache.old" %in% measure)
         temp[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
-        temp[, W_wl.Spache := NULL]
-    }
-    
+
+    if (any(c("Spache", "Spache.old") %in% measure)) temp[, W_wl.Spache := NULL]
+        
     if ("Strain" %in% measure)
         temp[, Strain := Sy * 1 / (St/3) / 10]
     
