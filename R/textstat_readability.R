@@ -178,7 +178,7 @@ textstat_readability.corpus <- function(x,
     # look up D-C words if needed
     if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK", "Bormuth", "Bormuth.GP") %in% measure)) {
         temp[, W_wl.Dale.Chall := lengths(tokens_setdiff(toks, 
-                                                         pattern = data_char_wordlists$dalechall,
+                                                         pattern = quanteda::data_char_wordlists$dalechall,
                                                          valuetype = "fixed", 
                                                          case_insensitive = TRUE,
                                                          unique = FALSE))]
@@ -232,6 +232,7 @@ textstat_readability.corpus <- function(x,
     }
     
     if ("Dale.Chall.old" %in% measure) {
+        DC_constant <- NULL
         temp[, DC_constant := ((W_wl.Dale.Chall / W) > .05) * 3.6365]
         temp[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + DC_constant]
         temp[, DC_constant := NULL]
@@ -343,7 +344,7 @@ textstat_readability.corpus <- function(x,
     if ("Spache" %in% measure) {
         # number of words which are not in the Spache word list
         temp[, W_wl.Spache := lengths(tokens_setdiff(toks, 
-                                                     pattern = data_char_wordlists$spache,
+                                                     pattern = quanteda::data_char_wordlists$spache,
                                                      valuetype = "fixed", 
                                                      case_insensitive = TRUE,
                                                      unique = FALSE))]
@@ -353,7 +354,7 @@ textstat_readability.corpus <- function(x,
     
     if ("Spache.old" %in% measure) {
         # number of words which are not in the Spache word list
-        temp[, W_wl.Spache := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
+        temp[, W_wl.Spache := vapply(toks, function(x) sum(!(x %in% quanteda::data_char_wordlists$spache)), numeric(1))]
         temp[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
         temp[, W_wl.Spache := NULL]
     }
