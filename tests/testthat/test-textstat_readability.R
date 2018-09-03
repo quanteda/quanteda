@@ -50,54 +50,74 @@ test_that("readability works as koRpus", {
 })
 
 test_that("Test Dale-Chall readability", {
-    # from Jeanne Chall and Edgar Dale’s Readability Revisited: 
-    # The New Dale-Chall Readability Formula featured the following text samples, 
-    # with the difficult words not found on their new word list underlined (pp. 135-140).
-    # see http://www.impact-information.com/scales.pdf
-    
-    dc1 <- 'One morning Toad sat in bed.
-    “I have many things to do,” he said.
-    “I will write them all down on a list so that I can remember them.”
-    Toad wrote on a piece of paper: A list of things to do today.
-    Then he wrote: Wake up.
-    “I have done that,” said Toad, and he crossed it out.'
-    expect_identical(
-        lengths(tokens_setdiff(tokens(dc1, remove_punct = TRUE), char_tolower(data_char_wordlists$dalechall))),
-        c(text1 = 0L)
-    )
-    toks <- tokens(dc1, remove_punct = TRUE)
-    textstat_readability(dc1, "Dale.Chall.old")
-        
-    dc2 <- 'You said you didn’t want it,” said Thelma. “And anyhow, I don’t want to sell it now.” “Why not?” said Frances.
-    “Well,” said Thelma, “it is a very good tea set. It is plastic that does not break.
-    It has pretty red flowers on it. It has all the cups and saucers.
-    It has the sugar bowl and the cream pitcher and the teapot.
-    It is almost new, and I think it cost a lot of money.”
-    “I have two dollars and seventeen cents,” said Frances.
-    “That’s a lot of money.”
-    “I don’t know,” said Thelma. “If I sell you..."'
-    toks <- tokens(dc2, remove_punct = TRUE)
-    textstat_readability(dc2, "Dale.Chall.old")
-    
+    # from Dale, Edgar, and Jeanne S Chall. 1948. “A Formula for Predicting
+    # Readability: Instructions.” Educational Research Bulletin 27(2): 37–54.
 
-    # Readability Data
-    # Number of Words in Sample ........................100 
-    # Number of Whole Sentences...........................8 
-    # Number of Unfamiliar Words..........................3 
-    # Cloze Score .......................................53 
-    # Reading Level ..................................... 3
-    dc3 <- "Once upon a time a very small witch was walking in the woods. The cold wind was blowing the dry leaves all around her. The little witch was frantically searching for a house for the winter. She could not find one. Suddenly a piece of orange paper, blown by the wind, landed at her feet. She picked it up. The little witch looked closely at the paper and then she said, “I shall make myself a little house from this piece of orange paper.”
-    She folded the paper in half. then she took her scissors (she always carried a pair..."
-    expect_equal(textstat_readability(dc3, measure = c("Dale.Chall.old"))$Dale.Chall.old, 3)
+    dc1 <- "A happy, useful life - that's what you want for your baby, isn't it? And because
+a healthy mind and body are so necessary to happiness and long life, you must
+do all you can to get your baby off to a good start. There is much you can do
+while he is still a baby to lay the foundation for good health and good health
+habits. Many things affect your baby's health. One was the state of your own
+health during pregnancy, and the special care your doctor gave you before the
+baby was born. Other things important to your child's health are food,
+clothes, baths, sleep, and habit training. A baby needs a clean, happy place
+to live, and he must be kept from having any sickness that can be prevented."
+    unfamiliar_words <- tokens_setdiff(tokens(dc1, remove_punct = TRUE), 
+                                       pattern = char_tolower(data_char_wordlists$dalechall),
+                                       case_insensitive = TRUE) %>%
+        as.character()
+    expect_identical(
+        unfamiliar_words,
+        c("necessary", "foundation", "affect", "pregnancy", "special", "prevented")
+    )
+    expect_equivalent(ntoken(dc1, remove_punct = TRUE), 132)
+    expect_equal(textstat_readability(dc1, "Dale.Chall.old")$Dale.Chall.old + 3.6365, 5.3684, tolerance = .1)
     
-    # from http://www.readabilityformulas.com/dalechallformula/dale-chall-formula.php
-    # (show words NOT on Dale-Chall Word List) # of words NOT found on Dale-Chall Word List : 3 
-    # Percent of words NOT found on Dale-Chall Word List: : 14% 
-    # 
-    # Dale-Chall Formula worksheet 
-    # Raw score 2.7765 [ ? ]
-    # Adjusted Score: (3.6365 + 2.7765) [ ? ]
-    # Final Score: 6.4 [ ? ]
+    dc2 <- "Diphtheria used to kill many babies. Today no child need die of
+diphtheria.  It is one of the diseases for which we have very good treatment
+and almost sure prevention. But your baby will not be safe from this disease
+unless he has been protected by immunization. The way to protect your baby is
+simple. Physicians usually give injections of three doses of toxoid, three to
+four weeks apart, generally beginning when a baby is about six months old.
+Your doctor will tell you that your baby should have this protection before
+his first birthday. Six months after the last injection of toxoid, the
+physician may test your baby to see if another dose of toxoid is necessary.
+Before the child enters school an extra shot of toxoid is often given."
+    unfamiliar_words <- tokens_setdiff(tokens(dc2, remove_punct = TRUE), 
+                                       pattern = char_tolower(data_char_wordlists$dalechall),
+                                       case_insensitive = TRUE) %>%
+        as.character()
+    expect_identical(
+        unique(unfamiliar_words),
+        c("diphtheria", "diseases", "treatment", "prevention", "disease", 
+          "immunization", "physicians", "usually", "injections", "doses", 
+          "toxoid", "protection", "injection", "physician", "dose", "necessary")
+    )
+    expect_identical(length(unfamiliar_words), 20L)
+    expect_equivalent(ntoken(dc2, remove_punct = TRUE), 131)
+    expect_equivalent(nsentence(dc2), 9)
+    expect_equal(textstat_readability(dc2, "Dale.Chall.old")$Dale.Chall.old, 6.7490, tolerance = .02)
     
-    
+    dc3 <- "The germs that cause tuberculosis can enter the baby's body through
+his mouth or be breathed in through his nose. These germs come to him on spray
+or moisture which the person with active tuberculosis breathes or coughs out.
+Germ-filled spray from the mouth or nose may light on the baby's food, his
+dishes, his toys. The baby's hands may carry germs from soiled objects to his
+mouth. Kissing is one way of spreading TB as well as other germs. Tuberculosis
+of the bones or joints or of certain organs of the body besides the lungs can
+come to the bottle-fed baby in milk which has not been pasteurized or boiled."
+    unfamiliar_words <- tokens_setdiff(tokens(dc3, remove_punct = TRUE), 
+                                       pattern = char_tolower(data_char_wordlists$dalechall),
+                                       case_insensitive = TRUE) %>%
+        as.character()
+    expect_identical(
+        unique(unfamiliar_words),
+        c("germs", "tuberculosis", "spray", "moisture", "active", "germ-filled",
+          "objects", "tb", "joints", "lungs", "bottle-fed", "pasteurized")
+    )
+    expect_equal(length(unfamiliar_words), 17, tolerance = 1)
+    expect_equivalent(ntoken(dc3, remove_punct = TRUE), 111)
+    expect_equivalent(nsentence(dc3), 6)
+    expect_equal(textstat_readability(dc3, "Dale.Chall.old")$Dale.Chall.old, 6.9474, tolerance = .01)
 })
+

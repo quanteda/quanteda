@@ -175,6 +175,15 @@ textstat_readability.corpus <- function(x,
     
     temp[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
     
+    # look up D-C words if needed
+    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK", "Bormuth", "Bormuth.GP") %in% measure)) {
+        temp[, W_wl.Dale.Chall := lengths(tokens_setdiff(toks, 
+                                                         pattern = data_char_wordlists$dalechall,
+                                                         valuetype = "fixed", 
+                                                         case_insensitive = TRUE,
+                                                         unique = FALSE))]
+    }
+    
     if ("ARI" %in% measure)
         temp[, ARI := 0.5 * W / St + 4.71 * C / W - 21.43]
     
@@ -218,16 +227,6 @@ textstat_readability.corpus <- function(x,
     if ("Coleman.Liau.short" %in% measure)
         temp[, Coleman.Liau.short := 5.88 * C / W - 29.6 * St / W - 15.8]
     
-    # look up D-C words if needed
-    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK") %in% measure)) {
-        temp[, W_wl.Dale.Chall := lengths(tokens_setdiff(toks, 
-                                                         pattern = data_char_wordlists$dalechall,
-                                                         valuetype = "fixed", 
-                                                         case_insensitive = TRUE,
-                                                         remove_possessives = TRUE,
-                                                         unique = FALSE))]
-    }
-
     if ("Dale.Chall" %in% measure) {
         temp[, Dale.Chall := 64 - 0.95 * 100 * W_wl.Dale.Chall / W - 0.69 * W / St]
     }
@@ -347,7 +346,6 @@ textstat_readability.corpus <- function(x,
                                                      pattern = data_char_wordlists$spache,
                                                      valuetype = "fixed", 
                                                      case_insensitive = TRUE,
-                                                     remove_possessives = TRUE,
                                                      unique = FALSE))]
         temp[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         temp[, W_wl.Spache := NULL]
