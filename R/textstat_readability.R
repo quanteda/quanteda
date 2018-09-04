@@ -177,11 +177,10 @@ textstat_readability.corpus <- function(x,
     
     # look up D-C words if needed
     if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK", "Bormuth", "Bormuth.GP") %in% measure)) {
-        temp[, W_wl.Dale.Chall := lengths(tokens_setdiff(toks, 
-                                                         pattern = quanteda::data_char_wordlists$dalechall,
-                                                         valuetype = "fixed", 
-                                                         case_insensitive = TRUE,
-                                                         unique = FALSE))]
+        temp[, W_wl.Dale.Chall := lengths(tokens_remove(toks, 
+                                                        pattern = quanteda::data_char_wordlists$dalechall,
+                                                        valuetype = "fixed", 
+                                                        case_insensitive = TRUE))]
     }
     
     if ("ARI" %in% measure)
@@ -343,11 +342,10 @@ textstat_readability.corpus <- function(x,
     
     if (any(c("Spache", "Spache.old") %in% measure)) {
         # number of words which are not in the Spache word list
-        temp[, W_wl.Spache := lengths(tokens_setdiff(toks, 
-                                                     pattern = quanteda::data_char_wordlists$spache,
-                                                     valuetype = "fixed", 
-                                                     case_insensitive = TRUE,
-                                                     unique = FALSE))]
+        temp[, W_wl.Spache := lengths(tokens_remove(toks, 
+                                                    pattern = quanteda::data_char_wordlists$spache,
+                                                    valuetype = "fixed", 
+                                                    case_insensitive = TRUE))]
     }
     
     if ("Spache" %in% measure)
