@@ -97,10 +97,7 @@ textstat_readability.corpus <- function(x,
                                min_sentence_length = 1, 
                                max_sentence_length = 10000, ...) {
     
-    added_args <- names(list(...))
-    if (length(added_args))
-        warning("Argument", if (length(added_args) > 1L) "s " else " ", 
-                added_args, " not used.", sep = "", noBreaks. = TRUE)
+    unused_dots(...)
     
     measure_option <- c("ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
                         "Coleman", "Coleman.C2",
