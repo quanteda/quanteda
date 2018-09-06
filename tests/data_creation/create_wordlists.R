@@ -6,11 +6,9 @@ makewordlist <- function(filename) {
     wordlist
 }
 
-dalechall_old <- makewordlist("~/Dropbox (Personal)/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
-dalechall_extended <- makewordlist("~/Dropbox (Personal)/QUANTESS/quanteda_working_files/readability/Dale-Chall-extended.txt")
+dalechall_extended <- makewordlist("Dale-Chall-extended.txt")
+spache <- makewordlist("Spache.txt")
 
-
-spache <- makewordlist("~/Dropbox (Personal)/QUANTESS/quanteda_working_files/readability/Spache.txt")
 data_char_wordlists <- list(dalechall = dalechall_extended, spache = spache)
 devtools::use_data(data_char_wordlists, overwrite = TRUE)
 
