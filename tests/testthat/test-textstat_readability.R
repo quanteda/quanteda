@@ -49,3 +49,75 @@ test_that("readability works as koRpus", {
     expect_equal(round(q_rdb$SMOG, 2), round(k_rdb@SMOG$grade, 2))
 })
 
+test_that("Test Dale-Chall readability", {
+    # from Dale, Edgar, and Jeanne S Chall. 1948. “A Formula for Predicting
+    # Readability: Instructions.” Educational Research Bulletin 27(2): 37–54.
+
+    dc1 <- "A happy, useful life - that's what you want for your baby, isn't it? And because
+a healthy mind and body are so necessary to happiness and long life, you must
+do all you can to get your baby off to a good start. There is much you can do
+while he is still a baby to lay the foundation for good health and good health
+habits. Many things affect your baby's health. One was the state of your own
+health during pregnancy, and the special care your doctor gave you before the
+baby was born. Other things important to your child's health are food,
+clothes, baths, sleep, and habit training. A baby needs a clean, happy place
+to live, and he must be kept from having any sickness that can be prevented."
+    unfamiliar_words <- tokens_remove(tokens(dc1, remove_punct = TRUE), 
+                                       pattern = char_tolower(data_char_wordlists$dalechall),
+                                       case_insensitive = TRUE) %>%
+        as.character()
+    expect_identical(
+        unique(unfamiliar_words),
+        c("necessary", "foundation", "affect", "pregnancy", "special", "prevented")
+    )
+    expect_equivalent(ntoken(dc1, remove_punct = TRUE), 132)
+    expect_equal(textstat_readability(dc1, "Dale.Chall.old")$Dale.Chall.old + 3.6365, 5.3684, tolerance = .1)
+    
+    dc2 <- "Diphtheria used to kill many babies. Today no child need die of
+diphtheria.  It is one of the diseases for which we have very good treatment
+and almost sure prevention. But your baby will not be safe from this disease
+unless he has been protected by immunization. The way to protect your baby is
+simple. Physicians usually give injections of three doses of toxoid, three to
+four weeks apart, generally beginning when a baby is about six months old.
+Your doctor will tell you that your baby should have this protection before
+his first birthday. Six months after the last injection of toxoid, the
+physician may test your baby to see if another dose of toxoid is necessary.
+Before the child enters school an extra shot of toxoid is often given."
+    unfamiliar_words <- tokens_remove(tokens(dc2, remove_punct = TRUE), 
+                                       pattern = char_tolower(data_char_wordlists$dalechall),
+                                       case_insensitive = TRUE) %>%
+        as.character()
+    expect_identical(
+        unique(char_tolower(unfamiliar_words)),
+        c("diphtheria", "diseases", "treatment", "prevention", "disease", 
+          "immunization", "physicians", "usually", "injections", "doses", 
+          "toxoid", "protection", "injection", "physician", "dose", "necessary")
+    )
+    expect_identical(length(unfamiliar_words), 20L)
+    expect_equivalent(ntoken(dc2, remove_punct = TRUE), 131)
+    expect_equivalent(nsentence(dc2), 9)
+    expect_equal(textstat_readability(dc2, "Dale.Chall.old")$Dale.Chall.old, 6.7490, tolerance = .02)
+    
+    dc3 <- "The germs that cause tuberculosis can enter the baby's body through
+his mouth or be breathed in through his nose. These germs come to him on spray
+or moisture which the person with active tuberculosis breathes or coughs out.
+Germ-filled spray from the mouth or nose may light on the baby's food, his
+dishes, his toys. The baby's hands may carry germs from soiled objects to his
+mouth. Kissing is one way of spreading TB as well as other germs. Tuberculosis
+of the bones or joints or of certain organs of the body besides the lungs can
+come to the bottle-fed baby in milk which has not been pasteurized or boiled."
+    unfamiliar_words <- tokens_remove(tokens(dc3, remove_punct = TRUE), 
+                                       pattern = char_tolower(data_char_wordlists$dalechall),
+                                       case_insensitive = TRUE) %>%
+        as.character()
+    expect_identical(
+        unique(char_tolower(unfamiliar_words)),
+        c("germs", "tuberculosis", "spray", "moisture", "active", "germ-filled",
+          "objects", "tb", "joints", "lungs", "bottle-fed", "pasteurized")
+    )
+    expect_equal(length(unfamiliar_words), 17, tolerance = 1)
+    expect_equivalent(ntoken(dc3, remove_punct = TRUE), 111)
+    expect_equivalent(nsentence(dc3), 6)
+    expect_equal(textstat_readability(dc3, "Dale.Chall.old")$Dale.Chall.old, 6.9474, tolerance = .01)
+})
+
