@@ -80,7 +80,7 @@ indexes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
       </span>
     </div>
 
@@ -206,17 +206,18 @@ indexes.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_readability</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"ARI"</span>, <span class='st'>"ARI.simple"</span>, <span class='st'>"Bormuth"</span>,
-  <span class='st'>"Bormuth.GP"</span>, <span class='st'>"Coleman"</span>, <span class='st'>"Coleman.C2"</span>, <span class='st'>"Coleman.Liau"</span>, <span class='st'>"Coleman.Liau.grade"</span>,
-  <span class='st'>"Coleman.Liau.short"</span>, <span class='st'>"Dale.Chall"</span>, <span class='st'>"Dale.Chall.old"</span>, <span class='st'>"Dale.Chall.PSK"</span>,
-  <span class='st'>"Danielson.Bryan"</span>, <span class='st'>"Danielson.Bryan.2"</span>, <span class='st'>"Dickes.Steiwer"</span>, <span class='st'>"DRP"</span>, <span class='st'>"ELF"</span>,
+    <pre class="usage"><span class='fu'>textstat_readability</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"ARI"</span>, <span class='st'>"ARI.simple"</span>,
+  <span class='st'>"Bormuth"</span>, <span class='st'>"Bormuth.GP"</span>, <span class='st'>"Coleman"</span>, <span class='st'>"Coleman.C2"</span>, <span class='st'>"Coleman.Liau"</span>,
+  <span class='st'>"Coleman.Liau.grade"</span>, <span class='st'>"Coleman.Liau.short"</span>, <span class='st'>"Dale.Chall"</span>,
+  <span class='st'>"Dale.Chall.old"</span>, <span class='st'>"Dale.Chall.PSK"</span>, <span class='st'>"Danielson.Bryan"</span>,
+  <span class='st'>"Danielson.Bryan.2"</span>, <span class='st'>"Dickes.Steiwer"</span>, <span class='st'>"DRP"</span>, <span class='st'>"ELF"</span>,
   <span class='st'>"Farr.Jenkins.Paterson"</span>, <span class='st'>"Flesch"</span>, <span class='st'>"Flesch.PSK"</span>, <span class='st'>"Flesch.Kincaid"</span>, <span class='st'>"FOG"</span>,
   <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>, <span class='st'>"FORCAST"</span>, <span class='st'>"FORCAST.RGL"</span>, <span class='st'>"Fucks"</span>, <span class='st'>"Linsear.Write"</span>,
-  <span class='st'>"LIW"</span>, <span class='st'>"nWS"</span>, <span class='st'>"nWS.2"</span>, <span class='st'>"nWS.3"</span>, <span class='st'>"nWS.4"</span>, <span class='st'>"RIX"</span>, <span class='st'>"Scrabble"</span>, <span class='st'>"SMOG"</span>, <span class='st'>"SMOG.C"</span>,
-  <span class='st'>"SMOG.simple"</span>,      <span class='st'>"SMOG.de"</span>, <span class='st'>"Spache"</span>, <span class='st'>"Spache.old"</span>, <span class='st'>"Strain"</span>,
-  <span class='st'>"Traenkle.Bailer"</span>, <span class='st'>"Traenkle.Bailer.2"</span>, <span class='st'>"Wheeler.Smith"</span>, <span class='st'>"meanSentenceLength"</span>,
-  <span class='st'>"meanWordSyllables"</span>), <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"LIW"</span>, <span class='st'>"nWS"</span>, <span class='st'>"nWS.2"</span>, <span class='st'>"nWS.3"</span>, <span class='st'>"nWS.4"</span>, <span class='st'>"RIX"</span>, <span class='st'>"Scrabble"</span>, <span class='st'>"SMOG"</span>,
+  <span class='st'>"SMOG.C"</span>, <span class='st'>"SMOG.simple"</span>,      <span class='st'>"SMOG.de"</span>, <span class='st'>"Spache"</span>, <span class='st'>"Spache.old"</span>,
+  <span class='st'>"Strain"</span>, <span class='st'>"Traenkle.Bailer"</span>, <span class='st'>"Traenkle.Bailer.2"</span>, <span class='st'>"Wheeler.Smith"</span>,
+  <span class='st'>"meanSentenceLength"</span>, <span class='st'>"meanWordSyllables"</span>), <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -265,7 +266,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
 #&gt; 1    text1      13.705000
 #&gt; 2    text2       8.383333</div><div class='input'><span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='fu'>c</span>(<span class='st'>"FOG"</span>, <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>))</div><div class='output co'>#&gt;   document       FOG  FOG.PSK FOG.NRI
 #&gt; 1    text1 17.000000 4.608659 -1.3875
-#&gt; 2    text2  9.066667 3.254382 -1.2600</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'inaugReadability' not found</span></div><div class='input'>
+#&gt; 2    text2  9.066667 3.254382 -1.2600</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'inaugReadability' not found</span></div><div class='input'>
 <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch.Kincaid"</span>)</div><div class='output co'>#&gt;           document Flesch.Kincaid
 #&gt; 1  1789-Washington      28.432155
 #&gt; 2  1793-Washington      17.151759
@@ -324,7 +325,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
 #&gt; 55       2005-Bush      11.036277
 #&gt; 56      2009-Obama      10.229426
 #&gt; 57      2013-Obama      11.734767
-#&gt; 58      2017-Trump       9.163084</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'inaugReadability' not found</span></div></pre>
+#&gt; 58      2017-Trump       9.163084</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'>cor</span>(<span class='no'>inaugReadability</span>[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'inaugReadability' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

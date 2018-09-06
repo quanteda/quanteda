@@ -80,7 +80,7 @@ Naive Bayes model. using trained Naive Bayes examples" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
       </span>
     </div>
 
@@ -207,8 +207,8 @@ Naive Bayes model. using trained Naive Bayes examples</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for textmodel_nb</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"class"</span>,
-  <span class='st'>"probability"</span>, <span class='st'>"logposterior"</span>), <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"class"</span>, <span class='st'>"probability"</span>, <span class='st'>"logposterior"</span>), <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,7 +250,7 @@ Naive Bayes model. using trained Naive Bayes examples</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># application to LBG (2003) example data</span>
-(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_nb.html'>textmodel_nb</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb): object 'nb' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logposterior"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb, type = "logposterior"): object 'nb' not found</span></div></pre>
+(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_nb.html'>textmodel_nb</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb): object 'nb' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logposterior"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb, type = "logposterior"): object 'nb' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -81,7 +81,7 @@ grouping variable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
       </span>
     </div>
 
@@ -290,7 +290,7 @@ column is omitted from the returned data.frame.</p></dd>
     <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='dfm_group.html'>dfm_group</a></span>(<span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'>
 <span class='co'># calculate relative frequency by president</span>
 <span class='no'>freq_weight</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>dfm_weight_pres</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>,
                                   <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in textstat_frequency(dfm_weight_pres, n = 10, groups = "President"): object 'dfm_weight_pres' not found</span></div><div class='input'>
