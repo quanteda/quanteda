@@ -158,6 +158,7 @@ Collate:
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
+    'textstat_simil2.R'
     'tokens.R'
     'tokens_compound.R'
     'tokens_group.R'
