@@ -169,17 +169,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_cosine
-S4 qatd_cpp_cosine(const arma::sp_mat& A, const IntegerVector selection_, const int margin, double limit);
-RcppExport SEXP _quanteda_qatd_cpp_cosine(SEXP ASEXP, SEXP selection_SEXP, SEXP marginSEXP, SEXP limitSEXP) {
+// qatd_cpp_similarity
+S4 qatd_cpp_similarity(const arma::sp_mat& mat, const int method, const IntegerVector target_, const double limit);
+RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP matSEXP, SEXP methodSEXP, SEXP target_SEXP, SEXP limitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type selection_(selection_SEXP);
-    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_cosine(A, selection_, margin, limit));
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type target_(target_SEXP);
+    Rcpp::traits::input_parameter< const double >::type limit(limitSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mat, method, target_, limit));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -374,7 +374,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 4},
-    {"_quanteda_qatd_cpp_cosine", (DL_FUNC) &_quanteda_qatd_cpp_cosine, 4},
+    {"_quanteda_qatd_cpp_similarity", (DL_FUNC) &_quanteda_qatd_cpp_similarity, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},

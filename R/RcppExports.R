@@ -49,8 +49,8 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window)
 }
 
-qatd_cpp_cosine <- function(A, selection_, margin = 1L, limit = 0) {
-    .Call(`_quanteda_qatd_cpp_cosine`, A, selection_, margin, limit)
+qatd_cpp_similarity <- function(mat, method, target_, limit = 0) {
+    .Call(`_quanteda_qatd_cpp_similarity`, mat, method, target_, limit)
 }
 
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {

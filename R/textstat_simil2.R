@@ -52,7 +52,7 @@
 textstat_simil2 <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("cosine", "correlation"), 
-                           upper  = FALSE, diag = FALSE, min_simil = 0) {
+                           min_simil = NULL) {
     UseMethod("textstat_simil2")
 }
     
@@ -61,112 +61,48 @@ textstat_simil2 <- function(x, selection = NULL,
 textstat_simil2.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("cosine", "correlation"), 
-                               upper  = FALSE, diag = FALSE, min_simil = 0) {
+                               min_simil = NULL) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil2"))
 }
     
 #' @export    
 textstat_simil2.dfm <- function(x, selection = NULL,
-                          margin = c("documents", "features"),
-                          method = c("cosine", "correlation"), 
-                          upper  = FALSE, diag = FALSE, min_simil = 0) {
+                                margin = c("documents", "features"),
+                                method = c("cosine", "correlation"), 
+                                min_simil = NULL) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
     method <- match.arg(method)
+    if (is.null(min_simil)) 
+        min_simil <- -1.0
     
-    if (margin == "documents") {
-        if (is.null(selection)) {
-            i <- seq(ndoc(x))
-        } else {
-            i <- match(selection, docnames(x))
-            upper <- TRUE
-        }
-        m <- 1
+    if (margin == "documents") 
+        x <- t(x)
+    if (is.null(selection)) {
+        i <- seq(ncol(x))
     } else {
-        if (is.null(selection)) {
-            i <- seq(nrow(x))
-        } else {
-            i <- match(selection, rownames(x))
-            upper <- TRUE
-        }
-        m <- 2
+        i <- match(selection, colnames(x))
     }
+    if (any(is.na(i)))
+        stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     
     if (method == "cosine") {
-        result <- qatd_cpp_cosine(mt, i, m, min_simil)
-    } else if  (method == "correlation") {
-        result <- qatd_cpp_cosine(mt, i, m, min_simil)
+        result <- qatd_cpp_similarity(x, 1, i, min_simil)
+    } else if (method == "correlation") {
+        result <- qatd_cpp_similarity(x, 2, i, min_simil)
     }
-    
-    if (!upper)
-        result <- result + t(result)
-    if (diag)
-        diag(result) <- 1
-    
-    
-    label <- if (margin == "documents") rownames(x) else colnames(x)
+
+    label <- colnames(x)
     rownames(result) <- label
     if (is.null(selection)) {
         colnames(result) <- label
+        result <- as(forceSymmetric(result, "L"), "dsCMatrix")
     } else {
         result <- result[,i, drop = FALSE]
         colnames(result) <- label[i]
+        result <- as(result, "dgCMatrix")
     }
-    
     return(result)
 }
 
-
-## code below based on assoc.R from the qlcMatrix package
-## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
-
-# L2 norm
-# norm2 <- function(x,s) { drop(Matrix::crossprod(x ^ 2, s)) ^ 0.5 }
-# L1 norm
-# norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
-
-# cosine similarity: xy / sqrt(xx * yy)
-cosine_simil <- function(x, y = NULL, margin = 1) {
-    
-    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
-    if (margin == 1) x <- t(x)
-    S <- rep(1, nrow(x))
-    N <- Matrix::Diagonal(x = sqrt(colSums(x ^ 2)) ^ -1)
-    x <- x %*% N
-    if (!is.null(y)) {
-        if (margin == 1) y <- t(y)
-        N <- Matrix::Diagonal(x = sqrt(colSums(y ^ 2)) ^ -1)
-        y <- y %*% N
-        return(as.matrix(Matrix::crossprod(x, y)))
-    } else
-        return(as.matrix(Matrix::crossprod(x)))
-}
-
-# Pearson correlation
-correlation_simil <- function(x, y = NULL, margin = 1) {
-    
-    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
-    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
-    func_tcp <- if (margin == 2) Matrix::tcrossprod else Matrix::crossprod
-    func_sum <- if (margin == 2) colSums else rowSums
-    
-    n <- if (margin == 2) nrow(x) else ncol(x)
-    mux <- if (margin == 2) colMeans(x) else rowMeans(x)
-    
-    if (!is.null(y)) {
-        stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
-        muy <- if (margin == 2) colMeans(y) else rowMeans(y)
-        covmat <- (as.matrix(func_cp(x,y)) - n * tcrossprod(mux, muy)) / (n - 1)
-        sdvecX <- sqrt((func_sum(x ^ 2) - n * mux ^ 2) / (n - 1))
-        sdvecY <- sqrt((func_sum(y ^ 2) - n * muy ^ 2) / (n - 1))
-        cormat <- covmat / tcrossprod(sdvecX, sdvecY)
-    } else {
-        covmat <- (as.matrix(func_cp(x)) - drop(n * tcrossprod(mux))) / (n - 1)
-        sdvec <- sqrt(diag(covmat))
-        cormat <- covmat / tcrossprod(sdvec)
-    }
-    cormat
-}

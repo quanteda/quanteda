@@ -4,8 +4,8 @@ quanteda_options(threads = 7)
 #load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
 #toks <- tokens(data_corpus_guardian, verbose=TRUE)
 
-load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
-toks <- data_tokens_guardian
+corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian.RDS")
+toks <- tokens(corp)
 toks[[1]]
 
 toks2 <- tokens_select(toks, stopwords(), valuetype='fixed', window = 2)

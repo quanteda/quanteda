@@ -1,66 +1,95 @@
 #include "armadillo.h"
 #include "quanteda.h"
+#include "dev.h"
 using namespace quanteda;
 using std::pow;
 using std::exp;
 using std::sqrt;
 using std::log;
 
-
-struct cosine_similarity : public Worker {
+double simil_cosine(arma::colvec& col_i, 
+                     arma::colvec& col_j) {
     
-    const arma::sp_mat& amat; // input
+    double simil = dot(col_i, col_j) / (sqrt(accu(pow(col_i, 2))) * sqrt(accu(pow(col_j, 2))));
+    return(simil);
+}
+
+double simil_correlation(arma::colvec& col_i, 
+                          arma::colvec& col_j) {
+    
+    double simil = as_scalar(cor(col_i, col_j));
+    return(simil);
+}
+
+struct similarity : public Worker {
+    
+    const arma::sp_mat& mat; // input
     Triplets& simil_tri; // output
-    const std::vector<unsigned int>& selection;
-    double limit;
+    const int method;
+    const std::vector<unsigned int>& target;
+    const double limit;
     arma::uword nrow, ncol;
     
-    // initialize from Rcpp input and output matrixes 
-    cosine_similarity(const arma::sp_mat& amat_, Triplets& simil_tri_, 
-                      std::vector<unsigned int>& selection_,
-                      double limit_, arma::uword nrow_, arma::uword ncol_) :
-                      amat(amat_), simil_tri(simil_tri_), selection(selection_),
-                      limit(limit_), nrow(nrow_), ncol(ncol_) {}
+    similarity(const arma::sp_mat& mat_, Triplets& simil_tri_,
+               int method_, std::vector<unsigned int>& target_,
+               double limit_, arma::uword nrow_, arma::uword ncol_) :
+               method(method_), mat(mat_), simil_tri(simil_tri_), target(target_),
+               limit(limit_), nrow(nrow_), ncol(ncol_) {}
     
-    // function call operator that work for the specified range (begin/end)
     void operator()(std::size_t begin, std::size_t end) {
-        bool upper = selection.size() < nrow;
+        double simil = 0;
+        bool symm = target.size() == ncol;
+        arma::colvec col_zero = arma::zeros<arma::colvec>(nrow);
         for (std::size_t i = begin; i < end; i++) {
-            arma::colvec col_i = amat.col(i) + arma::zeros<arma::colvec>(ncol);
-            for (auto s : selection) {
-                std::size_t j = s - 1;
-                if (!upper && j >= i) continue;
-                arma::colvec col_j = amat.col(j) + arma::zeros<arma::colvec>(ncol);
-                double simil = dot(col_i, col_j) / (sqrt(accu(pow(col_i, 2))) * sqrt(accu(pow(col_j, 2))));
-                //Rcout << "i=" << i << " j=" << j << " simil=" << simil << "\n";
-                if (s >= limit) {
-                    Triplet mat_triplet = std::make_tuple(i, j, simil);
-                    simil_tri.push_back(mat_triplet);
+            arma::colvec col_i = mat.col(i) + col_zero;
+            std::size_t j;
+            for (auto s : target) {
+                j = s - 1;
+                //Rcout << "i=" << i << " j=" << j << "\n";
+                if (symm && j > i) continue;
+                arma::colvec col_j = mat.col(j) + col_zero;
+                switch (method){
+                    case 1:
+                        simil = simil_cosine(col_i, col_j);
+                        break;
+                    case 2:
+                        simil = simil_correlation(col_i, col_j);
+                        break;
+                    default:
+                        simil = 0;
+                }
+                //Rcout << " simil=" << simil << "\n";
+                if (simil >= limit) {
+                    simil_tri.push_back(std::make_tuple(i, j, simil));
                 }
             }
         }
     }
 };
 
+
 // [[Rcpp::export]]
-S4 qatd_cpp_cosine(const arma::sp_mat& A, 
-                    const IntegerVector selection_,
-                    const int margin = 1, 
-                    double limit = 0) {
+S4 qatd_cpp_similarity(const arma::sp_mat& mat, 
+                       const int method,
+                       const IntegerVector target_,
+                       const double limit = 0) {
     
-    //Transpose the dfm so that the distance can be calculated between columns.
-    arma::sp_mat base_m = (margin == 1) ? A.t() : A;
-    arma::uword nrow = (margin == 1) ? A.n_rows : A.n_cols;
-    arma::uword ncol = (margin == 1) ? A.n_cols : A.n_rows;
+    arma::uword nrow = mat.n_rows;
+    arma::uword ncol = mat.n_cols;
+    std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     
-    std::vector<unsigned int> selection = as< std::vector<unsigned int> >(selection_);
+    //dev::Timer timer;
+    //dev::start_timer("Compute", timer);
     
     Triplets simil_tri;
-    cosine_similarity simil(base_m, simil_tri, selection, limit, nrow, ncol);
-    parallelFor(0, nrow, simil);
+    //simil_tri.reserve(ncol * target.size() * (1 - ((limit + 1) / 2)));
+    similarity simil(mat, simil_tri, method, target, limit, nrow, ncol);
+    parallelFor(0, ncol, simil);
+    //dev::stop_timer("Compute", timer);
     
+    //dev::start_timer("Convert", timer);
     std::size_t simil_size = simil_tri.size();
-    IntegerVector dim_ = IntegerVector::create(nrow, nrow);
+    IntegerVector dim_ = IntegerVector::create(ncol, ncol);
     IntegerVector i_(simil_size), j_(simil_size);
     NumericVector x_(simil_size);
     
@@ -80,29 +109,3 @@ S4 qatd_cpp_cosine(const arma::sp_mat& A,
     
     return simil_;
 }
-
-/***R
-quanteda_options(threads = 8)
-#mt <- dfm(c("a b c", "a b d", "b d e", "e"))
-mt <- dfm(data_corpus_inaugural)
-
-old <- as.matrix(textstat_simil(mt, method = "cosine"))
-dim(old)
-new <- as.matrix(textstat_simil2(mt, min_simil = 0, diag = TRUE))
-dim(new)
-old[1:6, 1:6]
-new[1:6, 1:6]
-microbenchmark::microbenchmark(
-    textstat_simil2(mt, min_simil = 0.8, diag = TRUE),
-    textstat_simil2(mt, min_simil = 0, diag = TRUE),
-    textstat_simil(mt, method = "cosine")
-)
-
-microbenchmark::microbenchmark(
-    textstat_simil2(mt, "feature", min_simil = 0.8, diag = TRUE),
-    textstat_simil2(mt, "feature", min_simil = 0, diag = TRUE),
-    textstat_simil(mt, "feature", method = "cosine")
-)
-
-*/
-
