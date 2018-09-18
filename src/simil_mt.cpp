@@ -37,6 +37,11 @@ struct similarity : public Worker {
                limit(limit_), nrow(nrow_), ncol(ncol_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
+        
+        // define local triplets
+        std::vector<Triplet> simil_tri_temp;
+        simil_tri_temp.reserve(target.size());
+        
         double simil = 0;
         bool symm = target.size() == ncol;
         arma::colvec col_zero = arma::zeros<arma::colvec>(nrow);
@@ -60,10 +65,12 @@ struct similarity : public Worker {
                 }
                 //Rcout << " simil=" << simil << "\n";
                 if (simil >= limit) {
-                    simil_tri.push_back(std::make_tuple(i, j, simil));
+                    simil_tri_temp.push_back(std::make_tuple(i, j, simil));
                 }
             }
         }
+        std::copy(simil_tri_temp.begin(), simil_tri_temp.end(), 
+                  simil_tri.grow_by(simil_tri_temp.size()));
     }
 };
 
