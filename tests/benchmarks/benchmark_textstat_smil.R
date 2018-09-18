@@ -16,15 +16,15 @@ cos_new1 <- textstat_simil2(mt, margin = "feature", method = "cosine")
 cos_new2 <- textstat_simil2(mt, margin = "feature", method = "cosine", min_simil = 0.5)
 cos_old <- textstat_simil(mt, margin = "feature", method = "cosine")
 
+print(object.size(cos_new1), units = "MB")
+print(object.size(cos_new2), units = "MB")
+print(object.size(cos_old), units = "MB")
+
 testthat::expect_equal(
     as.matrix(cos_new1),
     as.matrix(cos_old),
     tolerance = 0.001
 )
-
-print(object.size(cos_new1), units = "MB")
-print(object.size(cos_new2), units = "MB")
-print(object.size(cos_old), units = "MB")
 
 # correlation ---------------
 
@@ -39,12 +39,12 @@ cor_new1 <- textstat_simil2(mt, margin = "feature", method = "correlation")
 cor_new2 <- textstat_simil2(mt, margin = "feature", method = "correlation", min_simil = 0.5)
 cor_old <- textstat_simil(mt, margin = "feature", method = "correlation")
 
+print(object.size(cor_new1), units = "MB")
+print(object.size(cor_new2), units = "MB")
+print(object.size(cor_old), units = "MB")
+
 testthat::expect_equal(
     as.matrix(cor_new1),
     as.matrix(cor_old),
     tolerance = 0.001
 )
-
-print(object.size(cor_new1), units = "MB")
-print(object.size(cor_new2), units = "MB")
-print(object.size(cor_old), units = "MB")
