@@ -170,16 +170,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_similarity
-S4 qatd_cpp_similarity(const arma::sp_mat& mat, const int method, const IntegerVector target_, const double limit);
-RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP matSEXP, SEXP methodSEXP, SEXP target_SEXP, SEXP limitSEXP) {
+S4 qatd_cpp_similarity(const arma::sp_mat& mt, const int method, const IntegerVector target_, const double limit);
+RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mtSEXP, SEXP methodSEXP, SEXP target_SEXP, SEXP limitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt(mtSEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type target_(target_SEXP);
     Rcpp::traits::input_parameter< const double >::type limit(limitSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mat, method, target_, limit));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mt, method, target_, limit));
     return rcpp_result_gen;
 END_RCPP
 }

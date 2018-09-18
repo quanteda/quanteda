@@ -2,39 +2,29 @@
 #include "quanteda.h"
 #include "dev.h"
 using namespace quanteda;
-using std::pow;
-using std::exp;
-using std::sqrt;
-using std::log;
 
-double simil_cosine(arma::colvec& col_i, 
-                     arma::colvec& col_j) {
-    
-    double simil = dot(col_i, col_j) / (sqrt(accu(pow(col_i, 2))) * sqrt(accu(pow(col_j, 2))));
-    return(simil);
+double simil_cosine(arma::mat& col_i, arma::mat& col_j) {
+    return(dot(col_i, col_j) / (sqrt(accu(pow(col_i, 2))) * sqrt(accu(pow(col_j, 2)))));
 }
 
-double simil_correlation(arma::colvec& col_i, 
-                          arma::colvec& col_j) {
-    
-    double simil = as_scalar(cor(col_i, col_j));
-    return(simil);
+double simil_correlation(arma::mat& col_i, arma::mat& col_j) {
+    return(as_scalar(cor(col_i, col_j)));
 }
 
 struct similarity : public Worker {
     
-    const arma::sp_mat& mat; // input
+    const arma::sp_mat& mt; // input
     Triplets& simil_tri; // output
     const int method;
     const std::vector<unsigned int>& target;
     const double limit;
     arma::uword nrow, ncol;
     
-    similarity(const arma::sp_mat& mat_, Triplets& simil_tri_,
-               int method_, std::vector<unsigned int>& target_,
-               double limit_, arma::uword nrow_, arma::uword ncol_) :
-               mat(mat_), simil_tri(simil_tri_), method(method_), target(target_),
-               limit(limit_), nrow(nrow_), ncol(ncol_) {}
+    similarity(const arma::sp_mat& mt_, Triplets& simil_tri_,
+              int method_, std::vector<unsigned int>& target_,
+              double limit_, arma::uword nrow_, arma::uword ncol_) :
+              mt(mt_), simil_tri(simil_tri_), method(method_), target(target_),
+              limit(limit_), nrow(nrow_), ncol(ncol_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
@@ -44,15 +34,17 @@ struct similarity : public Worker {
         
         double simil = 0;
         bool symm = target.size() == ncol;
-        arma::colvec col_zero = arma::zeros<arma::colvec>(nrow);
+        arma::mat col_i = arma::mat(nrow, 1);
+        arma::mat col_j = arma::mat(nrow, 1);
         for (std::size_t i = begin; i < end; i++) {
-            arma::colvec col_i = mat.col(i) + col_zero;
+            col_i = arma::mat(mt.col(i));
+            //Rcout << col_i << "\n";
             std::size_t j;
             for (auto s : target) {
                 j = s - 1;
                 //Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
-                arma::colvec col_j = mat.col(j) + col_zero;
+                col_j = arma::mat(mt.col(j));
                 switch (method){
                     case 1:
                         simil = simil_cosine(col_i, col_j);
@@ -76,13 +68,13 @@ struct similarity : public Worker {
 
 
 // [[Rcpp::export]]
-S4 qatd_cpp_similarity(const arma::sp_mat& mat, 
+S4 qatd_cpp_similarity(const arma::sp_mat& mt, 
                        const int method,
                        const IntegerVector target_,
                        const double limit = -1.0) {
     
-    arma::uword ncol = mat.n_cols;
-    arma::uword nrow = mat.n_rows;
+    arma::uword ncol = mt.n_cols;
+    arma::uword nrow = mt.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     
     //dev::Timer timer;
@@ -91,7 +83,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mat,
     Triplets simil_tri;
     //if (limit == -1.0)
     //    simil_tri.reserve(ncol * target.size() * 0.5);
-    similarity simil(mat, simil_tri, method, target, limit, nrow, ncol);
+    similarity simil(mt, simil_tri, method, target, limit, nrow, ncol);
     parallelFor(0, ncol, simil);
     //dev::stop_timer("Compute", timer);
     
@@ -106,14 +98,22 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mat,
         j_[k] = std::get<1>(simil_tri[k]);
         x_[k] = std::get<2>(simil_tri[k]);
     }
-    
-    S4 simil_("dgTMatrix");
-    simil_.slot("i") = i_;
-    simil_.slot("j") = j_;
-    simil_.slot("x") = x_;
-    simil_.slot("Dim") = dim_;
-    
-    //dev::stop_timer("Convert", timer);
-    
-    return simil_;
+    if (target.size() == ncol) {
+        S4 simil_("dsTMatrix");
+        simil_.slot("i") = i_;
+        simil_.slot("j") = j_;
+        simil_.slot("x") = x_;
+        simil_.slot("Dim") = dim_;
+        simil_.slot("uplo") = "L";
+        //dev::stop_timer("Convert", timer);
+        return simil_;
+    } else {
+        S4 simil_("dgTMatrix");
+        simil_.slot("i") = i_;
+        simil_.slot("j") = j_;
+        simil_.slot("x") = x_;
+        simil_.slot("Dim") = dim_;
+        //dev::stop_timer("Convert", timer);
+        return simil_;
+    }
 }

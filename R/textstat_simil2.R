@@ -52,7 +52,7 @@
 textstat_simil2 <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("cosine", "correlation"), 
-                           min_simil = NULL) {
+                           min_simil = NULL, condition = FALSE) {
     UseMethod("textstat_simil2")
 }
     
@@ -61,7 +61,7 @@ textstat_simil2 <- function(x, selection = NULL,
 textstat_simil2.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("cosine", "correlation"), 
-                               min_simil = NULL) {
+                               min_simil = NULL, condition = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil2"))
 }
     
@@ -69,7 +69,7 @@ textstat_simil2.default <- function(x, selection = NULL,
 textstat_simil2.dfm <- function(x, selection = NULL,
                                 margin = c("documents", "features"),
                                 method = c("cosine", "correlation"), 
-                                min_simil = NULL) {
+                                min_simil = NULL, condition = FALSE) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
@@ -97,11 +97,11 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     rownames(result) <- label
     if (is.null(selection)) {
         colnames(result) <- label
-        result <- as(forceSymmetric(result, "L"), "dsCMatrix")
+        #result <- as(forceSymmetric(result, "L"), "dsCMatrix")
     } else {
         result <- result[,i, drop = FALSE]
         colnames(result) <- label[i]
-        result <- as(result, "dgCMatrix")
+        #result <- as(result, "dgCMatrix")
     }
     return(result)
 }
