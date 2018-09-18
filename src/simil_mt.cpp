@@ -3,30 +3,69 @@
 #include "dev.h"
 using namespace quanteda;
 
-double simil_cosine(arma::mat& col_i, arma::mat& col_j) {
-    return(dot(col_i, col_j) / (sqrt(accu(pow(col_i, 2))) * sqrt(accu(pow(col_j, 2)))));
+double magni_cosine(arma::mat& col) {
+    return(sqrt(accu(pow(col, 2))));
 }
 
-double simil_correlation(arma::mat& col_i, arma::mat& col_j) {
-    return(as_scalar(cor(col_i, col_j)));
+double magni_correlation(arma::mat& col) {
+    return(as_scalar(var(col)));
+}
+
+struct magnitude : public Worker {
+    
+    const arma::sp_mat& mt; // input
+    DoubleParams& magni; // output
+    const int method;
+    
+    magnitude(const arma::sp_mat& mt_, DoubleParams& magni_, int method_) :
+              mt(mt_), magni(magni_), method(method_) {}
+    
+    void operator()(std::size_t begin, std::size_t end) {
+        
+        arma::uword ncol = mt.n_cols;
+        arma::uword nrow = mt.n_rows;
+        arma::mat col = arma::mat(nrow, 1);
+        for (std::size_t i = begin; i < end; i++) {
+            col = arma::mat(mt.col(i));
+            switch (method) {
+                case 1:
+                    magni[i] = magni_cosine(col);
+                    break;
+                case 2:
+                    magni[i] = magni_correlation(col);
+                    break;
+                default:
+                    magni[i] = 0;
+            }
+        }
+    }
+};
+
+double simil_cosine(arma::mat& col_i, arma::mat& col_j, double magni_i, double magni_j) {
+    return dot(col_i, col_j) / (magni_i * magni_j);
+}
+
+double simil_correlation(arma::mat& col_i, arma::mat& col_j, double magni_i, double magni_j) {
+    return as_scalar(cov(col_i, col_j)) / (magni_i * magni_j);
 }
 
 struct similarity : public Worker {
     
     const arma::sp_mat& mt; // input
     Triplets& simil_tri; // output
+    const DoubleParams& magni;
     const int method;
     const std::vector<unsigned int>& target;
     const double limit;
-    arma::uword nrow, ncol;
     
-    similarity(const arma::sp_mat& mt_, Triplets& simil_tri_,
-              int method_, std::vector<unsigned int>& target_,
-              double limit_, arma::uword nrow_, arma::uword ncol_) :
-              mt(mt_), simil_tri(simil_tri_), method(method_), target(target_),
-              limit(limit_), nrow(nrow_), ncol(ncol_) {}
+    similarity(const arma::sp_mat& mt_, Triplets& simil_tri_, const DoubleParams& magni_,
+               int method_, std::vector<unsigned int>& target_, double limit_) :
+               mt(mt_), simil_tri(simil_tri_), magni(magni_), method(method_), target(target_), limit(limit_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
+        
+        arma::uword ncol = mt.n_cols;
+        arma::uword nrow = mt.n_rows;
         
         // define local triplets
         std::vector<Triplet> simil_tri_temp;
@@ -47,16 +86,16 @@ struct similarity : public Worker {
                 col_j = arma::mat(mt.col(j));
                 switch (method){
                     case 1:
-                        simil = simil_cosine(col_i, col_j);
+                        simil = simil_cosine(col_i, col_j, magni[i], magni[j]);
                         break;
                     case 2:
-                        simil = simil_correlation(col_i, col_j);
+                        simil = simil_correlation(col_i, col_j, magni[i], magni[j]);
                         break;
                     default:
                         simil = 0;
                 }
                 //Rcout << " simil=" << simil << "\n";
-                if (simil >= limit) {
+                if (simil != 0 && simil >= limit) {
                     simil_tri_temp.push_back(std::make_tuple(i, j, simil));
                 }
             }
@@ -80,11 +119,17 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     //dev::Timer timer;
     //dev::start_timer("Compute", timer);
     
+    // compute magnitued for all columns
+    DoubleParams mangi(ncol);
+    magnitude magnitude(mt, mangi, method);
+    parallelFor(0, ncol, magnitude);
+    
+    // compute similarity for each pair
     Triplets simil_tri;
     //if (limit == -1.0)
     //    simil_tri.reserve(ncol * target.size() * 0.5);
-    similarity simil(mt, simil_tri, method, target, limit, nrow, ncol);
-    parallelFor(0, ncol, simil);
+    similarity similarity(mt, simil_tri, mangi, method, target, limit);
+    parallelFor(0, ncol, similarity);
     //dev::stop_timer("Compute", timer);
     
     //dev::start_timer("Convert", timer);
