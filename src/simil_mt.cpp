@@ -33,7 +33,7 @@ struct similarity : public Worker {
     similarity(const arma::sp_mat& mat_, Triplets& simil_tri_,
                int method_, std::vector<unsigned int>& target_,
                double limit_, arma::uword nrow_, arma::uword ncol_) :
-               method(method_), mat(mat_), simil_tri(simil_tri_), target(target_),
+               mat(mat_), simil_tri(simil_tri_), method(method_), target(target_),
                limit(limit_), nrow(nrow_), ncol(ncol_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
