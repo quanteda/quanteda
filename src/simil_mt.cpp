@@ -72,17 +72,18 @@ struct similarity : public Worker {
 S4 qatd_cpp_similarity(const arma::sp_mat& mat, 
                        const int method,
                        const IntegerVector target_,
-                       const double limit = 0) {
+                       const double limit = -1.0) {
     
-    arma::uword nrow = mat.n_rows;
     arma::uword ncol = mat.n_cols;
+    arma::uword nrow = mat.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     
     //dev::Timer timer;
     //dev::start_timer("Compute", timer);
     
     Triplets simil_tri;
-    //simil_tri.reserve(ncol * target.size() * (1 - ((limit + 1) / 2)));
+    //if (limit == -1.0)
+    //    simil_tri.reserve(ncol * target.size() * 0.5);
     similarity simil(mat, simil_tri, method, target, limit, nrow, ncol);
     parallelFor(0, ncol, simil);
     //dev::stop_timer("Compute", timer);
