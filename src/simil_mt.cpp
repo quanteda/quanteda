@@ -71,9 +71,6 @@ struct similarity : public Worker {
         arma::uword ncol = mt.n_cols;
         arma::uword nrow = mt.n_rows;
         
-        // define local triplets
-        //std::vector<Triplet> simil_tri_temp;
-        //simil_tri_temp.reserve(target.size());
         std::vector<double> simil_temp;
         double simil = 0;
         
@@ -84,7 +81,7 @@ struct similarity : public Worker {
             i = target[h] - 1;
             col_i = arma::mat(mt.col(i));
             //Rcout << col_i << "\n";
-            simil_temp.reserve(nrow);
+            simil_temp.reserve(ncol);
             for (std::size_t j = 0; j < ncol; j++) {
                 //Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
@@ -104,7 +101,7 @@ struct similarity : public Worker {
             }
             std::vector<double> simil_sort = simil_temp;
             double limit_temp = limit;
-            if (nrow > rank) {
+            if (ncol > rank) {
                 std::sort(simil_sort.begin(), simil_sort.end(), std::greater<double>());
                 if (limit_temp < simil_sort[rank - 1])
                     limit_temp = simil_sort[rank - 1];
@@ -118,9 +115,6 @@ struct similarity : public Worker {
             }
             simil_temp.clear();
         }
-        
-        //std::copy(simil_tri_temp.begin(), simil_tri_temp.end(), 
-        //          simil_tri.grow_by(simil_tri_temp.size()));
     }
 };
 
