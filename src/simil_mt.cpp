@@ -75,7 +75,6 @@ struct similarity : public Worker {
         //std::vector<Triplet> simil_tri_temp;
         //simil_tri_temp.reserve(target.size());
         std::vector<double> simil_temp;
-        
         double simil = 0;
         
         arma::mat col_i = arma::mat(nrow, 1);
@@ -87,7 +86,7 @@ struct similarity : public Worker {
             //Rcout << col_i << "\n";
             simil_temp.reserve(nrow);
             for (std::size_t j = 0; j < ncol; j++) {
-                Rcout << "i=" << i << " j=" << j << "\n";
+                //Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
                 col_j = arma::mat(mt.col(j));
                 switch (method){
@@ -100,7 +99,7 @@ struct similarity : public Worker {
                     default:
                         simil = 0;
                 }
-                Rcout << "simil=" << simil << "\n";
+                //Rcout << "simil=" << simil << "\n";
                 simil_temp.push_back(simil);
             }
             std::vector<double> simil_sort = simil_temp;
@@ -110,10 +109,10 @@ struct similarity : public Worker {
                 if (limit_temp < simil_sort[rank - 1])
                     limit_temp = simil_sort[rank - 1];
             }
-            Rcout << "Limit: " << limit_temp << "\n";
+            //Rcout << "Limit: " << limit_temp << "\n";
             for (std::size_t k = 0; k < simil_temp.size(); k++) {
                 if (simil_temp[k] != 0 && simil_temp[k] >= limit_temp) {
-                    Rcout << "Add: " <<  target[k] - 1 << " " << simil_temp[k] << "\n";
+                    //Rcout << "Add: " <<  target[k] - 1 << " " << simil_temp[k] << "\n";
                     simil_tri.push_back(std::make_tuple(k, i, simil_temp[k]));
                 }
             }
@@ -137,7 +136,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     arma::uword nrow = mt.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     if (rank < 1) rank = 1;
-    bool symm = target.size() == ncol && target.size() == rank;
+    bool symm = target.size() == ncol && rank == nrow;
     
     //dev::Timer timer;
     //dev::start_timer("Compute", timer);
@@ -172,7 +171,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
         simil_.slot("j") = j_;
         simil_.slot("x") = x_;
         simil_.slot("Dim") = dim_;
-        simil_.slot("uplo") = "L";
+        simil_.slot("uplo") = "U";
         //dev::stop_timer("Convert", timer);
         return simil_;
     } else {
