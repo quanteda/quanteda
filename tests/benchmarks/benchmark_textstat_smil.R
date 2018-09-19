@@ -9,6 +9,7 @@ microbenchmark::microbenchmark(
     textstat_simil2(mt, margin = "features"),
     textstat_simil2(mt, margin = "features", min_simil = 0.5),
     textstat_simil2(mt, margin = "features", min_simil = 0.8),
+    textstat_simil2(mt, margin = "features", rank = 10),
     textstat_simil(mt, margin = "features", method = "cosine"),
     times = 10
 )
