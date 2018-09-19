@@ -76,7 +76,8 @@ Suggests:
     topicmodels,
     xtable,
     knitr,
-    igraph
+    igraph,
+    wordcloud
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
