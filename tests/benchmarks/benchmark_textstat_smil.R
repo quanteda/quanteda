@@ -16,10 +16,12 @@ microbenchmark::microbenchmark(
 
 cos_new1 <- textstat_simil2(mt, margin = "feature", method = "cosine")
 cos_new2 <- textstat_simil2(mt, margin = "feature", method = "cosine", min_simil = 0.5)
+cos_new3 <- textstat_simil2(mt, margin = "features", rank = 10)
 cos_old <- textstat_simil(mt, margin = "feature", method = "cosine")
 
 print(object.size(cos_new1), units = "MB")
 print(object.size(cos_new2), units = "MB")
+print(object.size(cos_new3), units = "MB")
 print(object.size(cos_old), units = "MB")
 
 testthat::expect_equal(
