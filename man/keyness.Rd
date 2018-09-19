@@ -4,13 +4,13 @@
 \alias{keyness}
 \alias{keyness_chi2_dt}
 \alias{keyness_chi2_stats}
-\alias{keyness}
 \alias{keyness_exact}
 \alias{keyness_lr}
 \alias{keyness_pmi}
 \title{Compute keyness (internal functions)}
 \usage{
-keyness_chi2_dt(x, correction = c("default", "yates", "williams", "none"))
+keyness_chi2_dt(x, correction = c("default", "yates", "williams",
+  "none"))
 
 keyness_chi2_stats(x)
 

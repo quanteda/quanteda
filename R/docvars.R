@@ -113,6 +113,8 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
+    if (is.dfm(value))
+        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
     if ("texts" %in% field) 
         stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
@@ -127,7 +129,13 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
+    if (is.dfm(value)) 
+        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
+    if (is.null(value)) {
+        attr(x, "docvars") <- attr(x, "docvars")[, seq(ncol(attr(x, "docvars"))) * -1, drop = FALSE]
+    } else if (is.null(field) && (is.data.frame(value))) {
+        if (nrow(value) != ndoc(x))
+            stop(message_error("docvar_mismatch"))
         attr(x, "docvars") <- value
     } else {
         if (!is.data.frame(attr(x, "docvars")) || !nrow(attr(x, "docvars"))) {
@@ -138,13 +146,19 @@ docvars.kwic <- function(x) {
             attr(x, "docvars")[[field]] <- value
         }
     }
+    # row.names(attr(x, "docvars")) <- docnames(x)
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
-    
-    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
+    if (is.dfm(value)) 
+        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
+    if (is.null(value)) {
+        x@docvars <- x@docvars[, seq(ncol(x@docvars)) * -1, drop = FALSE]
+    } else if (is.null(field) && (is.data.frame(value))) {
+        if (nrow(value) != ndoc(x))
+            stop(message_error("docvar_mismatch"))
         x@docvars <- value
     } else {
         if (!is.data.frame(x@docvars) || !nrow(x@docvars)) {
@@ -155,6 +169,7 @@ docvars.kwic <- function(x) {
             x@docvars[[field]] <- value
         }
     }
+    # row.names(attr(x, "docvars")) <- docnames(x)
     return(x)
 }
 

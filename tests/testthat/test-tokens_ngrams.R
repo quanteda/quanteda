@@ -87,25 +87,37 @@ test_that("test `tokens_ngrams` on skipgrams", {
     )
 })
 
-# FAILLING (issue #469)
-# test_that("test there is not competition between the thread", {
-#     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
-#              two = "A B C D E")
-#     toks <- tokens(txt, remove_punct = TRUE)
-#     
-#     for(k in 1:1000) {
-#         out <- tokens_ngrams(toks, n = 2:3)
-#         expect_equivalent(as.list(out),
-#                           list(c("insurgents_killed", "killed_in", "in_ongoing", "ongoing_fighting", 
-#                                  "insurgents_killed_in", "killed_in_ongoing", "in_ongoing_fighting"),
-#                                c("A_B", "B_C", "C_D", "D_E", "A_B_C", "B_C_D", "C_D_E")))
-#     }
-# })
+
+test_that("tokens_ngrams does nothing when n = 1 and skip = 0 (#1395)", {
     
-# FAILLING
-# test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
-#     ## issue #392
-#     expect_equivalent(unclass(tokens_ngrams(tokens("a"), n = 2))[[1]],
-#                       char_ngrams("a", n = 2))
-# })
+    toks <- tokens("insurgents killed in ongoing fighting")
+    expect_identical(tokens_ngrams(toks, n = 1, skip = 0, concatenator = " "), toks)
+    
+})
+
+test_that("test there is no competition between threads", {
+    
+    skip_on_cran()
+    skip_on_travis()
+    skip_on_appveyor()
+    
+    # increase the chance to generate the same ngram by duplicating texts
+    txt <- char_tolower(rep("Insurgents killed in ongoing fighting.", 10))
+    toks <- tokens(txt, remove_punct = TRUE)
+    
+    ngrs <- rep(list(c("insurgents_killed", "killed_in", "in_ongoing", "ongoing_fighting",
+                       "insurgents_killed_in", "killed_in_ongoing", "in_ongoing_fighting")), 10)
+    names(ngrs) <- names(toks)
+    
+    # needs to be repeated becasue thread compeition happen at low chance 
+    for(k in 1:1000) {
+        expect_identical(as.list(tokens_ngrams(toks, n = 2:3)), ngrs)
+    }
+})
+    
+test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
+    ## issue #392
+    expect_equivalent(unclass(as.list(tokens_ngrams(tokens("a"), n = 2)))[[1]],
+                      char_ngrams("a", n = 2))
+})
 

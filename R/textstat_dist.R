@@ -66,6 +66,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
                               upper = FALSE, diag = FALSE, p = 2) {
     
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
     method <- char_tolower(method)
     

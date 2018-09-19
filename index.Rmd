@@ -1,5 +1,5 @@
 ---
-output: github_document
+output: md_document
 ---
 
 
@@ -13,11 +13,7 @@ knitr::opts_chunk$set(
 
 # quanteda: Quantitative Analysis of Textual Data
 
-## About
-
-An R package for managing and analyzing text, created by [Kenneth Benoit](http://kenbenoit.net).
-Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
-
+**quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 ## How to Install
 
@@ -41,7 +37,17 @@ from CRAN.
 **If you are using macOS**, you should install the 
 [macOS tools](https://cran.r-project.org/bin/macosx/tools/), 
 namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requires gfortran to build).
-    
+
+## System Requirements
+
+**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
+
+| | Minimum | Recommended |
+| --- | :---: | :---: |
+| OS | Windows/MacOS/Linux | MacOS/Linux |
+| CPU | 1 core | 4 cores or more |
+| RAM | 2GB | 8GB more more |
+| IDE | | R Studio |    
 
 ## How to Use 
 

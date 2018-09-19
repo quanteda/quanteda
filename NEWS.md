@@ -1,12 +1,29 @@
-# Since quanteda v1.3.0
+# Since quanteda v1.3.4
 
-### Bug fixes
+### Bug fixes and stability enhancements
+
+* Fixed a bug causing incorrect counting in `fcm(x, ordered = TRUE)`. (#1413)  Also set the condition that `window` can be of size 1 (formerly the limit was 2 or greater).
+* Fixed deprecation warnings from adding a dfm as docvars, and this now inmports the feature names as docvar names automatically. (related to #1417)
+* Fixed behaviour from `tokens(x, what = "fasterword", remove_separators = TRUE)` so that it correctly splits words separated by `\n` and `\t` characters.  (#1420)
+* Add error checking for functions taking dfm inputs in case a dfm has empty features (#1419).
+* For `textstat_readability()`, fixed a bug in Dale-Chall-based measures and in the Spache word list measure.  These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists.  The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (#1410)
+
+
+# quanteda v1.3.4
+
+### Bug fixes and stability enhancements
 
 * Keep encodings of types when a tokens object is recompiled. (#1387)
+* More robust handling in `predict.textmodel_worscores()` when training and test feature sets are difference (#1380).  
+* `char_segment()` and `corpus_segment()` are more robust to whitespace characters preceding a pattern (#1394).  
+* `tokens_ngrams()` is more robust to handling large numbers of documents (#1395).  
+* `corpus.data.frame()` is now robust to handling data.frame inputs with improper or missing variable names (#1388).  
+
 
 ### New Features
 
 * Added `as.igraph.fcm()` method for converting an fcm object into an **igraph** graph object.
+* Added a `case_insensitive` argument to `char_segment()` and `corpus_segment()`.  
 
 
 # quanteda v1.3.0

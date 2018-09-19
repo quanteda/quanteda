@@ -21,13 +21,16 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
@@ -40,6 +43,7 @@
 <meta property="og:description" content="Internal function used in textstat_keyness.  Computes \(chi^2\) with Yates'
 continuity correction for 2x2 tables." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -76,7 +80,7 @@ continuity correction for 2x2 tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
       </span>
     </div>
 
@@ -202,7 +206,8 @@ continuity correction for 2x2 tables.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>))
+    <pre class="usage"><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>,
+  <span class='st'>"none"</span>))
 
 <span class='fu'>keyness_chi2_stats</span>(<span class='no'>x</span>)
 
@@ -277,7 +282,7 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
 #&gt; 5       e -0.065813362 0.7975330        1           1
 #&gt; 6       f -0.065813362 0.7975330        1           1
 #&gt; 7       g  0.731092437 0.3925293        1           0
-#&gt; 8       h  0.089303670 0.7650643        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_chi2_stats</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_exact</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_lr</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;   feature           G2         p n_target n_reference
+#&gt; 8       h  0.089303670 0.7650643        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_chi2_stats</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_exact</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_lr</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;   feature           G2         p n_target n_reference
 #&gt; 1       a  0.004751467 0.9450446        3           2
 #&gt; 2       b  0.091241952 0.7626042        2           1
 #&gt; 3       c  0.477346514 0.4896267        6           2

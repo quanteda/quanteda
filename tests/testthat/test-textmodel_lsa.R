@@ -81,3 +81,12 @@ test_that("textmodel-lsa works with margin argument", {
     expect_equal(dim(ie_lsa3$matrix_low_rank), c(ndoc(ie_dfm), 10))
     expect_true(is.dfm(as.dfm(ie_lsa3)))
 })
+
+test_that("raises error when dfm is empty (#1419)",  {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textmodel_lsa(mx),
+                 quanteda:::message_error("dfm_empty"))
+    
+})
+

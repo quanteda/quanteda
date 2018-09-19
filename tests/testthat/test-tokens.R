@@ -517,3 +517,24 @@ test_that("combined tokens objects have all the attributes", {
     
 })
 
+test_that("tokens fasterword handles newlines correctly (#1420)", {
+    expect_identical(
+        as.list(tokens("one\ntwo\tthree", what = "fasterword", remove_separators = TRUE)),
+        list(text1 = c("one", "two", "three"))
+    )
+    expect_identical(
+        as.list(tokens("one\ntwo\tthree", what = "fasterword", remove_separators = FALSE)),
+        list(text1 = c("one\ntwo\tthree"))
+    )
+    
+    # with "word" (behaviour is different)
+    expect_identical(
+        as.list(tokens("one\ntwo\tthree", what = "word", remove_separators = TRUE)),
+        list(text1 = c("one", "two", "three"))
+    )
+    expect_identical(
+        as.list(tokens("one\ntwo\tthree", what = "word", remove_separators = FALSE)),
+        list(text1 = c("one", "\n", "two", "\t", "three"))
+    )
+    
+})

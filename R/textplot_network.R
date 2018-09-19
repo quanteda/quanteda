@@ -10,7 +10,8 @@
 #' @param edge_color color of edges that connect vertices.
 #' @param edge_alpha opacity of edges ranging from 0 to 1.0.
 #' @param edge_size size of edges for most frequent co-occurrence The size of
-#'   other edges are determined proportionally to the highest frequency.
+#'   other edges are determined proportionally to the 99th percentile frequency
+#'   instead of the maximum to reduce the impact of outliers.
 #' @param vertex_size size of vertices.
 #' @param vertex_color color of vertices.
 #' @param vertex_labelcolor color of texts. Defaults to the same as
@@ -62,7 +63,8 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_labelcolor = NULL,
                                  vertex_labelfont = NULL, 
                                  offset = NULL, ...) {
-
+    
+    if (!sum(x)) stop(message_error("dfm_empty"))
     textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
                      edge_color = edge_color, edge_alpha = edge_alpha, 
                      edge_size = edge_size, 
@@ -83,6 +85,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  offset = NULL, 
                                  ...) {
     
+    if (!sum(x)) stop(message_error("fcm_empty"))
     font <- check_font(vertex_labelfont)
     net <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
@@ -91,7 +94,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     vertex$label <- network::network.vertex.names(net)
 
     weight <- network::get.edge.attribute(net, "weight")
-    weight <- weight / max(weight)
+    weight <- weight / quantile(weight, 0.99)
     
     index <- network::as.edgelist(net)
     edge <- data.frame(x1 = vertex[,1][index[,1]], 

@@ -78,8 +78,8 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             commands <- as.character(sys.calls())
             commands <- commands[stri_detect_regex(commands, "reshape\\.corpus")]
             
-            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, 
-                                  what = to, ...)
+            temp <- segment_texts(texts(x), pattern = NULL, extract_pattern = FALSE, 
+                                  omit_empty = FALSE, what = to, ...)
             
             result <- corpus(temp$texts, docnames = rownames(temp),
                              metacorpus = list(source = metacorpus(x, "source"),

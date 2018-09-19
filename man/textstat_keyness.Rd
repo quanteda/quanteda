@@ -4,8 +4,9 @@
 \alias{textstat_keyness}
 \title{Calculate keyness statistics}
 \usage{
-textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"),
-  sort = TRUE, correction = c("default", "yates", "williams", "none"))
+textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr",
+  "pmi"), sort = TRUE, correction = c("default", "yates", "williams",
+  "none"))
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}

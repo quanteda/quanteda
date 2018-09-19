@@ -42,12 +42,6 @@
 }
 \description{
 Print/show method for dictionary objects.
-
-Extractor for dictionary objects
-
-Extractor for dictionary objects
-
-Coerce a dictionary object into a list
 }
 \section{Slots}{
 

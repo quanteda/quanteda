@@ -8,8 +8,9 @@
 \usage{
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "#1F78B4", edge_alpha = 0.5, edge_size = 2,
-  vertex_color = "#4D4D4D", vertex_size = 2, vertex_labelcolor = NULL,
-  vertex_labelfont = NULL, offset = NULL, ...)
+  vertex_color = "#4D4D4D", vertex_size = 2,
+  vertex_labelcolor = NULL, vertex_labelfont = NULL, offset = NULL,
+  ...)
 
 \method{as.network}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)
 
@@ -29,7 +30,8 @@ frequencies of features to be included.}
 \item{edge_alpha}{opacity of edges ranging from 0 to 1.0.}
 
 \item{edge_size}{size of edges for most frequent co-occurrence The size of
-other edges are determined proportionally to the highest frequency.}
+other edges are determined proportionally to the 99th percentile frequency
+instead of the maximum to reduce the impact of outliers.}
 
 \item{vertex_color}{color of vertices.}
 

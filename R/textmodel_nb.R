@@ -1,4 +1,3 @@
-# main methods --------------
 
 #' Naive Bayes classifier for texts
 #' 
@@ -108,6 +107,8 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
                              distribution = c("multinomial", "Bernoulli")) {
     
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
+    
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
     call <- match.call()

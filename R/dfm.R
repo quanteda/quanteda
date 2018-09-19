@@ -283,7 +283,7 @@ dfm.tokens <- function(x,
     if (!is.null(attr(x, "docvars"))) {
         result@docvars <- attr(x, "docvars")
     } else {
-        result@docvars <- data.frame(row.names = docnames(x))
+        result@docvars <- data.frame(matrix(ncol = 0, nrow = length(x)))
     }
     
     dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
@@ -350,18 +350,19 @@ dfm.dfm <- function(x,
         if (verbose) 
             catm("   ... stemming features (", stri_trans_totitle(language), 
                  ")\n", sep="")
-        oldNfeature <- nfeat(x)
+        nfeat_org <- nfeat(x)
         x <- dfm_wordstem(x, language)
         if (verbose) 
-            if (oldNfeature - nfeat(x) > 0) 
-                catm(", trimmed ", oldNfeature - nfeat(x), " feature variant",
-                     ifelse(oldNfeature - nfeat(x) != 1, "s", ""), 
+            if (nfeat_org - nfeat(x) > 0) 
+                catm(", trimmed ", nfeat_org - nfeat(x), " feature variant",
+                     ifelse(nfeat_org - nfeat(x) != 1, "s", ""), 
                      "\n", sep = "")
     }
     
     # remove any NA named columns
-    if (any(naFeatures <- is.na(featnames(x))))
-        x <- x[, -which(naFeatures), drop = FALSE]
+    is_na <- is.na(featnames(x))
+    if (any(is_na))
+        x <- x[, !is_na, drop = FALSE]
 
     if (verbose) 
         catm("   ... created a", 

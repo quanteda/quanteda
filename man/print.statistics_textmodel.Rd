@@ -4,8 +4,8 @@
 \alias{print.statistics_textmodel}
 \title{Implements print methods for textmodel_statistics}
 \usage{
-\method{print}{statistics_textmodel}(x, digits = max(3L, getOption("digits") -
-  3L), ...)
+\method{print}{statistics_textmodel}(x, digits = max(3L,
+  getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{x}{a textmodel_wordscore_statistics object}

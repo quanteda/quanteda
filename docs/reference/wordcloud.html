@@ -21,13 +21,16 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
@@ -40,6 +43,7 @@
 <meta property="og:description" content="This function impliments wordcloud without dependecies. Code is adopted from 
 wordcloud." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -76,7 +80,7 @@ wordcloud." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
       </span>
     </div>
 
@@ -203,9 +207,10 @@ wordcloud." />
     </div>
 
     <pre class="usage"><span class='fu'>wordcloud</span>(<span class='no'>x</span>, <span class='no'>min_size</span>, <span class='no'>max_size</span>, <span class='no'>min_count</span>, <span class='no'>max_words</span>, <span class='no'>color</span>, <span class='no'>font</span>, <span class='no'>adjust</span>,
-  <span class='no'>rotation</span>, <span class='no'>random_order</span>, <span class='no'>random_color</span>, <span class='no'>ordered_color</span>, <span class='no'>labelcolor</span>, <span class='no'>labelsize</span>,
-  <span class='no'>labeloffset</span>, <span class='no'>fixed_aspect</span>, <span class='no'>colors</span>, <span class='no'>scale</span>, <span class='no'>min.freq</span>, <span class='no'>max.words</span>, <span class='no'>random.order</span>,
-  <span class='no'>random.color</span>, <span class='no'>rot.per</span>, <span class='no'>ordered.colors</span>, <span class='no'>use.r.layout</span>, <span class='no'>fixed.asp</span>, <span class='no'>...</span>)</pre>
+  <span class='no'>rotation</span>, <span class='no'>random_order</span>, <span class='no'>random_color</span>, <span class='no'>ordered_color</span>, <span class='no'>labelcolor</span>,
+  <span class='no'>labelsize</span>, <span class='no'>labeloffset</span>, <span class='no'>fixed_aspect</span>, <span class='no'>colors</span>, <span class='no'>scale</span>, <span class='no'>min.freq</span>, <span class='no'>max.words</span>,
+  <span class='no'>random.order</span>, <span class='no'>random.color</span>, <span class='no'>rot.per</span>, <span class='no'>ordered.colors</span>, <span class='no'>use.r.layout</span>,
+  <span class='no'>fixed.asp</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

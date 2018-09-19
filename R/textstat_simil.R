@@ -71,6 +71,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {
     x <- as.dfm(x)
+    if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
     
     if (!is.null(selection)) {

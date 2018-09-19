@@ -21,13 +21,16 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
@@ -36,6 +39,7 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 <meta property="og:title" content="Changelog" />
+
 
 
 <!-- mathjax -->
@@ -72,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
       </span>
     </div>
 
@@ -194,9 +198,9 @@
 <h1 class="page-header">
 <a href="#quanteda-0-9-8" class="anchor"></a>quanteda 0.9.8<small> 2016-07-28 </small>
 </h1>
-<div id="new-features-12" class="section level2">
+<div id="new-features-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-12" class="anchor"></a>New Features</h2>
+<a href="#new-features-13" class="anchor"></a>New Features</h2>
 <ul>
 <li>Improved the performance of <code>selectFeatures.tokenizedTexts()</code>.<br>
 </li>
@@ -216,11 +220,14 @@
 <li>yoshikoder,</li>
 <li>lexicoder v2 and v3 (#228)</li>
 <li>Autodetect dictionary file format from file extension, so no longer require <code>format</code> keyword for loading dictionaries (#227)</li>
-<li>Improved compatibility with rOpenSci guidelines (#218):</li>
+<li>Improved compatibility with rOpenSci guidelines (#218):
+<ul>
 <li>Use httr to get remote files</li>
 <li>Use <code>messages()</code> to display messages rather than <code>print</code> or <code>cat</code>
 </li>
 <li>Reorganise sections in README file<br>
+</li>
+</ul>
 </li>
 <li>Added new <code>punctuation</code> argument to <code><a href="../reference/textstat_collocations.html">collocations()</a></code> to provide new options for handling collocations separated by punctuation characters (#220).</li>
 </ul>
@@ -707,7 +714,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <a href="#quanteda-0-5-7" class="anchor"></a>quanteda 0.5.7<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>added compoundWords() to turn space-delimited phrases into single “tokens”. Works with dfm(, dictionary=) if the text has been pre-processed with compoundWords() and the dictionary joins phrases with the connector (“_“). May add this functionality to be more automatic in future versions.</p></li>
+<li><p>added compoundWords() to turn space-delimited phrases into single “tokens”. Works with dfm(, dictionary=) if the text has been pre-processed with compoundWords() and the dictionary joins phrases with the connector ("_"). May add this functionality to be more automatic in future versions.</p></li>
 <li><p>new keep argument for trimdfm() now takes a regular expression for which feature labels to retain. New defaults for minDoc and minCount (1 each).</p></li>
 <li><p>added nfeature() method for dfm objects.</p></li>
 </ul>
@@ -822,7 +829,7 @@ Mostly these related to documentation.</p></li>
 <ul>
 <li><p>the corpus object has been redesigned with more flexible components, including a settings list, better corpus-level metadata, and smarter implementation of document-level attributes including user-defined variables (docvars) and document- level meta-data (metadoc)</p></li>
 <li><p>the dfm now has a proper class definition, including additional attributes that hold the settings used to produce the dfm.</p></li>
-<li><p>all important functions are now defined as methods for classes of built-in (e.g. character) objects, or quanteda objects such as a corpus or dfm. Lots of functions operate on both, for instance dfm.corpus(x) and dfm.character(x).</p></li>
+<li><p>all important functions are now defined as methods for classes of built-in ( e.g. character) objects, or quanteda objects such as a corpus or dfm. Lots of functions operate on both, for instance dfm.corpus(x) and dfm.character(x).</p></li>
 </ul>
 </div>
 <div id="more-complete-documentation" class="section level2">

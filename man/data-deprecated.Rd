@@ -9,7 +9,6 @@
 \alias{inaugCorpus}
 \alias{LBGexample}
 \alias{exampleString}
-\alias{data_char_inaugural}
 \alias{data_char_mobydick}
 \title{Datasets with deprecated or defunct names}
 \format{See the specific object documentation for the renamed objects.}

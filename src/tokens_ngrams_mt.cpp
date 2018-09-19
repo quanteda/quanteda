@@ -6,34 +6,16 @@ using namespace quanteda;
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
                       IdNgram &id_ngram){
-    /*
-    unsigned int &id = map_ngram[ngram];
-    if (id) {
-        return id;
-    } else {
-        id = id_ngram.fetch_and_increment();
-        //id_ngram.fetch_and_store(id);
-        return id;
-    }
-    */
-    
-    /*
-    auto it = map_ngram.find(ngram);
-    if (it != map_ngram.end()) {
-        return it->second;
-    }
-    //unsigned int id = id_ngram.fetch_and_add(1);
-    //auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_add(1)));
-    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, map_ngram.size() + 1));
-    return iti.first->second
-    */
-    
+
+    auto it1 = map_ngram.find(ngram);
+    if (it1 != map_ngram.end()) return it1->second;
 #if QUANTEDA_USE_TBB    
-    auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
+    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
 #else
-    auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram++));
+    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram++));
 #endif
-    return it.first->second;
+    return it2.first->second;
+
 }
     
 void skip(const Text &tokens,
@@ -198,7 +180,7 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
         texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
     }
 #endif
-     //dev::stop_timer("Ngram generation", timer);
+    //dev::stop_timer("Ngram generation", timer);
     
     // Extract only keys in order of the id
     VecNgrams keys_ngram(id_ngram - 1);
@@ -208,7 +190,7 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     
     //dev::start_timer("Token generation", timer);
     // Create ngram types
-     Types types_ngram(keys_ngram.size());
+    Types types_ngram(keys_ngram.size());
 #if QUANTEDA_USE_TBB
         type_mt type_mt(keys_ngram, types_ngram, map_ngram, delim, types);
         parallelFor(0, types_ngram.size(), type_mt);
@@ -219,7 +201,7 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
 #endif
     //dev::stop_timer("Token generation", timer);
     return recompile(texts, types_ngram, true, false, is_encoded(delim_) || is_encoded(types_));
-    //return recompile(texts, types_ngram);
+    //return recompile(texts, types_ngram, false, false, false);
 }
 
 

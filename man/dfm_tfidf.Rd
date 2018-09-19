@@ -4,7 +4,8 @@
 \alias{dfm_tfidf}
 \title{Weight a dfm by \emph{tf-idf}}
 \usage{
-dfm_tfidf(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...)
+dfm_tfidf(x, scheme_tf = "count", scheme_df = "inverse", base = 10,
+  ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 

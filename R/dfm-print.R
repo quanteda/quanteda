@@ -92,10 +92,8 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 #' 
 head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
     x <- as.dfm(x)
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), 
-                names(addedArgs), " not used.", sep = "")
-    stopifnot(length(n) == 1L || length(nf) == 1L)
+    unused_dots(...)
+    stopifnot(length(n) == 1L && length(nf) == 1L)
     n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
     nf <- if (nf < 0L)  max(nfeat(x) + nf, 0L) else min(nf, nfeat(x))
     x[seq_len(n), seq_len(nf)]
@@ -110,10 +108,8 @@ head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) {
 #' tail(data_dfm_lbgexample, n = 3, nf = 4)
 tail.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
     x <- as.dfm(x)
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), 
-                names(addedArgs), " not used.", sep = "")
-    stopifnot(length(n) == 1L || length(nf) == 1L)
+    unused_dots(...)
+    stopifnot(length(n) == 1L && length(nf) == 1L)
     nrx <- ndoc(x)
     ncl <- nfeat(x)
     n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)

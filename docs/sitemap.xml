@@ -34,6 +34,9 @@
     <loc>http://docs.quanteda.io/reference/as.fcm.html</loc>
   </url>
   <url>
+    <loc>http://docs.quanteda.io/reference/as.igraph.html</loc>
+  </url>
+  <url>
     <loc>http://docs.quanteda.io/reference/as.list.dist.html</loc>
   </url>
   <url>
@@ -263,6 +266,9 @@
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/merge_dictionary_values.html</loc>
+  </url>
+  <url>
+    <loc>http://docs.quanteda.io/reference/message_error.html</loc>
   </url>
   <url>
     <loc>http://docs.quanteda.io/reference/metacorpus.html</loc>

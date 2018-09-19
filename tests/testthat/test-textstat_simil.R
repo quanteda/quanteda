@@ -399,3 +399,11 @@ test_that("selection works with dfm with padding", {
     expect_silent(textstat_simil(mt, selection = c('doc2'), margin = 'documents'))
     
 })
+
+test_that("raises error when dfm is empty (#1419)", {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textstat_simil(mx),
+                 quanteda:::message_error("dfm_empty"))
+    
+})

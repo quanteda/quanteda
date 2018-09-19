@@ -259,13 +259,13 @@ test_that("textstat_keyness returns raw frequency counts", {
                    d2 = "a a b c c d d d d e f h"))
     
     expect_equivalent(textstat_keyness(mydfm, measure = "chi2", sort = FALSE)[,c(4,5)], 
-                      as.data.frame(t(mydfm), document = NULL))
+                      suppressWarnings(as.data.frame(t(mydfm), document = NULL)))
     
     expect_equivalent(textstat_keyness(mydfm, measure = "exact", sort = FALSE)[,c(4,5)], 
-                      as.data.frame(t(mydfm), document = NULL))
+                      suppressWarnings(as.data.frame(t(mydfm), document = NULL)))
     
     expect_equivalent(textstat_keyness(mydfm, measure = "lr", sort = FALSE)[,c(4,5)], 
-                      as.data.frame(t(mydfm), document = NULL))
+                      suppressWarnings(as.data.frame(t(mydfm), document = NULL)))
     
 })
 
@@ -329,3 +329,9 @@ test_that("group labels are correct, #1257", {
     
 })
 
+test_that("raises error when dfm is empty (#1419)", {
+    
+    mx <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_error(textstat_keyness(mx), 
+                 quanteda:::message_error("dfm_empty"))
+})

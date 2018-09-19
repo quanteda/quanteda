@@ -5,8 +5,8 @@
 \alias{is.fcm}
 \title{Create a feature co-occurrence matrix}
 \usage{
-fcm(x, context = c("document", "window"), count = c("frequency", "boolean",
-  "weighted"), window = 5L, weights = 1L, ordered = FALSE,
+fcm(x, context = c("document", "window"), count = c("frequency",
+  "boolean", "weighted"), window = 5L, weights = 1L, ordered = FALSE,
   span_sentence = TRUE, tri = TRUE, ...)
 }
 \arguments{
@@ -45,7 +45,8 @@ context = "window".}
 \item{span_sentence}{if \code{FALSE}, then word windows will not span
 sentences}
 
-\item{tri}{if \code{TRUE} return only upper triangle (including diagonal)}
+\item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
+Ignored if \code{ordered = TRUE}}
 
 \item{...}{not used here}
 }
