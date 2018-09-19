@@ -56,11 +56,15 @@ struct similarity : public Worker {
     const DoubleParams& magni;
     const int method;
     const std::vector<unsigned int>& target;
+    const unsigned int rank;
     const double limit;
+    const bool symm;
     
     similarity(const arma::sp_mat& mt_, Triplets& simil_tri_, const DoubleParams& magni_,
-               int method_, std::vector<unsigned int>& target_, double limit_) :
-               mt(mt_), simil_tri(simil_tri_), magni(magni_), method(method_), target(target_), limit(limit_) {}
+               const int method_, const std::vector<unsigned int>& target_, 
+               const unsigned int rank_, const double limit_, const bool symm_) :
+               mt(mt_), simil_tri(simil_tri_), magni(magni_), 
+               method(method_), target(target_), rank(rank_), limit(limit_), symm(symm_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
@@ -68,20 +72,22 @@ struct similarity : public Worker {
         arma::uword nrow = mt.n_rows;
         
         // define local triplets
-        std::vector<Triplet> simil_tri_temp;
-        simil_tri_temp.reserve(target.size());
+        //std::vector<Triplet> simil_tri_temp;
+        //simil_tri_temp.reserve(target.size());
+        std::vector<double> simil_temp;
         
         double simil = 0;
-        bool symm = target.size() == ncol;
+        
         arma::mat col_i = arma::mat(nrow, 1);
         arma::mat col_j = arma::mat(nrow, 1);
-        for (std::size_t i = begin; i < end; i++) {
+        std::size_t i;
+        for (std::size_t h = begin; h < end; h++) {
+            i = target[h] - 1;
             col_i = arma::mat(mt.col(i));
             //Rcout << col_i << "\n";
-            std::size_t j;
-            for (auto s : target) {
-                j = s - 1;
-                //Rcout << "i=" << i << " j=" << j << "\n";
+            simil_temp.reserve(nrow);
+            for (std::size_t j = 0; j < ncol; j++) {
+                Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
                 col_j = arma::mat(mt.col(j));
                 switch (method){
@@ -94,14 +100,28 @@ struct similarity : public Worker {
                     default:
                         simil = 0;
                 }
-                //Rcout << " simil=" << simil << "\n";
-                if (simil != 0 && simil >= limit) {
-                    simil_tri_temp.push_back(std::make_tuple(i, j, simil));
+                Rcout << "simil=" << simil << "\n";
+                simil_temp.push_back(simil);
+            }
+            std::vector<double> simil_sort = simil_temp;
+            double limit_temp = limit;
+            if (nrow > rank) {
+                std::sort(simil_sort.begin(), simil_sort.end(), std::greater<double>());
+                if (limit_temp < simil_sort[rank - 1])
+                    limit_temp = simil_sort[rank - 1];
+            }
+            Rcout << "Limit: " << limit_temp << "\n";
+            for (std::size_t k = 0; k < simil_temp.size(); k++) {
+                if (simil_temp[k] != 0 && simil_temp[k] >= limit_temp) {
+                    Rcout << "Add: " <<  target[k] - 1 << " " << simil_temp[k] << "\n";
+                    simil_tri.push_back(std::make_tuple(k, i, simil_temp[k]));
                 }
             }
+            simil_temp.clear();
         }
-        std::copy(simil_tri_temp.begin(), simil_tri_temp.end(), 
-                  simil_tri.grow_by(simil_tri_temp.size()));
+        
+        //std::copy(simil_tri_temp.begin(), simil_tri_temp.end(), 
+        //          simil_tri.grow_by(simil_tri_temp.size()));
     }
 };
 
@@ -110,11 +130,14 @@ struct similarity : public Worker {
 S4 qatd_cpp_similarity(const arma::sp_mat& mt, 
                        const int method,
                        const IntegerVector target_,
-                       const double limit = -1.0) {
+                       unsigned int rank,
+                       double limit = -1.0) {
     
     arma::uword ncol = mt.n_cols;
     arma::uword nrow = mt.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
+    if (rank < 1) rank = 1;
+    bool symm = target.size() == ncol && target.size() == rank;
     
     //dev::Timer timer;
     //dev::start_timer("Compute", timer);
@@ -128,8 +151,8 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     Triplets simil_tri;
     //if (limit == -1.0)
     //    simil_tri.reserve(ncol * target.size() * 0.5);
-    similarity similarity(mt, simil_tri, mangi, method, target, limit);
-    parallelFor(0, ncol, similarity);
+    similarity similarity(mt, simil_tri, mangi, method, target, rank, limit, symm);
+    parallelFor(0, target.size(), similarity);
     //dev::stop_timer("Compute", timer);
     
     //dev::start_timer("Convert", timer);
@@ -143,7 +166,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
         j_[k] = std::get<1>(simil_tri[k]);
         x_[k] = std::get<2>(simil_tri[k]);
     }
-    if (target.size() == ncol) {
+    if (symm) {
         S4 simil_("dsTMatrix");
         simil_.slot("i") = i_;
         simil_.slot("j") = j_;

@@ -51,7 +51,8 @@
 #' 
 textstat_simil2 <- function(x, selection = NULL,
                            margin = c("documents", "features"),
-                           method = c("cosine", "correlation"), 
+                           method = c("cosine", "correlation"),
+                           rank = NULL,
                            min_simil = NULL, condition = FALSE) {
     UseMethod("textstat_simil2")
 }
@@ -61,6 +62,7 @@ textstat_simil2 <- function(x, selection = NULL,
 textstat_simil2.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("cosine", "correlation"), 
+                               rank = NULL,
                                min_simil = NULL, condition = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil2"))
 }
@@ -69,14 +71,12 @@ textstat_simil2.default <- function(x, selection = NULL,
 textstat_simil2.dfm <- function(x, selection = NULL,
                                 margin = c("documents", "features"),
                                 method = c("cosine", "correlation"), 
+                                rank = NULL,
                                 min_simil = NULL, condition = FALSE) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
     method <- match.arg(method)
-    if (is.null(min_simil)) 
-        min_simil <- -1.0
-    
     if (margin == "documents") 
         x <- t(x)
     if (is.null(selection)) {
@@ -84,13 +84,17 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     } else {
         i <- match(selection, colnames(x))
     }
+    if (is.null(min_simil)) 
+        min_simil <- -1.0
+    if (is.null(rank))
+        rank <- nrow(x)
     if (any(is.na(i)))
         stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     
     if (method == "cosine") {
-        result <- qatd_cpp_similarity(x, 1, i, min_simil)
+        result <- qatd_cpp_similarity(x, 1, i, rank, min_simil)
     } else if (method == "correlation") {
-        result <- qatd_cpp_similarity(x, 2, i, min_simil)
+        result <- qatd_cpp_similarity(x, 2, i, rank, min_simil)
     }
 
     label <- colnames(x)
