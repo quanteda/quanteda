@@ -80,7 +80,7 @@ continuity correction for 2x2 tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.8</span>
       </span>
     </div>
 
@@ -282,7 +282,41 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
 #&gt; 5       e -0.065813362 0.7975330        1           1
 #&gt; 6       f -0.065813362 0.7975330        1           1
 #&gt; 7       g  0.731092437 0.3925293        1           0
-#&gt; 8       h  0.089303670 0.7650643        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_chi2_stats</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_exact</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_lr</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;   feature           G2         p n_target n_reference
+#&gt; 8       h  0.089303670 0.7650643        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_chi2_stats</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;   feature       chi2.a       chi2.b    chi2.c    chi2.d        chi2.e
+#&gt; 1       a 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 2       b 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 3       c 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 4       d 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 5       e 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 6       f 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 7       g 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt; 8       h 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
+#&gt;          chi2.f      chi2.g       chi2.h p.a p.b       p.c       p.d p.e p.f
+#&gt; 1 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 2 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 3 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 4 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 5 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 6 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 7 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt; 8 -2.242191e-32 2.20717e-31 6.775245e-32   1   1 0.4942327 0.1531848   1   1
+#&gt;   p.g p.h n_target n_reference
+#&gt; 1   1   1        3           2
+#&gt; 2   1   1        2           1
+#&gt; 3   1   1        6           2
+#&gt; 4   1   1        1           4
+#&gt; 5   1   1        1           1
+#&gt; 6   1   1        1           1
+#&gt; 7   1   1        1           0
+#&gt; 8   1   1        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_exact</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;   feature        or         p n_target n_reference
+#&gt; 1       a 1.0689130 1.0000000        3           2
+#&gt; 2       b 1.4480473 1.0000000        2           1
+#&gt; 3       c 2.6375984 0.4083471        6           2
+#&gt; 4       d 0.1347360 0.1296366        1           4
+#&gt; 5       e 0.6966446 1.0000000        1           1
+#&gt; 6       f 0.6966446 1.0000000        1           1
+#&gt; 7       g       Inf 1.0000000        1           0
+#&gt; 8       h 1.4480473 1.0000000        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_lr</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;   feature           G2         p n_target n_reference
 #&gt; 1       a  0.004751467 0.9450446        3           2
 #&gt; 2       b  0.091241952 0.7626042        2           1
 #&gt; 3       c  0.477346514 0.4896267        6           2
