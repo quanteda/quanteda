@@ -102,7 +102,8 @@ struct similarity : public Worker {
             std::vector<double> simil_sort = simil_temp;
             double limit_temp = limit;
             if (ncol > rank) {
-                std::sort(simil_sort.begin(), simil_sort.end(), std::greater<double>());
+                std::nth_element(simil_sort.begin(), simil_sort.begin() + rank - 1, simil_sort.end(),
+                                 std::greater<double>());
                 if (limit_temp < simil_sort[rank - 1])
                     limit_temp = simil_sort[rank - 1];
             }
