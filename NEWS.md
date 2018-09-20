@@ -7,10 +7,12 @@
 * Fixed behaviour from `tokens(x, what = "fasterword", remove_separators = TRUE)` so that it correctly splits words separated by `\n` and `\t` characters.  (#1420)
 * Add error checking for functions taking dfm inputs in case a dfm has empty features (#1419).
 * For `textstat_readability()`, fixed a bug in Dale-Chall-based measures and in the Spache word list measure.  These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists.  The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (#1410)
+* Fixed problems with basic dfm operations (`rowMeans()`, `rowSums()`, `colMeans()`, `colSums()`) caused by not having access to the **Matrix** package methods.  (#1428)
 
 ### New Features
 
 * Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
+
 
 # quanteda v1.3.4
 
