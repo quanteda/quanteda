@@ -1,5 +1,5 @@
 quanteda_options(threads = 8)
-#mt <- dfm(c("a b c", "a b d", "b d e", "e"))
+#mt <- dfm(c("a a b c", "a b b d", "b d d e e", "e e e"))
 #mt <- dfm(corpus_reshape(data_corpus_inaugural, "sentence"))
 mt <- dfm(data_corpus_inaugural)
 
@@ -53,3 +53,15 @@ testthat::expect_equal(
     as.matrix(cor_old),
     tolerance = 0.001
 )
+
+# all ------
+
+for (m in c("cosine", "correlation", "jaccard", "ejaccard", "dice", 
+            "edice", "hamann", "simple matching")) {
+    cat(m, "\n")
+    old <- as.matrix(textstat_simil(mt, margin = "features", method = m, diag = TRUE))
+    new <- as.matrix(textstat_simil2(mt, margin = "features", method = m))
+    testthat::expect_equal(old, new, tolelance = 0.01)
+}
+
+

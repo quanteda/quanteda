@@ -70,7 +70,8 @@ textstat_simil2.default <- function(x, selection = NULL,
 #' @export    
 textstat_simil2.dfm <- function(x, selection = NULL,
                                 margin = c("documents", "features"),
-                                method = c("cosine", "correlation"), 
+                                method = c("cosine", "correlation", "jaccard", "ejaccard",
+                                           "dice", "edice", "hamann", "simple matching", "faith"), 
                                 rank = NULL,
                                 min_simil = NULL, condition = FALSE) {
     x <- as.dfm(x)
@@ -87,15 +88,42 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     if (is.null(min_simil)) 
         min_simil <- -1.0
     if (is.null(rank))
-        rank <- nrow(x)
+        rank <- ncol(x)
     if (any(is.na(i)))
         stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     
-    if (method == "cosine") {
-        result <- qatd_cpp_similarity(x, 1, i, rank, min_simil)
-    } else if (method == "correlation") {
-        result <- qatd_cpp_similarity(x, 2, i, rank, min_simil)
+    boolean <- FALSE
+    weight <- 1
+    if (method == "jaccard") {
+        boolean <- TRUE
+        weight <- 1
+        method <- "ejaccard"
+    } else if (method == "ejaccard") {
+        boolean <- FALSE
+        weight <- 2
+    } else if (method == "dice") {
+        boolean <- TRUE
+        weight <- 1
+        method <- "edice"
+    } else if (method == "edice") {
+        boolean <- FALSE
+        weight <- 2
+    } else if (method == "hamann") {
+        boolean <- TRUE
+        weight <- 1
+    } else if (method == "simple matching") {
+        boolean <- TRUE
+        weight <- 0
+        method <- "hamann"
+    } else if (method == "faith") {
+        boolean <- TRUE
     }
+    if (boolean)
+        x <- dfm_weight(x, "boolean")
+
+    id_method <- match(method, c("cosine", "correlation", "ejaccard", "edice", "hamann", "faith"))
+    result <- qatd_cpp_similarity(x, id_method, 
+                                  i, rank, min_simil, weight)
 
     label <- colnames(x)
     rownames(result) <- label
