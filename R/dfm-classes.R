@@ -66,29 +66,28 @@ setMethod("t",
 #' @export
 setMethod("colSums", 
           signature = (x = "dfm"),
-          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
+          function(x, ...) Matrix::colSums(as(x, "dgCMatrix"), ...))
 
 #' @method rowSums dfm
 #' @rdname dfm-class
 #' @export
 setMethod("rowSums", 
           signature = (x = "dfm"),
-          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
-
+          function(x, ...) Matrix::rowSums(as(x, "dgCMatrix"), ...))
 
 #' @method colMeans dfm
 #' @rdname dfm-class
 #' @export
 setMethod("colMeans", 
           signature = (x = "dfm"),
-          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
+          function(x, ...) Matrix::colMeans(as(x, "dgCMatrix"), ...))
 
 #' @method rowSums dfm
 #' @rdname dfm-class
 #' @export
 setMethod("rowMeans", 
           signature = (x = "dfm"),
-          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
+          function(x, ...) Matrix::rowMeans(as(x, "dgCMatrix"), ...))
 
 #' @param e1 first quantity in "+" operation for dfm
 #' @param e2 second quantity in "+" operation for dfm
@@ -246,7 +245,6 @@ cbind.dfm <- function(...) {
     return(result)
 
 }
-
 
 #' @rdname cbind.dfm
 #' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a
