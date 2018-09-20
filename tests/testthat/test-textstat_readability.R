@@ -38,10 +38,10 @@ test_that("readability works as koRpus", {
     # readability analysis from package koRpus
     k_toks <- koRpus::tokenize(fileName, lang = "en")
     wordlist_DC <- data_char_wordlists$dalechall
-    k_rdb <- koRpus::readability(k_toks, 
+    k_rdb <- suppressWarnings(koRpus::readability(k_toks, 
                                  word.lists = list(Bormuth = wordlist_DC, 
                                                    Dale.Chall = wordlist_DC, 
-                                                   Harris.Jacobson = wordlist_DC))
+                                                   Harris.Jacobson = wordlist_DC)))
     
     expect_equal(round(q_rdb$ARI, 2), round(k_rdb@ARI$grade, 2))
     expect_equal(round(q_rdb$Coleman.Liau.grade, 2), round(k_rdb@Coleman.Liau$grade, 2))
