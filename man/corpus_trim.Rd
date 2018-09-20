@@ -51,4 +51,3 @@ char_trim(txt, "sentences", exclude_pattern = "sentence\\\\.")
 }
 \keyword{character}
 \keyword{corpus}
-\keyword{internal}
