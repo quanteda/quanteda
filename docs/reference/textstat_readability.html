@@ -217,7 +217,8 @@ indexes.</p>
   <span class='st'>"SMOG.C"</span>, <span class='st'>"SMOG.simple"</span>,      <span class='st'>"SMOG.de"</span>, <span class='st'>"Spache"</span>, <span class='st'>"Spache.old"</span>,
   <span class='st'>"Strain"</span>, <span class='st'>"Traenkle.Bailer"</span>, <span class='st'>"Traenkle.Bailer.2"</span>, <span class='st'>"Wheeler.Smith"</span>,
   <span class='st'>"meanSentenceLength"</span>, <span class='st'>"meanWordSyllables"</span>), <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>intermediate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -247,6 +248,10 @@ may not really be sentences, such as section titles, table elements, and
 other cruft that might be in the texts following conversion.</p>
 <p>For finer-grained control, consider filtering sentences prior first, 
 including through pattern-matching, using <code><a href='corpus_trim.html'>corpus_trim</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>intermediate</th>
+      <td><p>if <code>TRUE</code>, include intermediate quantities in the output</p></td>
     </tr>
     <tr>
       <th>...</th>
