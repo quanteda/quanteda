@@ -170,7 +170,7 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 
 ### Adding two corpus objects together
 
-The `+` operator provides a simple method for concatenating two corpus objects.  If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost.  Corpus-level medata data is also concatenated.
+The `+` operator provides a simple method for concatenating two corpus objects.  If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost.  Corpus-level meta-data is also concatenated.
 
 ```{r}
 library(quanteda)
