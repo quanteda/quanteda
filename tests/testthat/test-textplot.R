@@ -1,6 +1,6 @@
 context('test plots.R')
 
-dev.new(width = 10, height = 10)
+pdf(file = tempfile(".pdf"), width = 10, height = 10)
 
 test_that("test plot.kwic scale argument default", {
 
@@ -116,7 +116,7 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm <- dfm(testcorp, remove = stopwords("english"))
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
-    dev.new(width = 10, height = 10)
+    jpeg(filename = tempfile(".jpg"), width = 5000, height = 5000)
     expect_silent(
         textplot_wordcloud(testdfm_grouped, comparison = TRUE)
     )
@@ -134,23 +134,24 @@ test_that("test textplot_wordcloud comparison works", {
 })
 
 test_that("test textplot_wordcloud raise deprecation message", {
-    
+    jpeg(filename = tempfile(".jpg"), width = 5000, height = 5000)  
     mt <- dfm(data_corpus_inaugural[1:5])
     mt <- dfm_trim(mt, min_termfreq = 10)
     expect_warning(textplot_wordcloud(mt, min.freq = 10), 'min.freq is deprecated')
     expect_warning(textplot_wordcloud(mt, use.r.layout = 10), 'use.r.layout is no longer use')
+    dev.off()
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {
     wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
-    expect_false(identical(textplot_scale1d(wf, sort = TRUE), 
+    expect_false(identical(textplot_scale1d(wf, sort = TRUE),
                            textplot_scale1d(wf, sort = FALSE)))
     expect_silent(textplot_scale1d(wf, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
     expect_silent(textplot_scale1d(wf, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
-    
-    expect_silent(textplot_scale1d(wf, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+
+    expect_silent(textplot_scale1d(wf, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
                                                           1, paste, collapse = " ")))
-    
+
     p1 <- textplot_scale1d(wf, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(wf, margin = "features", sort = FALSE)
     p1$plot_env <- NULL
@@ -162,20 +163,20 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     mt <- dfm(data_corpus_irishbudget2010)
     ws <- textmodel_wordscores(mt, c(rep(NA, 4), -1, 1, rep(NA, 8)))
     pr <- predict(ws, mt, force = TRUE)
-    expect_false(identical(textplot_scale1d(pr, sort = TRUE), 
+    expect_false(identical(textplot_scale1d(pr, sort = TRUE),
                            textplot_scale1d(pr, sort = FALSE)))
     expect_silent(textplot_scale1d(pr, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
     expect_silent(textplot_scale1d(pr, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
-    
-    expect_silent(textplot_scale1d(pr, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+
+    expect_silent(textplot_scale1d(pr, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
                                                          1, paste, collapse = " ")))
-    
+
     p1 <- textplot_scale1d(ws, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(ws, margin = "features", sort = FALSE)
     p1$plot_env <- NULL
     p2$plot_env <- NULL
     expect_equivalent(p1, p2)
-    
+
     expect_error(
         textplot_scale1d(ws, margin = "documents"),
         "This margin can only be run on a predicted wordscores object"
@@ -185,28 +186,28 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
         "This margin can only be run on a fitted wordscores object"
     )
 })
-
-# test_that("test textplot_keyness ", {
-#     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
-#     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-#                    remove_punct = TRUE)
-#     result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
-#     
-#     # shows the correct statistic measure 
-#     p3 <- textplot_keyness(result, show_reference = TRUE)
-#     expect_equal(p3$labels$y, colnames(result)[2])
-# })
-
+# 
+# # test_that("test textplot_keyness ", {
+# #     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
+# #     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+# #                    remove_punct = TRUE)
+# #     result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
+# #     
+# #     # shows the correct statistic measure 
+# #     p3 <- textplot_keyness(result, show_reference = TRUE)
+# #     expect_equal(p3$labels$y, colnames(result)[2])
+# # })
+# 
 test_that("test textplot_keyness: show_reference works correctly ", {
     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
                    remove_punct = TRUE)
     result <- textstat_keyness(presdfm, target = "Trump")
-    
+
     k <- 10
     p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
     p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
-    
+
     # raises error when min_count is too high
     expect_error(textplot_keyness(result, show_reference = FALSE, min_count = 100),
                  'Too few words in the documents')
@@ -218,11 +219,11 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
     expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2 * k)
 
-    # works with integer color 
+    # works with integer color
     expect_silent(textplot_keyness(result, color = 1:2))
-    
+
     # test that textplot_keyness works with pallette (vector > 2 colors)
-    expect_silent(textplot_keyness(result, show_reference = TRUE, 
+    expect_silent(textplot_keyness(result, show_reference = TRUE,
                                    color = RColorBrewer::brewer.pal(6,"Dark2")))
 
 })
@@ -233,9 +234,9 @@ test_that("test textplot_network", {
     testdfm <- dfm(txt)
     expect_silent(textplot_network(testfcm, vertex_color = 'red', offset = 0.1))
     expect_silent(textplot_network(testdfm, offset = 0.1))
-    expect_error(textplot_network(testfcm, min_freq = 100), 
+    expect_error(textplot_network(testfcm, min_freq = 100),
                  'There is no co-occurence higher than the threshold')
-    
+
     # works with interger color
     expect_silent(textplot_network(testfcm, vertex_color = 2))
     expect_silent(textplot_network(testfcm, edge_color = 2))
@@ -243,14 +244,14 @@ test_that("test textplot_network", {
 
 test_that("test textplot_affinity", {
     af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
-    afpred <- predict(af) 
+    afpred <- predict(af)
     expect_silent(textplot_influence(influence(afpred)))
     expect_silent(textplot_influence(summary(influence(afpred))))
 })
 
 test_that("test textplot_network works with vectorlized argument", {
     txt <- "A D A C E A D F E B A C E D"
-    
+
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     expect_silent(textplot_network(testfcm, vertex_color = rep(c(1, 2), nrow(testfcm) / 2)))
     expect_silent(textplot_network(testfcm, vertex_size = rowSums(testfcm) / 5))
@@ -267,17 +268,17 @@ test_that("test textplot_network font-selection", {
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
-    expect_silent(textplot_network(testfcm, offset = 0.1, 
+    expect_silent(textplot_network(testfcm, offset = 0.1,
                                    vertex_labelfont = "serif"))
-    expect_silent(textplot_network(testdfm, offset = 0.1, 
+    expect_silent(textplot_network(testdfm, offset = 0.1,
                                    vertex_labelfont = "sans"))
-    expect_error(textplot_network(testfcm, min_freq = 0.1, 
+    expect_error(textplot_network(testfcm, min_freq = 0.1,
                                   vertex_labelfont = "not_a_real_font"),
                "not_a_real_font is not found on your system")
 })
 
 test_that("raises error when dfm is empty (#1419)", {
-    
+
     mx <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_error(textplot_network(mx),
                  quanteda:::message_error("dfm_empty"))
@@ -285,7 +286,7 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("fcm_empty"))
     expect_error(textplot_wordcloud(mx),
                  quanteda:::message_error("dfm_empty"))
-    
+
 })
 
 dev.off()
