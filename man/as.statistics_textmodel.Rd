@@ -2,8 +2,7 @@
 % Please edit documentation in R/textmodel-methods.R
 \name{as.statistics_textmodel}
 \alias{as.statistics_textmodel}
-\title{Coerce various objects to statistics_textmodel
-This is a helper function used in \code{summary.textmodel_*}.}
+\title{Coerce various objects to statistics_textmodel}
 \usage{
 as.statistics_textmodel(x)
 }
@@ -11,7 +10,6 @@ as.statistics_textmodel(x)
 \item{x}{an object to be coerced}
 }
 \description{
-Coerce various objects to statistics_textmodel
 This is a helper function used in \code{summary.textmodel_*}.
 }
 \keyword{internal}

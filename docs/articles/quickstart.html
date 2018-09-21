@@ -232,7 +232,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Wed Sep 19 18:50:41 2018
+## Created: Thu Sep 20 13:25:11 2018
 ## Notes:</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<em>docvar</em>).</p>
@@ -253,7 +253,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Wed Sep 19 18:50:41 2018
+## Created: Thu Sep 20 13:25:11 2018
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -283,7 +283,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Wed Sep 19 18:50:41 2018
+## Created: Thu Sep 20 13:25:11 2018
 ## Notes:</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -392,7 +392,7 @@
 <div id="adding-two-corpus-objects-together" class="section level3">
 <h3 class="hasAnchor">
 <a href="#adding-two-corpus-objects-together" class="anchor"></a>Adding two corpus objects together</h3>
-<p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level medata data is also concatenated.</p>
+<p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level meta-data is also concatenated.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">library</span>(quanteda)</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2">my_corpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</a>
 <a class="sourceLine" id="cb20-3" data-line-number="3">my_corpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])</a>
@@ -414,7 +414,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Wed Sep 19 18:50:42 2018
+## Created: Thu Sep 20 13:25:12 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -862,30 +862,30 @@
 <a class="sourceLine" id="cb88-4" data-line-number="4">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb88-5" data-line-number="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1  Topic 2       Topic 3   Topic 4   Topic 5   Topic 6   
-## [1,] "fianna" "kind"        "levy"    "child"   "per"     "welfare" 
-## [2,] "fáil"   "imagination" "carbon"  "benefit" "system"  "system"  
-## [3,] "side"   "policies"    "created" "day"     "benefit" "taxation"
-## [4,] "level"  "wit"         "price"   "today"   "irish"   "fianna"  
-## [5,] "third"  "create"      "climate" "bank"    "ago"     "fáil"    
-##      Topic 7      Topic 8      Topic 9    Topic 10   Topic 11    
-## [1,] "rebuild"    "investment" "fianna"   "rate"     "support"   
-## [2,] "employment" "including"  "fáil"     "problem"  "million"   
-## [3,] "welfare"    "million"    "national" "existing" "welfare"   
-## [4,] "change"     "forward"    "irish"    "vat"      "employment"
-## [5,] "interest"   "areas"      "support"  "three"    "continue"  
-##      Topic 12      Topic 13    Topic 14    Topic 15   Topic 16   
-## [1,] "alternative" "care"      "failed"    "million"  "taoiseach"
-## [2,] "citizenship" "welfare"   "strategy"  "measures" "employees"
-## [3,] "wealth"      "allowance" "ministers" "spending" "referred" 
-## [4,] "adjustment"  "families"  "needed"    "scheme"   "debate"   
-## [5,] "breaks"      "hospital"  "vision"    "review"   "thinking" 
-##      Topic 17    Topic 18    Topic 19       Topic 20   
-## [1,] "million"   "taoiseach" "society"      "taoiseach"
-## [2,] "ensure"    "may"       "enterprising" "banks"    
-## [3,] "important" "bank"      "sense"        "case"     
-## [4,] "paid"      "gael"      "equal"        "fine"     
-## [5,] "levies"    "irish"     "nation"       "day"</code></pre>
+<pre><code>##      Topic 1    Topic 2        Topic 3        Topic 4    Topic 5      
+## [1,] "measures" "irish"        "society"      "system"   "alternative"
+## [2,] "million"  "million"      "enterprising" "taxation" "citizenship"
+## [3,] "scheme"   "introduce"    "sense"        "welfare"  "wealth"     
+## [4,] "spending" "contribution" "equal"        "high"     "adjustment" 
+## [5,] "review"   "levy"         "nation"       "worst"    "breaks"     
+##      Topic 6   Topic 7      Topic 8     Topic 9     Topic 10      
+## [1,] "day"     "strategy"   "welfare"   "care"      "welfare"     
+## [2,] "child"   "seen"       "million"   "welfare"   "benefit"     
+## [3,] "fianna"  "failed"     "programme" "per"       "contribution"
+## [4,] "benefit" "employment" "invest"    "allowance" "months"      
+## [5,] "face"    "system"     "level"     "hit"       "adjustment"  
+##      Topic 11  Topic 12     Topic 13    Topic 14  Topic 15    Topic 16   
+## [1,] "levy"    "support"    "taoiseach" "welfare" "taoiseach" "ministers"
+## [2,] "million" "million"    "may"       "fianna"  "kind"      "failed"   
+## [3,] "carbon"  "back"       "fine"      "child"   "debate"    "radical"  
+## [4,] "change"  "investment" "irish"     "banks"   "employees" "vision"   
+## [5,] "welfare" "confidence" "day"       "cutting" "rate"      "needed"   
+##      Topic 17  Topic 18 Topic 19   Topic 20   
+## [1,] "benefit" "fianna" "fianna"   "taoiseach"
+## [2,] "child"   "fáil"   "fáil"     "gael"     
+## [3,] "welfare" "side"   "national" "interest" 
+## [4,] "banks"   "level"  "irish"    "fine"     
+## [5,] "know"    "third"  "support"  "arrived"</code></pre>
 </div>
 </div>
   </div>
