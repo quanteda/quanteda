@@ -1,6 +1,6 @@
 context('test plots.R')
 
-dev.new(width = 10, height = 10)
+pdf(file = tempfile(".pdf"), width = 10, height = 10)
 
 test_that("test plot.kwic scale argument default", {
 
@@ -106,7 +106,9 @@ test_that("test textplot_wordcloud works for dfm objects", {
 })
 
 test_that("test textplot_wordcloud comparison works", {
-    skip("skipped because in CHECK mode, fails to open graphics devices")
+    skip_on_travis()
+    skip_on_cran()
+    skip_on_os('linux')
     testcorp <- corpus_reshape(corpus(data_char_sampletext))
     set.seed(1)
     docvars(testcorp, "label") <- sample(c("A", "B"), size = ndoc(testcorp), replace = TRUE)
@@ -114,7 +116,7 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm <- dfm(testcorp, remove = stopwords("english"))
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
-    dev.new(width = 10, height = 10)
+    jpeg(filename = tempfile(".jpg"), width = 5000, height = 5000)
     expect_silent(
         textplot_wordcloud(testdfm_grouped, comparison = TRUE)
     )
@@ -132,11 +134,14 @@ test_that("test textplot_wordcloud comparison works", {
 })
 
 test_that("test textplot_wordcloud raise deprecation message", {
+    jpeg(filename = tempfile(".jpg"), width = 5000, height = 5000)  
     mt <- dfm(data_corpus_inaugural[1:5])
     mt <- dfm_trim(mt, min_termfreq = 10)
     expect_warning(textplot_wordcloud(mt, min.freq = 10), 'min.freq is deprecated')
     expect_warning(textplot_wordcloud(mt, use.r.layout = 10), 'use.r.layout is no longer use')
+    dev.off()
 })
+
 
 test_that("test textplot_scale1d wordfish in the most basic way", {
     wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
