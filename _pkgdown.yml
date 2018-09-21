@@ -107,6 +107,7 @@ reference:
     - char_toupper
     - char_segment
     - char_ngrams
+    - char_trim
     - char_wordstem
 - title: Text matrix functions
   desc: Functions for constructing and manipulating a document-feature matrix (dfm) or feature co-occurrence matrix object.
