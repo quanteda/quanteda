@@ -1,4 +1,4 @@
-url: http://docs.quanteda.io
+url: https://quanteda.io
 template:
   params:
     bootswatch: readable
@@ -196,4 +196,3 @@ reference:
     - convert
     - bootstrap_dfm
     - spacyr-methods
-
