@@ -51,7 +51,7 @@ namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requ
 
 ## How to Use 
 
-See the [quick start guide](http://docs.quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
+See the [quick start guide](https://quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
 
 ## Leaving Feedback
 
