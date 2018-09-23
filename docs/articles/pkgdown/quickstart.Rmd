@@ -215,7 +215,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-More corpora are available from the [quanteda.corpora](http://github.com/quanteda/quanteda.corpora) package.
+More corpora are available from the [quanteda.corpora](https://github.com/quanteda/quanteda.corpora) package.
 
 # Extracting Features from a Corpus
 

@@ -21,7 +21,7 @@ An R package for managing and analyzing text, created by [Kenneth
 Benoit](http://kenbenoit.net). Supported by the European Research
 Council grant ERC-2011-StG 283794-QUANTESS.
 
-For more details, see <https://docs.quanteda.io/index.html>.
+For more details, see <https://quanteda.io>.
 
 ## How to Install
 
@@ -53,8 +53,8 @@ gfortran to build).
 ## How to Use
 
 See the [quick start
-guide](https://docs.quanteda.io/articles/pkgdown/quickstart.html) to
-learn how to use **quanteda**.
+guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn
+how to use **quanteda**.
 
 ## Leaving Feedback
 
