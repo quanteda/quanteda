@@ -153,12 +153,13 @@ These materials help beginner users understand how to use these functions for
 basic operations and expert users how to combine the functions for advanced text
 processing and analysis.
 
-_Performance_.  Built to use sparse data structures, **quanteda** can
-process large textual data that are difficult for other R packages (such as computing
-distances or scoring collocations).  Its high
-performance is further enhanced by token hashing and parallel computation
-implemented in C++, permitting large and fast text analysis even on computers with
-relatively limited resources (such as laptop computers). 
+_Performance_.  **quanteda**'s performance is enhanced by token hashing and
+parallel computation implemented in C++, permitting large and fast text analysis
+even on computers with relatively limited resources (such as laptop computers).
+Built to use sparse data structures, **quanteda** can efficiently performs
+complex textual data analyses, such as computing distances, calculating feature
+discrimination statistics (keyness), or model fitting, even for large
+document-feature matrices.
 
 _Transparency and reproducibility_.  **quanteda** is designed to facilitate rigorous,
 transparent, and reproducible scientific analysis of text. Being open-source
