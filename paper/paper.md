@@ -145,7 +145,7 @@ package more reliable for other packages that depend on it.
 
 _Accessibility_.  **quanteda** contains extensive manual pages structured around
 the naming rules. Furthermore, there are references, package vignettes, examples,
-and tutorials on the website at http://docs.quanteda.io. These materials help
+and tutorials on the website at https://quanteda.io. These materials help
 beginner users to understand how to use these functions for basic operations,
 and expert users to combine the functions for advanced text processing and analysis.
 
