@@ -501,4 +501,4 @@ head(ch_mw, 10)
 ch_mw17 <- textstat_collocations(ch17toks, size = 2, tolower = TRUE)
 head(ch_mw17, 10)
 ```
-注：以上这部分介绍翻译于[英文版](http://docs.quanteda.io/articles/pkgdown/examples/chinese.html).
+注：以上这部分介绍翻译于[英文版](https://quanteda.io/articles/pkgdown/examples/chinese.html).
