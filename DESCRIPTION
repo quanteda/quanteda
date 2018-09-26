@@ -77,7 +77,7 @@ Suggests:
     xtable,
     knitr,
     igraph
-URL: http://quanteda.io
+URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE

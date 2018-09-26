@@ -76,7 +76,7 @@ How to Use
 ----------
 
 See the [quick start
-guide](http://docs.quanteda.io/articles/quickstart.html) to learn how to
+guide](http://quanteda.io/articles/quickstart.html) to learn how to
 use **quanteda**.
 
 Leaving Feedback

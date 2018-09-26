@@ -1,6 +1,6 @@
 
 [![quanteda: quantitative analysis of textual
-data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
+data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)](https://quanteda.io)
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)

@@ -416,7 +416,7 @@ if (require(topicmodels)) {
     get_terms(my_lda_fit20, 5)
 }
 ```
-注：以上这个指南翻译于英文版[quickstart](http://docs.quanteda.io/articles/pkgdown/quickstart.html).
+注：以上这个指南翻译于英文版[quickstart](https://quanteda.io/articles/pkgdown/quickstart.html).
 
 
 # Quanteda处理中文文档 {#processing-chinese-documentation}
