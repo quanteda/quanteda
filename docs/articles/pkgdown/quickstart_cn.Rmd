@@ -302,8 +302,8 @@ topfeatures(mydfm, 20)  # 20 词频最高的词
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
-textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
-                   rot.per = .25, 
+textplot_wordcloud(mydfm, min_freq = 6, random_order = FALSE,
+                   rotation = .25, 
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
@@ -416,7 +416,7 @@ if (require(topicmodels)) {
     get_terms(my_lda_fit20, 5)
 }
 ```
-注：以上这个指南翻译于英文版[quickstart](http://docs.quanteda.io/articles/pkgdown/quickstart.html).
+注：以上这个指南翻译于英文版[quickstart](https://quanteda.io/articles/pkgdown/quickstart.html).
 
 
 # Quanteda处理中文文档 {#processing-chinese-documentation}
@@ -501,4 +501,4 @@ head(ch_mw, 10)
 ch_mw17 <- textstat_collocations(ch17toks, size = 2, tolower = TRUE)
 head(ch_mw17, 10)
 ```
-注：以上这部分介绍翻译于[英文版](http://docs.quanteda.io/articles/pkgdown/examples/chinese.html).
+注：以上这部分介绍翻译于[英文版](https://quanteda.io/articles/pkgdown/examples/chinese.html).

@@ -19,6 +19,6 @@ articles:
   text2vec: pkgdown/replication/text2vec.html
   quickstart: quickstart.html
 urls:
-  reference: http://docs.quanteda.io/reference
-  article: http://docs.quanteda.io/articles
+  reference: https://quanteda.io/reference
+  article: https://quanteda.io/articles
 

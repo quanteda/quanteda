@@ -132,7 +132,7 @@ print.statistics_textmodel <- function(x, digits = max(3L, getOption("digits") -
 }
 
 #' Coerce various objects to statistics_textmodel
-
+#'
 #' This is a helper function used in \code{summary.textmodel_*}.
 #' @param x an object to be coerced
 #' @keywords internal textmodel
