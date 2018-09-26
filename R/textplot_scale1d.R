@@ -136,7 +136,8 @@ textplot_scale1d.predict.textmodel_wordscores <- function(x,
                                                           alpha = 0.7, 
                                                           highlighted_color = "black") {
     margin <- match.arg(margin)
-    if (is.null(doclabels)) doclabels <- get_docnames(x)
+    if (is.null(doclabels)) doclabels <- get_docname(x)
+    
     
     if (margin == "documents") {
         p <- textplot_scale1d_documents(get_fitted(x), 
@@ -208,7 +209,7 @@ textplot_scale1d.textmodel_ca <- function(x,
 }
 
 
-# internal fns --------
+# internal functions ------------------------
 
 textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, 
                                        groups = NULL) {
@@ -289,37 +290,38 @@ apply_theme <- function(p) {
               panel.grid.major.y = element_line(linetype = "dotted"))
 }
 
-
-# internal functions --------
-
-get_docnames <- function(x) {
-    if (is.null(dim(x))) {
-        dnames <- names(x)
+get_docname <- function(x) {
+    if (is.list(x)) {
+        if (is.matrix(x$fit)) {
+            return(rownames(x$fit))
+        } else {
+            return(names(x$fit))
+        }
     } else {
-        if (is.list(x)) 
-            dnames <- row.names(x$fit)
-        else
-            dnames <- row.names(x)
+        return(names(x))
     }
-    dnames
 }
 
 get_fitted <- function(x) {
-    if (is.list(x)) x <- x$fit
-    if (is.numeric(x)) {
-        fit <- x
+    if (is.list(x)) {
+        if (is.matrix(x$fit)) {
+            return(x$fit[, "fit", drop = TRUE])
+        } else {
+            return(x$fit)
+        }
     } else {
-        fit <- x[, "fit"]
+        return(x)
     }
-    fit
 }
 
 get_sefit <- function(x) {
-    # se is zero if prediction is estimates
-    if (is.numeric(x)) return(rep(0, length(x)))
-    if (is.list(x) && !is.null(x$se.fit)) {
-        return(x$se.fit)
+    if (is.list(x)) {
+        if (is.matrix(x$fit)) {
+            return((x$fit[, "fit", drop = TRUE] - x$fit[, "lwr", drop = TRUE]) / 1.96)  
+        } else {
+            return(x$se.fit)
+        }
     } else {
-        return((x[, "fit"] - x[, "lwr"]) / 1.96)  
+        return(rep(0, length(x)))
     }
 }
