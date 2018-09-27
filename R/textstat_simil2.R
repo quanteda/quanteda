@@ -83,14 +83,22 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     if (is.null(selection)) {
         i <- seq(ncol(x))
     } else {
-        i <- match(selection, colnames(x))
+        if (is.character(selection)) {
+            i <- match(selection, colnames(x))
+        } else {
+            if (is.logical(selection))
+                selection <- which(selection)
+            i <- selection
+            i[i < 1 | ncol(x) < i] <- NA
+        }
+        if (any(is.na(i)))
+            stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (is.null(min_simil)) 
         min_simil <- -1.0
     if (is.null(rank))
         rank <- ncol(x)
-    if (any(is.na(i)))
-        stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
+    
     
     boolean <- FALSE
     weight <- 1
