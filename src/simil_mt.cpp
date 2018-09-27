@@ -4,12 +4,15 @@
 using namespace quanteda;
 
 double magni_cosine(arma::mat& col) {
-    return(sqrt(accu(pow(col, 2))));
+    return(sqrt((double)accu(pow(col, 2))));
 }
 
 double magni_correlation(arma::mat& col) {
     return(as_scalar(stddev(col, 1)));
 }
+
+bool condition;
+arma::uvec nz2;
 
 struct magnitude : public Worker {
     
@@ -18,7 +21,7 @@ struct magnitude : public Worker {
     const int method;
     
     magnitude(const arma::sp_mat& mt_, DoubleParams& magni_, int method_) :
-              mt(mt_), magni(magni_), method(method_) {}
+        mt(mt_), magni(magni_), method(method_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
@@ -29,21 +32,39 @@ struct magnitude : public Worker {
             col = arma::mat(mt.col(i));
             //Rcout << "i=" << i << "\n";
             switch (method) {
-                case 1:
-                    magni[i] = magni_cosine(col);
-                    break;
-                case 2:
-                    magni[i] = magni_correlation(col);
-                    break;
-                default:
-                    magni[i] = 0;
+            case 1:
+                magni[i] = magni_cosine(col);
+                break;
+            case 2:
+                magni[i] = magni_correlation(col);
+                break;
+            default:
+                magni[i] = 0;
             }
         }
     }
 };
 
-double simil_cosine(arma::mat& col_i, arma::mat& col_j, double magni_i, double magni_j) {
-    return dot(col_i, col_j) / (magni_i * magni_j);
+arma::uvec find_nonzero(const arma::sp_mat& mt, int col) {
+    std::vector<int> nz;
+    nz.reserve(mt.n_rows);
+    for (arma::sp_mat::const_col_iterator it = mt.begin_col(col); it != mt.end_col(col); ++it) {
+        nz.push_back(it.row());
+    }
+    return(arma::conv_to<arma::uvec>::from(nz));
+}
+
+double simil_cosine(const arma::colvec& col_i, const arma::colvec& col_j, arma::uvec& nz, 
+                    double magni_i, double magni_j) {
+    double p = 0;
+    for (arma::uvec::iterator it = nz.begin(); it != nz.end(); ++it) {
+        p += col_i[*it] * col_j[*it];
+    }
+    return p / (magni_i * magni_j);
+}
+
+double simil_cosine(const arma::colvec& col_i, const arma::colvec& col_j, double magni_i, double magni_j) { 
+       return dot(col_i, col_j) / (magni_i * magni_j);
 }
 
 double simil_correlation(arma::mat& col_i, arma::mat& col_j, double magni_i, double magni_j) {
@@ -91,8 +112,9 @@ double dist_canberra(arma::mat& col_i, arma::mat& col_j) {
 }
 
 double dist_minkowski(arma::mat& col_i, arma::mat& col_j, double order = 1) {
-    return(pow(accu(pow(abs(col_i) - abs(col_j), order)), 1 / order));
+    return pow(accu(pow(abs(col_i) - abs(col_j), order)), 1 / order);
 }
+
 
 struct similarity : public Worker {
     
@@ -109,8 +131,8 @@ struct similarity : public Worker {
     similarity(const arma::sp_mat& mt_, Triplets& simil_tri_, const DoubleParams& magni_,
                const int method_, const std::vector<unsigned int>& target_, 
                const unsigned int rank_, const double limit_, const bool symm_, const double weight_) :
-               mt(mt_), simil_tri(simil_tri_), magni(magni_), 
-               method(method_), target(target_), rank(rank_), limit(limit_), symm(symm_), weight(weight_) {}
+        mt(mt_), simil_tri(simil_tri_), magni(magni_), 
+        method(method_), target(target_), rank(rank_), limit(limit_), symm(symm_), weight(weight_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
@@ -119,40 +141,40 @@ struct similarity : public Worker {
         
         std::vector<double> simil_temp;
         double simil = 0;
-        
-        arma::mat col_i = arma::mat(nrow, 1);
-        arma::mat col_j = arma::mat(nrow, 1);
+        arma::colvec col_i(nrow);
+        arma::colvec col_j(nrow);
+        arma::uvec nz;
         std::size_t i;
         for (std::size_t h = begin; h < end; h++) {
             i = target[h] - 1;
-            col_i = arma::mat(mt.col(i));
-            //Rcout << col_i << "\n";
+            nz = find_nonzero(mt, i);
+            col_i = mt.col(i);
             simil_temp.reserve(ncol);
             for (std::size_t j = 0; j < ncol; j++) {
                 //Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
-                col_j = arma::mat(mt.col(j));
+                col_j = mt.col(j);
                 switch (method){
-                    case 1:
-                        simil = simil_cosine(col_i, col_j, magni[i], magni[j]);
-                        break;
-                    case 2:
-                        simil = simil_correlation(col_i, col_j, magni[i], magni[j]);
-                        break;
-                    case 3:
-                        simil = simil_ejaccard(col_i, col_j, weight);
-                        break;
-                    case 4:
-                        simil = simil_edice(col_i, col_j, weight);
-                        break;
-                    case 5:
-                        simil = simil_hamann(col_i, col_j, weight);
-                        break;
-                    case 6:
-                        simil = simil_faith(col_i, col_j);
-                        break;
-                    default:
-                        simil = 0;
+                case 1:
+                    simil = simil_cosine(col_i, col_j, nz, magni[i], magni[j]);
+                    break;
+                case 2:
+                    //simil = simil_correlation(col_i, col_j, magni[i], magni[j]);
+                    break;
+                case 3:
+                    //simil = simil_ejaccard(col_i, col_j, weight);
+                    break;
+                case 4:
+                    //simil = simil_edice(col_i, col_j, weight);
+                    break;
+                case 5:
+                    //simil = simil_hamann(col_i, col_j, weight);
+                    break;
+                case 6:
+                    //simil = simil_faith(col_i, col_j);
+                    break;
+                default:
+                    simil = 0;
                 }
                 //Rcout << "simil=" << simil << "\n";
                 simil_temp.push_back(simil);
@@ -184,7 +206,11 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
                        const IntegerVector target_,
                        unsigned int rank,
                        double limit = -1.0,
-                       const double weight = 1.0) {
+                       const double weight = 1.0,
+                       bool condition_ = false) {
+    
+    condition = condition_;
+    nz2 << 2 << 30 << 60 << 800;
     
     arma::uword ncol = mt.n_cols;
     arma::uword nrow = mt.n_rows;
@@ -193,7 +219,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     bool symm = target.size() == ncol && rank == nrow;
     
     //dev::Timer timer;
-    //dev::start_timer("Compute", timer);
+    //dev::start_timer("Compute magnitude", timer);
     
     // compute magnitued for all columns
     DoubleParams mangi(ncol);
@@ -201,14 +227,16 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
         magnitude magnitude(mt, mangi, method);
         parallelFor(0, ncol, magnitude);
     }
+    //dev::stop_timer("Compute magnitude", timer);
     
+    //dev::start_timer("Compute similarity", timer);
     // compute similarity for each pair
     Triplets simil_tri;
     //if (limit == -1.0)
     //    simil_tri.reserve(ncol * target.size() * 0.5);
     similarity similarity(mt, simil_tri, mangi, method, target, rank, limit, symm, weight);
     parallelFor(0, target.size(), similarity);
-    //dev::stop_timer("Compute", timer);
+    //dev::stop_timer("Compute similarity", timer);
     
     //dev::start_timer("Convert", timer);
     std::size_t simil_size = simil_tri.size();
