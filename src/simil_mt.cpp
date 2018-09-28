@@ -2,41 +2,56 @@
 #include "quanteda.h"
 #include "dev.h"
 using namespace quanteda;
+using namespace arma;
 
-double magni_cosine(arma::mat& col) {
-    return(sqrt((double)accu(pow(col, 2))));
+double magni_cosine(const sp_mat& mt, int i) {
+    sp_mat::const_col_iterator it = mt.begin_col(i);
+    sp_mat::const_col_iterator it_end = mt.end_col(i);
+    double sq_sum = 0;
+    for(; it != it_end; ++it) {
+        sq_sum += (*it) * (*it);
+    }
+    return std::sqrt(sq_sum);
 }
 
-double magni_correlation(arma::mat& col) {
-    return(as_scalar(stddev(col, 1)));
+double magni_correlation(const sp_mat& mt, int i) {
+    sp_mat::const_col_iterator it = mt.begin_col(i);
+    sp_mat::const_col_iterator it_end = mt.end_col(i);
+    double n = mt.n_rows;
+    if(n == 0)
+        return 0.0;
+    double sum = 0;
+    double sq_sum = 0;
+    for(; it != it_end; ++it) {
+        sum += (*it);
+        sq_sum += (*it) * (*it);
+    }
+    double mean = sum / n;
+    double var = sq_sum / n - mean * mean;
+    return std::sqrt(var);
 }
 
 bool condition;
-arma::uvec nz2;
 
 struct magnitude : public Worker {
     
-    const arma::sp_mat& mt; // input
+    const sp_mat& mt; // input
     DoubleParams& magni; // output
     const int method;
     
-    magnitude(const arma::sp_mat& mt_, DoubleParams& magni_, int method_) :
+    magnitude(const sp_mat& mt_, DoubleParams& magni_, int method_) :
         mt(mt_), magni(magni_), method(method_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
-        arma::uword ncol = mt.n_cols;
-        arma::uword nrow = mt.n_rows;
-        arma::mat col = arma::mat(nrow, 1);
         for (std::size_t i = begin; i < end; i++) {
-            col = arma::mat(mt.col(i));
             //Rcout << "i=" << i << "\n";
             switch (method) {
             case 1:
-                magni[i] = magni_cosine(col);
+                magni[i] = magni_cosine(mt, i);
                 break;
             case 2:
-                magni[i] = magni_correlation(col);
+                magni[i] = magni_correlation(mt, i);
                 break;
             default:
                 magni[i] = 0;
@@ -45,13 +60,13 @@ struct magnitude : public Worker {
     }
 };
 
-arma::uvec find_nonzero(const arma::sp_mat& mt, int col) {
+uvec find_nonzero(const sp_mat& mt, int col) {
     std::vector<int> nz;
     nz.reserve(mt.n_rows);
-    for (arma::sp_mat::const_col_iterator it = mt.begin_col(col); it != mt.end_col(col); ++it) {
+    for (sp_mat::const_col_iterator it = mt.begin_col(col); it != mt.end_col(col); ++it) {
         nz.push_back(it.row());
     }
-    return(arma::conv_to<arma::uvec>::from(nz));
+    return(conv_to<uvec>::from(nz));
 }
 
 double simil_cosine(const arma::colvec& col_i, const arma::colvec& col_j, arma::uvec& nz, 
@@ -147,7 +162,9 @@ struct similarity : public Worker {
         std::size_t i;
         for (std::size_t h = begin; h < end; h++) {
             i = target[h] - 1;
-            nz = find_nonzero(mt, i);
+            //Rcout << "target: " << i << "\n";
+            if (!condition)
+                nz = find_nonzero(mt, i);
             col_i = mt.col(i);
             simil_temp.reserve(ncol);
             for (std::size_t j = 0; j < ncol; j++) {
@@ -156,7 +173,11 @@ struct similarity : public Worker {
                 col_j = mt.col(j);
                 switch (method){
                 case 1:
-                    simil = simil_cosine(col_i, col_j, nz, magni[i], magni[j]);
+                    if (condition) {
+                        simil = simil_cosine(col_i, col_j, magni[i], magni[j]);
+                    } else {
+                        simil = simil_cosine(col_i, col_j, nz, magni[i], magni[j]);
+                    }
                     break;
                 case 2:
                     //simil = simil_correlation(col_i, col_j, magni[i], magni[j]);
@@ -199,7 +220,6 @@ struct similarity : public Worker {
     }
 };
 
-
 // [[Rcpp::export]]
 S4 qatd_cpp_similarity(const arma::sp_mat& mt, 
                        const int method,
@@ -210,7 +230,6 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
                        bool condition_ = false) {
     
     condition = condition_;
-    nz2 << 2 << 30 << 60 << 800;
     
     arma::uword ncol = mt.n_cols;
     arma::uword nrow = mt.n_rows;
