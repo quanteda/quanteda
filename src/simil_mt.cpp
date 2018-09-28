@@ -69,6 +69,15 @@ uvec find_nonzero(const sp_mat& mt, int col) {
     return(conv_to<uvec>::from(nz));
 }
 
+double simil_cosine(const arma::sp_mat& mt, arma::uvec& nz, 
+                    int i, int j, double magni_i, double magni_j) {
+    double p = 0;
+    for (arma::uvec::iterator it = nz.begin(); it != nz.end(); ++it) {
+        p += mt.at(*it, i) * mt.at(*it, j);
+    }
+    return p / (magni_i * magni_j);
+}
+
 double simil_cosine(const arma::colvec& col_i, const arma::colvec& col_j, arma::uvec& nz, 
                     double magni_i, double magni_j) {
     double p = 0;
@@ -163,18 +172,21 @@ struct similarity : public Worker {
         for (std::size_t h = begin; h < end; h++) {
             i = target[h] - 1;
             //Rcout << "target: " << i << "\n";
+            
+            nz = find_nonzero(mt, i);
             if (!condition)
-                nz = find_nonzero(mt, i);
-            col_i = mt.col(i);
+                col_i = mt.col(i);
             simil_temp.reserve(ncol);
+            
             for (std::size_t j = 0; j < ncol; j++) {
                 //Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
-                col_j = mt.col(j);
+                if (!condition)
+                    col_j = mt.col(j);
                 switch (method){
                 case 1:
                     if (condition) {
-                        simil = simil_cosine(col_i, col_j, magni[i], magni[j]);
+                        //simil = simil_cosine(mt, nz, i, j, magni[i], magni[j]);
                     } else {
                         simil = simil_cosine(col_i, col_j, nz, magni[i], magni[j]);
                     }

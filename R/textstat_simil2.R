@@ -130,9 +130,13 @@ textstat_simil2.dfm <- function(x, selection = NULL,
         x <- dfm_weight(x, "boolean")
 
     id_method <- match(method, c("cosine", "correlation", "ejaccard", "edice", "hamann", "faith"))
-    result <- qatd_cpp_similarity(x, id_method, 
-                                  i, rank, min_simil, weight)
-
+    if (condition) {
+        result <- qatd_cpp_similarity_linear(x, id_method, 
+                                      i, rank, min_simil, weight)
+    } else {
+        result <- qatd_cpp_similarity(x, id_method, 
+                                      i, rank, min_simil, weight)
+    }
     label <- colnames(x)
     rownames(result) <- label
     if (is.null(selection)) {
