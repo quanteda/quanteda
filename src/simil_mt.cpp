@@ -64,7 +64,7 @@ struct similarity_linear : public Worker {
         uword ncol = mt1.n_cols;
         uword nrow = mt1.n_rows;
         
-        std::vector<double> simils;
+        std::vector<double> simils(ncol);
         uword i;
         for (std::size_t h = begin; h < end; h++) {
             i = target[h] - 1;
@@ -82,7 +82,6 @@ struct similarity_linear : public Worker {
                     simil_tri.push_back(std::make_tuple(k, i, simils[k]));
                 }
             }
-            simils.clear();
         }
     }
 };
