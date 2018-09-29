@@ -68,7 +68,6 @@ struct similarity_linear : public Worker {
         uword i;
         for (std::size_t h = begin; h < end; h++) {
             i = target[h] - 1;
-            //Rcout << "target: " << i << "\n";
             if (method == 1) {
                 simils = to_vector(trans(mt2 * mt1.col(i)) / (square * square[i]));
             } else {
@@ -104,13 +103,8 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
     if (rank < 1) rank = 1;
     bool symm = targets.size() == ncol && rank == ncol;
     
-    Rcout << "targets.size() " << targets.size() << "\n";
-    Rcout << "ncol " << ncol << "\n";
-    Rcout << "rank " << rank << "\n";
-    Rcout << "nrow " << nrow << "\n";
-    
-    dev::Timer timer;
-    dev::start_timer("Compute magnitude", timer);
+    //dev::Timer timer;
+    //dev::start_timer("Compute magnitude", timer);
     rowvec square(ncol), center(ncol);
     if (method == 1) {
         square = rowvec(sqrt(mat(sum(mt1 % mt1, 0))));
@@ -118,17 +112,14 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
         square = stddev(mt1, 1);
         center = mean(mt1);
     }
-    Rcout << "Symmetric " << symm << "\n";
-    dev::stop_timer("Compute magnitude", timer);
     
-    dev::start_timer("Compute similarity", timer);
+    //dev::stop_timer("Compute magnitude", timer);
+    //dev::start_timer("Compute similarity", timer);
     Triplets simil_tri;
-    if (condition)
-        simil_tri.reserve(ncol * target.size() * 0.5);
     similarity_linear similarity_linear(mt1, mt2, simil_tri, square, center, method, targets, 
                                         rank, limit, symm);
     parallelFor(0, targets.size(), similarity_linear);
-    dev::stop_timer("Compute similarity", timer);
+    //dev::stop_timer("Compute similarity", timer);
     
     return to_matrix(simil_tri, ncol, ncol, symm);
 }
@@ -207,8 +198,6 @@ struct similarity : public Worker {
         uword i;
         for (std::size_t h = begin; h < end; h++) {
             i = targets[h] - 1;
-            //Rcout << "target: " << i << "\n";
-            
             col_i = mt.col(i);
             simils.reserve(ncol);
             
@@ -264,8 +253,6 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     similarity similarity(mt, simil_tri, method, target, rank, limit, symm, weight);
     parallelFor(0, target.size(), similarity);
     //dev::stop_timer("Compute similarity", timer);
-    
-    //dev::start_timer("Convert", timer);
     
     return to_matrix(simil_tri, ncol, ncol, symm); 
 

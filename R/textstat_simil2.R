@@ -99,7 +99,6 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     if (is.null(rank))
         rank <- ncol(x)
     
-    
     boolean <- FALSE
     weight <- 1
     if (method == "jaccard") {
@@ -128,24 +127,20 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     }
     if (boolean)
         x <- dfm_weight(x, "boolean")
-
-    id_method <- match(method, c("cosine", "correlation", "ejaccard", "edice", "hamann", "faith"))
-    if (condition) {
-        result <- qatd_cpp_similarity_linear(x, id_method, 
-                                      i, rank, min_simil, weight)
+    if (method %in% c("cosine", "correlation")) {
+        result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation")),
+                                             i, rank, min_simil, condition)
     } else {
-        result <- qatd_cpp_similarity(x, id_method, 
+        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamann", "faith")), 
                                       i, rank, min_simil, weight)
     }
     label <- colnames(x)
     rownames(result) <- label
     if (is.null(selection)) {
         colnames(result) <- label
-        #result <- as(forceSymmetric(result, "L"), "dsCMatrix")
     } else {
         result <- result[,i, drop = FALSE]
         colnames(result) <- label[i]
-        #result <- as(result, "dgCMatrix")
     }
     return(result)
 }
