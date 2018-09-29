@@ -202,21 +202,20 @@ struct similarity : public Worker {
             simils.reserve(ncol);
             
             for (uword j = 0; j < ncol; j++) {
-                //Rcout << "i=" << i << " j=" << j << "\n";
                 if (symm && j > i) continue;
                 col_j = mt.col(j);
                 switch (method) {
                 case 1:
-                    //simil = simil_ejaccard(col_i, col_j, weight);
+                    simil = simil_ejaccard(col_i, col_j, weight);
                     break;
                 case 2:
-                    //simil = simil_edice(col_i, col_j, weight);
+                    simil = simil_edice(col_i, col_j, weight);
                     break;
                 case 3:
-                    //simil = simil_hamann(col_i, col_j, weight);
+                    simil = simil_hamann(col_i, col_j, weight);
                     break;
                 case 4:
-                    //simil = simil_faith(col_i, col_j);
+                    simil = simil_faith(col_i, col_j);
                     break;
                 }
                 //Rcout << "simil=" << simil << "\n";
