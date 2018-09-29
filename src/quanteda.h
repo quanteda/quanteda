@@ -54,7 +54,50 @@ namespace quanteda{
     typedef std::vector<std::string> StringParams;
 #endif    
     
-
+    // Ngram functions and objects -------------------------------------------------------
+    
+    typedef std::vector<unsigned int> Ngram;
+    typedef std::vector<Ngram> Ngrams;
+    typedef std::string Type;
+    typedef std::vector<Type> Types;
+    
+    struct hash_ngram {
+        std::size_t operator() (const Ngram &vec) const {
+            unsigned int seed = 0;
+            for (std::size_t i = 0; i < vec.size(); i++) {
+                seed += vec[i] * (256 ^ i);
+            }
+            return std::hash<unsigned int>()(seed);
+        }
+    };
+    
+    struct equal_ngram {
+        bool operator() (const Ngram &vec1, const Ngram &vec2) const { 
+            return (vec1 == vec2);
+        }
+    };
+    
+#if QUANTEDA_USE_TBB
+    typedef tbb::atomic<unsigned int> IdNgram;
+    typedef tbb::concurrent_unordered_multimap<Ngram, UintParam, hash_ngram, equal_ngram> MultiMapNgrams;
+    typedef tbb::concurrent_unordered_map<Ngram, UintParam, hash_ngram, equal_ngram> MapNgrams;
+    typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
+    typedef tbb::concurrent_vector<Ngram> VecNgrams;
+    typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef tbb::concurrent_vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
+#else
+    typedef unsigned int IdNgram;
+    typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
+    typedef std::unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
+    typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
+    typedef std::vector<Ngram> VecNgrams;
+    typedef std::unordered_set<unsigned int> SetUnigrams;
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef std::vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
+#endif    
+    
+    
     inline String join_strings(CharacterVector &tokens_, 
                        const String delim_ = " "){
         
@@ -117,49 +160,38 @@ namespace quanteda{
         }
         return list;
     }
-
-    // Ngram functions and objects -------------------------------------------------------
     
-    typedef std::vector<unsigned int> Ngram;
-    typedef std::vector<Ngram> Ngrams;
-    typedef std::string Type;
-    typedef std::vector<Type> Types;
-    
-    struct hash_ngram {
-            std::size_t operator() (const Ngram &vec) const {
-            unsigned int seed = 0;
-            for (std::size_t i = 0; i < vec.size(); i++) {
-                seed += vec[i] * (256 ^ i);
-            }
-            return std::hash<unsigned int>()(seed);
+    inline S4 to_matrix(Triplets& tri, int nrow, int ncol, bool symmetric) {
+        
+        std::size_t l = tri.size();
+        IntegerVector dim_ = IntegerVector::create(nrow, ncol);
+        IntegerVector i_(l), j_(l);
+        NumericVector x_(l);
+        
+        for (std::size_t k = 0; k < tri.size(); k++) {
+            i_[k] = std::get<0>(tri[k]);
+            j_[k] = std::get<1>(tri[k]);
+            x_[k] = std::get<2>(tri[k]);
         }
-    };
-    
-    struct equal_ngram {
-        bool operator() (const Ngram &vec1, const Ngram &vec2) const { 
-            return (vec1 == vec2);
+        if (symmetric) {
+            S4 simil_("dsTMatrix");
+            simil_.slot("i") = i_;
+            simil_.slot("j") = j_;
+            simil_.slot("x") = x_;
+            simil_.slot("Dim") = dim_;
+            simil_.slot("uplo") = "U";
+            return simil_;
+        } else {
+            S4 simil_("dgTMatrix");
+            simil_.slot("i") = i_;
+            simil_.slot("j") = j_;
+            simil_.slot("x") = x_;
+            simil_.slot("Dim") = dim_;
+            return simil_;
         }
-    };
+    }
 
-#if QUANTEDA_USE_TBB
-    typedef tbb::atomic<unsigned int> IdNgram;
-    typedef tbb::concurrent_unordered_multimap<Ngram, UintParam, hash_ngram, equal_ngram> MultiMapNgrams;
-    typedef tbb::concurrent_unordered_map<Ngram, UintParam, hash_ngram, equal_ngram> MapNgrams;
-    typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
-    typedef tbb::concurrent_vector<Ngram> VecNgrams;
-    typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-    typedef tbb::concurrent_vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
-#else
-    typedef unsigned int IdNgram;
-    typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
-    typedef std::unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
-    typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
-    typedef std::vector<Ngram> VecNgrams;
-    typedef std::unordered_set<unsigned int> SetUnigrams;
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-    typedef std::vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
-#endif    
+
 /*
     inline std::vector<std::size_t> register_ngrams(List words_, SetNgrams &set_words) {
         std::vector<std::size_t> spans(words_.size());
