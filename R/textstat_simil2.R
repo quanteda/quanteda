@@ -18,7 +18,7 @@
 #' @param diag whether the diagonal of the distance matrix should be recorded
 #' @details \code{textstat_simil2} options are: \code{"correlation"} (default), 
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-#'   \code{"edice"}, \code{"simple matching"}, \code{"hamann"}, and 
+#'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and 
 #'   \code{"faith"}.
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
@@ -51,7 +51,8 @@
 #' 
 textstat_simil2 <- function(x, selection = NULL,
                            margin = c("documents", "features"),
-                           method = c("cosine", "correlation"),
+                           method = c("cosine", "correlation", "jaccard", "ejaccard",
+                                      "dice", "edice", "hamman", "simple matching", "faith"), 
                            rank = NULL,
                            min_simil = NULL, condition = FALSE) {
     UseMethod("textstat_simil2")
@@ -61,7 +62,8 @@ textstat_simil2 <- function(x, selection = NULL,
 #' @export    
 textstat_simil2.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
-                               method = c("cosine", "correlation"), 
+                               method = c("cosine", "correlation", "jaccard", "ejaccard",
+                                          "dice", "edice", "hamman", "simple matching", "faith"), 
                                rank = NULL,
                                min_simil = NULL, condition = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil2"))
@@ -71,7 +73,7 @@ textstat_simil2.default <- function(x, selection = NULL,
 textstat_simil2.dfm <- function(x, selection = NULL,
                                 margin = c("documents", "features"),
                                 method = c("cosine", "correlation", "jaccard", "ejaccard",
-                                           "dice", "edice", "hamann", "simple matching", "faith"), 
+                                           "dice", "edice", "hamman", "simple matching", "faith"), 
                                 rank = NULL,
                                 min_simil = NULL, condition = FALSE) {
     x <- as.dfm(x)
@@ -115,13 +117,13 @@ textstat_simil2.dfm <- function(x, selection = NULL,
     } else if (method == "edice") {
         boolean <- FALSE
         weight <- 2
-    } else if (method == "hamann") {
+    } else if (method == "hamman") {
         boolean <- TRUE
         weight <- 1
     } else if (method == "simple matching") {
         boolean <- TRUE
         weight <- 0
-        method <- "hamann"
+        method <- "hamman"
     } else if (method == "faith") {
         boolean <- TRUE
     }
@@ -131,7 +133,7 @@ textstat_simil2.dfm <- function(x, selection = NULL,
         result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation")),
                                              i, rank, min_simil, condition)
     } else {
-        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamann", "faith")), 
+        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "faith")), 
                                       i, rank, min_simil, weight)
     }
     label <- colnames(x)
