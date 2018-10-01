@@ -5,8 +5,9 @@
 \title{Similarity and distance computation between documents or features}
 \usage{
 textstat_simil2(x, selection = NULL, margin = c("documents",
-  "features"), method = c("cosine", "correlation"), upper = FALSE,
-  diag = FALSE, min_simil = 0)
+  "features"), method = c("cosine", "correlation", "jaccard", "ejaccard",
+  "dice", "edice", "hamman", "simple matching", "faith"), rank = NULL,
+  min_simil = NULL, condition = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -15,16 +16,18 @@ textstat_simil2(x, selection = NULL, margin = c("documents",
 to be selected for comparison}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
-difference will be computed:  \code{"documents"} for documents or 
+difference will be computed:  \code{"documents"} for documents or
 \code{"features"} for word/term features}
 
 \item{method}{method the similarity or distance measure to be used; see
 Details}
 
-\item{upper}{whether the upper triangle of the symmetric \eqn{V \times V} 
-matrix is recorded}
+\item{rank}{an integer value specifying top-n most similar documents or features
+to be recorded.}
 
-\item{diag}{whether the diagonal of the distance matrix should be recorded}
+\item{min_simil}{minimum similarity value to be recoded.}
+
+\item{condition}{boolean flag used only in developemnt}
 }
 \value{
 \code{textstat_simil2} and \code{textstat_dist} return
@@ -33,22 +36,22 @@ matrix is recorded}
   identified in the selection.
 }
 \description{
-These functions compute matrixes of distances and similarities between 
-documents or features from a \code{\link{dfm}} and return a 
+These functions compute matrixes of distances and similarities between
+documents or features from a \code{\link{dfm}} and return a
 \code{\link[stats]{dist}} object (or a matrix if specific targets are
-selected).  They are fast and robust because they operate directly on the sparse
-\link{dfm} objects.
+selected).  They are fast and robust because they operate directly on the
+sparse \link{dfm} objects.
 }
 \details{
-\code{textstat_simil2} options are: \code{"correlation"} (default), 
+\code{textstat_simil2} options are: \code{"correlation"} (default),
   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-  \code{"edice"}, \code{"simple matching"}, \code{"hamann"}, and 
+  \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
   \code{"faith"}.
 }
 \note{
-If you want to compute similarity on a "normalized" dfm object 
+If you want to compute similarity on a "normalized" dfm object
   (controlling for variable document lengths, for methods such as correlation
-  for which different document lengths matter), then wrap the input dfm in 
+  for which different document lengths matter), then wrap the input dfm in
   \code{\link{dfm_weight}(x, "prop")}.
 }
 \examples{
@@ -64,7 +67,7 @@ textstat_simil2(pres_dfm, "2017-Trump", method = "cosine", margin = "documents")
 textstat_simil2(pres_dfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 
 # compute some term similarities
-s2 <- textstat_simil2(pres_dfm, c("fair", "health", "terror"), method = "cosine", 
+s2 <- textstat_simil2(pres_dfm, c("fair", "health", "terror"), method = "cosine",
                       margin = "features")
 head(as.matrix(s2), 10)
 as.list(s2, n = 8)
