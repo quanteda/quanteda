@@ -2,6 +2,7 @@ context("test textstat_simil2.R")
 
 test_mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                stem = TRUE, verbose = FALSE)
+test_mt <- dfm_trim(test_mt, min_termfreq = 5)
 
 # correlation
 test_that("test textstat_simil2 method = correlation on documents", {
