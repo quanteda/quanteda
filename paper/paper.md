@@ -23,7 +23,9 @@ authors:
   name: Akitaka Matsuo
   orcid: 0000-0002-3323-6330
 date: "4 May 2018"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 bibliography: paper.bib
 tags:
 - text mining
@@ -55,6 +57,17 @@ methods for compiling document-feature matrices and for manipulating these or
 using them in further quantitative analysis. Using C++ and multi-threading
 extensively, **quanteda** is also considerably faster and more efficient than
 other R and Python packages in processing large textual data.
+
+The package is designed for R users needing to apply natural language
+processing to texts, from documents to final analysis.  Its
+capabilities match or exceed those provided in many end-user software
+applications, many of which are expensive and not open source.  The package is
+therefore of great benefit to researchers, students, and other analysts with
+fewer financial resources.  While using **quanteda** requires R programming
+knowledge, its API is designed to enable powerful, efficient analysis with a
+minimum of steps.  By emphasising consistent design, furthermore, **quanteda**
+lowers the barriers to learning and using NLP and quantitative text analysis
+even for proficient R programmers.
 
 # Corpus management
 

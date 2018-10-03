@@ -6,6 +6,17 @@ developed by [Kenneth Benoit](http://kenbenoit.net) and other
 contributors. Its initial development was supported by the European
 Research Council grant ERC-2011-StG 283794-QUANTESS.
 
+The package is designed for R users needing to apply natural language
+processing to texts, from documents to final analysis. Its capabilities
+match or exceed those provided in many end-user software applications,
+many of which are expensive and not open source. The package is
+therefore of great benefit to researchers, students, and other analysts
+with fewer financial resources. While using **quanteda** requires R
+programming knowledge, its API is designed to enable powerful, efficient
+analysis with a minimum of steps. By emphasising consistent design,
+furthermore, **quanteda** lowers the barriers to learning and using NLP
+and quantitative text analysis even for proficient R programmers.
+
 How to Install
 --------------
 
@@ -44,30 +55,30 @@ numbers of words are the same).
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Minimum</th>
-<th align="center">Recommended</th>
+<th style="text-align: center;">Minimum</th>
+<th style="text-align: center;">Recommended</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>OS</td>
-<td align="center">Windows/MacOS/Linux</td>
-<td align="center">MacOS/Linux</td>
+<td style="text-align: center;">Windows/MacOS/Linux</td>
+<td style="text-align: center;">MacOS/Linux</td>
 </tr>
 <tr class="even">
 <td>CPU</td>
-<td align="center">1 core</td>
-<td align="center">4 cores or more</td>
+<td style="text-align: center;">1 core</td>
+<td style="text-align: center;">4 cores or more</td>
 </tr>
 <tr class="odd">
 <td>RAM</td>
-<td align="center">2GB</td>
-<td align="center">8GB more more</td>
+<td style="text-align: center;">2GB</td>
+<td style="text-align: center;">8GB more more</td>
 </tr>
 <tr class="even">
 <td>IDE</td>
-<td align="center"></td>
-<td align="center">R Studio</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">R Studio</td>
 </tr>
 </tbody>
 </table>
@@ -76,8 +87,8 @@ How to Use
 ----------
 
 See the [quick start
-guide](http://quanteda.io/articles/quickstart.html) to learn how to
-use **quanteda**.
+guide](https://quanteda.io/articles/quickstart.html) to learn how to use
+**quanteda**.
 
 Leaving Feedback
 ----------------
