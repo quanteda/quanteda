@@ -13,7 +13,7 @@ many of which are expensive and not open source. The package is
 therefore of great benefit to researchers, students, and other analysts
 with fewer financial resources. While using **quanteda** requires R
 programming knowledge, its API is designed to enable powerful, efficient
-analysis with a minimum of steps. By emphasising consistent design,
+analysis with a minimum of steps. By emphasizing consistent design,
 furthermore, **quanteda** lowers the barriers to learning and using NLP
 and quantitative text analysis even for proficient R programmers.
 
