@@ -6,8 +6,10 @@
 \usage{
 textstat_simil2(x, selection = NULL, margin = c("documents",
   "features"), method = c("cosine", "correlation", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching", "faith"), rank = NULL,
-  min_simil = NULL, condition = FALSE)
+  "dice", "edice", "hamman", "simple matching", "faith", "euclidean",
+  "chisquared", "hamming", "kullback", "manhattan", "maximum", "canberra",
+  "minkowski"), rank = NULL, min_simil = NULL, p = 2,
+  condition = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -26,6 +28,8 @@ Details}
 to be recorded.}
 
 \item{min_simil}{minimum similarity value to be recoded.}
+
+\item{p}{The power of the Minkowski distance.}
 
 \item{condition}{boolean flag used only in developemnt}
 }

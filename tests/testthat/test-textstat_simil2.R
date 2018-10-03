@@ -4,247 +4,200 @@ test_mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopw
                stem = TRUE, verbose = FALSE)
 test_mt <- dfm_trim(test_mt, min_termfreq = 5)
 
-# correlation
-test_that("test textstat_simil2 method = correlation on documents", {
-    skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "correlation", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), by_rows = TRUE, diag = TRUE))
+test_simil <- function(x, method, margin, ignore_upper = FALSE, ...) {
+    
+    if (margin == "documents") {
+        by_rows <- TRUE
+        selection <- "1985-Reagan"
+        y <- x[selection,]
+    } else {
+        by_rows <- FALSE
+        selection <- "soviet"
+        y <- x[,selection]
+    }
+    
+    s1 <- as.matrix(textstat_simil2(x, method = method, margin = margin, ...))
+    s2 <- as.matrix(proxy::simil(as.matrix(x), 
+                                method = method, by_rows = by_rows, diag = TRUE, ...))
+
+    if (ignore_upper)
+        s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
     expect_equal(s1, s2, tolerance = 0.001)
     
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "correlation", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), by_rows = TRUE, diag = TRUE))
+    s3 <- as.matrix(textstat_simil2(x, selection, method = method, margin = margin, ...))
+    s4 <- as.matrix(proxy::simil(as.matrix(x), as.matrix(y), 
+                                method = method, by_rows = by_rows, diag = TRUE, ...))
+    if (ignore_upper)
+        s3[upper.tri(s3, TRUE)] <- s4[upper.tri(s4, TRUE)] <- 0
     expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+}
+
+test_dist <- function(x, method, margin, ignore_upper = FALSE, ...) {
+    
+    if (margin == "documents") {
+        by_rows <- TRUE
+        selection <- "1985-Reagan"
+        y <- x[selection,]
+    } else {
+        by_rows <- FALSE
+        selection <- "soviet"
+        y <- x[,selection]
+    }
+    
+    s1 <- as.matrix(textstat_simil2(x, method = method, margin = margin, ...))
+    s2 <- as.matrix(proxy::dist(as.matrix(x), 
+                                method = method, by_rows = by_rows, diag = TRUE, ...))
+    
+    if (ignore_upper)
+        s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
+    expect_equal(s1, s2, tolerance = 0.001)
+    
+    s3 <- as.matrix(textstat_simil2(x, selection, method = method, margin = margin, ...))
+    s4 <- as.matrix(proxy::dist(as.matrix(x), as.matrix(y), 
+                                method = method, by_rows = by_rows, diag = TRUE, ...))
+    if (ignore_upper)
+        s3[upper.tri(s3, TRUE)] <- s4[upper.tri(s4, TRUE)] <- 0
+    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+}
+
+# Similarity measures -------------------------------------------
+
+test_that("test textstat_simil2 cosine similarity", {
+    skip_if_not_installed("proxy")
+    test_simil(test_mt, "cosine", "documents")
+    test_simil(test_mt, "cosine", "features")
 })
 
-test_that("test textstat_simil2 method = correlation on features)", {
+test_that("test textstat_simil2 correlation similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "correlation", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "correlation", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "correlation", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "correlation", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "correlation", "documents")
+    test_simil(test_mt, "correlation", "features")
 })
 
-test_that("test textstat_simil2 method = cosine on documents", {
+test_that("test textstat_simil2 jaccard similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "cosine", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "cosine", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "cosine", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "cosine", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "jaccard", "documents")
+    test_simil(test_mt, "jaccard", "features")
 })
 
-test_that("test textstat_simil2 method = cosine on features", {
+test_that("test textstat_simil2 ejaccard similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "cosine", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "cosine", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "cosine", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "cosine", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "ejaccard", "documents")
+    test_simil(test_mt, "ejaccard", "features")
 })
 
-test_that("test textstat_simil2 method = jaccard on documents", {
+test_that("test textstat_simil2 dice similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "jaccard", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "jaccard", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "jaccard", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "jaccard", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "dice", "documents")
+    test_simil(test_mt, "dice", "features")
 })
 
-test_that("test textstat_simil2 method = jaccard on features", {
+test_that("test textstat_simil2 edice similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "jaccard", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "jaccard", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "jaccard", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "jaccard", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "edice", "documents")
+    test_simil(test_mt, "edice", "features")
 })
 
-test_that("test textstat_simil2 method = ejaccard on documents", {
+test_that("test textstat_simil2 simple matching similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "ejaccard", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "ejaccard", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "ejaccard", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "ejaccard", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "simple matching", "documents")
+    test_simil(test_mt, "simple matching", "features")
 })
 
-test_that("test textstat_simil2 method = ejaccard on features", {
+test_that("test textstat_simil2 hamman similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "ejaccard", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "ejaccard", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "ejaccard", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "ejaccard", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "hamman", "documents")
+    test_simil(test_mt, "hamman", "features")
 })
 
-test_that("test textstat_simil2 method = dice on documents", {
+test_that("test textstat_simil2 faith similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "dice", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "dice", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "dice", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "dice", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_simil(test_mt, "faith", "documents", ignore_upper = TRUE)
+    test_simil(test_mt, "faith", "features", ignore_upper = TRUE)
 })
 
-test_that("test textstat_simil2 method = dice on features", {
+# Distance measures -------------------------------------------
+
+test_that("test textstat_simil2 euclidean distance", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "dice", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "dice", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "dice", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "dice", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_dist(test_mt, "euclidean", "documents")
+    test_dist(test_mt, "euclidean", "features")
 })
 
-test_that("test textstat_simil2 method = edice on documents", {
+# test_that("test textstat_simil2 chisquared distance on documents", {
+#     skip_if_not_installed("ExPosition")
+#     s1 <- as.matrix(textstat_simil2(test_mt, method = "chisquared", margin = "documents"))
+#     s2 <- as.matrix(ExPosition::chi2Dist(as.matrix(test_mt))$D)
+#     names(dimnames(s2)) <- NULL
+#     expect_equal(s1, s2, tolerance = 0.001)
+#     
+#     s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "chisquared", margin = "documents"))
+#     s4 <- as.matrix(ExPosition::chi2Dist(as.matrix(test_mt))$D[,"1985-Reagan"])
+#     names(dimnames(s4)) <- NULL
+#     expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+# })
+# 
+# test_that("test textstat_simil2 chisquared distance on features", {
+#     skip_if_not_installed("ExPosition")
+#     s1 <- as.matrix(textstat_simil2(test_mt, method = "chisquared", margin = "features"))
+#     s2 <- as.matrix(ExPosition::chi2Dist(t(as.matrix(test_mt)))$D)
+#     names(dimnames(s2)) <- NULL
+#     expect_equal(s1, s2, tolerance = 0.001)
+#     
+#     s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "chisquared", margin = "features"))
+#     s4 <- as.matrix(ExPosition::chi2Dist(t(as.matrix(test_mt)))$D[,"soviet"])
+#     names(dimnames(s4)) <- NULL
+#     expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+# })
+
+
+test_that("test kullback kullback similarity", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "edice", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "edice", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "edice", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "edice", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    # make dense matrix to avoide Inf in proxy::dist
+    test_mt_dense <- test_mt + 1
+    # proxy::dist() also incorrectly produces symmetric matrix
+    test_dist(test_mt_dense, "kullback", "documents", ignore_upper = TRUE)
+    test_dist(test_mt_dense, "kullback", "features", ignore_upper = TRUE)
 })
 
-test_that("test textstat_simil2 method = edice on features", {
+test_that("test textstat_simil2 manhattan distance", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "edice", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "edice", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "edice", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "edice", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_dist(test_mt, "manhattan", "documents")
+    test_dist(test_mt, "manhattan", "features")
 })
 
-test_that("test textstat_simil2 method = simple matching on documents", {
+test_that("test textstat_simil2 maximum distance", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "simple matching", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "simple matching", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "simple matching", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "simple matching", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_dist(test_mt, "maximum", "documents")
+    test_dist(test_mt, "maximum", "features")
 })
 
-test_that("test textstat_simil2 method = \"simple matching\" against proxy::simil(): features", {
+test_that("test textstat_simil2 canberra distance", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt[,1:100], method = "simple matching", margin = "features"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt[,1:100]), 
-                                 method = "simple matching", by_rows = FALSE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "soviet", method = "simple matching", margin = "features"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt[,"soviet"]), 
-                                 method = "simple matching", by_rows = FALSE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_dist(test_mt, "canberra", "documents")
+    test_dist(test_mt, "canberra", "features")
 })
 
-test_that("test textstat_simil2 method = hamman on documents", {
+test_that("test textstat_simil2 canberra distance", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "hamman", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "hamman", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "hamman", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "hamman", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_dist(test_mt, "canberra", "documents")
+    test_dist(test_mt, "canberra", "features")
 })
 
-test_that("test textstat_simil2 method = hamman on features", {
+test_that("test textstat_simil2 minkowski distance", {
     skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "hamman", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "hamman", by_rows = TRUE, diag = TRUE))
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "hamman", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "hamman", by_rows = TRUE, diag = TRUE))
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
-})
-
-test_that("test textstat_simil2 method = faith on documents", {
-    skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "faith", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "faith", by_rows = TRUE, diag = TRUE))
-    diag(s1) <- diag(s2) <- NA # coersion of dist object to matrix induces artificial diagonal values
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "faith", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "faith", by_rows = TRUE, diag = TRUE))
-    diag(s3) <- diag(s4) <- NA # coersion of dist object to matrix induces artificial diagonal values
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
-})
-
-test_that("test textstat_simil2 method = faith on features", {
-    skip_if_not_installed("proxy")
-    s1 <- as.matrix(textstat_simil2(test_mt, method = "faith", margin = "documents"))
-    s2 <- as.matrix(proxy::simil(as.matrix(test_mt), 
-                                 method = "faith", by_rows = TRUE, diag = TRUE))
-    diag(s1) <- diag(s2) <- NA # coersion of dist object to matrix induces artificial diagonal values
-    expect_equal(s1, s2, tolerance = 0.001)
-    
-    s3 <- as.matrix(textstat_simil2(test_mt, "1985-Reagan", method = "faith", margin = "documents"))
-    s4 <- as.matrix(proxy::simil(as.matrix(test_mt), as.matrix(test_mt["1985-Reagan",]), 
-                                 method = "faith", by_rows = TRUE, diag = TRUE))
-    diag(s3) <- diag(s4) <- NA # coersion of dist object to matrix induces artificial diagonal values
-    expect_equal(as.numeric(s3), as.numeric(s4), tolerance = 0.001)
+    test_dist(test_mt, "minkowski", "documents", p = 0.1)
+    test_dist(test_mt, "minkowski", "features", p = 0.1)
+    test_dist(test_mt, "minkowski", "documents", p = 2)
+    test_dist(test_mt, "minkowski", "features", p = 2)
+    test_dist(test_mt, "minkowski", "documents", p = 10)
+    test_dist(test_mt, "minkowski", "features", p = 10)
 })
 
 test_that("as.matrix works as expected",{
     txt <- c('Bacon ipsum dolor amet tenderloin hamburger bacon t-bone,', 
              'Tenderloin turducken corned beef bacon.', 
-             ' Burgdoggen venison tail, hamburger filet mignon capicola meatloaf pig pork belly.')
+             'Burgdoggen venison tail, hamburger filet mignon capicola meatloaf pig pork belly.')
     mt <- dfm(txt)
     expect_equivalent(diag(as.matrix(textstat_simil2(mt))), 
                       rep(1, 3))
@@ -307,3 +260,6 @@ test_that("raises error when dfm is empty (#1419)", {
     expect_error(textstat_simil2(mx),
                  quanteda:::message_error("dfm_empty"))
 })
+
+
+

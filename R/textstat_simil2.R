@@ -13,6 +13,7 @@
 #'   \code{"features"} for word/term features
 #' @param method method the similarity or distance measure to be used; see
 #'   Details
+#' @param p The power of the Minkowski distance.
 #' @param rank an integer value specifying top-n most similar documents or features
 #'   to be recorded.
 #' @param min_simil minimum similarity value to be recoded.
@@ -53,9 +54,11 @@
 textstat_simil2 <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("cosine", "correlation", "jaccard", "ejaccard",
-                                      "dice", "edice", "hamman", "simple matching", "faith"), 
+                                      "dice", "edice", "hamman", "simple matching", "faith",
+                                      "euclidean", "chisquared", "hamming", "kullback", 
+                                      "manhattan", "maximum", "canberra", "minkowski"), 
                            rank = NULL,
-                           min_simil = NULL, condition = FALSE) {
+                           min_simil = NULL, p = 2, condition = FALSE) {
     UseMethod("textstat_simil2")
 }
     
@@ -64,9 +67,11 @@ textstat_simil2 <- function(x, selection = NULL,
 textstat_simil2.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("cosine", "correlation", "jaccard", "ejaccard",
-                                          "dice", "edice", "hamman", "simple matching", "faith"), 
+                                          "dice", "edice", "hamman", "simple matching", "faith",
+                                          "euclidean", "chisquared", "hamming", "kullback",
+                                          "manhattan", "maximum", "canberra", "minkowski"), 
                                rank = NULL,
-                               min_simil = NULL, condition = FALSE) {
+                               min_simil = NULL, p = 2, condition = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil2"))
 }
     
@@ -74,9 +79,11 @@ textstat_simil2.default <- function(x, selection = NULL,
 textstat_simil2.dfm <- function(x, selection = NULL,
                                 margin = c("documents", "features"),
                                 method = c("cosine", "correlation", "jaccard", "ejaccard",
-                                           "dice", "edice", "hamman", "simple matching", "faith"), 
+                                           "dice", "edice", "hamman", "simple matching", "faith",
+                                           "euclidean", "chisquared", "hamming", "kullback",
+                                           "manhattan", "maximum", "canberra", "minkowski"), 
                                 rank = NULL,
-                                min_simil = NULL, condition = FALSE) {
+                                min_simil = NULL, p = 2, condition = FALSE) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
@@ -127,6 +134,12 @@ textstat_simil2.dfm <- function(x, selection = NULL,
         method <- "hamman"
     } else if (method == "faith") {
         boolean <- TRUE
+    } else if (method == "hamming") {
+        boolean <- TRUE
+    } else if (method == "minkowski") {
+        if (p <= 0) 
+            stop("p must be greater than zero")
+        weight <- p
     }
     if (boolean)
         x <- dfm_weight(x, "boolean")
@@ -134,7 +147,9 @@ textstat_simil2.dfm <- function(x, selection = NULL,
         result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation")),
                                              i, rank, min_simil, condition)
     } else {
-        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "faith")), 
+        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "faith", 
+                                                         "euclidean", "chisquared", "hamming", "kullback",
+                                                         "manhattan", "maximum", "canberra", "minkowski")), 
                                       i, rank, min_simil, weight)
     }
     label <- colnames(x)

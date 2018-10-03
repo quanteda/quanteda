@@ -63,17 +63,20 @@ struct similarity_linear : public Worker {
         
         uword ncol = mt1.n_cols;
         uword nrow = mt1.n_rows;
-        
+        rowvec v1, v2;
         std::vector<double> simils(ncol);
         uword i;
         for (std::size_t h = begin; h < end; h++) {
             i = target[h] - 1;
-            if (method == 1) {
+            switch (method) {
+            case 1: // cosine similarity
                 simils = to_vector(trans(mt2 * mt1.col(i)) / (square * square[i]));
-            } else {
-                rowvec v1 = rowvec(trans(mt2 * mt1.col(i)));
-                rowvec v2 = center * center[i] * nrow;
+                break;
+            case 2: // correlation similarity
+                v1 = rowvec(trans(mt2 * mt1.col(i)));
+                v2 = center * center[i] * nrow;
                 simils = to_vector(((v1 - v2) / nrow) / (square * square[i]));
+                break;
             }
             limit = get_limit(simils, rank, limit);
             for (std::size_t k = 0; k < simils.size(); k++) {
@@ -105,11 +108,14 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
     //dev::Timer timer;
     //dev::start_timer("Compute magnitude", timer);
     rowvec square(ncol), center(ncol);
-    if (method == 1) {
+    switch (method) {
+    case 1: // cosine
         square = rowvec(sqrt(mat(sum(mt1 % mt1, 0))));
-    } else {
+        break;
+    case 2: // correlation
         square = stddev(mt1, 1);
         center = mean(mt1);
+        break;
     }
     
     //dev::stop_timer("Compute magnitude", timer);
@@ -146,12 +152,58 @@ double simil_faith(colvec& col_i, colvec& col_j) {
     return (t + (f / 2)) / n;
 }
 
+double dist_euclidean(colvec& col_i, colvec& col_j) {
+    return sqrt(accu(square(col_i - col_j)));
+}
+
+double dist_chisquare(colvec& col_i, colvec& col_j) {
+    //double s1 = accu(col_i);
+    //double s2 = accu(col_j);
+    //double q = accu(square((col_i / s1) - (col_j / s2)) * (1 / sum(col_i + col_j, 0)));
+    double s1 = accu(col_i);
+    double s2 = accu(col_j);
+    colvec p = (col_i + col_j) / (s1 + s2);
+    
+    //Rcout << col_i / s1 << "\n";
+    //Rcout << p << "\n";
+    
+    col_i = col_i / s1 / p;
+    col_j = col_j / s2 / p;
+    
+    return accu(col_i) + accu(col_j) - (2 * accu(col_i * trans(col_j)));
+    
+    //double q = accu(square(col_i - col_j) * pow(sum(col_i + col_j, 0) / (s1 + s2), -1));
+    //double q = accu(square(col_i - col_j) * (1 / sum(col_i + col_j, 0) / (s1 + s2)));
+    //return sqrt(s1 + s2) * sqrt(q);
+}
+
+double dist_hamming(colvec& col_i, colvec& col_j) {
+    uvec m = col_i == col_j;
+    return accu(m) / m.n_rows;
+}
+
+double dist_kullback(colvec& col_i, colvec& col_j) {
+    uvec nz1 = find(col_i != 0);
+    uvec nz2 = find(col_j != 0);
+    if (nz1.n_rows == 0 && nz2.n_rows == 0)
+        return 0;
+    uvec nz = intersect(nz1, nz2);
+    if (nz.n_rows == 0)
+        return std::numeric_limits<double>::infinity();
+    col_i = col_i(nz);
+    col_j = col_j(nz);
+    colvec p1 = col_i / sum(col_i);
+    colvec p2 = col_j / sum(col_j);
+    colvec l = log(p2 / p1);
+    return accu(trans(p2) * l);
+}
+
 double dist_manhattan(colvec& col_i, colvec& col_j) {
     return accu(abs(col_i - col_j));
 }
 
 double dist_maximum(colvec& col_i, colvec& col_j) {
-    return as_scalar(max(abs(col_i - col_j)));
+    return accu(max(abs(col_i - col_j)));
 }
 
 double dist_canberra(colvec& col_i, colvec& col_j) {
@@ -163,8 +215,8 @@ double dist_canberra(colvec& col_i, colvec& col_j) {
     return accu(d) / (accu(m != 0) / n);
 }
 
-double dist_minkowski(colvec& col_i, colvec& col_j, double order = 1) {
-    return pow(accu(pow(abs(col_i) - abs(col_j), order)), 1 / order);
+double dist_minkowski(colvec& col_i, colvec& col_j, double p = 1) {
+    return pow(accu(pow(abs(col_i - col_j), p)), 1 / p);
 }
 
 
@@ -216,6 +268,30 @@ struct similarity : public Worker {
                 case 4:
                     simil = simil_faith(col_i, col_j);
                     break;
+                case 5:
+                    simil = dist_euclidean(col_i, col_j);
+                    break;
+                case 6:
+                    simil = dist_chisquare(col_i, col_j);
+                    break;
+                case 7:
+                    simil = dist_hamming(col_i, col_j);
+                    break;
+                case 8:
+                    simil = dist_kullback(col_i, col_j);
+                    break;
+                case 9:
+                    simil = dist_manhattan(col_i, col_j);
+                    break;
+                case 10:
+                    simil = dist_maximum(col_i, col_j);
+                    break;
+                case 11:
+                    simil = dist_canberra(col_i, col_j);
+                    break;
+                case 12:
+                    simil = dist_minkowski(col_i, col_j, weight);
+                    break;
                 }
                 //Rcout << "simil=" << simil << "\n";
                 simils.push_back(simil);
@@ -243,7 +319,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     uword nrow = mt.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     if (rank < 1) rank = 1;
-    bool symm = target.size() == ncol && rank == ncol;
+    bool symm = target.size() == ncol && rank == ncol && method != 8;
     
     //dev::Timer timer;
     //dev::start_timer("Compute similarity", timer);
