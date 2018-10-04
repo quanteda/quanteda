@@ -182,38 +182,38 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
     expect_equal(minkQuanteda, minkProxy)
 })
 
-# Hamming distance
-test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: documents", {
-    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    
-    hammingQuanteda <- sort(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "hamming", margin = "documents", upper = TRUE))[,"1981-Reagan"], decreasing = FALSE)
-    hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "1981-Reagan")]
-    
-    if (requireNamespace("e1071", quietly = TRUE)) {
-        hammingE1071 <- sort(e1071::hamming.distance(as.matrix(dfm_weight(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
-        if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
-    } else {
-        hammingE1071 <- c(712, 723, 746, 769, 774, 781, 784, 812, 857)
-    }
-    expect_equivalent(hammingQuanteda, hammingE1071)
-})
-
-test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: features", {
-    skip_if_not_installed("e1071")
-    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    
-    hammingQuanteda <- textstat_dist(presDfm, "soviet", method = "hamming", margin = "features")[,"soviet"]
-    hammingQuanteda <- hammingQuanteda[order(names(hammingQuanteda))]
-    hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "soviet")]
-    
-    presM <- t(as.matrix(dfm_weight(presDfm, "boolean")))
-    hammingE1071 <- e1071::hamming.distance(presM)[, "soviet"]
-    hammingE1071 <- hammingE1071[order(names(hammingE1071))]
-    if("soviet" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "soviet")]
-    expect_equal(hammingQuanteda, hammingE1071)
-})
+# # Hamming distance
+# test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: documents", {
+#     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018), remove = stopwords("english"),
+#                    stem = TRUE, verbose = FALSE)
+#     
+#     hammingQuanteda <- sort(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "hamming", margin = "documents", upper = TRUE))[,"1981-Reagan"], decreasing = FALSE)
+#     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "1981-Reagan")]
+#     
+#     if (requireNamespace("e1071", quietly = TRUE)) {
+#         hammingE1071 <- sort(e1071::hamming.distance(as.matrix(dfm_weight(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
+#         if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
+#     } else {
+#         hammingE1071 <- c(712, 723, 746, 769, 774, 781, 784, 812, 857)
+#     }
+#     expect_equivalent(hammingQuanteda, hammingE1071)
+# })
+# 
+# test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: features", {
+#     skip_if_not_installed("e1071")
+#     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
+#                    stem = TRUE, verbose = FALSE)
+#     
+#     hammingQuanteda <- textstat_dist(presDfm, "soviet", method = "hamming", margin = "features")[,"soviet"]
+#     hammingQuanteda <- hammingQuanteda[order(names(hammingQuanteda))]
+#     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "soviet")]
+#     
+#     presM <- t(as.matrix(dfm_weight(presDfm, "boolean")))
+#     hammingE1071 <- e1071::hamming.distance(presM)[, "soviet"]
+#     hammingE1071 <- hammingE1071[order(names(hammingE1071))]
+#     if("soviet" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "soviet")]
+#     expect_equal(hammingQuanteda, hammingE1071)
+# })
 
 test_that("test textstat_dist method = \"binary\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
@@ -234,10 +234,11 @@ test_that("test textstat_dist method = \"binary\" against proxy::simil(): featur
 test_that("as.list.dist works as expected",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    ddist <- textstat_dist(presDfm, method = "hamming")
+    ddist <- textstat_dist(presDfm, method = "euclidean")
     expect_equal(
         as.list(ddist)$`1981-Reagan`[1:3], 
-        c("2009-Obama" = 857, "2013-Obama" = 812, "1997-Clinton" = 784)
+        c("2017-Trump" = 108.74282, "2013-Obama" = 103.31989, "2001-Bush" = 94.67312),
+        tolerance = 0.001
     )
 })
 
