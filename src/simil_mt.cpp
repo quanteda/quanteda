@@ -157,24 +157,9 @@ double dist_euclidean(colvec& col_i, colvec& col_j) {
 }
 
 double dist_chisquare(colvec& col_i, colvec& col_j) {
-    //double s1 = accu(col_i);
-    //double s2 = accu(col_j);
-    //double q = accu(square((col_i / s1) - (col_j / s2)) * (1 / sum(col_i + col_j, 0)));
-    double s1 = accu(col_i);
-    double s2 = accu(col_j);
-    colvec p = (col_i + col_j) / (s1 + s2);
-    
-    //Rcout << col_i / s1 << "\n";
-    //Rcout << p << "\n";
-    
-    col_i = col_i / s1 / p;
-    col_j = col_j / s2 / p;
-    
-    return accu(col_i) + accu(col_j) - (2 * accu(col_i * trans(col_j)));
-    
-    //double q = accu(square(col_i - col_j) * pow(sum(col_i + col_j, 0) / (s1 + s2), -1));
-    //double q = accu(square(col_i - col_j) * (1 / sum(col_i + col_j, 0) / (s1 + s2)));
-    //return sqrt(s1 + s2) * sqrt(q);
+    double s1 = accu(square(col_i));
+    double s2 = accu(square(col_j));
+    return (s1 + s2) - accu(2 * trans(col_i) * col_j);
 }
 
 double dist_hamming(colvec& col_i, colvec& col_j) {
