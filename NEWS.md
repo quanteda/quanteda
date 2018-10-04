@@ -14,6 +14,9 @@
 
 * Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
 
+### Behaviour changes
+
+* Removed the Hamming distance method from `textstat_dist()` (#1443), based on the reasoning in #1442.
 
 # quanteda v1.3.4
 
