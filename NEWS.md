@@ -1,4 +1,4 @@
-# Since quanteda v1.3.4
+# quanteda v1.3.10
 
 ### Bug fixes and stability enhancements
 
