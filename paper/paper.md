@@ -22,7 +22,7 @@ authors:
 - affiliation: 1
   name: Akitaka Matsuo
   orcid: 0000-0002-3323-6330
-date: "4 May 2018"
+date: "4 October 2018"
 output:
   html_document:
     df_print: paged
