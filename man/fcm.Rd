@@ -104,6 +104,23 @@ toks <- tokens(char_tolower(txt), remove_punct = TRUE)
 fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
 }
+\references{
+Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
+  "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
+   comparative study of word co-occurrence for term clustering in language 
+  model-based sentence retrieval.}" \emph{Human Language Technologies: The 
+  2010 Annual Conference of the North American Chapter of the ACL}, Los 
+  Angeles, California, June 2010, pp. 325-328.
+  
+  Jurafsky, Daniel and James H. Martin (2018). "Chapter 6, Vector Semantics."
+  from \emph{Speech and Language Processing}.  Draft of September 23, 2018,
+  from \url{https://web.stanford.edu/~jurafsky/slp3/}.
+  
+  Church, K. W. & P. Hanks (1990) 
+  "\href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
+  mutual information, and lexicography}" \emph{Computational Linguistics},
+  16(1):22–29.
+}
 \author{
 Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 }
