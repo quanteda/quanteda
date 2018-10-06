@@ -56,7 +56,7 @@ See the [quick start
 guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn
 how to use **quanteda**.
 
-## How to cite **quanteda**
+## How to cite
 
 Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng,
 Stefan Müller, and Akitaka Matsuo. (2018) “[quanteda: An R package for
@@ -64,6 +64,9 @@ the quantitative analysis of textual
 data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)”.
 *Journal of Open Source Software*. 3(30), 774.
 <https://doi.org/10.21105/joss.00774>.
+
+For a BibTeX entry, use the output from `citation(package =
+"quanteda")`.
 
 ## Leaving Feedback
 
