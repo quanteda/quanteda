@@ -48,7 +48,9 @@ software available from CRAN.
 **If you are using macOS**, you should install the [macOS
 tools](https://cran.r-project.org/bin/macosx/tools/), namely the Clang
 6.x compiler and the GNU Fortran compiler (as **quanteda** requires
-gfortran to build).
+gfortran to build). If you are still getting errors related to gfortran,
+follow the fixes
+[here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).
 
 ## How to Use
 
