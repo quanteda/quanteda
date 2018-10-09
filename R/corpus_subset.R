@@ -30,8 +30,7 @@ corpus_subset.default <- function(x, subset, select, ...) {
 #' @export
 corpus_subset.corpus <- function(x, subset, select, ...) {
     
-    if (length(addedArgs <- list(...)))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
+    unused_dots(...)
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(documents(x)))
     } else {

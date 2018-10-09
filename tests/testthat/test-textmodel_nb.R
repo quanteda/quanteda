@@ -155,7 +155,9 @@ test_that("textmodel_nb print methods work", {
 
 test_that("raise warning of unused dots", {
     expect_warning(predict(nb_multi_smooth, something = TRUE),
-                   "\\.\\.\\. is not used")
+                   "something argument is not used")
+    expect_warning(predict(nb_multi_smooth, something = TRUE, whatever = TRUE),
+                   "something, whatever arguments are not used")
 })
 
 test_that("raises error when dfm is empty (#1419)",  {
