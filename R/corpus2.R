@@ -165,10 +165,8 @@ corpus2.character <- function(x, docnames = NULL,
     result <- unname(x)
     class(result) <- "corpus2"
     attr(result, "docvars") <- docvars
-    attr(result, "created") <- Sys.time()
-    attr(result, "source") <- c("directory" = getwd(), 
-                                Sys.info()["machine"], 
-                                Sys.info()["user"])
+    attr(result, "meta") <- meta("character")
+    
     return(result)
 }
 
@@ -282,11 +280,19 @@ corpus2.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
     
     # remove spaces before punctuation that should not have it
     texts(result) <- stri_replace_all_regex(texts(result), "\\s([!%*?;:,.]{1})", "$1")
-    
-    attr(result, "created") <- Sys.time()
-    attr(result, "source") <- c("object" = "kwic", 
-                                Sys.info()["machine"], 
-                                Sys.info()["user"])
-    
+    attr(result, "meta") <- meta("kwic")
+
     return(result)
 }
+
+meta <- function(source = c("character", "kwic")) {
+    source <- match.arg(source)
+    list("source" = source,
+         "package-verion" = packageVersion("quanteda"),
+         "r-version" = getRversion(),
+         "system" = Sys.info()[c("sysname", "machine", "user")],
+         "directory" = getwd(),
+         "created" = Sys.time()
+    )
+}
+
