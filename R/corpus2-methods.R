@@ -11,8 +11,10 @@ texts.corpus2 <- function(x, groups = NULL, spacer = "  ") {
         return(txt)
     }
     
-    if (is.character(groups) & all(groups %in% docnames(x))) {
-        group <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
+    if (is.character(groups) & all(groups %in% attr(x, "docvars"))) {
+        if (any(is_internal(groups)))
+            message_error("docvar_invalid")
+        group <- as.factor(interaction(attr(x, "docvars")[groups]))
     } else {
         if (length(groups) != ndoc(x))
             stop("groups must name docvars or provide data matching the documents in x")
