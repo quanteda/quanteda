@@ -200,7 +200,7 @@ corpus2.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     if (length(docid_field) != 1)
         stop("docid_field must refer to a single column")
     if (identical(docid_field, "row.names")) {
-        docnames <- row.names(x)
+        docname <- row.names(x)
     } else {
         if (is.character(docid_field)) {
             docid_index <- match(docid_field, names(x))
@@ -220,7 +220,8 @@ corpus2.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     }
 
     docvars <- x[c(docid_index, text_index) * -1]
-
+    row.names(docvars) <- NULL
+    
     # fix the variable names for missing or NA - for #1388
     # will not affect tibbles since these conditions can never exist for tibbles
     is_empty <- (!nzchar(names(docvars)) | is.na(names(docvars)))
@@ -288,7 +289,7 @@ corpus2.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
 meta <- function(source = c("character", "kwic")) {
     source <- match.arg(source)
     list("source" = source,
-         "package-verion" = packageVersion("quanteda"),
+         "package-version" = packageVersion("quanteda"),
          "r-version" = getRversion(),
          "system" = Sys.info()[c("sysname", "machine", "user")],
          "directory" = getwd(),

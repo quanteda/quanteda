@@ -125,6 +125,8 @@ is_internal <- function(x) {
 #' corp[c("BNP", "Conservative", "PC")]
 #' corp[c(1, 3, 7)]
 #' 
+#' corp <- as.corpus2(data_corpus_inaugural)
+#' 
 #' 
 `[.corpus2` <- function(x, i) {
     
@@ -151,5 +153,25 @@ is_internal <- function(x) {
 print.corpus2 <- function(x, ...) {
     print(stri_sub(x, 0, 100))
     print(attributes(x))
+}
+
+#' @export
+#' @keywords internal
+as.corpus2 <- function(x) {
+    UseMethod("as.corpus2")
+}
+
+#' @export
+as.corpus2.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "as.corpus2"))
+}
+
+#' @export
+#' @method as.corpus2 corpus
+as.corpus2.corpus <- function(x) {
+    result <- corpus2(x$documents, "row.names", "texts")
+    attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
+                                               format = "%a %b %d %H:%M:%S %Y")
+    return(result)
 }
 
