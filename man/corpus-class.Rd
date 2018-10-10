@@ -118,7 +118,7 @@ corp <- corpus2(data_char_ukimmig2010)
 corp[c("BNP", "Conservative", "PC")]
 corp[c(1, 3, 7)]
 
-corp <- as.corpus2(data_corpus_)
+as.corpus2(data_corpus_inaugural)
 
 
 }

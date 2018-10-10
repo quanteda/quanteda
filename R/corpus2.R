@@ -148,9 +148,10 @@ corpus2.character <- function(x, docnames = NULL,
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    docvars_internal <- data.frame("_docname" = docname,
-                                   "_docid" = seq_along(x), 
-                                   "_segid" = rep(1, length(x)), 
+    docvars_internal <- data.frame("_docid" = docname,
+                                   "_docname" = docname,
+                                   "_docnum" = seq_along(x), 
+                                   "_segnum" = rep(1, length(x)), 
                                    check.names = FALSE,
                                    stringsAsFactors = FALSE)
     

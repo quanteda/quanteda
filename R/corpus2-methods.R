@@ -80,20 +80,20 @@ docvars.corpus2 <- function(x, field = NULL) {
     if (any(is_internal(names(docvars))))
         message_error("docvar_invalid")
     attr(x, "docvars")[field] <- value
-    x
+    return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.corpus2" <- function(x, value) {
-    attr(x, "docvars")[["_docname"]] <- value
+    attr(x, "docvars")[["_docid"]] <- value
     return(x)
 }
 
 #' @noRd
 #' @export
 docnames.corpus2 <- function(x) {
-    attr(x, "docvars")[["_docname"]]
+    attr(x, "docvars")[["_docid"]]
 }
 
 is_internal <- function(x) {
@@ -125,7 +125,7 @@ is_internal <- function(x) {
 #' corp[c("BNP", "Conservative", "PC")]
 #' corp[c(1, 3, 7)]
 #' 
-#' corp <- as.corpus2(data_corpus_inaugural)
+#' as.corpus2(data_corpus_inaugural)
 #' 
 #' 
 `[.corpus2` <- function(x, i) {
@@ -166,12 +166,69 @@ as.corpus2.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "as.corpus2"))
 }
 
+#' @examples
+#' corp_sent <- corpus_reshape(data_corpus_irishbudget2010)
+#' as.corpus2(corp_sent)
+#' 
 #' @export
 #' @method as.corpus2 corpus
 as.corpus2.corpus <- function(x) {
+    
+    # drop internal variables
+    flag <- is_internal(names(x$documents))
+    docvars_internal <- x$documents[flag]
+    x$documents <- x$documents[!flag]
+    
     result <- corpus2(x$documents, "row.names", "texts")
+    
+    # overwite internal variables
+    docvars <- attr(result, "docvars")
+    if ("_document" %in% names(docvars_internal)) {
+        docvars["_docname"] <- docvars_internal["_document"]
+    }
+    if ("_docid" %in% names(docvars_internal)) {
+        docvars["_docnum"] <- docvars_internal["_docid"]
+    }
+    if ("_segid" %in% names(docvars_internal)) {
+        docvars["_segnum"] <- docvars_internal["_segid"]
+    }
+    
+    attr(result, "docvars") <- docvars
     attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
                                                format = "%a %b %d %H:%M:%S %Y")
     return(result)
 }
+
+
+#' @examples 
+#' corpus_subset(as.corpus2(data_corpus_inaugural), Year > 2000)
+#' @export
+corpus_subset.corpus2 <- function(x, subset, select, ...) {
+    
+    unused_dots(...)
+    attrs <- attributes(x)
+    
+    r <- if (missing(subset)) {
+        rep_len(TRUE, nrow(attrs$docvars))
+    } else {
+        e <- substitute(subset)
+        r <- eval(e, attrs$docvars, parent.frame())
+        r & !is.na(r)
+    }
+    vars <- if (missing(select)) 
+        TRUE
+    else {
+        nl <- as.list(seq_along(attrs$docvars))
+        names(nl) <- names(attrs$docvars)
+        c(1, eval(substitute(select), nl, parent.frame()))
+    }
+    
+    x <- as.character(unclass(x))[r]
+    attrs$docvars <- attrs$docvars[r, vars, drop = FALSE]
+    attributes(x) <- attrs
+    return(x)
+}
+
+
+
 
