@@ -165,7 +165,7 @@ corpus2.character <- function(x, docnames = NULL,
     result <- unname(x)
     class(result) <- "corpus2"
     attr(result, "docvars") <- docvars
-    attr(result, "created") <- date()
+    attr(result, "created") <- Sys.time()
     attr(result, "source") <- c("directory" = getwd(), 
                                 Sys.info()["machine"], 
                                 Sys.info()["user"])
@@ -283,7 +283,7 @@ corpus2.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
     # remove spaces before punctuation that should not have it
     texts(result) <- stri_replace_all_regex(texts(result), "\\s([!%*?;:,.]{1})", "$1")
     
-    attr(result, "created") <- date()
+    attr(result, "created") <- Sys.time()
     attr(result, "source") <- c("object" = "kwic", 
                                 Sys.info()["machine"], 
                                 Sys.info()["user"])
