@@ -70,43 +70,48 @@ test_that("test corpus constructors works for kwic", {
     )
     
     # test text handling for punctuation - there should be no space before the ?
-    corp <- corpus(kwic(data_char_sampletext, "econom*",
+    corp <- corpus(kwic(data_char_sampletext, "econom*", window = 10,
                         separator = "",
                         remove_separators = FALSE),
                         split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
         texts(corp)[2],
-        c("text1.L202" = "it is decimating the domestic economy? As we are tired")
+        c("text1.L390" = "it is decimating the domestic economy? As we are tired ")
     )
     
-    # # ; and !
-    # txt <- c("This is; a test!")
-    # expect_equivalent(
-    #     texts(corpus(kwic(txt, "a"), split_context = FALSE)),
-    #     txt
-    # )
-    # 
-    # # quotes
-    # txt <- "This 'is' only a test!"
-    # expect_equivalent(
-    #      texts(corpus(kwic(txt, "a"), split_context = FALSE)),
-    #      txt
-    # )
-    # txt <- "This \"is\" only a test!"
-    # expect_equivalent(
-    #     texts(corpus(kwic(txt, "a"), split_context = FALSE)),
-    #     txt
-    # )
-    # txt <- 'This "is" only (a) test!'
-    # expect_equivalent(
-    #     texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
-    #     txt
-    # )
-    # txt <- 'This is only (a) test!'
-    # expect_equivalent(
-    #     texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
-    #     txt
-    # )    
+    # ; and !
+    txt <- c("This is; a test!")
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE), 
+                     split_context = FALSE)),
+        txt
+    )
+
+    # quotes
+    txt <- "This 'is' only a test!"
+    expect_equivalent(
+         texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE), 
+                      split_context = FALSE)),
+         txt
+    )
+    txt <- "This \"is\" only a test!"
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE), 
+                     split_context = FALSE)),
+        txt
+    )
+    txt <- 'This "is" only (a) test!'
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE), 
+                     split_context = FALSE)),
+        txt
+    )
+    txt <- 'This is only (a) test!'
+    expect_equivalent(
+        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE), 
+                     split_context = FALSE)),
+        txt
+    )
 })
 
 
