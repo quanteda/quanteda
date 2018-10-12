@@ -31,9 +31,9 @@ corpus_subset.default <- function(x, subset, select, ...) {
 corpus_subset.corpus <- function(x, subset, select, ...) {
     
     unused_dots(...)
+
     x <- as.corpus(x)
     attrs <- attributes(x)
-    
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(attrs$docvars))
     } else {

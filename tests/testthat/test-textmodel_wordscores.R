@@ -206,7 +206,9 @@ test_that("Works with newdata with different features from the model (#1329)", {
 test_that("raise warning of unused dots", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
     expect_warning(predict(ws, something = TRUE),
-                   "\\.\\.\\. is not used")
+                   "something argument is not used")
+    expect_warning(predict(ws, something = TRUE, whatever = TRUE),
+                   "something, whatever arguments are not used")
 })
 
 test_that("textmodel_wordscores does not use NA wordscores scores", {
