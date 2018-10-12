@@ -10,6 +10,7 @@
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
 #' @param case_insensitive match without respect to case if \code{TRUE}
+#' @param separator character to separate words in the output
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
 #' @return A \code{kwic} classed data.frame, with the document name 
@@ -30,7 +31,6 @@
 #'   or \link{dictionary} object, then the collocations or multi-word dictionary
 #'   keys will automatically be considered phrases where each 
 #'   whitespace-separated element matches a token in sequence.
-#' @author Kenneth Benoit and Kohei Watanabe
 #' @export
 #' @examples
 #' head(kwic(data_corpus_inaugural, "secure*", window = 3, valuetype = "glob"))
@@ -43,6 +43,7 @@
 #' 
 kwic <- function(x, pattern, window = 5, 
                  valuetype = c("glob", "regex", "fixed"), 
+                 separator = " ", 
                  case_insensitive = TRUE, ...) {
     UseMethod("kwic")
 }
@@ -57,8 +58,9 @@ kwic.default <- function(x, ...) {
 #' @export
 kwic.character <- function(x, pattern, window = 5, 
                            valuetype = c("glob", "regex", "fixed"), 
+                           separator = " ", 
                            case_insensitive = TRUE, ...) {
-    kwic(corpus(x), pattern, window, valuetype, case_insensitive, ...)
+    kwic(corpus(x), pattern, window, valuetype, separator, case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -66,11 +68,13 @@ kwic.character <- function(x, pattern, window = 5,
 #' @export 
 kwic.corpus <- function(x, pattern, window = 5, 
                         valuetype = c("glob", "regex", "fixed"), 
+                        separator = " ", 
                         case_insensitive = TRUE, ...) {
  
     if (is.collocations(pattern) || is.dictionary(pattern))
         pattern <- phrase(pattern) 
-    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive)
+    kwic(tokens(x, ...), 
+         pattern, window, valuetype, separator, case_insensitive)
 }
 
 #' @rdname kwic
@@ -88,17 +92,15 @@ kwic.corpus <- function(x, pattern, window = 5,
 #' toks <- tokens(txt)
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
+#' 
+#' corp <- corpus(txt)
+#' kwic(corp, c("is", "a"), valuetype = "fixed", separator = "", remove_separators = FALSE)
 #' @export 
 kwic.tokens <- function(x, pattern, window = 5, 
                         valuetype = c("glob", "regex", "fixed"), 
+                        separator = " ", 
                         case_insensitive = TRUE, ...) {
     
-    if ("keywords" %in% names(arglist <- list(...))) {
-        .Deprecated(msg = "keywords argument has been replaced by pattern")
-        return(kwic(x, pattern = arglist$keywords, window, 
-                    valuetype, case_insensitive))
-    }    
-
     valuetype <- match.arg(valuetype)
     types <- types(x)
     
@@ -109,7 +111,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     
     keywords_id <- pattern2list(pattern, types, 
                               valuetype, case_insensitive, attr(x, 'concatenator'))
-    temp <- qatd_cpp_kwic(x, types, keywords_id, window)
+    temp <- qatd_cpp_kwic(x, types, keywords_id, window, separator)
     
     # attributes for kwic object
     result <- structure(temp, 

@@ -8,8 +8,6 @@ unused_dots(...)
 }
 \arguments{
 \item{...}{dots to check}
-
-\item{fun_name}{name of the function in which dots are not used}
 }
 \description{
 Raise warning of unused dots
