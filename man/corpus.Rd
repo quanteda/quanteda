@@ -11,8 +11,7 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
-  docvars = quanteda::docvars(x), ...)
+\method{corpus}{corpus}(x, docnames = NULL, docvars = NULL, ...)
 
 \method{corpus}{character}(x, docnames = NULL, docvars = NULL, ...)
 

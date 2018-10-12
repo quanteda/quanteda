@@ -88,30 +88,29 @@
 #' # import a tm VCorpus
 #' if (requireNamespace("tm", quietly = TRUE)) {
 #'     data(crude, package = "tm")    # load in a tm example VCorpus
-#'     mytmCorpus <- corpus(crude)
-#'     summary(mytmCorpus, showmeta=TRUE)
+#'     vcorp <- corpus(crude)
+#'     summary(vcorp)
 #'
 #'     data(acq, package = "tm")
-#'     summary(corpus(acq), 5, showmeta=TRUE)
+#'     summary(corpus(acq), 5)
 #'
-#'     tmCorp <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
-#'     quantCorp <- corpus(tmCorp)
-#'     summary(quantCorp)
+#'     vcorp2 <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
+#'     corp <- corpus(vcorp2)
+#'     summary(corp)
 #' }
 #'
 #' # construct a corpus from a data.frame
-#' mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
-#'                   some_ints = 1L:6L,
-#'                   some_text = paste0("This is text number ", 1:6, "."),
-#'                   stringsAsFactors = FALSE,
-#'                   row.names = paste0("fromDf_", 1:6))
-#' mydf
-#' summary(corpus(mydf, text_field = "some_text",
-#'                metacorpus = list(source = "From a data.frame called mydf.")))
+#' df <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+#'                  some_ints = 1L:6L,
+#'                  some_text = paste0("This is text number ", 1:6, "."),
+#'                  stringsAsFactors = FALSE,
+#'                  row.names = paste0("fromDf_", 1:6))
+#' df
+#' summary(corpus(df, text_field = "some_text"))
 #'
 #' # construct a corpus from a kwic object
-#' mykwic <- kwic(data_corpus_inaugural, "southern")
-#' summary(corpus(mykwic))
+#' kw <- kwic(data_corpus_inaugural, "southern")
+#' summary(corpus(kw))
 corpus <- function(x, ...) {
     UseMethod("corpus")
 }
@@ -135,7 +134,7 @@ corpus.corpus <- function(x, docnames = NULL, docvars = NULL, ...) {
 #' @rdname corpus
 #' @export
 corpus.character <- function(x, docnames = NULL, 
-                              docvars = NULL, ...) {
+                             docvars = NULL, ...) {
     
     unused_dots(...)
     x[is.na(x)] <- ""
@@ -267,7 +266,8 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", ..
 #'   \code{pattern} as a new docvar \code{keyword}
 #' @examples 
 #' # from a kwic
-#' kw <- kwic(data_char_sampletext, "econom*")
+#' kw <- kwic(data_char_sampletext, "econom*", separator = "",
+#'            remove_separators = FALSE) # keep original separators
 #' summary(corpus(kw))
 #' summary(corpus(kw, split_context = FALSE))
 #' texts(corpus(kw, split_context = FALSE))
