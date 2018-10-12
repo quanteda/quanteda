@@ -23,20 +23,28 @@ test_that("test attr(kwic, 'ntoken') text names", {
 })
     
 test_that("test kwic general", {
-    testkwic <- kwic(paste(LETTERS, collapse = " "), "D")
-    
-    dtf <- data.frame(
-        docname = c("text1"),
-        from = 4L,
-        to = 4L,
-        pre = "A B C",
-        keyword = "D",
-        post = "E F G H I",
-        stringsAsFactors = FALSE)
+    txt <- paste(LETTERS, collapse = " ")
+    expect_equal(
+        data.frame(kwic(txt, "D")),
+        data.frame(
+            docname = c("text1"),
+            from = 4L,
+            to = 4L,
+            pre = "A B C",
+            keyword = "D",
+            post = "E F G H I",
+            stringsAsFactors = FALSE))
     
     expect_equal(
-        data.frame(testkwic),
-        dtf)
+        data.frame(kwic(txt, "D", separator = "")),
+        data.frame(
+            docname = c("text1"),
+            from = 4L,
+            to = 4L,
+            pre = "ABC",
+            keyword = "D",
+            post = "EFGHI",
+            stringsAsFactors = FALSE))
 })
 
 
