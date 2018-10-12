@@ -2,35 +2,25 @@ context('test corpus.R')
 
 test_that("test show.corpus", {
 
-    testcorpus <- corpus(c('The'))
     expect_that(
-        show(testcorpus),
+        show(corpus(c('The'))),
         prints_text('Corpus consisting of 1 document.')
     )
 
-    testcorpus <- corpus(
-        c('The', 'quick', 'brown', 'fox')
-    )
     expect_that(
-        show(testcorpus),
+        show(corpus(c('The', 'quick', 'brown', 'fox'))),
         prints_text('Corpus consisting of 4 documents.')
     )
-
-    testcorpus <- corpus(
-        c('The', 'quick', 'brown', 'fox'),
-        docvars=data.frame(list(test=1:4))
-    )
+    
     expect_that(
-        show(testcorpus),
+        show(corpus(c('The', 'quick', 'brown', 'fox'), 
+                    docvars = data.frame(list(test=1:4)))),
         prints_text('Corpus consisting of 4 documents and 1 docvar.')
     )
 
-    testcorpus <- corpus(
-        c('The', 'quick', 'brown', 'fox'),
-        docvars=data.frame(list(test=1:4, test2=1:4))
-    )
     expect_that(
-        show(testcorpus),
+        show(corpus(c('The', 'quick', 'brown', 'fox'), 
+                    docvars = data.frame(list(test=1:4, test2=1:4)))),
         prints_text('Corpus consisting of 4 documents and 2 docvars.')
     )
 
@@ -38,7 +28,9 @@ test_that("test show.corpus", {
 
 
 test_that("test c.corpus", {
-    corp <- c(data_corpus_inaugural[1:2], data_corpus_inaugural[3:5], data_corpus_inaugural[6:10])
+    corp <- c(data_corpus_inaugural[1:2], 
+              data_corpus_inaugural[3:5], 
+              data_corpus_inaugural[6:10])
     
     expect_equivalent(
         corp,
@@ -59,7 +51,7 @@ test_that("test corpus constructors works for kwic", {
     corp <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)
     expect_that(corp, is_a("corpus"))
     expect_equal(names(docvars(corp)),
-                 c("docname", "from", "to", "keyword", "context"))
+                 c("from", "to", "keyword", "context"))
     
     # split_context = FALSE, extract_keyword = TRUE
     expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
@@ -78,11 +70,13 @@ test_that("test corpus constructors works for kwic", {
     )
     
     # test text handling for punctuation - there should be no space before the ?
-    corp <- corpus(kwic(data_char_sampletext, "econom*"),
+    corp <- corpus(kwic(data_char_sampletext, "econom*",
+                        separator = "",
+                        remove_separators = FALSE),
                         split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
         texts(corp)[2],
-        c(text1.L202 = "it is decimating the domestic economy? As we are tired")
+        c("text1.L202" = "it is decimating the domestic economy? As we are tired")
     )
     
     # # ; and !
@@ -143,22 +137,22 @@ test_that("test corpus constructors works for data.frame", {
     expect_error(corpus(df, text_field = c("some_text", "letter_factor")),
                  "text_field must refer to a single column")
     expect_error(corpus(df, text_field = 0),
-                 "text_field index refers to an invalid column")
+                 "text_field column not found or invalid")
     expect_error(corpus(df, text_field = -1),
-                 "text_field index refers to an invalid column")
+                 "text_field column not found or invalid")
     expect_error(corpus(df, text_field = "nothing"),
-                 "text_field index refers to an invalid column")
+                 "text_field column not found or invalid")
     
     expect_error(corpus(df, text_field = "some_text", docid_field = c(1,3)),
                  "docid_field must refer to a single column")
     expect_error(corpus(df, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
                  "docid_field must refer to a single column")
     expect_error(corpus(df, text_field = "some_text", docid_field = 0),
-                 "docid_field index refers to an invalid column")
+                 "docid_field column not found or invalid")
     expect_error(corpus(df, text_field = "some_text", docid_field = -1),
-                 "docid_field index refers to an invalid column")
+                 "docid_field column not found or invalid")
     expect_error(corpus(df, text_field = "some_text", docid_field = "notfound"),
-                 "docid_field index refers to an invalid column")
+                 "docid_field column not found or invalid")
 })
 
 
@@ -198,29 +192,30 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
     skip_if_not_installed("tm")
     require(tm)
     vcorp <- VCorpus(VectorSource(data_corpus_inaugural[2]))
-    expect_silent(corp <- corpus(vcorp))
+    corp <- corpus(vcorp)
     expect_equivalent(texts(corp)[1], texts(data_corpus_inaugural)[2])
     detach("package:tm", unload = FALSE, force = TRUE)
     detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
-test_that("test corpus constructor works for complex VCorpus (#849)", {
-    skip_if_not_installed("tm")
-    load("../data/corpora/complex_Corpus.rda")
-    corp <- quanteda:::corpus.Corpus(complex_Corpus)
-    expect_equal(
-        head(docnames(corp), 3),
-        c("41113_201309.1", "41113_201309.2", "41113_201309.3")
-    )
-    expect_equal(
-        tail(docnames(corp), 3),
-        c("41223_201309.2553", "41223_201309.2554", "41223_201309.2555")
-    )
-    expect_output(
-        print(corp),
-        "Corpus consisting of 8,230 documents and 16 docvars\\."
-    )
-})
+# test_that("test corpus constructor works for complex VCorpus (#849)", {
+#     skip_if_not_installed("tm")
+#     require(tm)
+#     load("../data/corpora/complex_Corpus.rda")
+#     corp <- corpus(complex_Corpus)
+#     expect_equal(
+#         head(docnames(corp), 3),
+#         c("41113_201309.1", "41113_201309.2", "41113_201309.3")
+#     )
+#     expect_equal(
+#         tail(docnames(corp), 3),
+#         c("41223_201309.2553", "41223_201309.2554", "41223_201309.2555")
+#     )
+#     expect_output(
+#         print(corp),
+#         "Corpus consisting of 8,230 documents and 16 docvars\\."
+#     )
+# })
 
 test_that("corpus_subset works", {
     txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",

@@ -46,23 +46,24 @@ corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documen
 corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), 
                                   use_docvars = TRUE, ...) {
     
+    x <- as.corpus(x)
     to <- match.arg(to)
     
     if (to == "documents") {
         if (settings(x, 'units') %in% c('sentences', 'paragraphs')) {
             
-            docid <- docvars(x, '_docid')
-            segid <- docvars(x, '_segid')
+            docnum <- docvars(x, '_docnum')
+            segnum <- docvars(x, '_segnum')
             
             if (settings(x, 'units') == 'sentences') {
-                texts <- stri_join_list(split(texts(x), factor(docid)), sep = "  ")
+                texts <- stri_join_list(split(texts(x), factor(docnum)), sep = "  ")
             } else {
-                texts <- stri_join_list(split(texts(x), factor(docid)), sep = "\n\n")
+                texts <- stri_join_list(split(texts(x), factor(docnum)), sep = "\n\n")
             }
 
             temp <- corpus(texts, 
-                           docnames = docvars(x, '_document')[!duplicated(docid)],
-                           docvars = docvars(x)[!duplicated(docid),,drop = FALSE])
+                           docnames = docvars(x, '_document')[!duplicated(docnum)],
+                           docvars = docvars(x)[!duplicated(docnum),,drop = FALSE])
 
             settings(temp, 'units') <- "documents"
             result <- temp
@@ -88,13 +89,13 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             # add repeated versions of remaining docvars
             if (use_docvars && !is.null(vars)) {
                 rownames(vars) <- NULL # faster to repeat rows without rownames
-                vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
+                vars <- select_fields(vars, "user")[temp$docnum,,drop = FALSE]
                 rownames(vars) <- rownames(temp)
                 docvars(result) <- vars
             }
             docvars(result, '_document') <- temp$docname
-            docvars(result, '_docid') <- temp$docid
-            docvars(result, '_segid') <- temp$segid
+            docvars(result, '_docnum') <- temp$docnum
+            docvars(result, '_segnum') <- temp$segnum
             settings(result, "units") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")

@@ -360,14 +360,18 @@ rbind_fill <- function(x, y) {
     if (!identical(name1, name2)) {
         name <- union(name1, name2)
         name1_missing <- setdiff(name, name1)
-        fill1 <- rep(list(rep(NA, nrow(x))), length(name1_missing))
-        names(fill1) <- name1_missing
-        x <- cbind(x, fill1)
+        if (length(name1_missing)) {
+            fill1 <- rep(list(rep(NA, nrow(x))), length(name1_missing))
+            names(fill1) <- name1_missing
+            x <- cbind(x, fill1)
+        }
         
         name2_missing <- setdiff(name, name2)
-        fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))
-        names(fill2) <- name2_missing
-        y <- cbind(y, fill2)
+        if (length(name2_missing)) {
+            fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))
+            names(fill2) <- name2_missing
+            y <- cbind(y, fill2)
+        }
     }
     return(rbind(x, y))
 }

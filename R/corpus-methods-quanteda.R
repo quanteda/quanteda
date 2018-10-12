@@ -135,24 +135,24 @@ as.corpus.corpus <- function(x) {
     
     # drop internal variables
     flag <- is_internal(names(x$documents))
-    docvars_internal <- x$documents[flag]
+    vars_internal <- x$documents[flag]
     x$documents <- x$documents[!flag]
     
     result <- corpus(x$documents, "row.names", "texts")
     
     # overwite internal variables
-    docvars <- attr(result, "docvars")
-    if ("_document" %in% names(docvars_internal)) {
-        docvars["_docname"] <- docvars_internal["_document"]
+    vars <- attr(result, "docvars")
+    if ("_document" %in% names(vars_internal)) {
+        vars["_docname"] <- vars_internal["_document"]
     }
-    if ("_docid" %in% names(docvars_internal)) {
-        docvars["_docnum"] <- docvars_internal["_docid"]
+    if ("_docid" %in% names(vars_internal)) {
+        vars["_docnum"] <- vars_internal["_docid"]
     }
-    if ("_segid" %in% names(docvars_internal)) {
-        docvars["_segnum"] <- docvars_internal["_segid"]
+    if ("_segid" %in% names(vars_internal)) {
+        vars["_segnum"] <- vars_internal["_segid"]
     }
     
-    attr(result, "docvars") <- docvars
+    attr(result, "docvars") <- vars
     attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
                                                format = "%a %b %d %H:%M:%S %Y")
     return(result)

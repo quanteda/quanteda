@@ -93,32 +93,23 @@ kwic.tokens <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, ...) {
     
-    if ("keywords" %in% names(arglist <- list(...))) {
-        .Deprecated(msg = "keywords argument has been replaced by pattern")
-        return(kwic(x, pattern = arglist$keywords, window, 
-                    valuetype, case_insensitive))
-    }    
-
     valuetype <- match.arg(valuetype)
-    types <- types(x)
+    type <- types(x)
     
     # add document names if none
-    if (is.null(names(x))) {
-        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
-    }
-    
-    keywords_id <- pattern2list(pattern, types, 
+    # if (is.null(names(x))) {
+    #     names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
+    # }
+    attrs <- attributes(x)
+    keywords_id <- pattern2list(pattern, type, 
                                 valuetype, case_insensitive, attr(x, 'concatenator'))
-    temp <- qatd_cpp_kwic(x, types, keywords_id, window)
+    result <- qatd_cpp_kwic(x, type, keywords_id, window)
     
-    # attributes for kwic object
-    result <- structure(temp, 
-                        class = c("kwic", "data.frame"), 
-                        ntoken = ntoken(x), 
-                        valuetype = valuetype, 
-                        keywords = attr(keywords_id, 'pattern'),
-                        tokens =  attr(temp, "tokens"))
-    attributes(result, FALSE)  <- attributes(x)
+    attrs[["ntoken"]] <- ntoken(x)
+    attrs[["valuetype"]] <- valuetype
+    attrs[["keywords"]] <- attr(keywords_id, 'pattern')
+    attributes(result, FALSE) <- attrs
+    class(result) <- c("kwic", "data.frame")
     return(result)
 }
 

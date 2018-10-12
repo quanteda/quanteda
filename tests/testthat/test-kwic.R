@@ -42,9 +42,9 @@ test_that("test kwic general", {
 
 test_that("test kwic on first token", {
     testkwic <- kwic(paste(LETTERS, collapse = " "), "A")
-    expect_that(
-        data.frame(testkwic),
-        equals(data.frame(
+    expect_equal(
+        as.data.frame(testkwic),
+        data.frame(
             docname = c("text1"),
             from = 1L,
             to = 1L,
@@ -52,7 +52,7 @@ test_that("test kwic on first token", {
             keyword = "A",
             post = "B C D E F",
             stringsAsFactors = FALSE
-        ))
+        )
     )
 })
 
