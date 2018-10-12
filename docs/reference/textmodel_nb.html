@@ -80,7 +80,7 @@ training labels." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
       </span>
     </div>
 
@@ -297,9 +297,10 @@ the same, then "uniform" and "termfreq" would be the same.</p>
     <p>Manning, C. D., Raghavan, P., &amp; Schütze, H. (2008). Introduction
   to Information Retrieval. Cambridge University Press.
   <a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>  
-<p>Jurafsky, Daniel and James H. Martin. (2016) <em>Speech and Language
-  Processing.</em>  Draft of November 7, 2016.
-  <a href='https://web.stanford.edu/~jurafsky/slp3/6.pdf'>https://web.stanford.edu/~jurafsky/slp3/6.pdf</a></p>
+<p>Jurafsky, Daniel and James H. Martin. (2018). "Chapter 4, Naive Bayes and
+  Sentiment Classification." from <em>Speech and Language Processing</em>.
+  Draft of September 23, 2018.
+  <a href='https://web.stanford.edu/~jurafsky/slp3/4.pdf'>https://web.stanford.edu/~jurafsky/slp3/4.pdf</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -317,9 +318,38 @@ the same, then "uniform" and "termfreq" would be the same.</p>
 <span class='no'>trainingclass</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='fl'>NA</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>## replicate IIR p261 prediction for test set (document 5)</span>
-(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'>summary</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in summary(nb): object 'nb' not found</span></div><div class='input'><span class='fu'>coef</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in coef(nb): object 'nb' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb): object 'nb' not found</span></div><div class='input'>
+(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; 
+#&gt; Call:
+#&gt; textmodel_nb.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
+#&gt; 
+#&gt; Distribution: multinomial; prior: docfreq; smoothing value: 1; 4 training documents; 6 fitted features.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; 
+#&gt; Call:
+#&gt; textmodel_nb.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
+#&gt; 
+#&gt; Class Priors:
+#&gt; (showing first 2 elements)
+#&gt;    N    Y 
+#&gt; 0.25 0.75 
+#&gt; 
+#&gt; Estimated Feature Scores:
+#&gt;   Chinese Beijing Shanghai  Macao  Tokyo  Japan
+#&gt; N  0.1474  0.2059   0.2059 0.2059 0.5091 0.5091
+#&gt; Y  0.8526  0.7941   0.7941 0.7941 0.4909 0.4909</div><div class='input'><span class='fu'>coef</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt;           classes
+#&gt; features           N         Y
+#&gt;   Chinese  0.1473684 0.8526316
+#&gt;   Beijing  0.2058824 0.7941176
+#&gt;   Shanghai 0.2058824 0.7941176
+#&gt;   Macao    0.2058824 0.7941176
+#&gt;   Tokyo    0.5090909 0.4909091
+#&gt;   Japan    0.5090909 0.4909091</div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
+#&gt;  Y  Y  Y  N  Y 
+#&gt; Levels: N Y</div><div class='input'>
 <span class='co'># contrast with other priors</span>
-<span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'>
+<span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
+#&gt;  Y  Y  Y  N  N 
+#&gt; Levels: N Y</div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
+#&gt;  Y  Y  Y  N  Y 
+#&gt; Levels: N Y</div><div class='input'>
 <span class='co'>## replicate IIR p264 Bernoulli Naive Bayes</span>
 <span class='no'>nb_bern</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"Bernoulli"</span>,
                         <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>)

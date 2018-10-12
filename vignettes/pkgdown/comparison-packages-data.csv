@@ -25,7 +25,7 @@ Distance/similarity measures,Text statistics,textstat_simil(); textstat_dist(),,
 Keyness statistics,Text statistics,textstat_keyness(),,,,,
 Wordcloud,Text statistics,textplot_wordcloud(),,,,,
 Correspondence Analysis,Text scaling models,textmodel_ca(),,,,,
-Naïve Bayes,Text scaling models,textmodel_NB(),,,,,NaiveBayesClassifier
+Naïve Bayes,Text scaling models,textmodel_nb(),,,,,NaiveBayesClassifier
 Wordscores,Text scaling models,textmodel_wordscores(),,,,,
 Wordfish,Text scaling models,textmodel_wordfish(),,,,,
 Convert dfm to other format,Additional functions,convert(),,cast_tdm(),,,

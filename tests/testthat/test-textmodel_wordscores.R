@@ -206,7 +206,9 @@ test_that("Works with newdata with different features from the model (#1329)", {
 test_that("raise warning of unused dots", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
     expect_warning(predict(ws, something = TRUE),
-                   "\\.\\.\\. is not used")
+                   "something argument is not used")
+    expect_warning(predict(ws, something = TRUE, whatever = TRUE),
+                   "something, whatever arguments are not used")
 })
 
 test_that("textmodel_wordscores does not use NA wordscores scores", {
@@ -234,5 +236,15 @@ test_that("raises error when dfm is empty (#1419)",  {
     expect_error(textmodel_wordscores(mx, y = c(-1, NA, NA, NA, 1, NA)),
                  quanteda:::message_error("dfm_empty"))
     
+})
+
+test_that("works with different predicted object in different shapes (#1440)",  {
+    
+    ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+    expect_silent(textplot_scale1d(predict(ws)))
+    expect_silent(textplot_scale1d(predict(ws, se.fit = TRUE)))
+    expect_silent(textplot_scale1d(predict(ws, interval = "confidence")))
+    expect_silent(textplot_scale1d(predict(ws, se.fit = TRUE, interval = "confidence")))
+
 })
 

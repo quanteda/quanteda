@@ -38,10 +38,10 @@ test_that("readability works as koRpus", {
     # readability analysis from package koRpus
     k_toks <- koRpus::tokenize(fileName, lang = "en")
     wordlist_DC <- data_char_wordlists$dalechall
-    k_rdb <- koRpus::readability(k_toks, 
+    k_rdb <- suppressWarnings(koRpus::readability(k_toks, 
                                  word.lists = list(Bormuth = wordlist_DC, 
                                                    Dale.Chall = wordlist_DC, 
-                                                   Harris.Jacobson = wordlist_DC))
+                                                   Harris.Jacobson = wordlist_DC)))
     
     expect_equal(round(q_rdb$ARI, 2), round(k_rdb@ARI$grade, 2))
     expect_equal(round(q_rdb$Coleman.Liau.grade, 2), round(k_rdb@Coleman.Liau$grade, 2))
@@ -121,3 +121,19 @@ come to the bottle-fed baby in milk which has not been pasteurized or boiled."
     expect_equal(textstat_readability(dc3, "Dale.Chall.old")$Dale.Chall.old, 6.9474, tolerance = .01)
 })
 
+test_that("textstat_readability with intermediate = TRUE works", {
+    rs1a <- textstat_readability(data_char_sampletext, measure = "Flesch.Kincaid", intermediate = TRUE)
+    rs1b <- textstat_readability(data_char_sampletext, measure = "Flesch.Kincaid", intermediate = FALSE)
+    rs2 <- textstat_readability(data_char_sampletext, measure = c("Dale.Chall.old", "Flesch"), intermediate = TRUE)
+    
+    expect_true(
+        all(c("Flesch.Kincaid", "W", "St", "C", "Sy", "W3Sy", "W2Sy", "W_1Sy", "W6C", "W7C", "Wlt3Sy") %in% names(rs1a))
+    )
+    expect_true(
+        !any(c("W", "St", "C", "Sy", "W3Sy", "W2Sy", "W_1Sy", "W6C", "W7C", "Wlt3Sy") %in% names(rs1b))
+    )
+    expect_true(
+        all(c("Dale.Chall.old", "Flesch", "W", "St", "C", "Sy", "W3Sy", "W2Sy", "W_1Sy", "W6C", "W7C", "Wlt3Sy", "W_wl.Dale.Chall") %in% names(rs2))
+    )
+    
+})

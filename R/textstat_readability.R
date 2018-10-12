@@ -17,6 +17,7 @@
 #'   
 #'   For finer-grained control, consider filtering sentences prior first, 
 #'   including through pattern-matching, using \code{\link{corpus_trim}}.
+#' @param intermediate if \code{TRUE}, include intermediate quantities in the output
 #' @param ... not used
 #' @author Kenneth Benoit, re-engineered from Meik Michalke's \pkg{koRpus}
 #'   package.
@@ -50,7 +51,8 @@ textstat_readability <- function(x,
                                     "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                         remove_hyphens = TRUE,
                         min_sentence_length = 1, 
-                        max_sentence_length = 10000, ...) {
+                        max_sentence_length = 10000, 
+                        intermediate = FALSE, ...) {
     UseMethod("textstat_readability")
 }
 
@@ -72,7 +74,8 @@ textstat_readability.default <- function(x,
                                                     "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                                         remove_hyphens = TRUE,
                                         min_sentence_length = 1, 
-                                        max_sentence_length = 10000, ...) {
+                                        max_sentence_length = 10000, 
+                                        intermediate = FALSE, ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_readability"))
 }    
 
@@ -95,7 +98,8 @@ textstat_readability.corpus <- function(x,
                                            "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                                remove_hyphens = TRUE,
                                min_sentence_length = 1, 
-                               max_sentence_length = 10000, ...) {
+                               max_sentence_length = 10000, 
+                               intermediate = FALSE, ...) {
     
     unused_dots(...)
     
@@ -382,11 +386,17 @@ textstat_readability.corpus <- function(x,
         temp[, Scrabble := nscrabble(x, mean)]
     
     result <- data.frame(document = names(x), stringsAsFactors = FALSE)
-    result <- cbind(result, as.data.frame(temp[,measure, with = FALSE]))
-    class(result) <- c('readability', 'textstat', 'data.frame')
+    
+    # if intermediate is desired, add intermediate quantities to output
+    if (intermediate)
+        measure <- c(measure, names(temp)[names(temp) %in% 
+                                              c(c("W", "St", "C", "Sy", "W3Sy", "W2Sy", "W_1Sy", 
+                                                  "W6C", "W7C", "Wlt3Sy", "W_wl.Dale.Chall", "W_wl.Spache"))])
+
+    result <- cbind(result, as.data.frame(temp[, measure, with = FALSE]))
+    class(result) <- c("readability", "textstat", "data.frame")
     rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
-
 }
 
 

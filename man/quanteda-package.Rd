@@ -81,7 +81,7 @@ methods.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://quanteda.io}
+  \item \url{https://quanteda.io}
   \item Report bugs at \url{https://github.com/quanteda/quanteda/issues}
 }
 
