@@ -94,7 +94,7 @@ kwic.corpus <- function(x, pattern, window = 5,
 #' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' 
 #' corp <- corpus(txt)
-#' kwic(corp, c("is", "a"), valuetype = "fixed", separator = "", remove_separators = FALSE, )
+#' kwic(corp, c("is", "a"), valuetype = "fixed", separator = "", remove_separators = FALSE)
 #' @export 
 kwic.tokens <- function(x, pattern, window = 5, 
                         valuetype = c("glob", "regex", "fixed"), 
