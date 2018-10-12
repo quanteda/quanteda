@@ -23,7 +23,7 @@ docnames(x) <- value
 Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
 }
 \examples{
-# get and set doument names to a corpus
+# get and set document names to a corpus
 mycorp <- data_corpus_inaugural
 docnames(mycorp) <- char_tolower(docnames(mycorp))
 

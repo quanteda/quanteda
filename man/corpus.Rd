@@ -12,19 +12,17 @@
 corpus(x, ...)
 
 \method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
-  docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x),
-  compress = FALSE, ...)
+  docvars = quanteda::docvars(x), ...)
 
-\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
-  metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{character}(x, docnames = NULL, docvars = NULL, ...)
 
 \method{corpus}{data.frame}(x, docid_field = "doc_id",
-  text_field = "text", metacorpus = NULL, compress = FALSE, ...)
+  text_field = "text", ...)
 
 \method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE,
   ...)
 
-\method{corpus}{Corpus}(x, metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{Corpus}(x, ...)
 }
 \arguments{
 \item{x}{a valid corpus source object}
@@ -38,22 +36,6 @@ length to the number of documents.  If none of these are round, then
 "text1", "text2", etc. are assigned automatically.}
 
 \item{docvars}{a data.frame of document-level variables associated with each text}
-
-\item{metacorpus}{a named list containing additional (character) information
-  to be added to the corpus as corpus-level metadata.  Special fields
-  recognized in the \code{\link{summary.corpus}} are:
-\itemize{
-\item{\code{source }}{a description of the source of the texts, used for
-  referencing;}
-\item{\code{citation }}{information on how to cite the corpus; and}
-\item{\code{notes }}{any additional information about who created the text, warnings,
-  to do lists, etc.}
-}}
-
-\item{compress}{logical; if \code{TRUE}, compress the texts in memory using
-gzip compression. This significantly reduces the size of the corpus in
-memory, but will slow down operations that require the texts to be
-extracted.}
 
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the
@@ -73,6 +55,22 @@ therefore being twice the number of rows in the kwic.}
 
 \item{extract_keyword}{logical; if  \code{TRUE}, save the keyword matching
 \code{pattern} as a new docvar \code{keyword}}
+
+\item{metacorpus}{a named list containing additional (character) information
+  to be added to the corpus as corpus-level metadata.  Special fields
+  recognized in the \code{\link{summary.corpus}} are:
+\itemize{
+\item{\code{source }}{a description of the source of the texts, used for
+  referencing;}
+\item{\code{citation }}{information on how to cite the corpus; and}
+\item{\code{notes }}{any additional information about who created the text, warnings,
+  to do lists, etc.}
+}}
+
+\item{compress}{logical; if \code{TRUE}, compress the texts in memory using
+gzip compression. This significantly reduces the size of the corpus in
+memory, but will slow down operations that require the texts to be
+extracted.}
 }
 \value{
 A \link{corpus-class} class object containing the original texts,

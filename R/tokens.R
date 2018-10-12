@@ -183,18 +183,16 @@ tokens.character <- function(x, ...) {
     tokens(corpus(x), ...)
 }
 
-
 #' @rdname tokens
 #' @export
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
+    x <- as.corpus(x)
+    if (!include_docvars)
+        docvars(x) <- NULL
     result <- tokens_internal(texts(x), ...)
-    if (include_docvars) {
-        docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
-    } else {
-        docvars(result) <- data.frame(row.names = docnames(x))
-    }
-    result
+    attr(result, "docvars") <- attr(x, "docvars")
+    return(result)
 }
 
 #' @rdname tokens

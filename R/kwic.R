@@ -67,7 +67,7 @@ kwic.character <- function(x, pattern, window = 5,
 kwic.corpus <- function(x, pattern, window = 5, 
                         valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, ...) {
- 
+    x <- as.corpus(x)
     if (is.collocations(pattern) || is.dictionary(pattern))
         pattern <- phrase(pattern) 
     kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive)
@@ -108,7 +108,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     }
     
     keywords_id <- pattern2list(pattern, types, 
-                              valuetype, case_insensitive, attr(x, 'concatenator'))
+                                valuetype, case_insensitive, attr(x, 'concatenator'))
     temp <- qatd_cpp_kwic(x, types, keywords_id, window)
     
     # attributes for kwic object

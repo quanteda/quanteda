@@ -30,29 +30,28 @@ corpus_subset.default <- function(x, subset, select, ...) {
 #' @export
 corpus_subset.corpus <- function(x, subset, select, ...) {
     
-    if (length(addedArgs <- list(...)))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
+    unused_dots(...)
+    x <- as.corpus(x)
+    attrs <- attributes(x)
+    
     r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(documents(x)))
+        rep_len(TRUE, nrow(attrs$docvars))
     } else {
         e <- substitute(subset)
-        r <- eval(e, documents(x), parent.frame())
+        r <- eval(e, attrs$docvars, parent.frame())
         r & !is.na(r)
     }
     vars <- if (missing(select)) 
         TRUE
     else {
-        nl <- as.list(seq_along(documents(x)))
-        names(nl) <- names(documents(x))
+        nl <- as.list(seq_along(attrs$docvars))
+        names(nl) <- names(attrs$docvars)
         c(1, eval(substitute(select), nl, parent.frame()))
     }
     
-    documents(x) <- documents(x)[r, vars, drop = FALSE]
-    if (is.corpuszip(x)) {
-        texts(x) <- texts(x)[r]
-        x$docnames <- rownames(documents(x))
-    }
-    
-    x
+    x <- as.character(unclass(x))[r]
+    attrs$docvars <- attrs$docvars[r, vars, drop = FALSE]
+    attributes(x) <- attrs
+    return(x)
 }
 

@@ -13,22 +13,21 @@ NULL
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
         if (ndoc(x) > 1L) "s" else "", sep = "")
-    if (!is.null(docvars(x))) 
-        cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
+    if (ncol(docvars(x)))
+        cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar",
             if (ncol(docvars(x)) == 1L) "" else "s", sep="")
-    if (is.corpuszip(x)) {
-        cat(" (compressed ", 100 - round(x$compression_rate, 1), "%)", sep = "")
-    }
     cat(".\n")
     
-    #         ", ",
-    #         ifelse(is.null(corp$tokens), "un", ""),
-    #         "indexed.\n", sep="")
-    #     cat("Settings:")
-    #      tempSettings <- unlist(settings(corp))
-    #      for (i in seq_along(tempSettings)) {
-    #          print(tempSettings[i])
-    #      }
+    # development mode
+    cat("\n\n")
+    print(stri_sub(x, 0, 100))
+    cat("\n")
+    cat("docvars:\n")
+    print(attr(x, "docvar"))
+    cat("\n")
+    cat("meta:\n")
+    print(attr(x, "meta"))
+    
 }
 
 #' @return \code{is.corpus} returns \code{TRUE} if the object is a corpus
@@ -37,14 +36,6 @@ print.corpus <- function(x, ...) {
 is.corpus <- function(x) {
     "corpus" %in% class(x)
 }
-
-#' @return \code{is.corpuszip} returns \code{TRUE} if the object is a compressed corpus
-#' @rdname corpus-class
-#' @export
-is.corpuszip <- function(x) {
-    "corpuszip" %in% class(x)
-}
-
 
 #' Summarize a corpus
 #' 
@@ -63,38 +54,17 @@ is.corpuszip <- function(x) {
 #' @examples
 #' summary(data_corpus_inaugural)
 #' summary(data_corpus_inaugural, n = 10)
-#' mycorpus <- corpus(data_char_ukimmig2010, 
-#'                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
-#' summary(mycorpus, showmeta=TRUE) # show the meta-data
-#' mysummary <- summary(mycorpus) # (quietly) assign the results
-#' mysummary$Types / mysummary$Tokens # crude type-token ratio
-summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
-    
-    n_all <- ndoc(object)
-    object <- head(object, n)
-    result <- data.frame(summary_character(texts(object), n = n, tolower = tolower, ...))
-    dvars <- docvars_internal(object)
-    if (!is.null(dvars)) { 
-        if (showmeta) {
-            result <- cbind(result, select_fields(dvars, c('system', 'user')))
-        } else {
-            result <- cbind(result, select_fields(dvars, 'user'))
-        }
-    }
+#' corp <- corpus(data_char_ukimmig2010, 
+#'                docvars = data.frame(party=names(data_char_ukimmig2010))) 
+#' summary(corp) # show the meta-data
+#' mysummary <- summary(corp)
+summary.corpus <- function(object, n = 100, tolower = FALSE, ...) {
+    object <- as.corpus(object)
+    result <- summary_character(texts(object), n = n, tolower = tolower, ...)
+    attr(result, "ndoc_show") <- n
+    attr(result, "ndoc_all") <- ndoc(object)
     class(result) <- c("summary.corpus", "data.frame")
-    
-    if (is.corpuszip(object)) 
-        attr(result, "compression_rate") <- object$compression_rate
-    if (ndoc(object) >= n)
-        attr(result, "ndoc_show") <- n
-    attr(result, "meta") <- list(
-        source = unlist(metacorpus(object, "source")),
-        created = unlist(metacorpus(object, "created")),
-        notes = unlist(metacorpus(object, "notes"))
-    )
-    attr(result, "ndoc_all") <- n_all
-    rownames(result) <- NULL
-    result
+    return(result)
 }
 
 #' @export
@@ -104,25 +74,13 @@ print.summary.corpus <- function(x, ...) {
     
     ndoc_all <- attr(x, "ndoc_all")
     ndoc_show <- attr(x, "ndoc_show")
-    compression <- attr(x, "compression_rate")
-    
+
     cat("Corpus consisting of ", ndoc_all, " document", if (ndoc_all > 1) "s" else "", sep = "")
-    if (!is.null(compression))
-        cat(" (compressed ", 100 - round(compression, 1), "%)", sep = "")
     if (!is.null(ndoc_show)) 
         cat(", showing ", ndoc_show, " document", if (ndoc_show > 1) "s" else "", sep = "")
     cat(":\n\n")
-    
-    rownames(x) <- x[["Text"]]
     print.data.frame(x, row.names = FALSE)
     cat("\n")
-    
-    meta <- attr(x, "meta")
-    if (!is.null(meta)) {
-        cat('Source: ', meta$source, "\n", sep = "")
-        cat('Created: ', meta$created, "\n", sep = "")
-        cat('Notes: ', meta$notes, "\n", sep = "")
-    }
 }
 
 #' @noRd
@@ -152,6 +110,7 @@ print.summary.corpus <- function(x, ...) {
 #' head(data_corpus_irishbudget2010, 3) %>% summary()
 #' 
 head.corpus <- function(x, n = 6L, ...) {
+    x <- as.corpus(x)
     stopifnot(length(n) == 1L)
     n <- if (n < 0L) max(ndoc(x) + n, 0L) else min(n, ndoc(x))
     corpus_subset(x, seq_len(ndoc(x)) %in% seq_len(n))
@@ -163,6 +122,7 @@ head.corpus <- function(x, n = 6L, ...) {
 #' @examples
 #' tail(data_corpus_irishbudget2010, 3) %>% summary()
 tail.corpus <- function(x, n = 6L, ...) {
+    x <- as.corpus(x)
     stopifnot(length(n) == 1L)
     nrx <- ndoc(x)
     n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
@@ -193,42 +153,16 @@ tail.corpus <- function(x, n = 6L, ...) {
 #'   character vectors and never as factors.
 #' @export
 `+.corpus` <- function(c1, c2) {
-    ## deal with metadata first
-    # note the source and date/time-stamp the creation
-    metacorpus(c1, "source") <- paste("Combination of corpuses", 
-                                      deparse(substitute(c1)),
-                                      "and", deparse(substitute(c2)))
-    metacorpus(c1, "created") <- date()
-    # concatenate the other fields if not identical already
-    for (field in names(metacorpus(c2))) {
-        if (field %in% c("source", "created")) next
-        if (!identical(metacorpus(c1, field), metacorpus(c2, field)))
-            metacorpus(c1, field) <- 
-                paste(metacorpus(c1, field), metacorpus(c2, field))
-    }
-    
-    r_names <-  make.unique(c(rownames(c1$documents), rownames(c2$documents)), sep='')
-    c1$documents <- data.table::setDF(data.table::rbindlist(list(c1$documents, c2$documents), fill = TRUE))
-    rownames(c1$documents) <- r_names
-    
-    #  Put rownames back in because the hadleyverse discards them
-    #rownames(c1$documents) <- make.unique(rowname, sep='')
-    
-    # settings
-    ### currently just use the c1 settings
-    
-    # special handling for docnames if item is corpuszip
-    if (is.corpuszip(c1)) {
-        x <- c(texts(c1), texts(c2))
-        x[1 : (length(x)-1)] <- 
-            paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
-        c1$texts <- memCompress(x, 'gzip')
-        c1$docnames <- rownames(c1$documents)
-    }
-
-    return(c1)
+    c1 <- as.corpus(c1)
+    c2 <- as.corpus(c2)
+    attrs <- attributes(c1)
+    result <- c(as.character(unclass(c1)), as.character(unclass(c2)))
+    attrs$docvars <- rbind_fill(attr(c1, "docvars"), attr(c2, "docvars"))
+    attrs$meta[["source"]] <- "corpus"
+    attrs$docvars[["_docid"]] <- make.unique(attrs$docvars[["_docid"]])
+    attributes(result) <- attrs
+    return(result)
 }
-
 
 #' @rdname corpus-class
 #' @param recursive logical used by `c()` method, always set to `FALSE`
@@ -245,13 +179,10 @@ c.corpus <- function(..., recursive = FALSE) {
     if (length(x) == 1) return(x[[1]])
     result <- x[[1]] + x[[2]]
     if (length(x) == 2) return(result)
-    for (i in 3:length(x))
+    for (i in seq(3, length(x)))
         result <- result + x[[i]]
-    metacorpus(result, "source") <- 
-        paste0("Concatenation by c.corpus(", names(x), ")")
     return(result)
 }
-
 
 #' @rdname corpus-class
 #' @method [ corpus
@@ -263,55 +194,31 @@ c.corpus <- function(..., recursive = FALSE) {
 #'   \code{\link{drop}} for further details.
 #' @examples 
 #' 
-#' # ways to index corpus elements
-#' data_corpus_inaugural["1793-Washington"]    # 2nd Washington inaugural speech
-#' data_corpus_inaugural[2]                    # same
-#' # access the docvars from data_corpus_irishbudget2010
-#' data_corpus_irishbudget2010[, "year"]
-#' # same
-#' data_corpus_irishbudget2010[["year"]]            
+#' # two ways to index corpus elements
+#' data_corpus_inaugural["1793-Washington"]
+#' data_corpus_inaugural[2] 
 #' 
 #' # create a new document variable
 #' data_corpus_irishbudget2010[["govtopp"]] <- 
 #'     ifelse(data_corpus_irishbudget2010[["party"]] %in% c("FF", "Greens"), 
 #'            "Government", "Opposition")
 #' docvars(data_corpus_irishbudget2010)
-`[.corpus` <- function(x, i, j = NULL, ..., drop = TRUE) {
-    if (is.null(j))
-        return(texts(x)[i, ...])
-    else {
-        if (!is.null(docvars(x)))
-            x$documents <- x$documents[-1]  # remove texts
-        return(x$documents[i, j, ..., drop = drop])
+`[.corpus` <- function(x, i) {
+    x <- as.corpus(x)
+    attrs <- attributes(x)
+    if (is.character(i)) {
+        index <- fastmatch::fmatch(i, docnames(x))
+    } else {
+        index <- match(i, seq(length(x)))
     }
-}
-
-#' @export
-#' @method [[ corpus
-#' @rdname corpus-class
-`[[.corpus` <- function(x, i, ...) {
-    if (is.null(docvars(x)))
-        stop("cannot index docvars this way because none exist")
-    x$documents[i, ...]
-}
-
-#' @export
-#' @param value a vector that will form a new docvar
-#' @method [[<- corpus
-#' @rdname corpus-class
-`[[<-.corpus` <- function(x, i, value) {
-    x$documents[i] <- value
-    x
-}
-
-#' @export
-#' @param object the corpus about which you want structural information
-#' @param ... not used
-#' @method str corpus
-#' @importFrom utils str
-#' @rdname corpus-class
-str.corpus <- function(object, ...) {
-  # message("Warning: accessing corpus internals directly voids your warranty.")
-    str(unclass(object))
+    is_na <- is.na(index)
+    if (any(is_na))
+        warning(paste(i[is_na], collapse = ", "), " do not exist")
+    index <- index[!is_na]
+    
+    x <- as.character(unclass(x))[index]
+    attrs$docvars <- attrs$docvars[index,,drop = FALSE]
+    attributes(x) <- attrs
+    return(x)
 }
 

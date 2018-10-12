@@ -8,7 +8,6 @@ test_that("test show.corpus", {
         prints_text('Corpus consisting of 1 document.')
     )
 
-
     testcorpus <- corpus(
         c('The', 'quick', 'brown', 'fox')
     )
@@ -39,37 +38,16 @@ test_that("test show.corpus", {
 
 
 test_that("test c.corpus", {
-    concat.corpus <- c(data_corpus_inaugural, data_corpus_inaugural, data_corpus_inaugural)
-
-    expected_docvars <-rbind(docvars(data_corpus_inaugural), docvars(data_corpus_inaugural), docvars(data_corpus_inaugural))
-    rownames(expected_docvars) <- make.unique(rep(rownames(docvars(data_corpus_inaugural)), 3), sep='')
+    corp <- c(data_corpus_inaugural[1:2], data_corpus_inaugural[3:5], data_corpus_inaugural[6:10])
+    
+    expect_equivalent(
+        corp,
+        data_corpus_inaugural[1:10]
+    )
 
     expect_equal(
-        docvars(concat.corpus),
-        expected_docvars
-    )
-
-    expect_is(
-        docvars(concat.corpus),
-        'data.frame'
-    )
-
-    expected_texts <- c(texts(data_corpus_inaugural), texts(data_corpus_inaugural), texts(data_corpus_inaugural))
-    names(expected_texts) <- make.unique(rep(names(texts(data_corpus_inaugural)), 3), sep='')
-  
-    expect_equal(
-        texts(concat.corpus),
-        expected_texts
-    )
-
-    expect_is(
-        texts(concat.corpus),
-        'character'
-    )
-
-
-    expect_true(
-        grepl('Concatenation by c.corpus', metacorpus(concat.corpus)$source)
+        docvars(corp),
+        docvars(data_corpus_inaugural[1:10])
     )
 
 })
@@ -78,66 +56,63 @@ test_that("test corpus constructors works for kwic", {
     kw <- kwic(data_char_sampletext, "econom*")
     
     # split_context = TRUE, extract_keyword = TRUE
-    kwiccorpus <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)
-    expect_that(kwiccorpus, is_a("corpus"))
-    expect_equal(names(docvars(kwiccorpus)),
+    corp <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)
+    expect_that(corp, is_a("corpus"))
+    expect_equal(names(docvars(corp)),
                  c("docname", "from", "to", "keyword", "context"))
     
     # split_context = FALSE, extract_keyword = TRUE
-    expect_identical(docvars(corpus(kwic(data_char_sampletext, "econom*"),
+    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
                                     split_context = FALSE, extract_keyword = TRUE)),
-                     data.frame(keyword = rep("economy", 5), stringsAsFactors = FALSE,
-                                row.names = paste0("text1.L", as.character(kw[["from"]])))
+                     paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = FALSE, extract_keyword = FALSE
-    expect_identical(docvars(corpus(kwic(data_char_sampletext, "econom*"),
+    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
                                     split_context = FALSE, extract_keyword = FALSE)),
-                     data.frame(stringsAsFactors = FALSE,
-                                row.names = paste0("text1.L", as.character(kw[["from"]])))
+                     paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = TRUE, extract_keyword = FALSE
-    expect_identical(docvars(corpus(kwic(data_char_sampletext, "econom*"),
+    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
                                     split_context = FALSE, extract_keyword = FALSE)),
-                     data.frame(stringsAsFactors = FALSE,
-                                row.names = paste0("text1.L", as.character(kw[["from"]])))
+                     paste0("text1.L", as.character(kw[["from"]]))
     )
     
     # test text handling for punctuation - there should be no space before the ?
-    kwiccorpus <- corpus(kwic(data_char_sampletext, "econom*"),
-                         split_context = FALSE, extract_keyword = FALSE)
+    corp <- corpus(kwic(data_char_sampletext, "econom*"),
+                        split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
-        texts(kwiccorpus)[2],
+        texts(corp)[2],
         c(text1.L202 = "it is decimating the domestic economy? As we are tired")
     )
     
-    # ; and !
-    txt <- c("This is; a test!")
-    expect_equivalent(
-        texts(corpus(kwic(txt, "a"), split_context = FALSE)),
-        txt
-    )
-    
-    # quotes
-    txt <- "This 'is' only a test!"
-    expect_equivalent(
-         texts(corpus(kwic(txt, "a"), split_context = FALSE)),
-         txt
-    )
-    txt <- "This \"is\" only a test!"
-    expect_equivalent(
-        texts(corpus(kwic(txt, "a"), split_context = FALSE)),
-        txt
-    )
-    txt <- 'This "is" only (a) test!'
-    expect_equivalent(
-        texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
-        txt
-    )
-    txt <- 'This is only (a) test!'
-    expect_equivalent(
-        texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
-        txt
-    )    
+    # # ; and !
+    # txt <- c("This is; a test!")
+    # expect_equivalent(
+    #     texts(corpus(kwic(txt, "a"), split_context = FALSE)),
+    #     txt
+    # )
+    # 
+    # # quotes
+    # txt <- "This 'is' only a test!"
+    # expect_equivalent(
+    #      texts(corpus(kwic(txt, "a"), split_context = FALSE)),
+    #      txt
+    # )
+    # txt <- "This \"is\" only a test!"
+    # expect_equivalent(
+    #     texts(corpus(kwic(txt, "a"), split_context = FALSE)),
+    #     txt
+    # )
+    # txt <- 'This "is" only (a) test!'
+    # expect_equivalent(
+    #     texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
+    #     txt
+    # )
+    # txt <- 'This is only (a) test!'
+    # expect_equivalent(
+    #     texts(corpus(kwic(txt, "a", window = 10), split_context = FALSE)),
+    #     txt
+    # )    
 })
 
 
@@ -149,51 +124,41 @@ test_that("test corpus constructors works for character", {
 
 test_that("test corpus constructors works for data.frame", {
     
-    mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
-                       some_ints = 1L:6L,
-                       some_text = paste0("This is text number ", 1:6, "."),
-                       some_logical = rep(c(TRUE, FALSE), 3),
-                       stringsAsFactors = FALSE,
-                       row.names = paste0("fromDf_", 1:6))
-    mycorp <- corpus(mydf, text_field = "some_text", 
-                     metacorpus = list(source = "From a data.frame called mydf."))
-    expect_equal(docnames(mycorp), 
+    df <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+                     some_ints = 1L:6L,
+                     some_text = paste0("This is text number ", 1:6, "."),
+                     some_logical = rep(c(TRUE, FALSE), 3),
+                     stringsAsFactors = FALSE,
+                     row.names = paste0("fromDf_", 1:6))
+    corp <- corpus(df, docid_field = "row.names", text_field = "some_text")
+    expect_equal(docnames(corp), 
                  paste("fromDf", 1:6, sep = "_"))
-    expect_equal(mycorp[["letter_factor"]][3,1],
+    expect_equal(docvars(corp, "letter_factor")[3,1],
                  factor("b", levels = c("a", "b", "c")))
     
-    mydf2 <- mydf
-    names(mydf2)[3] <- "text"
-    expect_equal(corpus(mydf, text_field = "some_text"),
-                 corpus(mydf2))
-    expect_equal(corpus(mydf, text_field = "some_text"),
-                 corpus(mydf, text_field = 3))
-    
-    expect_error(corpus(mydf, text_field = "some_ints"),
+    expect_error(corpus(df, text_field = "some_ints"),
                  "text_field must refer to a character mode column")
-    expect_error(corpus(mydf, text_field = c(1,3)),
+    expect_error(corpus(df, text_field = c(1,3)),
                  "text_field must refer to a single column")
-    expect_error(corpus(mydf, text_field = c("some_text", "letter_factor")),
+    expect_error(corpus(df, text_field = c("some_text", "letter_factor")),
                  "text_field must refer to a single column")
-    expect_error(corpus(mydf, text_field = 0),
+    expect_error(corpus(df, text_field = 0),
                  "text_field index refers to an invalid column")
-    expect_error(corpus(mydf, text_field = -1),
+    expect_error(corpus(df, text_field = -1),
                  "text_field index refers to an invalid column")
-    expect_error(corpus(mydf, text_field = "notfound"),
-                 "column name notfound not found")
+    expect_error(corpus(df, text_field = "nothing"),
+                 "text_field index refers to an invalid column")
     
-    # expect_error(corpus(mydf, text_field = "some_text", docid_field = "some_ints"),
-    #              "docid_field must refer to a character mode column")
-    expect_error(corpus(mydf, text_field = "some_text", docid_field = c(1,3)),
+    expect_error(corpus(df, text_field = "some_text", docid_field = c(1,3)),
                  "docid_field must refer to a single column")
-    expect_error(corpus(mydf, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
+    expect_error(corpus(df, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
                  "docid_field must refer to a single column")
-    expect_error(corpus(mydf, text_field = "some_text", docid_field = 0),
-                 "docid_field column not found or invalid")
-    expect_error(corpus(mydf, text_field = "some_text", docid_field = -1),
-                 "docid_field column not found or invalid")
-    expect_error(corpus(mydf, text_field = "some_text", docid_field = "notfound"),
-                 "docid_field column not found or invalid")
+    expect_error(corpus(df, text_field = "some_text", docid_field = 0),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(df, text_field = "some_text", docid_field = -1),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(df, text_field = "some_text", docid_field = "notfound"),
+                 "docid_field index refers to an invalid column")
 })
 
 
@@ -203,28 +168,26 @@ test_that("test corpus constructor works for tm objects", {
     
     # VCorpus
     data(crude, package = "tm")    # load in a tm example VCorpus
-    mytmCorpus <- corpus(crude)
-    expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
-                 c("127"  = "Diamond Shamrock Corp"))
+    corp1 <- corpus(crude)
+    expect_equal(substring(texts(corp1)[1], 1, 21),
+                 c("reut-00001.xml"  = "Diamond Shamrock Corp"))
     
     data(acq, package = "tm")
-    mytmCorpus2 <- corpus(acq)
-    expect_equal(dim(docvars(mytmCorpus2)), c(50,12))
+    corp2 <- corpus(acq)
+    expect_equal(dim(docvars(corp2)), c(50,15))
     
     # SimpleCorpus
     txt <- system.file("texts", "txt", package = "tm")
-    mytmCorpus3 <- SimpleCorpus(DirSource(txt, encoding = "UTF-8"),
+    scorp <- SimpleCorpus(DirSource(txt, encoding = "UTF-8"),
                                 control = list(language = "lat"))
-    qcorpus3 <- corpus(mytmCorpus3)
-    expect_equal(content(mytmCorpus3), texts(qcorpus3))
-    expect_equal(unclass(meta(mytmCorpus3, type = "corpus")[1]),
-                 metacorpus(qcorpus3)[names(meta(mytmCorpus3, type = "corpus"))])
+    corp3 <- corpus(scorp)
+    expect_equal(content(scorp), texts(corp3))
     
     # any other type
-    mytmCorpus4 <- mytmCorpus3
-    class(mytmCorpus4)[1] <- "OtherCorpus"
+    scorp2 <- scorp
+    class(scorp2)[1] <- "OtherCorpus"
     expect_error(
-        corpus(mytmCorpus4),
+        corpus(scorp2),
         "Cannot construct a corpus from this tm OtherCorpus object"
     )
     detach("package:tm", unload = FALSE, force = TRUE)
@@ -234,9 +197,9 @@ test_that("test corpus constructor works for tm objects", {
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
     skip_if_not_installed("tm")
     require(tm)
-    tmCorpus_length1 <- VCorpus(VectorSource(data_corpus_inaugural[2]))
-    expect_silent(qcorpus <- corpus(tmCorpus_length1))
-    expect_equivalent(texts(qcorpus)[1], data_corpus_inaugural[2])
+    vcorp <- VCorpus(VectorSource(data_corpus_inaugural[2]))
+    expect_silent(corp <- corpus(vcorp))
+    expect_equivalent(texts(corp)[1], texts(data_corpus_inaugural)[2])
     detach("package:tm", unload = FALSE, force = TRUE)
     detach("package:NLP", unload = FALSE, force = TRUE)
 })
@@ -244,17 +207,17 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
     skip_if_not_installed("tm")
     load("../data/corpora/complex_Corpus.rda")
-    qc <- corpus(complex_Corpus)
+    corp <- quanteda:::corpus.Corpus(complex_Corpus)
     expect_equal(
-        head(docnames(qc), 3),
+        head(docnames(corp), 3),
         c("41113_201309.1", "41113_201309.2", "41113_201309.3")
     )
     expect_equal(
-        tail(docnames(qc), 3),
+        tail(docnames(corp), 3),
         c("41223_201309.2553", "41223_201309.2554", "41223_201309.2555")
     )
     expect_output(
-        print(qc),
+        print(corp),
         "Corpus consisting of 8,230 documents and 16 docvars\\."
     )
 })
@@ -264,73 +227,64 @@ test_that("corpus_subset works", {
              doc2 = "one\ntwo\tpart two\nthree\nfour.",
              doc3 = "A single sentence.",
              doc4 = "A sentence with \"escaped quotes\".")
-    dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
+    df <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), 
+                     varchar = letters[1:4])
 
-    data_corpus_test    <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpus.R"))
+    data_corpus_test    <- corpus(txt, docvars = df)
     expect_equal(ndoc(corpus_subset(data_corpus_test, varfactor == "B")), 2)
-    expect_equal(docnames(corpus_subset(data_corpus_test, varfactor == "B")), c("doc2", "doc4"))
+    expect_equal(docnames(corpus_subset(data_corpus_test, varfactor == "B")), 
+                 c("doc2", "doc4"))
     
-    data_corpus_test_nodv  <- corpus(txt, metacorpus = list(source = "From test-corpus.R"))
+    data_corpus_test_nodv  <- corpus(txt)
     expect_equal(ndoc(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 1)
-    expect_equal(docnames(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), c("doc2"))
+    expect_equal(docnames(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 
+                 c("doc2"))
 
 })
 
 test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
-    cor <- corpus(txt)
-    expect_equal(docnames(cor), c("one", "two", "one.1"))
+    corp <- corpus(txt)
+    expect_equal(docnames(corp), c("one", "two", "one.1"))
 })
 
 test_that("create a corpus on a corpus", {
     expect_identical(
-        data_corpus_irishbudget2010,
+        as.corpus(data_corpus_irishbudget2010),
         corpus(data_corpus_irishbudget2010)
     )
     
-    tmpcorp <- data_corpus_irishbudget2010
-    docnames(tmpcorp) <- paste0("d", seq_len(ndoc(tmpcorp)))
+    corp <- as.corpus(data_corpus_irishbudget2010)
+    name <- paste0("d", seq_len(ndoc(corp)))
+    corp2 <- corpus(corp, docnames = name, docvars = docvars(corp))
+    docnames(corp) <- name
     expect_identical(
-        tmpcorp,
-        corpus(data_corpus_irishbudget2010, docnames =  paste0("d", seq_len(ndoc(tmpcorp))))
+        docnames(corp),
+        docnames(corp2)
     )
-    
     expect_identical(
-        corpus(data_corpus_irishbudget2010, compress = TRUE),
-        corpus(texts(data_corpus_irishbudget2010), 
-               docvars = docvars(data_corpus_irishbudget2010),
-               metacorpus = metacorpus(data_corpus_irishbudget2010),
-               compress = TRUE)
+        docvars(corp),
+        docvars(corp2)
     )
 })
 
 test_that("head, tail.corpus work as expected", {
-    crp <- corpus_subset(data_corpus_inaugural, Year < 2018)
-    
+    corp <- corpus_subset(data_corpus_inaugural, Year < 2018)
     expect_equal(
-        docnames(head(crp, 3)),
+        docnames(head(corp, 3)),
         c("1789-Washington", "1793-Washington", "1797-Adams")
     )
     expect_equal(
-        docnames(head(crp, -55)),
+        docnames(head(corp, -55)),
         c("1789-Washington", "1793-Washington", "1797-Adams")
     )
     expect_equal(
-        docnames(tail(crp, 3)),
+        docnames(tail(corp, 3)),
         c("2009-Obama", "2013-Obama", "2017-Trump")
     )
     expect_equal(
-        docnames(tail(crp, -55)),
+        docnames(tail(corp, -55)),
         c("2009-Obama", "2013-Obama", "2017-Trump")
-    )
-})
-
-test_that("internal documents fn works", {
-    mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year < 1800))
-    expect_is(quanteda:::documents.dfm(mydfm), "data.frame")
-    expect_equal(
-        dim(quanteda:::documents.dfm(mydfm)),
-        c(3, 3)
     )
 })
 
@@ -349,7 +303,7 @@ test_that("corpus constructor works with tibbles", {
 
 test_that("corpus works on dplyr grouped data.frames (#1232)", {
     skip_if_not_installed("dplyr")
-    mydf_grouped <- 
+    df_grouped <- 
         data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                    some_ints = 1L:6L,
                    text = paste0("This is text number ", 1:6, "."),
@@ -358,101 +312,67 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
         dplyr::group_by(letter_factor) %>% 
         dplyr::mutate(n_group = n())
     expect_output(
-        print(corpus(mydf_grouped)),
-        "^Corpus consisting of 6 documents and 3 docvars\\.$"
+        print(corpus(df_grouped)),
+        "^Corpus consisting of 6 documents and 3 docvars\\."
     )
 })
 
 test_that("corpus + operator works", {
     corp1 <- corpus(LETTERS[1:3], docvars = data.frame(one = 1:3, two = 4:6))
     corp2 <- corpus(LETTERS[1:3], docvars = data.frame(one = 7:9, three = 10:12))
-    sm <- summary(corp1 + corp2)
-    expect_identical(sm$one, c(1:3, 7:9))
-    expect_identical(sm$two, c(4:6, NA, NA, NA))
-    expect_identical(sm$three, c(NA, NA, NA, 10:12))
-    expect_identical(
-        texts(corpus(LETTERS[1:3]) + corpus(LETTERS[3:5])),
-        c(text1 = "A", text2 = "B", text3 = "C", text11 = "C", text21= "D", text31 = "E")
-    )
+    corp <- corp1 + corp2
+    expect_false(any(duplicated(docnames(corp))))
+    expect_identical(unname(texts(corp)), LETTERS[c(1:3, 1:3)])
 })
 
 test_that("corpus.data.frame sets docnames correctly", {
     txt <- c("Text one.", "Text two.  Sentence two.", "Third text is here.")
     dnames <- paste(LETTERS[1:3], "dn", sep = "-")
     rnames <- paste(LETTERS[1:3], "rn", sep = "-")
-    df_with_text_docid_rownames <- 
-        data.frame(text = txt,  doc_id = dnames, row.names = rnames, stringsAsFactors = FALSE)
-    df_with_NOtext_docid_rownames <- 
-        data.frame(other = txt, doc_id = dnames, row.names = rnames, stringsAsFactors = FALSE)
-    df_with_text_docid_NOrownames <- 
-        data.frame(text = txt,  doc_id = dnames, row.names = NULL, stringsAsFactors = FALSE)
-    df_with_NOtext_docid_NOrownames <- 
-        data.frame(other = txt, doc_id = dnames, row.names = NULL, stringsAsFactors = FALSE)
-    df_with_NOtext_NOdocid_NOrownames <- 
-        data.frame(other = txt,                  row.names = NULL, stringsAsFactors = FALSE)
-    df_with_text_NOdocid_rownames <- 
-        data.frame(text = txt,                   row.names = rnames, stringsAsFactors = FALSE)
-    df_with_text_NOdocid_NOrownames <- 
-        data.frame(text = txt,                   row.names = NULL, stringsAsFactors = FALSE)
-    df_with_NOtext_NOdocid_rownames <- 
-        data.frame(other = txt,                  row.names = rnames, stringsAsFactors = FALSE)
+    
+    df <- data.frame(other = txt, 
+                     row.names = NULL, stringsAsFactors = FALSE)
+    df_docid <- data.frame(other = txt, doc_id = dnames, 
+                           row.names = NULL, stringsAsFactors = FALSE)
+    df_text <- data.frame(text = txt, 
+                          row.names = NULL, stringsAsFactors = FALSE)
+    df_rownames <- data.frame(other = txt, 
+                              row.names = rnames, stringsAsFactors = FALSE)
+    df_docid_rownames <- data.frame(other = txt, doc_id = dnames, 
+                                    row.names = rnames, stringsAsFactors = FALSE)
+    df_text_docid <- data.frame(text = txt,  doc_id = dnames, 
+                                row.names = NULL, stringsAsFactors = FALSE)
+    df_text_rownames <- data.frame(text = txt, 
+                                   row.names = rnames, stringsAsFactors = FALSE)
+    df_text_docid_rownames <- data.frame(text = txt, doc_id = dnames, 
+                                         row.names = rnames, stringsAsFactors = FALSE)
 
     expect_identical(
-        docnames(corpus(df_with_text_docid_rownames)),
+        docnames(corpus(df_text_docid_rownames)),
         c("A-dn", "B-dn", "C-dn")
     )
     expect_error(
-        corpus(df_with_text_docid_rownames, docid_field = "notfound"),
+        corpus(df_text_docid_rownames, docid_field = "notfound"),
         "docid_field column not found or invalid"
     )
     expect_identical(
-        docnames(corpus(df_with_text_NOdocid_rownames)),
+        docnames(corpus(df_text_rownames)),
         c("A-rn", "B-rn", "C-rn")
     )
     expect_identical(
-        docnames(corpus(df_with_text_NOdocid_NOrownames)),
-        paste0(quanteda_options("base_docname"), seq_len(nrow(df_with_text_NOdocid_NOrownames)))
+        docnames(corpus(df_text)),
+        paste0(quanteda_options("base_docname"), seq_len(nrow(df_text)))
     )
     
-    newdf <- data.frame(df_with_text_docid_rownames, new = c(99, 100, 101))
+    df2_text <- data.frame(df_text, new = c(99, 100, 101))
     expect_identical(
-        docnames(corpus(newdf, docid_field = "new")),
+        docnames(corpus(df2_text, docid_field = "new")),
         c("99", "100", "101")
-    )
-    expect_identical(
-        docvars(corpus(newdf, docid_field = "new")),
-        data.frame(doc_id = c("A-dn", "B-dn", "C-dn"), row.names = as.character(99:101), 
-                   stringsAsFactors = FALSE)
-    )
-    expect_identical(
-        docvars(corpus(newdf)),
-        data.frame(new = as.numeric(99:101), row.names = c("A-dn", "B-dn", "C-dn"), 
-                   stringsAsFactors = FALSE)
-    )
+    )      
 
-    newdf2 <- newdf
-    names(newdf2)[2] <- "notdoc_id"
-    row.names(newdf2) <- NULL
+    df3_text <- data.frame(df_text, new = c(TRUE, FALSE, TRUE))
     expect_identical(
-        docvars(corpus(newdf2)),
-        data.frame(
-            notdoc_id = c("A-dn", "B-dn", "C-dn"),
-            new = c(99, 100, 101),
-            row.names = paste0(quanteda_options("base_docname"), 
-                               seq_len(nrow(df_with_text_NOdocid_NOrownames))),
-            stringsAsFactors = FALSE
-        )
-    )
-
-    newdf <- data.frame(df_with_text_NOdocid_NOrownames, new = c(99, 100, 101))
-    expect_identical(
-        docnames(corpus(newdf, docid_field = "new")),
-        c("99", "100", "101")
-    )        
-
-    newdf <- data.frame(df_with_text_NOdocid_NOrownames, new = c(TRUE, FALSE, TRUE))
-    expect_identical(
-        docnames(corpus(newdf, docid_field = "new")),
+        docnames(corpus(df3_text, docid_field = "new")),
         c("TRUE", "FALSE", "TRUE.1")
     )        
 })
@@ -462,7 +382,8 @@ test_that("corpus handles NA correctly (#1372)", {
         is.na(texts(corpus(c("a b c", NA, "d e f"))))
     ))
     expect_true(!any(
-        is.na(texts(corpus(data.frame(text = c("a b c", NA, "d e f"), stringsAsFactors = FALSE))))
+        is.na(texts(corpus(data.frame(text = c("a b c", NA, "d e f"), 
+                                      stringsAsFactors = FALSE))))
     ))
 })
 
@@ -511,11 +432,11 @@ test_that("handle data.frame with improper column names and text and doc_id fiel
                      stringsAsFactors = FALSE)
     
     names(df)[c(3, 5)] <- c(NA, "")
-    crp <- corpus(df, text_field = "thetext", docid_field = "docID")
+    corp <- corpus(df, text_field = "thetext", docid_field = "docID")
     
-    expect_equal(names(docvars(crp)), c("V1", "dvar2", "V3"))
-    expect_equal(docnames(crp), paste0("txt", 1:5))
-    expect_equivalent(texts(crp), LETTERS[1:5])
+    expect_equal(names(docvars(corp)), c("V1", "dvar2", "V3"))
+    expect_equal(docnames(corp), paste0("txt", 1:5))
+    expect_equivalent(texts(corp), LETTERS[1:5])
 })
 
 test_that("handle data.frame variable renaming when one already exists", {
@@ -526,6 +447,6 @@ test_that("handle data.frame variable renaming when one already exists", {
                      x = 6:10,
                      stringsAsFactors = FALSE)
     names(df)[c(3, 5)] <- c(NA, "")
-    crp <- corpus(df, text_field = "thetext", docid_field = "docID")
-    expect_equal(names(docvars(crp)), c("V1", "V3", "V3.1"))
+    corp <- corpus(df, text_field = "thetext", docid_field = "docID")
+    expect_equal(names(docvars(corp)), c("V1", "V3", "V3.1"))
 })

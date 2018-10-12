@@ -28,7 +28,7 @@ ndoc.default <- function(x) {
 
 #' @export
 ndoc.corpus <- function(x) {
-    nrow(documents(x))
+    length(x)
 }
 
 #' @export

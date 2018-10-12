@@ -1,66 +1,3 @@
-# metacorpus functions ---------------------
-
-#' Get or set corpus metadata
-#' 
-#' Get or set the corpus-level metadata in a \link{corpus} object.
-#' @param x a \link{corpus} object
-#' @param field metadata field name(s);  if \code{NULL} (default), return all 
-#'   metadata names
-#' @return For \code{metacorpus}, a named list of the metadata fields in the corpus. 
-#'   
-#'   For \code{metacorpus <-}, the corpus with the updated metadata.
-#' @export
-#' @keywords corpus
-#' @examples
-#' metacorpus(data_corpus_inaugural)
-#' metacorpus(data_corpus_inaugural, "source")
-#' metacorpus(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
-#' metacorpus(data_corpus_inaugural, "citation")
-metacorpus <- function(x, field = NULL)
-    UseMethod("metacorpus")
-
-#' @export
-metacorpus.default <- function(x, field = NULL) {
-    stop(friendly_class_undefined_message(class(x), "metacorpus"))
-}
-
-#' @noRd
-#' @export
-metacorpus.corpus <- function(x, field = NULL) {
-    if (!is.null(field)) {
-        stopifnot(TRUE)
-        ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-        return(x$metadata[field])
-    } else {
-        return(x$metadata)
-    }
-}
-
-#' Replacement function for corpus-level data
-#' @param value new value of the corpus metadata field
-#' @export
-#' @rdname metacorpus
-"metacorpus<-" <- function(x, field, value) {
-    UseMethod("metacorpus<-")
-}
-
-#' @export
-"metacorpus<-.default" <- function(x, field, value) {
-    stop(friendly_class_undefined_message(class(x), "metacorpus<-"))
-}
-
-#' @export
-"metacorpus<-.corpus" <- function(x, field, value) {
-    if (!is.null(field)) {
-        stopifnot(TRUE)
-        ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-    }
-    x$metadata[field] <- value
-    x
-}
-
-
-# texts() functions ----------------------------
 
 #' Get or assign corpus texts
 #' 
@@ -95,32 +32,33 @@ texts <- function(x, groups = NULL, spacer = "  ") {
 #' @noRd
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = "  ") {
-    txts <- documents(x)$texts
+    x <- as.corpus(x)
+    txt <- as.character(unclass(x))
     
     # without groups
     if (is.null(groups)) {
-        names(txts) <- docnames(x)
-        return(txts)
+        names(txt) <- docnames(x)
+        return(txt)
     }
     
-    if (is.character(groups) & all(groups %in% names(documents(x)))) {
-        group.split <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
+    if (is.character(groups) & all(groups %in% attr(x, "docvars"))) {
+        if (any(is_internal(groups)))
+            message_error("docvar_invalid")
+        group <- as.factor(interaction(attr(x, "docvars")[groups]))
     } else {
         if (length(groups) != ndoc(x))
             stop("groups must name docvars or provide data matching the documents in x")
-        group.split <- as.factor(groups)
+        group <- as.factor(groups)
     }
     
-    texts(txts, groups = group.split, spacer = spacer)
+    texts(txt, groups = group, spacer = spacer)
 }
 
 #' @noRd
 #' @export
 texts.character <- function(x, groups = NULL, spacer = "  ") {
     if (is.null(groups)) return(x)
-    # if (!is.factor(groups)) stop("groups must be a factor")
-    x <- split(x, as.factor(groups))
-    vapply(x, paste, character(1), collapse = spacer)
+    stri_c_list(split(texts(x), as.factor(groups)), collapse = spacer)
 }
 
 
@@ -136,25 +74,28 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #'   \code{\link{tokens_tolower}} after applying \code{\link{tokens}} to a
 #'   corpus, or use the option \code{tolower = TRUE} in \code{\link{dfm}}.
 #' @examples
-#' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
-#'                        "Aluminium is a valourous metal."))
-#' texts(BritCorpus) <- 
-#'     stringi::stri_replace_all_regex(texts(BritCorpus),
+#' corp <- corpus(c("We must prioritise honour in our neighbourhood.", 
+#'                  "Aluminium is a valourous metal."))
+#' texts(corp) <- 
+#'     stringi::stri_replace_all_regex(texts(corp),
 #'                                    c("ise", "([nlb])our", "nium"),
 #'                                    c("ize", "$1or", "num"),
 #'                                    vectorize_all = FALSE)
-#' texts(BritCorpus)
-#' texts(BritCorpus)[2] <- "New text number 2."
-#' texts(BritCorpus)
+#' texts(corp)
+#' texts(corp)[2] <- "New text number 2."
+#' texts(corp)
 "texts<-" <- function(x, value) {
     UseMethod("texts<-")
 }
 
 #' @noRd
 #' @export
-"texts<-.corpus" <- function(x, value) { 
-    documents(x)$texts <- value
-    x
+"texts<-.corpus" <- function(x, value) {
+    x <- as.corpus(x)
+    attrs <- attributes(x)
+    x <- value
+    attributes(x) <- attrs
+    return(x)
 }
 
 #' @rdname texts
@@ -165,36 +106,69 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #' @return \code{as.character(x)} is equivalent to \code{texts(x)}
 #' @export
 as.character.corpus <- function(x, ...) {
+    x <- as.corpus(x)
     texts(x)
 }
 
-# internal: documents() functions ---------------------------------
-
-# internal accessor for documents object
-# @export
-documents <- function(x) {
-    UseMethod("documents")
+#' coerce a compressed corpus to a standard corpus
+#' 
+#' Recast a compressed corpus object into a standard (uncompressed) corpus
+#' object.
+#' @param x a compressed \link{corpus} object
+#' @export
+#' @keywords internal
+as.corpus <- function(x) {
+    UseMethod("as.corpus")
 }
 
-documents.corpus <- function(x) {
-    x$documents
+#' @export
+as.corpus.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "as.corpus"))
 }
 
-documents.tokens <- function(x) {
-    docvars(x)
+#' @export
+#' @method as.corpus corpus
+as.corpus.corpus <- function(x) {
+    
+    if (is.character(x) && is.data.frame(attr(x, "docvars")))
+        return(x)
+    
+    # drop internal variables
+    flag <- is_internal(names(x$documents))
+    docvars_internal <- x$documents[flag]
+    x$documents <- x$documents[!flag]
+    
+    result <- corpus(x$documents, "row.names", "texts")
+    
+    # overwite internal variables
+    docvars <- attr(result, "docvars")
+    if ("_document" %in% names(docvars_internal)) {
+        docvars["_docname"] <- docvars_internal["_document"]
+    }
+    if ("_docid" %in% names(docvars_internal)) {
+        docvars["_docnum"] <- docvars_internal["_docid"]
+    }
+    if ("_segid" %in% names(docvars_internal)) {
+        docvars["_segnum"] <- docvars_internal["_segid"]
+    }
+    
+    attr(result, "docvars") <- docvars
+    attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
+                                               format = "%a %b %d %H:%M:%S %Y")
+    return(result)
 }
 
-documents.dfm <- function(x) {
-    docvars(x)
-}
 
-# internal replacement function for documents
-"documents<-" <- function(x, value) {
-    UseMethod("documents<-")
-}
-
-"documents<-.corpus" <- function(x, value) {
-    x$documents <- value
-    x
+#' @export
+#' @method as.corpus corpuszip
+as.corpus.corpuszip <- function(x) {
+    
+    txt <- memDecompress(x$texts, 'gzip', asChar = TRUE)
+    txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
+    txt <- unlist(txt, use.names = FALSE)
+    
+    # drop internal variables
+    flag <- is_internal(names(x$documents))
+    corpus(txt, x$docnames, docvars = x$documents[!flag])
 }
 

@@ -6,7 +6,7 @@
 #' @return \code{docnames} returns a character vector of the document names
 #' @seealso \code{\link{featnames}}
 #' @examples
-#' # get and set doument names to a corpus
+#' # get and set document names to a corpus
 #' mycorp <- data_corpus_inaugural
 #' docnames(mycorp) <- char_tolower(docnames(mycorp))
 #' 
@@ -31,13 +31,8 @@ docnames.default <- function(x) {
 #' @noRd
 #' @export
 docnames.corpus <- function(x) {
-    # didn't use accessor documents() because didn't want to pass
-    # that large object
-    if (is.null(rownames(x$documents))) {
-        paste0('text', seq_len(ndoc(x)))
-    } else {
-        rownames(x$documents)
-    }
+    x <- as.corpus(x)
+    attr(x, "docvars")[["_docid"]]
 }
 
 #' @param value a character vector of the same length as \code{x}
@@ -54,27 +49,29 @@ docnames.corpus <- function(x) {
 
 #' @export
 "docnames<-.default" <- function(x, value) {
+    x <- as.corpus(x)
     stop(friendly_class_undefined_message(class(x), "docnames<-"))
 }
 
 #' @noRd
 #' @export
 "docnames<-.corpus" <- function(x, value) {
-    docvars(x, '_document') <- rownames(x$documents) <- value
+    x <- as.corpus(x)
+    attr(x, "docvars")[["_docid"]] <- value
     return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.tokens" <- function(x, value) {
-    docvars(x, '_document') <- names(x) <- value
+    names(x) <- attr(x, "docvars")[["_docid"]] <- value
     return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.dfm" <- function(x, value) {
-    docvars(x, '_document') <- rownames(x) <- value
+    rownames(x) <- attr(x, "docvars")[["_docid"]] <- value
     return(x)
 }
 
