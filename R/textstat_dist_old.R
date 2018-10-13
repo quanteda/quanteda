@@ -2,7 +2,7 @@
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#'   \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
+#'   \code{"chisquared"}, \code{"chisquared2"}, 
 #'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
 #'   and \code{"minkowski"}.
 #' @references The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
@@ -17,8 +17,6 @@
 #'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
 #'   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
 #'   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-#'   
-#'   \code{"hamming"} is \eqn{\sum{x \neq y)}}.
 #'
 #'   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
 #'   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case both \eqn{P(x_i)} and
@@ -77,7 +75,7 @@ textstat_dist_old.dfm <- function(x, selection = NULL,
     }
     
     m <- if (margin == "documents") 1 else 2
-    methods1 <- c("euclidean", "hamming", "chisquared", "chisquared2", "kullback", "manhattan", "maximum", "canberra")
+    methods1 <- c("euclidean", "chisquared", "chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "ejaccard", "simple matching")
     
     if (method %in% methods1) {
@@ -275,36 +273,36 @@ euclidean_dist <- function(x, y = NULL, margin = 1){
 
 # Hamming distance
 # formula: hamming = sum(x .!= y)
-hamming_dist <- function(x, y = NULL, margin = 1) {
-    
-    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
-    # convert to binary matrix
-    x <- dfm_weight(x, "boolean") 
-    x0 <- 1 - x
-    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
-    func_sum <- if (margin == 2) nrow else ncol
-    func_name <- if (margin == 2) colnames else rownames
-    # union 
-    an <- func_sum(x)
-    if (!is.null(y)) {
-        y <- dfm_weight(y, "boolean")
-        y0 <- 1 - y
-        a <- func_cp(x, y)
-        a0 <- func_cp(x0, y0)
-        colname <- func_name(y)
-    } else {
-        a <- func_cp(x)
-        a0 <- func_cp(x0)
-        colname <- func_name(x)
-    }
-    rowname <- func_name(x)
-    # common values
-    a <- a + a0
-    hammat <- an - a
-    dimnames(hammat) <- list(rowname, colname)
-    hammat
-}
+# hamming_dist <- function(x, y = NULL, margin = 1) {
+#     
+#     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+#     
+#     # convert to binary matrix
+#     x <- dfm_weight(x, "boolean") 
+#     x0 <- 1 - x
+#     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+#     func_sum <- if (margin == 2) nrow else ncol
+#     func_name <- if (margin == 2) colnames else rownames
+#     # union 
+#     an <- func_sum(x)
+#     if (!is.null(y)) {
+#         y <- dfm_weight(y, "boolean")
+#         y0 <- 1 - y
+#         a <- func_cp(x, y)
+#         a0 <- func_cp(x0, y0)
+#         colname <- func_name(y)
+#     } else {
+#         a <- func_cp(x)
+#         a0 <- func_cp(x0)
+#         colname <- func_name(x)
+#     }
+#     rowname <- func_name(x)
+#     # common values
+#     a <- a + a0
+#     hammat <- an - a
+#     dimnames(hammat) <- list(rowname, colname)
+#     hammat
+# }
 
 # Chi-squared distance:divide by row sums and square root of column sums, 
 # and adjust for square root of matrix total (Legendre & Gallagher 2001, 

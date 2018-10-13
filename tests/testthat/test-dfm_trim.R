@@ -101,23 +101,26 @@ test_that("dfm_trim works on previously weighted dfms (#1237)", {
                   "the quick brown foxy ox jumps over the lazy god"))
     dfm2 <- dfm_tfidf(dfm1)
     expect_equal(
-        dfm_trim(dfm2, min_termfreq = 0, min_docfreq = .5) %>% as.matrix(),
+        suppressWarnings(
+            dfm_trim(dfm2, min_termfreq = 0, min_docfreq = .5, termfreq_type = "prop") %>% 
+                as.matrix()
+        ),
         matrix(c(.30103, 0, .30103, 0, 0, .30103, 0, .30103, 0, .30103), nrow = 2,
                dimnames = list(docs = c("text1", "text2"), 
                                features = c("fox", "dog", "foxy", "ox", "god"))),
         tol = .0001
     )
-    expect_warning(
+    suppressWarnings(expect_warning(
         dfm_trim(dfm2, min_docfreq = .5, docfreq_type = "prop"),
         "dfm has been previously weighted"
-    )
-    expect_warning(
+    ))
+    suppressWarnings(expect_warning(
         dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = "prop"),
         "dfm has been previously weighted"
-    )
+    ))
     
     expect_equal(
-        dim(dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = "prop")),
+        dim(suppressWarnings(dfm_trim(dfm2, min_termfreq = 1, min_docfreq = .5, docfreq_type = "prop"))),
         c(2, 0)
     )
 })

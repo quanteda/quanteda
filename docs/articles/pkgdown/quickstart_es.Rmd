@@ -293,9 +293,10 @@ Para un objeto `dfm` se puede graficar una nube de palabras usando `textplot_wor
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
-textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
-                  rot.per = .25, 
-                  colors = RColorBrewer::brewer.pal(8,"Dark2"))
+textplot_wordcloud(mydfm, min_freq = 6, 
+                   random_order = FALSE,
+                   rotation = .25, 
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ### Agrupando documentos por variable 

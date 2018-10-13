@@ -2,21 +2,21 @@
   "index_name": "quanteda",
   "start_urls": [
     {
-      "url": "http://docs.quanteda.io/index.html",
+      "url": "https://quanteda.io/index.html",
       "selectors_key": "homepage",
       "tags": [
         "homepage"
       ]
     },
     {
-      "url": "http://docs.quanteda.io/reference",
+      "url": "https://quanteda.io/reference",
       "selectors_key": "reference",
       "tags": [
         "reference"
       ]
     },
     {
-      "url": "http://docs.quanteda.io/articles",
+      "url": "https://quanteda.io/articles",
       "selectors_key": "articles",
       "tags": [
         "articles"
@@ -30,7 +30,7 @@
     "/articles/index.html"
   ],
   "sitemap_urls": [
-    "http://docs.quanteda.io/sitemap.xml"
+    "https://quanteda.io/sitemap.xml"
   ],
   "selectors": {
     "homepage": {

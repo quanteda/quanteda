@@ -15,7 +15,8 @@ textstat_readability(x, measure = c("all", "ARI", "ARI.simple",
   "SMOG.C", "SMOG.simple",      "SMOG.de", "Spache", "Spache.old",
   "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2", "Wheeler.Smith",
   "meanSentenceLength", "meanWordSyllables"), remove_hyphens = TRUE,
-  min_sentence_length = 1, max_sentence_length = 10000, ...)
+  min_sentence_length = 1, max_sentence_length = 10000,
+  intermediate = FALSE, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}
@@ -36,6 +37,8 @@ other cruft that might be in the texts following conversion.
 
 For finer-grained control, consider filtering sentences prior first, 
 including through pattern-matching, using \code{\link{corpus_trim}}.}
+
+\item{intermediate}{if \code{TRUE}, include intermediate quantities in the output}
 
 \item{...}{not used}
 }

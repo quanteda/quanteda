@@ -272,7 +272,7 @@ test_that("object always have docvars in the same rows as documents", {
     dfm7 <- rbind(dfm1, dfm1)
     expect_true(nrow(docvars(dfm7)) == ndoc(dfm7))
     
-    dfm8 <- cbind(dfm1, dfm1)
+    dfm8 <- suppressWarnings(cbind(dfm1, dfm1))
     expect_true(nrow(docvars(dfm8)) == ndoc(dfm8))
     
 })

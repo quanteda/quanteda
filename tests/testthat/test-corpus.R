@@ -227,8 +227,8 @@ test_that("test corpus constructor works for tm objects", {
         corpus(mytmCorpus4),
         "Cannot construct a corpus from this tm OtherCorpus object"
     )
-    detach("package:tm", unload = TRUE)
-    detach("package:NLP", unload = TRUE)
+    detach("package:tm", unload = FALSE, force = TRUE)
+    detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
@@ -237,8 +237,8 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
     tmCorpus_length1 <- VCorpus(VectorSource(data_corpus_inaugural[2]))
     expect_silent(qcorpus <- corpus(tmCorpus_length1))
     expect_equivalent(texts(qcorpus)[1], data_corpus_inaugural[2])
-    detach("package:tm", unload = TRUE)
-    detach("package:NLP", unload = TRUE)
+    detach("package:tm", unload = FALSE, force = TRUE)
+    detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {

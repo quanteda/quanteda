@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.7</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
       </span>
     </div>
 
@@ -285,9 +285,22 @@ named features.  Any features not named will be assigned a weight of 1.0
     <pre class="examples"><div class='input'><span class='no'>my_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>my_dfm</span>, <span class='fl'>1</span>, <span class='kw'>function</span>(<span class='no'>tf</span>) <span class='no'>tf</span>/<span class='fu'>max</span>(<span class='no'>tf</span>))
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>my_dfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='no'>norm_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>norm_dfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(norm_dfm): object 'norm_dfm' not found</span></div><div class='input'><span class='no'>max_tf_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>max_tf_dfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='no'>log_tf_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"logcount"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>log_tf_dfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='no'>log_ave_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"logave"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .setupMethodsTables(fdef): trying to get slot "group" from an object of a basic class ("NULL") with no slots</span></div><div class='input'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>log_ave_dfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(log_ave_dfm): object 'log_ave_dfm' not found</span></div><div class='input'>
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>my_dfm</span>)</div><div class='output co'>#&gt;   the    of     ,   and     .    to    in     a   our  that 
+#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>norm_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='st'>"prop"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>norm_dfm</span>)</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in       our 
+#&gt; 3.7910332 2.7639649 2.6821863 2.0782035 1.9594539 1.7643366 1.0695645 0.8731637 
+#&gt;         a        we 
+#&gt; 0.8593092 0.7726443 </div><div class='input'><span class='no'>max_tf_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>max_tf_dfm</span>)</div><div class='output co'>#&gt;   the    of     ,   and     .    to    in     a   our  that 
+#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>log_tf_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"logcount"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>log_tf_dfm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
+#&gt; 182.1856 174.3182 173.3837 167.1782 164.9945 163.2151 150.4070 143.6032 
+#&gt;      our     that 
+#&gt; 140.7424 138.9939 </div><div class='input'><span class='no'>log_ave_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"logave"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>log_ave_dfm</span>)</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in         a 
+#&gt; 121.98599 116.64229 116.06902 111.83340 110.34098 109.25338 100.55961  95.75088 
+#&gt;       our      that 
+#&gt;  93.81347  92.88474 </div><div class='input'>
 <span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span>
 <span class='co'># of Introduction to Information Retrieval</span>
 <span class='fu'>head</span>(<span class='fu'><a href='dfm_tfidf.html'>dfm_tfidf</a></span>(<span class='no'>my_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"logcount"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,357 features (93.8% sparse).</div><div class='input'>
