@@ -44,7 +44,7 @@
 #' (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
 #' as.list(d1)
 #' 
-textstat_dist <- function(x, selection = NULL, 
+textstat_dist_old <- function(x, selection = NULL, 
                           margin = c("documents", "features"),
                           method = "euclidean",
                           upper = FALSE, diag = FALSE, p = 2) {
@@ -52,7 +52,7 @@ textstat_dist <- function(x, selection = NULL,
 }
     
 #' @export
-textstat_dist.default <- function(x, selection = NULL, 
+textstat_dist_old.default <- function(x, selection = NULL, 
                                   margin = c("documents", "features"),
                                   method = "euclidean",
                                   upper = FALSE, diag = FALSE, p = 2) {
@@ -60,7 +60,7 @@ textstat_dist.default <- function(x, selection = NULL,
 }
     
 #' @export
-textstat_dist.dfm <- function(x, selection = NULL, 
+textstat_dist_old.dfm <- function(x, selection = NULL, 
                               margin = c("documents", "features"),
                               method = "euclidean",
                               upper = FALSE, diag = FALSE, p = 2) {
