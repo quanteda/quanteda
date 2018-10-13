@@ -188,6 +188,7 @@ textstat_proxy <- function(x, selection = NULL,
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
+    method <- match.arg(method)
     if (margin == "documents") 
         x <- t(x)
     if (is.null(selection)) {
