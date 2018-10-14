@@ -53,7 +53,7 @@ textstat_simil_old <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = "correlation", 
                            upper  = FALSE, diag = FALSE) {
-    UseMethod("textstat_simil")
+    UseMethod("textstat_simil_old")
 }
     
 
@@ -92,7 +92,6 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
     # create a new dist object
     if (is.null(selection)) {
         result <- stats::as.dist(temp, diag = diag, upper = upper)
-        class(result) <- c("simil", class(result))
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
         return(result)
