@@ -85,10 +85,8 @@ textstat_simil.dfm <- function(x, selection = NULL,
     
     method <- match.arg(method)
     result <- textstat_proxy(x, selection, margin, method, 1, min_simil, rank)
-    if (output == "simil") {
-        result <- as.dist(as.matrix(result), diag = diag, upper = upper)
-        class(result) <- c("simil", "dist")
-    }
+    if (output == "simil")
+        result <- as_dist(result, diag = diag, upper = upper)
     return(result)
 }
 
@@ -173,7 +171,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
     method <- match.arg(method)
     result <- textstat_proxy(x, selection, margin, method, p, min_dist, rank)
     if (output == "dist")
-        result <- as.dist(as.matrix(result), diag = diag, upper = upper)
+        result <- as_dist(result, diag = diag, upper = upper)
     return(result)
 }
 
@@ -262,4 +260,17 @@ textstat_proxy <- function(x, selection = NULL,
         colnames(result) <- label[i]
     }
     return(result)
+}
+
+# internal function to coerce to dist object
+as_dist <- function(x, diag = diag, upper = upper) {
+    x <- as.matrix(x)
+    if (ncol(x) == nrow(x)) {
+        x <- as.dist(x, diag = diag, upper = upper)
+    } else {
+        attr(x, "Labels") <- colnames(x)
+        attr(x, "Size") <- ncol(x)
+        class(x) <- c("dist_selection")
+    }
+    return(x)
 }

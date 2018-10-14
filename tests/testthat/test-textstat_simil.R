@@ -11,10 +11,9 @@ test_that("test old and new textstat_dist are the same", {
     expect_identical(textstat_dist(mt, margin = "features"), 
                      textstat_dist_old(mt, margin = "features"))
     
-    suppressWarnings(
+    
     expect_identical(textstat_dist(mt, selection = "1985-Reagan"), 
                      textstat_dist_old(mt, selection = "1985-Reagan"))
-    )
     
     expect_identical(textstat_dist(mt, method = "euclidean"), 
                      textstat_dist_old(mt, method = "euclidean"))
@@ -51,10 +50,9 @@ test_that("test old and new textstat_simil are the same", {
     expect_identical(textstat_simil(mt, margin = "features"), 
                      textstat_simil_old(mt, margin = "features"))
     
-    suppressWarnings(
-        expect_identical(textstat_simil(mt, selection = "1985-Reagan"), 
+    
+    expect_identical(textstat_simil(mt, selection = "1985-Reagan"), 
                          textstat_simil_old(mt, selection = "1985-Reagan"))
-    )
     
     expect_identical(textstat_simil(mt, method = "cosine"), 
                      textstat_simil_old(mt, method = "cosine"))
