@@ -240,14 +240,20 @@ test_that("quanteda:::textstat_proxy works on zero-feature documents (#952)", {
     )    
 })
 
-test_that("selection can be integer index", {
+test_that("selection takes integer or logical vector", {
     expect_identical(quanteda:::textstat_proxy(test_mt, c(1,5), margin = "features"),
+                     quanteda:::textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
+    l1 <- featnames(test_mt) %in% c("senat", "chief")
+    expect_identical(quanteda:::textstat_proxy(test_mt, l1, margin = "features"),
                      quanteda:::textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
     
     expect_error(quanteda:::textstat_proxy(test_mt, "xxxx", margin = "features"))
     expect_error(quanteda:::textstat_proxy(test_mt, 1000, margin = "features"))
     
     expect_identical(quanteda:::textstat_proxy(test_mt, c(2,4), margin = "documents"),
+                     quanteda:::textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    l2 <- docnames(test_mt) %in% c("1985-Reagan", "1993-Clinton")
+    expect_identical(quanteda:::textstat_proxy(test_mt, l2, margin = "documents"),
                      quanteda:::textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
     
     expect_error(quanteda:::textstat_proxy(test_mt, "nothing", margin = "documents"))
