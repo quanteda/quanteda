@@ -152,6 +152,12 @@ double simil_faith(colvec& col_i, colvec& col_j) {
     return (t + (f / 2)) / n;
 }
 
+double simil_matching(colvec& col_i, colvec& col_j) {
+    uvec m = col_i == col_j;
+    double n = m.n_rows;
+    return accu(m) / n;
+}
+
 double dist_euclidean(colvec& col_i, colvec& col_j) {
     return sqrt(accu(square(col_i - col_j)));
 }
@@ -162,25 +168,23 @@ double dist_chisquare(colvec& col_i, colvec& col_j) {
     return (s1 + s2) - accu(2 * trans(col_i) * col_j);
 }
 
-double dist_hamming(colvec& col_i, colvec& col_j) {
-    uvec m = col_i == col_j;
-    return accu(m) / m.n_rows;
-}
-
 double dist_kullback(colvec& col_i, colvec& col_j) {
-    uvec nz1 = find(col_i != 0);
-    uvec nz2 = find(col_j != 0);
-    if (nz1.n_rows == 0 && nz2.n_rows == 0)
-        return 0;
-    uvec nz = intersect(nz1, nz2);
+    
+    double s1 = accu(col_i);
+    double s2 = accu(col_j);
+    uvec nz = intersect(find(col_i != 0), find(col_j != 0));
     if (nz.n_rows == 0)
-        return std::numeric_limits<double>::infinity();
-    col_i = col_i(nz);
-    col_j = col_j(nz);
-    colvec p1 = col_i / sum(col_i);
-    colvec p2 = col_j / sum(col_j);
-    colvec l = log(p2 / p1);
-    return accu(trans(p2) * l);
+        return 0;
+    colvec p1 = col_i(nz) / s1;
+    colvec p2 = col_j(nz) / s2;
+    
+    //Rcout << "log(p1):\n" << log(trans(p1)) << "\n";
+    //Rcout << "log(p2):\n" << log(trans(p2)) << "\n";
+    //Rcout << "trans(p1) * log(p1):\n" << trans(p1) * log(p1);
+    //Rcout << "trans(p1) * log(p2):\n" << trans(p1) * log(p2);
+    //Rcout << "simil\n" << as_scalar((trans(p1) * log(p1)) - (trans(p1) * log(p2))) << "\n";
+    //return as_scalar((trans(p1) * log(p1)) - (trans(p1) * log(p2)));
+    return as_scalar(trans(p2) * log(p2 / p1));
 }
 
 double dist_manhattan(colvec& col_i, colvec& col_j) {
@@ -251,16 +255,16 @@ struct similarity : public Worker {
                     simil = simil_hamman(col_i, col_j, weight);
                     break;
                 case 4:
-                    simil = simil_faith(col_i, col_j);
+                    simil = simil_matching(col_i, col_j);
                     break;
                 case 5:
-                    simil = dist_euclidean(col_i, col_j);
+                    simil = simil_faith(col_i, col_j);
                     break;
                 case 6:
-                    simil = dist_chisquare(col_i, col_j);
+                    simil = dist_euclidean(col_i, col_j);
                     break;
                 case 7:
-                    simil = dist_hamming(col_i, col_j);
+                    simil = dist_chisquare(col_i, col_j);
                     break;
                 case 8:
                     simil = dist_kullback(col_i, col_j);
