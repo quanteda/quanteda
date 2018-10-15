@@ -66,11 +66,6 @@ sparse \link{dfm} objects.
   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
   \code{"faith"}.
-
-\code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
-  \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
-  and \code{"minkowski"}.
 }
 \note{
 If you want to compute similarity on a "normalized" dfm object
@@ -123,11 +118,9 @@ The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-  
-  \code{"hamming"} is \eqn{\sum{x \neq y)}}.
 
   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
-  \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case both \eqn{P(x_i)} and
+  \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case either \eqn{P(x_i)} or
   \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
   assumed to be zero as the limit value.  The formula is:
    \deqn{\sum{P(x)*log(P(x)/p(y))}}
@@ -137,7 +130,4 @@ The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
 \seealso{
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
   \code{\link{dist}}
-}
-\author{
-Kenneth Benoit, Haiyan Wang
 }

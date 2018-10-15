@@ -98,10 +98,6 @@ textstat_simil.dfm <- function(x, selection = NULL,
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @param min_dist minimum distance value to be recoded.
-#' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#'   \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
-#'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
-#'   and \code{"minkowski"}.
 #' @references The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
 #'   E. D. (2001).
 #'   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
@@ -114,18 +110,15 @@ textstat_simil.dfm <- function(x, selection = NULL,
 #'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
 #'   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
 #'   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-#'   
-#'   \code{"hamming"} is \eqn{\sum{x \neq y)}}.
 #'
 #'   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
-#'   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case both \eqn{P(x_i)} and
+#'   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case either \eqn{P(x_i)} or
 #'   \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
 #'   assumed to be zero as the limit value.  The formula is:
 #'    \deqn{\sum{P(x)*log(P(x)/p(y))}}
 #'    
 #'   All other measures are described in the \pkg{proxy} package.
 #' @importFrom RcppParallel RcppParallelLibs
-#' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
