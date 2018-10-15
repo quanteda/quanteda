@@ -13,7 +13,6 @@ test_that("test old and new textstat_dist are the same", {
                       textstat_dist_old(mt, margin = "features"),
                       tolerance = 0.01)
     
-    
     expect_equivalent(textstat_dist(mt, selection = "1985-Reagan"), 
                       textstat_dist_old(mt, selection = "1985-Reagan"),
                       tolerance = 0.01)

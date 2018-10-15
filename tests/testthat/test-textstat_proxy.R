@@ -240,8 +240,18 @@ test_that("quanteda:::textstat_proxy works on zero-feature documents (#952)", {
     )    
 })
 
-test_that("selection offers option to enable an alien vector/matrix", {
-    expect_error(quanteda:::textstat_proxy(test_mt, c(1,2,3,4,5,6,7), margin = "features"), NA)
+test_that("selection can be integer index", {
+    expect_identical(quanteda:::textstat_proxy(test_mt, c(1,5), margin = "features"),
+                     quanteda:::textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
+    
+    expect_error(quanteda:::textstat_proxy(test_mt, "xxxx", margin = "features"))
+    expect_error(quanteda:::textstat_proxy(test_mt, 1000, margin = "features"))
+    
+    expect_identical(quanteda:::textstat_proxy(test_mt, c(2,4), margin = "documents"),
+                     quanteda:::textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    
+    expect_error(quanteda:::textstat_proxy(test_mt, "nothing", margin = "documents"))
+    expect_error(quanteda:::textstat_proxy(test_mt, 100, margin = "documents"))
 })
 
 test_that("selection works with dfm with padding", {
@@ -261,5 +271,8 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("dfm_empty"))
 })
 
-
+test_that("raises error when p is smaller than 1", {
+    expect_error(textstat_dist(test_mt, method = "minkowski", p = 0))
+    expect_error(textstat_dist(test_mt, method = "minkowski", p = -1))
+})
 
