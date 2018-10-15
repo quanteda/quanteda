@@ -106,7 +106,6 @@ as.matrix(d1)
 
 # distances for specific documents
 textstat_dist(mt, "2017-Trump", margin = "documents")
-textstat_dist(mt, "2005-Bush", margin = "documents", method = "jaccard")
 (d2 <- textstat_dist(mt, c("2009-Obama" , "2013-Obama"), margin = "documents"))
 as.list(d1)
 
