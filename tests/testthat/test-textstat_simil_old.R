@@ -6,7 +6,7 @@ test_that("test textstat_simil_old method = \"correlation\" against proxy simil(
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    corQuanteda <- sort(round(as.matrix(textstat_simil_old(presDfm, method = "correlation", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
+    corQuanteda <- sort(round(quanteda:::as.matrix.simil(textstat_simil_old(presDfm, method = "correlation", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     corProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
     corCor <- sort(round(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], 6), decreasing = TRUE)
     expect_equal(corQuanteda, corProxy)
@@ -45,7 +45,7 @@ test_that("test textstat_simil_old method = \"cosine\" against proxy simil(): do
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    cosQuanteda <- sort(round(as.matrix(textstat_simil_old(presDfm, method = "cosine", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
+    cosQuanteda <- sort(round(quanteda:::as.matrix.simil(textstat_simil_old(presDfm, method = "cosine", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     cosProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
     expect_equal(cosQuanteda[-9], cosProxy[-9])
 })
@@ -298,7 +298,7 @@ test_that("as.matrix.simil works as expected",{
                   ' Burgdoggen venison tail, hamburger filet mignon capicola meatloaf pig pork belly. ')
     dtm <- dfm(tokens(documents))
     
-    sim <- as.matrix(textstat_simil_old(dtm))
+    sim <- quanteda:::as.matrix.simil(textstat_simil_old(dtm))
     aMat <- c(1,1,1)
     expect_equivalent(diag(sim), aMat)
 })

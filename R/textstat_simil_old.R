@@ -70,7 +70,7 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
     } else {
         stop(method, " is not implemented; consider trying proxy::simil().")
     }
-    
+
     # create a new dist object
     if (is.null(selection)) {
         result <- stats::as.dist(temp, diag = diag, upper = upper)
