@@ -1,4 +1,4 @@
-#' @rdname textstat_simil
+#' @rdname textstat_simil_old
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
@@ -46,7 +46,7 @@ textstat_dist_old <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = "euclidean",
                           upper = FALSE, diag = FALSE, p = 2) {
-    UseMethod("textstat_dist")
+    UseMethod("textstat_dist_old")
 }
     
 #' @export
@@ -427,7 +427,11 @@ kullback_dist <- function(x, y = NULL, margin = 1) {
        colname <- func_name(y)
     } else {
         kullmat <- func_sum(x*logx) - func_cp(x, logx)
-       colname <- func_name(x)
+        # cat("func_sum(x*logx)\n")
+        # print(func_sum(x*logx))
+        # cat("func_cp(x, logx)\n")
+        # print(func_cp(x, logx))
+        colname <- func_name(x)
     }
     rowname <- func_name(x)
     dimnames(kullmat) <- list(rowname, colname)

@@ -13,7 +13,10 @@
 #'   \code{"features"} for word/term features
 #' @param method method the similarity or distance measure to be used; see
 #'   Details
-#' @param p The power of the Minkowski distance.
+#' @param upper whether the upper triangle of the symmetric \eqn{V \times V}
+#'   matrix is recorded. Only used when \code{output = "dist"}.
+#' @param diag whether the diagonal of the distance matrix should be recorded. .
+#'   Only used when \code{output = "dist"}.
 #' @param min_simil minimum similarity value to be recoded.
 #' @param rank an integer value specifying top-n most similar documents or
 #'   features to be recorded.
@@ -54,11 +57,11 @@
 #' 
 textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
-                           method = c("cosine", "correlation", "jaccard", "ejaccard",
+                           method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching", "faith"), 
                            upper = FALSE, diag = FALSE, 
                            min_simil = NULL, rank = NULL,
-                           output = if (is.null(min_simil) && is.null(rank)) "simil" else "sparse") {
+                           output = if (is.null(min_simil) && is.null(rank)) "dist" else "sparse") {
     UseMethod("textstat_simil")
 }
     
@@ -66,26 +69,26 @@ textstat_simil <- function(x, selection = NULL,
 #' @export    
 textstat_simil.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
-                               method = c("cosine", "correlation", "jaccard", "ejaccard",
+                               method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
                                upper = FALSE, diag = FALSE, 
                                min_simil = NULL, rank = NULL,
-                               output = if (is.null(min_simil) && is.null(rank)) "simil" else "sparse") {
+                               output = if (is.null(min_simil) && is.null(rank)) "dist" else "sparse") {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
 #' @export    
 textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
-                               method = c("cosine", "correlation", "jaccard", "ejaccard",
+                               method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
                                upper = FALSE, diag = FALSE, 
                                min_simil = NULL, rank = NULL,
-                               output = if (is.null(min_simil) && is.null(rank)) "simil" else "sparse") {
+                               output = if (is.null(min_simil) && is.null(rank)) "dist" else "sparse") {
     
     method <- match.arg(method)
     result <- textstat_proxy(x, selection, margin, method, 1, min_simil, rank)
-    if (output == "simil")
+    if (output == "dist")
         result <- as_dist(result, diag = diag, upper = upper)
     return(result)
 }
@@ -212,28 +215,19 @@ textstat_proxy <- function(x, selection = NULL,
     weight <- 1
     if (method == "jaccard") {
         boolean <- TRUE
-        weight <- 1
         method <- "ejaccard"
     } else if (method == "ejaccard") {
-        boolean <- FALSE
         weight <- 2
     } else if (method == "dice") {
         boolean <- TRUE
-        weight <- 1
         method <- "edice"
     } else if (method == "edice") {
-        boolean <- FALSE
         weight <- 2
     } else if (method == "hamman") {
         boolean <- TRUE
-        weight <- 1
-    } else if (method == "simple matching") {
-        boolean <- TRUE
-        weight <- 0
-        method <- "hamman"
     } else if (method == "faith") {
         boolean <- TRUE
-    } else if (method == "hamming") {
+    } else if (method == "simple matching") {
         boolean <- TRUE
     } else if (method == "minkowski") {
         if (p <= 0) 
@@ -246,8 +240,8 @@ textstat_proxy <- function(x, selection = NULL,
         result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation")),
                                              i, rank, min_proxy, condition)
     } else {
-        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "faith", 
-                                                         "euclidean", "chisquared", "hamming", "kullback",
+        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "simple matching", "faith", 
+                                                         "euclidean", "chisquared", "kullback",
                                                          "manhattan", "maximum", "canberra", "minkowski")), 
                                       i, rank, min_proxy, weight)
     }
@@ -264,6 +258,8 @@ textstat_proxy <- function(x, selection = NULL,
 
 # internal function to coerce to dist object
 as_dist <- function(x, diag = diag, upper = upper) {
+    warning("dist object is deprecated as an output of textstat_dist/simil function. ",
+            "Please coerce a sparse matrix to a dist object using as.dist(as.matrix(x)).")
     x <- as.matrix(x)
     if (ncol(x) == nrow(x)) {
         x <- as.dist(x, diag = diag, upper = upper)
