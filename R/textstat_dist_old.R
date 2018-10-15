@@ -27,21 +27,6 @@
 #'   All other measures are described in the \pkg{proxy} package.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @author Kenneth Benoit, Haiyan Wang
-#' @examples
-#' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-#'                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-#'                
-#' # distances for documents 
-#' (d1 <- textstat_dist(presDfm, margin = "documents"))
-#' as.matrix(d1)
-#' 
-#' # distances for specific documents
-#' textstat_dist(presDfm, "2017-Trump", margin = "documents")
-#' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "jaccard")
-#' (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
-#' as.list(d1)
-#' 
 textstat_dist_old <- function(x, selection = NULL, 
                           margin = c("documents", "features"),
                           method = "euclidean",
@@ -122,29 +107,6 @@ textstat_dist_old.dfm <- function(x, selection = NULL,
 #' @param ... unused
 #' @method as.list dist
 #' @export
-#' @examples 
-#' \dontrun{
-#' ## compare to tm
-#' 
-#' # tm version
-#' require(tm)
-#' data("crude")
-#' crude <- tm_map(crude, content_transformer(tolower))
-#' crude <- tm_map(crude, remove_punctuation)
-#' crude <- tm_map(crude, remove_numbers)
-#' crude <- tm_map(crude, stemDocument)
-#' tdm <- TermDocumentMatrix(crude)
-#' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
-#' 
-#' # in quanteda
-#' quantedaDfm <- as.dfm(t(as.matrix(tdm)))
-#' as.list(textstat_dist(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
-#' 
-#' # in base R
-#' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
-#' round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
-#' round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
-#' } 
 as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     
     if (!is.null(attr(x, "Labels"))) label <- attr(x, "Labels")

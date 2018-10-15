@@ -62,39 +62,6 @@ If you want to compute similarity on a "normalized" dfm object
   for which different document lengths matter), then wrap the input dfm in 
   \code{\link{dfm_weight}(x, "prop")}.
 }
-\examples{
-# create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-               remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-               
-# distances for documents 
-(d1 <- textstat_dist(presDfm, margin = "documents"))
-as.matrix(d1)
-
-# distances for specific documents
-textstat_dist(presDfm, "2017-Trump", margin = "documents")
-textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "jaccard")
-(d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
-as.list(d1)
-
-# similarities for documents
-pres_dfm <- dfm(data_corpus_inaugural, remove_punct = TRUE, remove = stopwords("english"))
-(s1 <- textstat_simil(pres_dfm, method = "cosine", margin = "documents"))
-as.matrix(s1)
-as.list(s1)
-
-# similarities for for specific documents
-textstat_simil(pres_dfm, "2017-Trump", margin = "documents")
-textstat_simil(pres_dfm, "2017-Trump", method = "cosine", margin = "documents")
-textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-
-# compute some term similarities
-s2 <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", 
-                      margin = "features")
-head(as.matrix(s2), 10)
-as.list(s2, n = 8)
-
-}
 \references{
 The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
   E. D. (2001).

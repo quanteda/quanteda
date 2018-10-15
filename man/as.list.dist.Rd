@@ -21,27 +21,3 @@ Coerce a dist matrix into a list of selected target terms and similar terms,
 in descending order of similarity.  Can be used after calling
 \code{\link{textstat_simil}} or \code{\link{textstat_dist}}.
 }
-\examples{
-\dontrun{
-## compare to tm
-
-# tm version
-require(tm)
-data("crude")
-crude <- tm_map(crude, content_transformer(tolower))
-crude <- tm_map(crude, remove_punctuation)
-crude <- tm_map(crude, remove_numbers)
-crude <- tm_map(crude, stemDocument)
-tdm <- TermDocumentMatrix(crude)
-findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
-
-# in quanteda
-quantedaDfm <- as.dfm(t(as.matrix(tdm)))
-as.list(textstat_dist(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
-
-# in base R
-corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
-round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
-round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
-} 
-}
