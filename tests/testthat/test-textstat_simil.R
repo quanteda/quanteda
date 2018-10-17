@@ -1,4 +1,4 @@
-context("test quanteda:::textstat_proxy.R")
+context("test textstat_dist and textstat_simil versus older methods")
 
 mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
 mt <- dfm_trim(mt, min_termfreq = 10)

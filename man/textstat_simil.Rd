@@ -66,6 +66,10 @@ sparse \link{dfm} objects.
   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
   \code{"faith"}.
+
+\code{textstat_dist} options are: \code{"euclidean"} (default), 
+  \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+  and \code{"minkowski"}.
 }
 \note{
 If you want to compute similarity on a "normalized" dfm object
@@ -106,20 +110,7 @@ as.list(d1)
 
 }
 \references{
-The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
-  E. D. (2001).
-  "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
-   meaningful transformations for ordination of species data}".
-  \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
-  
-  The \code{"chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
-  O., & Werman, M. (2010). 
-  "\href{https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54}{The
-  Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
-  2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
-  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-
-  \code{"kullback"} is the Kullback-Leibler distance, which assumes that
+\code{"kullback"} is the Kullback-Leibler distance, which assumes that
   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case either \eqn{P(x_i)} or
   \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
   assumed to be zero as the limit value.  The formula is:

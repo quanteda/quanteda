@@ -18,7 +18,7 @@
 #' @param diag whether the diagonal of the distance matrix should be recorded
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default), 
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-#'   \code{"edice"}, \code{"simple matching"}, \code{"hamann"}, and 
+#'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and 
 #'   \code{"faith"}.
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
@@ -29,6 +29,7 @@
 #'   matrix is returned matching distances to the documents or features
 #'   identified in the selection.
 #' @export
+#' @keywords internal textstat
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
 #'   \code{\link{dist}}
 textstat_simil_old <- function(x, selection = NULL,
@@ -63,7 +64,7 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
     }
     
     methods <- c("cosine", "correlation", "jaccard", "ejaccard", "dice", 
-                 "edice", "simple matching", "hamann", "faith")
+                 "edice", "simple matching", "hamman", "faith")
     if (method %in% methods) {
         if (method == "simple matching") method <- "smc"
         temp <- get(paste0(method, "_simil"))(x, y, margin = if (margin == "documents") 1 else 2)
@@ -313,12 +314,12 @@ smc_simil <- function(x, y = NULL, margin = 1) {
     smcmat
 }
 
-# Hamann similarity: This measure gives the probability that a characteristic has the same state in both items 
+# hamman similarity: This measure gives the probability that a characteristic has the same state in both items 
 # (present in both or absent from both) minus the probability that a characteristic has different states 
 # in the two items (present in one and absent from the other).
 # formula: Hamman = ((a+d)-(b+c))/n
 # "Hamman" in proxy::dist
-hamann_simil <- function(x, y = NULL, margin = 1) {
+hamman_simil <- function(x, y = NULL, margin = 1) {
     
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     

@@ -53,7 +53,7 @@ selected).  They are fast and robust because they operate directly on the sparse
 
 \code{textstat_simil} options are: \code{"correlation"} (default), 
   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-  \code{"edice"}, \code{"simple matching"}, \code{"hamann"}, and 
+  \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and 
   \code{"faith"}.
 }
 \note{
@@ -91,3 +91,5 @@ The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
 \author{
 Kenneth Benoit, Haiyan Wang
 }
+\keyword{internal}
+\keyword{textstat}

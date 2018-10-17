@@ -9,8 +9,8 @@ test_that("test textstat_simil_old method = \"correlation\" against proxy simil(
     corQuanteda <- sort(round(quanteda:::as.matrix.simil(textstat_simil_old(presDfm, method = "correlation", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     corProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
     corCor <- sort(round(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], 6), decreasing = TRUE)
-    expect_equal(corQuanteda, corProxy)
-    expect_equal(corProxy, corCor)
+    expect_equal(corQuanteda[-1], corProxy)
+    expect_equal(corProxy, corCor[-1])
 })
 
 test_that("test textstat_simil_old method = \"correlation\" against base cor(): features (allow selection)", {
@@ -47,7 +47,7 @@ test_that("test textstat_simil_old method = \"cosine\" against proxy simil(): do
     
     cosQuanteda <- sort(round(quanteda:::as.matrix.simil(textstat_simil_old(presDfm, method = "cosine", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     cosProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
-    expect_equal(cosQuanteda[-9], cosProxy[-9])
+    expect_equal(cosQuanteda[-1], cosProxy)
 })
 
 # jaccard - binary
@@ -222,30 +222,30 @@ test_that("test textstat_simil_old method = \"simple matching\" against proxy::s
     expect_equal(smcQuanteda, smcProxy)
 })
 
-# Hamann similarity (Hamman similarity in proxy::dist)
-test_that("test textstat_simil_old method = \"hamann\" against proxy::simil(): documents", {
+# hamman similarity (Hamman similarity in proxy::dist)
+test_that("test textstat_simil_old method = \"hamman\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    hamnQuanteda <- sort(round(as.matrix(textstat_simil_old(presDfm, "1981-Reagan", method = "hamann", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    hamnQuanteda <- sort(round(as.matrix(textstat_simil_old(presDfm, "1981-Reagan", method = "hamman", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
     hamnProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "hamman", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(hamnProxy)) hamnProxy <- hamnProxy[-which(names(hamnProxy) == "1981-Reagan")]
     expect_equal(hamnQuanteda, hamnProxy)
     
     # y is null
-    hamnQuanteda <- sort(round(as.matrix(textstat_simil_old(presDfm, method = "hamann", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    hamnQuanteda <- sort(round(as.matrix(textstat_simil_old(presDfm, method = "hamman", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
     expect_equal(hamnQuanteda, hamnProxy)
 })
 
-test_that("test textstat_simil_old method = \"hamann\" against proxy::simil(): features", {
+test_that("test textstat_simil_old method = \"hamman\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    hamnQuanteda <- round(as.matrix(textstat_simil_old(presDfm, "soviet", method = "hamann", margin = "features"))[,"soviet"], 2)
+    hamnQuanteda <- round(as.matrix(textstat_simil_old(presDfm, "soviet", method = "hamman", margin = "features"))[,"soviet"], 2)
     hamnQuanteda <- hamnQuanteda[order(names(hamnQuanteda))]
     hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "soviet")]
     

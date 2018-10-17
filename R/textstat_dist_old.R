@@ -26,6 +26,7 @@
 #'    
 #'   All other measures are described in the \pkg{proxy} package.
 #' @importFrom RcppParallel RcppParallelLibs
+#' @keywords internal textstat
 #' @author Kenneth Benoit, Haiyan Wang
 textstat_dist_old <- function(x, selection = NULL, 
                           margin = c("documents", "features"),
