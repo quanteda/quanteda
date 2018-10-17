@@ -236,7 +236,7 @@ textstat_proxy <- function(x, selection = NULL,
         result <- result[,i, drop = FALSE]
         colnames(result) <- label[i]
     }
-    return(result)
+    return(as(result, "CsparseMatrix"))
 }
 
 # internal function to coerce to dist object
