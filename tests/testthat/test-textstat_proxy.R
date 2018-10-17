@@ -283,14 +283,39 @@ test_that("raises error when p is smaller than 1", {
 })
 
 test_that("sparse objects are of expected class and occur when expected", {
-    skip("***Needs attention***")
-    expect_is(
-        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparsematrix", min_dist = .07),
-        "dtCMatrix"
-    )
-    expect_is(
-        textstat_dist(dfm_weight(test_mt, "prop"), min_dist = 0),
-        "dtCMatrix"
-    )
+    
+    expect_is(quanteda:::textstat_proxy(test_mt),
+              "dsCMatrix")
+    expect_is(quanteda:::textstat_proxy(test_mt, min_proxy = 10),
+              "dsCMatrix")
+    expect_is(quanteda:::textstat_proxy(test_mt, rank = 2),
+              "dgCMatrix")
+    expect_is(quanteda:::textstat_proxy(test_mt, method = "kullback"),
+              "dgCMatrix")
+
 })
+
+test_that("rank argument is working", {
+    
+    expect_error(textstat_simil(test_mt, rank = 0),
+                 "rank must be great than or equal to 1")
+    
+    expect_equal(as.matrix(textstat_simil(test_mt, rank = 3)),
+                 apply(as.matrix(textstat_simil(test_mt, value = "sparsematrix")), 2,
+                       function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
+    
+    expect_equal(as.matrix(textstat_simil(test_mt, value = "sparsematrix")), 
+                 as.matrix(textstat_simil(test_mt, rank = 100)))
+    
+    expect_equal(as.matrix(textstat_dist(test_mt, rank = 3)),
+                 apply(as.matrix(textstat_dist(test_mt, value = "sparsematrix")), 2,
+                       function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
+    
+    expect_equal(as.matrix(textstat_dist(test_mt, value = "sparsematrix")), 
+                 as.matrix(textstat_dist(test_mt, rank = 100)))
+    
+    expect_error(textstat_dist(test_mt, rank = 0),
+                 "rank must be great than or equal to 1")
+})
+
 
