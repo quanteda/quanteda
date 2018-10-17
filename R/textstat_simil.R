@@ -98,19 +98,10 @@ textstat_simil.dfm <- function(x, selection = NULL,
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @param min_dist minimum distance value to be recoded.
-#' @references The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
-#'   E. D. (2001).
-#'   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
-#'    meaningful transformations for ordination of species data}".
-#'   \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
-#'   
-#'   The \code{"chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
-#'   O., & Werman, M. (2010). 
-#'   "\href{https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54}{The
-#'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
-#'   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
-#'   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-#'
+#' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
+#'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+#'   and \code{"minkowski"}.
+#' @references 
 #'   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
 #'   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case either \eqn{P(x_i)} or
 #'   \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
@@ -250,8 +241,8 @@ textstat_proxy <- function(x, selection = NULL,
 
 # internal function to coerce to dist object
 as_dist <- function(x, diag = diag, upper = upper) {
-    warning("dist object is deprecated as an output of textstat_dist/simil function. ",
-            "Please coerce a sparse matrix to a dist object using as.dist(as.matrix(x)).")
+    # warning("dist object is deprecated as an output of textstat_dist/simil function. ",
+    #         "Please coerce a sparse matrix to a dist object using as.dist(as.matrix(x)).")
     x <- as.matrix(x)
     if (ncol(x) == nrow(x)) {
         x <- as.dist(x, diag = diag, upper = upper)
