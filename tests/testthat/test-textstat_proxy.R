@@ -282,3 +282,15 @@ test_that("raises error when p is smaller than 1", {
     expect_error(textstat_dist(test_mt, method = "minkowski", p = -1))
 })
 
+test_that("sparse objects are of expected class and occur when expected", {
+    skip("***Needs attention***")
+    expect_is(
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparsematrix", min_dist = .07),
+        "dtCMatrix"
+    )
+    expect_is(
+        textstat_dist(dfm_weight(test_mt, "prop"), min_dist = 0),
+        "dtCMatrix"
+    )
+})
+
