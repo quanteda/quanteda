@@ -209,6 +209,8 @@ textstat_proxy <- function(x, selection = NULL,
         min_proxy <- -1.0
     if (is.null(rank))
         rank <- ncol(x)
+    if (rank < 1)
+        stop("rank must be great than or equal to 1")
     
     boolean <- FALSE
     weight <- 1
