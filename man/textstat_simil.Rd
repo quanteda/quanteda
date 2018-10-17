@@ -8,14 +8,14 @@
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
   "dice", "edice", "hamman", "simple matching", "faith"), upper = FALSE,
-  diag = FALSE, min_simil = NULL, rank = NULL, output = if
-  (is.null(min_simil) && is.null(rank)) "dist" else "sparse")
+  diag = FALSE, min_simil = NULL, rank = NULL, value = if
+  (is.null(min_simil) && is.null(rank)) "dist" else "sparsematrix")
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
   "minkowski"), upper = FALSE, diag = FALSE, p = 2,
-  min_dist = NULL, rank = NULL, output = if (is.null(min_dist) &&
-  is.null(rank)) "dist" else "sparse")
+  min_dist = NULL, rank = NULL, value = if (is.null(min_dist) &&
+  is.null(rank)) "dist" else "sparsematrix")
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -31,35 +31,49 @@ difference will be computed:  \code{"documents"} for documents or
 Details}
 
 \item{upper}{whether the upper triangle of the symmetric \eqn{V \times V}
-matrix is recorded. Only used when \code{output = "dist"}.}
+matrix is recorded. Only used when \code{value = "dist"}.}
 
 \item{diag}{whether the diagonal of the distance matrix should be recorded. .
-Only used when \code{output = "dist"}.}
+Only used when \code{value = "dist"}.}
 
 \item{min_simil}{minimum similarity value to be recoded.}
 
 \item{rank}{an integer value specifying top-n most similar documents or
 features to be recorded.}
 
-\item{output}{returned sparase matrix if \code{"sparse"}, or \code{min_simil}
-or \code{rank} is specified.}
+\item{value}{format of the returned object: if \code{"dist"}, a
+\code{\link{dist}} object; or if \code{"sparsematrix"}, a triangular
+compressed sparse column matrix format of class
+\link[Matrix]{dtCMatrix-class}.  See Value below.}
 
 \item{p}{The power of the Minkowski distance.}
 
 \item{min_dist}{minimum distance value to be recoded.}
 }
 \value{
-\code{textstat_simil} and \code{textstat_dist} return
+By default, \code{textstat_simil} and \code{textstat_dist} return
   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
   matrix is returned matching distances to the documents or features
   identified in the selection.
+  
+  For dealing with large numbers of features or documents, it is more
+  efficient (and far less memory intensive) to return sparse matrix objects
+  where the values below \code{min_dist} or \code{min_simil} are dropped.
+  This is the default when values for these arguments are supplied or when
+  \code{value = "sparsematrix"}, in which case the returned object will be a
+  compressed sparse column matrix format of class
+  \link[Matrix]{dtCMatrix-class}.  Coercion methods are available for
+  converting sparse return objects to the \code{dist} class via
+  \code{\link{as.dist}}, or can be converted into other sparse matrix formats
+  using \code{\link{as}}.
 }
 \description{
 These functions compute matrixes of distances and similarities between
 documents or features from a \code{\link{dfm}} and return a
 \code{\link[stats]{dist}} object (or a matrix if specific targets are
 selected).  They are fast and robust because they operate directly on the
-sparse \link{dfm} objects.
+sparse \link{dfm} objects, with the option of returning a sparse matrix
+object.
 }
 \details{
 \code{textstat_simil} options are: \code{"correlation"} (default),
@@ -120,5 +134,5 @@ as.list(d1)
 }
 \seealso{
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-  \code{\link{dist}}
+  \code{\link{dist}}, \code{\link{as.dist}}
 }

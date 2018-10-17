@@ -4,7 +4,8 @@
 #' documents or features from a \code{\link{dfm}} and return a
 #' \code{\link[stats]{dist}} object (or a matrix if specific targets are
 #' selected).  They are fast and robust because they operate directly on the
-#' sparse \link{dfm} objects.
+#' sparse \link{dfm} objects, with the option of returning a sparse matrix
+#' object.
 #' @param x a \link{dfm} object
 #' @param selection a valid index for document or feature names from \code{x},
 #'   to be selected for comparison
@@ -14,14 +15,16 @@
 #' @param method method the similarity or distance measure to be used; see
 #'   Details
 #' @param upper whether the upper triangle of the symmetric \eqn{V \times V}
-#'   matrix is recorded. Only used when \code{output = "dist"}.
+#'   matrix is recorded. Only used when \code{value = "dist"}.
 #' @param diag whether the diagonal of the distance matrix should be recorded. .
-#'   Only used when \code{output = "dist"}.
+#'   Only used when \code{value = "dist"}.
 #' @param min_simil minimum similarity value to be recoded.
 #' @param rank an integer value specifying top-n most similar documents or
 #'   features to be recorded.
-#' @param output returned sparase matrix if \code{"sparse"}, or \code{min_simil}
-#'   or \code{rank} is specified.
+#' @param value format of the returned object: if \code{"dist"}, a
+#'   \code{\link{dist}} object; or if \code{"sparsematrix"}, a triangular
+#'   compressed sparse column matrix format of class
+#'   \link[Matrix]{dtCMatrix-class}.  See Value below.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
@@ -30,13 +33,24 @@
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in
 #'   \code{\link{dfm_weight}(x, "prop")}.
-#' @return \code{textstat_simil} and \code{textstat_dist} return
+#' @return By default, \code{textstat_simil} and \code{textstat_dist} return
 #'   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
 #'   matrix is returned matching distances to the documents or features
 #'   identified in the selection.
+#'   
+#'   For dealing with large numbers of features or documents, it is more
+#'   efficient (and far less memory intensive) to return sparse matrix objects
+#'   where the values below \code{min_dist} or \code{min_simil} are dropped.
+#'   This is the default when values for these arguments are supplied or when
+#'   \code{value = "sparsematrix"}, in which case the returned object will be a
+#'   compressed sparse column matrix format of class
+#'   \link[Matrix]{dtCMatrix-class}.  Coercion methods are available for
+#'   converting sparse return objects to the \code{dist} class via
+#'   \code{\link{as.dist}}, or can be converted into other sparse matrix formats
+#'   using \code{\link{as}}.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-#'   \code{\link{dist}}
+#'   \code{\link{dist}}, \code{\link{as.dist}}
 #' @examples
 #' # similarities for documents
 #' mt <- dfm(data_corpus_inaugural, remove_punct = TRUE, remove = stopwords("english"))
@@ -61,7 +75,7 @@ textstat_simil <- function(x, selection = NULL,
                                       "dice", "edice", "hamman", "simple matching", "faith"), 
                            upper = FALSE, diag = FALSE, 
                            min_simil = NULL, rank = NULL,
-                           output = if (is.null(min_simil) && is.null(rank)) "dist" else "sparse") {
+                           value = if (is.null(min_simil) && is.null(rank)) "dist" else "sparsematrix") {
     UseMethod("textstat_simil")
 }
     
@@ -73,7 +87,7 @@ textstat_simil.default <- function(x, selection = NULL,
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
                                upper = FALSE, diag = FALSE, 
                                min_simil = NULL, rank = NULL,
-                               output = if (is.null(min_simil) && is.null(rank)) "dist" else "sparse") {
+                               value = if (is.null(min_simil) && is.null(rank)) "dist" else "sparsematrix") {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
@@ -84,11 +98,12 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
                                upper = FALSE, diag = FALSE, 
                                min_simil = NULL, rank = NULL,
-                               output = if (is.null(min_simil) && is.null(rank)) "dist" else "sparse") {
+                               value = if (is.null(min_simil) && is.null(rank)) "dist" else "sparsematrix") {
     
     method <- match.arg(method)
+    value <- match.arg(value, choices = c("dist", "sparsematrix"))
     result <- textstat_proxy(x, selection, margin, method, 1, min_simil, rank)
-    if (output == "dist")
+    if (value == "dist")
         result <- as_dist(result, diag = diag, upper = upper)
     return(result)
 }
@@ -130,7 +145,7 @@ textstat_dist <- function(x, selection = NULL,
                                      "manhattan", "maximum", "canberra", "minkowski"), 
                           upper = FALSE, diag = FALSE, 
                           p = 2, min_dist = NULL, rank = NULL, 
-                          output = if (is.null(min_dist) && is.null(rank)) "dist" else "sparse") {
+                          value = if (is.null(min_dist) && is.null(rank)) "dist" else "sparsematrix") {
     UseMethod("textstat_dist")
 }
 
@@ -141,7 +156,7 @@ textstat_dist.default <- function(x, selection = NULL,
                                              "manhattan", "maximum", "canberra", "minkowski"), 
                                   upper = FALSE, diag = FALSE, 
                                   p = 2, min_dist = NULL, rank = NULL, 
-                                  output = if (is.null(min_dist) && is.null(rank)) "dist" else "sparse") {
+                                  value = if (is.null(min_dist) && is.null(rank)) "dist" else "sparsematrix") {
     stop(friendly_class_undefined_message(class(x), "textstat_dist"))
 }
 
@@ -152,11 +167,12 @@ textstat_dist.dfm <- function(x, selection = NULL,
                                          "manhattan", "maximum", "canberra", "minkowski"), 
                               upper = FALSE, diag = FALSE, 
                               p = 2, min_dist = NULL, rank = NULL, 
-                              output = if (is.null(min_dist) && is.null(rank)) "dist" else "sparse") {
+                              value = if (is.null(min_dist) && is.null(rank)) "dist" else "sparsematrix") {
     
     method <- match.arg(method)
+    value <- match.arg(value, choices = c("dist", "sparsematrix"))
     result <- textstat_proxy(x, selection, margin, method, p, min_dist, rank)
-    if (output == "dist")
+    if (value == "dist")
         result <- as_dist(result, diag = diag, upper = upper)
     return(result)
 }
