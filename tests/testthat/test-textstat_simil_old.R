@@ -9,8 +9,8 @@ test_that("test textstat_simil_old method = \"correlation\" against proxy simil(
     corQuanteda <- sort(round(quanteda:::as.matrix.simil(textstat_simil_old(presDfm, method = "correlation", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     corProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
     corCor <- sort(round(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], 6), decreasing = TRUE)
-    expect_equal(corQuanteda[-1], corProxy)
-    expect_equal(corProxy, corCor[-1])
+    expect_equal(corQuanteda, corProxy)
+    expect_equal(corProxy, corCor)
 })
 
 test_that("test textstat_simil_old method = \"correlation\" against base cor(): features (allow selection)", {
@@ -47,7 +47,7 @@ test_that("test textstat_simil_old method = \"cosine\" against proxy simil(): do
     
     cosQuanteda <- sort(round(quanteda:::as.matrix.simil(textstat_simil_old(presDfm, method = "cosine", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     cosProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
-    expect_equal(cosQuanteda[-1], cosProxy)
+    expect_equal(cosQuanteda, cosProxy)
 })
 
 # jaccard - binary
