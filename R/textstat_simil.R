@@ -104,7 +104,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
     value <- match.arg(value, choices = c("dist", "sparsematrix"))
     result <- textstat_proxy(x, selection, margin, method, 1, min_simil, rank)
     if (value == "dist")
-        result <- as_dist(result, diag = diag, upper = upper)
+        result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
     return(result)
 }
 
@@ -173,7 +173,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
     value <- match.arg(value, choices = c("dist", "sparsematrix"))
     result <- textstat_proxy(x, selection, margin, method, p, min_dist, rank)
     if (value == "dist")
-        result <- as_dist(result, diag = diag, upper = upper)
+        result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
     return(result)
 }
 
@@ -256,7 +256,7 @@ textstat_proxy <- function(x, selection = NULL,
 }
 
 # internal function to coerce to dist object
-as_dist <- function(x, diag = diag, upper = upper) {
+as_dist <- function(x, method, call, diag = diag, upper = upper) {
     # warning("dist object is deprecated as an output of textstat_dist/simil function. ",
     #         "Please coerce a sparse matrix to a dist object using as.dist(as.matrix(x)).")
     x <- as.matrix(x)
@@ -267,5 +267,7 @@ as_dist <- function(x, diag = diag, upper = upper) {
         attr(x, "Size") <- ncol(x)
         class(x) <- c("dist_selection")
     }
+    attr(x, "method") <- method
+    attr(x, "call") <- call
     return(x)
 }

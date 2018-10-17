@@ -92,3 +92,21 @@ test_that("test old and new textstat_simil are the same", {
                      textstat_simil_old(mt, method = "faith"))
     
 })
+
+test_that("dist object has all the attributes", {
+    d1 <- textstat_dist(mt)
+    expect_equal(class(attr(d1, "Label")), "character")
+    expect_equal(class(attr(d1, "Size")), "integer")
+    expect_equal(class(attr(d1, "call")), "call")
+    expect_equal(class(attr(d1, "Diag")), "logical")
+    expect_equal(class(attr(d1, "Upper")), "logical")
+    expect_equal(class(attr(d1, "method")), "character")
+    
+    d2 <- textstat_simil(mt)
+    expect_equal(class(attr(d2, "Label")), "character")
+    expect_equal(class(attr(d2, "Size")), "integer")
+    expect_equal(class(attr(d2, "call")), "call")
+    expect_equal(class(attr(d2, "Diag")), "logical")
+    expect_equal(class(attr(d2, "Upper")), "logical")
+    expect_equal(class(attr(d2, "method")), "character")
+})
