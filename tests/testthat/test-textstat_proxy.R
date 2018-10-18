@@ -292,7 +292,23 @@ test_that("sparse objects are of expected class and occur when expected", {
               "dgCMatrix")
     expect_is(quanteda:::textstat_proxy(test_mt, method = "kullback"),
               "dgCMatrix")
-
+    
+    expect_is(
+        textstat_dist(dfm_weight(test_mt, "prop"), min_dist = 0),
+        "dsCMatrix"
+    )
+    expect_is(
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_dist = .07),
+        "dsCMatrix"
+    )
+    expect_is(
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_dist = NULL),
+        "dsCMatrix"
+    )
+    expect_is(
+        textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_simil = .95),
+        "dsCMatrix"
+    )
 })
 
 test_that("rank argument is working", {
@@ -301,17 +317,17 @@ test_that("rank argument is working", {
                  "rank must be great than or equal to 1")
     
     expect_equal(as.matrix(textstat_simil(test_mt, rank = 3)),
-                 apply(as.matrix(textstat_simil(test_mt, value = "sparsematrix")), 2,
+                 apply(as.matrix(textstat_simil(test_mt, value = "sparseMatrix")), 2,
                        function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
     
-    expect_equal(as.matrix(textstat_simil(test_mt, value = "sparsematrix")), 
+    expect_equal(as.matrix(textstat_simil(test_mt, value = "sparseMatrix")), 
                  as.matrix(textstat_simil(test_mt, rank = 100)))
     
     expect_equal(as.matrix(textstat_dist(test_mt, rank = 3)),
-                 apply(as.matrix(textstat_dist(test_mt, value = "sparsematrix")), 2,
+                 apply(as.matrix(textstat_dist(test_mt, value = "sparseMatrix")), 2,
                        function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
     
-    expect_equal(as.matrix(textstat_dist(test_mt, value = "sparsematrix")), 
+    expect_equal(as.matrix(textstat_dist(test_mt, value = "sparseMatrix")), 
                  as.matrix(textstat_dist(test_mt, rank = 100)))
     
     expect_error(textstat_dist(test_mt, rank = 0),
