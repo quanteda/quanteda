@@ -42,9 +42,9 @@ Only used when \code{value = "dist"}.}
 features to be recorded.}
 
 \item{value}{format of the returned object: if \code{"dist"}, a
-\code{\link{dist}} object; or if \code{"sparseMatrix"}, a triangular
-compressed sparse column matrix format of class
-\link[Matrix]{dtCMatrix-class}.  See Value below.}
+\code{\link{dist}} object; or if \code{"sparseMatrix"}, a symmetric sparse
+column matrix format of class \link[Matrix]{dsCMatrix-class}.  See Value
+below.}
 
 \item{p}{The power of the Minkowski distance.}
 
@@ -61,8 +61,8 @@ By default, \code{textstat_simil} and \code{textstat_dist} return
   where the values below \code{min_dist} or \code{min_simil} are dropped.
   This is the default when values for these arguments are supplied or when
   \code{value = "sparseMatrix"}, in which case the returned object will be a
-  compressed sparse column matrix format of class
-  \link[Matrix]{dtCMatrix-class}.  Coercion methods are available for
+  symmetric sparse column matrix format of class
+  \link[Matrix]{dsCMatrix-class}.  Coercion methods are available for
   converting sparse return objects to the \code{dist} class via
   \code{\link{as.dist}}, or can be converted into other sparse matrix formats
   using \code{\link{as}}.

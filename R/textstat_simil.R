@@ -22,9 +22,9 @@
 #' @param rank an integer value specifying top-n most similar documents or
 #'   features to be recorded.
 #' @param value format of the returned object: if \code{"dist"}, a
-#'   \code{\link{dist}} object; or if \code{"sparseMatrix"}, a triangular
-#'   compressed sparse column matrix format of class
-#'   \link[Matrix]{dtCMatrix-class}.  See Value below.
+#'   \code{\link{dist}} object; or if \code{"sparseMatrix"}, a symmetric sparse
+#'   column matrix format of class \link[Matrix]{dsCMatrix-class}.  See Value
+#'   below.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
@@ -43,8 +43,8 @@
 #'   where the values below \code{min_dist} or \code{min_simil} are dropped.
 #'   This is the default when values for these arguments are supplied or when
 #'   \code{value = "sparseMatrix"}, in which case the returned object will be a
-#'   compressed sparse column matrix format of class
-#'   \link[Matrix]{dtCMatrix-class}.  Coercion methods are available for
+#'   symmetric sparse column matrix format of class
+#'   \link[Matrix]{dsCMatrix-class}.  Coercion methods are available for
 #'   converting sparse return objects to the \code{dist} class via
 #'   \code{\link{as.dist}}, or can be converted into other sparse matrix formats
 #'   using \code{\link{as}}.
