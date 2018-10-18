@@ -311,6 +311,25 @@ test_that("sparse objects are of expected class and occur when expected", {
     )
 })
 
+test_that("lowercase sparsematrix or sparse works", {
+    expect_identical(
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparsematrix")
+    )
+    expect_identical(
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
+        textstat_dist(dfm_weight(test_mt, "prop"), value = "sparse")
+    )
+    expect_identical(
+        textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
+        textstat_simil(dfm_weight(test_mt, "prop"), value = "sparsematrix")
+    )
+    expect_identical(
+        textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
+        textstat_simil(dfm_weight(test_mt, "prop"), value = "sparse")
+    )
+})
+
 test_that("rank argument is working", {
     
     expect_error(textstat_simil(test_mt, rank = 0),

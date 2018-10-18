@@ -9,13 +9,13 @@ textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
   "dice", "edice", "hamman", "simple matching", "faith"), upper = FALSE,
   diag = FALSE, min_simil = NULL, rank = NULL, value = if
-  (is.null(min_simil) && is.null(rank)) "dist" else "sparsematrix")
+  (is.null(min_simil) && is.null(rank)) "dist" else "sparseMatrix")
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
   "minkowski"), upper = FALSE, diag = FALSE, p = 2,
   min_dist = NULL, rank = NULL, value = if (is.null(min_dist) &&
-  is.null(rank)) "dist" else "sparsematrix")
+  is.null(rank)) "dist" else "sparseMatrix")
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -42,7 +42,7 @@ Only used when \code{value = "dist"}.}
 features to be recorded.}
 
 \item{value}{format of the returned object: if \code{"dist"}, a
-\code{\link{dist}} object; or if \code{"sparsematrix"}, a triangular
+\code{\link{dist}} object; or if \code{"sparseMatrix"}, a triangular
 compressed sparse column matrix format of class
 \link[Matrix]{dtCMatrix-class}.  See Value below.}
 
@@ -60,7 +60,7 @@ By default, \code{textstat_simil} and \code{textstat_dist} return
   efficient (and far less memory intensive) to return sparse matrix objects
   where the values below \code{min_dist} or \code{min_simil} are dropped.
   This is the default when values for these arguments are supplied or when
-  \code{value = "sparsematrix"}, in which case the returned object will be a
+  \code{value = "sparseMatrix"}, in which case the returned object will be a
   compressed sparse column matrix format of class
   \link[Matrix]{dtCMatrix-class}.  Coercion methods are available for
   converting sparse return objects to the \code{dist} class via
