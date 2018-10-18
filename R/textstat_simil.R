@@ -184,7 +184,7 @@ textstat_proxy <- function(x, selection = NULL,
                                       "dice", "edice", "hamman", "simple matching", "faith",
                                       "euclidean", "chisquared", "hamming", "kullback",
                                       "manhattan", "maximum", "canberra", "minkowski"), 
-                           p = 2, min_proxy = NULL, rank = NULL, condition = FALSE) {
+                           p = 2, min_proxy = NULL, rank = NULL) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
@@ -239,7 +239,7 @@ textstat_proxy <- function(x, selection = NULL,
         x <- dfm_weight(x, "boolean")
     if (method %in% c("cosine", "correlation")) {
         result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation")),
-                                             i, rank, min_proxy, condition)
+                                             i, rank, min_proxy)
     } else {
         result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "simple matching", "faith", 
                                                          "euclidean", "chisquared", "kullback",

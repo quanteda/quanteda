@@ -49,13 +49,13 @@ struct similarity_linear : public Worker {
     const int method;
     const std::vector<unsigned int>& target;
     const unsigned int rank;
-    double limit;
+    const double limit;
     const bool symm;
     
     similarity_linear(const sp_mat& mt1_, const sp_mat& mt2_, Triplets& simil_tri_, 
                       const rowvec& square_, const rowvec& center_,
                       const int method_, const std::vector<unsigned int>& target_, 
-                      const unsigned int rank_, double limit_, const bool symm_) :
+                      const unsigned int rank_, const double limit_, const bool symm_) :
         mt1(mt1_), mt2(mt2_), simil_tri(simil_tri_), square(square_), center(center_), 
         method(method_), target(target_), rank(rank_), limit(limit_), symm(symm_) {}
     
@@ -94,8 +94,7 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
                               const int method,
                               const IntegerVector targets_,
                               unsigned int rank,
-                              double limit = -1.0,
-                              bool condition = false) {
+                              double limit = -1.0) {
     
     const sp_mat& mt1 = mt;
     const sp_mat& mt2 = trans(mt);
@@ -216,13 +215,13 @@ struct similarity : public Worker {
     const int method;
     const std::vector<unsigned int>& targets;
     const unsigned int rank;
-    double limit;
+    const double limit;
     const bool symm;
     const double weight;
     
     similarity(const sp_mat& mt_, Triplets& simil_tri_, 
                const int method_, const std::vector<unsigned int>& targets_, 
-               const unsigned int rank_, double limit_, const bool symm_, const double weight_) :
+               const unsigned int rank_, const double limit_, const bool symm_, const double weight_) :
                mt(mt_), simil_tri(simil_tri_), 
                method(method_), targets(targets_), rank(rank_), limit(limit_), symm(symm_), weight(weight_) {}
     
@@ -302,7 +301,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
                        const IntegerVector target_,
                        unsigned int rank,
                        double limit = -1.0,
-                       const double weight = 1.0) {
+                       double weight = 1.0) {
     
     uword ncol = mt.n_cols;
     uword nrow = mt.n_rows;

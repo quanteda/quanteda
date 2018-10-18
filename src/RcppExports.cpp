@@ -171,8 +171,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_similarity_linear
-S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt, const int method, const IntegerVector targets_, unsigned int rank, double limit, bool condition);
-RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mtSEXP, SEXP methodSEXP, SEXP targets_SEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP conditionSEXP) {
+S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt, const int method, const IntegerVector targets_, unsigned int rank, double limit);
+RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mtSEXP, SEXP methodSEXP, SEXP targets_SEXP, SEXP rankSEXP, SEXP limitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -181,13 +181,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector >::type targets_(targets_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
-    Rcpp::traits::input_parameter< bool >::type condition(conditionSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity_linear(mt, method, targets_, rank, limit, condition));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity_linear(mt, method, targets_, rank, limit));
     return rcpp_result_gen;
 END_RCPP
 }
 // qatd_cpp_similarity
-S4 qatd_cpp_similarity(const arma::sp_mat& mt, const int method, const IntegerVector target_, unsigned int rank, double limit, const double weight);
+S4 qatd_cpp_similarity(const arma::sp_mat& mt, const int method, const IntegerVector target_, unsigned int rank, double limit, double weight);
 RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mtSEXP, SEXP methodSEXP, SEXP target_SEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP weightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -197,7 +196,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector >::type target_(target_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
-    Rcpp::traits::input_parameter< const double >::type weight(weightSEXP);
+    Rcpp::traits::input_parameter< double >::type weight(weightSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mt, method, target_, rank, limit, weight));
     return rcpp_result_gen;
 END_RCPP
@@ -393,7 +392,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
-    {"_quanteda_qatd_cpp_similarity_linear", (DL_FUNC) &_quanteda_qatd_cpp_similarity_linear, 6},
+    {"_quanteda_qatd_cpp_similarity_linear", (DL_FUNC) &_quanteda_qatd_cpp_similarity_linear, 5},
     {"_quanteda_qatd_cpp_similarity", (DL_FUNC) &_quanteda_qatd_cpp_similarity, 6},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
