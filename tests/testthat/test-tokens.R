@@ -466,14 +466,6 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
 
-test_that("what = 'fasterword' works correctly", {
-    txt <- "\n \t  word"
-    expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = TRUE))[[1]],
-                 "word")
-    expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = FALSE))[[1]],
-                 c("\n", "\t", "word"))
-})
-
 test_that("empty tokens are removed correctly", {
     txt <- 'a   b  c d e '
     tok <- c('a', 'b', 'c', 'd', 'e')
@@ -517,17 +509,23 @@ test_that("combined tokens objects have all the attributes", {
     
 })
 
-test_that("tokens fasterword handles newlines correctly (#1420)", {
+test_that("tokens fasterword handles newlines correctly (#1447)", {
+    expect_identical(
+        as.list(tokens("one\ntwo\tthree", what = "fastestword", remove_separators = TRUE)),
+        list(text1 = c("one\ntwo\tthree"))
+    )
+    expect_identical(
+        as.list(tokens("one\ntwo\tthree", what = "fastestword", remove_separators = FALSE)),
+        list(text1 = c("one\ntwo\tthree"))
+    )
     expect_identical(
         as.list(tokens("one\ntwo\tthree", what = "fasterword", remove_separators = TRUE)),
         list(text1 = c("one", "two", "three"))
     )
     expect_identical(
         as.list(tokens("one\ntwo\tthree", what = "fasterword", remove_separators = FALSE)),
-        list(text1 = c("one\ntwo\tthree"))
+        list(text1 = c("one", "two", "three"))
     )
-    
-    # with "word" (behaviour is different)
     expect_identical(
         as.list(tokens("one\ntwo\tthree", what = "word", remove_separators = TRUE)),
         list(text1 = c("one", "two", "three"))
@@ -536,5 +534,4 @@ test_that("tokens fasterword handles newlines correctly (#1420)", {
         as.list(tokens("one\ntwo\tthree", what = "word", remove_separators = FALSE)),
         list(text1 = c("one", "\n", "two", "\t", "three"))
     )
-    
 })

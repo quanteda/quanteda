@@ -10,7 +10,7 @@
 #'   slowest, word tokenization method; see 
 #'   \link[stringi]{stringi-search-boundaries} for details.} 
 #'   \item{\code{"fasterword"}}{dumber, but faster, word tokenization method, 
-#'   uses \code{{\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}}} 
+#'   uses \code{{\link[stringi]{stri_split_charclass}(x, "[\\\\p{Z}\\\\p{C}]+")}}} 
 #'   \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method,
 #'   calls \code{\link[stringi]{stri_split_fixed}(x, " ")}} 
 #'   \item{\code{"character"}}{tokenization into individual characters} 
@@ -664,14 +664,10 @@ tokens_word <- function(txt,
                         remove_separators = TRUE,
                         verbose = FALSE){
     
-    if (what=="fastestword") {
+    if (what == "fastestword") {
         tok <- stri_split_fixed(txt, " ")
-    } else if (what=="fasterword") {
-        tok <- if (remove_separators) {
-            stri_split_regex(txt, "\\p{WHITE_SPACE}+") 
-        } else {
-            stri_split_regex(txt, "\\p{Z}+") 
-        }
+    } else if (what == "fasterword") {
+        tok <- stri_split_regex(txt, "[\\p{Z}\\p{C}]+") 
     } else {
         txt <- stri_replace_all_regex(txt, "[\uFE00-\uFE0F]", '') # remove variant selector
         txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", '') # remove whitespace with diacritical marks
@@ -726,7 +722,7 @@ tokens_sentence <- function(txt, verbose = FALSE){
         x <- stri_trim_right(x) # trim trailing spaces
         x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
         return(x)
-    } )
+    })
     
     return(tok)
 }

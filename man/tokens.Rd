@@ -19,7 +19,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
 slowest, word tokenization method; see 
 \link[stringi]{stringi-search-boundaries} for details.} 
 \item{\code{"fasterword"}}{dumber, but faster, word tokenization method, 
-uses \code{{\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}}} 
+uses \code{{\link[stringi]{stri_split_charclass}(x, "[\\\\p{Z}\\\\p{C}]+")}}} 
 \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method,
 calls \code{\link[stringi]{stri_split_fixed}(x, " ")}} 
 \item{\code{"character"}}{tokenization into individual characters} 
