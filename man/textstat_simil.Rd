@@ -46,7 +46,7 @@ selected).  They are fast and robust because they operate directly on the sparse
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
+  \code{"chisquared"}, \code{"chisquared2"}, 
   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
   and \code{"minkowski"}.
 
@@ -107,8 +107,6 @@ The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-  
-  \code{"hamming"} is \eqn{\sum{x \neq y)}}.
 
   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case both \eqn{P(x_i)} and

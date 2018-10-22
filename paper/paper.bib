@@ -1,5 +1,5 @@
 @ARTICLE{PerryBenoit2017,
-   author = {{Perry}, P.~O. and {Benoit}, K.},
+   author = {Perry, Patrick O. and Benoit, Kenneth},
     title = "{Scaling Text with the Class Affinity Model}",
   journal = {ArXiv e-prints},
 archivePrefix = "arXiv",
@@ -19,7 +19,8 @@ archivePrefix = "arXiv",
 	Journal = {American Political Science Review},
 	Number = {2},
 	Pages = {311--331},
-	Title = {Estimating the policy positions of political actors using words as data},
+	doi = {10.1017/S0003055403000698},
+	Title = {Extracting Policy Positions from Political Texts Using Words as Data},
 	Volume = {97},
 	Year = {2003}}
 	
@@ -29,13 +30,14 @@ archivePrefix = "arXiv",
 	Date-Modified = {2014-06-03 09:57:23 +0000},
 	Journal = {American Journal of Political Science},
 	Number = {3},
-	Pages = {705-722},
+	Pages = {705--722},
+	doi = {10.1111/j.1540-5907.2008.00338.x},
 	Title = {A Scaling Model for Estimating Time-Series Party Positions from Texts},
 	Volume = {52},
 	Year = {2008}}
 
 @book{greenacre1984,
-  title={Theory and applications of correspondence analysis},
+  title={Theory and Applications of Correspondence Analysis},
   author={Greenacre, Michael J},
   year={1984},
   address = {London},
@@ -43,27 +45,30 @@ archivePrefix = "arXiv",
 }
 
 @book{Manningetal2008,
-	Author = {C. D. Manning and P. Raghavan and H. Sch\"{u}tze},
+	Author = {Manning, Christopher D and Raghavan, Prabhakar and Sch\"{u}tze, Hinrich},
 	Date-Added = {2014-06-03 09:57:23 +0000},
 	Date-Modified = {2014-06-03 09:57:23 +0000},
 	Publisher = {Cambridge University Press},
 	Address = {Cambridge},
+	doi = {10.1017/CBO9780511809071},
 	Title = {Introduction to Information Retrieval},
 	Year = {2008}}
 
 @article{deerwester1990,
-  title={Indexing by latent semantic analysis},
+  title={Indexing by Latent Semantic Analysis},
   author={Deerwester, Scott and Dumais, Susan T and Furnas, George W and Landauer, Thomas K and Harshman, Richard},
-  journal={Journal of the American society for information science},
+  journal={Journal of the American Society for Information Science},
+  doi = {10.1002/(SICI)1097-4571(199009)41:6%3C391::AID-ASI1%3E3.0.CO;2-9},
   volume={41},
   number={6},
-  pages={391},
+  pages={391-407},
   year={1990}
 }
 
 @article{youngsoroka2012,
-  title={Affective news: The automated coding of sentiment in political texts},
+  title={Affective News: The Automated Coding of Sentiment in Political Texts},
   author={Young, Lori and Soroka, Stuart},
+  doi={10.1080/10584609.2012.671234},
   journal={Political Communication},
   volume={29},
   number={2},
@@ -73,15 +78,17 @@ archivePrefix = "arXiv",
 
 @UNPUBLISHED{spacy2,
    AUTHOR  = {Honnibal, Matthew and Montani, Ines},
-   TITLE   = {spaCy 2: Natural language understanding with Bloom embeddings, convolutional neural networks and incremental parsing},
+   TITLE   = {spaCy 2: Natural Language Understanding with Bloom Embeddings, Convolutional Neural Networks and Incremental Parsing},
    YEAR    = {2017},
+   doi = {10.5281/zenodo.1212304},
    note = {Explosion.ai manuscript}
 }
 
 @article{tidytextJOSS,
-  title={tidytext: Text mining and analysis using tidy data principles in r},
+  title={tidytext: Text Mining and Analysis Using Tidy Data Principles in R},
   author={Silge, Julia and Robinson, David},
   journal={The Journal of Open Source Software},
+  doi={10.21105/joss.00037},
   volume={1},
   number={3},
   year={2016}
@@ -104,9 +111,10 @@ archivePrefix = "arXiv",
 }
   
 @article{tmJSS,
-  title={Text mining infrastructure in R},
+  title={Text Mining Infrastructure in R},
   author={Meyer, David and Hornik, Kurt and Feinerer, Ingo},
-  journal={Journal of statistical software},
+  journal={Journal of Statistical Software},
+  doi = {10.18637/jss.v025.i05},
   volume={25},
   number={5},
   pages={1--54},
@@ -115,25 +123,40 @@ archivePrefix = "arXiv",
 
 @Manual{magrittr,
     title = {magrittr: A Forward-Pipe Operator for R},
-    author = {Stefan Milton Bache and Hadley Wickham},
+    author = {Bache, Stefan Milton and Hadley Wickham},
     year = {2014},
     note = {R package version 1.5},
     url = {https://CRAN.R-project.org/package=magrittr},
 }
   
 @Manual{stringi,
-    title = {R package stringi: Character string processing facilities},
+    title = {R Package stringi: Character String Processing Facilities},
     author = {Marek Gagolewski},
     year = {2018},
+    doi = {10.5281/zenodo.1292492},
     url = {http://www.gagolewski.com/software/stringi/},
 }
  
 @Manual{RcppParallel,
-    title = {RcppParallel: Parallel Programming Tools for 'Rcpp'},
+    title = {RcppParallel: Parallel Programming Tools for `Rcpp'},
     author = {JJ Allaire and Romain Francois and Kevin Ushey and Gregory Vandenbrouck and Marcus Geelnard and {Intel}},
     year = {2018},
     note = {R package version 4.4.0},
     url = {https://CRAN.R-project.org/package=RcppParallel},
   }
 
-
+@Manual{readtext,
+    title = {readtext: Import and Handling for Plain and Formatted Text Files},
+    author = {Benoit, Kenneth and Adam Obeng},
+    year = {2018},
+    note = {R package version 0.71},
+    url = {https://CRAN.R-project.org/package=readtext},
+}
+  
+@Manual{spacyr,
+    title = {spacyr: Wrapper to the {spaCy} {NLP} Library},
+    author = {Benoit, Kenneth and Akitaka Matsuo},
+    year = {2018},
+    note = {R package version 0.9.91},
+    url = {https://CRAN.R-project.org/package=spacyr},
+}

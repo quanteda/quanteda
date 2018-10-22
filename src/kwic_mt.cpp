@@ -62,13 +62,15 @@ struct kwic_mt : public Worker{
  * @param texts_ tokens ojbect
  * @param types_ types
  * @param words_ list of target features
+ * @param delim_ character to join tokens
  */
 
 // [[Rcpp::export]]
 DataFrame qatd_cpp_kwic(const List &texts_,
                         const CharacterVector types_,
                         const List &words_,
-                        const unsigned int &window){
+                        const unsigned int &window,
+                        const String &delim_){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -122,9 +124,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             
             pos_from_[j] = targets[i].first + 1;
             pos_to_[j] = targets[i].second + 1; 
-            coxs_pre_[j] = join_strings(cox_pre, types_); 
-            coxs_target_[j] = join_strings(cox_target, types_);
-            coxs_post_[j] = join_strings(cox_post, types_);
+            coxs_pre_[j] = join_strings(cox_pre, types_, delim_); 
+            coxs_target_[j] = join_strings(cox_target, types_, delim_);
+            coxs_post_[j] = join_strings(cox_post, types_, delim_);
             coxs_name_[j] = names_[h];
             j++;
         }
