@@ -535,3 +535,11 @@ test_that("tokens fasterword handles newlines correctly (#1447)", {
         list(text1 = c("one", "\n", "two", "\t", "three"))
     )
 })
+
+test_that("warn when remove_separators = FALSE fasterword and fastestword", {
+    expect_silent(tokens("a b c", what = "word"))
+    expect_warning(tokens("a b c", what = "fasterword", remove_separators = FALSE),
+                   "remove_separators == TRUE has no effect")
+    expect_warning(tokens("a b c", what = "fastestword", remove_separators = FALSE),
+                   "remove_separators == TRUE has no effect")
+})
