@@ -353,4 +353,13 @@ test_that("rank argument is working", {
                  "rank must be great than or equal to 1")
 })
 
+test_that("record zeros even in the sparse matrix", {
+    toks <- tokens(c(doc1 = 'a b c', doc2 = 'd e f'), remove_punct = TRUE)
+    mt <- dfm(toks)
+    expect_equal(quanteda:::textstat_proxy(mt)@x, c(1, 0, 1))
+    expect_equal(quanteda:::textstat_proxy(mt, method = "cosine")@x, c(1, 0, 1))
+    expect_equal(quanteda:::textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x, c(1, 0, 1))
+    expect_equal(quanteda:::textstat_proxy(mt, method = "cosine", rank = 2)@x, c(1, 0, 1))
+    expect_equal(quanteda:::textstat_proxy(mt, method = "dice")@x, c(1, 0, 1))
+})
 
