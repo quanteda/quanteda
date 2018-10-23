@@ -77,6 +77,9 @@ struct similarity_linear : public Worker {
                 v2 = center * center[i] * nrow;
                 simils = to_vector(((v1 - v2) / nrow) / (square * square[i]));
                 break;
+            case 3: // euclidean distance
+                simils = to_vector(sqrt(trans(mt2 * mt1.col(i)) * -2 + square + square[i]));
+                break;
             }
             double l = get_limit(simils, rank, limit);
             for (std::size_t k = 0; k < simils.size(); k++) {
@@ -114,6 +117,9 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
     case 2: // correlation
         square = stddev(mt1, 1);
         center = mean(mt1);
+        break;
+    case 3: // euclidean distance
+        square = mat(sum(mt1 % mt1, 0));
         break;
     }
     
@@ -260,24 +266,21 @@ struct similarity : public Worker {
                     simil = simil_faith(col_i, col_j);
                     break;
                 case 6:
-                    simil = dist_euclidean(col_i, col_j);
-                    break;
-                case 7:
                     simil = dist_chisquare(col_i, col_j);
                     break;
-                case 8:
+                case 7:
                     simil = dist_kullback(col_i, col_j);
                     break;
-                case 9:
+                case 8:
                     simil = dist_manhattan(col_i, col_j);
                     break;
-                case 10:
+                case 9:
                     simil = dist_maximum(col_i, col_j);
                     break;
-                case 11:
+                case 10:
                     simil = dist_canberra(col_i, col_j);
                     break;
-                case 12:
+                case 11:
                     simil = dist_minkowski(col_i, col_j, weight);
                     break;
                 }
@@ -307,7 +310,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
     uword nrow = mt.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     if (rank < 1) rank = 1;
-    bool symm = target.size() == ncol && rank == ncol && method != 8;
+    bool symm = target.size() == ncol && rank == ncol && method != 7;
     
     //dev::Timer timer;
     //dev::start_timer("Compute similarity", timer);

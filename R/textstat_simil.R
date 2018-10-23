@@ -239,13 +239,13 @@ textstat_proxy <- function(x, selection = NULL,
     }
     if (boolean)
         x <- dfm_weight(x, "boolean")
-    if (method %in% c("cosine", "correlation")) {
-        result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation")),
+    if (method %in% c("cosine", "correlation", "euclidean")) {
+        result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation", "euclidean")),
                                              i, rank, min_proxy)
     } else {
         result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "simple matching", "faith", 
-                                                         "euclidean", "chisquared", "kullback",
-                                                         "manhattan", "maximum", "canberra", "minkowski")), 
+                                                         "chisquared", "kullback", "manhattan", 
+                                                         "maximum", "canberra", "minkowski")), 
                                       i, rank, min_proxy, weight)
     }
     label <- colnames(x)
