@@ -18,13 +18,6 @@
 #'   matrix is recorded. Only used when \code{value = "dist"}.
 #' @param diag whether the diagonal of the distance matrix should be recorded. .
 #'   Only used when \code{value = "dist"}.
-#' @param min_simil minimum similarity value to be recoded.
-#' @param rank an integer value specifying top-n most similar documents or
-#'   features to be recorded.
-#' @param value format of the returned object: if \code{"dist"}, a
-#'   \code{\link{dist}} object; or if \code{"sparseMatrix"}, a symmetric sparse
-#'   column matrix format of class \link[Matrix]{dsCMatrix-class}.  See Value
-#'   below.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
@@ -37,17 +30,6 @@
 #'   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
 #'   matrix is returned matching distances to the documents or features
 #'   identified in the selection.
-#'   
-#'   For dealing with large numbers of features or documents, it is more
-#'   efficient (and far less memory intensive) to return sparse matrix objects
-#'   where the values below \code{min_dist} or \code{min_simil} are dropped.
-#'   This is the default when values for these arguments are supplied or when
-#'   \code{value = "sparseMatrix"}, in which case the returned object will be a
-#'   symmetric sparse column matrix format of class
-#'   \link[Matrix]{dsCMatrix-class}.  Coercion methods are available for
-#'   converting sparse return objects to the \code{dist} class via
-#'   \code{\link{as.dist}}, or can be converted into other sparse matrix formats
-#'   using \code{\link{as}}.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
 #'   \code{\link{dist}}, \code{\link{as.dist}}
@@ -73,9 +55,7 @@ textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching", "faith"), 
-                           upper = FALSE, diag = FALSE, 
-                           min_simil = NULL, rank = NULL,
-                           value = if (is.null(min_simil) && is.null(rank)) "dist" else "sparseMatrix") {
+                           upper = FALSE, diag = FALSE) {
     UseMethod("textstat_simil")
 }
     
@@ -85,9 +65,7 @@ textstat_simil.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
-                               upper = FALSE, diag = FALSE, 
-                               min_simil = NULL, rank = NULL,
-                               value = if (is.null(min_simil) && is.null(rank)) "dist" else "sparseMatrix") {
+                               upper = FALSE, diag = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
@@ -96,24 +74,17 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
-                               upper = FALSE, diag = FALSE, 
-                               min_simil = NULL, rank = NULL,
-                               value = if (is.null(min_simil) && is.null(rank)) "dist" else "sparseMatrix") {
+                               upper = FALSE, diag = FALSE) {
     
     method <- match.arg(method)
-    if (value == "sparsematrix") value <- "sparseMatrix"
-    value <- match.arg(value, choices = c("dist", "sparseMatrix"))
-    result <- textstat_proxy(x, selection, margin, method, 1, min_simil, rank)
-    if (value == "dist")
-        result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
-    return(result)
+    result <- textstat_proxy(x, selection, margin, method, 1)
+    as_dist(result, method, match.call(), diag = diag, upper = upper)
 }
 
 
 #' @rdname textstat_simil
 #' @export
 #' @param p The power of the Minkowski distance.
-#' @param min_dist minimum distance value to be recoded.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
 #'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
 #'   and \code{"minkowski"}.
@@ -144,9 +115,7 @@ textstat_dist <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = c("euclidean", "kullback",
                                      "manhattan", "maximum", "canberra", "minkowski"), 
-                          upper = FALSE, diag = FALSE, 
-                          p = 2, min_dist = NULL, rank = NULL, 
-                          value = if (is.null(min_dist) && is.null(rank)) "dist" else "sparseMatrix") {
+                          upper = FALSE, diag = FALSE, p = 2) {
     UseMethod("textstat_dist")
 }
 
@@ -155,9 +124,7 @@ textstat_dist.default <- function(x, selection = NULL,
                                   margin = c("documents", "features"),
                                   method = c("euclidean", "kullback",
                                              "manhattan", "maximum", "canberra", "minkowski"), 
-                                  upper = FALSE, diag = FALSE, 
-                                  p = 2, min_dist = NULL, rank = NULL, 
-                                  value = if (is.null(min_dist) && is.null(rank)) "dist" else "sparseMatrix") {
+                                  upper = FALSE, diag = FALSE, p = 2) {
     stop(friendly_class_undefined_message(class(x), "textstat_dist"))
 }
 
@@ -166,20 +133,24 @@ textstat_dist.dfm <- function(x, selection = NULL,
                               margin = c("documents", "features"),
                               method = c("euclidean", "kullback",
                                          "manhattan", "maximum", "canberra", "minkowski"), 
-                              upper = FALSE, diag = FALSE, 
-                              p = 2, min_dist = NULL, rank = NULL, 
-                              value = if (is.null(min_dist) && is.null(rank)) "dist" else "sparseMatrix") {
+                              upper = FALSE, diag = FALSE, p = 2) {
     
     method <- match.arg(method)
-    if (value == "sparsematrix") value <- "sparseMatrix"
-    value <- match.arg(value, choices = c("dist", "sparseMatrix"))
-    result <- textstat_proxy(x, selection, margin, method, p, min_dist, rank)
-    if (value == "dist")
-        result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
-    return(result)
+    result <- textstat_proxy(x, selection, margin, method, p)
+    as_dist(result, method, match.call(), diag = diag, upper = upper)
 }
 
-# internal function for textstat_dist and textstat_simil
+#' [Experimental] Compute document/feature proximity
+#'
+#' This is an underlying function for \code{textstat_dist} and
+#' \code{textstat_simil} but returns \code{CsparaseMatrix}. 
+#' @keywords internal
+#' @inheritParams textstat_dist
+#' @param min_proxy the minimum proximity value to be recoded.
+#' @param rank an integer value specifying top-n most proximity values to be
+#'   recorded.
+#' @export
+#' @seealso \code{\link{textstat_dist}}, \code{\link{textstat_simil}}
 textstat_proxy <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("cosine", "correlation", "jaccard", "ejaccard",

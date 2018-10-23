@@ -119,7 +119,7 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
         center = mean(mt1);
         break;
     case 3: // euclidean distance
-        square = mat(sum(mt1 % mt1, 0));
+        square = rowvec(mat(sum(mt1 % mt1, 0)));
         break;
     }
     
@@ -163,10 +163,10 @@ double simil_matching(colvec& col_i, colvec& col_j) {
     return accu(m) / n;
 }
 
-double dist_euclidean(colvec& col_i, colvec& col_j) {
-    return sqrt(accu(square(col_i - col_j)));
-}
-
+// double dist_euclidean(colvec& col_i, colvec& col_j) {
+//     return sqrt(accu(square(col_i - col_j)));
+// }
+ 
 double dist_chisquare(colvec& col_i, colvec& col_j) {
     double s1 = accu(square(col_i));
     double s2 = accu(square(col_j));

@@ -8,14 +8,11 @@
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
   "dice", "edice", "hamman", "simple matching", "faith"), upper = FALSE,
-  diag = FALSE, min_simil = NULL, rank = NULL, value = if
-  (is.null(min_simil) && is.null(rank)) "dist" else "sparseMatrix")
+  diag = FALSE)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
-  "minkowski"), upper = FALSE, diag = FALSE, p = 2,
-  min_dist = NULL, rank = NULL, value = if (is.null(min_dist) &&
-  is.null(rank)) "dist" else "sparseMatrix")
+  "minkowski"), upper = FALSE, diag = FALSE, p = 2)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -36,36 +33,13 @@ matrix is recorded. Only used when \code{value = "dist"}.}
 \item{diag}{whether the diagonal of the distance matrix should be recorded. .
 Only used when \code{value = "dist"}.}
 
-\item{min_simil}{minimum similarity value to be recoded.}
-
-\item{rank}{an integer value specifying top-n most similar documents or
-features to be recorded.}
-
-\item{value}{format of the returned object: if \code{"dist"}, a
-\code{\link{dist}} object; or if \code{"sparseMatrix"}, a symmetric sparse
-column matrix format of class \link[Matrix]{dsCMatrix-class}.  See Value
-below.}
-
 \item{p}{The power of the Minkowski distance.}
-
-\item{min_dist}{minimum distance value to be recoded.}
 }
 \value{
 By default, \code{textstat_simil} and \code{textstat_dist} return
   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
   matrix is returned matching distances to the documents or features
   identified in the selection.
-  
-  For dealing with large numbers of features or documents, it is more
-  efficient (and far less memory intensive) to return sparse matrix objects
-  where the values below \code{min_dist} or \code{min_simil} are dropped.
-  This is the default when values for these arguments are supplied or when
-  \code{value = "sparseMatrix"}, in which case the returned object will be a
-  symmetric sparse column matrix format of class
-  \link[Matrix]{dsCMatrix-class}.  Coercion methods are available for
-  converting sparse return objects to the \code{dist} class via
-  \code{\link{as.dist}}, or can be converted into other sparse matrix formats
-  using \code{\link{as}}.
 }
 \description{
 These functions compute matrixes of distances and similarities between
