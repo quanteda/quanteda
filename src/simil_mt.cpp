@@ -102,7 +102,7 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt,
     const sp_mat& mt1 = mt;
     const sp_mat& mt2 = trans(mt);
     uword ncol = mt1.n_cols;
-    uword nrow = mt1.n_rows;
+    // uword nrow = mt1.n_rows;
     std::vector<unsigned int> targets = as< std::vector<unsigned int> >(targets_);
     if (rank < 1) rank = 1;
     bool symm = targets.size() == ncol && rank == ncol;
@@ -307,7 +307,7 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt,
                        double weight = 1.0) {
     
     uword ncol = mt.n_cols;
-    uword nrow = mt.n_rows;
+    // uword nrow = mt.n_rows;
     std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
     if (rank < 1) rank = 1;
     bool symm = target.size() == ncol && rank == ncol && method != 7;
