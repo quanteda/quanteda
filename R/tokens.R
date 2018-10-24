@@ -157,7 +157,7 @@
 tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                     remove_numbers = FALSE,
                     remove_punct = FALSE,
-                    remove_symbols = FALSE,
+                    remove_symbols = remove_punct,
                     remove_separators = TRUE,
                     remove_twitter = FALSE,
                     remove_hyphens = FALSE,
@@ -203,7 +203,7 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                            remove_numbers = FALSE,
                            remove_punct = FALSE,
-                           remove_symbols = FALSE,
+                           remove_symbols = remove_punct,
                            remove_separators = TRUE,
                            remove_twitter = FALSE,
                            remove_hyphens = FALSE,
@@ -228,7 +228,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
     if (remove_numbers)
         regex <- c(regex, "^[\\p{N}]+$")
     if (remove_punct)
-        regex <- c(regex, "^[\\p{P}\\p{S}]+$")
+        regex <- c(regex, "^[\\p{P}]+$")
     if (remove_symbols)
         regex <- c(regex, "^[\\p{S}]+$")
     if (remove_separators)
@@ -631,7 +631,7 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         if (remove_numbers)
             regex <- c(regex, "^[\\p{N}]+$")
         if (remove_punct)
-            regex <- c(regex, "^[\\p{P}\\p{S}]+$")
+            regex <- c(regex, "^[\\p{P}]+$")
         if (remove_symbols)
             regex <- c(regex, "^[\\p{S}]+$")
         if (remove_separators)

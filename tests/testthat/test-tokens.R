@@ -543,3 +543,76 @@ test_that("warn when remove_separators = FALSE fasterword and fastestword", {
     expect_warning(tokens("a b c", what = "fastestword", remove_separators = FALSE),
                    "remove_separators = FALSE has no effect")
 })
+
+test_that("remove_punct and remove_symbols are distinct (#1445)", {
+    txt <- c(doc = "I bet ± £100!")
+
+    expect_identical(
+        as.character(tokens(txt, remove_punct = FALSE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100", "!")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, remove_punct = TRUE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, remove_punct = FALSE, remove_symbols = TRUE)),
+        c("I", "bet", "100", "!")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, remove_punct = TRUE, remove_symbols = TRUE)),
+        c("I", "bet", "100")
+    )
+  
+    # test defaults
+    expect_identical(
+        as.character(tokens(txt)),
+        c("I", "bet", "±", "£", "100", "!")
+    )
+    expect_identical(
+        as.character(tokens(txt, remove_punct = TRUE)),
+        c("I", "bet", "100")
+    )
+    expect_identical(
+        as.character(tokens(txt, remove_symbols = TRUE)),
+        c("I", "bet", "100", "!")
+    )
+})
+
+test_that("remove_punct and remove_symbols are distinct (#1445)", {
+    # separated because of #1464
+    txt <- c(doc = "I bet ± £ 100 !")
+
+    expect_identical(
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100", "!")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, what = "fasterword", remove_punct = FALSE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100", "!")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, what = "fasterword", remove_punct = TRUE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, what = "fastestword", remove_punct = FALSE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100", "!")
+    )
+    
+    expect_identical(
+        as.character(tokens(txt, what = "fastestword", remove_punct = TRUE, remove_symbols = FALSE)),
+        c("I", "bet", "±", "£", "100")
+    )    
+})
