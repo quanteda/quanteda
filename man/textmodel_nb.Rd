@@ -112,9 +112,10 @@ Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
   to Information Retrieval. Cambridge University Press.
   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
   
-  Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language
-  Processing.}  Draft of November 7, 2016.
-  \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
+  Jurafsky, Daniel and James H. Martin. (2018). "Chapter 4, Naive Bayes and
+  Sentiment Classification." from \emph{Speech and Language Processing}.
+  Draft of September 23, 2018.
+  \url{https://web.stanford.edu/~jurafsky/slp3/4.pdf}
 }
 \seealso{
 \code{\link{predict.textmodel_nb}}

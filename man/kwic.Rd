@@ -6,7 +6,7 @@
 \title{Locate keywords-in-context}
 \usage{
 kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, ...)
+  separator = " ", case_insensitive = TRUE, ...)
 
 is.kwic(x)
 }
@@ -21,6 +21,8 @@ is.kwic(x)
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{separator}{character to separate words in the output}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
@@ -67,7 +69,4 @@ kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)
 is.kwic("Not a kwic")
-}
-\author{
-Kenneth Benoit and Kohei Watanabe
 }

@@ -24,3 +24,4 @@ __MACOSX
 ^pkgdown$
 ^index.(html|md|Rmd)$
 ^paper
+LICENSE

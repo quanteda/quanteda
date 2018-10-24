@@ -15,6 +15,17 @@ knitr::opts_chunk$set(
 
 **quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
+The package is designed for R users needing to apply natural language
+processing to texts, from documents to final analysis.  Its
+capabilities match or exceed those provided in many end-user software
+applications, many of which are expensive and not open source.  The package is
+therefore of great benefit to researchers, students, and other analysts with
+fewer financial resources.  While using **quanteda** requires R programming
+knowledge, its API is designed to enable powerful, efficient analysis with a
+minimum of steps.  By emphasizing consistent design, furthermore, **quanteda**
+lowers the barriers to learning and using NLP and quantitative text analysis
+even for proficient R programmers.
+
 ## How to Install
 
 The normal way from CRAN, using your R GUI or 
@@ -37,7 +48,8 @@ from CRAN.
 **If you are using macOS**, you should install the 
 [macOS tools](https://cran.r-project.org/bin/macosx/tools/), 
 namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requires gfortran to build).
-
+ If you are still getting errors related to gfortran, follow the fixes [here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).  
+ 
 ## System Requirements
 
 **quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
@@ -52,6 +64,12 @@ namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requ
 ## How to Use 
 
 See the [quick start guide](https://quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
+
+## How to cite
+
+Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, and Akitaka Matsuo.  (2018) "[quanteda: An R package for the quantitative analysis of textual data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)".  _Journal of Open Source Software_.  3(30), 774. [https://doi.org/10.21105/joss.00774](https://doi.org/10.21105/joss.00774).
+
+For a BibTeX entry, use the output from `citation(package = "quanteda")`.
 
 ## Leaving Feedback
 
