@@ -18,10 +18,10 @@ to be selected for comparison}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or
-\code{"features"} for word/term features}
+\code{"features"} for word/term features.}
 
 \item{method}{method the similarity or distance measure to be used; see
-Details}
+Details.}
 
 \item{p}{The power of the Minkowski distance.}
 
@@ -35,6 +35,6 @@ This is an underlying function for \code{textstat_dist} and
 \code{textstat_simil} but returns \code{CsparaseMatrix}.
 }
 \seealso{
-textstat_dist textstat_simil
+\code{\link{textstat_dist}}, \code{\link{textstat_simil}}
 }
 \keyword{internal}
