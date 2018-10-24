@@ -1,6 +1,6 @@
 context('test plots.R')
 
-dev.new(width = 10, height = 10)
+pdf(file = tempfile(".pdf"), width = 10, height = 10)
 
 test_that("test plot.kwic scale argument default", {
 
@@ -116,7 +116,7 @@ test_that("test textplot_wordcloud comparison works", {
     testdfm <- dfm(testcorp, remove = stopwords("english"))
     testdfm_grouped <- dfm(testcorp, remove = stopwords("english"), groups = "label")
     
-    dev.new(width = 10, height = 10)
+    jpeg(filename = tempfile(".jpg"), width = 5000, height = 5000)
     expect_silent(
         textplot_wordcloud(testdfm_grouped, comparison = TRUE)
     )
@@ -134,12 +134,14 @@ test_that("test textplot_wordcloud comparison works", {
 })
 
 test_that("test textplot_wordcloud raise deprecation message", {
-    
+    jpeg(filename = tempfile(".jpg"), width = 5000, height = 5000)  
     mt <- dfm(data_corpus_inaugural[1:5])
     mt <- dfm_trim(mt, min_termfreq = 10)
     expect_warning(textplot_wordcloud(mt, min.freq = 10), 'min.freq is deprecated')
     expect_warning(textplot_wordcloud(mt, use.r.layout = 10), 'use.r.layout is no longer use')
+    dev.off()
 })
+
 
 test_that("test textplot_scale1d wordfish in the most basic way", {
     wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
@@ -161,7 +163,8 @@ test_that("test textplot_scale1d wordfish in the most basic way", {
 test_that("test textplot_scale1d wordscores in the most basic way", {
     mt <- dfm(data_corpus_irishbudget2010)
     ws <- textmodel_wordscores(mt, c(rep(NA, 4), -1, 1, rep(NA, 8)))
-    pr <- predict(ws, mt, force = TRUE)
+    pr <- suppressWarnings(predict(ws, mt, force = TRUE))
+    
     expect_false(identical(textplot_scale1d(pr, sort = TRUE), 
                            textplot_scale1d(pr, sort = FALSE)))
     expect_silent(textplot_scale1d(pr, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
@@ -181,7 +184,7 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
         "This margin can only be run on a predicted wordscores object"
     )
     expect_error(
-        textplot_scale1d(predict(ws), margin = "features"),
+        suppressWarnings(textplot_scale1d(predict(ws), margin = "features")),
         "This margin can only be run on a fitted wordscores object"
     )
 })
