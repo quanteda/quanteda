@@ -54,3 +54,26 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("dfm_empty"))
     
 })
+
+test_that("remove_edges is working", {
+    
+    mt <- fcm(c("a a b", "a b", "c b"))
+    expect_identical(colnames(quanteda:::remove_edges(mt, 1, TRUE)), 
+                     c("a", "b", "c"))
+    expect_identical(colnames(quanteda:::remove_edges(mt, 2, TRUE)), 
+                     c("a", "b"))
+    expect_identical(Matrix::diag(quanteda:::remove_edges(mt, 1, FALSE)),
+                     c(0, 0, 0))
+    
+})
+
+test_that("error when fcm is ordered", {
+    
+    mt <- fcm(c("a a b", "a b", "c b"), ordered = FALSE)
+    expect_silent(as.network(mt))
+    mt2 <- fcm(c("a a b", "a b", "c b"), ordered = TRUE)
+    expect_error(as.network(mt2),
+                 "Cannot plot ordered fcm")
+})
+
+
