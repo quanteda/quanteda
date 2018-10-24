@@ -515,7 +515,7 @@ test_that("tokens fasterword handles newlines correctly (#1447)", {
         list(text1 = c("one\ntwo\tthree"))
     )
     expect_identical(
-        as.list(tokens("one\ntwo\tthree", what = "fastestword", remove_separators = FALSE)),
+        suppressWarnings(as.list(tokens("one\ntwo\tthree", what = "fastestword", remove_separators = FALSE))),
         list(text1 = c("one\ntwo\tthree"))
     )
     expect_identical(
@@ -523,7 +523,7 @@ test_that("tokens fasterword handles newlines correctly (#1447)", {
         list(text1 = c("one", "two", "three"))
     )
     expect_identical(
-        as.list(tokens("one\ntwo\tthree", what = "fasterword", remove_separators = FALSE)),
+        suppressWarnings(as.list(tokens("one\ntwo\tthree", what = "fasterword", remove_separators = FALSE))),
         list(text1 = c("one", "two", "three"))
     )
     expect_identical(
@@ -539,7 +539,7 @@ test_that("tokens fasterword handles newlines correctly (#1447)", {
 test_that("warn when remove_separators = FALSE fasterword and fastestword", {
     expect_silent(tokens("a b c", what = "word"))
     expect_warning(tokens("a b c", what = "fasterword", remove_separators = FALSE),
-                   "remove_separators == TRUE has no effect")
+                   "remove_separators = FALSE has no effect")
     expect_warning(tokens("a b c", what = "fastestword", remove_separators = FALSE),
-                   "remove_separators == TRUE has no effect")
+                   "remove_separators = FALSE has no effect")
 })

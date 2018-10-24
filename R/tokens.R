@@ -10,8 +10,8 @@
 #'   slowest, word tokenization method; see
 #'   \link[stringi]{stringi-search-boundaries} for details.}
 #'   \item{\code{"fasterword"}}{dumber, but faster, word tokenization method,
-#'   uses \code{{\link[stringi]{stri_split_charclass}(x,
-#'   "[\\\\p{Z}\\\\p{C}]+")}}} \item{\code{"fastestword"}}{dumbest, but fastest,
+#'   uses \code{\link[stringi]{stri_split_charclass}(x,
+#'   "[\\\\p{Z}\\\\p{C}]+")}} \item{\code{"fastestword"}}{dumbest, but fastest,
 #'   word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, "
 #'   ")}} \item{\code{"character"}}{tokenization into individual characters}
 #'   \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some
@@ -568,7 +568,7 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
     }
     
     if (!remove_separators && what %in% c("fasterword", "fastestword"))
-        warning("remove_separators == TRUE has no effect when what == fasterword or fastestword",
+        warning("remove_separators = FALSE has no effect when what = fasterword or fastestword",
                 call. = FALSE, noBreaks. = TRUE)
     
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
