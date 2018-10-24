@@ -22,10 +22,10 @@ to be selected for comparison}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or
-\code{"features"} for word/term features}
+\code{"features"} for word/term features.}
 
 \item{method}{method the similarity or distance measure to be used; see
-Details}
+Details.}
 
 \item{upper}{whether the upper triangle of the symmetric \eqn{V \times V}
 matrix is recorded. Only used when \code{value = "dist"}.}
@@ -40,14 +40,16 @@ By default, \code{textstat_simil} and \code{textstat_dist} return
   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
   matrix is returned matching distances to the documents or features
   identified in the selection.
+  
+  These can be transformed into a list format using
+  \code{\link{as.list.dist}}, if that format is preferred.
 }
 \description{
 These functions compute matrixes of distances and similarities between
 documents or features from a \code{\link{dfm}} and return a
 \code{\link[stats]{dist}} object (or a matrix if specific targets are
 selected).  They are fast and robust because they operate directly on the
-sparse \link{dfm} objects, with the option of returning a sparse matrix
-object.
+sparse \link{dfm} objects.
 }
 \details{
 \code{textstat_simil} options are: \code{"correlation"} (default),
