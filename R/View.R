@@ -48,7 +48,6 @@ View.kwic <- function(x, title) {
 #' @rdname View
 #' @export
 View.dfm <- function(x, title) {
-    x <- as.dfm(x)
     if (missing(title)) 
         title <- deparse(substitute(x))
     View(as.matrix(x), title)
