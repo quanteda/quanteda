@@ -147,8 +147,6 @@ as.network.default <- function(x, ...) {
 #' @seealso \code{\link[network]{network}}
 as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     
-    if (!x@tri)
-        stop("Cannot plot ordered fcm")
     if (nfeat(x) > 1000) stop('fcm is too large for a network plot')
     f <- x@margin
     x <- remove_edges(x, min_freq, omit_isolated)

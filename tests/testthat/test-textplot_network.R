@@ -67,13 +67,13 @@ test_that("remove_edges is working", {
     
 })
 
-test_that("error when fcm is ordered", {
-    
-    mt <- fcm(c("a a b", "a b", "c b"), ordered = FALSE)
-    expect_silent(as.network(mt))
-    mt2 <- fcm(c("a a b", "a b", "c b"), ordered = TRUE)
-    expect_error(as.network(mt2),
-                 "Cannot plot ordered fcm")
-})
+# test_that("error when fcm is ordered", {
+#     
+#     mt <- fcm(c("a a b", "a b", "c b"), ordered = FALSE)
+#     expect_silent(as.network(mt))
+#     mt2 <- fcm(c("a a b", "a b", "c b"), ordered = TRUE)
+#     expect_error(as.network(mt2),
+#                  "Cannot plot ordered fcm")
+# })
 
 
