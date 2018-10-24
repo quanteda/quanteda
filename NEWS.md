@@ -14,7 +14,7 @@
 
 * Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
 * Added a new `separator` argument to `kwic()` to allow a user to define which characters will be added between tokens returned from a keywords in context search.  (#1449)
-* Reimplemented `textstat_dist()` and `textstat_simil()` in C++ for enhanced performance, including the addition of a sparse min/max threshold to allow sparse matrix return format objects, making it possible to compute these for very large numbers of documents or features.  (#1210)
+* Reimplemented `textstat_dist()` and `textstat_simil()` in C++ for enhanced performance.  (#1210)
 
 ### Behaviour changes
 
