@@ -49,7 +49,7 @@ Rosario, Barbara.  2000.
   
   Deerwester, S., Dumais, S. T., Furnas, G. W., Landauer, T. K., & Harshman, 
   R. 1990. 
-  "\href{http://search.proquest.com/openview/a1907164bd88dfc38a4875b73a3f7b3d/1?pq-origsite=gscholar&cbl=1818555}{Indexing
+  "\href{https://search.proquest.com/docview/1301252034}{Indexing
   by latent semantic analysis}". \emph{Journal of the American society for 
   information science} 41(6), 391.
 }
