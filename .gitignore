@@ -25,3 +25,5 @@ __MACOSX
 **_cache/
 /inst/doc
 inst/doc
+vignettes/quickstart.R
+vignettes/quickstart.html
