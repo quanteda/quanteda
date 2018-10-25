@@ -199,8 +199,9 @@ print.dist_selection <- function(x, ...) {
 #' @method as.matrix dist_selection
 #' @keywords textstat internal
 as.matrix.dist_selection <- function(x, ...) {
-    attributes(x)[setdiff(names(attributes(x)), 
-                          c("dimnames", "dim"))] <- NULL
+    attrs <- attributes(x)
+    attrs <- attrs[names(attrs) %in% c("dimnames", "dim")]
+    attributes(x) <- attrs
     class(x) <- "matrix"
     x
 }

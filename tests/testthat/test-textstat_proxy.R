@@ -285,13 +285,13 @@ test_that("raises error when dfm is empty (#1419)", {
 test_that("sparse objects are of expected class and occur when expected", {
     
     expect_is(textstat_proxy(test_mt),
-              "dsCMatrix")
+              "dsTMatrix")
     expect_is(textstat_proxy(test_mt, min_proxy = 10),
-              "dsCMatrix")
+              "dsTMatrix")
     expect_is(textstat_proxy(test_mt, rank = 2),
-              "dgCMatrix")
+              "dgTMatrix")
     expect_is(textstat_proxy(test_mt, method = "kullback"),
-              "dgCMatrix")
+              "dgTMatrix")
     
     # expect_is(
     #     textstat_dist(dfm_weight(test_mt, "prop"), min_dist = 0),
