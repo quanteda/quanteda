@@ -109,7 +109,7 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param concatenator concatenator that join multi-word expression in tokens object
 #' @param remove_unigram ignore single-word patterns if \code{TRUE}
-#' @seealso pattern2id
+#' @seealso \code{\link{pattern2id}}
 #' @keywords internal
 pattern2list <- function(pattern, types, valuetype, case_insensitive, 
                          concatenator = '_', remove_unigram = FALSE) {

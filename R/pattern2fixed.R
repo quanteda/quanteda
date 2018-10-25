@@ -276,7 +276,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL) {
 #' fastmatch.
 #' @param regex a glob expression to search
 #' @param index an index object created by \code{index_types}
-#' @seealso index_types
+#' @seealso \code{\link{index_types}}
 #' @keywords internal
 search_index <- function(pattern, index){
     # use fmatch instead of names for quick access

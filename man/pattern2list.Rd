@@ -27,6 +27,6 @@ Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic.
 }
 \seealso{
-pattern2id
+\code{\link{pattern2id}}
 }
 \keyword{internal}
