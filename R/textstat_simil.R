@@ -145,7 +145,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' [Experimental] Compute document/feature proximity
 #'
 #' This is an underlying function for \code{textstat_dist} and
-#' \code{textstat_simil} but returns \code{sparseMatrix}. 
+#' \code{textstat_simil} but returns \code{TsparseMatrix}. 
 #' @keywords internal
 #' @inheritParams textstat_dist
 #' @param min_proxy the minimum proximity value to be recoded.
