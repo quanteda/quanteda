@@ -27,15 +27,17 @@
 #' 
 pattern2id <- function(pattern, types = NULL, valuetype = NULL,
                        case_insensitive = NULL, index = NULL) {
-
+    
+    
     if (!length(pattern)) return(list())
     pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
-
+    
     if (is.null(index)) {
         if (is.null(types)) stop("types cannot be NULL when index is not provided")
         if (is.null(valuetype)) stop("valuetype cannot be NULL when index is not provided")
         if (is.null(case_insensitive)) stop("case_insensitive cannot be NULL when index is not provided")
-    
+        if (!is.character(types)) stop("types must be a character vector")
+        
         # glob is treated as fixed if neither * or ? is found
         pattern_unlist <- unlist(pattern, use.names = FALSE)
         if (!valuetype %in% c("glob", "fixed", "regex"))
