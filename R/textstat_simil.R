@@ -145,7 +145,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' [Experimental] Compute document/feature proximity
 #'
 #' This is an underlying function for \code{textstat_dist} and
-#' \code{textstat_simil} but returns \code{CsparaseMatrix}. 
+#' \code{textstat_simil} but returns \code{TsparseMatrix}. 
 #' @keywords internal
 #' @inheritParams textstat_dist
 #' @param min_proxy the minimum proximity value to be recoded.
@@ -229,22 +229,27 @@ textstat_proxy <- function(x, selection = NULL,
         result <- result[,i, drop = FALSE]
         colnames(result) <- label[i]
     }
-    return(as(result, "CsparseMatrix"))
+    return(result)
+    #return(as(result, "CsparseMatrix"))
 }
 
 # internal function to coerce to dist object
-as_dist <- function(x, method, call, diag = diag, upper = upper) {
+as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
     # warning("dist object is deprecated as an output of textstat_dist/simil function. ",
     #         "Please coerce a sparse matrix to a dist object using as.dist(as.matrix(x)).")
-    x <- as.matrix(x)
+    result <- as.matrix(x)
+    if (ncol(x) == nrow(x))
+        result <- result[lower.tri(result)]
+    attr(result, "Labels") <- colnames(x)
+    attr(result, "Size") <- ncol(x)
+    attr(result, "call") <- call
+    attr(result, "Diag") <- diag
+    attr(result, "Upper") <- upper
+    attr(result, "method") <- method
     if (ncol(x) == nrow(x)) {
-        x <- as.dist(x, diag = diag, upper = upper)
+        class(result) <- "dist"
     } else {
-        attr(x, "Labels") <- colnames(x)
-        attr(x, "Size") <- ncol(x)
-        class(x) <- c("dist_selection")
+        class(result) <- "dist_selection"
     }
-    attr(x, "method") <- method
-    attr(x, "call") <- call
-    return(x)
+    return(result)
 }
