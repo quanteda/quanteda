@@ -2,12 +2,12 @@
 
 ## Purpose
 
-- Bug fixes and stability enhancements (noted in NEWS).
+- Bug fixes, stability enhancements, and feature additions (noted in NEWS).
 - Fixed some URLs that became broken due to changes on the target websites.
 
 ## Test environments
 
-* local macOS 10.13.6, R 3.5.1
+* local macOS 10.14, R 3.5.1
 * ubuntu Ubuntu 16.04.5 LTS, R 3.5.1
 * Windows Server 2012 R2 x64 (build 9600), R 3.5.1 (on Appveyor)
 * local Windows 10, R 3.5.1
