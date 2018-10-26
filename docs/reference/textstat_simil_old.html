@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coerce a dist into a dist — as.dist.dist • quanteda</title>
+<title>Similarity and distance computation between documents or features — textstat_dist_old • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -38,10 +38,13 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Coerce a dist into a dist — as.dist.dist" />
+<meta property="og:title" content="Similarity and distance computation between documents or features — textstat_dist_old" />
 
-<meta property="og:description" content="Internal function to guarantee that a dist remains a dist, if for some reason
-a user wants to coerce a dist into a dist." />
+<meta property="og:description" content="These functions compute matrixes of distances and similarities between 
+documents or features from a dfm and return a 
+dist object (or a matrix if specific targets are
+selected).  They are fast and robust because they operate directly on the sparse
+dfm objects." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -194,27 +197,137 @@ a user wants to coerce a dist into a dist." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coerce a dist into a dist</h1>
+    <h1>Similarity and distance computation between documents or features</h1>
     
-    <div class="hidden name"><code>as.dist.dist.Rd</code></div>
+    <div class="hidden name"><code>textstat_simil_old.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Internal function to guarantee that a dist remains a dist, if for some reason
-a user wants to coerce a dist into a dist.</p>
+    <p>These functions compute matrixes of distances and similarities between 
+documents or features from a <code><a href='dfm.html'>dfm</a></code> and return a 
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/dist'>dist</a></code> object (or a matrix if specific targets are
+selected).  They are fast and robust because they operate directly on the sparse
+<a href='dfm.html'>dfm</a> objects.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for dist</span>
-<span class='fu'>as.dist</span>(<span class='no'>m</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-        
+    <pre class="usage"><span class='fu'>textstat_dist_old</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>,
+  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"euclidean"</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+
+<span class='fu'>textstat_simil_old</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>,
+  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"correlation"</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a> object</p></td>
+    </tr>
+    <tr>
+      <th>selection</th>
+      <td><p>a valid index for document or feature names from <code>x</code>,
+to be selected for comparison</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p>identifies the margin of the dfm on which similarity or
+difference will be computed:  <code>"documents"</code> for documents or 
+<code>"features"</code> for word/term features</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>method the similarity or distance measure to be used; see
+Details</p></td>
+    </tr>
+    <tr>
+      <th>upper</th>
+      <td><p>whether the upper triangle of the symmetric \(V \times V\) 
+matrix is recorded</p></td>
+    </tr>
+    <tr>
+      <th>diag</th>
+      <td><p>whether the diagonal of the distance matrix should be recorded</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>The power of the Minkowski distance.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>textstat_simil</code> and <code>textstat_dist</code> return
+  <code>dist</code> class objects if selection is <code>NULL</code>, otherwise, a
+  matrix is returned matching distances to the documents or features
+  identified in the selection.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default), 
+  <code>"chisquared"</code>, <code>"chisquared2"</code>, 
+  <code>"kullback"</code>. <code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
+  and <code>"minkowski"</code>.</p>
+<p><code>textstat_simil</code> options are: <code>"correlation"</code> (default), 
+  <code>"cosine"</code>, <code>"jaccard"</code>, <code>"ejaccard"</code>, <code>"dice"</code>,
+  <code>"edice"</code>, <code>"simple matching"</code>, <code>"hamman"</code>, and 
+  <code>"faith"</code>.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>If you want to compute similarity on a "normalized" dfm object 
+  (controlling for variable document lengths, for methods such as correlation
+  for which different document lengths matter), then wrap the input dfm in 
+  <code><a href='dfm_weight.html'>dfm_weight</a>(x, "prop")</code>.</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>The <code>"chisquared"</code> metric is from Legendre, P., &amp; Gallagher,
+  E. D. (2001).
+  "<a href='http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&amp;_Gallagher.pdf'>Ecologically
+   meaningful transformations for ordination of species data</a>".
+  <em>Oecologia</em>, 129(2), 271–280. doi.org/10.1007/s004420100716</p>  
+<p>The <code>"chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
+  O., &amp; Werman, M. (2010). 
+  "<a href='https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54'>The
+  Quadratic-Chi Histogram Distance Family</a>". In <em>Computer Vision – ECCV
+  2010</em> (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
+  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.</p>
+<p><code>"kullback"</code> is the Kullback-Leibler distance, which assumes that
+  \(P(x_i) = 0\) implies \(P(y_i)=0\), and in case both \(P(x_i)\) and
+  \(P(y_i)\) equals to zero, then \(P(x_i) * log(p(x_i)/p(y_i))\) is
+  assumed to be zero as the limit value.  The formula is:
+   $$\sum{P(x)*log(P(x)/p(y))}$$</p>   
+<p>All other measures are described in the <span class="pkg">proxy</span> package.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='textstat_simil.html'>textstat_dist</a></code>, <code><a href='as.list.dist.html'>as.list.dist</a></code>,
+  <code>dist</code></p></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#note">Note</a></li>
+
+      <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
+
+    <h2>Author</h2>
+    
+Kenneth Benoit, Haiyan Wang
 
   </div>
 </div>

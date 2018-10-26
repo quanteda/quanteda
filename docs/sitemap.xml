@@ -460,6 +460,9 @@
     <loc>https://quanteda.io/reference/textstat_lexdiv.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/textstat_proxy.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/textstat_readability.html</loc>
   </url>
   <url>
@@ -467,6 +470,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/textstat_simil.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/textstat_simil_old.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/tf.html</loc>

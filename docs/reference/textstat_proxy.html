@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coerce a dist into a dist — as.dist.dist • quanteda</title>
+<title>[Experimental] Compute document/feature proximity — textstat_proxy • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -38,10 +38,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Coerce a dist into a dist — as.dist.dist" />
+<meta property="og:title" content="[Experimental] Compute document/feature proximity — textstat_proxy" />
 
-<meta property="og:description" content="Internal function to guarantee that a dist remains a dist, if for some reason
-a user wants to coerce a dist into a dist." />
+<meta property="og:description" content="This is an underlying function for textstat_dist and
+textstat_simil but returns TsparseMatrix." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -194,27 +194,75 @@ a user wants to coerce a dist into a dist." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coerce a dist into a dist</h1>
+    <h1>[Experimental] Compute document/feature proximity</h1>
     
-    <div class="hidden name"><code>as.dist.dist.Rd</code></div>
+    <div class="hidden name"><code>textstat_proxy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Internal function to guarantee that a dist remains a dist, if for some reason
-a user wants to coerce a dist into a dist.</p>
+    <p>This is an underlying function for <code>textstat_dist</code> and
+<code>textstat_simil</code> but returns <code>TsparseMatrix</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for dist</span>
-<span class='fu'>as.dist</span>(<span class='no'>m</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-        
+    <pre class="usage"><span class='fu'>textstat_proxy</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>,
+  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"cosine"</span>, <span class='st'>"correlation"</span>, <span class='st'>"jaccard"</span>, <span class='st'>"ejaccard"</span>,
+  <span class='st'>"dice"</span>, <span class='st'>"edice"</span>, <span class='st'>"hamman"</span>, <span class='st'>"simple matching"</span>, <span class='st'>"faith"</span>, <span class='st'>"euclidean"</span>,
+  <span class='st'>"chisquared"</span>, <span class='st'>"hamming"</span>, <span class='st'>"kullback"</span>, <span class='st'>"manhattan"</span>, <span class='st'>"maximum"</span>, <span class='st'>"canberra"</span>,
+  <span class='st'>"minkowski"</span>), <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_proxy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a> object</p></td>
+    </tr>
+    <tr>
+      <th>selection</th>
+      <td><p>a valid index for document or feature names from <code>x</code>,
+to be selected for comparison</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p>identifies the margin of the dfm on which similarity or
+difference will be computed:  <code>"documents"</code> for documents or
+<code>"features"</code> for word/term features.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>method the similarity or distance measure to be used; see
+Details.</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>The power of the Minkowski distance.</p></td>
+    </tr>
+    <tr>
+      <th>min_proxy</th>
+      <td><p>the minimum proximity value to be recoded.</p></td>
+    </tr>
+    <tr>
+      <th>rank</th>
+      <td><p>an integer value specifying top-n most proximity values to be
+recorded.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='textstat_simil.html'>textstat_dist</a></code>, <code><a href='textstat_simil.html'>textstat_simil</a></code></p></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>
