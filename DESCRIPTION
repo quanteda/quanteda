@@ -58,7 +58,6 @@ Suggests:
     DT,
     e1071,     
     ExPosition,     
-    koRpus,     
     lda,
     lsa,     
     proxy,
