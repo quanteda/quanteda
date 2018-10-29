@@ -1,6 +1,6 @@
 #' Randomly sample documents from a corpus
 #' 
-#' Take a random sample or documents of the specified size from a corpus or
+#' Take a random sample of documents of the specified size from a corpus or
 #' document-feature matrix, with or without replacement.  Works just as
 #' \code{\link{sample}} works for the documents and their associated 
 #' document-level variables.
