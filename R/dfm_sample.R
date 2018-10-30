@@ -1,7 +1,7 @@
 #' Randomly sample documents or features from a dfm
 #' 
 #' Sample randomly from a dfm object, from documents or features.
-#' @param x the dfm object whose documents or features will be sampled
+#' @param x the \link{dfm} object whose documents or features will be sampled
 #' @param size a positive number, the number of documents or features to select
 #' @param replace logical; should sampling be with replacement?
 #' @param prob a vector of probability weights for obtaining the elements of the
@@ -12,6 +12,7 @@
 #' @return A dfm object with number of documents or features equal to \code{size}, drawn 
 #'   from the dfm \code{x}.  
 #' @seealso \link{sample}
+#' @keywords dfm
 #' @examples
 #' set.seed(10)
 #' myDfm <- dfm(data_corpus_inaugural[1:10])
