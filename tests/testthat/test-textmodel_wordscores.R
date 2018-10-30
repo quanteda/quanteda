@@ -248,3 +248,36 @@ test_that("works with different predicted object in different shapes (#1440)",  
 
 })
 
+test_that("textmodel_wordscores correctly implements smoothing (#1476)", {
+    ws_nosmooth <- textmodel_wordscores(data_dfm_lbgexample, smooth = 0,
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    ws_smooth1 <- textmodel_wordscores(dfm_smooth(data_dfm_lbgexample, smoothing = 1),
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    ws_smooth1a <- textmodel_wordscores(data_dfm_lbgexample + 1,
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    expect_identical(coef(ws_smooth1), coef(ws_smooth1a))
+    expect_true(!any(coef(ws_nosmooth) ==  coef(ws_smooth1)))
+    
+    ws_smooth2 <- textmodel_wordscores(data_dfm_lbgexample, smooth = 0.5,
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    ws_smooth2a <- textmodel_wordscores(data_dfm_lbgexample + 0.5,
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    expect_identical(coef(ws_smooth2), coef(ws_smooth2a))
+})
+
+test_that("predict.textmodel_wordscores correctly implements smoothing (#1476)", {
+    ws_nosmooth <- textmodel_wordscores(data_dfm_lbgexample, smooth = 0,
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    ws_smooth1 <- textmodel_wordscores(data_dfm_lbgexample, smooth = 1,
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    ws_smooth1a <- textmodel_wordscores(dfm_smooth(data_dfm_lbgexample, smoothing = 1),
+                                        c(seq(-1.5, 1.5, .75), NA), scale = "linear")
+    expect_identical(
+        predict(ws_smooth1),
+        predict(ws_smooth1, newdata = data_dfm_lbgexample)
+    )
+    expect_identical(
+        predict(ws_smooth1a),
+        predict(ws_smooth1, newdata = dfm_smooth(data_dfm_lbgexample, smoothing = 1))
+    )
+})

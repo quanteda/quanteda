@@ -17,7 +17,16 @@ LBG linear posterior weighted word class differences, or \code{"logit"}
 for log posterior differences}
 
 \item{smooth}{a smoothing parameter for word counts; defaults to zero for the
-to match the LBG (2003) method.}
+to match the LBG (2003) method.  See Value below for additional
+information on the behaviour of this argument.}
+}
+\value{
+A fitted \code{textmodel_wordscores} object.  This object will
+  contain a copy of the input data, but in its original form without any
+  smoothing applied. Calling \code{\link{predict.textmodel_wordscores}} on
+  this object without specifying a value for \code{newdata}, for instance,
+  will predict on the unsmoothed object.  This behaviour differs from
+  versions of quanteda <= 1.2.
 }
 \description{
 \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
