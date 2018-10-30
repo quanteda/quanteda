@@ -2,12 +2,12 @@
 % Please edit documentation in R/tokens_sample.R
 \name{tokens_sample}
 \alias{tokens_sample}
-\title{Randomly sample documents or features from a tokens}
+\title{Randomly sample documents from a tokens object}
 \usage{
 tokens_sample(x, size = ndoc(x), replace = FALSE, prob = NULL)
 }
 \arguments{
-\item{x}{the tokens object whose documents or features will be sampled}
+\item{x}{the \link{tokens} object whose documents will be sampled}
 
 \item{size}{a positive number, the number of documents or features to select}
 
@@ -17,11 +17,13 @@ tokens_sample(x, size = ndoc(x), replace = FALSE, prob = NULL)
 vector being sampled.}
 }
 \value{
-A tokens object with number of documents or features equal to \code{size}, drawn 
-  from the tokens \code{x}.
+A \link{tokens} object with number of documents or features equal to
+  \code{size}, drawn from the tokens \code{x}.
 }
 \description{
-Sample documents randomly from a tokens object.
+Sample tokenized documents randomly from a tokens object, with or without
+replacement. Works just as \code{\link{sample}} works, for document-level
+units (and their associated document-level variables).
 }
 \examples{
 set.seed(10)
@@ -33,3 +35,4 @@ head(tokens_sample(toks, replace = TRUE))
 \seealso{
 \link{sample}
 }
+\keyword{tokens}
