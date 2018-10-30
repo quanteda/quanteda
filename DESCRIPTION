@@ -168,6 +168,7 @@ Collate:
     'tokens_segment.R'
     'tokens_select.R'
     'tokens_subset.R'
+    'tokens_sample.R'
     'utils.R'
     'wordstem.R'
     'zzz.R'

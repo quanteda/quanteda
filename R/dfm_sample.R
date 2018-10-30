@@ -37,11 +37,11 @@ dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
     x <- as.dfm(x)
     margin <- match.arg(margin)
     if (margin == "documents") {
-        if (size > ndoc(x))
+        if (size > ndoc(x) && !replace)
             stop("size cannot exceed the number of documents (", ndoc(x), ")")
         x <- x[sample(ndoc(x), size, replace, prob), ]
     } else if (margin == "features") {
-        if (size > nfeat(x))
+        if (size > nfeat(x) && !replace)
             stop("size cannot exceed the number of features (", nfeat(x), ")")
         x <- x[, sample(nfeat(x), size, replace, prob)]
     } 

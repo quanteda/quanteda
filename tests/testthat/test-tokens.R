@@ -543,3 +543,16 @@ test_that("warn when remove_separators = FALSE fasterword and fastestword", {
     expect_warning(tokens("a b c", what = "fastestword", remove_separators = FALSE),
                    "remove_separators = FALSE has no effect")
 })
+
+
+
+test_that("dfm_sample works as expected",{
+    toks <- tokens(data_corpus_inaugural[1:10])
+    expect_equal(ndoc(tokens_sample(toks, size = 5)), 5)
+    expect_equal(ndoc(tokens_sample(toks, size = 15, replace = TRUE)), 15)
+    expect_error(tokens_sample(toks, size = 20),
+                 "size cannot exceed the number of documents \\(10\\)")
+    expect_error(tokens_sample(data_corpus_inaugural[1:10]), 
+                 "only works on tokens objects")
+})
+
