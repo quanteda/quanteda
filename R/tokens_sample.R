@@ -30,5 +30,5 @@ tokens_sample.tokens <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     
     if (size > ndoc(x) && !replace)
         stop("size cannot exceed the number of documents (", ndoc(x), ")")
-    x <- x[sample(ndoc(x), size, replace, prob)]
+    x[sample(ndoc(x), size, replace, prob)]
 }

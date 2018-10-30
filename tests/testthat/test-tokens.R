@@ -544,9 +544,7 @@ test_that("warn when remove_separators = FALSE fasterword and fastestword", {
                    "remove_separators = FALSE has no effect")
 })
 
-
-
-test_that("dfm_sample works as expected",{
+test_that("tokens_sample works as expected",{
     toks <- tokens(data_corpus_inaugural[1:10])
     expect_equal(ndoc(tokens_sample(toks, size = 5)), 5)
     expect_equal(ndoc(tokens_sample(toks, size = 15, replace = TRUE)), 15)
