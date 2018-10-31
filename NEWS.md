@@ -1,4 +1,4 @@
-# quanteda v1.3.12
+# quanteda v1.3.13
 
 ### Bug fixes and stability enhancements
 
@@ -16,6 +16,7 @@
 * Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
 * Added a new `separator` argument to `kwic()` to allow a user to define which characters will be added between tokens returned from a keywords in context search.  (#1449)
 * Reimplemented `textstat_dist()` and `textstat_simil()` in C++ for enhanced performance.  (#1210)
+* Added a `tokens_sample()` function (#1478).
 
 ### Behaviour changes
 

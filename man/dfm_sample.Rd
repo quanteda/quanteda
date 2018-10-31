@@ -8,7 +8,7 @@ dfm_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
   margin = c("documents", "features"))
 }
 \arguments{
-\item{x}{the dfm object whose documents or features will be sampled}
+\item{x}{the \link{dfm} object whose documents or features will be sampled}
 
 \item{size}{a positive number, the number of documents or features to select}
 
@@ -38,3 +38,4 @@ head(dfm_sample(myDfm, margin = "features"))
 \seealso{
 \link{sample}
 }
+\keyword{dfm}
