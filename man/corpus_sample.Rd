@@ -30,10 +30,9 @@ A corpus object with number of documents equal to \code{size}, drawn
   the documents selected.
 }
 \description{
-Take a random sample or documents of the specified size from a corpus or
-document-feature matrix, with or without replacement.  Works just as
-\code{\link{sample}} works for the documents and their associated 
-document-level variables.
+Take a random sample of documents of the specified size from a corpus, with
+or without replacement.  Works just as \code{\link{sample}} works for the
+documents and their associated document-level variables.
 }
 \examples{
 # sampling from a corpus

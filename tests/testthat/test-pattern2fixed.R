@@ -145,15 +145,15 @@ test_that("regex2fixed and regex2id still work", {
     glob <- list(c('a', 'b*'), c('*c*'), c('*d*'), c('*b'))
     types <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     
-    expect_identical(quanteda:::regex2fixed(types, regex, 'regex', TRUE),
-                     pattern2fixed(types, regex, 'regex', TRUE))
-    expect_identical(quanteda:::regex2id(types, regex, 'regex', TRUE),
-                     pattern2id(types, regex, 'regex', TRUE))
+    expect_identical(quanteda:::regex2fixed(regex, types, 'regex', TRUE),
+                     pattern2fixed(regex, types, 'regex', TRUE))
+    expect_identical(quanteda:::regex2id(regex, types, 'regex', TRUE),
+                     pattern2id(regex, types, 'regex', TRUE))
     
-    expect_identical(quanteda:::regex2fixed(types, glob, 'glob', TRUE),
-                     pattern2fixed(types, glob, 'glob', TRUE))
-    expect_identical(quanteda:::regex2id(types, glob, 'glob', TRUE),
-                     pattern2id(types, glob, 'glob', TRUE))
+    expect_identical(quanteda:::regex2fixed(glob, types, 'glob', TRUE),
+                     pattern2fixed(glob, types, 'glob', TRUE))
+    expect_identical(quanteda:::regex2id(glob, types, 'glob', TRUE),
+                     pattern2id(glob, types, 'glob', TRUE))
 })
 
 test_that("raise error when valuetype is illegal", {
@@ -165,4 +165,18 @@ test_that("raise error when valuetype is illegal", {
     expect_error(index_types('a*', 'xxx', TRUE),
                  'valuetype should be "glob", "fixed" or "regex"')
 })
+
+test_that("add value check for types (#1463)", {
+    
+    v1 <- list(c("a", "bb", "cc"))
+    v2 <- letters
+    v3 <- c(TRUE, FALSE)
+    expect_error(pattern2fixed(v1, v1, 'regex', TRUE),
+                 "types must be a character vector")
+    expect_silent(pattern2fixed(v1, v2, 'regex', TRUE))
+    expect_error(pattern2fixed(v1, v3, 'regex', TRUE),
+                 "types must be a character vector")
+    
+})
+
 

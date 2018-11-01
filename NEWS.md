@@ -1,4 +1,4 @@
-# quanteda v1.3.11
+# quanteda v1.3.13
 
 ### Bug fixes and stability enhancements
 
@@ -9,15 +9,19 @@
 * For `textstat_readability()`, fixed a bug in Dale-Chall-based measures and in the Spache word list measure.  These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists.  The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (#1410)
 * Fixed problems with basic dfm operations (`rowMeans()`, `rowSums()`, `colMeans()`, `colSums()`) caused by not having access to the **Matrix** package methods.  (#1428)
 * Fixed problem in `textplot_scale1d()` when input a predicted wordscores object with `se.fit = TRUE` (#1440).
+* Improved the stability of `textplot_network()`. (#1460)
 
 ### New Features
 
 * Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
 * Added a new `separator` argument to `kwic()` to allow a user to define which characters will be added between tokens returned from a keywords in context search.  (#1449)
+* Reimplemented `textstat_dist()` and `textstat_simil()` in C++ for enhanced performance.  (#1210)
+* Added a `tokens_sample()` function (#1478).
 
 ### Behaviour changes
 
 * Removed the Hamming distance method from `textstat_dist()` (#1443), based on the reasoning in #1442.
+* Removed the "chisquared" and "chisquared2" distance measures from `textstat_simil()`. (#1442)
 
 # quanteda v1.3.4
 

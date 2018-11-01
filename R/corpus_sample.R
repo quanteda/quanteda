@@ -1,9 +1,8 @@
 #' Randomly sample documents from a corpus
 #' 
-#' Take a random sample or documents of the specified size from a corpus or
-#' document-feature matrix, with or without replacement.  Works just as
-#' \code{\link{sample}} works for the documents and their associated 
-#' document-level variables.
+#' Take a random sample of documents of the specified size from a corpus, with
+#' or without replacement.  Works just as \code{\link{sample}} works for the
+#' documents and their associated document-level variables.
 #' @param x a corpus object whose documents will be sampled
 #' @param size a positive number, the number of documents to select
 #' @param replace Should sampling be with replacement?
