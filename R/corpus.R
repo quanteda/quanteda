@@ -178,6 +178,7 @@ corpus.character <- function(x, docnames = NULL,
     result <- unname(x)
     class(result) <- "corpus"
     attr(result, "docvars") <- docvars
+    attr(result, "unit") <- "documents"
     attr(result, "meta") <- meta("character")
     
     return(result)
@@ -327,11 +328,6 @@ corpus.Corpus <- function(x, ...) {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
     corpus(txt, docvars = docvars)
-}
-
-# internal function to check if variable is internal-only
-is_internal <- function(x) {
-    stri_startswith_fixed(x, "_")
 }
 
 # internal function to create corpus meta data

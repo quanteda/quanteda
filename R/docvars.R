@@ -1,37 +1,46 @@
 
-# internal function to modify docvars
-set_docvars <- function(x, field, value) {
-    
-    flag <- is_internal(names(x))
+# internal function to modify user docvars only
+"set_docvars<-" <- function(x, field, system = FALSE, value) {
+    stopifnot(is.data.frame(x))
+    flag <- system == is_system(names(x))
     if (is.dfm(value))
         value <- convert(value, to = "data.frame")[-1]
     if (is.null(value)) {
-        x <- x[flag] 
+        x <- x[flag]
     } else if (is.null(field) && (is.data.frame(value))) {
-        # old objects has no docvars
-        #if (is.null(x)) {
-        #    x <- value
-        #} else {
-            if (nrow(value) != nrow(x))
-                stop(message_error("docvar_mismatch"))
-            x <- cbind(x[flag], value)
-        #}
-    } else if (!any(is_internal(field))) {
-        x[[field]] <- value
+        if (nrow(value) != nrow(x))
+            stop(message_error("docvar_mismatch"))
+        x <- cbind(x[flag], value)
     } else {
-        message_error("docvar_invalid")
+        if (any(is_system(field)))
+            stop(message_error("docvar_invalid"))
+        if (system) field <- paste0("_", field)
+        x[field] <- value
     }
+    rownames(x) <- NULL
     return(x)
 }
 
-## internal function to return the docvars for all docvars functions
-get_docvars <- function(x, field = NULL) {
-    x <- x[!is_internal(names(x))]
+## internal function to return all the user docvars
+get_docvars <- function(x, field = NULL, drop = FALSE, system = FALSE) {
+    stopifnot(is.data.frame(x))
+    x <- x[system == is_system(names(x))]
     if (is.null(field)) {
         return(x)
     } else {
-        return(x[,field])
+        if (system) field <- paste0("_", field)
+        return(x[field])
     }
+    if (length(x) == 1 && drop) {
+        return(x[[1]])
+    } else {
+        return(x)
+    }
+}
+
+# internal function to check if variable is internal-only
+is_system <- function(x) {
+    stri_startswith_fixed(x, "_")
 }
 
 
@@ -65,20 +74,20 @@ docvars.default <- function(x, field = NULL) {
 #' @export
 docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
-    get_docvars(attr(x, 'docvars'), field)
+    get_docvars(attr(x, 'docvars'), field, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.tokens <- function(x, field = NULL) {
-    get_docvars(attr(x, 'docvars'), field)
+    get_docvars(attr(x, 'docvars'), field, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.dfm <- function(x, field = NULL) {
     x <- as.dfm(x)
-    get_docvars(x@docvars, field)
+    get_docvars(x@docvars, field, drop = TRUE)
 }
 
 #' @noRd

@@ -208,12 +208,10 @@ char_segment.character <- function(x, pattern = "##*",
 # internal functions ----------
 
 # internal function for char_segment and corpus_segment
-segment_texts <- function(x, pattern = NULL, valuetype = "regex",
+segment_texts <- function(x, docname, pattern = NULL, valuetype = "regex",
                           case_insensitive = TRUE,
                           extract_pattern = FALSE, pattern_position = "after", 
                           omit_empty = TRUE, what = "other", ...){
-    
-    docname <- names(x)
     
     # normalize EOL
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
@@ -297,14 +295,13 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         result <- data.frame(texts = stri_trim_both(txt), 
                              pattern = stri_sub(x, pos[,1], pos[,2]),
                              stringsAsFactors = FALSE)
-        
     } else {
         result <- data.frame(texts = stri_trim_both(x),
                              stringsAsFactors = FALSE)
     }
 
-    result$docid <- rep(seq_along(n), n)
-    if (!is.null(docname)) result$docname <- rep(docname, n)
+    result$docnum <- rep(seq_along(n), n)
+    result$docname <- rep(docname, n)
     
     if (extract_pattern) {
         result <- result[!is.na(result$pattern),]
@@ -313,13 +310,9 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
             result <- result[!is.na(result$texts),]
     }
     
-    result$segid <- unlist(lapply(rle(result$docid)$lengths, seq_len))
+    result$segnum <- unlist(lapply(rle(result$docnum)$lengths, seq_len))
+    result$docid <- paste0(result$docname, ".", result$segnum)
 
-    if (!is.null(docname)) {
-        # to make names doc1.1, doc1.2, doc2.1, ...
-        rownames(result) <- stri_c(result$docname, ".", result$segid)
-    }
-    
     return(result)
 }
 

@@ -137,7 +137,7 @@ as.corpus.corpus <- function(x) {
     flag <- is_internal(names(x$documents))
     vars_internal <- x$documents[flag]
     x$documents <- x$documents[!flag]
-    
+
     result <- corpus(x$documents, "row.names", "texts")
     
     # overwite internal variables
@@ -153,6 +153,7 @@ as.corpus.corpus <- function(x) {
     }
     
     attr(result, "docvars") <- vars
+    attr(result, "unit") <- x$settings$unit
     attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
                                                format = "%a %b %d %H:%M:%S %Y")
     return(result)

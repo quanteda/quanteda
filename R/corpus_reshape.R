@@ -18,7 +18,7 @@
 #'                  textwo = "Premiere phrase.  Deuxieme phrase."), 
 #'                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
 #' summary(corp)
-#' summary(corpus_reshape(corp, to = "sentences"), showmeta = TRUE)
+#' summary(corpus_reshape(corp, to = "sentences"))
 #' 
 #' # example with inaugural corpus speeches
 #' (corp2 <- corpus_subset(data_corpus_inaugural, Year>2004))
@@ -47,57 +47,42 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     
     x <- as.corpus(x)
     to <- match.arg(to)
+    attrs <- attributes(x)
+    vars <- attr(x, "docvars")
     
     if (to == "documents") {
         if (settings(x, 'units') %in% c('sentences', 'paragraphs')) {
             
-            docnum <- docvars(x, '_docnum')
-            segnum <- docvars(x, '_segnum')
+            docname <- get_docvars("segnum", TRUE)
+            docnum <- get_docvars("docnum", TRUE)
+            segnum <- get_docvars("segnum", TRUE)
             
-            if (settings(x, 'units') == 'sentences') {
-                texts <- stri_join_list(split(texts(x), factor(docnum)), sep = "  ")
+            if (identical(attrs$unit, "sentences")) {
+                texts <- stri_join_list(split(x, factor(docnum)), sep = "  ")
             } else {
-                texts <- stri_join_list(split(texts(x), factor(docnum)), sep = "\n\n")
+                texts <- stri_join_list(split(x, factor(docnum)), sep = "\n\n")
             }
-
-            temp <- corpus(texts, 
-                           docnames = docvars(x, '_document')[!duplicated(docnum)],
-                           docvars = docvars(x)[!duplicated(docnum),,drop = FALSE])
-
-            settings(temp, 'units') <- "documents"
-            result <- temp
+            result <- corpus(texts)
+            attr(result, "docvars") <- vars[!duplicated(docnum),,drop = FALSE]
+            attr(result, "unit") <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
         
     } else if (to %in% c("sentences", "paragraphs")) {
-        if (settings(x, 'units') == 'documents') {
-            vars <- docvars(x)
-            
-            # get the relevant function call
-            commands <- as.character(sys.calls())
-            commands <- commands[stri_detect_regex(commands, "reshape\\.corpus")]
-            
-            temp <- segment_texts(texts(x), pattern = NULL, extract_pattern = FALSE, 
+        if (identical(attrs$unit, "documents")) {
+            name <- c("docid", "docname", "docnum", "segnum")
+            temp <- segment_texts(x, docnames(x), pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
-            
-            result <- corpus(temp$texts, docnames = rownames(temp))
-            
-            # add repeated versions of remaining docvars
-            if (use_docvars && !is.null(vars)) {
-                rownames(vars) <- NULL # faster to repeat rows without rownames
-                vars <- select_fields(vars, "user")[temp$docnum,,drop = FALSE]
-                rownames(vars) <- rownames(temp)
-                docvars(result) <- vars
-            }
-            docvars(result, '_document') <- temp$docname
-            docvars(result, '_docnum') <- temp$docnum
-            docvars(result, '_segnum') <- temp$segnum
-            settings(result, "units") <- to
+            if (use_docvars)
+                vars <- vars[temp$docnum,,drop = FALSE]
+            set_docvars(vars, name, TRUE) <- temp[name]
+            result <- corpus(temp$texts)
+            attr(result, "docvars") <- vars
+            attr(result, "unit") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
-        
     } 
     return (result)
 }
