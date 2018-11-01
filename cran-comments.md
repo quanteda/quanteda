@@ -17,6 +17,8 @@
 
 ## R CMD check results
 
+We're run this through every checker possible: local builds, win-builder, r-hub, and revdep_check.  It's clean, except:
+
 ### Note on UBSAN issues
 
 Our package has some recurring UBSAN issues related to the Intel TBB (Threading Building Blocks) library built into **RcppParallel**.  However, these are harmless and should not block acceptance of our package.  
@@ -42,4 +44,4 @@ None.
 
 ## Downstream dependencies
 
-No errors, warnings, or notes were caused in other packages, using `devtools::revdep_check()` to confirm.
+No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm.
