@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -179,12 +179,12 @@
 <li>
 <a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: 用于<strong>quanteda</strong>的附加文本数据</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
 <ul>
 <li>
 <a href="https://github.com/quanteda/LIWCalike"><strong>LIWCalike</strong></a>: R版<a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> 文本分析软件</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="creating-a-corpus" class="section level1">
@@ -233,7 +233,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:49:55 2018
+## Created: Thu Nov  1 12:57:57 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -254,7 +254,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:49:55 2018
+## Created: Thu Nov  1 12:57:57 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -284,7 +284,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:49:55 2018
+## Created: Thu Nov  1 12:57:57 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -376,8 +376,8 @@
 <p>我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="cf">if</span> (<span class="kw">require</span>(ggplot2))</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>) ) </a></code></pre></div>
+<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">        </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>) ) </a></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># 最长的就职演说: William Henry Harrison</span></a>
@@ -414,7 +414,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Thu Oct  4 10:49:56 2018
+## Created: Thu Nov  1 12:57:58 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -691,20 +691,17 @@
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</a></code></pre></div>
-<pre><code>## Warning: 'stopwords(language = "ar")' is deprecated.
-## Use 'stopwords(language = "ar", source = "misc")' instead.
-## See help("Deprecated")</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>查看文档特征矩阵</h3>
 <p>可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调用<a href="https://cran.r-project.org/web/packages/wordcloud/index.html">wordcloud软件包</a>绘制词云图。</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">mydfm</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">mydfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>使用<code><a href="../../reference/topfeatures.html">topfeatures()</a></code>可以访问出现频率最高的特征：</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 词频最高的词</span></a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 词频最高的词</span></a></code></pre></div>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
 ##      system  population     country         new  immigrants      ensure 
@@ -714,20 +711,20 @@
 ##        work     percent 
 ##          13          12</code></pre>
 <p>使用<code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>可以绘制<code>dfm</code>对象的词云图。这个函数将参数传递给<strong>wordcloud</strong>包的<code><a href="../../reference/wordcloud.html">wordcloud()</a></code>函数，并且可以使用相同的参数来对图进行美化：</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb69-3" data-line-number="3">                   <span class="dt">rot.per =</span> <span class="fl">.25</span>, </a>
-<a class="sourceLine" id="cb69-4" data-line-number="4">                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">                   <span class="dt">rot.per =</span> <span class="fl">.25</span>, </a>
+<a class="sourceLine" id="cb68-4" data-line-number="4">                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
 <h3 class="hasAnchor">
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>按文档变量对文档分组</h3>
 <p>通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </a>
-<a class="sourceLine" id="cb70-2" data-line-number="2">                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>我们可以对这个dfm进行排序，并查看：</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
 ##        features
@@ -751,13 +748,13 @@
 <a href="#grouping-words-by-dictionary-or-equivalence-class" class="anchor"></a>按字典或等价的类别对词汇分组</h3>
 <p>在某些应用中，关于文本中我们感兴趣的单词集合我们有先验知识。例如，在电影评论中，通用的正面词汇的列表可能表示对电影正面的评价，或者我们可能会有一个与特定的意识形态立场相关的政治词汇的字典。在这些情况下，为了分析的目的，将这些词组等同处理并将其计数归类是有用的。</p>
 <p>例如，我们来看看总统在就职演讲的语料库中，与恐怖主义有关的词汇和与经济相关的词语在总统之间是如何变化的。从原语料库中，我们选择自克林顿以来的总统：</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</a></code></pre></div>
 <p>现在我们定义一个用于展示的字典：</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">                          <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</a>
+<a class="sourceLine" id="cb73-2" data-line-number="2">                          <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</a></code></pre></div>
 <p>我们也可在构建dfm时使用字典：</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">byPresMat</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">byPresMat</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
 ## 7 x 2 sparse Matrix of class "dfm"
 ##               features
@@ -770,10 +767,10 @@
 ##   2013-Obama        1       6
 ##   2017-Trump        1       5</code></pre>
 <p>构造函数<code><a href="../../reference/dictionary.html">dictionary()</a></code>也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research’ Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,</a>
-<a class="sourceLine" id="cb77-2" data-line-number="2">                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)</a>
-<a class="sourceLine" id="cb77-3" data-line-number="3">liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)</a>
-<a class="sourceLine" id="cb77-4" data-line-number="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2">                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)</a>
+<a class="sourceLine" id="cb76-3" data-line-number="3">liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)</a>
+<a class="sourceLine" id="cb76-4" data-line-number="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 </div>
 </div>
 </div>
@@ -783,11 +780,11 @@
 <div id="similarities-between-texts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>文本之间的相似度</h2>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </a>
-<a class="sourceLine" id="cb78-2" data-line-number="2">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb78-3" data-line-number="3">obama_simil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </a>
-<a class="sourceLine" id="cb78-4" data-line-number="4">                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
-<a class="sourceLine" id="cb78-5" data-line-number="5">obama_simil</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </a>
+<a class="sourceLine" id="cb77-2" data-line-number="2">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb77-3" data-line-number="3">obama_simil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </a>
+<a class="sourceLine" id="cb77-4" data-line-number="4">                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
+<a class="sourceLine" id="cb77-5" data-line-number="5">obama_simil</a></code></pre></div>
 <pre><code>##              2009-Obama 2013-Obama
 ## 1981-Reagan   0.6229949  0.6376412
 ## 1985-Reagan   0.6434472  0.6629428
@@ -799,25 +796,25 @@
 ## 2009-Obama    1.0000000  0.6815711
 ## 2013-Obama    0.6815711  1.0000000
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="co"># dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")</span></a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="co"># dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")</span></a></code></pre></div>
 <p>我们可以用这些距离来绘制树状图，聚类分析总统：</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</a>
-<a class="sourceLine" id="cb81-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </a>
-<a class="sourceLine" id="cb81-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb81-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
-<a class="sourceLine" id="cb81-5" data-line-number="5">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(pres_dfm, <span class="dt">min_termfreq =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb81-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb81-7" data-line-number="7"><span class="co">#分层聚类 -  在归一化dfm上计算距离</span></a>
-<a class="sourceLine" id="cb81-8" data-line-number="8">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))</a>
-<a class="sourceLine" id="cb81-9" data-line-number="9"><span class="co"># 聚类分析文本距离</span></a>
-<a class="sourceLine" id="cb81-10" data-line-number="10">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</a>
-<a class="sourceLine" id="cb81-11" data-line-number="11"><span class="co"># 按文档名标注</span></a>
-<a class="sourceLine" id="cb81-12" data-line-number="12">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(pres_dfm)</a>
-<a class="sourceLine" id="cb81-13" data-line-number="13"><span class="co"># 绘制树状图</span></a>
-<a class="sourceLine" id="cb81-14" data-line-number="14"><span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</a>
+<a class="sourceLine" id="cb80-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </a>
+<a class="sourceLine" id="cb80-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb80-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb80-5" data-line-number="5">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(pres_dfm, <span class="dt">min_termfreq =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb80-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb80-7" data-line-number="7"><span class="co">#分层聚类 -  在归一化dfm上计算距离</span></a>
+<a class="sourceLine" id="cb80-8" data-line-number="8">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))</a>
+<a class="sourceLine" id="cb80-9" data-line-number="9"><span class="co"># 聚类分析文本距离</span></a>
+<a class="sourceLine" id="cb80-10" data-line-number="10">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</a>
+<a class="sourceLine" id="cb80-11" data-line-number="11"><span class="co"># 按文档名标注</span></a>
+<a class="sourceLine" id="cb80-12" data-line-number="12">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(pres_dfm)</a>
+<a class="sourceLine" id="cb80-13" data-line-number="13"><span class="co"># 绘制树状图</span></a>
+<a class="sourceLine" id="cb80-14" data-line-number="14"><span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
 <p>我们也可查看特征相似度:</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
-<a class="sourceLine" id="cb82-2" data-line-number="2"><span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
+<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## $fair
 ##   economi     begin jefferson    author     faith      call   struggl 
 ## 0.9080252 0.9075951 0.8981462 0.8944272 0.8866586 0.8608285 0.8451543 
@@ -840,9 +837,9 @@
 <h2 class="hasAnchor">
 <a href="#scaling-document-positions" class="anchor"></a>文档位置的缩放分析</h2>
 <p>我们在<code><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="co"># make prettier document names</span></a>
-<a class="sourceLine" id="cb84-2" data-line-number="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
-<a class="sourceLine" id="cb84-3" data-line-number="3"><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ie_dfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="co"># make prettier document names</span></a>
+<a class="sourceLine" id="cb83-2" data-line-number="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
+<a class="sourceLine" id="cb83-3" data-line-number="3"><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ie_dfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## textmodel_wordfish.dfm(x = ie_dfm, dir = c(2, 1))
@@ -853,40 +850,40 @@
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>主题模型</h2>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </a>
-<a class="sourceLine" id="cb86-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
-<a class="sourceLine" id="cb86-3" data-line-number="3">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quant_dfm, <span class="dt">min_termfreq =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb86-4" data-line-number="4">quant_dfm</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </a>
+<a class="sourceLine" id="cb85-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb85-3" data-line-number="3">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quant_dfm, <span class="dt">min_termfreq =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb85-4" data-line-number="4">quant_dfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {</a>
-<a class="sourceLine" id="cb88-2" data-line-number="2">    my_lda_fit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quant_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb88-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb88-4" data-line-number="4">}</a></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {</a>
+<a class="sourceLine" id="cb87-2" data-line-number="2">    my_lda_fit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quant_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb87-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb87-4" data-line-number="4">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2       Topic 3  Topic 4     Topic 5     
-## [1,] "taoiseach" "kind"        "fianna" "taoiseach" "million"   
-## [2,] "employees" "imagination" "fáil"   "fine"      "support"   
-## [3,] "rate"      "policies"    "side"   "day"       "investment"
-## [4,] "referred"  "wit"         "level"  "case"      "welfare"   
-## [5,] "debate"    "create"      "third"  "credit"    "continue"  
-##      Topic 6     Topic 7    Topic 8     Topic 9      Topic 10 Topic 11    
-## [1,] "society"   "gael"     "care"      "irish"      "child"  "measures"  
-## [2,] "world"     "may"      "welfare"   "welfare"    "fianna" "per"       
-## [3,] "companies" "stimulus" "per"       "deficit"    "bank"   "reduce"    
-## [4,] "open"      "irish"    "allowance" "better"     "day"    "investment"
-## [5,] "sense"     "problems" "hit"       "confidence" "fáil"   "energy"    
-##      Topic 12   Topic 13  Topic 14  Topic 15   Topic 16   Topic 17  
-## [1,] "even"     "levy"    "benefit" "fianna"   "spending" "welfare" 
-## [2,] "irish"    "million" "today"   "fáil"     "million"  "system"  
-## [3,] "issue"    "carbon"  "day"     "national" "level"    "taxation"
-## [4,] "recovery" "change"  "child"   "irish"    "recent"   "fianna"  
-## [5,] "better"   "welfare" "burden"  "support"  "scheme"   "fáil"    
-##      Topic 18      Topic 19       Topic 20   
-## [1,] "alternative" "enterprising" "failed"   
-## [2,] "citizenship" "equal"        "strategy" 
-## [3,] "wealth"      "sense"        "needed"   
-## [4,] "adjustment"  "nation"       "ministers"
-## [5,] "breaks"      "going"        "system"</code></pre>
+<pre><code>##      Topic 1   Topic 2     Topic 3     Topic 4     Topic 5      
+## [1,] "child"   "failed"    "taoiseach" "taoiseach" "never"      
+## [2,] "benefit" "strategy"  "prsi"      "may"       "fianna"     
+## [3,] "day"     "needed"    "referred"  "irish"     "competitive"
+## [4,] "bank"    "ministers" "terms"     "gael"      "societies"  
+## [5,] "today"   "system"    "stimulus"  "fine"      "start"      
+##      Topic 6        Topic 7      Topic 8     Topic 9        Topic 10     
+## [1,] "society"      "spending"   "care"      "system"       "alternative"
+## [2,] "enterprising" "providing"  "per"       "taxation"     "citizenship"
+## [3,] "create"       "future"     "welfare"   "welfare"      "levy"       
+## [4,] "kind"         "reductions" "allowance" "government's" "wealth"     
+## [5,] "sense"        "national"   "child"     "stimulus"     "position"   
+##      Topic 11    Topic 12  Topic 13   Topic 14     Topic 15    
+## [1,] "taoiseach" "pension" "fianna"   "measures"   "confidence"
+## [2,] "day"       "welfare" "fáil"     "million"    "per"       
+## [3,] "case"      "changes" "national" "spending"   "today"     
+## [4,] "fine"      "scheme"  "irish"    "investment" "fianna"    
+## [5,] "gael"      "review"  "support"  "pensions"   "reduction" 
+##      Topic 16     Topic 17     Topic 18    Topic 19      Topic 20   
+## [1,] "welfare"    "million"    "fáil"      "measures"    "taoiseach"
+## [2,] "education"  "support"    "side"      "incomes"     "rate"     
+## [3,] "child"      "welfare"    "fianna"    "scheme"      "debate"   
+## [4,] "fianna"     "investment" "education" "level"       "employees"
+## [5,] "employment" "back"       "third"     "introducing" "three"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -896,21 +893,16 @@
 <div id="chinese-stop-words" class="section level2">
 <h2 class="hasAnchor">
 <a href="#chinese-stop-words" class="anchor"></a>中文停用词：取自百度停用词</h2>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co"># 读取中文停用词</span></a>
-<a class="sourceLine" id="cb91-2" data-line-number="2">csw &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>)</a></code></pre></div>
-<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
-## Use 'stopwords(language = "zh", source = "misc")' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="co"># 读取中文停用词</span></a>
+<a class="sourceLine" id="cb90-2" data-line-number="2">csw &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)</a>
+<a class="sourceLine" id="cb90-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb90-4" data-line-number="4"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</a></code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="co"># 除去停用词</span></a>
-<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</a></code></pre></div>
-<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
-## Use 'stopwords(language = "zh", source = "misc")' instead.
-## See help("Deprecated")</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1"><span class="co"># 除去停用词</span></a>
+<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb92-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>))</a></code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "1949"</code></pre>
@@ -919,9 +911,9 @@
 <h2 class="hasAnchor">
 <a href="#chinese-government-report" class="anchor"></a>例子：中国总理的“政府工作报告”</h2>
 <p>四十九份中国总理的“政府工作报告”，1954 - 2017</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="co"># 读取文件</span></a>
-<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="kw">load</span>(<span class="st">"examples/data/data_corpus_chinesegovreport.rda"</span>)</a>
-<a class="sourceLine" id="cb98-3" data-line-number="3"><span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="co"># 读取文件</span></a>
+<a class="sourceLine" id="cb94-2" data-line-number="2"><span class="kw">load</span>(<span class="st">"examples/data/data_corpus_chinesegovreport.rda"</span>)</a>
+<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## Warning in nsentence.character(object, ...): nsentence() does not correctly
 ## count sentences in all lower-cased text</code></pre>
 <pre><code>## Corpus consisting of 49 documents, showing 10 documents:
@@ -952,30 +944,30 @@
 ## Source: /home/wangh52/quanteda_2/vignettes/pkgdown_only/* on x86_64 by wangh52
 ## Created: Mon Nov 27 13:29:27 2017
 ## Notes:</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="co"># 分词</span></a>
-<a class="sourceLine" id="cb101-2" data-line-number="2">chtoks &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb101-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb101-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="co"># 分词</span></a>
+<a class="sourceLine" id="cb97-2" data-line-number="2">chtoks &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb97-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb97-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</a></code></pre></div>
 <pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
 ## Use 'stopwords(language = "zh", source = "misc")' instead.
 ## See help("Deprecated")</code></pre>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1"><span class="co"># 创建 dfm</span></a>
-<a class="sourceLine" id="cb103-2" data-line-number="2">chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chtoks)</a>
-<a class="sourceLine" id="cb103-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</a></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="co"># 创建 dfm</span></a>
+<a class="sourceLine" id="cb99-2" data-line-number="2">chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chtoks)</a>
+<a class="sourceLine" id="cb99-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</a></code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></a>
-<a class="sourceLine" id="cb105-2" data-line-number="2"><span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span></a>
-<a class="sourceLine" id="cb105-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb105-4" data-line-number="4"><span class="co"># 绘制词云图</span></a>
-<a class="sourceLine" id="cb105-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb105-6" data-line-number="6">chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_termfreq =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb105-7" data-line-number="7"><span class="co"># 设置适用于MacOS的字体</span></a>
-<a class="sourceLine" id="cb105-8" data-line-number="8"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb105-9" data-line-number="9">                   <span class="dt">rot_per =</span> <span class="fl">.25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>, </a>
-<a class="sourceLine" id="cb105-10" data-line-number="10">                   <span class="dt">min_size =</span> <span class="fl">.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,</a>
-<a class="sourceLine" id="cb105-11" data-line-number="11">                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb105-12" data-line-number="12">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span></a>
+<a class="sourceLine" id="cb101-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb101-4" data-line-number="4"><span class="co"># 绘制词云图</span></a>
+<a class="sourceLine" id="cb101-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb101-6" data-line-number="6">chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_termfreq =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb101-7" data-line-number="7"><span class="co"># 设置适用于MacOS的字体</span></a>
+<a class="sourceLine" id="cb101-8" data-line-number="8"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb101-9" data-line-number="9">                   <span class="dt">rot_per =</span> <span class="fl">.25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>, </a>
+<a class="sourceLine" id="cb101-10" data-line-number="10">                   <span class="dt">min_size =</span> <span class="fl">.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,</a>
+<a class="sourceLine" id="cb101-11" data-line-number="11">                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb101-12" data-line-number="12">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
 <pre><code>## Warning in text.default(x1, y1, word[i], cex = (1 + adjust) * size[i],
 ## offset = 0, : "rot_per" is not a graphical parameter</code></pre>
 <pre><code>## Warning in text.default(x1, y1, word[i], cex = (1 + adjust) * size[i],
@@ -1279,39 +1271,36 @@
 <div id="features-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features-co-occurrence-matrix" class="anchor"></a>特征共现矩阵</h2>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span></a>
-<a class="sourceLine" id="cb108-2" data-line-number="2">ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)</a>
-<a class="sourceLine" id="cb108-3" data-line-number="3">ch17toks &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb108-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb108-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</a></code></pre></div>
-<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
-## Use 'stopwords(language = "zh", source = "misc")' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </a>
-<a class="sourceLine" id="cb110-2" data-line-number="2"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span></a>
+<a class="sourceLine" id="cb104-2" data-line-number="2">ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)</a>
+<a class="sourceLine" id="cb104-3" data-line-number="3">ch17toks &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb104-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb104-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>))</a>
+<a class="sourceLine" id="cb104-6" data-line-number="6">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </a>
+<a class="sourceLine" id="cb104-7" data-line-number="7"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1"><span class="co"># fcm 共现窗口为："改革" + “xx”</span></a>
-<a class="sourceLine" id="cb112-2" data-line-number="2">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb112-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="co"># fcm 共现窗口为："改革" + “xx”</span></a>
+<a class="sourceLine" id="cb106-2" data-line-number="2">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb106-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
 <pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
 ##   10    8    8    8    8    7    7    6    5    5</code></pre>
 </div>
 <div id="wordfish" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wordfish" class="anchor"></a>文本缩放模型</h2>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)</a>
-<a class="sourceLine" id="cb114-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
-<a class="sourceLine" id="cb114-3" data-line-number="3">y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1977</span>)]</a>
-<a class="sourceLine" id="cb114-4" data-line-number="4"><span class="kw">plot</span>(y, wfm<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)</a>
+<a class="sourceLine" id="cb108-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb108-3" data-line-number="3">y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1977</span>)]</a>
+<a class="sourceLine" id="cb108-4" data-line-number="4"><span class="kw">plot</span>(y, wfm<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocation" class="anchor"></a>词组 - 双词词组/三词词组等</h2>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="co"># 所有报告中的双词词组</span></a>
-<a class="sourceLine" id="cb115-2" data-line-number="2">ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb115-3" data-line-number="3"><span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="co"># 所有报告中的双词词组</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2">ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb109-3" data-line-number="3"><span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    collocation count count_nested length   lambda         z
 ## 1    社会 主义  1787            0      2 5.661200 128.61741
 ## 2        亿 元   689            0      2 7.445259  93.01487
@@ -1323,9 +1312,9 @@
 ## 8        万 吨   212            0      2 6.589957  62.56344
 ## 9    国民 经济   589            0      2 6.014672  61.80426
 ## 10   充分 发挥   191            0      2 6.584129  61.24885</code></pre>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="co"># 2017 报告中的双词词组</span></a>
-<a class="sourceLine" id="cb117-2" data-line-number="2">ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb117-3" data-line-number="3"><span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="co"># 2017 报告中的双词词组</span></a>
+<a class="sourceLine" id="cb111-2" data-line-number="2">ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb111-3" data-line-number="3"><span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    collocation count count_nested length   lambda        z
 ## 1    人民 群众    12            0      2 5.406485 12.89405
 ## 2        亿 元    14            0      2 8.302483 12.62130

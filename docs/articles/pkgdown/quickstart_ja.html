@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -183,11 +183,11 @@
 <a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>：Pythonの<a href="http://spacy.io">spaCy</a>ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる</li>
 <li>
 <p><a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>：<strong>quanteda</strong>の本記事内の説明で使用する追加のテキストデータ</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> (LIWC) アプローチによるテキスト分析のR実装</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</a></code></pre></div>
 </li>
 </ul>
 </div>
@@ -238,7 +238,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:50:33 2018
+## Created: Thu Nov  1 12:58:33 2018
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -259,7 +259,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:50:33 2018
+## Created: Thu Nov  1 12:58:33 2018
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -289,7 +289,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:50:33 2018
+## Created: Thu Nov  1 12:58:33 2018
 ## Notes:</code></pre>
 <p><code><a href="../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -381,9 +381,9 @@
 <p><code>summary()</code>の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができる．</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="cf">if</span> (<span class="kw">require</span>(ggplot2))</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_bw</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">        </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Longest inaugural address: William Henry Harrison</span></a>
@@ -420,7 +420,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Thu Oct  4 10:50:34 2018
+## Created: Thu Nov  1 12:58:34 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -683,20 +683,17 @@
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</a></code></pre></div>
-<pre><code>## Warning: 'stopwords(language = "ar")' is deprecated.
-## Use 'stopwords(language = "ar", source = "misc")' instead.
-## See help("Deprecated")</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>文書行列の表示</h3>
 <p>RStudioの“Environment”パネル，またはRの<code><a href="../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができる．</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">my_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2">my_dfm</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">my_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">my_dfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>頻度が最も高い特長を見るには，<code><a href="../../reference/topfeatures.html">topfeatures()</a></code>を用いる．</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(my_dfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span></a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(my_dfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span></a></code></pre></div>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
 ##      system  population     country         new  immigrants      ensure 
@@ -706,20 +703,20 @@
 ##        work     percent 
 ##          13          12</code></pre>
 <p>dfmを<code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>に渡すことで，ワードクラウドを描画できる．この関数は，オブジェクトや引数を<strong>wordcloud</strong>パッケージの<code><a href="../../reference/wordcloud.html">wordcloud()</a></code>に渡すので，ワードクラウドの表示を変更できる．</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(my_dfm, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb67-3" data-line-number="3">                   <span class="dt">rotation =</span> <span class="fl">.25</span>, </a>
-<a class="sourceLine" id="cb67-4" data-line-number="4">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(my_dfm, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">                   <span class="dt">rotation =</span> <span class="fl">.25</span>, </a>
+<a class="sourceLine" id="cb66-4" data-line-number="4">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
 <h3 class="hasAnchor">
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>変数による文書のグループ化</h3>
 <p><strong>quanteda</strong>では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">by_party_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">by_party_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられる．</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(by_party_dfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(by_party_dfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
 ##        features
@@ -741,13 +738,13 @@
 <h3 class="hasAnchor">
 <a href="#grouping-words-by-dictionary-or-equivalence-class" class="anchor"></a>辞書による語のグループ化</h3>
 <p>キーワードがあらかじめ分かっている場合，<code><a href="../../reference/dictionary.html">dictionary()</a></code>によって辞書を作成し、語の出現回数を測定できる。次の例では，テロリズムに関連する言葉や経済に関連する言葉が，クリントン以降の大統領演説でどのように異なるかを示している．</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</a></code></pre></div>
 <p>テロリズムと経済という2つのリストからなる辞書を作成する．</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</a>
-<a class="sourceLine" id="cb72-2" data-line-number="2">                          <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</a>
+<a class="sourceLine" id="cb71-2" data-line-number="2">                          <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</a></code></pre></div>
 <p>文書行列を作成するときに，この辞書を<code><a href="../../reference/dfm.html">dfm()</a></code>の<code>dictionary</code>に渡す．</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)</a>
-<a class="sourceLine" id="cb73-2" data-line-number="2">byPresMat</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">byPresMat</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
 ## 7 x 2 sparse Matrix of class "dfm"
 ##               features
@@ -760,10 +757,10 @@
 ##   2013-Obama        1       6
 ##   2017-Trump        1       5</code></pre>
 <p><code><a href="../../reference/dictionary.html">dictionary()</a></code>は，LIWCやWordstatなどの一般的な辞書ファイルを読み込むことができる．以下では，LIWCの辞書を大統領就任演説に適用している．</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)</a>
-<a class="sourceLine" id="cb75-3" data-line-number="3">liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)</a>
-<a class="sourceLine" id="cb75-4" data-line-number="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)</a>
+<a class="sourceLine" id="cb74-3" data-line-number="3">liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)</a>
+<a class="sourceLine" id="cb74-4" data-line-number="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 </div>
 </div>
 </div>
@@ -773,11 +770,11 @@
 <div id="similarities-between-texts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>文書の類似性</h2>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </a>
-<a class="sourceLine" id="cb76-2" data-line-number="2">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb76-3" data-line-number="3">obama_simil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </a>
-<a class="sourceLine" id="cb76-4" data-line-number="4">                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
-<a class="sourceLine" id="cb76-5" data-line-number="5">obama_simil</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb75-3" data-line-number="3">obama_simil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </a>
+<a class="sourceLine" id="cb75-4" data-line-number="4">                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
+<a class="sourceLine" id="cb75-5" data-line-number="5">obama_simil</a></code></pre></div>
 <pre><code>##              2009-Obama 2013-Obama
 ## 1981-Reagan   0.6229949  0.6376412
 ## 1985-Reagan   0.6434472  0.6629428
@@ -789,25 +786,25 @@
 ## 2009-Obama    1.0000000  0.6815711
 ## 2013-Obama    0.6815711  1.0000000
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="co"># dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")</span></a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1"><span class="co"># dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")</span></a></code></pre></div>
 <p>上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</a>
-<a class="sourceLine" id="cb79-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </a>
-<a class="sourceLine" id="cb79-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb79-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
-<a class="sourceLine" id="cb79-5" data-line-number="5">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(pres_dfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb79-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb79-7" data-line-number="7"><span class="co"># hierarchical clustering - get distances on normalized dfm</span></a>
-<a class="sourceLine" id="cb79-8" data-line-number="8">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))</a>
-<a class="sourceLine" id="cb79-9" data-line-number="9"><span class="co"># hiarchical clustering the distance object</span></a>
-<a class="sourceLine" id="cb79-10" data-line-number="10">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</a>
-<a class="sourceLine" id="cb79-11" data-line-number="11"><span class="co"># label with document names</span></a>
-<a class="sourceLine" id="cb79-12" data-line-number="12">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(pres_dfm)</a>
-<a class="sourceLine" id="cb79-13" data-line-number="13"><span class="co"># plot as a dendrogram</span></a>
-<a class="sourceLine" id="cb79-14" data-line-number="14"><span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">data</span>(data_corpus_sotu, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</a>
+<a class="sourceLine" id="cb78-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_sotu, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), </a>
+<a class="sourceLine" id="cb78-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb78-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb78-5" data-line-number="5">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(pres_dfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb78-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb78-7" data-line-number="7"><span class="co"># hierarchical clustering - get distances on normalized dfm</span></a>
+<a class="sourceLine" id="cb78-8" data-line-number="8">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))</a>
+<a class="sourceLine" id="cb78-9" data-line-number="9"><span class="co"># hiarchical clustering the distance object</span></a>
+<a class="sourceLine" id="cb78-10" data-line-number="10">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</a>
+<a class="sourceLine" id="cb78-11" data-line-number="11"><span class="co"># label with document names</span></a>
+<a class="sourceLine" id="cb78-12" data-line-number="12">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(pres_dfm)</a>
+<a class="sourceLine" id="cb78-13" data-line-number="13"><span class="co"># plot as a dendrogram</span></a>
+<a class="sourceLine" id="cb78-14" data-line-number="14"><span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
 <p>文書間と同様に用語間の類似性も測定できる．</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
-<a class="sourceLine" id="cb80-2" data-line-number="2"><span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(pres_dfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## $fair
 ##   economi     begin jefferson    author     faith      call   struggl 
 ## 0.9080252 0.9075951 0.8981462 0.8944272 0.8866586 0.8608285 0.8451543 
@@ -830,8 +827,8 @@
 <h2 class="hasAnchor">
 <a href="#scaling-document-positions" class="anchor"></a>文書のスケーリング</h2>
 <p><strong>quanteda</strong>には多数のテキスト分析のためのモデルが含まれている．ここでは，ワードフィッシュ（<code><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>）による教師なしの文書のスケーリングを2010年のアイルランドの予算討論の分析に用いている．</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
-<a class="sourceLine" id="cb82-2" data-line-number="2"><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ie_dfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
+<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ie_dfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## textmodel_wordfish.dfm(x = ie_dfm, dir = c(2, 1))
@@ -842,41 +839,41 @@
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>トピックモデル</h2>
 <p><code><a href="../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA()</a></code>形式のデータに転換し，簡単にトピックモデルを適用できる．</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </a>
-<a class="sourceLine" id="cb84-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
-<a class="sourceLine" id="cb84-3" data-line-number="3">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quant_dfm, <span class="dt">min_termfreq =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb84-4" data-line-number="4">quant_dfm</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </a>
+<a class="sourceLine" id="cb83-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb83-3" data-line-number="3">quant_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quant_dfm, <span class="dt">min_termfreq =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb83-4" data-line-number="4">quant_dfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {</a>
-<a class="sourceLine" id="cb86-3" data-line-number="3">    my_lda_fit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quant_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb86-4" data-line-number="4">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb86-5" data-line-number="5">}</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb85-2" data-line-number="2"><span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {</a>
+<a class="sourceLine" id="cb85-3" data-line-number="3">    my_lda_fit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quant_dfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb85-4" data-line-number="4">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb85-5" data-line-number="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1       Topic 2     Topic 3     Topic 4    Topic 5        
-## [1,] "alternative" "care"      "failed"    "vision"   "details"      
-## [2,] "citizenship" "welfare"   "needed"    "cycle"    "savings"      
-## [3,] "wealth"      "per"       "ministers" "strategy" "today"        
-## [4,] "adjustment"  "allowance" "system"    "rebuild"  "approximately"
-## [5,] "breaks"      "hit"       "strategy"  "start"    "change"       
-##      Topic 6        Topic 7    Topic 8   Topic 9  Topic 10   Topic 11    
-## [1,] "society"      "stimulus" "levy"    "fianna" "fianna"   "welfare"   
-## [2,] "enterprising" "rate"     "million" "fáil"   "fáil"     "million"   
-## [3,] "sense"        "high"     "carbon"  "side"   "national" "investment"
-## [4,] "equal"        "earners"  "change"  "level"  "irish"    "confidence"
-## [5,] "nation"       "rates"    "welfare" "third"  "support"  "support"   
-##      Topic 12  Topic 13     Topic 14    Topic 15      Topic 16  
-## [1,] "child"   "continue"   "taoiseach" "kind"        "welfare" 
-## [2,] "benefit" "support"    "employees" "imagination" "system"  
-## [3,] "day"     "million"    "rate"      "policies"    "taxation"
-## [4,] "today"   "reductions" "referred"  "wit"         "worst"   
-## [5,] "bank"    "adjustment" "debate"    "create"      "much"    
-##      Topic 17        Topic 18  Topic 19    Topic 20    
-## [1,] "review"        "fianna"  "taoiseach" "million"   
-## [2,] "system"        "sinn"    "fine"      "measures"  
-## [3,] "welfare"       "fáil"    "gael"      "spending"  
-## [4,] "scheme"        "welfare" "may"       "investment"
-## [5,] "international" "hope"    "irish"     "pension"</code></pre>
+<pre><code>##      Topic 1     Topic 2      Topic 3     Topic 4    Topic 5        
+## [1,] "taoiseach" "support"    "taoiseach" "welfare"  "welfare"      
+## [2,] "fine"      "million"    "employees" "system"   "scheme"       
+## [3,] "gael"      "continue"   "rate"      "taxation" "international"
+## [4,] "may"       "investment" "referred"  "fianna"   "research"     
+## [5,] "irish"     "energy"     "debate"    "fáil"     "million"      
+##      Topic 6   Topic 7  Topic 8   Topic 9     Topic 10   Topic 11  
+## [1,] "welfare" "fianna" "child"   "failed"    "fáil"     "care"    
+## [2,] "million" "fáil"   "benefit" "strategy"  "policies" "per"     
+## [3,] "since"   "side"   "today"   "needed"    "million"  "welfare" 
+## [4,] "top"     "level"  "banks"   "ministers" "recovery" "workers" 
+## [5,] "system"  "third"  "much"    "system"    "wealthy"  "families"
+##      Topic 12    Topic 13      Topic 14        Topic 15      Topic 16 
+## [1,] "welfare"   "alternative" "level"         "kind"        "child"  
+## [2,] "including" "citizenship" "set"           "imagination" "benefit"
+## [3,] "measures"  "wealth"      "international" "carbon"      "society"
+## [4,] "million"   "adjustment"  "today"         "policies"    "fianna" 
+## [5,] "earners"   "breaks"      "recent"        "wit"         "million"
+##      Topic 17       Topic 18     Topic 19   Topic 20  
+## [1,] "society"      "fianna"     "fáil"     "million" 
+## [2,] "enterprising" "fáil"       "fianna"   "spending"
+## [3,] "sense"        "support"    "irish"    "measures"
+## [4,] "equal"        "national"   "strategy" "review"  
+## [5,] "nation"       "confidence" "child"    "scheme"</code></pre>
 </div>
 </div>
   </div>

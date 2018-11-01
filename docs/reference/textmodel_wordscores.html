@@ -85,7 +85,7 @@ documents from a fitted textmodel_wordscores object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -239,9 +239,19 @@ for log posterior differences</p></td>
     <tr>
       <th>smooth</th>
       <td><p>a smoothing parameter for word counts; defaults to zero for the
-to match the LBG (2003) method.</p></td>
+to match the LBG (2003) method.  See Value below for additional
+information on the behaviour of this argument.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A fitted <code>textmodel_wordscores</code> object.  This object will
+  contain a copy of the input data, but in its original form without any
+  smoothing applied. Calling <code><a href='predict.textmodel_wordscores.html'>predict.textmodel_wordscores</a></code> on
+  this object without specifying a value for <code>newdata</code>, for instance,
+  will predict on the unsmoothed object.  This behaviour differs from
+  versions of quanteda &lt;= 1.2.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -330,6 +340,8 @@ to match the LBG (2003) method.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>

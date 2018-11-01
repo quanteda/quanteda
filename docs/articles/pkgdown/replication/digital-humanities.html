@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -275,7 +275,7 @@
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="co"># ten most frequent words</span></a>
 <a class="sourceLine" id="cb47-2" data-line-number="2">moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb47-3" data-line-number="3"><span class="kw">head</span>(moby_dfm, <span class="dt">nfeature =</span> <span class="dv">10</span>)</a></code></pre></div>
-<pre><code>## Warning in unused_dots(...): ... is not used in tryCatchList()</code></pre>
+<pre><code>## Warning: nfeature argument is not used in tryCatchList()</code></pre>
 <pre><code>## Document-feature matrix of: 1 document, 18,524 features (0% sparse).</code></pre>
 <p>Getting the list of the most frequent 10 terms is easy, using <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code>.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">10</span>) </a></code></pre></div>
@@ -290,14 +290,14 @@
 ## 8      his      2495    8       1   all
 ## 9       it      2394    9       1   all
 ## 10       i      1976   10       1   all</code></pre>
-<p>Finally, if we wish to plot the most frequent (50) terms, we can supply the results of <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code> to <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> to plot their frequency by their rank:</p>
+<p>Finally, if we wish to plot the most frequent (50) terms, we can supply the results of <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code> to <code><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> to plot their frequency by their rank:</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="co"># plot frequency of 50 most frequent terms </span></a>
 <a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme_get">theme_set</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_minimal</a></span>())</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="kw"><a href="ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw"><a href="ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())</a>
 <a class="sourceLine" id="cb52-4" data-line-number="4"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb52-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb52-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Frequency rank"</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb52-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Frequency rank"</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 <p>For direct comparison with the next chapter, we also create the sorted list of the most frequently found words using this:</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">sorted_moby_freqs_t &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(moby_dfm, <span class="dt">n =</span> <span class="kw"><a href="../../../reference/ndoc.html">nfeature</a></span>(moby_dfm))</a></code></pre></div>
@@ -367,9 +367,9 @@
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 <p>Plotting the most frequent terms using <strong>ggplot2</strong>:</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm_pct, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">reorder</span>(feature, <span class="op">-</span>rank), <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb76-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip">coord_flip</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb76-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">""</span>, <span class="dt">y =</span> <span class="st">"Term Frequency as a Percentage"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> <span class="kw">reorder</span>(feature, <span class="op">-</span>rank), <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb76-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">""</span>, <span class="dt">y =</span> <span class="st">"Term Frequency as a Percentage"</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
 </div>
 </div>
@@ -381,13 +381,13 @@
 <a href="#dispersion-plots" class="anchor"></a>4.1 Dispersion plots</h2>
 <p>A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the <code>kwic</code> function can be plotted to display a dispersion plot. The <strong>quanteda</strong> <code>textplot_</code> objects are based on <strong>ggplot2</strong>, so you can easily change the plot, for example by adding custom title.</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1"><span class="co"># using words from tokenized corpus for dispersion</span></a>
-<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-24-1.png" width="768"></p>
 <p>To produce multiple dispersion plots for comparison, you can simply send more than one <code><a href="../../../reference/kwic.html">kwic()</a></code> output to <code><a href="../../../reference/textplot_xray.html">textplot_xray()</a></code>:</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
 <a class="sourceLine" id="cb78-2" data-line-number="2">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>),</a>
 <a class="sourceLine" id="cb78-3" data-line-number="3">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"Ahab"</span>)</a>
-<a class="sourceLine" id="cb78-4" data-line-number="4">) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb78-4" data-line-number="4">) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-25-1.png" width="768"></p>
 </div>
 <div id="searching-with-regular-expression" class="section level2">
@@ -421,7 +421,7 @@
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:50:47 2018
+## Created: Thu Nov  1 12:58:48 2018
 ## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))</a>
@@ -434,7 +434,7 @@
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:50:47 2018
+## Created: Thu Nov  1 12:58:48 2018
 ## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</a></code></pre></div>
@@ -453,15 +453,15 @@
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">whales_ahabs_df<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(whales_ahabs_df)</a>
 <a class="sourceLine" id="cb88-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb88-3" data-line-number="3"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb88-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb88-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, </a>
+<a class="sourceLine" id="cb88-3" data-line-number="3"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb88-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb88-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, </a>
 <a class="sourceLine" id="cb88-6" data-line-number="6">         <span class="dt">y =</span> <span class="st">"Frequency"</span>,</a>
 <a class="sourceLine" id="cb88-7" data-line-number="7">         <span class="dt">title =</span> <span class="st">'Occurrence of "whale"'</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-1.png" width="768"></p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb89-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, </a>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb89-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="st">        </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, </a>
 <a class="sourceLine" id="cb89-4" data-line-number="4">         <span class="dt">y =</span> <span class="st">"Frequency"</span>,</a>
 <a class="sourceLine" id="cb89-5" data-line-number="5">         <span class="dt">title =</span> <span class="st">'Occurrence of "ahab"'</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-2.png" width="768"></p>
@@ -475,14 +475,14 @@
 ## Use 'convert(x, to = "data.frame")' instead.
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(rel_chap_freq)</a>
-<a class="sourceLine" id="cb94-2" data-line-number="2"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb94-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,</a>
+<a class="sourceLine" id="cb94-2" data-line-number="2"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb94-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,</a>
 <a class="sourceLine" id="cb94-5" data-line-number="5">         <span class="dt">title =</span> <span class="st">'Occurrence of "whale"'</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,</a>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,</a>
 <a class="sourceLine" id="cb95-4" data-line-number="4">         <span class="dt">title =</span> <span class="st">'Occurrence of "ahab"'</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-2.png" width="768"></p>
 </div>
@@ -520,10 +520,10 @@
 <a class="sourceLine" id="cb100-6" data-line-number="6">)</a>
 <a class="sourceLine" id="cb100-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb100-8" data-line-number="8"><span class="co"># plot distribution of resampled correlations</span></a>
-<a class="sourceLine" id="cb100-9" data-line-number="9"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> samples, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> cor_sample, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb100-10" data-line-number="10"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram</a></span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="dt">binwidth =</span> <span class="fl">0.01</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb100-11" data-line-number="11"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_density">geom_density</a></span>(<span class="dt">colour =</span> <span class="st">"red"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb100-12" data-line-number="12"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Correlation Coefficient"</span>, <span class="dt">y =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb100-9" data-line-number="9"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> samples, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> cor_sample, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb100-10" data-line-number="10"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="dt">binwidth =</span> <span class="fl">0.01</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb100-11" data-line-number="11"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span>(<span class="dt">colour =</span> <span class="st">"red"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb100-12" data-line-number="12"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Correlation Coefficient"</span>, <span class="dt">y =</span> <span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb100-13" data-line-number="13">         <span class="dt">title =</span> <span class="st">"Histogram of Random Correlation Coefficients with Normal Curve"</span>)</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-33-1.png" width="768"></p>
 </div>
@@ -732,30 +732,30 @@
 <a class="sourceLine" id="cb127-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb127-9" data-line-number="9"><span class="co"># get top five terms per topic</span></a>
 <a class="sourceLine" id="cb127-10" data-line-number="10"><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##      Topic 1    Topic 2     Topic 3      Topic 4   Topic 5     Topic 6    
-## [1,] "spending" "taoiseach" "measures"   "levy"    "system"    "allowance"
-## [2,] "million"  "employees" "scheme"     "million" "hope"      "care"     
-## [3,] "welfare"  "rate"      "investment" "carbon"  "welfare"   "per"      
-## [4,] "level"    "referred"  "review"     "change"  "taoiseach" "benefit"  
-## [5,] "reduced"  "debate"    "reduce"     "welfare" "members"   "million"  
-##      Topic 7       Topic 8  Topic 9     Topic 10     Topic 11   Topic 12
-## [1,] "kind"        "fianna" "needed"    "million"    "welfare"  "back"  
-## [2,] "imagination" "fáil"   "failed"    "support"    "system"   "bank"  
-## [3,] "policies"    "side"   "ministers" "welfare"    "fáil"     "gael"  
-## [4,] "wit"         "level"  "strategy"  "investment" "taxation" "irish" 
-## [5,] "create"      "third"  "per"       "back"       "fianna"   "banks" 
-##      Topic 13       Topic 14   Topic 15  Topic 16       Topic 17     
-## [1,] "welfare"      "face"     "child"   "society"      "alternative"
-## [2,] "child"        "vision"   "benefit" "enterprising" "citizenship"
-## [3,] "order"        "system"   "day"     "sense"        "wealth"     
-## [4,] "fianna"       "problems" "today"   "equal"        "adjustment" 
-## [5,] "government's" "modern"   "bank"    "nation"       "breaks"     
-##      Topic 18  Topic 19    Topic 20  
-## [1,] "fianna"  "taoiseach" "fianna"  
-## [2,] "fáil"    "may"       "fáil"    
-## [3,] "welfare" "fine"      "national"
-## [4,] "system"  "gael"      "irish"   
-## [5,] "still"   "day"       "support"</code></pre>
+<pre><code>##      Topic 1     Topic 2       Topic 3     Topic 4   Topic 5     
+## [1,] "taoiseach" "alternative" "care"      "recent"  "million"   
+## [2,] "irish"     "citizenship" "welfare"   "scheme"  "employment"
+## [3,] "day"       "wealth"      "per"       "reduced" "support"   
+## [4,] "local"     "adjustment"  "allowance" "review"  "welfare"   
+## [5,] "case"      "breaks"      "hit"       "reduce"  "measures"  
+##      Topic 6   Topic 7  Topic 8       Topic 9       Topic 10   
+## [1,] "system"  "fianna" "kind"        "investment"  "taoiseach"
+## [2,] "job"     "fáil"   "imagination" "development" "employees"
+## [3,] "welfare" "side"   "policies"    "support"     "rate"     
+## [4,] "earners" "level"  "wit"         "welfare"     "referred" 
+## [5,] "low"     "third"  "create"      "future"      "debate"   
+##      Topic 11       Topic 12  Topic 13   Topic 14   Topic 15  Topic 16 
+## [1,] "society"      "carbon"  "welfare"  "million"  "benefit" "child"  
+## [2,] "enterprising" "levy"    "system"   "measures" "fáil"    "day"    
+## [3,] "sense"        "change"  "taxation" "pension"  "face"    "benefit"
+## [4,] "equal"        "harsh"   "fianna"   "spending" "child"   "bank"   
+## [5,] "nation"       "climate" "stimulus" "system"   "much"    "welfare"
+##      Topic 17    Topic 18   Topic 19  Topic 20   
+## [1,] "failed"    "fianna"   "million" "fine"     
+## [2,] "strategy"  "fáil"     "price"   "may"      
+## [3,] "needed"    "national" "paid"    "gael"     
+## [4,] "ministers" "irish"    "welfare" "bank"     
+## [5,] "system"    "support"  "levy"    "taoiseach"</code></pre>
 </div>
   </div>
 

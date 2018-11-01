@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -178,11 +178,11 @@
 <a href="https://github.com/quanteda/spacyr"><strong>spacyr</strong></a>: NLP using the <a href="http://spacy.io">spaCy</a> library, including part-of-speech tagging, entity recognition, and dependency parsing.</li>
 <li>
 <p><a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: Additional textual data for use with <strong>quanteda</strong>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/quanteda.dictionaries"><strong>quanteda.dictionaries</strong></a>: Various dictionaries for use with <strong>quanteda</strong>, including the function <code>liwcalike()</code>, an R implementation of the <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> approach to text analysis.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/quanteda.dictionaries"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kbenoit/quanteda.dictionaries"</span>)</a></code></pre></div>
 </li>
 </ul>
 </div>
@@ -214,7 +214,7 @@
 <div id="building-a-corpus-from-a-character-vector" class="section level3">
 <h3 class="hasAnchor">
 <a href="#building-a-corpus-from-a-character-vector" class="anchor"></a>Building a corpus from a character vector</h3>
-<p>The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.</p>
+<p>The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexibility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.</p>
 <p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called <code>data_char_ukimmig2010</code>).</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">my_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># build a new corpus from the texts</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">summary</span>(my_corpus)</a></code></pre></div>
@@ -232,7 +232,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:51:46 2018
+## Created: Thu Nov  1 12:59:43 2018
 ## Notes:</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<em>docvar</em>).</p>
@@ -253,7 +253,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:51:46 2018
+## Created: Thu Nov  1 12:59:43 2018
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -283,9 +283,9 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Thu Oct  4 10:51:46 2018
+## Created: Thu Nov  1 12:59:43 2018
 ## Notes:</code></pre>
-<p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
+<p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assigning just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
 <div id="loading-in-files-using-the-readtext-package" class="section level3">
 <h3 class="hasAnchor">
@@ -375,9 +375,9 @@
 <p>We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="cf">if</span> (<span class="kw">require</span>(ggplot2))</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_bw</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">        </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Longest inaugural address: William Henry Harrison</span></a>
@@ -414,7 +414,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Thu Oct  4 10:51:47 2018
+## Created: Thu Nov  1 12:59:44 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -698,7 +698,7 @@
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>Viewing the document-feature matrix</h3>
-<p>The dfm can be inspected in the Enviroment pane in RStudio, or by calling R’s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud.</p>
+<p>The dfm can be inspected in the Environment pane in RStudio, or by calling R’s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">my_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb65-2" data-line-number="2">my_dfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
@@ -862,30 +862,30 @@
 <a class="sourceLine" id="cb88-4" data-line-number="4">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb88-5" data-line-number="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2     Topic 3     Topic 4      Topic 5       
-## [1,] "taoiseach" "taoiseach" "care"      "support"    "measures"    
-## [2,] "employees" "fine"      "allowance" "investment" "contribution"
-## [3,] "rate"      "gael"      "welfare"   "welfare"    "welfare"     
-## [4,] "referred"  "may"       "per"       "million"    "scheme"      
-## [5,] "debate"    "irish"     "hospital"  "back"       "per"         
-##      Topic 6       Topic 7     Topic 8       Topic 9   Topic 10   
-## [1,] "kind"        "welfare"   "alternative" "child"   "failed"   
-## [2,] "imagination" "policies"  "citizenship" "bank"    "strategy" 
-## [3,] "policies"    "proposals" "wealth"      "per"     "needed"   
-## [4,] "wit"         "job"       "adjustment"  "day"     "ministers"
-## [5,] "create"      "sinn"      "breaks"      "welfare" "system"   
-##      Topic 11   Topic 12    Topic 13       Topic 14   Topic 15  Topic 16 
-## [1,] "benefit"  "measures"  "society"      "fianna"   "paid"    "levy"   
-## [2,] "banks"    "scheme"    "enterprising" "fáil"     "fáil"    "million"
-## [3,] "face"     "reduction" "sense"        "national" "child"   "carbon" 
-## [4,] "society"  "child"     "equal"        "irish"    "since"   "change" 
-## [5,] "national" "decided"   "nation"       "support"  "million" "welfare"
-##      Topic 17 Topic 18  Topic 19     Topic 20 
-## [1,] "fianna" "welfare" "million"    "million"
-## [2,] "fáil"   "system"  "spending"   "scheme" 
-## [3,] "side"   "fáil"    "review"     "rate"   
-## [4,] "level"  "fianna"  "pension"    "welfare"
-## [5,] "third"  "worst"   "investment" "help"</code></pre>
+<pre><code>##      Topic 1      Topic 2    Topic 3      Topic 4   Topic 5     Topic 6   
+## [1,] "million"    "spending" "welfare"    "million" "failed"    "welfare" 
+## [2,] "confidence" "measures" "support"    "scheme"  "strategy"  "system"  
+## [3,] "recovery"   "welfare"  "investment" "details" "needed"    "taxation"
+## [4,] "support"    "bill"     "million"    "pension" "ministers" "fianna"  
+## [5,] "employment" "system"   "back"       "review"  "system"    "fáil"    
+##      Topic 7   Topic 8    Topic 9   Topic 10    Topic 11  Topic 12 
+## [1,] "levy"    "measures" "welfare" "care"      "fáil"    "benefit"
+## [2,] "million" "reduce"   "bank"    "welfare"   "just"    "child"  
+## [3,] "carbon"  "local"    "hear"    "per"       "society" "day"    
+## [4,] "change"  "per"      "child"   "allowance" "fianna"  "burden" 
+## [5,] "welfare" "million"  "benefit" "hit"       "bank"    "today"  
+##      Topic 13 Topic 14       Topic 15    Topic 16 Topic 17   
+## [1,] "irish"  "society"      "taoiseach" "fianna" "taoiseach"
+## [2,] "day"    "enterprising" "fine"      "fáil"   "employees"
+## [3,] "say"    "sense"        "may"       "side"   "rate"     
+## [4,] "case"   "equal"        "gael"      "level"  "referred" 
+## [5,] "gael"   "nation"       "bank"      "third"  "debate"   
+##      Topic 18      Topic 19   Topic 20     
+## [1,] "kind"        "fianna"   "alternative"
+## [2,] "imagination" "fáil"     "citizenship"
+## [3,] "policies"    "national" "wealth"     
+## [4,] "wit"         "irish"    "adjustment" 
+## [5,] "create"      "support"  "breaks"</code></pre>
 </div>
 </div>
   </div>

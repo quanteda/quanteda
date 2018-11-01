@@ -88,7 +88,7 @@ Feature selection is implemented by considering features across
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -244,10 +244,10 @@ across all documents, below/above which features will
     <tr>
       <th>termfreq_type</th>
       <td><p>how <code>min_termfreq</code> and <code>max_termfreq</code> are
-intepreted.  <code>"count"</code> sums the frequencies; <code>"prop"</code> devides the
-term frequences by the total sum; <code>"rank"</code> is matched against the inverted
-ranking of features in terms of overall frequency, so that 1, 2, ... are
-the highest and second highest frequency features, and so on;
+intepreted.  <code>"count"</code> sums the frequencies; <code>"prop"</code> divides the
+term frequencies by the total sum; <code>"rank"</code> is matched against the
+inverted ranking of features in terms of overall frequency, so that 1, 2,
+... are the highest and second highest frequency features, and so on;
 <code>"quantile"</code> sets the cutoffs according to the quantiles (see
 <code>quantile</code>) of term frequencies.</p></td>
     </tr>
@@ -259,9 +259,9 @@ frequency, below/above which features will be removed</p></td>
     <tr>
       <th>docfreq_type</th>
       <td><p>specify how <code>min_docfreq</code> and <code>max_docfreq</code> are
-intepreted.   <code>"count"</code> is the same as <code><a href='docfreq.html'>docfreq</a>(x, scheme
-= "count")</code>; <code>"prop"</code> devides the document frequences by the total sum;
-<code>"rank"</code> is matched against the inverted ranking of document
+interpreted.   <code>"count"</code> is the same as <code><a href='docfreq.html'>docfreq</a>(x, scheme
+= "count")</code>; <code>"prop"</code> divides the document frequencies by the total
+sum; <code>"rank"</code> is matched against the inverted ranking of document
 frequency, so that 1, 2, ... are the features with the highest and second
 highest document frequencies, and so on; <code>"quantile"</code> sets the cutoffs
 according to the quantiles (see <code>quantile</code>) of document

@@ -82,7 +82,7 @@ text analysis packages for which conversions are defined." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -289,7 +289,10 @@ documents with non-zero counts.</p></td>
 #&gt;  $ frequency: num [1:8389] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
 <span class='co'># illustrate what happens with zero-length documents</span>
 <span class='no'>quantdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>punctOnly</span> <span class='kw'>=</span> <span class='st'>"!!!"</span>, <span class='no'>mycorpus</span>[-<span class='fl'>1</span>]), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in rowSums(quantdfm2): 'x' must be an array of at least two dimensions</span></div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
+<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt;    punctOnly  1977-Carter  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 
+#&gt;            3         1376         2790         2921         2681         1833 
+#&gt; 1997-Clinton    2001-Bush    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
+#&gt;         2449         1808         2319         2711         2317         1660 </div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
 <span class='fu'>str</span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
 #&gt;   ..$ punctOnly   : int [1:2, 1] 5 3

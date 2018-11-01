@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.10</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
       </span>
     </div>
 
@@ -227,7 +227,7 @@
 <div id="advantages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#advantages" class="anchor"></a>Advantages</h3>
-<p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code><a href="../../reference/corpus_sample.html">corpus_sample()</a></code>, <code>tokens_sample()</code>, and <code><a href="../../reference/dfm_sample.html">dfm_sample()</a></code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code>sample()</code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code>sample()</code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
+<p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code><a href="../../reference/corpus_sample.html">corpus_sample()</a></code>, <code><a href="../../reference/tokens_sample.html">tokens_sample()</a></code>, and <code><a href="../../reference/dfm_sample.html">dfm_sample()</a></code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code>sample()</code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code>sample()</code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
 </div>
 <div id="why-are-some-operations-unavailable-for-specific-object-types" class="section level3">
 <h3 class="hasAnchor">
