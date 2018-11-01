@@ -35,7 +35,7 @@
 #' @param verbose display messages if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}; not used when \code{x}
 #'   is a \link{dfm}
-#' @details The default behavior for \code{remove}/\code{select} when 
+#' @details The default behaviour for \code{remove}/\code{select} when 
 #'   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to 
 #'   remove/select any ngram constructed from a matching feature.  If you wish 
 #'   to remove these before constructing ngrams, you will need to first tokenize

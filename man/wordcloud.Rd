@@ -26,8 +26,8 @@ dropped.}
 
 \item{font}{font-family of words and labels. Use default font if \code{NULL}.}
 
-\item{adjust}{ajust sizes of words by a constant. Useful for non-Engish words
-for which R fails to obtain correct sizes.}
+\item{adjust}{adjust sizes of words by a constant. Useful for non-English
+words for which R fails to obtain correct sizes.}
 
 \item{rotation}{proportion of words with 90 degree rotation}
 
@@ -72,10 +72,10 @@ aspect ratio only supported if rotation = 0.}
 \pkg{wordcloud}}
 }
 \description{
-This function impliments wordcloud without dependecies. Code is adopted from 
+This function implements wordcloud without dependencies. Code is adopted from 
 \code{\link[wordcloud]{wordcloud}}.
 }
 \author{
-Kohei Watanabe, builting on code from Ian Fellows's \pkg{wordcloud} package.
+Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud} package.
 }
 \keyword{internal}

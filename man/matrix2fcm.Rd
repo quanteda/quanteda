@@ -2,7 +2,7 @@
 % Please edit documentation in R/fcm-methods.R
 \name{matrix2fcm}
 \alias{matrix2fcm}
-\title{Conversts a Matrix to a fcm}
+\title{Converts a Matrix to a fcm}
 \usage{
 matrix2fcm(x, slots = NULL)
 }
@@ -12,6 +12,6 @@ matrix2fcm(x, slots = NULL)
 \item{slots}{slots a list of values to be assigned to slots}
 }
 \description{
-Conversts a Matrix to a fcm
+Converts a Matrix to a fcm
 }
 \keyword{internal}

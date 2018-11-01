@@ -140,7 +140,7 @@ as.dfm.TermDocumentMatrix <- function(x){
                      dimnames = list(colnames(x), rownames(x))))
 }
 
-#' Conversts a Matrix to a dfm
+#' Converts a Matrix to a dfm
 #' @param x a Matrix
 #' @param slots slots a list of values to be assigned to slots
 #' @keywords internal

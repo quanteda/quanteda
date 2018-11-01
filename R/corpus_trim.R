@@ -106,7 +106,7 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #'   a tokenized set of sentences if .  If the input was a corpus, then the all
 #'   docvars and metadata are preserved.  For documents whose sentences have
 #'   been removed entirely, a null string (\code{""}) will be returned.
-#' @note This function has been superceded by \code{\link{corpus_trim}}; use
+#' @note This function has been superseded by \code{\link{corpus_trim}}; use
 #'   that function instead.
 #' @export
 #' @keywords internal deprecated

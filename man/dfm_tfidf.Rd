@@ -62,7 +62,7 @@ if (requireNamespace("tm")) {
 }
 }
 \references{
-Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
+Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
 \seealso{

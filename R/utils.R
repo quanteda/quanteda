@@ -230,7 +230,7 @@ unused_dots <- function(...) {
 
 
 #' Return an error message
-#' @param key type of erro message
+#' @param key type of error message
 #' @keywords internal
 message_error <- function(key = NULL) {
     msg <- c("dfm_empty" = "dfm must have at least one non-zero value",

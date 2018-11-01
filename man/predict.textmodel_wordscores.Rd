@@ -25,8 +25,8 @@ rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg
 
 \item{force}{make the feature set of \code{newdata} conform to the model
 terms.  The default of \code{TRUE} means that a fitted model can be applied
-to scale a dfm that doesn't contain a 1:1 match of features in the training
-and prediction data.}
+to scale a dfm that does not contain a 1:1 match of features in the
+training and prediction data.}
 
 \item{...}{not used}
 }

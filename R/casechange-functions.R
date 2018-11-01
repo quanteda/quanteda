@@ -1,7 +1,7 @@
 #' Convert the case of tokens
 #' 
 #' \code{tokens_tolower} and \code{tokens_toupper} convert the features of a
-#' \link{tokens} object and reindex the types.
+#' \link{tokens} object and re-index the types.
 #' @inheritParams char_tolower
 #' @importFrom stringi stri_trans_tolower
 #' @export

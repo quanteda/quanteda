@@ -29,7 +29,7 @@ prevent a zero document count for a term}
 
 \item{base}{the base with respect to which logarithms in the inverse document
 frequency weightings are computed; default is 10 (see Manning, 
-  Raghavan, and Schutze 2008, p123).}
+  Raghavan, and Schütze 2008, p123).}
 
 \item{threshold}{numeric value of the threshold \emph{above which} a feature 
 will considered in the computation of document frequency.  The default is 
@@ -73,7 +73,7 @@ docfreq(wiki_dfm, scheme = "inversemax")
 docfreq(wiki_dfm, scheme = "inverseprob")
 }
 \references{
-Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
+Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
 \keyword{dfm}
