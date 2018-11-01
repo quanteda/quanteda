@@ -280,7 +280,7 @@ myStemMat[, 1:5]
 ```{r}
 head(stopwords("english"), 20)
 head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("arabic", source = "misc"), 10)
 ```
 
 ### 查看文档特征矩阵 {#viewing-the-document-feature-matrix}
@@ -425,13 +425,13 @@ if (require(topicmodels)) {
 
 ```{r}
 # 读取中文停用词
-csw <- stopwords("chinese")
+csw <- stopwords("zh", source = "misc")
 
 tokens("中华人民共和国成立于1949 年")
 
 # 除去停用词
 tokens("中华人民共和国成立于1949 年") %>%
-    tokens_remove(stopwords("chinese"))
+    tokens_remove(stopwords("zh", source = "misc"))
 ```
 
 ## 例子：中国总理的“政府工作报告” {#chinese-government-report}
@@ -472,7 +472,7 @@ textplot_wordcloud(chdfm_tf, min_count = 6, random_order = FALSE,
 ch17txt <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
 ch17toks <- 
     tokens(ch17txt, remove_punct = TRUE) %>% 
-    tokens_remove(stopwords("chinese"))
+    tokens_remove(stopwords("zh", source = "misc"))
 chfcm <- fcm(ch17toks, context = "window")  
 topfeatures(chfcm["改革", ])
 

@@ -278,7 +278,7 @@ myStemMat[, 1:5]
 ```{r}
 head(stopwords("english"), 20)
 head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("arabic", source = "misc"), 10)
 ```
 
 ### 文書行列の表示 {#viewing-the-document-feature-matrix}
