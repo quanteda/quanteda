@@ -1,0 +1,12 @@
+if (!exists("meta") || is.null(meta)) 
+    meta <- packageDescription("quanteda")
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "Manual",
+         title = "quanteda: Quantitative Analysis of Textual Data",
+         author = c(person("Kenneth", "Benoit")),
+         doi = "10.5281/zenodo.1004683",
+         url = "http://quanteda.io",
+         year = 2018,
+         note = note
+)
