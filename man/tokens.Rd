@@ -72,7 +72,7 @@ expression and Unicode definitions of "word" characters}
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by
 default}
 
-\item{include_docvars}{if \code{TRUE}, pass docvars and metadoc fields
+\item{include_docvars}{if \code{TRUE}, pass docvars 
 through to the tokens object.  Only applies when tokenizing \link{corpus}
 objects.}
 

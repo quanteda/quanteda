@@ -46,22 +46,22 @@ variable; if \code{FALSE}, return it as a single-column data.frame.  See
 Extensions of base R functions for corpus objects.
 }
 \details{
-The \code{+} operator for a corpus object will combine two corpus 
-  objects, resolving any non-matching \code{\link{docvars}} or 
-  \code{\link{metadoc}} fields by making them into \code{NA} values for the 
-  corpus lacking that field.  Corpus-level meta data is concatenated, except 
-  for \code{source} and \code{notes}, which are stamped with information 
-  pertaining to the creation of the new joined corpus.
-  
+The \code{+} operator for a corpus object will combine two corpus
+  objects, resolving any non-matching \code{\link{docvars}} by making them
+  into \code{NA} values for the corpus lacking that field. Corpus-level meta
+  data is concatenated, except for \code{source} and \code{notes}, which are
+  stamped with information pertaining to the creation of the new joined
+  corpus.
+
   The `c()` operator is also defined for corpus class objects, and provides
   an easy way to combine multiple corpus objects.
-  
-  There are some issues that need to be addressed in future revisions of 
-  quanteda concerning the use of factors to store document variables and 
-  meta-data.  Currently most or all of these are not recorded as factors, 
-  because we use \code{stringsAsFactors=FALSE} in the 
-  \code{\link{data.frame}} calls that are used to create and store the 
-  document-level information, because the texts should always be stored as 
+
+  There are some issues that need to be addressed in future revisions of
+  quanteda concerning the use of factors to store document variables and
+  meta-data.  Currently most or all of these are not recorded as factors,
+  because we use \code{stringsAsFactors=FALSE} in the
+  \code{\link{data.frame}} calls that are used to create and store the
+  document-level information, because the texts should always be stored as
   character vectors and never as factors.
 }
 \examples{

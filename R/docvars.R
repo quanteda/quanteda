@@ -1,3 +1,40 @@
+
+# internal function to modify docvars
+set_docvars <- function(x, field, value) {
+    
+    flag <- is_internal(names(x))
+    if (is.dfm(value))
+        value <- convert(value, to = "data.frame")[-1]
+    if (is.null(value)) {
+        x <- x[flag] 
+    } else if (is.null(field) && (is.data.frame(value))) {
+        # old objects has no docvars
+        #if (is.null(x)) {
+        #    x <- value
+        #} else {
+            if (nrow(value) != nrow(x))
+                stop(message_error("docvar_mismatch"))
+            x <- cbind(x[flag], value)
+        #}
+    } else if (!any(is_internal(field))) {
+        x[[field]] <- value
+    } else {
+        message_error("docvar_invalid")
+    }
+    return(x)
+}
+
+## internal function to return the docvars for all docvars functions
+get_docvars <- function(x, field = NULL) {
+    x <- x[!is_internal(names(x))]
+    if (is.null(field)) {
+        return(x)
+    } else {
+        return(x[,field])
+    }
+}
+
+
 #' Get or set document-level variables
 #' 
 #' Get or set variables associated with a document in a \link{corpus},
@@ -109,34 +146,4 @@ docvars.kwic <- function(x) {
     x <- as.dfm(x)
     x@docvars <- set_docvars(x@docvars, field, value)
     return(x)
-}
-
-# internal function to modify docvars
-set_docvars <- function(x, field, value) {
-    
-    flag <- is_internal(names(x))
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[-1]
-    if (is.null(value)) {
-        x[!flag] <- NULL
-    } else if (is.null(field) && (is.data.frame(value))) {
-        if (nrow(value) != ndoc(x))
-            stop(message_error("docvar_mismatch"))
-        x <- cbind(x[flag], value)
-    } else if (!any(is_internal(field))) {
-        x[[field]] <- value
-    } else {
-        message_error("docvar_invalid")
-    }
-    return(x)
-}
-
-## internal function to return the docvars for all docvars functions
-get_docvars <- function(x, field = NULL) {
-    x <- x[!is_internal(names(x))]
-    if (is.null(field)) {
-        return(x)
-    } else {
-        return(x[field])
-    }
 }

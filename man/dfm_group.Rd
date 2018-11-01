@@ -38,13 +38,13 @@ one of the \link{docvars} attached to the dfm. This is identical in
 functionality to using the \code{"groups"} argument in \code{\link{dfm}}.
 }
 \examples{
-mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
+corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
-mydfm <- dfm(mycorpus)
-dfm_group(mydfm, groups = "grp")
-dfm_group(mydfm, groups = c(1, 1, 2, 2))
+mt <- dfm(corp)
+dfm_group(mt, groups = "grp")
+dfm_group(mt, groups = c(1, 1, 2, 2))
 
 # equivalent
-dfm(mydfm, groups = "grp")
-dfm(mydfm, groups = c(1, 1, 2, 2))
+dfm(mt, groups = "grp")
+dfm(mt, groups = c(1, 1, 2, 2))
 }

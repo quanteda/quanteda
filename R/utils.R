@@ -76,11 +76,11 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' @param value a list of attributes extracted by attributes()
 #' @keywords internal
 "slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
-    slots <- methods::getSlots(class(x)[1])
-    for (sname in names(value)) {
-        if (!sname %in% names(slots) || sname %in% exceptions) next
-        if (!identical(typeof(value[[sname]]), slots[[sname]])) next
-        methods::slot(x, sname) <- value[[sname]]
+    slot <- methods::getSlots(head(class(x)))
+    for (name in names(value)) {
+        if (!name %in% names(slot) || name %in% exceptions) next
+        if (!identical(class(value[[name]]), unname(slot[name]))) next
+        methods::slot(x, name) <- value[[name]]
     }
     return(x)
 }

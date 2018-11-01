@@ -16,13 +16,11 @@
 # @examples 
 # testCorp <- resample(corpus_subset(data_corpus_inaugural, Year>2000), 10, "sentences")
 # testCorpPara <- resample(corpus(data_char_ukimmig2010), 10, "paragraphs")
-# names(metadoc(testCorp))
 # x <- corpus(c("Sentence One C1.  Sentence Two C1.  Sentence Three C1.", 
 #               "Sentence One C2.  Sentence Two C2.  Sentence Three C2. 
 #                Sentence Four C2.  Sentence Five C2.  Sentence Six C2."),
 #             docnames=c("docTwo", "docOne"))
 # testRS <- resample(x, n=3)
-# metadoc(testRS)
 # testRS$documents
 # 
 # # tests to see if a corpus contains resampled texts

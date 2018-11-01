@@ -273,19 +273,15 @@ dfm.tokens <- function(x,
     result <- compile_dfm(x, verbose = verbose)
     
     # copy, set attributes
-    result@ngrams <- as.integer(attr(x, "ngrams"))
-    result@skip <- as.integer(attr(x, "skip"))
-    result@concatenator <- attr(x, "concatenator")
-    if (attr(x, 'what') == "dictionary") {
-        attr(result, 'what') <- "dictionary"
-        attr(result, 'dictionary') <- attr(x, 'dictionary')
-    }
-    if (!is.null(attr(x, "docvars"))) {
-        result@docvars <- attr(x, "docvars")
-    } else {
-        result@docvars <- data.frame(matrix(ncol = 0, nrow = length(x)))
-    }
-    
+    slots(result) <- attributes(x)
+    #result@ngrams <- as.integer(attr(x, "ngrams"))
+    #result@skip <- as.integer(attr(x, "skip"))
+    #result@concatenator <- attr(x, "concatenator")
+    # if (attr(x, 'what') == "dictionary") {
+    #     attr(result, 'what') <- "dictionary"
+    #     attr(result, 'dictionary') <- attr(x, 'dictionary')
+    # }
+
     dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 

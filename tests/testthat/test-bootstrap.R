@@ -5,8 +5,7 @@ test_that("bootstrap_dfm works with character and corpus objects", {
              texttwo = "Premiere phrase.  Deuxieme phrase.",
              textthree = "Sentence three is really short.")
     mycorpus <- corpus(txt,
-                       docvars = data.frame(country=c("UK", "USA", "UK"), year=c(1990, 2000, 2005)),
-                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+                       docvars = data.frame(country=c("UK", "USA", "UK"), year=c(1990, 2000, 2005)))
     set.seed(10)
     dfmresamp1 <- bootstrap_dfm(mycorpus, n = 10, verbose = TRUE)
     expect_equal(dfmresamp1[[1]], dfm(mycorpus))
@@ -32,8 +31,7 @@ test_that("bootstrap_dfm works as planned with dfm", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
              texttwo = "Premiere phrase.  Deuxieme phrase.")
     mycorpus <- corpus(txt, 
-                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
     mydfm <- dfm(corpus_reshape(mycorpus, to = "sentences"))
     
     set.seed(10)

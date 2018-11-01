@@ -13,8 +13,7 @@ docvars <-
 docvars <- data.frame(do.call(rbind, docvars))
 names(docvars) <- c("name", "party", "position")
     
-data_corpus_dailnoconf1991 <- corpus(data_readtext_dailnoconf1991,
-                                     metacorpus(list(source = "LBG (2003)")))
+data_corpus_dailnoconf1991 <- corpus(data_readtext_dailnoconf1991)
 
 docvars(data_corpus_dailnoconf1991) <- docvars
 

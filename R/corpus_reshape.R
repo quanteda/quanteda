@@ -16,8 +16,7 @@
 #' # simple example
 #' corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'                  textwo = "Premiere phrase.  Deuxieme phrase."), 
-#'                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-#'                  metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+#'                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
 #' summary(corp)
 #' summary(corpus_reshape(corp, to = "sentences"), showmeta = TRUE)
 #' 
@@ -82,9 +81,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             temp <- segment_texts(texts(x), pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
             
-            result <- corpus(temp$texts, docnames = rownames(temp),
-                             metacorpus = list(source = metacorpus(x, "source"),
-                                               notes = commands))
+            result <- corpus(temp$texts, docnames = rownames(temp))
             
             # add repeated versions of remaining docvars
             if (use_docvars && !is.null(vars)) {

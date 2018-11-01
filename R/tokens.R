@@ -51,7 +51,7 @@
 #'   expression and Unicode definitions of "word" characters
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by
 #'   default
-#' @param include_docvars if \code{TRUE}, pass docvars and metadoc fields
+#' @param include_docvars if \code{TRUE}, pass docvars 
 #'   through to the tokens object.  Only applies when tokenizing \link{corpus}
 #'   objects.
 #' @param ... additional arguments not used
@@ -188,10 +188,11 @@ tokens.character <- function(x, ...) {
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     x <- as.corpus(x)
+    attrs <- attributes(x)
     if (!include_docvars)
         docvars(x) <- NULL
     result <- tokens_internal(texts(x), ...)
-    attr(result, "docvars") <- attr(x, "docvars")
+    attributes(result, FALSE) <- attrs
     return(result)
 }
 

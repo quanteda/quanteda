@@ -11,10 +11,7 @@
 #' are imported as document-level meta-data.  This matches the format of
 #' data.frames constructed by the the \pkg{readtext} package.
 #' \item a \link{kwic} object constructed by \code{\link{kwic}}.
-#' \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
-#'   with the fixed metadata
-#'   fields imported as \link{docvars} and corpus-level metadata imported
-#'   as \link{metacorpus} information.
+#' \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class object.
 #' \item a \link{corpus} object.
 #' }
 #' @param x a valid corpus source object
@@ -29,9 +26,6 @@
 #'   be a character vector. All other variables in the data.frame will be
 #'   imported as docvars.  This argument is only used for \code{data.frame}
 #'   objects (including those created by \pkg{readtext}).
-#' @param metacorpus a named list containing additional (character) information
-#'   to be added to the corpus as corpus-level metadata.  Special fields
-#'   recognized in the \code{\link{summary.corpus}} are:
 #' \itemize{
 #' \item{\code{source }}{a description of the source of the texts, used for
 #'   referencing;}
@@ -54,8 +48,7 @@
 #'   also likely to break should the internal structure of a corpus object
 #'   change (as it inevitably will as we continue to develop the package,
 #'   including moving corpus objects to the S4 class system).
-#' @seealso \link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}},
-#'   \code{\link{metacorpus}},
+#' @seealso \link{corpus-class}, \code{\link{docvars}}, 
 #'   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
 #'   \code{\link{docnames}}
 #' @details The texts and document variables of corpus objects can also be

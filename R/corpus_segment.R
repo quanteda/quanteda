@@ -80,18 +80,18 @@
 #'                   ##DOC3 Third document starts here.  End of third document.",
 #'                  "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 #' corp_seg <- corpus_segment(corp, "##*")
-#' cbind(texts(corp_seg), docvars(corp_seg), metadoc(corp_seg))
+#' cbind(texts(corp_seg), docvars(corp_seg))
 #' 
 #' # segmenting a transcript based on speaker identifiers
 #' corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
 #' corp_seg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
 #'                             valuetype = "regex")
-#' cbind(texts(corp_seg2), docvars(corp_seg2), metadoc(corp_seg2))
+#' cbind(texts(corp_seg2), docvars(corp_seg2))
 #' 
 #' # segmenting a corpus using crude end-of-sentence segmentation
 #' corp_seg3 <- corpus_segment(corp, pattern = ".", valuetype = "fixed", 
 #'                             pattern_position = "after", extract_pattern = FALSE)
-#' cbind(texts(corp_seg3), docvars(corp_seg3), metadoc(corp_seg3))
+#' cbind(texts(corp_seg3), docvars(corp_seg3))
 #' 
 #' @import stringi
 #' @export
@@ -133,9 +133,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                           extract_pattern, pattern_position)
 
     # create the new corpus
-    result <- corpus(temp$texts, docnames = rownames(temp),
-                     metacorpus = list(source = metacorpus(x, "source"),
-                                       notes = commands))
+    result <- corpus(temp$texts, docnames = rownames(temp))
     
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(vars)) {

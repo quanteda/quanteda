@@ -42,10 +42,17 @@ data.frame; if the rownames are not set, it will use the default sequence
 based on \code{(\link{quanteda_options}("base_docname")}.}
 
 \item{text_field}{the character name or numeric index of the source
-\code{data.frame} indicating the variable to be read in as text, which must
-be a character vector. All other variables in the data.frame will be
-imported as docvars.  This argument is only used for \code{data.frame}
-objects (including those created by \pkg{readtext}).}
+  \code{data.frame} indicating the variable to be read in as text, which must
+  be a character vector. All other variables in the data.frame will be
+  imported as docvars.  This argument is only used for \code{data.frame}
+  objects (including those created by \pkg{readtext}).
+\itemize{
+\item{\code{source }}{a description of the source of the texts, used for
+  referencing;}
+\item{\code{citation }}{information on how to cite the corpus; and}
+\item{\code{notes }}{any additional information about who created the text, warnings,
+  to do lists, etc.}
+}}
 
 \item{split_context}{logical; if \code{TRUE}, split each kwic row into two
 "documents", one for "pre" and one for "post", with this designation saved
@@ -54,17 +61,6 @@ therefore being twice the number of rows in the kwic.}
 
 \item{extract_keyword}{logical; if  \code{TRUE}, save the keyword matching
 \code{pattern} as a new docvar \code{keyword}}
-
-\item{metacorpus}{a named list containing additional (character) information
-  to be added to the corpus as corpus-level metadata.  Special fields
-  recognized in the \code{\link{summary.corpus}} are:
-\itemize{
-\item{\code{source }}{a description of the source of the texts, used for
-  referencing;}
-\item{\code{citation }}{information on how to cite the corpus; and}
-\item{\code{notes }}{any additional information about who created the text, warnings,
-  to do lists, etc.}
-}}
 
 \item{compress}{logical; if \code{TRUE}, compress the texts in memory using
 gzip compression. This significantly reduces the size of the corpus in
@@ -88,10 +84,7 @@ document is a variable identified by \code{textid_field}; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the \pkg{readtext} package.
 \item a \link{kwic} object constructed by \code{\link{kwic}}.
-\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
-  with the fixed metadata
-  fields imported as \link{docvars} and corpus-level metadata imported
-  as \link{metacorpus} information.
+\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class object.
 \item a \link{corpus} object.
 }
 }
@@ -134,40 +127,39 @@ corpus(texts(data_corpus_irishbudget2010))
 # import a tm VCorpus
 if (requireNamespace("tm", quietly = TRUE)) {
     data(crude, package = "tm")    # load in a tm example VCorpus
-    mytmCorpus <- corpus(crude)
-    summary(mytmCorpus, showmeta=TRUE)
+    vcorp <- corpus(crude)
+    summary(vcorp)
 
     data(acq, package = "tm")
-    summary(corpus(acq), 5, showmeta=TRUE)
+    summary(corpus(acq), 5)
 
-    tmCorp <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
-    quantCorp <- corpus(tmCorp)
-    summary(quantCorp)
+    vcorp2 <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
+    corp <- corpus(vcorp2)
+    summary(corp)
 }
 
 # construct a corpus from a data.frame
-mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
-                  some_ints = 1L:6L,
-                  some_text = paste0("This is text number ", 1:6, "."),
-                  stringsAsFactors = FALSE,
-                  row.names = paste0("fromDf_", 1:6))
-mydf
-summary(corpus(mydf, text_field = "some_text",
-               metacorpus = list(source = "From a data.frame called mydf.")))
+df <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+                 some_ints = 1L:6L,
+                 some_text = paste0("This is text number ", 1:6, "."),
+                 stringsAsFactors = FALSE,
+                 row.names = paste0("fromDf_", 1:6))
+df
+summary(corpus(df, text_field = "some_text"))
 
 # construct a corpus from a kwic object
-mykwic <- kwic(data_corpus_inaugural, "southern")
-summary(corpus(mykwic))
+kw <- kwic(data_corpus_inaugural, "southern")
+summary(corpus(kw))
 # from a kwic
-kw <- kwic(data_char_sampletext, "econom*")
+kw <- kwic(data_char_sampletext, "econom*", separator = "",
+           remove_separators = FALSE) # keep original separators
 summary(corpus(kw))
 summary(corpus(kw, split_context = FALSE))
 texts(corpus(kw, split_context = FALSE))
 
 }
 \seealso{
-\link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}},
-  \code{\link{metacorpus}},
+\link{corpus-class}, \code{\link{docvars}}, 
   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
   \code{\link{docnames}}
 }
