@@ -22,15 +22,15 @@
 #'   previously existed with that date.
 #' @export
 #' @examples
-#' mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
+#' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 #'                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
-#' mydfm <- dfm(mycorpus)
-#' dfm_group(mydfm, groups = "grp")
-#' dfm_group(mydfm, groups = c(1, 1, 2, 2))
+#' mt <- dfm(corp)
+#' dfm_group(mt, groups = "grp")
+#' dfm_group(mt, groups = c(1, 1, 2, 2))
 #'
 #' # equivalent
-#' dfm(mydfm, groups = "grp")
-#' dfm(mydfm, groups = c(1, 1, 2, 2))
+#' dfm(mt, groups = "grp")
+#' dfm(mt, groups = c(1, 1, 2, 2))
 dfm_group <- function(x, groups = NULL, fill = FALSE) {
     UseMethod("dfm_group")
 }
@@ -45,9 +45,7 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
     if (is.null(groups))
         return(x)
-    
     x <- as.dfm(x)
-    dvars <- docvars_internal(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups)
@@ -55,16 +53,29 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
         groups <- droplevels(groups)
     x <- group_dfm(x, documents = groups, fill = fill)
     x <- x[as.character(levels(groups)),]
-    if (length(dvars)) {
-        x@docvars <- group_docvars(dvars, groups)
-    } else {
-        x@docvars <- data.frame(row.names = docnames(x))
-    }
     return(x)
 }
 
 
-# ----- internal -------
+#' Generate a grouping vector from docvars
+#'
+#' Internal function to generate a grouping vector from docvars used in
+#' dfm.corpus, dfm.tokens, dfm.group, and tokens_group
+#' @param x corpus, tokens or dfm
+#' @param groups names of docvars or vector that can be coerced to a factor
+#' @return a factor
+#' @keywords internal
+generate_groups <- function(x, groups, drop = FALSE) {
+    if (is.character(groups) && all(groups %in% names(docvars(x)))) {
+        groups <- interaction(docvars(x, groups), drop = FALSE)
+    } else {
+        if (length(groups) != ndoc(x))
+            stop("groups must name docvars or provide data matching the documents in x")
+        groups <- factor(groups)
+    }
+    return(groups)
+}
+
 
 # internal code to perform dfm compression and grouping
 # on features and/or documents
@@ -131,9 +142,9 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
                   concatenator = x@concatenator)
     
     if (is.null(documents)) {
-        docvars(result) <- docvars(x)
+        result@docvars <- x@docvars
     } else {
-        docvars(result) <- data.frame(row.names = documents_name)
+        result@docvars <- group_docvars(x@docvars, documents)
     }
     return(result)
 }
@@ -153,3 +164,5 @@ is_grouped <- function(x, group) {
         qatd_cpp_is_grouped_numeric(as.numeric(x), group)
     }
 }
+
+

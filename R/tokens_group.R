@@ -22,26 +22,7 @@ tokens_group <- function(x, groups = NULL) {
         names(x) <- as.character(groups[1])
     }
     x <- structure(x, class = 'tokens')
-    docvars(x) <- data.frame(row.names = docnames(x))
+    attrs$docvars <- group_docvars(attrs$docvars, groups)
     attributes(x, FALSE) <- attrs
     return(x)
-}
-
-#' Generate a grouping vector from docvars
-#'
-#' Internal function to generate a grouping vector from docvars used in
-#' dfm.corpus, dfm.tokens, dfm.group, and tokens_group
-#' @param x corpus, tokens or dfm
-#' @param groups names of docvars or vector that can be coerced to a factor
-#' @return a factor
-#' @keywords internal
-generate_groups <- function(x, groups, drop = FALSE) {
-    if (is.character(groups) && all(groups %in% names(documents(x)))) {
-        groups <- interaction(documents(x)[, groups], drop = FALSE)
-    } else {
-        if (length(groups) != ndoc(x))
-            stop("groups must name docvars or provide data matching the documents in x")
-        groups <- factor(groups)
-    }
-    return(groups)
 }
