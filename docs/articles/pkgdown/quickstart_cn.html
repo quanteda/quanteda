@@ -233,7 +233,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  1 12:57:57 2018
+## Created: Thu Nov  8 12:21:53 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -254,7 +254,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  1 12:57:57 2018
+## Created: Thu Nov  8 12:21:53 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -284,7 +284,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  1 12:57:57 2018
+## Created: Thu Nov  8 12:21:53 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -414,7 +414,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Thu Nov  1 12:57:58 2018
+## Created: Thu Nov  8 12:21:54 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -713,7 +713,7 @@
 <p>使用<code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>可以绘制<code>dfm</code>对象的词云图。这个函数将参数传递给<strong>wordcloud</strong>包的<code><a href="../../reference/wordcloud.html">wordcloud()</a></code>函数，并且可以使用相同的参数来对图进行美化：</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb68-2" data-line-number="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb68-3" data-line-number="3">                   <span class="dt">rot.per =</span> <span class="fl">.25</span>, </a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">                   <span class="dt">rotation =</span> <span class="fl">.25</span>, </a>
 <a class="sourceLine" id="cb68-4" data-line-number="4">                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
@@ -860,30 +860,30 @@
 <a class="sourceLine" id="cb87-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb87-4" data-line-number="4">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2     Topic 3     Topic 4     Topic 5      
-## [1,] "child"   "failed"    "taoiseach" "taoiseach" "never"      
-## [2,] "benefit" "strategy"  "prsi"      "may"       "fianna"     
-## [3,] "day"     "needed"    "referred"  "irish"     "competitive"
-## [4,] "bank"    "ministers" "terms"     "gael"      "societies"  
-## [5,] "today"   "system"    "stimulus"  "fine"      "start"      
-##      Topic 6        Topic 7      Topic 8     Topic 9        Topic 10     
-## [1,] "society"      "spending"   "care"      "system"       "alternative"
-## [2,] "enterprising" "providing"  "per"       "taxation"     "citizenship"
-## [3,] "create"       "future"     "welfare"   "welfare"      "levy"       
-## [4,] "kind"         "reductions" "allowance" "government's" "wealth"     
-## [5,] "sense"        "national"   "child"     "stimulus"     "position"   
-##      Topic 11    Topic 12  Topic 13   Topic 14     Topic 15    
-## [1,] "taoiseach" "pension" "fianna"   "measures"   "confidence"
-## [2,] "day"       "welfare" "fáil"     "million"    "per"       
-## [3,] "case"      "changes" "national" "spending"   "today"     
-## [4,] "fine"      "scheme"  "irish"    "investment" "fianna"    
-## [5,] "gael"      "review"  "support"  "pensions"   "reduction" 
-##      Topic 16     Topic 17     Topic 18    Topic 19      Topic 20   
-## [1,] "welfare"    "million"    "fáil"      "measures"    "taoiseach"
-## [2,] "education"  "support"    "side"      "incomes"     "rate"     
-## [3,] "child"      "welfare"    "fianna"    "scheme"      "debate"   
-## [4,] "fianna"     "investment" "education" "level"       "employees"
-## [5,] "employment" "back"       "third"     "introducing" "three"</code></pre>
+<pre><code>##      Topic 1     Topic 2   Topic 3       Topic 4   Topic 5     Topic 6  
+## [1,] "since"     "failed"  "review"      "child"   "taoiseach" "banks"  
+## [2,] "recession" "told"    "report"      "fianna"  "gael"      "courses"
+## [3,] "rate"      "vision"  "recovery"    "benefit" "fine"      "child"  
+## [4,] "position"  "instead" "set"         "poverty" "may"       "private"
+## [5,] "problem"   "create"  "sustainable" "welfare" "irish"     "weeks"  
+##      Topic 7     Topic 8   Topic 9    Topic 10      Topic 11   Topic 12   
+## [1,] "care"      "benefit" "fianna"   "kind"        "welfare"  "strategy" 
+## [2,] "welfare"   "day"     "fáil"     "imagination" "system"   "needed"   
+## [3,] "per"       "bank"    "national" "policies"    "taxation" "ministers"
+## [4,] "allowance" "today"   "irish"    "wit"         "fianna"   "confront" 
+## [5,] "hit"       "society" "support"  "create"      "high"     "system"   
+##      Topic 13   Topic 14   Topic 15  Topic 16      Topic 17    
+## [1,] "measures" "much"     "levy"    "fianna"      "million"   
+## [2,] "million"  "per"      "million" "fáil"        "support"   
+## [3,] "spending" "system"   "carbon"  "citizenship" "welfare"   
+## [4,] "scheme"   "measures" "change"  "side"        "investment"
+## [5,] "pension"  "fáil"     "welfare" "alternative" "back"      
+##      Topic 18    Topic 19    Topic 20      
+## [1,] "taoiseach" "welfare"   "society"     
+## [2,] "employees" "reduction" "enterprising"
+## [3,] "debate"    "taken"     "sense"       
+## [4,] "referred"  "set"       "equal"       
+## [5,] "rate"      "system"    "nation"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -947,27 +947,25 @@
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="co"># 分词</span></a>
 <a class="sourceLine" id="cb97-2" data-line-number="2">chtoks &lt;-<span class="st"> </span></a>
 <a class="sourceLine" id="cb97-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb97-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</a></code></pre></div>
-<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
-## Use 'stopwords(language = "zh", source = "misc")' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="co"># 创建 dfm</span></a>
-<a class="sourceLine" id="cb99-2" data-line-number="2">chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chtoks)</a>
-<a class="sourceLine" id="cb99-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</a></code></pre></div>
+<a class="sourceLine" id="cb97-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>))</a>
+<a class="sourceLine" id="cb97-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb97-6" data-line-number="6"><span class="co"># 创建 dfm</span></a>
+<a class="sourceLine" id="cb97-7" data-line-number="7">chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chtoks)</a>
+<a class="sourceLine" id="cb97-8" data-line-number="8"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</a></code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></a>
-<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span></a>
-<a class="sourceLine" id="cb101-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb101-4" data-line-number="4"><span class="co"># 绘制词云图</span></a>
-<a class="sourceLine" id="cb101-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb101-6" data-line-number="6">chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_termfreq =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb101-7" data-line-number="7"><span class="co"># 设置适用于MacOS的字体</span></a>
-<a class="sourceLine" id="cb101-8" data-line-number="8"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb101-9" data-line-number="9">                   <span class="dt">rot_per =</span> <span class="fl">.25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>, </a>
-<a class="sourceLine" id="cb101-10" data-line-number="10">                   <span class="dt">min_size =</span> <span class="fl">.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,</a>
-<a class="sourceLine" id="cb101-11" data-line-number="11">                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb101-12" data-line-number="12">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></a>
+<a class="sourceLine" id="cb99-2" data-line-number="2"><span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span></a>
+<a class="sourceLine" id="cb99-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb99-4" data-line-number="4"><span class="co"># 绘制词云图</span></a>
+<a class="sourceLine" id="cb99-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb99-6" data-line-number="6">chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_termfreq =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb99-7" data-line-number="7"><span class="co"># 设置适用于MacOS的字体</span></a>
+<a class="sourceLine" id="cb99-8" data-line-number="8"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb99-9" data-line-number="9">                   <span class="dt">rot_per =</span> <span class="fl">.25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>, </a>
+<a class="sourceLine" id="cb99-10" data-line-number="10">                   <span class="dt">min_size =</span> <span class="fl">.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,</a>
+<a class="sourceLine" id="cb99-11" data-line-number="11">                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb99-12" data-line-number="12">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
 <pre><code>## Warning in text.default(x1, y1, word[i], cex = (1 + adjust) * size[i],
 ## offset = 0, : "rot_per" is not a graphical parameter</code></pre>
 <pre><code>## Warning in text.default(x1, y1, word[i], cex = (1 + adjust) * size[i],
@@ -1271,36 +1269,36 @@
 <div id="features-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features-co-occurrence-matrix" class="anchor"></a>特征共现矩阵</h2>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span></a>
-<a class="sourceLine" id="cb104-2" data-line-number="2">ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)</a>
-<a class="sourceLine" id="cb104-3" data-line-number="3">ch17toks &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb104-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb104-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>))</a>
-<a class="sourceLine" id="cb104-6" data-line-number="6">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </a>
-<a class="sourceLine" id="cb104-7" data-line-number="7"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span></a>
+<a class="sourceLine" id="cb102-2" data-line-number="2">ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)</a>
+<a class="sourceLine" id="cb102-3" data-line-number="3">ch17toks &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb102-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb102-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>))</a>
+<a class="sourceLine" id="cb102-6" data-line-number="6">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </a>
+<a class="sourceLine" id="cb102-7" data-line-number="7"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="co"># fcm 共现窗口为："改革" + “xx”</span></a>
-<a class="sourceLine" id="cb106-2" data-line-number="2">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb106-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="co"># fcm 共现窗口为："改革" + “xx”</span></a>
+<a class="sourceLine" id="cb104-2" data-line-number="2">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb104-3" data-line-number="3"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
 <pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
 ##   10    8    8    8    8    7    7    6    5    5</code></pre>
 </div>
 <div id="wordfish" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wordfish" class="anchor"></a>文本缩放模型</h2>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)</a>
-<a class="sourceLine" id="cb108-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
-<a class="sourceLine" id="cb108-3" data-line-number="3">y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1977</span>)]</a>
-<a class="sourceLine" id="cb108-4" data-line-number="4"><span class="kw">plot</span>(y, wfm<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)</a>
+<a class="sourceLine" id="cb106-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb106-3" data-line-number="3">y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1977</span>)]</a>
+<a class="sourceLine" id="cb106-4" data-line-number="4"><span class="kw">plot</span>(y, wfm<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocation" class="anchor"></a>词组 - 双词词组/三词词组等</h2>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="co"># 所有报告中的双词词组</span></a>
-<a class="sourceLine" id="cb109-2" data-line-number="2">ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb109-3" data-line-number="3"><span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="co"># 所有报告中的双词词组</span></a>
+<a class="sourceLine" id="cb107-2" data-line-number="2">ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb107-3" data-line-number="3"><span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    collocation count count_nested length   lambda         z
 ## 1    社会 主义  1787            0      2 5.661200 128.61741
 ## 2        亿 元   689            0      2 7.445259  93.01487
@@ -1312,9 +1310,9 @@
 ## 8        万 吨   212            0      2 6.589957  62.56344
 ## 9    国民 经济   589            0      2 6.014672  61.80426
 ## 10   充分 发挥   191            0      2 6.584129  61.24885</code></pre>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="co"># 2017 报告中的双词词组</span></a>
-<a class="sourceLine" id="cb111-2" data-line-number="2">ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb111-3" data-line-number="3"><span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="co"># 2017 报告中的双词词组</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2">ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb109-3" data-line-number="3"><span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    collocation count count_nested length   lambda        z
 ## 1    人民 群众    12            0      2 5.406485 12.89405
 ## 2        亿 元    14            0      2 8.302483 12.62130
