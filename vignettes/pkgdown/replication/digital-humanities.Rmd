@@ -268,7 +268,7 @@ chap_dfm <- dfm(chapters_corp)
 # extract row with count for "whale"/"ahab" in each chapter
 # and convert to data frame for plotting
 whales_ahabs_df <- chap_dfm %>% 
-    dfm_keep(c("whale", "ahab")) %>% 
+    dfm_keep(pattern = c("whale", "ahab")) %>% 
     convert(to = "data.frame")
     
 whales_ahabs_df$chapter <- 1:nrow(whales_ahabs_df)
@@ -328,7 +328,7 @@ With the ahab frequency and whale frequency vectors extracted from the dfm, it i
 
 ```{r, fig.width=8}
 cor_data_df <- dfm_weight(chap_dfm, scheme = "prop") %>% 
-    dfm_keep(c("ahab", "whale")) %>% 
+    dfm_keep(pattern = c("ahab", "whale")) %>% 
     convert(to = "data.frame")
 
 # sample 1000 replicates and create data frame
@@ -462,7 +462,8 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"),
     dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- dfm_weight(pres_dfm, "prop") %>%
+    textstat_dist(method = "euclidean")
 
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
