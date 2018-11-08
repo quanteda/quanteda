@@ -238,7 +238,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  1 12:58:33 2018
+## Created: Thu Nov  8 12:22:29 2018
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -259,7 +259,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  1 12:58:33 2018
+## Created: Thu Nov  8 12:22:29 2018
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -289,7 +289,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  1 12:58:33 2018
+## Created: Thu Nov  8 12:22:29 2018
 ## Notes:</code></pre>
 <p><code><a href="../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -420,7 +420,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Thu Nov  1 12:58:34 2018
+## Created: Thu Nov  8 12:22:30 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -850,30 +850,30 @@
 <a class="sourceLine" id="cb85-4" data-line-number="4">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb85-5" data-line-number="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2      Topic 3     Topic 4    Topic 5        
-## [1,] "taoiseach" "support"    "taoiseach" "welfare"  "welfare"      
-## [2,] "fine"      "million"    "employees" "system"   "scheme"       
-## [3,] "gael"      "continue"   "rate"      "taxation" "international"
-## [4,] "may"       "investment" "referred"  "fianna"   "research"     
-## [5,] "irish"     "energy"     "debate"    "fáil"     "million"      
-##      Topic 6   Topic 7  Topic 8   Topic 9     Topic 10   Topic 11  
-## [1,] "welfare" "fianna" "child"   "failed"    "fáil"     "care"    
-## [2,] "million" "fáil"   "benefit" "strategy"  "policies" "per"     
-## [3,] "since"   "side"   "today"   "needed"    "million"  "welfare" 
-## [4,] "top"     "level"  "banks"   "ministers" "recovery" "workers" 
-## [5,] "system"  "third"  "much"    "system"    "wealthy"  "families"
-##      Topic 12    Topic 13      Topic 14        Topic 15      Topic 16 
-## [1,] "welfare"   "alternative" "level"         "kind"        "child"  
-## [2,] "including" "citizenship" "set"           "imagination" "benefit"
-## [3,] "measures"  "wealth"      "international" "carbon"      "society"
-## [4,] "million"   "adjustment"  "today"         "policies"    "fianna" 
-## [5,] "earners"   "breaks"      "recent"        "wit"         "million"
-##      Topic 17       Topic 18     Topic 19   Topic 20  
-## [1,] "society"      "fianna"     "fáil"     "million" 
-## [2,] "enterprising" "fáil"       "fianna"   "spending"
-## [3,] "sense"        "support"    "irish"    "measures"
-## [4,] "equal"        "national"   "strategy" "review"  
-## [5,] "nation"       "confidence" "child"    "scheme"</code></pre>
+<pre><code>##      Topic 1     Topic 2   Topic 3      Topic 4     Topic 5      
+## [1,] "taoiseach" "scheme"  "investment" "taoiseach" "alternative"
+## [2,] "employees" "pension" "million"    "fine"      "citizenship"
+## [3,] "rate"      "reduced" "support"    "gael"      "wealth"     
+## [4,] "referred"  "reduce"  "increasing" "may"       "adjustment" 
+## [5,] "debate"    "million" "forward"    "irish"     "breaks"     
+##      Topic 6    Topic 7   Topic 8        Topic 9    Topic 10       
+## [1,] "fianna"   "benefit" "society"      "welfare"  "support"      
+## [2,] "fáil"     "child"   "enterprising" "per"      "employment"   
+## [3,] "national" "day"     "sense"        "hospital" "development"  
+## [4,] "irish"    "today"   "equal"        "benefit"  "back"         
+## [5,] "support"  "welfare" "nation"       "fianna"   "international"
+##      Topic 11 Topic 12    Topic 13   Topic 14   Topic 15      Topic 16    
+## [1,] "fianna" "failed"    "million"  "welfare"  "kind"        "welfare"   
+## [2,] "fáil"   "strategy"  "scheme"   "system"   "carbon"      "million"   
+## [3,] "side"   "needed"    "level"    "taxation" "imagination" "investment"
+## [4,] "level"  "ministers" "reduced"  "fianna"   "change"      "confidence"
+## [5,] "third"  "system"    "national" "fáil"     "levy"        "measures"  
+##      Topic 17 Topic 18        Topic 19    Topic 20   
+## [1,] "child"  "measures"      "care"      "savings"  
+## [2,] "irish"  "million"       "allowance" "welfare"  
+## [3,] "know"   "spending"      "policies"  "reduction"
+## [4,] "banks"  "international" "private"   "deficit"  
+## [5,] "fianna" "welfare"       "real"      "spending"</code></pre>
 </div>
 </div>
   </div>

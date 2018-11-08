@@ -213,7 +213,7 @@
 <pre><code>##    ... found 85 documents, 8,630 features</code></pre>
 <pre><code>##    ... created a 85 x 8,630 sparse dfm
 ##    ... complete. 
-## Elapsed time: 0.266 seconds.</code></pre>
+## Elapsed time: 0.262 seconds.</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># remove stop words and stem words</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(dfm_prep, <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"></a>
@@ -416,13 +416,12 @@
 <a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">mean</span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">disputed &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">49</span>, <span class="dv">50</span><span class="op">:</span><span class="dv">57</span>, <span class="dv">62</span>, <span class="dv">63</span>) <span class="co"># 11 essays with disputed authorship</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">tf_disputed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="kw">is.na</span>(author)))</a></code></pre></div>
-<pre><code>## Warning: 'as.data.frame.dfm' is deprecated.
-## Use 'convert(x, to = "data.frame")' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">author_data<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw">predict</span>(hm_fit, <span class="dt">newdata =</span> author_data)</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">author_data<span class="op">$</span>prediction <span class="co"># predicted values</span></a></code></pre></div>
+<a class="sourceLine" id="cb42-2" data-line-number="2">tf_disputed &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="kw">is.na</span>(author)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(<span class="dt">to =</span> <span class="st">"data.frame"</span>)</a>
+<a class="sourceLine" id="cb42-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb42-5" data-line-number="5">author_data<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw">predict</span>(hm_fit, <span class="dt">newdata =</span> author_data)</a>
+<a class="sourceLine" id="cb42-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb42-7" data-line-number="7">author_data<span class="op">$</span>prediction <span class="co"># predicted values</span></a></code></pre></div>
 <pre><code>##  [1]  0.73682138 -0.13810334 -1.35072048 -0.03823549 -0.27285552
 ##  [6]  0.71537231  1.33178340  0.19414036  0.37516964 -0.20369832
 ## [11]  0.67584796  0.99478176  1.39348825 -1.18908379  1.20446180
@@ -441,18 +440,18 @@
 ## [76]  1.05480578  1.05926761  0.90585578  0.54292995  0.64035410
 ## [81]  0.91773469  0.31189155  0.80869221  0.73649069  1.00895939</code></pre>
 <p>Finally, we plot the fitted values for each Federalist paper with the <strong>ggplot2</strong> package.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">author_data<span class="op">$</span>author_plot &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">is.na</span>(author_data<span class="op">$</span>author), <span class="st">"unknown"</span>, <span class="kw">as.character</span>(author_data<span class="op">$</span>author))</a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> author_data, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> paper_numeric, </a>
-<a class="sourceLine" id="cb46-5" data-line-number="5">                               <span class="dt">y =</span> prediction, </a>
-<a class="sourceLine" id="cb46-6" data-line-number="6">                               <span class="dt">shape =</span> author_plot, </a>
-<a class="sourceLine" id="cb46-7" data-line-number="7">                               <span class="dt">colour =</span> author_plot)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb46-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb46-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb46-10" data-line-number="10"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Federalist Papers"</span>, <span class="dt">y =</span> <span class="st">"Predicted values"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb46-11" data-line-number="11"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb46-12" data-line-number="12"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title=</span><span class="kw"><a href="ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">author_data<span class="op">$</span>author_plot &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">is.na</span>(author_data<span class="op">$</span>author), <span class="st">"unknown"</span>, <span class="kw">as.character</span>(author_data<span class="op">$</span>author))</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb44-4" data-line-number="4"><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> author_data, <span class="kw"><a href="ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> paper_numeric, </a>
+<a class="sourceLine" id="cb44-5" data-line-number="5">                               <span class="dt">y =</span> prediction, </a>
+<a class="sourceLine" id="cb44-6" data-line-number="6">                               <span class="dt">shape =</span> author_plot, </a>
+<a class="sourceLine" id="cb44-7" data-line-number="7">                               <span class="dt">colour =</span> author_plot)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb44-10" data-line-number="10"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Federalist Papers"</span>, <span class="dt">y =</span> <span class="st">"Predicted values"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-11" data-line-number="11"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb44-12" data-line-number="12"><span class="st">    </span><span class="kw"><a href="ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title=</span><span class="kw"><a href="ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
 <p><img src="qss_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 </div>
   </div>

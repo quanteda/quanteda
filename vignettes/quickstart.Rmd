@@ -286,7 +286,7 @@ the `stopwords()` function:
 ```{r}
 head(stopwords("english"), 20)
 head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("arabic", source = "misc"), 10)
 ```
 
 ### Viewing the document-feature matrix

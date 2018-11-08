@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Using **quanteda**'s `fcm()` and `textplot_network()`, you can perform visual analysis of social media posts in terms of cooccurances of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyze more one million posts on your laptop computer.
+Using **quanteda**'s `fcm()` and `textplot_network()`, you can perform visual analysis of social media posts in terms of co-occurrences of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyze more than one million posts on your laptop computer.
 
 ```{r, message = FALSE}
 library(quanteda)

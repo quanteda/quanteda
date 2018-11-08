@@ -38,7 +38,7 @@ corpus_subset(data_corpus_inaugural,
 Plot will pass through additional arguments to the underlying call to `wordcloud`.
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 textplot_wordcloud(dfm_inaug, min_count = 10,
-     colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
+     color = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 ```
 
 # Lexical dispersion plot
