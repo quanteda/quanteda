@@ -111,6 +111,11 @@ textstat_keyness.dfm <- function(x, target = 1L,
         stop("target must be numeric, character or logical")
     }
     
+    # check if number of target documents < ndoc
+    if (!(sum(target) < ndoc(x))) {
+      stop("number of target documents must be < ndoc")
+    }
+    
     # use original docnames only when there are two documents
     if (ndoc(x) == 2) {
         label <- docnames(x)[order(target, decreasing = TRUE)]
