@@ -1,3 +1,11 @@
+# quanteda > v.1.3.13
+
+### Bug fixes and stability enhancements
+
+* Improved the robustnes of `textstat_keyness()` (#1482).
+
+
+
 # quanteda v1.3.13
 
 ### Bug fixes and stability enhancements
