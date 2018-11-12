@@ -113,7 +113,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
     
     # check if number of target documents < ndoc
     if (!(sum(target) < ndoc(x))) {
-      stop("number of target documents must be < ndoc")
+        stop("number of target documents must be < ndoc")
     }
     
     # use original docnames only when there are two documents
