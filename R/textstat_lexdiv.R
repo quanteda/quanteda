@@ -166,7 +166,7 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
             result[["i"]] <- as.integer(result[["i"]])
             result[["n_tokens"]] <- ntoken(x)[y]
             result[["n_types"]] <- ntype(x)[y]
-            subset(result, i > 0)
+            subset(result, result$i > 0)
         })
     }
         
