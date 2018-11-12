@@ -369,4 +369,17 @@ test_that("keyness works correctly for default, single, and multiple targets", {
     textstat_keyness(d, target = docnames(d)[1:3]),
     "number of target documents must be < ndoc"
   )
+  
+  # for numeric values that exceed range
+  expect_error(
+      textstat_keyness(d, target = c(1, 4)),
+      "target index outside range of documents"
+  )
+  
+  # for logical values that exceed range
+  expect_error(
+      textstat_keyness(d, target = c(TRUE, FALSE, FALSE, TRUE)),
+      "logical target value length must equal the number of documents"
+  )
+  
 })
