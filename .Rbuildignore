@@ -28,3 +28,4 @@ __MACOSX
 ^index.(html|md|Rmd)$
 ^paper
 LICENSE
+quanteda.pdf

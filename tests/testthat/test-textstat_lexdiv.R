@@ -82,9 +82,9 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     # 39(4): 287–94.
     # text source: http://www.latinvulgate.com/verse.aspx?t=1&b=4&c=1
     data_corpus_stjohn <- read.csv("../data/corpora/stjohn_latin.csv", stringsAsFactors = FALSE) %>%
-        corpus(text_field = "Latin") %>%
-        texts(groups = "Chapter") %>%  # combine verses into a single document
-        corpus(docvars = data.frame(Chapter = 1:4))
+        corpus(text_field = "latin") %>%
+        texts(groups = "chapter") %>%  # combine verses into a single document
+        corpus(docvars = data.frame(chapter = 1:4))
     docnames(data_corpus_stjohn) <- paste0("chap", 1:4)    
 
     data_dfm_stjohn <- data_corpus_stjohn %>%
@@ -93,7 +93,7 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
         dfm()
     
     # work with chapter 1
-    data_dfm_stjohnch1 <- dfm_subset(data_dfm_stjohn, Chapter == 1)
+    data_dfm_stjohnch1 <- dfm_subset(data_dfm_stjohn, chapter == 1)
 
     expect_equal(
         as.integer(ntoken(data_dfm_stjohnch1)), # 770
