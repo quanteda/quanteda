@@ -81,15 +81,19 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     # “Yule's Characteristic K Revisited.” Language Resources and Evaluation
     # 39(4): 287–94.
     # text source: http://www.latinvulgate.com/verse.aspx?t=1&b=4&c=1
-    data_corpus_stjohnch1 <- read.csv("../data/corpora/stjohn_ch1.csv", stringsAsFactors = FALSE) %>%
-    corpus(text_field = "Latin") %>%
-    texts(groups = "Chapter") %>%  # combine verses into a single document
-    corpus()
+    data_corpus_stjohn <- read.csv("../data/corpora/stjohn_latin.csv", stringsAsFactors = FALSE) %>%
+        corpus(text_field = "Latin") %>%
+        texts(groups = "Chapter") %>%  # combine verses into a single document
+        corpus(docvars = data.frame(Chapter = 1:4))
+    docnames(data_corpus_stjohn) <- paste0("chap", 1:4)    
 
-    data_tokens_stjohnch1 <- data_corpus_stjohnch1 %>%
-        tokens(remove_punct = TRUE) %>% 
-        tokens_tolower()
-    data_dfm_stjohnch1 <- dfm(data_tokens_stjohnch1) 
+    data_dfm_stjohn <- data_corpus_stjohn %>%
+        tokens(remove_punct = TRUE) %>%
+        tokens_tolower() %>%
+        dfm()
+    
+    # work with chapter 1
+    data_dfm_stjohnch1 <- dfm_subset(data_dfm_stjohn, Chapter == 1)
 
     expect_equal(
         as.integer(ntoken(data_dfm_stjohnch1)), # 770
@@ -106,26 +110,37 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     expect_equivalent(
         textstat_lexdiv(data_dfm_stjohnch1, "K"),  # 129.0943
         # from Miranda-Garcia and Calle-Martin (2005, Table 3)
-        data.frame(document = "1", K = 126.3366167, stringsAsFactors = FALSE), 
+        data.frame(document = "chap1", K = 126.3366167, stringsAsFactors = FALSE), 
+        tol = 3
+    )
+    
+    # tests on multiple documents - this is Ch 1 and Chs 1-4 as per the first two rows of 
+    # Table 3 of Miranda-Garcia and Calle-Martin (2005)
+    data_dfm_stjohncomb <- rbind(data_dfm_stjohnch1, 
+                                 dfm_group(data_dfm_stjohn, rep(1, 4)))
+    docnames(data_dfm_stjohncomb)[2] <- "chaps1-4"
+    expect_equivalent(
+        textstat_lexdiv(data_dfm_stjohncomb, "K"),
+        data.frame(document = c("chap1", "chaps1-4"), K = c(126.3366167, 99.43763148), stringsAsFactors = FALSE),
         tol = 3
     )
 
     # try also Herdan's Vm and Simpson's D - these are VERY WEAK tests
     expect_true(
-        textstat_lexdiv(data_dfm_stjohnch1, "D")[1, "D", drop = TRUE] > 0
+        all(textstat_lexdiv(data_dfm_stjohncomb, "D")[1, "D", drop = TRUE] > 0)
     )
     expect_true(
-        textstat_lexdiv(data_dfm_stjohnch1, "Vm")[1, "Vm", drop = TRUE] > 0
+        all(textstat_lexdiv(data_dfm_stjohncomb, "Vm")[1, "Vm", drop = TRUE] > 0)
     )
     
     # test equality as per Tweedie and Baayen (1998, Eq. 19)
     # this needs checking - the tol value is a fudge
-    result <- textstat_lexdiv(data_dfm_stjohnch1, c("K", "Vm"))
-    K <- as.numeric(result[1, "K"])
-    Vm <- as.numeric(result[1, "Vm"])
+    result <- textstat_lexdiv(data_dfm_stjohncomb, c("K", "Vm"))
+    K <- result[["K"]]
+    Vm <- result[["Vm"]]
     expect_equal(
         Vm^2,
-        as.numeric(K / 10^4 + (1 / ntoken(data_dfm_stjohnch1) - 1 / ntype(data_dfm_stjohnch1))),
+        as.numeric(K / 10^4 + (1 / ntoken(data_dfm_stjohncomb) - 1 / ntype(data_dfm_stjohncomb))),
         tol = .0013
     )
 })

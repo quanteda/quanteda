@@ -157,24 +157,32 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
         temp[, S := log(log(n_types, base = log.base), base = log.base) / 
                        log(log(n_tokens, base = log.base), base = log.base)]
     
-    if ("K" %in% measure) {
-        ViN <- table(topfeatures(x, n = nfeat(x)))
-        i <- as.integer(names(ViN))
-        temp[, K := 10^4 * ( sum(ViN * (i/n_tokens)^2) )]
+    # computations for K, D, Vm
+    # produces a list of data.frames that will be used for computing the measures
+    if (length(intersect(c("K", "D", "Vm"), measure))) {
+        ViN <- lapply(docnames(x), function(y) {
+            result <- as.data.frame(table(colSums(x[y, ])), stringsAsFactors = FALSE)
+            names(result) <- c("i", "ViN")
+            result[["i"]] <- as.integer(result[["i"]])
+            result[["n_tokens"]] <- ntoken(x)[y]
+            result[["n_types"]] <- ntype(x)[y]
+            subset(result, i > 0)
+        })
     }
+        
+    if ("K" %in% measure)
+        temp[, K := 10^4 * vapply(ViN, function(y) sum(y$ViN * (y$i / y$n_tokens)^2), numeric(1))]
     
-    if ("D" %in% measure) {
-        ViN <- table(topfeatures(x, n = nfeat(x)))
-        i <- as.integer(names(ViN))
-        temp[, D := sum(ViN * (i/n_tokens) * ((i - 1) / (n_tokens - 1)))]
-    }
-    
-    if ("Vm" %in% measure) {
-        ViN <- table(topfeatures(x, n = nfeat(x)))
-        i <- as.integer(names(ViN))
-        temp[, Vm := sqrt( sum(ViN * (i/n_tokens)^2) - 1/n_types)]
-    }
-
+    if ("D" %in% measure)
+        temp[, D := vapply(ViN, 
+                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))), 
+                           numeric(1))]
+        
+    if ("Vm" %in% measure) 
+        temp[, Vm := vapply(ViN, 
+                            function(y) sqrt( sum(y$ViN * (y$i / y$n_tokens)^2) - 1 / y$n_types[1] ),
+                            numeric(1))]
+        
     if ("Maas" %in% measure) {
         measure <- c(measure, "lgV0", "lgeV0")
         temp[, Maas := sqrt((log(n_tokens, base = log.base) - log(n_types, base = log.base)) / 
