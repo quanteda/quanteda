@@ -106,20 +106,20 @@
 #' (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
 #' cor(textstat_lexdiv(mydfm, "all")[,-1])
 #' 
-textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "Vm", "Maas"), 
+textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
                             log.base = 10) {
     UseMethod("textstat_lexdiv")
 }
 
 
 #' @export
-textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "Vm", "Maas"), 
+textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
                                 log.base = 10) {
     stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
 }
 
 #' @export
-textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "Vm", "Maas"), 
+textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
                                 log.base = 10) {
     
     x <- as.dfm(x)
