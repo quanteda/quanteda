@@ -5,11 +5,10 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
-  "Maas"), log.base = 10)
+  "K", "D", "Vm", "Maas"), log.base = 10)
 }
 \arguments{
-\item{x}{an input object, such as a \link[=dfm]{document-feature matrix}
-object}
+\item{x}{an input \link{dfm}}
 
 \item{measure}{a character vector defining the measure to calculate.}
 
@@ -26,10 +25,12 @@ measures using logs)}
 Calculate the lexical diversity or complexity of text(s).
 }
 \details{
-\code{textstat_lexdiv} calculates a variety of proposed indices for lexical
-  diversity. In the following formulae, \eqn{N} refers to the total number of
-  tokens, and \eqn{V} to the number of types: \describe{
-  
+\code{textstat_lexdiv} calculates a variety of proposed indices for
+  lexical diversity. In the following formulas, \eqn{N} refers to the total
+  number of tokens, \eqn{V} to the number of types, and \eqn{f_v(i, N)} to the
+  numbers of types occurring \eqn{i} times in a sample of length \eqn{N}.
+  \describe{
+     
   \item{\code{"TTR"}:}{The ordinary \emph{Type-Token Ratio}: \deqn{TTR =
   \frac{V}{N}}{TTR =  V / N}}
   
@@ -50,12 +51,18 @@ Calculate the lexical diversity or complexity of text(s).
   \item{\code{"S"}:}{Summer's index: \deqn{S = 
   \frac{\log{\log{V}}}{\log{\log{N}}}}{S = log(log(V)) / log(log(N))}}
   
-  \item{\code{"K"}:}{Yule's \emph{K}  (Yule, 1944, as cited in Tweedie &
-  Baayen, 1998) is calculated by: \deqn{K = 10^4 \times
-  \frac{(\sum_{X=1}^{X}{{f_X}X^2}) - N}{N^2}}{K = 10^4 * (sum(fX*X^2) - N) /
-  N^2} where \eqn{N} is the number of tokens, \eqn{X} is a vector with the
-  frequencies of each type, and \eqn{f_X}{fX} is the frequencies for each X.}
+  \item{\code{"K"}:}{Yule's \emph{K}  (Yule, 1944, as presented in Tweedie &
+  Baayen, 1998, Eq. 16) is calculated by: \deqn{K = 10^4 \times
+  \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] }}
   
+  \item{\code{"D"}:}{Simpson's \emph{D}  (Simpson 1949, as presented in
+  Tweedie & Baayen, 1998, Eq. 17) is calculated by:
+  \deqn{D = \sum_{i=1}^{V} f_v(i, N) \frac{i}{N} \frac{i-1}{N-1}}}
+
+  \item{\code{"Vm"}:}{Herdan's \eqn{V_m}  (Herdan 1955, as presented in
+  Tweedie & Baayen, 1998, Eq. 18) is calculated by:
+  \deqn{V_m = \sqrt{ \sum_{i=1}^{V} f_v(i, N) (i/N)^2 - \frac{i}{V} }}}
+
   \item{\code{"Maas"}:}{Maas' indices (\eqn{a}, \eqn{\log{V_0}} & 
   \eqn{\log{}_{e}{V_0}}): \deqn{a^2 = \frac{\log{N} -
   \log{V}}{\log{N}^2}}{a^2 = log(N) - log(V) / log(N)^2} \deqn{\log{V_0} =
@@ -88,27 +95,33 @@ cor(textstat_lexdiv(mydfm, "all")[,-1])
 
 }
 \references{
-Covington, M.A. & McFall, J.D. (2010). Cutting the Gordian Knot: 
-  The Moving-Average Type-Token Ratio (MATTR). \emph{Journal of Quantitative 
-  Linguistics}, 17(2), 94--100.
+Covington, M.A. & McFall, J.D. (2010). "Cutting the Gordian Knot: 
+  The Moving-Average Type-Token Ratio (MATTR)". \emph{Journal of Quantitative 
+  Linguistics} 17(2), 94--100.
   
-  Maas, H.-D., (1972). \"Uber den Zusammenhang zwischen Wortschatzumfang und 
-  L\"ange eines Textes. \emph{Zeitschrift f\"ur Literaturwissenschaft und 
-  Linguistik}, 2(8), 73--96.
+  Herdan, Gustav. 1955. "A New Derivation and Interpretation of Yule's
+  'Characteristic' \emph{K}." \emph{Zeitschrift für angewandte Mathematik und
+  Physik} 6(4): 332--34.
   
-  McCarthy, P.M. & Jarvis, S. (2007). vocd: A theoretical and empirical 
-  evaluation. \emph{Language Testing}, 24(4), 459--488.
+  Maas, H.-D., (1972). "\"Uber den Zusammenhang zwischen Wortschatzumfang und 
+  L\"ange eines Textes". \emph{Zeitschrift f\"ur Literaturwissenschaft und 
+  Linguistik} 2(8), 73--96.
   
-  McCarthy, P.M. & Jarvis, S. (2010). MTLD, vocd-D, and HD-D: A validation 
-  study of sophisticated approaches to lexical diversity assessment. 
-  \emph{Behaviour Research Methods}, 42(2), 381--392.
+  McCarthy, P.M. & Jarvis, S. (2007). "vocd: A theoretical and empirical 
+  evaluation". \emph{Language Testing} 24(4), 459--488.
+  
+  McCarthy, P.M. & Jarvis, S. (2010). "MTLD, vocd-D, and HD-D: A validation 
+  study of sophisticated approaches to lexical diversity assessment". 
+  \emph{Behaviour Research Methods} 42(2), 381--392.
   
   Michalke, Meik.  (2014) \emph{koRpus: An R Package for Text Analysis}. 
   Version 0.05-5. \url{http://reaktanz.de/?c=hacking&s=koRpus}
   
-  Tweedie. F.J. & Baayen, R.H. (1998). How Variable May a Constant Be? 
-  Measures of Lexical Richness in Perspective. \emph{Computers and the 
-  Humanities}, 32(5), 323--352.
+  Simpson, Edward H. 1949. "Measurement of Diversity." \emph{Nature} 163: 688.
+  
+  Tweedie. F.J. & Baayen, R.H. (1998). "How Variable May a Constant Be? 
+  Measures of Lexical Richness in Perspective". \emph{Computers and the 
+  Humanities} 32(5), 323--352.
 }
 \author{
 Kenneth Benoit, adapted from the S4 class implementation written by 

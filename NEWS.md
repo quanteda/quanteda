@@ -4,7 +4,9 @@
 
 * Improved the robustnes of `textstat_keyness()` (#1482).
 
+### New Features
 
+* Added the following measures to `textstat_lexdiv()`: Yule's _K_, Simpson's _D_, and Herdan's _Vm_.
 
 # quanteda v1.3.13
 
