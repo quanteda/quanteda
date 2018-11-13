@@ -5,7 +5,7 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
-  "K", "Vm", "Maas"), log.base = 10)
+  "K", "D", "Vm", "Maas"), log.base = 10)
 }
 \arguments{
 \item{x}{an input \link{dfm}}
