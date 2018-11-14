@@ -140,19 +140,19 @@ docvars.kwic <- function(x) {
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
     x <- as.corpus(x)
-    attr(x, "docvars") <- set_docvars(attr(x, "docvars"), field, value)
+    set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    attr(x, "docvars") <- set_docvars(attr(x, "docvars"), field, value)
+    set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
     x <- as.dfm(x)
-    x@docvars <- set_docvars(x@docvars, field, value)
+    set_docvars(x@docvars, field) <- value
     return(x)
 }
