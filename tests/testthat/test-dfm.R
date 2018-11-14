@@ -207,7 +207,7 @@ test_that("dfm print works as expected", {
     expect_output(print(testdfm),
                   "^Document-feature matrix of: 14 documents, 5,140 features \\(81.2% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
-                  "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
+                  "^Document-feature matrix of: 5 documents, 5 features \\(28.0% sparse\\).*")
     
     expect_equal(dim(head(testdfm[,1:100], 2)), c(2, 100))
     expect_is(head(testdfm, 2), "dfm")
@@ -554,7 +554,7 @@ test_that("dfm print works with options as expected", {
     )
     expect_output(
         print(tmp[1:5, 1:5], show.values = FALSE),
-        "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\)\\.$"
+        "^Document-feature matrix of: 5 documents, 5 features \\(28.0% sparse\\)\\.$"
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeat = 2, show.values = TRUE),
@@ -610,7 +610,7 @@ test_that("printing an empty dfm produces informative result (#811)", {
     
     expect_output(
         print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfm\""
+        "^Document-feature matrix of: 2 documents, 2 features \\(100.0% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfm\""
     )
     expect_output(
         print(my_dfm[-c(1, 2), ]),
@@ -981,3 +981,27 @@ test_that("rbind and cbind wokrs with empty dfm", {
                      docnames(cbind(mt, quanteda:::make_null_dfm())))
 })
 
+test_that("format_sparsity works correctly", {
+    expect_error(
+        quanteda:::format_sparsity(-1),
+        "illegal sparsity value; must be 0 <= x <= 1.0"
+    )
+    expect_identical(
+        quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.5)))),
+        " (50.0% sparse)"
+    )
+    expect_identical(
+        quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.1)))),
+        " (90.0% sparse)"
+    )
+    expect_identical(
+        quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.99)))),
+        " (1.0% sparse)"
+    )
+    expect_identical(quanteda:::format_sparsity(.9999), " (99.99% sparse)")
+    expect_identical(quanteda:::format_sparsity(.99991), " (>99.99% sparse)")
+    expect_identical(quanteda:::format_sparsity(.0001), " (0.01% sparse)")
+    expect_identical(quanteda:::format_sparsity(.00001), " (<0.01% sparse)")
+    expect_identical(quanteda:::format_sparsity(.00011), " (0.011% sparse)")
+    expect_identical(quanteda:::format_sparsity(.00011, digits = 3), " (0.011% sparse)")
+})

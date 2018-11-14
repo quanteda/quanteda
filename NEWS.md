@@ -3,6 +3,7 @@
 ### Bug fixes and stability enhancements
 
 * Improved the robustnes of `textstat_keyness()` (#1482).
+* Improved the accuracy of sparsity reporting for the print method of a dfm (#1473).
 
 ### New Features
 
