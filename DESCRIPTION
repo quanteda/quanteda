@@ -171,5 +171,5 @@ Collate:
     'utils.R'
     'wordstem.R'
     'zzz.R'
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 SystemRequirements: C++11

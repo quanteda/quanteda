@@ -42,7 +42,7 @@ texts.corpus <- function(x, groups = NULL, spacer = "  ") {
     }
     
     if (is.character(groups) & all(groups %in% attr(x, "docvars"))) {
-        if (any(is_internal(groups)))
+        if (any(is_system(groups)))
             message_error("docvar_invalid")
         group <- as.factor(interaction(attr(x, "docvars")[groups]))
     } else {
@@ -134,7 +134,7 @@ as.corpus.corpus <- function(x) {
         return(x)
     
     # drop internal variables
-    flag <- is_internal(names(x$documents))
+    flag <- is_system(names(x$documents))
     vars_internal <- x$documents[flag]
     x$documents <- x$documents[!flag]
 
@@ -169,7 +169,7 @@ as.corpus.corpuszip <- function(x) {
     txt <- unlist(txt, use.names = FALSE)
     
     # drop internal variables
-    flag <- is_internal(names(x$documents))
+    flag <- is_system(names(x$documents))
     corpus(txt, x$docnames, docvars = x$documents[!flag])
 }
 

@@ -168,7 +168,7 @@ corpus.character <- function(x, docnames = NULL,
                                    stringsAsFactors = FALSE)
     
     if (!is.null(docvars) && nrow(docvars) > 0) {
-        if (any(is_internal(names(docvars))))
+        if (any(is_system(names(docvars))))
             message_error("docvar_invalid")
         docvars <- cbind(docvars_internal, docvars)
     } else {
