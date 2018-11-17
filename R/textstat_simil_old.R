@@ -77,6 +77,7 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
         result <- stats::as.dist(temp, diag = diag, upper = upper)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
+        class(result) <- c("simil", class(result))
         return(result)
     } else {
         result <- as.matrix(temp)
@@ -87,7 +88,7 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
         attr(result, "Size") <- if (margin == "documents") nrow(result) else ncol(result)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
-        class(result) <- c("dist_selection")
+        class(result) <- c("simil_selection", "dist_selection")
         return(result)
     }
 }

@@ -33,8 +33,10 @@
 #'   These can be transformed into a list format using
 #'   \code{\link{as.list.dist}}, if that format is preferred.
 #' @export
-#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-#'   \code{\link{dist}}, \code{\link{as.dist}}
+#' @seealso \code{\link{textstat_dist}},
+#'   \code{\link[quanteda]{as.matrix.simil}},
+#'   \code{\link[quanteda]{as.list.dist}}, \code{\link[stats]{dist}},
+#'   \code{\link[stats]{as.dist}}
 #' @examples
 #' # similarities for documents
 #' mt <- dfm(data_corpus_inaugural, remove_punct = TRUE, remove = stopwords("english"))
@@ -260,17 +262,19 @@ as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
 
 #' Coerce a simil object into a matrix
 #' 
-#' @details \code{as.matrix.simil} coerces an object returned from
-#'   `textstat_simil()` into a matrix.  See also \link[proxy]{as.matrix.simil}.
-#' @param diag  the value to use on the diagonal representing self-proximities.
-#'   This defaults to \code{NA} since a priori there are no upper bounds, so the
-#'   maximum similarity needs to be specified by the user.
+#' \code{as.matrix.simil} coerces an object returned from
+#'   `textstat_simil()` into a matrix
+#' @param diag  the value to use on the diagonal representing self-similarities
+#' @note 
+#'   Because for the similarity methods implemented in  \pkg{quanteda}, the
+#'   similarity of an object with itself will be 1.0, \code{diag} defaults to
+#'   this value. This differs the default \code{diag = NA} in
+#'   \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
 #' @param ... unused
 #' @export
 #' @method as.matrix simil
-#' @keywords textstat 
-#' @rdname textstat_simil
-as.matrix.simil <- function(x, diag = 1, ...) {
+#' @keywords textstat internal
+as.matrix.simil <- function(x, diag = 1.0, ...) {
     size <- attr(x, "Size")
     df <- matrix(0, size, size)
     df[row(df) > col(df)] <- x
