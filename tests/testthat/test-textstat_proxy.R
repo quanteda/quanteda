@@ -363,3 +363,58 @@ test_that("record zeros even in the sparse matrix", {
     expect_equal(textstat_proxy(mt, method = "dice")@x, c(1, 0, 1))
 })
 
+test_that("test stability of textstat_proxy functions", {
+    toks <- tokens(c(doc1 = 'a b c', doc2 = 'd e f'), remove_punct = TRUE)
+    mt <- dfm(toks)
+    
+    # qatd_cpp_similarity_linear() (cosine)
+    n <- 1000
+    testcpp <- list()
+    for (i in seq_len(n)) {
+        testcpp <- c(testcpp,
+                     list(quanteda:::qatd_cpp_similarity_linear(t(mt), 1, seq_len(ndoc(mt)), ndoc(mt), -1)@x))
+    }
+    testcpp <- do.call(rbind, testcpp)
+    # each position (column) should have identical values
+    expect_equal(
+        apply(testcpp, 2, function(y) length(unique(y))),
+        c(1, 1, 1)
+    )
+    
+    # what it should be
+    # what it should be:
+    #      doc1 doc2
+    # doc1    1    0
+    # doc2    0    1
+    expect_identical(
+        proxy::dist(as.matrix(mt), method = "cosine") %>% as.matrix(),
+        textstat_proxy(mt, method = "cosine") %>% as.matrix()
+    )
+        
+    # qatd_cpp_similarity() (dice)
+    n <- 1000
+    testcpp <- list()
+    for (i in seq_len(n)) {
+        testcpp <- c(testcpp,
+                     list(quanteda:::qatd_cpp_similarity(t(mt), 2, seq_len(ndoc(mt)), ndoc(mt), -1, 1)@x))
+    }
+    testcpp <- do.call(rbind, testcpp)
+    # each position (column) should have identical values
+    expect_equal(
+        apply(testcpp, 2, function(y) length(unique(y))),
+        c(1, 1, 1)
+    )
+    
+    # what it should be:
+    #      doc1 doc2
+    # doc1    1    0
+    # doc2    0    1
+    expect_identical(
+        proxy::simil(as.matrix(mt), method = "cosine") %>% as.matrix(),
+        textstat_simil(mt, method = "cosine") %>% as.matrix()
+    )
+    expect_identical(
+        proxy::simil(as.matrix(mt), method = "dice") %>% as.matrix(),
+        textstat_simil(mt, method = "dice") %>% as.matrix()
+    )
+})
