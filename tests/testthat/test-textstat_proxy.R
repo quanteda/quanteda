@@ -356,10 +356,10 @@ test_that("sparse objects are of expected class and occur when expected", {
 test_that("record zeros even in the sparse matrix", {
     toks <- tokens(c(doc1 = 'a b c', doc2 = 'd e f'), remove_punct = TRUE)
     mt <- dfm(toks)
-    expect_equal(sum(textstat_proxy(mt)@x == 0), 1)
-    expect_equal(sum(textstat_proxy(mt, method = "cosine")@x == 0), 1)
-    expect_equal(sum(textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x == 0), 1)
-    expect_equal(sum(textstat_proxy(mt, method = "cosine", rank = 2)@x == 0), 1)
-    expect_equal(sum(textstat_proxy(mt, method = "dice")@x == 0), 1)
+    expect_equal(textstat_proxy(mt)@x, c(1, 0, 1))
+    expect_equal(textstat_proxy(mt, method = "cosine")@x, c(1, 0, 1))
+    expect_equal(textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x, c(1, 0, 1))
+    expect_equal(textstat_proxy(mt, method = "cosine", rank = 2)@x, c(1, 0, 1))
+    expect_equal(textstat_proxy(mt, method = "dice")@x, c(1, 0, 1))
 })
 
