@@ -356,10 +356,22 @@ test_that("sparse objects are of expected class and occur when expected", {
 test_that("record zeros even in the sparse matrix", {
     toks <- tokens(c(doc1 = 'a b c', doc2 = 'd e f'), remove_punct = TRUE)
     mt <- dfm(toks)
-    expect_equal(textstat_proxy(mt)@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "cosine")@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "cosine", rank = 2)@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "dice")@x, c(1, 0, 1))
+    
+    # should always be the 0,1 (bottom left) cell that is explicit zero
+    check_zero_indexes <- function(x) {
+        expect_identical(
+            c(x@i[which(x@x == 0)], x@j[which(x@x == 0)]),
+            c(0L, 1L)
+        )
+    }
+    
+    check_zero_indexes(textstat_proxy(mt))
+    check_zero_indexes(textstat_proxy(mt, method = "cosine"))
+    check_zero_indexes(textstat_proxy(mt, method = "cosine", min_proxy = -0.5))
+    check_zero_indexes(textstat_proxy(mt, method = "cosine", rank = 2))
+    check_zero_indexes(textstat_proxy(mt, method = "dice"))
+    
+    # test repeatedly - since not always stable on Debian
+    for (i in seq_len(100)) check_zero_indexes(textstat_proxy(mt, method = "cosine"))
+    for (i in seq_len(100)) check_zero_indexes(textstat_proxy(mt, method = "dice"))
 })
-
