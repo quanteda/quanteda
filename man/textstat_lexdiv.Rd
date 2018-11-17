@@ -6,7 +6,7 @@
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
   "K", "D", "Vm", "Maas"), log.base = 10, remove_numbers = TRUE,
-  remove_punct = TRUE, remove_symbols = TRUE)
+  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE)
 }
 \arguments{
 \item{x}{an input \link{dfm} or \link{tokens}}
@@ -21,6 +21,8 @@ measures using logs)}
 \item{remove_punct}{default = TRUE. removes regex "\\p{P}"}
 
 \item{remove_symbols}{default = TRUE. removes regex "\\p{S}"}
+
+\item{remove_hyphens}{default = FALSE. splits hyphenated tokens by the hyphen and produces two tokens.}
 
 \item{...}{not used}
 }

@@ -167,4 +167,16 @@ test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols"
   
 })
 
+test_that('textstat_lexdiv supports removal of hyphenation', {
+  
+  y <- corpus(c(d1 = "apple-pear orange-fruit elephant-ferrari",
+                d2 = "alpha-beta charlie-delta echo-foxtrot")) %>% dfm()
+  z <- corpus(c(d1 = "apple pear orange fruit elephant ferrari",
+                d2 ="alpha beta charlie delta echo foxtrot" )) %>% dfm()
+  
+  expect_equivalent(textstat_lexdiv(y, measure = 'all', remove_hyphens = TRUE), textstat_lexdiv(z, measure = 'all', remove_hyphens = TRUE))
+})
+
+
+
 
