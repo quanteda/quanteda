@@ -3,6 +3,7 @@
 \name{textstat_simil}
 \alias{textstat_simil}
 \alias{textstat_dist}
+\alias{as.matrix.simil}
 \title{Similarity and distance computation between documents or features}
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
@@ -13,12 +14,14 @@ textstat_simil(x, selection = NULL, margin = c("documents",
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
   "minkowski"), upper = FALSE, diag = FALSE, p = 2)
+
+\method{as.matrix}{simil}(x, diag = 1, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{selection}{a valid index for document or feature names from \code{x},
-to be selected for comparison}
+\item{selection}{a valid index for document or feature names (depending on
+\code{margin}) from \code{x}, to be selected for comparison}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or
@@ -34,6 +37,12 @@ matrix is recorded. Only used when \code{value = "dist"}.}
 Only used when \code{value = "dist"}.}
 
 \item{p}{The power of the Minkowski distance.}
+
+\item{...}{unused}
+
+\item{diag}{the value to use on the diagonal representing self-proximities.
+This defaults to \code{NA} since a priori there are no upper bounds, so the
+maximum similarity needs to be specified by the user.}
 }
 \value{
 By default, \code{textstat_simil} and \code{textstat_dist} return
@@ -60,6 +69,9 @@ sparse \link{dfm} objects.
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
   and \code{"minkowski"}.
+
+\code{as.matrix.simil} coerces an object returned from
+  `textstat_simil()` into a matrix.  See also \link[proxy]{as.matrix.simil}.
 }
 \note{
 If you want to compute similarity on a "normalized" dfm object
@@ -112,3 +124,4 @@ as.list(d1)
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
   \code{\link{dist}}, \code{\link{as.dist}}
 }
+\keyword{textstat}
