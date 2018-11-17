@@ -161,22 +161,10 @@ textstat_lexdiv.tokens <- function(x, measure = c("all", "TTR", "C", "R", "CTTR"
         if (remove_numbers) {x <- tokens_remove(x, "\\p{N}", valuetype = "regex")}
         if (remove_punct) {x <- tokens_remove(x, "\\p{P}", valuetype = "regex")}
         if (remove_symbols) {x <- tokens_remove(x, "\\p{S}", valuetype = "regex")}
-        x <- dfm(x)
     }
-  
-  
-  
-    measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
-    if (measure[1] == 'all') {
-        measure <- measure_option
-    } else {
-        is_valid <- measure %in% measure_option
-        if (!all(is_valid))
-            stop("Invalid measure(s): ", measure[!is_valid])
-    }
-
-    result <- compute_lexdiv_stats(x, measure, log.base)
     
+    result <- dfm(x) %>% textstat_lexdiv.dfm(measure = measure, log.base = log.base)
+  
     return(result)
   
 }
@@ -234,8 +222,8 @@ compute_lexdiv_stats <- function(x, measure, log.base){
     
     if ("D" %in% measure)
         temp[, D := vapply(ViN, 
-                          function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))), 
-                          numeric(1))]
+                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))), 
+                           numeric(1))]
     
     if ("Vm" %in% measure) 
         temp[, Vm := vapply(ViN, 
