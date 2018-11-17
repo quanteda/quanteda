@@ -55,10 +55,13 @@
 #'   
 #'   }
 #'   
-#' @param x an input \link{dfm}
+#' @param x an input \link{dfm} or \link{tokens}
 #' @param measure a character vector defining the measure to calculate.
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logs)
+#' @param remove_numbers default = TRUE. removes regex "\\p{N}"
+#' @param remove_punct default = TRUE. removes regex "\\p{P}"
+#' @param remove_symbols default = TRUE. removes regex "\\p{S}"
 #' @param ... not used
 #' @author Kenneth Benoit, adapted from the S4 class implementation written by 
 #'   Meik Michalke in the \pkg{koRpus} package.
@@ -107,23 +110,30 @@
 #' cor(textstat_lexdiv(mydfm, "all")[,-1])
 #' 
 textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
-                            log.base = 10) {
+                            log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+                            remove_symbols = TRUE) {
     UseMethod("textstat_lexdiv")
 }
 
 
 #' @export
 textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
-                                log.base = 10) {
+                                log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+                                remove_symbols = TRUE) {
     stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
 }
 
 #' @export
 textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
-                                log.base = 10) {
+                                log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+                                remove_symbols = TRUE) {
     
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
+    if (remove_numbers) {x <- dfm_remove(x, "\\p{N}", valuetype = "regex")}
+    if (remove_punct) {x <- dfm_remove(x, "\\p{P}", valuetype = "regex")}
+    if (remove_symbols) {x <- dfm_remove(x, "\\p{S}", valuetype = "regex")}
+    
     
     measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
     if (measure[1] == 'all') {
@@ -134,29 +144,78 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
             stop("Invalid measure(s): ", measure[!is_valid])
     }
     
+    result <- compute_lexdiv_stats(x, measure, log.base)
+    return(result)
+}
+
+#' @export
+textstat_lexdiv.tokens <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"),
+                                   log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+                                   remove_symbols = TRUE) {
+  
+    # Check if input is a token and coerce. This would support lists
+    if (!(is.tokens(x))) {x <- as.tokens(x)}
+  
+    # Convert x into dfm to reuse computation for K, D, Vm
+    if (is.tokens(x)) {
+        if (remove_numbers) {x <- tokens_remove(x, "\\p{N}", valuetype = "regex")}
+        if (remove_punct) {x <- tokens_remove(x, "\\p{P}", valuetype = "regex")}
+        if (remove_symbols) {x <- tokens_remove(x, "\\p{S}", valuetype = "regex")}
+        x <- dfm(x)
+    }
+  
+  
+  
+    measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
+    if (measure[1] == 'all') {
+        measure <- measure_option
+    } else {
+        is_valid <- measure %in% measure_option
+        if (!all(is_valid))
+            stop("Invalid measure(s): ", measure[!is_valid])
+    }
+
+    result <- compute_lexdiv_stats(x, measure, log.base)
+    
+    return(result)
+  
+}
+
+#' Compute lexdiv (internal functions)
+#' 
+#' Internal function used in textstat_lexdiv 
+#' @name lexdiv
+#' @param x a \link{dfm} object
+#' @param measure a list of lexical diversity measures.
+#' @param log.base a numeric value defining the base of the logarithm (for
+#'   measures using logs)
+#' @return returns a data.frame of documents and their lexical diversity scores.
+
+compute_lexdiv_stats <- function(x, measure, log.base){
+    
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- K <- D <- Vm <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
-                               
+  
     if ("TTR" %in% measure)
         temp[, TTR := n_types / n_tokens]
-    
+  
     if ("C" %in% measure)
         temp[, C := log(n_types, base = log.base) / log(n_tokens, base = log.base)]
-
+  
     if ("R" %in% measure)
         temp[, R := n_types / sqrt(n_tokens)]
-    
+  
     if ("CTTR" %in% measure)
         temp[, CTTR := n_types / sqrt(2 * n_tokens)]
-
+  
     if ("U" %in% measure) 
         temp[, U := log(n_tokens, base = log.base) ^ 2 / 
-                   (log(n_tokens, base = log.base) - log(n_types, base = log.base))]
-
+                    (log(n_tokens, base = log.base) - log(n_types, base = log.base))]
+  
     if ("S" %in% measure) 
         temp[, S := log(log(n_types, base = log.base), base = log.base) / 
-                       log(log(n_tokens, base = log.base), base = log.base)]
-    
+                    log(log(n_tokens, base = log.base), base = log.base)]
+  
     # computations for K, D, Vm
     # produces a list of data.frames that will be used for computing the measures
     if (length(intersect(c("K", "D", "Vm"), measure))) {
@@ -167,22 +226,22 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
             result[["n_tokens"]] <- ntoken(x)[y]
             result[["n_types"]] <- ntype(x)[y]
             subset(result, result$i > 0)
-        })
+      })
     }
-        
+    
     if ("K" %in% measure)
         temp[, K := 10^4 * vapply(ViN, function(y) sum(y$ViN * (y$i / y$n_tokens)^2), numeric(1))]
     
     if ("D" %in% measure)
         temp[, D := vapply(ViN, 
-                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))), 
-                           numeric(1))]
-        
+                          function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))), 
+                          numeric(1))]
+    
     if ("Vm" %in% measure) 
         temp[, Vm := vapply(ViN, 
                             function(y) sqrt( sum(y$ViN * (y$i / y$n_tokens)^2) - 1 / y$n_types[1] ),
                             numeric(1))]
-        
+    
     if ("Maas" %in% measure) {
         measure <- c(measure, "lgV0", "lgeV0")
         temp[, Maas := sqrt((log(n_tokens, base = log.base) - log(n_types, base = log.base)) / 
@@ -190,9 +249,12 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
         temp[, lgV0 := log10(n_types) / sqrt(1 - (log10(n_types) / (log10(n_tokens) + 0)) ^ 2)]
         temp[, lgeV0 := log(n_types) / sqrt(1 - (log(n_types) / (log(n_tokens) + 0)) ^ 2)]
     }
+    
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
     result <- cbind(result, as.data.frame(temp[,measure, with = FALSE]))
     class(result) <- c("lexdiv", "textstat", "data.frame")
     rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
+
+

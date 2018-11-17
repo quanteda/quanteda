@@ -5,15 +5,22 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
-  "K", "D", "Vm", "Maas"), log.base = 10)
+  "K", "D", "Vm", "Maas"), log.base = 10, remove_numbers = TRUE,
+  remove_punct = TRUE, remove_symbols = TRUE)
 }
 \arguments{
-\item{x}{an input \link{dfm}}
+\item{x}{an input \link{dfm} or \link{tokens}}
 
 \item{measure}{a character vector defining the measure to calculate.}
 
 \item{log.base}{a numeric value defining the base of the logarithm (for
 measures using logs)}
+
+\item{remove_numbers}{default = TRUE. removes regex "\\p{N}"}
+
+\item{remove_punct}{default = TRUE. removes regex "\\p{P}"}
+
+\item{remove_symbols}{default = TRUE. removes regex "\\p{S}"}
 
 \item{...}{not used}
 }

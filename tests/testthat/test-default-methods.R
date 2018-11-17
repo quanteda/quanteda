@@ -402,7 +402,7 @@ test_that("test default textstat methods", {
     )   
     expect_error(
         textstat_lexdiv(TRUE),
-        "textstat_lexdiv\\(\\) only works on dfm objects"
+        "textstat_lexdiv\\(\\) only works on dfm, tokens objects"
     )   
     expect_error(
         textstat_readability(TRUE),

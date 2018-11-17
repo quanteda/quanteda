@@ -145,4 +145,26 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     )
 })
 
+test_that("textstat_lexdiv works similarly for corpus and tokens", {
+    mydfm <- dfm(c(d1 = "b a b a b a b a",
+                   d2 = "a a b b"))
+    mytokens <- tokens(c(d1 = "b a b a b a b a",
+                         d2 = "a a b b"))
+    expect_equivalent(
+      textstat_lexdiv(mydfm, "all"),
+      textstat_lexdiv(mytokens, "all")
+    )
+})
+
+test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols", {
+  
+    mydfm <- dfm(c(d1 = "a a  b b  c c",
+                   d2 = "a a , b b . c c / & ^ *** ### 1 2 3 4"))
+    mytokens <- tokens(c(d1 = "a a  b b  c c",
+                            d2 = "a a , b b . c c / & ^ *** ### 1 2 3 4"))
+    expect_equivalent(textstat_lexdiv(mydfm['d1'], "all")[,-1], textstat_lexdiv(mydfm['d2'], "all")[,-1])
+    expect_equivalent(textstat_lexdiv(mytokens['d1'], "all")[,-1], textstat_lexdiv(mytokens['d2'], "all")[,-1])
+  
+})
+
 
