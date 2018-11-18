@@ -26,8 +26,8 @@ dropped.}
 
 \item{font}{font-family of words and labels. Use default font if \code{NULL}.}
 
-\item{adjust}{ajust sizes of words by a constant. Useful for non-Engish words
-for which R fails to obtain correct sizes.}
+\item{adjust}{adjust sizes of words by a constant. Useful for non-English
+words for which R fails to obtain correct sizes.}
 
 \item{rotation}{proportion of words with 90 degree rotation}
 
@@ -53,8 +53,8 @@ aspect ratio only supported if rotation = 0.}
 \item{...}{additional parameters. Only used to make it compatible with
 \pkg{wordcloud}}
 
-\item{comparison}{if \code{TRUE}, plot a wordclound that compares documents
-in the same way as \code{\link[wordcloud]{comparison.cloud}}}
+\item{comparison}{if \code{TRUE}, plot a wordcloud that compares documents in
+the same way as \code{\link[wordcloud]{comparison.cloud}}}
 }
 \description{
 Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted

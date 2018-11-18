@@ -63,7 +63,7 @@ Construct a sparse document-feature matrix, from a character, \link{corpus},
 \link{tokens}, or even other \link{dfm} object.
 }
 \details{
-The default behavior for \code{remove}/\code{select} when 
+The default behaviour for \code{remove}/\code{select} when 
   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to 
   remove/select any ngram constructed from a matching feature.  If you wish 
   to remove these before constructing ngrams, you will need to first tokenize

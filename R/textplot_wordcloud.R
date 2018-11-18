@@ -21,8 +21,8 @@
 #'   dropped.
 #' @param color color of words from least to most frequent
 #' @param font font-family of words and labels. Use default font if \code{NULL}.
-#' @param adjust ajust sizes of words by a constant. Useful for non-Engish words
-#'   for which R fails to obtain correct sizes.
+#' @param adjust adjust sizes of words by a constant. Useful for non-English
+#'   words for which R fails to obtain correct sizes.
 #' @param rotation proportion of words with 90 degree rotation
 #' @param random_order plot words in random order. If \code{FALSE}, they will be
 #'   plotted in decreasing frequency.
@@ -36,8 +36,8 @@
 #'   \code{comparison=TRUE}.
 #' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable
 #'   aspect ratio only supported if rotation = 0.
-#' @param comparison if \code{TRUE}, plot a wordclound that compares documents
-#'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
+#' @param comparison if \code{TRUE}, plot a wordcloud that compares documents in
+#'   the same way as \code{\link[wordcloud]{comparison.cloud}}
 #' @param ... additional parameters. Only used to make it compatible with
 #'   \pkg{wordcloud}
 #' @examples
@@ -140,7 +140,7 @@ textplot_wordcloud.dfm <- function(x,
 
 #' Internal function for textplot_wordcloud
 #'
-#' This function impliments wordcloud without dependecies. Code is adopted from 
+#' This function implements wordcloud without dependencies. Code is adopted from 
 #' \code{\link[wordcloud]{wordcloud}}.
 #' @inheritParams textplot_wordcloud
 #' @param scale deprecated argument
@@ -153,7 +153,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
 #' @keywords internal
-#' @author Kohei Watanabe, builting on code from Ian Fellows's \pkg{wordcloud} package.
+#' @author Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, min_count, max_words, 
                       color, font, adjust, rotation,
                       random_order, random_color, ordered_color,
@@ -309,8 +309,8 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
 
 #' Internal function for textplot_wordcloud
 #'
-#' This function impliments wordcloud that compares documents. Code is adopted from
-#' \code{\link[wordcloud]{comparison.cloud}}.
+#' This function implements wordcloud that compares documents. Code is adopted
+#' from \code{\link[wordcloud]{comparison.cloud}}.
 #' @inheritParams textplot_wordcloud
 #' @param scale deprecated argument
 #' @param min.freq deprecated argument

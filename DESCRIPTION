@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.3.13
+Version: 1.3.14
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -18,7 +18,7 @@ Authors@R: c(
     person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
     person("Patrick O.", "Perry", email = "patperry@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-7460-127X")),
     person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-1156-8465")),
-    person("Benjamin", "Lauderdale", email = "b.e.lauderdale@lse.ac.uk", role = "aut", comment = "0000-0003-3090-0969; wordfish C++ code"),    
+    person("Benjamin", "Lauderdale", email = "b.e.lauderdale@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-3090-0969")),    
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
     person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
     person("Lori", "Young", role = "dtc", comment = "Lexicoder Sentiment Dictionary 2015"),
@@ -53,6 +53,7 @@ Imports:
     yaml
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
+    spelling,
     ca,
     dplyr,     
     DT,
@@ -82,6 +83,7 @@ Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
+Language: en-UK
 Collate:
     'RcppExports.R'
     'View.R'

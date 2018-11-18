@@ -21,7 +21,7 @@ all-uppercase words (applies only to \code{*_tolower} functions)}
 }
 \description{
 \code{tokens_tolower} and \code{tokens_toupper} convert the features of a
-\link{tokens} object and reindex the types.
+\link{tokens} object and re-index the types.
 }
 \examples{
 # for a document-feature matrix

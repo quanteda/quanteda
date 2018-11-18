@@ -35,7 +35,7 @@ Removes sentences from a corpus or a character vector shorter than a
 specified length.
 }
 \note{
-This function has been superceded by \code{\link{corpus_trim}}; use
+This function has been superseded by \code{\link{corpus_trim}}; use
   that function instead.
 }
 \examples{

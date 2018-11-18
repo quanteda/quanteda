@@ -65,7 +65,7 @@ The corpus constructor command `corpus()` works directly on:
 
 ### Building a corpus from a character vector
 
-The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.
+The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexibility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.
 
 If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called `data_char_ukimmig2010`).
 
@@ -83,6 +83,22 @@ docvars(my_corpus, "Year") <- 2010
 summary(my_corpus)
 ```
 
+<<<<<<< HEAD
+=======
+If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also 
+add those to our corpus.
+```{r}
+metadoc(my_corpus, "language") <- "english"
+metadoc(my_corpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(my_corpus), sep = "_")
+summary(my_corpus, showmeta = TRUE)
+```
+
+The last command, `metadoc`, allows you to define your own document meta-data fields.  Note that in assigning just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
+a simple tag for our custom metadoc field `docsource`, we used the quanteda function `ndoc()` to retrieve
+the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
+functions you may already use in R, such as `nrow()` and `ncol()`.
+
+>>>>>>> master
 ### Loading in files using the readtext package
 
 ```{r, eval=FALSE}
@@ -276,7 +292,7 @@ head(stopwords("ar", source = "misc"), 10)
 
 ### Viewing the document-feature matrix
 
-The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud.
+The dfm can be inspected in the Environment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud.
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 my_dfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)

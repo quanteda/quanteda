@@ -768,10 +768,10 @@ tokens_character <- function(txt,
 #' This function recompiles a serialized tokens object when the vocabulary has
 #' been changed in a way that makes some of its types identical, such as
 #' lowercasing when a lowercased version of the type already exists in the type
-#' table, or introduces gaps in the integer map of the types.  It also reindexes
-#' the types attribute to account for types that may have become duplicates,
-#' through a procedure such as stemming or lowercasing; or the addition of new
-#' tokens through compounding.
+#' table, or introduces gaps in the integer map of the types.  It also
+#' re-indexes the types attribute to account for types that may have become
+#' duplicates, through a procedure such as stemming or lowercasing; or the
+#' addition of new tokens through compounding.
 #' @param x the \link{tokens} object to be recompiled
 #' @param gap if \code{TRUE}, remove gaps between token IDs
 #' @param dup if \code{TRUE}, merge duplicated token types into the same ID 

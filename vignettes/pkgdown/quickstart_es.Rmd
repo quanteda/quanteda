@@ -388,7 +388,7 @@ textmodel_wordfish(ieDfm, dir = c(2, 1))
 ```{r}
 quantdfm <- dfm(data_corpus_irishbudget2010, 
                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quantdfm <- dfm_trim(quantdfm, min_count = 4, max_docfreq = 10)
+quantdfm <- dfm_trim(quantdfm, min_termfreq = 4, max_docfreq = 10)
 quantdfm
 
 if (require(topicmodels)) {

@@ -93,7 +93,7 @@ for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "lo
 dfm_smooth(my_dfm, 0.5)
 }
 \references{
-Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
+Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze.
   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
   University Press, 2008.
 }

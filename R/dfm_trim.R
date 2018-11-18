@@ -16,18 +16,18 @@
 #' across all documents, below/above which features will
 #'   be removed
 #' @param termfreq_type how \code{min_termfreq} and \code{max_termfreq} are
-#'   intepreted.  \code{"count"} sums the frequencies; \code{"prop"} devides the
-#'   term frequences by the total sum; \code{"rank"} is matched against the inverted
-#'   ranking of features in terms of overall frequency, so that 1, 2, ... are
-#'   the highest and second highest frequency features, and so on;
+#'   intepreted.  \code{"count"} sums the frequencies; \code{"prop"} divides the
+#'   term frequencies by the total sum; \code{"rank"} is matched against the
+#'   inverted ranking of features in terms of overall frequency, so that 1, 2,
+#'   ... are the highest and second highest frequency features, and so on;
 #'   \code{"quantile"} sets the cutoffs according to the quantiles (see
 #'   \code{\link{quantile}}) of term frequencies.
 #' @param min_docfreq,max_docfreq minimum/maximum values of a feature's document
 #'   frequency, below/above which features will be removed
 #' @param docfreq_type specify how \code{min_docfreq} and \code{max_docfreq} are
-#'   intepreted.   \code{"count"} is the same as \code{\link{docfreq}(x, scheme
-#'   = "count")}; \code{"prop"} devides the document frequences by the total sum;
-#'   \code{"rank"} is matched against the inverted ranking of document
+#'   interpreted.   \code{"count"} is the same as \code{\link{docfreq}(x, scheme
+#'   = "count")}; \code{"prop"} divides the document frequencies by the total
+#'   sum; \code{"rank"} is matched against the inverted ranking of document
 #'   frequency, so that 1, 2, ... are the features with the highest and second
 #'   highest document frequencies, and so on; \code{"quantile"} sets the cutoffs
 #'   according to the quantiles (see \code{\link{quantile}}) of document

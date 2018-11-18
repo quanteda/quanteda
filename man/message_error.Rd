@@ -7,7 +7,7 @@
 message_error(key = NULL)
 }
 \arguments{
-\item{key}{type of erro message}
+\item{key}{type of error message}
 }
 \description{
 Return an error message

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm-methods.R
 \name{matrix2dfm}
 \alias{matrix2dfm}
-\title{Conversts a Matrix to a dfm}
+\title{Converts a Matrix to a dfm}
 \usage{
 matrix2dfm(x, slots = NULL)
 }
@@ -12,6 +12,6 @@ matrix2dfm(x, slots = NULL)
 \item{slots}{slots a list of values to be assigned to slots}
 }
 \description{
-Conversts a Matrix to a dfm
+Converts a Matrix to a dfm
 }
 \keyword{internal}

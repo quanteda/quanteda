@@ -134,7 +134,7 @@ To quickly sort the word types by their frequency, we can use the `dfm()` comman
 ```{r eval=TRUE}
 # ten most frequent words
 moby_dfm <- dfm(novel_lower_v, remove_punct = TRUE)
-head(moby_dfm, nfeature = 10)
+head(moby_dfm, nf = 10)
 ```
 Getting the list of the most frequent 10 terms is easy, using `textstat_frequency()`.  
 ```{r}
@@ -154,7 +154,7 @@ textstat_frequency(moby_dfm, n = 50) %>%
 
 For direct comparison with the next chapter, we also create the sorted list of the most frequently found words using this:
 ```{r}
-sorted_moby_freqs_t <- topfeatures(moby_dfm, n = nfeature(moby_dfm))
+sorted_moby_freqs_t <- topfeatures(moby_dfm, n = nfeat(moby_dfm))
 ```
 
 
@@ -267,7 +267,9 @@ chap_dfm <- dfm(chapters_corp)
 
 # extract row with count for "whale"/"ahab" in each chapter
 # and convert to data frame for plotting
-whales_ahabs_df <- as.data.frame(chap_dfm[, c("whale", "ahab")])
+whales_ahabs_df <- chap_dfm %>% 
+    dfm_keep(pattern = c("whale", "ahab")) %>% 
+    convert(to = "data.frame")
     
 whales_ahabs_df$chapter <- 1:nrow(whales_ahabs_df)
 
@@ -293,7 +295,9 @@ head(rel_dfm)
 
 
 # subset dfm and convert to data.frame object
-rel_chap_freq <- as.data.frame(rel_dfm[, c("whale", "ahab")])
+rel_chap_freq <- rel_dfm[, c("whale", "ahab")] %>% 
+    convert(to = "data.frame")
+
 rel_chap_freq$chapter <- 1:nrow(rel_chap_freq)
 ggplot(data = rel_chap_freq, aes(x = chapter, y = whale)) + 
     geom_bar(stat = "identity") +
@@ -323,8 +327,9 @@ With the ahab frequency and whale frequency vectors extracted from the dfm, it i
 ##  5.4 Testing Correlation with Randomization
 
 ```{r, fig.width=8}
-cor_data_df <- dfm_weight(chap_dfm, scheme = "prop")[, c("ahab", "whale")] %>%
-    as.data.frame
+cor_data_df <- dfm_weight(chap_dfm, scheme = "prop") %>% 
+    dfm_keep(pattern = c("ahab", "whale")) %>% 
+    convert(to = "data.frame")
 
 # sample 1000 replicates and create data frame
 n <- 1000
@@ -457,7 +462,8 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"),
     dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- dfm_weight(pres_dfm, "prop") %>%
+    textstat_dist(method = "euclidean")
 
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)

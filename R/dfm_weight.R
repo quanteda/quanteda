@@ -65,7 +65,7 @@
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
 #' }}
-#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
+#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze.
 #'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
 #'   University Press, 2008.
 dfm_weight <- function(
@@ -259,7 +259,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   prevent a zero document count for a term
 #' @param base the base with respect to which logarithms in the inverse document
 #' frequency weightings are computed; default is 10 (see Manning, 
-#'   Raghavan, and Schutze 2008, p123).
+#'   Raghavan, and Schütze 2008, p123).
 #' @param threshold numeric value of the threshold \emph{above which} a feature 
 #'   will considered in the computation of document frequency.  The default is 
 #'   0, meaning that a feature's document frequency will be the number of 
@@ -290,7 +290,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' docfreq(wiki_dfm, scheme = "unary")
 #' docfreq(wiki_dfm, scheme = "inversemax")
 #' docfreq(wiki_dfm, scheme = "inverseprob")
-#' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
+#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax", 
                                   "inverseprob", "unary"),
@@ -371,7 +371,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #'   weighting.  The default is to use counts instead of normalized term
 #'   frequency (the relative term frequency within document), but this
 #'   can be overridden using \code{scheme_tf = "prop"}.
-#' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
+#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 #' @seealso \code{\link{dfm_weight}}, \code{\link{docfreq}}
 #' @keywords dfm weighting

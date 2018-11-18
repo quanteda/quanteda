@@ -1,5 +1,6 @@
 context("test textstat_keyness()")
 
+
 test_that("keyness_textstat chi2 computation is correct", {
     mydfm <- dfm(c(d1 = "b b b b b b b a a a",
                    d2 = "a a a a a a a b b"))
@@ -334,4 +335,51 @@ test_that("raises error when dfm is empty (#1419)", {
     mx <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_error(textstat_keyness(mx), 
                  quanteda:::message_error("dfm_empty"))
+})
+
+
+
+
+test_that("keyness works correctly for default, single, and multiple targets", {
+    d <- corpus(c(d1 = "a a a a a b b b c c c c ",
+                  d2 = "a b c d d d d e f g",
+                  d3 = "a b c d d e e e e f g")) %>%
+        dfm()
+    
+    # default target is first document
+    expect_identical(
+        textstat_keyness(d),
+        textstat_keyness(d, target = docnames(d)[1])
+    )
+    
+    # for explicit first target
+    expect_identical(
+        as.integer(textstat_keyness(d, target = docnames(d)[1])[1, "n_target"]),
+        5L
+    )
+    
+    # for two documents as targets
+    expect_equivalent(
+        textstat_keyness(d, target = docnames(d)[1:2])[1, c("n_target", "n_reference")],
+        data.frame(n_target = 6, n_reference = 1)
+    )
+    
+    # for all documents as targets
+    expect_error(
+        textstat_keyness(d, target = docnames(d)[1:3]),
+        "number of target documents must be < ndoc"
+    )
+  
+  # for numeric values that exceed range
+  expect_error(
+      textstat_keyness(d, target = c(1, 4)),
+      "target index outside range of documents"
+  )
+  
+  # for logical values that exceed range
+  expect_error(
+      textstat_keyness(d, target = c(TRUE, FALSE, FALSE, TRUE)),
+      "logical target value length must equal the number of documents"
+  )
+  
 })

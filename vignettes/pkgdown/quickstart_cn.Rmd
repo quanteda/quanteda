@@ -291,7 +291,7 @@ topfeatures(mydfm, 20)  # 20 词频最高的词
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
 textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
-                   rot.per = .25, 
+                   rotation = .25, 
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
@@ -413,13 +413,13 @@ if (require(topicmodels)) {
 
 ```{r}
 # 读取中文停用词
-csw <- stopwords("chinese")
+csw <- stopwords("zh", source = "misc")
 
 tokens("中华人民共和国成立于1949 年")
 
 # 除去停用词
 tokens("中华人民共和国成立于1949 年") %>%
-    tokens_remove(stopwords("chinese"))
+    tokens_remove(stopwords("zh", source = "misc"))
 ```
 
 ## 例子：中国总理的“政府工作报告” {#chinese-government-report}
@@ -433,7 +433,7 @@ summary(data_corpus_chinesegovreport, 10)
 # 分词
 chtoks <- 
     tokens(data_corpus_chinesegovreport, remove_punct = TRUE) %>%
-    tokens_remove(stopwords("chinese"))
+    tokens_remove(stopwords("zh", source = "misc"))
 
 # 创建 dfm
 chdfm <- dfm(chtoks)
@@ -460,7 +460,7 @@ textplot_wordcloud(chdfm_tf, min_count = 6, random_order = FALSE,
 ch17txt <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
 ch17toks <- 
     tokens(ch17txt, remove_punct = TRUE) %>% 
-    tokens_remove(stopwords("chinese"))
+    tokens_remove(stopwords("zh", source = "misc"))
 chfcm <- fcm(ch17toks, context = "window")  
 topfeatures(chfcm["改革", ])
 

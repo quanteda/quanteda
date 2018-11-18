@@ -1,3 +1,6 @@
+^CRAN-RELEASE$
+^Meta$
+^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.Rd2pdf
@@ -25,3 +28,4 @@ __MACOSX
 ^index.(html|md|Rmd)$
 ^paper
 LICENSE
+quanteda.pdf

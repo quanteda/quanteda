@@ -99,7 +99,7 @@ Authors:
   \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (0000-0002-3323-6330)
   \item Patrick O. Perry \email{patperry@gmail.com} (0000-0001-7460-127X)
   \item Jouni Kuha \email{j.kuha@lse.ac.uk} (0000-0002-1156-8465)
-  \item Benjamin Lauderdale \email{b.e.lauderdale@lse.ac.uk} (0000-0003-3090-0969; wordfish C++ code)
+  \item Benjamin Lauderdale \email{b.e.lauderdale@lse.ac.uk} (0000-0003-3090-0969)
   \item William Lowe \email{wlowe@princeton.edu} (0000-0002-1549-6163)
 }
 

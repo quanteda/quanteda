@@ -166,7 +166,7 @@ as.fcm <- function(x) {
     matrix2fcm(x)
 }
 
-#' Conversts a Matrix to a fcm
+#' Converts a Matrix to a fcm
 #' @param x a Matrix
 #' @param slots slots a list of values to be assigned to slots
 #' @keywords internal

@@ -2,8 +2,10 @@
 
 ## Purpose
 
-- Bug fixes, stability enhancements, and feature additions (noted in NEWS).
-- Fixed some URLs that became broken due to changes on the target websites.
+- Responds to an email from Kurt Hornik (31 Oct 2018) asking us to fix the problems at https://cran.r-project.org/web/checks/check_results_quanteda.html.  Although except for the UBSAN issues (see below) these were caused by changes to the **koRpus** package that was published last week, that should have been caught by revdep checks when updates to that package were submitted.  
+- Fixed some URLs that became broken due to changes on the target websites.  
+- Bug fixes, stability enhancements, and feature additions (noted in NEWS).  
+
 
 ## Test environments
 
@@ -15,9 +17,13 @@
 
 ## R CMD check results
 
+We're run this through every checker possible: local builds, win-builder, r-hub, and revdep_check.  It's clean, except:
+
 ### Note on UBSAN issues
 
-Our package has some recurring UBSAN issues.  These are warnings that occur in RcppParallel, because of code in the TBB (Intel Threading Building Blocks) library used by RcppParallel.  We have been in a wide discussion with the RcppParallel development team (see https://github.com/RcppCore/RcppParallel/issues/36) but they have identified the problem as an object call in TBB.  This seems to have no consequences for stability in packages that use these functions.  One of the RcppParallel developers, Kevin Ushey (kevinushey@gmail.com) has confirmed this.
+Our package has some recurring UBSAN issues related to the Intel TBB (Threading Building Blocks) library built into **RcppParallel**.  However, these are harmless and should not block acceptance of our package.  
+
+We have been in a wide discussion with the RcppParallel development team (see https://github.com/RcppCore/RcppParallel/issues/36) but they have identified the problem as an object call in TBB.  This seems to have no consequences for stability in packages that use these functions.  One of the RcppParallel developers, Kevin Ushey (kevinushey@gmail.com) has confirmed this.
 
 We are far from the only package to be affected by these (harmless) compiler warnings, for instance the following are also affected:
 
@@ -38,4 +44,4 @@ None.
 
 ## Downstream dependencies
 
-No errors, warnings, or notes were caused in other packages, using `devtools::revdep_check()` to confirm.
+No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm.

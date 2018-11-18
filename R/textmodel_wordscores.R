@@ -14,7 +14,8 @@
 #' @param y vector of training scores associated with each document 
 #'   in \code{x}
 #' @param smooth a smoothing parameter for word counts; defaults to zero for the
-#'   to match the LBG (2003) method.
+#'   to match the LBG (2003) method.  See Value below for additional
+#'   information on the behaviour of this argument.
 #' @param scale scale on which to score the words; \code{"linear"} for classic 
 #'   LBG linear posterior weighted word class differences, or \code{"logit"}
 #'   for log posterior differences
@@ -24,6 +25,12 @@
 #'   \code{coef()} can also be used to extract the word coefficients from the
 #'   fitted \code{textmodel_wordscores} object, and \code{summary()} will print a
 #'   nice summary of the fitted object.
+#' @return  A fitted \code{textmodel_wordscores} object.  This object will
+#'   contain a copy of the input data, but in its original form without any
+#'   smoothing applied. Calling \code{\link{predict.textmodel_wordscores}} on
+#'   this object without specifying a value for \code{newdata}, for instance,
+#'   will predict on the unsmoothed object.  This behaviour differs from
+#'   versions of quanteda <= 1.2.
 #' @seealso \code{\link{predict.textmodel_wordscores}} for methods of applying a
 #'   fitted \link{textmodel_wordscores} model object to predict quantities from
 #'   (other) documents.
@@ -117,8 +124,8 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' @param level tolerance/confidence level for intervals
 #' @param force make the feature set of \code{newdata} conform to the model
 #'   terms.  The default of \code{TRUE} means that a fitted model can be applied
-#'   to scale a dfm that doesn't contain a 1:1 match of features in the training
-#'   and prediction data.
+#'   to scale a dfm that does not contain a 1:1 match of features in the
+#'   training and prediction data.
 #' @param ... not used
 #' @return 
 #' \code{predict.textmodel_wordscores()} returns a named vector of predicted

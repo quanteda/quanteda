@@ -95,10 +95,10 @@ textstat_keyness.dfm <- function(x, target = 1L,
         stop("x must have at least two documents")
     if (is.character(target) && !(target %in% docnames(x)))
         stop("target not found in docnames(x)")
-    if (is.numeric(target) && (target < 1 || target > ndoc(x)))
+    if (is.numeric(target) && any(target < 1 | target > ndoc(x)))
         stop("target index outside range of documents")
     if (is.logical(target) && length(target) != ndoc(x))
-        stop("target must be the same length as the number of documents")
+        stop("logical target value length must equal the number of documents")
 
     # convert all inputs into logical vector
     if (is.numeric(target)) {
@@ -109,6 +109,11 @@ textstat_keyness.dfm <- function(x, target = 1L,
         target <- target
     } else {
         stop("target must be numeric, character or logical")
+    }
+    
+    # check if number of target documents < ndoc
+    if (!(sum(target) < ndoc(x))) {
+        stop("number of target documents must be < ndoc")
     }
     
     # use original docnames only when there are two documents
