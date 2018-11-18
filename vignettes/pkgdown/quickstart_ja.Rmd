@@ -276,9 +276,9 @@ myStemMat[, 1:5]
 `remove`によって，文書行列から除外するトークンを指定する．`stopwords()`は，幾つかの言語で定義されたストップワードのリストを返す．
 
 ```{r}
-head(stopwords("english"), 20)
-head(stopwords("russian"), 10)
-head(stopwords("arabic", source = "misc"), 10)
+head(stopwords("en"), 20)
+head(stopwords("ru"), 10)
+head(stopwords("ar", source = "misc"), 10)
 ```
 
 ### 文書行列の表示 {#viewing-the-document-feature-matrix}
