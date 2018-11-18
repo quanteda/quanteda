@@ -155,7 +155,7 @@ textstat_lexdiv.dfm <-
     if (remove_symbols) 
         x <- dfm_remove(x, "^\\p{S}+$", valuetype = "regex")
     if (remove_hyphens) 
-        x<- dfm_split_hyphenated_features(x)
+        x <- dfm_split_hyphenated_features(x)
     
     if (!sum(x)) 
         stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
@@ -204,7 +204,6 @@ textstat_lexdiv.tokens <-
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logs)
 #' @return returns a data.frame of documents and their lexical diversity scores.
-
 compute_lexdiv_stats <- function(x, measure, log.base){
     
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- K <- D <- Vm <- NULL
@@ -271,42 +270,34 @@ compute_lexdiv_stats <- function(x, measure, log.base){
     return(result)
 }
 
-
+#' Split a dfm's hyphenated features into constituent parts
+#' 
+#' Takes a dfm that contains features with hyphenated words, such as
+#' "split-second" and turns them into features that split the elements
+#' in the same was as `tokens(x, remove_hyphens = TRUE)` would have done.
+#' @param x input \link{dfm}
+#' @keywords internal dfm
+#' @examples
+#' (tmp <- dfm("One-two one two three."))
+#' quanteda:::dfm_split_hyphenated_features(tmp)
 dfm_split_hyphenated_features <- function(x) {
-    return(x)
-    features <- featnames(x)
-        features_with_hyphens <- features[stringi::stri_detect_fixed(features, '-')]
-        dfm_nohyphen <- dfm_select(x, features_with_hyphens, selection ="remove")
-        # Create separate dataframe for hyphenated features
-        temp <- dfm_select(x, features_with_hyphens)
-        temp <- convert(temp, to = 'data.frame')
-        for (i in features_with_hyphens){
-          split = stri_split_fixed(i, '-', tokens_only=TRUE) 
-          temp[split[[1]]] <- temp[i]
-        }
-        
-        dfm_hyphen <- as.dfm(temp) 
-        # WARNING: Coercion creates unwanted column "document" and docnames are not updated properly
-        # Remove hyphenated features
-        dfm_hyphen_removed <- dfm_hyphen %>% 
-          dfm_remove('document') %>% 
-          dfm_remove(features_with_hyphens)
-        
-        # Add checks to deal with case when hyphenated words contain duplicated tokens in dfm_nohyphen
-        overlap_condition = (featnames(dfm_hyphen_removed) %in% featnames(dfm_nohyphen))
-        if (any(overlap_condition) == TRUE) {
-            overlap = featnames(dfm_hyphen_removed)[overlap_condition]
-            df_keep_overlap <- convert(dfm_hyphen_removed, to = 'data.frame')
-            df_drop_overlap <- convert(dfm_nohyphen, to = 'data.frame')
-            df_keep_overlap[overlap] = df_keep_overlap[overlap] + df_drop_overlap[overlap]
-            df_drop_overlap = df_drop_overlap[,!names(df_drop_overlap) %in% overlap]
-            dfm_recombine <- cbind(as.dfm(df_keep_overlap) %>% dfm_remove('document'), 
-                                   as.dfm(df_drop_overlap) %>% dfm_remove('document'))
-            docnames(dfm_recombine) <- docnames(x)
-            x <- dfm_recombine
-        } else {
-          #Update docnames
-          docnames(dfm_hyphen_removed) <- docnames(x)
-          x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
-        }
-}
+    # the global for matching the hyphens and similar characters
+    hyphen_regex <- "^.+\\p{Pd}.+$"
+    
+    # figure out where the hyphens are
+    hyphenated_index <- which(stringi::stri_detect_regex(featnames(x), hyphen_regex))
+
+    # split the hyphenated feature names into a list of components
+    splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
+    
+    # efficiently create a new dfm from hyphenated feature name components
+    splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
+    colnames(splitdfm) <- unlist(splitfeatures, use.names = FALSE)
+    
+    # combine dfms and suppress duplicated feature name warning
+    result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
+    # compress features to combine same-named features
+    result <- dfm_compress(result, margin = "features")
+    
+    result
+}    
