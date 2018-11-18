@@ -189,22 +189,6 @@ test_that("as.dfm to and from a matrix works with docvars", {
     )
 })
 
-test_that("repeat row index for dfm makes unique row.names for @docvars", {
-    txt <- c(docA = "a a a b c c f",
-             docB = "a b b b c d",
-             docC = "c c c f f")
-    crp <- corpus(txt, 
-                  docvars = data.frame(y = 1:3))
-    d <- dfm(crp)
-    expect_identical(
-        row.names(docvars(d[c(1,2,2), ])),
-        c("docA", "docB", "docB.1")
-    )
-    expect_identical(
-        attributes(d[c(1,2,2), ]@docvars)$row.names,
-        c("docA", "docB", "docB.1")
-    )
-})
 
 # test_that("rbind duplicates docvars", {
 #     txt <- c(docA = "a a a b c c f",

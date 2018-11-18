@@ -38,9 +38,46 @@ get_docvars <- function(x, field = NULL, drop = FALSE, system = FALSE) {
     }
 }
 
+# internal function to make new system-level docvars
+make_docvars <- function(docname, unique = TRUE) {
+    docname <- as.character(docname)
+    if (unique)
+        docname <- make.unique(docname)
+    n <- length(docname)
+    if (n == 0) {
+        data.frame("_docid" = character(),
+                   "_docname" = character(),
+                   "_docnum" = integer(), 
+                   "_segnum" = integer(), 
+                   check.names = FALSE,
+                   stringsAsFactors = FALSE)
+    } else {
+        data.frame("_docid" = docname,
+                   "_docname" = docname,
+                   "_docnum" = seq(1L, n), 
+                   "_segnum" = rep(1L, n), 
+                   check.names = FALSE,
+                   stringsAsFactors = FALSE)
+    }
+}
+
+# internal function to upgrade docvars to modern format
+upgrade_docvars <- function(x, docname = NULL) {
+    if (is.null(docname))
+        docname <- rownames(x)
+    rownames(x) <- NULL
+    if (sum(is_system(colnames(x))) == 4) {
+        return(x)
+    } else if (is.null(x) || length(x) == 0) {
+        return(make_docvars(docname, FALSE))
+    } else {
+        return(cbind(make_docvars(docname, FALSE), get_docvars(x)))
+    }
+}
+
 # internal function to check if variable is internal-only
 is_system <- function(x) {
-    stri_startswith_fixed(x, "_")
+    x %in% c("_docid", "_docname", "_docnum", "_segnum")
 }
 
 

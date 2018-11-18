@@ -1,12 +1,56 @@
 context("test docvars")
 
-test_that("docvars of corpus is a data.frame", {
-    expect_that(
-        docvars(data_corpus_inaugural),
-        is_a('data.frame')
+
+test_that("make_docvars() works", {
+    
+    docvar1 <- quanteda:::make_docvars(character())
+    docvar2 <- quanteda:::make_docvars(c("A", "B", "C"))
+    docvar3 <- quanteda:::make_docvars(1:3)
+    expect_equal(dim(docvar1), c(0, 4))
+    expect_equal(dim(docvar2), c(3, 4))
+    expect_equal(dim(docvar3), c(3, 4))
+    expect_equal(colnames(docvar1), c("_docid", "_docname", "_docnum", "_segnum"))
+    expect_equal(colnames(docvar2), c("_docid", "_docname", "_docnum", "_segnum"))
+    expect_equal(colnames(docvar3), c("_docid", "_docname", "_docnum", "_segnum"))
+    
+})
+
+test_that("upgrade_docvars() workds", {
+    
+    docvar1 <- data.frame()
+    docvar2 <- data.frame("var1" = c(100, 200, 300),
+                          "var2" = c(TRUE, TRUE, FALSE))
+    docvar3 <- data.frame("var1" = c(100, 200, 300),
+                          "var2" = c(TRUE, TRUE, FALSE),
+                          row.names = c("A", "B", "C"))
+    docvar4 <- data.frame("_docid" = c("A", "B", "C"), 
+                          "_docname" = c("A", "B", "C"), 
+                          "_docnum" = 1L:3L, 
+                          "_segnum" = rep(1L, 3), 
+                          "var1" = c(100, 200, 300),
+                          "var2" = c(TRUE, TRUE, FALSE),
+                          check.names = FALSE,
+                          stringsAsFactors = FALSE)
+    expect_identical(
+        quanteda:::upgrade_docvars(docvar1, c("A", "B", "C")),
+        docvar4[,1:4]
+    )
+    expect_identical(
+        quanteda:::upgrade_docvars(docvar3),
+                     docvar4
+    )
+    expect_identical(
+        quanteda:::upgrade_docvars(docvar2, c("A", "B", "C")),
+        docvar4
     )
 })
 
+test_that("docvars of corpus is a data.frame", {
+    expect_equal(
+        class(docvars(data_corpus_inaugural)),
+        "data.frame"
+    )
+})
 
 test_that("docvars with non-existent field names generate correct error messages", {
     expect_error(

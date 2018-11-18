@@ -160,19 +160,12 @@ corpus.character <- function(x, docnames = NULL,
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    docvars_internal <- data.frame("_docid" = make.unique(docname),
-                                   "_docname" = docname,
-                                   "_docnum" = seq_along(x), 
-                                   "_segnum" = rep(1, length(x)), 
-                                   check.names = FALSE,
-                                   stringsAsFactors = FALSE)
-    
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
             message_error("docvar_invalid")
-        docvars <- cbind(docvars_internal, docvars)
+        docvars <- cbind(make_docvars(docname), docvars)
     } else {
-        docvars <- docvars_internal
+        docvars <- make_docvars(docname)
     }
     
     result <- unname(x)

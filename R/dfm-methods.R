@@ -88,8 +88,7 @@ as.dfm.default <- function(x) {
 #' @export
 as.dfm.dfm <- function(x) {
     # for compatibility with older dfm objects
-    if (identical(dim(x@docvars), c(0L, 0L)))
-        x@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(x)))
+    x@docvars <- upgrade_docvars(x@docvars, rownames(x))
     return(x)
 }
 
@@ -156,14 +155,7 @@ matrix2dfm <- function(x, slots = NULL) {
     
     x <- Matrix(x, sparse = TRUE)
     dimnames(x) <- list(docs = rowname, features = colname)
-    
-    # Force dfm to have docvars
-    if (is.character(rownames(x))) {
-        x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = make.unique(rownames(x))))
-    } else {
-        x <- new("dfm", as(x, 'dgCMatrix'))
-    }
-    
+    x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(rowname, FALSE))
     set_dfm_slots(x, slots)
 }
 
