@@ -301,7 +301,6 @@ dfm_split_hyphenated_features <- function(x) {
     result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
     # compress features to combine same-named features
     result <- dfm_compress(result, margin = "features")
-    result <- dfm_remove(result, pattern = '-', valuetype = 'fixed')
-    
+
     result
 }    
