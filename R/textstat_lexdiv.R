@@ -116,10 +116,10 @@
 #' (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
 #' cor(textstat_lexdiv(mydfm, "all")[,-1])
 #' 
-#' txt <- c("Anyway, like I was sayin’, shrimp is the fruit of the sea. You can
+#' txt <- c("Anyway, like I was sayin', shrimp is the fruit of the sea. You can
 #'           barbecue it, boil it, broil it, bake it, saute it.",
-#'          "There’s shrimp-kabobs,
-#'           shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There’s
+#'          "There's shrimp-kabobs,
+#'           shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
 #'           pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
 #'           shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
 #'           sandwich.")
@@ -148,14 +148,14 @@ textstat_lexdiv.dfm <-
         
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
+    if (remove_hyphens) 
+        x <- dfm_split_hyphenated_features(x)
     if (remove_numbers) 
         x <- dfm_remove(x, "^\\p{N}+$", valuetype = "regex")
     if (remove_punct) 
         x <- dfm_remove(x, "^\\p{P}+$", valuetype = "regex")
     if (remove_symbols) 
         x <- dfm_remove(x, "^\\p{S}+$", valuetype = "regex")
-    if (remove_hyphens) 
-        x <- dfm_split_hyphenated_features(x)
     
     if (!sum(x)) 
         stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
@@ -287,23 +287,21 @@ dfm_split_hyphenated_features <- function(x) {
     # figure out where the hyphens are
     hyphenated_index <- which(stringi::stri_detect_regex(featnames(x), hyphen_regex))
     
-    # Add check if there are any hyphenated features at all
-    if (!(length(hyphenated_index) == 0)){
-        # split the hyphenated feature names into a list of components
-        splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
-        
-        # efficiently create a new dfm from hyphenated feature name components
-        splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
-        colnames(splitdfm) <- unlist(splitfeatures, use.names = FALSE)
-        
-        # combine dfms and suppress duplicated feature name warning
-        result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
-        # compress features to combine same-named features
-        result <- dfm_compress(result, margin = "features")
-        result <- dfm_remove(result, pattern = '-', valuetype = 'fixed')
-        return(result)
-    } else {
-        return(x)
-    }
-       
+    # return dfm unmodified if no hyphenated features are found
+    if (length(hyphenated_index) == 0) return(x)
+    
+    # split the hyphenated feature names into a list of components
+    splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
+    
+    # efficiently create a new dfm from hyphenated feature name components
+    splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
+    colnames(splitdfm) <- unlist(splitfeatures, use.names = FALSE)
+    
+    # combine dfms and suppress duplicated feature name warning
+    result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
+    # compress features to combine same-named features
+    result <- dfm_compress(result, margin = "features")
+    result <- dfm_remove(result, pattern = '-', valuetype = 'fixed')
+    
+    result
 }    
