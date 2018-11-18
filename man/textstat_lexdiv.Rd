@@ -106,10 +106,10 @@ mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
 cor(textstat_lexdiv(mydfm, "all")[,-1])
 
-txt <- c("Anyway, like I was sayin’, shrimp is the fruit of the sea. You can
+txt <- c("Anyway, like I was sayin', shrimp is the fruit of the sea. You can
           barbecue it, boil it, broil it, bake it, saute it.",
-         "There’s shrimp-kabobs,
-          shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There’s
+         "There's shrimp-kabobs,
+          shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
           pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
           shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
           sandwich.")
