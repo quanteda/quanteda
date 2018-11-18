@@ -176,7 +176,7 @@ test_that("textstat_lexdiv supports removal of hyphenation", {
                d2 = "alpha-beta charlie-delta echo-foxtrot"))
     z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
                d2 ="alpha beta charlie delta echo foxtrot" ))
-    expect_equivalent(
+    expect_identical(
         textstat_lexdiv(y, measure = "all", remove_hyphens = TRUE), 
         textstat_lexdiv(z, measure = "all", remove_hyphens = TRUE)
     )
@@ -188,7 +188,41 @@ test_that("textstat_lexdiv can handle hyphenated words containing duplicated tok
     # remaining punctuation, symbols and numbers should also be removed
     # dfm_nested should only have 4 types with 6 tokens
     dfm_non_nested <- corpus(c(d1 = "a b b c c d")) %>% dfm()
-    expect_equivalent(textstat_lexdiv(dfm_nested, measure = "all", remove_hyphens = TRUE), 
-                      textstat_lexdiv(dfm_non_nested))
+    expect_identical(textstat_lexdiv(dfm_nested, measure = "all", remove_hyphens = TRUE), 
+                     textstat_lexdiv(dfm_non_nested))
 })
 
+test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
+    txt <- c("There's shrimp-kabobs,
+              shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
+              pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
+              shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
+              sandwich.",
+             "A shrimp-kabob costs $0.50, shrimp costs $0.25.")
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", remove_hyphens = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", remove_hyphens = TRUE)
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", 
+                        remove_punct = TRUE, remove_hyphens = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", 
+                        remove_punct = TRUE, remove_hyphens = TRUE)
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", remove_punct = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", remove_punct = TRUE)
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt[2]), measure = "TTR", remove_symbols = TRUE),
+        textstat_lexdiv(dfm(txt[2]), measure = "TTR", remove_symbols = TRUE)
+    )
+    expect_true(
+        textstat_lexdiv(dfm(txt[2]), measure = "TTR", remove_symbols = TRUE)[1, "TTR"] !=
+        textstat_lexdiv(dfm(txt[2]), measure = "TTR", remove_symbols = FALSE)[1, "TTR"]
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", remove_numbers = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", remove_numbers = TRUE)
+    )
+})
