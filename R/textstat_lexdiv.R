@@ -273,8 +273,7 @@ compute_lexdiv_stats <- function(x, measure, log.base){
 
 
 dfm_split_hyphenated_features <- function(x) {
-    return(x)
-    features <- featnames(x)
+        features <- featnames(x)
         features_with_hyphens <- features[stringi::stri_detect_fixed(features, '-')]
         dfm_nohyphen <- dfm_select(x, features_with_hyphens, selection ="remove")
         # Create separate dataframe for hyphenated features
@@ -302,11 +301,15 @@ dfm_split_hyphenated_features <- function(x) {
             df_drop_overlap = df_drop_overlap[,!names(df_drop_overlap) %in% overlap]
             dfm_recombine <- cbind(as.dfm(df_keep_overlap) %>% dfm_remove('document'), 
                                    as.dfm(df_drop_overlap) %>% dfm_remove('document'))
+            #Update docnames
             docnames(dfm_recombine) <- docnames(x)
             x <- dfm_recombine
         } else {
-          #Update docnames
-          docnames(dfm_hyphen_removed) <- docnames(x)
-          x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
+            #Update docnames
+            docnames(dfm_hyphen_removed) <- docnames(x)
+            x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
         }
+        
+        return(x)
+        
 }
