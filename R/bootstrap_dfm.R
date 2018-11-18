@@ -62,9 +62,8 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' bootstrap_dfm(mydfm, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     
-    if (! "_document" %in% names(x@docvars)) 
-        stop("x must be a dfm with a _document field")
-    if (length(unique(docvars(x, "_document"))) == ndoc(x))
+    x <- as.dfm(x)
+    if (length(unique(get_docvars(x, "docname", TRUE, TRUE))) == ndoc(x))
         stop("x must contain more than one row per document")
 
     if (verbose) {
@@ -72,21 +71,20 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
     
-    x <- as.dfm(x)
     result <- list()
     # construct the original dfm
-    result[['dfm_0']] <- dfm_group(x, groups = docvars(x, '_document'))
+    result[['dfm_0']] <- dfm_group(x, groups = get_docvars(x, "docname", TRUE, TRUE))
     
     # randomly resample dfm
     id <- index <- NULL
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        dt <- data.table(index = seq_len(ndoc(x)), id = docvars(x, "_document"))
+        dt <- data.table(index = seq_len(ndoc(x)), id = get_docvars(x, "docname", TRUE, TRUE))
         dt[, temp := sample(1:.N, replace = TRUE), by = id]
         dt[, sample_index := index[temp], by = id]
         sample_index <- dt[, sample_index]
         temp <- x[sample_index, ]
-        temp <- dfm_group(temp, groups = docvars(temp, '_document'))
+        temp <- dfm_group(temp, groups = get_docvars(temp, "docname", TRUE, TRUE))
         result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
     }
     if (verbose) 
@@ -95,4 +93,4 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     class(result) <- c("dfm_bootstrap")
     return(result)
 }
-
+function <
