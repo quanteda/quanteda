@@ -145,17 +145,33 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
           split = stri_split_fixed(i, '-', tokens_only=TRUE) 
           temp[split[[1]]] <- temp[i]
         }
-        temp <- as.dfm(temp) 
+        
+        dfm_hyphen <- as.dfm(temp) 
         # WARNING: Coercion creates unwanted column "document" and docnames are not updated properly
         # Remove hyphenated features
-        dfm_hyphen_removed <- temp %>% 
+        dfm_hyphen_removed <- dfm_hyphen %>% 
           dfm_remove('document') %>% 
           dfm_remove(features_with_hyphens)
         
-        #Update docnames
-        docnames(dfm_hyphen_removed) <- docnames(x)
+        # Add checks to deal with case when hyphenated words contain duplicated tokens in dfm_nohyphen
+        overlap_condition = (featnames(dfm_hyphen_removed) %in% featnames(dfm_nohyphen))
+        if (any(overlap_condition) == TRUE) {
+            overlap = featnames(dfm_hyphen_removed)[overlap_condition]
+            df_keep_overlap <- convert(dfm_hyphen_removed, to = 'data.frame')
+            df_drop_overlap <- convert(dfm_nohyphen, to = 'data.frame')
+            df_keep_overlap[overlap] = df_keep_overlap[overlap] + df_drop_overlap[overlap]
+            df_drop_overlap = df_drop_overlap[,!names(df_drop_overlap) %in% overlap]
+            dfm_recombine <- cbind(as.dfm(df_keep_overlap) %>% dfm_remove('document'), 
+                                   as.dfm(df_drop_overlap) %>% dfm_remove('document'))
+            docnames(dfm_recombine) <- docnames(x)
+            x <- dfm_recombine
+          
+        } else {
+          #Update docnames
+          docnames(dfm_hyphen_removed) <- docnames(x)
+          x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
+        }
         
-        x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
     }
     
     if (!sum(x)) stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
