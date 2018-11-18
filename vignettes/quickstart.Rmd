@@ -269,9 +269,9 @@ The option `remove` provides a list of tokens to be ignored.  Most users will
 supply a list of pre-defined "stop words", defined for numerous languages, accessed through 
 the `stopwords()` function:
 ```{r}
-head(stopwords("english"), 20)
-head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("en"), 20)
+head(stopwords("ru"), 10)
+head(stopwords("ar", source = "misc"), 10)
 ```
 
 ### Viewing the document-feature matrix

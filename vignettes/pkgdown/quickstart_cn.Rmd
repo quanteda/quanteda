@@ -266,9 +266,9 @@ myStemMat[, 1:5]
 `remove`选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过`stopwords()`函数获取：
 
 ```{r}
-head(stopwords("english"), 20)
-head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("en"), 20)
+head(stopwords("ru"), 10)
+head(stopwords("ar", source = "misc"), 10)
 ```
 
 ### 查看文档特征矩阵 {#viewing-the-document-feature-matrix}

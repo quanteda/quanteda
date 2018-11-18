@@ -258,9 +258,9 @@ myStemMat[, 1:5]
 La opción 'remove' provee una lista de tokens a ser ignorados. La mayoría de los usuarios proveerán una lista de 'stop words' predefinidas para varios idiomas, accediendo a través de la función `stopwords()`:
 
 ```{r}
-head(stopwords("english"), 20)
-head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("en"), 20)
+head(stopwords("ru"), 10)
+head(stopwords("ar", source = "misc"), 10)
 ```
 
 ### Visualizando la matriz de documentos y atributos
