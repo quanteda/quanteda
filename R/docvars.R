@@ -21,20 +21,45 @@
     return(x)
 }
 
-## internal function to return all the user docvars
-get_docvars <- function(x, field = NULL, drop = FALSE, system = FALSE) {
+#' Internal function to extract docvars
+#' @param x an object from which docvars are extracted
+#' @param field name of docvar fields
+#' @param system if \code{TRUE}, treat field as system-level variable
+#' @param drop if \code{TRUE}, covert data.frame with one variable to a vector
+#' @keywords internal
+get_docvars <- function(x, field = NULL, system = FALSE, drop = FALSE) {
+    UseMethod("get_docvars")
+}
+
+#' @method get_docvars corpus
+get_docvars.corpus <- function(x, field = NULL, system = FALSE, drop = FALSE) {
+    get_docvars(attr(x, "docvars"), field, system, drop)
+}
+
+#' @method get_docvars tokens
+get_docvars.tokens <- function(x, field = NULL, system = FALSE, drop = FALSE) {
+    get_docvars(attr(x, "docvars"), field, system, drop)
+}
+
+#' @method get_docvars dfm
+get_docvars.dfm <- function(x, field = NULL, system = FALSE, drop = FALSE) {
+    get_docvars(x@docvars, field, system, drop)
+}
+
+#' @method get_docvars data.frame
+get_docvars.data.frame <- function(x, field = NULL, system = FALSE, drop = FALSE) {
     stopifnot(is.data.frame(x))
     x <- x[system == is_system(names(x))]
     if (is.null(field)) {
         return(x)
     } else {
-        if (system) field <- paste0("_", field)
-        return(x[field])
-    }
-    if (length(x) == 1 && drop) {
-        return(x[[1]])
-    } else {
-        return(x)
+        if (system) 
+            x <- x[paste0("_", field)]
+        if (length(x) == 1 && drop) {
+            return(x[[1]])
+        } else {
+            return(x)
+        }
     }
 }
 
