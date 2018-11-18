@@ -172,7 +172,6 @@ test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols"
 })
 
 test_that("textstat_lexdiv supports removal of hyphenation", {
-    skip("implementation pending")
     y <- dfm(c(d1 = "apple-pear orange-fruit elephant-ferrari",
                d2 = "alpha-beta charlie-delta echo-foxtrot"))
     z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
@@ -184,10 +183,9 @@ test_that("textstat_lexdiv supports removal of hyphenation", {
 })
 
 test_that("textstat_lexdiv can handle hyphenated words containing duplicated tokens ", {
-    skip("implementation pending")
     dfm_nested <- corpus(c(d1 = "have we not-we-have bicycle ! % 123 ^ ")) %>% dfm()
-    # not-we-have should be separated into three tokens if remove_hyphen works properly
-    # punctuation, symbols and numbers should also be removed
+    # not-we-have should be separated into three tokens, with hyphens being removed
+    # remaining punctuation, symbols and numbers should also be removed
     # dfm_nested should only have 4 types with 6 tokens
     dfm_non_nested <- corpus(c(d1 = "a b b c c d")) %>% dfm()
     expect_equivalent(textstat_lexdiv(dfm_nested, measure = "all", remove_hyphens = TRUE), 
