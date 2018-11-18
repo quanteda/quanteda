@@ -55,17 +55,23 @@
 #'   
 #'   }
 #'   
-#' @param x an input \link{dfm} or \link{tokens}
-#' @param measure a character vector defining the measure to calculate.
+#' @param x an input \link{dfm} or \link{tokens} input object
+#' @param measure a character vector defining the measure to calculate
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logs)
-#' @param remove_numbers default = TRUE. removes regex "\\p{N}"
-#' @param remove_punct default = TRUE. removes regex "\\p{P}"
-#' @param remove_symbols default = TRUE. removes regex "\\p{S}"
-#' @param remove_hyphens default = FALSE. splits hyphenated tokens by the hyphen and produces two tokens.
-#' @param ... not used
-#' @author Kenneth Benoit, adapted from the S4 class implementation written by 
-#'   Meik Michalke in the \pkg{koRpus} package.
+#' @param remove_numbers logical; if \code{TRUE} remove features or tokens that
+#'   consist only of numerals (the Unicode "Number" [N] class)
+#' @param remove_punct logical; if \code{TRUE} remove all features or tokens
+#'   that consist only of the Unicode "Punctuation" [P] class)
+#' @param remove_symbols logical; if \code{TRUE} remove all features or tokens
+#'   that consist only of the Unicode "Punctuation" [S] class)
+#' @param remove_hyphens logical; if \code{TRUE} split words that are connected
+#'   by hyphenation and hyphenation-like characters in between words, e.g.
+#'   "self-storage" becomes two features or tokens "self" and "storage". Default
+#'   is FALSE to preserve such words as is, with the hyphens.
+#' @author Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
+#'   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
+#'   package.
 #' @note This implements only the static measures of lexical diversity, not more
 #'   complex measures based on windows of text such as the Mean Segmental
 #'   Type-Token Ratio, the Moving-Average Type-Token Ratio (Covington & McFall,
@@ -110,12 +116,22 @@
 #' (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
 #' cor(textstat_lexdiv(mydfm, "all")[,-1])
 #' 
+#' txt <- c("Anyway, like I was sayin’, shrimp is the fruit of the sea. You can
+#'           barbecue it, boil it, broil it, bake it, saute it.",
+#'          "There’s shrimp-kabobs,
+#'           shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There’s
+#'           pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
+#'           shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
+#'           sandwich.")
+#' tokens(txt) %>% 
+#'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
+#' dfm(txt) %>% 
+#'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
 textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
                             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
                             remove_symbols = TRUE, remove_hyphens = FALSE) {
     UseMethod("textstat_lexdiv")
 }
-
 
 #' @export
 textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
@@ -125,60 +141,27 @@ textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR
 }
 
 #' @export
-textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
-                                log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-                                remove_symbols = TRUE, remove_hyphens = FALSE) {
-    
+textstat_lexdiv.dfm <- 
+    function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
+             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+             remove_symbols = TRUE, remove_hyphens = FALSE) {
+        
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
-    if (remove_numbers) {x <- dfm_remove(x, "\\p{N}", valuetype = "regex")}
-    if (remove_punct) {x <- dfm_remove(x, "\\p{Po}", valuetype = "regex")}
-    if (remove_symbols) {x <- dfm_remove(x, "\\p{S}", valuetype = "regex")}
-    if (remove_hyphens){
-        features <- featnames(x)
-        features_with_hyphens <- features[stringi::stri_detect_fixed(features, '-')]
-        dfm_nohyphen <- dfm_select(x, features_with_hyphens, selection ="remove")
-        # Create separate dataframe for hyphenated features
-        temp <- dfm_select(x, features_with_hyphens)
-        temp <- convert(temp, to = 'data.frame')
-        for (i in features_with_hyphens){
-          split = stri_split_fixed(i, '-', tokens_only=TRUE) 
-          temp[split[[1]]] <- temp[i]
-        }
-        
-        dfm_hyphen <- as.dfm(temp) 
-        # WARNING: Coercion creates unwanted column "document" and docnames are not updated properly
-        # Remove hyphenated features
-        dfm_hyphen_removed <- dfm_hyphen %>% 
-          dfm_remove('document') %>% 
-          dfm_remove(features_with_hyphens)
-        
-        # Add checks to deal with case when hyphenated words contain duplicated tokens in dfm_nohyphen
-        overlap_condition = (featnames(dfm_hyphen_removed) %in% featnames(dfm_nohyphen))
-        if (any(overlap_condition) == TRUE) {
-            overlap = featnames(dfm_hyphen_removed)[overlap_condition]
-            df_keep_overlap <- convert(dfm_hyphen_removed, to = 'data.frame')
-            df_drop_overlap <- convert(dfm_nohyphen, to = 'data.frame')
-            df_keep_overlap[overlap] = df_keep_overlap[overlap] + df_drop_overlap[overlap]
-            df_drop_overlap = df_drop_overlap[,!names(df_drop_overlap) %in% overlap]
-            dfm_recombine <- cbind(as.dfm(df_keep_overlap) %>% dfm_remove('document'), 
-                                   as.dfm(df_drop_overlap) %>% dfm_remove('document'))
-            docnames(dfm_recombine) <- docnames(x)
-            x <- dfm_recombine
-          
-        } else {
-          #Update docnames
-          docnames(dfm_hyphen_removed) <- docnames(x)
-          x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
-        }
-        
-    }
+    if (remove_numbers) 
+        x <- dfm_remove(x, "^\\p{N}+$", valuetype = "regex")
+    if (remove_punct) 
+        x <- dfm_remove(x, "^\\p{P}+$", valuetype = "regex")
+    if (remove_symbols) 
+        x <- dfm_remove(x, "^\\p{S}+$", valuetype = "regex")
+    if (remove_hyphens) 
+        x<- dfm_split_hyphenated_features(x)
     
-    if (!sum(x)) stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
-    
-    
+    if (!sum(x)) 
+        stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
+
     measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
-    if (measure[1] == 'all') {
+    if (measure[1] == "all") {
         measure <- measure_option
     } else {
         is_valid <- measure %in% measure_option
@@ -191,24 +174,25 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
 }
 
 #' @export
-textstat_lexdiv.tokens <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"),
-                                   log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-                                   remove_symbols = TRUE, remove_hyphens = FALSE) {
-  
-    # Check if input is a token and coerce. This would support lists
-    if (!(is.tokens(x))) {x <- as.tokens(x)}
-  
-    # Convert x into dfm to reuse computation for K, D, Vm
-    if (is.tokens(x)) {
-        if (remove_numbers) {x <- tokens_remove(x, "\\p{N}", valuetype = "regex")}
-        if (remove_punct) {x <- tokens_remove(x, "\\p{Po}", valuetype = "regex")}
-        if (remove_symbols) {x <- tokens_remove(x, "\\p{S}", valuetype = "regex")}
+textstat_lexdiv.tokens <- 
+    function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"),
+             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+             remove_symbols = TRUE, remove_hyphens = FALSE) {
+        
+    if (remove_hyphens)
+        x <- tokens(x, remove_hyphens = TRUE)
+    if (remove_numbers) 
+        x <- tokens(x, remove_numbers = TRUE)
+    if (remove_symbols)
+        x <- tokens(x, remove_symbols = TRUE)
+    if (remove_punct) {
+        # this will be replaced with 
+        # x <- tokens(x, remove_punct = TRUE)
+        # when we resolve #1445
+        x <- tokens_remove(x, "^\\p{P}+$", valuetype = "regex")
     }
-    
-    result <- dfm(x) %>% textstat_lexdiv.dfm(measure = measure, log.base = log.base)
-  
-    return(result)
-  
+
+    textstat_lexdiv.dfm(dfm(x), measure = measure, log.base = log.base)
 }
 
 #' Compute lexdiv (internal functions)
@@ -288,3 +272,41 @@ compute_lexdiv_stats <- function(x, measure, log.base){
 }
 
 
+dfm_split_hyphenated_features <- function(x) {
+    return(x)
+    features <- featnames(x)
+        features_with_hyphens <- features[stringi::stri_detect_fixed(features, '-')]
+        dfm_nohyphen <- dfm_select(x, features_with_hyphens, selection ="remove")
+        # Create separate dataframe for hyphenated features
+        temp <- dfm_select(x, features_with_hyphens)
+        temp <- convert(temp, to = 'data.frame')
+        for (i in features_with_hyphens){
+          split = stri_split_fixed(i, '-', tokens_only=TRUE) 
+          temp[split[[1]]] <- temp[i]
+        }
+        
+        dfm_hyphen <- as.dfm(temp) 
+        # WARNING: Coercion creates unwanted column "document" and docnames are not updated properly
+        # Remove hyphenated features
+        dfm_hyphen_removed <- dfm_hyphen %>% 
+          dfm_remove('document') %>% 
+          dfm_remove(features_with_hyphens)
+        
+        # Add checks to deal with case when hyphenated words contain duplicated tokens in dfm_nohyphen
+        overlap_condition = (featnames(dfm_hyphen_removed) %in% featnames(dfm_nohyphen))
+        if (any(overlap_condition) == TRUE) {
+            overlap = featnames(dfm_hyphen_removed)[overlap_condition]
+            df_keep_overlap <- convert(dfm_hyphen_removed, to = 'data.frame')
+            df_drop_overlap <- convert(dfm_nohyphen, to = 'data.frame')
+            df_keep_overlap[overlap] = df_keep_overlap[overlap] + df_drop_overlap[overlap]
+            df_drop_overlap = df_drop_overlap[,!names(df_drop_overlap) %in% overlap]
+            dfm_recombine <- cbind(as.dfm(df_keep_overlap) %>% dfm_remove('document'), 
+                                   as.dfm(df_drop_overlap) %>% dfm_remove('document'))
+            docnames(dfm_recombine) <- docnames(x)
+            x <- dfm_recombine
+        } else {
+          #Update docnames
+          docnames(dfm_hyphen_removed) <- docnames(x)
+          x <- cbind(dfm_nohyphen, dfm_hyphen_removed)
+        }
+}

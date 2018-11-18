@@ -9,22 +9,26 @@ textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
   remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE)
 }
 \arguments{
-\item{x}{an input \link{dfm} or \link{tokens}}
+\item{x}{an input \link{dfm} or \link{tokens} input object}
 
-\item{measure}{a character vector defining the measure to calculate.}
+\item{measure}{a character vector defining the measure to calculate}
 
 \item{log.base}{a numeric value defining the base of the logarithm (for
 measures using logs)}
 
-\item{remove_numbers}{default = TRUE. removes regex "\\p{N}"}
+\item{remove_numbers}{logical; if \code{TRUE} remove features or tokens that
+consist only of numerals (the Unicode "Number" [N] class)}
 
-\item{remove_punct}{default = TRUE. removes regex "\\p{P}"}
+\item{remove_punct}{logical; if \code{TRUE} remove all features or tokens
+that consist only of the Unicode "Punctuation" [P] class)}
 
-\item{remove_symbols}{default = TRUE. removes regex "\\p{S}"}
+\item{remove_symbols}{logical; if \code{TRUE} remove all features or tokens
+that consist only of the Unicode "Punctuation" [S] class)}
 
-\item{remove_hyphens}{default = FALSE. splits hyphenated tokens by the hyphen and produces two tokens.}
-
-\item{...}{not used}
+\item{remove_hyphens}{logical; if \code{TRUE} split words that are connected
+by hyphenation and hyphenation-like characters in between words, e.g.
+"self-storage" becomes two features or tokens "self" and "storage". Default
+is FALSE to preserve such words as is, with the hyphens.}
 }
 \value{
 \code{textstat_lexdiv} returns a data.frame of documents and
@@ -102,6 +106,17 @@ mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
 cor(textstat_lexdiv(mydfm, "all")[,-1])
 
+txt <- c("Anyway, like I was sayin’, shrimp is the fruit of the sea. You can
+          barbecue it, boil it, broil it, bake it, saute it.",
+         "There’s shrimp-kabobs,
+          shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There’s
+          pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
+          shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
+          sandwich.")
+tokens(txt) \%>\% 
+    textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
+dfm(txt) \%>\% 
+    textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
 }
 \references{
 Covington, M.A. & McFall, J.D. (2010). "Cutting the Gordian Knot: 
@@ -133,6 +148,7 @@ Covington, M.A. & McFall, J.D. (2010). "Cutting the Gordian Knot:
   Humanities} 32(5), 323--352.
 }
 \author{
-Kenneth Benoit, adapted from the S4 class implementation written by 
-  Meik Michalke in the \pkg{koRpus} package.
+Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
+  reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
+  package.
 }
