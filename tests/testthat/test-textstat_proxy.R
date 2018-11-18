@@ -360,7 +360,7 @@ test_that("record zeros even in the sparse matrix", {
     # should always be the 0,1 (bottom left) cell that is explicit zero
     check_zero_indexes <- function(x) {
         expect_identical(
-            c(x@i[which(x@x == 0)], x@j[which(x@x == 0)]),
+            c(x@i[x@x == 0], x@j[x@x == 0]),
             c(0L, 1L)
         )
     }
