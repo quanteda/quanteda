@@ -93,4 +93,4 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     class(result) <- c("dfm_bootstrap")
     return(result)
 }
-function <
+

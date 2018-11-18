@@ -188,9 +188,9 @@ tokens.character <- function(x, ...) {
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     x <- as.corpus(x)
-    attrs <- attributes(x)
     if (!include_docvars)
         docvars(x) <- NULL
+    attrs <- attributes(x)
     result <- tokens_internal(texts(x), ...)
     attributes(result, FALSE) <- attrs
     return(result)

@@ -130,32 +130,23 @@ as.corpus.default <- function(x) {
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
     
-    if (is.character(x) && is.data.frame(attr(x, "docvars")))
-        return(x)
-    
-    # drop internal variables
-    flag <- is_system(names(x$documents))
-    vars_internal <- x$documents[flag]
-    x$documents <- x$documents[!flag]
-
-    result <- corpus(x$documents, "row.names", "texts")
-    
-    # overwite internal variables
-    vars <- attr(result, "docvars")
-    if ("_document" %in% names(vars_internal)) {
-        vars["_docname"] <- vars_internal["_document"]
+    if (is.character(x)) {
+        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
+        result <- x
+    } else {
+        result <- corpus(x$documents)
+        docvars <- make_docvars(row.names(x$documents))
+        if ("_document" %in% names(x$documents))
+            docvars["_docname"] <- x$documents["_document"]
+        if ("_docid" %in% names(x$documents))
+            docvars["_docnum"] <- x$documents["_docid"]
+        if ("_segid" %in% names(x$documents))
+            docvars["_segnum"] <- x$documents["_segid"]
+        attr(result, "unit") <- x$settings$unit
+        attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
+                                                   format = "%a %b %d %H:%M:%S %Y")
+        attr(result, "docvars") <- cbind(docvars, get_docvars(x))
     }
-    if ("_docid" %in% names(vars_internal)) {
-        vars["_docnum"] <- vars_internal["_docid"]
-    }
-    if ("_segid" %in% names(vars_internal)) {
-        vars["_segnum"] <- vars_internal["_segid"]
-    }
-    
-    attr(result, "docvars") <- vars
-    attr(result, "unit") <- x$settings$unit
-    attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
-                                               format = "%a %b %d %H:%M:%S %Y")
     return(result)
 }
 

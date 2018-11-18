@@ -32,7 +32,7 @@ docnames.default <- function(x) {
 #' @export
 docnames.corpus <- function(x) {
     x <- as.corpus(x)
-    attr(x, "docvars")[["_docid"]]
+    get_docvars(x, "docid", TRUE, TRUE)
 }
 
 #' @param value a character vector of the same length as \code{x}

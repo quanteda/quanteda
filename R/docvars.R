@@ -6,7 +6,7 @@
     if (is.dfm(value))
         value <- convert(value, to = "data.frame")[-1]
     if (is.null(value)) {
-        x <- x[flag]
+        x <- x[!flag]
     } else if (is.null(field) && (is.data.frame(value))) {
         if (nrow(value) != nrow(x))
             stop(message_error("docvar_mismatch"))
@@ -14,7 +14,8 @@
     } else {
         if (any(is_system(field)))
             stop(message_error("docvar_invalid"))
-        if (system) field <- paste0("_", field)
+        if (system) 
+            field <- paste0("_", field)
         x[field] <- value
     }
     rownames(x) <- NULL
@@ -202,19 +203,19 @@ docvars.kwic <- function(x) {
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
     x <- as.corpus(x)
-    set_docvars(attr(x, "docvars"), field) <- value
+    set_docvars(attr(x, "docvars"), field, FALSE) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    set_docvars(attr(x, "docvars"), field) <- value
+    set_docvars(attr(x, "docvars"), field, FALSE) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
     x <- as.dfm(x)
-    set_docvars(x@docvars, field) <- value
+    set_docvars(x@docvars, field, FALSE) <- value
     return(x)
 }

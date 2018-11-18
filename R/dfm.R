@@ -315,7 +315,7 @@ dfm.dfm <- function(x,
         x <- dfm_group(x, groups)
     }
     
-    if (!is.null(dictionary) | !is.null(thesaurus)) {
+    if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm("   ... ")
         x <- dfm_lookup(x, dictionary,
