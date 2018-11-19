@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.13</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.14</span>
       </span>
     </div>
 
@@ -233,7 +233,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  8 12:21:53 2018
+## Created: Mon Nov 19 08:48:16 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -254,7 +254,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  8 12:21:53 2018
+## Created: Mon Nov 19 08:48:16 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -284,7 +284,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Nov  8 12:21:53 2018
+## Created: Mon Nov 19 08:48:16 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -414,7 +414,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Thu Nov  8 12:21:54 2018
+## Created: Mon Nov 19 08:48:16 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -656,7 +656,7 @@
 <a class="sourceLine" id="cb54-3" data-line-number="3"><span class="co"># 构建dfm</span></a>
 <a class="sourceLine" id="cb54-4" data-line-number="4">myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(my_corpus)</a>
 <a class="sourceLine" id="cb54-5" data-line-number="5">myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 7 documents, 5 features (0% sparse).
+<pre><code>## Document-feature matrix of: 7 documents, 5 features (0.0% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
 ##               features
 ## docs           my fellow citizens   , today
@@ -684,14 +684,14 @@
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
 <p><code>remove</code>选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过<code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>函数获取：</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"en"</span>), <span class="dv">20</span>)</a></code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"ru"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>), <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"ar"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
@@ -725,7 +725,7 @@
 <a class="sourceLine" id="cb69-2" data-line-number="2">                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>我们可以对这个dfm进行排序，并查看：</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
+<pre><code>## Document-feature matrix of: 5 documents, 10 features (0.0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
 ##        features
 ## docs    people budget government public minister tax economy pay jobs
@@ -860,30 +860,30 @@
 <a class="sourceLine" id="cb87-3" data-line-number="3">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb87-4" data-line-number="4">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2   Topic 3       Topic 4   Topic 5     Topic 6  
-## [1,] "since"     "failed"  "review"      "child"   "taoiseach" "banks"  
-## [2,] "recession" "told"    "report"      "fianna"  "gael"      "courses"
-## [3,] "rate"      "vision"  "recovery"    "benefit" "fine"      "child"  
-## [4,] "position"  "instead" "set"         "poverty" "may"       "private"
-## [5,] "problem"   "create"  "sustainable" "welfare" "irish"     "weeks"  
-##      Topic 7     Topic 8   Topic 9    Topic 10      Topic 11   Topic 12   
-## [1,] "care"      "benefit" "fianna"   "kind"        "welfare"  "strategy" 
-## [2,] "welfare"   "day"     "fáil"     "imagination" "system"   "needed"   
-## [3,] "per"       "bank"    "national" "policies"    "taxation" "ministers"
-## [4,] "allowance" "today"   "irish"    "wit"         "fianna"   "confront" 
-## [5,] "hit"       "society" "support"  "create"      "high"     "system"   
-##      Topic 13   Topic 14   Topic 15  Topic 16      Topic 17    
-## [1,] "measures" "much"     "levy"    "fianna"      "million"   
-## [2,] "million"  "per"      "million" "fáil"        "support"   
-## [3,] "spending" "system"   "carbon"  "citizenship" "welfare"   
-## [4,] "scheme"   "measures" "change"  "side"        "investment"
-## [5,] "pension"  "fáil"     "welfare" "alternative" "back"      
-##      Topic 18    Topic 19    Topic 20      
-## [1,] "taoiseach" "welfare"   "society"     
-## [2,] "employees" "reduction" "enterprising"
-## [3,] "debate"    "taken"     "sense"       
-## [4,] "referred"  "set"       "equal"       
-## [5,] "rate"      "system"    "nation"</code></pre>
+<pre><code>##      Topic 1    Topic 2      Topic 3  Topic 4     Topic 5   Topic 6   
+## [1,] "fianna"   "child"      "fianna" "million"   "levy"    "review"  
+## [2,] "fáil"     "benefit"    "fáil"   "measures"  "million" "spending"
+## [3,] "national" "million"    "side"   "welfare"   "carbon"  "level"   
+## [4,] "irish"    "welfare"    "level"  "increases" "change"  "deficit" 
+## [5,] "support"  "vulnerable" "third"  "reduce"    "welfare" "scheme"  
+##      Topic 7     Topic 8       Topic 9     Topic 10  Topic 11 
+## [1,] "care"      "kind"        "fáil"      "benefit" "child"  
+## [2,] "per"       "imagination" "fianna"    "bank"    "day"    
+## [3,] "allowance" "policies"    "whether"   "child"   "society"
+## [4,] "hit"       "wit"         "taoiseach" "irish"   "welfare"
+## [5,] "workers"   "create"      "benefit"   "know"    "today"  
+##      Topic 12       Topic 13   Topic 14    Topic 15      Topic 16  
+## [1,] "society"      "welfare"  "taoiseach" "alternative" "welfare" 
+## [2,] "enterprising" "continue" "fine"      "citizenship" "fianna"  
+## [3,] "sense"        "forward"  "gael"      "wealth"      "fáil"    
+## [4,] "equal"        "future"   "may"       "adjustment"  "stimulus"
+## [5,] "nation"       "scheme"   "irish"     "breaks"      "taxation"
+##      Topic 17    Topic 18     Topic 19       Topic 20   
+## [1,] "taoiseach" "million"    "system"       "failed"   
+## [2,] "employees" "support"    "welfare"      "strategy" 
+## [3,] "rate"      "back"       "government's" "needed"   
+## [4,] "referred"  "confidence" "parties"      "ministers"
+## [5,] "debate"    "investment" "high"         "system"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>

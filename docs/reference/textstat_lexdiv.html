@@ -205,7 +205,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
-  <span class='st'>"K"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='st'>"K"</span>, <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -322,32 +322,32 @@ measures using logs)</p></td>
 #&gt; 7     2005-Bush 10.792498 0.3169470 22.69528
 #&gt; 8    2009-Obama 12.222576 0.3319808 24.61202
 #&gt; 9    2013-Obama 11.546345 0.3392318 24.11639
-#&gt; 10   2017-Trump  9.493324 0.3295181 21.50726</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>)[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='warning'>Warning: longer object length is not a multiple of shorter object length</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer object length is not a multiple of shorter object length</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer object length is not a multiple of shorter object length</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer object length is not a multiple of shorter object length</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the standard deviation is zero</span></div><div class='output co'>#&gt;               TTR          C           R        CTTR          U          S  K
-#&gt; TTR    1.00000000  0.8718973  0.04870698  0.04870698  0.4574744  0.5625226 NA
-#&gt; C      0.87189735  1.0000000  0.53081068  0.53081068  0.8331756  0.8951709 NA
-#&gt; R      0.04870698  0.5308107  1.00000000  1.00000000  0.9097523  0.8520574 NA
-#&gt; CTTR   0.04870698  0.5308107  1.00000000  1.00000000  0.9097523  0.8520574 NA
-#&gt; U      0.45747444  0.8331756  0.90975232  0.90975232  1.0000000  0.9915124 NA
-#&gt; S      0.56252261  0.8951709  0.85205745  0.85205745  0.9915124  1.0000000 NA
-#&gt; K              NA         NA          NA          NA         NA         NA  1
-#&gt; D              NA         NA          NA          NA         NA         NA NA
-#&gt; Vm    -0.34891250  0.1531773  0.91502934  0.91502934  0.6719463  0.5773260 NA
-#&gt; Maas  -0.45448662 -0.8320582 -0.91102148 -0.91102148 -0.9995375 -0.9919846 NA
-#&gt; lgV0   0.23953222  0.6835092  0.98095778  0.98095778  0.9728109  0.9368443 NA
-#&gt; lgeV0  0.23953222  0.6835092  0.98095778  0.98095778  0.9728109  0.9368443 NA
-#&gt;        D         Vm       Maas       lgV0      lgeV0
-#&gt; TTR   NA -0.3489125 -0.4544866  0.2395322  0.2395322
-#&gt; C     NA  0.1531773 -0.8320582  0.6835092  0.6835092
-#&gt; R     NA  0.9150293 -0.9110215  0.9809578  0.9809578
-#&gt; CTTR  NA  0.9150293 -0.9110215  0.9809578  0.9809578
-#&gt; U     NA  0.6719463 -0.9995375  0.9728109  0.9728109
-#&gt; S     NA  0.5773260 -0.9919846  0.9368443  0.9368443
-#&gt; K     NA         NA         NA         NA         NA
-#&gt; D      1         NA         NA         NA         NA
-#&gt; Vm    NA  1.0000000 -0.6750263  0.8244108  0.8244108
-#&gt; Maas  NA -0.6750263  1.0000000 -0.9734910 -0.9734910
-#&gt; lgV0  NA  0.8244108 -0.9734910  1.0000000  1.0000000
-#&gt; lgeV0 NA  0.8244108 -0.9734910  1.0000000  1.0000000</div><div class='input'>
+#&gt; 10   2017-Trump  9.493324 0.3295181 21.50726</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>)[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt;               TTR          C           R        CTTR          U          S
+#&gt; TTR    1.00000000  0.8718973  0.04870698  0.04870698  0.4574744  0.5625226
+#&gt; C      0.87189735  1.0000000  0.53081068  0.53081068  0.8331756  0.8951709
+#&gt; R      0.04870698  0.5308107  1.00000000  1.00000000  0.9097523  0.8520574
+#&gt; CTTR   0.04870698  0.5308107  1.00000000  1.00000000  0.9097523  0.8520574
+#&gt; U      0.45747444  0.8331756  0.90975232  0.90975232  1.0000000  0.9915124
+#&gt; S      0.56252261  0.8951709  0.85205745  0.85205745  0.9915124  1.0000000
+#&gt; K     -0.01185274 -0.3831754 -0.77860112 -0.77860112 -0.7001294 -0.6402251
+#&gt; D     -0.05603631 -0.4080766 -0.75379499 -0.75379499 -0.6962734 -0.6421508
+#&gt; Vm    -0.10629822 -0.4191610 -0.69107691 -0.69107691 -0.6615685 -0.6155763
+#&gt; Maas  -0.45448662 -0.8320582 -0.91102148 -0.91102148 -0.9995375 -0.9919846
+#&gt; lgV0   0.23953222  0.6835092  0.98095778  0.98095778  0.9728109  0.9368443
+#&gt; lgeV0  0.23953222  0.6835092  0.98095778  0.98095778  0.9728109  0.9368443
+#&gt;                 K           D         Vm       Maas       lgV0      lgeV0
+#&gt; TTR   -0.01185274 -0.05603631 -0.1062982 -0.4544866  0.2395322  0.2395322
+#&gt; C     -0.38317544 -0.40807657 -0.4191610 -0.8320582  0.6835092  0.6835092
+#&gt; R     -0.77860112 -0.75379499 -0.6910769 -0.9110215  0.9809578  0.9809578
+#&gt; CTTR  -0.77860112 -0.75379499 -0.6910769 -0.9110215  0.9809578  0.9809578
+#&gt; U     -0.70012938 -0.69627339 -0.6615685 -0.9995375  0.9728109  0.9728109
+#&gt; S     -0.64022510 -0.64215079 -0.6155763 -0.9919846  0.9368443  0.9368443
+#&gt; K      1.00000000  0.99819365  0.9869706  0.6933530 -0.7581868 -0.7581868
+#&gt; D      0.99819365  1.00000000  0.9946240  0.6889510 -0.7423626 -0.7423626
+#&gt; Vm     0.98697059  0.99462399  1.0000000  0.6532064 -0.6910347 -0.6910347
+#&gt; Maas   0.69335298  0.68895100  0.6532064  1.0000000 -0.9734910 -0.9734910
+#&gt; lgV0  -0.75818677 -0.74236260 -0.6910347 -0.9734910  1.0000000  1.0000000
+#&gt; lgeV0 -0.75818677 -0.74236260 -0.6910347 -0.9734910  1.0000000  1.0000000</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

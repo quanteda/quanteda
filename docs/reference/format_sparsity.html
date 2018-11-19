@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert quanteda dictionary objects to the YAML format — as.yaml • quanteda</title>
+<title>format a sparsity value for printing — format_sparsity • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -38,12 +38,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Convert quanteda dictionary objects to the YAML format — as.yaml" />
+<meta property="og:title" content="format a sparsity value for printing — format_sparsity" />
 
-<meta property="og:description" content="Converts a quanteda dictionary object constructed by the 
-dictionary function into the YAML format. The YAML 
-files can be edited in text editors and imported into 
-quanteda again." />
+<meta property="og:description" content="Inputs a dfm sparsity value from sparsity and formats it for
+printing in print.dfm." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -196,43 +194,70 @@ quanteda again." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert quanteda dictionary objects to the YAML format</h1>
+    <h1>format a sparsity value for printing</h1>
     
-    <div class="hidden name"><code>as.yaml.Rd</code></div>
+    <div class="hidden name"><code>format_sparsity.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Converts a <span class="pkg">quanteda</span> dictionary object constructed by the 
-<a href='dictionary.html'>dictionary</a> function into the YAML format. The YAML 
-files can be edited in text editors and imported into 
-<span class="pkg">quanteda</span> again.</p>
+    <p>Inputs a dfm sparsity value from <code><a href='sparsity.html'>sparsity</a></code> and formats it for
+printing in <code><a href='print.dfm.html'>print.dfm</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>as.yaml</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>format_sparsity</span>(<span class='no'>x</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nsmall</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <a href='dictionary.html'>dictionary</a> object</p></td>
+      <td><p>input sparsity value, ranging from 0 to 1.0</p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p>value below which the decimal places will be rounded and
+printed with an inequality</p></td>
+    </tr>
+    <tr>
+      <th>digits</th>
+      <td><p><code>digits</code> input to <code>format</code></p></td>
+    </tr>
+    <tr>
+      <th>nsmall</th>
+      <td><p><code>nsmall</code> input to <code>format</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>as.yaml</code> a dictionary in the YAML format, as a character object</p>
+    <p><code>character</code> value for inserting into the dfm print ouput</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a b"</span>, <span class='st'>"c*"</span>), <span class='kw'>two</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z??"</span>)))
-<span class='fu'>cat</span>(<span class='no'>yaml</span> <span class='kw'>&lt;-</span> <span class='fu'>as.yaml</span>(<span class='no'>dict</span>))
-<span class='fu'>cat</span>(<span class='no'>yaml</span>, <span class='kw'>file</span> <span class='kw'>=</span> (<span class='no'>yamlfile</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='fu'>tempfile</span>(), <span class='st'>".yml"</span>)))
-<span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>yamlfile</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>.9</span>, <span class='fl'>.99</span>, <span class='fl'>.999</span>, <span class='fl'>.9999</span>, <span class='fl'>.99999</span>,
+       <span class='fl'>.1</span>, <span class='fl'>.01</span>, <span class='fl'>.001</span>, <span class='fl'>.0001</span>, <span class='fl'>.000001</span>, <span class='fl'>.0000001</span>, <span class='fl'>.00000001</span>, <span class='fl'>.000000000001</span>,
+       <span class='fu'><a href='sparsity.html'>sparsity</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)),
+       <span class='fu'><a href='sparsity.html'>sparsity</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)),
+       <span class='fl'>.12312431242134</span>)
+<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='no'>s</span>)
+    <span class='fu'>print</span>(<span class='fu'>paste0</span>(<span class='fu'>format</span>(<span class='no'>i</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>10</span>),  <span class='st'>":  "</span>, <span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/format_sparsity.html'>format_sparsity</a></span>(<span class='no'>i</span>)))</div><div class='output co'>#&gt; [1] "       0.9:   (90.0% sparse)"
+#&gt; [1] "      0.99:   (99.0% sparse)"
+#&gt; [1] "     0.999:   (99.9% sparse)"
+#&gt; [1] "    0.9999:   (99.99% sparse)"
+#&gt; [1] "   0.99999:   (&gt;99.99% sparse)"
+#&gt; [1] "       0.1:   (10.0% sparse)"
+#&gt; [1] "      0.01:   (1.0% sparse)"
+#&gt; [1] "     0.001:   (0.1% sparse)"
+#&gt; [1] "     1e-04:   (0.01% sparse)"
+#&gt; [1] "     1e-06:   (&lt;0.01% sparse)"
+#&gt; [1] "     1e-07:   (&lt;0.01% sparse)"
+#&gt; [1] "     1e-08:   (&lt;0.01% sparse)"
+#&gt; [1] "     1e-12:   (&lt;0.01% sparse)"
+#&gt; [1] " 0.9176184:   (91.8% sparse)"
+#&gt; [1] " 0.8117982:   (81.2% sparse)"
+#&gt; [1] " 0.1231243:   (12.3% sparse)"</div><div class='input'><span class='fu'>print</span>(<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw pkg'>Matrix</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/Matrix/topics/rsparsematrix'>rsparsematrix</a></span>(<span class='fl'>1000</span>, <span class='fl'>1000</span>, <span class='kw'>density</span> <span class='kw'>=</span> <span class='fl'>0.9999</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1,000 documents, 1,000 features (&lt;0.01% sparse).</div><div class='input'><span class='fu'>print</span>(<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw pkg'>Matrix</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/Matrix/topics/rsparsematrix'>rsparsematrix</a></span>(<span class='fl'>10000</span>, <span class='fl'>10000</span>, <span class='kw'>density</span> <span class='kw'>=</span> <span class='fl'>0.00001</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 10,000 documents, 10,000 features (&gt;99.99% sparse).</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
