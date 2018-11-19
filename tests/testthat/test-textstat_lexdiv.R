@@ -145,4 +145,84 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     )
 })
 
+test_that("textstat_lexdiv works similarly for corpus and tokens", {
+    txt <- c(d1 = "b a b a b a b a",
+             d2 = "a a b b")
+    mydfm <- dfm(txt)
+    mytokens <- tokens(txt)
+    expect_identical(
+        textstat_lexdiv(mydfm, "all"),
+        textstat_lexdiv(mytokens, "all")
+    )
+})
 
+test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols", {
+    txt <- c(d1 = "a a  b b  c c",
+             d2 = "a a , b b . c c / & ^ *** ### 1 2 3 4")
+    mydfm <- dfm(txt)
+    mytokens <- tokens(txt)
+    expect_identical(
+        textstat_lexdiv(mydfm["d1", ], "all")[, -1], 
+        textstat_lexdiv(mydfm["d2", ], "all")[, -1]
+    )
+    expect_identical(
+        textstat_lexdiv(mytokens["d1", ], "all")[,-1], 
+        textstat_lexdiv(mytokens["d2", ], "all")[,-1]
+    )
+})
+
+test_that("textstat_lexdiv supports removal of hyphenation", {
+    y <- dfm(c(d1 = "apple-pear orange-fruit elephant-ferrari",
+               d2 = "alpha-beta charlie-delta echo-foxtrot"))
+    z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
+               d2 ="alpha beta charlie delta echo foxtrot" ))
+    expect_identical(
+        textstat_lexdiv(y, measure = "all", remove_hyphens = TRUE), 
+        textstat_lexdiv(z, measure = "all", remove_hyphens = TRUE)
+    )
+})
+
+test_that("textstat_lexdiv can handle hyphenated words containing duplicated tokens ", {
+    dfm_nested <- corpus(c(d1 = "have we not-we-have bicycle ! % 123 ^ ")) %>% dfm()
+    # not-we-have should be separated into three tokens, with hyphens being removed
+    # remaining punctuation, symbols and numbers should also be removed
+    # dfm_nested should only have 4 types with 6 tokens
+    dfm_non_nested <- corpus(c(d1 = "a b b c c d")) %>% dfm()
+    expect_identical(textstat_lexdiv(dfm_nested, measure = "all", remove_hyphens = TRUE), 
+                     textstat_lexdiv(dfm_non_nested))
+})
+
+test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
+    txt <- c("There's shrimp-kabobs,
+              shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
+              pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
+              shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
+              sandwich.",
+             "A shrimp-kabob costs $0.50, shrimp costs $0.25.")
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", remove_hyphens = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", remove_hyphens = TRUE)
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", 
+                        remove_punct = TRUE, remove_hyphens = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", 
+                        remove_punct = TRUE, remove_hyphens = TRUE)
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", remove_punct = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", remove_punct = TRUE)
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt[2]), measure = "TTR", remove_symbols = TRUE),
+        textstat_lexdiv(dfm(txt[2]), measure = "TTR", remove_symbols = TRUE)
+    )
+    expect_true(
+        textstat_lexdiv(dfm(txt[2]), measure = "TTR", remove_symbols = TRUE)[1, "TTR"] !=
+        textstat_lexdiv(dfm(txt[2]), measure = "TTR", remove_symbols = FALSE)[1, "TTR"]
+    )
+    expect_identical(
+        textstat_lexdiv(tokens(txt), measure = "TTR", remove_numbers = TRUE),
+        textstat_lexdiv(dfm(txt), measure = "TTR", remove_numbers = TRUE)
+    )
+})

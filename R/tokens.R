@@ -17,27 +17,28 @@
 #'   \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some
 #'   exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far
 #'   from perfect).} }
-#' @param remove_numbers remove tokens that consist only of numbers, but not
-#'   words that start with digits, e.g. \code{2day}
-#' @param remove_punct if \code{TRUE}, remove all characters in the Unicode
-#'   "Punctuation" [P] class
-#' @param remove_symbols if \code{TRUE}, remove all characters in the Unicode
-#'   "Symbol" [S] class
-#' @param remove_twitter remove Twitter characters \code{@@} and \code{#}; set
-#'   to \code{TRUE} if you wish to eliminate these.  Note that this will always
-#'   be set to \code{FALSE} if \code{remove_punct = FALSE}.
-#' @param remove_url if \code{TRUE}, find and eliminate URLs beginning with
-#'   http(s) -- see section "Dealing with URLs".
-#' @param remove_hyphens if \code{TRUE}, split words that are connected by
-#'   hyphenation and hyphenation-like characters in between words, e.g.
+#' @param remove_numbers logical; if \code{TRUE} remove tokens that consist only
+#'   of numbers, but not words that start with digits, e.g. \code{2day}
+#' @param remove_punct logical; if \code{TRUE} remove all characters in the
+#'   Unicode "Punctuation" [P] class
+#' @param remove_symbols logical; if \code{TRUE} remove all characters in the
+#'   Unicode "Symbol" [S] class
+#' @param remove_twitter logical; if \code{TRUE} remove Twitter characters
+#'   \code{@@} and \code{#}; set to \code{TRUE} if you wish to eliminate these.
+#'   Note that this will always be set to \code{FALSE} if \code{remove_punct =
+#'   FALSE}.
+#' @param remove_url logical; if \code{TRUE} find and eliminate URLs beginning
+#'   with http(s) -- see section "Dealing with URLs".
+#' @param remove_hyphens logical; if \code{TRUE} split words that are connected
+#'   by hyphenation and hyphenation-like characters in between words, e.g.
 #'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
 #'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies
 #'   if \code{what = "word"} or \code{what = "fasterword"}.
-#' @param remove_separators if \code{TRUE}, remove separators and separator
-#'   characters (Unicode "Separator" [Z] and "Control [C]" categories). Only
-#'   applicable for \code{what = "character"} (when you probably want it to be
-#'   \code{FALSE}) and for \code{what = "word"} (when you probably want it to be
-#'   \code{TRUE}).
+#' @param remove_separators logical; if \code{TRUE} remove separators and
+#'   separator characters (Unicode "Separator" [Z] and "Control [C]"
+#'   categories). Only applicable for \code{what = "character"} (when you
+#'   probably want it to be \code{FALSE}) and for \code{what = "word"} (when you
+#'   probably want it to be \code{TRUE}).
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular
@@ -215,11 +216,17 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            include_docvars = TRUE,
                            ...) {
     
+    # if remove_hyphens == TRUE, check for an internal hyphen before appluying
+    # this inefficient method of splitting the hyphens
+    if (remove_hyphens && any(stri_detect_regex(types(x), "^.+-.+$"))) {
+        x <- lapply(as.list(x), function(y) 
+            as.character(tokens(as.character(y), remove_hyphens = TRUE))) %>%
+            as.tokens()
+    }
+    
     types <- types(x)
-    if (remove_hyphens)
-        types <- stri_replace_all_fixed(types, "-", " ")
     if (remove_twitter)
-        types <- stri_replace_all_regex(types, c('^@', '^#'), "", vectorize_all = FALSE)
+        types <- stri_replace_all_regex(types, c("^@", "^#"), "", vectorize_all = FALSE)
     if (!identical(types, types(x)))
         types(x) <- types
         x <- tokens_recompile(x)
