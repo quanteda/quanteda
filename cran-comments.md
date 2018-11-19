@@ -2,15 +2,15 @@
 
 ## Purpose
 
-- Responds to an email from Kurt Hornik (31 Oct 2018) asking us to fix the problems at https://cran.r-project.org/web/checks/check_results_quanteda.html.  Although except for the UBSAN issues (see below) these were caused by changes to the **koRpus** package that was published last week, that should have been caught by revdep checks when updates to that package were submitted.  
-- Fixed some URLs that became broken due to changes on the target websites.  
-- Bug fixes, stability enhancements, and feature additions (noted in NEWS).  
-
+- Responds to an email from Kurt Hornik (14 Nov 2018) asking us to fix the
+problems at https://cran.r-project.org/web/checks/check_results_quanteda.html,
+caused by unit tests whose results differed on Debian versus other platforms.  
+- Bug fixes, stability enhancements, and one small feature addition (noted in NEWS).  
 
 ## Test environments
 
-* local macOS 10.14, R 3.5.1
-* ubuntu Ubuntu 16.04.5 LTS, R 3.5.1
+* local macOS 10.14.1, R 3.5.1
+* ubuntu Ubuntu 16.04 LTS and 18.04 LTS, R 3.5.1
 * Windows Server 2012 R2 x64 (build 9600), R 3.5.1 (on Appveyor)
 * local Windows 10, R 3.5.1
 * win-builder (devel and release)
