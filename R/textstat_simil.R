@@ -6,8 +6,8 @@
 #' selected).  They are fast and robust because they operate directly on the
 #' sparse \link{dfm} objects.
 #' @param x a \link{dfm} object
-#' @param selection a valid index for document or feature names from \code{x},
-#'   to be selected for comparison
+#' @param selection a valid index for document or feature names (depending on
+#'   \code{margin}) from \code{x}, to be selected for comparison
 #' @param margin identifies the margin of the dfm on which similarity or
 #'   difference will be computed:  \code{"documents"} for documents or
 #'   \code{"features"} for word/term features.
@@ -33,8 +33,10 @@
 #'   These can be transformed into a list format using
 #'   \code{\link{as.list.dist}}, if that format is preferred.
 #' @export
-#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-#'   \code{\link{dist}}, \code{\link{as.dist}}
+#' @seealso \code{\link{textstat_dist}},
+#'   \code{\link[quanteda]{as.matrix.simil}},
+#'   \code{\link[quanteda]{as.list.dist}}, \code{\link[stats]{dist}},
+#'   \code{\link[stats]{as.dist}}
 #' @examples
 #' # similarities for documents
 #' mt <- dfm(data_corpus_inaugural, remove_punct = TRUE, remove = stopwords("english"))
@@ -80,7 +82,13 @@ textstat_simil.dfm <- function(x, selection = NULL,
     
     method <- match.arg(method)
     result <- textstat_proxy(x, selection, margin, method, 1)
-    as_dist(result, method, match.call(), diag = diag, upper = upper)
+    result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
+    if (is.null(selection)) {
+        class(result) <- c("simil", "dist")
+    } else {
+        class(result) <- c("simil_selection", "dist_selection")
+    }
+    result
 }
 
 
@@ -235,13 +243,11 @@ textstat_proxy <- function(x, selection = NULL,
 
 # internal function to coerce to dist object
 as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
-    # warning("dist object is deprecated as an output of textstat_dist/simil function. ",
-    #         "Please coerce a sparse matrix to a dist object using as.dist(as.matrix(x)).")
     result <- as.matrix(x)
     if (ncol(x) == nrow(x))
         result <- result[lower.tri(result)]
-    attr(result, "Labels") <- colnames(x)
     attr(result, "Size") <- ncol(x)
+    attr(result, "Labels") <- colnames(x)
     attr(result, "call") <- call
     attr(result, "Diag") <- diag
     attr(result, "Upper") <- upper
@@ -252,4 +258,33 @@ as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
         class(result) <- "dist_selection"
     }
     return(result)
+}
+
+#' Coerce a simil object into a matrix
+#' 
+#' \code{as.matrix.simil} coerces an object returned from
+#'   `textstat_simil()` into a matrix
+#' @param diag  the value to use on the diagonal representing self-similarities
+#' @note 
+#'   Because for the similarity methods implemented in  \pkg{quanteda}, the
+#'   similarity of an object with itself will be 1.0, \code{diag} defaults to
+#'   this value. This differs the default \code{diag = NA} in
+#'   \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
+#' @param ... unused
+#' @export
+#' @method as.matrix simil
+#' @keywords textstat internal
+as.matrix.simil <- function(x, diag = 1.0, ...) {
+    size <- attr(x, "Size")
+    df <- matrix(0, size, size)
+    df[row(df) > col(df)] <- x
+    df <- df + t(df)
+    label <- attr(x, "Labels")
+     if (is.null(label)) {
+        dimnames(df) <- list(seq_len(size), seq_len(size))
+    } else {
+        dimnames(df) <- list(label, label)
+    }
+    diag(df) <- diag
+    df
 }

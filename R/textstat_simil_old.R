@@ -77,6 +77,7 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
         result <- stats::as.dist(temp, diag = diag, upper = upper)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
+        class(result) <- c("simil", class(result))
         return(result)
     } else {
         result <- as.matrix(temp)
@@ -87,7 +88,7 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
         attr(result, "Size") <- if (margin == "documents") nrow(result) else ncol(result)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
-        class(result) <- c("dist_selection")
+        class(result) <- c("simil_selection", "dist_selection")
         return(result)
     }
 }
@@ -380,28 +381,4 @@ faith_simil <- function(x, y = NULL, margin = 1) {
     faithmat <- (a + 0.5 * a0) / an
     dimnames(faithmat) <- list(rowname, colname)
     faithmat
-}
-
-#' Coerce a simil object into a matrix
-#' 
-#' Coerces a simil object, which is a specially classed dist object, into a matrix.
-#' @param x a simil object from \code{\link{textstat_simil}}
-#' @param Diag sets the value for matrix diagonal
-#' @param ... unused
-#' @export
-#' @method as.matrix simil
-#' @keywords textstat internal
-as.matrix.simil <- function(x, Diag = 1L, ...) {
-    size <- attr(x, "Size")
-    df <- matrix(0, size, size)
-    df[row(df) > col(df)] <- x
-    df <- df + t(df)
-    label <- attr(x, "Labels")
-     if (is.null(label)) {
-        dimnames(df) <- list(seq_len(size), seq_len(size))
-    } else {
-        dimnames(df) <- list(label, label)
-    }
-    diag(df) <- Diag
-    df
 }
