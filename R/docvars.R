@@ -1,12 +1,12 @@
 
-# internal function to modify user docvars only
-"set_docvars<-" <- function(x, field, system = FALSE, value) {
+# internal function to modify docvars while protecting system-level variables
+"set_docvars<-" <- function(x, field = NULL, value) {
     stopifnot(is.data.frame(x))
-    flag <- system == is_system(names(x))
+    flag <- is_system(names(x))
     if (is.dfm(value))
         value <- convert(value, to = "data.frame")[-1]
     if (is.null(value)) {
-        x <- x[!flag]
+        x <- x[flag]
     } else if (is.null(field) && (is.data.frame(value))) {
         if (nrow(value) != nrow(x))
             stop(message_error("docvar_mismatch"))
@@ -14,8 +14,6 @@
     } else {
         if (any(is_system(field)))
             stop(message_error("docvar_invalid"))
-        if (system) 
-            field <- paste0("_", field)
         x[field] <- value
     }
     rownames(x) <- NULL
@@ -25,8 +23,8 @@
 #' Internal function to extract docvars
 #' @param x an object from which docvars are extracted
 #' @param field name of docvar fields
-#' @param system if \code{TRUE}, treat field as system-level variable
-#' @param drop if \code{TRUE}, covert data.frame with one variable to a vector
+#' @param system if \code{TRUE}, return system-level variables
+#' @param drop if \code{TRUE}, convert data.frame with one variable to a vector
 #' @keywords internal
 get_docvars <- function(x, field = NULL, system = FALSE, drop = FALSE) {
     UseMethod("get_docvars")
@@ -49,17 +47,14 @@ get_docvars.dfm <- function(x, field = NULL, system = FALSE, drop = FALSE) {
 
 #' @method get_docvars data.frame
 get_docvars.data.frame <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    stopifnot(is.data.frame(x))
     x <- x[system == is_system(names(x))]
     if (is.null(field)) {
         return(x)
     } else {
-        if (system) 
-            x <- x[paste0("_", field)]
-        if (length(x) == 1 && drop) {
-            return(x[[1]])
+        if (length(field) == 1 && drop) {
+            return(x[[field]])
         } else {
-            return(x)
+            return(x[field])
         }
     }
 }
@@ -137,20 +132,20 @@ docvars.default <- function(x, field = NULL) {
 #' @export
 docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
-    get_docvars(attr(x, 'docvars'), field, drop = TRUE)
+    get_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.tokens <- function(x, field = NULL) {
-    get_docvars(attr(x, 'docvars'), field, drop = TRUE)
+    get_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.dfm <- function(x, field = NULL) {
     x <- as.dfm(x)
-    get_docvars(x@docvars, field, drop = TRUE)
+    get_docvars(x@docvars, field, FALSE, TRUE)
 }
 
 #' @noRd
@@ -203,19 +198,19 @@ docvars.kwic <- function(x) {
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
     x <- as.corpus(x)
-    set_docvars(attr(x, "docvars"), field, FALSE) <- value
+    set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    set_docvars(attr(x, "docvars"), field, FALSE) <- value
+    set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
     x <- as.dfm(x)
-    set_docvars(x@docvars, field, FALSE) <- value
+    set_docvars(x@docvars, field) <- value
     return(x)
 }

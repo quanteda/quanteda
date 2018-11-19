@@ -48,22 +48,19 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     x <- as.corpus(x)
     to <- match.arg(to)
     attrs <- attributes(x)
-    vars <- attr(x, "docvars")
+    docvar <- attr(x, "docvars")
     
     if (to == "documents") {
-        if (settings(x, 'units') %in% c('sentences', 'paragraphs')) {
-            
-            docname <- get_docvars("segnum", TRUE)
-            docnum <- get_docvars("docnum", TRUE)
-            segnum <- get_docvars("segnum", TRUE)
-            
+        if (attr(x, 'unit') %in% c('sentences', 'paragraphs')) {
             if (identical(attrs$unit, "sentences")) {
-                texts <- stri_join_list(split(x, factor(docnum)), sep = "  ")
+                temp <- stri_join_list(split(x, factor(docvar[["_docnum"]])), sep = "  ")
             } else {
-                texts <- stri_join_list(split(x, factor(docnum)), sep = "\n\n")
+                temp <- stri_join_list(split(x, factor(docvar[["_docnum"]])), sep = "\n\n")
             }
-            result <- corpus(texts)
-            attr(result, "docvars") <- vars[!duplicated(docnum),,drop = FALSE]
+            docvar <- docvar[!duplicated(docvar[["_docnum"]]),]
+            docvar[["_docid"]] <- docvar[["_docname"]]
+            result <- corpus(temp)
+            attr(result, "docvars") <- docvar
             attr(result, "unit") <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
@@ -71,14 +68,16 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         
     } else if (to %in% c("sentences", "paragraphs")) {
         if (identical(attrs$unit, "documents")) {
-            name <- c("docid", "docname", "docnum", "segnum")
             temp <- segment_texts(x, docnames(x), pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
-            if (use_docvars)
-                vars <- vars[temp$docnum,,drop = FALSE]
-            set_docvars(vars, name, TRUE) <- temp[name]
-            result <- corpus(temp$texts)
-            attr(result, "docvars") <- vars
+            
+            result <- corpus(temp, docid_field = "_docid", text_field = "text")
+            if (use_docvars) {
+                attr(result, "docvars") <- cbind(get_docvars(temp, system = TRUE), 
+                                                 get_docvars(docvar[temp[["_docnum"]],]))
+            } else {
+                attr(result, "docvars") <- get_docvars(temp, system = TRUE)
+            }
             attr(result, "unit") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")

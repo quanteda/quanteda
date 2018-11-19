@@ -123,30 +123,20 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                                   use_docvars = TRUE) {
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    vars <- docvars(x)
-    
-    # get the relevant function call
-    commands <- as.character(sys.calls())
-    commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
-    
+    docvar <- docvars(x)
+
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
 
-    # create the new corpus
-    result <- corpus(temp$texts, docnames = rownames(temp))
-    
-    # add repeated versions of remaining docvars
-    if (use_docvars && !is.null(vars)) {
-        vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
-        rownames(vars) <- rownames(temp)
-        docvars(result) <- vars
+    result <- corpus(temp, docid_field = "_docid", text_field = "text")
+    if (use_docvars) {
+        docvar <- cbind(get_docvars(temp, system = TRUE), get_docvars(docvar[temp[["_docnum"]],]))
+    } else {
+        docvar <- get_docvars(temp, system = TRUE)
     }
-    docvars(result, '_document') <- temp$docname
-    docvars(result, '_docid') <- temp$docid
-    docvars(result, '_segid') <- temp$segid
     if (extract_pattern) docvars(result, "pattern") <- temp$pattern
-    settings(result, "units") <- 'other'
-    
+    attr(result, "docvars") <- docvar
+    attr(result, "unit") <- "documents"
     return(result)
 }
 
@@ -292,26 +282,26 @@ segment_texts <- function(x, docname, pattern = NULL, valuetype = "regex",
         } else {
             txt <- stri_sub(x, pos[,2] + 1L, -1L)
         }
-        result <- data.frame(texts = stri_trim_both(txt), 
+        result <- data.frame(text = stri_trim_both(txt), 
                              pattern = stri_sub(x, pos[,1], pos[,2]),
                              stringsAsFactors = FALSE)
     } else {
-        result <- data.frame(texts = stri_trim_both(x),
+        result <- data.frame(text = stri_trim_both(x),
                              stringsAsFactors = FALSE)
     }
 
-    result$docnum <- rep(seq_along(n), n)
-    result$docname <- rep(docname, n)
+    result[["_docnum"]] <- rep(seq_along(n), n)
+    result[["_docname"]] <- rep(docname, n)
     
     if (extract_pattern) {
         result <- result[!is.na(result$pattern),]
     } else {
         if (omit_empty)
-            result <- result[!is.na(result$texts),]
+            result <- result[!is.na(result$text),]
     }
     
-    result$segnum <- unlist(lapply(rle(result$docnum)$lengths, seq_len))
-    result$docid <- paste0(result$docname, ".", result$segnum)
+    result[["_segnum"]] <- unlist(lapply(rle(result[["_docnum"]])$lengths, seq_len))
+    result[["_docid"]] <- paste0(result[["_docname"]], ".", result[["_segnum"]])
 
     return(result)
 }

@@ -132,20 +132,29 @@ as.corpus.corpus <- function(x) {
     
     if (is.character(x)) {
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
-        result <- x
-    } else {
-        result <- corpus(x$documents)
-        docvars <- make_docvars(row.names(x$documents))
-        if ("_document" %in% names(x$documents))
-            docvars["_docname"] <- x$documents["_document"]
-        if ("_docid" %in% names(x$documents))
-            docvars["_docnum"] <- x$documents["_docid"]
-        if ("_segid" %in% names(x$documents))
-            docvars["_segnum"] <- x$documents["_segid"]
+        return(x)
+    }
+    result <- corpus(x$documents)
+    docvar <- make_docvars(row.names(x$documents))
+    if ("_document" %in% names(x$documents))
+        docvar["_docname"] <- x$documents["_document"]
+    if ("_docid" %in% names(x$documents))
+        docvar["_docnum"] <- x$documents["_docid"]
+    if ("_segid" %in% names(x$documents))
+        docvar["_segnum"] <- x$documents["_segid"]
+    flag <- !name(x$document) == "texts" & !stri_startswith(name(x$document), "_")
+    attr(result, "docvars") <- cbind(docvar, x$document[flag])
+    
+    if ("unit" %in% names(x$settings)) {
         attr(result, "unit") <- x$settings$unit
+    } else {
+        attr(result, "unit") < "document"
+    }
+    if ("created" %in% names(x$metadata)) {
         attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
                                                    format = "%a %b %d %H:%M:%S %Y")
-        attr(result, "docvars") <- cbind(docvars, get_docvars(x))
+    } else {
+        attr(result, "meta")$created <- as.POSIXlt(Sys.time())
     }
     return(result)
 }

@@ -73,18 +73,18 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     
     result <- list()
     # construct the original dfm
-    result[['dfm_0']] <- dfm_group(x, groups = get_docvars(x, "docname", TRUE, TRUE))
+    result[['dfm_0']] <- dfm_group(x, groups = get_docvars(x, "_docname", TRUE, TRUE))
     
     # randomly resample dfm
     id <- index <- NULL
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        dt <- data.table(index = seq_len(ndoc(x)), id = get_docvars(x, "docname", TRUE, TRUE))
+        dt <- data.table(index = seq_len(ndoc(x)), id = get_docvars(x, "_docname", TRUE, TRUE))
         dt[, temp := sample(1:.N, replace = TRUE), by = id]
         dt[, sample_index := index[temp], by = id]
         sample_index <- dt[, sample_index]
         temp <- x[sample_index, ]
-        temp <- dfm_group(temp, groups = get_docvars(temp, "docname", TRUE, TRUE))
+        temp <- dfm_group(temp, groups = get_docvars(temp, "_docname", TRUE, TRUE))
         result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
     }
     if (verbose) 
