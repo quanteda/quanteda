@@ -71,6 +71,9 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             temp <- segment_texts(x, docnames(x), pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
             
+            #result[["_docname"]] <- rep(docname, n)
+            #result[["_docid"]] <- paste0(result[["_docname"]], ".", result[["_segnum"]])
+            
             result <- corpus(temp, docid_field = "_docid", text_field = "text")
             if (use_docvars) {
                 attr(result, "docvars") <- cbind(get_docvars(temp, system = TRUE), 

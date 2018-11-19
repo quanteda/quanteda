@@ -62,8 +62,6 @@ get_docvars.data.frame <- function(x, field = NULL, system = FALSE, drop = FALSE
 # internal function to make new system-level docvars
 make_docvars <- function(docname, unique = TRUE) {
     docname <- as.character(docname)
-    if (unique)
-        docname <- make.unique(docname)
     n <- length(docname)
     if (n == 0) {
         data.frame("_docid" = character(),
@@ -73,10 +71,24 @@ make_docvars <- function(docname, unique = TRUE) {
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
     } else {
-        data.frame("_docid" = docname,
+        if (unique) {
+            docnum <- match(docname, unique(docname))
+            if (any(duplicated(docname))) {
+                segnum <- ave(docname == docname, docname, FUN = cumsum)
+                docid <- paste0(docname, ".", segnum)
+            } else {
+                segnum <- rep(1L, n)
+                docid <- docname
+            }
+        } else {
+            docnum <- seq(1L, n)
+            segnum <- rep(1L, n)
+            docid <- docname
+        }
+        data.frame("_docid" = docid,
                    "_docname" = docname,
-                   "_docnum" = seq(1L, n), 
-                   "_segnum" = rep(1L, n), 
+                   "_docnum" = docnum, 
+                   "_segnum" = segnum, 
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
     }

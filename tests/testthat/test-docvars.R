@@ -13,6 +13,16 @@ test_that("make_docvars() works", {
     expect_equal(colnames(docvar2), c("_docid", "_docname", "_docnum", "_segnum"))
     expect_equal(colnames(docvar3), c("_docid", "_docname", "_docnum", "_segnum"))
     
+    docvar4 <- quanteda:::make_docvars(c("A", "A", "B", "B", "C"))
+    expect_equal(docvar4[["_docid"]], c("A.1", "A.2", "B.1", "B.2", "C.1"))
+    expect_equal(docvar4[["_docnum"]], c(1, 1, 2, 2, 3))
+    docvar5 <- quanteda:::make_docvars(c("A", "B", "B", "A", "C"))
+    expect_equal(docvar5[["_docid"]], c("A.1", "B.1", "B.2", "A.2", "C.1"))
+    expect_equal(docvar5[["_docnum"]], c(1, 2, 2, 1, 3))
+    docvar6 <- quanteda:::make_docvars(c("A", "A", "B", "B", "C"), unique = FALSE)
+    expect_equal(docvar6[["_docid"]], c("A", "A", "B", "B", "C"))
+    expect_equal(docvar6[["_docnum"]], c(1, 2, 3, 4, 5))
+    expect_equal(docvar6[["_segnum"]], c(1, 1, 1, 1, 1))
 })
 
 test_that("upgrade_docvars() workds", {
