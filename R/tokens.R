@@ -216,11 +216,17 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            include_docvars = TRUE,
                            ...) {
     
+    # if remove_hyphens == TRUE, check for an internal hyphen before appluying
+    # this inefficient method of splitting the hyphens
+    if (remove_hyphens && any(stri_detect_regex(types(x), "^.+-.+$"))) {
+        x <- lapply(as.list(x), function(y) 
+            as.character(tokens(as.character(y), remove_hyphens = TRUE))) %>%
+            as.tokens()
+    }
+    
     types <- types(x)
-    if (remove_hyphens)
-        types <- stri_replace_all_fixed(types, "-", " ")
     if (remove_twitter)
-        types <- stri_replace_all_regex(types, c('^@', '^#'), "", vectorize_all = FALSE)
+        types <- stri_replace_all_regex(types, c("^@", "^#"), "", vectorize_all = FALSE)
     if (!identical(types, types(x)))
         types(x) <- types
         x <- tokens_recompile(x)

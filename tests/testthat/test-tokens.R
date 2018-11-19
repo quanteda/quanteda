@@ -392,9 +392,8 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
     expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
                  tokens(toks5, ngrams = 2, skip = 1:2))
     
-    # This fails because hyphnated words are concatenated in toks
-    #expect_equal(tokens(chars[3], remove_hyphens = TRUE),
-    #             tokens(toks3, remove_hyphens = TRUE))
+    expect_equal(tokens(chars[3], remove_hyphens = TRUE),
+                 tokens(toks3, remove_hyphens = TRUE))
     
     # This fails because there is not separator in toks
     # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
@@ -554,3 +553,19 @@ test_that("tokens_sample works as expected",{
                  "only works on tokens objects")
 })
 
+test_that("tokens.tokens(x, remove_hyphens = TRUE) behaves same as tokens.character(...)", {
+    # issue #1498
+    txt <- "Auto-immune system."
+    expect_identical(
+        as.character(tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE)),
+        c("Auto", "-", "immune", "system", ".")
+    )
+    
+    txt <- c("There's shrimp-kabobs, shrimp creole. Deep-deep-fried, stir-fried.",
+             "Stir-fried shrimp.")
+    toks <- tokens(txt, remove_hyphens = FALSE)
+    expect_identical(
+        tokens(txt, remove_hyphens = TRUE),
+        tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE)
+    )
+})
