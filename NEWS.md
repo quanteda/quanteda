@@ -1,9 +1,10 @@
-# quanteda > v.1.3.13
+# quanteda v1.3.14
 
 ### Bug fixes and stability enhancements
 
 * Improved the robustnes of `textstat_keyness()` (#1482).
 * Improved the accuracy of sparsity reporting for the print method of a dfm (#1473).
+* Diagonals on a `textstat_simil()` return object coerced to matrix now default to 1.0, rather than 0.0 (#1494).
 
 ### New Features
 

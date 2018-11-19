@@ -13,8 +13,8 @@ textstat_proxy(x, selection = NULL, margin = c("documents",
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{selection}{a valid index for document or feature names from \code{x},
-to be selected for comparison}
+\item{selection}{a valid index for document or feature names (depending on
+\code{margin}) from \code{x}, to be selected for comparison}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or

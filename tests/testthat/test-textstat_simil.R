@@ -110,3 +110,30 @@ test_that("dist object has all the attributes", {
     expect_equal(class(attr(d2, "Upper")), "logical")
     expect_equal(class(attr(d2, "method")), "character")
 })
+
+test_that("as.matrix.simil is consistent with the equivalent proxy function", {
+    skip_if_not_installed("proxy")
+    toks <- tokens(c(doc1 = "a b c d", doc2 = "c d e f"), remove_punct = TRUE)
+    mt <- dfm(toks)
+    
+    expect_identical(
+        textstat_simil(mt, method = "cosine") %>% quanteda:::as.matrix.simil(diag = NA),
+        textstat_simil(mt, method = "cosine") %>% proxy:::as.matrix.simil(diag = NA)
+    )
+    expect_identical(
+        textstat_simil(mt, method = "cosine") %>% quanteda:::as.matrix.simil(diag = 1.0),
+        textstat_simil(mt, method = "cosine") %>% proxy:::as.matrix.simil(diag = 1.0)
+    )
+    expect_identical(
+        textstat_simil(mt) %>% 
+            quanteda:::as.matrix.simil() %>%
+            diag(),
+        c(doc1 = 1, doc2 = 1)
+    )
+    expect_identical(
+        textstat_simil(mt) %>% 
+            quanteda:::as.matrix.simil(diag = NA) %>%
+            diag(),
+        c(doc1 = as.numeric(NA), doc2 = as.numeric(NA))
+    )
+})
