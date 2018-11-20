@@ -24,9 +24,9 @@ Text replace(Text tokens,
                 //Rcout << "index:" << i << "\n";
                 std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
                 //dev::print_ngram(ids_repls[it->second]);
-                //tokens_multi[i].insert(tokens_multi[i].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
+                tokens_multi[i].insert(tokens_multi[i].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
                 //dev::print_ngram(tokens_multi[i]);
-                match++;
+                match += ids_repls[it->second].size();
             }
         }
     }
@@ -95,14 +95,12 @@ List qatd_cpp_tokens_replace(const List &texts_,
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
-    Rcout << "here0\n";
     //dev::Timer timer;
     //dev::start_timer("Map construction", timer);
 
     MapNgrams map_pat;
     map_pat.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
     Ngrams pats = Rcpp::as<Ngrams>(patterns_);
-    Rcout << "here1\n";
 
     size_t len = std::min(pats.size(), ids_repls.size());
     std::vector<std::size_t> spans(len);
@@ -114,16 +112,12 @@ List qatd_cpp_tokens_replace(const List &texts_,
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
     std::reverse(std::begin(spans), std::end(spans));
-    
-    Rcout << "here2\n";
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Pattern replace", timer);
 #if QUANTEDA_USE_TBB
-    Rcout << "here3\n";
     replace_mt replace_mt(texts, spans, map_pat, ids_repls);
     parallelFor(0, texts.size(), replace_mt);
-    Rcout << "here4\n";
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         texts[h] = replace(texts[h], spans, map_pat, ids_repls);

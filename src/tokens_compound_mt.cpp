@@ -155,7 +155,7 @@ struct compound_mt : public Worker{
  * @used tokens_compound()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
- * @param comps_ list of features to substitute
+ * @param compounds_ list of features to substitute
  * @param ids_ IDs to be placed after substitution
  * @param join join overlapped features if true
  * 
@@ -163,7 +163,7 @@ struct compound_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_compound(const List &texts_, 
-                              const List &comps_,
+                              const List &compounds_,
                               const CharacterVector &types_,
                               const String &delim_,
                               const bool &join){
@@ -196,7 +196,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     MapNgrams map_comps;
     map_comps.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
     
-    Ngrams comps = Rcpp::as<Ngrams>(comps_);
+    Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
     for (size_t g = 0; g < comps.size(); g++) {
         map_comps.insert(std::pair<Ngram, IdNgram>(comps[g], ++id_comp));
