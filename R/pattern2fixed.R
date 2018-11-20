@@ -25,6 +25,7 @@
 #' pats_glob <- list(c("a*", "b*"), c("c"), c("d"))
 #' pattern2id(pats_glob, types, "glob", case_insensitive = TRUE)
 #' 
+#' @export
 pattern2id <- function(pattern, types = NULL, valuetype = NULL,
                        case_insensitive = NULL, index = NULL) {
     
@@ -54,50 +55,43 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
         if (!is.null(valuetype)) stop("valuetype must be NULL when index is provided")
         if (!is.null(case_insensitive)) stop("case_insensitive must be NULL when index is provided")
     }
-
+    
     # use options in the index
     types_search <- attr(index, "types_search")
     valuetype <- attr(index, "valuetype")
     case_insensitive <- attr(index, "case_insensitive")
-
+    
     # lowercases for case-insensitive search
-    if (valuetype != "regex" && case_insensitive) {
+    if (valuetype != "regex" && case_insensitive)
         pattern <- lapply(pattern, stri_trans_tolower)
-    }
 
-    # separate multi and single-entry patterns
-    len <- lengths(pattern)
-    pats_multi <- pattern[len > 1]
-    pats_single <- pattern[len == 1]
-
-    # process multi-entry patterns
-    ids <- list()
-    for (pat_multi in pats_multi) {
-        if (valuetype == "regex") {
-            ids_multi <- search_regex(pat_multi, types_search, case_insensitive)
-        } else if (valuetype == "glob") {
-            ids_multi <- search_glob(pat_multi, types_search, index)
+    temp <- vector("list", length(pattern)) 
+    for (i in seq_along(pattern)) {
+        if (length(pattern[[i]]) > 1) {
+            if (valuetype == "regex") {
+                temp[[i]] <- search_regex_multi(pattern[[i]], types_search, case_insensitive)
+            } else if (valuetype == "glob") {
+                temp[[i]] <- search_glob_multi(pattern[[i]], types_search, index)
+            } else {
+                temp[[i]] <- search_fixed_multi(pattern[[i]], types_search, index)
+            }
         } else {
-            ids_multi <- search_fixed(pat_multi, types_search, index)
+            if (valuetype == "regex") {
+                temp[[i]] <- search_regex(pattern[[i]], types_search, case_insensitive)
+            } else if (valuetype == "glob") {
+                temp[[i]] <- search_glob(pattern[[i]], types_search, index)
+            } else {
+                temp[[i]] <- search_fixed(pattern[[i]], types_search, index)
+            }
         }
-        ids <- c(ids, expand(ids_multi))
     }
-
-    # process single-entry patterns
-    if (length(pats_single) > 0) {
-        pats_single <- unlist(pats_single, use.names = FALSE)
-        if (valuetype == "regex") {
-            ids_single <- unlist(search_regex(pats_single, types_search, case_insensitive), use.names = FALSE)
-        } else if (valuetype == "glob") {
-            ids_single <- unlist(search_glob(pats_single, types_search, index), use.names = FALSE)
-        } else {
-            ids_single <- unlist(search_fixed(pats_single, types_search, index), use.names = FALSE)
-        }
-        ids <- c(ids, ids_single)
-    }
-    return(unique(ids))
+    id_pattern <- rep(seq_along(pattern), lengths(temp))
+    temp <- unlist(temp, FALSE)
+    dup <- duplicated(temp)
+    result <- temp[!dup]
+    attr(result, "id") <- id_pattern[!dup]
+    return(result)
 }
-
 
 #' @rdname pattern2id
 #' @description \code{pattern2fixed} converts regex and glob patterns to fixed patterns.
@@ -114,11 +108,11 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
 #' pattern2fixed(pattern, index = index)
 pattern2fixed <- function(pattern, types = NULL, valuetype = NULL,
                           case_insensitive = NULL, index = NULL) {
-    id <- pattern2id(pattern, types, valuetype, case_insensitive, index)
+    temp <- pattern2id(pattern, types, valuetype, case_insensitive, index)
     if (!is.null(index))
         types <- attr(index, "types")
-    fixed <- lapply(id, function(x) types[x])
-    return(fixed)
+    result <- lapply(temp, function(x) types[x])
+    return(result)
 }
 
 
@@ -126,59 +120,72 @@ pattern2fixed <- function(pattern, types = NULL, valuetype = NULL,
 #' 
 #' This is an internal function for \code{pattern2id} that select types using
 #' keys in index when available.
-#' @param patterns a list of "glob", "fixed" or "regex" patterns
+#' @param pattern a "glob", "fixed" or "regex" pattern
 #' @param types_search lowercased types when \code{case_insensitive=TRUE}, but
 #'   not used in glob and fixed matching as types are in the index.
 #' @param case_insensitive ignore case when matching, if \code{TRUE}, but not
 #'   used in glob and fixed matching as types are lowercased in the index.
 #' @param index index object created by \code{index_types}
 #' @keywords internal
-search_glob <- function(patterns, types_search, index) {
-    lapply(patterns, function(pattern, types_search, index) {
-        if (pattern == "") {
-            return(integer()) # return nothing for empty pattern
-        } else if (pattern == "*") {
-            return(seq_along(types_search)) # return all types when glob is *
+search_glob <- function(pattern, types_search, index) {
+    if (pattern == "") {
+        return(integer()) # return nothing for empty pattern
+    } else if (pattern == "*") {
+        return(seq_along(types_search)) # return all types when glob is *
+    } else {
+        pos <- search_index(pattern, index)
+        if (length((pos))) {
+            #cat("Index search", pattern, "\n")
+            return(pos)
+        } else if (!is_indexed(pattern)) {
+            #cat("Regex search", pattern, "\n")
+            return(which(stri_detect_regex(types_search, utils::glob2rx(pattern),
+                                           case_insensitive = FALSE)))
         } else {
-            pos <- search_index(pattern, index)
-            if (length((pos))) {
-                #cat("Index search", pattern, "\n")
-                return(pos)
-            } else if (!is_indexed(pattern)) {
-                #cat("Regex search", pattern, "\n")
-                return(which(stri_detect_regex(types_search, utils::glob2rx(pattern),
-                                               case_insensitive = FALSE)))
-            } else {
-                #cat("Not found\n")
-                return(integer())
-            }
+            #cat("Not found\n")
+            return(integer())
         }
-    }, types_search, index)
+    }
+}
+
+#' @rdname search_glob
+#' @param patterns a list of "glob", "fixed" or "regex" patterns
+#' @keywords internal
+search_glob_multi <- function(patterns, types_search, index) {
+    expand(lapply(patterns, search_glob, types_search, index))
 }
 
 #' @rdname search_glob
 #' @keywords internal
-search_regex <- function(patterns, types_search, case_insensitive) {
-    lapply(patterns, function(pattern, types_search, case_insensitive) {
-        if (pattern == "") {
-            return(integer())
-        } else {
-            return(which(stri_detect_regex(types_search, pattern,
-                                           case_insensitive = case_insensitive)))
-        }
-    }, types_search, case_insensitive)
+search_regex <- function(pattern, types_search, case_insensitive) {
+    if (pattern == "") {
+        return(integer())
+    } else {
+        return(which(stri_detect_regex(types_search, pattern,
+                                       case_insensitive = case_insensitive)))
+    }
 }
 
 #' @rdname search_glob
 #' @keywords internal
-search_fixed <- function(patterns, types_search, index) {
-    lapply(patterns, function(pattern, types_search, index) {
-        if (pattern == "") {
-            return(integer())
-        } else {
-            return(search_index(pattern, index))
-        }
-    }, types_search, index)
+search_regex_multi <- function(patterns, types_search, case_insensitive) {
+    expand(lapply(patterns, search_regex, types_search, case_insensitive))
+}
+
+#' @rdname search_glob
+#' @keywords internal
+search_fixed <- function(pattern, types_search, index) {
+    if (pattern == "") {
+        return(integer())
+    } else {
+        return(search_index(pattern, index))
+    }
+}
+
+#' @rdname search_glob
+#' @keywords internal
+search_fixed_multi <- function(patterns, types_search, index) {
+    expand(lapply(patterns, search_fixed, types_search, index))
 }
 
 #' Index types for fastest "glob" or "fixed" pattern matches
@@ -280,9 +287,12 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL) {
 #' @param index an index object created by \code{index_types}
 #' @seealso \code{\link{index_types}}
 #' @keywords internal
-search_index <- function(pattern, index){
+ search_index <- function(pattern, index){
     # use fmatch instead of names for quick access
-    index[[fastmatch::fmatch(pattern, attr(index, "key"))]]
+    result <- index[[fastmatch::fmatch(pattern, attr(index, "key"))]]
+    if (is.null(result))
+        result <- integer()
+    return(result)
 }
 
 #' Simpler and faster version of expand.grid() in base package
