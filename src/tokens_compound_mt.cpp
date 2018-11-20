@@ -15,7 +15,7 @@ Text join_comp(Text tokens,
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
-    std::size_t count_match = 0;
+    std::size_t match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -25,12 +25,12 @@ Text join_comp(Text tokens,
             if (it != map_comps.end()) {
                 //Rcout << it->second << "\n";
                 std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
-                count_match++;
+                match++;
             }
         }
     }
     
-    if (count_match == 0) return tokens; // return original tokens if no match
+    if (match == 0) return tokens; // return original tokens if no match
     
     Text tokens_flat;
     tokens_flat.reserve(tokens.size());
@@ -78,7 +78,7 @@ Text match_comp(Text tokens,
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
-    std::size_t count_match = 0;
+    std::size_t match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -93,24 +93,24 @@ Text match_comp(Text tokens,
                     std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
                 }
                 tokens_multi[i].push_back(it->second); // keep multiple keys in the same position
-                count_match++;
+                match++;
             }
         }
     }
     
-    if (count_match == 0) return tokens; // return original tokens if no match
+    if (match == 0) return tokens; // return original tokens if no match
     
     // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {
         if (!flags_match[i]) {
             tokens_multi[i].push_back(tokens[i]); 
-            count_match++;
+            match++;
         }
     }
     
     // Flatten the vector of vector
     Text tokens_flat;
-    tokens_flat.reserve(count_match);
+    tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
         if (nested) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());

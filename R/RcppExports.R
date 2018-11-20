@@ -73,6 +73,10 @@ qatd_cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
     .Call(`_quanteda_qatd_cpp_tokens_recompile`, texts_, types_, gap, dup)
 }
 
+qatd_cpp_tokens_replace <- function(texts_, types_, patterns_, replacements_) {
+    .Call(`_quanteda_qatd_cpp_tokens_replace`, texts_, types_, patterns_, replacements_)
+}
+
 qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position) {
     .Call(`_quanteda_qatd_cpp_tokens_segment`, texts_, types_, patterns_, remove, position)
 }

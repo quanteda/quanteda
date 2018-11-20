@@ -59,7 +59,6 @@
 #' tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
 #' 
 #' @importFrom RcppParallel RcppParallelLibs
-#' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
                           case_insensitive = TRUE,
