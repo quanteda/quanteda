@@ -303,4 +303,58 @@ dfm_split_hyphenated_features <- function(x) {
     result <- dfm_compress(result, margin = "features")
 
     result
-}    
+} 
+
+#' Computes the Moving-Average Type-Token Ratio for a Tokens Object
+#' 
+#' Takes a tokens object which should have been preprocessed - removal of punctuation etc.
+#' @param x input \link{tokens}
+#' @param window_size input: the size of the moving window for computation of TTR
+#' @param all_windows default = FALSE. If TRUE, returns a vector with the MATTR for each window
+#' @param mean_mattr default = TRUE. Returns the mean MATTR, given the window size, for the tokens object. 
+#' @return return either a vector with the MATTR for each window, or the mean MATTR for the whole tokens object
+#' @keywords internal dfm
+#' @examples
+
+compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr= TRUE){
+    # Error Checks
+    if (!is.tokens(x)) stop("x must be a tokens object")
+    if (is.null(window_size)) stop('window_size must be specified')
+    # Get number of tokens across all documents
+    num_tokens <- sum(ntoken(x))
+    if (window_size > num_tokens) stop('window_size must be smaller than total ntokens across all documents')
+    if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop('at least MATTR value type to be returned')
+    
+    # List to Store MATTR Values for each Window 
+    mattr_list <- list()
+    
+    # Initializers
+    start = 1
+    end = window_size 
+    
+    while (end <= num_tokens){
+        # Each MATTR value is named with the start token number and end token number
+        temp_ls <- paste(unlist(x)[start:end], collapse = ' ')
+        window_name <- paste0('tokens',start, '_',end)
+        temp_toks <- tokens(temp_ls)
+         # print(temp_toks)
+        typecount <- ntype(temp_toks)[[1]]
+        tokcount <- ntoken(temp_toks)[[1]]
+        mattr_list[[window_name]] <- typecount/tokcount
+        start = start + 1
+        end = end + 1
+    }
+    mattr_list <- unlist(mattr_list)
+    return(mean(mattr_list))
+    ## Checks
+    if (length(mattr) != (num_tokens - window_size + 1)) {
+        stop('Internal error within compute_mattr')}
+    else {
+        if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr_list))
+        if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr_list)
+        if ((all_windows == TRUE) && (mean_mattr == TRUE)) return(mean(mattr_list), mattr_list)
+    }
+}
+
+
+
