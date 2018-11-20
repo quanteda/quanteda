@@ -320,10 +320,10 @@ dfm_split_hyphenated_features <- function(x) {
 #' shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
 #' sandwich."
 #' # Return only Mean MATTR
-#' compute_mattr(tokens(txt[1]), window_size = 20)
-#' [1] 0.52
+#' compute_mattr(tokens(txt), window_size = 20)
+#' 0.52
 #' # Return MATTR for each moving window
-#' compute_mattr(tokens(txt[1]), window_size = 20, all_windows = TRUE, mean_mattr = FALSE)
+#' compute_mattr(tokens(txt), window_size = 20, all_windows = TRUE, mean_mattr = FALSE)
 #' tokens1_20  tokens2_21  tokens3_22  tokens4_23  tokens5_24  tokens6_25  tokens7_26  tokens8_27  tokens9_28 
 #' 0.60        0.60        0.60        0.60        0.60        0.60        0.60        0.60        0.60 
 #' tokens10_29 tokens11_30 tokens12_31 tokens13_32 tokens14_33 tokens15_34 tokens16_35 tokens17_36 tokens18_37 
@@ -393,14 +393,15 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
 #' sandwich."
 #' # Return Mean-Segmental Type Token Ratio
-#' > compute_msttr(tokens(txt[1]), segment_size = 7)
-#' [1] 0.7346939
+#' > compute_msttr(tokens(txt), segment_size = 7)
+#' 0.7346939
 #' # Return TTR for each Segments
-#' > compute_msttr(tokens(txt[1]), segment_size = 7, all_segments = TRUE, mean_sttr = FALSE)
+#' > compute_msttr(tokens(txt), segment_size = 7, all_segments = TRUE, mean_sttr = FALSE)
 #' MSTTR_tokens1_7  MSTTR_tokens8_14 MSTTR_tokens15_21 MSTTR_tokens22_28 MSTTR_tokens29_35 MSTTR_tokens36_42 
 #' 0.7142857         0.8571429         0.8571429         0.7142857         0.5714286         0.7142857 
 #' MSTTR_tokens43_49 
 #' 0.7142857 
+
 
 compute_msttr <- function(x, segment_size = NULL, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks

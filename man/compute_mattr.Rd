@@ -28,10 +28,10 @@ pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
 shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
 sandwich."
 # Return only Mean MATTR
-compute_mattr(tokens(txt[1]), window_size = 20)
-[1] 0.52
+compute_mattr(tokens(txt), window_size = 20)
+0.52
 # Return MATTR for each moving window
-compute_mattr(tokens(txt[1]), window_size = 20, all_windows = TRUE, mean_mattr = FALSE)
+compute_mattr(tokens(txt), window_size = 20, all_windows = TRUE, mean_mattr = FALSE)
 tokens1_20  tokens2_21  tokens3_22  tokens4_23  tokens5_24  tokens6_25  tokens7_26  tokens8_27  tokens9_28 
 0.60        0.60        0.60        0.60        0.60        0.60        0.60        0.60        0.60 
 tokens10_29 tokens11_30 tokens12_31 tokens13_32 tokens14_33 tokens15_34 tokens16_35 tokens17_36 tokens18_37 
