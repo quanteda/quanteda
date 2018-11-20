@@ -365,14 +365,14 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
         if (end <= num_tokens) {temp_ls <- c(overlap, all_tokens[end])}
     }
     
-    mattr <- unlist(mattr_list)
+    mattr_list <- unlist(mattr_list)
     ## Checks
-    if (length(mattr) != (num_tokens - window_size + 1)) {
+    if (length(mattr_list) != (num_tokens - window_size + 1)) {
         stop('Internal error within compute_mattr')}
     else {
-        if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr))
-        if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr)
-        if ((all_windows == TRUE) && (mean_mattr == TRUE)) return(mean(mattr), mattr)
+        if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr_list))
+        if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr_list)
+        if ((all_windows == TRUE) && (mean_mattr == TRUE)) return(mean(mattr_list), mattr_list)
     }
 }
 
@@ -383,6 +383,8 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' Takes a tokens object which should have been preprocessed - removal of punctuation etc.
 #' @param x input \link{tokens}
 #' @param segment_size input: the size of the segment. 
+#' @param all_segments default = FALSE. If TRUE, returns a vector with the TTR for each segment. 
+#' @param mean_sttr default = TRUE. Returns the Mean TTR across Segments for the tokens object. 
 #' @return returns a vector with the MSSTR for each segment
 #' @keywords internal tokens
 #' @examples 
@@ -390,14 +392,22 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
 #' shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
 #' sandwich."
-#' compute_msttr(tokens(txt[1]), segment_size = 7)
-#' segment1_7  segment8_14 segment15_21 segment22_28 segment29_35 segment36_42 segment43_49 
-#' 0.7142857    0.8571429    0.8571429    0.7142857    0.5714286    0.7142857    0.7142857 
+#' # Return Mean-Segmental Type Token Ratio
+#' > compute_msttr(tokens(txt[1]), segment_size = 7)
+#' [1] 0.7346939
+#' # Return TTR for each Segments
+#' > compute_msttr(tokens(txt[1]), segment_size = 7, all_segments = TRUE, mean_sttr = FALSE)
+#' MSTTR_tokens1_7  MSTTR_tokens8_14 MSTTR_tokens15_21 MSTTR_tokens22_28 MSTTR_tokens29_35 MSTTR_tokens36_42 
+#' 0.7142857         0.8571429         0.8571429         0.7142857         0.5714286         0.7142857 
+#' MSTTR_tokens43_49 
+#' 0.7142857 
 
-compute_msttr <- function(x, segment_size = NULL){
+compute_msttr <- function(x, segment_size = NULL, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks
     if (!is.tokens(x)) stop("x must be a tokens object")
     if (is.null(segment_size)) stop('segment_size must be specified')
+    if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop('at least one MSTTR value type to be returned')
+    
 
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))
@@ -439,16 +449,18 @@ compute_msttr <- function(x, segment_size = NULL){
         }
     }
     
-    msttr <- unlist(msttr_list)
+    msttr_list <- unlist(msttr_list)
     
     
-    if ((remainder ==0) & (length(msttr) != n_segments)){
+    if ((remainder ==0) & (length(msttr_list) != n_segments)){
         stop('Internal error within compute_msttr')}
     
-    if ((remainder != 0) & length(msttr) != (n_segments + 1)) {
+    if ((remainder != 0) & length(msttr_list) != (n_segments + 1)) {
         stop('Internal error within compute_msttr')}
     
-    return(msttr)
+    if ((all_segments == FALSE) && (mean_sttr == TRUE)) return(mean(msttr_list))
+    if ((all_segments == TRUE) && (mean_sttr == FALSE)) return(msttr_list)
+    if ((all_segments == TRUE) && (mean_sttr == TRUE)) return(mean(mattr), msttr_list)
         
 }
 
