@@ -1,3 +1,18 @@
+# quanteda > v1.3.14
+
+### Bug fixes and stability enhancements
+
+* None (yet).
+
+### New features
+
+* `textstat_lexdiv()` now works on tokens objects, not just dfm objects.
+
+### Behaviour changes
+
+* `tokens.tokens(x, remove_hyphens = TRUE)` where `x` was generated with `remove_hyphens = FALSE` now behaves similarly to how the same tokens would be handled had this option been called on character input as `tokens.character(x, remove_hyphens = TRUE)`. (#1498)
+
+
 # quanteda v1.3.14
 
 ### Bug fixes and stability enhancements
