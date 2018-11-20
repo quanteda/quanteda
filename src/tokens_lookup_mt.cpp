@@ -161,11 +161,12 @@ List qatd_cpp_tokens_lookup(const List &texts_,
 
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
-    
     Ngrams keys = Rcpp::as<Ngrams>(keys_);
     std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
-    std::vector<std::size_t> spans(keys.size());
-    for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
+    
+    size_t len = std::min(keys.size(), ids.size());
+    std::vector<std::size_t> spans(len);
+    for (size_t g = 0; g < len; g++) {
         Ngram key = keys[g];
         unsigned int id = ids[g];
         map_keys.insert(std::pair<Ngram, unsigned int>(key, id));

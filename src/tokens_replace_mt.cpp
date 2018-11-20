@@ -1,12 +1,12 @@
 #include "quanteda.h"
 #include "recompile.h"
-#include "dev.h"
+//#include "dev.h"
 using namespace quanteda;
 
 Text replace(Text tokens, 
-            const std::vector<std::size_t> &spans,
-            const MapNgrams &map_pat,
-            const Texts &repls){
+             const std::vector<std::size_t> &spans,
+             MapNgrams &map_pat,
+             Ngrams &ids_repls){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -14,8 +14,7 @@ Text replace(Text tokens,
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     
     std::size_t match = 0;
-    std::vector< std::vector<unsigned int> > keys(tokens.size()); 
-    for (std::size_t span : spans) {
+    for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         //Rcout << "span:" << span << "\n";
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
@@ -24,8 +23,8 @@ Text replace(Text tokens,
             if (it != map_pat.end()) {
                 //Rcout << "index:" << i << "\n";
                 std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
-                //dev::print_ngram(repls[it->second]);
-                tokens_multi[i].insert(tokens_multi[i].end(), repls[it->second].begin(), repls[it->second].end());
+                //dev::print_ngram(ids_repls[it->second]);
+                //tokens_multi[i].insert(tokens_multi[i].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
                 //dev::print_ngram(tokens_multi[i]);
                 match++;
             }
@@ -60,18 +59,18 @@ struct replace_mt : public Worker{
     
     Texts &texts;
     const std::vector<std::size_t> &spans;
-    const MapNgrams &map_pat;
-    const Texts &repls;
+    MapNgrams &map_pat;
+    Ngrams &ids_repls;
     
     // Constructor
-    replace_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const MapNgrams &map_pat_, const Texts &repls_):
-               texts(texts_), spans(spans_), map_pat(map_pat_), repls(repls_){}
+    replace_mt(Texts &texts_, const std::vector<std::size_t> &spans_, MapNgrams &map_pat_, Ngrams &ids_repls_):
+               texts(texts_), spans(spans_), map_pat(map_pat_), ids_repls(ids_repls_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            texts[h] = replace(texts[h], spans, map_pat, repls);
+            texts[h] = replace(texts[h], spans, map_pat, ids_repls);
         }
     }
 };
@@ -89,38 +88,45 @@ struct replace_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_replace(const List &texts_,
-                            const CharacterVector types_,
-                            const List &patterns_,
-                            const List &replacements_){
+                             const CharacterVector types_,
+                             const List &patterns_,
+                             const List &replacements_){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
-    Texts repls = Rcpp::as<Texts>(replacements_);
-    
+    Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
+    Rcout << "here0\n";
     //dev::Timer timer;
     //dev::start_timer("Map construction", timer);
 
     MapNgrams map_pat;
     map_pat.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
     Ngrams pats = Rcpp::as<Ngrams>(patterns_);
-    std::vector<std::size_t> spans(pats.size());
-    for (size_t g = 0; g < std::min(pats.size(), repls.size()); g++) {
+    Rcout << "here1\n";
+
+    size_t len = std::min(pats.size(), ids_repls.size());
+    std::vector<std::size_t> spans(len);
+    for (size_t g = 0; g < len; g++) {
         Ngram pat = pats[g];
         map_pat.insert(std::pair<Ngram, unsigned int>(pat, g));
         spans[g] = pat.size();
     }
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
     
+    Rcout << "here2\n";
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Pattern replace", timer);
 #if QUANTEDA_USE_TBB
-    replace_mt replace_mt(texts, spans, map_pat, repls);
+    Rcout << "here3\n";
+    replace_mt replace_mt(texts, spans, map_pat, ids_repls);
     parallelFor(0, texts.size(), replace_mt);
+    Rcout << "here4\n";
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        texts[h] = replace(texts[h], spans, id_max, map_pat);
+        texts[h] = replace(texts[h], spans, map_pat, ids_repls);
     }
 #endif
     //dev::stop_timer("Pattern replace", timer);

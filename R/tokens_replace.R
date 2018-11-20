@@ -76,3 +76,18 @@ replace_type <- function(type, pattern, replacement, case_insensitive) {
     type_new <- ifelse(is.na(type_new), type, type_new)
     return(type_new)
 }
+
+
+#' @export
+tokens_replace2 <- function(x, pattern, replacement = NULL, case_insensitive = TRUE, 
+                            verbose = quanteda_options("verbose")) {
+    
+    if (length(pattern) != length(replacement))
+        stop("Lengths of 'pattern' and 'replacement' must be the same")
+    type <- types(x)
+    ids_pat <- pattern2list(pattern, type, "fixed", case_insensitive, attr(x, 'concatenator'))
+    type <- union(type, unlist(replacement, use.names = FALSE))
+    ids_repl <- pattern2list(replacement, type, "fixed", case_insensitive, attr(x, 'concatenator'))
+    
+    qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl[attr(ids_pat, "id")])
+}
