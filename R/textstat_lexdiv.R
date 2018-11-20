@@ -323,7 +323,7 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))
     if (window_size > num_tokens) stop('window_size must be smaller than total ntokens across all documents')
-    if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop('at least MATTR value type to be returned')
+    if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop('at least one MATTR value type to be returned')
     
     # List to Store MATTR Values for each Window 
     mattr_list <- list()
@@ -332,29 +332,33 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
     start = 1
     end = window_size 
     
+    all_tokens <- unlist(x)
+    temp_ls <- all_tokens[start:end]
+    
     while (end <= num_tokens){
         # Each MATTR value is named with the start token number and end token number
-        temp_ls <- paste(unlist(x)[start:end], collapse = ' ')
         window_name <- paste0('tokens',start, '_',end)
-        temp_toks <- tokens(temp_ls)
-         # print(temp_toks)
+        temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
         typecount <- ntype(temp_toks)[[1]]
         tokcount <- ntoken(temp_toks)[[1]]
         mattr_list[[window_name]] <- typecount/tokcount
         start = start + 1
         end = end + 1
+        overlap <- temp_ls[2:length(temp_ls)]
+        if (end <= num_tokens) {temp_ls <- c(overlap, all_tokens[end])}
     }
-    mattr_list <- unlist(mattr_list)
-    return(mean(mattr_list))
+    
+    mattr <- unlist(mattr_list)
     ## Checks
     if (length(mattr) != (num_tokens - window_size + 1)) {
         stop('Internal error within compute_mattr')}
     else {
-        if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr_list))
-        if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr_list)
-        if ((all_windows == TRUE) && (mean_mattr == TRUE)) return(mean(mattr_list), mattr_list)
+        if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr))
+        if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr)
+        if ((all_windows == TRUE) && (mean_mattr == TRUE)) return(mean(mattr), mattr)
     }
 }
+
 
 
 
