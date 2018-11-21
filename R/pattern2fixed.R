@@ -77,16 +77,16 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
             }
         } else {
             if (valuetype == "regex") {
-                temp[[i]] <- search_regex(pattern[[i]], types_search, case_insensitive)
+                temp[[i]] <- as.list(search_regex(pattern[[i]], types_search, case_insensitive))
             } else if (valuetype == "glob") {
-                temp[[i]] <- search_glob(pattern[[i]], types_search, index)
+                temp[[i]] <- as.list(search_glob(pattern[[i]], types_search, index))
             } else {
-                temp[[i]] <- search_fixed(pattern[[i]], types_search, index)
+                temp[[i]] <- as.list(search_fixed(pattern[[i]], types_search, index))
             }
         }
     }
     id_pattern <- rep(seq_along(pattern), lengths(temp))
-    temp <- unlist(temp, FALSE)
+    temp <- unlist(temp, recursive = FALSE)
     dup <- duplicated(temp)
     result <- temp[!dup]
     attr(result, "id") <- id_pattern[!dup]

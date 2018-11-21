@@ -71,16 +71,28 @@ test_that("pattern2list is working with collocations", {
     type <- types(toks)
     col <- textstat_collocations(toks, size = 2:3)
     ids <- quanteda:::pattern2list(col, type, 'fixed', TRUE)
-    expect_equal(col$collocation, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
+    expect_equivalent(col$collocation, 
+                      vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
+    expect_equal(names(ids), col$collocation)
     
 })
 
 test_that("pattern2list is working with a list", {
     
     type <- letters
-    pat <- c('a b', 'c d', 'e f g')
-    ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', TRUE)
-    expect_equal(pat, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
+    pat <- c('a', 'a b', 'c d', 'e f g')
+    ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', FALSE)
+    expect_equivalent(pat, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
+    expect_equal(names(ids), pat)
+    
+})
+
+test_that("pattern2list is working with a dictionary", {
+    
+    type <- c("a", "ab", "b", "bb", "a a", "a b")
+    dict <- dictionary(list(key1 = c("a*", "b*"), key2 = c('a a*', 'a b*')))
+    ids <- quanteda:::pattern2list(dict, type, 'glob', FALSE)
+    expect_true(all(names(dict) %in% names(ids)))
     
 })
 

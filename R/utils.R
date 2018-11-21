@@ -119,22 +119,29 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
     
     if (is.collocations(pattern)) {
         if (nrow(pattern) == 0) return(list())
-        pattern <- stri_split_charclass(pattern$collocation, "\\p{Z}")
-        temp <- lapply(pattern, function(x) fastmatch::fmatch(x, types))
+        temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
+        temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
+        names(temp) <- pattern$collocation
         result <- temp[vapply(temp, function(x) all(!is.na(x)), logical(1))]
     } else {
         if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
-            pattern <- unlist(pattern, use.names = FALSE)
-            pattern <- split_dictionary_values(pattern, concatenator)
+            pattern <- flatten_dictionary(pattern)
+            temp <- unlist(pattern, use.names = FALSE)
+            names(temp) <- rep(names(pattern), lengths(pattern))
+            temp <- split_values(temp, concatenator)
+        } else if (is.list(pattern)) {
+            temp <- pattern
+            names(temp) <- stri_c_list(pattern, " ")   
         } else {
-            pattern <- as.list(pattern)
+            temp <- as.list(pattern)
+            names(temp) <- pattern
         }
         if (remove_unigram)
-            pattern <- pattern[lengths(pattern) > 1] # drop single-word pattern
-        result <- pattern2id(pattern, types, valuetype, case_insensitive)
+            temp <- temp[lengths(temp) > 1] # drop single-word patterns
+        result <- pattern2id(temp, types, valuetype, case_insensitive)
+        names(result) <- names(temp)[attr(result, "id")]
     }
-    attr(result, 'pattern') <- stri_c_list(pattern, sep = ' ')
     return(result)
 }
 
@@ -241,4 +248,3 @@ message_error <- function(key = NULL) {
     }
     return(unname(msg[key]))
 }    
-
