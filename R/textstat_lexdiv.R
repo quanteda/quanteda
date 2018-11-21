@@ -314,24 +314,6 @@ dfm_split_hyphenated_features <- function(x) {
 #' @param mean_mattr default = TRUE. Returns the mean MATTR, given the window size, for the tokens object. 
 #' @return return either a vector with the MATTR for each window, or the mean MATTR for the whole tokens object
 #' @keywords internal tokens
-#' @examples 
-#' txt <- "There's shrimp-kabobs, shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's 
-#' pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
-#' shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
-#' sandwich."
-#' # Return only Mean MATTR
-#' compute_mattr(tokens(txt), window_size = 20)
-#' 0.52
-#' # Return MATTR for each moving window
-#' compute_mattr(tokens(txt), window_size = 20, all_windows = TRUE, mean_mattr = FALSE)
-#' tokens1_20  tokens2_21  tokens3_22  tokens4_23  tokens5_24  tokens6_25  tokens7_26  tokens8_27  tokens9_28 
-#' 0.60        0.60        0.60        0.60        0.60        0.60        0.60        0.60        0.60 
-#' tokens10_29 tokens11_30 tokens12_31 tokens13_32 tokens14_33 tokens15_34 tokens16_35 tokens17_36 tokens18_37 
-#' 0.60        0.55        0.55        0.60        0.55        0.50        0.55        0.50        0.45 
-#' tokens19_38 tokens20_39 tokens21_40 tokens22_41 tokens23_42 tokens24_43 tokens25_44 tokens26_45 tokens27_46 
-#' 0.45        0.40        0.40        0.45        0.45        0.45        0.45        0.45        0.45 
-#' tokens28_47 tokens29_48 tokens30_49 
-#' 0.45        0.45        0.50 
 
 compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr= TRUE){
     # Error Checks
@@ -383,33 +365,20 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' Takes a tokens object which should have been preprocessed - removal of punctuation etc.
 #' @param x input \link{tokens}
 #' @param segment_size input: the size of the segment. 
+#' @param discard_remainder default = TRUE. If TRUE, the final segment of the document not divisible by segment_size is dropped. 
 #' @param all_segments default = FALSE. If TRUE, returns a vector with the TTR for each segment. 
 #' @param mean_sttr default = TRUE. Returns the Mean TTR across Segments for the tokens object. 
 #' @return returns a vector with the MSSTR for each segment
 #' @keywords internal tokens
-#' @examples 
-#' txt <- "There's shrimp-kabobs, shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's 
-#' pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
-#' shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
-#' sandwich."
-#' # Return Mean-Segmental Type Token Ratio
-#' > compute_msttr(tokens(txt), segment_size = 7)
-#' 0.7346939
-#' # Return TTR for each Segments
-#' > compute_msttr(tokens(txt), segment_size = 7, all_segments = TRUE, mean_sttr = FALSE)
-#' MSTTR_tokens1_7  MSTTR_tokens8_14 MSTTR_tokens15_21 MSTTR_tokens22_28 MSTTR_tokens29_35 MSTTR_tokens36_42 
-#' 0.7142857         0.8571429         0.8571429         0.7142857         0.5714286         0.7142857 
-#' MSTTR_tokens43_49 
-#' 0.7142857 
 
 
-compute_msttr <- function(x, segment_size = NULL, all_segments = FALSE, mean_sttr = TRUE){
+compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks
     if (!is.tokens(x)) stop("x must be a tokens object")
     if (is.null(segment_size)) stop('segment_size must be specified')
     if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop('at least one MSTTR value type to be returned')
     
-
+    
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))
     if (segment_size > num_tokens) stop('window_size must be smaller than total ntokens across all documents')
@@ -421,6 +390,9 @@ compute_msttr <- function(x, segment_size = NULL, all_segments = FALSE, mean_stt
     if (remainder != 0) warning(paste('ntokens =', num_tokens, 'not perfectly divisible by segment_size.', 
                                       n_segments, 'segments of size', segment_size, 
                                       'and last segment of size', remainder))
+    
+    # Warning of discard of remainder
+    if (discard_remainder == TRUE) warning(paste('Last segment of size ', remainder, 'will be discarded'))
     
     # List to Store MSTTR Values for each Window 
     msttr_list <- list()
@@ -443,10 +415,14 @@ compute_msttr <- function(x, segment_size = NULL, all_segments = FALSE, mean_stt
         end = end + segment_size
         if (end <= num_tokens) {temp_ls <- all_tokens[start:end]}
         else {
-            if ((segment_size < num_tokens) && (end > num_tokens)) {
-                temp_ls <- all_tokens[start:num_tokens]
-                end = num_tokens
+            if ((start < num_tokens) && (end > num_tokens)) {
+                if (discard_remainder == FALSE){
+                    end = num_tokens
+                    temp_ls <- all_tokens[start:end]
+                } else if (discard_remainder == TRUE){
+                    break
                 }
+            }
         }
     }
     
@@ -456,14 +432,20 @@ compute_msttr <- function(x, segment_size = NULL, all_segments = FALSE, mean_stt
     if ((remainder ==0) & (length(msttr_list) != n_segments)){
         stop('Internal error within compute_msttr')}
     
-    if ((remainder != 0) & length(msttr_list) != (n_segments + 1)) {
+    
+    if ((remainder != 0)  & (discard_remainder == TRUE) & length(msttr_list) != (n_segments)) {
+        stop('Internal error within compute_msttr')}
+    
+    if ((remainder != 0)  & (discard_remainder == FALSE) & length(msttr_list) != (n_segments + 1)) {
         stop('Internal error within compute_msttr')}
     
     if ((all_segments == FALSE) && (mean_sttr == TRUE)) return(mean(msttr_list))
     if ((all_segments == TRUE) && (mean_sttr == FALSE)) return(msttr_list)
     if ((all_segments == TRUE) && (mean_sttr == TRUE)) return(mean(mattr), msttr_list)
-        
+    
 }
+
+
 
 
 

@@ -4,13 +4,15 @@
 \alias{compute_msttr}
 \title{Computes the Mean Segmental Type-Token Ratio (Johnson, 1944) for a Tokens Object}
 \usage{
-compute_msttr(x, segment_size = NULL, all_segments = FALSE,
-  mean_sttr = TRUE)
+compute_msttr(x, segment_size = NULL, discard_remainder = TRUE,
+  all_segments = FALSE, mean_sttr = TRUE)
 }
 \arguments{
 \item{x}{input \link{tokens}}
 
 \item{segment_size}{input: the size of the segment.}
+
+\item{discard_remainder}{default = TRUE. If TRUE, the final segment of the document not divisible by segment_size is dropped.}
 
 \item{all_segments}{default = FALSE. If TRUE, returns a vector with the TTR for each segment.}
 
@@ -21,21 +23,6 @@ returns a vector with the MSSTR for each segment
 }
 \description{
 Takes a tokens object which should have been preprocessed - removal of punctuation etc.
-}
-\examples{
-txt <- "There's shrimp-kabobs, shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's 
-pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
-shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
-sandwich."
-# Return Mean-Segmental Type Token Ratio
-> compute_msttr(tokens(txt), segment_size = 7)
-0.7346939
-# Return TTR for each Segments
-> compute_msttr(tokens(txt), segment_size = 7, all_segments = TRUE, mean_sttr = FALSE)
-MSTTR_tokens1_7  MSTTR_tokens8_14 MSTTR_tokens15_21 MSTTR_tokens22_28 MSTTR_tokens29_35 MSTTR_tokens36_42 
-0.7142857         0.8571429         0.8571429         0.7142857         0.5714286         0.7142857 
-MSTTR_tokens43_49 
-0.7142857 
 }
 \keyword{internal}
 \keyword{tokens}
