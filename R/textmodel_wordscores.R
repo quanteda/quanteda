@@ -13,9 +13,9 @@
 #' @param x the \link{dfm} on which the model will be trained
 #' @param y vector of training scores associated with each document 
 #'   in \code{x}
-#' @param smooth a smoothing parameter for word counts; defaults to zero for the
-#'   to match the LBG (2003) method.  See Value below for additional
-#'   information on the behaviour of this argument.
+#' @param smooth a smoothing parameter for word counts; defaults to zero to match the LBG (2003) method. 
+#' See Value below for additional information on the behaviour
+#'  of this argument.
 #' @param scale scale on which to score the words; \code{"linear"} for classic 
 #'   LBG linear posterior weighted word class differences, or \code{"logit"}
 #'   for log posterior differences
