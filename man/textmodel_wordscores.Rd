@@ -16,9 +16,9 @@ in \code{x}}
 LBG linear posterior weighted word class differences, or \code{"logit"}
 for log posterior differences}
 
-\item{smooth}{a smoothing parameter for word counts; defaults to zero to match the LBG (2003) method. 
-See Value below for additional information on the behaviour
- of this argument.}
+\item{smooth}{a smoothing parameter for word counts; defaults to zero to
+match the LBG (2003) method. See Value below for additional information on
+the behaviour of this argument.}
 }
 \value{
 A fitted \code{textmodel_wordscores} object.  This object will
@@ -42,8 +42,8 @@ The \code{textmodel_wordscores()} function and the associated
   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
   to function in the same manner as \code{\link[stats]{predict.lm}}.
   \code{coef()} can also be used to extract the word coefficients from the
-  fitted \code{textmodel_wordscores} object, and \code{summary()} will print a
-  nice summary of the fitted object.
+  fitted \code{textmodel_wordscores} object, and \code{summary()} will print
+  a nice summary of the fitted object.
 }
 \examples{
 (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
@@ -54,9 +54,10 @@ predict(ws, rescaling = "lbg")
 predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 }
 \references{
-Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-  "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
-  \emph{American Political Science Review} 97(02): 311-31
+Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
+  "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy
+  Positions From Political Texts Using Words as Data.}" \emph{American
+  Political Science Review} 97(02): 311-31
   
   Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
   Voting." New York University Mimeo.
