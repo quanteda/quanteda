@@ -86,10 +86,13 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
         }
     }
     id_pattern <- rep(seq_along(pattern), lengths(temp))
-    temp <- unlist(temp, recursive = FALSE)
-    dup <- duplicated(temp)
-    result <- temp[!dup]
-    attr(result, "id") <- id_pattern[!dup]
+    #temp <- unlist(temp, recursive = FALSE)
+    #dup <- duplicated(temp)
+    #result <- temp[!dup]
+    #attr(result, "id") <- id_pattern[!dup]
+    result <- unlist(temp, recursive = FALSE)
+    attr(result, "id") <- id_pattern # could be removed
+    names(result) <- names(pattern)[id_pattern]
     return(result)
 }
 

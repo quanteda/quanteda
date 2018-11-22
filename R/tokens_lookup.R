@@ -98,7 +98,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     type <- types(x)
-    dictionary <- flatten_dictionary(dictionary, levels)
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
@@ -110,25 +109,25 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     #     values_id <- c(values_id, values_temp)
     #     keys_id <- c(keys_id, rep(h, length(values_temp)))
     # }
-    values_id <- pattern2list(dictionary, type, valuetype, case_insensitive)
-    keys_id <- match(names(values_id), unique(names(dictionary)))
+    ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
+                              attr(x, "concatenator"), levels)
+    key <- attr(ids, "key")
+    id_key <- match(names(ids), key)
     
-    if (capkeys) {
-        keys <- char_toupper(names(dictionary))
-    } else {
-        keys <- names(dictionary)
-    }
+    if (capkeys)
+        key <- char_toupper(key)
+
     if (exclusive) {
         if (!is.null(nomatch)) {
-            x <- qatd_cpp_tokens_lookup(x, c(keys, nomatch[1]), values_id, keys_id, FALSE, 1)
+            x <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, FALSE, 1)
         } else {
-            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, 0)
+            x <- qatd_cpp_tokens_lookup(x, key, ids, id_key, FALSE, 0)
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
-        keys_used <- unique(keys_id)
-        x <- qatd_cpp_tokens_lookup(x, c(keys[keys_used], type), values_id, match(keys_id, keys_used), FALSE, 2)
+        id_used <- unique(id_key)
+        x <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), FALSE, 2)
     }
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
