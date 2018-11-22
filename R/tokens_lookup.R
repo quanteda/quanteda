@@ -95,26 +95,23 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     
-    dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
-    
-    # Generate all combinations of type IDs
-    values_id <- list()
-    keys_id <- integer()
-    types <- types(x)
-    
+    type <- types(x)
+    dictionary <- flatten_dictionary(dictionary, levels)
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
-    index <- index_types(types, valuetype, case_insensitive) # index types before the loop
-    for (h in seq_along(dictionary)) {
-        values <- split_values(dictionary[[h]], attr(x, 'concatenator'))
-        values_temp <- pattern2id(values, index = index)
-        values_id <- c(values_id, values_temp)
-        keys_id <- c(keys_id, rep(h, length(values_temp)))
-    }
+    # index <- index_types(types, valuetype, case_insensitive) # index types before the loop
+    # for (h in seq_along(dictionary)) {
+    #     values <- split_values(dictionary[[h]], attr(x, 'concatenator'))
+    #     values_temp <- pattern2id(values, index = index)
+    #     values_id <- c(values_id, values_temp)
+    #     keys_id <- c(keys_id, rep(h, length(values_temp)))
+    # }
+    values_id <- pattern2list(dictionary, type, valuetype, case_insensitive)
+    keys_id <- match(names(values_id), unique(names(dictionary)))
     
     if (capkeys) {
         keys <- char_toupper(names(dictionary))
@@ -131,7 +128,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         keys_used <- unique(keys_id)
-        x <- qatd_cpp_tokens_lookup(x, c(keys[keys_used], types), values_id, match(keys_id, keys_used), FALSE, 2)
+        x <- qatd_cpp_tokens_lookup(x, c(keys[keys_used], type), values_id, match(keys_id, keys_used), FALSE, 2)
     }
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary

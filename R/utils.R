@@ -108,11 +108,12 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param concatenator concatenator that join multi-word expression in tokens object
+#' @param levels only used when pattern is a dictionary
 #' @param remove_unigram ignore single-word patterns if \code{TRUE}
 #' @seealso \code{\link{pattern2id}}
 #' @keywords internal
 pattern2list <- function(pattern, types, valuetype, case_insensitive, 
-                         concatenator = '_', remove_unigram = FALSE) {
+                         concatenator = '_', levels = 1, remove_unigram = FALSE) {
     
     if (is.dfm(pattern)) 
         stop('dfm cannot be used as pattern')
@@ -126,7 +127,7 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
     } else {
         if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
-            pattern <- flatten_dictionary(pattern)
+            pattern <- flatten_dictionary(pattern, levels)
             temp <- unlist(pattern, use.names = FALSE)
             names(temp) <- rep(names(pattern), lengths(pattern))
             temp <- split_values(temp, concatenator)

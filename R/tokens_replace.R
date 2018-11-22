@@ -43,9 +43,32 @@ tokens_replace.default <- function(x, pattern, replacement = NULL, case_insensit
 tokens_replace.tokens <- function(x, pattern, replacement = NULL, case_insensitive = TRUE, 
                                   verbose = quanteda_options("verbose")) {
     
+    if (is.dictionary(pattern)) {
+        if (!is.null(replacement))
+            stop("'replacement' must be NULL when 'pattern' is a dictionary")
+        pattern <- flatten_dictionary(pattern, levels = 1)
+        replacement <- rep(names(pattern), lengths(pattern))
+        pattern <- unlist(pattern, use.names = FALSE)
+    }
+    
+    if (length(pattern) != length(replacement))
+        stop("Lengths of 'pattern' and 'replacement' must be the same")
+    
     if (!length(pattern)) return(x)
-    attr(x, 'types') <- replace_type(types(x), pattern, replacement, case_insensitive)
-    tokens_recompile(x)
+    type <- types(x)
+    if (!is.phrase(pattern) && !is.phrase(replacement)) {
+        attr(x, 'types') <- replace_type(type, pattern, replacement, case_insensitive)
+        x <- tokens_recompile(x)
+    } else {
+        attrs <- attributes(x)
+        ids_pat <- pattern2list(pattern, type, "fixed", case_insensitive, attr(x, 'concatenator'))
+        type <- union(type, unlist(replacement, use.names = FALSE))
+        ids_repl <- pattern2list(replacement, type, "fixed", FALSE, attr(x, 'concatenator'))
+        
+        x <- qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl[attr(ids_pat, "id")])
+        attributes(x, FALSE) <- attrs
+    }
+    return(x)
 }
 
 
@@ -55,15 +78,7 @@ tokens_replace.tokens <- function(x, pattern, replacement = NULL, case_insensiti
 #' @keywords internal
 replace_type <- function(type, pattern, replacement, case_insensitive) {
     
-    if (is.dictionary(pattern)) {
-        if (!is.null(replacement))
-            stop("'replacement' must be NULL when 'pattern' is a dictionary")
-        pattern <- flatten_dictionary(pattern, levels = 1)
-        replacement <- rep(names(pattern), lengths(pattern))
-        pattern <- unlist(pattern, use.names = FALSE)
-    }
-    if (length(pattern) != length(replacement))
-        stop("Lengths of 'pattern' and 'replacement' must be the same")
+    
     if (!is.character(pattern) || !is.character(replacement))
         stop("'pattern' and 'replacement' must be characters")
     
@@ -85,9 +100,5 @@ tokens_replace2 <- function(x, pattern, replacement = NULL, case_insensitive = T
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
     type <- types(x)
-    ids_pat <- pattern2list(pattern, type, "fixed", case_insensitive, attr(x, 'concatenator'))
-    type <- union(type, unlist(replacement, use.names = FALSE))
-    ids_repl <- pattern2list(replacement, type, "fixed", case_insensitive, attr(x, 'concatenator'))
     
-    qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl[attr(ids_pat, "id")])
 }
