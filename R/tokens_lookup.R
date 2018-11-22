@@ -101,22 +101,13 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
-    
-    # index <- index_types(types, valuetype, case_insensitive) # index types before the loop
-    # for (h in seq_along(dictionary)) {
-    #     values <- split_values(dictionary[[h]], attr(x, 'concatenator'))
-    #     values_temp <- pattern2id(values, index = index)
-    #     values_id <- c(values_id, values_temp)
-    #     keys_id <- c(keys_id, rep(h, length(values_temp)))
-    # }
+
     ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
-                              attr(x, "concatenator"), levels)
+                        attr(x, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)
-    
     if (capkeys)
         key <- char_toupper(key)
-
     if (exclusive) {
         if (!is.null(nomatch)) {
             x <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, FALSE, 1)
