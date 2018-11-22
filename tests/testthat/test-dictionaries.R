@@ -384,7 +384,7 @@ test_that("dictionary merge values in duplicate keys", {
     
 })
 
-test_that("split_values() preserves the order of keys and values", {
+test_that("pattern2list() preserves the order of keys and values", {
   
   type <- stopwords()
   dict1 <- dictionary(list(th = c("tho*", "the"), wh = "wh*", ng = "not *"))
@@ -403,6 +403,24 @@ test_that("split_values() preserves the order of keys and values", {
   
   ids4 <- quanteda:::pattern2list(dict4, type, "glob", FALSE)
   expect_identical(unique(names(ids4)), names(dict4))
+})
+
+
+test_that("split_values() handle concatenators correctly", {
+  
+  test_that(
+    quanteda:::split_values(list(A = "a_a", "b_b"), "_", " "),
+    list(A = c("a", "a"), A = "a a", B = c("b", "b"), A = "b b")
+  )
+  test_that(
+    quanteda:::split_values(list(A = "a_a", "b_b"), "_", "-"),
+    list(A = c("a", "a"), A = "a-a", B = c("b", "b"), A = "b-b")
+  )
+  test_that(
+    quanteda:::split_values(list(A = "a_a", "b_b"), " ", " "),
+    list(A = "a a", A = "b b")
+  )
+  
 })
 
   

@@ -70,21 +70,28 @@ print_dictionary <- function(entry, level = 1) {
 
 
 #' Internal function for special handling of multi-word dicitionary values
-#' @param value character vector for dictionary values to be split
-#' @param concatenator concatenator from a dictionary object
+#' @param dict a flatten dictionary
+#' @param concatenator_dictionary concatenator from a dictionary object
+#' @param concatenator_tokens concatenator from a tokens object
 #' @keywords internal
-split_values <- function(value, concatenator) {
+split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
     
-    is_multi <- stri_detect_charclass(value, "\\p{Z}")
+    key <- rep(names(dict), lengths(dict))
+    value <- unlist(dict, use.names = FALSE)
+    is_multi <- stri_detect_fixed(value, concatenator_dictionary)
     if (any(is_multi)) {
         result <- vector("list", length(value) + sum(is_multi))
         l <- !seq_along(result) %in% (seq_along(value) + cumsum(is_multi))
-        result[l] <- stri_split_charclass(value[is_multi], "\\p{Z}")
-        result[!l] <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
-        names(result) <- names(value)[rep(seq_along(value), 1 + is_multi)]
+        result[l] <- stri_split_fixed(value[is_multi], concatenator_dictionary)
+        result[!l] <- as.list(stri_replace_all_fixed(value, 
+                                                     concatenator_dictionary, 
+                                                     concatenator_tokens))
+        names(result) <- key[rep(seq_along(value), 1 + is_multi)]
     } else {
-        result <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
-        names(result) <- names(value)
+        result <- as.list(stri_replace_all_fixed(value, 
+                                                 concatenator_dictionary, 
+                                                 concatenator_tokens))
+        names(result) <- key
     }
     return(result)
 }
