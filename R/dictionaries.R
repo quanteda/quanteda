@@ -74,15 +74,19 @@ print_dictionary <- function(entry, level = 1) {
 #' @param concatenator concatenator from a dictionary object
 #' @keywords internal
 split_values <- function(value, concatenator) {
-    values <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
-    names(values) <- names(value)
+    
     is_multi <- stri_detect_charclass(value, "\\p{Z}")
     if (any(is_multi)) {
-        values_multi <- stri_split_charclass(value[is_multi], "\\p{Z}")
-        names(values_multi) <- names(value[is_multi])
-        values <- c(values, values_multi)
+        result <- vector("list", length(value) + sum(is_multi))
+        l <- !seq_along(result) %in% (seq_along(value) + cumsum(is_multi))
+        result[l] <- stri_split_charclass(value[is_multi], "\\p{Z}")
+        result[!l] <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
+        names(result) <- names(value)[rep(seq_along(value), 1 + is_multi)]
+    } else {
+        result <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
+        names(result) <- names(value)
     }
-    return(values)
+    return(result)
 }
 
 

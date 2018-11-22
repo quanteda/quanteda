@@ -383,3 +383,26 @@ test_that("dictionary merge values in duplicate keys", {
                                  C = 'c')))
     
 })
+
+test_that("split_values() preserves the order of keys and values", {
+  
+  type <- stopwords()
+  dict1 <- dictionary(list(th = c("tho*", "the"), wh = "wh*", ng = "not *"))
+  dict2 <- dictionary(list(ng = "not *", th = c("tho*", "the"), wh = "wh*"))
+  dict3 <- dictionary(list(ng = "not *", wh = "wh* is", th = c("tho*", "the")))
+  dict4 <- dictionary(list(ng = "not *", th = c("tho*", "the"), wh = "wh* is"))
+  
+  ids1 <- quanteda:::pattern2list(dict1, type, "glob", FALSE)
+  expect_identical(unique(names(ids1)), names(dict1))
+  
+  ids2 <- quanteda:::pattern2list(dict2, type, "glob", FALSE)
+  expect_identical(unique(names(ids2)), names(dict2))
+  
+  ids3 <- quanteda:::pattern2list(dict3, type, "glob", FALSE)
+  expect_identical(unique(names(ids3)), names(dict3))
+  
+  ids4 <- quanteda:::pattern2list(dict4, type, "glob", FALSE)
+  expect_identical(unique(names(ids4)), names(dict4))
+})
+
+  
