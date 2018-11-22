@@ -16,9 +16,9 @@ in \code{x}}
 LBG linear posterior weighted word class differences, or \code{"logit"}
 for log posterior differences}
 
-\item{smooth}{a smoothing parameter for word counts; defaults to zero for the
-to match the LBG (2003) method.  See Value below for additional
-information on the behaviour of this argument.}
+\item{smooth}{a smoothing parameter for word counts; defaults to zero to match the LBG (2003) method. 
+See Value below for additional information on the behaviour
+ of this argument.}
 }
 \value{
 A fitted \code{textmodel_wordscores} object.  This object will
