@@ -448,52 +448,64 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
 
 
 #' Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis, 2010) for a Tokens Object
-#' MLTD is defined as the mean length of sequential word strings in a text that maintain a given TTR value
+#' MTLD is defined as the mean length of sequential word strings in a text that maintain a given TTR value
 #' Takes a tokens object which should have been preprocessed - removal of punctuation etc.
 #' Support for partial factors not yet implemented
 #' @param x input \link{tokens}
 #' @param ttr_threshold the threshold below which TTR for a sequential string of words cannot fall. 
 #' If TTR falls below this value, the factor count increases by a value of 1, and the TTR evaluations are reset.
-#' @return MLTD = Total Number of Words / Factor Count 
+#' @return Average of MTLD (Forward Pass and Backward Pass)
 #' @keywords internal tokens
 
 
-compute_mltd <- function(x, ttr_threshold = 0.75){
+compute_mtld <- function(x, ttr_threshold = 0.720){
     # Error Checks 
     if (!is.tokens(x)) stop("x must be a tokens object")
     if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop("TTR threshold must be between 0 and 1")
     if (is.null(ttr_threshold)) stop('TTR threshold cannot be NULL')
     
-    # Initialize Counters
-    start = 1
-    counter = 1
-    end = sum(ntoken(x))
-    factor = 1
-    
-    all_tokens <- unlist(x)
-    temp_ls <- all_tokens[start:counter]
-    
-    while (counter <= end){
-        temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
-        typecount <- ntype(temp_toks)[[1]]
-        tokcount <- ntoken(temp_toks)[[1]]
-        temp_TTR <- typecount/tokcount
-        if (temp_TTR <= ttr_threshold){
-            factor = factor + 1
-            counter = counter + 1
-            start = counter
-            temp_ls <- all_tokens[start:counter]
-        } else if (temp_TTR > ttr_threshold){
-            counter = counter + 1
-            if (counter <= end){
-                temp_ls <- c(temp_ls, all_tokens[counter])
-            } else {
-                break
+    # Internal Function to compute MTLD for both forward and backward passes
+    one_pass <- function(x, backward = FALSE){
+        # Initialize Counters
+        start = 1
+        counter = 1
+        end = sum(ntoken(x))
+        factor = 1
+        
+        list_of_tokens <- unlist(x)
+        
+        if (backward == TRUE){list_of_tokens <- rev(list_of_tokens)}
+        
+        temp_ls <- list_of_tokens[start:counter]
+        
+        while (counter <= end){
+            print(paste(start, counter, temp_ls))
+            temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
+            typecount <- ntype(temp_toks)[[1]]
+            tokcount <- ntoken(temp_toks)[[1]]
+            temp_TTR <- typecount/tokcount
+            if (temp_TTR <= ttr_threshold){
+                factor = factor + 1
+                counter = counter + 1
+                start = counter
+                temp_ls <- list_of_tokens[start:counter]
+            } else if (temp_TTR > ttr_threshold){
+                counter = counter + 1
+                if (counter <= end){
+                    temp_ls <- c(temp_ls, list_of_tokens[counter])
+                } else {
+                    break
+                }
             }
         }
+        mtld_value = (end / factor)
+        return(mtld_value)
     }
-    mltd_value = (end / factor)
-    return(mltd_value)
+    
+    mtld_forward_pass <- one_pass(x)
+    mtld_backward_pass <- one_pass(x, backward = TRUE)
+    mtld_average <- ((mtld_forward_pass + mtld_backward_pass) /2)
+    return (mtld_average)
 }
 
 
