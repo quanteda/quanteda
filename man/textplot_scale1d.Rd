@@ -70,7 +70,7 @@ textplot_scale1d(predict(ws, se.fit = TRUE), doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 
 ## wordfish
-wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+wf <- textmodel_wordfish(ie_dfm, dir = c(6,5))
 # plot estimated document positions
 textplot_scale1d(wf, doclabels = doclab)
 textplot_scale1d(wf, doclabels = doclab,
