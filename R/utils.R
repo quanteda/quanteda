@@ -127,10 +127,9 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
     } else {
         if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
-            pattern <- flatten_dictionary(pattern, levels)
-            temp <- unlist(pattern, use.names = FALSE)
-            names(temp) <- rep(names(pattern), lengths(pattern))
-            temp <- split_values(temp, concatenator)
+            temp <- flatten_dictionary(pattern, levels)
+            key <- names(temp)
+            temp <- split_values(temp, pattern@concatenator, concatenator)
         } else if (is.list(pattern)) {
             temp <- pattern
             names(temp) <- stri_c_list(pattern, " ")   
@@ -141,7 +140,8 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
         if (remove_unigram)
             temp <- temp[lengths(temp) > 1] # drop single-word patterns
         result <- pattern2id(temp, types, valuetype, case_insensitive)
-        names(result) <- names(temp)[attr(result, "id")]
+        if (is.dictionary(pattern))
+            attr(result, "key") <- key
     }
     return(result)
 }
