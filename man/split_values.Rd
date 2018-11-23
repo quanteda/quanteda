@@ -4,12 +4,14 @@
 \alias{split_values}
 \title{Internal function for special handling of multi-word dicitionary values}
 \usage{
-split_values(value, concatenator)
+split_values(dict, concatenator_dictionary, concatenator_tokens)
 }
 \arguments{
-\item{value}{character vector for dictionary values to be split}
+\item{dict}{a flatten dictionary}
 
-\item{concatenator}{concatenator from a dictionary object}
+\item{concatenator_dictionary}{concatenator from a dictionary object}
+
+\item{concatenator_tokens}{concatenator from a tokens object}
 }
 \description{
 Internal function for special handling of multi-word dicitionary values

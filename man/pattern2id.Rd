@@ -7,10 +7,10 @@
 \title{Convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
 pattern2id(pattern, types = NULL, valuetype = NULL,
-  case_insensitive = NULL, index = NULL)
+  case_insensitive = NULL, index = NULL, flatten = TRUE)
 
 pattern2fixed(pattern, types = NULL, valuetype = NULL,
-  case_insensitive = NULL, index = NULL)
+  case_insensitive = NULL, index = NULL, flatten = TRUE)
 
 index_types(types, valuetype, case_insensitive, max_len = NULL)
 }

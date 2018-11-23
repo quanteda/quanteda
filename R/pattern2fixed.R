@@ -9,9 +9,6 @@
 #' @param types unique types of tokens obtained by \code{\link{types}}
 #' @inheritParams valuetype
 #' @param case_insensitive if \code{TRUE}, ignores case when matching
-#' @param index If \code{NULL}, index is constructed automatically. It also
-#'   accept index constructed by \code{index_types}. In that case, \code{types},
-#'   \code{valuetype} and \code{case_insensitive} should be NULL.
 #' @return  \code{pattern2id} returns a list of integer vectors containing type
 #'   IDs
 #' @keywords internal
@@ -26,41 +23,23 @@
 #' pattern2id(pats_glob, types, "glob", case_insensitive = TRUE)
 #' 
 #' @export
-pattern2id <- function(pattern, types = NULL, valuetype = NULL,
-                       case_insensitive = NULL, index = NULL) {
-    
+pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
+                       case_insensitive = TRUE, flatten = TRUE) {
     
     if (!length(pattern)) return(list())
     pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
+    stopifnot(is.character(types))
+    valuetype <- match.arg(valuetype)
     
-    if (is.null(index)) {
-        if (is.null(types)) stop("types cannot be NULL when index is not provided")
-        if (is.null(valuetype)) stop("valuetype cannot be NULL when index is not provided")
-        if (is.null(case_insensitive)) stop("case_insensitive cannot be NULL when index is not provided")
-        if (!is.character(types)) stop("types must be a character vector")
-        
-        # glob is treated as fixed if neither * or ? is found
-        pattern_unlist <- unlist(pattern, use.names = FALSE)
-        if (!valuetype %in% c("glob", "fixed", "regex"))
-            stop('valuetype should be "glob", "fixed" or "regex"')
-        if (valuetype == "glob" &&
-            !any(stri_detect_fixed(pattern_unlist, "*")) &&
-            !any(stri_detect_fixed(pattern_unlist, "?"))) {
-            valuetype <- "fixed"
-        }
-        max_len <- max(stri_length(unlist(pattern, use.names = FALSE)))
-        index <- index_types(types, valuetype, case_insensitive, max_len) # index types for quick search
-    } else {
-        if (!is.null(types)) stop("types must be NULL when index is provided")
-        if (!is.null(valuetype)) stop("valuetype must be NULL when index is provided")
-        if (!is.null(case_insensitive)) stop("case_insensitive must be NULL when index is provided")
-    }
+    # glob is treated as fixed if neither * or ? is found
+    if (valuetype == "glob" && !is_glob(pattern))
+        valuetype <- "fixed"
+    max_len <- max(stri_length(unlist(pattern, use.names = FALSE)))
     
-    # use options in the index
+    # construct glob or fixed index for quick search
+    index <- index_types(types, valuetype, case_insensitive, max_len)
     types_search <- attr(index, "types_search")
-    valuetype <- attr(index, "valuetype")
-    case_insensitive <- attr(index, "case_insensitive")
-    
+
     # lowercases for case-insensitive search
     if (valuetype != "regex" && case_insensitive)
         pattern <- lapply(pattern, stri_trans_tolower)
@@ -85,14 +64,13 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
             }
         }
     }
-    id_pattern <- rep(seq_along(pattern), lengths(temp))
-    #temp <- unlist(temp, recursive = FALSE)
-    #dup <- duplicated(temp)
-    #result <- temp[!dup]
-    #attr(result, "id") <- id_pattern[!dup]
-    result <- unlist(temp, recursive = FALSE)
-    attr(result, "id") <- id_pattern # could be removed
-    names(result) <- names(pattern)[id_pattern]
+    if (flatten) {
+        result <- unlist(temp, recursive = FALSE)
+        names(result) <- names(pattern)[rep(seq_along(pattern), lengths(temp))]
+    } else {
+        result <- temp
+        names(result) <- names(pattern)
+    }
     return(result)
 }
 
@@ -107,14 +85,15 @@ pattern2id <- function(pattern, types = NULL, valuetype = NULL,
 #' pattern <- list(c("^a$", "^b"), c("c"), c("d"))
 #' types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
 #' pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
-#' index <- index_types(types, "regex", case_insensitive = TRUE)
-#' pattern2fixed(pattern, index = index)
-pattern2fixed <- function(pattern, types = NULL, valuetype = NULL,
-                          case_insensitive = NULL, index = NULL) {
-    temp <- pattern2id(pattern, types, valuetype, case_insensitive, index)
-    if (!is.null(index))
-        types <- attr(index, "types")
-    result <- lapply(temp, function(x) types[x])
+pattern2fixed <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
+                          case_insensitive = TRUE, flatten = TRUE) {
+    
+    temp <- pattern2id(pattern, types, valuetype, case_insensitive, flatten)
+    if (flatten) {
+        result <- lapply(temp, function(x) types[x])
+    } else {
+        result <- lapply(temp, function(x) lapply(x, function(y) types[y]))
+    }
     return(result)
 }
 
@@ -327,7 +306,7 @@ expand <- function(elem){
 #' Internal function for \code{select_types} to check if a glob pattern is
 #' indexed by
 #' \code{index_types}.
-#' @param x a glob pattern to be tested
+#' @param pattern a glob pattern to be tested
 #' @keywords internal
 is_indexed <- function(pattern) {
     pattern <- stri_sub(pattern, 1, -2)
@@ -342,6 +321,15 @@ is_indexed <- function(pattern) {
         #       !any(stri_detect_fixed(stri_sub(pattern, 2, -1), c("*", "?"))))
     }
 }
+
+#' Check if patterns contains glob wildcard
+#' @param pattern a glob pattern to be tested
+#' @keywords internal
+is_glob <- function(pattern) {
+    pattern <- unlist(pattern, use.names = FALSE)
+    return(any(stri_detect_fixed(pattern, "*")) || any(stri_detect_fixed(pattern, "?")))
+}
+
 
 # internal-only aliases for backward compatibility
 # TODO: this should be removed with in a year (by April 2019).

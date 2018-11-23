@@ -113,7 +113,8 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @seealso \code{\link{pattern2id}}
 #' @keywords internal
 pattern2list <- function(pattern, types, valuetype, case_insensitive, 
-                         concatenator = '_', levels = 1, remove_unigram = FALSE) {
+                         concatenator = '_', levels = 1, remove_unigram = FALSE,
+                         flatten = TRUE) {
     
     if (is.dfm(pattern)) 
         stop('dfm cannot be used as pattern')
@@ -139,7 +140,7 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
         }
         if (remove_unigram)
             temp <- temp[lengths(temp) > 1] # drop single-word patterns
-        result <- pattern2id(temp, types, valuetype, case_insensitive)
+        result <- pattern2id(temp, types, valuetype, case_insensitive, flatten = flatten)
         if (is.dictionary(pattern))
             attr(result, "key") <- key
     }
