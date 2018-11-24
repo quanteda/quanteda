@@ -156,41 +156,14 @@ test_that("regex2fixed and regex2id still work", {
                      pattern2id(glob, type, 'glob', TRUE))
 })
 
-test_that("raise error when valuetype is illegal", {
-    
-    expect_error(pattern2fixed(c('aaa', 'bbb'), 'a*', 'xxx', TRUE),
-                 'valuetype should be "glob", "fixed" or "regex"')
-    expect_error(pattern2id(c('aaa', 'bbb'), 'a*', 'xxx', TRUE),
-                 'valuetype should be "glob", "fixed" or "regex"')
-    expect_error(index_types('a*', 'xxx', TRUE),
-                 'valuetype should be "glob", "fixed" or "regex"')
-})
-
 test_that("add value check for types (#1463)", {
     
     v1 <- list(c("a", "bb", "cc"))
     v2 <- letters
     v3 <- c(TRUE, FALSE)
-    expect_error(pattern2fixed(v1, v1, 'regex', TRUE),
-                 "types must be a character vector")
+    expect_error(pattern2fixed(v1, v1, 'regex', TRUE))
     expect_silent(pattern2fixed(v1, v2, 'regex', TRUE))
-    expect_error(pattern2fixed(v1, v3, 'regex', TRUE),
-                 "types must be a character vector")
+    expect_error(pattern2fixed(v1, v3, 'regex', TRUE))
     
 })
 
-test_that("pattern2id returns the id attribute", {
-    type <- c("aa", "A", "bbb", "bb", "z")
-    ids1 <- pattern2id(list("a*", "b*"), type, "glob", TRUE)
-    expect_equal(ids1, structure(list(1, 2, 3, 4), 
-                                 id = c(1, 1, 2, 2)))
-    ids2 <- pattern2id(list("a*", "b*"), type, "glob", FALSE)
-    expect_equal(ids2, structure(list(1, 3, 4), 
-                                 id = c(1, 2, 2)))
-    ids3 <- pattern2id(list("z", c("a*", "b*")), type, "glob", TRUE)
-    expect_equal(ids3, structure(list(5, c(1, 3), c(2, 3), c(1, 4), c(2, 4)), 
-                                 id = c(1, 2, 2, 2, 2)))
-    ids4 <- pattern2id(list("z", c("a*", "b*")), type, "glob", FALSE)
-    expect_equal(ids4, structure(list(5, c(1, 3), c(1, 4)), 
-                                 id = c(1, 2, 2)))
-})
