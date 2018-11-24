@@ -9,6 +9,11 @@ dict_fix <- dictionary(list(country = "united states",
                             freedom=c('freedom', 'liberty'))) 
 
 microbenchmark::microbenchmark(
+    tokens_lookup(toks, data_dictionary_LSD2015, valuetype='glob', verbose=FALSE),
+    times=10
+)
+
+microbenchmark::microbenchmark(
     cpp1=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE),
     cpp2=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE, nomatch = 'NA'),
     cpp3=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE, exclusive = FALSE),

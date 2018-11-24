@@ -61,8 +61,8 @@ qatd_cpp_tokens_compound <- function(texts_, compounds_, types_, delim_, join) {
     .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, compounds_, types_, delim_, join)
 }
 
-qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap, nomatch) {
-    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, keys_, ids_, overlap, nomatch)
+qatd_cpp_tokens_lookup <- function(texts_, types_, words_, keys_, overlap, nomatch) {
+    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, words_, keys_, overlap, nomatch)
 }
 
 qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
