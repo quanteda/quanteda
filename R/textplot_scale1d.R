@@ -50,8 +50,7 @@
 #' wf <- textmodel_wordfish(ie_dfm, dir = c(6,5))
 #' # plot estimated document positions
 #' textplot_scale1d(wf)
-#' textplot_scale1d(wf,
-#'                  groups = docvars(data_corpus_irishbudget2010, "party"))
+#' textplot_scale1d(wf, groups = docvars(data_corpus_irishbudget2010, "party"))
 #' # plot estimated word positions
 #' textplot_scale1d(wf, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
