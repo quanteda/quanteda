@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-**quanteda** has functionality to select, remove or compound for multi-word expressions such as phrasal verbs ("try on", "wake up" etc.) and place names ("New York", "South Korea" etc.). 
+**quanteda** has the functionality to select, remove or compound multi-word expressions, such as phrasal verbs ("try on", "wake up" etc.) and place names ("New York", "South Korea" etc.). 
 
 ```{r, message = FALSE}
 library(quanteda)
