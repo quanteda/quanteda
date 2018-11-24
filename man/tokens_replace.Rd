@@ -49,7 +49,8 @@ toks3 <- tokens_replace(toks, type, stem, valuetype = "fixed", case_insensitive 
 identical(toks3, tokens_wordstem(toks, "porter"))
 
 # multi-multi substitution
-toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), phrase(c("Minister Deputy Conor Lenihan")))
+toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), 
+                              phrase(c("Minister Deputy Conor Lenihan")))
 kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
 }
 \seealso{

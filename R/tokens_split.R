@@ -4,9 +4,8 @@
 #' @inheritParams valuetype
 #' @param remove_separator if \code{TRUE}, remove separator from new tokens
 #' @examples
-#' toks <- tokens("UK-EU negotiation is not going anywhere as of 2019-12-24", 
-#'                separator = "-")
-#' tokens_split(toks) 
+#' toks <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24")
+#' tokens_split(toks, separator = "-") 
 #' 
 #' @export 
 tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"), remove_separator = FALSE) {

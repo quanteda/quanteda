@@ -22,8 +22,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 Split tokens by separator
 }
 \examples{
-toks <- tokens("UK-EU negotiation is not going anywhere as of 2019-12-24", 
-               separator = "-")
-tokens_split(toks) 
+toks <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24")
+tokens_split(toks, separator = "-") 
 
 }
