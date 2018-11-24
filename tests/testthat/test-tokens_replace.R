@@ -3,12 +3,11 @@ context("test tokens_replace")
 txt <- c(doc1 = "aa bb BB cc DD ee",
          doc2 = "aa bb cc DD ee")
 toks_test <- tokens(txt)
-type_test <- types(toks)
 
 test_that("tokens_replace works with regular pattern and replacement", {
     
     # equivalent to tokens conversion method
-    expect_equal(tokens_replace(toks_test, type_test, char_toupper(type_test), "fixed", case_insensitive = FALSE),
+    expect_equal(tokens_replace(toks_test, types(toks_test), char_toupper(types(toks_test)), "fixed", case_insensitive = FALSE),
                  tokens_toupper(toks_test))
     
     # fixed, case-insensitive

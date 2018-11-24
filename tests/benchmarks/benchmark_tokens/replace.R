@@ -1,19 +1,15 @@
 require(quanteda)
 quanteda_options(threads = 8)
 
-#corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian_2016-2017.RDS")
-toks_guard <- tokens(data_corpus_irishbudget2010)
-#toks <- tokens(corp)
+corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian_2016-2017.RDS")
+toks_guard <- tokens(corp)
+
+toks <- tokens(data_corpus_irishbudget2010)
 toks <- toks_guard
-type <- types(toks)
-stem <- char_wordstem(type, "porter")
 
-type <- type[stringi::stri_detect_fixed(type, "-")]
-type_split <- stringi::stri_split_fixed(type, "-")
-toks_out <- tokens_replace(toks, type, type_split, case_insensitive = FALSE)
-kw <- kwic(toks_out, head(type_split))
-
-head(kw)
+profvis::profvis(
+    tokens_split(toks, "-")
+)
 
 microbenchmark::microbenchmark(
     tokens_replace(toks, phrase(c("this is", "that is", "it is")), 
