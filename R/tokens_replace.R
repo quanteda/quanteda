@@ -10,8 +10,8 @@
 #' @param x \link{tokens} object whose token elements will be replaced
 #' @param pattern a character vector or list of character vectors.  See
 #'   \link{pattern} for more details.
-#' @param replacement a character vector or list of character vectors in the
-#'   same length as \code{pattern}
+#' @param replacement a character vector or (if \code{pattern} is a list) list
+#'   of character vectors of the same length as \code{pattern}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param verbose print status messages if \code{TRUE}
@@ -36,13 +36,13 @@
 #' toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), 
 #'                               phrase(c("Minister Deputy Conor Lenihan")))
 #' kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
-tokens_replace <- function(x, pattern, replacement, valuetype = "glob", 
+tokens_replace <- function(x, pattern, replacement, valuetype = "glob",
                            case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_replace")
 }
 
 #' @export
-tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob", 
+tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob",
                                    case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_replace"))
 }
@@ -50,32 +50,33 @@ tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob",
 #' @export
 tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
                                   case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
-    
+
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
     if (!length(pattern)) return(x)
-    
+
     type <- types(x)
     if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
         type_new <- replace_type(type, pattern, replacement, case_insensitive)
         if (!identical(type, type_new)) {
-            attr(x, 'types') <- type_new
+            attr(x, "types") <- type_new
             x <- tokens_recompile(x)
         }
     } else {
         attrs <- attributes(x)
-        ids_pat <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'),
+        ids_pat <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, "concatenator"),
                                 flatten = FALSE)
         r <- rep(seq(ids_pat), lengths(ids_pat))
         type <- union(type, unlist(replacement, use.names = FALSE))
-        ids_repl <- pattern2list(replacement, type, "fixed", FALSE, attr(x, 'concatenator'),
+        ids_repl <- pattern2list(replacement, type, "fixed", FALSE, attr(x, "concatenator"),
                                  flatten = FALSE)[r]
-        x <- qatd_cpp_tokens_replace(x, type, 
+        x <- qatd_cpp_tokens_replace(x, type,
                                      unlist(ids_pat, FALSE, FALSE),
                                      unlist(ids_repl, FALSE, FALSE))
         attributes(x, FALSE) <- attrs
     }
-    return(x)
+    
+    x
 }
 
 
@@ -84,16 +85,17 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
 #' @noRd
 #' @keywords internal
 replace_type <- function(type, pattern, replacement, case_insensitive) {
-    
+
     if (!is.character(pattern) || !is.character(replacement))
         stop("'pattern' and 'replacement' must be characters")
-    
+
     if (case_insensitive) {
         type_new <- replacement[match(stri_trans_tolower(type), stri_trans_tolower(pattern))]
     } else {
         type_new <- replacement[match(type, pattern)]
     }
-    
+
     type_new <- ifelse(is.na(type_new), type, type_new)
-    return(type_new)
+    
+    type_new
 }

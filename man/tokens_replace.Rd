@@ -13,8 +13,8 @@ tokens_replace(x, pattern, replacement, valuetype = "glob",
 \item{pattern}{a character vector or list of character vectors.  See
 \link{pattern} for more details.}
 
-\item{replacement}{a character vector or list of character vectors in the
-same length as \code{pattern}}
+\item{replacement}{a character vector or (if \code{pattern} is a list) list
+of character vectors of the same length as \code{pattern}}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
