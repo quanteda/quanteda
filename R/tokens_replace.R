@@ -53,8 +53,8 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
     
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
-    
     if (!length(pattern)) return(x)
+    
     type <- types(x)
     if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
         type_new <- replace_type(type, pattern, replacement, case_insensitive)

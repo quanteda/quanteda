@@ -130,43 +130,10 @@ test_that("tokens_replace raises error when input values are invalid", {
     expect_error(tokens_replace(toks_test, c('aa', 'bb'), c('a')),
                  "Lengths of 'pattern' and 'replacement' must be the same")
     
-    expect_error(tokens_replace(toks_test, c(1, 2), c(10, 20)), 
+    expect_error(tokens_replace(toks_test, c(1, 2), c(10, 20), valuetype = "fixed"),
                  "'pattern' and 'replacement' must be characters")
     
     # does nothing when input vector is zero length
     expect_equal(tokens_replace(toks_test, character(), character()),
                  toks_test)
 })
-
-test_that("test tokens_replace works with dictionary", {
-    
-    txt <- c(doc1 = "aa bb a BB cc DD ee",
-             doc2 = "AA bb cc b DD ee")
-    toks <- tokens(txt)
-    dict1 <- dictionary(list(A = c('a', 'aa'), B = c('b', 'bb')))
-    dict2 <- dictionary(list(AB = c('a* b*'), BC = c('b* c*')))
-    
-    expect_equal(as.list(tokens_replace(toks, dict1, case_insensitive = TRUE)),
-                 list(doc1 = c("A", "B", "A", "B", "cc", "DD", "ee"), 
-                      doc2 = c("A", "B", "cc", "B", "DD", "ee")))
-    
-    expect_equal(as.list(tokens_replace(toks, dict1, case_insensitive = FALSE)),
-                 list(doc1 = c("A", "B", "A", "BB", "cc", "DD", "ee"), 
-                      doc2 = c("AA", "B", "cc", "B", "DD", "ee")))
-    
-    expect_error(tokens_replace(toks, dict1, c('a')),
-                 "'replacement' must be NULL when 'pattern' is a dictionary")
-    
-    expect_equal(as.list(tokens_replace(toks, dict2, case_insensitive = TRUE)),
-                 list(doc1 = c("AB", "AB", "cc", "DD", "ee"), 
-                      doc2 = c("AB", "cc", "b", "DD", "ee")))
-    
-    expect_equal(as.list(tokens_replace(toks, dict1, case_insensitive = FALSE)),
-                 list(doc1 = c("A", "B", "A", "BB", "cc", "DD", "ee"), 
-                      doc2 = c("AA", "B", "cc", "B", "DD", "ee")))
-    
-    expect_error(tokens_replace(toks, dict1, c('a')),
-                 "'replacement' must be NULL when 'pattern' is a dictionary")
-    
-})
-
