@@ -368,32 +368,32 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
     toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], ' '))
     toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], ' '))
     
-    expect_equal(tokens(chars[1], remove_numbers = TRUE),
-                 tokens(toks1, remove_numbers = TRUE))
+    expect_equal(tokens(chars[1], remove_numbers = TRUE) %>% as.list(),
+                 tokens(toks1, remove_numbers = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[1], remove_punct = TRUE),
-                 tokens(toks1, remove_punct = TRUE))
+    expect_equal(tokens(chars[1], remove_punct = TRUE) %>% as.list(),
+                 tokens(toks1, remove_punct = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[1], remove_separator = TRUE),
-                 tokens(toks1, remove_separator = TRUE))
+    expect_equal(tokens(chars[1], remove_separator = TRUE) %>% as.list(),
+                 tokens(toks1, remove_separator = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[1], remove_symbols = TRUE),
-                 tokens(toks1, remove_symbols = TRUE))
+    expect_equal(tokens(chars[1], remove_symbols = TRUE) %>% as.list(),
+                 tokens(toks1, remove_symbols = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE),
-                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE))
+    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[4], remove_url = TRUE),
-                 tokens(toks4, remove_url = TRUE))
+    expect_equal(tokens(chars[4], remove_url = TRUE) %>% as.list(),
+                 tokens(toks4, remove_url = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[5], ngrams = 1:2),
-                 tokens(toks5, ngrams = 1:2))
+    expect_equal(tokens(chars[5], ngrams = 1:2) %>% as.list(),
+                 tokens(toks5, ngrams = 1:2) %>% as.list())
     
-    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
-                 tokens(toks5, ngrams = 2, skip = 1:2))
+    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2) %>% as.list(),
+                 tokens(toks5, ngrams = 2, skip = 1:2) %>% as.list())
     
-    expect_equal(tokens(chars[3], remove_hyphens = TRUE),
-                 tokens(toks3, remove_hyphens = TRUE))
+    expect_equal(tokens(chars[3], remove_hyphens = TRUE) %>% as.list(),
+                 tokens(toks3, remove_hyphens = TRUE) %>% as.list())
     
     # This fails because there is not separator in toks
     # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
@@ -563,9 +563,8 @@ test_that("tokens.tokens(x, remove_hyphens = TRUE) behaves same as tokens.charac
     
     txt <- c("There's shrimp-kabobs, shrimp creole. Deep-deep-fried, stir-fried.",
              "Stir-fried shrimp.")
-    toks <- tokens(txt, remove_hyphens = FALSE)
     expect_identical(
-        tokens(txt, remove_hyphens = TRUE),
-        tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE)
+        tokens(txt, remove_hyphens = TRUE) %>% as.list(),
+        tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE) %>% as.list()
     )
 })

@@ -34,19 +34,23 @@ tokens. Please use \code{\link{tokens_lookup}} with \code{exclusive = FALSE}
 to replace \link{dictionary} values.
 }
 \examples{
-toks <- tokens(data_corpus_irishbudget2010)
+toks <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE)
 
 # lemmatization
 infle <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
 lemma <- rep("focus", length(infle))
-toks2 <- tokens_replace(toks, infle, lemma)
+toks2 <- tokens_replace(toks, infle, lemma, valuetype = "fixed")
 kwic(toks2, "focus*")
 
 # stemming
 type <- types(toks)
 stem <- char_wordstem(type, "porter")
-toks3 <- tokens_replace(toks, type, stem, case_insensitive = FALSE)
+toks3 <- tokens_replace(toks, type, stem, valuetype = "fixed", case_insensitive = FALSE)
 identical(toks3, tokens_wordstem(toks, "porter"))
+
+# multi-multi substitution
+toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), phrase(c("Minister Deputy Conor Lenihan")))
+kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
 }
 \seealso{
 tokens_lookup

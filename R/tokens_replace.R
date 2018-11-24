@@ -33,7 +33,8 @@
 #' identical(toks3, tokens_wordstem(toks, "porter"))
 #' 
 #' # multi-multi substitution
-#' toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), phrase(c("Minister Deputy Conor Lenihan")))
+#' toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), 
+#'                               phrase(c("Minister Deputy Conor Lenihan")))
 #' kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
 tokens_replace <- function(x, pattern, replacement, valuetype = "glob", 
                            case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
@@ -55,9 +56,12 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
     
     if (!length(pattern)) return(x)
     type <- types(x)
-    if (valuetype == "fixed" && !is.phrase(pattern) && !is.phrase(replacement)) {
-        attr(x, 'types') <- replace_type(type, pattern, replacement, case_insensitive)
-        x <- tokens_recompile(x)
+    if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
+        type_new <- replace_type(type, pattern, replacement, case_insensitive)
+        if (!identical(type, type_new)) {
+            attr(x, 'types') <- type_new
+            x <- tokens_recompile(x)
+        }
     } else {
         attrs <- attributes(x)
         ids_pat <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'),
