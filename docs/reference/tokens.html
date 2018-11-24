@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.14</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.15</span>
       </span>
     </div>
 
@@ -235,45 +235,46 @@ from perfect).</p></dd> </dl></td>
     </tr>
     <tr>
       <th>remove_numbers</th>
-      <td><p>remove tokens that consist only of numbers, but not
-words that start with digits, e.g. <code>2day</code></p></td>
+      <td><p>logical; if <code>TRUE</code> remove tokens that consist only
+of numbers, but not words that start with digits, e.g. <code>2day</code></p></td>
     </tr>
     <tr>
       <th>remove_punct</th>
-      <td><p>if <code>TRUE</code>, remove all characters in the Unicode
-"Punctuation" [P] class</p></td>
+      <td><p>logical; if <code>TRUE</code> remove all characters in the
+Unicode "Punctuation" [P] class</p></td>
     </tr>
     <tr>
       <th>remove_symbols</th>
-      <td><p>if <code>TRUE</code>, remove all characters in the Unicode
-"Symbol" [S] class</p></td>
+      <td><p>logical; if <code>TRUE</code> remove all characters in the
+Unicode "Symbol" [S] class</p></td>
     </tr>
     <tr>
       <th>remove_separators</th>
-      <td><p>if <code>TRUE</code>, remove separators and separator
-characters (Unicode "Separator" [Z] and "Control [C]" categories). Only
-applicable for <code>what = "character"</code> (when you probably want it to be
-<code>FALSE</code>) and for <code>what = "word"</code> (when you probably want it to be
-<code>TRUE</code>).</p></td>
+      <td><p>logical; if <code>TRUE</code> remove separators and
+separator characters (Unicode "Separator" [Z] and "Control [C]"
+categories). Only applicable for <code>what = "character"</code> (when you
+probably want it to be <code>FALSE</code>) and for <code>what = "word"</code> (when you
+probably want it to be <code>TRUE</code>).</p></td>
     </tr>
     <tr>
       <th>remove_twitter</th>
-      <td><p>remove Twitter characters <code>@</code> and <code>#</code>; set
-to <code>TRUE</code> if you wish to eliminate these.  Note that this will always
-be set to <code>FALSE</code> if <code>remove_punct = FALSE</code>.</p></td>
+      <td><p>logical; if <code>TRUE</code> remove Twitter characters
+<code>@</code> and <code>#</code>; set to <code>TRUE</code> if you wish to eliminate these.
+Note that this will always be set to <code>FALSE</code> if <code>remove_punct =
+FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>remove_hyphens</th>
-      <td><p>if <code>TRUE</code>, split words that are connected by
-hyphenation and hyphenation-like characters in between words, e.g.
+      <td><p>logical; if <code>TRUE</code> split words that are connected
+by hyphenation and hyphenation-like characters in between words, e.g.
 <code>"self-storage"</code> becomes <code>c("self", "storage")</code>.  Default is
 <code>FALSE</code> to preserve such words as is, with the hyphens.  Only applies
 if <code>what = "word"</code> or <code>what = "fasterword"</code>.</p></td>
     </tr>
     <tr>
       <th>remove_url</th>
-      <td><p>if <code>TRUE</code>, find and eliminate URLs beginning with
-http(s) -- see section "Dealing with URLs".</p></td>
+      <td><p>logical; if <code>TRUE</code> find and eliminate URLs beginning
+with http(s) -- see section "Dealing with URLs".</p></td>
     </tr>
     <tr>
       <th>ngrams</th>
@@ -432,7 +433,7 @@ objects.</p></td>
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving hyphens</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>34 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.0109999999999957 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving hyphens</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>34 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.0120000000000005 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
 #&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     

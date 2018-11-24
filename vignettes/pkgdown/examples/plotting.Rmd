@@ -212,7 +212,7 @@ Wordscores is a scaling procedure for estimating policy positions or scores (Lav
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Transform corpus to dfm
-ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
+ie_dfm <- dfm(data_corpus_irishbudget2010)
 
 # Set reference scores
 refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
@@ -256,8 +256,7 @@ textplot_scale1d(wf, margin = "features",
                  highlighted_color = "red")
 
 # Plot estimated document positions
-textplot_scale1d(wf,
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
+textplot_scale1d(wf, groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
 ## Correspondence Analysis

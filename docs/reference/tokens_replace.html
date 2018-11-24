@@ -83,7 +83,7 @@ of more complex patterns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.14</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.3.15</span>
       </span>
     </div>
 
@@ -251,40 +251,40 @@ a <a href='dictionary.html'>dictionary</a>, then <code>replacement</code> should
 <span class='no'>infle</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"foci"</span>, <span class='st'>"focus"</span>, <span class='st'>"focused"</span>, <span class='st'>"focuses"</span>, <span class='st'>"focusing"</span>, <span class='st'>"focussed"</span>, <span class='st'>"focusses"</span>)
 <span class='no'>lemma</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='st'>"focus"</span>, <span class='fu'>length</span>(<span class='no'>infle</span>))
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks</span>, <span class='no'>infle</span>, <span class='no'>lemma</span>)
-<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks2</span>, <span class='st'>"focus*"</span>)</div><div class='output co'>#&gt;                                                                            
-#&gt;    [2010_BUDGET_01_Brian_Lenihan_FF, 1092]            . A key feature and |
-#&gt;    [2010_BUDGET_01_Brian_Lenihan_FF, 5477] , our investment projects will |
-#&gt;   [2010_BUDGET_02_Richard_Bruton_FG, 2133]        budget and see that the |
-#&gt;      [2010_BUDGET_03_Joan_Burton_LAB, 927]         therefore, be the main |
-#&gt;     [2010_BUDGET_03_Joan_Burton_LAB, 3592]        the budget had just one |
-#&gt;     [2010_BUDGET_03_Joan_Burton_LAB, 4115]           county, however, the |
-#&gt;     [2010_BUDGET_03_Joan_Burton_LAB, 4997]           That is too narrow a |
-#&gt;     [2010_BUDGET_03_Joan_Burton_LAB, 5210]    economic revival that has a |
-#&gt;    [2010_BUDGET_04_Arthur_Morgan_SF, 3141]          new jobs. Instead the |
-#&gt;    [2010_BUDGET_04_Arthur_Morgan_SF, 3721]        what should be the main |
-#&gt;    [2010_BUDGET_04_Arthur_Morgan_SF, 6796]  must be completely redrawn to |
-#&gt;      [2010_BUDGET_05_Brian_Cowen_FF, 3114]         . The scheme will also |
-#&gt;      [2010_BUDGET_05_Brian_Cowen_FF, 3786] to maximise the efficiency and |
-#&gt;      [2010_BUDGET_05_Brian_Cowen_FF, 4466]       place, with a particular |
-#&gt;  [2010_BUDGET_07_Kieran_ODonnell_FG, 1953]  coherent plan which should be |
-#&gt;   [2010_BUDGET_08_Eamon_Gilmore_LAB, 2628]         " More recent studies, |
-#&gt;                                           
-#&gt;  focus | of today's budget is regaining   
-#&gt;  focus | on labour-intensive areas such as
-#&gt;  focus | has been on the front            
-#&gt;  focus | of policy. The Labour            
-#&gt;  focus | and that was just too            
-#&gt;  focus | of the feature is not            
-#&gt;  focus | . There is a character           
-#&gt;  focus | other than the dream of          
-#&gt;  focus | was on rates of pay              
-#&gt;  focus | of economic recovery, which      
-#&gt;  focus | on the more labour intensive     
-#&gt;  focus | on providing information, via    
-#&gt;  focus | of our investment and ensure     
-#&gt;  focus | on some of the worst             
-#&gt;  focus | on jobs. The Taoiseach           
-#&gt;  focus | on country cases, provide        </div><div class='input'>
+<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks2</span>, <span class='st'>"focus*"</span>)</div><div class='output co'>#&gt;                                                                        
+#&gt;    [Lenihan, Brian (FF), 1092]            . A key feature and | focus |
+#&gt;    [Lenihan, Brian (FF), 5477] , our investment projects will | focus |
+#&gt;   [Bruton, Richard (FG), 2133]        budget and see that the | focus |
+#&gt;      [Burton, Joan (LAB), 927]         therefore, be the main | focus |
+#&gt;     [Burton, Joan (LAB), 3592]        the budget had just one | focus |
+#&gt;     [Burton, Joan (LAB), 4115]           county, however, the | focus |
+#&gt;     [Burton, Joan (LAB), 4997]           That is too narrow a | focus |
+#&gt;     [Burton, Joan (LAB), 5210]    economic revival that has a | focus |
+#&gt;    [Morgan, Arthur (SF), 3141]          new jobs. Instead the | focus |
+#&gt;    [Morgan, Arthur (SF), 3721]        what should be the main | focus |
+#&gt;    [Morgan, Arthur (SF), 6796]  must be completely redrawn to | focus |
+#&gt;      [Cowen, Brian (FF), 3114]         . The scheme will also | focus |
+#&gt;      [Cowen, Brian (FF), 3786] to maximise the efficiency and | focus |
+#&gt;      [Cowen, Brian (FF), 4466]       place, with a particular | focus |
+#&gt;  [ODonnell, Kieran (FG), 1953]  coherent plan which should be | focus |
+#&gt;   [Gilmore, Eamon (LAB), 2628]         " More recent studies, | focus |
+#&gt;                                   
+#&gt;  of today's budget is regaining   
+#&gt;  on labour-intensive areas such as
+#&gt;  has been on the front            
+#&gt;  of policy. The Labour            
+#&gt;  and that was just too            
+#&gt;  of the feature is not            
+#&gt;  . There is a character           
+#&gt;  other than the dream of          
+#&gt;  was on rates of pay              
+#&gt;  of economic recovery, which      
+#&gt;  on the more labour intensive     
+#&gt;  on providing information, via    
+#&gt;  of our investment and ensure     
+#&gt;  on some of the worst             
+#&gt;  on jobs. The Taoiseach           
+#&gt;  on country cases, provide        </div><div class='input'>
 <span class='co'># stemming</span>
 <span class='no'>type</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='types.html'>types</a></span>(<span class='no'>toks</span>)
 <span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_wordstem.html'>char_wordstem</a></span>(<span class='no'>type</span>, <span class='st'>"porter"</span>)

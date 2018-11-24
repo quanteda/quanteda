@@ -178,6 +178,9 @@
     <loc>https://quanteda.io/reference/dfm_sort.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/dfm_split_hyphenated_features.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/dfm_subset.html</loc>
   </url>
   <url>
@@ -257,6 +260,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/kwic.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/lexdiv.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/list2dictionary.html</loc>
