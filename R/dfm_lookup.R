@@ -57,8 +57,8 @@
 #' dfm_lookup(my_dfm, my_dict, nomatch = "_UNMATCHED")
 #' 
 dfm_lookup <- function(x, dictionary, levels = 1:5,
-                       exclusive = TRUE, 
-                       valuetype = c("glob", "regex", "fixed"), 
+                       exclusive = TRUE,
+                       valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
                        nomatch = NULL,
@@ -68,8 +68,8 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
  
 #' @export
 dfm_lookup.default <- function(x, dictionary, levels = 1:5,
-                           exclusive = TRUE, 
-                           valuetype = c("glob", "regex", "fixed"), 
+                           exclusive = TRUE,
+                           valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            capkeys = !exclusive,
                            nomatch = NULL,
@@ -79,26 +79,26 @@ dfm_lookup.default <- function(x, dictionary, levels = 1:5,
 
 #' @export
 dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
-                           exclusive = TRUE, 
-                           valuetype = c("glob", "regex", "fixed"), 
+                           exclusive = TRUE,
+                           valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            capkeys = !exclusive,
                            nomatch = NULL,
                            verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    
+
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
-    
+
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     type <- colnames(x)
-    
-    if (verbose) 
-        catm("applying a dictionary consisting of ", length(dictionary), " key", 
-             if (length(dictionary) > 1L) "s" else "", "\n", sep="")
-    
+
+    if (verbose)
+        catm("applying a dictionary consisting of ", length(dictionary), " key",
+             if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
+
     ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
                         attr(x, "concatenator"), levels)
     key <- attr(ids, "key")
@@ -112,16 +112,16 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             if (!is.null(nomatch)) {
                 id_nomatch <- setdiff(seq_len(nfeat(x)), id)
                 id <- c(id, id_nomatch)
-                id_key <- c(id_key, rep(length(key) + 1, 
+                id_key <- c(id_key, rep(length(key) + 1,
                                         length(id_nomatch)))
                 key <- c(key, nomatch[1])
             }
-            x <- x[,id]
+            x <- x[, id]
             col_new <- key[id_key]
             colnames(x) <- col_new
             # merge identical keys and add non-existent keys
-            result <- dfm_select(dfm_compress(x, margin = 'features'), 
-                                 as.dfm(rbind(structure(rep(0, length(key)), 
+            result <- dfm_select(dfm_compress(x, margin = "features"),
+                                 as.dfm(rbind(structure(rep(0, length(key)),
                                                         names = key))))
         } else {
             if (!is.null(nomatch))
@@ -129,22 +129,22 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             col_new <- type
             col_new[id] <- key[id_key]
             colnames(x) <- col_new
-            result <- dfm_compress(x, margin = 'features')
+            result <- dfm_compress(x, margin = "features")
         }
-        
+
     } else {
         if (exclusive) {
             if (!is.null(nomatch)) {
-                result <- cbind(x[,0], as.dfm(cbind(structure(ntoken(x), 
-                                                              names = nomatch))))
+                result <- cbind(x[, 0], as.dfm(cbind(structure(ntoken(x),
+                                                               names = nomatch))))
             } else {
-                result <- x[,0] # dfm without features
+                result <- x[, 0] # dfm without features
             }
         } else {
             result <- x
         }
     }
-        
+
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
     attributes(result, FALSE) <- attrs

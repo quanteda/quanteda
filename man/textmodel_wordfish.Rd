@@ -89,7 +89,7 @@ predict(wf, se.fit = TRUE)
 predict(wf, interval = "confidence")
 
 \dontrun{
-ie2010dwf <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 (wf1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 (wf2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
                              dispersion = "quasipoisson", dispersion_floor = 0))
@@ -106,7 +106,7 @@ text(wf2a$phi, wf2b$phi, wf2a$features,
 text(wf2a$phi['underdispersedTerms'], wf2b$phi['underdispersedTerms'], 
      wf2a$features['underdispersedTerms'], 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
-if (require(austin)) {
+if (requireNamespace("austin")) {
     wf_austin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
     cor(wf1$theta, wf_austin$theta)
 }}
