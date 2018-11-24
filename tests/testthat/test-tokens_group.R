@@ -108,7 +108,7 @@ test_that("generate_groups works for corpus objects", {
     expect_equal(
         quanteda:::generate_groups(sents, "_document"),
         factor(metadoc(sents, "document"),
-               levels = unique(metadoc(sents, "document")))
+               levels = sort(unique(metadoc(sents, "document"))))
     )
     
 })
