@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{split_values}
 \alias{split_values}
-\title{Internal function for special handling of multi-word dicitionary values}
+\title{Internal function for special handling of multi-word dictionary values}
 \usage{
 split_values(dict, concatenator_dictionary, concatenator_tokens)
 }
@@ -14,6 +14,6 @@ split_values(dict, concatenator_dictionary, concatenator_tokens)
 \item{concatenator_tokens}{concatenator from a tokens object}
 }
 \description{
-Internal function for special handling of multi-word dicitionary values
+Internal function for special handling of multi-word dictionary values
 }
 \keyword{internal}

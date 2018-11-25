@@ -4,7 +4,7 @@
 #' separator pattern, with the option of retaining the separator.  This function
 #' effectively reverses the operation of \code{\link{tokens_compound}}.
 #' @param x a \link{tokens} object
-#' @param separator a character by which tokens are seperated
+#' @param separator a character by which tokens are separated
 #' @inheritParams valuetype
 #' @param remove_separator if \code{TRUE}, remove separator from new tokens
 #' @examples

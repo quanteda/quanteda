@@ -69,7 +69,7 @@ print_dictionary <- function(entry, level = 1) {
 }
 
 
-#' Internal function for special handling of multi-word dicitionary values
+#' Internal function for special handling of multi-word dictionary values
 #' @param dict a flatten dictionary
 #' @param concatenator_dictionary concatenator from a dictionary object
 #' @param concatenator_tokens concatenator from a tokens object
@@ -436,7 +436,7 @@ is.dictionary <- function(x) {
 #' @param levels integer vector indicating levels in the dictionary
 #' @param level internal argument to pass current levels
 #' @param key_tree internal argument to pass for parent keys
-#' @param dict internal argument to pass flattend dictionary
+#' @param dict internal argument to pass flattened dictionary
 #' @return A dictionary flattened to variable levels
 #' @keywords internal dictionary
 #' @author Kohei Watanabe

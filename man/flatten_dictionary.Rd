@@ -8,7 +8,7 @@ flatten_dictionary(dict, levels = 1:100, level = 1, key_parent = "",
   dict_flat = list())
 }
 \arguments{
-\item{dict}{internal argument to pass flattend dictionary}
+\item{dict}{internal argument to pass flattened dictionary}
 
 \item{levels}{integer vector indicating levels in the dictionary}
 

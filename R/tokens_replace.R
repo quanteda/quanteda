@@ -4,7 +4,7 @@
 #' function is created for lemmatization or user-defined stemming. It support
 #' substitution of multi-word features by multi-word features, but substitution
 #' is fastest when \code{pattern} and \code{replacement} are character vectors
-#' and \code{valuetype = "fixed"} as the function only subsitute types of
+#' and \code{valuetype = "fixed"} as the function only substitute types of
 #' tokens. Please use \code{\link{tokens_lookup}} with \code{exclusive = FALSE}
 #' to replace \link{dictionary} values.
 #' @param x \link{tokens} object whose token elements will be replaced

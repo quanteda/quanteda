@@ -10,7 +10,7 @@ tokens_split(x, separator = " ", valuetype = c("fixed", "regex"),
 \arguments{
 \item{x}{a \link{tokens} object}
 
-\item{separator}{a character by which tokens are seperated}
+\item{separator}{a character by which tokens are separated}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
