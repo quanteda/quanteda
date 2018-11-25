@@ -1,4 +1,4 @@
-context('test textplot_netork.R')
+context("test textplot_network.R")
 
 test_that("test textplot_network", {
     txt <- "A D A C E A D F E B A C E D"
