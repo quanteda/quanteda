@@ -407,18 +407,22 @@ test_that("pattern2list() preserves the order of keys and values", {
 
 
 test_that("split_values() handle concatenators correctly", {
-
-  test_that(
-    quanteda:::split_values(list(A = "a_a", "b_b"), "_", " "),
-    list(A = c("a", "a"), A = "a a", B = c("b", "b"), A = "b b")
-  )
-  test_that(
-    quanteda:::split_values(list(A = "a_a", "A_A"), "_", "-"),
-    list(A = c("a", "a"), A = "a-a", A = c("A", "A"), A = "A-A")
-  )
-  test_that(
-    quanteda:::split_values(list(A = "a_a", "A_A"), " ", " "),
-    list(A = "a_a", A = "A_A")
-  )
-  
+    
+    expect_identical(
+        quanteda:::split_values(list(A = "a_a", "b_b"), "_", " "),
+        list(A = c("a", "a"), A = "a a", c("b", "b"), "b b")
+    )
+    expect_identical(
+        quanteda:::split_values(list(A = "a_a", B = "b_b"), "_", " "),
+        list(A = c("a", "a"), A = "a a", B = c("b", "b"), B = "b b")
+    )
+    expect_identical(
+        quanteda:::split_values(list(A = "a_a", "A_A"), "_", "-"),
+        list(A = c("a", "a"), A = "a-a", c("A", "A"), "A-A")
+    )
+    expect_identical(
+        quanteda:::split_values(list(A = "a_a", "A_A"), " ", " "),
+        list(A = "a_a", "A_A")
+    )
+    
 })
