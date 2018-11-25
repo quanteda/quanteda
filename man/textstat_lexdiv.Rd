@@ -5,8 +5,10 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
-  "K", "D", "Vm", "Maas"), log.base = 10, remove_numbers = TRUE,
-  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE)
+  "K", "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD"), log.base = 10,
+  remove_numbers = TRUE, remove_punct = TRUE, remove_symbols = TRUE,
+  remove_hyphens = FALSE, MATTR_window_size = NULL,
+  MSTTR_segment_size = NULL, MTLD_ttr_threshold = NULL)
 }
 \arguments{
 \item{x}{an input \link{dfm} or \link{tokens} input object}
@@ -29,6 +31,16 @@ that consist only of the Unicode "Punctuation" [S] class)}
 by hyphenation and hyphenation-like characters in between words, e.g.
 "self-storage" becomes two features or tokens "self" and "storage". Default
 is FALSE to preserve such words as is, with the hyphens.}
+
+\item{MATTR_window_size}{a numeric value defining the size of the moving window 
+for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)}
+
+\item{MSTTR_segment_size}{a numeric value defining the size of the each segment
+for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)}
+
+\item{MTLD_ttr_threshold}{a numeric value defining the Type-Token Ratio threshold
+below which the TTR for a sequential string of text cannot fall. This is required
+to compute the Measure of Textual Lexical Diversity  (McCarthy & Jarvis, 2010)}
 }
 \value{
 \code{textstat_lexdiv} returns a data.frame of documents and
@@ -148,7 +160,7 @@ Covington, M.A. & McFall, J.D. (2010). "Cutting the Gordian Knot:
   Humanities} 32(5), 323--352.
 }
 \author{
-Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
+Kenneth Benoit and Jiong Wei Lua.  Many of the formulas have been
   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
   package.
 }

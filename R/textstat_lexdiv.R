@@ -69,7 +69,14 @@
 #'   by hyphenation and hyphenation-like characters in between words, e.g.
 #'   "self-storage" becomes two features or tokens "self" and "storage". Default
 #'   is FALSE to preserve such words as is, with the hyphens.
-#' @author Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
+#' @param MATTR_window_size a numeric value defining the size of the moving window 
+#'   for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)
+#' @param MSTTR_segment_size a numeric value defining the size of the each segment
+#'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
+#' @param MTLD_ttr_threshold a numeric value defining the Type-Token Ratio threshold
+#'   below which the TTR for a sequential string of text cannot fall. This is required
+#'   to compute the Measure of Textual Lexical Diversity  (McCarthy & Jarvis, 2010)
+#' @author Kenneth Benoit and Jiong Wei Lua.  Many of the formulas have been
 #'   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
 #'   package.
 #' @note This implements only the static measures of lexical diversity, not more
@@ -127,16 +134,22 @@
 #'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
 #' dfm(txt) %>% 
 #'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
-textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
+textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
                             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-                            remove_symbols = TRUE, remove_hyphens = FALSE) {
+                            remove_symbols = TRUE, remove_hyphens = FALSE,
+                            MATTR_window_size = NULL,
+                            MSTTR_segment_size = NULL,
+                            MTLD_ttr_threshold = NULL) {
     UseMethod("textstat_lexdiv")
 }
 
 #' @export
-textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
+textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
                                 log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-                                remove_symbols = TRUE, remove_hyphens = FALSE) {
+                                remove_symbols = TRUE, remove_hyphens = FALSE,
+                                MATTR_window_size = NULL,
+                                MSTTR_segment_size = NULL,
+                                MTLD_ttr_threshold = NULL) {
     stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
 }
 
@@ -148,6 +161,14 @@ textstat_lexdiv.dfm <-
         
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
+    
+    if ('MATTR' %in% measure)
+        stop('MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object')
+    if ('MSTTR' %in% measure)
+        stop('MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object')
+    if ('MTLD' %in% measure)
+        stop('MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object')
+    
     if (remove_hyphens) 
         x <- dfm_split_hyphenated_features(x)
     if (remove_numbers) 
@@ -175,9 +196,12 @@ textstat_lexdiv.dfm <-
 
 #' @export
 textstat_lexdiv.tokens <- 
-    function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"),
+    function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
              log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-             remove_symbols = TRUE, remove_hyphens = FALSE) {
+             remove_symbols = TRUE, remove_hyphens = FALSE,
+             MATTR_window_size = NULL,
+             MSTTR_segment_size = NULL,
+             MTLD_ttr_threshold = NULL) {
         
     if (remove_hyphens)
         x <- tokens(x, remove_hyphens = TRUE)
@@ -191,8 +215,47 @@ textstat_lexdiv.tokens <-
         # when we resolve #1445
         x <- tokens_remove(x, "^\\p{P}+$", valuetype = "regex")
     }
-
-    textstat_lexdiv.dfm(dfm(x), measure = measure, log.base = log.base)
+    if ('MATTR' %in% measure) {
+        if (is.null(MATTR_window_size)) stop('window_size must be specified if MATTR is to be computed')
+    }
+    if ('MATTR' %in% measure) {
+        if (is.null(MSTTR_segment_size)) stop('segment_size must be specified if MSTTR is to be computed')
+    }
+    if ('MTLD' %in% measure) {
+        if (is.null(MTLD_ttr_threshold)) stop('MTLD_ttr_threshold must be specified if MTLD is to be computed')
+    }
+        
+    results = textstat_lexdiv.dfm(dfm(x),
+                                  measure = measure, log.base = log.base,
+                                  remove_numbers = remove_numbers, remove_punct = remove_punct,
+                                  remove_symbols = remove_symbols, remove_hyphens = remove_hyphens)
+    
+    if ('MATTR' %in% measure) {
+        MATTR <- unlist(lapply(x, function(x) compute_mattr(x,
+                                                            window_size = MATTR_window_size,
+                                                            all_windows = FALSE,
+                                                            mean_mattr = TRUE)))
+        results <- cbind(results, MATTR)
+        }
+    
+    if ('MSTTR' %in% measure) {
+        MSTTR <- unlist(lapply(x, function(x) compute_msttr(x,
+                                                            segment_size = MSTTR_segment_size,
+                                                            discard_remainder = TRUE,
+                                                            all_segments = FALSE,
+                                                            mean_sttr = TRUE)))
+        results <- cbind(results, MSTTR)
+    }
+    
+    if ('MTLD' %in% measure) {
+        MTLD <- unlist(lapply(tokens(txt), function(x) compute_mtld(x,
+                                                                    ttr_threshold = MTLD_ttr_threshold)))
+        results <- cbind(results, MTLD)
+    }
+    
+    
+    return(results)
+    
 }
 
 #' Compute lexdiv (internal functions)
@@ -317,12 +380,13 @@ dfm_split_hyphenated_features <- function(x) {
 
 compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr= TRUE){
     # Error Checks
-    if (!is.tokens(x)) stop("x must be a tokens object")
     if (is.null(window_size)) stop('window_size must be specified')
-    # Get number of tokens across all documents
+    # Get number of tokens across each individual document
     num_tokens <- sum(ntoken(x))
-    if (window_size > num_tokens) stop('window_size must be smaller than total ntokens across all documents')
+    if (window_size > num_tokens) stop('window_size must be smaller than total ntokens for each document')
     if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop('at least one MATTR value type to be returned')
+    if ((all_windows == TRUE)) (mean_mattr = FALSE)
+    if (mean_mattr == TRUE) (all_windows == FALSE)
     
     # List to Store MATTR Values for each Window 
     mattr_list <- list()
@@ -354,7 +418,6 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
     else {
         if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr_list))
         if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr_list)
-        if ((all_windows == TRUE) && (mean_mattr == TRUE)) return(mean(mattr_list), mattr_list)
     }
 }
 
@@ -371,17 +434,16 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' @return returns a vector with the MSSTR for each segment
 #' @keywords internal tokens
 
-
 compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks
-    if (!is.tokens(x)) stop("x must be a tokens object")
     if (is.null(segment_size)) stop('segment_size must be specified')
     if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop('at least one MSTTR value type to be returned')
-    
+    if (all_segments == TRUE) (mean_sttr == FALSE)
+    if (mean_sttr == FALSE) (mean_sttr == TRUE)
     
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))
-    if (segment_size > num_tokens) stop('window_size must be smaller than total ntokens across all documents')
+    if (segment_size > num_tokens) stop('segment_size must be smaller than total ntokens across all documents')
     
     # Checks for divisibility of the tokens object by segment_size
     remainder = num_tokens %% segment_size
@@ -404,7 +466,7 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
     all_tokens <- unlist(x)
     temp_ls <- all_tokens[start:end]
     
-    while (start <= num_tokens){
+    while (end <= num_tokens){
         # Each MSSTR segment is named with the start token number and end token number
         segment_name <- paste0('MSTTR_tokens',start, '_',end)
         temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
@@ -432,18 +494,19 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
     if ((remainder ==0) & (length(msttr_list) != n_segments)){
         stop('Internal error within compute_msttr')}
     
-    
     if ((remainder != 0)  & (discard_remainder == TRUE) & length(msttr_list) != (n_segments)) {
         stop('Internal error within compute_msttr')}
+    
     
     if ((remainder != 0)  & (discard_remainder == FALSE) & length(msttr_list) != (n_segments + 1)) {
         stop('Internal error within compute_msttr')}
     
     if ((all_segments == FALSE) && (mean_sttr == TRUE)) return(mean(msttr_list))
     if ((all_segments == TRUE) && (mean_sttr == FALSE)) return(msttr_list)
-    if ((all_segments == TRUE) && (mean_sttr == TRUE)) return(mean(mattr), msttr_list)
+    
     
 }
+
 
 
 
@@ -460,7 +523,6 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
 
 compute_mtld <- function(x, ttr_threshold = 0.720){
     # Error Checks 
-    if (!is.tokens(x)) stop("x must be a tokens object")
     if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop("TTR threshold must be between 0 and 1")
     if (is.null(ttr_threshold)) stop('TTR threshold cannot be NULL')
     
@@ -479,7 +541,6 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
         temp_ls <- list_of_tokens[start:counter]
         
         while (counter <= end){
-            print(paste(start, counter, temp_ls))
             temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
             typecount <- ntype(temp_toks)[[1]]
             tokcount <- ntoken(temp_toks)[[1]]
