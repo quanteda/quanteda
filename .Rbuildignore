@@ -29,4 +29,4 @@ __MACOSX
 ^paper
 LICENSE
 quanteda.pdf
-.lintr
+^\.lintr$
