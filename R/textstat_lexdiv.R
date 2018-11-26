@@ -195,14 +195,26 @@ textstat_lexdiv.dfm <-
 }
 
 #' @export
-textstat_lexdiv.tokens <- 
-    function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
-             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-             remove_symbols = TRUE, remove_hyphens = FALSE,
-             MATTR_window_size = NULL,
-             MSTTR_segment_size = NULL,
-             MTLD_ttr_threshold = NULL) {
-        
+textstat_lexdiv.tokens <- function(x,
+                                   measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
+                                   log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+                                   remove_symbols = TRUE, remove_hyphens = FALSE,
+                                   MATTR_window_size = NULL,
+                                   MSTTR_segment_size = NULL,
+                                   MTLD_ttr_threshold = NULL) {
+    
+    # Error Checks for Dynamic Measures
+    if ('MATTR' %in% measure) {
+        if (is.null(MATTR_window_size)) stop('MATTR_window_size must be specified if MATTR is to be computed')
+    }
+    if ('MSTTR' %in% measure) {
+        if (is.null(MSTTR_segment_size)) stop('MSTTR_segment_size must be specified if MSTTR is to be computed')
+    }
+    if ('MTLD' %in% measure) {
+        if (is.null(MTLD_ttr_threshold)) stop('MTLD_ttr_threshold must be specified if MTLD is to be computed')
+    }
+    
+    # Preprocessing of Tokens
     if (remove_hyphens)
         x <- tokens(x, remove_hyphens = TRUE)
     if (remove_numbers) 
@@ -215,44 +227,63 @@ textstat_lexdiv.tokens <-
         # when we resolve #1445
         x <- tokens_remove(x, "^\\p{P}+$", valuetype = "regex")
     }
-    if ('MATTR' %in% measure) {
-        if (is.null(MATTR_window_size)) stop('window_size must be specified if MATTR is to be computed')
-    }
-    if ('MATTR' %in% measure) {
-        if (is.null(MSTTR_segment_size)) stop('segment_size must be specified if MSTTR is to be computed')
-    }
-    if ('MTLD' %in% measure) {
-        if (is.null(MTLD_ttr_threshold)) stop('MTLD_ttr_threshold must be specified if MTLD is to be computed')
-    }
-        
-    results = textstat_lexdiv.dfm(dfm(x),
-                                  measure = measure, log.base = log.base,
-                                  remove_numbers = remove_numbers, remove_punct = remove_punct,
-                                  remove_symbols = remove_symbols, remove_hyphens = remove_hyphens)
     
-    if ('MATTR' %in% measure) {
-        MATTR <- unlist(lapply(x, function(x) compute_mattr(x,
-                                                            window_size = MATTR_window_size,
-                                                            all_windows = FALSE,
-                                                            mean_mattr = TRUE)))
-        results <- cbind(results, MATTR)
+    # Split Measures into Static and Dynamic Measures
+    measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
+    if (measure[1] == "all") {
+        measure_static <- measure_option
+        measure_dynamic <- c("MATTR","MSTTR","MTLD")
+    } else {
+        measure_static <- measure[measure %in% measure_option]
+        measure_dynamic <- measure[measure %in% c("MATTR","MSTTR","MTLD")]
+    }
+    
+    # Compute static lexdiv measures by calling textstat_lexdiv.dfm
+    
+    if (length(measure_static) > 0){
+        results = textstat_lexdiv.dfm(dfm(x),
+                                      measure = measure_static, log.base = log.base,
+                                      remove_numbers = remove_numbers, remove_punct = remove_punct,
+                                      remove_symbols = remove_symbols, remove_hyphens = remove_hyphens)
         }
     
-    if ('MSTTR' %in% measure) {
-        MSTTR <- unlist(lapply(x, function(x) compute_msttr(x,
-                                                            segment_size = MSTTR_segment_size,
-                                                            discard_remainder = TRUE,
-                                                            all_segments = FALSE,
-                                                            mean_sttr = TRUE)))
-        results <- cbind(results, MSTTR)
+    # Compute / append dynamic lexdiv measures by calling respective helper functions
+    if (length(measure_dynamic) > 0){
+        if ('MATTR' %in% measure_dynamic) {
+            MATTR <- unlist(lapply(x, function(x) compute_mattr(x,
+                                                                window_size = MATTR_window_size,
+                                                                all_windows = FALSE,
+                                                                mean_mattr = TRUE)))
+            if (exists('results')) {
+                results <- cbind(results, MATTR)
+            } else {
+                results <- data.table(document = names(MATTR), MATTR = MATTR)
+            }
+        }
+        
+        if ('MSTTR' %in% measure_dynamic) {
+            MSTTR <- unlist(lapply(x, function(x) compute_msttr(x,
+                                                                segment_size = MSTTR_segment_size,
+                                                                discard_remainder = TRUE,
+                                                                all_segments = FALSE,
+                                                                mean_sttr = TRUE)))
+            if (exists('results')) {
+                results <- cbind(results, MSTTR)
+            } else {
+                results <- data.table(document = names(MSTTR), MSTTR = MSTTR)
+            }
+        }
+        
+        if ('MTLD' %in% measure_dynamic) {
+            MTLD <- unlist(lapply(x, function(x) compute_mtld(x,
+                                                              ttr_threshold = MTLD_ttr_threshold)))
+            if (exists('results')) {
+                results <- cbind(results, MTLD)
+            } else {
+                results <- data.table(document = names(MTLD), MTLD = MTLD)
+            }
+        }
     }
-    
-    if ('MTLD' %in% measure) {
-        MTLD <- unlist(lapply(tokens(txt), function(x) compute_mtld(x,
-                                                                    ttr_threshold = MTLD_ttr_threshold)))
-        results <- cbind(results, MTLD)
-    }
-    
     
     return(results)
     
