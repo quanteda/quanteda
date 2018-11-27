@@ -4,32 +4,34 @@
 #' separator pattern, with the option of retaining the separator.  This function
 #' effectively reverses the operation of \code{\link{tokens_compound}}.
 #' @param x a \link{tokens} object
-#' @param separator a character by which tokens are separated
+#' @param separator a single-character pattern match by which tokens are separated
 #' @inheritParams valuetype
 #' @param remove_separator if \code{TRUE}, remove separator from new tokens
 #' @examples
-#' toks <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
-#' tokens_split(toks, separator = "-") 
-#' 
-#' ctoks <- tokens("pork barrel is amn idiomatic multi-word expression")
+#' # undo tokens_compound()
+#' ctoks <- tokens("pork barrel is an idiomatic multi-word expression")
 #' tokens_compound(ctoks, phrase("pork barrel"))
 #' tokens_compound(ctoks, phrase("pork barrel")) %>%
-#'     tokens_split(separator = "_", remove_separator = TRUE)
+#'     tokens_split(separator = "_")
+#'     
+#' # similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 
+#' toks <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
+#' tokens_split(toks, separator = "-", remove_separator = FALSE) 
 #' @export 
 tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                         remove_separator = FALSE) {
+                         remove_separator = TRUE) {
     UseMethod("tokens_split")
 }
 
 #' @export
 tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                                 remove_separator = FALSE) {
+                                 remove_separator = TRUE) {
     stop(friendly_class_undefined_message(class(x), "tokens_split"))
 }
 
 #' @export
 tokens_split.tokens <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                                remove_separator = FALSE) {
+                                remove_separator = TRUE) {
 
     valuetype <- match.arg(valuetype)
     if (length(separator) != 1)
