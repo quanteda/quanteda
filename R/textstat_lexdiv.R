@@ -154,10 +154,12 @@ textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR
 }
 
 #' @export
-textstat_lexdiv.dfm <- 
-    function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"), 
+textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
              log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-             remove_symbols = TRUE, remove_hyphens = FALSE) {
+             remove_symbols = TRUE, remove_hyphens = FALSE,
+             MATTR_window_size = NULL,
+             MSTTR_segment_size = NULL,
+             MTLD_ttr_threshold = NULL) {
         
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
