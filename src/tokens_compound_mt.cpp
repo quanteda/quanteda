@@ -101,9 +101,7 @@ Text match_comp(Text tokens,
     }
     
     // return original tokens if no match
-    if (none) {
-        return tokens; 
-    }
+    if (none) return tokens;
     
     // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {
