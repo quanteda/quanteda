@@ -217,7 +217,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            ...) {
     
     if (remove_hyphens)
-        x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex")
+        x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     
     if (remove_twitter)
         x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""))
