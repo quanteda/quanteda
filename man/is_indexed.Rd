@@ -7,7 +7,7 @@
 is_indexed(pattern)
 }
 \arguments{
-\item{x}{a glob pattern to be tested}
+\item{pattern}{a glob pattern to be tested}
 }
 \description{
 Internal function for \code{select_types} to check if a glob pattern is

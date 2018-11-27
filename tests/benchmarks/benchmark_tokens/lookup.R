@@ -1,5 +1,5 @@
-load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
-toks <- data_tokens_guardian
+corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian.RDS")
+toks <- tokens(corp)
 
 dict <- dictionary(list(country = "united states", 
                         law=c('law*', 'constitution'), 
@@ -7,6 +7,11 @@ dict <- dictionary(list(country = "united states",
 dict_fix <- dictionary(list(country = "united states", 
                             law=c('law', 'constitution'), 
                             freedom=c('freedom', 'liberty'))) 
+
+microbenchmark::microbenchmark(
+    tokens_lookup(toks, data_dictionary_LSD2015, valuetype='glob', verbose=FALSE),
+    times=10
+)
 
 microbenchmark::microbenchmark(
     cpp1=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE),

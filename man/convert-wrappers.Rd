@@ -70,7 +70,7 @@ identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
+identical(quanteda:::dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
 }
 
 }

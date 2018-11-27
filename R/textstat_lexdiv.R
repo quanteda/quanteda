@@ -291,9 +291,9 @@ textstat_lexdiv.tokens <- function(x,
     
 }
 
-#' Compute lexdiv (internal functions)
+#' Compute lexical diversity (internal functions)
 #' 
-#' Internal function used in textstat_lexdiv 
+#' Internal function used in \code{\link{textstat_lexdiv}}.
 #' @name lexdiv
 #' @param x a \link{dfm} object
 #' @param measure a list of lexical diversity measures.

@@ -140,8 +140,7 @@ char_toupper.character <- function(x, ...) {
 #' @export
 #' @examples
 #' # for a document-feature matrix
-#' mydfm <- dfm(c("b A A", "C C a b B"), 
-#'              toLower = FALSE, verbose = FALSE)
+#' mydfm <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
 #' mydfm
 #' dfm_tolower(mydfm) 
 #' dfm_toupper(mydfm)

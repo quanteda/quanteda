@@ -231,7 +231,7 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
-#' identical(dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
+#' identical(quanteda:::dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
 #' }
 #' 
 #' @keywords internal

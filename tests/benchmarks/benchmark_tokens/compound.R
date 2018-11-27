@@ -1,6 +1,6 @@
 toks <- tokens(inaugCorpus)
-load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
-toks <- tokens(data_corpus_guardian)
+corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian.RDS")
+toks <- tokens(corp)
 
 seqs <- list(c('united', 'states'))
 microbenchmark::microbenchmark(

@@ -86,18 +86,17 @@ test_that("test plot.kwic facet order parameter", {
     
 })
 
-test_that("test plot.kwic keeps order of keywords passed", {
-    p <- textplot_xray(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort=TRUE)
-    keywords <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword))
-    if(identical(keywords, character(0))) {
-        keywords <- as.character(unique(ggplot2::ggplot_build(p)$layout$layout$keyword))
-    }
-    
-    expect_equal(
-        keywords,
-        c('people', 'american')
-    )
-})
+# test_that("test plot.kwic keeps order of keywords passed", {
+#     p <- textplot_xray(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort = TRUE)
+#     keywords <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword))
+#     if (identical(keywords, character(0))) {
+#         keywords <- as.character(unique(ggplot2::ggplot_build(p)$layout$layout$keyword))
+#     }
+#     expect_equal(
+#         keywords,
+#         c('people', 'american')
+#     )
+# })
 
 test_that("test textplot_wordcloud works for dfm objects", {
     mt <- dfm(data_corpus_inaugural[1:5])
