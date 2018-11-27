@@ -53,8 +53,14 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
 
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
-    if (!length(pattern)) return(x)
+    
+    # !!!! replace by nothing means remove !!!!!
+    # l <- lengths(pattern) > 0 & lengths(replacement) > 0
+    # pattern <- pattern[l]
+    # replacement <- replacement[l]
 
+    if (!length(pattern)) return(x)
+    
     type <- types(x)
     if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
         type_new <- replace_type(type, pattern, replacement, case_insensitive)
@@ -71,12 +77,11 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
         ids_repl <- pattern2list(replacement, type, "fixed", FALSE, attr(x, "concatenator"),
                                  flatten = FALSE)[r]
         x <- qatd_cpp_tokens_replace(x, type,
-                                     unlist(ids_pat, FALSE, FALSE),
-                                     unlist(ids_repl, FALSE, FALSE))
+                                     flatten_id(ids_pat, TRUE),
+                                     flatten_id(ids_repl, TRUE))
         attributes(x, FALSE) <- attrs
     }
-    
-    x
+    return(x)
 }
 
 
@@ -94,8 +99,5 @@ replace_type <- function(type, pattern, replacement, case_insensitive) {
     } else {
         type_new <- replacement[match(type, pattern)]
     }
-
-    type_new <- ifelse(is.na(type_new), type, type_new)
-    
-    type_new
+    return(ifelse(is.na(type_new), type, type_new))
 }

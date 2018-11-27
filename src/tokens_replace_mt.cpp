@@ -12,8 +12,9 @@ Text replace(Text tokens,
     
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
-    
     std::size_t match = 0;
+    bool none = true;
+    
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         //Rcout << "span:" << span << "\n";
@@ -21,17 +22,16 @@ Text replace(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_pat.find(ngram);
             if (it != map_pat.end()) {
-                //Rcout << "index:" << i << "\n";
                 std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
-                //dev::print_ngram(ids_repls[it->second]);
                 tokens_multi[i].insert(tokens_multi[i].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
-                //dev::print_ngram(tokens_multi[i]);
                 match += ids_repls[it->second].size();
+                none = false;
             }
         }
     }
     
-    if (match == 0) return tokens; // return original tokens if no match
+    // return original tokens if no match
+    if (none) return tokens; 
     
     // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {
@@ -131,8 +131,10 @@ List qatd_cpp_tokens_replace(const List &texts_,
 
 toks <- list(rep(1:10, 1), rep(5:15, 1))
 #toks <- list(rep(1:10, 1))
-from <- list(c(1, 2), c(2, 3), c(5, 6), 10, 20)
-to <- list(c(1, 1, 1), c(2, 2, 2), c(5, 5, 5), 1, 2)
+#from <- list(c(1, 2), c(2, 3), c(5, 6), 10, 20)
+#to <- list(c(1, 1, 1), c(2, 2, 2), c(5, 5, 5), 1, 2)
+from <- list(c(9, 10))
+to <- list(0)
 
 #qatd_cpp_tokens_replace(toks, letters, dict, integer(0), 0)
 qatd_cpp_tokens_replace(toks, letters, from, to)

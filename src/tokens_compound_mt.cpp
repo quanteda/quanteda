@@ -79,6 +79,7 @@ Text match_comp(Text tokens,
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t match = 0;
+    bool none = true;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -94,11 +95,15 @@ Text match_comp(Text tokens,
                 }
                 tokens_multi[i].push_back(it->second); // keep multiple keys in the same position
                 match++;
+                none = false;
             }
         }
     }
     
-    if (match == 0) return tokens; // return original tokens if no match
+    // return original tokens if no match
+    if (none) {
+        return tokens; 
+    }
     
     // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {

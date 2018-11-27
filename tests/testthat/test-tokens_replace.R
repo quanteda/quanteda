@@ -140,5 +140,16 @@ test_that("tokens_replace raises error when input values are invalid", {
 
 test_that("tokens_replace remove tokens when replacement is empty", {
     
-    tokens_replace(toks_test, list(c("aa", "bb"), c("dd", "ee")), list(character(), c("dd", "ff")))
+    pat1 <- list(c("aa", "bb"), c("dd", "ee"))
+    rep1 <- list(character(), c("zz", "zz"))
+    pat2 <- list(c("aa", "bb"), c("bb", "cc"))
+    rep2 <- list(c("zz", "zz"), character())
+    
+    expect_equal(as.list(tokens_replace(toks_test, pat1, rep1)),
+                 list(doc1 = c("BB", "cc", "zz", "zz"), 
+                      doc2 = c("cc","zz", "zz")))
+    expect_equal(as.list(tokens_replace(toks_test, pat2, rep2)),
+                 list(doc1 = c("zz", "zz", "DD", "ee"), 
+                      doc2 = c("zz","zz", "DD", "ee")))
+                 
 })
