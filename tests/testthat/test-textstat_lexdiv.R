@@ -1,5 +1,6 @@
 context("test textstat_lexdiv")
 
+
 test_that("textstat_lexdiv computation is correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
@@ -145,14 +146,18 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     )
 })
 
+# Tests for multiple static measures of lexical diversity
+static_measures <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
+
+
 test_that("textstat_lexdiv works similarly for corpus and tokens", {
     txt <- c(d1 = "b a b a b a b a",
              d2 = "a a b b")
     mydfm <- dfm(txt)
     mytokens <- tokens(txt)
     expect_identical(
-        textstat_lexdiv(mydfm, "all"),
-        textstat_lexdiv(mytokens, "all")
+        textstat_lexdiv(mydfm, measure = static_measures),
+        textstat_lexdiv(mytokens, measure = static_measures)
     )
 })
 
@@ -162,12 +167,12 @@ test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols"
     mydfm <- dfm(txt)
     mytokens <- tokens(txt)
     expect_identical(
-        textstat_lexdiv(mydfm["d1", ], "all")[, -1], 
-        textstat_lexdiv(mydfm["d2", ], "all")[, -1]
+        textstat_lexdiv(mydfm["d1", ], measure = static_measures)[, -1], 
+        textstat_lexdiv(mydfm["d2", ], measure = static_measures)[, -1]
     )
     expect_identical(
-        textstat_lexdiv(mytokens["d1", ], "all")[,-1], 
-        textstat_lexdiv(mytokens["d2", ], "all")[,-1]
+        textstat_lexdiv(mytokens["d1", ], measure = static_measures)[,-1], 
+        textstat_lexdiv(mytokens["d2", ], measure = static_measures)[,-1]
     )
 })
 
@@ -177,8 +182,8 @@ test_that("textstat_lexdiv supports removal of hyphenation", {
     z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
                d2 ="alpha beta charlie delta echo foxtrot" ))
     expect_identical(
-        textstat_lexdiv(y, measure = "all", remove_hyphens = TRUE), 
-        textstat_lexdiv(z, measure = "all", remove_hyphens = TRUE)
+        textstat_lexdiv(y, measure = static_measures, remove_hyphens = TRUE), 
+        textstat_lexdiv(z, measure = static_measures, remove_hyphens = TRUE)
     )
 })
 
@@ -188,7 +193,7 @@ test_that("textstat_lexdiv can handle hyphenated words containing duplicated tok
     # remaining punctuation, symbols and numbers should also be removed
     # dfm_nested should only have 4 types with 6 tokens
     dfm_non_nested <- corpus(c(d1 = "a b b c c d")) %>% dfm()
-    expect_identical(textstat_lexdiv(dfm_nested, measure = "all", remove_hyphens = TRUE), 
+    expect_identical(textstat_lexdiv(dfm_nested, measure = static_measures, remove_hyphens = TRUE), 
                      textstat_lexdiv(dfm_non_nested))
 })
 
