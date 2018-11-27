@@ -137,3 +137,8 @@ test_that("tokens_replace raises error when input values are invalid", {
     expect_equal(tokens_replace(toks_test, character(), character()),
                  toks_test)
 })
+
+test_that("tokens_replace remove tokens when replacement is empty", {
+    
+    tokens_replace(toks_test, list(c("aa", "bb"), c("dd", "ee")), list(character(), c("dd", "ff")))
+})

@@ -167,3 +167,17 @@ test_that("add value check for types (#1463)", {
     
 })
 
+test_that("flatten_id() is working", {
+  expect_identical(
+    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
+    list(c(1, 2), 3, 4)
+  )
+  expect_identical(
+    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list())),
+    list(c(1, 2), 3, 4)
+  )
+  expect_identical(
+    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list()), TRUE),
+    list(c(1, 2), 3, 4, integer())
+  )
+})

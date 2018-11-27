@@ -27,6 +27,7 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
                        case_insensitive = TRUE, flatten = TRUE) {
     
     if (!length(pattern)) return(list())
+    
     pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
     stopifnot(is.character(types))
     valuetype <- match.arg(valuetype)
@@ -34,8 +35,14 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     # glob is treated as fixed if neither * or ? is found
     if (valuetype == "glob" && !is_glob(pattern))
         valuetype <- "fixed"
-    max_len <- max(stri_length(unlist(pattern, use.names = FALSE)))
     
+    len <- stri_length(unlist(pattern, use.names = FALSE))
+    if (length(len)) {
+        max_len <- max(len)    
+    } else {
+        max_len <- 0
+    }
+        
     # construct glob or fixed index for quick search
     index <- index_types(types, valuetype, case_insensitive, max_len)
     types_search <- attr(index, "types_search")
@@ -110,8 +117,10 @@ pattern2fixed <- function(pattern, types, valuetype = c("glob", "fixed", "regex"
 #' @param index index object created by \code{index_types}
 #' @keywords internal
 search_glob <- function(pattern, types_search, index) {
-    if (pattern == "") {
-        return(integer()) # return nothing for empty pattern
+    if (length(pattern) == 0)  {
+        return(integer())
+    } else if (pattern == "") {
+        return(0L)
     } else if (pattern == "*") {
         return(seq_along(types_search)) # return all types when glob is *
     } else {
@@ -140,8 +149,10 @@ search_glob_multi <- function(patterns, types_search, index) {
 #' @rdname search_glob
 #' @keywords internal
 search_regex <- function(pattern, types_search, case_insensitive) {
-    if (pattern == "") {
+    if (length(pattern) == 0)  {
         return(integer())
+    } else if (pattern == "") {
+        return(0L)
     } else {
         return(which(stri_detect_regex(types_search, pattern,
                                        case_insensitive = case_insensitive)))
@@ -157,8 +168,10 @@ search_regex_multi <- function(patterns, types_search, case_insensitive) {
 #' @rdname search_glob
 #' @keywords internal
 search_fixed <- function(pattern, types_search, index) {
-    if (pattern == "") {
+    if (length(pattern) == 0)  {
         return(integer())
+    } else if (pattern == "") {
+        return(0L)
     } else {
         return(search_index(pattern, index))
     }
@@ -328,6 +341,17 @@ is_indexed <- function(pattern) {
 is_glob <- function(pattern) {
     pattern <- unlist(pattern, use.names = FALSE)
     return(any(stri_detect_fixed(pattern, "*")) || any(stri_detect_fixed(pattern, "?")))
+}
+
+#' Flatten ids keeping no matches
+#' @param ids nested list of token ID from \code{pattern2id}
+#' @param keep_nomatch keep list element for no-matches
+#' @keywords internal
+flatten_id <- function(ids, keep_nomatch = FALSE) {
+    if (keep_nomatch) {
+        ids <- lapply(ids, function(x) if (!length(x)) list(integer()) else x)
+    }
+    unlist(ids, FALSE, FALSE)
 }
 
 
