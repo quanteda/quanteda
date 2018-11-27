@@ -9,7 +9,7 @@ test_that("textstat_lexdiv computation is correct", {
         textstat_lexdiv(mydfm, "TTR"),
         data.frame(document = c('d1', 'd2'), TTR = c(0.25, 0.5),
                    stringsAsFactors = FALSE)
-    )
+        )
 })
 
 test_that("textstat_lexdiv CTTR works correct", {
@@ -194,7 +194,7 @@ test_that("textstat_lexdiv can handle hyphenated words containing duplicated tok
     # dfm_nested should only have 4 types with 6 tokens
     dfm_non_nested <- corpus(c(d1 = "a b b c c d")) %>% dfm()
     expect_identical(textstat_lexdiv(dfm_nested, measure = static_measures, remove_hyphens = TRUE), 
-                     textstat_lexdiv(dfm_non_nested))
+                     textstat_lexdiv(dfm_non_nested, measure = static_measures))
 })
 
 test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
@@ -231,3 +231,119 @@ test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
         textstat_lexdiv(dfm(txt), measure = "TTR", remove_numbers = TRUE)
     )
 })
+
+# General Tests for "Moving Measures"
+
+test_that('textstat_lexdiv does not support dfm for MATTR, MTLD and MSTTR', {
+    mytxt <- "one one two one one two one"
+    mydfm <- dfm(mytxt)
+    expect_error(textstat_lexdiv(mydfm, measure = 'MATTR', MATTR_window_size = 2),
+                 quanteda:::message_error('MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
+    
+    expect_error(textstat_lexdiv(mydfm, measure = 'MSTTR', MSTTR_segment_size = 2),
+                 quanteda:::message_error('MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
+    
+    expect_error(textstat_lexdiv(mydfm, measure = 'MTLD', MTLD_ttr_threshold = 0.720),
+                 quanteda:::message_error('MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
+    
+})
+
+
+# Test MATTR 
+test_that('textstat_lexdiv.tokens MATTR works correct', {
+    mytxt <- "one one two one one two one"
+    mytoken <- tokens(mytxt)
+    wsize2_MATTR = (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6 
+    wsize3_MATTR = (2/3 + 2/3 + 2/3 + 2/3 + 2/3) / 5
+    wsize4_MATTR = (2/4 + 2/4 + 2/4 + 2/4) / 4
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 2)[[2]], 
+                      wsize2_MATTR)
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 3)[[2]], 
+                      wsize3_MATTR)
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 4)[[2]], 
+                      wsize4_MATTR)
+    
+    expect_error(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 8),
+                 quanteda:::message_error('window_size must be smaller than total ntokens for each document'))
+    
+})
+
+# Test MSTTR
+
+test_that('textstat_lexdiv.tokens MSTTR works correct', {
+    mytxt <- "apple orange apple orange pear pear apple orange"
+    mytoken <- tokens(mytxt)
+    wsize2_MSTTR = (2/2 + 2/2 + 1/2 + 2/2) / 4
+    wsize3_MSTTR = (2/3 + 2/3 ) / 2 # apple orange at the back is discarded
+    wsize4_MSTTR = (2/4 + 3/4) / 2
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 2)[[2]], 
+                      wsize2_MSTTR)
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 3)[[2]], 
+                      wsize3_MSTTR)
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 4)[[2]], 
+                      wsize4_MSTTR)
+    
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = length(mytoken$text1))[[2]],
+                      textstat_lexdiv(mytoken, measure = 'TTR')[[2]])
+    
+    expect_error(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 10),
+                 quanteda:::message_error('segment_size must be smaller than total ntokens across all documents'))
+    
+})
+
+# Test MTLD
+
+
+test_that('textstat_lexdiv.tokens MTLD works correct', {
+    mytxt <- "apple orange apple orange pear pear apple orange"
+    mytoken <- tokens(mytxt)
+    
+    ttr_threshold_1 = 0.80
+    # FORWARD PASS
+    # <START> apple (1/1) orange (2/2) apple(2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # orange (1/1) pear (2/2) pear (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # apple (1/1) orange (2/2) <END>
+    # FACTOR = 3
+    forward_pass_1_MTLD = 8 / 3
+    
+    # BACKWARD PASS
+    # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # orange (1/1) apple (1/1) orange (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # apple <END> 
+    # FACTOR = 3
+    backward_pass_1_MTLD = 8/3 
+    ttr_threshold_1_expected_MTLD = (forward_pass_1_MTLD +  backward_pass_1_MTLD) /2
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  ttr_threshold_1)[[2]], 
+                      ttr_threshold_1_expected_MTLD)
+    
+    ttr_threshold_2 = 0.50
+    # FORWARD PASS
+    # <START> apple (1/1) orange (2/2) apple(2/3) orange (2/4) pear (3/5) pear (3/6)  apple (3/7) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # orange (1) <END>
+    # FACTOR = 2
+    forward_pass_2_MTLD = 8 / 2
+    
+    # BACKWARD PASS
+    # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) orange (3/5) apple (3/6) orange (3/7) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # apple (1) 
+    # FACTOR = 2
+    
+    # NOTE: When rolling TTR counter = 3/6 = 1/2 == ttr_threshold 2, the TTR counter is not reset.
+    # It resets the TTR if it falls BELOW the threshold. This is consistent with the koRpus package implementation by Meik Michalke.
+    backward_pass_2_MTLD = 8 / 2
+    ttr_threshold_2_expected_MTLD = (forward_pass_2_MTLD +  backward_pass_2_MTLD) /2
+    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  ttr_threshold_2)[[2]], 
+                      ttr_threshold_2_expected_MTLD)
+    
+    
+    expect_error(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  26), 
+                 quanteda:::message_error('TTR threshold must be between 0 and 1'))
+})
+
+

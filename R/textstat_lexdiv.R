@@ -165,11 +165,11 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
     if (!sum(x)) stop(message_error("dfm_empty"))
     
     if ('MATTR' %in% measure)
-        stop('MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object')
+        stop(message_error('MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
     if ('MSTTR' %in% measure)
-        stop('MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object')
+        stop(message_error('MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
     if ('MTLD' %in% measure)
-        stop('MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object')
+        stop(message_error('MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
     
     if (remove_hyphens) 
         x <- dfm_split_hyphenated_features(x)
@@ -207,13 +207,13 @@ textstat_lexdiv.tokens <- function(x,
     
     # Error Checks for Dynamic Measures
     if ('MATTR' %in% measure) {
-        if (is.null(MATTR_window_size)) stop('MATTR_window_size must be specified if MATTR is to be computed')
+        if (is.null(MATTR_window_size)) stop(message_error('MATTR_window_size must be specified if MATTR is to be computed'))
     }
     if ('MSTTR' %in% measure) {
-        if (is.null(MSTTR_segment_size)) stop('MSTTR_segment_size must be specified if MSTTR is to be computed')
+        if (is.null(MSTTR_segment_size)) stop(message_error('MSTTR_segment_size must be specified if MSTTR is to be computed'))
     }
     if ('MTLD' %in% measure) {
-        if (is.null(MTLD_ttr_threshold)) stop('MTLD_ttr_threshold must be specified if MTLD is to be computed')
+        if (is.null(MTLD_ttr_threshold)) stop(message_error('MTLD_ttr_threshold must be specified if MTLD is to be computed'))
     }
     
     # Preprocessing of Tokens
@@ -413,11 +413,11 @@ dfm_split_hyphenated_features <- function(x) {
 
 compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr= TRUE){
     # Error Checks
-    if (is.null(window_size)) stop('window_size must be specified')
+    if (is.null(window_size)) stop(message_error('window_size must be specified'))
     # Get number of tokens across each individual document
     num_tokens <- sum(ntoken(x))
-    if (window_size > num_tokens) stop('window_size must be smaller than total ntokens for each document')
-    if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop('at least one MATTR value type to be returned')
+    if (window_size > num_tokens) stop(message_error('window_size must be smaller than total ntokens for each document'))
+    if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop(message_error('at least one MATTR value type to be returned'))
     if ((all_windows == TRUE)) (mean_mattr = FALSE)
     if (mean_mattr == TRUE) (all_windows == FALSE)
     
@@ -469,14 +469,14 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 
 compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks
-    if (is.null(segment_size)) stop('segment_size must be specified')
-    if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop('at least one MSTTR value type to be returned')
+    if (is.null(segment_size)) stop(message_error('segment_size must be specified'))
+    if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop(message_error('at least one MSTTR value type to be returned'))
     if (all_segments == TRUE) (mean_sttr == FALSE)
     if (mean_sttr == FALSE) (mean_sttr == TRUE)
     
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))
-    if (segment_size > num_tokens) stop('segment_size must be smaller than total ntokens across all documents')
+    if (segment_size > num_tokens) stop(message_error('segment_size must be smaller than total ntokens across all documents'))
     
     # Checks for divisibility of the tokens object by segment_size
     remainder = num_tokens %% segment_size
@@ -487,7 +487,7 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
                                       'and last segment of size', remainder))
     
     # Warning of discard of remainder
-    if (discard_remainder == TRUE) warning(paste('Last segment of size ', remainder, 'will be discarded'))
+    if ((discard_remainder == TRUE) & (remainder !=0)) warning(paste('Last segment of size ', remainder, 'will be discarded'))
     
     # List to Store MSTTR Values for each Window 
     msttr_list <- list()
@@ -556,8 +556,8 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
 
 compute_mtld <- function(x, ttr_threshold = 0.720){
     # Error Checks 
-    if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop("TTR threshold must be between 0 and 1")
-    if (is.null(ttr_threshold)) stop('TTR threshold cannot be NULL')
+    if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop(message_error("TTR threshold must be between 0 and 1"))
+    if (is.null(ttr_threshold)) stop(message_error('TTR threshold cannot be NULL'))
     
     # Internal Function to compute MTLD for both forward and backward passes
     one_pass <- function(x, backward = FALSE){
@@ -578,12 +578,12 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
             typecount <- ntype(temp_toks)[[1]]
             tokcount <- ntoken(temp_toks)[[1]]
             temp_TTR <- typecount/tokcount
-            if (temp_TTR <= ttr_threshold){
+            if (temp_TTR < ttr_threshold){
                 factor = factor + 1
                 counter = counter + 1
                 start = counter
                 temp_ls <- list_of_tokens[start:counter]
-            } else if (temp_TTR > ttr_threshold){
+            } else if (temp_TTR >= ttr_threshold){
                 counter = counter + 1
                 if (counter <= end){
                     temp_ls <- c(temp_ls, list_of_tokens[counter])
