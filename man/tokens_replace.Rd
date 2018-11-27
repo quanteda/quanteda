@@ -2,20 +2,23 @@
 % Please edit documentation in R/tokens_replace.R
 \name{tokens_replace}
 \alias{tokens_replace}
-\title{Replace types in tokens object}
+\title{Replace tokens in a tokens object}
 \usage{
-tokens_replace(x, pattern, replacement = NULL, case_insensitive = TRUE,
-  verbose = quanteda_options("verbose"))
+tokens_replace(x, pattern, replacement, valuetype = "glob",
+  case_insensitive = TRUE, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be replaced}
 
-\item{pattern}{a character vector or \link{dictionary}.  See \link{pattern}
-for more details.}
+\item{pattern}{a character vector or list of character vectors.  See
+\link{pattern} for more details.}
 
-\item{replacement}{if \code{pattern} is a character vector, then \code{replacement}
-must be character vector of equal length, for a 1:1 match.  If \code{pattern} is
-a \link{dictionary}, then \code{replacement} should not be used.}
+\item{replacement}{a character vector or (if \code{pattern} is a list) list
+of character vectors of the same length as \code{pattern}}
+
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
@@ -23,23 +26,33 @@ a \link{dictionary}, then \code{replacement} should not be used.}
 }
 \description{
 Substitute token types based on vectorized one-to-one matching. Since this
-function is created for lemmatization or user-defined stemming, it does not
-support multi-word features, or glob and regex patterns. Please use
-\code{\link{tokens_lookup}} with \code{exclusive = FALSE} for substitutions
-of more complex patterns.
+function is created for lemmatization or user-defined stemming. It support
+substitution of multi-word features by multi-word features, but substitution
+is fastest when \code{pattern} and \code{replacement} are character vectors
+and \code{valuetype = "fixed"} as the function only substitute types of
+tokens. Please use \code{\link{tokens_lookup}} with \code{exclusive = FALSE}
+to replace \link{dictionary} values.
 }
 \examples{
-toks <- tokens(data_corpus_irishbudget2010)
+toks <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE)
 
 # lemmatization
 infle <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
 lemma <- rep("focus", length(infle))
-toks2 <- tokens_replace(toks, infle, lemma)
+toks2 <- tokens_replace(toks, infle, lemma, valuetype = "fixed")
 kwic(toks2, "focus*")
 
 # stemming
 type <- types(toks)
 stem <- char_wordstem(type, "porter")
-toks3 <- tokens_replace(toks, type, stem, case_insensitive = FALSE)
+toks3 <- tokens_replace(toks, type, stem, valuetype = "fixed", case_insensitive = FALSE)
 identical(toks3, tokens_wordstem(toks, "porter"))
+
+# multi-multi substitution
+toks4 <- tokens_replace(toks, phrase(c("Minister Deputy Lenihan")), 
+                              phrase(c("Minister Deputy Conor Lenihan")))
+kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
+}
+\seealso{
+tokens_lookup
 }

@@ -7,6 +7,7 @@ Akitaka
 analyzed
 analyzing
 ange
+angewandte
 arXiv
 austin
 Baayen
@@ -44,14 +45,16 @@ Dugast
 Dumais
 ECCV
 eines
-Éireann                d
+Éireann
 ERC
+Eq
 et
 fastmatch
 fcm
 featnames
 fileset
 funder
+für
 Furnas
 getStemLanguages
 glob2rx
@@ -68,6 +71,7 @@ idf
 igraph
 INFOSYS
 intepreted
+Jiang
 Jouni
 JSON
 Jurafsky
@@ -99,6 +103,8 @@ lowercased
 lowercasing
 lsa
 LSA
+Lua
+Mathematik
 Matsuo
 MATTR
 McFall
@@ -126,6 +132,7 @@ overplot
 p123
 pearson
 Pennebaker
+Physik
 pp21
 Prabhakar
 pre
@@ -214,6 +221,8 @@ VignetteIndexEntry
 vocd
 Watanabe
 Werman
+wordfish
+Wordfish
 wordscore
 wordscores
 Wordscores

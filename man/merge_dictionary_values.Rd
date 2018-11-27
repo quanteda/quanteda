@@ -13,10 +13,10 @@ merge_dictionary_values(dict)
 Internal function to merge values of duplicated keys
 }
 \examples{
-dict <- list('A' = list(AA = list('aaaaa'), 'a'), 
-             'B' = list('b'),
-             'C' = list('c'),
-             'A' = list('aa'))
+dict <- list("A" = list(AA = list("aaaaa"), "a"), 
+             "B" = list("b"),
+             "C" = list("c"),
+             "A" = list("aa"))
 quanteda:::merge_dictionary_values(dict)
 }
 \keyword{internal}

@@ -15,7 +15,7 @@ Text join_comp(Text tokens,
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
-    std::size_t count_match = 0;
+    std::size_t match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -25,12 +25,12 @@ Text join_comp(Text tokens,
             if (it != map_comps.end()) {
                 //Rcout << it->second << "\n";
                 std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
-                count_match++;
+                match++;
             }
         }
     }
     
-    if (count_match == 0) return tokens; // return original tokens if no match
+    if (match == 0) return tokens; // return original tokens if no match
     
     Text tokens_flat;
     tokens_flat.reserve(tokens.size());
@@ -78,7 +78,8 @@ Text match_comp(Text tokens,
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
-    std::size_t count_match = 0;
+    std::size_t match = 0;
+    bool none = true;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -93,24 +94,26 @@ Text match_comp(Text tokens,
                     std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
                 }
                 tokens_multi[i].push_back(it->second); // keep multiple keys in the same position
-                count_match++;
+                match++;
+                none = false;
             }
         }
     }
     
-    if (count_match == 0) return tokens; // return original tokens if no match
+    // return original tokens if no match
+    if (none) return tokens;
     
     // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {
         if (!flags_match[i]) {
             tokens_multi[i].push_back(tokens[i]); 
-            count_match++;
+            match++;
         }
     }
     
     // Flatten the vector of vector
     Text tokens_flat;
-    tokens_flat.reserve(count_match);
+    tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
         if (nested) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());
@@ -155,7 +158,7 @@ struct compound_mt : public Worker{
  * @used tokens_compound()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
- * @param comps_ list of features to substitute
+ * @param compounds_ list of features to substitute
  * @param ids_ IDs to be placed after substitution
  * @param join join overlapped features if true
  * 
@@ -163,7 +166,7 @@ struct compound_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_compound(const List &texts_, 
-                              const List &comps_,
+                              const List &compounds_,
                               const CharacterVector &types_,
                               const String &delim_,
                               const bool &join){
@@ -196,7 +199,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     MapNgrams map_comps;
     map_comps.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
     
-    Ngrams comps = Rcpp::as<Ngrams>(comps_);
+    Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
     for (size_t g = 0; g < comps.size(); g++) {
         map_comps.insert(std::pair<Ngram, IdNgram>(comps[g], ++id_comp));

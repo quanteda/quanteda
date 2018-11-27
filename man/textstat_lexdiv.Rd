@@ -149,6 +149,6 @@ Covington, M.A. & McFall, J.D. (2010). "Cutting the Gordian Knot:
 }
 \author{
 Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
-  reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
+  re-implemented from functions written by Meik Michalke in the \pkg{koRpus}
   package.
 }

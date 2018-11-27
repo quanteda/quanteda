@@ -7,6 +7,7 @@
 ### New features
 
 * `textstat_lexdiv()` now works on tokens objects, not just dfm objects.
+* New function `tokens_split()` allows splitting single into multiple tokens based on a pattern match. (#1500)
 
 ### Behaviour changes
 
