@@ -37,8 +37,7 @@ fcm to lower and upper case, respectively, and then recombine the counts.
 }
 \examples{
 # for a document-feature matrix
-mydfm <- dfm(c("b A A", "C C a b B"), 
-             toLower = FALSE, verbose = FALSE)
+mydfm <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
 mydfm
 dfm_tolower(mydfm) 
 dfm_toupper(mydfm)

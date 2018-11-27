@@ -3,7 +3,7 @@
 \name{lexdiv}
 \alias{lexdiv}
 \alias{compute_lexdiv_stats}
-\title{Compute lexdiv (internal functions)}
+\title{Compute lexical diversity (internal functions)}
 \usage{
 compute_lexdiv_stats(x, measure, log.base)
 }
@@ -19,5 +19,5 @@ measures using logs)}
 returns a data.frame of documents and their lexical diversity scores.
 }
 \description{
-Internal function used in textstat_lexdiv
+Internal function used in \code{\link{textstat_lexdiv}}.
 }

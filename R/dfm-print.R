@@ -55,7 +55,7 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #'   printed with an inequality
 #' @param digits \code{digits} input to \code{\link{format}}
 #' @param nsmall \code{nsmall} input to \code{\link{format}}
-#' @return \code{character} value for inserting into the dfm print ouput
+#' @return \code{character} value for inserting into the dfm print output
 #' @examples 
 #' s <- c(.9, .99, .999, .9999, .99999, 
 #'        .1, .01, .001, .0001, .000001, .0000001, .00000001, .000000000001, 

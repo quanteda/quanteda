@@ -4,19 +4,18 @@
 \alias{dfm_replace}
 \title{Replace features in dfm}
 \usage{
-dfm_replace(x, pattern, replacement = NULL, case_insensitive = TRUE,
+dfm_replace(x, pattern, replacement, case_insensitive = TRUE,
   verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{dfm} whose features will be replaced}
 
-\item{pattern}{a character vector or \link{dictionary}.  See \link{pattern}
+\item{pattern}{a character vector.  See \link{pattern}
 for more details.}
 
 \item{replacement}{if \code{pattern} is a character vector, then
 \code{replacement} must be character vector of equal length, for a 1:1
-match.  If \code{pattern} is a \link{dictionary}, then \code{replacement}
-should not be used.}
+match.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 

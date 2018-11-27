@@ -70,7 +70,7 @@
 #'   "self-storage" becomes two features or tokens "self" and "storage". Default
 #'   is FALSE to preserve such words as is, with the hyphens.
 #' @author Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
-#'   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
+#'   re-implemented from functions written by Meik Michalke in the \pkg{koRpus}
 #'   package.
 #' @note This implements only the static measures of lexical diversity, not more
 #'   complex measures based on windows of text such as the Mean Segmental
@@ -195,9 +195,9 @@ textstat_lexdiv.tokens <-
     textstat_lexdiv.dfm(dfm(x), measure = measure, log.base = log.base)
 }
 
-#' Compute lexdiv (internal functions)
+#' Compute lexical diversity (internal functions)
 #' 
-#' Internal function used in textstat_lexdiv 
+#' Internal function used in \code{\link{textstat_lexdiv}}.
 #' @name lexdiv
 #' @param x a \link{dfm} object
 #' @param measure a list of lexical diversity measures.

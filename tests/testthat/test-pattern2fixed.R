@@ -4,74 +4,74 @@ test_that("pattern2fixed converts regex patterns correctly", {
       
     regex <- list(c('^a$', '^b'), c('c'), c('d'), c('b$'))
     glob <- list(c('a', 'b*'), c('*c*'), c('*d*'), c('*b'))
-    types <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
+    type <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     
     expect_identical(setdiff(
-        pattern2fixed(regex, types, 'fixed', case_insensitive = TRUE),
+        pattern2fixed(regex, type, 'fixed', case_insensitive = TRUE),
         list('C', 'c')
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed(regex, types, 'fixed', case_insensitive = FALSE),
+        pattern2fixed(regex, type, 'fixed', case_insensitive = FALSE),
         list('c')
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed(regex, types, 'regex', case_insensitive = TRUE),
+        pattern2fixed(regex, type, 'regex', case_insensitive = TRUE),
         list(c("A", "B"), c("a", "B"), c("A", "BB"), c("a", "BB"), 
              c("A", "b"), c("a", "b"), c("A", "bb"), c("a", "bb"), 
              "C", "CC", "c", "cc", "B", "BB", "b", "bb")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed(glob, types, 'glob', case_insensitive = TRUE),
+        pattern2fixed(glob, type, 'glob', case_insensitive = TRUE),
         list(c("A", "B"), c("a", "B"), c("A", "BB"), c("a", "BB"), 
              c("A", "b"), c("a", "b"), c("A", "bb"), c("a", "bb"), 
              "C", "CC", "c", "cc", "B", "BB", "b", "bb")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed(regex, types, 'regex', case_insensitive = FALSE),
+        pattern2fixed(regex, type, 'regex', case_insensitive = FALSE),
         list(c("a", "b"), c("a", "bb"), "c", "cc", "b", "bb")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed(glob, types, 'glob', case_insensitive = FALSE),
+        pattern2fixed(glob, type, 'glob', case_insensitive = FALSE),
         list(c("a", "b"), c("a", "bb"), "c", "cc", "b", "bb")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('?', types, 'glob', case_insensitive = FALSE),
+        pattern2fixed('?', type, 'glob', case_insensitive = FALSE),
         list("A", "B", "C", "a", "b", "c")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('?', types, 'glob', case_insensitive = TRUE),
+        pattern2fixed('?', type, 'glob', case_insensitive = TRUE),
         list("A", "B", "C", "a", "b", "c")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('a?', types, 'glob', case_insensitive = FALSE),
+        pattern2fixed('a?', type, 'glob', case_insensitive = FALSE),
         list("aa")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('a?', types, 'glob', case_insensitive = TRUE),
+        pattern2fixed('a?', type, 'glob', case_insensitive = TRUE),
         list("AA", "aa")
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('??', types, 'glob', case_insensitive = TRUE),
+        pattern2fixed('??', type, 'glob', case_insensitive = TRUE),
         list("AA", "BB", "CC", "aa", "bb", 'cc')
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('*', types, 'glob', case_insensitive = FALSE),
+        pattern2fixed('*', type, 'glob', case_insensitive = FALSE),
         list('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     ), list())
     
     expect_identical(setdiff(
-        pattern2fixed('*', types, 'glob', case_insensitive = TRUE),
+        pattern2fixed('*', type, 'glob', case_insensitive = TRUE),
         list('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     ), list())
     
@@ -82,20 +82,20 @@ test_that("pattern2fixed converts regex patterns correctly", {
 test_that("pattern2fixed converts complex regex patterns correctly", {
     
     regex <- list(c('a...b'), c('c.*d'), c('e.+f'), c('^g[xyz]+h$'), c('z'), c('[0-9]'))
-    types <- c('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b')
+    type <- c('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b')
     
     expect_identical(setdiff(
-        pattern2fixed(regex, types, 'regex', case_insensitive = TRUE),
+        pattern2fixed(regex, type, 'regex', case_insensitive = TRUE),
         list('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b')
     ), list())
 })
 
 test_that("pattern2fixed works with character class", {
     
-    types <- c('NATO', 'GM', '2000', 'G7')
-    expect_equal(pattern2fixed('\\d', types, 'regex', case_insensitive = TRUE),
+    type <- c('NATO', 'GM', '2000', 'G7')
+    expect_equal(pattern2fixed('\\d', type, 'regex', case_insensitive = TRUE),
                  list('2000', 'G7'))
-    expect_equal(pattern2fixed('\\D', types, 'regex', case_insensitive = TRUE),
+    expect_equal(pattern2fixed('\\D', type, 'regex', case_insensitive = TRUE),
                  list('NATO', 'GM', 'G7'))
     
 })
@@ -103,13 +103,13 @@ test_that("pattern2fixed works with character class", {
 test_that("pattern2fixed converts emoji correctly", {
     
     regex <- ':)'
-    types <- c(';)', ':(', ':)', ':/', '(;')
+    type <- c(';)', ':(', ':)', ':/', '(;')
     expect_identical(
-        unlist(pattern2fixed(regex, types, 'glob', case_insensitive=TRUE)),
+        unlist(pattern2fixed(regex, type, 'glob', case_insensitive=TRUE)),
         ':)'
     )
     expect_identical(
-        unlist(pattern2fixed(regex, types, 'fixed', case_insensitive=TRUE)),
+        unlist(pattern2fixed(regex, type, 'fixed', case_insensitive=TRUE)),
         ':)'
     )
 })
@@ -143,27 +143,17 @@ test_that("regex2fixed and regex2id still work", {
    
     regex <- list(c('^a$', '^b'), c('c'), c('d'), c('b$'))
     glob <- list(c('a', 'b*'), c('*c*'), c('*d*'), c('*b'))
-    types <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
+    type <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     
-    expect_identical(quanteda:::regex2fixed(regex, types, 'regex', TRUE),
-                     pattern2fixed(regex, types, 'regex', TRUE))
-    expect_identical(quanteda:::regex2id(regex, types, 'regex', TRUE),
-                     pattern2id(regex, types, 'regex', TRUE))
+    expect_identical(quanteda:::regex2fixed(regex, type, 'regex', TRUE),
+                     pattern2fixed(regex, type, 'regex', TRUE))
+    expect_identical(quanteda:::regex2id(regex, type, 'regex', TRUE),
+                     pattern2id(regex, type, 'regex', TRUE))
     
-    expect_identical(quanteda:::regex2fixed(glob, types, 'glob', TRUE),
-                     pattern2fixed(glob, types, 'glob', TRUE))
-    expect_identical(quanteda:::regex2id(glob, types, 'glob', TRUE),
-                     pattern2id(glob, types, 'glob', TRUE))
-})
-
-test_that("raise error when valuetype is illegal", {
-    
-    expect_error(pattern2fixed(c('aaa', 'bbb'), 'a*', 'xxx', TRUE),
-                 'valuetype should be "glob", "fixed" or "regex"')
-    expect_error(pattern2id(c('aaa', 'bbb'), 'a*', 'xxx', TRUE),
-                 'valuetype should be "glob", "fixed" or "regex"')
-    expect_error(index_types('a*', 'xxx', TRUE),
-                 'valuetype should be "glob", "fixed" or "regex"')
+    expect_identical(quanteda:::regex2fixed(glob, type, 'glob', TRUE),
+                     pattern2fixed(glob, type, 'glob', TRUE))
+    expect_identical(quanteda:::regex2id(glob, type, 'glob', TRUE),
+                     pattern2id(glob, type, 'glob', TRUE))
 })
 
 test_that("add value check for types (#1463)", {
@@ -171,12 +161,23 @@ test_that("add value check for types (#1463)", {
     v1 <- list(c("a", "bb", "cc"))
     v2 <- letters
     v3 <- c(TRUE, FALSE)
-    expect_error(pattern2fixed(v1, v1, 'regex', TRUE),
-                 "types must be a character vector")
+    expect_error(pattern2fixed(v1, v1, 'regex', TRUE))
     expect_silent(pattern2fixed(v1, v2, 'regex', TRUE))
-    expect_error(pattern2fixed(v1, v3, 'regex', TRUE),
-                 "types must be a character vector")
+    expect_error(pattern2fixed(v1, v3, 'regex', TRUE))
     
 })
 
-
+test_that("flatten_id() is working", {
+  expect_identical(
+    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
+    list(c(1, 2), 3, 4)
+  )
+  expect_identical(
+    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list())),
+    list(c(1, 2), 3, 4)
+  )
+  expect_identical(
+    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list()), TRUE),
+    list(c(1, 2), 3, 4, integer())
+  )
+})
