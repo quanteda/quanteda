@@ -250,14 +250,14 @@ test_that('textstat_lexdiv does not support dfm for MATTR, MTLD and MSTTR', {
 })
 
 
-test_that('textstat_lexdiv.tokens raises errors if parameters for moving emasures are not specified', {
+test_that('textstat_lexdiv.tokens raises errors if parameters for moving measures are not specified', {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
     
     expect_error(textstat_lexdiv(mytoken, measure = 'MATTR'),
                  quanteda:::message_error('MATTR_window_size must be specified if MATTR is to be computed'))
     
-    expect_error(textstat_lexdiv(mytoken, measure = 'MATTR'),
+    expect_error(textstat_lexdiv(mytoken, measure = 'MSTTR'),
                  quanteda:::message_error('MSTTR_segment_size must be specified if MSTTR is to be computed'))
     
     expect_error(textstat_lexdiv(mytoken, measure = 'MTLD'),
