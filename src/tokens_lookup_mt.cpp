@@ -130,8 +130,8 @@ struct lookup_mt : public Worker{
 * @used tokens_lookup()
 * @creator Kohei Watanabe
 * @param texts_ tokens ojbect
-* @param words_ list of patterns to find
-* @param ids_ IDs of patterns
+* @param words_ list of dictionary values
+* @param keys_ IDs of dictionary keys
 * @param overlap count overlapped words if true
 * @param nomatch determine how to treat unmached words: 0=remove, 1=pad; 2=keep
 */
@@ -140,8 +140,8 @@ struct lookup_mt : public Worker{
 // [[Rcpp::export]]
 List qatd_cpp_tokens_lookup(const List &texts_,
                             const CharacterVector types_,
-                            const List &keys_,
-                            const IntegerVector &ids_,
+                            const List &words_,
+                            const IntegerVector &keys_,
                             const bool overlap,
                             const int nomatch){
     
@@ -149,7 +149,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     Types types = Rcpp::as<Types>(types_);
     unsigned int id_max(0);
     if (nomatch == 2) {
-        id_max = ids_.size() > 0 ? Rcpp::max(ids_) : 0;
+        id_max = keys_.size() > 0 ? Rcpp::max(keys_) : 0;
     } else {
         id_max = types_.size();
     }
@@ -161,15 +161,16 @@ List qatd_cpp_tokens_lookup(const List &texts_,
 
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    Ngrams words = Rcpp::as<Ngrams>(words_);
+    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     
-    Ngrams keys = Rcpp::as<Ngrams>(keys_);
-    std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
-    std::vector<std::size_t> spans(keys.size());
-    for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
-        Ngram key = keys[g];
-        unsigned int id = ids[g];
-        map_keys.insert(std::pair<Ngram, unsigned int>(key, id));
-        spans[g] = key.size();
+    size_t len = std::min(words.size(), keys.size());
+    std::vector<std::size_t> spans(len);
+    for (size_t g = 0; g < len; g++) {
+        Ngram value = words[g];
+        unsigned int key = keys[g];
+        map_keys.insert(std::pair<Ngram, unsigned int>(value, key));
+        spans[g] = value.size();
     }
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());

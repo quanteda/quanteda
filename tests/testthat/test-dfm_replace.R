@@ -35,21 +35,3 @@ test_that("test dfm_replace", {
                  dfmt)
     
 })
-
-test_that("test dfm_replace works with dictionary", {
-    
-    txt <- c(doc1 = "aa bb a BB cc DD ee",
-             doc2 = "AA bb cc b DD ee")
-    dfmt <- dfm(txt, tolower = FALSE)
-    dict <- dictionary(list(A = c('a', 'aa'), B = c('b', 'bb')))
-    
-    expect_equal(featnames(dfm_replace(dfmt, dict, case_insensitive = TRUE)),
-                 c("A", "B", "cc", "DD", "ee"))
-    
-    expect_equal(featnames(dfm_replace(dfmt, dict, case_insensitive = FALSE)),
-                 c("A", "B", "BB", "cc", "DD", "ee", "AA"))
-    
-    expect_error(dfm_replace(dfmt, dict, c('a')),
-                 "'replacement' must be NULL when 'pattern' is a dictionary")
-    
-})

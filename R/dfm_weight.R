@@ -398,7 +398,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #' \dontrun{
 #' # comparison with tm
 #' if (requireNamespace("tm")) {
-#'     convert(wiki_dfm, to = "tm") %>% weightTfIdf() %>% as.matrix()
+#'     convert(wiki_dfm, to = "tm") %>% tm::weightTfIdf() %>% as.matrix()
 #'     # same as:
 #'     dfm_tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
 #' }

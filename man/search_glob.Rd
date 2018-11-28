@@ -2,23 +2,34 @@
 % Please edit documentation in R/pattern2fixed.R
 \name{search_glob}
 \alias{search_glob}
+\alias{search_glob_multi}
 \alias{search_regex}
+\alias{search_regex_multi}
 \alias{search_fixed}
+\alias{search_fixed_multi}
 \title{Select types without performing slow regex search}
 \usage{
-search_glob(patterns, types_search, index)
+search_glob(pattern, types_search, index)
 
-search_regex(patterns, types_search, case_insensitive)
+search_glob_multi(patterns, types_search, index)
 
-search_fixed(patterns, types_search, index)
+search_regex(pattern, types_search, case_insensitive)
+
+search_regex_multi(patterns, types_search, case_insensitive)
+
+search_fixed(pattern, types_search, index)
+
+search_fixed_multi(patterns, types_search, index)
 }
 \arguments{
-\item{patterns}{a list of "glob", "fixed" or "regex" patterns}
+\item{pattern}{a "glob", "fixed" or "regex" pattern}
 
 \item{types_search}{lowercased types when \code{case_insensitive=TRUE}, but
 not used in glob and fixed matching as types are in the index.}
 
 \item{index}{index object created by \code{index_types}}
+
+\item{patterns}{a list of "glob", "fixed" or "regex" patterns}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}, but not
 used in glob and fixed matching as types are lowercased in the index.}

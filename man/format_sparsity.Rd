@@ -17,7 +17,7 @@ printed with an inequality}
 \item{nsmall}{\code{nsmall} input to \code{\link{format}}}
 }
 \value{
-\code{character} value for inserting into the dfm print ouput
+\code{character} value for inserting into the dfm print output
 }
 \description{
 Inputs a dfm sparsity value from \code{\link{sparsity}} and formats it for

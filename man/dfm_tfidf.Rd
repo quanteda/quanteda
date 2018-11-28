@@ -55,7 +55,7 @@ dfm_tfidf(wiki_dfm, scheme_tf = "prop") \%>\% round(digits = 2)
 \dontrun{
 # comparison with tm
 if (requireNamespace("tm")) {
-    convert(wiki_dfm, to = "tm") \%>\% weightTfIdf() \%>\% as.matrix()
+    convert(wiki_dfm, to = "tm") \%>\% tm::weightTfIdf() \%>\% as.matrix()
     # same as:
     dfm_tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
 }

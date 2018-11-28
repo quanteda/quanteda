@@ -19,8 +19,8 @@ coalition.  (See Laver and Benoit 2002 for details.)
 }
 \examples{
 \dontrun{
-data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, removePunct = TRUE)
-fitted <- textmodel_mixfit(data_dfm_dailnoconf1991, 
+data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, remove_punct = TRUE)
+fitted <- textmodel_affinity(data_dfm_dailnoconf1991, 
                            c("Govt", "Opp", "Opp", rep(NA, 55)))
 (pred <- predict(fitted))
 tmpdf <- 
