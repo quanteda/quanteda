@@ -266,6 +266,7 @@ test_that('textstat_lexdiv.tokens raises errors if parameters for moving measure
 })
 
 
+
 # Test MATTR 
 test_that('textstat_lexdiv.tokens MATTR works correct on its own', {
     mytxt <- "one one two one one two one"
@@ -296,6 +297,23 @@ test_that('textstat_lexdiv.tokens MATTR works correct in conjunction with static
     
     expect_equivalent(textstat_lexdiv(mytoken, measure = c('TTR','MATTR'), MATTR_window_size = 2), 
                       data.frame(textstat_lexdiv(mytoken, measure = 'TTR'), MATTR = wsize2_MATTR))
+    
+})
+
+#Test compute_mattr internal function
+
+test_that('compute_mattr internal function has working exception handlers', {
+    mytxt <- "one one two one one two one"
+    mytoken <- tokens(mytxt)
+    
+    expect_equivalent(list(compute_mattr(mytoken,window_size=4,mean_mattr = FALSE,all_windows=TRUE)),
+                      list(c(MATTR_tokens1_4 = 2/4 ,MATTR_tokens2_5 =  2/4, MATTR_tokens3_6 = 2/4, MATTR_tokens4_7 =2/4)))
+    
+    expect_error(compute_mattr(mytoken),
+                 quanteda:::message_error('window_size must be specified'))
+    
+    expect_error(compute_mattr(mytoken, window_size = 2, all_windows = FALSE, mean_mattr = FALSE),
+                 quanteda:::message_error('at least one MATTR value type to be returned'))
     
 })
 
@@ -400,3 +418,10 @@ test_that('textstat_lexdiv.tokens MTLD works correct in conjunction with static 
 })
 
 
+test_that('compute_mtld internal function has working exception handlers',{
+    mytxt <- "apple orange apple orange pear pear apple orange"
+    mytoken <- tokens(mytxt)
+    
+    expect_error(compute_mtld(mytoken, ttr_threshold = NULL),
+                 quanteda:::message_error('TTR threshold cannot be NULL'))
+})
