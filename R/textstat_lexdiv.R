@@ -472,7 +472,7 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
     if (is.null(segment_size)) stop(message_error('segment_size must be specified'))
     if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop(message_error('at least one MSTTR value type to be returned'))
     if (all_segments == TRUE) (mean_sttr == FALSE)
-    if (mean_sttr == FALSE) (mean_sttr == TRUE)
+    if (mean_sttr == FALSE) (all_segments == FALSE)
     
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))

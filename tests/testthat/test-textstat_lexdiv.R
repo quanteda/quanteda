@@ -355,6 +355,22 @@ test_that('textstat_lexdiv.tokens MSTTR works correct in conjunction with static
 })
 
 
+
+
+test_that('compute_MSTTR internal function has working exception handlers',{
+    mytxt <- "apple orange apple orange pear pear apple orange"
+    mytoken <- tokens(mytxt)
+    
+    expect_equivalent(list(compute_msttr(mytoken,segment_size=2,mean_sttr = FALSE,all_segments=TRUE)),
+                      list(c(MATTR_tokens1_2 = 2/2 ,MATTR_tokens3_4 =  2/2, MATTR_tokens5_6 = 1/2, MSTTR_tokens7_8 =2/2)))
+    
+    expect_error(compute_mattr(mytoken),
+                 quanteda:::message_error('segment_size must be specified'))
+    
+    expect_error(compute_msttr(mytoken,segment_size=2,mean_sttr = FALSE ,all_segments=FALSE),
+                 quanteda:::message_error('at least one MSTTR value type to be returned'))
+})
+
 # Test MTLD
 
 
