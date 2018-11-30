@@ -265,8 +265,6 @@ test_that('textstat_lexdiv.tokens raises errors if parameters for moving measure
     
 })
 
-
-
 # Test MATTR 
 test_that('textstat_lexdiv.tokens MATTR works correct on its own', {
     mytxt <- "one one two one one two one"
@@ -466,4 +464,43 @@ test_that('compute_mtld internal function has working exception handlers',{
     # Test when TTR_threshold is not specified
     expect_error(compute_mtld(mytoken, ttr_threshold = NULL),
                  quanteda:::message_error('TTR threshold cannot be NULL'))
+})
+
+# Test situation where all static and dynamic measures are requested
+
+test_that('textstat_lexdiv.tokens works right when all measures are requested', {
+    mytxt <- "apple orange apple orange pear pear apple orange"
+    mytoken <- tokens(mytxt)
+    wsize2_MATTR = (2/2 + 2/2 + 2/2 + 2/2 + 1/2 + 2/2 + 2/2) / 7
+    wsize2_MSTTR = (2/2 + 2/2 + 1/2 + 1) /4 # 7th entry is discarded
+    
+    # Test TTR Threshold = 0.80
+    # FORWARD PASS
+    # <START> apple (1/1) orange (2/2) apple(2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # orange (1/1) pear (2/2) pear (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # apple (1/1) orange (2/2) <END>
+    # FACTOR = 3
+    forward_pass_1_MTLD = 8 / 3
+    
+    # BACKWARD PASS
+    # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # orange (1/1) apple (1/1) orange (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
+    # apple <END> 
+    # FACTOR = 3
+    backward_pass_1_MTLD = 8/3 
+    ttr0.8_MTLD = (forward_pass_1_MTLD +  backward_pass_1_MTLD) /2
+    
+    static_measures <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
+    moving_measures_df = data.frame(MATTR = wsize2_MATTR, MSTTR = wsize2_MSTTR, MTLD = ttr0.8_MTLD)
+    
+    
+    expect_identical(textstat_lexdiv(mytoken, 
+                                     measure = 'all', 
+                                     MATTR_window_size = 2,
+                                     MSTTR_segment_size = 2,
+                                     MTLD_ttr_threshold = 0.80
+    ), 
+    cbind(textstat_lexdiv(mytoken, measure = static_measures),
+          moving_measures_df))
+    
 })
