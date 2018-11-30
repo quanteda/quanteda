@@ -556,8 +556,8 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
 
 compute_mtld <- function(x, ttr_threshold = 0.720){
     # Error Checks 
-    if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop(message_error("TTR threshold must be between 0 and 1"))
     if (is.null(ttr_threshold)) stop(message_error('TTR threshold cannot be NULL'))
+    if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop(message_error("TTR threshold must be between 0 and 1"))
     
     # Internal Function to compute MTLD for both forward and backward passes
     one_pass <- function(x, backward = FALSE){

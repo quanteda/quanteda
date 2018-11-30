@@ -232,9 +232,8 @@ test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
     )
 })
 
-# General Tests for "Moving Measures"
-
-#Exception Handlers
+# <BEGIN> Tests for "Moving Measures"
+#Exception Handlers for DFM Objects
 test_that('textstat_lexdiv does not support dfm for MATTR, MTLD and MSTTR', {
     mytxt <- "one one two one one two one"
     mydfm <- dfm(mytxt)
@@ -249,7 +248,7 @@ test_that('textstat_lexdiv does not support dfm for MATTR, MTLD and MSTTR', {
     
 })
 
-
+#Exception Handlers for Tokens Objects
 test_that('textstat_lexdiv.tokens raises errors if parameters for moving measures are not specified', {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
@@ -285,10 +284,6 @@ test_that('textstat_lexdiv.tokens MATTR works correct on its own', {
     expect_identical(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 4)[[2]], 
                       wsize4_MATTR)
     
-    # Test window size > ntokens
-    expect_error(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 8),
-                 quanteda:::message_error('window_size must be smaller than total ntokens for each document'))
-    
 })
 
 
@@ -302,11 +297,15 @@ test_that('textstat_lexdiv.tokens MATTR works correct in conjunction with static
     
 })
 
-#Test compute_mattr internal function
-
+# Test compute_mattr internal function
 test_that('compute_mattr internal function has working exception handlers', {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
+    
+    # Test window size > ntokens
+    expect_error(compute_mattr(mytoken, window_size = 8),
+                 quanteda:::message_error('window_size must be smaller than total ntokens for each document'))
+    
     
     #Return each windows' TTR
     expect_equivalent(list(compute_mattr(mytoken,window_size=4,mean_mattr = FALSE,all_windows=TRUE)),
@@ -347,10 +346,7 @@ test_that('textstat_lexdiv.tokens MSTTR works correct on its own', {
     expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = length(mytoken$text1))[[2]],
                       textstat_lexdiv(mytoken, measure = 'TTR')[[2]])
     
-    # Test segment size > ntoken
-    expect_error(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 10),
-                 quanteda:::message_error('segment_size must be smaller than total ntokens across all documents'))
-    
+   
 })
 
 
@@ -366,10 +362,15 @@ test_that('textstat_lexdiv.tokens MSTTR works correct in conjunction with static
 
 
 
+# Test compute_msttr internal function
 
 test_that('compute_MSTTR internal function has working exception handlers',{
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
+    
+    # Test segment size > ntoken
+    expect_error(compute_msttr(mytoken, segment_size = 20),
+                 quanteda:::message_error('segment_size must be smaller than total ntokens across all documents'))
     
     #Return each segments TTR
     expect_identical(list(compute_msttr(mytoken,segment_size=2,mean_sttr = FALSE,all_segments=TRUE)),
@@ -437,10 +438,6 @@ test_that('textstat_lexdiv.tokens MTLD works correct', {
     ttr_threshold_2_expected_MTLD = (forward_pass_2_MTLD +  backward_pass_2_MTLD) /2
     expect_identical(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  ttr_threshold_2)[[2]], 
                       ttr_threshold_2_expected_MTLD)
-    
-    
-    expect_error(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  26), 
-                 quanteda:::message_error('TTR threshold must be between 0 and 1'))
 })
 
 
@@ -461,6 +458,10 @@ test_that('compute_mtld internal function has working exception handlers',{
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     
+    # Test when TTR_threshold is not  between 0 and 1
+    expect_error(compute_mtld(mytoken, ttr_threshold =  26), 
+                 quanteda:::message_error('TTR threshold must be between 0 and 1'))
+    
     # Test when TTR_threshold is not specified
     expect_error(compute_mtld(mytoken, ttr_threshold = NULL),
                  quanteda:::message_error('TTR threshold cannot be NULL'))
@@ -480,15 +481,15 @@ test_that('textstat_lexdiv.tokens works right when all measures are requested', 
     # orange (1/1) pear (2/2) pear (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # apple (1/1) orange (2/2) <END>
     # FACTOR = 3
-    forward_pass_1_MTLD = 8 / 3
+    forward_pass_MTLD = 8 / 3
     
     # BACKWARD PASS
     # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # orange (1/1) apple (1/1) orange (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # apple <END> 
     # FACTOR = 3
-    backward_pass_1_MTLD = 8/3 
-    ttr0.8_MTLD = (forward_pass_1_MTLD +  backward_pass_1_MTLD) /2
+    backward_pass_MTLD = 8/3 
+    ttr0.8_MTLD = (forward_pass_MTLD +  backward_pass_MTLD) /2
     
     static_measures <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
     moving_measures_df = data.frame(MATTR = wsize2_MATTR, MSTTR = wsize2_MSTTR, MTLD = ttr0.8_MTLD)
