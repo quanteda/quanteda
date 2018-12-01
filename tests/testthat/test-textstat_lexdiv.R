@@ -1,13 +1,11 @@
-context("test textstat_lexdiv")
-
+context("test textstat_lexdiv.dfm")
 
 test_that("textstat_lexdiv computation is correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
-    
     expect_equivalent(
         textstat_lexdiv(mydfm, "TTR"),
-        data.frame(document = c('d1', 'd2'), TTR = c(0.25, 0.5),
+        data.frame(document = c("d1", "d2"), TTR = c(0.25, 0.5),
                    stringsAsFactors = FALSE)
         )
 })
@@ -15,44 +13,44 @@ test_that("textstat_lexdiv computation is correct", {
 test_that("textstat_lexdiv CTTR works correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
-    
+
     expect_equivalent(
         textstat_lexdiv(mydfm, "CTTR")$CTTR,
-        c(2/sqrt(2*8), 2/sqrt(2*4)),
-        tolerance = 0.01 
+        c(2 / sqrt(2 * 8), 2 / sqrt( 2 * 4)),
+        tolerance = 0.01
     )
 })
 
 test_that("textstat_lexdiv R works correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
-    
+
     expect_equivalent(
         textstat_lexdiv(mydfm, "R")$R,
-        c(2/sqrt(8), 2/sqrt(4)),
-        tolerance = 0.01 
+        c(2 / sqrt(8), 2 / sqrt(4)),
+        tolerance = 0.01
     )
 })
 
 test_that("textstat_lexdiv C works correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
-    
+
     expect_equivalent(
         textstat_lexdiv(mydfm, "C")$C,
-        c(log10(2)/log10(8), log10(2)/log10(4)),
-        tolerance = 0.01 
+        c(log10(2) / log10(8), log10(2) / log10(4)),
+        tolerance = 0.01
     )
 })
 
 test_that("textstat_lexdiv Maas works correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
-    
+
     expect_equivalent(
         textstat_lexdiv(mydfm, "Maas")$Maas[1],
-        sqrt((log10(8) - log10(2))/log10(8)^2),
-        tolerance = 0.01 
+        sqrt( (log10(8) - log10(2)) / log10(8) ^ 2),
+        tolerance = 0.01
     )
 })
 
@@ -61,20 +59,17 @@ test_that("textstat_lexdiv works with a single document dfm (#706)", {
     mydfm <- dfm(mytxt)
     expect_equivalent(
         textstat_lexdiv(mydfm, c("TTR", "C")),
-        data.frame(document = "text1", TTR = 0.286, C = 0.356, 
+        data.frame(document = "text1", TTR = 0.286, C = 0.356,
                    stringsAsFactors = FALSE),
         tolerance = 0.01
     )
 })
 
 test_that("raises error when dfm is empty (#1419)", {
-    
     mx <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_error(textstat_lexdiv(mx, c("TTR", "C")),
                  quanteda:::message_error("dfm_empty"))
-    
 })
-
 
 test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     # read in Latin version of Ch 1 of the Gospel according to St. John
@@ -86,13 +81,13 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
         corpus(text_field = "latin") %>%
         texts(groups = "chapter") %>%  # combine verses into a single document
         corpus(docvars = data.frame(chapter = 1:4))
-    docnames(data_corpus_stjohn) <- paste0("chap", 1:4)    
+    docnames(data_corpus_stjohn) <- paste0("chap", 1:4)
 
     data_dfm_stjohn <- data_corpus_stjohn %>%
         tokens(remove_punct = TRUE) %>%
         tokens_tolower() %>%
         dfm()
-    
+
     # work with chapter 1
     data_dfm_stjohnch1 <- dfm_subset(data_dfm_stjohn, chapter == 1)
 
@@ -101,28 +96,29 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
         755L,     # from Miranda-Garcia and Calle-Martin (2005, Table 1)
         tol = 15  # might differ b/c of different translations, spellings, or token-counting method
     )
-    
+
     expect_equal(
         as.integer(ntype(data_dfm_stjohnch1)),  # 329
         331L,     # from Miranda-Garcia and Calle-Martin (2005, Table 1)
         tol = 2   # might be off because of different translations or token-counting method
     )
-    
+
     expect_equivalent(
         textstat_lexdiv(data_dfm_stjohnch1, "K"),  # 129.0943
         # from Miranda-Garcia and Calle-Martin (2005, Table 3)
-        data.frame(document = "chap1", K = 126.3366167, stringsAsFactors = FALSE), 
+        data.frame(document = "chap1", K = 126.3366167, stringsAsFactors = FALSE),
         tol = 3
     )
-    
-    # tests on multiple documents - this is Ch 1 and Chs 1-4 as per the first two rows of 
+
+    # tests on multiple documents - this is Ch 1 and Chs 1-4 as per the first two rows of
     # Table 3 of Miranda-Garcia and Calle-Martin (2005)
-    data_dfm_stjohncomb <- rbind(data_dfm_stjohnch1, 
+    data_dfm_stjohncomb <- rbind(data_dfm_stjohnch1,
                                  dfm_group(data_dfm_stjohn, rep(1, 4)))
     docnames(data_dfm_stjohncomb)[2] <- "chaps1-4"
     expect_equivalent(
         textstat_lexdiv(data_dfm_stjohncomb, "K"),
-        data.frame(document = c("chap1", "chaps1-4"), K = c(126.3366167, 99.43763148), stringsAsFactors = FALSE),
+        data.frame(document = c("chap1", "chaps1-4"), K = c(126.3366167, 99.43763148),
+                   stringsAsFactors = FALSE),
         tol = 3
     )
 
@@ -133,22 +129,21 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     expect_true(
         all(textstat_lexdiv(data_dfm_stjohncomb, "Vm")[1, "Vm", drop = TRUE] > 0)
     )
-    
+
     # test equality as per Tweedie and Baayen (1998, Eq. 19)
     # this needs checking - the tol value is a fudge
     result <- textstat_lexdiv(data_dfm_stjohncomb, c("K", "Vm"))
     K <- result[["K"]]
     Vm <- result[["Vm"]]
     expect_equal(
-        Vm^2,
-        as.numeric(K / 10^4 + (1 / ntoken(data_dfm_stjohncomb) - 1 / ntype(data_dfm_stjohncomb))),
+        Vm ^ 2,
+        as.numeric(K / 10 ^ 4 + (1 / ntoken(data_dfm_stjohncomb) - 1 / ntype(data_dfm_stjohncomb))),
         tol = .0013
     )
 })
 
 # Tests for multiple static measures of lexical diversity
 static_measures <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
-
 
 test_that("textstat_lexdiv works similarly for corpus and tokens", {
     txt <- c(d1 = "b a b a b a b a",
@@ -167,12 +162,12 @@ test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols"
     mydfm <- dfm(txt)
     mytokens <- tokens(txt)
     expect_identical(
-        textstat_lexdiv(mydfm["d1", ], measure = static_measures)[, -1], 
+        textstat_lexdiv(mydfm["d1", ], measure = static_measures)[, -1],
         textstat_lexdiv(mydfm["d2", ], measure = static_measures)[, -1]
     )
     expect_identical(
-        textstat_lexdiv(mytokens["d1", ], measure = static_measures)[,-1], 
-        textstat_lexdiv(mytokens["d2", ], measure = static_measures)[,-1]
+        textstat_lexdiv(mytokens["d1", ], measure = static_measures)[, -1],
+        textstat_lexdiv(mytokens["d2", ], measure = static_measures)[, -1]
     )
 })
 
@@ -180,9 +175,9 @@ test_that("textstat_lexdiv supports removal of hyphenation", {
     y <- dfm(c(d1 = "apple-pear orange-fruit elephant-ferrari",
                d2 = "alpha-beta charlie-delta echo-foxtrot"))
     z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
-               d2 ="alpha beta charlie delta echo foxtrot" ))
+               d2 = "alpha beta charlie delta echo foxtrot" ))
     expect_identical(
-        textstat_lexdiv(y, measure = static_measures, remove_hyphens = TRUE), 
+        textstat_lexdiv(y, measure = static_measures, remove_hyphens = TRUE),
         textstat_lexdiv(z, measure = static_measures, remove_hyphens = TRUE)
     )
 })
@@ -193,7 +188,7 @@ test_that("textstat_lexdiv can handle hyphenated words containing duplicated tok
     # remaining punctuation, symbols and numbers should also be removed
     # dfm_nested should only have 4 types with 6 tokens
     dfm_non_nested <- corpus(c(d1 = "a b b c c d")) %>% dfm()
-    expect_identical(textstat_lexdiv(dfm_nested, measure = static_measures, remove_hyphens = TRUE), 
+    expect_identical(textstat_lexdiv(dfm_nested, measure = static_measures, remove_hyphens = TRUE),
                      textstat_lexdiv(dfm_non_nested, measure = static_measures))
 })
 
@@ -209,9 +204,9 @@ test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
         textstat_lexdiv(dfm(txt), measure = "TTR", remove_hyphens = TRUE)
     )
     expect_identical(
-        textstat_lexdiv(tokens(txt), measure = "TTR", 
+        textstat_lexdiv(tokens(txt), measure = "TTR",
                         remove_punct = TRUE, remove_hyphens = TRUE),
-        textstat_lexdiv(dfm(txt), measure = "TTR", 
+        textstat_lexdiv(dfm(txt), measure = "TTR",
                         remove_punct = TRUE, remove_hyphens = TRUE)
     )
     expect_identical(
@@ -232,170 +227,167 @@ test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
     )
 })
 
+
+context("test textstat_lexdiv.tokens")
+
 # <BEGIN> Tests for "Moving Measures"
 #Exception Handlers for DFM Objects
-test_that('textstat_lexdiv does not support dfm for MATTR, MTLD and MSTTR', {
+test_that("textstat_lexdiv does not support dfm for MATTR, MTLD and MSTTR", {
     mytxt <- "one one two one one two one"
     mydfm <- dfm(mytxt)
-    expect_error(textstat_lexdiv(mydfm, measure = 'MATTR', MATTR_window_size = 2),
-                 quanteda:::message_error('MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
-    
-    expect_error(textstat_lexdiv(mydfm, measure = 'MSTTR', MSTTR_segment_size = 2),
-                 quanteda:::message_error('MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
-    
-    expect_error(textstat_lexdiv(mydfm, measure = 'MTLD', MTLD_ttr_threshold = 0.720),
-                 quanteda:::message_error('MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
-    
+    expect_error(textstat_lexdiv(mydfm, measure = "MATTR", MATTR_window_size = 2),
+                 quanteda:::message_error("MATTR is not supported for dfm objects."))
+                 # textstat_lexdiv should be called on a tokens object"))
+
+    expect_error(textstat_lexdiv(mydfm, measure = "MSTTR", MSTTR_segment_size = 2),
+                 quanteda:::message_error("MSTTR is not supported for dfm objects."))
+                 # textstat_lexdiv should be called on a tokens object"))
+
+    expect_error(textstat_lexdiv(mydfm, measure = "MTLD", MTLD_ttr_threshold = 0.720),
+                 quanteda:::message_error("MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object"))
+
 })
 
-#Exception Handlers for Tokens Objects
-test_that('textstat_lexdiv.tokens raises errors if parameters for moving measures are not specified', {
+# Exception Handlers for Tokens Objects
+test_that("textstat_lexdiv.tokens raises errors if parameters for moving measures are not specified", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
-    
-    expect_error(textstat_lexdiv(mytoken, measure = 'MATTR'),
-                 quanteda:::message_error('MATTR_window_size must be specified if MATTR is to be computed'))
-    
-    expect_error(textstat_lexdiv(mytoken, measure = 'MSTTR'),
-                 quanteda:::message_error('MSTTR_segment_size must be specified if MSTTR is to be computed'))
-    
-    expect_error(textstat_lexdiv(mytoken, measure = 'MTLD'),
-                 quanteda:::message_error('MTLD_ttr_threshold must be specified if MTLD is to be computed'))
-    
+
+    expect_error(textstat_lexdiv(mytoken, measure = "MATTR"),
+                 quanteda:::message_error("MATTR_window_size must be specified if MATTR is to be computed"))
+    expect_error(textstat_lexdiv(mytoken, measure = "MSTTR"),
+                 quanteda:::message_error("MSTTR_segment_size must be specified if MSTTR is to be computed"))
+    expect_error(textstat_lexdiv(mytoken, measure = "MTLD"),
+                 quanteda:::message_error("MTLD_ttr_threshold must be specified if MTLD is to be computed"))
 })
 
 # Test MATTR 
-test_that('textstat_lexdiv.tokens MATTR works correct on its own', {
+test_that("textstat_lexdiv.tokens MATTR works correct on its own", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
-    wsize2_MATTR = (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6 
-    wsize3_MATTR = (2/3 + 2/3 + 2/3 + 2/3 + 2/3) / 5
-    wsize4_MATTR = (2/4 + 2/4 + 2/4 + 2/4) / 4
-    
+    wsize2_MATTR <- (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6
+    wsize3_MATTR <- (2/3 + 2/3 + 2/3 + 2/3 + 2/3) / 5
+    wsize4_MATTR <- (2/4 + 2/4 + 2/4 + 2/4) / 4
+
     # Test window size = 2
-    expect_identical(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 2)[[2]], 
+    expect_identical(textstat_lexdiv(mytoken, measure = "MATTR", MATTR_window_size = 2)[[2]],
                       wsize2_MATTR)
-    
+
     # Test window size = 3
-    expect_identical(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 3)[[2]], 
+    expect_identical(textstat_lexdiv(mytoken, measure = "MATTR", MATTR_window_size = 3)[[2]],
                       wsize3_MATTR)
-    
+
     # Test window size = 4
-    expect_identical(textstat_lexdiv(mytoken, measure = 'MATTR', MATTR_window_size = 4)[[2]], 
+    expect_identical(textstat_lexdiv(mytoken, measure = "MATTR", MATTR_window_size = 4)[[2]],
                       wsize4_MATTR)
-    
+
 })
 
 
-test_that('textstat_lexdiv.tokens MATTR works correct in conjunction with static measures', {
+test_that("textstat_lexdiv.tokens MATTR works correct in conjunction with static measures", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
-    wsize2_MATTR = (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6 
-    
-    expect_identical(textstat_lexdiv(mytoken, measure = c('TTR','MATTR'), MATTR_window_size = 2), 
-                      data.frame(textstat_lexdiv(mytoken, measure = 'TTR'), MATTR = wsize2_MATTR))
-    
+    wsize2_MATTR < (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6
+
+    expect_identical(
+        textstat_lexdiv(mytoken, measure = c("TTR", "MATTR"), MATTR_window_size = 2),
+        data.frame(textstat_lexdiv(mytoken, measure = "TTR"), MATTR = wsize2_MATTR)
+    )
 })
 
 # Test compute_mattr internal function
-test_that('compute_mattr internal function has working exception handlers', {
+test_that("compute_mattr internal function has working exception handlers", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
-    
+
     # Test window size > ntokens
     expect_error(compute_mattr(mytoken, window_size = 8),
-                 quanteda:::message_error('window_size must be smaller than total ntokens for each document'))
-    
-    
-    #Return each windows' TTR
-    expect_equivalent(list(compute_mattr(mytoken,window_size=4,mean_mattr = FALSE,all_windows=TRUE)),
-                      list(c(MATTR_tokens1_4 = 2/4 ,MATTR_tokens2_5 =  2/4, MATTR_tokens3_6 = 2/4, MATTR_tokens4_7 =2/4)))
-    
+                 quanteda:::message_error("window_size must be smaller than total ntokens for each document"))
+
+    #Return each windows" TTR
+    expect_equivalent(list(compute_mattr(mytoken, window_size=4, mean_mattr = FALSE, all_windows=TRUE)),
+                      list(c(MATTR_tokens1_4 = 2/4, MATTR_tokens2_5 =  2/4, MATTR_tokens3_6 = 2/4, MATTR_tokens4_7 = 2/4)))
+
     #Test case when segment_size is not specified
     expect_error(compute_mattr(mytoken),
-                 quanteda:::message_error('window_size must be specified'))
-    
+                 quanteda:::message_error("window_size must be specified"))
+
     #Test case when neither all_windows or mean TTR across all windows is not requested
     expect_error(compute_mattr(mytoken, window_size = 2, all_windows = FALSE, mean_mattr = FALSE),
-                 quanteda:::message_error('at least one MATTR value type to be returned'))
-    
+                 quanteda:::message_error("at least one MATTR value type to be returned"))
 })
 
 # Test MSTTR
 
-test_that('textstat_lexdiv.tokens MSTTR works correct on its own', {
+test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    wsize2_MSTTR = (2/2 + 2/2 + 1/2 + 2/2) / 4
-    wsize3_MSTTR = (2/3 + 2/3 ) / 2 # apple orange at the back is discarded
-    wsize4_MSTTR = (2/4 + 3/4) / 2
+    wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4
+    wsize3_MSTTR <- (2/3 + 2/3 ) / 2 # apple orange at the back is discarded
+    wsize4_MSTTR <- (2/4 + 3/4) / 2
     
     # Test segment size = 2
-    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 2)[[2]], 
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment_size = 2)[[2]], 
                       wsize2_MSTTR)
     
     # Test segment size = 3
-    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 3)[[2]], 
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment_size = 3)[[2]], 
                       wsize3_MSTTR)
     
     # Test segment size = 4
-    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = 4)[[2]], 
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment_size = 4)[[2]], 
                       wsize4_MSTTR)
     
     # Test segment size = ntoken
-    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MSTTR', MSTTR_segment_size = length(mytoken$text1))[[2]],
-                      textstat_lexdiv(mytoken, measure = 'TTR')[[2]])
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment_size = length(mytoken$text1))[[2]],
+                      textstat_lexdiv(mytoken, measure = "TTR")[[2]])
     
    
 })
 
 
 
-test_that('textstat_lexdiv.tokens MSTTR works correct in conjunction with static measures', {
+test_that("textstat_lexdiv.tokens MSTTR works correct in conjunction with static measures", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    wsize2_MSTTR = (2/2 + 2/2 + 1/2 + 2/2) / 4
-    
-    expect_identical(textstat_lexdiv(mytoken, measure = c('TTR','MSTTR'), MSTTR_segment_size = 2), 
-                      data.frame(textstat_lexdiv(mytoken, measure = 'TTR'), MSTTR = wsize2_MSTTR))
+    wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4
+
+    expect_identical(textstat_lexdiv(mytoken, measure = c("TTR","MSTTR"), MSTTR_segment_size = 2), 
+                      data.frame(textstat_lexdiv(mytoken, measure = "TTR"), MSTTR = wsize2_MSTTR))
 })
 
 
 
 # Test compute_msttr internal function
 
-test_that('compute_MSTTR internal function has working exception handlers',{
+test_that("compute_MSTTR internal function has working exception handlers",{
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     
     # Test segment size > ntoken
     expect_error(compute_msttr(mytoken, segment_size = 20),
-                 quanteda:::message_error('segment_size must be smaller than total ntokens across all documents'))
+                 quanteda:::message_error("segment_size must be smaller than total ntokens across all documents"))
     
     #Return each segments TTR
-    expect_identical(list(compute_msttr(mytoken,segment_size=2,mean_sttr = FALSE,all_segments=TRUE)),
-                      list(c(MSTTR_tokens1_2 = 2/2 ,MSTTR_tokens3_4 =  2/2, MSTTR_tokens5_6 = 1/2, MSTTR_tokens7_8 =2/2)))
+    expect_identical(list(compute_msttr(mytoken,segment_size=2, mean_sttr = FALSE, all_segments=TRUE)),
+                      list(c(MSTTR_tokens1_2 = 2/2, MSTTR_tokens3_4 =  2/2, MSTTR_tokens5_6 = 1/2, MSTTR_tokens7_8 = 2/2)))
     
     
     # Don't Discard Remainder
     expect_identical(list(compute_msttr(mytoken,segment_size=3 , mean_sttr = FALSE, all_segments=TRUE, discard_remainder = FALSE)),
-                     list(c(MSTTR_tokens1_3 = 2/3 ,MSTTR_tokens4_6 =  2/3, MSTTR_tokens7_8 = 1)))
+                     list(c(MSTTR_tokens1_3 = 2/3, MSTTR_tokens4_6 =  2/3, MSTTR_tokens7_8 = 1)))
     
     # Test misspecification of Segment Size
     expect_error(compute_msttr(mytoken, segment_size = NULL),
-                 quanteda:::message_error('segment_size must be specified'))
+                 quanteda:::message_error("segment_size must be specified"))
     
     # Case when neither mean segmental TTR or each segment TTR is not requested 
     expect_error(compute_msttr(mytoken,segment_size=2,mean_sttr = FALSE ,all_segments=FALSE),
-                 quanteda:::message_error('at least one MSTTR value type to be returned'))
-    
-    
+                 quanteda:::message_error("at least one MSTTR value type to be returned"))
 })
 
 # Test MTLD
-
-
-test_that('textstat_lexdiv.tokens MTLD works correct', {
+test_that("textstat_lexdiv.tokens MTLD works correct", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     
@@ -413,9 +405,9 @@ test_that('textstat_lexdiv.tokens MTLD works correct', {
     # orange (1/1) apple (1/1) orange (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # apple <END> 
     # FACTOR = 3
-    backward_pass_1_MTLD = 8/3 
+    backward_pass_1_MTLD <- 8/3 
     ttr_threshold_1_expected_MTLD = (forward_pass_1_MTLD +  backward_pass_1_MTLD) /2
-    expect_equivalent(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  ttr_threshold_1)[[2]], 
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MTLD", MTLD_ttr_threshold =  ttr_threshold_1)[[2]], 
                       ttr_threshold_1_expected_MTLD)
     
     
@@ -436,40 +428,40 @@ test_that('textstat_lexdiv.tokens MTLD works correct', {
     # It resets the TTR if it falls BELOW the threshold. This is consistent with the koRpus package implementation by Meik Michalke.
     backward_pass_2_MTLD = 8 / 2
     ttr_threshold_2_expected_MTLD = (forward_pass_2_MTLD +  backward_pass_2_MTLD) /2
-    expect_identical(textstat_lexdiv(mytoken, measure = 'MTLD', MTLD_ttr_threshold =  ttr_threshold_2)[[2]], 
+    expect_identical(textstat_lexdiv(mytoken, measure = "MTLD", MTLD_ttr_threshold =  ttr_threshold_2)[[2]], 
                       ttr_threshold_2_expected_MTLD)
 })
 
 
 
-test_that('textstat_lexdiv.tokens MTLD works correct in conjunction with static measures', {
+test_that("textstat_lexdiv.tokens MTLD works correct in conjunction with static measures", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     
     ttr_threshold = 0.50
     expected_MTLD_value = 4
     
-    expect_identical(textstat_lexdiv(mytoken, measure = c('TTR','MTLD'), MTLD_ttr_threshold =  ttr_threshold), 
-                      data.frame(textstat_lexdiv(mytoken, measure = 'TTR'), MTLD = expected_MTLD_value))
+    expect_identical(textstat_lexdiv(mytoken, measure = c("TTR","MTLD"), MTLD_ttr_threshold =  ttr_threshold), 
+                      data.frame(textstat_lexdiv(mytoken, measure = "TTR"), MTLD = expected_MTLD_value))
 })
 
 
-test_that('compute_mtld internal function has working exception handlers',{
+test_that("compute_mtld internal function has working exception handlers",{
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     
     # Test when TTR_threshold is not  between 0 and 1
     expect_error(compute_mtld(mytoken, ttr_threshold =  26), 
-                 quanteda:::message_error('TTR threshold must be between 0 and 1'))
+                 quanteda:::message_error("TTR threshold must be between 0 and 1"))
     
     # Test when TTR_threshold is not specified
     expect_error(compute_mtld(mytoken, ttr_threshold = NULL),
-                 quanteda:::message_error('TTR threshold cannot be NULL'))
+                 quanteda:::message_error("TTR threshold cannot be NULL"))
 })
 
 # Test situation where all static and dynamic measures are requested
 
-test_that('textstat_lexdiv.tokens works right when all measures are requested', {
+test_that("textstat_lexdiv.tokens works right when all measures are requested", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     wsize2_MATTR = (2/2 + 2/2 + 2/2 + 2/2 + 1/2 + 2/2 + 2/2) / 7
@@ -496,7 +488,7 @@ test_that('textstat_lexdiv.tokens works right when all measures are requested', 
     
     
     expect_identical(textstat_lexdiv(mytoken, 
-                                     measure = 'all', 
+                                     measure = "all", 
                                      MATTR_window_size = 2,
                                      MSTTR_segment_size = 2,
                                      MTLD_ttr_threshold = 0.80

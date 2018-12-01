@@ -134,7 +134,9 @@
 #'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
 #' dfm(txt) %>% 
 #'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
-textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
+textstat_lexdiv <- function(x,
+                            measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K",
+                                        "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD"),
                             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
                             remove_symbols = TRUE, remove_hyphens = FALSE,
                             MATTR_window_size = NULL,
@@ -144,43 +146,47 @@ textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", 
 }
 
 #' @export
-textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
+textstat_lexdiv.default <- function(x,
+                                    measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K",
+                                                "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD"),
+                                    log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
+                                    remove_symbols = TRUE, remove_hyphens = FALSE,
+                                    MATTR_window_size = NULL,
+                                    MSTTR_segment_size = NULL,
+                                    MTLD_ttr_threshold = NULL) {
+    stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
+}
+
+#' @export
+textstat_lexdiv.dfm <- function(x,
+                                measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K",
+                                            "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD"),
                                 log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
                                 remove_symbols = TRUE, remove_hyphens = FALSE,
                                 MATTR_window_size = NULL,
                                 MSTTR_segment_size = NULL,
                                 MTLD_ttr_threshold = NULL) {
-    stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
-}
 
-#' @export
-textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
-             log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
-             remove_symbols = TRUE, remove_hyphens = FALSE,
-             MATTR_window_size = NULL,
-             MSTTR_segment_size = NULL,
-             MTLD_ttr_threshold = NULL) {
-        
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
-    
-    if ('MATTR' %in% measure)
-        stop(message_error('MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
-    if ('MSTTR' %in% measure)
-        stop(message_error('MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
-    if ('MTLD' %in% measure)
-        stop(message_error('MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object'))
-    
-    if (remove_hyphens) 
+
+    if ("MATTR" %in% measure)
+        stop(message_error("MATTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object"))
+    if ("MSTTR" %in% measure)
+        stop(message_error("MSTTR is not supported for dfm objects. textstat_lexdiv should be called on a tokens object"))
+    if ("MTLD" %in% measure)
+        stop(message_error("MTLD is not supported for dfm objects. textstat_lexdiv should be called on a tokens object"))
+
+    if (remove_hyphens)
         x <- dfm_split_hyphenated_features(x)
-    if (remove_numbers) 
+    if (remove_numbers)
         x <- dfm_remove(x, "^\\p{N}+$", valuetype = "regex")
-    if (remove_punct) 
+    if (remove_punct)
         x <- dfm_remove(x, "^\\p{P}+$", valuetype = "regex")
-    if (remove_symbols) 
+    if (remove_symbols)
         x <- dfm_remove(x, "^\\p{S}+$", valuetype = "regex")
-    
-    if (!sum(x)) 
+
+    if (!sum(x))
         stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
 
     measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
@@ -191,104 +197,104 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
         if (!all(is_valid))
             stop("Invalid measure(s): ", measure[!is_valid])
     }
-    
+
     result <- compute_lexdiv_stats(x, measure, log.base)
     return(result)
 }
 
 #' @export
 textstat_lexdiv.tokens <- function(x,
-                                   measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas", "MATTR","MSTTR","MTLD"),
+                                   measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K",
+                                               "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD"),
                                    log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
                                    remove_symbols = TRUE, remove_hyphens = FALSE,
                                    MATTR_window_size = NULL,
                                    MSTTR_segment_size = NULL,
                                    MTLD_ttr_threshold = NULL) {
-    
+
     # Error Checks for Dynamic Measures
-    if ('MATTR' %in% measure) {
-        if (is.null(MATTR_window_size)) stop(message_error('MATTR_window_size must be specified if MATTR is to be computed'))
+    if ("MATTR" %in% measure) {
+        if (is.null(MATTR_window_size)) stop(message_error("MATTR_window_size must be specified if MATTR is to be computed"))
     }
-    if ('MSTTR' %in% measure) {
-        if (is.null(MSTTR_segment_size)) stop(message_error('MSTTR_segment_size must be specified if MSTTR is to be computed'))
+    if ("MSTTR" %in% measure) {
+        if (is.null(MSTTR_segment_size)) stop(message_error("MSTTR_segment_size must be specified if MSTTR is to be computed"))
     }
-    if ('MTLD' %in% measure) {
-        if (is.null(MTLD_ttr_threshold)) stop(message_error('MTLD_ttr_threshold must be specified if MTLD is to be computed'))
+    if ("MTLD" %in% measure) {
+        if (is.null(MTLD_ttr_threshold)) stop(message_error("MTLD_ttr_threshold must be specified if MTLD is to be computed"))
     }
-    
+
     # Preprocessing of Tokens
     if (remove_hyphens)
         x <- tokens(x, remove_hyphens = TRUE)
-    if (remove_numbers) 
+    if (remove_numbers)
         x <- tokens(x, remove_numbers = TRUE)
     if (remove_symbols)
         x <- tokens(x, remove_symbols = TRUE)
     if (remove_punct) {
-        # this will be replaced with 
+        # this will be replaced with
         # x <- tokens(x, remove_punct = TRUE)
         # when we resolve #1445
         x <- tokens_remove(x, "^\\p{P}+$", valuetype = "regex")
     }
-    
+
     # Split Measures into Static and Dynamic Measures
     measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
     if (measure[1] == "all") {
         measure_static <- measure_option
-        measure_dynamic <- c("MATTR","MSTTR","MTLD")
+        measure_dynamic <- c("MATTR", "MSTTR", "MTLD")
     } else {
         measure_static <- measure[measure %in% measure_option]
-        measure_dynamic <- measure[measure %in% c("MATTR","MSTTR","MTLD")]
+        measure_dynamic <- measure[measure %in% c("MATTR", "MSTTR", "MTLD")]
     }
-    
+
     # Compute static lexdiv measures by calling textstat_lexdiv.dfm
-    
-    if (length(measure_static) > 0){
-        results = textstat_lexdiv.dfm(dfm(x),
+
+    if (length(measure_static) > 0) {
+        results <- textstat_lexdiv.dfm(dfm(x),
                                       measure = measure_static, log.base = log.base,
                                       remove_numbers = remove_numbers, remove_punct = remove_punct,
                                       remove_symbols = remove_symbols, remove_hyphens = remove_hyphens)
         }
-    
+
     # Compute / append dynamic lexdiv measures by calling respective helper functions
     if (length(measure_dynamic) > 0){
-        if ('MATTR' %in% measure_dynamic) {
+        if ("MATTR" %in% measure_dynamic) {
             MATTR <- unlist(lapply(x, function(x) compute_mattr(x,
                                                                 window_size = MATTR_window_size,
                                                                 all_windows = FALSE,
                                                                 mean_mattr = TRUE)))
-            if (exists('results')) {
+            if (exists("results")) {
                 results <- cbind(results, MATTR)
             } else {
                 results <- data.table(document = names(MATTR), MATTR = MATTR)
             }
         }
-        
-        if ('MSTTR' %in% measure_dynamic) {
+
+        if ("MSTTR" %in% measure_dynamic) {
             MSTTR <- unlist(lapply(x, function(x) compute_msttr(x,
                                                                 segment_size = MSTTR_segment_size,
                                                                 discard_remainder = TRUE,
                                                                 all_segments = FALSE,
                                                                 mean_sttr = TRUE)))
-            if (exists('results')) {
+            if (exists("results")) {
                 results <- cbind(results, MSTTR)
             } else {
                 results <- data.table(document = names(MSTTR), MSTTR = MSTTR)
             }
         }
-        
-        if ('MTLD' %in% measure_dynamic) {
+
+        if ("MTLD" %in% measure_dynamic) {
             MTLD <- unlist(lapply(x, function(x) compute_mtld(x,
                                                               ttr_threshold = MTLD_ttr_threshold)))
-            if (exists('results')) {
+            if (exists("results")) {
                 results <- cbind(results, MTLD)
             } else {
                 results <- data.table(document = names(MTLD), MTLD = MTLD)
             }
         }
     }
-    
-    return(results)
-    
+
+    results
 }
 
 #' Compute lexical diversity (internal functions)
@@ -300,31 +306,31 @@ textstat_lexdiv.tokens <- function(x,
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logs)
 #' @return returns a data.frame of documents and their lexical diversity scores.
-compute_lexdiv_stats <- function(x, measure, log.base){
-    
+compute_lexdiv_stats <- function(x, measure, log.base) {
+
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- K <- D <- Vm <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
-  
+
     if ("TTR" %in% measure)
         temp[, TTR := n_types / n_tokens]
-  
+
     if ("C" %in% measure)
         temp[, C := log(n_types, base = log.base) / log(n_tokens, base = log.base)]
-  
+
     if ("R" %in% measure)
         temp[, R := n_types / sqrt(n_tokens)]
-  
+
     if ("CTTR" %in% measure)
         temp[, CTTR := n_types / sqrt(2 * n_tokens)]
-  
-    if ("U" %in% measure) 
-        temp[, U := log(n_tokens, base = log.base) ^ 2 / 
+
+    if ("U" %in% measure)
+        temp[, U := log(n_tokens, base = log.base) ^ 2 /
                     (log(n_tokens, base = log.base) - log(n_types, base = log.base))]
-  
-    if ("S" %in% measure) 
-        temp[, S := log(log(n_types, base = log.base), base = log.base) / 
+
+    if ("S" %in% measure)
+        temp[, S := log(log(n_types, base = log.base), base = log.base) /
                     log(log(n_tokens, base = log.base), base = log.base)]
-  
+
     # computations for K, D, Vm
     # produces a list of data.frames that will be used for computing the measures
     if (length(intersect(c("K", "D", "Vm"), measure))) {
@@ -337,33 +343,33 @@ compute_lexdiv_stats <- function(x, measure, log.base){
             subset(result, result$i > 0)
       })
     }
-    
+
     if ("K" %in% measure)
-        temp[, K := 10^4 * vapply(ViN, function(y) sum(y$ViN * (y$i / y$n_tokens)^2), numeric(1))]
-    
+        temp[, K := 10 ^ 4 * vapply(ViN, function(y) sum(y$ViN * (y$i / y$n_tokens) ^ 2), numeric(1))]
+
     if ("D" %in% measure)
-        temp[, D := vapply(ViN, 
-                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))), 
+        temp[, D := vapply(ViN,
+                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ( (y$i - 1) / (y$n_tokens - 1)) ),
                            numeric(1))]
-    
-    if ("Vm" %in% measure) 
-        temp[, Vm := vapply(ViN, 
-                            function(y) sqrt( sum(y$ViN * (y$i / y$n_tokens)^2) - 1 / y$n_types[1] ),
+
+    if ("Vm" %in% measure)
+        temp[, Vm := vapply(ViN,
+                            function(y) sqrt( sum(y$ViN * (y$i / y$n_tokens) ^ 2) - 1 / y$n_types[1] ),
                             numeric(1))]
-    
+
     if ("Maas" %in% measure) {
         measure <- c(measure, "lgV0", "lgeV0")
-        temp[, Maas := sqrt((log(n_tokens, base = log.base) - log(n_types, base = log.base)) / 
+        temp[, Maas := sqrt( (log(n_tokens, base = log.base) - log(n_types, base = log.base) ) /
                              log(n_tokens, base = log.base) ^ 2)]
         temp[, lgV0 := log10(n_types) / sqrt(1 - (log10(n_types) / (log10(n_tokens) + 0)) ^ 2)]
         temp[, lgeV0 := log(n_types) / sqrt(1 - (log(n_types) / (log(n_tokens) + 0)) ^ 2)]
     }
-    
+
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
-    result <- cbind(result, as.data.frame(temp[,measure, with = FALSE]))
+    result <- cbind(result, as.data.frame(temp[, measure, with = FALSE]))
     class(result) <- c("lexdiv", "textstat", "data.frame")
     rownames(result) <- as.character(seq_len(nrow(result)))
-    return(result)
+    result
 }
 
 #' Split a dfm's hyphenated features into constituent parts
@@ -379,27 +385,27 @@ compute_lexdiv_stats <- function(x, measure, log.base){
 dfm_split_hyphenated_features <- function(x) {
     # the global for matching the hyphens and similar characters
     hyphen_regex <- "^.+\\p{Pd}.+$"
-    
+
     # figure out where the hyphens are
     hyphenated_index <- which(stringi::stri_detect_regex(featnames(x), hyphen_regex))
-    
+
     # return dfm unmodified if no hyphenated features are found
     if (length(hyphenated_index) == 0) return(x)
-    
+
     # split the hyphenated feature names into a list of components
     splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
-    
+
     # efficiently create a new dfm from hyphenated feature name components
     splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
     colnames(splitdfm) <- unlist(splitfeatures, use.names = FALSE)
-    
+
     # combine dfms and suppress duplicated feature name warning
     result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
     # compress features to combine same-named features
     result <- dfm_compress(result, margin = "features")
 
     result
-} 
+}
 
 #' Computes the Moving-Average Type-Token Ratio (Covington & McFall, 2010) for a Tokens Object
 #' 
@@ -413,44 +419,49 @@ dfm_split_hyphenated_features <- function(x) {
 
 compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr= TRUE){
     # Error Checks
-    if (is.null(window_size)) stop(message_error('window_size must be specified'))
+    if (is.null(window_size)) stop(message_error("window_size must be specified"))
     # Get number of tokens across each individual document
     num_tokens <- sum(ntoken(x))
-    if (window_size > num_tokens) stop(message_error('window_size must be smaller than total ntokens for each document'))
-    if ((all_windows == FALSE) && (mean_mattr == FALSE)) stop(message_error('at least one MATTR value type to be returned'))
-    if ((all_windows == TRUE)) (mean_mattr = FALSE)
-    if (mean_mattr == TRUE) (all_windows == FALSE)
-    
-    # List to Store MATTR Values for each Window 
+    if (window_size > num_tokens)
+        stop(message_error("window_size must be smaller than total ntokens for each document"))
+    if (!all_windows && !mean_mattr)
+        stop(message_error("at least one MATTR value type to be returned"))
+    if (all_windows)
+        mean_mattr <- FALSE
+    if (mean_mattr)
+        all_windows <- FALSE
+
+    # List to Store MATTR Values for each Window
     mattr_list <- list()
-    
+
     # Initializers
-    start = 1
-    end = window_size 
-    
+    start <- 1
+    end <- window_size
+
     all_tokens <- unlist(x)
     temp_ls <- all_tokens[start:end]
-    
+
     while (end <= num_tokens){
         # Each MATTR value is named with the start token number and end token number
-        window_name <- paste0('MATTR_tokens',start, '_',end)
-        temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
+        window_name <- paste0("MATTR_tokens", start, "_", end)
+        temp_toks <- tokens(paste(unlist(temp_ls), collapse = " "))
         typecount <- ntype(temp_toks)[[1]]
         tokcount <- ntoken(temp_toks)[[1]]
-        mattr_list[[window_name]] <- typecount/tokcount
-        start = start + 1
-        end = end + 1
+        mattr_list[[window_name]] <- typecount / tokcount
+        start <- start + 1
+        end <- end + 1
         overlap <- temp_ls[2:length(temp_ls)]
-        if (end <= num_tokens) {temp_ls <- c(overlap, all_tokens[end])}
+        if (end <= num_tokens)
+            temp_ls <- c(overlap, all_tokens[end])
     }
-    
+
     mattr_list <- unlist(mattr_list)
     ## Checks
-    if (length(mattr_list) != (num_tokens - window_size + 1)) {
-        stop('Internal error within compute_mattr')}
+    if (length(mattr_list) != (num_tokens - window_size + 1))
+        stop("Internal error within compute_mattr")
     else {
-        if ((all_windows == FALSE) && (mean_mattr == TRUE)) return(mean(mattr_list))
-        if ((all_windows == TRUE) && (mean_mattr == FALSE)) return(mattr_list)
+        if (!all_windows && mean_mattr) return(mean(mattr_list))
+        if (!all_windows && !mean_mattr) return(mattr_list)
     }
 }
 
@@ -466,78 +477,76 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' @param mean_sttr default = TRUE. Returns the Mean TTR across Segments for the tokens object. 
 #' @return returns a vector with the MSSTR for each segment
 #' @keywords internal tokens
-
 compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks
-    if (is.null(segment_size)) stop(message_error('segment_size must be specified'))
-    if ((all_segments == FALSE) && (mean_sttr == FALSE)) stop(message_error('at least one MSTTR value type to be returned'))
-    if (all_segments == TRUE) (mean_sttr == FALSE)
-    if (mean_sttr == FALSE) (all_segments == FALSE)
-    
+    if (is.null(segment_size)) stop(message_error("segment_size must be specified"))
+    if (!all_segments && !mean_sttr)
+        stop(message_error("at least one MSTTR value type to be returned"))
+    if (all_segments) mean_sttr <- FALSE
+    if (!mean_sttr) all_segments <- FALSE
+
     # Get number of tokens across all documents
     num_tokens <- sum(ntoken(x))
-    if (segment_size > num_tokens) stop(message_error('segment_size must be smaller than total ntokens across all documents'))
-    
+    if (segment_size > num_tokens) stop(message_error("segment_size must be smaller than total ntokens across all documents"))
+
     # Checks for divisibility of the tokens object by segment_size
-    remainder = num_tokens %% segment_size
-    n_segments = num_tokens %/% segment_size
+    remainder <- num_tokens %% segment_size
+    n_segments <- num_tokens %/% segment_size
     # Warning raiser if not perfectly divisible
-    if (remainder != 0) warning(paste('ntokens =', num_tokens, 'not perfectly divisible by segment_size.', 
-                                      n_segments, 'segments of size', segment_size, 
-                                      'and last segment of size', remainder))
-    
+    if (remainder != 0) warning(paste("ntokens =", num_tokens, "not perfectly divisible by segment_size.",
+                                      n_segments, "segments of size", segment_size,
+                                      "and last segment of size", remainder))
+
     # Warning of discard of remainder
-    if ((discard_remainder == TRUE) & (remainder !=0)) warning(paste('Last segment of size ', remainder, 'will be discarded'))
-    
-    # List to Store MSTTR Values for each Window 
+    if (discard_remainder && remainder != 0)
+        warning(paste("Last segment of size ", remainder, "will be discarded"))
+
+    # List to Store MSTTR Values for each Window
     msttr_list <- list()
-    
+
     # Initializers
-    start = 1
-    end = segment_size 
-    
+    start <- 1
+    end <- segment_size
+
     all_tokens <- unlist(x)
     temp_ls <- all_tokens[start:end]
-    
+
     while (end <= num_tokens){
         # Each MSSTR segment is named with the start token number and end token number
-        segment_name <- paste0('MSTTR_tokens',start, '_',end)
-        temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
+        segment_name <- paste0("MSTTR_tokens", start, "_", end)
+        temp_toks <- tokens(paste(unlist(temp_ls), collapse = " "))
         typecount <- ntype(temp_toks)[[1]]
         tokcount <- ntoken(temp_toks)[[1]]
-        msttr_list[[segment_name]] <- typecount/tokcount
-        start = start + segment_size
-        end = end + segment_size
-        if (end <= num_tokens) {temp_ls <- all_tokens[start:end]}
-        else {
-            if ((start < num_tokens) && (end > num_tokens)) {
-                if (discard_remainder == FALSE){
-                    end = num_tokens
+        msttr_list[[segment_name]] <- typecount / tokcount
+        start <- start + segment_size
+        end <- end + segment_size
+        if (end <= num_tokens) {
+            temp_ls <- all_tokens[start:end]
+        } else {
+            if (start < num_tokens && end > num_tokens) {
+                if (!discard_remainder) {
+                    end <- num_tokens
                     temp_ls <- all_tokens[start:end]
-                } else if (discard_remainder == TRUE){
+                } else if (discard_remainder) {
                     break
                 }
             }
         }
     }
-    
+
     msttr_list <- unlist(msttr_list)
-    
-    
-    if ((remainder ==0) & (length(msttr_list) != n_segments)){
-        stop('Internal error within compute_msttr')}
-    
-    if ((remainder != 0)  & (discard_remainder == TRUE) & length(msttr_list) != (n_segments)) {
-        stop('Internal error within compute_msttr')}
-    
-    
-    if ((remainder != 0)  & (discard_remainder == FALSE) & length(msttr_list) != (n_segments + 1)) {
-        stop('Internal error within compute_msttr')}
-    
-    if ((all_segments == FALSE) && (mean_sttr == TRUE)) return(mean(msttr_list))
-    if ((all_segments == TRUE) && (mean_sttr == FALSE)) return(msttr_list)
-    
-    
+
+    if (remainder == 0 && length(msttr_list) != n_segments)
+        stop("Internal error within compute_msttr")
+
+    if (remainder != 0  && discard_remainder && length(msttr_list) != n_segments)
+        stop("Internal error within compute_msttr")
+
+    if (remainder != 0 && !discard_remainder && length(msttr_list) != (n_segments + 1))
+        stop("Internal error within compute_msttr")
+
+    if (!all_segments && mean_sttr) return(mean(msttr_list))
+    if (!all_segments && !mean_sttr) return(msttr_list)
 }
 
 
@@ -552,39 +561,39 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
 #' If TTR falls below this value, the factor count increases by a value of 1, and the TTR evaluations are reset.
 #' @return Average of MTLD (Forward Pass and Backward Pass)
 #' @keywords internal tokens
-
-
 compute_mtld <- function(x, ttr_threshold = 0.720){
-    # Error Checks 
-    if (is.null(ttr_threshold)) stop(message_error('TTR threshold cannot be NULL'))
-    if ((ttr_threshold > 1) | (ttr_threshold < 0)) stop(message_error("TTR threshold must be between 0 and 1"))
-    
+    # Error Checks
+    if (is.null(ttr_threshold))
+        stop(message_error("TTR threshold cannot be NULL"))
+    if (ttr_threshold > 1 || ttr_threshold < 0)
+        stop(message_error("TTR threshold must be between 0 and 1"))
+
     # Internal Function to compute MTLD for both forward and backward passes
     one_pass <- function(x, backward = FALSE){
         # Initialize Counters
-        start = 1
-        counter = 1
-        end = sum(ntoken(x))
-        factor = 1
-        
+        start <- 1
+        counter <- 1
+        end <- sum(ntoken(x))
+        factor <- 1
+
         list_of_tokens <- unlist(x)
-        
-        if (backward == TRUE){list_of_tokens <- rev(list_of_tokens)}
-        
+
+        if (backward) list_of_tokens <- rev(list_of_tokens)
+
         temp_ls <- list_of_tokens[start:counter]
-        
+
         while (counter <= end){
-            temp_toks <- tokens(paste(unlist(temp_ls), collapse = ' '))
+            temp_toks <- tokens(paste(unlist(temp_ls), collapse = " "))
             typecount <- ntype(temp_toks)[[1]]
             tokcount <- ntoken(temp_toks)[[1]]
-            temp_TTR <- typecount/tokcount
+            temp_TTR <- typecount / tokcount
             if (temp_TTR < ttr_threshold){
-                factor = factor + 1
-                counter = counter + 1
-                start = counter
+                factor <- factor + 1
+                counter <- counter + 1
+                start <- counter
                 temp_ls <- list_of_tokens[start:counter]
             } else if (temp_TTR >= ttr_threshold){
-                counter = counter + 1
+                counter <- counter + 1
                 if (counter <= end){
                     temp_ls <- c(temp_ls, list_of_tokens[counter])
                 } else {
@@ -592,18 +601,12 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
                 }
             }
         }
-        mtld_value = (end / factor)
+        mtld_value <- (end / factor)
         return(mtld_value)
     }
-    
+
     mtld_forward_pass <- one_pass(x)
     mtld_backward_pass <- one_pass(x, backward = TRUE)
-    mtld_average <- ((mtld_forward_pass + mtld_backward_pass) /2)
+    mtld_average <- (mtld_forward_pass + mtld_backward_pass) / 2
     return (mtld_average)
 }
-
-
-
-
-
-
