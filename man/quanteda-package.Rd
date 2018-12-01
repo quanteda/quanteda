@@ -97,6 +97,7 @@ Authors:
   \item Adam Obeng \email{quanteda@binaryeagle.com} (0000-0002-2906-4775)
   \item Stefan Müller \email{mullers@tcd.ie} (0000-0002-6315-4125)
   \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (0000-0002-3323-6330)
+  \item Jiong Wei Lua \email{J.W.Lua@lse.ac.uk}
   \item Patrick O. Perry \email{patperry@gmail.com} (0000-0001-7460-127X)
   \item Jouni Kuha \email{j.kuha@lse.ac.uk} (0000-0002-1156-8465)
   \item Benjamin Lauderdale \email{b.e.lauderdale@lse.ac.uk} (0000-0003-3090-0969)
