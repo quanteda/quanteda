@@ -209,3 +209,11 @@ test_that("tokens_chunk works", {
                    check.names = FALSE)
     )
 })
+
+test_that("tokens_chunk separator error check works", {
+    skip_on_travis()
+    expect_error(
+        tokens_chunk(tokens("a b ֎ d e"), size = 2),
+        "need a different septoken!"
+    )
+})
