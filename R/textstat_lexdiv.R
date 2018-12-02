@@ -367,7 +367,7 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD")
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
 
     if ("MATTR" %in% measure) 
-        result[["MATTR"]] <- compute_mattr2(x, window_size = MATTR_window)
+        result[["MATTR"]] <- compute_mattr2(x, MATTR_window = MATTR_window)
 
     if ("MSTTR" %in% measure)
         result[["MSTTR"]] <- compute_msttr2(x, MSTTR_segment = MSTTR_segment)
@@ -494,10 +494,10 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' @keywords internal textstat lexdiv
 compute_mattr2 <- function(x, MATTR_window = 100L) {
 
-    if (window_size < 1)
+    if (MATTR_window < 1)
         stop("MATTR_window must be positive")
     if (any(ntoken(x) < MATTR_window)) {
-        window_size <- max(ntoken(x))
+        MATTR_window <- max(ntoken(x))
         warning("MATTR_window exceeds some documents' token lengths, resetting to ",
                 MATTR_window)
     }
