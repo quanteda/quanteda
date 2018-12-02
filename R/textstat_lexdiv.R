@@ -149,7 +149,7 @@ textstat_lexdiv <- function(x,
                             remove_symbols = TRUE, remove_hyphens = FALSE, 
                             log.base = 10, 
                             MATTR_window = 100L,
-                            MSTTR_segment = 1/5,
+                            MSTTR_segment = 100L,
                             MTLD_ttr_threshold = NULL,
                             ...) {
     UseMethod("textstat_lexdiv")
@@ -370,7 +370,7 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD")
         result[["MATTR"]] <- compute_mattr2(x, window_size = MATTR_window)
 
     if ("MSTTR" %in% measure)
-        result[["MSTTR"]] <- NA # compute_msttr(x, MSTTR_segment = MSTTR_segment)]
+        result[["MSTTR"]] <- compute_msttr2(x, MSTTR_segment = MSTTR_segment)
 
     if ("MTLD" %in% measure)
         result[["MTLD"]] <- NA # compute_mtld(x, MTLD_ttr_threshold = MTLD_ttr_threshold)]
@@ -492,18 +492,18 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' @param window_size integer; the size of the moving window for computation of
 #'   TTR, between 1 and the number of tokens of the document
 #' @keywords internal textstat lexdiv
-compute_mattr2 <- function(x, window_size = 100L) {
+compute_mattr2 <- function(x, MATTR_window = 100L) {
 
     if (window_size < 1)
-        stop("MATTR must be positive")
-    if (any(ntoken(x) < window_size)) {
+        stop("MATTR_window must be positive")
+    if (any(ntoken(x) < MATTR_window)) {
         window_size <- max(ntoken(x))
         warning("MATTR_window exceeds some documents' token lengths, resetting to ",
-                window_size)
+                MATTR_window)
     }
     
     # create each document window as an "ngram"
-    x <- tokens_ngrams(x, n = window_size, concatenator = " ")
+    x <- tokens_ngrams(x, n = MATTR_window, concatenator = " ")
     
     # get a list of TTRs by document
     ttr_by_window <- lapply(as.list(x), function(y) textstat_lexdiv(dfm(y), "TTR")[["TTR"]])
@@ -511,9 +511,10 @@ compute_mattr2 <- function(x, window_size = 100L) {
     sapply(ttr_by_window, mean)
 }
 
-#' Computes the Mean Segmental Type-Token Ratio (Johnson, 1944) for a Tokens Object
+#' Computes the Mean Segmental Type-Token Ratio
 #' 
-#' Takes a tokens object which should have been preprocessed - removal of punctuation etc.
+#' Computes the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens
+#' object.
 #' @param x input \link{tokens}
 #' @param segment_size input: the size of the segment. 
 #' @param discard_remainder default = TRUE. If TRUE, the final segment of the document not divisible by segment_size is dropped. 
@@ -593,8 +594,36 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
     if (!all_segments && !mean_sttr) return(msttr_list)
 }
 
+#' Compute the Mean Segmental Type-Token Ratio (MSTTR)
+#' 
+#' Compute the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens input.
+#' 
+#' Ken's variation.
+#' @param x input \link{tokens}
+#' @param segment_size the size of the segment
+#' @keywords internal textstat lexdiv
+compute_msttr2 <- function(x, MSTTR_segment) {
+    dnames <- docnames(x)
+    
+    if (MSTTR_segment < 1)
+        stop("MSTTR_segment must be positive")
+    if (any(ntoken(x) < MSTTR_segment)) {
+        MSTTR_segment <- max(ntoken(x))
+        warning("MSTTR_segment exceeds some documents' token lengths, resetting to ",
+                MSTTR_segment)
+    }
 
-
+    x <- tokens_chunk(x, MSTTR_segment)
+    ttr <- data.table(
+        ttr = textstat_lexdiv(x, "TTR")[["TTR"]],
+        docid = metadoc(x, "docid")
+    )
+    ttr <- ttr[, mean(ttr), by = docid]
+    result <- ttr[, V1]
+    names(result) <- dnames
+    
+    result
+}
 
 #' Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis, 2010) for a Tokens Object
 #' MTLD is defined as the mean length of sequential word strings in a text that maintain a given TTR value

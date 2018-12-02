@@ -8,7 +8,7 @@ textstat_lexdiv(x, measure = c("TTR", "C", "R", "CTTR", "U", "S", "K",
   "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD", "all"),
   remove_numbers = TRUE, remove_punct = TRUE, remove_symbols = TRUE,
   remove_hyphens = FALSE, log.base = 10, MATTR_window = 100L,
-  MSTTR_segment = 1/5, MTLD_ttr_threshold = NULL, ...)
+  MSTTR_segment = 100L, MTLD_ttr_threshold = NULL, ...)
 }
 \arguments{
 \item{x}{an \link{dfm} or \link{tokens} input object for whose documents

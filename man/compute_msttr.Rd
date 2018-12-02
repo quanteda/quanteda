@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_lexdiv.R
 \name{compute_msttr}
 \alias{compute_msttr}
-\title{Computes the Mean Segmental Type-Token Ratio (Johnson, 1944) for a Tokens Object}
+\title{Computes the Mean Segmental Type-Token Ratio}
 \usage{
 compute_msttr(x, segment_size = NULL, discard_remainder = TRUE,
   all_segments = FALSE, mean_sttr = TRUE)
@@ -22,7 +22,8 @@ compute_msttr(x, segment_size = NULL, discard_remainder = TRUE,
 returns a vector with the MSSTR for each segment
 }
 \description{
-Takes a tokens object which should have been preprocessed - removal of punctuation etc.
+Computes the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens
+object.
 }
 \keyword{internal}
 \keyword{tokens}

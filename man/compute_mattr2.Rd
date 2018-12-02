@@ -4,7 +4,7 @@
 \alias{compute_mattr2}
 \title{Computes the Moving-Average Type-Token Ratio}
 \usage{
-compute_mattr2(x, window_size = 100L)
+compute_mattr2(x, MATTR_window = 100L)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
