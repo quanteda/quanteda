@@ -195,10 +195,6 @@ test_that("tokens_chunk works", {
         as.list(tokens_chunk(toks, 3, discard_remainder = FALSE)),
         list(c("a", "b", "c"), c("d", "e", "f"), c("a", "a", "b"), c("d", "c"))
     )
-    expect_error(
-        tokens_chunk(tokens("a b ֎ d e"), size = 2),
-        "need a different septoken!"
-    )
     expect_identical(
         metadoc(tokens_chunk(toks, 3)),
         data.frame("_document" = paste0("text", c(1, 1, 2)),
