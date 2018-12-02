@@ -170,5 +170,42 @@ test_that("tokens_segment works with tags", {
                  list(d1.1 = c("##TEST", "One", "two"), d1.2 = c("##TEST2", "Three"), d2.1 = c("##TEST3", "Four")))
 })
 
+test_that("insert_values works", {
+    expect_identical(quanteda:::insert_values(1, 3, 99), 1)
+    expect_identical(
+        quanteda:::insert_values(1:3, 3, 99, truncate = TRUE), 
+        c(1, 2, 3)
+    )
+    expect_identical(quanteda:::insert_values(1:5, 3, 99, truncate = TRUE), c(1, 2, 3))
+    expect_identical(
+        quanteda:::insert_values(1:5, 3, 99, truncate = FALSE), 
+        c(1:3, 99, 4:5)
+    )
+    expect_identical(quanteda:::insert_values(1:6, 3, 99), c(1:3, 99, 4:6))
+})
 
-
+test_that("tokens_chunk works", {
+    toks <- tokens(c("a b c d e f", "a a b d c"))
+    expect_is(tokens_chunk(toks, size = 3), "tokens")
+    expect_equivalent(
+        as.list(tokens_chunk(toks, 3, discard_remainder = TRUE)),
+        list(c("a", "b", "c"), c("d", "e", "f"), c("a", "a", "b"))
+    )
+    expect_equivalent(
+        as.list(tokens_chunk(toks, 3, discard_remainder = FALSE)),
+        list(c("a", "b", "c"), c("d", "e", "f"), c("a", "a", "b"), c("d", "c"))
+    )
+    expect_error(
+        tokens_chunk(tokens("a b ֎ d e"), size = 2),
+        "need a different septoken!"
+    )
+    expect_identical(
+        metadoc(tokens_chunk(toks, 3)),
+        data.frame("_document" = paste0("text", c(1, 1, 2)),
+                   "_docid" = c(1L, 1L, 2L),
+                   "_segid" = c(1L, 2L, 1L),
+                   stringsAsFactors = FALSE,
+                   row.names = c("text1.1", "text1.2", "text2.1"),
+                   check.names = FALSE)
+    )
+})
