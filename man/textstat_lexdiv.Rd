@@ -8,7 +8,7 @@ textstat_lexdiv(x, measure = c("TTR", "C", "R", "CTTR", "U", "S", "K",
   "D", "Vm", "Maas", "MATTR", "MSTTR", "MTLD", "all"),
   remove_numbers = TRUE, remove_punct = TRUE, remove_symbols = TRUE,
   remove_hyphens = FALSE, log.base = 10, MATTR_window = 100L,
-  MSTTR_segment = 100L, MTLD_ttr_threshold = NULL, ...)
+  MSTTR_segment = 100L, MTLD_threshold = NULL, ...)
 }
 \arguments{
 \item{x}{an \link{dfm} or \link{tokens} input object for whose documents
@@ -39,7 +39,7 @@ for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010
 \item{MSTTR_segment}{a numeric value defining the size of the each segment
 for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)}
 
-\item{MTLD_ttr_threshold}{a numeric value defining the Type-Token Ratio threshold
+\item{MTLD_threshold}{a numeric value defining the Type-Token Ratio threshold
 below which the TTR for a sequential string of text cannot fall. This is required
 to compute the Measure of Textual Lexical Diversity  (McCarthy & Jarvis, 2010)}
 

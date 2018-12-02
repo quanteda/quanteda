@@ -2,23 +2,21 @@
 % Please edit documentation in R/textstat_lexdiv.R
 \name{compute_mattr2}
 \alias{compute_mattr2}
-\title{Computes the Moving-Average Type-Token Ratio}
+\title{Compute the Moving-Average Type-Token Ratio (MATTR)}
 \usage{
 compute_mattr2(x, MATTR_window = 100L)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
 
-\item{window_size}{integer; the size of the moving window for computation of
+\item{MATTR_window}{integer; the size of the moving window for computation of
 TTR, between 1 and the number of tokens of the document}
 }
 \description{
-Takes a tokens object which should have been preprocessed - removal of
-punctuation etc. and computes the Moving-Average Type-Token Ratio from
-Covington & McFall (2010).
-}
-\details{
-Ken's variation.
+From a tokens object, computes the Moving-Average Type-Token Ratio (MATTR)
+from Covington & McFall (2010), averaging all of the sequential moving
+windows of tokens of size \code{MATTR_window} across the text, returning the
+average as the MATTR.
 }
 \keyword{internal}
 \keyword{lexdiv}

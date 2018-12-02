@@ -2,27 +2,30 @@
 % Please edit documentation in R/textstat_lexdiv.R
 \name{compute_mtld}
 \alias{compute_mtld}
-\title{Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis, 2010) for a Tokens Object
-MTLD is defined as the mean length of sequential word strings in a text that maintain a given TTR value
-Takes a tokens object which should have been preprocessed - removal of punctuation etc.
-Support for partial factors not yet implemented}
+\title{Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis,
+2010) for a Tokens Object MTLD is defined as the mean length of sequential
+word strings in a text that maintain a given TTR value Takes a tokens object
+which should have been preprocessed - removal of punctuation etc. Support for
+partial factors not yet implemented}
 \usage{
 compute_mtld(x, ttr_threshold = 0.72)
 }
 \arguments{
-\item{x}{input \link{tokens}}
+\item{x}{a \link{tokens} object}
 
-\item{ttr_threshold}{the threshold below which TTR for a sequential string of words cannot fall. 
-If TTR falls below this value, the factor count increases by a value of 1, and the TTR evaluations are reset.}
+\item{ttr_threshold}{the threshold below which TTR for a sequential string of
+words cannot fall. If TTR falls below this value, the factor count
+increases by a value of 1, and the TTR evaluations are reset.}
 }
 \value{
 Average of MTLD (Forward Pass and Backward Pass)
 }
 \description{
-Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis, 2010) for a Tokens Object
-MTLD is defined as the mean length of sequential word strings in a text that maintain a given TTR value
-Takes a tokens object which should have been preprocessed - removal of punctuation etc.
-Support for partial factors not yet implemented
+Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis,
+2010) for a Tokens Object MTLD is defined as the mean length of sequential
+word strings in a text that maintain a given TTR value Takes a tokens object
+which should have been preprocessed - removal of punctuation etc. Support for
+partial factors not yet implemented
 }
 \keyword{internal}
-\keyword{tokens}
+\keyword{textstat}

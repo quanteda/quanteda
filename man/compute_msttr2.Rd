@@ -14,9 +14,6 @@ compute_msttr2(x, MSTTR_segment)
 \description{
 Compute the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens input.
 }
-\details{
-Ken's variation.
-}
 \keyword{internal}
 \keyword{lexdiv}
 \keyword{textstat}

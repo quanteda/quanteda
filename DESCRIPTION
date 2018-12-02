@@ -159,6 +159,7 @@ Collate:
     'textstat_frequency.R'
     'textstat_keyness.R'
     'textstat_lexdiv.R'
+    'textstat_lexdiv_replaced.R'
     'textstat_readability.R'
     'textstat_simil.R'
     'textstat_simil_old.R'

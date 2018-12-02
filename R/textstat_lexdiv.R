@@ -1,4 +1,4 @@
-# textstat_lexdiv main functions -------
+# main functions ========
 
 #' Calculate lexical diversity
 #'
@@ -89,7 +89,7 @@
 #'   for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)
 #' @param MSTTR_segment a numeric value defining the size of the each segment
 #'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
-#' @param MTLD_ttr_threshold a numeric value defining the Type-Token Ratio threshold
+#' @param MTLD_threshold a numeric value defining the Type-Token Ratio threshold
 #'   below which the TTR for a sequential string of text cannot fall. This is required
 #'   to compute the Measure of Textual Lexical Diversity  (McCarthy & Jarvis, 2010)
 #' @param ... for passing arguments to other methods
@@ -146,11 +146,11 @@ textstat_lexdiv <- function(x,
                             measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "D",
                                         "Vm", "Maas", "MATTR", "MSTTR", "MTLD", "all"),
                             remove_numbers = TRUE, remove_punct = TRUE,
-                            remove_symbols = TRUE, remove_hyphens = FALSE, 
-                            log.base = 10, 
+                            remove_symbols = TRUE, remove_hyphens = FALSE,
+                            log.base = 10,
                             MATTR_window = 100L,
                             MSTTR_segment = 100L,
-                            MTLD_ttr_threshold = NULL,
+                            MTLD_threshold = NULL,
                             ...) {
     UseMethod("textstat_lexdiv")
 }
@@ -161,16 +161,17 @@ textstat_lexdiv.default <- function(x, ...) {
 }
 
 #' @export
-textstat_lexdiv.dfm <- function(x, 
+textstat_lexdiv.dfm <- function(x,
                                 measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "D",
                                             "Vm", "Maas", "all"),
                                 remove_numbers = TRUE, remove_punct = TRUE,
-                                remove_symbols = TRUE, remove_hyphens = FALSE, 
+                                remove_symbols = TRUE, remove_hyphens = FALSE,
                                 log.base = 10,
                                 ...) {
-    
+
+    check_dots(list(...))
     tokens_only_measures <-  c("MATTR", "MSTTR", "MTLD")
-    
+
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
 
@@ -193,7 +194,7 @@ textstat_lexdiv.dfm <- function(x,
     # match the measures from the function signature
     available_measures <- as.character(formals()$measure)[-1]
     # this ensures that a default will choose only the first option
-    measure <- match.arg(measure, choices = available_measures, 
+    measure <- match.arg(measure, choices = available_measures,
                          several.ok = !missing(measure))
     # get all measures except "all" if "all" is specified
     if ("all" %in% measure)
@@ -203,22 +204,23 @@ textstat_lexdiv.dfm <- function(x,
 }
 
 #' @export
-textstat_lexdiv.tokens <- 
+textstat_lexdiv.tokens <-
     function(x,
              measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "D",
                          "Vm", "Maas", "MATTR", "MSTTR", "MTLD", "all"),
              remove_numbers = TRUE, remove_punct = TRUE,
              remove_symbols = TRUE, remove_hyphens = FALSE,
-             log.base = 10, 
+             log.base = 10,
              MATTR_window = 100L,
-             MSTTR_segment = 1/5,
-             MTLD_ttr_threshold = NULL,
+             MSTTR_segment = 100L,
+             MTLD_threshold = NULL,
              ...) {
-    
+
+    check_dots(list(...))
     tokens_only_measures <-  c("MATTR", "MSTTR", "MTLD")
-         
+ 
     # additional token handling
-    x <- tokens(x, remove_hyphens = remove_hyphens, 
+    x <- tokens(x, remove_hyphens = remove_hyphens,
                 remove_numbers = remove_numbers,
                 remove_symbols = remove_symbols)
     if (remove_punct) {
@@ -231,18 +233,18 @@ textstat_lexdiv.tokens <-
     # get and validate measures
     available_measures <- as.character(formals()$measure)[-1]
     # this ensures that a default will choose only the first option
-    measure <- match.arg(measure, choices = available_measures, 
+    measure <- match.arg(measure, choices = available_measures,
                          several.ok = !missing(measure))
     # get all measures except "all" if "all" is specified
     if ("all" %in% measure)
         measure <- available_measures[!available_measures %in% "all"]
-    
+
     # which, if any, are tokens-only measures
     tokens_only_measure_index <- which(measure %in% tokens_only_measures)
 
     # compute all results - returns NAs for tokens-only measures
     result <- compute_lexdiv_dfm_stats(dfm(x), measure = measure, log.base = log.base)
-    
+
     # if any tokens-only measures exist, compute and replace NAs with the reusults
     # removes the first column which is "documents"
     if (length(tokens_only_measure_index)) {
@@ -251,13 +253,13 @@ textstat_lexdiv.tokens <-
                                         measure = measure[tokens_only_measure_index],
                                         MATTR_window = MATTR_window,
                                         MSTTR_segment = MSTTR_segment,
-                                        MTLD_ttr_threshold = MTLD_ttr_threshold)[, -1]
+                                        MTLD_threshold = MTLD_threshold)[, -1]
     }
-    
+
     result
 }
 
-# internal functions to compute lexdiv statistics -------
+# internal functions to handle lexdiv statistics for dfm and tokens -------
 
 #' @name compute_lexdiv_stats
 #' @title Compute lexical diversity from a dfm or tokens
@@ -280,7 +282,7 @@ NULL
 #'   computes the lexical diversity measures from a \link{dfm} input.
 compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
 
-    n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- 
+    n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <-
         lgV0 <- lgeV0 <- K <- D <- Vm <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
 
@@ -345,7 +347,7 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
     if ("MTLD" %in% measure)  temp[, MTLD := NA]
 
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
-    if (length(measure)) 
+    if (length(measure))
         result <- cbind(result, as.data.frame(temp[, measure, with = FALSE]))
     class(result) <- c("lexdiv", "textstat", "data.frame")
     result
@@ -358,22 +360,22 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
 #'   for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)
 #' @param MSTTR_segment a numeric value defining the size of the each segment
 #'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
-#' @param MTLD_ttr_threshold a numeric value defining the Type-Token Ratio threshold
+#' @param MTLD_threshold a numeric value defining the Type-Token Ratio threshold
 #'   below which the TTR for a sequential string of text cannot fall. This is required
 #'   to compute the Measure of Textual Lexical Diversity  (McCarthy & Jarvis, 2010)
-compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD"), 
-                                     MATTR_window, MSTTR_segment, MTLD_ttr_threshold) {
+compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD"),
+                                     MATTR_window, MSTTR_segment, MTLD_threshold) {
     measure <- match.arg(measure, several.ok = TRUE)
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
 
-    if ("MATTR" %in% measure) 
+    if ("MATTR" %in% measure)
         result[["MATTR"]] <- compute_mattr2(x, MATTR_window = MATTR_window)
 
     if ("MSTTR" %in% measure)
         result[["MSTTR"]] <- compute_msttr2(x, MSTTR_segment = MSTTR_segment)
 
     if ("MTLD" %in% measure)
-        result[["MTLD"]] <- NA # compute_mtld(x, MTLD_ttr_threshold = MTLD_ttr_threshold)]
+        result[["MTLD"]] <- NA # compute_mtld(x, MTLD_threshold = MTLD_threshold)]
 
     # reorder output as originally supplied
     result <- result[, c("document", measure), drop = FALSE]
@@ -381,115 +383,16 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD")
     result
 }
 
-#' Split a dfm's hyphenated features into constituent parts
+# specific functions for tokens-only moving average measures -----------
+
+#' Compute the Moving-Average Type-Token Ratio (MATTR)
 #' 
-#' Takes a dfm that contains features with hyphenated words, such as
-#' "split-second" and turns them into features that split the elements
-#' in the same was as `tokens(x, remove_hyphens = TRUE)` would have done.
-#' @param x input \link{dfm}
-#' @keywords internal dfm
-#' @examples
-#' (tmp <- dfm("One-two one two three."))
-#' quanteda:::dfm_split_hyphenated_features(tmp)
-dfm_split_hyphenated_features <- function(x) {
-    # the global for matching the hyphens and similar characters
-    hyphen_regex <- "^.+\\p{Pd}.+$"
-
-    # figure out where the hyphens are
-    hyphenated_index <- which(stringi::stri_detect_regex(featnames(x), hyphen_regex))
-
-    # return dfm unmodified if no hyphenated features are found
-    if (length(hyphenated_index) == 0) return(x)
-
-    # split the hyphenated feature names into a list of components
-    splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
-
-    # efficiently create a new dfm from hyphenated feature name components
-    splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
-    colnames(splitdfm) <- unlist(splitfeatures, use.names = FALSE)
-
-    # combine dfms and suppress duplicated feature name warning
-    result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
-    # compress features to combine same-named features
-    result <- dfm_compress(result, margin = "features")
-
-    result
-}
-
-#' Computes the Moving-Average Type-Token Ratio 
-#' 
-#' Takes a tokens object which should have been preprocessed - removal of
-#' punctuation etc. and computes the Moving-Average Type-Token Ratio from
-#' Covington & McFall (2010).
+#' From a tokens object, computes the Moving-Average Type-Token Ratio (MATTR)
+#' from Covington & McFall (2010), averaging all of the sequential moving
+#' windows of tokens of size \code{MATTR_window} across the text, returning the
+#' average as the MATTR.
 #' @param x a \link{tokens} object
-#' @param window_size integer; the size of the moving window for computation of
-#'   TTR, between 1 and the number of tokens of the document
-#' @param all_windows default = FALSE. If TRUE, returns a vector with the MATTR
-#'   for each window
-#' @param mean_mattr default = TRUE. Returns the mean MATTR, given the window
-#'   size, for the tokens object.
-#' @return return either a vector with the MATTR for each window, or the mean
-#'   MATTR for the whole tokens object
-#' @keywords internal tokens
-compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr= TRUE) {
-    
-    # Error Checks
-    if (is.null(window_size)) stop(message_error("window_size must be specified"))
-    # Get number of tokens across each individual document
-    num_tokens <- sum(ntoken(x))
-    if (window_size > num_tokens)
-        stop(message_error("window_size must be smaller than total ntokens for each document"))
-    if (!all_windows && !mean_mattr)
-        stop(message_error("at least one MATTR value type to be returned"))
-    if (all_windows)
-        mean_mattr <- FALSE
-    if (mean_mattr)
-        all_windows <- FALSE
-
-    # List to Store MATTR Values for each Window
-    mattr_list <- list()
-
-    # Initializers
-    start <- 1
-    end <- window_size
-
-    all_tokens <- unlist(x)
-    temp_ls <- all_tokens[start:end]
-
-    while (end <= num_tokens){
-        # Each MATTR value is named with the start token number and end token number
-        window_name <- paste0("MATTR_tokens", start, "_", end)
-        temp_toks <- tokens(paste(unlist(temp_ls), collapse = " "))
-        typecount <- ntype(temp_toks)[[1]]
-        tokcount <- ntoken(temp_toks)[[1]]
-        mattr_list[[window_name]] <- typecount / tokcount
-        start <- start + 1
-        end <- end + 1
-        overlap <- temp_ls[2:length(temp_ls)]
-        if (end <= num_tokens)
-            temp_ls <- c(overlap, all_tokens[end])
-    }
-
-    mattr_list <- unlist(mattr_list)
-    ## Checks
-    if (length(mattr_list) != (num_tokens - window_size + 1))
-        stop("Internal error within compute_mattr")
-    else {
-        if (!all_windows && mean_mattr) return(mean(mattr_list))
-        if (!all_windows && !mean_mattr) return(mattr_list)
-    }
-}
-
-
-#' Computes the Moving-Average Type-Token Ratio 
-#' 
-#' Takes a tokens object which should have been preprocessed - removal of
-#' punctuation etc. and computes the Moving-Average Type-Token Ratio from
-#' Covington & McFall (2010).
-#' 
-#' Ken's variation.
-#' @param x a \link{tokens} object
-#' @param window_size integer; the size of the moving window for computation of
+#' @param MATTR_window integer; the size of the moving window for computation of
 #'   TTR, between 1 and the number of tokens of the document
 #' @keywords internal textstat lexdiv
 compute_mattr2 <- function(x, MATTR_window = 100L) {
@@ -501,110 +404,24 @@ compute_mattr2 <- function(x, MATTR_window = 100L) {
         warning("MATTR_window exceeds some documents' token lengths, resetting to ",
                 MATTR_window)
     }
-    
+
     # create each document window as an "ngram"
     x <- tokens_ngrams(x, n = MATTR_window, concatenator = " ")
-    
+
     # get a list of TTRs by document
     ttr_by_window <- lapply(as.list(x), function(y) textstat_lexdiv(dfm(y), "TTR")[["TTR"]])
-    
-    sapply(ttr_by_window, mean)
-}
 
-#' Computes the Mean Segmental Type-Token Ratio
-#' 
-#' Computes the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens
-#' object.
-#' @param x input \link{tokens}
-#' @param segment_size input: the size of the segment. 
-#' @param discard_remainder default = TRUE. If TRUE, the final segment of the document not divisible by segment_size is dropped. 
-#' @param all_segments default = FALSE. If TRUE, returns a vector with the TTR for each segment. 
-#' @param mean_sttr default = TRUE. Returns the Mean TTR across Segments for the tokens object. 
-#' @return returns a vector with the MSSTR for each segment
-#' @keywords internal tokens
-compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_segments = FALSE, mean_sttr = TRUE){
-    # Error Checks
-    if (is.null(segment_size)) stop(message_error("segment_size must be specified"))
-    if (!all_segments && !mean_sttr)
-        stop(message_error("at least one MSTTR value type to be returned"))
-    if (all_segments) mean_sttr <- FALSE
-    if (!mean_sttr) all_segments <- FALSE
-
-    # Get number of tokens across all documents
-    num_tokens <- sum(ntoken(x))
-    if (segment_size > num_tokens) stop(message_error("segment_size must be smaller than total ntokens across all documents"))
-
-    # Checks for divisibility of the tokens object by segment_size
-    remainder <- num_tokens %% segment_size
-    n_segments <- num_tokens %/% segment_size
-    # Warning raiser if not perfectly divisible
-    if (remainder != 0) warning(paste("ntokens =", num_tokens, "not perfectly divisible by segment_size.",
-                                      n_segments, "segments of size", segment_size,
-                                      "and last segment of size", remainder))
-
-    # Warning of discard of remainder
-    if (discard_remainder && remainder != 0)
-        warning(paste("Last segment of size ", remainder, "will be discarded"))
-
-    # List to Store MSTTR Values for each Window
-    msttr_list <- list()
-
-    # Initializers
-    start <- 1
-    end <- segment_size
-
-    all_tokens <- unlist(x)
-    temp_ls <- all_tokens[start:end]
-
-    while (end <= num_tokens){
-        # Each MSSTR segment is named with the start token number and end token number
-        segment_name <- paste0("MSTTR_tokens", start, "_", end)
-        temp_toks <- tokens(paste(unlist(temp_ls), collapse = " "))
-        typecount <- ntype(temp_toks)[[1]]
-        tokcount <- ntoken(temp_toks)[[1]]
-        msttr_list[[segment_name]] <- typecount / tokcount
-        start <- start + segment_size
-        end <- end + segment_size
-        if (end <= num_tokens) {
-            temp_ls <- all_tokens[start:end]
-        } else {
-            if (start < num_tokens && end > num_tokens) {
-                if (!discard_remainder) {
-                    end <- num_tokens
-                    temp_ls <- all_tokens[start:end]
-                } else if (discard_remainder) {
-                    break
-                }
-            }
-        }
-    }
-
-    msttr_list <- unlist(msttr_list)
-
-    if (remainder == 0 && length(msttr_list) != n_segments)
-        stop("Internal error within compute_msttr")
-
-    if (remainder != 0  && discard_remainder && length(msttr_list) != n_segments)
-        stop("Internal error within compute_msttr")
-
-    if (remainder != 0 && !discard_remainder && length(msttr_list) != (n_segments + 1))
-        stop("Internal error within compute_msttr")
-
-    if (!all_segments && mean_sttr) return(mean(msttr_list))
-    if (!all_segments && !mean_sttr) return(msttr_list)
+    vapply(ttr_by_window, mean, numeric(1))
 }
 
 #' Compute the Mean Segmental Type-Token Ratio (MSTTR)
 #' 
 #' Compute the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens input.
-#' 
-#' Ken's variation.
 #' @param x input \link{tokens}
 #' @param segment_size the size of the segment
 #' @keywords internal textstat lexdiv
 compute_msttr2 <- function(x, MSTTR_segment) {
-    dnames <- docnames(x)
-    
+
     if (MSTTR_segment < 1)
         stop("MSTTR_segment must be positive")
     if (any(ntoken(x) < MSTTR_segment)) {
@@ -614,26 +431,21 @@ compute_msttr2 <- function(x, MSTTR_segment) {
     }
 
     x <- tokens_chunk(x, MSTTR_segment)
-    ttr <- data.table(
-        ttr = textstat_lexdiv(x, "TTR")[["TTR"]],
-        docid = metadoc(x, "docid")
-    )
-    ttr <- ttr[, mean(ttr), by = docid]
-    result <- ttr[, V1]
-    names(result) <- dnames
-    
-    result
+    ttr <- split(textstat_lexdiv(x, "TTR")[["TTR"]], metadoc(x, "document"))
+    vapply(ttr, mean, numeric(1))
 }
 
-#' Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis, 2010) for a Tokens Object
-#' MTLD is defined as the mean length of sequential word strings in a text that maintain a given TTR value
-#' Takes a tokens object which should have been preprocessed - removal of punctuation etc.
-#' Support for partial factors not yet implemented
-#' @param x input \link{tokens}
-#' @param ttr_threshold the threshold below which TTR for a sequential string of words cannot fall. 
-#' If TTR falls below this value, the factor count increases by a value of 1, and the TTR evaluations are reset.
+#' Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis,
+#' 2010) for a Tokens Object MTLD is defined as the mean length of sequential
+#' word strings in a text that maintain a given TTR value Takes a tokens object
+#' which should have been preprocessed - removal of punctuation etc. Support for
+#' partial factors not yet implemented
+#' @param x a \link{tokens} object
+#' @param ttr_threshold the threshold below which TTR for a sequential string of
+#'   words cannot fall. If TTR falls below this value, the factor count
+#'   increases by a value of 1, and the TTR evaluations are reset.
 #' @return Average of MTLD (Forward Pass and Backward Pass)
-#' @keywords internal tokens
+#' @keywords internal textstat
 compute_mtld <- function(x, ttr_threshold = 0.720){
     # Error Checks
     if (is.null(ttr_threshold))
@@ -682,4 +494,41 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
     mtld_backward_pass <- one_pass(x, backward = TRUE)
     mtld_average <- (mtld_forward_pass + mtld_backward_pass) / 2
     return (mtld_average)
+}
+
+# additional utility functions ------------
+
+#' Split a dfm's hyphenated features into constituent parts
+#' 
+#' Takes a dfm that contains features with hyphenated words, such as
+#' "split-second" and turns them into features that split the elements
+#' in the same was as `tokens(x, remove_hyphens = TRUE)` would have done.
+#' @param x input \link{dfm}
+#' @keywords internal dfm
+#' @examples
+#' (tmp <- dfm("One-two one two three."))
+#' quanteda:::dfm_split_hyphenated_features(tmp)
+dfm_split_hyphenated_features <- function(x) {
+    # the global for matching the hyphens and similar characters
+    hyphen_regex <- "^.+\\p{Pd}.+$"
+
+    # figure out where the hyphens are
+    hyphenated_index <- which(stringi::stri_detect_regex(featnames(x), hyphen_regex))
+
+    # return dfm unmodified if no hyphenated features are found
+    if (length(hyphenated_index) == 0) return(x)
+
+    # split the hyphenated feature names into a list of components
+    splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
+
+    # efficiently create a new dfm from hyphenated feature name components
+    splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
+    colnames(splitdfm) <- unlist(splitfeatures, use.names = FALSE)
+
+    # combine dfms and suppress duplicated feature name warning
+    result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
+    # compress features to combine same-named features
+    result <- dfm_compress(result, margin = "features")
+
+    result
 }
