@@ -262,7 +262,7 @@ test_that("textstat_lexdiv.tokens raises errors if parameters for moving measure
     # )
     # expect_error(
     #     textstat_lexdiv(mytoken, measure = "MTLD"),
-    #     "MTLD_ttr_threshold must be specified if MTLD is to be computed"
+    #     "MTLD_threshold must be specified if MTLD is to be computed"
     # )
 })
 
@@ -328,23 +328,23 @@ test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
     wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4
     wsize3_MSTTR <- (2/3 + 2/3 ) / 2 # apple orange at the back is discarded
     wsize4_MSTTR <- (2/4 + 3/4) / 2
-    
+
     # Test segment size = 2
     expect_equivalent(
-        textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = 2)[["MSTTR"]], 
+        textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = 2)[["MSTTR"]],
         wsize2_MSTTR
     )
-    
+
     # Test segment size = 3
     expect_equivalent(
-        textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = 3)[[2]], 
+        textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = 3)[[2]],
         wsize3_MSTTR
     )
-    
+
     # Test segment size = 4
-    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = 4)[[2]], 
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = 4)[[2]],
                       wsize4_MSTTR)
-    
+
     # Test segment size = ntoken
     expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = length(mytoken$text1))[[2]],
                       textstat_lexdiv(mytoken, measure = "TTR")[[2]])
@@ -356,36 +356,36 @@ test_that("textstat_lexdiv.tokens MSTTR works correct in conjunction with static
     wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4
 
     expect_equivalent(
-        textstat_lexdiv(mytoken, measure = c("TTR","MSTTR"), MSTTR_segment = 2), 
+        textstat_lexdiv(mytoken, measure = c("TTR", "MSTTR"), MSTTR_segment = 2),
         data.frame(textstat_lexdiv(mytoken, measure = "TTR"), MSTTR = wsize2_MSTTR)
     )
 })
 
 
-test_that("compute_MSTTR internal function has working exception handlers",{
+test_that("compute_MSTTR internal function has working exception handlers", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    
+
     expect_warning(
         quanteda:::compute_msttr2(mytoken, 20),
         "MSTTR_segment exceeds some documents' token lengths, resetting to 8"
     )
-    
+
     # expect_identical(
     #     list(compute_msttr(mytoken,segment_size=2, mean_sttr = FALSE, all_segments=TRUE)),
     #     list(c(MSTTR_tokens1_2 = 2/2, MSTTR_tokens3_4 =  2/2, MSTTR_tokens5_6 = 1/2, MSTTR_tokens7_8 = 2/2))
     # )
-    # 
+    #
     # expect_identical(
     #     list(compute_msttr(mytoken,segment_size=3 , mean_sttr = FALSE, all_segments=TRUE, discard_remainder = FALSE)),
     #     list(c(MSTTR_tokens1_3 = 2/3, MSTTR_tokens4_6 =  2/3, MSTTR_tokens7_8 = 1))
     # )
-    
+
     # Test misspecification of Segment Size
     expect_error(quanteda:::compute_msttr2(mytoken, 0),
                  "MSTTR_segment must be positive")
-    
-    # # Case when neither mean segmental TTR or each segment TTR is not requested 
+
+    # # Case when neither mean segmental TTR or each segment TTR is not requested
     # expect_error(compute_msttr(mytoken,segment_size=2,mean_sttr = FALSE ,all_segments=FALSE),
     #              quanteda:::message_error("at least one MSTTR value type to be returned"))
 })
@@ -394,44 +394,44 @@ test_that("textstat_lexdiv.tokens MTLD works correct", {
     skip("until MTLD is made functional")
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    
+
     # Test TTR Threshold = 0.80
-    ttr_threshold_1 = 0.80
+    ttr_threshold_1 <- 0.80
     # FORWARD PASS
     # <START> apple (1/1) orange (2/2) apple(2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # orange (1/1) pear (2/2) pear (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # apple (1/1) orange (2/2) <END>
     # FACTOR = 3
-    forward_pass_1_MTLD = 8 / 3
-    
+    forward_pass_1_MTLD <- 8 / 3
+
     # BACKWARD PASS
     # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # orange (1/1) apple (1/1) orange (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
-    # apple <END> 
+    # apple <END>
     # FACTOR = 3
-    backward_pass_1_MTLD <- 8/3 
-    ttr_threshold_1_expected_MTLD = (forward_pass_1_MTLD +  backward_pass_1_MTLD) /2
-    expect_equivalent(textstat_lexdiv(mytoken, measure = "MTLD", MTLD_ttr_threshold =  ttr_threshold_1)[[2]], 
+    backward_pass_1_MTLD <- 8/3
+    ttr_threshold_1_expected_MTLD <- (forward_pass_1_MTLD +  backward_pass_1_MTLD) / 2
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MTLD", MTLD_threshold =  ttr_threshold_1)[[2]],
                       ttr_threshold_1_expected_MTLD)
 
     # Test TTR Threshold = 0.50
-    ttr_threshold_2 = 0.50
+    ttr_threshold_2 <- 0.50
     # FORWARD PASS
     # <START> apple (1/1) orange (2/2) apple(2/3) orange (2/4) pear (3/5) pear (3/6)  apple (3/7) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # orange (1) <END>
     # FACTOR = 2
-    forward_pass_2_MTLD = 8 / 2
-    
+    forward_pass_2_MTLD <- 8 / 2
+
     # BACKWARD PASS
     # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) orange (3/5) apple (3/6) orange (3/7) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
-    # apple (1) 
+    # apple (1)
     # FACTOR = 2
-    
+
     # NOTE: When rolling TTR counter = 3/6 = 1/2 == ttr_threshold 2, the TTR counter is not reset.
     # It resets the TTR if it falls BELOW the threshold. This is consistent with the koRpus package implementation by Meik Michalke.
-    backward_pass_2_MTLD = 8 / 2
-    ttr_threshold_2_expected_MTLD = (forward_pass_2_MTLD +  backward_pass_2_MTLD) /2
-    expect_identical(textstat_lexdiv(mytoken, measure = "MTLD", MTLD_ttr_threshold =  ttr_threshold_2)[[2]], 
+    backward_pass_2_MTLD <- 8 / 2
+    ttr_threshold_2_expected_MTLD <- (forward_pass_2_MTLD +  backward_pass_2_MTLD) / 2
+    expect_identical(textstat_lexdiv(mytoken, measure = "MTLD", MTLD_threshold =  ttr_threshold_2)[[2]],
                       ttr_threshold_2_expected_MTLD)
 })
 
@@ -439,23 +439,23 @@ test_that("textstat_lexdiv.tokens MTLD works correct in conjunction with static 
     skip("until MTLD is made functional")
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    
-    ttr_threshold = 0.50
-    expected_MTLD_value = 4
-    
-    expect_identical(textstat_lexdiv(mytoken, measure = c("TTR","MTLD"), MTLD_ttr_threshold =  ttr_threshold), 
+
+    ttr_threshold <- 0.50
+    expected_MTLD_value <- 4
+
+    expect_identical(textstat_lexdiv(mytoken, measure = c("TTR", "MTLD"), MTLD_threshold =  ttr_threshold),
                       data.frame(textstat_lexdiv(mytoken, measure = "TTR"), MTLD = expected_MTLD_value))
 })
 
-test_that("compute_mtld internal function has working exception handlers",{
+test_that("compute_mtld internal function has working exception handlers", {
     skip("until MTLD is made functional")
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    
+
     # Test when TTR_threshold is not  between 0 and 1
-    expect_error(quanteda:::compute_mtld(mytoken, ttr_threshold =  26), 
+    expect_error(quanteda:::compute_mtld(mytoken, ttr_threshold =  26),
                  quanteda:::message_error("TTR threshold must be between 0 and 1"))
-    
+
     # Test when TTR_threshold is not specified
     expect_error(compute_mtld(mytoken, ttr_threshold = NULL),
                  quanteda:::message_error("TTR threshold cannot be NULL"))
@@ -465,36 +465,34 @@ test_that("textstat_lexdiv.tokens works right when all measures are requested", 
     skip("until all MA measures are made functional")
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
-    wsize2_MATTR = (2/2 + 2/2 + 2/2 + 2/2 + 1/2 + 2/2 + 2/2) / 7
-    wsize2_MSTTR = (2/2 + 2/2 + 1/2 + 1) /4 # 7th entry is discarded
-    
+    wsize2_MATTR <- (2/2 + 2/2 + 2/2 + 2/2 + 1/2 + 2/2 + 2/2) / 7
+    wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 1) /4 # 7th entry is discarded
+
     # Test TTR Threshold = 0.80
     # FORWARD PASS
     # <START> apple (1/1) orange (2/2) apple(2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # orange (1/1) pear (2/2) pear (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # apple (1/1) orange (2/2) <END>
     # FACTOR = 3
-    forward_pass_MTLD = 8 / 3
-    
+    forward_pass_MTLD <- 8 / 3
+
     # BACKWARD PASS
     # <START> orange (1/1) apple (2/2) pear (3/3) pear (3/4) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
     # orange (1/1) apple (1/1) orange (2/3) [FACTOR = FACTOR + 1, RESET TTR COUNTER]
-    # apple <END> 
+    # apple <END>
     # FACTOR = 3
-    backward_pass_MTLD = 8/3 
-    ttr0.8_MTLD = (forward_pass_MTLD +  backward_pass_MTLD) /2
-    
+    backward_pass_MTLD <- 8 / 3
+    ttr0.8_MTLD <- (forward_pass_MTLD +  backward_pass_MTLD) / 2
+
     static_measures <- c("TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas")
-    moving_measures_df = data.frame(MATTR = wsize2_MATTR, MSTTR = wsize2_MSTTR, MTLD = ttr0.8_MTLD)
-    
-    
-    expect_identical(textstat_lexdiv(mytoken, 
-                                     measure = "all", 
+    moving_measures_df <- data.frame(MATTR = wsize2_MATTR, MSTTR = wsize2_MSTTR, MTLD = ttr0.8_MTLD)
+
+    expect_identical(textstat_lexdiv(mytoken,
+                                     measure = "all",
                                      MATTR_window = 2,
                                      MSTTR_segment_size = 2,
-                                     MTLD_ttr_threshold = 0.80
-    ), 
+                                     MTLD_threshold = 0.80
+    ),
     cbind(textstat_lexdiv(mytoken, measure = static_measures),
           moving_measures_df))
-    
 })
