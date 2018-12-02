@@ -139,7 +139,11 @@ tokens_chunk.tokens <- function(x, size, discard_remainder = TRUE) {
                 n = size, val = septoken_index, truncate = discard_remainder)
     attributes(x) <- attrs
     
-    tokens_segment(x, pattern = septoken, extract_pattern = TRUE)
+    # segment on the inserted pattern
+    ret <- tokens_segment(x, pattern = septoken, extract_pattern = TRUE)
+    # return without the extracted pattern in the docvars
+    attr(ret, "docvars")$pattern <- NULL
+    ret
 }
 
 #' Insert integers into a vector at defined intervals
