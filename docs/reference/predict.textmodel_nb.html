@@ -251,7 +251,7 @@ Naive Bayes model. using trained Naive Bayes examples</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># application to LBG (2003) example data</span>
-(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_nb.html'>textmodel_nb</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
+(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_nb.html'>textmodel_nb</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; textmodel_nb.dfm(x = data_dfm_lbgexample, y = c("A", "A", "B", 
 #&gt;     "C", "C", NA))

@@ -198,9 +198,9 @@
 <p><img src="plotting_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 <p>You can also pass multiple kwic objects to <code>plot</code> to compare the dispersion of different terms:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
-<a class="sourceLine" id="cb6-2" title="2">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"american"</span>),</a>
-<a class="sourceLine" id="cb6-3" title="3">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"people"</span>),</a>
-<a class="sourceLine" id="cb6-4" title="4">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"communist"</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"american"</span>),</a>
+<a class="sourceLine" id="cb6-3" title="3">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"people"</span>),</a>
+<a class="sourceLine" id="cb6-4" title="4">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"communist"</span>)</a>
 <a class="sourceLine" id="cb6-5" title="5">)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>If you’re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
@@ -211,15 +211,15 @@
 <a class="sourceLine" id="cb9-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(data_char_mobydick) &lt;-<span class="st"> "Moby Dick"</span></a>
 <a class="sourceLine" id="cb9-4" title="4"></a>
 <a class="sourceLine" id="cb9-5" title="5"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
-<a class="sourceLine" id="cb9-6" title="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),</a>
-<a class="sourceLine" id="cb9-7" title="7">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"ahab"</span>)</a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"whale"</span>),</a>
+<a class="sourceLine" id="cb9-7" title="7">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"ahab"</span>)</a>
 <a class="sourceLine" id="cb9-8" title="8">) </a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
-<a class="sourceLine" id="cb10-2" title="2">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"american"</span>),</a>
-<a class="sourceLine" id="cb10-3" title="3">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"people"</span>),</a>
-<a class="sourceLine" id="cb10-4" title="4">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"communist"</span>),</a>
+<a class="sourceLine" id="cb10-2" title="2">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"american"</span>),</a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"people"</span>),</a>
+<a class="sourceLine" id="cb10-4" title="4">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"communist"</span>),</a>
 <a class="sourceLine" id="cb10-5" title="5">    <span class="dt">scale =</span> <span class="st">"absolute"</span></a>
 <a class="sourceLine" id="cb10-6" title="6">)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
@@ -231,9 +231,9 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)</a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>())</a>
 <a class="sourceLine" id="cb11-3" title="3">g &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
-<a class="sourceLine" id="cb11-4" title="4">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"american"</span>),</a>
-<a class="sourceLine" id="cb11-5" title="5">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"people"</span>),</a>
-<a class="sourceLine" id="cb11-6" title="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"communist"</span>)</a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"american"</span>),</a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"people"</span>),</a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"communist"</span>)</a>
 <a class="sourceLine" id="cb11-7" title="7">)</a>
 <a class="sourceLine" id="cb11-8" title="8">g <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color =</span> keyword) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="op">+</span></a>
@@ -340,7 +340,7 @@
 <a class="sourceLine" id="cb20-5" title="5">refscores &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">NA</span>, <span class="dv">4</span>), <span class="dv">1</span>, <span class="dv">-1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">NA</span>, <span class="dv">8</span>))</a>
 <a class="sourceLine" id="cb20-6" title="6"></a>
 <a class="sourceLine" id="cb20-7" title="7"><span class="co"># Predict Wordscores model</span></a>
-<a class="sourceLine" id="cb20-8" title="8">ws &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordscores.html">textmodel_wordscores</a></span>(ie_dfm, refscores, <span class="dt">smooth =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb20-8" title="8">ws &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordscores.html">textmodel_wordscores</a></span>(ie_dfm, <span class="dt">y =</span> refscores, <span class="dt">smooth =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb20-9" title="9"></a>
 <a class="sourceLine" id="cb20-10" title="10"><span class="co"># Plot estimated word positions (highlight words and print them in red)</span></a>
 <a class="sourceLine" id="cb20-11" title="11"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(ws,</a>
@@ -399,9 +399,9 @@
 <div id="references" class="section level1">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
-<p>Laver, Michael, Kenneth Benoit, and John Garry. 2003. “Extracting Policy Positions from Political Texts Using Words as Data.” <em>American Political Science Review</em> 97(2):311-331.</p>
-<p>Nenadic, Oleg, and Michael Greenacre. 2007. “Correspondence analysis in R, with two- and three-dimensional graphics: The ca package.” <em>Journal of Statistical Software</em> 20(3): 1-13. URL: <a href="http://www.jstatsoft.org/v20/i03/" class="uri">http://www.jstatsoft.org/v20/i03/</a>.</p>
-<p>Slapin, Jonathan, and Sven-Oliver Proksch. 2008. “A Scaling Model for Estimating Time-Series Party Positions from Texts.” <em>American Journal of Political Science</em> 52(3):705-772.</p>
+<p>Laver, Michael, Kenneth Benoit, and John Garry. 2003. “.” <em>American Political Science Review</em> 97(2): 311-331.</p>
+<p>Nenadic, Oleg and Michael Greenacre. 2007. “.” <em>Journal of Statistical Software</em> 20(3): 1–13.</p>
+<p>Slapin, Jonathan and Sven-Oliver Proksch. 2008. “.” <em>American Journal of Political Science</em> 52(3): 705–772.</p>
 </div>
   </div>
 

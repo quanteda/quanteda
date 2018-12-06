@@ -252,7 +252,7 @@ the behaviour of this argument.</p></td>
   smoothing applied. Calling <code><a href='predict.textmodel_wordscores.html'>predict.textmodel_wordscores</a></code> on
   this object without specifying a value for <code>newdata</code>, for instance,
   will predict on the unsmoothed object.  This behaviour differs from
-  versions of quanteda &lt;= 1.2.</p>
+  versions of <span class="pkg">quanteda</span> &lt;= 1.2.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -268,11 +268,12 @@ the behaviour of this argument.</p></td>
     <p>Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
   "<a href='http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf'>Extracting Policy
   Positions From Political Texts Using Words as Data.</a>" <em>American
-  Political Science Review</em> 97(02): 311-31</p>  
-<p>Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
-  Voting." New York University Mimeo.</p>  
-<p>Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
-  Interpreting Political Text." <em>Political Analysis</em> 16(1): 93-100.</p>
+  Political Science Review</em> 97(2): 311--331</p>  
+<p>Beauchamp, Nick. 2012. "<a href='http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf'>Using 
+  Text to Scale Legislatures with Uninformative Voting</a>." New York University Mimeo.</p>  
+<p>Martin, Lanny W. and Georg Vanberg. 2007. "<a href='https://doi.org/10.1093/pan/mpm010'>A Robust 
+  Transformation Procedure for Interpreting Political Text</a>." <em>Political Analysis</em> 
+  16(1): 93--100.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -282,7 +283,7 @@ the behaviour of this argument.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
+    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; textmodel_wordscores.dfm(x = data_dfm_lbgexample, y = c(seq(-1.5, 
 #&gt;     1.5, 0.75), NA))

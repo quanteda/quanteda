@@ -273,9 +273,9 @@ named features.  Any features not named will be assigned a weight of 1.0
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze.
-  <em>Introduction to Information Retrieval</em>. Vol. 1. Cambridge: Cambridge 
-  University Press, 2008.</p>
+    <p>Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
+  <em>An Introduction to Information Retrieval</em>. Cambridge University Press. 
+  <a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -287,7 +287,7 @@ named features.  Any features not named will be assigned a weight of 1.0
 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>my_dfm</span>, <span class='fl'>1</span>, <span class='kw'>function</span>(<span class='no'>tf</span>) <span class='no'>tf</span>/<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>tf</span>))
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>my_dfm</span>)</div><div class='output co'>#&gt;   the    of     ,   and     .    to    in     a   our  that 
-#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>norm_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='st'>"prop"</span>)
+#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>norm_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>my_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>norm_dfm</span>)</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in       our 
 #&gt; 3.7910332 2.7639649 2.6821863 2.0782035 1.9594539 1.7643366 1.0695645 0.8731637 
 #&gt;         a        we 
