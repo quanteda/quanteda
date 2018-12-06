@@ -32,14 +32,14 @@
 #' toks <- corpus_subset(data_corpus_irishbudget2010) %>%
 #'     tokens(remove_punct = TRUE) %>%
 #'     tokens_tolower() %>%
-#'     tokens_remove(stopwords("english"), padding = FALSE)
+#'     tokens_remove(pattern = stopwords("english"), padding = FALSE)
 #' myfcm <- fcm(toks, context = "window", tri = FALSE)
 #' feat <- names(topfeatures(myfcm, 30))
-#' fcm_select(myfcm, feat, verbose = FALSE) %>% 
+#' fcm_select(myfcm, pattern = feat, verbose = FALSE) %>% 
 #'     textplot_network(min_freq = 0.5)
-#' fcm_select(myfcm, feat, verbose = FALSE) %>% 
+#' fcm_select(myfcm, pattern = feat, verbose = FALSE) %>% 
 #'     textplot_network(min_freq = 0.8)
-#' fcm_select(myfcm, feat, verbose = FALSE) %>%
+#' fcm_select(myfcm, pattern = feat, verbose = FALSE) %>%
 #'     textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
 #' @export
 #' @seealso \code{\link{fcm}}
