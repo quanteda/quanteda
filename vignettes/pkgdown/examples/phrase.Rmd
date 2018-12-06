@@ -42,7 +42,7 @@ multiword <- c('United States', 'New York')
 `kwic()` is useful to find multi-word expressions in tokens. If you are not sure if 'United' and 'States' are separated, check their positions (e.g. '434:435').
 
 ```{r}
-head(kwic(toks, phrase(multiword)))
+head(kwic(toks, pattern = phrase(multiword)))
 ```
 
 ### Select tokens
@@ -50,7 +50,7 @@ head(kwic(toks, phrase(multiword)))
 Similarly, you can select or remove multi-word expression using `tokens_select()`.
 
 ```{r}
-head(tokens_select(toks, phrase(multiword)))
+head(tokens_select(toks, pattern = phrase(multiword)))
 ```
 
 ### Compound tokens
@@ -58,8 +58,8 @@ head(tokens_select(toks, phrase(multiword)))
 `tokens_compound()` joins elements of multi-word expressions by underscore, so they become 'United_States' and 'New_York'.
 
 ```{r}
-comp_toks <- tokens_compound(toks, phrase(multiword))
-head(tokens_select(comp_toks, c('United_States', 'New_York')))
+comp_toks <- tokens_compound(toks, pattern = phrase(multiword))
+head(tokens_select(comp_toks, pattern = c('United_States', 'New_York')))
 ```
 
 ## Dictionary
@@ -74,7 +74,7 @@ multiword_dict <- dictionary(list(country = 'United States',
 ### Lookup dictionary
 
 ```{r}
-head(tokens_lookup(toks, multiword_dict))
+head(tokens_lookup(toks, dictionary = multiword_dict))
 ```
 
 ## Collocations
@@ -87,8 +87,9 @@ If `textstat_collocations()` is applied to a tokens object comprised only of cap
 
 ```{r}
 col <- toks %>% 
-       tokens_remove(stopwords()) %>% 
-       tokens_select('^[A-Z]', valuetype = 'regex', case_insensitive = FALSE, padding = TRUE) %>% 
+       tokens_remove(stopwords("en")) %>% 
+       tokens_select(pattern = '^[A-Z]', valuetype = 'regex', 
+                     case_insensitive = FALSE, padding = TRUE) %>% 
        textstat_collocations(min_count = 5, tolower = FALSE)
 head(col)
 ```
@@ -98,14 +99,14 @@ head(col)
 Collocations are automatically recognized as multi-word expressions by `tokens_compound()` in *case-sensitive fixed pattern matching*. This is the fastest way to compound large numbers of multi-word expressions, but make sure that `tolower = FALSE` in `textstat_collocations()` to do this.
 
 ```{r}
-comp_toks2 <- tokens_compound(toks, col)
-head(kwic(comp_toks2, c('United_States', 'New_York')))
+comp_toks2 <- tokens_compound(toks, pattern = col)
+head(kwic(comp_toks2, pattern = c('United_States', 'New_York')))
 ```
 
 You can use `phrase()` on collocations if more flexibility is needed. This is usually the case if you compound tokens from different corpus.
 
 ```{r}
-comp_toks3 <- tokens_compound(toks, phrase(col$collocation))
-head(kwic(comp_toks3, c('United_States', 'New_York')))
+comp_toks3 <- tokens_compound(toks, pattern = phrase(col$collocation))
+head(kwic(comp_toks3, pattern = c('United_States', 'New_York')))
 ```
 

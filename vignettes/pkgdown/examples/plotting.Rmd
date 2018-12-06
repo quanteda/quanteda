@@ -55,9 +55,9 @@ kwic(data_corpus_inaugural_subset, pattern = "american") %>%
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(data_corpus_inaugural_subset, "american"),
-     kwic(data_corpus_inaugural_subset, "people"),
-     kwic(data_corpus_inaugural_subset, "communist")
+     kwic(data_corpus_inaugural_subset, pattern = "american"),
+     kwic(data_corpus_inaugural_subset, pattern = "people"),
+     kwic(data_corpus_inaugural_subset, pattern = "communist")
 )
 ```
 
@@ -70,8 +70,8 @@ data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/p
 names(data_char_mobydick) <- "Moby Dick"
 
 textplot_xray(
-    kwic(data_char_mobydick, "whale"),
-    kwic(data_char_mobydick, "ahab")
+    kwic(data_char_mobydick, pattern = "whale"),
+    kwic(data_char_mobydick, pattern = "ahab")
 ) 
 ```
 
@@ -79,9 +79,9 @@ You might also have noticed that the x-axis scale is the absolute token index fo
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-    kwic(data_corpus_inaugural_subset, "american"),
-    kwic(data_corpus_inaugural_subset, "people"),
-    kwic(data_corpus_inaugural_subset, "communist"),
+    kwic(data_corpus_inaugural_subset, pattern = "american"),
+    kwic(data_corpus_inaugural_subset, pattern = "people"),
+    kwic(data_corpus_inaugural_subset, pattern = "communist"),
     scale = "absolute"
 )
 ```
@@ -96,9 +96,9 @@ The object returned is a ggplot object, which can be modified using ggplot:
 library("ggplot2")
 theme_set(theme_bw())
 g <- textplot_xray(
-    kwic(data_corpus_inaugural_subset, "american"),
-    kwic(data_corpus_inaugural_subset, "people"),
-    kwic(data_corpus_inaugural_subset, "communist")
+    kwic(data_corpus_inaugural_subset, pattern = "american"),
+    kwic(data_corpus_inaugural_subset, pattern = "people"),
+    kwic(data_corpus_inaugural_subset, pattern = "communist")
 )
 g + aes(color = keyword) + 
     scale_color_manual(values = c("blue", "red", "green")) +
@@ -218,7 +218,7 @@ ie_dfm <- dfm(data_corpus_irishbudget2010)
 refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
 
 # Predict Wordscores model
-ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
+ws <- textmodel_wordscores(ie_dfm, y = refscores, smooth = 1)
 
 # Plot estimated word positions (highlight words and print them in red)
 textplot_scale1d(ws,

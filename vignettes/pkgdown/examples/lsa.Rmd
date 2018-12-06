@@ -20,9 +20,9 @@ library(quanteda)
 # Create a document-feature matrix
 
 ```{r}
-txt <- c(d1="Shipment of gold damaged in a fire",
-         d2="Delivery of silver arrived in a silver truck",
-         d3="Shipment of gold arrived in a truck" )
+txt <- c(d1 = "Shipment of gold damaged in a fire",
+         d2 = "Delivery of silver arrived in a silver truck",
+         d3 = "Shipment of gold arrived in a truck" )
 
 mydfm <- dfm(txt)
 mydfm
@@ -47,6 +47,6 @@ querydfm <- dfm(c("gold silver truck")) %>%
 querydfm
 ```
 ```{r}
-newq <- predict(mylsa, querydfm)
+newq <- predict(mylsa, newdata = querydfm)
 newq$docs_newspace[, 1:2]
 ```

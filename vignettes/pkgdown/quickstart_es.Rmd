@@ -151,8 +151,8 @@ Se puede guardar el output del comando summary como un data frame y graficar alg
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-   ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-       scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+   ggplot(data = tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+       scale_x_continuous(labels = c(seq(1789, 2012, 12)), breaks = seq(1789, 2012, 12)) 
 
 # El discurso inaugural más largo: William Henry Harrison
 tokenInfo[which.max(tokenInfo$Tokens), ] 
@@ -352,7 +352,7 @@ liwcdfm[, 1:10]
 ```{r fig.width = 6}
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
               remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), 
+obamaSimil <- textstat_simil(presDfm, selection = c("2009-Obama" , "2013-Obama"), 
                             margin = "documents", method = "cosine")
 obamaSimil
 # dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
@@ -368,7 +368,7 @@ presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")),
 presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
 
 # Clustering jerárquico- obtener distancias en dfm normalizado
-presDistMat <- textstat_dist(dfm_weight(presDfm, "prop"))
+presDistMat <- textstat_dist(dfm_weight(presDfm, scheme = "prop"))
 # Clustering jerárquico de los objetos de distancia
 presCluster <- hclust(presDistMat)
 # etiqueta con nombres de documentos
@@ -379,7 +379,8 @@ lot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized T
 También se puede observar similitudes de los términos:
 
 ```{r}
-sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(presDfm, selection = c("fair", "health", "terror"), 
+                      method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
