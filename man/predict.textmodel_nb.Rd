@@ -31,7 +31,7 @@ Naive Bayes model. using trained Naive Bayes examples
 }
 \examples{
 # application to LBG (2003) example data
-(nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
+(nb <- textmodel_nb(data_dfm_lbgexample, y = c("A", "A", "B", "C", "C", NA)))
 predict(nb)
 predict(nb, type = "logposterior")
 }

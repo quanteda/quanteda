@@ -60,7 +60,7 @@ ie_dfm <- dfm(data_corpus_irishbudget2010)
 
 ## wordscores
 refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
-ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
+ws <- textmodel_wordscores(ie_dfm, y = refscores, smooth = 1)
 # plot estimated document positions
 textplot_scale1d(predict(ws, se.fit = TRUE), 
                  groups = docvars(data_corpus_irishbudget2010, "party"))
