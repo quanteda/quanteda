@@ -39,18 +39,18 @@
 #'   \code{\link[stats]{as.dist}}
 #' @examples
 #' # similarities for documents
-#' mt <- dfm(data_corpus_inaugural, remove_punct = TRUE, remove = stopwords("english"))
+#' mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE, remove = stopwords("english"))
 #' (s1 <- textstat_simil(mt, method = "cosine", margin = "documents"))
 #' as.matrix(s1)
 #' as.list(s1)
 #'
 #' # similarities for for specific documents
-#' textstat_simil(mt, "2017-Trump", margin = "documents")
-#' textstat_simil(mt, "2017-Trump", method = "cosine", margin = "documents")
-#' textstat_simil(mt, c("2009-Obama" , "2013-Obama"), margin = "documents")
+#' textstat_simil(mt, selection = "2017-Trump", margin = "documents")
+#' textstat_simil(mt, selection = "2017-Trump", method = "cosine", margin = "documents")
+#' textstat_simil(mt, selection = c("2009-Obama" , "2013-Obama"), margin = "documents")
 #'
 #' # compute some term similarities
-#' s2 <- textstat_simil(mt, c("fair", "health", "terror"), method = "cosine",
+#' s2 <- textstat_simil(mt, selection = c("fair", "health", "terror"), method = "cosine",
 #'                       margin = "features")
 #' head(as.matrix(s2), 10)
 #' as.list(s2, n = 8)
