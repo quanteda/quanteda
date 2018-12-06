@@ -212,7 +212,7 @@ Wordscores is a scaling procedure for estimating policy positions or scores (Lav
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Transform corpus to dfm
-ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
+ie_dfm <- dfm(data_corpus_irishbudget2010)
 
 # Set reference scores
 refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
@@ -225,16 +225,11 @@ textplot_scale1d(ws,
                  highlighted = c("minister", "have", "our", "budget"), 
                  highlighted_color = "red")
 
-# Set document labels for y-axis
-doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-                1, paste, collapse = " ")
-
 # Get predictions
 pred <- predict(ws, se.fit = TRUE)
 
 # Plot estimated document positions and group by "party" variable
 textplot_scale1d(pred, margin = "documents",
-                 doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 
 # Plot estimated document positions using the LBG transformation and group by "party" variable
@@ -242,7 +237,6 @@ textplot_scale1d(pred, margin = "documents",
 pred_lbg <- predict(ws, se.fit = TRUE, rescaling = "lbg")
 
 textplot_scale1d(pred_lbg, margin = "documents",
-                 doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
@@ -262,8 +256,7 @@ textplot_scale1d(wf, margin = "features",
                  highlighted_color = "red")
 
 # Plot estimated document positions
-textplot_scale1d(wf, doclabels = doclab,
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
+textplot_scale1d(wf, groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
 ## Correspondence Analysis
@@ -277,13 +270,8 @@ ie_dfm <- dfm(data_corpus_irishbudget2010)
 # Run correspondence analysis on dfm
 ca <- textmodel_ca(ie_dfm)
 
-# Create doclabels for y-axis
-doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-                1, paste, collapse = " ")
-
 # Plot estimated positions and group by party
 textplot_scale1d(ca, margin = "documents",
-                 doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 

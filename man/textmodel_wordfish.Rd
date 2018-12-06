@@ -114,11 +114,11 @@ if (requireNamespace("austin")) {
 \references{
 Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
   for Estimating Time-Series Party Positions from Texts." \emph{American 
-  Journal of Political Science} 52(3):705-772.
+  Journal of Political Science} 52(3): 705-772.
   
   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
-  21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
+  21(3): 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 }
 \seealso{
 \code{\link{predict.textmodel_wordfish}}

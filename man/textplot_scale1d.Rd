@@ -57,24 +57,21 @@ The \code{groups} argument only applies when \code{margin = "documents"}.
 \examples{
 \dontrun{
 ie_dfm <- dfm(data_corpus_irishbudget2010)
-doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-                1, paste, collapse = " ")
 
 ## wordscores
 refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
 ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
+# plot estimated document positions
+textplot_scale1d(predict(ws, se.fit = TRUE), 
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
 # plot estimated word positions
 textplot_scale1d(ws, highlighted = c("minister", "have", "our", "budget"))
-# plot estimated document positions
-textplot_scale1d(predict(ws, se.fit = TRUE), doclabels = doclab,
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
 
 ## wordfish
 wf <- textmodel_wordfish(ie_dfm, dir = c(6,5))
 # plot estimated document positions
-textplot_scale1d(wf, doclabels = doclab)
-textplot_scale1d(wf, doclabels = doclab,
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
+textplot_scale1d(wf)
+textplot_scale1d(wf, groups = docvars(data_corpus_irishbudget2010, "party"))
 # plot estimated word positions
 textplot_scale1d(wf, margin = "features", 
                  highlighted = c("government", "global", "children", 
@@ -85,7 +82,6 @@ textplot_scale1d(wf, margin = "features",
 ca <- textmodel_ca(ie_dfm)
 # plot estimated document positions
 textplot_scale1d(ca, margin = "documents",
-                 doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 }
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Internal function for <code>select_types()</code> to check if a string is a regular expression — is_regex • quanteda</title>
+<title>Compute lexdiv (internal functions) — lexdiv • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -38,9 +38,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Internal function for <code>select_types()</code> to check if a string is a regular expression — is_regex" />
+<meta property="og:title" content="Compute lexdiv (internal functions) — lexdiv" />
 
-<meta property="og:description" content="Internal function for select_types() to check if a string is a regular expression" />
+<meta property="og:description" content="Internal function used in textstat_lexdiv" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -193,27 +193,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Internal function for <code>select_types()</code> to check if a string is a regular expression</h1>
+    <h1>Compute lexdiv (internal functions)</h1>
     
-    <div class="hidden name"><code>is_regex.Rd</code></div>
+    <div class="hidden name"><code>lexdiv.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Internal function for <code>select_types()</code> to check if a string is a regular expression</p>
+    <p>Internal function used in textstat_lexdiv</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>is_regex</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>compute_lexdiv_stats</span>(<span class='no'>x</span>, <span class='no'>measure</span>, <span class='no'>log.base</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a character string to be tested</p></td>
+      <td><p>a <a href='dfm.html'>dfm</a> object</p></td>
+    </tr>
+    <tr>
+      <th>measure</th>
+      <td><p>a list of lexical diversity measures.</p></td>
+    </tr>
+    <tr>
+      <th>log.base</th>
+      <td><p>a numeric value defining the base of the logarithm (for
+measures using logs)</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>returns a data.frame of documents and their lexical diversity scores.</p>
     
 
   </div>
@@ -221,7 +234,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

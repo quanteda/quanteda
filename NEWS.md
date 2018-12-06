@@ -2,7 +2,7 @@
 
 ### Bug fixes and stability enhancements
 
-* None (yet).
+* Fixed bug in `dfm_compress()` and `dfm_group()` that changed or deleted docvars attributes of dfm objects (#1506).
 
 ### New features
 
