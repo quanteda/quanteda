@@ -51,10 +51,10 @@ Calculate the readability of text(s) using one of a variety of computed
 indexes.
 }
 \examples{
-txt <- c(doc1 = "Readability zero one.  Ten, Eleven.", 
+txt <- c(doc1 = "Readability zero one. Ten, Eleven.", 
          doc2 = "The cat in a dilapidated tophat.")
-textstat_readability(txt, "Flesch")
-textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
+textstat_readability(txt, measure = "Flesch")
+textstat_readability(txt, measure = c("FOG", "FOG.PSK", "FOG.NRI"))
 
 textstat_readability(data_corpus_inaugural[48:58], 
                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))

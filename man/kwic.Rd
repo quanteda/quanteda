@@ -58,13 +58,13 @@ delimiters.)
   whitespace-separated element matches a token in sequence.
 }
 \examples{
-head(kwic(data_corpus_inaugural, "secure*", window = 3, valuetype = "glob"))
-head(kwic(data_corpus_inaugural, "secur", window = 3, valuetype = "regex"))
-head(kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed"))
+head(kwic(data_corpus_inaugural, pattern = "secure*", window = 3, valuetype = "glob"))
+head(kwic(data_corpus_inaugural, pattern = "secur", window = 3, valuetype = "regex"))
+head(kwic(data_corpus_inaugural, pattern = "security", window = 3, valuetype = "fixed"))
 
 toks <- tokens(data_corpus_inaugural)
-kwic(data_corpus_inaugural, phrase("war against"))
-kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
+kwic(data_corpus_inaugural, pattern = phrase("war against"))
+kwic(data_corpus_inaugural, pattern = phrase("war against"), valuetype = "regex")
 
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)

@@ -319,7 +319,7 @@ the same, then "uniform" and "termfreq" would be the same.</p>
 <span class='no'>trainingclass</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='fl'>NA</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>## replicate IIR p261 prediction for test set (document 5)</span>
-(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; 
+(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; textmodel_nb.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
 #&gt; 
@@ -346,13 +346,13 @@ the same, then "uniform" and "termfreq" would be the same.</p>
 #&gt;  Y  Y  Y  N  Y 
 #&gt; Levels: N Y</div><div class='input'>
 <span class='co'># contrast with other priors</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
 #&gt;  Y  Y  Y  N  N 
-#&gt; Levels: N Y</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
+#&gt; Levels: N Y</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; d1 d2 d3 d4 d5 
 #&gt;  Y  Y  Y  N  Y 
 #&gt; Levels: N Y</div><div class='input'>
 <span class='co'>## replicate IIR p264 Bernoulli Naive Bayes</span>
-<span class='no'>nb_bern</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"Bernoulli"</span>,
+<span class='no'>nb_bern</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>trainingclass</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"Bernoulli"</span>,
                         <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>nb_bern</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; d5 
 #&gt;  N 

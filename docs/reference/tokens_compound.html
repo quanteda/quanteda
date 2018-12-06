@@ -265,7 +265,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 
 <span class='co'># for lists of sequence elements</span>
 <span class='no'>myseqs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tax"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"income"</span>, <span class='st'>"tax"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"capital"</span>, <span class='st'>"gains"</span>, <span class='st'>"tax"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"inheritance"</span>, <span class='st'>"tax"</span>))
-(<span class='no'>cw</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>myseqs</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+(<span class='no'>cw</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>myseqs</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
@@ -287,7 +287,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt;   text2          1                 0               0</div><div class='input'>
 <span class='co'># when used as a dictionary for dfm creation</span>
 <span class='no'>mydict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax*"</span>)))
-(<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict1</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+(<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>mydict1</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
@@ -300,7 +300,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt; [10] "inheritance_taxes"
 #&gt; </div><div class='input'>
 <span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
-(<span class='no'>cw3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict1</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+(<span class='no'>cw3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>mydict1</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
@@ -317,7 +317,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
                           <span class='kw'>positive</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"good stuff"</span>, <span class='st'>"like? th??"</span>)))
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"I liked this, when we can use bad words, in awful text."</span>,
                  <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"Some damn good stuff, like the text, she likes that too."</span>))
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; txt1 :
 #&gt;  [1] "I"          "liked_this" ","          "when"       "we"        
 #&gt;  [6] "can"        "use"        "bad_words"  ","          "in"        
@@ -329,11 +329,10 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt; [11] "too"        "."         
 #&gt; </div><div class='input'>
 <span class='co'># with collocations</span>
-<span class='no'>cols</span> <span class='kw'>&lt;-</span>
-    <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"capital gains taxes are worse than inheritance taxes"</span>),
-                                  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"capital gains taxes are worse than inheritance taxes"</span>),
+                              <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new law included capital gains taxes and inheritance taxes."</span>)
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>cols</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>cols</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"                 "new"                 "law"                
 #&gt; [4] "included"            "capital_gains_taxes" "and"                

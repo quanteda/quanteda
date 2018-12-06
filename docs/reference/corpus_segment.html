@@ -335,7 +335,7 @@ semi-colons (phrase delimiters within a sentence),
                   ##DOC1 This is the first document.  Second sentence in Doc 1.
                   ##DOC3 Third document starts here.  End of third document."</span>,
                  <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
-<span class='no'>corp_seg</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp</span>, <span class='st'>"##*"</span>)
+<span class='no'>corp_seg</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corp_seg</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp_seg</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corp_seg</span>))</div><div class='output co'>#&gt;                                                texts(corp_seg)  pattern
 #&gt; text1.1                              This is the introduction.  ##INTRO
 #&gt; text1.2 This is the first document.  Second sentence in Doc 1.   ##DOC1

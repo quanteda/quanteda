@@ -36,7 +36,6 @@
 #' tokens_ngrams(toks, n = 1:3)
 #' tokens_ngrams(toks, n = c(2,4), concatenator = " ")
 #' tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
-#' 
 tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("tokens_ngrams")
 }
@@ -127,9 +126,9 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #'   \eqn{(k-i)} skipgram until \eqn{(k-i)==0} (which includes 0 skip-grams).
 #' @export
 #' @references 
-#' \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
-#' D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram 
-#' Modelling."}
+#' Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006. 
+#' "\href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{A Closer 
+#' Look at Skip-Gram Modelling}."
 #' @importFrom utils combn
 #' @examples 
 #' # skipgrams

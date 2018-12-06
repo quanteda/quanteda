@@ -155,14 +155,14 @@ summary(data_corpus_irishbudget2010)
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(data_corpus_inaugural)
+tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
         scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
     theme_bw()
 
 # Longest inaugural address: William Henry Harrison
-tokenInfo[which.max(tokenInfo$Tokens), ] 
+tokeninfo[which.max(tokeninfo$Tokens), ] 
 ```
 
 
@@ -195,15 +195,15 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "communist*")
+kwic(data_corpus_inaugural, pattern = "communist*")
 ```
 
 
@@ -379,7 +379,7 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
 pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, scheme = "prop"))
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
 # label with document names
@@ -390,7 +390,7 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 We can also look at term similarities:
 ```{r}
-sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, selection = c("fair", "health", "terror"), method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
