@@ -39,7 +39,8 @@
 #'   \code{\link[stats]{as.dist}}
 #' @examples
 #' # similarities for documents
-#' mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE, remove = stopwords("english"))
+#' mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+#'           remove_punct = TRUE, remove = stopwords("english"))
 #' (s1 <- textstat_simil(mt, method = "cosine", margin = "documents"))
 #' as.matrix(s1)
 #' as.list(s1)

@@ -18,21 +18,21 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
          " feature", if (nfeats != 1L) "s" else "", sep = "")
     if (ndocs > 0) {
         catm(" and ",
-             format(ndocs, big.mark=",", scientific = FALSE),
+             format(ndocs, big.mark = ",", scientific = FALSE),
              " document", if (ndocs != 1L) "s" else "",
              sep = "")
     }
-    if ((nfeatspad + ndocspad) > 0) {
+    if ( (nfeatspad + ndocspad) > 0) {
         catm(", padded ", sep = "")
     }
     if (nfeatspad > 0) {
-        catm(format(nfeatspad, big.mark=",", scientific = FALSE), 
+        catm(format(nfeatspad, big.mark = ",", scientific = FALSE),
              " feature", if (nfeatspad != 1L) "s" else "",
              sep = "")
     }
     if (ndocspad > 0) {
         if (nfeatspad > 0) catm(" and ", sep = "")
-        catm(format(ndocspad, big.mark=",", scientific = FALSE), 
+        catm(format(ndocspad, big.mark = ",", scientific = FALSE),
              " document", if (ndocspad != 1L) "s" else "",
              sep = "")
     }
@@ -65,7 +65,8 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     if (overwrite) {
         base::attributes(x) <- value
     } else {
-        base::attributes(x) <- c(base::attributes(x), value[!(names(value) %in% names(base::attributes(x)))])
+        base::attributes(x) <- c(base::attributes(x),
+                                 value[!(names(value) %in% names(base::attributes(x)))])
     }
     return(x)
 }
@@ -91,8 +92,8 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' @param overwrite_attributes overwrite attributes of the input object, if \code{TRUE}
 #' @keywords internal
 create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
-    if (what == 'tokens') {
-        class <- c('tokens', 'list')
+    if (what == "tokens") {
+        class <- c("tokens", "list")
     }
     x <- structure(x, class = class, ...)
     if (!is.null(attrs)) {
@@ -112,13 +113,13 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @param remove_unigram ignore single-word patterns if \code{TRUE}
 #' @seealso \code{\link{pattern2id}}
 #' @keywords internal
-pattern2list <- function(pattern, types, valuetype, case_insensitive, 
-                         concatenator = '_', levels = 1, remove_unigram = FALSE,
+pattern2list <- function(pattern, types, valuetype, case_insensitive,
+                         concatenator = "_", levels = 1, remove_unigram = FALSE,
                          flatten = TRUE) {
-    
-    if (is.dfm(pattern)) 
-        stop('dfm cannot be used as pattern')
-    
+
+    if (is.dfm(pattern))
+        stop("dfm cannot be used as pattern")
+
     if (is.collocations(pattern)) {
         if (nrow(pattern) == 0) return(list())
         temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
@@ -133,7 +134,7 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
             temp <- split_values(temp, pattern@concatenator, concatenator)
         } else if (is.list(pattern)) {
             temp <- pattern
-            names(temp) <- stri_c_list(pattern, " ")   
+            names(temp) <- stri_c_list(pattern, " ")
         } else {
             temp <- as.list(pattern)
             names(temp) <- pattern
@@ -162,7 +163,6 @@ is_regex <- function(x){
 #' @param x character vector to be escaped
 #' @keywords internal
 escape_regex <- function(x){
-    #stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1") # escape any
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
@@ -172,8 +172,8 @@ check_dots <-  function(dots, permissible_args = NULL) {
     args <- names(dots)
     impermissible_args <-  setdiff(args, permissible_args)
     if (length(impermissible_args))
-        warning("Argument", if (length(impermissible_args) > 1) "s " else " ", 
-                paste(impermissible_args, collapse = ', '), " not used.", 
+        warning("Argument", if (length(impermissible_args) > 1) "s " else " ",
+                paste(impermissible_args, collapse = ", "), " not used.",
                 noBreaks. = TRUE, call. = FALSE)
 }
 
@@ -189,12 +189,12 @@ check_dots <-  function(dots, permissible_args = NULL) {
 #' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
 friendly_class_undefined_message <- function(object_class, function_name) {
-    valid_object_types <- 
-        utils::methods(function_name) %>% 
-        as.character() %>% 
+    valid_object_types <-
+        utils::methods(function_name) %>%
+        as.character() %>%
         stringi::stri_replace_first_fixed(paste0(function_name, "."), "")
     valid_object_types <- valid_object_types[valid_object_types != "default"]
-    paste0(function_name, "() only works on ", 
+    paste0(function_name, "() only works on ",
          paste(valid_object_types, collapse = ", "),
          " objects.")
 }
@@ -207,17 +207,18 @@ friendly_class_undefined_message <- function(object_class, function_name) {
 #' @return character string
 #' @keywords internal
 check_font <- function(font) {
-    
+
     if (is.null(font)) {
         font <- ""
     } else {
-        msg <- paste0(font, ' is not found on your system.')
-        if (.Platform$OS.type == 'windows') {
+        msg <- paste0(font, " is not found on your system.")
+        if (.Platform$OS.type == "windows") {
             if (!font %in% names(grDevices::windowsFonts()))
-                stop(msg, ' Run extrafont::font_import() and extrafont::loadfonts(device = "win") to use custom fonts.')
+                stop(msg, " Run extrafont::font_import() and ",
+                     "extrafont::loadfonts(device = \"win\") to use custom fonts.")
         } else {
-            if (!font %in% c('sans', 'serif', 'mono', extrafont::fonts()))
-                stop(msg, ' Run extrafont::font_import() to use custom fonts.')
+            if (!font %in% c("sans", "serif", "mono", extrafont::fonts()))
+                stop(msg, " Run extrafont::font_import() to use custom fonts.")
         }
     }
     return(font)
@@ -229,10 +230,10 @@ check_font <- function(font) {
 unused_dots <- function(...) {
     arg <- names(list(...))
     if (length(arg) == 1) {
-        warning(arg[1], " argument is not used in ", 
+        warning(arg[1], " argument is not used in ",
                 sys.call(2)[1], "()", call. = FALSE)
     } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used in ", 
+        warning(paste0(arg, collapse = ", "), " arguments are not used in ",
                 sys.call(2)[1], "()", call. = FALSE)
     }
 }
@@ -249,4 +250,4 @@ message_error <- function(key = NULL) {
         return("")
     }
     return(unname(msg[key]))
-}    
+} 
