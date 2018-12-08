@@ -1011,27 +1011,18 @@ test_that("unused argument warning only happens only once (#1509)", {
         dfm("some text", NOTARG = TRUE),
         "^Argument NOTARG not used\\.$"
     )
-    w <- suppressWarnings(warnings(dfm("some text", NOTARG = TRUE)))
-    expect_equal(length(w), 1)
     expect_warning(
         dfm(corpus("some text"), NOTARG = TRUE),
         "^Argument NOTARG not used\\.$"
     )
-    w <- suppressWarnings(warnings(dfm(corpus("some text"), NOTARG = TRUE)))
-    expect_equal(length(w), 1)
     expect_warning(
         dfm(tokens("some text"), NOTARG = TRUE),
         "^Argument NOTARG not used\\.$"
     )
-    w <- suppressWarnings(warnings(dfm(tokens("some text"), NOTARG = TRUE)))
-    expect_equal(length(w), 1)
-    
     expect_warning(
         dfm(tokens("some text"), NOTARG = TRUE, NOTARG2 = FALSE),
         "^Arguments NOTARG, NOTARG2 not used\\.$"
     )
-    w <- suppressWarnings(warnings(dfm(tokens("some text"), NOTARG = TRUE, NOTARG2 = FALSE)))
-    expect_equal(length(w), 1)
 })
 
 test_that("dfm.tokens() with groups works as expected", {
