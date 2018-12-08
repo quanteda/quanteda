@@ -1005,3 +1005,39 @@ test_that("format_sparsity works correctly", {
     expect_identical(quanteda:::format_sparsity(.00011), " (0.011% sparse)")
     expect_identical(quanteda:::format_sparsity(.00011, digits = 3), " (0.011% sparse)")
 })
+
+test_that("unused argument warning only happens only once (#1509)", {
+    expect_warning(
+        dfm("some text", NOTARG = TRUE),
+        "^Argument NOTARG not used\\.$"
+    )
+    expect_equal(
+        suppressWarnings(length(warnings(dfm("some text", NOTARG = TRUE)))),
+        1
+    )
+    expect_warning(
+        dfm(corpus("some text"), NOTARG = TRUE),
+        "^Argument NOTARG not used\\.$"
+    )
+    expect_equal(
+        suppressWarnings(length(warnings(dfm(corpus("some text", NOTARG = TRUE))))),
+        1
+    )
+    expect_warning(
+        dfm(tokens("some text"), NOTARG = TRUE),
+        "^Argument NOTARG not used\\.$"
+    )
+    expect_equal(
+        suppressWarnings(length(warnings(dfm(tokens("some text", NOTARG = TRUE))))),
+        1
+    )
+    expect_warning(
+        dfm(tokens("some text"), NOTARG = TRUE, NOTARG2 = FALSE),
+        "^Arguments NOTARG, NOTARG2 not used\\.$"
+    )
+    expect_equal(
+        suppressWarnings(length(warnings(dfm(tokens("some text"), 
+                                             NOTARG = TRUE, NOTARG2 = FALSE)))),
+        1
+    )
+})

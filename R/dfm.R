@@ -159,8 +159,6 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    
-    check_dots(list(...), names(formals('tokens')))
     dfm.tokens(tokens(corpus(x), ...),
         tolower = tolower, 
         stem = stem, 
@@ -185,8 +183,6 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    
-    check_dots(list(...), names(formals('tokens')))
     dfm.tokens(tokens(x, ...),  
                tolower = tolower, 
                stem = stem, 
@@ -212,7 +208,6 @@ dfm.tokens <- function(x,
                        verbose = quanteda_options("verbose"), 
                        ...) {
     valuetype <- match.arg(valuetype)
-    check_dots(list(...), names(formals('tokens')))
     
     # set document names if none
     if (is.null(names(x))) {
@@ -220,8 +215,10 @@ dfm.tokens <- function(x,
     } 
     
     # call tokens only if options given
-    if (length(intersect(names(list(...)), names(formals('tokens'))))) {
+    if (length(intersect(names(list(...)), names(formals("tokens"))))) {
         x <- tokens(x, ...)
+    } else {
+        check_dots(list(...), names(formals("dfm")))
     }
     
     if (tolower) {

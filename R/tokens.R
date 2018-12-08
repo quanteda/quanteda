@@ -549,6 +549,8 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
     #     return(do.call(tokens, thecall))
     # }
     
+    check_dots(list(...), names(formals("tokens")))
+
     what <- match.arg(what)
     attrs <- attributes(x)
     
@@ -556,13 +558,6 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
     if (!remove_punct & remove_twitter) {
         remove_twitter <- FALSE
         warning("remove_twitter reset to FALSE when remove_punct = FALSE")
-    }
-    
-    # warn about unused arguments
-    if (length(added_args <- list(...)) & 
-        !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
-        warning("Argument", if (length(added_args) > 1L) "s " else " ", names(added_args), 
-                " not used.", sep = "", call. = FALSE, noBreaks. = TRUE)
     }
     
     if (!remove_separators && what %in% c("fasterword", "fastestword"))
