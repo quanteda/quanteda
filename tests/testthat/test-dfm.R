@@ -1041,3 +1041,12 @@ test_that("unused argument warning only happens only once (#1509)", {
         1
     )
 })
+
+test_that("dfm.tokens() with groups works as expected", {
+    x <- tokens(data_corpus_irishbudget2010)
+    groupeddfm <- dfm(tokens(x), 
+                      groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2)))
+    expect_equal(ndoc(groupeddfm), 2)
+    expect_equal(docnames(groupeddfm), c("FF", "non-FF"))
+    expect_equal(featnames(groupeddfm), featnames(dfm(x)))
+})
