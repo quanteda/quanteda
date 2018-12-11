@@ -137,6 +137,7 @@ fcm_sort	fcm_sort
 fcm_tolower	dfm_tolower
 fcm_toupper	dfm_tolower
 featnames	featnames
+format_sparsity	format_sparsity
 friendly_class_undefined_message	friendly_class_undefined_message
 generate_groups	generate_groups
 groups	groups
@@ -170,6 +171,7 @@ list2dictionary	list2dictionary
 matrix2dfm	matrix2dfm
 matrix2fcm	matrix2fcm
 merge_dictionary_values	merge_dictionary_values
+message_error	message_error
 metacorpus	metacorpus
 metacorpus<-	metacorpus
 metadoc	metadoc
@@ -269,12 +271,15 @@ texts	texts
 texts<-	texts
 textstat_collocations	textstat_collocations
 textstat_dist	textstat_simil
+textstat_dist_old	textstat_simil_old
 textstat_frequency	textstat_frequency
 textstat_keyness	textstat_keyness
 textstat_lexdiv	textstat_lexdiv
+textstat_proxy	textstat_proxy
 textstat_readability	textstat_readability
 textstat_select	textstat_select
 textstat_simil	textstat_simil
+textstat_simil_old	textstat_simil_old
 tf	tf
 tfidf	tfidf
 tokens	tokens
@@ -286,6 +291,7 @@ tokens_ngrams	tokens_ngrams
 tokens_recompile	tokens_recompile
 tokens_remove	tokens_select
 tokens_replace	tokens_replace
+tokens_sample	tokens_sample
 tokens_segment	tokens_segment
 tokens_select	tokens_select
 tokens_serialize	tokens_serialize
