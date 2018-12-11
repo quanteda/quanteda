@@ -1005,3 +1005,31 @@ test_that("format_sparsity works correctly", {
     expect_identical(quanteda:::format_sparsity(.00011), " (0.011% sparse)")
     expect_identical(quanteda:::format_sparsity(.00011, digits = 3), " (0.011% sparse)")
 })
+
+test_that("unused argument warning only happens only once (#1509)", {
+    expect_warning(
+        dfm("some text", NOTARG = TRUE),
+        "^Argument NOTARG not used\\.$"
+    )
+    expect_warning(
+        dfm(corpus("some text"), NOTARG = TRUE),
+        "^Argument NOTARG not used\\.$"
+    )
+    expect_warning(
+        dfm(tokens("some text"), NOTARG = TRUE),
+        "^Argument NOTARG not used\\.$"
+    )
+    expect_warning(
+        dfm(tokens("some text"), NOTARG = TRUE, NOTARG2 = FALSE),
+        "^Arguments NOTARG, NOTARG2 not used\\.$"
+    )
+})
+
+test_that("dfm.tokens() with groups works as expected", {
+    x <- tokens(data_corpus_irishbudget2010)
+    groupeddfm <- dfm(tokens(x), 
+                      groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2)))
+    expect_equal(ndoc(groupeddfm), 2)
+    expect_equal(docnames(groupeddfm), c("FF", "non-FF"))
+    expect_equal(featnames(groupeddfm), featnames(dfm(x)))
+})
