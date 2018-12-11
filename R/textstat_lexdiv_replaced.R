@@ -73,7 +73,7 @@ compute_mattr <- function(x, window_size = NULL, all_windows = FALSE, mean_mattr
 #' @param discard_remainder default = TRUE. If TRUE, the final segment of the document not divisible by segment_size is dropped. 
 #' @param all_segments default = FALSE. If TRUE, returns a vector with the TTR for each segment. 
 #' @param mean_sttr default = TRUE. Returns the Mean TTR across Segments for the tokens object. 
-#' @return returns a vector with the MSSTR for each segment
+#' @return returns a vector with the MSTTR for each segment
 #' @keywords internal tokens
 compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_segments = FALSE, mean_sttr = TRUE){
     # Error Checks
@@ -110,7 +110,7 @@ compute_msttr <- function(x, segment_size = NULL, discard_remainder = TRUE, all_
     temp_ls <- all_tokens[start:end]
 
     while (end <= num_tokens){
-        # Each MSSTR segment is named with the start token number and end token number
+        # Each MSTTR segment is named with the start token number and end token number
         segment_name <- paste0("MSTTR_tokens", start, "_", end)
         temp_toks <- tokens(paste(unlist(temp_ls), collapse = " "))
         typecount <- ntype(temp_toks)[[1]]

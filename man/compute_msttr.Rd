@@ -19,7 +19,7 @@ compute_msttr(x, segment_size = NULL, discard_remainder = TRUE,
 \item{mean_sttr}{default = TRUE. Returns the Mean TTR across Segments for the tokens object.}
 }
 \value{
-returns a vector with the MSSTR for each segment
+returns a vector with the MSTTR for each segment
 }
 \description{
 Computes the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens
