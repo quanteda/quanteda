@@ -40,7 +40,7 @@ ch_stop <- stopwords("zh", source = "misc")
 # tokenize
 ch_toks <- 
     tokens(corp, remove_punct = TRUE) %>%
-    tokens_remove(ch_stop)
+    tokens_remove(pattern = ch_stop)
 
 # construct a dfm
 ch_dfm <- dfm(ch_toks)
@@ -60,7 +60,7 @@ textplot_wordcloud(ch_dfm, min_count = 500, random_order = FALSE,
                    rotation = .25, max_words = 100,
                    min_size = 0.5, max_size = 2.8,
                    font = if (Sys.info()['sysname'] == "Darwin") "SimHei" else NULL,
-                   color = RColorBrewer::brewer.pal(8,"Dark2"))
+                   color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
 ## Feature co-occurrence matrix

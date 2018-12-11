@@ -21,18 +21,18 @@
 #'   defaults, for instance to apply the Williams correction to the chi2 
 #'   measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
 #'   measures has no effect and produces a warning.
-#' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
-#'   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.
+#' @references Bondi, Marina and Mike Scott, eds. 2010. \emph{Keyness in 
+#'   Texts}. Amsterdam, Philadelphia: John Benjamins.
 #'   
-#'   Stubbs, Michael. 2010.  "Three Concepts of Keywords". In \emph{Keyness in 
-#'   Texts}, Marina Bondi and Mike Scott, eds. pp21–42. Amsterdam, Philadelphia:
+#'   Stubbs, Michael. 2010. "Three Concepts of Keywords". In \emph{Keyness in 
+#'   Texts}, Marina Bondi and Mike Scott, eds: 1--42. Amsterdam, Philadelphia:
 #'   John Benjamins.
 #'   
-#'   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
-#'   analysis in language education}.  Amsterdam: Benjamins, p. 55.
+#'   Scott, Mike and Christopher Tribble. 2006. \emph{Textual Patterns: keyword and corpus 
+#'   analysis in language education}. Amsterdam: Benjamins: 55.
 #'   
-#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and 
-#'   Coincidence", \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
+#'   Dunning, Ted. 1993. "\href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
+#'   for the Statistics of Surprise and Coincidence}." \emph{Computational Linguistics} 19(1): 61--74.
 #' @return a data.frame of computed statistics and associated p-values, where 
 #'   the features scored name each row, and the number of occurrences for both 
 #'   the target and reference groups. For \code{measure = "chi2"} this is the 
@@ -56,11 +56,12 @@
 #' 
 #' # compare pre- v. post-war terms using logical vector
 #' mydfm2 <- dfm(data_corpus_inaugural)
-#' textstat_keyness(mydfm2, docvars(data_corpus_inaugural, "Year") >= 1945)
+#' head(textstat_keyness(mydfm2, docvars(data_corpus_inaugural, "Year") >= 1945), 10)
 #' 
 #' # compare Trump 2017 to other post-war preseidents
 #' pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
+#' 
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
 textstat_keyness <- function(x, target = 1L, 

@@ -104,8 +104,8 @@ head(cols <- textstat_collocations(txts, size = 3, min_count = 2), 10)
 
 # extracting multi-part proper nouns (capitalized terms)
 toks2 <- tokens(data_corpus_inaugural)
-toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
-toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex", 
+toks2 <- tokens_remove(toks2, pattern = stopwords("english"), padding = TRUE)
+toks2 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex", 
                        case_insensitive = FALSE, padding = TRUE)
 seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 head(seqs, 10)

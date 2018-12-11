@@ -32,5 +32,6 @@ tokens_compound(ctoks, phrase("pork barrel")) \%>\%
     
 # similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 
 toks <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
-tokens_split(toks, separator = "-", remove_separator = FALSE) 
+tokens_split(toks, separator = "-", remove_separator = FALSE)
 }
+\keyword{tokens}

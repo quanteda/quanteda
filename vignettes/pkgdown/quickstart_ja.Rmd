@@ -302,7 +302,7 @@ dfmを`textplot_wordcloud()`に渡すことで，ワードクラウドを描画�
 set.seed(100)
 textplot_wordcloud(my_dfm, min_count = 6, random_order = FALSE,
                    rotation = .25, 
-                   color = RColorBrewer::brewer.pal(8,"Dark2"))
+                   color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
 ### 変数による文書のグループ化 {#grouping-documents-by-document-variable}
@@ -361,7 +361,7 @@ liwcdfm[, 1:10]
 ```{r fig.width = 6}
 pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obama_simil <- textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), 
+obama_simil <- textstat_simil(pres_dfm, selection = c("2009-Obama" , "2013-Obama"), 
                              margin = "documents", method = "cosine")
 obama_simil
 # dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")
@@ -376,7 +376,7 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
 pres_dfm <- dfm_trim(pres_dfm, min_count = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, scheme = "prop"))
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
 # label with document names
@@ -387,7 +387,8 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 文書間と同様に用語間の類似性も測定できる．
 ```{r}
-sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, selection = c("fair", "health", "terror"), 
+                      method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 

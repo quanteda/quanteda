@@ -3,14 +3,11 @@
 \name{ndoc}
 \alias{ndoc}
 \alias{nfeat}
-\alias{nfeature}
 \title{Count the number of documents or features}
 \usage{
 ndoc(x)
 
 nfeat(x)
-
-nfeature(x)
 }
 \arguments{
 \item{x}{a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
@@ -32,8 +29,6 @@ Get the number of documents or features in an object.
   alias for \code{ntype} when applied to dfm objects.  This function is only 
   defined for \link{dfm} objects because only these have "features".  (To count
   tokens, see \code{\link{ntoken}}.)
-
-\code{nfeature} is the deprecated form of \code{nfeat}.
 }
 \examples{
 # number of documents

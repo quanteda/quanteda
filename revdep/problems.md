@@ -70,7 +70,7 @@ Version: 1.1.2
       11: tryCatchOne(expr, names, parentenv, handlers[[1L]])
       12: value[[3L]](cond)
       
-      ══ testthat results  ═════════════════════════════════════════════════════════════════════════════════════════════════════════════
+      ══ testthat results  ═════════════════════════════════════════════════════════════════════════════════
       OK: 10 SKIPPED: 0 FAILED: 3
       1. Error: See if tagging five documents works, and if coarsening works (@test_POS_tag_documents.R#10) 
       2. Error: See if extractor works (@test_extract_phrases.R#10) 
@@ -116,9 +116,22 @@ Version: 0.71
       Note: found 7 strings marked as "bytes"
     ```
 
+# rJST
+
+Version: 1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘Rcpp’ ‘RcppProgress’ ‘magrittr’
+      All declared Imports should be used.
+    ```
+
 # sentometrics
 
-Version: 0.5.1
+Version: 0.5.5
 
 ## In both
 
@@ -167,9 +180,18 @@ Version: 0.9.91
       Note: found 1 marked UTF-8 string
     ```
 
+# stm
+
+Version: 1.3.3
+
+## In both
+
+*   R CMD check timed out
+    
+
 # stminsights
 
-Version: 0.2.2
+Version: 0.3.0
 
 ## In both
 

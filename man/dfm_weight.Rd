@@ -64,7 +64,7 @@ my_dfm <- dfm(data_corpus_inaugural)
 
 x <- apply(my_dfm, 1, function(tf) tf/max(tf))
 topfeatures(my_dfm)
-norm_dfm <- dfm_weight(my_dfm, "prop")
+norm_dfm <- dfm_weight(my_dfm, scheme = "prop")
 topfeatures(norm_dfm)
 max_tf_dfm <- dfm_weight(my_dfm)
 topfeatures(max_tf_dfm)
@@ -93,9 +93,9 @@ for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "lo
 dfm_smooth(my_dfm, 0.5)
 }
 \references{
-Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze.
-  \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
-  University Press, 2008.
+Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
+  \emph{An Introduction to Information Retrieval}. Cambridge University Press. 
+  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
 \code{\link{dfm_tfidf}}, \code{\link{docfreq}}
