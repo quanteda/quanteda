@@ -53,7 +53,6 @@ Imports:
     yaml
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
-    spelling,
     ca,
     dplyr,     
     DT,
@@ -66,6 +65,7 @@ Suggests:
     RColorBrewer,
     rmarkdown,
     slam,
+    spelling,
     stm,     
     svs,     
     testthat,
@@ -83,7 +83,7 @@ Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
-Language: en-UK
+Language: en-GB
 Collate:
     'RcppExports.R'
     'View.R'

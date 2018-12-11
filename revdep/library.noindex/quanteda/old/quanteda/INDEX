@@ -16,6 +16,8 @@ corpus_reshape          Recast the document units of a corpus
 corpus_sample           Randomly sample documents from a corpus
 corpus_segment          Segment texts on a pattern match
 corpus_subset           Extract a subset of a corpus
+corpus_trim             Remove sentences based on their token lengths
+                        or a pattern match
 data_char_sampletext    A paragraph of text for testing various
                         text-based functions
 data_char_ukimmig2010   Immigration-related sections of 2010 UK party
@@ -90,17 +92,18 @@ textplot_wordcloud      Plot features as a wordcloud
 textplot_xray           Plot the dispersion of key word(s)
 texts                   Get or assign corpus texts
 textstat_collocations   Identify and score multi-word expressions
-textstat_dist           Similarity and distance computation between
-                        documents or features
 textstat_frequency      Tabulate feature frequencies
 textstat_keyness        Calculate keyness statistics
 textstat_lexdiv         Calculate lexical diversity
 textstat_readability    Calculate readability
+textstat_simil          Similarity and distance computation between
+                        documents or features
 tokens                  Tokenize a set of texts
 tokens_compound         Convert token sequences into compound tokens
 tokens_lookup           Apply a dictionary to a tokens object
 tokens_ngrams           Create ngrams and skipgrams from tokens
 tokens_replace          Replace types in tokens object
+tokens_sample           Randomly sample documents from a tokens object
 tokens_select           Select or remove tokens from a tokens object
 tokens_subset           Extract a subset of a tokens
 tokens_tolower          Convert the case of tokens

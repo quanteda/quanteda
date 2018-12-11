@@ -138,9 +138,9 @@ myStemMat <- dfm(my_corpus, remove = stopwords("english"), stem = TRUE, remove_p
 myStemMat[, 1:5]
 
 ## ------------------------------------------------------------------------
-head(stopwords("english"), 20)
-head(stopwords("russian"), 10)
-head(stopwords("arabic"), 10)
+head(stopwords("en"), 20)
+head(stopwords("ru"), 10)
+head(stopwords("ar", source = "misc"), 10)
 
 ## ----warning=FALSE, fig.width = 8, fig.height = 8------------------------
 my_dfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)

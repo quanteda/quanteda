@@ -132,7 +132,7 @@ tokens("<tags> and other + symbols.", remove_symbols = TRUE)
 tokens("<tags> and other + symbols.", remove_symbols = FALSE, what = "fasterword")
 tokens("<tags> and other + symbols.", remove_symbols = TRUE, what = "fasterword")
 
-## examples with URLs - hardly perfect!
+# examples with URLs - hardly perfect!
 txt <- "Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."
 tokens(txt, remove_url = TRUE, remove_punct = TRUE)
 tokens(txt, remove_url = FALSE, remove_punct = TRUE)
@@ -144,8 +144,8 @@ tokens(txt, remove_url = FALSE, remove_punct = FALSE, what = "fasterword")
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
 tokens(txt, remove_punct = TRUE)
 tokens(txt, remove_punct = TRUE, remove_twitter = TRUE)
-#tokens("great website http://textasdata.com", remove_url = FALSE)
-#tokens("great website http://textasdata.com", remove_url = TRUE)
+tokens("great website http://textasdata.com", remove_url = FALSE)
+tokens("great website http://textasdata.com", remove_url = TRUE)
 
 txt <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!",
          text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
