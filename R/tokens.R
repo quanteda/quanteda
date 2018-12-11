@@ -1,3 +1,5 @@
+# tokens() functions -----------
+
 #' Tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
@@ -104,7 +106,7 @@
 #' tokens("<tags> and other + symbols.", remove_symbols = FALSE, what = "fasterword")
 #' tokens("<tags> and other + symbols.", remove_symbols = TRUE, what = "fasterword")
 #'
-#' ## examples with URLs - hardly perfect!
+#' # examples with URLs - hardly perfect!
 #' txt <- "Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."
 #' tokens(txt, remove_url = TRUE, remove_punct = TRUE)
 #' tokens(txt, remove_url = FALSE, remove_punct = TRUE)
@@ -116,8 +118,8 @@
 #' txt <- "#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)"
 #' tokens(txt, remove_punct = TRUE)
 #' tokens(txt, remove_punct = TRUE, remove_twitter = TRUE)
-#' #tokens("great website http://textasdata.com", remove_url = FALSE)
-#' #tokens("great website http://textasdata.com", remove_url = TRUE)
+#' tokens("great website http://textasdata.com", remove_url = FALSE)
+#' tokens("great website http://textasdata.com", remove_url = TRUE)
 #'
 #' txt <- c(text1="This is $10 in 999 different ways,\n up and down; left and right!",
 #'          text2="@@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
@@ -201,7 +203,8 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
+tokens.tokens <-  function(x,
+                           what = c("word", "sentence", "character", "fastestword", "fasterword"),
                            remove_numbers = FALSE,
                            remove_punct = FALSE,
                            remove_symbols = FALSE,
@@ -215,13 +218,13 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            verbose = quanteda_options("verbose"),
                            include_docvars = TRUE,
                            ...) {
-    
+
     if (remove_hyphens)
         x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
-    
+
     if (remove_twitter)
         x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""))
-    
+
     regex <- c()
     if (remove_numbers)
         regex <- c(regex, "^[\\p{N}]+$")
@@ -230,12 +233,12 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
     if (remove_symbols)
         regex <- c(regex, "^[\\p{S}]+$")
     if (remove_separators)
-        regex <- c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$") 
+        regex <- c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$")
     if (remove_url)
         regex <- c(regex, "^https?")
-    
+
     if (length(regex))
-        x <- tokens_remove(x, paste(regex, collapse = '|'), valuetype = 'regex', padding = FALSE)
+        x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", padding = FALSE)
     if (!identical(ngrams, 1L) || !identical(skip, 0L))
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     if (!include_docvars)
@@ -244,10 +247,12 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 }
 
 
+# coercion and checking functions -----------
+
 #' Coercion, checking, and combining functions for tokens objects
-#' 
-#' Coercion functions to and from \link{tokens} objects, checks for whether an 
-#' object is a \link{tokens} object, and functions to combine \link{tokens} 
+#'
+#' Coercion functions to and from \link{tokens} objects, checks for whether an
+#' object is a \link{tokens} object, and functions to combine \link{tokens}
 #' objects.
 #' @param x object to be coerced or checked
 #' @param concatenator character between multi-word expressions, default is the
@@ -259,23 +264,23 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #'   values for multi-word expressions in \code{\link{tokens_lookup}} and
 #'   \code{\link{dfm_lookup}}. The underscore character is commonly used to join
 #'   elements of multi-word expressions (e.g. "piece_of_cake", "New_York"), but
-#'   other characters (e.g. whitespace " " or a hyphen "-") can also be used. 
-#'   In those cases, users have to tell the system what is the concatenator in 
+#'   other characters (e.g. whitespace " " or a hyphen "-") can also be used.
+#'   In those cases, users have to tell the system what is the concatenator in
 #'   your tokens so that the conversion knows to treat this character as the
 #'   inter-word delimiter, when reading in the elements that will become the
 #'   tokens.
 #' @export
 #' @rdname as.tokens
-#' @examples 
-#' 
+#' @examples
+#'
 #' # create tokens object from list of characters with custom concatenator
-#' dict <- dictionary(list(country = "United States", 
+#' dict <- dictionary(list(country = "United States",
 #'                    sea = c("Atlantic Ocean", "Pacific Ocean")))
-#' lis <- list(c("The", "United-States", "has", "the", "Atlantic-Ocean", 
+#' lis <- list(c("The", "United-States", "has", "the", "Atlantic-Ocean",
 #'               "and", "the", "Pacific-Ocean", "."))
 #' toks <- as.tokens(lis, concatenator = "-")
 #' tokens_lookup(toks, dict)
-#' 
+#'
 as.tokens <- function(x, concatenator = "_", ...) {
     UseMethod("as.tokens")
 }
@@ -293,19 +298,12 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
                         names = docnames(x),
                         what = "word",
                         ngrams = 1L,
-                        skip = 0L, 
+                        skip = 0L,
                         concatenator = concatenator,
                         padding = FALSE)
     docvars(result) <- data.frame(row.names = docnames(x))
     return(result)
 }
-
-# # @export
-# # @method as.tokens collocations
-# # @rdname as.tokens
-# as.tokens.collocations <- function(x, concatenator = '_') {
-#     as.tokens(phrase(x$collocation), concatenator = concatenator)
-# }
 
 #' @rdname as.tokens
 #' @param use_lemma logical; if \code{TRUE}, use the lemma rather than the raw
@@ -315,18 +313,18 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #'   \code{pos} variable, \code{"tag"} use the \code{tag} variable.  The POS
 #'   will be added to the token after \code{"concatenator"}.
 #' @export
-as.tokens.spacyr_parsed <- function(x, concatenator = "/", 
-                                    include_pos = c("none", "pos", "tag"), 
+as.tokens.spacyr_parsed <- function(x, concatenator = "/",
+                                    include_pos = c("none", "pos", "tag"),
                                     use_lemma = FALSE, ...) {
     token_index <-  if (use_lemma) "lemma" else "token"
-    
+
     include_pos <- match.arg(include_pos)
     if (include_pos != "none") {
-        x[[token_index]] <- 
+        x[[token_index]] <-
             paste(x[[token_index]], x[[include_pos]], sep = concatenator)
     }
-    
-    as.tokens(base::split(x[[token_index]], 
+
+    as.tokens(base::split(x[[token_index]],
                           factor(x[["doc_id"]], levels = unique(x[["doc_id"]]))))
 }
 
@@ -337,14 +335,32 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #' @export
 as.list.tokens <- function(x, ...) {
     types <- c("", types(x))
-    result <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
+    result <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
     attributes(result) <- NULL
     names(result) <- names(x)
     return(result)
 }
 
 #' @rdname as.tokens
-#' @return \code{unlist} returns a simple vector of characters from a 
+#' @param use.names logical; preserve names if \code{TRUE}.  For
+#'   \code{as.character} and \code{unlist} only.
+#' @return \code{as.character} returns a character vector from a
+#'   \link{tokens} object.
+#' @export
+as.character.tokens <- function(x, use.names = FALSE, ...) {
+    unlist(as.list(x), use.names = use.names)
+}
+
+#' @rdname as.tokens
+#' @export
+#' @return \code{is.tokens} returns \code{TRUE} if the object is of class
+#'   tokens, \code{FALSE} otherwise.
+is.tokens <- function(x) "tokens" %in% class(x)
+
+# extension of generics for tokens -----------
+
+#' @rdname as.tokens
+#' @return \code{unlist} returns a simple vector of characters from a
 #'   \link{tokens} object.
 #' @param recursive a required argument for \link{unlist} but inapplicable to
 #'   \link{tokens} objects
@@ -354,61 +370,6 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
-#' @rdname as.tokens
-#' @param use.names logical; preserve names if \code{TRUE}.  For
-#'   \code{as.character} and \code{unlist} only.
-#' @return \code{as.character} returns a character vector from a 
-#'   \link{tokens} object.
-#' @export
-as.character.tokens <- function(x, use.names = FALSE, ...) {
-    unlist(as.list(x), use.names = use.names)
-} 
-
-#' @rdname as.tokens
-#' @export
-#' @return \code{is.tokens} returns \code{TRUE} if the object is of class
-#'   tokens, \code{FALSE} otherwise.
-is.tokens <- function(x) "tokens" %in% class(x)
-
-
-
-#' Function to serialized list-of-character tokens
-#' 
-#' Creates a serialized object of tokens, called by \code{\link{tokens}}.
-#' @param x a list of character vectors
-#' @param types_reserved optional pre-existing types for mapping of tokens
-#' @param ... additional arguments
-#' @return a list the serialized tokens found in each text
-#' @importFrom fastmatch fmatch
-#' @keywords internal tokens
-tokens_serialize <- function(x, types_reserved = NULL, ...) {
-    
-    attrs <- attributes(x)
-    types <- unique(unlist(x, use.names = FALSE))
-    types <- types[types != '']  # remove empty tokens
-    
-    if (!is.null(types_reserved)) {
-        types <- c(types_reserved, setdiff(types, types_reserved))
-    }
-    x <- lapply(x, function(x) {
-        id <- fastmatch::fmatch(x, types)
-        is_na <- is.na(id)
-        if (length(is_na) > 0) {
-            id[!is_na]
-        } else {
-            integer()
-        }
-    })
-    
-    attributes(x) <- attrs
-    attr(x, "types") <- stri_trans_nfc(types) # unicode normalization
-    class(x) <- "tokens"
-    return(x)
-}
-
-
-
-
 #' print a tokens objects
 #' print method for a tokens object
 #' @param x a tokens object created by \code{\link{tokens}}
@@ -417,10 +378,10 @@ tokens_serialize <- function(x, types_reserved = NULL, ...) {
 #' @method print tokens
 #' @noRd
 print.tokens <- function(x, ...) {
-    cat(class(x)[1], " from ", ndoc(x), " document", 
+    cat(class(x)[1], " from ", ndoc(x), " document",
         if (ndoc(x) > 1L) "s" else "", ".\n", sep = "")
     types <- c("", types(x))
-    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
+    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
     class(x) <- "listof"
     print(x, ...)
 }
@@ -429,23 +390,23 @@ print.tokens <- function(x, ...) {
 #' @method "[" tokens
 #' @export
 #' @noRd
-#' @examples 
+#' @examples
 #' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
 #' str(toks)
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
-    
+
     if (length(x) == 1 && is.null(x[[1]])) return(x)
-    
+
     error <- FALSE
     if (is.character(i) && any(!i %in% names(x))) error <- TRUE
     if (is.numeric(i) && any(i > length(x))) error <- TRUE
     if (error) stop("Subscript out of bounds")
-    
+
     attrs <- attributes(x)
     x <- unclass(x)[i]
     if (is.data.frame(attrs$docvars)) {
-        attrs$docvars <- attrs$docvars[i,,drop = FALSE]
+        attrs$docvars <- attrs$docvars[i, , drop = FALSE]
     }
     attributes(x, FALSE) <- attrs
     tokens_recompile(x)
@@ -454,19 +415,19 @@ print.tokens <- function(x, ...) {
 #' @method "[[" tokens
 #' @export
 #' @noRd
-#' @examples 
+#' @examples
 #' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
     types <- c("", types(x))
-    types[unclass(x)[[i]] + 1] # shift index to show padding 
+    types[unclass(x)[[i]] + 1] # shift index to show padding
 }
 
 #' @method "$" tokens
 #' @export
 #' @noRd
-#' @examples 
+#' @examples
 #' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
 #' str(toks)
 #' toks$d3
@@ -478,14 +439,14 @@ print.tokens <- function(x, ...) {
 #' @export
 #' @noRd
 "[<-.tokens" <- function(x, i, value) {
-    stop('assignment to tokens objects is not allowed', call. = FALSE)
+    stop("assignment to tokens objects is not allowed", call. = FALSE)
 }
 
 #' @method "[[<-" tokens
 #' @export
 #' @noRd
 "[[<-.tokens" <- function(x, i, value) {
-    stop('assignment to tokens objects is not allowed', call. = FALSE)
+    stop("assignment to tokens objects is not allowed", call. = FALSE)
 }
 
 #' @method lengths tokens
@@ -495,11 +456,66 @@ lengths.tokens <- function(x, use.names = TRUE) {
     NextMethod()
 }
 
+#' @rdname as.tokens
+#' @param t1 tokens one to be added
+#' @param t2 tokens two to be added
+#' @return \code{c(...)} and \code{+} return a tokens object whose documents
+#'   have been added as a single sequence of documents.
+#' @examples
+#' # combining tokens
+#' toks1 <- tokens(c(doc1 = "a b c d e", doc2 = "f g h"))
+#' toks2 <- tokens(c(doc3 = "1 2 3"))
+#' toks1 + toks2
+#' c(toks1, toks2)
+#'
+#' @export
+`+.tokens` <- function(t1, t2) {
+    if (length(intersect(docnames(t1), docnames(t2))))
+        stop("Cannot combine tokens with duplicated document names")
+    if (!identical(attr(t1, "what"), attr(t2, "what")))
+        stop("Cannot combine tokens in different units")
+    if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
+        stop("Cannot combine tokens with different concatenators")
+
+    attrs <- list(what = attr(t1, "what"),
+                  ngrams = sort(unique(c(attr(t1, "ngrams"), attr(t2, "ngrams")))),
+                  skip = sort(unique(c(attr(t1, "skip"), attr(t2, "skip")))),
+                  concatenator = attr(t1, "concatenator"),
+                  docvars = data.frame(row.names = c(docnames(t1), docnames(t2))))
+
+    docvars(t1) <- docvars(t2) <- NULL
+    types2 <- types(t2)
+    types1 <- types(t1)
+    t2 <- unclass(t2)
+    t1 <- unclass(t1)
+    t2 <- lapply(t2, function(x, y) x + y, length(types1)) # shift IDs
+    t1 <- c(t1, t2)
+    class(t1) <- "tokens"
+    types(t1) <- c(types1, types2)
+    t1 <- tokens_recompile(t1)
+    attributes(t1, FALSE) <- attrs
+    return(t1)
+}
+
+#' @rdname as.tokens
+#' @export
+c.tokens <- function(...) {
+    x <- list(...)
+    if (length(x) == 1) return(x[[1]])
+    result <- x[[1]] + x[[2]]
+    if (length(x) == 2) return(result)
+    for (i in seq(3, length(x)))
+        result <- result + x[[i]]
+    return(result)
+}
+
+# quanteda methods for tokens ---------
+
 #' @noRd
 #' @export
 docnames.tokens <- function(x) {
     if (is.null(names(x))) {
-        paste0('text', seq_along(x))
+        paste0("text", seq_along(x))
     } else {
         names(x)
     }
@@ -509,7 +525,7 @@ docnames.tokens <- function(x) {
 #' @export
 docnames.list <- function(x) {
     if (is.null(names(x))) {
-        paste0('text', seq_along(x))
+        paste0("text", seq_along(x))
     } else {
         names(x)
     }
@@ -517,12 +533,11 @@ docnames.list <- function(x) {
 
 
 
-##
-## ============== INTERNAL FUNCTIONS =======================================
-##
+# ============== INTERNAL FUNCTIONS =======================================
 
 # TODO we can be rename this "tokenize" once quanteda::tokenize has gone
-tokens_internal <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
+tokens_internal <- function(x,
+                            what = c("word", "sentence", "character", "fastestword", "fasterword"),
                             remove_numbers = FALSE,
                             remove_punct = FALSE,
                             remove_symbols = FALSE,
@@ -533,77 +548,61 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                             ngrams = 1L,
                             skip = 0L,
                             concatenator = "_",
-                            verbose = getOption("verbose"),  
-                            include_docvars = TRUE, 
+                            verbose = getOption("verbose"),
+                            include_docvars = TRUE,
                             ...) {
-    
-    # # trap older arguments, issue a warning, and call with correct arguments
-    # thecall <- as.list(match.call())[-1]
-    # oldargindex <- 
-    #     stri_detect_regex(names(thecall), 
-    #                       "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
-    # if (any(oldargindex)) {
-    #     warning(names(thecall)[oldargindex], " is deprecated; use ",
-    #             tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead", call. = FALSE)
-    #     names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
-    #     return(do.call(tokens, thecall))
-    # }
-    
+
+    check_dots(list(...), names(formals("tokens")))
+
     what <- match.arg(what)
     attrs <- attributes(x)
-    
+
     # disable remove_twitter if remove_punct = FALSE
     if (!remove_punct & remove_twitter) {
         remove_twitter <- FALSE
         warning("remove_twitter reset to FALSE when remove_punct = FALSE")
     }
-    
-    # warn about unused arguments
-    if (length(added_args <- list(...)) & 
-        !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
-        warning("Argument", if (length(added_args) > 1L) "s " else " ", names(added_args), 
-                " not used.", sep = "", call. = FALSE, noBreaks. = TRUE)
-    }
-    
+
     if (!remove_separators && what %in% c("fasterword", "fastestword"))
         warning("remove_separators = FALSE has no effect when what = fasterword or fastestword",
                 call. = FALSE, noBreaks. = TRUE)
-    
+
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
-    
+
     if (verbose) catm("Starting tokenization...\n")
-    
+
     time_start <- proc.time()
-    
+
     # Split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
     for (i in seq_along(x)) {
-        
-        if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
+
+        if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
         if (what %in% c("word", "fasterword")) {
             temp <- preserve_special(x[[i]], remove_hyphens, remove_url, remove_twitter, verbose)
-            temp <- tokens_word(temp, what, remove_numbers, remove_punct, remove_symbols, 
+            temp <- tokens_word(temp, what, remove_numbers, remove_punct, remove_symbols,
                                 remove_separators, verbose)
         } else if (what == "fastestword") {
             temp <- tokens_word(x[[i]], what, FALSE, FALSE, FALSE, FALSE, verbose)
         } else if (what == "character") {
-            temp <- tokens_character(x[[i]], remove_punct, remove_symbols, remove_separators, verbose)
+            temp <- tokens_character(x[[i]], remove_punct, remove_symbols,
+                                     remove_separators, verbose)
         } else if (what == "sentence") {
             temp <- tokens_sentence(x[[i]], verbose)
         } else {
             stop(what, " not implemented in tokens().")
         }
-        
+
         if (verbose) catm("...serializing tokens ")
         if (i == 1) {
             x[[i]] <- tokens_serialize(temp)
         } else {
-            x[[i]] <- tokens_serialize(temp, attr(x[[i - 1]], 'types'))
+            x[[i]] <- tokens_serialize(temp, attr(x[[i - 1]], "types"))
         }
-        if (verbose) catm(length(attr(x[[i]], 'types')), 'unique types\n')
+        if (verbose) catm(length(attr(x[[i]], "types")), "unique types\n")
 
     }
-    
+
     x <- structure(unlist(x, recursive = FALSE), # put all the blocked results togather
                    class = "tokens",
                    names = attrs$names,
@@ -612,15 +611,16 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                    skip = skip,
                    concatenator = concatenator,
                    padding = FALSE,
-                   types = attr(x[[length(x)]], 'types') # last block has all the types
+                   types = attr(x[[length(x)]], "types") # last block has all the types
                    )
     if (what %in% c("word", "fasterword")) {
-        
+
         types <- types(x)
         if (!remove_punct || remove_punct)
             types <- stri_replace_all_fixed(types, "_hy_", "-") # run this always
         if (!remove_twitter)
-            types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+            types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
+                                            vectorize_all = FALSE)
         if (!identical(types, types(x)))
             types(x) <- types
             x <- tokens_recompile(x)
@@ -633,55 +633,56 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         if (remove_symbols)
             regex <- c(regex, "^[\\p{S}]+$")
         if (remove_separators)
-            regex <- c(regex, "^[\\p{Z}\\p{C}]+$") 
-            #regex <- c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$") 
+            regex <- c(regex, "^[\\p{Z}\\p{C}]+$")
         if (remove_punct & !remove_twitter)
             regex <- c(regex, "^#+$|^@+$") # remove @ # only if not part of Twitter names
         if (length(regex))
-            x <- tokens_remove(x, paste(regex, collapse = '|'), valuetype = "regex")
+            x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex")
     }
-    
-        
+
+
     if (!identical(ngrams, 1L)) {
         if (verbose) catm("...creating ngrams\n")
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     }
-        
+
     if (verbose){
         catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
-        catm("Finished tokenizing and cleaning", format(length(x), big.mark=","), "texts.\n")
+        catm("Finished tokenizing and cleaning", format(length(x), big.mark = ","), "texts.\n")
     }
-    
+
     return(x)
 }
 
-tokens_word <- function(txt, 
-                        what = 'word', 
-                        remove_numbers = FALSE, 
-                        remove_punct = FALSE, 
-                        remove_symbols = FALSE, 
+tokens_word <- function(txt,
+                        what = "word",
+                        remove_numbers = FALSE,
+                        remove_punct = FALSE,
+                        remove_symbols = FALSE,
                         remove_separators = TRUE,
                         verbose = FALSE){
-    
+
     if (what == "fastestword") {
         tok <- stri_split_fixed(txt, " ")
     } else if (what == "fasterword") {
-        tok <- stri_split_regex(txt, "[\\p{Z}\\p{C}]+") 
+        tok <- stri_split_regex(txt, "[\\p{Z}\\p{C}]+")
     } else {
-        txt <- stri_replace_all_regex(txt, "[\uFE00-\uFE0F]", '') # remove variant selector
-        txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", '') # remove whitespace with diacritical marks
-        tok <- stri_split_boundaries(txt, type = "word", 
-                                     # this is what obliterates currency symbols, Twitter tags, and URLs
-                                     skip_word_none = remove_punct && remove_separators, 
+        # remove variant selector
+        txt <- stri_replace_all_regex(txt, "[\uFE00-\uFE0F]", "")
+        # remove whitespace with diacritical marks
+        txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", "")
+        tok <- stri_split_boundaries(txt, type = "word",
+                                     # this is what kills currency symbols, Twitter tags, URLs
+                                     skip_word_none = remove_punct && remove_separators,
                                      # but does not remove 4u, 2day, etc.
-                                     skip_word_number = remove_numbers) 
-        
+                                     skip_word_number = remove_numbers)
+
     }
     return(tok)
 }
 
 preserve_special <- function(txt, remove_hyphens, remove_url, remove_twitter, verbose) {
-    
+
     if (remove_hyphens) {
         txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 _hy_ $2")
     } else {
@@ -701,20 +702,20 @@ preserve_special <- function(txt, remove_hyphens, remove_url, remove_twitter, ve
 }
 
 tokens_sentence <- function(txt, verbose = FALSE){
-    
+
     if (verbose) catm("...separating into sentences.\n")
-    
+
     # Replace . delimiter from common title abbreviations, with _pd_
     exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
     findregex <- paste0("\\b(", exceptions, ")\\.")
     txt <- stri_replace_all_regex(txt, findregex, "$1_pd_", vectorize_all = FALSE)
-    
-    ## Remove newline chars 
-    txt <- lapply(txt,stri_replace_all_fixed, "\n", " ")
-    
+
+    ## Remove newline chars
+    txt <- lapply(txt, stri_replace_all_fixed, "\n", " ")
+
     ## Perform the tokenization
     tok <- stri_split_boundaries(txt, type = "sentence")
-    
+
     ## Cleaning
     tok <- lapply(tok, function(x){
         x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
@@ -722,16 +723,16 @@ tokens_sentence <- function(txt, verbose = FALSE){
         x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
         return(x)
     })
-    
+
     return(tok)
 }
 
-tokens_character <- function(txt, 
-                             remove_punct = FALSE, 
-                             remove_symbols = FALSE, 
-                             remove_separators = FALSE, 
+tokens_character <- function(txt,
+                             remove_punct = FALSE,
+                             remove_symbols = FALSE,
+                             remove_separators = FALSE,
                              verbose = FALSE){
-    
+
     # note: does not implement remove_numbers
     tok <- stri_split_boundaries(txt, type = "character")
     if (remove_punct) {
@@ -739,31 +740,64 @@ tokens_character <- function(txt,
         tok <- lapply(tok, function(x){
             x <- stri_replace_all_charclass(x, "[\\p{P}]", "")
             x <- x[which(x != "")]
-            return(x)    
+            return(x)
         })
-    } 
+    }
     if (remove_symbols) {
         if (verbose) catm("...removing symbols.\n")
         tok <- lapply(tok, function(x){
             x <- stri_replace_all_charclass(x, "[\\p{S}]", "")
             x <- x[which(x != "")]
-            return(x)    
+            return(x)
         })
-    } 
+    }
     if (remove_separators) {
         if (verbose) catm("...removing separators.\n")
         tok <- lapply(tok, function(x){
             x <- stri_subset_regex(x, "^\\p{Z}$", negate = TRUE)
             x <- x[which(x != "")]
-            return(x)    
+            return(x)
         })
     }
     return(tok)
 }
 
+#' Function to serialized list-of-character tokens
+#'
+#' Creates a serialized object of tokens, called by \code{\link{tokens}}.
+#' @param x a list of character vectors
+#' @param types_reserved optional pre-existing types for mapping of tokens
+#' @param ... additional arguments
+#' @return a list the serialized tokens found in each text
+#' @importFrom fastmatch fmatch
+#' @keywords internal tokens
+tokens_serialize <- function(x, types_reserved = NULL, ...) {
+
+    attrs <- attributes(x)
+    types <- unique(unlist(x, use.names = FALSE))
+    types <- types[types != ""]  # remove empty tokens
+
+    if (!is.null(types_reserved)) {
+        types <- c(types_reserved, setdiff(types, types_reserved))
+    }
+    x <- lapply(x, function(x) {
+        id <- fastmatch::fmatch(x, types)
+        is_na <- is.na(id)
+        if (length(is_na) > 0) {
+            id[!is_na]
+        } else {
+            integer()
+        }
+    })
+
+    attributes(x) <- attrs
+    attr(x, "types") <- stri_trans_nfc(types) # unicode normalization
+    class(x) <- "tokens"
+    return(x)
+}
 
 #' recompile a serialized tokens object
-#' 
+#'
 #' This function recompiles a serialized tokens object when the vocabulary has
 #' been changed in a way that makes some of its types identical, such as
 #' lowercasing when a lowercased version of the type already exists in the type
@@ -773,27 +807,27 @@ tokens_character <- function(txt,
 #' addition of new tokens through compounding.
 #' @param x the \link{tokens} object to be recompiled
 #' @param gap if \code{TRUE}, remove gaps between token IDs
-#' @param dup if \code{TRUE}, merge duplicated token types into the same ID 
+#' @param dup if \code{TRUE}, merge duplicated token types into the same ID
 #' @param method \code{"C++"} for C++ implementation or \code{"R"} for an older
 #'   R-based method
-#' @examples 
+#' @examples
 #' # lowercasing
 #' toks1 <- tokens(c(one = "a b c d A B C D",
 #'                  two = "A B C d"))
 #' attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
 #' unclass(toks1)
 #' unclass(quanteda:::tokens_recompile(toks1))
-#' 
+#'
 #' # stemming
 #' toks2 <- tokens("Stemming stemmed many word stems.")
 #' unclass(toks2)
 #' unclass(quanteda:::tokens_recompile(tokens_wordstem(toks2)))
-#' 
+#'
 #' # compounding
 #' toks3 <- tokens("One two three four.")
 #' unclass(toks3)
 #' unclass(tokens_compound(toks3, "two three"))
-#' 
+#'
 #' # lookup
 #' dict <- dictionary(list(test = c("one", "three")))
 #' unclass(tokens_lookup(toks3, dict))
@@ -801,46 +835,46 @@ tokens_character <- function(txt,
 #' # empty pads
 #' unclass(tokens_select(toks3, dict))
 #' unclass(tokens_select(toks3, dict, pad = TRUE))
-#' 
+#'
 #' # ngrams
 #' unclass(tokens_ngrams(toks3, n = 2:3))
-#' 
+#'
 #' @keywords internal tokens
 #' @author Kenneth Benoit and Kohei Watanabe
 tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) {
-    
+
     method <- match.arg(method)
     attrs <- attributes(x)
-    
+
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
         attributes(x, FALSE) <- attrs
         return(x)
     }
-    
+
     # Check for padding
     index_unique <- unique(unlist(unclass(x), use.names = FALSE))
     padding <- (index_unique == 0)
     attrs$padding <- any(padding) # add padding flag
     index_unique <- index_unique[!padding] # exclude padding
-    
+
     if (!gap && !dup) {
         attributes(x) <- attrs
         return(x)
     }
-    
+
     # Remove gaps in the type index, if any, remap index
     if (gap) {
-        if (any(is.na(match(seq_len(length(types(x))), index_unique)))) { 
+        if (any(is.na(match(seq_len(length(types(x))), index_unique)))) {
             types_new <- types(x)[index_unique]
             index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
             index_unique <- c(0, index_unique) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)]) 
+            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
             attributes(x) <- attrs
             types(x) <- types_new
         }
     }
-    
+
     # Reindex duplicates, if any
     if (dup) {
         if (any(duplicated(types(x)))) {
@@ -866,12 +900,12 @@ get_tokens.tokens <- function(x) {
 }
 
 #' Get word types from a tokens object
-#' 
-#' Get unique types of tokens from a \link{tokens} object. 
+#'
+#' Get unique types of tokens from a \link{tokens} object.
 #' @param x a tokens object
 #' @export
 #' @seealso \link{featnames}
-#' @examples 
+#' @examples
 #' toks <- tokens(data_corpus_inaugural)
 #' types(toks)
 types <- function(x) {
@@ -892,67 +926,9 @@ types.tokens <- function(x) {
     UseMethod("types<-")
 }
 
-# "types<-.default" <- function(x, value) {
-#     stop(friendly_class_undefined_message(class(x), "types<-"))
-# }
-
 "types<-.tokens" <- function(x, value) {
     if (!is.character(value))
         stop("replacement value must be character")
     attr(x, "types") <- value
     return(x)
-}
-
-
-#' @rdname as.tokens
-#' @param t1 tokens one to be added
-#' @param t2 tokens two to be added
-#' @return \code{c(...)} and \code{+} return a tokens object whose documents
-#'   have been added as a single sequence of documents.
-#' @examples 
-#' # combining tokens
-#' toks1 <- tokens(c(doc1 = "a b c d e", doc2 = "f g h"))
-#' toks2 <- tokens(c(doc3 = "1 2 3"))
-#' toks1 + toks2
-#' c(toks1, toks2)
-#' 
-#' @export
-`+.tokens` <- function(t1, t2) {
-    if (length(intersect(docnames(t1), docnames(t2))))
-        stop("Cannot combine tokens with duplicated document names")
-    if (!identical(attr(t1, "what"), attr(t2, "what")))
-        stop("Cannot combine tokens in different units")
-    if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
-        stop("Cannot combine tokens with different concatenators")
-    
-    attrs <- list(what = attr(t1, "what"),
-                  ngrams = sort(unique(c(attr(t1, "ngrams"), attr(t2, "ngrams")))),
-                  skip = sort(unique(c(attr(t1, "skip"), attr(t2, "skip")))),
-                  concatenator = attr(t1, "concatenator"),
-                  docvars = data.frame(row.names = c(docnames(t1), docnames(t2))))
-    
-    docvars(t1) <- docvars(t2) <- NULL
-    types2 <- types(t2)
-    types1 <- types(t1)
-    t2 <- unclass(t2)
-    t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + y, length(types1)) # shift IDs
-    t1 <- c(t1, t2)
-    class(t1) <- "tokens"
-    types(t1) <- c(types1, types2)
-    t1 <- tokens_recompile(t1)
-    attributes(t1, FALSE) <- attrs
-    return(t1)
-}
-
-#' @rdname as.tokens
-#' @export
-c.tokens <- function(...) {
-    x <- list(...)
-    if (length(x) == 1) return(x[[1]])
-    result <- x[[1]] + x[[2]]
-    if (length(x) == 2) return(result)
-    for (i in seq(3, length(x)))
-        result <- result + x[[i]]
-    return(result)
 }

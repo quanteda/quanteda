@@ -15,29 +15,29 @@ dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
 
 \item{stem}{if \code{TRUE}, stem words}
 
-\item{select}{a  \link{pattern}  of user-supplied features to keep, while 
-excluding all others.  This can be used in lieu of a dictionary if there 
-are only specific features that a user wishes to keep. To extract only 
-Twitter usernames, for example, set \code{select = "@*"} and make sure 
-that \code{remove_twitter = FALSE} as an additional argument passed to 
+\item{select}{a  \link{pattern}  of user-supplied features to keep, while
+excluding all others.  This can be used in lieu of a dictionary if there
+are only specific features that a user wishes to keep. To extract only
+Twitter usernames, for example, set \code{select = "@*"} and make sure
+that \code{remove_twitter = FALSE} as an additional argument passed to
 \link{tokens}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
-expression version of this matching pattern.  The pattern matching type 
+expression version of this matching pattern.  The pattern matching type
 will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.}
 
-\item{remove}{a \link{pattern} of user-supplied features to ignore, such as 
-"stop words".  To access one possible list (from any list you wish), use 
-\code{\link{stopwords}()}.  The pattern matching type will be set by 
+\item{remove}{a \link{pattern} of user-supplied features to ignore, such as
+"stop words".  To access one possible list (from any list you wish), use
+\code{\link{stopwords}()}.  The pattern matching type will be set by
 \code{valuetype}.  See also \code{\link{tokens_select}}.  For behaviour of
 \code{remove} with \code{ngrams > 1}, see Details.}
 
-\item{dictionary}{a \link{dictionary} object to apply to the tokens when 
+\item{dictionary}{a \link{dictionary} object to apply to the tokens when
 creating the dfm}
 
-\item{thesaurus}{a \link{dictionary} object that will be applied as if 
-\code{exclusive = FALSE}. See also \code{\link{tokens_lookup}}.  For more 
-fine-grained control over this and other aspects of converting features 
-into dictionary/thesaurus keys from pattern matches to values, consider 
-creating the dfm first, and then applying \code{\link{dfm_lookup}} 
+\item{thesaurus}{a \link{dictionary} object that will be applied as if
+\code{exclusive = FALSE}. See also \code{\link{tokens_lookup}}.  For more
+fine-grained control over this and other aspects of converting features
+into dictionary/thesaurus keys from pattern matches to values, consider
+creating the dfm first, and then applying \code{\link{dfm_lookup}}
 separately, or using \code{\link{tokens_lookup}} on the tokenized text
 before calling \code{dfm}.}
 
@@ -59,18 +59,18 @@ is a \link{dfm}}
 a \link{dfm-class} object
 }
 \description{
-Construct a sparse document-feature matrix, from a character, \link{corpus}, 
+Construct a sparse document-feature matrix, from a character, \link{corpus},
 \link{tokens}, or even other \link{dfm} object.
 }
 \details{
-The default behaviour for \code{remove}/\code{select} when 
-  constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to 
-  remove/select any ngram constructed from a matching feature.  If you wish 
+The default behaviour for \code{remove}/\code{select} when
+  constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to
+  remove/select any ngram constructed from a matching feature.  If you wish
   to remove these before constructing ngrams, you will need to first tokenize
-  the texts with ngrams, then remove the features to be ignored, and then 
-  construct the dfm using this modified tokenization object.  See the code 
+  the texts with ngrams, then remove the features to be ignored, and then
+  construct the dfm using this modified tokenization object.  See the code
   examples for an illustration.
-  
+
   To select on and match the features of a another \link{dfm}, \code{x} must
   also be a \link{dfm}.
 }
@@ -133,9 +133,9 @@ dfm(test_tweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
 
 # for a dfm
 dfm1 <- dfm(data_corpus_irishbudget2010)
-dfm2 <- dfm(dfm1, 
+dfm2 <- dfm(dfm1,
             groups = ifelse(docvars(data_corpus_irishbudget2010, "party") \%in\% c("FF", "Green"),
-                            "Govt", "Opposition"), 
+                            "Govt", "Opposition"),
             tolower = FALSE, verbose = TRUE)
 
 }
