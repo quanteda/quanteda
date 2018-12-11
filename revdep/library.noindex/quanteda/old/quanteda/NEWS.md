@@ -1,4 +1,41 @@
-# Since quanteda v1.3.0
+# quanteda v1.3.14
+
+### Bug fixes and stability enhancements
+
+* Improved the robustnes of `textstat_keyness()` (#1482).
+* Improved the accuracy of sparsity reporting for the print method of a dfm (#1473).
+* Diagonals on a `textstat_simil()` return object coerced to matrix now default to 1.0, rather than 0.0 (#1494).
+
+### New Features
+
+* Added the following measures to `textstat_lexdiv()`: Yule's _K_, Simpson's _D_, and Herdan's _Vm_.
+
+# quanteda v1.3.13
+
+### Bug fixes and stability enhancements
+
+* Fixed a bug causing incorrect counting in `fcm(x, ordered = TRUE)`. (#1413)  Also set the condition that `window` can be of size 1 (formerly the limit was 2 or greater).
+* Fixed deprecation warnings from adding a dfm as docvars, and this now inmports the feature names as docvar names automatically. (related to #1417)
+* Fixed behaviour from `tokens(x, what = "fasterword", remove_separators = TRUE)` so that it correctly splits words separated by `\n` and `\t` characters.  (#1420)
+* Add error checking for functions taking dfm inputs in case a dfm has empty features (#1419).
+* For `textstat_readability()`, fixed a bug in Dale-Chall-based measures and in the Spache word list measure.  These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists.  The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (#1410)
+* Fixed problems with basic dfm operations (`rowMeans()`, `rowSums()`, `colMeans()`, `colSums()`) caused by not having access to the **Matrix** package methods.  (#1428)
+* Fixed problem in `textplot_scale1d()` when input a predicted wordscores object with `se.fit = TRUE` (#1440).
+* Improved the stability of `textplot_network()`. (#1460)
+
+### New Features
+
+* Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
+* Added a new `separator` argument to `kwic()` to allow a user to define which characters will be added between tokens returned from a keywords in context search.  (#1449)
+* Reimplemented `textstat_dist()` and `textstat_simil()` in C++ for enhanced performance.  (#1210)
+* Added a `tokens_sample()` function (#1478).
+
+### Behaviour changes
+
+* Removed the Hamming distance method from `textstat_dist()` (#1443), based on the reasoning in #1442.
+* Removed the "chisquared" and "chisquared2" distance measures from `textstat_simil()`. (#1442)
+
+# quanteda v1.3.4
 
 ### Bug fixes and stability enhancements
 

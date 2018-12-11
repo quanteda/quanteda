@@ -3,30 +3,31 @@
 |field    |value                        |
 |:--------|:----------------------------|
 |version  |R version 3.5.1 (2018-07-02) |
-|os       |macOS  10.14                 |
+|os       |macOS  10.14.2               |
 |system   |x86_64, darwin15.6.0         |
-|ui       |X11                          |
+|ui       |RStudio                      |
 |language |(EN)                         |
 |collate  |en_GB.UTF-8                  |
 |ctype    |en_GB.UTF-8                  |
-|tz       |Europe/London                |
-|date     |2018-11-01                   |
+|tz       |Australia/Sydney             |
+|date     |2018-12-09                   |
 
 # Dependencies
 
-|package  |old   |new |Δ  |
-|:--------|:-----|:---|:--|
-|quanteda |1.3.4 |NA  |*  |
+|package  |old    |new |Δ  |
+|:--------|:------|:---|:--|
+|quanteda |1.3.14 |NA  |*  |
 
 # Revdeps
 
-## Couldn't check (1)
+## Couldn't check (2)
 
 |package                                  |version |error |warning |note |
 |:----------------------------------------|:-------|:-----|:-------|:----|
-|[sentometrics](problems.md#sentometrics) |0.5.1   |1     |        |     |
+|[sentometrics](problems.md#sentometrics) |0.5.5   |1     |        |     |
+|[stm](problems.md#stm)                   |1.3.3   |1     |        |     |
 
-## All (17)
+## All (18)
 
 |package                                    |version |error |warning |note |
 |:------------------------------------------|:-------|:-----|:-------|:----|
@@ -39,10 +40,11 @@
 |politeness                                 |0.2.6   |      |        |     |
 |preText                                    |0.6.2   |      |        |     |
 |[readtext](problems.md#readtext)           |0.71    |      |        |1    |
-|[sentometrics](problems.md#sentometrics)   |0.5.1   |1     |        |     |
+|[rJST](problems.md#rjst)                   |1.0     |      |        |1    |
+|[sentometrics](problems.md#sentometrics)   |0.5.5   |1     |        |     |
 |[spacyr](problems.md#spacyr)               |0.9.91  |      |        |1    |
-|stm                                        |1.3.3   |      |        |     |
-|[stminsights](problems.md#stminsights)     |0.2.2   |      |        |1    |
+|[stm](problems.md#stm)                     |1.3.3   |1     |        |     |
+|[stminsights](problems.md#stminsights)     |0.3.0   |      |        |1    |
 |[stopwords](problems.md#stopwords)         |0.9.0   |      |        |1    |
 |textstem                                   |0.1.4   |      |        |     |
 |[tidytext](problems.md#tidytext)           |0.2.0   |      |        |1    |
