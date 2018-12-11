@@ -3,16 +3,22 @@ context("tokens_chunk works")
 test_that("tokens_chunk works", {
     txt <- c(d1 = "a b c d", d2 = "e f g")
     
-    corp <- corpus(txt, docvars = data.frame(title = c("title1", "title2")))
+    corp <- corpus(txt, docvars = data.frame(title = c("title1", "title2"),
+                                             stringsAsFactors = FALSE))
     toks <- tokens(corp)
     
     toks_chunk1 <- tokens_chunk(toks, 5)
     expect_identical(as.list(toks_chunk1),
                      list(d1 = c("a", "b", "c", "d"),
                           d2 = c("e", "f", "g")))
-    expect_identical(docvars(toks_chunk1),
-                     data.frame(title = c("title1", "title2"),
-                                row.names = c("d1", "d2")))
+    expect_identical(attr(toks_chunk1, "docvars"),
+                     data.frame("title" = c("title1", "title2"),
+                                "_document" = c("d1", "d2"),
+                                "_docid" = c(1L, 2L),
+                                "_segid" = c(1L, 1L),
+                                row.names = c("d1", "d2"),
+                                stringsAsFactors = FALSE,
+                                check.names = FALSE))
     
     toks_chunk2 <- tokens_chunk(toks, 2)
     expect_identical(as.list(toks_chunk2),
@@ -20,9 +26,14 @@ test_that("tokens_chunk works", {
                           d1.2 = c("c", "d"),
                           d2.1 = c("e", "f"),
                           d2.2 = c("g")))
-    expect_identical(docvars(toks_chunk2),
-                     data.frame(title = c("title1", "title1", "title2", "title2"),
-                                row.names = c("d1.1", "d1.2", "d2.1", "d2.2")))
+    expect_identical(attr(toks_chunk2, "docvars"),
+                     data.frame("title" = c("title1", "title1", "title2", "title2"),
+                                "_document" = c("d1", "d1", "d2", "d2"),
+                                "_docid" = c(1L, 1L, 2L, 2L),
+                                "_segid" = c(1L, 2L, 1L, 2L),
+                                row.names = c("d1.1", "d1.2", "d2.1", "d2.2"),
+                                stringsAsFactors = FALSE,
+                                check.names = FALSE))
     
     toks_chunk3 <- tokens_chunk(toks, 2, overlap = TRUE)
     expect_identical(as.list(toks_chunk3),
@@ -33,9 +44,14 @@ test_that("tokens_chunk works", {
                           d2.1 = c("e", "f"),
                           d2.2 = c("f", "g"),
                           d2.3 = c("g")))
-    expect_identical(docvars(toks_chunk3),
-                     data.frame(title = c("title1", "title1", "title1", "title1", "title2", "title2", "title2"),
-                                row.names = c("d1.1", "d1.2", "d1.3", "d1.4", "d2.1", "d2.2", "d2.3")))
+    expect_identical(attr(toks_chunk3, "docvars"),
+                     data.frame("title" = c("title1", "title1", "title1", "title1", "title2", "title2", "title2"),
+                                "_document" = c("d1", "d1", "d1", "d1", "d2", "d2", "d2"),
+                                "_docid" = c(1L, 1L, 1L, 1L, 2L, 2L, 2L),
+                                "_segid" = c(1L, 2L, 3L, 4L, 1L, 2L, 3L),
+                                row.names = c("d1.1", "d1.2", "d1.3", "d1.4", "d2.1", "d2.2", "d2.3"),
+                                stringsAsFactors = FALSE,
+                                check.names = FALSE))
     
 })
 

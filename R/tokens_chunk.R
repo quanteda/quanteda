@@ -41,6 +41,10 @@ tokens_chunk.tokens <- function(x, size, overlap = FALSE) {
     } else {
         docid <- names(x)
     }
+    attrs$docvars["_document"] <- names(x)[attr(result, "docnum")]
+    attrs$docvars["_docid"] <- attr(result, "docnum")
+    attrs$docvars["_segid"] <- attr(result, "segnum")
+    
     attrs$names <- rownames(attrs$docvars) <- docid
     attr(result, "docnum") <- attr(result, "segnum") <- NULL
     
