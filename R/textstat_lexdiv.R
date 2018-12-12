@@ -498,6 +498,42 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
     return (mtld_average)
 }
 
+# Prototype vocd-d solution
+compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 400,
+                           trials_per_sample = 10, plot_graph = TRUE ){
+    x <- tokens(x)
+    if (!is.tokens(x)) stop('x must be tokens object')
+    x <- unlist(x)
+    mean_ttr_list <- list()
+    sd_ttr_list <- list()
+    size_list <- c((sample_size_start:sample_size_end))
+    for (size in size_list){
+        temp <- list()
+        trial <- 1
+        while (trial <= trials_per_sample){
+            sample <- paste(as.character(sample(x, size = size)), collapse = " ") %>% dfm()
+            ttr_sample <- compute_lexdiv_dfm_stats(sample, measure = 'TTR')[[2]]
+            temp[[trial]] <- ttr_sample
+            trial <- trial + 1
+        }
+        temp <- unlist(temp)
+        mean_ttr_for_size <- mean(temp)
+        sd_ttr_for_size <- sd(temp)
+        
+        mean_ttr_list[[size]] <- mean_ttr_for_size
+        sd_ttr_list[[size]]<- sd_ttr_for_size
+        
+    }
+    
+    ttr <- unlist(mean_ttr_list)
+    
+    if (plot_graph == TRUE) plot(size_list,ttr, ylim = c(0,1))
+    model <- stats::nls( ttr ~ ((D/size_list)* ((1 + 2*(size_list/D))^0.5 -1)), 
+                         start = list(D = 1))
+    D <- coef(model)
+    return(D)
+}
+
 # additional utility functions ------------
 
 #' Split a dfm's hyphenated features into constituent parts
