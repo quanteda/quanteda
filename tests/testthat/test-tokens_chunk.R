@@ -98,8 +98,9 @@ test_that("tokens_chunk() works with sizes longer than tokens length", {
     )
     expect_identical(
         as.list(tokens_chunk(toks, size = 4, discard_remainder = TRUE)),
-        list(d1 = c("a", "b", "c", "d"),
-             d2 = character(0))
+        list(d1.1 = c("a", "b", "c", "d"),
+             d1.2 = character(0),
+             d2.1 = character(0))
     )
 })
 

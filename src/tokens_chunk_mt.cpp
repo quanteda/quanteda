@@ -22,10 +22,10 @@ Texts chunk(Text &tokens,
     }
     for (size_t i = 0; i < tokens.size(); i += step) {
         Text chunk(tokens.begin() + i, tokens.begin() + min(i + size, tokens.size()));
-        if (!exact || chunk.size() == size) {
-            chunks.push_back(chunk);
-            count++;
-        }
+        if (exact && chunk.size() != size)
+            chunk = Text(0);
+        chunks.push_back(chunk);
+        count++;
     }
     return chunks;
 }
