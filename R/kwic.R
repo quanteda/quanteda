@@ -118,11 +118,8 @@ kwic.tokens <- function(x, pattern, window = 5,
                         class = c("kwic", "data.frame"),
                         ntoken = ntoken(x),
                         valuetype = valuetype,
-                        keywords = if (is.dictionary(pattern)) {
-                            types[unique(unlist(keywords_id))]
-                        } else {
-                            unique(names(keywords_id))
-                        })
+                        keywords = unique(names(keywords_id))
+                        )
     attributes(result, FALSE)  <- attributes(x)
     result
 }
