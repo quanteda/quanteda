@@ -368,3 +368,19 @@ test_that("kwic error when dfm is given, #1006", {
     toks <- tokens('a b c')
     expect_error(kwic(toks, dfm('b c d')))
 })
+
+test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {
+    toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
+                     alpha2 = paste(LETTERS, collapse = " ")))
+    kwic1 <- kwic(toks, "f", window = 3)
+    kwic2 <- kwic(toks, "u", window = 3)
+    kwicboth <- kwic(toks, c("u", "f"), window = 3)
+    kwicdict1 <- kwic(toks, dictionary(list(ukey = "u")), window = 3)
+    kwicdictboth <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")), window = 3)
+
+    expect_identical(attr(kwic1, "keywords"), "f")
+    expect_identical(attr(kwic2, "keywords"), "u")
+    expect_identical(attr(kwicboth, "keywords"), c("u", "f"))
+    expect_identical(attr(kwicdict1, "keywords"), "ukey")
+    expect_identical(attr(kwicdictboth, "keywords"), c("ukey", "fkey"))
+})

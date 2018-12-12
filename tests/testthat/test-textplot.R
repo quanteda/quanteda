@@ -236,5 +236,58 @@ test_that("test textplot_affinity", {
     expect_silent(textplot_influence(summary(influence(afpred))))
 })
 
-dev.off()
+test_that("multiple patterns display correctly in textplot_kwic", {
+    library("quanteda")
+    toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
+                     alpha2 = paste(LETTERS, collapse = " ")))
+    
+    kwic_char_f <- kwic(toks, "f", window = 3)
+    kwic_char_u <- kwic(toks, "u", window = 3)
+    kwic_char_uf <- kwic(toks, c("u", "f"), window = 3)
+    kwic_char_fu <- kwic(toks, c("f", "u"), window = 3)
+    kwic_dict_u <- kwic(toks, dictionary(list(ukey = "u")), window = 3)
+    kwic_dict_f <- kwic(toks, dictionary(list(fkey = "f")), window = 3)
+    kwic_dict_uf <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")), window = 3)
+    kwic_dict_fu <- kwic(toks, dictionary(list(fkey = "f", ukey = "u")), window = 3)
+    kwic_dict_uf_jm <- kwic(toks, dictionary(list(ufkey = c("u", "f"), 
+                                                  jmkey = c("j", "m"))), window = 3)
 
+    # warning free: ✓   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_char_f, scale = "absolute")
+
+    # warning free: ✓   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_char_u, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_char_u, kwic_char_f, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: x 
+    textplot_xray(kwic_char_uf, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: x 
+    textplot_xray(kwic_char_fu, scale = "absolute")
+
+    # warning free: ✓   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_dict_f, scale = "absolute")
+
+    # warning free: ✓   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_dict_u, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_dict_u, kwic_dict_f, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_dict_f, kwic_dict_u, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: x 
+    textplot_xray(kwic_dict_uf, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: ✓ 
+    textplot_xray(kwic_dict_fu, scale = "absolute")
+
+    # warning free: x   label order correct: ✓   plot order correct: x 
+    # AND THIS IS WORSE: ufkey shows f, m, jmkey shows j, u
+    textplot_xray(kwic_dict_uf_jm, scale = "absolute")
+})
+
+dev.off()
