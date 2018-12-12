@@ -3,11 +3,13 @@
 //#include "dev.h"
 using namespace quanteda;
 
-Texts chunk(Text tokens,
+Texts chunk(Text &tokens,
+            UintParam &count,
             const int size,
-            const bool overlap){
+            const bool overlap,
+            const bool exact){
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     std::size_t step;
     Texts chunks;
@@ -20,7 +22,10 @@ Texts chunk(Text tokens,
     }
     for (size_t i = 0; i < tokens.size(); i += step) {
         Text chunk(tokens.begin() + i, tokens.begin() + min(i + size, tokens.size()));
-        chunks.push_back(chunk);
+        if (!exact || chunk.size() == size) {
+            chunks.push_back(chunk);
+            count++;
+        }
     }
     return chunks;
 }
@@ -29,15 +34,19 @@ struct chunk_mt : public Worker{
     
     Texts &texts;
     std::vector<Texts> &temp;
+    UintParam &count;
     const int size;
     const bool overlap;
+    const bool exact;
     
-    chunk_mt(Texts &texts_, std::vector<Texts> &temp_, const int size_, const bool overlap_):
-             texts(texts_), temp(temp_), size(size_), overlap(overlap_){}
+    chunk_mt(Texts &texts_, std::vector<Texts> &temp_, UintParam &count_, const int size_, 
+             const bool overlap_, const bool exact_):
+             texts(texts_), temp(temp_), count(count_), size(size_), 
+             overlap(overlap_), exact(exact_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            temp[h] = chunk(texts[h], size, overlap);
+            temp[h] = chunk(texts[h], count, size, overlap, exact);
         }
     }
 };
@@ -52,37 +61,34 @@ struct chunk_mt : public Worker{
  * @param types_ types
  * @param size size of chunks
  * @param overlap chunks are overlapped with next chunks if TRUE
+ * @param exact only include chunks in the specified size
  */
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_chunk(const List &texts_,
                            const CharacterVector types_,
                            const int size,
-                           const bool overlap){
+                           const bool overlap,
+                           const bool exact){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
-    
+    UintParam count = 0;
     // dev::Timer timer;
     std::vector<Texts> temp(texts.size());
     
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-     chunk_mt chunk_mt(texts, temp, size, overlap);
+     chunk_mt chunk_mt(texts, temp, count, size, overlap, exact);
      parallelFor(0, texts.size(), chunk_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = chunk(texts[h], size, overlap);
+        temp[h] = chunk(texts[h], count, size, overlap, exact);
     }
 #endif
     
-    // Get total number of matches
-    std::size_t len = 0;
-    for (std::size_t h = 0; h < temp.size(); h++) {
-        len += temp[h].size();
-    }
-    Texts chunks(len);
-    IntegerVector docnum_(len), segnum_(len);
+    Texts chunks(count);
+    IntegerVector docnum_(count), segnum_(count);
 
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -94,7 +100,7 @@ List qatd_cpp_tokens_chunk(const List &texts_,
         }
     }
     
-    Tokens chunks_ = recompile(chunks, types, false, false, false);
+    Tokens chunks_ = recompile(chunks, types, exact, false, false);
     chunks_.attr("docnum") = docnum_;
     chunks_.attr("segnum") = segnum_;
     
@@ -106,7 +112,11 @@ List qatd_cpp_tokens_chunk(const List &texts_,
 toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 100)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-out1 <- qatd_cpp_tokens_chunk(toks, letters, 2, FALSE)
-out2 <- qatd_cpp_tokens_chunk(toks, letters, 2, TRUE)
+out1 <- qatd_cpp_tokens_chunk(toks, letters, 2, FALSE, FALSE)
+out2 <- qatd_cpp_tokens_chunk(toks, letters, 2, TRUE, FALSE)
+
+out3 <- qatd_cpp_tokens_chunk(toks, letters, 2, FALSE, TRUE)
+out4 <- qatd_cpp_tokens_chunk(toks, letters, 2, TRUE, TRUE)
+
 
 */

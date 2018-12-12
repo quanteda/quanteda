@@ -39,7 +39,7 @@ tokens_chunk.tokens <- function(x, size, overlap = FALSE, discard_remainder = TR
 
     attrs <- attributes(x)
     type <- types(x)
-    result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
+    result <- qatd_cpp_tokens_chunk(x, type, size, overlap, discard_remainder)
 
     # add repeated versions of remaining docvars
     attrs$docvars <- attrs$docvars[attr(result, "docnum"),, drop = FALSE] # repeat rows
@@ -55,10 +55,6 @@ tokens_chunk.tokens <- function(x, size, overlap = FALSE, discard_remainder = TR
     attrs$names <- rownames(attrs$docvars) <- docid
     attr(result, "docnum") <- attr(result, "segnum") <- NULL
     attributes(result) <- attrs
-
-    if (discard_remainder && length(result[[ndoc(result)]]) < size) {
-        result <- result[-ndoc(result)]
-    }
 
     result
 }

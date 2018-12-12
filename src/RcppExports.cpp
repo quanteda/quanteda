@@ -202,8 +202,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_chunk
-List qatd_cpp_tokens_chunk(const List& texts_, const CharacterVector types_, const int size, const bool overlap);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_chunk(SEXP texts_SEXP, SEXP types_SEXP, SEXP sizeSEXP, SEXP overlapSEXP) {
+List qatd_cpp_tokens_chunk(const List& texts_, const CharacterVector types_, const int size, const bool overlap, const bool exact);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_chunk(SEXP texts_SEXP, SEXP types_SEXP, SEXP sizeSEXP, SEXP overlapSEXP, SEXP exactSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -211,7 +211,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const int >::type size(sizeSEXP);
     Rcpp::traits::input_parameter< const bool >::type overlap(overlapSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_chunk(texts_, types_, size, overlap));
+    Rcpp::traits::input_parameter< const bool >::type exact(exactSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_chunk(texts_, types_, size, overlap, exact));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -422,7 +423,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_similarity_linear", (DL_FUNC) &_quanteda_qatd_cpp_similarity_linear, 5},
     {"_quanteda_qatd_cpp_similarity", (DL_FUNC) &_quanteda_qatd_cpp_similarity, 6},
-    {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
+    {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 5},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
