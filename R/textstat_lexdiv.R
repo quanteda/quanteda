@@ -499,40 +499,50 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
 }
 
 # Prototype vocd-d solution
-compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 400,
+tokens_samplefrom <- function(x, size, replace = FALSE) { 
+    attrs <- attributes(x) 
+    result <- lapply(unclass(x), sample, size = size, replace = replace) 
+    attributes(result) <- attrs 
+    quanteda:::tokens_recompile(result)
+}
+
+compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 50,
                            trials_per_sample = 10, plot_graph = TRUE ){
     x <- tokens(x)
+    # Exception handlers
     if (!is.tokens(x)) stop('x must be tokens object')
-    x <- unlist(x)
+    if (sample_size_start >= sample_size_end) stop('sample_size_end must be larger than sample_size_start')
+    if (ntoken(x) < sample_size_start) stop('sample size must be less than ntokens')
+    # Counter Lists
     mean_ttr_list <- list()
     sd_ttr_list <- list()
     size_list <- c((sample_size_start:sample_size_end))
+    # For Loop for Sample Sizes
     for (size in size_list){
-        temp <- list()
+        temp <- data.frame(docnames(x))
         trial <- 1
+        # While Loop for Bootstrap Per Sample Size
         while (trial <= trials_per_sample){
-            sample <- paste(as.character(sample(x, size = size)), collapse = " ") %>% dfm()
+            sample <- tokens_samplefrom(x, size = size, replace = FALSE) %>% dfm()
             ttr_sample <- compute_lexdiv_dfm_stats(sample, measure = 'TTR')[[2]]
-            temp[[trial]] <- ttr_sample
+            temp <- cbind(temp, ttr_sample)
             trial <- trial + 1
         }
-        temp <- unlist(temp)
-        mean_ttr_for_size <- mean(temp)
-        sd_ttr_for_size <- sd(temp)
-        
+        mean_ttr_for_size <- apply(temp[,-1], 1,function(y) mean(y))
+        sd_ttr_for_size <- apply(temp[,-1], 1,function(y) sd(y))
+        # Append Values to Counter Lists
         mean_ttr_list[[size]] <- mean_ttr_for_size
         sd_ttr_list[[size]]<- sd_ttr_for_size
-        
     }
-    
-    ttr <- unlist(mean_ttr_list)
-    
-    if (plot_graph == TRUE) plot(size_list,ttr, ylim = c(0,1))
-    model <- stats::nls( ttr ~ ((D/size_list)* ((1 + 2*(size_list/D))^0.5 -1)), 
-                         start = list(D = 1))
-    D <- coef(model)
+    df_mean_ttr_per_size <- data.frame(documents = docnames(x), mean_ttr_list)
+    D <- apply(df_mean_ttr_per_size[,-1], 1, function(y){
+        model <- stats::nls( y ~ ((D/size_list)* ((1 + 2*(size_list/D))^0.5 -1)),
+                             start = list(D = 1))
+        D <- coef(model)
+    })
     return(D)
 }
+
 
 # additional utility functions ------------
 
