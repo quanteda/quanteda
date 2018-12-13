@@ -8,6 +8,7 @@
 
 * `textstat_lexdiv()` now works on tokens objects, not just dfm objects.
 * New function `tokens_split()` allows splitting single into multiple tokens based on a pattern match. (#1500)
+* New function `tokens_chunk()` allows splitting tokens into new documents of equally-sized "chunks". (#1520)
 
 ### Behaviour changes
 
