@@ -4,7 +4,7 @@
 \alias{tokens_chunk}
 \title{Segment tokens object by chunks of a given size}
 \usage{
-tokens_chunk(x, size, overlap = FALSE, discard_remainder = TRUE)
+tokens_chunk(x, size, overlap = FALSE, keep_remainder = FALSE)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented into
@@ -15,8 +15,8 @@ chunks}
 \item{overlap}{logical; if \code{TRUE}, the last token of a chunk will be the
 first token of the next chunk}
 
-\item{discard_remainder}{logical; if \code{TRUE}, discard any ending chunk
-whose length is less than \code{size}}
+\item{keep_remainder}{logical; if \code{TRUE}, keep any ending chunk whose
+length is less than \code{size}, otherwise this will be discarded}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of
@@ -34,6 +34,6 @@ txts <- c(doc1 = "Fellow citizens, I am again called upon by the voice of
 toks <- tokens(txts)
 tokens_chunk(toks, size = 5)
 tokens_chunk(toks, size = 5, overlap = TRUE)
-tokens_chunk(toks, size = 5, discard_remainder = FALSE)
+tokens_chunk(toks, size = 5, keep_remainder = TRUE)
 }
 \keyword{tokens}

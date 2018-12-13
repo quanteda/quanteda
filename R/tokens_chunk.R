@@ -6,8 +6,8 @@
 #' @param size integer; the size of the chunks in tokens
 #' @param overlap logical; if \code{TRUE}, the last token of a chunk will be the
 #'   first token of the next chunk
-#' @param discard_remainder logical; if \code{TRUE}, discard any ending chunk
-#'   whose length is less than \code{size}
+#' @param keep_remainder logical; if \code{TRUE}, keep any ending chunk whose
+#'   length is less than \code{size}, otherwise this will be discarded
 #' @return A \link{tokens} object whose documents have been split into chunks of
 #'   length \code{size}, similar to \code{\link{tokens_segment}}.
 #' @keywords tokens
@@ -21,8 +21,8 @@
 #' toks <- tokens(txts)
 #' tokens_chunk(toks, size = 5)
 #' tokens_chunk(toks, size = 5, overlap = TRUE)
-#' tokens_chunk(toks, size = 5, discard_remainder = FALSE)
-tokens_chunk <- function(x, size, overlap = FALSE, discard_remainder = TRUE) {
+#' tokens_chunk(toks, size = 5, keep_remainder = TRUE)
+tokens_chunk <- function(x, size, overlap = FALSE, keep_remainder = FALSE) {
     UseMethod("tokens_chunk")
 }
 
@@ -30,7 +30,7 @@ tokens_chunk <- function(x, size, overlap = FALSE, discard_remainder = TRUE) {
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_chunk.tokens <- function(x, size, overlap = FALSE, discard_remainder = TRUE) {
+tokens_chunk.tokens <- function(x, size, overlap = FALSE, keep_remainder = FALSE) {
 
     if (length(size) > 1L)
         stop("Size must be a single integer")
@@ -39,7 +39,7 @@ tokens_chunk.tokens <- function(x, size, overlap = FALSE, discard_remainder = TR
 
     attrs <- attributes(x)
     type <- types(x)
-    result <- qatd_cpp_tokens_chunk(x, type, size, overlap, discard_remainder)
+    result <- qatd_cpp_tokens_chunk(x, type, size, overlap, !keep_remainder)
 
     # add repeated versions of remaining docvars
     attrs$docvars <- attrs$docvars[attr(result, "docnum"),, drop = FALSE] # repeat rows
@@ -58,4 +58,3 @@ tokens_chunk.tokens <- function(x, size, overlap = FALSE, discard_remainder = TR
 
     result
 }
-

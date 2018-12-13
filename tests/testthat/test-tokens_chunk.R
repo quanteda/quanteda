@@ -7,7 +7,7 @@ test_that("tokens_chunk works", {
                                              stringsAsFactors = FALSE))
     toks <- tokens(corp)
 
-    toks_chunk1 <- tokens_chunk(toks, size = 5, discard_remainder = FALSE)
+    toks_chunk1 <- tokens_chunk(toks, size = 5, keep_remainder = TRUE)
     expect_identical(as.list(toks_chunk1),
                      list(d1 = c("a", "b", "c", "d"),
                           d2 = c("e", "f", "g")))
@@ -20,7 +20,7 @@ test_that("tokens_chunk works", {
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
 
-    toks_chunk2 <- tokens_chunk(toks, size = 2, discard_remainder = FALSE)
+    toks_chunk2 <- tokens_chunk(toks, size = 2, keep_remainder = TRUE)
     expect_identical(as.list(toks_chunk2),
                      list(d1.1 = c("a", "b"),
                           d1.2 = c("c", "d"),
@@ -35,7 +35,7 @@ test_that("tokens_chunk works", {
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
 
-    toks_chunk3 <- tokens_chunk(toks, 2, overlap = TRUE, discard_remainder = FALSE)
+    toks_chunk3 <- tokens_chunk(toks, 2, overlap = TRUE, keep_remainder = TRUE)
     expect_identical(as.list(toks_chunk3),
                      list(d1.1 = c("a", "b"),
                           d1.2 = c("b", "c"),
@@ -70,11 +70,11 @@ test_that("tokens_chunk works", {
     toks <- tokens(c("a b c d e f", "a a b d c"))
     expect_is(tokens_chunk(toks, size = 3), "tokens")
     expect_equivalent(
-        as.list(tokens_chunk(toks, 3, discard_remainder = TRUE)),
+        as.list(tokens_chunk(toks, 3, keep_remainder = FALSE)),
         list(c("a", "b", "c"), c("d", "e", "f"), c("a", "a", "b"), character())
     )
     expect_equivalent(
-        as.list(tokens_chunk(toks, 3, discard_remainder = FALSE)),
+        as.list(tokens_chunk(toks, 3, keep_remainder = TRUE)),
         list(c("a", "b", "c"), c("d", "e", "f"), c("a", "a", "b"), c("d", "c"))
     )
     expect_identical(
@@ -91,13 +91,13 @@ test_that("tokens_chunk works", {
 test_that("tokens_chunk() works with sizes longer than tokens length", {
     toks <- tokens(c(d1 = "a b c d e", d2 = "a b c"))
     expect_identical(
-        as.list(tokens_chunk(toks, size = 4, discard_remainder = FALSE)),
+        as.list(tokens_chunk(toks, size = 4, keep_remainder = TRUE)),
         list(d1.1 = c("a", "b", "c", "d"),
              d1.2 = "e",
              d2.1 = c("a", "b", "c"))
     )
     expect_identical(
-        as.list(tokens_chunk(toks, size = 4, discard_remainder = TRUE)),
+        as.list(tokens_chunk(toks, size = 4, keep_remainder = FALSE)),
         list(d1.1 = c("a", "b", "c", "d"),
              d1.2 = character(0),
              d2.1 = character(0))
