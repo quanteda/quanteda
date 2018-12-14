@@ -543,6 +543,76 @@ compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 50,
     return(D)
 }
 
+# Prototype hd-d function
+compute_hd_d <- function(x, sample_size_start = 35, sample_size_end = 50, ATTR_for_all_samp_size = FALSE){
+    
+    x <- as.dfm(x)
+    # Exception handlers
+    if (!is.dfm(x)) stop('x must be dfm object')
+    if (sample_size_start >= sample_size_end) stop('sample_size_end must be larger than sample_size_start')
+    if (any(ntoken(x) < sample_size_start)) stop('sample_size_start must be less than smallest ntokens')
+    
+    
+    hd_d_vals <- data.table(docs = docnames(x))
+    sample_range <- c((sample_size_start:sample_size_end))
+    for (sample_size in sample_range){
+        
+        # e.g. Whenever a new word occurs in a sample of 35 words, its contribution to the TTR of that sample is 1/35 
+        ttr_contribution <- 1 / sample_size
+        
+        ATTR_vector =  lapply(docnames(x), function(y){
+            # each temp is a one-document dfm
+            temp <- dfm(x)[y] 
+            # calculate the document length
+            temp_length <- ntoken(temp) 
+            # calculate the frequency of each token
+            temp_featcount <- data.frame(feature = featnames(temp), frequency = colSums(temp)) 
+            # sort in descending order
+            temp_featcount <- temp_featcount[order(temp_featcount$frequency, decreasing = TRUE),]
+            rownames(temp_featcount) <- c()
+            
+            # For each term in `temp`, calculating the probability that it will apppear 
+            # AT LEAST ONCE
+            # in a sample text of size `sample_size`
+            # This is equivalent to the complement that it will not appear at all 
+            
+            # The notation in stats::dhyper is slightly different from McCarthy & Jarvis (2007)
+            # In McCarthy & Jarvis, it's denoted Hypergeom(x, r, n, N), dhyper takes dhyper(x,m,n,k)
+            # Based on my reconstruction
+            # (MJ) x = x (dhyper)
+            # (MJ) r = k (dhyper)
+            # (MJ) n = m (dhyper)
+            # (MJ) N = m + n (dhyper)
+            temp_featcount$prob_feature_in_sample_size <- 1 - stats::dhyper(x = 0,
+                                                                            m = temp_featcount$frequency,
+                                                                            n = temp_length - temp_featcount$frequency,
+                                                                            k = sample_size)
+            
+            # The contribution of word X to ATTR-sample_size, 
+            # its contribution to the TTR of a single sample (i.e. 1/sample_size) 
+            # multiplied by the proportion of samples in which
+            # it will occur if all possible combinations of 35 words are taken into
+            # account: (1/sample_size) *  temp_featcount$prob_feature_in_sample_size
+            
+            temp_featcount$contribution_to_ATTR <- ttr_contribution * temp_featcount$prob_feature_in_sample_size
+            
+            # sum over all types
+            ATTR_val <- sum(temp_featcount$contribution_to_ATTR)
+        })
+        
+        hd_d_vals <- cbind(hd_d_vals, unlist(ATTR_vector))
+    }
+    colnames(hd_d_vals) <- c('docs', sample_range) 
+    
+    # if ATTR_for_all_samp_size == TRUE, returns the hd_d value computed for each sample size
+    if (ATTR_for_all_samp_size) {
+        return(hd_d_vals)
+    }
+    else {
+        mean_hd_d <- data.table(docs = docnames(x), hd_d = apply(hd_d_vals[,2:ncol(hd_d_vals)], 1, mean))
+        return(mean_hd_d)}
+}
+
 
 # additional utility functions ------------
 
