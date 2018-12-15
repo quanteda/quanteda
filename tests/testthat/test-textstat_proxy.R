@@ -258,6 +258,13 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("dfm_empty"))
 })
 
+test_that("raises error when p is too small for minkowski", {
+    mt <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_silent(textstat_proxy(mt, method = "minkowski", p = 2))
+    expect_error(textstat_proxy(mt, method = "minkowski", p = -1),
+                 "p must be greater than zero")
+})
+
 # test_that("raises error when p is smaller than 1", {
 #     expect_error(textstat_dist(test_mt, method = "minkowski", p = 0))
 #     expect_error(textstat_dist(test_mt, method = "minkowski", p = -1))
@@ -274,65 +281,22 @@ test_that("sparse objects are of expected class and occur when expected", {
     expect_is(textstat_proxy(test_mt, method = "kullback"),
               "dgTMatrix")
     
-    # expect_is(
-    #     textstat_dist(dfm_weight(test_mt, "prop"), min_dist = 0),
-    #     "dsCMatrix"
-    # )
-    # expect_is(
-    #     textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_dist = .07),
-    #     "dsCMatrix"
-    # )
-    # expect_is(
-    #     textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_dist = NULL),
-    #     "dsCMatrix"
-    # )
-    # expect_is(
-    #     textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_simil = .95),
-    #     "dsCMatrix"
-    # )
 })
 
-# test_that("lowercase sparsematrix or sparse works", {
-#     expect_identical(
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparsematrix")
-#     )
-#     expect_identical(
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparse")
-#     )
-#     expect_identical(
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparsematrix")
-#     )
-#     expect_identical(
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparse")
-#     )
-# })
+test_that("rank argument is working", {
 
-# test_that("rank argument is working", {
-#     
-#     expect_error(textstat_simil(test_mt, rank = 0),
-#                  "rank must be great than or equal to 1")
-#     
-#     expect_equal(as.matrix(textstat_simil(test_mt, rank = 3)),
-#                  apply(as.matrix(textstat_simil(test_mt, value = "sparseMatrix")), 2,
-#                        function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
-#     
-#     expect_equal(as.matrix(textstat_simil(test_mt, value = "sparseMatrix")), 
-#                  as.matrix(textstat_simil(test_mt, rank = 100)))
-#     
-#     expect_equal(as.matrix(textstat_dist(test_mt, rank = 3)),
-#                  apply(as.matrix(textstat_dist(test_mt, value = "sparseMatrix")), 2,
-#                        function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
-#     
-#     expect_equal(as.matrix(textstat_dist(test_mt, value = "sparseMatrix")), 
-#                  as.matrix(textstat_dist(test_mt, rank = 100)))
-#     
-#     expect_error(textstat_dist(test_mt, rank = 0),
-#                  "rank must be great than or equal to 1")
-# })
+    expect_error(textstat_proxy(test_mt, rank = 0),
+                 "rank must be great than or equal to 1")
+
+
+    expect_equal(as.matrix(textstat_proxy(test_mt)),
+                 as.matrix(textstat_proxy(test_mt, rank = 100)))
+
+    expect_equal(as.matrix(textstat_proxy(test_mt, rank = 3)),
+                 apply(as.matrix(textstat_proxy(test_mt)), 2,
+                       function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
+
+})
 
 test_that("record zeros even in the sparse matrix", {
     toks <- tokens(c(doc1 = 'a b c', doc2 = 'd e f'), remove_punct = TRUE)
