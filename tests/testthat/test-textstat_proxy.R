@@ -24,7 +24,7 @@ test_simil <- function(x, method, margin, ignore_upper = FALSE, ...) {
         s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
     expect_equal(s1, s2, tolerance = 0.001)
     
-    s3 <- as.matrix(textstat_proxy(x, selection, method = method, margin = margin, ...))
+    s3 <- as.matrix(textstat_proxy(x, y, method = method, margin = margin, ...))
     s4 <- as.matrix(proxy::simil(as.matrix(x), as.matrix(y), 
                                 method = method, by_rows = by_rows, diag = TRUE, ...))
     if (ignore_upper)
@@ -52,7 +52,7 @@ test_dist <- function(x, method, margin, ignore_upper = FALSE, ...) {
         s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
     expect_equal(s1, s2, tolerance = 0.001)
     
-    s3 <- as.matrix(textstat_proxy(x, selection, method = method, margin = margin, ...))
+    s3 <- as.matrix(textstat_proxy(x, y, method = method, margin = margin, ...))
     s4 <- as.matrix(proxy::dist(as.matrix(x), as.matrix(y), 
                                 method = method, by_rows = by_rows, diag = TRUE, ...))
     if (ignore_upper)
@@ -240,35 +240,16 @@ test_that("textstat_proxy works on zero-feature documents (#952)", {
     )    
 })
 
-test_that("selection takes integer or logical vector", {
-    expect_identical(textstat_proxy(test_mt, c(1,5), margin = "features"),
-                     textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
-    l1 <- featnames(test_mt) %in% c("senat", "chief")
-    expect_identical(textstat_proxy(test_mt, l1, margin = "features"),
-                     textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
+test_that("textstat_proxy works with non-intersecting documents or features", {
     
-    expect_error(textstat_proxy(test_mt, "xxxx", margin = "features"))
-    expect_error(textstat_proxy(test_mt, 1000, margin = "features"))
-    
-    expect_identical(textstat_proxy(test_mt, c(2,4), margin = "documents"),
-                     textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
-    l2 <- docnames(test_mt) %in% c("1985-Reagan", "1993-Clinton")
-    expect_identical(textstat_proxy(test_mt, l2, margin = "documents"),
-                     textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
-    
-    expect_error(textstat_proxy(test_mt, "nothing", margin = "documents"))
-    expect_error(textstat_proxy(test_mt, 100, margin = "documents"))
-})
-
-test_that("selection works with dfm with padding", {
-    
-    toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e'), remove_punct = TRUE)
-    toks <- tokens_remove(toks, 'b', padding = TRUE)
+    toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e', doc3 = 'c d f', doc4 = 'f g h'), remove_punct = TRUE)
     mt <- dfm(toks)
-    expect_silent(textstat_proxy(mt, selection = c('c'), margin = 'features'))
-    expect_silent(textstat_proxy(mt, selection = c(''), margin = 'features'))
-    expect_silent(textstat_proxy(mt, selection = c('doc2'), margin = 'documents'))
-    
+    sim1 <- textstat_proxy(mt, margin = "features")
+    expect_equal(textstat_proxy(mt[,c("a", "b")], mt[,c("c", "d", "e")], margin = "features"),
+                 sim1[c("a", "b"), c("c", "d", "e")],drop = FALSE)
+    sim2 <- textstat_proxy(mt, margin = "documents")
+    expect_equal(textstat_proxy(mt[c("doc1", "doc2"),], mt[c("doc4"),], margin = "documents"),
+                 sim2[c("doc1", "doc2"), c("doc4"),drop = FALSE])
 })
 
 test_that("raises error when dfm is empty (#1419)", {
@@ -361,4 +342,12 @@ test_that("record zeros even in the sparse matrix", {
     expect_true(any(textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x == 0))
     expect_true(any(textstat_proxy(mt, method = "cosine", rank = 2)@x == 0))
     expect_true(any(textstat_proxy(mt, method = "dice")@x == 0))
+})
+
+test_that("textstat_proxy raises error when documents are different for feature similarity", {
+    expect_silent(
+        textstat_proxy(test_mt[1:5,], test_mt[1:5,], margin = "features")
+    )
+    expect_error(textstat_proxy(test_mt[1:5,], test_mt[6:10,], margin = "features"),
+                 "x and y must contain the same documents")
 })
