@@ -67,7 +67,6 @@ struct similarity_linear : public Worker {
         uword nrow = mt1t.n_rows;
         uword ncol = mt1t.n_cols;
         rowvec v1, v2;
-        sp_mat out;
         std::vector<double> simils(nrow);
         for (uword i = begin; i < end; i++) {
             switch (method) {
