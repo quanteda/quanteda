@@ -235,8 +235,8 @@ textstat_proxy <- function(x, y = NULL,
     
     if (margin == "documents") {
         f <- union(featnames(x), featnames(y))
-        x <- t(quanteda:::pad_dfm(x, f))
-        y <- t(quanteda:::pad_dfm(y, f))
+        x <- t(pad_dfm(x, f))
+        y <- t(pad_dfm(y, f))
     } else {
         if (!identical(docnames(x), docnames(y)))
             stop("x and y must contain the same documents")
