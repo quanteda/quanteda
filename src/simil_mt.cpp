@@ -41,7 +41,7 @@ rowvec mean(const sp_mat& mt) {
 
 struct similarity_linear : public Worker {
     
-    const arma::sp_mat& mt1; // input
+    const arma::sp_mat& mt1t; // input
     const arma::sp_mat& mt2; // input
     Triplets& simil_tri; // output
     const rowvec& square1;
@@ -53,35 +53,34 @@ struct similarity_linear : public Worker {
     const double limit;
     const bool symm;
     
-    similarity_linear(const sp_mat& mt1_, const sp_mat& mt2_, Triplets& simil_tri_, 
+    similarity_linear(const sp_mat& mt1t_, const sp_mat& mt2_, Triplets& simil_tri_, 
                       const rowvec& square1_, const rowvec& center1_,
                       const rowvec& square2_, const rowvec& center2_,
                       const int method_, 
                       const unsigned int rank_, const double limit_, const bool symm_) :
-        mt1(mt1_), mt2(mt2_), simil_tri(simil_tri_), 
+        mt1t(mt1t_), mt2(mt2_), simil_tri(simil_tri_), 
         square1(square1_), center1(center1_), square2(square2_), center2(center2_), 
         method(method_), rank(rank_), limit(limit_), symm(symm_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
-        uword nrow = mt1.n_rows;
-        uword ncol = mt2.n_cols;
+        uword nrow = mt1t.n_rows;
+        uword ncol = mt1t.n_cols;
         rowvec v1, v2;
-        std::vector<double> simils(ncol);
+        sp_mat out;
+        std::vector<double> simils(nrow);
         for (uword i = begin; i < end; i++) {
-            Rcout << "i=" << i << "\n";
             switch (method) {
             case 1: // cosine similarity
-                Rcout << mt1 * mt2.col(i);
-                //simils = to_vector(trans(mt2 * mt1.col(i)) / (square2 * square1[i]));
+                simils = to_vector(trans(mt1t * mt2.col(i)) / (square1 * square2[i]));
                 break;
             case 2: // correlation similarity
-                v1 = rowvec(trans(mt2 * mt1.col(i)));
-                v2 = center2 * center1[i] * nrow;
-                simils = to_vector(((v1 - v2) / nrow) / (square2 * square1[i]));
+                v1 = rowvec(trans(mt1t * mt2.col(i)));
+                v2 = center1 * center2[i] * ncol;
+                simils = to_vector(((v1 - v2) / ncol) / (square1 * square2[i]));
                 break;
             case 3: // euclidean distance
-                simils = to_vector(sqrt(trans(mt2 * mt1.col(i)) * -2 + square2 + square1[i]));
+                simils = to_vector(sqrt(trans(mt1t * mt2.col(i)) * -2 + square1 + square2[i]));
                 break;
             }
             double l = get_limit(simils, rank, limit);
@@ -102,15 +101,17 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt1,
                               unsigned int rank,
                               double limit = -1.0) {
     
+    if (mt1.n_rows != mt2.n_rows)
+        throw std::range_error("Invalid dfm objects");
+    
     uword ncol1 = mt1.n_cols;
     uword ncol2 = mt2.n_cols;
     if (rank < 1) rank = 1;
-    bool symm = ncol1 == ncol2 && rank == ncol2;
+    bool symm = rank == ncol1 && rank == ncol2;
     
     //dev::Timer timer;
     //dev::start_timer("Compute magnitude", timer);
-    rowvec square1(ncol1), center1(ncol1);
-    rowvec square2(ncol2), center2(ncol2);
+    rowvec square1(ncol1), center1(ncol1), square2(ncol2), center2(ncol2);
     switch (method) {
     case 1: // cosine
         square1 = rowvec(sqrt(mat(sum(mt1 % mt1, 0))));
@@ -130,14 +131,16 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt1,
     
     //dev::stop_timer("Compute magnitude", timer);
     //dev::start_timer("Compute similarity", timer);
+    
     Triplets simil_tri;
-    similarity_linear similarity_linear(mt1, trans(mt2), simil_tri, 
+    const sp_mat mt1t = trans(mt1);
+    similarity_linear similarity_linear(mt1t, mt2, simil_tri, 
                                         square1, center1, square2, center2, 
                                         method, rank, limit, symm);
-    parallelFor(0, ncol1, similarity_linear);
+    parallelFor(0, ncol2, similarity_linear);
     //dev::stop_timer("Compute similarity", timer);
     
-    return to_matrix(simil_tri, ncol2, ncol1, symm);
+    return to_matrix(simil_tri, ncol1, ncol2, symm);
 }
 
 double simil_ejaccard(colvec& col_i, colvec& col_j, double weight = 1) {
@@ -240,19 +243,19 @@ struct similarity : public Worker {
     void operator()(std::size_t begin, std::size_t end) {
         
         arma::uword nrow = mt1.n_rows;
-        arma::uword ncol = mt2.n_cols;
+        arma::uword ncol = mt1.n_cols;
         
         double simil = 0;
         std::vector<double> simils;
         colvec col_i(nrow);
         colvec col_j(nrow);
         for (uword i = begin; i < end; i++) {
-            col_i = mt1.col(i);
+            col_i = mt2.col(i);
             simils.reserve(ncol);
             
             for (uword j = 0; j < ncol; j++) {
                 if (symm && j > i) continue;
-                col_j = mt2.col(j);
+                col_j = mt1.col(j);
                 switch (method) {
                 case 1:
                     simil = simil_ejaccard(col_i, col_j, weight);
@@ -310,18 +313,21 @@ S4 qatd_cpp_similarity(const arma::sp_mat& mt1,
                        double limit = -1.0,
                        double weight = 1.0) {
     
+    if (mt1.n_rows != mt2.n_rows)
+        throw std::range_error("Invalid dfm objects");
+        
     uword ncol1 = mt1.n_cols;
     uword ncol2 = mt2.n_cols;
     if (rank < 1) rank = 1;
-    bool symm = ncol1 == ncol2 && rank == ncol2 && method != 7;
+    bool symm = rank == ncol1 && rank == ncol2 && method != 7;;
     
     //dev::Timer timer;
     //dev::start_timer("Compute similarity", timer);
     Triplets simil_tri;
     similarity similarity(mt1, mt2, simil_tri, method, rank, limit, symm, weight);
-    parallelFor(0, ncol1, similarity);
+    parallelFor(0, ncol2, similarity);
     //dev::stop_timer("Compute similarity", timer);
     
-    return to_matrix(simil_tri, ncol2, ncol1, symm); 
+    return to_matrix(simil_tri, ncol1, ncol2, symm); 
 
 }

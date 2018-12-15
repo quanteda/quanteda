@@ -235,13 +235,13 @@ textstat_proxy <- function(x, y = NULL,
         x <- t(quanteda:::pad_dfm(x, f))
         y <- t(quanteda:::pad_dfm(y, f))
     } else {
-        if (!union(docnames(x), docnames(y)))
+        if (!identical(docnames(x), docnames(y)))
             stop("x and y must contain the same documents")
     }
     if (is.null(min_proxy)) 
         min_proxy <- -1.0
     if (is.null(rank))
-        rank <- ncol(y)
+        rank <- ncol(x)
     if (rank < 1)
         stop("rank must be great than or equal to 1")
     
@@ -268,19 +268,22 @@ textstat_proxy <- function(x, y = NULL,
             stop("p must be greater than zero")
         weight <- p
     }
-    if (boolean)
+    if (boolean) {
         x <- dfm_weight(x, "boolean")
+        y <- dfm_weight(y, "boolean")
+    }
     if (method %in% c("cosine", "correlation", "euclidean")) {
         result <- qatd_cpp_similarity_linear(x, y, match(method, c("cosine", "correlation", "euclidean")),
-                                              rank, min_proxy)
+                                             rank, min_proxy)
     } else {
         result <- qatd_cpp_similarity(x, y, match(method, c("ejaccard", "edice", "hamman", "simple matching", "faith", 
-                                                         "chisquared", "kullback", "manhattan", 
-                                                         "maximum", "canberra", "minkowski")), 
+                                                            "chisquared", "kullback", "manhattan", 
+                                                            "maximum", "canberra", "minkowski")), 
                                       rank, min_proxy, weight)
     }
     
-    dimnames(result) <- list(colnames(y), colnames(x))
+    dimnames(result) <- list(colnames(x), colnames(y))
+    #dimnames(result) <- list(colnames(y), colnames(x))
     return(result)
     #return(as(result, "CsparseMatrix"))
 }
