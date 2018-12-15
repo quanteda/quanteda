@@ -245,11 +245,11 @@ test_that("textstat_proxy works with non-intersecting documents or features", {
     toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e', doc3 = 'c d f', doc4 = 'f g h'), remove_punct = TRUE)
     mt <- dfm(toks)
     sim1 <- textstat_proxy(mt, margin = "features")
-    expect_equal(textstat_proxy(mt[,c("a", "b")], mt[,c("c", "d", "e")], margin = "features"),
-                 sim1[c("a", "b"), c("c", "d", "e")],drop = FALSE)
+    expect_equal(as.matrix(textstat_proxy(mt[,c("a", "b")], mt[,c("c", "d", "e")], margin = "features")),
+                 as.matrix(sim1[c("a", "b"), c("c", "d", "e"), drop = FALSE]))
     sim2 <- textstat_proxy(mt, margin = "documents")
-    expect_equal(textstat_proxy(mt[c("doc1", "doc2"),], mt[c("doc4"),], margin = "documents"),
-                 sim2[c("doc1", "doc2"), c("doc4"),drop = FALSE])
+    expect_equal(as.matrix(textstat_proxy(mt[c("doc1", "doc2"),], mt[c("doc4"),], margin = "documents")),
+                 as.matrix(sim2[c("doc1", "doc2"), c("doc4"), drop = FALSE]))
 })
 
 test_that("raises error when dfm is empty (#1419)", {
