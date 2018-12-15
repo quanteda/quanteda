@@ -81,9 +81,33 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                           "dice", "edice", "hamman", "simple matching", "faith"), 
                                upper = FALSE, diag = FALSE) {
     
+    margin <- match.arg(margin)
     method <- match.arg(method)
-    result <- textstat_proxy(x, selection, margin, method, 1)
-    result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
+    
+    if (margin == "features") {
+        name <- colnames(x) 
+    } else {
+        name <- rownames(x) 
+    }
+    if (is.null(selection)) {
+        i <- seq_along(name)
+    } else {
+        if (is.character(selection)) {
+            i <- match(selection, name)
+        } else {
+            if (is.logical(selection))
+                selection <- which(selection)
+            i <- selection
+            i[i < 1 | length(name) < i] <- NA
+        }
+        if (any(is.na(i)))
+            stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
+    }
+    if (margin == "features") {
+        result <- textstat_proxy(x[,i], x, margin, method, 1)
+    } else {
+        result <- textstat_proxy(x[i,], x, margin, method, 1)
+    }
     if (is.null(selection)) {
         class(result) <- c("simil", "dist")
     } else {
@@ -146,8 +170,33 @@ textstat_dist.dfm <- function(x, selection = NULL,
                                          "manhattan", "maximum", "canberra", "minkowski"), 
                               upper = FALSE, diag = FALSE, p = 2) {
     
+    margin <- match.arg(margin)
     method <- match.arg(method)
-    result <- textstat_proxy(x, selection, margin, method, p)
+    
+    if (margin == "features") {
+        name <- colnames(x) 
+    } else {
+        name <- rownames(x) 
+    }
+    if (is.null(selection)) {
+        i <- seq_along(name)
+    } else {
+        if (is.character(selection)) {
+            i <- match(selection, name)
+        } else {
+            if (is.logical(selection))
+                selection <- which(selection)
+            i <- selection
+            i[i < 1 | length(name) < i] <- NA
+        }
+        if (any(is.na(i)))
+            stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
+    }
+    if (margin == "features") {
+        result <- textstat_proxy(x[,i], x, margin, method, p)
+    } else {
+        result <- textstat_proxy(x[i,], x, margin, method, p)
+    }
     as_dist(result, method, match.call(), diag = diag, upper = upper)
 }
 
@@ -162,7 +211,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #'   recorded.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{textstat_simil}}
-textstat_proxy <- function(x, selection = NULL,
+textstat_proxy <- function(x, y = NULL, 
                            margin = c("documents", "features"),
                            method = c("cosine", "correlation", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching", "faith",
@@ -171,28 +220,28 @@ textstat_proxy <- function(x, selection = NULL,
                            p = 2, min_proxy = NULL, rank = NULL) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
+    if (is.null(y)) {
+        y <- x
+    } else {
+        y <- as.dfm(y)
+        if (!sum(y)) stop(message_error("dfm_empty"))
+    }
+    
     margin <- match.arg(margin)
     method <- match.arg(method)
-    if (margin == "documents") 
-        x <- t(x)
-    if (is.null(selection)) {
-        i <- seq(ncol(x))
+    
+    if (margin == "documents") {
+        f <- union(featnames(x), featnames(y))
+        x <- t(quanteda:::pad_dfm(x, f))
+        y <- t(quanteda:::pad_dfm(y, f))
     } else {
-        if (is.character(selection)) {
-            i <- match(selection, colnames(x))
-        } else {
-            if (is.logical(selection))
-                selection <- which(selection)
-            i <- selection
-            i[i < 1 | ncol(x) < i] <- NA
-        }
-        if (any(is.na(i)))
-            stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
+        if (!union(docnames(x), docnames(y)))
+            stop("x and y must contain the same documents")
     }
     if (is.null(min_proxy)) 
         min_proxy <- -1.0
     if (is.null(rank))
-        rank <- ncol(x)
+        rank <- ncol(y)
     if (rank < 1)
         stop("rank must be great than or equal to 1")
     
@@ -222,22 +271,16 @@ textstat_proxy <- function(x, selection = NULL,
     if (boolean)
         x <- dfm_weight(x, "boolean")
     if (method %in% c("cosine", "correlation", "euclidean")) {
-        result <- qatd_cpp_similarity_linear(x, match(method, c("cosine", "correlation", "euclidean")),
-                                             i, rank, min_proxy)
+        result <- qatd_cpp_similarity_linear(x, y, match(method, c("cosine", "correlation", "euclidean")),
+                                              rank, min_proxy)
     } else {
-        result <- qatd_cpp_similarity(x, match(method, c("ejaccard", "edice", "hamman", "simple matching", "faith", 
+        result <- qatd_cpp_similarity(x, y, match(method, c("ejaccard", "edice", "hamman", "simple matching", "faith", 
                                                          "chisquared", "kullback", "manhattan", 
                                                          "maximum", "canberra", "minkowski")), 
-                                      i, rank, min_proxy, weight)
+                                      rank, min_proxy, weight)
     }
-    label <- colnames(x)
-    rownames(result) <- label
-    if (is.null(selection)) {
-        colnames(result) <- label
-    } else {
-        result <- result[,i, drop = FALSE]
-        colnames(result) <- label[i]
-    }
+    
+    dimnames(result) <- list(colnames(y), colnames(x))
     return(result)
     #return(as(result, "CsparseMatrix"))
 }
