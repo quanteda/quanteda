@@ -258,17 +258,10 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("dfm_empty"))
 })
 
-test_that("raises error when p is too small for minkowski", {
-    mt <- dfm_trim(data_dfm_lbgexample, 1000)
-    expect_silent(textstat_proxy(mt, method = "minkowski", p = 2))
-    expect_error(textstat_proxy(mt, method = "minkowski", p = -1),
-                 "p must be greater than zero")
+test_that("raises error when p is smaller than 1", {
+    expect_error(textstat_proxy(test_mt, method = "minkowski", p = 0))
+    expect_error(textstat_proxy(test_mt, method = "minkowski", p = -1))
 })
-
-# test_that("raises error when p is smaller than 1", {
-#     expect_error(textstat_dist(test_mt, method = "minkowski", p = 0))
-#     expect_error(textstat_dist(test_mt, method = "minkowski", p = -1))
-# })
 
 test_that("sparse objects are of expected class and occur when expected", {
     
@@ -287,7 +280,6 @@ test_that("rank argument is working", {
 
     expect_error(textstat_proxy(test_mt, rank = 0),
                  "rank must be great than or equal to 1")
-
 
     expect_equal(as.matrix(textstat_proxy(test_mt)),
                  as.matrix(textstat_proxy(test_mt, rank = 100)))
