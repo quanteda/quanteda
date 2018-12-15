@@ -108,6 +108,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
     } else {
         result <- textstat_proxy(x[i,], x, margin, method, 1)
     }
+    result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
     if (is.null(selection)) {
         class(result) <- c("simil", "dist")
     } else {
@@ -203,8 +204,10 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' [Experimental] Compute document/feature proximity
 #'
 #' This is an underlying function for \code{textstat_dist} and
-#' \code{textstat_simil} but returns \code{TsparseMatrix}. 
+#' \code{textstat_simil} but returns \code{TsparseMatrix}.
 #' @keywords internal
+#' @param y if a \link{dfm} object is provided, proximity between documents or
+#'   features in \code{x} and \code{y} is computed.
 #' @inheritParams textstat_dist
 #' @param min_proxy the minimum proximity value to be recoded.
 #' @param rank an integer value specifying top-n most proximity values to be
@@ -283,7 +286,6 @@ textstat_proxy <- function(x, y = NULL,
     }
     
     dimnames(result) <- list(colnames(x), colnames(y))
-    #dimnames(result) <- list(colnames(y), colnames(x))
     return(result)
     #return(as(result, "CsparseMatrix"))
 }
