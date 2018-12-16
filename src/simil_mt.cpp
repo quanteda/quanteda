@@ -94,8 +94,8 @@ struct similarity_linear : public Worker {
 };
 
 // [[Rcpp::export]]
-S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt1, 
-                              const arma::sp_mat& mt2, 
+S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1, 
+                              arma::sp_mat& mt2, 
                               const int method,
                               unsigned int rank,
                               double limit = -1.0) {
@@ -132,8 +132,8 @@ S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt1,
     //dev::start_timer("Compute similarity", timer);
     
     Triplets simil_tri;
-    const sp_mat mt1t = trans(mt1);
-    similarity_linear similarity_linear(mt1t, mt2, simil_tri, 
+    mt1 = trans(mt1);
+    similarity_linear similarity_linear(mt1, mt2, simil_tri, 
                                         square1, center1, square2, center2, 
                                         method, rank, limit, symm);
     parallelFor(0, ncol2, similarity_linear);
@@ -305,8 +305,8 @@ struct similarity : public Worker {
 };
 
 // [[Rcpp::export]]
-S4 qatd_cpp_similarity(const arma::sp_mat& mt1, 
-                       const arma::sp_mat& mt2,
+S4 qatd_cpp_similarity(arma::sp_mat& mt1, 
+                       arma::sp_mat& mt2,
                        const int method,
                        unsigned int rank,
                        double limit = -1.0,

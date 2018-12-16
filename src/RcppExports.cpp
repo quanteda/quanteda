@@ -171,13 +171,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_similarity_linear
-S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt1, const arma::sp_mat& mt2, const int method, unsigned int rank, double limit);
+S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1, arma::sp_mat& mt2, const int method, unsigned int rank, double limit);
 RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mt1SEXP, SEXP mt2SEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP limitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt1(mt1SEXP);
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt2(mt2SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt1(mt1SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt2(mt2SEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
@@ -186,13 +186,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_similarity
-S4 qatd_cpp_similarity(const arma::sp_mat& mt1, const arma::sp_mat& mt2, const int method, unsigned int rank, double limit, double weight);
+S4 qatd_cpp_similarity(arma::sp_mat& mt1, arma::sp_mat& mt2, const int method, unsigned int rank, double limit, double weight);
 RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mt1SEXP, SEXP mt2SEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP weightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt1(mt1SEXP);
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt2(mt2SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt1(mt1SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt2(mt2SEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
