@@ -226,6 +226,8 @@ textstat_proxy <- function(x, y = NULL,
     if (is.null(y)) {
         y <- x
     } else {
+        if (!is.dfm(y))
+            stop("y must be a dfm")
         y <- as.dfm(y)
         if (!sum(y)) stop(message_error("dfm_empty"))
     }

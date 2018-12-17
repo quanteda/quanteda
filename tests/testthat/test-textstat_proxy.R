@@ -307,3 +307,8 @@ test_that("textstat_proxy raises error when documents are different for feature 
     expect_error(textstat_proxy(test_mt[1:5,], test_mt[6:10,], margin = "features"),
                  "x and y must contain the same documents")
 })
+
+test_that("textstat_proxy raises error when y is not a dfm", {
+    expect_error(textstat_proxy(test_mt[1:5,], 6:10, margin = "features"),
+                 "y must be a dfm")
+})
