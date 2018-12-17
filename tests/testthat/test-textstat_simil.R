@@ -137,3 +137,43 @@ test_that("as.matrix.simil is consistent with the equivalent proxy function", {
         c(doc1 = as.numeric(NA), doc2 = as.numeric(NA))
     )
 })
+
+test_that("selection takes integer or logical vector", {
+    expect_equivalent(textstat_simil(mt, c(2, 5), margin = "features"),
+                      textstat_simil(mt, c("mr", "president"), margin = "features"))
+    l1 <- featnames(mt) %in% c("mr", "president")
+    expect_equivalent(textstat_simil(mt, l1, margin = "features"),
+                      textstat_simil(mt, c("mr", "president"), margin = "features"))
+    
+    expect_error(textstat_simil(mt, "xxxx", margin = "features"))
+    expect_error(textstat_simil(mt, 1000, margin = "features"))
+    
+    expect_equivalent(textstat_simil(mt, c(2,4), margin = "documents"),
+                      textstat_simil(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    l2 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
+    expect_equivalent(textstat_simil(mt, l2, margin = "documents"),
+                      textstat_simil(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    
+    expect_error(textstat_simil(mt, "nothing", margin = "documents"))
+    expect_error(textstat_simil(mt, 100, margin = "documents"))
+    
+    
+    expect_equivalent(textstat_dist(mt, c(2, 5), margin = "features"),
+                      textstat_dist(mt, c("mr", "president"), margin = "features"))
+    l3 <- featnames(mt) %in% c("mr", "president")
+    expect_equivalent(textstat_dist(mt, l3, margin = "features"),
+                      textstat_dist(mt, c("mr", "president"), margin = "features"))
+    
+    expect_error(textstat_dist(mt, "xxxx", margin = "features"))
+    expect_error(textstat_dist(mt, 1000, margin = "features"))
+    
+    expect_equivalent(textstat_dist(mt, c(2,4), margin = "documents"),
+                      textstat_dist(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    l4 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
+    expect_equivalent(textstat_dist(mt, l4, margin = "documents"),
+                      textstat_dist(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    
+    expect_error(textstat_dist(mt, "nothing", margin = "documents"))
+    expect_error(textstat_dist(mt, 100, margin = "documents"))
+})
+
