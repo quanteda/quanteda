@@ -4,7 +4,7 @@
 \alias{tokens_chunk}
 \title{Segment tokens object by chunks of a given size}
 \usage{
-tokens_chunk(x, size, overlap = FALSE, keep_remainder = FALSE)
+tokens_chunk(x, size, overlap = 0, use_docvars = TRUE)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented into
@@ -12,11 +12,11 @@ chunks}
 
 \item{size}{integer; the size of the chunks in tokens}
 
-\item{overlap}{logical; if \code{TRUE}, the last token of a chunk will be the
-first token of the next chunk}
+\item{overlap}{integer; if large than zero, the neighbouring chunks contain
+the same tokens}
 
-\item{keep_remainder}{logical; if \code{TRUE}, keep any ending chunk whose
-length is less than \code{size}, otherwise this will be discarded}
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of
@@ -26,14 +26,14 @@ A \link{tokens} object whose documents have been split into chunks of
 Segment tokens by splitting into equally sized chunks.
 }
 \examples{
-txts <- c(doc1 = "Fellow citizens, I am again called upon by the voice of 
+txts <- c(doc1 = "Fellow citizens, I am again called upon by the voice of
                   my country to execute the functions of its Chief Magistrate.",
-          doc2 = "When the occasion proper for it shall arrive, I shall 
+          doc2 = "When the occasion proper for it shall arrive, I shall
                   endeavor to express the high sense I entertain of this
                   distinguished honor.")
 toks <- tokens(txts)
 tokens_chunk(toks, size = 5)
-tokens_chunk(toks, size = 5, overlap = TRUE)
-tokens_chunk(toks, size = 5, keep_remainder = TRUE)
+tokens_chunk(toks, size = 5, overlap = 4)
+tokens_chunk(toks, size = 5)
 }
 \keyword{tokens}
