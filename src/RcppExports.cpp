@@ -171,33 +171,33 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_similarity_linear
-S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt, const int method, const IntegerVector targets_, unsigned int rank, double limit);
-RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mtSEXP, SEXP methodSEXP, SEXP targets_SEXP, SEXP rankSEXP, SEXP limitSEXP) {
+S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1, arma::sp_mat& mt2, const int method, unsigned int rank, double limit);
+RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mt1SEXP, SEXP mt2SEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP limitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt(mtSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt1(mt1SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt2(mt2SEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type targets_(targets_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity_linear(mt, method, targets_, rank, limit));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity_linear(mt1, mt2, method, rank, limit));
     return rcpp_result_gen;
 END_RCPP
 }
 // qatd_cpp_similarity
-S4 qatd_cpp_similarity(const arma::sp_mat& mt, const int method, const IntegerVector target_, unsigned int rank, double limit, double weight);
-RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mtSEXP, SEXP methodSEXP, SEXP target_SEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP weightSEXP) {
+S4 qatd_cpp_similarity(arma::sp_mat& mt1, arma::sp_mat& mt2, const int method, unsigned int rank, double limit, double weight);
+RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mt1SEXP, SEXP mt2SEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP weightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt(mtSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt1(mt1SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt2(mt2SEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type target_(target_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
     Rcpp::traits::input_parameter< double >::type weight(weightSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mt, method, target_, rank, limit, weight));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mt1, mt2, method, rank, limit, weight));
     return rcpp_result_gen;
 END_RCPP
 }
