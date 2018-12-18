@@ -82,7 +82,6 @@ test_that("pattern2list is working with a list", {
     type <- letters
     pat <- c('a', 'a b', 'c d', 'e f g')
     ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', FALSE)
-    expect_equivalent(pat, vapply(ids, function(x, y) paste0(y[x], collapse = " "), character(1), type))
     expect_equal(names(ids), pat)
     
 })
