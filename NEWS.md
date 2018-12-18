@@ -18,7 +18,7 @@
 
 ### Bug fixes and stability enhancements
 
-* Improved the robustnes of `textstat_keyness()` (#1482).
+* Improved the robustness of `textstat_keyness()` (#1482).
 * Improved the accuracy of sparsity reporting for the print method of a dfm (#1473).
 * Diagonals on a `textstat_simil()` return object coerced to matrix now default to 1.0, rather than 0.0 (#1494).
 
@@ -31,7 +31,7 @@
 ### Bug fixes and stability enhancements
 
 * Fixed a bug causing incorrect counting in `fcm(x, ordered = TRUE)`. (#1413)  Also set the condition that `window` can be of size 1 (formerly the limit was 2 or greater).
-* Fixed deprecation warnings from adding a dfm as docvars, and this now inmports the feature names as docvar names automatically. (related to #1417)
+* Fixed deprecation warnings from adding a dfm as docvars, and this now imports the feature names as docvar names automatically. (related to #1417)
 * Fixed behaviour from `tokens(x, what = "fasterword", remove_separators = TRUE)` so that it correctly splits words separated by `\n` and `\t` characters.  (#1420)
 * Add error checking for functions taking dfm inputs in case a dfm has empty features (#1419).
 * For `textstat_readability()`, fixed a bug in Dale-Chall-based measures and in the Spache word list measure.  These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists.  The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (#1410)
@@ -111,7 +111,7 @@
 ### New Features
 
 * Added `as.dfm()` methods for **tm** `DocumentTermMatrix` and `TermDocumentMatrix` objects. (#1222)
-* `predict.textmodel_wordscores()` nows includes an `include_reftexts` argument to exclude training texts from the predicted model object (#1229).  The default behaviour is `include_reftexts = TRUE`, producing the same behaviour as existed before the introduction of this argument.  This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.
+* `predict.textmodel_wordscores()` now includes an `include_reftexts` argument to exclude training texts from the predicted model object (#1229).  The default behaviour is `include_reftexts = TRUE`, producing the same behaviour as existed before the introduction of this argument.  This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.
 * `textplot_wordcloud()` now uses code entirely internal to **quanteda**, instead of using the **wordcloud** package.
 
 ### Bug fixes and stability enhancements
@@ -236,7 +236,7 @@
 
 ### New features
 
-*  Improvements and consoldiation of methods for detecting multi-word expressions, now active only through `textstat_collocations()`, which computes only the `lambda` method for now, but does so accurately and efficiently.  (#753, #803).  This function is still under development and likely to change further.
+*  Improvements and consolidation of methods for detecting multi-word expressions, now active only through `textstat_collocations()`, which computes only the `lambda` method for now, but does so accurately and efficiently.  (#753, #803).  This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
 *  `ngram` formation is now significantly faster, including with skips (skipgrams).
 *  Improvements to `topfeatures()`:
@@ -256,7 +256,7 @@
 
 *  The functions `sequences()` and `collocations()` have been removed and replaced by `textstat_collocations()`.
 *  (Finally) we added "will" to the list of English stopwords (#818).
-*  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
+*  `dfm` objects with one or both dimensions having zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
 *  Pattern matches are now implemented more consistently across functions.  In functions such as `*_select`, `*_remove`, `tokens_compound`, `features` has been replaced by `pattern`, and in `kwic`, `keywords` has been replaced by `pattern`.  These all behave consistently with respect to `pattern`, which now has a unified single help page and parameter description.(#839)  See also above new features related to `phrase()`.
 *  We have improved the performance of the C++ routines that handle many of the `tokens_*` functions using hashed tokens, making some of them 10x faster (#853).
 *  Upgrades to the `dfm_group()` function now allow "empty" documents to be created using the `fill = TRUE` option, for making documents conform to a selection (similar to how `dfm_select()` works for features, when supplied a dfm as the pattern argument).  The `groups` argument now behaves consistently across the functions where it is used. (#854)
@@ -434,7 +434,7 @@ new name | original name | notes
 
 The following functions will still work, but issue a deprecation warning:
 
-new function | deprecated function | contructs:
+new function | deprecated function | constructs:
 :--------|:------------- |:-------
 `tokens` | `tokenize()` | `tokens` class object
 `corpus_subset` | `subset.corpus` | `corpus` class object
@@ -472,12 +472,12 @@ new function | deprecated function | contructs:
 
 The following are new to v0.9.9 (and not associated with deprecated functions):
 
-new function | description | ouput class
+new function | description | output class
 :--------|:------------- |:-------
 `fcm()` | constructor for a feature co-occurrence matrix | `fcm` 
 `fcm_select` | selects features from an `fcm` | `fcm`
 `fcm_remove` | removes features from an `fcm` | `fcm`
-`fcm_sort`    | sorts an `fcm` in alpahbetical order of its features| `fcm`
+`fcm_sort`    | sorts an `fcm` in alphabetical order of its features| `fcm`
 `fcm_compress` | compacts an `fcm` | `fcm`
 `fcm_tolower` | lowercases the features of an `fcm` and compacts | `fcm`
 `fcm_toupper` | uppercases the features of an `fcm` and compacts | `fcm`
@@ -521,7 +521,7 @@ new name | reason
 *  Added fast `tokens_lookup()` method (formerly `applyDictionary()`), that also works with 
    dictionaries that have multi-word keys.  Addresses but does not entirely yet solve #188.
 *  Added `sparsity()` function to compute the sparsity of a dfm.
-*  Added feature co-occurence matrix functions (`fcm`).
+*  Added feature co-occurrence matrix functions (`fcm`).
 
 
 
@@ -537,8 +537,8 @@ new name | reason
 *  Substantially improved the performance of `convert(x, to = "stm")` for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)  
 *  Internal rewrite of `textfile()`, now supports more file types, more wildcard patterns, and is far more robust generally.  
 *  Add support for loading external dictionary formats: 
-  - yoshikoder, 
-  - lexicoder v2 and v3 (#228)
+  - Yoshikoder, 
+  - Lexicoder v2 and v3 (#228)
 * Autodetect dictionary file format from file extension, so no longer require `format` keyword for loading dictionaries (#227)
 * Improved compatibility with rOpenSci guidelines (#218):
   - Use httr to get remote files
@@ -550,7 +550,7 @@ new name | reason
 ## Bug fixes
 
 *  (0.9.8.7) Solved #267 in which `fcm(x, tri = TRUE)` temporarily created a dense logical matrix.
-*  (0.9.8.7) Added feature co-occurence matrix functions (`fcm`).
+*  (0.9.8.7) Added feature co-occurrence matrix functions (`fcm`).
 *  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
 *  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
 *  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 
@@ -573,7 +573,7 @@ new name | reason
 
 ## Changes
 
-*  Added `warn = FALSE` to the `readLines()` calls in `textfile()`, so that no warnings are issued when files are read that are missing a final EOL or that contain  embedded nuls.
+*  Added `warn = FALSE` to the `readLines()` calls in `textfile()`, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.
 * `trim()` now prints an output message even when no features are removed (#223)
 * We now skip some platform-dependent tests on CRAN, travis-ci and Windows.
 
@@ -614,7 +614,7 @@ quanteda 0.9.6
    rbind.dfm() also knits together dfms with different features, which can be useful for information and retrieval purposes 
    or machine learning.
    
-*  selectFeatures(x, anyDfm) (where the second argument is a dfm) now works with a selection = "remove" option.
+*  `selectFeatures(x, anyDfm)` (where the second argument is a dfm) now works with a selection = "remove" option.
 
 *  tokenize.character adds a removeURL option.
 
@@ -678,7 +678,7 @@ quanteda 0.9.4
 
 *  Improved documentation.
 
-*  Added `c.corpus()` method for concatenating arbitarily large sets of corpus objects.
+*  Added `c.corpus()` method for concatenating arbitrarily large sets of corpus objects.
 
 *  Default for `similarity()` is now `margin = "documents"` -- prevents overly massive results if
    `selection = NULL`.
@@ -739,7 +739,7 @@ quanteda 0.9.2
    and tf-idf directly.
 
 *  textmodel_wordfish() now accepts an integer `dispersionFloor` argument to constrain the phi parameter
-   to a minimium value (of underdispersion).
+   to a minimum value (of underdispersion).
 
 *  textfile() now takes a vector of filenames, if you wish to construct these yourself.  See ?textfile
    examples.
@@ -757,7 +757,7 @@ Bug fixes
 *  Fixed a nasty bug problem in `convert(x, to = "stm")` that mixed up the word indexes.  Thanks Felix Haass for 
    spotting this!
 
-*  Fixed a problem where wordstem was not working on ngram=1 tokenied objects
+*  Fixed a problem where wordstem was not working on ngram=1 tokenized objects
 
 *  Fixed toLower(x, keepAcronyms = TRUE) that caused an error when x contained no acronyms.
 
@@ -808,7 +808,7 @@ quanteda 0.8.6
 
 *  removeFeatures.dfm(x, stopwords), selectFeatures.dfm(x, features), and dfm(x, ignoredFeatures) now work on objects created with ngrams.  (Any ngram containing a stopword is removed.)  Performance on these functions is already good but will be improved further soon.
 
-*  selectFeatures(x, features = <anotherdfm>) is now possible, to produce a selection of features from x identical to those in <dfm>.  Not only are only features kept in x that are in <anotherdfm>, but also fatures in <anotherdfm> not in x are added to x as padded zero counts.  This functionality can also be accessed via dfm(x, keptFeatures = <anotherdfm>).  This is useful when new data used in a test set needs to have identical features as a training set dfm constructed at an earlier stage.
+*  selectFeatures(x, features = <anotherdfm>) is now possible, to produce a selection of features from x identical to those in <dfm>.  Not only are only features kept in x that are in <anotherdfm>, but also features in <anotherdfm> not in x are added to x as padded zero counts.  This functionality can also be accessed via dfm(x, keptFeatures = <anotherdfm>).  This is useful when new data used in a test set needs to have identical features as a training set dfm constructed at an earlier stage.
 
 *  head.dfm() and tail.dfm() methods added.
 
@@ -897,16 +897,16 @@ Bug Fixes
 
 Deletions
 ---------
-* clean() is no more.
+* `clean()` is no more.
 
 API changes
 -----------
-* addto option removed from dfm()
+* `addto` option removed from `dfm()`
 
 Imminent Changes
 ----------------
 * change behaviour of `ignoredFeatures` and `removeFeatures()` applied to ngrams; change behaviour of stem = TRUE applied to ngrams (in `dfm()`)
-* create ngrams.tokenizedTexts() method, replacing current ngrams(), bigrams()
+* create `ngrams.tokenizedTexts()` method, replacing current `ngrams()`, `bigrams()`
 
 
 quanteda 0.8.0
@@ -954,7 +954,7 @@ Other changes
 
 * new object encodedTexts contains some encoded character objects for testing.
 
-* ie2010Corpus now has UTF-8 encoded texts (previously was unicode escaped for non-ASCII characters)
+* ie2010Corpus now has UTF-8 encoded texts (previously was Unicode escaped for non-ASCII characters)
 
 * texts() and docvars() methods added for corpusSource objects.
 
@@ -978,7 +978,7 @@ quanteda 0.7.3
 ==============
 * added an ntoken() method for dfm objects.
 
-* fixed a bug wherein convert(anydfm, to="tm") created a DocumentTermMatrix, not a 
+* fixed a bug wherein `convert(anydfm, to = "tm")` created a DocumentTermMatrix, not a 
   TermDocumentMatrix.  Now correctly creates a TermDocumentMatrix.  (Both worked
   previously in topicmodels::LDA() so many users may not notice the change.)
 
@@ -1072,7 +1072,7 @@ quanteda 0.6.5
 * Added trigram collocations (n=3) to collocations().
 
 * Improvements to clean(): Minor fixes to clean() so that removeDigits=TRUE 
-  removes €10bn entirely and not just the €10. clean() now removes http and 
+  removes "€10bn" entirely and not just the "€10". clean() now removes http and 
   https URLs by default, although does not 
   preserve them (yet).  clean also handles numbers better, to remove
   1,000,000 and 3.14159 if removeDigits=TRUE but not crazy8 or 4sure.
