@@ -1,15 +1,17 @@
 #' Segment tokens object by chunks of a given size
 #'
-#' Segment tokens by splitting into equally sized chunks.
+#' Segment tokens into new documents of equally sized token lengths, with the
+#' possibility of overlapping the chunks.
 #' @param x \link{tokens} object whose token elements will be segmented into
 #'   chunks
-#' @param size integer; the size of the chunks in tokens
-#' @param overlap integer; if large than zero, the neighbouring chunks contain
-#'   the same tokens
-#' @param use_docvars if \code{TRUE}, repeat the docvar values for each 
-#'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+#' @param size integer; the token length of the chunks
+#' @param overlap integer; the number of tokens in a chunk to be taken from the
+#'   last \code{overlap} tokens from the preceding chunk
+#' @param use_docvars if \code{TRUE}, repeat the docvar values for each chunk;
+#'   if \code{FALSE}, drop the docvars in the chunked tokens
 #' @return A \link{tokens} object whose documents have been split into chunks of
-#'   length \code{size}, similar to \code{\link{tokens_segment}}.
+#'   length \code{size}.
+#' @seealso \code{\link{tokens_segment}}
 #' @keywords tokens
 #' @export
 #' @examples
@@ -21,7 +23,6 @@
 #' toks <- tokens(txts)
 #' tokens_chunk(toks, size = 5)
 #' tokens_chunk(toks, size = 5, overlap = 4)
-#' tokens_chunk(toks, size = 5)
 tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
     UseMethod("tokens_chunk")
 }
@@ -42,13 +43,13 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
         stop("Overlap must be smaller than size")
     if (!use_docvars)
         docvars(x) <- NULL
-    
+
     attrs <- attributes(x)
     type <- types(x)
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
-    
+
     # add repeated versions of remaining docvars
-    attrs$docvars <- attrs$docvars[attr(result, "docnum"),, drop = FALSE] # repeat rows
+    attrs$docvars <- attrs$docvars[attr(result, "docnum"), , drop = FALSE] # repeat rows
     if (any(duplicated(attr(result, "docnum")))) {
         docid <- paste0(names(x)[attr(result, "docnum")], ".", attr(result, "segnum"))
     } else {

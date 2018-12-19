@@ -10,20 +10,21 @@ tokens_chunk(x, size, overlap = 0, use_docvars = TRUE)
 \item{x}{\link{tokens} object whose token elements will be segmented into
 chunks}
 
-\item{size}{integer; the size of the chunks in tokens}
+\item{size}{integer; the token length of the chunks}
 
-\item{overlap}{integer; if large than zero, the neighbouring chunks contain
-the same tokens}
+\item{overlap}{integer; the number of tokens in a chunk to be taken from the
+last \code{overlap} tokens from the preceding chunk}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.}
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
+if \code{FALSE}, drop the docvars in the chunked tokens}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of
-  length \code{size}, similar to \code{\link{tokens_segment}}.
+  length \code{size}.
 }
 \description{
-Segment tokens by splitting into equally sized chunks.
+Segment tokens into new documents of equally sized token lengths, with the
+possibility of overlapping the chunks.
 }
 \examples{
 txts <- c(doc1 = "Fellow citizens, I am again called upon by the voice of
@@ -34,6 +35,8 @@ txts <- c(doc1 = "Fellow citizens, I am again called upon by the voice of
 toks <- tokens(txts)
 tokens_chunk(toks, size = 5)
 tokens_chunk(toks, size = 5, overlap = 4)
-tokens_chunk(toks, size = 5)
+}
+\seealso{
+\code{\link{tokens_segment}}
 }
 \keyword{tokens}
