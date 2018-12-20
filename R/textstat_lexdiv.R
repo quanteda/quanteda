@@ -423,7 +423,6 @@ compute_mattr2 <- function(x, MATTR_window = 100L) {
 #' @param segment_size the size of the segment
 #' @keywords internal textstat lexdiv
 compute_msttr2 <- function(x, MSTTR_segment) {
-
     if (MSTTR_segment < 1)
         stop("MSTTR_segment must be positive")
     if (any(ntoken(x) < MSTTR_segment)) {
@@ -432,9 +431,13 @@ compute_msttr2 <- function(x, MSTTR_segment) {
                 MSTTR_segment)
     }
 
-    x <- tokens_chunk(x, MSTTR_segment)
-    ttr <- split(textstat_lexdiv(x, "TTR")[["TTR"]], metadoc(x, "document"))
-    vapply(ttr, mean, numeric(1))
+    x_seg <- tokens_chunk(x, MSTTR_segment)
+    # drop remainder documents shorter than MSTTR_segment
+    x_seg <- x_seg[lengths(x_seg) >= MSTTR_segment]
+    
+    split(textstat_lexdiv(x_seg, measure = "TTR")[["TTR"]], 
+          factor(metadoc(x_seg, "document"), levels = docnames(x))) %>%
+        vapply(mean, numeric(1))
 }
 
 #' Computes the Measure of Textual Lexical Diversity (MTLD) (McCarthy & Jarvis,
@@ -503,7 +506,7 @@ tokens_samplefrom <- function(x, size, replace = FALSE) {
     attrs <- attributes(x) 
     result <- lapply(unclass(x), sample, size = size, replace = replace) 
     attributes(result) <- attrs 
-    quanteda:::tokens_recompile(result)
+    tokens_recompile(result)
 }
 
 compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 50,
