@@ -77,8 +77,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"),
     x[, ntokens := ntokensbydoc[as.character(x[, docname])]]
 
     # replace "found" keyword with patterned keyword
-    x[, keyword := unlist(sapply(kwics,
-                                 function(l) rep(attr(l, "keyword"), nrow(l))))]
+    x[, keyword := unlist(lapply(kwics, function(l) attr(l, "keyword")))]
 
     # pre-emptively convert keyword to factor before ggplot does it, so that we
     # can keep the order of the factor the same as the order of the kwic objects

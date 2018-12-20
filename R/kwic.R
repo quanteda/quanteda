@@ -104,13 +104,20 @@ kwic.tokens <- function(x, pattern, window = 5,
     valuetype <- match.arg(valuetype)
     types <- types(x)
 
+    # coerce a character vector into a dictionary
+    if (is.character(pattern)) {
+        patternlist <- as.list(pattern)
+        names(patternlist) <- pattern
+        pattern <- dictionary(patternlist)
+    }
+    
     # add document names if none
     if (is.null(names(x))) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
 
     keywords_id <- pattern2list(pattern, types,
-                              valuetype, case_insensitive, attr(x, "concatenator"))
+                                valuetype, case_insensitive, attr(x, "concatenator"))
     temp <- qatd_cpp_kwic(x, types, keywords_id, window, separator)
 
     # attributes for kwic object
@@ -118,7 +125,7 @@ kwic.tokens <- function(x, pattern, window = 5,
                         class = c("kwic", "data.frame"),
                         ntoken = ntoken(x),
                         valuetype = valuetype,
-                        keywords = unique(names(keywords_id))
+                        keywords = names(keywords_id)
                         )
     attributes(result, FALSE)  <- attributes(x)
     result
