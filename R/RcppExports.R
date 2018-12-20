@@ -57,6 +57,10 @@ qatd_cpp_similarity <- function(mt1, mt2, method, rank, limit = -1.0, weight = 1
     .Call(`_quanteda_qatd_cpp_similarity`, mt1, mt2, method, rank, limit, weight)
 }
 
+qatd_cpp_tokens_chunk <- function(texts_, types_, size, overlap) {
+    .Call(`_quanteda_qatd_cpp_tokens_chunk`, texts_, types_, size, overlap)
+}
+
 qatd_cpp_tokens_compound <- function(texts_, compounds_, types_, delim_, join) {
     .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, compounds_, types_, delim_, join)
 }
