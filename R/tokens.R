@@ -775,11 +775,9 @@ tokens_serialize <- function(x, types_reserved = NULL, ...) {
 
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
-    types <- types[types != ""]  # remove empty tokens
-
-    if (!is.null(types_reserved)) {
-        types <- c(types_reserved, setdiff(types, types_reserved))
-    }
+    types <- types[nzchar(types)]  # remove empty types
+    types <- union(types_reserved, types) # prepend new types
+    
     x <- lapply(x, function(x) {
         id <- fastmatch::fmatch(x, types)
         is_na <- is.na(id)

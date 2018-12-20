@@ -41,44 +41,45 @@ rowvec mean(const sp_mat& mt) {
 
 struct similarity_linear : public Worker {
     
-    const arma::sp_mat& mt1; // input
+    const arma::sp_mat& mt1t; // input
     const arma::sp_mat& mt2; // input
     Triplets& simil_tri; // output
-    const rowvec& square;
-    const rowvec& center;
+    const rowvec& square1;
+    const rowvec& center1;
+    const rowvec& square2;
+    const rowvec& center2;
     const int method;
-    const std::vector<unsigned int>& target;
     const unsigned int rank;
     const double limit;
     const bool symm;
     
-    similarity_linear(const sp_mat& mt1_, const sp_mat& mt2_, Triplets& simil_tri_, 
-                      const rowvec& square_, const rowvec& center_,
-                      const int method_, const std::vector<unsigned int>& target_, 
+    similarity_linear(const sp_mat& mt1t_, const sp_mat& mt2_, Triplets& simil_tri_, 
+                      const rowvec& square1_, const rowvec& center1_,
+                      const rowvec& square2_, const rowvec& center2_,
+                      const int method_, 
                       const unsigned int rank_, const double limit_, const bool symm_) :
-        mt1(mt1_), mt2(mt2_), simil_tri(simil_tri_), square(square_), center(center_), 
-        method(method_), target(target_), rank(rank_), limit(limit_), symm(symm_) {}
+        mt1t(mt1t_), mt2(mt2_), simil_tri(simil_tri_), 
+        square1(square1_), center1(center1_), square2(square2_), center2(center2_), 
+        method(method_), rank(rank_), limit(limit_), symm(symm_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
-        uword ncol = mt1.n_cols;
-        uword nrow = mt1.n_rows;
+        uword nrow = mt1t.n_rows;
+        uword ncol = mt1t.n_cols;
         rowvec v1, v2;
-        std::vector<double> simils(ncol);
-        uword i;
-        for (std::size_t h = begin; h < end; h++) {
-            i = target[h] - 1;
+        std::vector<double> simils(nrow);
+        for (uword i = begin; i < end; i++) {
             switch (method) {
             case 1: // cosine similarity
-                simils = to_vector(trans(mt2 * mt1.col(i)) / (square * square[i]));
+                simils = to_vector(trans(mt1t * mt2.col(i)) / (square1 * square2[i]));
                 break;
             case 2: // correlation similarity
-                v1 = rowvec(trans(mt2 * mt1.col(i)));
-                v2 = center * center[i] * nrow;
-                simils = to_vector(((v1 - v2) / nrow) / (square * square[i]));
+                v1 = rowvec(trans(mt1t * mt2.col(i)));
+                v2 = center1 * center2[i] * ncol;
+                simils = to_vector(((v1 - v2) / ncol) / (square1 * square2[i]));
                 break;
             case 3: // euclidean distance
-                simils = to_vector(sqrt(trans(mt2 * mt1.col(i)) * -2 + square + square[i]));
+                simils = to_vector(sqrt(trans(mt1t * mt2.col(i)) * -2 + square1 + square2[i]));
                 break;
             }
             double l = get_limit(simils, rank, limit);
@@ -93,45 +94,52 @@ struct similarity_linear : public Worker {
 };
 
 // [[Rcpp::export]]
-S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt, 
+S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1, 
+                              arma::sp_mat& mt2, 
                               const int method,
-                              const IntegerVector targets_,
                               unsigned int rank,
                               double limit = -1.0) {
     
-    const sp_mat& mt1 = mt;
-    const sp_mat& mt2 = trans(mt);
-    uword ncol = mt1.n_cols;
+    if (mt1.n_rows != mt2.n_rows)
+        throw std::range_error("Invalid dfm objects");
     
-    std::vector<unsigned int> targets = as< std::vector<unsigned int> >(targets_);
+    uword ncol1 = mt1.n_cols;
+    uword ncol2 = mt2.n_cols;
     if (rank < 1) rank = 1;
-    bool symm = targets.size() == ncol && rank == ncol;
+    bool symm = rank == ncol1 && rank == ncol2;
     
     //dev::Timer timer;
     //dev::start_timer("Compute magnitude", timer);
-    rowvec square(ncol), center(ncol);
+    rowvec square1(ncol1), center1(ncol1), square2(ncol2), center2(ncol2);
     switch (method) {
     case 1: // cosine
-        square = rowvec(sqrt(mat(sum(mt1 % mt1, 0))));
+        square1 = rowvec(sqrt(mat(sum(mt1 % mt1, 0))));
+        square2 = rowvec(sqrt(mat(sum(mt2 % mt2, 0))));
         break;
     case 2: // correlation
-        square = stddev(mt1, 1);
-        center = mean(mt1);
+        square1 = stddev(mt1, 1);
+        center1 = mean(mt1);
+        square2 = stddev(mt2, 1);
+        center2 = mean(mt2);
         break;
     case 3: // euclidean distance
-        square = rowvec(mat(sum(mt1 % mt1, 0)));
+        square1 = rowvec(mat(sum(mt1 % mt1, 0)));
+        square2 = rowvec(mat(sum(mt2 % mt2, 0)));
         break;
     }
     
     //dev::stop_timer("Compute magnitude", timer);
     //dev::start_timer("Compute similarity", timer);
+    
     Triplets simil_tri;
-    similarity_linear similarity_linear(mt1, mt2, simil_tri, square, center, method, targets, 
-                                        rank, limit, symm);
-    parallelFor(0, targets.size(), similarity_linear);
+    mt1 = trans(mt1);
+    similarity_linear similarity_linear(mt1, mt2, simil_tri, 
+                                        square1, center1, square2, center2, 
+                                        method, rank, limit, symm);
+    parallelFor(0, ncol2, similarity_linear);
     //dev::stop_timer("Compute similarity", timer);
     
-    return to_matrix(simil_tri, ncol, ncol, symm);
+    return to_matrix(simil_tri, ncol1, ncol2, symm);
 }
 
 double simil_ejaccard(colvec& col_i, colvec& col_j, double weight = 1) {
@@ -216,39 +224,37 @@ double dist_minkowski(colvec& col_i, colvec& col_j, double p = 1) {
 
 struct similarity : public Worker {
     
-    const sp_mat& mt; // input
+    const sp_mat& mt1; // input
+    const sp_mat& mt2; // input
     Triplets& simil_tri; // output
     const int method;
-    const std::vector<unsigned int>& targets;
     const unsigned int rank;
     const double limit;
     const bool symm;
     const double weight;
     
-    similarity(const sp_mat& mt_, Triplets& simil_tri_, 
-               const int method_, const std::vector<unsigned int>& targets_, 
+    similarity(const sp_mat& mt1_, const sp_mat& mt2_, Triplets& simil_tri_, 
+               const int method_,
                const unsigned int rank_, const double limit_, const bool symm_, const double weight_) :
-               mt(mt_), simil_tri(simil_tri_), 
-               method(method_), targets(targets_), rank(rank_), limit(limit_), symm(symm_), weight(weight_) {}
+               mt1(mt1_), mt2(mt2_), simil_tri(simil_tri_), 
+               method(method_), rank(rank_), limit(limit_), symm(symm_), weight(weight_) {}
     
     void operator()(std::size_t begin, std::size_t end) {
         
-        arma::uword ncol = mt.n_cols;
-        arma::uword nrow = mt.n_rows;
+        arma::uword nrow = mt1.n_rows;
+        arma::uword ncol = mt1.n_cols;
         
         double simil = 0;
         std::vector<double> simils;
         colvec col_i(nrow);
         colvec col_j(nrow);
-        uword i;
-        for (std::size_t h = begin; h < end; h++) {
-            i = targets[h] - 1;
-            col_i = mt.col(i);
+        for (uword i = begin; i < end; i++) {
+            col_i = mt2.col(i);
             simils.reserve(ncol);
             
             for (uword j = 0; j < ncol; j++) {
                 if (symm && j > i) continue;
-                col_j = mt.col(j);
+                col_j = mt1.col(j);
                 switch (method) {
                 case 1:
                     simil = simil_ejaccard(col_i, col_j, weight);
@@ -299,25 +305,28 @@ struct similarity : public Worker {
 };
 
 // [[Rcpp::export]]
-S4 qatd_cpp_similarity(const arma::sp_mat& mt, 
+S4 qatd_cpp_similarity(arma::sp_mat& mt1, 
+                       arma::sp_mat& mt2,
                        const int method,
-                       const IntegerVector target_,
                        unsigned int rank,
                        double limit = -1.0,
                        double weight = 1.0) {
     
-    uword ncol = mt.n_cols;
-    std::vector<unsigned int> target = as< std::vector<unsigned int> >(target_);
+    if (mt1.n_rows != mt2.n_rows)
+        throw std::range_error("Invalid dfm objects");
+        
+    uword ncol1 = mt1.n_cols;
+    uword ncol2 = mt2.n_cols;
     if (rank < 1) rank = 1;
-    bool symm = target.size() == ncol && rank == ncol && method != 7;
+    bool symm = rank == ncol1 && rank == ncol2 && method != 7;;
     
     //dev::Timer timer;
     //dev::start_timer("Compute similarity", timer);
     Triplets simil_tri;
-    similarity similarity(mt, simil_tri, method, target, rank, limit, symm, weight);
-    parallelFor(0, target.size(), similarity);
+    similarity similarity(mt1, mt2, simil_tri, method, rank, limit, symm, weight);
+    parallelFor(0, ncol2, similarity);
     //dev::stop_timer("Compute similarity", timer);
     
-    return to_matrix(simil_tri, ncol, ncol, symm); 
+    return to_matrix(simil_tri, ncol1, ncol2, symm); 
 
 }
