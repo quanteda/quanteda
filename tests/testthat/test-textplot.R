@@ -247,7 +247,6 @@ test_that("test textplot_affinity", {
 })
 
 test_that("multiple patterns display correctly in textplot_kwic", {
-    library("quanteda")
     skip("For interactive visual inspection only")
     toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
                      alpha2 = paste(LETTERS, collapse = " ")))
@@ -298,6 +297,24 @@ test_that("multiple patterns display correctly in textplot_kwic", {
 
     # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_dict_uf_jm, scale = "absolute")
+})
+
+test_that("phrasal patterns display correctly in textplot_kwic", {
+    skip("For interactive visual inspection only")
+    toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
+                     alpha2 = paste(LETTERS, collapse = " ")))
+
+    kwic_char_bc <- kwic(toks, phrase("b c"), window = 3)
+    kwic_dict_bc <- kwic(toks, dictionary(list(bc = "b c")), window = 3)
+    kwic_list_bc <- kwic(toks, list(bc = c("b", "c")), window = 3)
+
+    # label OK: x  label order correct: ✓  plot order correct: ✓
+    textplot_xray(kwic_char_bc, scale = "absolute")
+    # label OK: x  label order correct: ✓  plot order correct: ✓
+    textplot_xray(kwic_dict_bc, scale = "absolute")
+    # label OK: x  label order correct: ✓  plot order correct: ✓
+    textplot_xray(kwic_list_bc, scale = "absolute")
+
 })
 
 dev.off()
