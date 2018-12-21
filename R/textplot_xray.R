@@ -13,8 +13,18 @@
 #'   for single document and relative for multiple documents.
 #' @param sort whether to sort the rows of a multiple document plot by document
 #'   name
-#' @author Adam Obeng
 #' @return a \pkg{ggplot2} object
+#' @section Known Issues:
+#' These are known issues on which we are working to solve in future versions:
+#' \itemize{
+#' \item \code{textplot_xray()} will not display the patterns correctly when
+#' these are multi-token sequences.
+#'
+#' \item For dictionaries with keys that have overlapping value matches to
+#' tokens in the text, only the first match will be used in the plot.  The way
+#' around this is to produce one kwic per dictionary key, and send them as a
+#' list to \code{textplot_xray}.
+#' }
 #' @examples 
 #' \dontrun{
 #' data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
