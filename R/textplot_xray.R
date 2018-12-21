@@ -66,7 +66,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"),
     kwics <- list(...)
     if (!all(vapply(kwics, is.kwic, logical(1))))
         stop("objects to plot must be kwic objects")
-
+    
     # create a data.table from the kwic arguments
     x <- data.table(do.call(rbind, kwics))
     # use old variable name
@@ -81,7 +81,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"),
 
     # pre-emptively convert keyword to factor before ggplot does it, so that we
     # can keep the order of the factor the same as the order of the kwic objects
-    x[, keyword := factor(keyword, levels = unique(keyword))]
+    # x[, keyword := factor(keyword, levels = unique(keyword))]
 
     multiple_documents <- length(unique(x$docname)) > 1
 

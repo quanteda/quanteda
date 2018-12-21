@@ -104,11 +104,10 @@ kwic.tokens <- function(x, pattern, window = 5,
     valuetype <- match.arg(valuetype)
     types <- types(x)
 
-    # coerce a character vector into a dictionary
+    # coerce a character vector into a list
     if (is.character(pattern)) {
-        patternlist <- as.list(pattern)
-        names(patternlist) <- pattern
-        pattern <- dictionary(patternlist)
+        pattern <- as.list(pattern)
+        names(pattern) <- pattern
     }
     
     # add document names if none
@@ -119,14 +118,15 @@ kwic.tokens <- function(x, pattern, window = 5,
     keywords_id <- pattern2list(pattern, types,
                                 valuetype, case_insensitive, attr(x, "concatenator"))
     temp <- qatd_cpp_kwic(x, types, keywords_id, window, separator)
-
+    
     # attributes for kwic object
-    result <- structure(temp,
-                        class = c("kwic", "data.frame"),
-                        ntoken = ntoken(x),
-                        valuetype = valuetype,
-                        keywords = names(keywords_id)
-                        )
+    result <- structure(
+        temp,
+        class = c("kwic", "data.frame"),
+        ntoken = ntoken(x),
+        valuetype = valuetype,
+        keywords = factor(map_keywords(keywords_id, temp, types), levels = names(pattern))
+    )
     attributes(result, FALSE)  <- attributes(x)
     result
 }
@@ -162,4 +162,10 @@ print.kwic <- function(x, ...) {
         colnames(kwic) <- NULL
         print(kwic, row.names = FALSE)
     }
+}
+
+map_keywords <- function(keywords_id, kwic, types) {
+    type_index <- match(kwic$keyword, types)
+    keywords_id_sorted <- keywords_id[match(type_index, unlist(keywords_id, use.names = FALSE))]
+    names(keywords_id_sorted)
 }

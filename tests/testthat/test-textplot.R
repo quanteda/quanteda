@@ -248,6 +248,7 @@ test_that("test textplot_affinity", {
 
 test_that("multiple patterns display correctly in textplot_kwic", {
     library("quanteda")
+    skip("For interactive visual inspection only")
     toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
                      alpha2 = paste(LETTERS, collapse = " ")))
 
@@ -283,21 +284,19 @@ test_that("multiple patterns display correctly in textplot_kwic", {
     # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_dict_f, kwic_dict_u, scale = "absolute")
 
-
-    # warning free: ✓  label order correct: ✓  plot order correct: x
+    # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_dict_uf, scale = "absolute")
 
-    # warning free: ✓  label order correct: ✓  plot order correct: x
+    # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_dict_fu, scale = "absolute")
 
-    # warning free: ✓  label order correct: ✓  plot order correct: x
+    # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_char_uf, scale = "absolute")
 
-    # warning free: ✓  label order correct: ✓  plot order correct: x
+    # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_char_fu, scale = "absolute")
 
-    # warning free: x   label order correct: ✓  plot order correct: x
-    # AND THIS IS WORSE: ufkey shows f, m, jmkey shows j, u
+    # warning free: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_dict_uf_jm, scale = "absolute")
 })
 

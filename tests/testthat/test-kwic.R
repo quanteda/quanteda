@@ -306,7 +306,7 @@ test_that("kwic works as expected with and without phrases", {
         c("a b", "a b")
     )
     
-    expect_equal(
+    expect_equivalent(
         kwic(txt, dict_uni),
         kwic(txt, char_uni)
     )
@@ -378,9 +378,35 @@ test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {
     kwicdict1 <- kwic(toks, dictionary(list(ukey = "u")), window = 3)
     kwicdictboth <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")), window = 3)
 
-    expect_identical(attr(kwic1, "keywords"), "f")
-    expect_identical(attr(kwic2, "keywords"), "u")
-    expect_identical(attr(kwicboth, "keywords"), c("u", "f"))
-    expect_identical(attr(kwicdict1, "keywords"), "ukey")
-    expect_identical(attr(kwicdictboth, "keywords"), c("ukey", "fkey"))
+    expect_identical(attr(kwic1, "keywords"), factor(c("f", "f")))
+    expect_identical(attr(kwic2, "keywords"), factor(c("u", "u")))
+    expect_identical(attr(kwicboth, "keywords"), factor(c("f", "u", "f", "u"), levels = c("u", "f")))
+    expect_identical(attr(kwicdict1, "keywords"), factor(c("ukey", "ukey")))
+    expect_identical(attr(kwicdictboth, "keywords"), factor(rep(c("fkey", "ukey"), 2), levels = c("ukey", "fkey")))
+})
+
+test_that("keywords match pattern match and map_keywords() is working as expected", {
+    toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
+                     alpha2 = paste(LETTERS, collapse = " ")))
+    
+    kwic1 <- kwic(toks, dictionary(list(key1 = c("a", "b"), key2 = c("x", "y"))), window = 3)
+    expect_equal(
+        attr(kwic1, "keywords"),
+        factor(c("key1", "key1", "key2", "key2", "key1", "key1", "key2", "key2"),
+               levels = c("key1", "key2"))
+    )
+    
+    kwic2 <- kwic(toks, dictionary(list(key2 = c("x", "y"), key1 = c("a", "b"))), window = 3)
+    expect_equal(
+        attr(kwic2, "keywords"),
+        factor(c("key1", "key1", "key2", "key2", "key1", "key1", "key2", "key2"),
+               levels = c("key2", "key1"))
+    )
+    
+    # NOT REALLY CORRECT SINCE THE "b"/"B" is a match for each key
+    kwic3 <- kwic(toks, dictionary(list(key1 = c("a", "b"), key2 = c("b", "c"))), window = 3)
+    expect_equal(
+        attr(kwic3, "keywords"),
+        factor(c("key1", "key1", "key2", "key1", "key1", "key2"), levels =  c("key1", "key2"))
+    )
 })
