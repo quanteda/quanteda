@@ -222,7 +222,6 @@ textstat_proxy <- function(x, y = NULL,
                                       "manhattan", "maximum", "canberra", "minkowski"),
                            p = 2, min_proxy = NULL, rank = NULL) {
     x <- as.dfm(x)
-    if (!sum(x)) stop(message_error("dfm_empty"))
     if (is.null(y)) {
         y <- x
     } else {
