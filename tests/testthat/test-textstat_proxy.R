@@ -252,12 +252,6 @@ test_that("textstat_proxy works with non-intersecting documents or features", {
                  as.matrix(sim2[c("doc1", "doc2"), c("doc4"), drop = FALSE]))
 })
 
-test_that("raises error when dfm is empty (#1419)", {
-    mt <- dfm_trim(data_dfm_lbgexample, 1000)
-    expect_error(textstat_proxy(mt),
-                 quanteda:::message_error("dfm_empty"))
-})
-
 test_that("raises error when p is smaller than 1", {
     expect_error(textstat_proxy(test_mt, method = "minkowski", p = 0))
     expect_error(textstat_proxy(test_mt, method = "minkowski", p = -1))
