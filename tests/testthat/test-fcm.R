@@ -372,3 +372,17 @@ test_that("ordered is working correctly (#1413)", {
                  fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE, tri = FALSE))
     
 })
+
+
+test_that("dimnames are always character vectors", {
+    mt <- fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE)
+    expect_identical(dimnames(mt[,character()]),
+                     list(features = rownames(mt), features = character()))
+    expect_identical(dimnames(mt[,FALSE]),
+                     list(features = rownames(mt), features = character()))
+    expect_identical(dimnames(mt[character(),]),
+                     list(features = character(), features = colnames(mt)))
+    expect_identical(dimnames(mt[FALSE,]),
+                     list(features = character(), features = colnames(mt)))
+    
+})

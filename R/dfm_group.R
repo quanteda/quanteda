@@ -69,54 +69,50 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
 # on features and/or documents
 group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
 
-    if (is.null(features) && is.null(documents)) {
+    if (is.null(features) && is.null(documents))
         return(x)
-    }
 
     temp <- as(x, "dgTMatrix")
-
     if (is.null(features)) {
-        features_name <- temp@Dimnames[[2]]
+        featname <- temp@Dimnames[[2]]
         j_new <- temp@j + 1
     } else {
-        features_unique <- unique(features)
-        features_index <- match(features, features_unique)
-        j_new <- features_index[temp@j + 1]
+        featname_unique <- unique(features)
+        j <- match(features, featname_unique)
+        j_new <- j[temp@j + 1]
 
         if (!is.factor(features))
-            features <- factor(features, levels = features_unique)
-        features_name <- as.character(features_unique)
-        if (fill && !identical(levels(features), features_unique)) {
-            features_name <-
-                c(features_name, setdiff(as.character(levels(features)),
-                                         as.character(features_unique)))
+            features <- factor(features, levels = featname_unique)
+        featname <- as.character(featname_unique)
+        if (fill && !identical(levels(features), featname_unique)) {
+            featname <-
+                c(featname, setdiff(as.character(levels(features)),
+                                    as.character(featname_unique)))
         }
     }
     if (is.null(documents)) {
-        documents_name <- temp@Dimnames[[1]]
+        docname <- temp@Dimnames[[1]]
         i_new <- temp@i + 1
     } else {
-        documents_unique <- unique(documents)
-        documents_index <- match(documents, documents_unique)
-        i_new <- documents_index[temp@i + 1]
+        docname_unique <- unique(documents)
+        i <- match(documents, docname_unique)
+        i_new <- i[temp@i + 1]
 
         if (!is.factor(documents))
-            documents <- factor(documents, levels = documents_unique)
-        documents_name <- as.character(documents_unique)
-        if (fill && !identical(levels(documents), documents_unique)) {
-            documents_name <-
-                c(documents_name, setdiff(as.character(levels(documents)),
-                                          as.character(documents_unique)))
+            documents <- factor(documents, levels = docname_unique)
+        docname <- as.character(docname_unique)
+        if (fill && !identical(levels(documents), docname_unique)) {
+            docname <-
+                c(docname, setdiff(as.character(levels(documents)),
+                                   as.character(docname_unique)))
         }
     }
 
     x_new <- temp@x
-    dims <- c(length(documents_name), length(features_name))
-    dimnames <- list(docs = documents_name, features = features_name)
-
+    dims <- c(length(docname), length(featname))
     result <- new("dfm",
                   sparseMatrix(i = i_new, j = j_new, x = x_new,
-                               dims = dims, dimnames = dimnames),
+                               dims = dims),
                   settings = x@settings,
                   weightTf = x@weightTf,
                   weightDf = x@weightDf,
@@ -124,11 +120,12 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
                   ngrams = x@ngrams,
                   skip = x@skip,
                   concatenator = x@concatenator)
+    set_dfm_dimnames(result) <- list(docname, featname)
 
     if (is.null(documents)) {
         docvars(result) <- cbind(docvars(x), metadoc(x))
     } else {
-        docvars(result) <- data.frame(row.names = documents_name)
+        docvars(result) <- data.frame(row.names = docname)
     }
     result
 }

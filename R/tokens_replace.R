@@ -93,7 +93,7 @@ replace_type <- function(type, pattern, replacement, case_insensitive) {
 
     if (!is.character(pattern) || !is.character(replacement))
         stop("'pattern' and 'replacement' must be characters")
-
+    if (!length(type)) return(character())
     if (case_insensitive) {
         type_new <- replacement[match(stri_trans_tolower(type), stri_trans_tolower(pattern))]
     } else {

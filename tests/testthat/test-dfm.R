@@ -1033,3 +1033,17 @@ test_that("dfm.tokens() with groups works as expected", {
     expect_equal(docnames(groupeddfm), c("FF", "non-FF"))
     expect_equal(featnames(groupeddfm), featnames(dfm(x)))
 })
+
+test_that("dimnames are always character vectors", {
+    mt <- data_dfm_lbgexample
+    expect_identical(dimnames(mt[,character()]),
+                     list(docs = rownames(mt), features = character()))
+    expect_identical(dimnames(mt[,FALSE]),
+                     list(docs = rownames(mt), features = character()))
+    expect_identical(dimnames(mt[character(),]),
+                     list(docs = character(), features = colnames(mt)))
+    expect_identical(dimnames(mt[FALSE,]),
+                     list(docs = character(), features = colnames(mt)))
+    
+})
+

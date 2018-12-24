@@ -158,7 +158,7 @@ dfm_tolower.default <- function(x, ...) {
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    colnames(x) <- lowercase_types(featnames(x), keep_acronyms)
+    set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
 }
 
@@ -178,7 +178,7 @@ dfm_toupper.default <- function(x, ...) {
 dfm_toupper.dfm <- function(x, ...) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    colnames(x) <- char_toupper(featnames(x), ...)
+    set_dfm_featnames(x) <- char_toupper(featnames(x), ...)
     dfm_compress(x, margin = "features")
 }
 
@@ -206,7 +206,7 @@ fcm_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
 
 #' @export
 fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
-    colnames(x) <- rownames(x) <- lowercase_types(featnames(x), keep_acronyms)
+    set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     fcm_compress(x)
 }
 
@@ -224,8 +224,7 @@ fcm_toupper.default <- function(x, ...) {
 
 #' @export
 fcm_toupper.fcm <- function(x, ...) {
-    colnames(x) <- rownames(x) <-
-        char_toupper(colnames(x), ...)
+    set_fcm_featnames(x) <- char_toupper(colnames(x), ...)
     fcm_compress(x)
 }
 
