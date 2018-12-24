@@ -27,33 +27,34 @@ word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, "
 exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far
 from perfect).} }}
 
-\item{remove_numbers}{remove tokens that consist only of numbers, but not
-words that start with digits, e.g. \code{2day}}
+\item{remove_numbers}{logical; if \code{TRUE} remove tokens that consist only
+of numbers, but not words that start with digits, e.g. \code{2day}}
 
-\item{remove_punct}{if \code{TRUE}, remove all characters in the Unicode
-"Punctuation" [P] class}
+\item{remove_punct}{logical; if \code{TRUE} remove all characters in the
+Unicode "Punctuation" [P] class}
 
-\item{remove_symbols}{if \code{TRUE}, remove all characters in the Unicode
-"Symbol" [S] class}
+\item{remove_symbols}{logical; if \code{TRUE} remove all characters in the
+Unicode "Symbol" [S] class}
 
-\item{remove_separators}{if \code{TRUE}, remove separators and separator
-characters (Unicode "Separator" [Z] and "Control [C]" categories). Only
-applicable for \code{what = "character"} (when you probably want it to be
-\code{FALSE}) and for \code{what = "word"} (when you probably want it to be
-\code{TRUE}).}
+\item{remove_separators}{logical; if \code{TRUE} remove separators and
+separator characters (Unicode "Separator" [Z] and "Control [C]"
+categories). Only applicable for \code{what = "character"} (when you
+probably want it to be \code{FALSE}) and for \code{what = "word"} (when you
+probably want it to be \code{TRUE}).}
 
-\item{remove_twitter}{remove Twitter characters \code{@} and \code{#}; set
-to \code{TRUE} if you wish to eliminate these.  Note that this will always
-be set to \code{FALSE} if \code{remove_punct = FALSE}.}
+\item{remove_twitter}{logical; if \code{TRUE} remove Twitter characters
+\code{@} and \code{#}; set to \code{TRUE} if you wish to eliminate these.
+Note that this will always be set to \code{FALSE} if \code{remove_punct =
+FALSE}.}
 
-\item{remove_hyphens}{if \code{TRUE}, split words that are connected by
-hyphenation and hyphenation-like characters in between words, e.g.
+\item{remove_hyphens}{logical; if \code{TRUE} split words that are connected
+by hyphenation and hyphenation-like characters in between words, e.g.
 \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
 \code{FALSE} to preserve such words as is, with the hyphens.  Only applies
 if \code{what = "word"} or \code{what = "fasterword"}.}
 
-\item{remove_url}{if \code{TRUE}, find and eliminate URLs beginning with
-http(s) -- see section "Dealing with URLs".}
+\item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning
+with http(s) -- see section "Dealing with URLs".}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
@@ -131,7 +132,7 @@ tokens("<tags> and other + symbols.", remove_symbols = TRUE)
 tokens("<tags> and other + symbols.", remove_symbols = FALSE, what = "fasterword")
 tokens("<tags> and other + symbols.", remove_symbols = TRUE, what = "fasterword")
 
-## examples with URLs - hardly perfect!
+# examples with URLs - hardly perfect!
 txt <- "Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."
 tokens(txt, remove_url = TRUE, remove_punct = TRUE)
 tokens(txt, remove_url = FALSE, remove_punct = TRUE)
@@ -143,8 +144,8 @@ tokens(txt, remove_url = FALSE, remove_punct = FALSE, what = "fasterword")
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
 tokens(txt, remove_punct = TRUE)
 tokens(txt, remove_punct = TRUE, remove_twitter = TRUE)
-#tokens("great website http://textasdata.com", remove_url = FALSE)
-#tokens("great website http://textasdata.com", remove_url = TRUE)
+tokens("great website http://textasdata.com", remove_url = FALSE)
+tokens("great website http://textasdata.com", remove_url = TRUE)
 
 txt <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!",
          text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")

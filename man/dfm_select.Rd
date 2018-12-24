@@ -106,12 +106,12 @@ my_dfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
 my_dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))
-dfm_select(my_dfm, my_dict)
-dfm_select(my_dfm, my_dict, case_insensitive = FALSE)
-dfm_select(my_dfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
-dfm_select(my_dfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
-dfm_select(my_dfm, stopwords("english"), selection = "keep", valuetype = "fixed")
-dfm_select(my_dfm, stopwords("english"), selection = "remove", valuetype = "fixed")
+dfm_select(my_dfm, pattern = my_dict)
+dfm_select(my_dfm, pattern = my_dict, case_insensitive = FALSE)
+dfm_select(my_dfm, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(my_dfm, pattern = c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(my_dfm, pattern = stopwords("english"), selection = "keep", valuetype = "fixed")
+dfm_select(my_dfm, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
 
 # select based on character length
 dfm_select(my_dfm, min_nchar = 5)
@@ -120,7 +120,7 @@ dfm_select(my_dfm, min_nchar = 5)
 txts <- c("This is text one", "The second text", "This is text three")
 (dfm1 <- dfm(txts[1:2]))
 (dfm2 <- dfm(txts[2:3]))
-(dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", verbose = TRUE))
+(dfm3 <- dfm_select(dfm1, pattern = dfm2, valuetype = "fixed", verbose = TRUE))
 setequal(featnames(dfm2), featnames(dfm3))
 
 tmpdfm <- dfm(c("This is a document with lots of stopwords.",

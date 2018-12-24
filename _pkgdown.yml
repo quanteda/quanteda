@@ -89,6 +89,7 @@ reference:
     - tokens_replace
     - tokens_sample
     - tokens_select
+    - tokens_split
     - tokens_subset
     - tokens_tolower
     - tokens_toupper

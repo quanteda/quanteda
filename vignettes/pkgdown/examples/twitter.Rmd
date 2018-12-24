@@ -34,7 +34,7 @@ head(tweet_dfm)
 
 ## Extract most common hashtags
 ```{r}
-tag_dfm <- dfm_select(tweet_dfm, ('#*'))
+tag_dfm <- dfm_select(tweet_dfm, pattern = ("#*"))
 toptag <- names(topfeatures(tag_dfm, 50))
 head(toptag)
 ```
@@ -43,7 +43,7 @@ head(toptag)
 ```{r}
 tag_fcm <- fcm(tag_dfm)
 head(tag_fcm)
-topgat_fcm <- fcm_select(tag_fcm, toptag)
+topgat_fcm <- fcm_select(tag_fcm, pattern = toptag)
 textplot_network(topgat_fcm, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
 ```
 
@@ -51,7 +51,7 @@ textplot_network(topgat_fcm, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
 
 ## Extract most frequently mentioned usernames 
 ```{r}
-user_dfm <- dfm_select(tweet_dfm, ('@*'))
+user_dfm <- dfm_select(tweet_dfm, pattern = "@*")
 topuser <- names(topfeatures(user_dfm, 50))
 head(topuser)
 ```
@@ -60,7 +60,7 @@ head(topuser)
 ```{r}
 user_fcm <- fcm(user_dfm)
 head(user_fcm)
-user_fcm <- fcm_select(user_fcm, topuser)
-textplot_network(user_fcm, min_freq = 0.1, edge_color = 'orange', edge_alpha = 0.8, edge_size = 5)
+user_fcm <- fcm_select(user_fcm, pattern = topuser)
+textplot_network(user_fcm, min_freq = 0.1, edge_color = "orange", edge_alpha = 0.8, edge_size = 5)
 ```
 

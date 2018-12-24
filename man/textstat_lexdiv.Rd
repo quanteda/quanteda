@@ -5,17 +5,30 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
-  "K", "D", "Vm", "Maas"), log.base = 10)
+  "K", "D", "Vm", "Maas"), log.base = 10, remove_numbers = TRUE,
+  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE)
 }
 \arguments{
-\item{x}{an input \link{dfm}}
+\item{x}{an input \link{dfm} or \link{tokens} input object}
 
-\item{measure}{a character vector defining the measure to calculate.}
+\item{measure}{a character vector defining the measure to calculate}
 
 \item{log.base}{a numeric value defining the base of the logarithm (for
 measures using logs)}
 
-\item{...}{not used}
+\item{remove_numbers}{logical; if \code{TRUE} remove features or tokens that
+consist only of numerals (the Unicode "Number" [N] class)}
+
+\item{remove_punct}{logical; if \code{TRUE} remove all features or tokens
+that consist only of the Unicode "Punctuation" [P] class)}
+
+\item{remove_symbols}{logical; if \code{TRUE} remove all features or tokens
+that consist only of the Unicode "Punctuation" [S] class)}
+
+\item{remove_hyphens}{logical; if \code{TRUE} split words that are connected
+by hyphenation and hyphenation-like characters in between words, e.g.
+"self-storage" becomes two features or tokens "self" and "storage". Default
+is FALSE to preserve such words as is, with the hyphens.}
 }
 \value{
 \code{textstat_lexdiv} returns a data.frame of documents and
@@ -93,37 +106,51 @@ mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
 cor(textstat_lexdiv(mydfm, "all")[,-1])
 
+txt <- c("Anyway, like I was sayin', shrimp is the fruit of the sea. You can
+          barbecue it, boil it, broil it, bake it, saute it.",
+         "There's shrimp-kabobs,
+          shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
+          pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
+          shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
+          sandwich.")
+tokens(txt) \%>\% 
+    textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
+dfm(txt) \%>\% 
+    textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
 }
 \references{
-Covington, M.A. & McFall, J.D. (2010). "Cutting the Gordian Knot: 
-  The Moving-Average Type-Token Ratio (MATTR)". \emph{Journal of Quantitative 
-  Linguistics} 17(2), 94--100.
+Covington, Michael A. and Joe D. McFall. 2010. 
+  "\href{https://doi.org/10.1080/09296171003643098}{Cutting the Gordian Knot: The 
+  Moving-Average Type-Token Ratio (MATTR)}". \emph{Journal of Quantitative 
+  Linguistics} 17(2): 94--100.
   
-  Herdan, Gustav. 1955. "A New Derivation and Interpretation of Yule's
-  'Characteristic' \emph{K}." \emph{Zeitschrift für angewandte Mathematik und
-  Physik} 6(4): 332--34.
+  Herdan, Gustav. 1955. "\href{https://doi.org/10.1007/BF01587632}{A New Derivation 
+  and Interpretation of Yule's 'Characteristic' \emph{K}}." \emph{Zeitschrift für 
+  angewandte Mathematik und Physik} 6(4): 332--334.
   
-  Maas, H.-D., (1972). "\"Uber den Zusammenhang zwischen Wortschatzumfang und 
-  L\"ange eines Textes". \emph{Zeitschrift f\"ur Literaturwissenschaft und 
-  Linguistik} 2(8), 73--96.
+  Maas, Heinz-Dieter. 1972. "Über den Zusammenhang zwischen Wortschatzumfang und 
+  Länge eines Textes". \emph{Zeitschrift für Literaturwissenschaft und 
+  Linguistik} 2(8): 73--96.
   
-  McCarthy, P.M. & Jarvis, S. (2007). "vocd: A theoretical and empirical 
-  evaluation". \emph{Language Testing} 24(4), 459--488.
+  McCarthy, Philip M. and Scott Jarvis. 2007. "\href{https://doi.org/10.1177/0265532207080767}{vocd: 
+  A Theoretical and Empirical Evaluation}". \emph{Language Testing} 24(4): 459--488.
   
-  McCarthy, P.M. & Jarvis, S. (2010). "MTLD, vocd-D, and HD-D: A validation 
-  study of sophisticated approaches to lexical diversity assessment". 
-  \emph{Behaviour Research Methods} 42(2), 381--392.
+  McCarthy, Philip M. and Scott Jarvis. 2010. "\href{https://doi.org/10.3758/BRM.42.2.381}{MTLD, 
+  vocd-D, and HD-D: A Validation Study of Sophisticated Approaches to Lexical Diversity 
+  Assessment}". \emph{Behaviour Research Methods} 42(2): 381--392.
   
   Michalke, Meik.  (2014) \emph{koRpus: An R Package for Text Analysis}. 
-  Version 0.05-5. \url{http://reaktanz.de/?c=hacking&s=koRpus}
+  R package version 0.05-5. \url{http://reaktanz.de/?c=hacking&s=koRpus}
   
-  Simpson, Edward H. 1949. "Measurement of Diversity." \emph{Nature} 163: 688.
+  Simpson, Edward H. 1949. "\href{https://doi.org/10.1038/163688a0}{Measurement of Diversity}." 
+  \emph{Nature} 163: 688.
   
-  Tweedie. F.J. & Baayen, R.H. (1998). "How Variable May a Constant Be? 
-  Measures of Lexical Richness in Perspective". \emph{Computers and the 
-  Humanities} 32(5), 323--352.
+  Tweedie. Fiona J. and R. Harald Baayen. 1998. "\href{https://doi.org/10.1023/A:1001749303137}{How 
+  Variable May a Constant Be? Measures of Lexical Richness in Perspective}". \emph{Computers and the 
+  Humanities} 32(5): 323--352.
 }
 \author{
-Kenneth Benoit, adapted from the S4 class implementation written by 
-  Meik Michalke in the \pkg{koRpus} package.
+Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
+  re-implemented from functions written by Meik Michalke in the \pkg{koRpus}
+  package.
 }

@@ -184,15 +184,15 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 `kwic`功能（keywords-in-context）可以搜索一个指定的词并显示它的上下文：
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "communist*")
+kwic(data_corpus_inaugural, pattern = "communist*")
 ```
 
 在上面的汇总中，`Year`和`President`是与每个文档相关的变量。我们可以用`docvars()`函数访问这些变量。
@@ -349,7 +349,7 @@ liwcdfm[, 1:10]
 ```{r fig.width = 6}
 pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obama_simil <- textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), 
+obama_simil <- textstat_simil(pres_dfm, selection = c("2009-Obama" , "2013-Obama"), 
                              margin = "documents", method = "cosine")
 obama_simil
 # dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")
@@ -364,7 +364,7 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
 pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
 
 #分层聚类 -  在归一化dfm上计算距离
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, scheme = "prop"))
 # 聚类分析文本距离
 pres_cluster <- hclust(pres_dist_mat)
 # 按文档名标注
@@ -375,7 +375,8 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 我们也可查看特征相似度:
 ```{r}
-sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, selection = c("fair", "health", "terror"),
+                      method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
@@ -474,7 +475,7 @@ topfeatures(chfcm["改革", ])
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 wfm <- textmodel_wordfish(chdfm)
 y <- 1954:2017
-y <- y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 | y==1977)]
+y <- y[-which(y==1963 | y==1961 | y==1962 | (y>1964 & y<1975) | y==1976 | y==1977)]
 plot(y, wfm$theta, xlab = "Year", ylab = "Position")
 ```
 

@@ -24,7 +24,7 @@ test_simil <- function(x, method, margin, ignore_upper = FALSE, ...) {
         s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
     expect_equal(s1, s2, tolerance = 0.001)
     
-    s3 <- as.matrix(textstat_proxy(x, selection, method = method, margin = margin, ...))
+    s3 <- as.matrix(textstat_proxy(x, y, method = method, margin = margin, ...))
     s4 <- as.matrix(proxy::simil(as.matrix(x), as.matrix(y), 
                                 method = method, by_rows = by_rows, diag = TRUE, ...))
     if (ignore_upper)
@@ -52,7 +52,7 @@ test_dist <- function(x, method, margin, ignore_upper = FALSE, ...) {
         s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
     expect_equal(s1, s2, tolerance = 0.001)
     
-    s3 <- as.matrix(textstat_proxy(x, selection, method = method, margin = margin, ...))
+    s3 <- as.matrix(textstat_proxy(x, y, method = method, margin = margin, ...))
     s4 <- as.matrix(proxy::dist(as.matrix(x), as.matrix(y), 
                                 method = method, by_rows = by_rows, diag = TRUE, ...))
     if (ignore_upper)
@@ -240,35 +240,16 @@ test_that("textstat_proxy works on zero-feature documents (#952)", {
     )    
 })
 
-test_that("selection takes integer or logical vector", {
-    expect_identical(textstat_proxy(test_mt, c(1,5), margin = "features"),
-                     textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
-    l1 <- featnames(test_mt) %in% c("senat", "chief")
-    expect_identical(textstat_proxy(test_mt, l1, margin = "features"),
-                     textstat_proxy(test_mt, c("senat", "chief"), margin = "features"))
+test_that("textstat_proxy works with non-intersecting documents or features", {
     
-    expect_error(textstat_proxy(test_mt, "xxxx", margin = "features"))
-    expect_error(textstat_proxy(test_mt, 1000, margin = "features"))
-    
-    expect_identical(textstat_proxy(test_mt, c(2,4), margin = "documents"),
-                     textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
-    l2 <- docnames(test_mt) %in% c("1985-Reagan", "1993-Clinton")
-    expect_identical(textstat_proxy(test_mt, l2, margin = "documents"),
-                     textstat_proxy(test_mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
-    
-    expect_error(textstat_proxy(test_mt, "nothing", margin = "documents"))
-    expect_error(textstat_proxy(test_mt, 100, margin = "documents"))
-})
-
-test_that("selection works with dfm with padding", {
-    
-    toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e'), remove_punct = TRUE)
-    toks <- tokens_remove(toks, 'b', padding = TRUE)
+    toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e', doc3 = 'c d f', doc4 = 'f g h'), remove_punct = TRUE)
     mt <- dfm(toks)
-    expect_silent(textstat_proxy(mt, selection = c('c'), margin = 'features'))
-    expect_silent(textstat_proxy(mt, selection = c(''), margin = 'features'))
-    expect_silent(textstat_proxy(mt, selection = c('doc2'), margin = 'documents'))
-    
+    sim1 <- textstat_proxy(mt, margin = "features")
+    expect_equal(as.matrix(textstat_proxy(mt[,c("a", "b")], mt[,c("c", "d", "e")], margin = "features")),
+                 as.matrix(sim1[c("a", "b"), c("c", "d", "e"), drop = FALSE]))
+    sim2 <- textstat_proxy(mt, margin = "documents")
+    expect_equal(as.matrix(textstat_proxy(mt[c("doc1", "doc2"),], mt[c("doc4"),], margin = "documents")),
+                 as.matrix(sim2[c("doc1", "doc2"), c("doc4"), drop = FALSE]))
 })
 
 test_that("raises error when dfm is empty (#1419)", {
@@ -277,10 +258,10 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("dfm_empty"))
 })
 
-# test_that("raises error when p is smaller than 1", {
-#     expect_error(textstat_dist(test_mt, method = "minkowski", p = 0))
-#     expect_error(textstat_dist(test_mt, method = "minkowski", p = -1))
-# })
+test_that("raises error when p is smaller than 1", {
+    expect_error(textstat_proxy(test_mt, method = "minkowski", p = 0))
+    expect_error(textstat_proxy(test_mt, method = "minkowski", p = -1))
+})
 
 test_that("sparse objects are of expected class and occur when expected", {
     
@@ -293,73 +274,41 @@ test_that("sparse objects are of expected class and occur when expected", {
     expect_is(textstat_proxy(test_mt, method = "kullback"),
               "dgTMatrix")
     
-    # expect_is(
-    #     textstat_dist(dfm_weight(test_mt, "prop"), min_dist = 0),
-    #     "dsCMatrix"
-    # )
-    # expect_is(
-    #     textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_dist = .07),
-    #     "dsCMatrix"
-    # )
-    # expect_is(
-    #     textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_dist = NULL),
-    #     "dsCMatrix"
-    # )
-    # expect_is(
-    #     textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix", min_simil = .95),
-    #     "dsCMatrix"
-    # )
 })
 
-# test_that("lowercase sparsematrix or sparse works", {
-#     expect_identical(
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparsematrix")
-#     )
-#     expect_identical(
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_dist(dfm_weight(test_mt, "prop"), value = "sparse")
-#     )
-#     expect_identical(
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparsematrix")
-#     )
-#     expect_identical(
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparseMatrix"),
-#         textstat_simil(dfm_weight(test_mt, "prop"), value = "sparse")
-#     )
-# })
+test_that("rank argument is working", {
 
-# test_that("rank argument is working", {
-#     
-#     expect_error(textstat_simil(test_mt, rank = 0),
-#                  "rank must be great than or equal to 1")
-#     
-#     expect_equal(as.matrix(textstat_simil(test_mt, rank = 3)),
-#                  apply(as.matrix(textstat_simil(test_mt, value = "sparseMatrix")), 2,
-#                        function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
-#     
-#     expect_equal(as.matrix(textstat_simil(test_mt, value = "sparseMatrix")), 
-#                  as.matrix(textstat_simil(test_mt, rank = 100)))
-#     
-#     expect_equal(as.matrix(textstat_dist(test_mt, rank = 3)),
-#                  apply(as.matrix(textstat_dist(test_mt, value = "sparseMatrix")), 2,
-#                        function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
-#     
-#     expect_equal(as.matrix(textstat_dist(test_mt, value = "sparseMatrix")), 
-#                  as.matrix(textstat_dist(test_mt, rank = 100)))
-#     
-#     expect_error(textstat_dist(test_mt, rank = 0),
-#                  "rank must be great than or equal to 1")
-# })
+    expect_error(textstat_proxy(test_mt, rank = 0),
+                 "rank must be great than or equal to 1")
+
+    expect_equal(as.matrix(textstat_proxy(test_mt)),
+                 as.matrix(textstat_proxy(test_mt, rank = 100)))
+
+    expect_equal(as.matrix(textstat_proxy(test_mt, rank = 3)),
+                 apply(as.matrix(textstat_proxy(test_mt)), 2,
+                       function(x) ifelse(x >= sort(x, decreasing = TRUE)[3], x, 0)))
+
+})
 
 test_that("record zeros even in the sparse matrix", {
     toks <- tokens(c(doc1 = 'a b c', doc2 = 'd e f'), remove_punct = TRUE)
     mt <- dfm(toks)
-    expect_equal(textstat_proxy(mt)@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "cosine")@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "cosine", rank = 2)@x, c(1, 0, 1))
-    expect_equal(textstat_proxy(mt, method = "dice")@x, c(1, 0, 1))
+    expect_true(any(textstat_proxy(mt)@x == 0))
+    expect_true(any(textstat_proxy(mt, method = "cosine")@x == 0))
+    expect_true(any(textstat_proxy(mt, method = "cosine", min_proxy = -0.5)@x == 0))
+    expect_true(any(textstat_proxy(mt, method = "cosine", rank = 2)@x == 0))
+    expect_true(any(textstat_proxy(mt, method = "dice")@x == 0))
 })
 
+test_that("textstat_proxy raises error when documents are different for feature similarity", {
+    expect_silent(
+        textstat_proxy(test_mt[1:5,], test_mt[1:5,], margin = "features")
+    )
+    expect_error(textstat_proxy(test_mt[1:5,], test_mt[6:10,], margin = "features"),
+                 "x and y must contain the same documents")
+})
+
+test_that("textstat_proxy raises error when y is not a dfm", {
+    expect_error(textstat_proxy(test_mt[1:5,], 6:10, margin = "features"),
+                 "y must be a dfm")
+})

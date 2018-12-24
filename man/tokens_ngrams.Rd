@@ -69,7 +69,6 @@ toks <- tokens(c(text1 = "the quick brown fox jumped over the lazy dog"))
 tokens_ngrams(toks, n = 1:3)
 tokens_ngrams(toks, n = c(2,4), concatenator = " ")
 tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
-
 # on character
 char_ngrams(letters[1:3], n = 1:3)
 
@@ -80,9 +79,9 @@ tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
 tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
 }
 \references{
-\href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
-D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram 
-Modelling."}
+Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006. 
+"\href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{A Closer 
+Look at Skip-Gram Modelling}."
 }
 \author{
 Kohei Watanabe (C++) and Ken Benoit (R)

@@ -71,37 +71,48 @@ test_that("pattern2list is working with collocations", {
     type <- types(toks)
     col <- textstat_collocations(toks, size = 2:3)
     ids <- quanteda:::pattern2list(col, type, 'fixed', TRUE)
-    expect_equal(col$collocation, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
+    expect_equivalent(col$collocation, 
+                      vapply(ids, function(x, y) paste0(y[x], collapse = " "), character(1), type))
+    expect_equal(names(ids), col$collocation)
     
 })
 
 test_that("pattern2list is working with a list", {
     
     type <- letters
-    pat <- c('a b', 'c d', 'e f g')
-    ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', TRUE)
-    expect_equal(pat, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
+    pat <- c('a', 'a b', 'c d', 'e f g')
+    ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', FALSE)
+    expect_equal(names(ids), pat)
+    
+})
+
+test_that("pattern2list is working with a dictionary", {
+    
+    type <- c("a", "ab", "b", "bb", "a a", "a b")
+    dict <- dictionary(list(key1 = c("a*", "b*"), key2 = c("a a*", "a b*")))
+    ids <- quanteda:::pattern2list(dict, type, "glob", FALSE)
+    expect_true(all(names(dict) %in% names(ids)))
     
 })
 
 test_that("pattern2list is working with empty patterns", {
     
     col <- data.frame()
-    class(col) <- c('collocations', 'data.frame')
+    class(col) <- c("collocations", "data.frame")
     pat <- list()
-    expect_silent(quanteda:::pattern2list(col, types(toks), 'fixed', TRUE))
-    expect_silent(quanteda:::pattern2list(pat, types(toks), 'fixed', TRUE))
+    expect_silent(quanteda:::pattern2list(col, types(toks), "fixed", TRUE))
+    expect_silent(quanteda:::pattern2list(pat, types(toks), "fixed", TRUE))
     
 })
 
 test_that("check_font is working", {
-    # skip_on_os('windows')
-    # skip_on_os('mac')
+    # skip_on_os("windows")
+    # skip_on_os("mac")
     skip_on_cran()
-    expect_error(quanteda:::check_font('XXXXX'), 'XXXXX is not found on your system') 
-    # expect_equal(quanteda:::check_font('Ubuntu'), 'Ubuntu')
-    expect_equal(quanteda:::check_font('sans'), 'sans')
-    expect_equal(quanteda:::check_font('serif'), 'serif')
-    expect_equal(quanteda:::check_font('mono'), 'mono')
+    expect_error(quanteda:::check_font("XXXXX"), "XXXXX is not found on your system") 
+    # expect_equal(quanteda:::check_font("Ubuntu"), "Ubuntu")
+    expect_equal(quanteda:::check_font("sans"), "sans")
+    expect_equal(quanteda:::check_font("serif"), "serif")
+    expect_equal(quanteda:::check_font("mono"), "mono")
 })
 

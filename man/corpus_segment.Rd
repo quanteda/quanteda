@@ -115,7 +115,7 @@ corp <- corpus(c("##INTRO This is the introduction.
                   ##DOC1 This is the first document.  Second sentence in Doc 1.
                   ##DOC3 Third document starts here.  End of third document.",
                  "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-corp_seg <- corpus_segment(corp, "##*")
+corp_seg <- corpus_segment(corp, pattern = "##*")
 cbind(texts(corp_seg), docvars(corp_seg))
 
 # segmenting a transcript based on speaker identifiers

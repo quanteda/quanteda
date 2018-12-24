@@ -44,7 +44,7 @@ as.dictionary(afinn)
 }
 
 is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))
-## [1] TRUE
+# [1] TRUE
 is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
-## [1] FALSE
+# [1] FALSE
 }

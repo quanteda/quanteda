@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.3.4
+Version: 1.3.14
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -18,7 +18,7 @@ Authors@R: c(
     person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
     person("Patrick O.", "Perry", email = "patperry@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-7460-127X")),
     person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-1156-8465")),
-    person("Benjamin", "Lauderdale", email = "b.e.lauderdale@lse.ac.uk", role = "aut", comment = "0000-0003-3090-0969; wordfish C++ code"),    
+    person("Benjamin", "Lauderdale", email = "b.e.lauderdale@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-3090-0969")),    
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
     person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
     person("Lori", "Young", role = "dtc", comment = "Lexicoder Sentiment Dictionary 2015"),
@@ -34,15 +34,16 @@ Imports: data.table (>= 1.9.6), extrafont, fastmatch, ggplot2 (>=
         RSpectra, Rcpp (>= 0.12.12), RcppParallel, sna, SnowballC,
         spacyr, stopwords, stringi, xml2, yaml
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
-Suggests: ca, dplyr, DT, e1071, ExPosition, koRpus, lda, lsa, proxy,
+Suggests: spelling, ca, dplyr, DT, e1071, ExPosition, lda, lsa, proxy,
         purrr, RColorBrewer, rmarkdown, slam, stm, svs, testthat,
         text2vec, tibble, tidytext, tm (>= 0.6), topicmodels, xtable,
-        knitr, igraph
-URL: http://quanteda.io
+        knitr, igraph, wordcloud
+URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
+Language: en-UK
 Collate: 'RcppExports.R' 'View.R' 'bootstrap_dfm.R'
         'casechange-functions.R' 'directionchange-functions.R'
         'character-methods.R' 'convert.R' 'corpus-methods-base.R'
@@ -65,17 +66,18 @@ Collate: 'RcppExports.R' 'View.R' 'bootstrap_dfm.R'
         'textmodel_wordscores.R' 'textplot_influence.R'
         'textplot_keyness.R' 'textplot_network.R' 'textplot_scale1d.R'
         'textplot_wordcloud.R' 'textplot_xray.R' 'textstat-methods.R'
-        'textstat_collocations.R' 'textstat_dist.R'
+        'textstat_collocations.R' 'textstat_dist_old.R'
         'textstat_frequency.R' 'textstat_keyness.R' 'textstat_lexdiv.R'
-        'textstat_readability.R' 'textstat_simil.R' 'tokens.R'
-        'tokens_compound.R' 'tokens_group.R' 'tokens_lookup.R'
-        'tokens_ngrams.R' 'tokens_replace.R' 'tokens_segment.R'
-        'tokens_select.R' 'tokens_subset.R' 'utils.R' 'wordstem.R'
+        'textstat_readability.R' 'textstat_simil.R'
+        'textstat_simil_old.R' 'tokens.R' 'tokens_compound.R'
+        'tokens_group.R' 'tokens_lookup.R' 'tokens_ngrams.R'
+        'tokens_replace.R' 'tokens_segment.R' 'tokens_select.R'
+        'tokens_subset.R' 'tokens_sample.R' 'utils.R' 'wordstem.R'
         'zzz.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 SystemRequirements: C++11
 NeedsCompilation: yes
-Packaged: 2018-07-15 10:19:21 UTC; kbenoit
+Packaged: 2018-11-19 18:22:44 UTC; kbenoit
 Author: Kenneth Benoit [cre, aut, cph]
     (<https://orcid.org/0000-0002-0797-564X>),
   Kohei Watanabe [aut] (<https://orcid.org/0000-0001-6519-5265>),
@@ -86,7 +88,7 @@ Author: Kenneth Benoit [cre, aut, cph]
   Akitaka Matsuo [aut] (<https://orcid.org/0000-0002-3323-6330>),
   Patrick O. Perry [aut] (<https://orcid.org/0000-0001-7460-127X>),
   Jouni Kuha [aut] (<https://orcid.org/0000-0002-1156-8465>),
-  Benjamin Lauderdale [aut] (0000-0003-3090-0969; wordfish C++ code),
+  Benjamin Lauderdale [aut] (<https://orcid.org/0000-0003-3090-0969>),
   William Lowe [aut] (<https://orcid.org/0000-0002-1549-6163>),
   Christian Müller [ctb],
   Lori Young [dtc] (Lexicoder Sentiment Dictionary 2015),
@@ -95,6 +97,6 @@ Author: Kenneth Benoit [cre, aut, cph]
   European Research Council [fnd] (ERC-2011-StG 283794-QUANTESS)
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
 Repository: CRAN
-Date/Publication: 2018-07-15 12:50:03 UTC
-Built: R 3.5.0; x86_64-apple-darwin15.6.0; 2018-07-16 16:18:04 UTC; unix
+Date/Publication: 2018-11-19 19:50:03 UTC
+Built: R 3.5.0; x86_64-apple-darwin15.6.0; 2018-11-20 16:27:31 UTC; unix
 Archs: quanteda.so.dSYM

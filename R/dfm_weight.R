@@ -40,7 +40,7 @@
 #' 
 #' x <- apply(my_dfm, 1, function(tf) tf/max(tf))
 #' topfeatures(my_dfm)
-#' norm_dfm <- dfm_weight(my_dfm, "prop")
+#' norm_dfm <- dfm_weight(my_dfm, scheme = "prop")
 #' topfeatures(norm_dfm)
 #' max_tf_dfm <- dfm_weight(my_dfm)
 #' topfeatures(max_tf_dfm)
@@ -65,9 +65,9 @@
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
 #' }}
-#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze.
-#'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
-#'   University Press, 2008.
+#' @references  Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
+#'   \emph{An Introduction to Information Retrieval}. Cambridge University Press. 
+#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 dfm_weight <- function(
     x, 
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
@@ -398,7 +398,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #' \dontrun{
 #' # comparison with tm
 #' if (requireNamespace("tm")) {
-#'     convert(wiki_dfm, to = "tm") %>% weightTfIdf() %>% as.matrix()
+#'     convert(wiki_dfm, to = "tm") %>% tm::weightTfIdf() %>% as.matrix()
 #'     # same as:
 #'     dfm_tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
 #' }

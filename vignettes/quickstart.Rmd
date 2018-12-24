@@ -83,22 +83,6 @@ docvars(my_corpus, "Year") <- 2010
 summary(my_corpus)
 ```
 
-<<<<<<< HEAD
-=======
-If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also 
-add those to our corpus.
-```{r}
-metadoc(my_corpus, "language") <- "english"
-metadoc(my_corpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(my_corpus), sep = "_")
-summary(my_corpus, showmeta = TRUE)
-```
-
-The last command, `metadoc`, allows you to define your own document meta-data fields.  Note that in assigning just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
-a simple tag for our custom metadoc field `docsource`, we used the quanteda function `ndoc()` to retrieve
-the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
-functions you may already use in R, such as `nrow()` and `ncol()`.
-
->>>>>>> master
 ### Loading in files using the readtext package
 
 ```{r, eval=FALSE}
@@ -161,12 +145,12 @@ We can save the output from the summary command as a data frame, and plot some b
 tokenInfo <- summary(data_corpus_inaugural)
 tokenInfo$Year <- docvars(data_corpus_inaugural, "Year")
 if (require(ggplot2))
-    ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
         scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
     theme_bw()
 
 # Longest inaugural address: William Henry Harrison
-tokenInfo[which.max(tokenInfo$Tokens), ] 
+tokeninfo[which.max(tokeninfo$Tokens), ] 
 ```
 
 
@@ -199,15 +183,15 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "communist*")
+kwic(data_corpus_inaugural, pattern = "communist*")
 ```
 
 
@@ -380,7 +364,7 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
 pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, scheme = "prop"))
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
 # label with document names
@@ -391,7 +375,7 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 We can also look at term similarities:
 ```{r}
-sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, selection = c("fair", "health", "terror"), method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 

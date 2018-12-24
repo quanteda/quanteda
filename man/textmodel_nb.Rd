@@ -93,28 +93,28 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
  
 ## replicate IIR p261 prediction for test set (document 5)
-(nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
+(nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq"))
 summary(nb)
 coef(nb)
 predict(nb)
 
 # contrast with other priors
-predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
-predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
+predict(textmodel_nb(trainingset, y = trainingclass, prior = "uniform"))
+predict(textmodel_nb(trainingset, y = trainingclass, prior = "termfreq"))
 
 ## replicate IIR p264 Bernoulli Naive Bayes
-nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
+nb_bern <- textmodel_nb(trainingset, y = trainingclass, distribution = "Bernoulli", 
                         prior = "docfreq")
 predict(nb_bern, newdata = trainingset[5, ])
 }
 \references{
-Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
-  to Information Retrieval. Cambridge University Press.
-  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
+  \emph{An Introduction to Information Retrieval}. Cambridge University Press 
+  (Chapter 13). \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
   
-  Jurafsky, Daniel and James H. Martin. (2018). "Chapter 4, Naive Bayes and
-  Sentiment Classification." from \emph{Speech and Language Processing}.
-  Draft of September 23, 2018.
+  Jurafsky, Daniel, and James H. Martin. 2018. \emph{Speech and Language Processing. 
+  An Introduction to Natural Language Processing, Computational Linguistics, and 
+  Speech Recognition}. Draft of 3rd edition, September 23, 2018 (Chapter 4).
   \url{https://web.stanford.edu/~jurafsky/slp3/4.pdf}
 }
 \seealso{

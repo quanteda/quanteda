@@ -171,64 +171,78 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_similarity_linear
-S4 qatd_cpp_similarity_linear(const arma::sp_mat& mt, const int method, const IntegerVector targets_, unsigned int rank, double limit);
-RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mtSEXP, SEXP methodSEXP, SEXP targets_SEXP, SEXP rankSEXP, SEXP limitSEXP) {
+S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1, arma::sp_mat& mt2, const int method, unsigned int rank, double limit);
+RcppExport SEXP _quanteda_qatd_cpp_similarity_linear(SEXP mt1SEXP, SEXP mt2SEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP limitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt(mtSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt1(mt1SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt2(mt2SEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type targets_(targets_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity_linear(mt, method, targets_, rank, limit));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity_linear(mt1, mt2, method, rank, limit));
     return rcpp_result_gen;
 END_RCPP
 }
 // qatd_cpp_similarity
-S4 qatd_cpp_similarity(const arma::sp_mat& mt, const int method, const IntegerVector target_, unsigned int rank, double limit, double weight);
-RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mtSEXP, SEXP methodSEXP, SEXP target_SEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP weightSEXP) {
+S4 qatd_cpp_similarity(arma::sp_mat& mt1, arma::sp_mat& mt2, const int method, unsigned int rank, double limit, double weight);
+RcppExport SEXP _quanteda_qatd_cpp_similarity(SEXP mt1SEXP, SEXP mt2SEXP, SEXP methodSEXP, SEXP rankSEXP, SEXP limitSEXP, SEXP weightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type mt(mtSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt1(mt1SEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt2(mt2SEXP);
     Rcpp::traits::input_parameter< const int >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type target_(target_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type rank(rankSEXP);
     Rcpp::traits::input_parameter< double >::type limit(limitSEXP);
     Rcpp::traits::input_parameter< double >::type weight(weightSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mt, method, target_, rank, limit, weight));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_similarity(mt1, mt2, method, rank, limit, weight));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_tokens_compound
-List qatd_cpp_tokens_compound(const List& texts_, const List& comps_, const CharacterVector& types_, const String& delim_, const bool& join);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP comps_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type comps_(comps_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
-    Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_compound(texts_, comps_, types_, delim_, join));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_tokens_lookup
-List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap, const int nomatch);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP, SEXP nomatchSEXP) {
+// qatd_cpp_tokens_chunk
+List qatd_cpp_tokens_chunk(const List& texts_, const CharacterVector types_, const int size, const int overlap);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_chunk(SEXP texts_SEXP, SEXP types_SEXP, SEXP sizeSEXP, SEXP overlapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type keys_(keys_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
+    Rcpp::traits::input_parameter< const int >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< const int >::type overlap(overlapSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_chunk(texts_, types_, size, overlap));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_tokens_compound
+List qatd_cpp_tokens_compound(const List& texts_, const List& compounds_, const CharacterVector& types_, const String& delim_, const bool& join);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP compounds_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type compounds_(compounds_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
+    Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_compound(texts_, compounds_, types_, delim_, join));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_tokens_lookup
+List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& words_, const IntegerVector& keys_, const bool overlap, const int nomatch);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP keys_SEXP, SEXP overlapSEXP, SEXP nomatchSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type keys_(keys_SEXP);
     Rcpp::traits::input_parameter< const bool >::type overlap(overlapSEXP);
     Rcpp::traits::input_parameter< const int >::type nomatch(nomatchSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, keys_, ids_, overlap, nomatch));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, words_, keys_, overlap, nomatch));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -258,6 +272,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type gap(gapSEXP);
     Rcpp::traits::input_parameter< const bool >::type dup(dupSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_recompile(texts_, types_, gap, dup));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_tokens_replace
+List qatd_cpp_tokens_replace(const List& texts_, const CharacterVector types_, const List& patterns_, const List& replacements_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP types_SEXP, SEXP patterns_SEXP, SEXP replacements_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type patterns_(patterns_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type replacements_(replacements_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, types_, patterns_, replacements_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -394,10 +422,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_similarity_linear", (DL_FUNC) &_quanteda_qatd_cpp_similarity_linear, 5},
     {"_quanteda_qatd_cpp_similarity", (DL_FUNC) &_quanteda_qatd_cpp_similarity, 6},
+    {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
+    {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 7},
     {"_quanteda_qatd_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_numeric, 2},

@@ -96,7 +96,7 @@ test_that("textmodel-wordfish (sparse) works as expected on another dataset", {
 
 test_that("test wordfish predict methods", {
     pr <- predict(wfm)
-    expect_equal(pr[1], c('2010_BUDGET_01_Brian_Lenihan_FF' = 1.82), tolerance = .01)
+    expect_equal(pr[1], c("Lenihan, Brian (FF)" = 1.82), tolerance = .01)
     
     pr2 <- predict(wfm, se.fit = TRUE)
     expect_is(pr2, "list")

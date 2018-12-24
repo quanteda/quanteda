@@ -77,13 +77,13 @@ nfeat.dfm <- function(x) {
 #     }
 # }
 
-#' @rdname ndoc
-#' @details \code{nfeature} is the deprecated form of \code{nfeat}.
+#' Defunct form of nfeat
+#' 
+#' @details \code{nfeature} is the defunct form of \code{\link{nfeat}}.
+#' @keywords internal defunct
 #' @export
-nfeature <- function(x) {
-    .Deprecated("nfeat")
-    UseMethod("nfeat")
-}
+nfeature <- function(x) .Defunct("nfeat")
+
 
 #' Count the number of tokens or types
 #' 

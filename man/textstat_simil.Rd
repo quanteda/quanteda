@@ -17,8 +17,8 @@ textstat_dist(x, selection = NULL, margin = c("documents", "features"),
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{selection}{a valid index for document or feature names from \code{x},
-to be selected for comparison}
+\item{selection}{a valid index for document or feature names (depending on
+\code{margin}) from \code{x}, to be selected for comparison}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or
@@ -69,18 +69,19 @@ If you want to compute similarity on a "normalized" dfm object
 }
 \examples{
 # similarities for documents
-mt <- dfm(data_corpus_inaugural, remove_punct = TRUE, remove = stopwords("english"))
+mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+          remove_punct = TRUE, remove = stopwords("english"))
 (s1 <- textstat_simil(mt, method = "cosine", margin = "documents"))
 as.matrix(s1)
 as.list(s1)
 
 # similarities for for specific documents
-textstat_simil(mt, "2017-Trump", margin = "documents")
-textstat_simil(mt, "2017-Trump", method = "cosine", margin = "documents")
-textstat_simil(mt, c("2009-Obama" , "2013-Obama"), margin = "documents")
+textstat_simil(mt, selection = "2017-Trump", margin = "documents")
+textstat_simil(mt, selection = "2017-Trump", method = "cosine", margin = "documents")
+textstat_simil(mt, selection = c("2009-Obama" , "2013-Obama"), margin = "documents")
 
 # compute some term similarities
-s2 <- textstat_simil(mt, c("fair", "health", "terror"), method = "cosine",
+s2 <- textstat_simil(mt, selection = c("fair", "health", "terror"), method = "cosine",
                       margin = "features")
 head(as.matrix(s2), 10)
 as.list(s2, n = 8)
@@ -109,6 +110,8 @@ as.list(d1)
   All other measures are described in the \pkg{proxy} package.
 }
 \seealso{
-\code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-  \code{\link{dist}}, \code{\link{as.dist}}
+\code{\link{textstat_dist}},
+  \code{\link[quanteda]{as.matrix.simil}},
+  \code{\link[quanteda]{as.list.dist}}, \code{\link[stats]{dist}},
+  \code{\link[stats]{as.dist}}
 }

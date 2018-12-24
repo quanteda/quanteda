@@ -16,7 +16,7 @@
 #' across all documents, below/above which features will
 #'   be removed
 #' @param termfreq_type how \code{min_termfreq} and \code{max_termfreq} are
-#'   intepreted.  \code{"count"} sums the frequencies; \code{"prop"} divides the
+#'   interpreted.  \code{"count"} sums the frequencies; \code{"prop"} divides the
 #'   term frequencies by the total sum; \code{"rank"} is matched against the
 #'   inverted ranking of features in terms of overall frequency, so that 1, 2,
 #'   ... are the highest and second highest frequency features, and so on;

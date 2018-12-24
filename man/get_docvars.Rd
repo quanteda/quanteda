@@ -2,10 +2,20 @@
 % Please edit documentation in R/docvars.R
 \name{get_docvars}
 \alias{get_docvars}
-\title{internal function to return all the user docvars}
+\title{Internal function to extract docvars}
 \usage{
-get_docvars(x, field = NULL, drop = FALSE, system = FALSE)
+get_docvars(x, field = NULL, system = FALSE, drop = FALSE)
+}
+\arguments{
+\item{x}{an object from which docvars are extracted}
+
+\item{field}{name of docvar fields}
+
+\item{system}{if \code{TRUE}, return system-level variables}
+
+\item{drop}{if \code{TRUE}, convert data.frame with one variable to a vector}
 }
 \description{
-internal function to return all the user docvars
+Internal function to extract docvars
 }
+\keyword{internal}

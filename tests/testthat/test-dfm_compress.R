@@ -62,4 +62,23 @@ test_that("dfm_compress: empty documents are preserved", {
 #    )
 #})
 
+test_that("dfm_compress preserves docvars (#1506)", {
+    corp <- corpus(c(d1 = "A A A b c D D",
+                 d2 = "b b b b D D D"),
+               docvars = data.frame(bool = c(TRUE, FALSE)))
+    thedfm <- dfm(corp)
+    # this ensures the existence of _document
+    docnames(thedfm) <- docnames(thedfm)
+    
+    expect_true("_document" %in% names(thedfm@docvars))
 
+    expect_identical(
+        thedfm@docvars,
+        dfm_compress(thedfm, margin = "features")@docvars
+    )
+    
+    expect_identical(
+        thedfm@docvars,
+        dfm(thedfm)@docvars
+    )
+})

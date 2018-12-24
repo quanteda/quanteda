@@ -134,7 +134,7 @@ as.corpus.corpus <- function(x) {
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
         return(x)
     }
-    result <- corpus(x$documents)
+    result <- corpus(x$documents, text_field = "texts")
     docvar <- make_docvars(row.names(x$documents))
     if ("_document" %in% names(x$documents))
         docvar["_docname"] <- x$documents["_document"]

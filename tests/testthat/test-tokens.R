@@ -251,27 +251,22 @@ test_that("unlist retuns character vector, issue #716", {
 })
 
 
-test_that("deprecated tokens arguments still work", {
-    
-    # expect_warning(
-    #     tokens("This contains 99 numbers.", removeNumbers = TRUE),
-    #     "removeNumbers is deprecated"
-    # )
+test_that("unused argument warnings for tokens work as expected", {
     
     # for tokens
     expect_identical(
         as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
         c("This", "punctuation")
     )
-    # expect_identical(
-    #     as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
-    #     as.character(tokens(c(d1 = "This: punctuation"), removePunct = TRUE))
-    # )
     expect_warning(
-        tokens(c(d1 = "This: punctuation"), notanargument = TRUE),
-        "Argument notanargument not used"
+        tokens(c(d1 = "This: punctuation"), notarg1 = TRUE),
+        "^Argument notarg1 not used\\."
     )
-    
+    expect_warning(
+        tokens(c(d1 = "This: punctuation"), notarg1 = TRUE, notarg2 = FALSE),
+        "^Arguments notarg1, notarg2 not used\\."
+    )
+
 })
 
 test_that("tokens arguments works with values from parent frame (#721)", {
@@ -368,33 +363,32 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
     toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], ' '))
     toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], ' '))
     
-    expect_equal(tokens(chars[1], remove_numbers = TRUE),
-                 tokens(toks1, remove_numbers = TRUE))
+    expect_equal(tokens(chars[1], remove_numbers = TRUE) %>% as.list(),
+                 tokens(toks1, remove_numbers = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[1], remove_punct = TRUE),
-                 tokens(toks1, remove_punct = TRUE))
+    expect_equal(tokens(chars[1], remove_punct = TRUE) %>% as.list(),
+                 tokens(toks1, remove_punct = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[1], remove_separator = TRUE),
-                 tokens(toks1, remove_separator = TRUE))
+    expect_equal(tokens(chars[1], remove_separator = TRUE) %>% as.list(),
+                 tokens(toks1, remove_separator = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[1], remove_symbols = TRUE),
-                 tokens(toks1, remove_symbols = TRUE))
+    expect_equal(tokens(chars[1], remove_symbols = TRUE) %>% as.list(),
+                 tokens(toks1, remove_symbols = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE),
-                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE))
+    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[4], remove_url = TRUE),
-                 tokens(toks4, remove_url = TRUE))
+    expect_equal(tokens(chars[4], remove_url = TRUE) %>% as.list(),
+                 tokens(toks4, remove_url = TRUE) %>% as.list())
     
-    expect_equal(tokens(chars[5], ngrams = 1:2),
-                 tokens(toks5, ngrams = 1:2))
+    expect_equal(tokens(chars[5], ngrams = 1:2) %>% as.list(),
+                 tokens(toks5, ngrams = 1:2) %>% as.list())
     
-    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
-                 tokens(toks5, ngrams = 2, skip = 1:2))
+    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2) %>% as.list(),
+                 tokens(toks5, ngrams = 2, skip = 1:2) %>% as.list())
     
-    # This fails because hyphnated words are concatenated in toks
-    #expect_equal(tokens(chars[3], remove_hyphens = TRUE),
-    #             tokens(toks3, remove_hyphens = TRUE))
+    expect_equal(tokens(chars[3], remove_hyphens = TRUE) %>% as.list(),
+                 tokens(toks3, remove_hyphens = TRUE) %>% as.list())
     
     # This fails because there is not separator in toks
     # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
@@ -554,3 +548,18 @@ test_that("tokens_sample works as expected",{
                  "only works on tokens objects")
 })
 
+test_that("tokens.tokens(x, remove_hyphens = TRUE) behaves same as tokens.character(...)", {
+    # issue #1498
+    txt <- "Auto-immune system."
+    expect_identical(
+        as.character(tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE)),
+        c("Auto", "-", "immune", "system", ".")
+    )
+    
+    txt <- c("There's shrimp-kabobs, shrimp creole. Deep-deep-fried, stir-fried.",
+             "Stir-fried shrimp.")
+    expect_identical(
+        tokens(txt, remove_hyphens = TRUE) %>% as.list(),
+        tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE) %>% as.list()
+    )
+})

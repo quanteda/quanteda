@@ -19,6 +19,6 @@ dict <- list(KEY1 = list(SUBKEY1 = list("A_B"),
                           SUBKEY4 = list("G_F_I")),
               KEY3 = list(SUBKEY5 = list(SUBKEY7 = list("J_K")),
                           SUBKEY6 = list(SUBKEY8 = list("L"))))
-quanteda:::replace_dictionary_values(dict, '_', ' ')
+quanteda:::replace_dictionary_values(dict, "_", " ")
 }
 \keyword{internal}

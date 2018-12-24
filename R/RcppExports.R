@@ -49,20 +49,24 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window, delim_) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window, delim_)
 }
 
-qatd_cpp_similarity_linear <- function(mt, method, targets_, rank, limit = -1.0) {
-    .Call(`_quanteda_qatd_cpp_similarity_linear`, mt, method, targets_, rank, limit)
+qatd_cpp_similarity_linear <- function(mt1, mt2, method, rank, limit = -1.0) {
+    .Call(`_quanteda_qatd_cpp_similarity_linear`, mt1, mt2, method, rank, limit)
 }
 
-qatd_cpp_similarity <- function(mt, method, target_, rank, limit = -1.0, weight = 1.0) {
-    .Call(`_quanteda_qatd_cpp_similarity`, mt, method, target_, rank, limit, weight)
+qatd_cpp_similarity <- function(mt1, mt2, method, rank, limit = -1.0, weight = 1.0) {
+    .Call(`_quanteda_qatd_cpp_similarity`, mt1, mt2, method, rank, limit, weight)
 }
 
-qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
-    .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, comps_, types_, delim_, join)
+qatd_cpp_tokens_chunk <- function(texts_, types_, size, overlap) {
+    .Call(`_quanteda_qatd_cpp_tokens_chunk`, texts_, types_, size, overlap)
 }
 
-qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap, nomatch) {
-    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, keys_, ids_, overlap, nomatch)
+qatd_cpp_tokens_compound <- function(texts_, compounds_, types_, delim_, join) {
+    .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, compounds_, types_, delim_, join)
+}
+
+qatd_cpp_tokens_lookup <- function(texts_, types_, words_, keys_, overlap, nomatch) {
+    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, words_, keys_, overlap, nomatch)
 }
 
 qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
@@ -71,6 +75,10 @@ qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
 
 qatd_cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
     .Call(`_quanteda_qatd_cpp_tokens_recompile`, texts_, types_, gap, dup)
+}
+
+qatd_cpp_tokens_replace <- function(texts_, types_, patterns_, replacements_) {
+    .Call(`_quanteda_qatd_cpp_tokens_replace`, texts_, types_, patterns_, replacements_)
 }
 
 qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position) {

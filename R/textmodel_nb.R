@@ -54,13 +54,13 @@
 #' class, so that the classes with the largest number of features are assigned
 #' the largest priors. If the total count of features in each training class was
 #' the same, then "uniform" and "termfreq" would be the same.
-#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
-#'   to Information Retrieval. Cambridge University Press.
-#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
+#'   \emph{An Introduction to Information Retrieval}. Cambridge University Press 
+#'   (Chapter 13). \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 #'   
-#'   Jurafsky, Daniel and James H. Martin. (2018). "Chapter 4, Naive Bayes and
-#'   Sentiment Classification." from \emph{Speech and Language Processing}.
-#'   Draft of September 23, 2018.
+#'   Jurafsky, Daniel, and James H. Martin. 2018. \emph{Speech and Language Processing. 
+#'   An Introduction to Natural Language Processing, Computational Linguistics, and 
+#'   Speech Recognition}. Draft of 3rd edition, September 23, 2018 (Chapter 4).
 #'   \url{https://web.stanford.edu/~jurafsky/slp3/4.pdf}
 #'   
 #' @seealso \code{\link{predict.textmodel_nb}}
@@ -76,17 +76,17 @@
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #'  
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
+#' (nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq"))
 #' summary(nb)
 #' coef(nb)
 #' predict(nb)
 #' 
 #' # contrast with other priors
-#' predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
-#' predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
+#' predict(textmodel_nb(trainingset, y = trainingclass, prior = "uniform"))
+#' predict(textmodel_nb(trainingset, y = trainingclass, prior = "termfreq"))
 #' 
 #' ## replicate IIR p264 Bernoulli Naive Bayes
-#' nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
+#' nb_bern <- textmodel_nb(trainingset, y = trainingclass, distribution = "Bernoulli", 
 #'                         prior = "docfreq")
 #' predict(nb_bern, newdata = trainingset[5, ])
 #' @export
@@ -191,7 +191,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' @seealso \code{\link{textmodel_nb}}
 #' @examples 
 #' # application to LBG (2003) example data
-#' (nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
+#' (nb <- textmodel_nb(data_dfm_lbgexample, y = c("A", "A", "B", "C", "C", NA)))
 #' predict(nb)
 #' predict(nb, type = "logposterior")
 #' @keywords textmodel internal

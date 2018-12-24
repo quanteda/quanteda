@@ -13,9 +13,9 @@
 #' @param x the \link{dfm} on which the model will be trained
 #' @param y vector of training scores associated with each document 
 #'   in \code{x}
-#' @param smooth a smoothing parameter for word counts; defaults to zero for the
-#'   to match the LBG (2003) method.  See Value below for additional
-#'   information on the behaviour of this argument.
+#' @param smooth a smoothing parameter for word counts; defaults to zero to
+#'   match the LBG (2003) method. See Value below for additional information on
+#'   the behaviour of this argument.
 #' @param scale scale on which to score the words; \code{"linear"} for classic 
 #'   LBG linear posterior weighted word class differences, or \code{"logit"}
 #'   for log posterior differences
@@ -23,34 +23,36 @@
 #'   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
 #'   to function in the same manner as \code{\link[stats]{predict.lm}}.
 #'   \code{coef()} can also be used to extract the word coefficients from the
-#'   fitted \code{textmodel_wordscores} object, and \code{summary()} will print a
-#'   nice summary of the fitted object.
+#'   fitted \code{textmodel_wordscores} object, and \code{summary()} will print
+#'   a nice summary of the fitted object.
 #' @return  A fitted \code{textmodel_wordscores} object.  This object will
 #'   contain a copy of the input data, but in its original form without any
 #'   smoothing applied. Calling \code{\link{predict.textmodel_wordscores}} on
 #'   this object without specifying a value for \code{newdata}, for instance,
 #'   will predict on the unsmoothed object.  This behaviour differs from
-#'   versions of quanteda <= 1.2.
+#'   versions of \pkg{quanteda} <= 1.2.
 #' @seealso \code{\link{predict.textmodel_wordscores}} for methods of applying a
 #'   fitted \link{textmodel_wordscores} model object to predict quantities from
 #'   (other) documents.
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
+#' (ws <- textmodel_wordscores(data_dfm_lbgexample, y = c(seq(-1.5, 1.5, .75), NA)))
 #' summary(ws)
 #' coef(ws)
 #' predict(ws)
 #' predict(ws, rescaling = "lbg")
 #' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
-#' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
-#'   \emph{American Political Science Review} 97(02): 311-31
+#' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
+#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy
+#'   Positions From Political Texts Using Words as Data.}" \emph{American
+#'   Political Science Review} 97(2): 311--331
 #'   
-#'   Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
-#'   Voting." New York University Mimeo.
+#'   Beauchamp, Nick. 2012. "\href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
+#'   Text to Scale Legislatures with Uninformative Voting}." New York University Mimeo.
 #'   
-#'   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
-#'   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
+#'   Martin, Lanny W. and Georg Vanberg. 2007. "\href{https://doi.org/10.1093/pan/mpm010}{A Robust 
+#'   Transformation Procedure for Interpreting Political Text}." \emph{Political Analysis} 
+#'   16(1): 93--100.
 #' @export
 textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     UseMethod("textmodel_wordscores")

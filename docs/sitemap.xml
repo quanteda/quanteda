@@ -178,6 +178,9 @@
     <loc>https://quanteda.io/reference/dfm_sort.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/dfm_split_hyphenated_features.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/dfm_subset.html</loc>
   </url>
   <url>
@@ -226,6 +229,15 @@
     <loc>https://quanteda.io/reference/featnames.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/flatten_dictionary.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/flatten_id.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/format_sparsity.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/friendly_class_undefined_message.html</loc>
   </url>
   <url>
@@ -244,6 +256,9 @@
     <loc>https://quanteda.io/reference/influence.predict.textmodel_affinity.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/is_glob.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/is_indexed.html</loc>
   </url>
   <url>
@@ -256,7 +271,13 @@
     <loc>https://quanteda.io/reference/kwic.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/lexdiv.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/list2dictionary.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/lowercase_dictionary_values.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/matrix2dfm.html</loc>
@@ -346,7 +367,16 @@
     <loc>https://quanteda.io/reference/quanteda_options.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/read_dict_lexicoder.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/read_dict_liwc.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/read_dict_wordstat.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/read_dict_yoshikoder.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/reexports.html</loc>
@@ -383,6 +413,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/sparsity.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/split_values.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/summary.character.html</loc>
@@ -512,6 +545,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens_serialize.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/tokens_split.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens_subset.html</loc>

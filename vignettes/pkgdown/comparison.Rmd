@@ -19,5 +19,3 @@ dta_table <- read.csv("comparison-packages-data.csv")
 dta_table <- dta_table[-2] # exclude "Category" to save space
 kable(dta_table, format = "markdown")
 ```
-
-

@@ -37,11 +37,11 @@ are not desired for the segmented corpus.}
   have been split by patterns
 }
 \description{
-Segment tokens by splitting
-on a pattern match. This is useful for breaking the tokenized texts into smaller
-document units, based on a regular pattern or a user-supplied annotation.  
-While it normally makes more sense to do this at the corpus level (see \code{\link{corpus_segment}}), 
-\code{tokens_segment} provides the option to perform this operation on tokens.
+Segment tokens by splitting on a pattern match. This is useful for breaking
+the tokenized texts into smaller document units, based on a regular pattern
+or a user-supplied annotation. While it normally makes more sense to do this
+at the corpus level (see \code{\link{corpus_segment}}), \code{tokens_segment}
+provides the option to perform this operation on tokens.
 }
 \examples{
 txts <- "Fellow citizens, I am again called upon by the voice of my country to
@@ -51,11 +51,12 @@ this distinguished honor."
 toks <- tokens(txts)
 
 # split by any punctuation
-toks_punc <- tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed", 
-                            pattern_position = "after")
-toks_punc <- tokens_segment(toks, "^\\\\p{Sterm}$", valuetype = "regex", 
-                            extract_pattern = FALSE, 
-                            pattern_position = "after")
+tokens_segment(toks, "^\\\\p{Sterm}$", valuetype = "regex", 
+               extract_pattern = TRUE, 
+               pattern_position = "after")
+tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed", 
+               extract_pattern = TRUE, 
+               pattern_position = "after")
 }
 \keyword{internal}
 \keyword{tokens}

@@ -15,7 +15,7 @@ nest_dictionary(dict, depth)
 Utility function to generate a nested list
 }
 \examples{
-list_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'), 'D' = c('ddd'))
+list_flat <- list("A" = c("a", "aa", "aaa"), "B" = c("b", "bb"), "C" = c("c", "cc"), "D" = c("ddd"))
 dict_flat <- quanteda:::list2dictionary(list_flat)
 quanteda:::nest_dictionary(dict_flat, c(1, 1, 2, 2))
 quanteda:::nest_dictionary(dict_flat, c(1, 2, 1, 2))

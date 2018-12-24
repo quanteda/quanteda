@@ -45,12 +45,14 @@
 #' 
 #' Speeches and document-level variables from the debate over the Irish budget
 #' of 2010.
+#' @details At the time of the debate, Fianna Fáil (FF) and the Greens formed the government
+#'   coalition, while Fine Gael (FG), Labour (LAB), and Sinn Féin (SF) were in opposition.
 #' @format The corpus object for the 2010 budget speeches, with document-level 
 #'   variables for year, debate, serial number, first and last name of the 
 #'   speaker, and the speaker's party.
 #' @references Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
 #'   Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
-#'   \emph{Political Analysis} 21: 298-313.
+#'   \emph{Political Analysis} 21(3): 298-313.
 #' @keywords data
 #' @source 
 #' Dáil Éireann Debate, 
@@ -188,8 +190,8 @@ NULL
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, removePunct = TRUE)
-#' fitted <- textmodel_mixfit(data_dfm_dailnoconf1991, 
+#' data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, remove_punct = TRUE)
+#' fitted <- textmodel_affinity(data_dfm_dailnoconf1991, 
 #'                            c("Govt", "Opp", "Opp", rep(NA, 55)))
 #' (pred <- predict(fitted))
 #' tmpdf <- 
