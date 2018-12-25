@@ -22,8 +22,10 @@ subset_dfm <- function(x, i, j, ..., drop) {
         x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
     }
     
-    if (!missing(i))
+    if (!missing(i)) {
         attrs$docvars <- attrs$docvars[i, , drop = FALSE]
+        rownames(attrs$docvars) <- NULL
+    }
     matrix2dfm(x, attrs)
 }
 

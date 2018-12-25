@@ -406,6 +406,7 @@ print.tokens <- function(x, ...) {
     x <- unclass(x)[i]
     if (is.data.frame(attrs$docvars)) {
         attrs$docvars <- attrs$docvars[i, , drop = FALSE]
+        rownames(attrs$docvars) <- NULL
     }
     attributes(x, FALSE) <- attrs
     tokens_recompile(x)
