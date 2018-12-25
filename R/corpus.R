@@ -163,9 +163,9 @@ corpus.character <- function(x, docnames = NULL,
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
             message_error("docvar_invalid")
-        docvars <- cbind(make_docvars(docname), docvars)
+        docvars <- cbind(make_docvars(length(x), docname), docvars)
     } else {
-        docvars <- make_docvars(docname)
+        docvars <- make_docvars(length(x), docname)
     }
     
     result <- unname(x)

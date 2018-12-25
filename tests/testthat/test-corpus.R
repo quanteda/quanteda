@@ -132,7 +132,7 @@ test_that("test corpus constructors works for data.frame", {
     corp <- corpus(df, docid_field = "row.names", text_field = "some_text")
     expect_equal(docnames(corp), 
                  paste("fromDf", 1:6, sep = "_"))
-    expect_equal(docvars(corp, "letter_factor")[3,1],
+    expect_equal(docvars(corp, "letter_factor")[3],
                  factor("b", levels = c("a", "b", "c")))
     
     expect_error(corpus(df, text_field = "some_ints"),
@@ -449,4 +449,24 @@ test_that("handle data.frame variable renaming when one already exists", {
     names(df)[c(3, 5)] <- c(NA, "")
     corp <- corpus(df, text_field = "thetext", docid_field = "docID")
     expect_equal(names(docvars(corp)), c("V1", "V3", "V3.1"))
+})
+
+test_that("upgrade_corpus is working", {
+    corp1 <- quanteda:::upgrade_corpus(data_corpus_dailnoconf1991)
+    expect_true(is.character(corp1))
+    expect_true(all(c("_docid", "_docname", "_docnum", "_segnum") %in% names(attr(corp1, "docvars"))))
+    expect_true(all(!c("_document", "texts") %in% names(attr(corp1, "docvars"))))
+    expect_true(is.factor(attr(corp1, "docvars")[["_docname"]]))
+    
+    corp2 <- quanteda:::upgrade_corpus(data_corpus_inaugural)
+    expect_true(is.character(corp2))
+    expect_true(all(c("_docid", "_docname", "_docnum", "_segnum") %in% names(attr(corp2, "docvars"))))
+    expect_true(all(!c("_document", "texts") %in% names(attr(corp2, "docvars"))))
+    expect_true(is.factor(attr(corp2, "docvars")[["_docname"]]))
+    
+    corp3 <- quanteda:::upgrade_corpus(data_corpus_irishbudget2010)
+    expect_true(is.character(corp3))
+    expect_true(all(c("_docid", "_docname", "_docnum", "_segnum") %in% names(attr(corp3, "docvars"))))
+    expect_true(all(!c("_document", "texts") %in% names(attr(corp3, "docvars"))))
+    expect_true(is.factor(attr(corp3, "docvars")[["_docname"]]))
 })

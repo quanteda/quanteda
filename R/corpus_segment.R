@@ -123,18 +123,27 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                                   use_docvars = TRUE) {
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    docvar <- docvars(x)
-
+    docvar <- attr(x, "docvars")
+    
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
-
-    result <- corpus(temp, docid_field = "_docid", text_field = "text")
-    if (use_docvars) {
-        docvar <- cbind(get_docvars(temp, system = TRUE), get_docvars(docvar[temp[["_docnum"]],]))
-    } else {
-        docvar <- get_docvars(temp, system = TRUE)
-    }
-    if (extract_pattern) docvars(result, "pattern") <- temp$pattern
+    
+    docname <- docvar[["_docname"]][temp$docnum]
+    docid <- paste0(docname, ".", temp$segnum)
+    docvar_system <- data.frame("_docid" = docid,
+                                "_docname" = docname,
+                                "_docnum" = temp$docnum, 
+                                "_segnum" = temp$segnum, 
+                                check.names = FALSE,
+                                stringsAsFactors = FALSE)
+    result <- corpus(temp$text, docnames = docid)
+    
+    if (use_docvars)
+        docvar <- cbind(docvar, get_docvars(docvar)[temp$docnum,])
+    if (extract_pattern) 
+        docvars(result, "pattern") <- temp$pattern
+    
+    rownames(docvar) <- NULL
     attr(result, "docvars") <- docvar
     attr(result, "unit") <- "documents"
     return(result)
@@ -185,20 +194,17 @@ char_segment.character <- function(x, pattern = "##*",
     
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    
-    temp <- segment_texts(x, pattern, valuetype, 
-                          case_insensitive, remove_pattern, 
-                          pattern_position)
-    result <- temp$texts
-    if (!is.null(names(x)))
-        names(result) <- rownames(temp)
-    return(result)
+    temp <- corpus_segment(corpus(x, docnames = names(x)), 
+                           pattern, valuetype, 
+                           case_insensitive, remove_pattern, 
+                           pattern_position)
+    return(texts(temp))
 }
 
 # internal functions ----------
 
 # internal function for char_segment and corpus_segment
-segment_texts <- function(x, docname, pattern = NULL, valuetype = "regex",
+segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           case_insensitive = TRUE,
                           extract_pattern = FALSE, pattern_position = "after", 
                           omit_empty = TRUE, what = "other", ...){
@@ -290,19 +296,15 @@ segment_texts <- function(x, docname, pattern = NULL, valuetype = "regex",
                              stringsAsFactors = FALSE)
     }
 
-    result[["_docnum"]] <- rep(seq_along(n), n)
-    result[["_docname"]] <- rep(docname, n)
-    
+    result$docnum <- rep(seq_along(n), n)
     if (extract_pattern) {
         result <- result[!is.na(result$pattern),]
     } else {
         if (omit_empty)
             result <- result[!is.na(result$text),]
     }
+    result$segnum <- unlist(lapply(rle(result$docnum)$lengths, seq_len))
     
-    result[["_segnum"]] <- unlist(lapply(rle(result[["_docnum"]])$lengths, seq_len))
-    result[["_docid"]] <- paste0(result[["_docname"]], ".", result[["_segnum"]])
-
     return(result)
 }
 

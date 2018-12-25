@@ -63,7 +63,8 @@ test_that("corpus_segment works with use_docvars TRUE or FALSE", {
                      d2 = "##TEST3 Four"),
                    docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
     corp_seg1 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
-                           pattern_position = "before", extract_pattern = TRUE, use_docvars = TRUE)
+                                pattern_position = "before", extract_pattern = TRUE, 
+                                use_docvars = TRUE)
     summ1 <- summary(corp_seg1)
     expect_equal(summ1$test, c("A", "A", "B"))
     

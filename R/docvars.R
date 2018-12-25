@@ -60,45 +60,54 @@ get_docvars.data.frame <- function(x, field = NULL, system = FALSE, drop = FALSE
 }
 
 # internal function to make new system-level docvars
-make_docvars <- function(docname, unique = TRUE) {
-    docname <- as.character(docname)
-    if (unique)
-        docname <- make.unique(docname)
-    n <- length(docname)
-    if (n == 0) {
-        data.frame("_docid" = character(),
-                   "_docname" = factor(),
-                   "_docnum" = integer(), 
-                   "_segnum" = integer(), 
-                   check.names = FALSE,
-                   stringsAsFactors = FALSE)
+make_docvars <- function(n, docname = NULL, unique = TRUE) {
+    stopifnot(is.integer(n))
+    if (is.null(docname)) {
+        docname <- paste0(quanteda_options("base_docname"), seq_len(n))
     } else {
-        data.frame("_docid" = docname,
-                   "_docname" = factor(docname, levels = unique(docname)),
-                   "_docnum" = seq(1L, n), 
-                   "_segnum" = rep(1L, n), 
-                   check.names = FALSE,
-                   stringsAsFactors = FALSE)
+        stopifnot(n == length(docname))
+        docname <- as.character(docname)
+        if (unique)
+            docname <- make.unique(docname)
     }
+    data.frame("_docid" = docname,
+               "_docname" = factor(docname, levels = unique(docname)),
+               "_docnum" = seq_len(n), 
+               "_segnum" = rep(1L, n), 
+               check.names = FALSE,
+               stringsAsFactors = FALSE)
 }
 
 # internal function to upgrade docvars to modern format
 upgrade_docvars <- function(x, docname = NULL) {
-    if (is.null(docname))
-        docname <- rownames(x)
-    rownames(x) <- NULL
-    if (sum(is_system(colnames(x))) == 4) {
+    if (sum(is_system(colnames(x))) == 4) 
         return(x)
-    } else if (is.null(x) || length(x) == 0) {
-        return(make_docvars(docname, FALSE))
+    if (is.null(docname)) 
+        docname <- rownames(x)
+    if (is.null(x) || length(x) == 0) {
+        result <- make_docvars(length(docname), docname, FALSE)
     } else {
-        return(cbind(make_docvars(docname, FALSE), get_docvars(x)))
+        rownames(x) <- NULL
+        result <- cbind(make_docvars(nrow(x), docname, FALSE), 
+                        x[!is_system(names(x)) & !!is_system_old(names(x))])
+        if ("_document" %in% names(x))
+            result[["_docname"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
+        if ("_docid" %in% names(x))
+            result[["_docnum"]] <- as.integer(x[["_docid"]])
+        if ("_segid" %in% names(x))
+            result[["_segnum"]] <- as.integer(x[["_segid"]])
     }
+    return(result)
 }
 
-# internal function to check if variable is internal-only
+# internal function to check if variables are internal-only
 is_system <- function(x) {
     x %in% c("_docid", "_docname", "_docnum", "_segnum")
+}
+
+# internal function to check if old variables are internal-only
+is_system_old <- function(x) {
+    x %in% c("texts", "_document", "_docid", "_segid")
 }
 
 

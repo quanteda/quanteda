@@ -41,24 +41,18 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 #' @import data.table data.table
 #' @export
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
-    index <- docID <- temp <- NULL
+    index <- docid <- temp <- NULL
     
     if (!is.null(by)) {
-        if (by == "document") by <- "_document"
-        dt <- data.table(index = 1:ndoc(x), docID = docvars(x, by))
-        dt[, temp := sample(1:.N, replace = TRUE), by = docID]
-        dt[, sample_index := index[temp], by = docID]
-        sample_index <- dt[, sample_index]
+        if (by == "document") by <- "_docname"
+        dt <- data.table(index = ndoc(x), docid = attr(x, "docvars")[[by]])
+        dt[, temp := sample(1:.N, replace = TRUE), by = docid]
+        dt[, index_sample := index[temp], by = docid]
+        index_sample <- dt[, index_sample]
     } else {
-        sample_index <- base::sample(ndoc(x), size, replace, prob) 
+        index_sample <- base::sample(ndoc(x), size, replace, prob) 
     }
-        
-    documents(x) <- documents(x)[sample_index, , drop = FALSE]
-    if (is.corpuszip(x)) {
-        texts(x) <- texts(x)[sample_index]
-        x$docnames <- x$docnames[sample_index]
-    }
-    x
+    x[index_sample]
 }
 
 # ---------- internal functions from older resample.R ---------

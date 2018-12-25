@@ -3,16 +3,24 @@ context("test docvars")
 
 test_that("make_docvars() works", {
     
-    docvar1 <- quanteda:::make_docvars(character())
-    docvar2 <- quanteda:::make_docvars(c("A", "B", "C"))
-    docvar3 <- quanteda:::make_docvars(1:3)
+    docvar1 <- quanteda:::make_docvars(n = 0L, docname = character())
+    docvar2 <- quanteda:::make_docvars(n = 3L, docname = c("A", "B", "C"))
+    docvar3 <- quanteda:::make_docvars(n = 3L, docname = 1:3)
+    docvar4 <- quanteda:::make_docvars(n = 10L)
+    docvar5 <- quanteda:::make_docvars(n = 3L, docname = c("A", "B", "B"))
+
     expect_equal(dim(docvar1), c(0, 4))
     expect_equal(dim(docvar2), c(3, 4))
     expect_equal(dim(docvar3), c(3, 4))
     expect_equal(colnames(docvar1), c("_docid", "_docname", "_docnum", "_segnum"))
     expect_equal(colnames(docvar2), c("_docid", "_docname", "_docnum", "_segnum"))
     expect_equal(colnames(docvar3), c("_docid", "_docname", "_docnum", "_segnum"))
-    
+    expect_equal(colnames(docvar4), c("_docid", "_docname", "_docnum", "_segnum"))
+    expect_equal(docvar4[["_docid"]], paste0("text", 1:10))
+    expect_error(quanteda:::make_docvars(n = 2, docname = c("A", "B", "C")))
+    expect_equal(docvar5[["_docid"]], c("A", "B", "B.1"))
+    expect_error(quanteda:::make_docvars(n = "3"))
+    expect_error(quanteda:::make_docvars(n = 1.4))
 })
 
 test_that("upgrade_docvars() workds", {

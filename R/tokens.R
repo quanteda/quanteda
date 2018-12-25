@@ -300,7 +300,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
                         skip = 0L,
                         concatenator = concatenator,
                         padding = FALSE)
-    docvars(result) <- data.frame(row.names = docnames(x))
+    attr(result, "docvars") <- make_docvars(length(x), names(x))
     return(result)
 }
 

@@ -155,7 +155,7 @@ matrix2dfm <- function(x, slots = NULL) {
     
     x <- Matrix(x, sparse = TRUE)
     dimnames(x) <- list(docs = rowname, features = colname)
-    x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(rowname, FALSE))
+    x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(nrow(x), rowname, FALSE))
     set_dfm_slots(x, slots)
 }
 

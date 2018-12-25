@@ -39,9 +39,10 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("ver
                 stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1], 
                                        "bootstrap_dfm.", ""),
                 " into sentences...", appendLF = FALSE)
-    corp_sentences <- corpus_reshape(x, to = "sentences")
+    x <- as.corpus(x)
+    corp_sent <- corpus_reshape(x, to = "sentences")
     if (verbose) message("done.")
-    result <- bootstrap_dfm(dfm(corp_sentences, ...),  n = n, ..., verbose = verbose)
+    result <- bootstrap_dfm(dfm(corp_sent, ...),  n = n, ..., verbose = verbose)
     # replace original dfm with the one created pre-splitting
     result[['dfm_0']] <- dfm(x, ...)
     result

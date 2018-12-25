@@ -132,7 +132,6 @@ as.corpus.corpus <- function(x) {
     
     if (is.character(x)) {
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
-        return(x)
     } else {
         x <- upgrade_corpus(x)
     }
@@ -143,21 +142,7 @@ upgrade_corpus <- function(x) {
     
     # Make a new corpus object
     result <- corpus(x$documents, text_field = "texts")
-    
-    # Make docvars only with system vars
-    docvar <- make_docvars(row.names(x$documents))
-    
-    # Copy old system variables
-    if ("_document" %in% names(x$documents))
-        docvar["_docname"] <- x$documents["_document"]
-    if ("_docid" %in% names(x$documents))
-        docvar["_docnum"] <- x$documents["_docid"]
-    if ("_segid" %in% names(x$documents))
-        docvar["_segnum"] <- x$documents["_segid"]
-    
-    # Copy user variables but texts
-    flag <- !names(x$document) == "texts" & !stri_startswith_fixed(names(x$document), "_")
-    attr(result, "docvars") <- cbind(docvar, x$document[flag])
+    attr(result, "docvars") <- upgrade_docvars(x$documents)
     
     if ("unit" %in% names(x$settings)) {
         attr(result, "unit") <- x$settings$unit
