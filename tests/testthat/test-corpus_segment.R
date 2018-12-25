@@ -65,13 +65,11 @@ test_that("corpus_segment works with use_docvars TRUE or FALSE", {
     corp_seg1 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, 
                                 use_docvars = TRUE)
-    summ1 <- summary(corp_seg1)
-    expect_equal(summ1$test, c("A", "A", "B"))
+    expect_equal(docvars(corp_seg1, "test"), c("A", "A", "B"))
     
     corp_seg2 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
-    summ2 <- summary(corp_seg2)
-    expect_equal(names(summ2), c("Text", "Types", "Tokens", "Sentences", "pattern"))
+    expect_error(docvars(corp_seg2, "test"))
 })
 
 test_that("char_segment works with Japanese texts", {

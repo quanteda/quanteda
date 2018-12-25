@@ -51,6 +51,9 @@ get_docvars.data.frame <- function(x, field = NULL, system = FALSE, drop = FALSE
     if (is.null(field)) {
         return(x)
     } else {
+        error <- !field %in% names(x)
+        if (any(error))
+            stop("field(s) ", paste(field[error], collapse = ", "), " not found")
         if (length(field) == 1 && drop) {
             return(x[[field]])
         } else {
@@ -67,15 +70,36 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
     } else {
         stopifnot(n == length(docname))
         docname <- as.character(docname)
-        if (unique)
-            docname <- make.unique(docname)
     }
-    data.frame("_docid" = docname,
-               "_docname" = factor(docname, levels = unique(docname)),
-               "_docnum" = seq_len(n), 
-               "_segnum" = rep(1L, n), 
-               check.names = FALSE,
-               stringsAsFactors = FALSE)
+    if (n == 0) {
+        data.frame("_docid" = character(),
+                   "_docname" = factor(),
+                   "_docnum" = integer(), 
+                   "_segnum" = integer(), 
+                   check.names = FALSE,
+                   stringsAsFactors = FALSE)
+    } else {
+        if (unique) {
+            docnum <- match(docname, unique(docname))
+            if (any(duplicated(docname))) {
+                segnum <- ave(docname == docname, docname, FUN = cumsum)
+                docid <- paste0(docname, ".", segnum)
+            } else {
+                segnum <- rep(1L, n)
+                docid <- docname
+            }
+        } else {
+            docnum <- seq(1L, n)
+            segnum <- rep(1L, n)
+            docid <- docname
+        }
+        data.frame("_docid" = docid,
+                   "_docname" = factor(docname, levels = unique(docname)),
+                   "_docnum" = docnum, 
+                   "_segnum" = segnum,
+                   check.names = FALSE,
+                   stringsAsFactors = FALSE)
+    }
 }
 
 # internal function to upgrade docvars to modern format
