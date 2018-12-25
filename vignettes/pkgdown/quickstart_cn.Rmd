@@ -144,14 +144,14 @@ summary(data_corpus_irishbudget2010)
 我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(data_corpus_inaugural)
-tokenInfo$Year <- docvars(data_corpus_inaugural, "Year")
+summ <- summary(data_corpus_inaugural)
+summ$Year <- docvars(data_corpus_inaugural, "Year")
 if (require(ggplot2))
-    ggplot(data = tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+    ggplot(data = summ, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
         scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
 
 # 最长的就职演说: William Henry Harrison
-tokenInfo[which.max(tokenInfo$Tokens), ] 
+summ[which.max(summ$Tokens), ] 
 ```
 
 

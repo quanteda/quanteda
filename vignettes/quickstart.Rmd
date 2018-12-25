@@ -142,15 +142,15 @@ summary(data_corpus_irishbudget2010)
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(data_corpus_inaugural)
-tokenInfo$Year <- docvars(data_corpus_inaugural, "Year")
+summ <- summary(data_corpus_inaugural)
+summ$Year <- docvars(data_corpus_inaugural, "Year")
 if (require(ggplot2))
-    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+    ggplot(data = summ, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
         scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
     theme_bw()
 
 # Longest inaugural address: William Henry Harrison
-tokeninfo[which.max(tokeninfo$Tokens), ] 
+summ[which.max(summ$Tokens), ] 
 ```
 
 
