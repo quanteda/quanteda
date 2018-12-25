@@ -24,7 +24,7 @@ test_that("upgrade_docvars() workds", {
                           "var2" = c(TRUE, TRUE, FALSE),
                           row.names = c("A", "B", "C"))
     docvar4 <- data.frame("_docid" = c("A", "B", "C"), 
-                          "_docname" = c("A", "B", "C"), 
+                          "_docname" = factor(c("A", "B", "C")), 
                           "_docnum" = 1L:3L, 
                           "_segnum" = rep(1L, 3), 
                           "var1" = c(100, 200, 300),

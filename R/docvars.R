@@ -67,14 +67,14 @@ make_docvars <- function(docname, unique = TRUE) {
     n <- length(docname)
     if (n == 0) {
         data.frame("_docid" = character(),
-                   "_docname" = character(),
+                   "_docname" = factor(),
                    "_docnum" = integer(), 
                    "_segnum" = integer(), 
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
     } else {
         data.frame("_docid" = docname,
-                   "_docname" = docname,
+                   "_docname" = factor(docname, levels = unique(docname)),
                    "_docnum" = seq(1L, n), 
                    "_segnum" = rep(1L, n), 
                    check.names = FALSE,
