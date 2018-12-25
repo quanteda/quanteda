@@ -38,25 +38,16 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
     stop(friendly_class_undefined_message(class(x), "corpus_sample"))
 }
 
-#' @import data.table data.table
 #' @export
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
-    index <- docid <- temp <- NULL
     
     if (!is.null(by)) {
-        if (by == "document") by <- "_docname"
-        dt <- data.table(index = ndoc(x), docid = attr(x, "docvars")[[by]])
-        dt[, temp := sample(1:.N, replace = TRUE), by = docid]
-        dt[, index_sample := index[temp], by = docid]
-        index_sample <- dt[, index_sample]
+        if (by == "document") by <- "_docnum"
+        docvar <- attr(x, "docvars")
+        index <- unlist(lapply(split(seq_len(ndoc(x)), docvar[[by]]), base::sample), 
+                        use.names = FALSE)
     } else {
-        index_sample <- base::sample(ndoc(x), size, replace, prob) 
+        index <- base::sample(ndoc(x), size, replace, prob) 
     }
-    x[index_sample]
+    x[index]
 }
-
-# ---------- internal functions from older resample.R ---------
-
-is.resampled <- function(x) { FALSE }
-
-nresample <- function(x) { 0 }
