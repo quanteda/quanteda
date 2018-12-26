@@ -22,10 +22,7 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     )
 
     # check that all documents have at least one sentence
-    L <- lapply(bs1, as.matrix)
-    arrayL <- array(unlist(L), dim = c(nrow(L[[1]]), ncol(L[[1]]), length(L)))
-    docsums <- apply(arrayL, c(1, 3), sum)
-    expect_true(all(docsums[c(2, 3), ] == 6))
+    expect_true(all(unlist(lapply(bs1, rowSums)) > 0))
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {
@@ -55,3 +52,4 @@ test_that("bootstrap_dfm works as planned with dfm", {
         docnames(bs2[[2]])
     )
 })
+

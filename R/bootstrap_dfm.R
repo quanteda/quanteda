@@ -42,10 +42,7 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("ver
     x <- as.corpus(x)
     corp_sent <- corpus_reshape(x, to = "sentences")
     if (verbose) message("done.")
-    result <- bootstrap_dfm(dfm(corp_sent, ...),  n = n, ..., verbose = verbose)
-    # replace original dfm with the one created pre-splitting
-    result[['dfm_0']] <- dfm(x, ...)
-    result
+    bootstrap_dfm(dfm(corp_sent, ...),  n = n, ..., verbose = verbose)
 }
 
 #' @noRd
@@ -56,7 +53,6 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 
 #' @noRd
 #' @export
-#' @import data.table
 #' @examples 
 #' # bootstrapping from a dfm
 #' mydfm <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
@@ -64,30 +60,24 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     
     x <- as.dfm(x)
-    if (length(unique(get_docvars(x, "docname", TRUE, TRUE))) == ndoc(x))
+    group <- attr(x, "docvars")[["_docname"]]
+    if (length(unique(group)) == ndoc(x))
         stop("x must contain more than one row per document")
 
     if (verbose) {
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
-    
     result <- list()
-    # construct the original dfm
-    result[['dfm_0']] <- dfm_group(x, groups = get_docvars(x, "_docname", TRUE, TRUE))
-    
-    # randomly resample dfm
-    id <- index <- NULL
+    temp <- dfm_group(x, groups = group, fill = TRUE)
+    temp@docvars[["_docid"]] <- levels(group)
+    result[[1]] <- temp
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        dt <- data.table(index = seq_len(ndoc(x)), id = get_docvars(x, "_docname", TRUE, TRUE))
-        dt[, temp := sample(1:.N, replace = TRUE), by = id]
-        dt[, sample_index := index[temp], by = id]
-        sample_index <- dt[, sample_index]
-        temp <- x[sample_index, ]
-        temp <- dfm_group(temp, groups = get_docvars(temp, "_docname", TRUE, TRUE))
-        result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
+        temp <- x[unlist(lapply(split(seq_len(ndoc(x)), group), sample), use.names = FALSE), ]
+        result[[i + 1]] <- dfm_group(temp, groups = temp@docvars[["_docname"]], fill = TRUE)
     }
+    names(result) <- paste0("dfm_", seq(0, n))
     if (verbose) 
         message("\n   ...complete.\n")
     
