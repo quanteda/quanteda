@@ -113,7 +113,7 @@ upgrade_docvars <- function(x, docname = NULL) {
     } else {
         rownames(x) <- NULL
         result <- cbind(make_docvars(nrow(x), docname, FALSE), 
-                        x[!is_system(names(x)) & !!is_system_old(names(x))])
+                        x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
             result[["_docname"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
         if ("_docid" %in% names(x))
