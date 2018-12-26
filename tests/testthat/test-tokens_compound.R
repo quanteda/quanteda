@@ -5,8 +5,8 @@ test_that("tokens_compound join tokens correctly", {
     txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", 
              "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
     toks <- tokens(txt)
-    seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), 
-                   what = "fastestword")
+    seqs <- as.list(tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), 
+                    what = "fastestword"))
     expect_equivalent(
         as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE)),
         list(c("a_b", "c_d", "e", "f", "g"),
@@ -25,8 +25,8 @@ test_that("tokens_compound join tokens correctly", {
              c("a_b", "b_c", "c_d", "d_e_e_f", "f_g"))
     )
     
-    seqs_fixed <- tokens(c("a b", "C D", "aa bb", "eEE FFf", "d_e e_f"), 
-                         what = "fastestword")
+    seqs_fixed <- as.list(tokens(c("a b", "C D", "aa bb", "eEE FFf", "d_e e_f"), 
+                          what = "fastestword"))
     expect_equivalent(
         as.list(tokens_compound(toks, seqs_fixed, valuetype = "glob", case_insensitive = TRUE)),
         list(c("a_b", "c_d", "e", "f", "g"),
@@ -50,8 +50,8 @@ test_that("tokens_compound join a sequences of sequences", {
     
     txt <- c("a b c d e f g", "A B C D E F G") 
     toks <- tokens(txt)
-    seqs <- tokens(c("a b", "b c d", "E F", "F G"), 
-                   what = "fastestword")
+    seqs <- as.list(tokens(c("a b", "b c d", "E F", "F G"), 
+                    what = "fastestword"))
     expect_equal(
         as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = TRUE)),
         list(text1 = c("a_b_c_d", "e_f_g"),
