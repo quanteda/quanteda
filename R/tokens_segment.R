@@ -57,44 +57,37 @@ tokens_segment.tokens <- function(x, pattern,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
     
+    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    
+    if (!use_docvars)
+        docvars(x) <- NULL
     attrs <- attributes(x)
-    types <- types(x)
-    vars <- docvars(x)
-
-    ids <- pattern2list(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    type <- types(x)
+    
+    ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
-
+    
     if (pattern_position == "before") {
-        x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 1)
+        result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 1)
     } else {
-        x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 2)
+        result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 2)
     }
-    docname <- paste(attr(x, 'document'), as.character(attr(x, 'segid')), sep = '.')
     
-    # add repeated versions of remaining docvars
-    if (use_docvars && !is.null(vars)) {
-        vars <- vars[attr(x, 'docid'),,drop = FALSE] # repeat rows
-        rownames(vars) <- docname
-    } else {
-        attrs$docvars <- NULL
-        vars <- NULL
-    }
-    result <- create(x, what = 'tokens', 
-                     attrs = attrs, 
-                     docvars = vars, 
-                     names = docname,
-                     document = NULL, 
-                     docid = NULL, 
-                     segid = NULL)
+    attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
+    attrs$docvars[["_docid"]] <- paste0(docnames(x)[attr(result, "docnum")], ".", 
+                                        attr(result, "segnum"))
+    attrs$docvars[["_docnum"]] <- attr(result, "docnum")
+    attrs$docvars[["_segnum"]] <- attr(result, "segnum")
+    if (extract_pattern)
+        attrs$docvars[["pattern"]] <- attr(result, "pattern")
     
-    docvars(result, '_document') <- attr(x, 'document')
-    docvars(result, '_docid') <- attr(x, 'docid')
-    docvars(result, '_segid') <- attr(x, 'segid')
-    if (extract_pattern) docvars(result, "pattern") <- attr(x, 'pattern')
+    attrs$names <- attrs$docvars[["_docid"]]
+    attr(result, "docnum") <- NULL
+    attr(result, "segnum") <- NULL
+    attr(result, "pattern") <- NULL
+    attributes(result, FALSE) <- attrs
     
     return(result)
-
+    
 }

@@ -153,7 +153,8 @@ List qatd_cpp_tokens_segment(const List &texts_,
     
     Texts segments(len);
     IntegerVector ids_document_(len), ids_segment_(len);
-    CharacterVector names_document_(len), matches_(len);
+    //CharacterVector names_document_(len), matches_(len);
+    CharacterVector matches_(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -181,16 +182,16 @@ List qatd_cpp_tokens_segment(const List &texts_,
             
             ids_document_[j] = (int)h + 1;
             ids_segment_[j] = (int)i + 1;
-            names_document_[j] = names_[h];
+            //names_document_[j] = names_[h];
             j++;
         }
     }
     
     Tokens segments_ = recompile(segments, types, remove, false, false);
     segments_.attr("pattern") = matches_;
-    segments_.attr("document") = names_document_;
-    segments_.attr("docid") = ids_document_;
-    segments_.attr("segid") = ids_segment_;
+    //segments_.attr("docid") = names_document_;
+    segments_.attr("docnum") = ids_document_;
+    segments_.attr("segnum") = ids_segment_;
     
     return(segments_);
 }

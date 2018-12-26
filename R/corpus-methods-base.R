@@ -11,6 +11,7 @@ NULL
 #' @rdname corpus-class
 #' @method print corpus
 print.corpus <- function(x, ...) {
+    x <- as.corpus(x)
     cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
         if (ndoc(x) > 1L) "s" else "", sep = "")
     if (ncol(docvars(x)))
@@ -207,18 +208,20 @@ c.corpus <- function(..., recursive = FALSE) {
     x <- as.corpus(x)
     attrs <- attributes(x)
     if (is.character(i)) {
-        index <- fastmatch::fmatch(i, docnames(x))
+        index <- match(i, docnames(x))
+    } else if (is.numeric(i)) {
+        index <- match(i, seq_len(length(x)))
     } else {
-        index <- match(i, seq(length(x)))
+        index <- which(i)
     }
     is_na <- is.na(index)
     if (any(is_na))
         warning(paste(i[is_na], collapse = ", "), " do not exist")
     index <- index[!is_na]
     
-    x <- as.character(unclass(x))[index]
-    attrs$docvars <- attrs$docvars[index,,drop = FALSE]
-    attributes(x) <- attrs
+    x <- unclass(x)[index]
+    attrs$docvars <- reshape_docvars(attrs$docvars, index)
+    attributes(x, FALSE) <- attrs
     return(x)
 }
 

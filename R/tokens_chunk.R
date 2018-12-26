@@ -32,7 +32,9 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
-
+    
+    x <- as.tokens(x)
+    
     if (length(size) > 1L)
         stop("Size must be a single integer")
     if (size < 1L)
@@ -43,25 +45,21 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
         stop("Overlap must be smaller than size")
     if (!use_docvars)
         docvars(x) <- NULL
-
+    
     attrs <- attributes(x)
     type <- types(x)
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
 
-    # add repeated versions of remaining docvars
-    attrs$docvars <- attrs$docvars[attr(result, "docnum"), , drop = FALSE] # repeat rows
-    if (any(duplicated(attr(result, "docnum")))) {
-        docid <- paste0(names(x)[attr(result, "docnum")], ".", attr(result, "segnum"))
-    } else {
-        docid <- names(x)
-    }
-    attrs$docvars["_document"] <- names(x)[attr(result, "docnum")]
-    attrs$docvars["_docid"] <- attr(result, "docnum")
-    attrs$docvars["_segid"] <- attr(result, "segnum")
-
-    attrs$names <- rownames(attrs$docvars) <- docid
-    attr(result, "docnum") <- attr(result, "segnum") <- NULL
-    attributes(result) <- attrs
+    attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
+    attrs$docvars[["_docid"]] <- paste0(docnames(x)[attr(result, "docnum")], ".", 
+                                        attr(result, "segnum"))
+    attrs$docvars[["_docnum"]] <- attr(result, "docnum")
+    attrs$docvars[["_segnum"]] <- attr(result, "segnum")
+    
+    attrs$names <- attrs$docvars[["_docid"]]
+    attr(result, "docnum") <- NULL
+    attr(result, "segnum") <- NULL
+    attributes(result, FALSE) <- attrs
 
     return(result)
 }
