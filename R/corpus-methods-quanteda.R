@@ -31,34 +31,25 @@ texts <- function(x, groups = NULL, spacer = "  ") {
 
 #' @noRd
 #' @export
-texts.corpus <- function(x, groups = NULL, spacer = "  ") {
+texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
-    txt <- as.character(unclass(x))
-    
-    # without groups
-    if (is.null(groups)) {
-        names(txt) <- docnames(x)
-        return(txt)
-    }
-    
-    if (is.character(groups) & all(groups %in% attr(x, "docvars"))) {
-        if (any(is_system(groups)))
-            message_error("docvar_invalid")
-        group <- as.factor(interaction(attr(x, "docvars")[groups]))
-    } else {
-        if (length(groups) != ndoc(x))
-            stop("groups must name docvars or provide data matching the documents in x")
-        group <- as.factor(groups)
-    }
-    
-    texts(txt, groups = group, spacer = spacer)
+    temp <- as.character(unclass(x))
+    names(temp) <- docnames(x)
+    if (is.null(groups)) 
+        return(x)
+    if (!is.factor(groups))
+        groups <- generate_groups(x, groups)
+    texts(temp, groups = groups, spacer = spacer)
 }
 
 #' @noRd
 #' @export
-texts.character <- function(x, groups = NULL, spacer = "  ") {
+texts.character <- function(x, groups = NULL, spacer = " ") {
     if (is.null(groups)) return(x)
-    stri_c_list(split(texts(x), as.factor(groups)), collapse = spacer)
+    if (!is.factor(groups)) groups <- factor(groups, unique(groups)) 
+    result <- stri_c_list(split(x, groups), sep = spacer)
+    names(result) <- levels(groups)
+    return(result)
 }
 
 
