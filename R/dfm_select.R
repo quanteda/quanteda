@@ -156,7 +156,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                                                       stri_length(featnames(x)) <= max_nchar))
     }
     
-    if (!length(feature_keep)) feature_keep <- 0
+    if (!length(feature_keep)) feature_keep <- integer()
     x <- x[, feature_keep]    
 
     if (valuetype == "fixed" && padding) {
