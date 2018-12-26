@@ -82,6 +82,7 @@ group_docvars <- function(x, group) {
     l <- c(rep(TRUE, 4), unlist(lapply(get_docvars(x), is_grouped, as.integer(group)), 
                                 use.names = FALSE))
     result <- x[match(levels(group), group), l, drop = FALSE]
+    result[["_docid"]] <- levels(group)
     rownames(result) <- NULL
     result
 }

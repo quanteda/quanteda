@@ -69,9 +69,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
     result <- list()
-    temp <- dfm_group(x, groups = group, fill = TRUE)
-    temp@docvars[["_docid"]] <- levels(group)
-    result[[1]] <- temp
+    result[[1]] <- dfm_group(x, groups = group, fill = TRUE)
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
         temp <- x[unlist(lapply(split(seq_len(ndoc(x)), group), sample), use.names = FALSE), ]
