@@ -32,21 +32,21 @@ get_docvars <- function(x, field = NULL, system = FALSE, drop = FALSE) {
 
 #' @method get_docvars corpus
 get_docvars.corpus <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    get_docvars(attr(x, "docvars"), field, system, drop)
+    select_docvars(attr(x, "docvars"), field, system, drop)
 }
 
 #' @method get_docvars tokens
 get_docvars.tokens <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    get_docvars(attr(x, "docvars"), field, system, drop)
+    select_docvars(attr(x, "docvars"), field, system, drop)
 }
 
 #' @method get_docvars dfm
 get_docvars.dfm <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    get_docvars(x@docvars, field, system, drop)
+    select_docvars(x@docvars, field, system, drop)
 }
 
-#' @method get_docvars data.frame
-get_docvars.data.frame <- function(x, field = NULL, system = FALSE, drop = FALSE) {
+# Internal function to select columns of docvars
+select_docvars <- function(x, field = NULL, system = FALSE, drop = FALSE) {
     x <- x[system == is_system(names(x))]
     if (is.null(field)) {
         return(x)
@@ -102,17 +102,30 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
     }
 }
 
+# internal function to duplicate or dedplicate docvar rows
+reshape_docvars <- function(x, i = NULL, j = NULL) {
+    if (is.null(i) && is.null(j)) return(x)
+    if (is.null(i)) i <- seq_len(nrow(x))
+    if (is.null(j)) j <- seq_len(ncol(x))
+    x <- x[i, j, drop = FALSE]
+    rownames(x) <- NULL
+    return(x)
+}
+
 # internal function to upgrade docvars to modern format
-upgrade_docvars <- function(x, docname = NULL) {
+upgrade_docvars <- function(x, docnames = NULL) {
     if (sum(is_system(colnames(x))) == 4) 
         return(x)
-    if (is.null(docname)) 
-        docname <- rownames(x)
+    if (is.null(docnames)) {
+        stopifnot(!is.null(x))
+        docnames <- rownames(x)
+    }
     if (is.null(x) || length(x) == 0) {
-        result <- make_docvars(length(docname), docname, FALSE)
+        stopifnot(!is.null(docnames))
+        result <- make_docvars(length(docnames), docnames, FALSE)
     } else {
         rownames(x) <- NULL
-        result <- cbind(make_docvars(nrow(x), docname, FALSE), 
+        result <- cbind(make_docvars(nrow(x), docnames, FALSE), 
                         x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
             result[["_docname"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
@@ -165,26 +178,26 @@ docvars.default <- function(x, field = NULL) {
 #' @export
 docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
-    get_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
+    select_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.tokens <- function(x, field = NULL) {
-    get_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
+    select_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.dfm <- function(x, field = NULL) {
     x <- as.dfm(x)
-    get_docvars(x@docvars, field, FALSE, TRUE)
+    select_docvars(x@docvars, field, FALSE, TRUE)
 }
 
 #' @noRd
 #' @keywords internal
 docvars.kwic <- function(x) {
-    get_docvars(attr(x, 'docvars'), NULL)
+    select_docvars(attr(x, 'docvars'), NULL)
 }
 
 #' @rdname docvars
