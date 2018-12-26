@@ -24,12 +24,6 @@ featnames <- function(x) {
 
 #' @export
 #' @noRd
-featnames.NULL <- function(x) {
-    NULL
-}
-
-#' @export
-#' @noRd
 featnames.dfm <- function(x) {
     x <- as.dfm(x)
     if (is.null(colnames(x))) {
@@ -50,12 +44,6 @@ docnames.dfm <- function(x) {
     } else {
         rownames(x)
     }
-}
-
-#' @noRd
-#' @export
-docnames.NULL <- function(x) {
-    NULL
 }
 
 # as.dfm -----------
@@ -264,20 +252,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
     }
     
     result <- sort(wght, decreasing)
-    return(result[1:n])
-    
-    # Under development by Ken
-    # if (is.resampled(x)) {
-    #     subdfm <- x[, order(colSums(x[,,1]), decreasing = decreasing), ]
-    #     subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-    #     return(data.frame(#features=colnames(subdfm),
-    #         freq=colSums(subdfm[,,1]),
-    #         cilo = apply(colSums(subdfm), 1, stats::quantile, (1 - ci) / 2),
-    #         cihi = apply(colSums(subdfm), 1, stats::quantile, 1 - (1 - ci) / 2)))
-    # } else {
-    #    subdfm <- sort(colSums(x), decreasing)
-    #    return(subdfm[1:n])
-    #}
+    return(head(result, n))
 }
 
 # sparsity -----------
