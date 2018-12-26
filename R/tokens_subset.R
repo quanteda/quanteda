@@ -8,9 +8,7 @@
 #'
 #' @param x \link{tokens} object to be subsetted
 #' @inheritParams corpus_subset
-#' @param select expression, indicating the docvars to select from the tokens;
-#'   or a \link{tokens} object, in which case the returned tokens will contain the same
-#'   documents in the same order as the original tokens, even if these are empty.
+#' @param select expression, indicating the \link{docvars} to keep
 #' @return \link{tokens} object, with a subset of documents (and docvars)
 #'   selected according to arguments
 #' @export
@@ -25,12 +23,6 @@
 #' tokens_subset(toks, grp > 1)
 #' # selecting on a supplied vector
 #' tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
-#'
-#' # selecting on a tokens
-#' toks1 <- tokens(c(d1 = "a b b c", d2 = "b b c d"))
-#' toks2 <- tokens(c(d1 = "x y z", d2 = "a b c c d", d3 = "x x x"))
-#' tokens_subset(toks1, subset = toks2)
-#' tokens_subset(toks1, subset = toks2[c(3,1,2)])
 tokens_subset <- function(x, subset, select, ...) {
     UseMethod("tokens_subset")
 }
@@ -45,29 +37,25 @@ tokens_subset.tokens <- function(x, subset, select, ...) {
     
     unused_dots(...)
     
+    x <- as.tokens(x)
+    sys <- get_docvars(attr(x, "docvars"), system = TRUE)
+    usr <- get_docvars(attr(x, "docvars"), system = FALSE)
     r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(docvars(x)))
+        rep_len(TRUE, ndoc(x))
     } else {
         e <- substitute(subset)
-        r <- eval(e, docvars(x), parent.frame())
-        if (is.tokens(r)) {
-            if (!missing(select)) stop("cannot select docvars if subset is a tokens")
-            x <- x[which(docnames(x) %in% docnames(r)), ]
-            return(tokens_group(x, groups = factor(docnames(x), levels = docnames(r))))
-        } else {
-            r & !is.na(r)
-        }
+        r <- eval(e, usr, parent.frame())
+        r & !is.na(r)
     }
-    
-    vars <- if (missing(select)) {
-        TRUE
-    } else {
-        nl <- as.list(seq_along(docvars(x)))
-        names(nl) <- names(docvars(x))
+    vars <- if (missing(select)) 
+        rep_len(TRUE, ncol(usr))
+    else {
+        nl <- as.list(seq_along(usr))
+        names(nl) <- names(usr)
         eval(substitute(select), nl, parent.frame())
     }
-    if (ncol(docvars(x)))
-        docvars(x) <- docvars(x)[, vars, drop = FALSE]
-    
-    x[which(r)]
+    x <- unclass(x)[r]
+    attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
+                                reshape_docvars(usr, r, vars))
+    return(x)
 }

@@ -33,25 +33,25 @@ corpus_subset.corpus <- function(x, subset, select, ...) {
     unused_dots(...)
 
     x <- as.corpus(x)
-    attrs <- attributes(x)
+    sys <- get_docvars(attr(x, "docvars"), system = TRUE)
+    usr <- get_docvars(attr(x, "docvars"), system = FALSE)
     r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(attrs$docvars))
+        rep_len(TRUE, ndoc(x))
     } else {
         e <- substitute(subset)
-        r <- eval(e, attrs$docvars, parent.frame())
+        r <- eval(e, usr, parent.frame())
         r & !is.na(r)
     }
     vars <- if (missing(select)) 
-        TRUE
+        rep_len(TRUE, ncol(usr))
     else {
-        nl <- as.list(seq_along(attrs$docvars))
-        names(nl) <- names(attrs$docvars)
-        c(1, eval(substitute(select), nl, parent.frame()))
+        nl <- as.list(seq_along(usr))
+        names(nl) <- names(usr)
+        eval(substitute(select), nl, parent.frame())
     }
-    
-    x <- as.character(unclass(x))[r]
-    attrs$docvars <- attrs$docvars[r, vars, drop = FALSE]
-    attributes(x) <- attrs
+    x <- unclass(x)[r]
+    attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
+                                reshape_docvars(usr, r, vars))
     return(x)
 }
 
