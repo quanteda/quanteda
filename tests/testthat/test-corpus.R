@@ -1,4 +1,4 @@
-context('test corpus.R')
+context('test corpus')
 
 test_that("test show.corpus", {
 
@@ -222,30 +222,11 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 #     )
 # })
 
-test_that("corpus_subset works", {
-    txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
-             doc2 = "one\ntwo\tpart two\nthree\nfour.",
-             doc3 = "A single sentence.",
-             doc4 = "A sentence with \"escaped quotes\".")
-    df <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), 
-                     varchar = letters[1:4])
-
-    data_corpus_test    <- corpus(txt, docvars = df)
-    expect_equal(ndoc(corpus_subset(data_corpus_test, varfactor == "B")), 2)
-    expect_equal(docnames(corpus_subset(data_corpus_test, varfactor == "B")), 
-                 c("doc2", "doc4"))
-    
-    data_corpus_test_nodv  <- corpus(txt)
-    expect_equal(ndoc(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 1)
-    expect_equal(docnames(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 
-                 c("doc2"))
-
-})
 
 test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
     corp <- corpus(txt)
-    expect_equal(docnames(corp), c("one", "two", "one.1"))
+    expect_equal(docnames(corp), c("one.1", "two.1", "one.2"))
 })
 
 test_that("create a corpus on a corpus", {
@@ -268,25 +249,6 @@ test_that("create a corpus on a corpus", {
     )
 })
 
-test_that("head, tail.corpus work as expected", {
-    corp <- corpus_subset(data_corpus_inaugural, Year < 2018)
-    expect_equal(
-        docnames(head(corp, 3)),
-        c("1789-Washington", "1793-Washington", "1797-Adams")
-    )
-    expect_equal(
-        docnames(head(corp, -55)),
-        c("1789-Washington", "1793-Washington", "1797-Adams")
-    )
-    expect_equal(
-        docnames(tail(corp, 3)),
-        c("2009-Obama", "2013-Obama", "2017-Trump")
-    )
-    expect_equal(
-        docnames(tail(corp, -55)),
-        c("2009-Obama", "2013-Obama", "2017-Trump")
-    )
-})
 
 test_that("corpus constructor works with tibbles", {
     skip_if_not_installed("tibble")
@@ -373,7 +335,7 @@ test_that("corpus.data.frame sets docnames correctly", {
     df3_text <- data.frame(df_text, new = c(TRUE, FALSE, TRUE))
     expect_identical(
         docnames(corpus(df3_text, docid_field = "new")),
-        c("TRUE", "FALSE", "TRUE.1")
+        c("TRUE.1", "FALSE.1", "TRUE.2")
     )        
 })
 
