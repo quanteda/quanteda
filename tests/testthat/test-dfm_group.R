@@ -45,15 +45,16 @@ test_that("dfm_group works with docvars", {
 
 test_that("dfm.character groups works (#794)", {
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    corp <- corpus(txt, docvars = data.frame(grp = c(1, 1, 2)))
+    corp <- corpus(txt)
     toks <- tokens(corp)
+    grp <- c(1, 1, 2)
     expect_equal(
-        dfm(txt, groups = docvars(corp, "grp")),
-        dfm(toks, groups = "grp")
+        dfm(txt, groups = grp),
+        dfm(toks, groups = grp)
     )
     expect_equal(
-        dfm(txt, groups = docvars(corp, "grp")),
-        dfm(corp, groups = "grp")
+        dfm(txt, groups = grp),
+        dfm(corp, groups = grp)
     )
 })
 
@@ -170,7 +171,6 @@ test_that("test dfm_group keeps group-level variables", {
                             var1 = c(2, 2, 1),
                             var3 = c("y", NA, "x"),
                             var5 = as.Date(c("2015-03-01", "2012-12-15", "2018-01-01")),
-                            row.names = c("A", "C", "D"),
                             stringsAsFactors = FALSE)
     )
     
@@ -181,7 +181,6 @@ test_that("test dfm_group keeps group-level variables", {
                    var1 = c(2, NA, 2, 1),
                    var3 = c("y", NA, NA, "x"),
                    var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
-                   row.names = c("A", "B", "C", "D"),
                    stringsAsFactors = FALSE)
     )
 })

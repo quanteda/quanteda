@@ -3,12 +3,16 @@ subset_dfm <- function(x, i, j, ..., drop) {
     attrs <- attributes(x)
     error <- FALSE
     if (!missing(i)) {
-        if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
-        if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+        if (is.character(i))
+            i <- match(i, rownames(x))
+        if (any(is.na(i)) || any(i < 1L) || any(nrow(x) < i)) 
+            error <- TRUE
     }
     if (!missing(j)) {
-        if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
-        if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+        if (is.character(j))
+            j <- match(j, colnames(x))
+        if (any(is.na(j)) || any(j < 1L) || any(ncol(x) < j)) 
+            error <- TRUE
     }
     if (error) stop("Subscript out of bounds")
     
