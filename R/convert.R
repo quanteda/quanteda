@@ -29,37 +29,31 @@
 #'   of the return formats.
 #' @export
 #' @examples
-#' mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' quantdfm <- dfm(mycorpus, verbose = FALSE)
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+#' quant_mt <- dfm(corp, verbose = FALSE)
 #' 
 #' # austin's wfm format
-#' identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
+#' identical(dim(quant_mt), dim(convert(quant_mt, to = "austin")))
 #' 
 #' # stm package format
-#' stmdfm <- convert(quantdfm, to = "stm")
-#' str(stmdfm)
+#' stm_mt <- convert(quant_mt, to = "stm")
+#' str(stm_mt)
 #' 
 #' #' # triplet
-#' triplet <- convert(quantdfm, to = "tripletlist")
+#' triplet <- convert(quant_mt, to = "tripletlist")
 #' str(triplet)
-#' 
-#' # illustrate what happens with zero-length documents
-#' quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
-#' rowSums(quantdfm2)
-#' stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
-#' str(stmdfm2)
 #' 
 #' \dontrun{
 #' # tm's DocumentTermMatrix format
-#' tmdfm <- convert(quantdfm, to = "tm")
-#' str(tmdfm)
+#' tm_mt <- convert(quant_mt, to = "tm")
+#' str(tm_mt)
 #' 
 #' # topicmodels package format
-#' str(convert(quantdfm, to = "topicmodels"))
+#' str(convert(quant_mt, to = "topicmodels"))
 #' 
 #' # lda package format
-#' ldadfm <- convert(quantdfm, to = "lda")
-#' str(ldadfm)
+#' lda_mt <- convert(quant_mt, to = "lda")
+#' str(lda_mt)
 #' 
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 

@@ -33,10 +33,6 @@
 #' \item{\code{notes }}{any additional information about who created the text, warnings,
 #'   to do lists, etc.}
 #' }
-#' @param compress logical; if \code{TRUE}, compress the texts in memory using
-#'   gzip compression. This significantly reduces the size of the corpus in
-#'   memory, but will slow down operations that require the texts to be
-#'   extracted.
 #' @param ... not used directly
 #' @return A \link{corpus-class} class object containing the original texts,
 #'   document-level variables, document-level metadata, corpus-level metadata,
@@ -318,7 +314,7 @@ corpus.Corpus <- function(x, ...) {
 meta <- function(source = c("character", "corpus", "kwic", "list")) {
     source <- match.arg(source)
     list("source" = source,
-         "package-version" = packageVersion("quanteda"),
+         "package-version" = utils::packageVersion("quanteda"),
          "r-version" = getRversion(),
          "system" = Sys.info()[c("sysname", "machine", "user")],
          "directory" = getwd(),

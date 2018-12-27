@@ -21,11 +21,12 @@
 #' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 #' 
 #' # grouping a character vector using a factor
-#' nchar(data_char_ukimmig2010[1:5])
 #' nchar(texts(data_corpus_inaugural[1:5], 
-#'             groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+#'       groups = "President"))
+#' nchar(texts(data_corpus_inaugural[1:5], 
+#'       groups = factor(c("W", "W", "A", "J", "J"))))
 #' 
-texts <- function(x, groups = NULL, spacer = "  ") {
+texts <- function(x, groups = NULL, spacer = " ") {
     UseMethod("texts")
 }
 
