@@ -19,7 +19,7 @@ set_fcm_dimnames(x) <- value
 set_fcm_featnames(x) <- value
 }
 \arguments{
-\item{x}{a dfm or fcm}
+\item{x}{\link{dfm} or \link{fcm}}
 
 \item{value}{character a vector for docnames or featnames or a list of them
 for dimnames}
@@ -27,6 +27,12 @@ for dimnames}
 \description{
 Default \code{dimnames()} converts a zero-length character vector to NULL,
 leading to the improper functioning of subsetting functions. These are safer
-methods to set dimnames of a \link{dfm} or \link{fcm}.
+methods to set the dimnames of a dfm or fcm object.
+}
+\examples{
+x <- dfm(c("a a b b c", "b b b c"))
+quanteda:::set_dfm_featnames(x) <- paste0("feature", 1:3)
+quanteda:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
+quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
 }
 \keyword{internal}

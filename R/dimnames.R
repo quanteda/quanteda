@@ -2,11 +2,16 @@
 #'
 #' Default \code{dimnames()} converts a zero-length character vector to NULL,
 #' leading to the improper functioning of subsetting functions. These are safer
-#' methods to set dimnames of a \link{dfm} or \link{fcm}.
-#' @param x a dfm or fcm
+#' methods to set the dimnames of a dfm or fcm object.
+#' @param x \link{dfm} or \link{fcm}
 #' @param value character a vector for docnames or featnames or a list of them
 #'   for dimnames
 #' @keywords internal
+#' @examples 
+#' x <- dfm(c("a a b b c", "b b b c"))
+#' quanteda:::set_dfm_featnames(x) <- paste0("feature", 1:3)
+#' quanteda:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
+#' quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
 #' @rdname set_dfm_dimnames
 "set_dfm_dimnames<-" <- function(x, value) {
     if (is.null(value[[1]])) value[[1]] <- character()

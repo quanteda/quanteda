@@ -1044,3 +1044,17 @@ test_that("dimnames are always character vectors", {
     expect_identical(dimnames(mt[FALSE, ]),
                      list(docs = character(), features = colnames(mt)))
 })
+
+test_that("set_dfm_dimnames etc functions work", {
+    x <- dfm(c("a a b b c", "b b b c"))
+
+    quanteda:::set_dfm_featnames(x) <- paste0("feature", 1:3)
+    expect_identical(featnames(x), c("feature1", "feature2", "feature3"))
+
+    quanteda:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
+    expect_identical(docnames(x), c("DOC1", "DOC2"))
+    
+    quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
+    expect_identical(docnames(x), c("docA", "docB"))
+    expect_identical(featnames(x), c("A", "B", "C"))
+})
