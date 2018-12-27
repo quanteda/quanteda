@@ -94,7 +94,6 @@ Collate:
     'convert.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
-    'corpus-methods-tm.R'
     'corpus.R'
     'corpus_reshape.R'
     'corpus_sample.R'

@@ -30,7 +30,7 @@ Character values are only defined for non-accented Latin a-z, A-Z
 }
 \examples{
 nscrabble(c("muzjiks", "excellency"))
-nscrabble(data_corpus_inaugural[1:5], mean)
+nscrabble(texts(data_corpus_inaugural)[1:5], mean)
 }
 \author{
 Kenneth Benoit

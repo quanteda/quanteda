@@ -61,11 +61,6 @@ therefore being twice the number of rows in the kwic.}
 
 \item{extract_keyword}{logical; if  \code{TRUE}, save the keyword matching
 \code{pattern} as a new docvar \code{keyword}}
-
-\item{compress}{logical; if \code{TRUE}, compress the texts in memory using
-gzip compression. This significantly reduces the size of the corpus in
-memory, but will slow down operations that require the texts to be
-extracted.}
 }
 \value{
 A \link{corpus-class} class object containing the original texts,

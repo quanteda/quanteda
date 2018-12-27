@@ -36,7 +36,7 @@ documents and their associated document-level variables.
 }
 \examples{
 # sampling from a corpus
-summary(corpus_sample(data_corpus_inaugural, 5)) 
+summary(corpus_sample(data_corpus_inaugural, 5))
 summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 
 # sampling sentences within document
