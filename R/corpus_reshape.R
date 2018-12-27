@@ -52,34 +52,27 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     
     if (to == "documents") {
         if (attr(x, 'unit') %in% c('sentences', 'paragraphs')) {
+            temp <- split(unclass(x), droplevels(docvar[["_docname"]]))
             if (identical(attrs$unit, "sentences")) {
-                temp <- stri_join_list(split(x, factor(docvar[["_docnum"]])), sep = "  ")
+                temp <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
-                temp <- stri_join_list(split(x, factor(docvar[["_docnum"]])), sep = "\n\n")
+                temp <- unlist(lapply(temp, paste0, collapse = "\n\n"))
             }
-            docvar <- docvar[!duplicated(docvar[["_docnum"]]),]
-            docvar[["_docid"]] <- docvar[["_docname"]]
-            result <- corpus(temp)
-            attr(result, "docvars") <- docvar
+            docvar <- reshape_docvars(docvar, !duplicated(docvar[["_docname"]]))
+            result <- corpus(temp, docvars = select_docvars(docvar))
             attr(result, "unit") <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
-        
     } else if (to %in% c("sentences", "paragraphs")) {
         if (identical(attrs$unit, "documents")) {
-            temp <- segment_texts(x, docnames(x), pattern = NULL, extract_pattern = FALSE, 
+            temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
-            
-            #result[["_docname"]] <- rep(docname, n)
-            #result[["_docid"]] <- paste0(result[["_docname"]], ".", result[["_segnum"]])
-            
-            result <- corpus(temp, docid_field = "_docid", text_field = "text")
+            docvar <- reshape_docvars(docvar, temp$docnum)
             if (use_docvars) {
-                attr(result, "docvars") <- cbind(get_docvars(temp, system = TRUE), 
-                                                 get_docvars(docvar[temp[["_docnum"]],]))
+                result <- corpus(temp$text, docvar[["_docname"]], select_docvars(docvar))
             } else {
-                attr(result, "docvars") <- get_docvars(temp, system = TRUE)
+                result <- corpus(temp$text, docvar[["_docname"]])
             }
             attr(result, "unit") <- to
         } else {

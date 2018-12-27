@@ -4,17 +4,13 @@
 \alias{tokens_subset}
 \title{Extract a subset of a tokens}
 \usage{
-tokens_subset(x, subset, select, ...)
+tokens_subset(x, subset, ...)
 }
 \arguments{
 \item{x}{\link{tokens} object to be subsetted}
 
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
-
-\item{select}{expression, indicating the docvars to select from the tokens;
-or a \link{tokens} object, in which case the returned tokens will contain the same
-documents in the same order as the original tokens, even if these are empty.}
 
 \item{...}{not used}
 }
@@ -38,12 +34,6 @@ toks <- tokens(corp)
 tokens_subset(toks, grp > 1)
 # selecting on a supplied vector
 tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
-
-# selecting on a tokens
-toks1 <- tokens(c(d1 = "a b b c", d2 = "b b c d"))
-toks2 <- tokens(c(d1 = "x y z", d2 = "a b c c d", d3 = "x x x"))
-tokens_subset(toks1, subset = toks2)
-tokens_subset(toks1, subset = toks2[c(3,1,2)])
 }
 \seealso{
 \code{\link{subset.data.frame}}

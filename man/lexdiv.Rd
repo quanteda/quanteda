@@ -2,10 +2,10 @@
 % Please edit documentation in R/textstat_lexdiv.R
 \name{lexdiv}
 \alias{lexdiv}
-\alias{compute_lexdiv_stats}
+\alias{compute_lexdiv}
 \title{Compute lexical diversity (internal functions)}
 \usage{
-compute_lexdiv_stats(x, measure, log.base)
+compute_lexdiv(x, measure, log.base)
 }
 \arguments{
 \item{x}{a \link{dfm} object}

@@ -1,7 +1,7 @@
 library(quanteda)
 library(testthat)
 
-context('test ngrams.R')
+context('test tokens_ngrams')
 
 test_that("test that ngrams produces the results from Guthrie 2006", {
       toks <- tokens(c('insurgents killed in ongoing fighting'))

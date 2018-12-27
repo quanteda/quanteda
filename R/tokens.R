@@ -189,11 +189,16 @@ tokens.character <- function(x, ...) {
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     x <- as.corpus(x)
-    if (!include_docvars)
-        docvars(x) <- NULL
     attrs <- attributes(x)
     result <- tokens_internal(texts(x), ...)
     attributes(result, FALSE) <- attrs
+    if (include_docvars) {
+        attr(result, "docvars") <- attr(x, "docvars")
+    } else {
+        attr(result, "docvars") <- select_docvars(attr(x, "docvars"), system = TRUE)
+    }
+    attr(result, "unit") <- attr(x, "unit")
+    attr(result, "meta") <- attr(x, "meta")
     return(result)
 }
 
@@ -215,14 +220,16 @@ tokens.tokens <-  function(x,
                            verbose = quanteda_options("verbose"),
                            include_docvars = TRUE,
                            ...) {
-
+    
+    x <- as.tokens(x)
+    
     if (remove_hyphens)
         x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
 
     if (remove_twitter)
         x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""))
 
-    regex <- c()
+    regex <- character()
     if (remove_numbers)
         regex <- c(regex, "^[\\p{N}]+$")
     if (remove_punct)
@@ -239,7 +246,7 @@ tokens.tokens <-  function(x,
     if (!identical(ngrams, 1L) || !identical(skip, 0L))
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     if (!include_docvars)
-        docvars(x) <- data.frame(row.names = docnames(x))
+        docvars(x) <- NULL
     return(x)
 }
 
@@ -290,23 +297,18 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 #' @rdname as.tokens
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
-
+    x <- serialize_tokens(x)
     docvar <- make_docvars(length(x), names(x))
-    result <- structure(tokens_serialize(x),
-                        class = "tokens",
-                        what = "word",
-                        names = docvar[["_docid"]],
-                        ngrams = 1L,
-                        skip = 0L,
-                        concatenator = concatenator,
-                        padding = FALSE,
-                        docvars = docvar)
-    return(result)
+    compile_tokens(x, docvar[["_docid"]], 
+                   concatenator = concatenator,
+                   types = attr(x, "types"), source = "list",
+                   docvars = docvar)
 }
 
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x) {
+    attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
     return(x)
 }
 
@@ -405,24 +407,18 @@ tokens_internal <- function(x,
 
         if (verbose) catm("...serializing tokens ")
         if (i == 1) {
-            x[[i]] <- tokens_serialize(temp)
+            x[[i]] <- serialize_tokens(temp)
         } else {
-            x[[i]] <- tokens_serialize(temp, attr(x[[i - 1]], "types"))
+            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
         }
         if (verbose) catm(length(attr(x[[i]], "types")), "unique types\n")
 
     }
 
-    x <- structure(unlist(x, recursive = FALSE), # put all the blocked results togather
-                   class = "tokens",
-                   names = attrs$names,
-                   what = what,
-                   ngrams = ngrams,
-                   skip = skip,
-                   concatenator = concatenator,
-                   padding = FALSE,
-                   types = attr(x[[length(x)]], "types") # last block has all the types
-                   )
+    x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names, 
+                        what = what, ngrams = ngrams, skip = skip, concatenator = concatenator,
+                        types = attr(x[[length(x)]], "types"), unit = "documents", source = "corpus")
+    
     if (what %in% c("word", "fasterword")) {
 
         types <- types(x)
@@ -431,9 +427,10 @@ tokens_internal <- function(x,
         if (!remove_twitter)
             types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
                                             vectorize_all = FALSE)
-        if (!identical(types, types(x)))
+        if (!identical(types, types(x))) {
             types(x) <- types
             x <- tokens_recompile(x)
+        }
 
         regex <- c()
         if (remove_numbers)
@@ -450,7 +447,6 @@ tokens_internal <- function(x,
             x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex")
     }
 
-
     if (!identical(ngrams, 1L)) {
         if (verbose) catm("...creating ngrams\n")
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
@@ -462,6 +458,23 @@ tokens_internal <- function(x,
     }
 
     return(x)
+}
+
+compile_tokens <- function(x, names, types, ngrams = 1, skip = 0, 
+                           what = "word", concatenator = "_", padding = FALSE,
+                           unit = "documents", source = "corpus", docvars = data.frame()) {
+    structure(x,
+              names = names,
+              class = "tokens",
+              what = what,
+              ngrams = ngrams,
+              skip = skip,
+              concatenator = concatenator,
+              padding = padding,
+              types = types,
+              unit = unit,
+              meta = meta(source),
+              docvars = docvars)
 }
 
 tokens_word <- function(txt,
@@ -581,7 +594,7 @@ tokens_character <- function(txt,
 #' @return a list the serialized tokens found in each text
 #' @importFrom fastmatch fmatch
 #' @keywords internal tokens
-tokens_serialize <- function(x, types_reserved = NULL, ...) {
+serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
@@ -648,10 +661,7 @@ tokens_serialize <- function(x, types_reserved = NULL, ...) {
 #' unclass(tokens_ngrams(toks3, n = 2:3))
 #'
 #' @keywords internal tokens
-#' @author Kenneth Benoit and Kohei Watanabe
 tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) {
-    
-    x <- as.tokens(x)
     
     method <- match.arg(method)
     attrs <- attributes(x)

@@ -256,7 +256,6 @@ setMethod("print", signature(x = "fcm"),
                       format(ndoc(x), big.mark = ","), " by ",
                       format(nfeat(x), big.mark = ","), " feature",
                       if (nfeat(x) != 1L) "s" else "",
-                      if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep = "") else "",
                       ".\n", sep = "")
               }
               print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)

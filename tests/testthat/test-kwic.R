@@ -50,10 +50,10 @@ test_that("test kwic general", {
 
 test_that("test kwic on first token", {
     testkwic <- kwic(paste(LETTERS, collapse = " "), "A")
-    expect_equal(
+    expect_equivalent(
         as.data.frame(testkwic),
         data.frame(
-            docname = c("text1"),
+            docname = "text1",
             from = 1L,
             to = 1L,
             pre = "",
@@ -67,9 +67,9 @@ test_that("test kwic on first token", {
 
 test_that("test kwic on last token", {
     testkwic <- kwic(paste(LETTERS, collapse = " "), "Z")
-    expect_that(
+    expect_equivalent(
         data.frame(testkwic),
-        equals(data.frame(
+        data.frame(
             docname = c("text1"),
             from = 26L,
             to = 26L,
@@ -77,7 +77,7 @@ test_that("test kwic on last token", {
             keyword = "Z",
             post = "",
             stringsAsFactors = FALSE
-        ))
+        )
     )
 })
 
@@ -306,7 +306,7 @@ test_that("kwic works as expected with and without phrases", {
         c("a b", "a b")
     )
     
-    expect_equal(
+    expect_equivalent(
         kwic(txt, dict_uni),
         kwic(txt, char_uni)
     )

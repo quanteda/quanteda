@@ -89,8 +89,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           exclusive = TRUE,
                           nomatch = NULL,
                           verbose = quanteda_options("verbose")) {
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
+
+    x <- as.tokens(x)
     
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")

@@ -1,4 +1,4 @@
-context('Testing dfm*.R')
+context('test dfm')
 
 test_that("oldest dfm test", {
     mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
@@ -602,7 +602,7 @@ test_that("cannot supply remove and select in one call (#793)", {
 
 test_that("printing an empty dfm produces informative result (#811)", {
     my_dictionary <- dictionary(list( a = c( "asd", "dsa" ),
-                                      b = c( "foo", "jup" ) ) )
+                                      b = c( "foo", "jup" )))
     raw_text <- c( "Wow I can't believe it's not raining!", 
                    "Today is a beautiful day. The sky is blue and there are burritos" )
     my_corpus <- corpus( raw_text )

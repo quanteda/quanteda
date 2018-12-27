@@ -50,6 +50,7 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 ## but starts with "tokens_"
 #' @importFrom stats complete.cases
 tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    
     # trap condition where a "text" is a single NA
     if (is.na(x[1]) && length(x)==1) return(NULL)
     if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
@@ -99,9 +100,8 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' @export
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    
+    x <- as.tokens(x)
+
     if (any(n <= 0)) 
         stop("ngram length has to be greater than zero")
     

@@ -9,9 +9,9 @@
 #' To select or subset \emph{features}, see \code{\link{dfm_select}} instead.
 #' @param x \link{dfm} object to be subsetted
 #' @inheritParams corpus_subset
-#' @param select expression, indicating the docvars to select from the dfm; or a
-#'   \link{dfm} object, in which case the returned dfm will contain the same
-#'   documents as the original dfm, even if these are empty.  See Details.
+# @param select expression, indicating the docvars to select from the dfm; or a
+#   \link{dfm} object, in which case the returned dfm will contain the same
+#   documents as the original dfm, even if these are empty.  See Details.
 #' @return \link{dfm} object, with a subset of documents (and docvars) selected
 #'   according to arguments
 #' @details When \code{select} is a dfm, then the returned dfm will be equal in
@@ -37,23 +37,23 @@
 #' dfm2 <- dfm(c(d1 = "x y z", d2 = "a b c c d", d3 = "x x x"))
 #' dfm_subset(dfm1, subset = dfm2)
 #' dfm_subset(dfm1, subset = dfm2[c(3,1,2), ])
-dfm_subset <- function(x, subset, select, ...) {
+dfm_subset <- function(x, subset, ...) {
     UseMethod("dfm_subset")
 }
     
 #' @export
-dfm_subset.default <- function(x, subset, select, ...) {
+dfm_subset.default <- function(x, subset, ...) {
     stop(friendly_class_undefined_message(class(x), "dfm_subset"))
 }
     
 #' @export
-dfm_subset.dfm <- function(x, subset, select, ...) {
+dfm_subset.dfm <- function(x, subset, ...) {
     
     unused_dots(...)
     
     x <- as.dfm(x)
-    sys <- get_docvars(x@docvars, system = TRUE)
-    usr <- get_docvars(x@docvars, system = FALSE)
+    #sys <- select_docvars(x@docvars, system = TRUE)
+    usr <- select_docvars(x@docvars, system = FALSE)
     r <- if (missing(subset)) {
         rep_len(TRUE, ndoc(x))
     } else {
@@ -61,15 +61,15 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
         r <- eval(e, usr, parent.frame())
         r & !is.na(r)
     }
-    vars <- if (missing(select)) 
-        rep_len(TRUE, ncol(usr))
-    else {
-        nl <- as.list(seq_along(usr))
-        names(nl) <- names(usr)
-        eval(substitute(select), nl, parent.frame())
-    }
+    # vars <- if (missing(select)) 
+    #     rep_len(TRUE, ncol(usr))
+    # else {
+    #     nl <- as.list(seq_along(usr))
+    #     names(nl) <- names(usr)
+    #     eval(substitute(select), nl, parent.frame())
+    # }
     x <- x[r,]
-    x@docvars <- cbind(reshape_docvars(sys, r),
-                       reshape_docvars(usr, r, vars))
+    #x@docvars <- cbind(reshape_docvars(sys, r),
+    #                   reshape_docvars(usr, r, vars))
     return(x)
 }

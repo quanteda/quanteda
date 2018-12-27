@@ -290,6 +290,6 @@ rbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
-    result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
+    result@docvars <- make_docvars(ndoc(result), rownames(result))
     return(result)
 }

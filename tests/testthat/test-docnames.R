@@ -25,8 +25,8 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
     expect_equal(docnames(toks), name_new)
     expect_equal(docnames(mx), name_new)
     
-    expect_equal(docvars(corp, '_document'), name_new)
-    expect_equal(docvars(toks, '_document'), name_new)
-    expect_equal(docvars(mx, '_document'), name_new)
+    expect_equal(attr(corp, "docvars")[["_docid"]], name_new)
+    expect_equal(attr(toks, "docvars")[["_docid"]], name_new)
+    expect_equal(attr(mx, "docvars")[["_docid"]], name_new)
     
 })

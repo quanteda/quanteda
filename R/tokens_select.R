@@ -117,6 +117,8 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  min_nchar = 1L, max_nchar = 79L,
                                  verbose = quanteda_options("verbose")) {
     
+    x <- as.tokens(x)
+    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)

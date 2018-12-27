@@ -77,9 +77,9 @@ generate_groups <- function(x, groups, drop = FALSE) {
 }
 
 
-# select docvar fields that have all the same values within groups
+# Reshape docvars keeping variables that have the same values within groups
 group_docvars <- function(x, group) {
-    l <- c(rep(TRUE, 4), unlist(lapply(get_docvars(x), is_grouped, as.integer(group)), 
+    l <- c(rep(TRUE, 4), unlist(lapply(select_docvars(x), is_grouped, as.integer(group)), 
                                 use.names = FALSE))
     result <- x[match(levels(group), group), l, drop = FALSE]
     result[["_docid"]] <- levels(group)
@@ -87,7 +87,7 @@ group_docvars <- function(x, group) {
     result
 }
 
-# check if values are uniform within groups
+# Check if values are uniform within groups
 is_grouped <- function(x, group) {
     if (is.character(x)) {
         qatd_cpp_is_grouped_character(x, group)

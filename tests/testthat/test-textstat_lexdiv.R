@@ -85,7 +85,7 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
         corpus(text_field = "latin") %>%
         texts(groups = "chapter") %>%  # combine verses into a single document
         corpus(docvars = data.frame(chapter = 1:4))
-    docnames(data_corpus_stjohn) <- paste0("chap", 1:4)    
+    docnames(data_corpus_stjohn) <- paste0("chap", 1:4)
 
     data_dfm_stjohn <- data_corpus_stjohn %>%
         tokens(remove_punct = TRUE) %>%
@@ -121,7 +121,9 @@ test_that("Yule's K and Herndon's Vm correction are (approximately) correct", {
     docnames(data_dfm_stjohncomb)[2] <- "chaps1-4"
     expect_equivalent(
         textstat_lexdiv(data_dfm_stjohncomb, "K"),
-        data.frame(document = c("chap1", "chaps1-4"), K = c(126.3366167, 99.43763148), stringsAsFactors = FALSE),
+        data.frame(document = c("chap1", "chaps1-4"), 
+                   K = c(126.3366167, 99.43763148), 
+                   stringsAsFactors = FALSE),
         tol = 3
     )
 
@@ -166,8 +168,8 @@ test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols"
         textstat_lexdiv(mydfm["d2", ], "all")[, -1]
     )
     expect_identical(
-        textstat_lexdiv(mytokens["d1", ], "all")[,-1], 
-        textstat_lexdiv(mytokens["d2", ], "all")[,-1]
+        textstat_lexdiv(mytokens["d1"], "all")[,-1], 
+        textstat_lexdiv(mytokens["d2"], "all")[,-1]
     )
 })
 

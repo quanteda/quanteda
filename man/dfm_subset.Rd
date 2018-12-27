@@ -4,17 +4,13 @@
 \alias{dfm_subset}
 \title{Extract a subset of a dfm}
 \usage{
-dfm_subset(x, subset, select, ...)
+dfm_subset(x, subset, ...)
 }
 \arguments{
 \item{x}{\link{dfm} object to be subsetted}
 
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
-
-\item{select}{expression, indicating the docvars to select from the dfm; or a
-\link{dfm} object, in which case the returned dfm will contain the same
-documents as the original dfm, even if these are empty.  See Details.}
 
 \item{...}{not used}
 }

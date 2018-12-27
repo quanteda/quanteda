@@ -33,7 +33,8 @@ tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "reg
 #' @export
 tokens_split.tokens <- function(x, separator = " ", valuetype = c("fixed", "regex"),
                                 remove_separator = TRUE) {
-
+    
+    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     if (length(separator) != 1)
         stop("separator must be a character")

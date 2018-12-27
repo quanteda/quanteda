@@ -49,7 +49,6 @@ docnames.corpus <- function(x) {
 
 #' @export
 "docnames<-.default" <- function(x, value) {
-    x <- as.corpus(x)
     stop(friendly_class_undefined_message(class(x), "docnames<-"))
 }
 

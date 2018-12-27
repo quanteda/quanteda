@@ -126,8 +126,7 @@ corpus.corpus <- function(x, docnames = NULL, docvars = NULL, ...) {
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, 
-                             docvars = NULL, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
     
     unused_dots(...)
     x[is.na(x)] <- ""
@@ -135,16 +134,17 @@ corpus.character <- function(x, docnames = NULL,
     if (!is.null(docnames)) {
         if(length(docnames) != length(x))
             stop("docnames must the the same length as x")
-        docname <- docnames
     } else if (!is.null(names(x))) {
-        docname <- names(x)
-    } else {
-        docname <- paste0(quanteda_options("base_docname"), seq_along(x))
+        docnames <- names(x)
     }
     
-    # ensure that docnames are unique
-    #if (any(duplicated(docname)))
-    #    docname <- make.unique(docname)
+    if (!is.null(docvars) && nrow(docvars) > 0) {
+        if (any(is_system(names(docvars))))
+            message_error("docvar_invalid")
+        docvar <- cbind(make_docvars(length(x), docnames), docvars)
+    } else {
+        docvar <- make_docvars(length(x), docnames)
+    }
     
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
@@ -160,21 +160,12 @@ corpus.character <- function(x, docnames = NULL,
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    if (!is.null(docvars) && nrow(docvars) > 0) {
-        if (any(is_system(names(docvars))))
-            message_error("docvar_invalid")
-        docvars <- cbind(make_docvars(length(x), docname), docvars)
-    } else {
-        docvars <- make_docvars(length(x), docname)
-    }
-    
-    result <- unname(x)
-    class(result) <- "corpus"
-    attr(result, "docvars") <- docvars
-    attr(result, "unit") <- "documents"
-    attr(result, "meta") <- meta("character")
-    
-    return(result)
+    names(x) <- docvar[["_docid"]]
+    class(x) <- "corpus"
+    attr(x, "unit") <- "documents"
+    attr(x, "meta") <- meta("character")
+    attr(x, "docvars") <- docvar
+    return(x)
 }
 
 #' @rdname corpus
@@ -323,15 +314,15 @@ corpus.Corpus <- function(x, ...) {
     corpus(txt, docvars = docvars)
 }
 
-# internal function to create corpus meta data
-meta <- function(source = c("character", "kwic")) {
+# Internal function to create corpus meta data
+meta <- function(source = c("character", "corpus", "kwic", "list")) {
     source <- match.arg(source)
     list("source" = source,
          "package-version" = packageVersion("quanteda"),
          "r-version" = getRversion(),
          "system" = Sys.info()[c("sysname", "machine", "user")],
          "directory" = getwd(),
-         "created" = Sys.time()
+         "created" = Sys.Date()
     )
 }
 

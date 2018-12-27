@@ -8,7 +8,7 @@
 #'
 #' @param x \link{tokens} object to be subsetted
 #' @inheritParams corpus_subset
-#' @param select expression, indicating the \link{docvars} to keep
+# @param select expression, indicating the \link{docvars} to keep
 #' @return \link{tokens} object, with a subset of documents (and docvars)
 #'   selected according to arguments
 #' @export
@@ -23,23 +23,24 @@
 #' tokens_subset(toks, grp > 1)
 #' # selecting on a supplied vector
 #' tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
-tokens_subset <- function(x, subset, select, ...) {
+tokens_subset <- function(x, subset, ...) {
     UseMethod("tokens_subset")
 }
     
 #' @export
-tokens_subset.default <- function(x, subset, select, ...) {
+tokens_subset.default <- function(x, subset, ...) {
     stop(friendly_class_undefined_message(class(x), "tokens_subset"))
 }
     
 #' @export
-tokens_subset.tokens <- function(x, subset, select, ...) {
+tokens_subset.tokens <- function(x, subset, ...) {
     
     unused_dots(...)
     
     x <- as.tokens(x)
-    sys <- get_docvars(attr(x, "docvars"), system = TRUE)
-    usr <- get_docvars(attr(x, "docvars"), system = FALSE)
+    attrs <- attributes(x)
+    #sys <- select_docvars(attr(x, "docvars"), system = TRUE)
+    usr <- select_docvars(attr(x, "docvars"), system = FALSE)
     r <- if (missing(subset)) {
         rep_len(TRUE, ndoc(x))
     } else {
@@ -47,15 +48,16 @@ tokens_subset.tokens <- function(x, subset, select, ...) {
         r <- eval(e, usr, parent.frame())
         r & !is.na(r)
     }
-    vars <- if (missing(select)) 
-        rep_len(TRUE, ncol(usr))
-    else {
-        nl <- as.list(seq_along(usr))
-        names(nl) <- names(usr)
-        eval(substitute(select), nl, parent.frame())
-    }
-    x <- unclass(x)[r]
-    attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
-                                reshape_docvars(usr, r, vars))
+    # vars <- if (missing(select)) 
+    #     rep_len(TRUE, ncol(usr))
+    # else {
+    #     nl <- as.list(seq_along(usr))
+    #     names(nl) <- names(usr)
+    #     eval(substitute(select), nl, parent.frame())
+    # }
+    x <- x[r]
+    #attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
+    #                            reshape_docvars(usr, r, vars))
+    #attributes(x, FALSE) <- attrs
     return(x)
 }

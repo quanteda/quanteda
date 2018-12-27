@@ -78,7 +78,7 @@ test_that("get_docvars() workds", {
                          stringsAsFactors = FALSE)
     
     expect_identical(
-        quanteda:::get_docvars.data.frame(data, system = TRUE),
+        quanteda:::select_docvars(data, system = TRUE),
         data.frame("_docid" = c("A", "B", "C"), 
                    "_docname" = c("A", "B", "C"), 
                    "_docnum" = 1L:3L, 
@@ -86,29 +86,29 @@ test_that("get_docvars() workds", {
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
-    expect_error(quanteda:::get_docvars.data.frame(data, "_docname", system = FALSE))
+    expect_error(quanteda:::select_docvars(data, "_docname", system = FALSE))
     expect_identical(
-        quanteda:::get_docvars.data.frame(data, "_docname", system = TRUE),
+        quanteda:::select_docvars(data, "_docname", system = TRUE),
         data.frame("_docname" = c("A", "B", "C"), 
                    check.names = FALSE, stringsAsFactors = FALSE)
     )
     expect_identical(
-        quanteda:::get_docvars.data.frame(data, "_docname", system = TRUE, drop = TRUE),
+        quanteda:::select_docvars(data, "_docname", system = TRUE, drop = TRUE),
         c("A", "B", "C")
     )
     expect_identical(
-        quanteda:::get_docvars.data.frame(data),
+        quanteda:::select_docvars(data),
         data.frame("var1" = c(100, 200, 300),
                    "var2" = c(TRUE, TRUE, FALSE),
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
     expect_identical(
-        quanteda:::get_docvars.data.frame(data, "var1"),
+        quanteda:::select_docvars(data, "var1"),
         data.frame("var1" = c(100, 200, 300), stringsAsFactors = FALSE)
     )
     expect_identical(
-        quanteda:::get_docvars.data.frame(data, "var1", drop = TRUE),
+        quanteda:::select_docvars(data, "var1", drop = TRUE),
         c(100, 200, 300)
     )
 })
@@ -256,68 +256,70 @@ test_that("dfm works works with two docvars", {
 
 test_that("object always have docvars in the same rows as documents", {
     
-    txts <- data_char_ukimmig2010
-    corp1 <- corpus(txts)
+    txt <- data_char_ukimmig2010
+    corp1 <- corpus(txt)
     expect_true(nrow(docvars(corp1)) == ndoc(corp1))
-    expect_true(all(rownames(docvars(corp1)) == docnames(corp1)))
+    expect_true(all(rownames(docvars(corp1)) == seq_len(ndoc(corp1))))
     
     corp2 <- corpus_segment(corp1, "\\p{P}", valuetype = "regex")
     expect_true(nrow(docvars(corp2)) == ndoc(corp2))
-    expect_true(all(rownames(docvars(corp2)) == docnames(corp2)))
+    expect_true(all(rownames(docvars(corp2)) == seq_len(ndoc(corp2))))
     
     corp3 <- corpus_reshape(corp1, to = "sentences")
     expect_true(nrow(docvars(corp3)) == ndoc(corp3))
-    expect_true(all(rownames(docvars(corp3)) == docnames(corp3)))
+    expect_true(all(rownames(docvars(corp3)) == seq_len(ndoc(corp3))))
     
     corp4 <- corpus_sample(corp1, size = 5)
     expect_true(nrow(docvars(corp4)) == ndoc(corp4))
-    expect_true(all(rownames(docvars(corp4)) == docnames(corp4)))
+    expect_true(all(rownames(docvars(corp4)) == seq_len(ndoc(corp4))))
     
-    toks1 <- tokens(txts)
+    toks1 <- tokens(txt)
     expect_true(nrow(docvars(toks1)) == ndoc(toks1))
-    expect_true(all(rownames(docvars(toks1)) == docnames(toks1)))
+    expect_true(all(rownames(docvars(toks1)) == seq_len(ndoc(toks1))))
     
-    toks2 <- tokens(corpus(txts))
+    toks2 <- tokens(corpus(txt))
     expect_true(nrow(docvars(toks2)) == ndoc(toks2))
-    expect_true(all(rownames(docvars(toks2)) == docnames(toks2)))
+    expect_true(all(rownames(docvars(toks2)) == seq_len(ndoc(toks2))))
     
     toks3 <- quanteda:::tokens_group(toks1, rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(toks3)) == ndoc(toks3))
-    expect_true(all(rownames(docvars(toks3)) == docnames(toks3)))
+    expect_true(all(rownames(docvars(toks3)) == seq_len(ndoc(toks3))))
     
     toks4 <- tokens_select(toks1, stopwords())
     expect_true(nrow(docvars(toks4)) == ndoc(toks4))
-    expect_true(all(rownames(docvars(toks4)) == docnames(toks4)))
+    expect_true(all(rownames(docvars(toks4)) == seq_len(ndoc(toks4))))
     
-    dfm1 <- dfm(txts)
+    dfm1 <- dfm(txt)
     expect_true(nrow(docvars(dfm1)) == ndoc(dfm1))
-    expect_true(all(rownames(docvars(toks3)) == docnames(toks3)))
+    expect_true(all(rownames(docvars(dfm1)) == seq_len(ndoc(dfm1))))
     
-    dfm2 <- dfm(tokens(txts))
+    dfm2 <- dfm(tokens(txt))
     expect_true(nrow(docvars(dfm2)) == ndoc(dfm2))
-    expect_true(all(rownames(docvars(dfm2)) == docnames(dfm2)))
+    expect_true(all(rownames(docvars(dfm2)) == seq_len(ndoc(dfm2))))
     
-    dfm3 <- dfm(corpus(txts))
+    dfm3 <- dfm(corpus(txt))
     expect_true(nrow(docvars(dfm3)) == ndoc(dfm3))
-    expect_true(all(rownames(docvars(dfm3)) == docnames(dfm3)))
+    expect_true(all(rownames(docvars(dfm3)) == seq_len(ndoc(dfm3))))
     
     dfm4 <- dfm_group(dfm1, rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(dfm4)) == ndoc(dfm4))
-    expect_true(all(rownames(docvars(dfm4)) == docnames(dfm4)))
+    expect_true(all(rownames(docvars(dfm4)) == seq_len(ndoc(dfm4))))
     
     dfm5 <- dfm(dfm1, group = rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(dfm5)) == ndoc(dfm5))
-    expect_true(all(rownames(docvars(dfm5)) == docnames(dfm5)))
+    expect_true(all(rownames(docvars(dfm5)) == seq_len(ndoc(dfm5))))
     
     dfm6 <- dfm_subset(dfm1, rep(c(TRUE, TRUE, FALSE), 3))
     expect_true(nrow(docvars(dfm6)) == ndoc(dfm6))
-    expect_true(all(rownames(docvars(dfm6)) == docnames(dfm6)))
+    expect_true(all(rownames(docvars(dfm6)) == seq_len(ndoc(dfm6))))
     
     dfm7 <- rbind(dfm1, dfm1)
     expect_true(nrow(docvars(dfm7)) == ndoc(dfm7))
+    expect_true(all(rownames(docvars(dfm7)) == seq_len(ndoc(dfm7))))
     
     dfm8 <- suppressWarnings(cbind(dfm1, dfm1))
     expect_true(nrow(docvars(dfm8)) == ndoc(dfm8))
+    expect_true(all(rownames(docvars(dfm8)) == seq_len(ndoc(dfm8))))
     
 })
 
@@ -354,7 +356,7 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     docvars(mycorp) <- thedfm
     expect_identical(
         docvars(mycorp),
-        data.frame(the = as.vector(thedfm), row.names = docnames(mycorp))
+        data.frame(the = as.vector(thedfm))
     )
     
     anddfm <- dfm(mycorp)[, "and"]

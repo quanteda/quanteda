@@ -1,4 +1,4 @@
-context("Testing corpus_segment and char_segment")
+context("test corpus_segment")
 
 test_that("char_segment works with punctuations", {
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n

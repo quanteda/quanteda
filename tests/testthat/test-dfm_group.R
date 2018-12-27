@@ -166,21 +166,33 @@ test_that("test dfm_group keeps group-level variables", {
     
     grp1 <- c("D", "D", "A", "C")
     expect_equal(
-        docvars(dfm_group(testdfm, grp1)),
-                 data.frame(grp = c("A", "C", "D"),
+        dfm_group(testdfm, grp1)@docvars,
+                 data.frame("_docid" = c("A", "C", "D"),
+                            "_docname" = factor(c("text3", "text4", "text1"), 
+                                                levels = c("text1", "text2", "text3", "text4")),
+                            "_docnum" = c(3L, 4L, 1L),
+                            "_segnum" = c(1L, 1L, 1L),
+                            grp = c("A", "C", "D"),
                             var1 = c(2, 2, 1),
                             var3 = c("y", NA, "x"),
                             var5 = as.Date(c("2015-03-01", "2012-12-15", "2018-01-01")),
+                            check.names = FALSE,
                             stringsAsFactors = FALSE)
     )
     
     grp2 <- factor(c("D", "D", "A", "C"), levels = c("A", "B", "C", "D"))
     expect_equal(
-        docvars(dfm_group(testdfm, grp2, fill = TRUE)),
-        data.frame(grp = c("A", NA, "C", "D"),
+        dfm_group(testdfm, grp2, fill = TRUE)@docvars,
+        data.frame("_docid" = c("A", "B", "C", "D"),
+                   "_docname" = factor(c("text3", NA, "text4", "text1"), 
+                                       levels = c("text1", "text2", "text3", "text4")),
+                   "_docnum" = c(3L, NA, 4L, 1L),
+                   "_segnum" = c(1L, NA, 1L, 1L),
+                   grp = c("A", NA, "C", "D"),
                    var1 = c(2, NA, 2, 1),
                    var3 = c("y", NA, NA, "x"),
                    var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
+                   check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
 })

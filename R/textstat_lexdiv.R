@@ -171,8 +171,7 @@ textstat_lexdiv.dfm <-
             stop("Invalid measure(s): ", measure[!is_valid])
     }
     
-    result <- compute_lexdiv_stats(x, measure, log.base)
-    return(result)
+    compute_lexdiv(x, measure, log.base)
 }
 
 #' @export
@@ -180,7 +179,8 @@ textstat_lexdiv.tokens <-
     function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "K", "D", "Vm", "Maas"),
              log.base = 10, remove_numbers = TRUE, remove_punct = TRUE,
              remove_symbols = TRUE, remove_hyphens = FALSE) {
-        
+    
+    x <- as.tokens(x)
     if (remove_hyphens)
         x <- tokens(x, remove_hyphens = TRUE)
     if (remove_numbers) 
@@ -194,7 +194,7 @@ textstat_lexdiv.tokens <-
         x <- tokens_remove(x, "^\\p{P}+$", valuetype = "regex")
     }
 
-    textstat_lexdiv.dfm(dfm(x), measure = measure, log.base = log.base)
+    textstat_lexdiv(dfm(x), measure = measure, log.base = log.base)
 }
 
 #' Compute lexical diversity (internal functions)
@@ -206,7 +206,7 @@ textstat_lexdiv.tokens <-
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logs)
 #' @return returns a data.frame of documents and their lexical diversity scores.
-compute_lexdiv_stats <- function(x, measure, log.base){
+compute_lexdiv <- function(x, measure, log.base){
     
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- K <- D <- Vm <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
@@ -302,7 +302,5 @@ dfm_split_hyphenated_features <- function(x) {
     # combine dfms and suppress duplicated feature name warning
     result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
     # compress features to combine same-named features
-    result <- dfm_compress(result, margin = "features")
-
-    result
+    dfm_compress(result, margin = "features")
 }    

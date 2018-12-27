@@ -35,8 +35,8 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
     temp <- as.character(unclass(x))
     names(temp) <- docnames(x)
-    if (is.null(groups)) 
-        return(x)
+    if (is.null(groups))
+        return(temp)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups)
     texts(temp, groups = groups, spacer = spacer)
@@ -51,7 +51,6 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
     names(result) <- levels(groups)
     return(result)
 }
-
 
 #' @rdname texts
 #' @param value character vector of the new texts
@@ -129,9 +128,23 @@ as.corpus.corpus <- function(x) {
     return(x)
 }
 
+#' @export
+#' @method as.corpus corpuszip
+as.corpus.corpuszip <- function(x) {
+    
+    txt <- memDecompress(x$texts, 'gzip', asChar = TRUE)
+    txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
+    txt <- unlist(txt, use.names = FALSE)
+    
+    # drop internal variables
+    flag <- is_system(names(x$documents))
+    corpus(txt, x$docnames, docvars = x$documents[!flag])
+}
+
+# Internal function to convert corpus from data.frame character vector-based
+# stracture
 upgrade_corpus <- function(x) {
     
-    # Make a new corpus object
     result <- corpus(x$documents, text_field = "texts")
     attr(result, "docvars") <- upgrade_docvars(x$documents)
     
@@ -149,17 +162,4 @@ upgrade_corpus <- function(x) {
     return(result)
 }
 
-
-#' @export
-#' @method as.corpus corpuszip
-as.corpus.corpuszip <- function(x) {
-    
-    txt <- memDecompress(x$texts, 'gzip', asChar = TRUE)
-    txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
-    txt <- unlist(txt, use.names = FALSE)
-    
-    # drop internal variables
-    flag <- is_system(names(x$documents))
-    corpus(txt, x$docnames, docvars = x$documents[!flag])
-}
 

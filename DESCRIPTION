@@ -161,6 +161,7 @@ Collate:
     'textstat_simil.R'
     'textstat_simil_old.R'
     'tokens.R'
+    'tokens-methods-base.R'
     'tokens_compound.R'
     'tokens_group.R'
     'tokens_lookup.R'
