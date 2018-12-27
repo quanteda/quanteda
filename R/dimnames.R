@@ -50,5 +50,3 @@
     x@Dimnames[[1]] <- x@Dimnames[[2]] <- value
     return(x)
 }
-
-

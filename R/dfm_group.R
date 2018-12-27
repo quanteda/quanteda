@@ -85,9 +85,8 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
             features <- factor(features, levels = featname_unique)
         featname <- as.character(featname_unique)
         if (fill && !identical(levels(features), featname_unique)) {
-            featname <-
-                c(featname, setdiff(as.character(levels(features)),
-                                    as.character(featname_unique)))
+            featname <- c(featname, setdiff(as.character(levels(features)),
+                                            as.character(featname_unique)))
         }
     }
     if (is.null(documents)) {
