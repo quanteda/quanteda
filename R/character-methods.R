@@ -5,11 +5,11 @@
 #' @keywords char internal 
 #' @examples
 #' # summarize texts
-#' quanteda:::summary_character(c("Testing this text. Second sentence.", "And this one."))
-#' quanteda:::summary_character(data_char_ukimmig2010)
-#' summ <- quanteda:::summary_character(data_char_ukimmig2010)
+#' quanteda:::summarize_texts(c("Testing this text. Second sentence.", "And this one."))
+#' quanteda:::summarize_texts(data_char_ukimmig2010)
+#' summ <- quanteda:::summarize_texts(data_char_ukimmig2010)
 #' head(summ)
-summary_character <- function(object, n = 100, tolower = FALSE, ...) {
+summarize_texts <- function(object, n = 100, tolower = FALSE, ...) {
     
     object <- head(object, n)
     if (is.null(names(object))) 

@@ -60,8 +60,9 @@ is.corpus <- function(x) {
 #' summary(corp) # show the meta-data
 #' mysummary <- summary(corp)
 summary.corpus <- function(object, n = 100, tolower = FALSE, ...) {
+    
     object <- as.corpus(object)
-    result <- summary_character(texts(object), n = n, tolower = tolower, ...)
+    result <- summarize_texts(texts(object), n = n, tolower = tolower, ...)
     attr(result, "ndoc_show") <- n
     attr(result, "ndoc_all") <- ndoc(object)
     class(result) <- c("summary.corpus", "data.frame")
