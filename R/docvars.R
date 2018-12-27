@@ -82,7 +82,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
         if (unique) {
             docnum <- match(docname, unique(docname))
             if (any(duplicated(docname))) {
-                segnum <- ave(docname == docname, docname, FUN = cumsum)
+                segnum <- stats::ave(docname == docname, docname, FUN = cumsum)
                 docid <- paste0(docname, ".", segnum)
             } else {
                 segnum <- rep(1L, n)
@@ -224,13 +224,7 @@ docvars.kwic <- function(x) {
 #' # assigning document variables to a corpus
 #' corp <- data_corpus_inaugural
 #' docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
-#' head(docvars(corp))
-#' 
-#' # alternative using indexing
-#' head(corp[, "Year"])
-#' corp[["President2"]] <- paste("prezTwo", 1:ndoc(corp), sep = "")
-#' head(docvars(corp))
-#' 
+#' head(docvars(corp)) 
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
     UseMethod("docvars<-")
