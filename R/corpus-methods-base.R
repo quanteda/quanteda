@@ -156,12 +156,9 @@ tail.corpus <- function(x, n = 6L, ...) {
 `+.corpus` <- function(c1, c2) {
     c1 <- as.corpus(c1)
     c2 <- as.corpus(c2)
-    attrs <- attributes(c1)
-    result <- c(as.character(unclass(c1)), as.character(unclass(c2)))
-    attrs$docvars <- rbind_fill(attr(c1, "docvars"), attr(c2, "docvars"))
-    attrs$meta[["source"]] <- "corpus"
-    attrs$docvars[["_docid"]] <- make.unique(attrs$docvars[["_docid"]])
-    attributes(result) <- attrs
+    result <- corpus(c(as.character(unclass(c1)), as.character(unclass(c2))),
+                     docvars = rbind_fill(get_docvars(c1), get_docvars(c2)))
+    attr(result, "meta") <- meta("corpus")
     return(result)
 }
 
@@ -216,7 +213,7 @@ c.corpus <- function(..., recursive = FALSE) {
     }
     is_na <- is.na(index)
     if (any(is_na))
-        warning(paste(i[is_na], collapse = ", "), " do not exist")
+        stop("Subscript out of bounds")
     index <- index[!is_na]
     
     x <- unclass(x)[index]
