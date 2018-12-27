@@ -11,6 +11,7 @@
 
 <meta name="author" content="Kohei Watanabe" />
 
+<meta name="date" content="2018-12-27" />
 
 <title>Benchmark basic operations</title>
 
@@ -371,7 +372,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Benchmark basic operations</h1>
 <h4 class="author"><em>Kohei Watanabe</em></h4>
-<h4 class="date"><em>27/12/2018</em></h4>
+<h4 class="date"><em>2018-12-27</em></h4>
 
 </div>
 
@@ -431,37 +432,37 @@ system.time(
     corp2 &lt;- corpus_sample(corp, 5000)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  10.638   0.802  11.495</code></pre>
+##  10.126   0.539  10.669</code></pre>
 <pre class="r"><code>system.time(
     toks &lt;- tokens(corp)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-## 214.989   4.544 197.248</code></pre>
+## 219.813   4.588 202.292</code></pre>
 <pre class="r"><code>system.time(
     toks2 &lt;- tokens_sample(toks, 5000)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.099   0.000   1.076</code></pre>
+##   1.028   0.001   1.009</code></pre>
 <pre class="r"><code>system.time(
     toks3 &lt;- tokens_remove(toks, stopwords(&quot;en&quot;))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  24.697   0.656   8.999</code></pre>
+##  25.548   0.573   9.560</code></pre>
 <pre class="r"><code>system.time(
     mt &lt;- dfm(toks)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  22.226   1.825  23.273</code></pre>
+##  24.539   2.472  26.250</code></pre>
 <pre class="r"><code>system.time(
     mt2 &lt;- dfm_group(mt, &quot;date&quot;)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   8.174   1.027   9.201</code></pre>
+##   8.049   1.599   9.669</code></pre>
 <pre class="r"><code>system.time(
     mt3 &lt;- dfm_remove(mt, stopwords(&quot;en&quot;))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.405   0.000   2.406</code></pre>
+##   2.244   0.232   2.477</code></pre>
 
 
 
