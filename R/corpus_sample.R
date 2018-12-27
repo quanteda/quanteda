@@ -20,7 +20,7 @@
 #' @keywords corpus
 #' @examples
 #' # sampling from a corpus
-#' summary(corpus_sample(data_corpus_inaugural, 5)) 
+#' summary(corpus_sample(data_corpus_inaugural, 5))
 #' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 #' 
 #' # sampling sentences within document
@@ -40,7 +40,7 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 
 #' @export
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
-    
+    x <- as.corpus(x)
     if (!is.null(by)) {
         if (by == "document") by <- "_docnum"
         docvar <- attr(x, "docvars")

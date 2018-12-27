@@ -68,7 +68,6 @@ tokens_compound.tokens <- function(x, pattern,
                    case_insensitive = TRUE, join = TRUE) {
     
     x <- as.tokens(x)
-    
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     types <- types(x)

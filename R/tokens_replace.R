@@ -52,7 +52,6 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
                                   case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
     
     x <- as.tokens(x)
-    
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
     

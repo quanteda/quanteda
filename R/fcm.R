@@ -204,6 +204,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
                        weights = 1L,
                        ordered = FALSE,
                        span_sentence = TRUE, tri = TRUE, ...) {
+    
+    x <- as.tokens(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)

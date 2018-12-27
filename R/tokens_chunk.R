@@ -34,7 +34,6 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
 tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
     
     x <- as.tokens(x)
-    
     if (length(size) > 1L)
         stop("Size must be a single integer")
     if (size < 1L)

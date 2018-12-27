@@ -101,6 +101,7 @@ kwic.tokens <- function(x, pattern, window = 5,
                         separator = " ", 
                         case_insensitive = TRUE, ...) {
     
+    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     type <- types(x)

@@ -124,8 +124,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          ...) {
-    check_dots(list(...), NULL)
-    
+    x <- as.tokens(x)
     method <- match.arg(method, c("lambda"))
     
     if (any(size == 1))
@@ -167,6 +166,7 @@ textstat_collocations.corpus <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          recursive = TRUE, ...) {
+    x <- as.corpus(x)
     textstat_collocations(tokens(x, ...), method = method, size = size, 
                           min_count = min_count, 
                           smoothing = smoothing, tolower = tolower)

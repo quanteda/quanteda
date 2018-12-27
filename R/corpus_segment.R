@@ -121,6 +121,8 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
+    
+    x <- as.corpus(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     docvar <- attr(x, "docvars")
@@ -297,7 +299,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         if (omit_empty)
             result <- result[!is.na(result$text),]
     }
-    result$segnum <- ave(result$docnum == result$docnum, result$docnum, FUN = cumsum)
+    result$segnum <- stats::ave(result$docnum == result$docnum, result$docnum, FUN = cumsum)
     return(result)
 }
 

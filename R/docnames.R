@@ -63,6 +63,7 @@ docnames.corpus <- function(x) {
 #' @noRd
 #' @export
 "docnames<-.tokens" <- function(x, value) {
+    x <- as.tokens(x)
     names(x) <- attr(x, "docvars")[["_docid"]] <- value
     return(x)
 }
@@ -70,6 +71,7 @@ docnames.corpus <- function(x) {
 #' @noRd
 #' @export
 "docnames<-.dfm" <- function(x, value) {
+    x <- as.dfm(x)
     rownames(x) <- attr(x, "docvars")[["_docid"]] <- value
     return(x)
 }

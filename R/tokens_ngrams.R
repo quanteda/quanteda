@@ -101,7 +101,6 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     
     x <- as.tokens(x)
-
     if (any(n <= 0)) 
         stop("ngram length has to be greater than zero")
     
