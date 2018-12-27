@@ -1,7 +1,7 @@
 ---
 title: "Benchmark basic operations"
 author: "Kohei Watanabe"
-date: "27/12/2018"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
