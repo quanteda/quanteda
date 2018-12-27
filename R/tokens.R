@@ -222,7 +222,6 @@ tokens.tokens <-  function(x,
                            ...) {
     
     x <- as.tokens(x)
-    
     if (remove_hyphens)
         x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
 
@@ -307,7 +306,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 
 #' @rdname as.tokens
 #' @export
-as.tokens.tokens <- function(x) {
+as.tokens.tokens <- function(x, ...) {
     attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
     return(x)
 }
@@ -323,16 +322,12 @@ as.tokens.tokens <- function(x) {
 as.tokens.spacyr_parsed <- function(x, concatenator = "/",
                                     include_pos = c("none", "pos", "tag"),
                                     use_lemma = FALSE, ...) {
-    token_index <-  if (use_lemma) "lemma" else "token"
-
+    
     include_pos <- match.arg(include_pos)
-    if (include_pos != "none") {
-        x[[token_index]] <-
-            paste(x[[token_index]], x[[include_pos]], sep = concatenator)
-    }
-
-    as.tokens(base::split(x[[token_index]],
-                          factor(x[["doc_id"]], levels = unique(x[["doc_id"]]))))
+    temp <- x[[if (use_lemma) "lemma" else "token"]]
+    if (include_pos != "none")
+        temp <- paste(temp, x[[include_pos]], sep = concatenator)
+    as.tokens(base::split(temp, factor(x[["doc_id"]], levels = unique(x[["doc_id"]]))))
 }
 
 #' @noRd
