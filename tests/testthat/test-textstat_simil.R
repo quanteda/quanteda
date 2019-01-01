@@ -177,3 +177,146 @@ test_that("selection takes integer or logical vector", {
     expect_error(textstat_dist(mt, 100, margin = "documents"))
 })
 
+test_that("textstat_dist() returns NA for empty dfm", {
+    mt <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_equivalent(
+        textstat_dist(mt, method = "euclidean"),
+        proxy::dist(as.matrix(mt), method = "Euclidean")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "kullback"),
+        proxy::dist(as.matrix(mt), method = "kullback")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "manhattan"),
+        proxy::dist(as.matrix(mt), method = "manhattan")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "maximum"),
+        proxy::dist(as.matrix(mt), method = "maximum")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "canberra"),
+        proxy::dist(as.matrix(mt), method = "canberra")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "minkowski"),
+        proxy::dist(as.matrix(mt), method = "minkowski", p = 2)
+    )
+})
+
+test_that("textstat_simil() returns NA for empty dfm", {
+    mt <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_equivalent(
+        textstat_simil(mt, method = "correlation"),
+        proxy::simil(as.matrix(mt), method = "correlation")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "cosine"),
+        proxy::simil(as.matrix(mt), method = "cosine")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "jaccard"),
+        proxy::simil(as.matrix(mt), method = "jaccard")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "ejaccard"),
+        proxy::simil(as.matrix(mt), method = "ejaccard")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "dice"),
+        proxy::simil(as.matrix(mt), method = "dice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "edice"),
+        proxy::simil(as.matrix(mt), method = "edice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "hamman"),
+        proxy::simil(as.matrix(mt), method = "hamman")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "simple matching"),
+        proxy::simil(as.matrix(mt), method = "simple matching")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "faith"),
+        proxy::simil(as.matrix(mt), method = "faith")
+    )
+})
+
+test_that("textstat_dist() returns NA for zero-variance documents", {
+    mt <- data_dfm_lbgexample[1:5, 1:20]
+    mt[1:2, ] <- 0
+    mt[3:4, ] <- 1
+    mt <- as.dfm(mt)
+
+    expect_equivalent(
+        textstat_dist(mt, method = "euclidean"),
+        proxy::dist(as.matrix(mt), method = "Euclidean")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "kullback"),
+        proxy::dist(as.matrix(mt), method = "kullback")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "manhattan"),
+        proxy::dist(as.matrix(mt), method = "manhattan")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "maximum"),
+        proxy::dist(as.matrix(mt), method = "maximum")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "canberra"),
+        proxy::dist(as.matrix(mt), method = "canberra")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "minkowski"),
+        proxy::dist(as.matrix(mt), method = "minkowski", p = 2)
+    )
+})
+
+test_that("textstat_simil() returns NA for zero-variance documents", {
+    mt <- data_dfm_lbgexample[1:5, 1:20]
+    mt[1:2, ] <- 0
+    mt[3:4, ] <- 1
+    mt <- as.dfm(mt)
+
+    expect_equivalent(
+        textstat_simil(mt, method = "correlation"),
+        proxy::simil(as.matrix(mt), method = "correlation")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "cosine"),
+        proxy::simil(as.matrix(mt), method = "cosine")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "jaccard"),
+        proxy::simil(as.matrix(mt), method = "jaccard")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "ejaccard"),
+        proxy::simil(as.matrix(mt), method = "ejaccard")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "dice"),
+        proxy::simil(as.matrix(mt), method = "dice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "edice"),
+        proxy::simil(as.matrix(mt), method = "edice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "hamman"),
+        proxy::simil(as.matrix(mt), method = "hamman")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "simple matching"),
+        proxy::simil(as.matrix(mt), method = "simple matching")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "faith"),
+        proxy::simil(as.matrix(mt), method = "faith")
+    )
+})
