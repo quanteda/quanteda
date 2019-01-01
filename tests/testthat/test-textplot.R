@@ -308,13 +308,12 @@ test_that("phrasal patterns display correctly in textplot_kwic", {
     kwic_dict_bc <- kwic(toks, dictionary(list(bc = "b c")), window = 3)
     kwic_list_bc <- kwic(toks, list(bc = c("b", "c")), window = 3)
 
-    # label OK: x  label order correct: ✓  plot order correct: ✓
+    # label OK: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_char_bc, scale = "absolute")
-    # label OK: x  label order correct: ✓  plot order correct: ✓
+    # label OK: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_dict_bc, scale = "absolute")
-    # label OK: x  label order correct: ✓  plot order correct: ✓
+    # label OK: ✓  label order correct: ✓  plot order correct: ✓
     textplot_xray(kwic_list_bc, scale = "absolute")
-
 })
 
 dev.off()

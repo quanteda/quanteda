@@ -64,7 +64,6 @@ test_that("test kwic on first token", {
     )
 })
 
-
 test_that("test kwic on last token", {
     testkwic <- kwic(paste(LETTERS, collapse = " "), "Z")
     expect_that(
@@ -82,7 +81,6 @@ test_that("test kwic on last token", {
 })
 
 test_that("test kwic on two tokens", {
-
     txt <- "A B C D E F G D H"
     testkwic <- kwic(txt, c("D", "E"), 3)
     expect_equivalent(
@@ -403,10 +401,42 @@ test_that("keywords match pattern match and map_keywords() is working as expecte
                levels = c("key2", "key1"))
     )
     
-    # NOT REALLY CORRECT SINCE THE "b"/"B" is a match for each key
-    kwic3 <- kwic(toks, dictionary(list(key1 = c("a", "b"), key2 = c("b", "c"))), window = 3)
+    kwic3 <- kwic(toks, dictionary(list(key2 = c("b", "c"), key1 = c("a", "b"))), window = 3)
     expect_equal(
         attr(kwic3, "keywords"),
-        factor(c("key1", "key1", "key2", "key1", "key1", "key2"), levels =  c("key1", "key2"))
+        factor(c("key1", "key2", "key1", "key2", "key1", "key2", "key1", "key2"), 
+               levels =  c("key2", "key1"))
+    )
+})
+
+test_that("kwic keywords attribute works for phrases", {
+    txt <- c("This is a test",
+          "This is it.",
+          "What is in a train?",
+          "Is it a question?",
+          "Sometimes you don't know if this is it.",
+          "Is it a bird or a plane or is it a train?")
+    toks <- tokens(txt)
+    
+    kw1 <- kwic(toks, c("is", "a"), valuetype = "fixed")
+    expect_equal(
+        as.character(attr(kw1, "keywords")),
+        char_tolower(kw1$keyword)
+    )
+    
+    kw2 <- kwic(toks, phrase("is a"), valuetype = "fixed")
+    expect_equal(
+        as.character(attr(kw2, "keywords")),
+        char_tolower(kw2$keyword)
+    )
+})
+
+test_that("kwic with pattern overlaps works as expected", {
+    kw <- c(d2 = "one two three four", d1 = "four three two one") %>%
+        tokens() %>%
+        kwic(pattern = c("two", "two", "three"), window = 1)
+    expect_equal(
+        as.character(attr(kw, "keywords")),
+        char_tolower(kw$keyword)
     )
 })

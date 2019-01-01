@@ -101,34 +101,75 @@ kwic.tokens <- function(x, pattern, window = 5,
                         separator = " ",
                         case_insensitive = TRUE, ...) {
 
-    valuetype <- match.arg(valuetype)
-    types <- types(x)
+    if (is.list(pattern) && is.null(names(pattern)))
+        names(pattern) <- pattern
 
-    # coerce a character vector into a list
+    # coerce a character vector and phrase list into a named list
     if (is.character(pattern)) {
         pattern <- as.list(pattern)
         names(pattern) <- pattern
+    } else if ("phrases" %in% class(pattern)) {
+        names(pattern) <- sapply(pattern, paste, collapse = " ")
+    } else if ("collocations" %in% class(pattern)) {
+        temppatt <- phrase(pattern$collocation)
+        names(temppatt) <- pattern$collocation
+        pattern <- temppatt
     }
+    
+    # remove duplicated pattern elements (key and value match)
+    pattern <- pattern[!(duplicated(pattern) & duplicated(names(pattern)))]
     
     # add document names if none
     if (is.null(names(x))) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
 
-    keywords_id <- pattern2list(pattern, types,
-                                valuetype, case_insensitive, attr(x, "concatenator"))
-    temp <- qatd_cpp_kwic(x, types, keywords_id, window, separator)
+    # loop over each pattern (name)
+    temp <- lapply(seq_along(pattern), function(i) {
+        kwic_internal(x, pattern = pattern[i],
+                      window = window, valuetype = valuetype,
+                      separator = separator, case_insensitive = case_insensitive)
+    })
     
-    # attributes for kwic object
+    # combine into a single data.frame
+    result <- do.call(rbind, temp)
+    
+    # get the keyword pattern for each row of what will be the combined kwic
+    result[["keywords"]] <- rep(names(pattern), sapply(temp, nrow))
+    
+    # sort by original document order
+    result <- merge(
+        result,
+        data.frame(docname = docnames(x), pos = seq_along(docnames(x))),
+        by = "docname"
+    )
+
+    # additionally sort by from and to positions
+    result <- result[order(result$pos, result$from, result$to), ]
+    
+    # assemble into a single data.frame
     result <- structure(
-        temp,
+        result[, c("docname", "from", "to", "pre", "keyword", "post")],
         class = c("kwic", "data.frame"),
         ntoken = ntoken(x),
         valuetype = valuetype,
-        keywords = factor(map_keywords(keywords_id, temp, types), levels = names(pattern))
+        keywords = factor(result$keywords, levels = unique(names(pattern)))
     )
+    # pass on other attributes of input tokens
     attributes(result, FALSE)  <- attributes(x)
+    
     result
+}
+    
+kwic_internal <- function(x, pattern, window = 5,
+                          valuetype = c("glob", "regex", "fixed"),
+                          separator = " ",
+                          case_insensitive = TRUE, ...) {
+    valuetype <- match.arg(valuetype)
+    types <- types(x)
+    keywords_id <- pattern2list(pattern, types,
+                                valuetype, case_insensitive, attr(x, "concatenator"))
+    qatd_cpp_kwic(x, types, keywords_id, window, separator)
 }
 
 #' @rdname kwic
@@ -162,10 +203,4 @@ print.kwic <- function(x, ...) {
         colnames(kwic) <- NULL
         print(kwic, row.names = FALSE)
     }
-}
-
-map_keywords <- function(keywords_id, kwic, types) {
-    type_index <- match(kwic$keyword, types)
-    keywords_id_sorted <- keywords_id[match(type_index, unlist(keywords_id, use.names = FALSE))]
-    names(keywords_id_sorted)
 }

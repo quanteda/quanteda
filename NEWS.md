@@ -3,6 +3,8 @@
 ### Bug fixes and stability enhancements
 
 * Fixed bug in `dfm_compress()` and `dfm_group()` that changed or deleted docvars attributes of dfm objects (#1506).
+* Fixed a bug in `textplot_xray()` that caused incorrect facet labels when a pattern contained multiple list elements or values (#1514).
+* `kwic()` now correctly returns the pattern associated with each match as the `"keywords"` attribute, for all `pattern` types (#1515)
 
 ### New features
 

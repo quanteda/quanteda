@@ -32,13 +32,13 @@ below the other, with keywords shown side-by-side. Given that this returns a
 
 These are known issues on which we are working to solve in future versions:
 \itemize{
-\item \code{textplot_xray()} will not display the patterns correctly when these are
-multi-token sequences.
+\item \code{textplot_xray()} will not display the patterns correctly when
+these are multi-token sequences.
 
-\item For dictionaries with keys that have overlapping value matches to tokens in
-the text, only the first match will be used in the plot.  The way around this
-is to produce one kwic per dictionary key, and send them as a list to
-\code{textplot_xray}.
+\item For dictionaries with keys that have overlapping value matches to
+tokens in the text, only the first match will be used in the plot.  The way
+around this is to produce one kwic per dictionary key, and send them as a
+list to \code{textplot_xray}.
 }
 }
 
