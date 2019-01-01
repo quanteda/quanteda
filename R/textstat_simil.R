@@ -301,16 +301,16 @@ as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
         result <- result[lower.tri(result)]
     attr(result, "Size") <- ncol(x)
     attr(result, "Labels") <- colnames(x)
-    attr(result, "call") <- call
     attr(result, "Diag") <- diag
     attr(result, "Upper") <- upper
     attr(result, "method") <- method
+    attr(result, "call") <- call
     if (ncol(x) == nrow(x)) {
         class(result) <- "dist"
     } else {
         class(result) <- "dist_selection"
     }
-    return(result)
+    result
 }
 
 #' Coerce a simil object into a matrix
