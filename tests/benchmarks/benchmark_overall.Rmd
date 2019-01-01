@@ -1,0 +1,48 @@
+---
+title: "Benchmark basic operations"
+author: "Kohei Watanabe"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+require(quanteda)
+quanteda_options(threads = 8)
+sessionInfo()
+
+corp <- readRDS("/home/kohei/Documents/Brexit/Data/data_corpus_guardian.RDS")
+
+system.time(
+    corp2 <- corpus_sample(corp, 5000)
+)
+
+system.time(
+    toks <- tokens(corp)
+)
+
+system.time(
+    toks2 <- tokens_sample(toks, 5000)
+)
+
+system.time(
+    toks3 <- tokens_remove(toks, stopwords("en"))
+)
+
+system.time(
+    mt <- dfm(toks)
+)
+
+system.time(
+    mt2 <- dfm_group(mt, "date")
+)
+
+system.time(
+    mt3 <- dfm_remove(mt, stopwords("en"))
+)
+
+```
+
