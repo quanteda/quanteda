@@ -272,7 +272,7 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
                    stringsAsFactors = FALSE,
                    row.names = paste0("fromDf_", 1:6)) %>%
         dplyr::group_by(letter_factor) %>% 
-        dplyr::mutate(n_group = n())
+        dplyr::mutate(n_group = dplyr::n())
     expect_output(
         print(corpus(df_grouped)),
         "^Corpus consisting of 6 documents and 3 docvars\\."
