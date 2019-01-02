@@ -241,6 +241,8 @@ textstat_proxy <- function(x, y = NULL,
         if (!identical(docnames(x), docnames(y)))
             stop("x and y must contain the same documents")
     }
+    if (is.null(min_proxy) && is.null(rank))
+        use_na <- TRUE
     if (is.null(min_proxy))
         min_proxy <- -1.0
     if (is.null(rank))
@@ -288,8 +290,12 @@ textstat_proxy <- function(x, y = NULL,
                                                 "maximum", "canberra", "minkowski")),
                                 rank, min_proxy, weight)
     }
-
     dimnames(result) <- list(colnames(x), colnames(y))
+    if (use_na) {
+        l <- (colSums(x != 0) == 0) | (colSums(y != 0) == 0)
+        result[l,,drop = FALSE] <- NA
+        result[,l,drop = FALSE] <- NA
+    }
     return(result)
     # return(as(result, "CsparseMatrix"))
 }
