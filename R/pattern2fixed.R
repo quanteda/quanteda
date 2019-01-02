@@ -7,6 +7,7 @@
 #'   patterns for faster matching.
 #' @inheritParams pattern
 #' @param types unique types of tokens obtained by \code{\link{types}}
+#' @param keep_nomatch keep patterns not found
 #' @inheritParams valuetype
 #' @param case_insensitive if \code{TRUE}, ignores case when matching
 #' @return  \code{pattern2id} returns a list of integer vectors containing type
@@ -24,7 +25,7 @@
 #' 
 #' @export
 pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
-                       case_insensitive = TRUE, flatten = TRUE) {
+                       case_insensitive = TRUE, keep_nomatch = FALSE) {
     
     if (!length(pattern)) return(list())
     
@@ -71,13 +72,10 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
             }
         }
     }
-    if (flatten) {
-        result <- unlist(temp, recursive = FALSE)
-        names(result) <- names(pattern)[rep(seq_along(pattern), lengths(temp))]
-    } else {
-        result <- temp
-        names(result) <- names(pattern)
-    }
+    if (keep_nomatch) #{
+        temp <- lapply(temp, function(x) if (!length(x)) list(integer()) else x)
+    result <- unlist(temp, FALSE, FALSE)
+    names(result) <- rep(names(pattern), lengths(temp))
     return(result)
 }
 
@@ -93,14 +91,10 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
 #' types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
 #' pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
 pattern2fixed <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
-                          case_insensitive = TRUE, flatten = TRUE) {
+                          case_insensitive = TRUE, keep_nomatch = FALSE) {
     
-    temp <- pattern2id(pattern, types, valuetype, case_insensitive, flatten)
-    if (flatten) {
-        result <- lapply(temp, function(x) types[x])
-    } else {
-        result <- lapply(temp, function(x) lapply(x, function(y) types[y]))
-    }
+    temp <- pattern2id(pattern, types, valuetype, case_insensitive, keep_nomatch)
+    result <- lapply(temp, function(x) types[x])
     return(result)
 }
 
@@ -342,18 +336,6 @@ is_glob <- function(pattern) {
     pattern <- unlist(pattern, use.names = FALSE)
     return(any(stri_detect_fixed(pattern, "*")) || any(stri_detect_fixed(pattern, "?")))
 }
-
-#' Flatten ids keeping no matches
-#' @param ids nested list of token ID from \code{pattern2id}
-#' @param keep_nomatch keep list element for no-matches
-#' @keywords internal
-flatten_id <- function(ids, keep_nomatch = FALSE) {
-    if (keep_nomatch) {
-        ids <- lapply(ids, function(x) if (!length(x)) list(integer()) else x)
-    }
-    unlist(ids, FALSE, FALSE)
-}
-
 
 # internal-only aliases for backward compatibility
 # TODO: this should be removed with in a year (by April 2019).
