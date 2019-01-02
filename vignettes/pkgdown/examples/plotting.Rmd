@@ -277,8 +277,8 @@ textplot_scale1d(ca, margin = "documents",
 
 # References
 
-Laver, Michael, Kenneth Benoit, and John Garry. 2003. "\href{http://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions from Political Texts Using Words as Data}." _American Political Science Review_ 97(2): 311-331.
+Laver, Michael, Kenneth Benoit, and John Garry. 2003. "[Extracting Policy Positions from Political Texts Using Words as Data](http://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf)." _American Political Science Review_ 97(2): 311-331.
 
-Nenadic, Oleg and Michael Greenacre. 2007. "\href{http://www.jstatsoft.org/v20/i03/}{Correspondence analysis in R, with two- and three-dimensional graphics: The ca package}." _Journal of Statistical Software_ 20(3): 1--13.
+Nenadic, Oleg and Michael Greenacre. 2007. "[Correspondence analysis in R, with two- and three-dimensional graphics: The ca package](http://www.jstatsoft.org/v20/i03/)." _Journal of Statistical Software_ 20(3): 1--13.
 
-Slapin, Jonathan and Sven-Oliver Proksch. 2008. "\href{https://doi.org/10.1111/j.1540-5907.2008.00338.x}{A Scaling Model for Estimating Time-Series Party Positions from Texts}." _American Journal of Political Science_ 52(3): 705--772.
+Slapin, Jonathan and Sven-Oliver Proksch. 2008. "[A Scaling Model for Estimating Time-Series Party Positions from Texts](https://doi.org/10.1111/j.1540-5907.2008.00338.x)." _American Journal of Political Science_ 52(3): 705--772.

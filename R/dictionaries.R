@@ -93,7 +93,7 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
                                                  concatenator_tokens))
         names(result) <- key
     }
-    result
+    return(result)
 }
 
 
