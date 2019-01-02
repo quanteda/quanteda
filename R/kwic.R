@@ -104,72 +104,30 @@ kwic.tokens <- function(x, pattern, window = 5,
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern
 
-    # coerce a character vector and phrase list into a named list
-    if (is.character(pattern)) {
-        pattern <- as.list(pattern)
-        names(pattern) <- pattern
-    } else if ("phrases" %in% class(pattern)) {
-        names(pattern) <- sapply(pattern, paste, collapse = " ")
-    } else if ("collocations" %in% class(pattern)) {
-        temppatt <- phrase(pattern$collocation)
-        names(temppatt) <- pattern$collocation
-        pattern <- temppatt
-    }
-    
-    # remove duplicated pattern elements (key and value match)
-    pattern <- pattern[!(duplicated(pattern) & duplicated(names(pattern)))]
-    
-    # add document names if none
-    if (is.null(names(x))) {
-        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
-    }
-
-    # loop over each pattern (name)
-    temp <- lapply(seq_along(pattern), function(i) {
-        kwic_internal(x, pattern = pattern[i],
-                      window = window, valuetype = valuetype,
-                      separator = separator, case_insensitive = case_insensitive)
-    })
-    
-    # combine into a single data.frame
-    result <- do.call(rbind, temp)
-    
-    # get the keyword pattern for each row of what will be the combined kwic
-    result[["keywords"]] <- rep(names(pattern), sapply(temp, nrow))
-    
-    # sort by original document order
-    result <- merge(
-        result,
-        data.frame(docname = docnames(x), pos = seq_along(docnames(x))),
-        by = "docname"
-    )
-
-    # additionally sort by from and to positions
-    result <- result[order(result$pos, result$from, result$to), ]
-    
-    # assemble into a single data.frame
-    result <- structure(
-        result[, c("docname", "from", "to", "pre", "keyword", "post")],
-        class = c("kwic", "data.frame"),
-        ntoken = ntoken(x),
-        valuetype = valuetype,
-        keywords = factor(result$keywords, levels = unique(names(pattern)))
-    )
-    # pass on other attributes of input tokens
-    attributes(result, FALSE)  <- attributes(x)
-    
-    result
-}
-    
-kwic_internal <- function(x, pattern, window = 5,
-                          valuetype = c("glob", "regex", "fixed"),
-                          separator = " ",
-                          case_insensitive = TRUE, ...) {
     valuetype <- match.arg(valuetype)
-    types <- types(x)
-    keywords_id <- pattern2list(pattern, types,
-                                valuetype, case_insensitive, attr(x, "concatenator"))
-    qatd_cpp_kwic(x, types, keywords_id, window, separator)
+    type <- types(x)
+    
+    # add document names if none (TODO: should be removed after corpus upgrade)
+    if (is.null(names(x)))
+        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
+    
+    ids <- pattern2list(pattern, type,
+                        valuetype, case_insensitive, attr(x, "concatenator"))
+    result <- data.frame()
+    for (m in unique(names(ids))) {
+        temp <- qatd_cpp_kwic(x, type, ids[names(ids) == m], window, separator)
+        temp[["pattern"]] <- rep(m, nrow(temp))
+        result <- rbind(result, temp)
+    }
+    result[["pattern"]] <- factor(result[["pattern"]], levels = unique(names(ids)))
+    if (nrow(result))
+        result <- result[order(match(result[["docname"]], docnames(x)), 
+                               result[["from"]], result[["to"]]),]
+    rownames(result) <- NULL
+    attr(result, "ntoken") <- ntoken(x)
+    class(result) = c("kwic", "data.frame")
+    attributes(result, FALSE)  <- attributes(x)
+    return(result)
 }
 
 #' @rdname kwic

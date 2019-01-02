@@ -87,7 +87,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"),
     x[, ntokens := ntokensbydoc[as.character(x[, docname])]]
 
     # replace "found" keyword with patterned keyword
-    x[, keyword := unlist(lapply(kwics, function(l) attr(l, "keyword")))]
+    x[, keyword := unlist(lapply(kwics, function(l) l[["pattern"]]))]
 
     # pre-emptively convert keyword to factor before ggplot does it, so that we
     # can keep the order of the factor the same as the order of the kwic objects
@@ -105,8 +105,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"),
     else {
         if (multiple_documents) {
             scale <- "relative"
-        }
-        else {
+        } else {
             scale <- "absolute"
         }
     }
