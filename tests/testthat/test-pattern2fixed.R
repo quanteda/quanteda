@@ -167,17 +167,27 @@ test_that("add value check for types (#1463)", {
     
 })
 
-test_that("flatten_id() is working", {
-  expect_identical(
-    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
-    list(c(1, 2), 3, 4)
-  )
-  expect_identical(
-    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list())),
-    list(c(1, 2), 3, 4)
-  )
-  expect_identical(
-    quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list()), TRUE),
-    list(c(1, 2), 3, 4, integer())
-  )
+test_that("keep_unmatched is working", {
+  pattern <- list(c("a", "b"), c("a", "z"), "x")
+  type <- c("a", "b", "c")
+  expect_identical(quanteda:::regex2id(pattern, type, "fixed", keep_nomatch = FALSE),
+                   list(c(1L, 2L)))
+  expect_identical(quanteda:::regex2id(pattern, type, "fixed", keep_nomatch = TRUE),
+                   list(c(1L, 2L), integer(), integer()))
 })
+
+
+# test_that("flatten_id() is working", {
+#   expect_identical(
+#     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
+#     list(c(1, 2), 3, 4)
+#   )
+#   expect_identical(
+#     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list())),
+#     list(c(1, 2), 3, 4)
+#   )
+#   expect_identical(
+#     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list()), TRUE),
+#     list(c(1, 2), 3, 4, integer())
+#   )
+# })
