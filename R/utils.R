@@ -115,7 +115,7 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @keywords internal
 pattern2list <- function(pattern, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
-                         flatten = TRUE) {
+                         keep_nomatch = FALSE) {
 
     if (is.dfm(pattern))
         stop("dfm cannot be used as pattern")
@@ -125,7 +125,8 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
         temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
         temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
         names(temp) <- pattern$collocation
-        result <- temp[vapply(temp, function(x) all(!is.na(x)), logical(1))]
+        result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
+        attr(result, "pattern") <- match(names(result), pattern$collocation)
     } else {
         if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
@@ -141,7 +142,8 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
         }
         if (remove_unigram)
             temp <- temp[lengths(temp) > 1] # drop single-word patterns
-        result <- pattern2id(temp, types, valuetype, case_insensitive, flatten = flatten)
+        result <- pattern2id(temp, types, valuetype, case_insensitive, keep_nomatch)
+        attr(result, "pattern") <- match(names(result), names(temp))
         if (is.dictionary(pattern))
             attr(result, "key") <- key
     }
