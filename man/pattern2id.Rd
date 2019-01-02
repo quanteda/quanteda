@@ -7,10 +7,10 @@
 \title{Convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
 pattern2id(pattern, types, valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE, flatten = TRUE)
+  case_insensitive = TRUE, keep_nomatch = FALSE)
 
 pattern2fixed(pattern, types, valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE, flatten = TRUE)
+  case_insensitive = TRUE, keep_nomatch = FALSE)
 
 index_types(types, valuetype, case_insensitive, max_len = NULL)
 }
@@ -25,6 +25,8 @@ index_types(types, valuetype, case_insensitive, max_len = NULL)
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{if \code{TRUE}, ignores case when matching}
+
+\item{keep_nomatch}{keep patterns not found}
 
 \item{max_len}{maximum length of types to be indexed}
 }
