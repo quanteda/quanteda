@@ -54,7 +54,6 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
     x <- as.tokens(x)
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
-    
     # !!!! replace by nothing means remove !!!!!
     # l <- lengths(pattern) > 0 & lengths(replacement) > 0
     # pattern <- pattern[l]
@@ -71,15 +70,13 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
         }
     } else {
         attrs <- attributes(x)
-        ids_pat <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, "concatenator"),
-                                flatten = FALSE)
-        r <- rep(seq(ids_pat), lengths(ids_pat))
+        ids_pat <- pattern2list(pattern, type, valuetype, case_insensitive, 
+                                attr(x, "concatenator"), keep_nomatch = FALSE)
         type <- union(type, unlist(replacement, use.names = FALSE))
-        ids_repl <- pattern2list(replacement, type, "fixed", FALSE, attr(x, "concatenator"),
-                                 flatten = FALSE)[r]
-        x <- qatd_cpp_tokens_replace(x, type,
-                                     flatten_id(ids_pat, TRUE),
-                                     flatten_id(ids_repl, TRUE))
+        ids_repl <- pattern2list(replacement, type, "fixed", FALSE, 
+                                 attr(x, "concatenator"), keep_nomatch = TRUE)
+        ids_repl <- ids_repl[match(attr(ids_pat, "pattern"), attr(ids_repl, "pattern"))]
+        x <- qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl)
         attributes(x, FALSE) <- attrs
     }
     return(x)
