@@ -8,7 +8,7 @@ textstat_proxy(x, y = NULL, margin = c("documents", "features"),
   method = c("cosine", "correlation", "jaccard", "ejaccard", "dice",
   "edice", "hamman", "simple matching", "faith", "euclidean", "chisquared",
   "hamming", "kullback", "manhattan", "maximum", "canberra", "minkowski"),
-  p = 2, min_proxy = NULL, rank = NULL)
+  p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -29,6 +29,9 @@ Details.}
 
 \item{rank}{an integer value specifying top-n most proximity values to be
 recorded.}
+
+\item{use_na}{if \code{TRUE}, return \code{NA} for proximity to empty
+vectors. Note that use of \code{NA} makes the proximity matrices denser.}
 }
 \description{
 This is an underlying function for \code{textstat_dist} and

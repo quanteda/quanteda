@@ -104,9 +104,9 @@ textstat_simil.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x[, i], x, margin, method, 1)
+        result <- textstat_proxy(x[, i], x, margin, method, 1, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x[i, ], x, margin, method, 1)
+        result <- textstat_proxy(x[i, ], x, margin, method, 1, use_na = TRUE)
     }
     result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
     if (is.null(selection)) {
@@ -194,9 +194,9 @@ textstat_dist.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x[, i], x, margin, method, p)
+        result <- textstat_proxy(x[, i], x, margin, method, p, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x[i, ], x, margin, method, p)
+        result <- textstat_proxy(x[i, ], x, margin, method, p, use_na = TRUE)
     }
     as_dist(result, method, match.call(), diag = diag, upper = upper)
 }
@@ -208,6 +208,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' @keywords internal
 #' @param y if a \link{dfm} object is provided, proximity between documents or
 #'   features in \code{x} and \code{y} is computed.
+#' @param use_na if \code{TRUE}, return \code{NA} for proximity to empty
+#'   vectors. Note that use of \code{NA} makes the proximity matrices denser.
 #' @inheritParams textstat_dist
 #' @param min_proxy the minimum proximity value to be recoded.
 #' @param rank an integer value specifying top-n most proximity values to be
@@ -220,7 +222,7 @@ textstat_proxy <- function(x, y = NULL,
                                       "dice", "edice", "hamman", "simple matching", "faith",
                                       "euclidean", "chisquared", "hamming", "kullback",
                                       "manhattan", "maximum", "canberra", "minkowski"),
-                           p = 2, min_proxy = NULL, rank = NULL) {
+                           p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE) {
     x <- as.dfm(x)
     if (is.null(y)) {
         y <- x
@@ -241,8 +243,6 @@ textstat_proxy <- function(x, y = NULL,
         if (!identical(docnames(x), docnames(y)))
             stop("x and y must contain the same documents")
     }
-    if (is.null(min_proxy) && is.null(rank))
-        use_na <- TRUE
     if (is.null(min_proxy))
         min_proxy <- -1.0
     if (is.null(rank))
