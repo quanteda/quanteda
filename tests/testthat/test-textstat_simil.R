@@ -181,7 +181,7 @@ test_that("textstat_dist() returns NA for empty dfm", {
     mt <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_equivalent(
         textstat_dist(mt, method = "euclidean"),
-        proxy::dist(as.matrix(mt), method = "Euclidean")
+        stats::dist(as.matrix(mt), method = "euclidean")
     )
     expect_equivalent(
         textstat_dist(mt, method = "kullback"),
@@ -189,19 +189,19 @@ test_that("textstat_dist() returns NA for empty dfm", {
     )
     expect_equivalent(
         textstat_dist(mt, method = "manhattan"),
-        proxy::dist(as.matrix(mt), method = "manhattan")
+        stats::dist(as.matrix(mt), method = "manhattan")
     )
     expect_equivalent(
         textstat_dist(mt, method = "maximum"),
-        proxy::dist(as.matrix(mt), method = "maximum")
+        stats::dist(as.matrix(mt), method = "maximum")
     )
     expect_equivalent(
         textstat_dist(mt, method = "canberra"),
-        proxy::dist(as.matrix(mt), method = "canberra")
+        stats::dist(as.matrix(mt), method = "canberra")
     )
     expect_equivalent(
         textstat_dist(mt, method = "minkowski"),
-        proxy::dist(as.matrix(mt), method = "minkowski", p = 2)
+        stats::dist(as.matrix(mt), method = "minkowski", p = 2)
     )
 })
 
@@ -209,7 +209,7 @@ test_that("textstat_simil() returns NA for empty dfm", {
     mt <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_equivalent(
         textstat_simil(mt, method = "correlation"),
-        proxy::simil(as.matrix(mt), method = "correlation")
+        cor(t(as.matrix(mt)), method = "pearson") %>% as.dist()
     )
     expect_equivalent(
         textstat_simil(mt, method = "cosine"),
@@ -253,7 +253,7 @@ test_that("textstat_dist() returns NA for zero-variance documents", {
 
     expect_equivalent(
         textstat_dist(mt, method = "euclidean"),
-        proxy::dist(as.matrix(mt), method = "Euclidean")
+        stats::dist(as.matrix(mt), method = "euclidean")
     )
     expect_equivalent(
         textstat_dist(mt, method = "kullback"),
@@ -261,19 +261,19 @@ test_that("textstat_dist() returns NA for zero-variance documents", {
     )
     expect_equivalent(
         textstat_dist(mt, method = "manhattan"),
-        proxy::dist(as.matrix(mt), method = "manhattan")
+        stats::dist(as.matrix(mt), method = "manhattan")
     )
     expect_equivalent(
         textstat_dist(mt, method = "maximum"),
-        proxy::dist(as.matrix(mt), method = "maximum")
+        stats::dist(as.matrix(mt), method = "maximum")
     )
     expect_equivalent(
         textstat_dist(mt, method = "canberra"),
-        proxy::dist(as.matrix(mt), method = "canberra")
+        stats::dist(as.matrix(mt), method = "canberra")
     )
     expect_equivalent(
         textstat_dist(mt, method = "minkowski"),
-        proxy::dist(as.matrix(mt), method = "minkowski", p = 2)
+        stats::dist(as.matrix(mt), method = "minkowski", p = 2)
     )
 })
 
@@ -284,12 +284,14 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
     mt <- as.dfm(mt)
 
     expect_equivalent(
-        textstat_simil(mt, method = "correlation"),
-        proxy::simil(as.matrix(mt), method = "correlation")
+        textstat_simil(mt, method = "correlation") %>% as.matrix(),
+        stats::cor(t(as.matrix(mt)), method = "pearson")
     )
-    expect_equivalent(
+    expect_equal(
         textstat_simil(mt, method = "cosine"),
-        proxy::simil(as.matrix(mt), method = "cosine")
+        matrix(c(rep(NaN, 13), 1, rep(NaN, 3), 1, rep(NaN, 7)), nrow = 5,
+                 dimnames = list(paste0("R", 1:5), paste0("R", 1:5))) %>%
+            as.dist()
     )
     expect_equivalent(
         textstat_simil(mt, method = "jaccard"),
@@ -303,8 +305,10 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
         textstat_simil(mt, method = "dice"),
         proxy::simil(as.matrix(mt), method = "dice")
     )
-    expect_equivalent(
+    expect_equal(
         textstat_simil(mt, method = "edice"),
+        # proxy has this wrong, since 2xy / (xx + yy) means that if 
+        # both x and y are empty then this should be NaN
         proxy::simil(as.matrix(mt), method = "edice")
     )
     expect_equivalent(
