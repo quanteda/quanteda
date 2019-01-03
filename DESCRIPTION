@@ -56,7 +56,8 @@ Suggests:
     ca,
     dplyr,     
     DT,
-    e1071,     
+    e1071,
+    entropy,
     ExPosition,     
     lda,
     lsa,     
@@ -159,6 +160,7 @@ Collate:
     'textstat_readability.R'
     'textstat_simil.R'
     'textstat_simil_old.R'
+    'textstat_entropy.R'
     'tokens.R'
     'tokens-methods-base.R'
     'tokens_compound.R'
