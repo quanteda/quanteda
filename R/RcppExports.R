@@ -57,8 +57,8 @@ qatd_cpp_similarity <- function(mt1, mt2, method, rank, limit = -1.0, weight = 1
     .Call(`_quanteda_qatd_cpp_similarity`, mt1, mt2, method, rank, limit, weight)
 }
 
-qatd_cpp_stddev <- function(mt) {
-    .Call(`_quanteda_qatd_cpp_stddev`, mt)
+qatd_cpp_sd <- function(mt) {
+    .Call(`_quanteda_qatd_cpp_sd`, mt)
 }
 
 qatd_cpp_nz <- function(mt) {

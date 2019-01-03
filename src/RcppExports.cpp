@@ -201,14 +201,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_stddev
-NumericVector qatd_cpp_stddev(arma::sp_mat& mt);
-RcppExport SEXP _quanteda_qatd_cpp_stddev(SEXP mtSEXP) {
+// qatd_cpp_sd
+NumericVector qatd_cpp_sd(arma::sp_mat& mt);
+RcppExport SEXP _quanteda_qatd_cpp_sd(SEXP mtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::sp_mat& >::type mt(mtSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_stddev(mt));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sd(mt));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -444,7 +444,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_similarity_linear", (DL_FUNC) &_quanteda_qatd_cpp_similarity_linear, 5},
     {"_quanteda_qatd_cpp_similarity", (DL_FUNC) &_quanteda_qatd_cpp_similarity, 6},
-    {"_quanteda_qatd_cpp_stddev", (DL_FUNC) &_quanteda_qatd_cpp_stddev, 1},
+    {"_quanteda_qatd_cpp_sd", (DL_FUNC) &_quanteda_qatd_cpp_sd, 1},
     {"_quanteda_qatd_cpp_nz", (DL_FUNC) &_quanteda_qatd_cpp_nz, 1},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},

@@ -23,7 +23,7 @@ double get_limit(std::vector<double> simils, const unsigned int rank, double lim
     return limit;
 }
 
-rowvec nz(const sp_mat& mt) {
+rowvec nnz(const sp_mat& mt) {
     rowvec v(mt.n_cols, fill::zeros);
     if (mt.is_empty()) return(v);
     for (uword i = 0; i < mt.n_cols; i++) {
@@ -350,7 +350,7 @@ NumericVector qatd_cpp_sd(arma::sp_mat& mt) {
 
 // [[Rcpp::export]]
 NumericVector qatd_cpp_nz(arma::sp_mat& mt) {
-    std::vector<double> nzs = to_vector(nz(mt));
+    std::vector<double> nzs = to_vector(nnz(mt));
     return wrap(nzs);
 }
 
