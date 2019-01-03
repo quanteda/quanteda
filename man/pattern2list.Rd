@@ -7,7 +7,7 @@ tokens_compound and kwic.}
 \usage{
 pattern2list(pattern, types, valuetype, case_insensitive,
   concatenator = "_", levels = 1, remove_unigram = FALSE,
-  flatten = TRUE)
+  keep_nomatch = FALSE)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
