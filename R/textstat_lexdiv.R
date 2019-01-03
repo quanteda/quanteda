@@ -220,7 +220,7 @@ textstat_lexdiv.tokens <-
 
     check_dots(list(...))
     tokens_only_measures <-  c("MATTR", "MSTTR", "MTLD")
- 
+
     # additional token handling
     x <- tokens(x, remove_hyphens = remove_hyphens,
                 remove_numbers = remove_numbers,
@@ -371,10 +371,10 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD")
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
 
     if ("MATTR" %in% measure)
-        result[["MATTR"]] <- compute_mattr2(x, MATTR_window = MATTR_window)
+        result[["MATTR"]] <- compute_mattr(x, MATTR_window = MATTR_window)
 
     if ("MSTTR" %in% measure)
-        result[["MSTTR"]] <- compute_msttr2(x, MSTTR_segment = MSTTR_segment)
+        result[["MSTTR"]] <- compute_msttr(x, MSTTR_segment = MSTTR_segment)
 
     if ("MTLD" %in% measure)
         result[["MTLD"]] <- NA # compute_mtld(x, MTLD_threshold = MTLD_threshold)]
@@ -397,7 +397,7 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR", "MTLD")
 #' @param MATTR_window integer; the size of the moving window for computation of
 #'   TTR, between 1 and the number of tokens of the document
 #' @keywords internal textstat lexdiv
-compute_mattr2 <- function(x, MATTR_window = 100L) {
+compute_mattr <- function(x, MATTR_window = 100L) {
 
     if (MATTR_window < 1)
         stop("MATTR_window must be positive")
@@ -422,7 +422,7 @@ compute_mattr2 <- function(x, MATTR_window = 100L) {
 #' @param x input \link{tokens}
 #' @param segment_size the size of the segment
 #' @keywords internal textstat lexdiv
-compute_msttr2 <- function(x, MSTTR_segment) {
+compute_msttr <- function(x, MSTTR_segment) {
     if (MSTTR_segment < 1)
         stop("MSTTR_segment must be positive")
     if (any(ntoken(x) < MSTTR_segment)) {
@@ -434,8 +434,8 @@ compute_msttr2 <- function(x, MSTTR_segment) {
     x_seg <- tokens_chunk(x, MSTTR_segment)
     # drop remainder documents shorter than MSTTR_segment
     x_seg <- x_seg[lengths(x_seg) >= MSTTR_segment]
-    
-    split(textstat_lexdiv(x_seg, measure = "TTR")[["TTR"]], 
+
+    split(textstat_lexdiv(x_seg, measure = "TTR")[["TTR"]],
           factor(metadoc(x_seg, "document"), levels = docnames(x))) %>%
         vapply(mean, numeric(1))
 }
@@ -502,10 +502,10 @@ compute_mtld <- function(x, ttr_threshold = 0.720){
 }
 
 # Prototype vocd-d solution
-tokens_samplefrom <- function(x, size, replace = FALSE) { 
-    attrs <- attributes(x) 
-    result <- lapply(unclass(x), sample, size = size, replace = replace) 
-    attributes(result) <- attrs 
+tokens_samplefrom <- function(x, size, replace = FALSE) {
+    attrs <- attributes(x)
+    result <- lapply(unclass(x), sample, size = size, replace = replace)
+    attributes(result) <- attrs
     tokens_recompile(result)
 }
 
@@ -513,33 +513,34 @@ compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 50,
                            trials_per_sample = 10, plot_graph = TRUE ){
     x <- tokens(x)
     # Exception handlers
-    if (!is.tokens(x)) stop('x must be tokens object')
-    if (sample_size_start >= sample_size_end) stop('sample_size_end must be larger than sample_size_start')
-    if (ntoken(x) < sample_size_start) stop('sample size must be less than ntokens')
+    if (!is.tokens(x)) stop("x must be tokens object")
+    if (sample_size_start >= sample_size_end)
+        stop("sample_size_end must be larger than sample_size_start")
+    if (ntoken(x) < sample_size_start) stop("sample size must be less than ntokens")
     # Counter Lists
     mean_ttr_list <- list()
     sd_ttr_list <- list()
-    size_list <- c((sample_size_start:sample_size_end))
+    size_list <- c(sample_size_start:sample_size_end)
     # For Loop for Sample Sizes
     for (size in size_list){
         temp <- data.frame(docnames(x))
         trial <- 1
         # While Loop for Bootstrap Per Sample Size
-        while (trial <= trials_per_sample){
+        while (trial <= trials_per_sample) {
             sample <- tokens_samplefrom(x, size = size, replace = FALSE) %>% dfm()
-            ttr_sample <- compute_lexdiv_dfm_stats(sample, measure = 'TTR')[[2]]
+            ttr_sample <- compute_lexdiv_dfm_stats(sample, measure = "TTR")[[2]]
             temp <- cbind(temp, ttr_sample)
             trial <- trial + 1
         }
-        mean_ttr_for_size <- apply(temp[,-1], 1,function(y) mean(y))
-        sd_ttr_for_size <- apply(temp[,-1], 1,function(y) sd(y))
+        mean_ttr_for_size <- apply(temp[, -1], 1, function(y) mean(y))
+        sd_ttr_for_size <- apply(temp[, -1], 1, function(y) sd(y))
         # Append Values to Counter Lists
         mean_ttr_list[[size]] <- mean_ttr_for_size
-        sd_ttr_list[[size]]<- sd_ttr_for_size
+        sd_ttr_list[[size]] <- sd_ttr_for_size
     }
     df_mean_ttr_per_size <- data.frame(documents = docnames(x), mean_ttr_list)
-    D <- apply(df_mean_ttr_per_size[,-1], 1, function(y){
-        model <- stats::nls( y ~ ((D/size_list)* ((1 + 2*(size_list/D))^0.5 -1)),
+    D <- apply(df_mean_ttr_per_size[, -1], 1, function(y){
+        model <- stats::nls( y ~ ((D / size_list) * ((1 + 2 * (size_list / D))^0.5 -1)),
                              start = list(D = 1))
         D <- coef(model)
     })
@@ -548,37 +549,36 @@ compute_vocd_d <- function(x, sample_size_start = 1, sample_size_end = 50,
 
 # Prototype hd-d function
 compute_hd_d <- function(x, sample_size_start = 35, sample_size_end = 50, ATTR_for_all_samp_size = FALSE){
-    
+
     x <- as.dfm(x)
     # Exception handlers
-    if (!is.dfm(x)) stop('x must be dfm object')
-    if (sample_size_start >= sample_size_end) stop('sample_size_end must be larger than sample_size_start')
-    if (any(ntoken(x) < sample_size_start)) stop('sample_size_start must be less than smallest ntokens')
-    
-    
+    if (!is.dfm(x)) stop("x must be dfm object")
+    if (sample_size_start >= sample_size_end) stop("sample_size_end must be larger than sample_size_start")
+    if (any(ntoken(x) < sample_size_start)) stop("sample_size_start must be less than smallest ntokens")
+
     hd_d_vals <- data.table(docs = docnames(x))
-    sample_range <- c((sample_size_start:sample_size_end))
-    for (sample_size in sample_range){
-        
-        # e.g. Whenever a new word occurs in a sample of 35 words, its contribution to the TTR of that sample is 1/35 
+    sample_range <- c(sample_size_start:sample_size_end)
+    for (sample_size in sample_range) {
+
+        # e.g. Whenever a new word occurs in a sample of 35 words, its contribution to the TTR of that sample is 1/35
         ttr_contribution <- 1 / sample_size
-        
-        ATTR_vector =  lapply(docnames(x), function(y){
+
+        ATTR_vector <- lapply(docnames(x), function(y) {
             # each temp is a one-document dfm
-            temp <- dfm(x)[y] 
+            temp <- dfm(x)[y]
             # calculate the document length
-            temp_length <- ntoken(temp) 
+            temp_length <- ntoken(temp)
             # calculate the frequency of each token
-            temp_featcount <- data.frame(feature = featnames(temp), frequency = colSums(temp)) 
+            temp_featcount <- data.frame(feature = featnames(temp), frequency = colSums(temp))
             # sort in descending order
-            temp_featcount <- temp_featcount[order(temp_featcount$frequency, decreasing = TRUE),]
+            temp_featcount <- temp_featcount[order(temp_featcount$frequency, decreasing = TRUE), ]
             rownames(temp_featcount) <- c()
-            
-            # For each term in `temp`, calculating the probability that it will apppear 
+
+            # For each term in `temp`, calculating the probability that it will apppear
             # AT LEAST ONCE
             # in a sample text of size `sample_size`
-            # This is equivalent to the complement that it will not appear at all 
-            
+            # This is equivalent to the complement that it will not appear at all
+
             # The notation in stats::dhyper is slightly different from McCarthy & Jarvis (2007)
             # In McCarthy & Jarvis, it's denoted Hypergeom(x, r, n, N), dhyper takes dhyper(x,m,n,k)
             # Based on my reconstruction
@@ -590,30 +590,31 @@ compute_hd_d <- function(x, sample_size_start = 35, sample_size_end = 50, ATTR_f
                                                                             m = temp_featcount$frequency,
                                                                             n = temp_length - temp_featcount$frequency,
                                                                             k = sample_size)
-            
-            # The contribution of word X to ATTR-sample_size, 
-            # its contribution to the TTR of a single sample (i.e. 1/sample_size) 
+
+            # The contribution of word X to ATTR-sample_size,
+            # its contribution to the TTR of a single sample (i.e. 1/sample_size)
             # multiplied by the proportion of samples in which
             # it will occur if all possible combinations of 35 words are taken into
             # account: (1/sample_size) *  temp_featcount$prob_feature_in_sample_size
-            
+
             temp_featcount$contribution_to_ATTR <- ttr_contribution * temp_featcount$prob_feature_in_sample_size
-            
+
             # sum over all types
             ATTR_val <- sum(temp_featcount$contribution_to_ATTR)
         })
-        
+
         hd_d_vals <- cbind(hd_d_vals, unlist(ATTR_vector))
     }
-    colnames(hd_d_vals) <- c('docs', sample_range) 
-    
+    colnames(hd_d_vals) <- c("docs", sample_range)
+
     # if ATTR_for_all_samp_size == TRUE, returns the hd_d value computed for each sample size
     if (ATTR_for_all_samp_size) {
         return(hd_d_vals)
     }
     else {
-        mean_hd_d <- data.table(docs = docnames(x), hd_d = apply(hd_d_vals[,2:ncol(hd_d_vals)], 1, mean))
-        return(mean_hd_d)}
+        mean_hd_d <- data.table(docs = docnames(x), hd_d = apply(hd_d_vals[, 2:ncol(hd_d_vals)], 1, mean))
+        return(mean_hd_d)
+    }
 }
 
 
