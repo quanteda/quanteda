@@ -292,9 +292,18 @@ textstat_proxy <- function(x, y = NULL,
     }
     dimnames(result) <- list(colnames(x), colnames(y))
     if (use_na) {
-        l <- (colSums(x != 0) == 0) | (colSums(y != 0) == 0)
-        result[l,,drop = FALSE] <- NA
-        result[,l,drop = FALSE] <- NA
+        na1 <- na2 <- logical()
+        if (method == "cosine") {
+            na1 <- qatd_cpp_nz(x) == 0
+            na2 <- qatd_cpp_nz(y) == 0
+        } else if (method == "correlation") {
+            na1 <- qatd_cpp_stddev(x) == 0
+            na2 <- qatd_cpp_stddev(y) == 0
+        }
+        if (any(na1))
+            result[na1,,drop = FALSE] <- NA
+        if (any(na2))
+            result[,na2,drop = FALSE] <- NA
     }
     return(result)
     # return(as(result, "CsparseMatrix"))
