@@ -297,8 +297,8 @@ textstat_proxy <- function(x, y = NULL,
             na1 <- qatd_cpp_nz(x) == 0
             na2 <- qatd_cpp_nz(y) == 0
         } else if (method == "correlation") {
-            na1 <- qatd_cpp_stddev(x) == 0
-            na2 <- qatd_cpp_stddev(y) == 0
+            na1 <- qatd_cpp_sd(x) == 0
+            na2 <- qatd_cpp_sd(y) == 0
         }
         if (any(na1))
             result[na1,,drop = FALSE] <- NA

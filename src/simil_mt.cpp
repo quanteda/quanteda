@@ -343,7 +343,7 @@ S4 qatd_cpp_similarity(arma::sp_mat& mt1,
 }
 
 // [[Rcpp::export]]
-NumericVector qatd_cpp_stddev(arma::sp_mat& mt) {
+NumericVector qatd_cpp_sd(arma::sp_mat& mt) {
     std::vector<double> sds = to_vector(stddev(mt, 1));
     return wrap(sds);
 }
