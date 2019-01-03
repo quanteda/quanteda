@@ -285,7 +285,7 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
 
     expect_equivalent(
         textstat_simil(mt, method = "correlation") %>% as.matrix(),
-        stats::cor(t(as.matrix(mt)), method = "pearson")
+        suppressWarnings(stats::cor(t(as.matrix(mt)), method = "pearson"))
     )
     expect_equal(
         textstat_simil(mt, method = "cosine"),
