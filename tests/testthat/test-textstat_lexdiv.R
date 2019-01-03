@@ -298,30 +298,6 @@ test_that("textstat_lexdiv.tokens MATTR works correct in conjunction with static
     )
 })
 
-# Test compute_mattr internal function
-test_that("compute_mattr internal function has working exception handlers", {
-    mytxt <- "one one two one one two one"
-    mytoken <- tokens(mytxt)
-
-    # Test window size > ntokens
-    expect_warning(quanteda:::compute_mattr(mytoken, MATTR_window = 8),
-                   "MATTR_window exceeds some documents' token lengths, resetting to 7")
-
-    # Return each windows" TTR
-    # expect_equivalent(
-    #     list(quanteda:::compute_mattr(mytoken, MATTR_window = 4, mean_mattr = FALSE, all_windows=TRUE)),
-    #     list(c(MATTR_tokens1_4 = 2/4, MATTR_tokens2_5 =  2/4, MATTR_tokens3_6 = 2/4, MATTR_tokens4_7 = 2/4))
-    # )
-
-    # Test case when segment_size is not specified
-    expect_error(compute_mattr(mytoken),
-                 quanteda:::message_error("MATTR_window must be specified"))
-
-    # Test case when neither all_windows or mean TTR across all windows is not requested
-    expect_error(compute_mattr(mytoken, MATTR_window = 2, all_windows = FALSE, mean_mattr = FALSE),
-                 quanteda:::message_error("at least one MATTR value type to be returned"))
-})
-
 test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
