@@ -31,11 +31,12 @@ View.default <- function(x, title) {
 #' }
 View.kwic <- function(x, title) {
     if (requireNamespace("DT", quietly = TRUE)) {
-        DT::datatable(x, options = list(pageLength = 20), rownames = FALSE,
+        DT::datatable(x[,c(1, 2, 4, 5, 6)], 
+                      options = list(pageLength = 20), rownames = FALSE,
                       class = "display",
                       colnames = c("document", "position", "pre", "keyword", "post"))    
     } else if (requireNamespace("xtable", quietly = TRUE)) {
-        filename <- tempfile(, fileext = ".html")
+        filename <- tempfile(fileext = ".html")
         temp_xtable <- xtable::xtable(x)
         print(temp_xtable, type = "html", sanitize.text.function = identity, file = filename,
               html.table.attributes = getOption("xtable.html.table.attributes", "border=1 cellpadding=5 cellspacing=3 style=\"border-collapse:collapse; font-family:arial;\""))
