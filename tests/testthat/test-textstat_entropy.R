@@ -15,3 +15,12 @@ test_that("test textstat_entropy is working", {
                  textstat_entropy(mt, "features", base = 10))
 
 })
+
+test_that("test textstat_entropy works witn empty documents or features", {
+    mt <- data_dfm_lbgexample
+    mt[3,] <- 0
+    mt[5,] <- 0
+    mt <- as.dfm(mt)
+    expect_silent(textstat_entropy(mt, "documents"))
+    expect_silent(textstat_entropy(mt, "features"))
+})
