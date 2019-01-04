@@ -152,7 +152,7 @@ upgrade_corpus <- function(x) {
     if ("unit" %in% names(x$settings)) {
         attr(result, "unit") <- x$settings$unit
     } else {
-        attr(result, "unit") < "document"
+        attr(result, "unit") <- "document"
     }
     if ("created" %in% names(x$metadata)) {
         attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
