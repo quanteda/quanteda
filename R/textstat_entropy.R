@@ -15,7 +15,7 @@ textstat_entropy <- function(x, margin = c("documents", "features"), base = 2) {
         x <- t(x)
     x <- dfm_weight(x, "prop")
     x <- as(x, "dgTMatrix")
-    result <- unlist(lapply(split(x@x, x@i),
+    result <- unlist(lapply(split(x@x, factor(x@i + 1L, levels = seq_len(nrow(x)))),
                             function(y) sum(y * log(y, base)) * -1), use.names = FALSE)
     names(result) <- rownames(x)
     return(result)
