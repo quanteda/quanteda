@@ -372,3 +372,25 @@ test_that("ordered is working correctly (#1413)", {
                  fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE, tri = FALSE))
     
 })
+
+
+test_that("dimnames are always character vectors", {
+    mt <- fcm(c("a b c", "a b c"), "window", window = 1, ordered = TRUE)
+    expect_identical(dimnames(mt[,character()]),
+                     list(features = rownames(mt), features = character()))
+    expect_identical(dimnames(mt[,FALSE]),
+                     list(features = rownames(mt), features = character()))
+    expect_identical(dimnames(mt[character(),]),
+                     list(features = character(), features = colnames(mt)))
+    expect_identical(dimnames(mt[FALSE,]),
+                     list(features = character(), features = colnames(mt)))
+})
+
+test_that("fcm_setnames works", {
+    x <- fcm(c("a b c", "a b c"), "window", window = 1)
+    
+    quanteda:::set_fcm_featnames(x) <- paste0("feature", 1:3)
+    expect_identical(featnames(x), c("feature1", "feature2", "feature3"))
+
+    quanteda:::set_fcm_dimnames(x) <- list(paste0("feature", 1:3), paste0("ALTFEAT", 1:3))
+})

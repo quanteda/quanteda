@@ -254,8 +254,8 @@ test_that("textstat_proxy works with non-intersecting documents or features", {
 
 test_that("raises error when dfm is empty (#1419)", {
     mt <- dfm_trim(data_dfm_lbgexample, 1000)
-    expect_error(textstat_proxy(mt),
-                 quanteda:::message_error("dfm_empty"))
+    expect_silent(textstat_proxy(mt))
+    expect_silent(textstat_proxy(mt, mt))
 })
 
 test_that("raises error when p is smaller than 1", {
@@ -311,4 +311,24 @@ test_that("textstat_proxy raises error when documents are different for feature 
 test_that("textstat_proxy raises error when y is not a dfm", {
     expect_error(textstat_proxy(test_mt[1:5,], 6:10, margin = "features"),
                  "y must be a dfm")
+})
+
+test_that("use_na is working", {
+    mt <- as.dfm(matrix(c(rep(0, 4), 
+                          rep(1, 4), 
+                          c(1,3,2,0)), ncol = 3))
+    
+    cos1 <- textstat_proxy(mt, margin = "features", method = "cosine", use_na = TRUE)
+    cor1 <- textstat_proxy(mt, margin = "features", method = "correlation", use_na = TRUE)
+    euc1 <- textstat_proxy(mt, margin = "features", method = "euclidean", use_na = TRUE)
+    expect_equal(sum(is.na(cos1)), 5)
+    expect_equal(sum(is.na(cor1)), 8)
+    expect_equal(sum(is.na(euc1)), 0)
+    
+    cos2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "cosine", use_na = TRUE)
+    cor2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "correlation", use_na = TRUE)
+    euc2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "euclidean", use_na = TRUE)
+    expect_equal(sum(is.na(cos2)), 1)
+    expect_equal(sum(is.na(cor2)), 2)
+    expect_equal(sum(is.na(euc2)), 0)
 })

@@ -32,7 +32,7 @@ setClass("dfm",
                    docvars = "data.frame"),
          prototype = list(settings = list(),
                           Dim = integer(2), 
-                          Dimnames = list(docs = NULL, features = NULL),
+                          Dimnames = list(docs = character(), features = character()),
                           weightTf = list(scheme = "count", base = NULL, K = NULL),
                           weightDf = list(scheme = "unary", base = NULL, c = NULL,
                                           smoothing = NULL, threshold = NULL),
@@ -228,10 +228,10 @@ cbind.dfm <- function(...) {
     }
     
     # make any added feature names unique
-    index_added <- stri_startswith_fixed(colnames(result), 
+    i_added <- stri_startswith_fixed(colnames(result), 
                                          quanteda_options("base_featname"))
-    colnames(result)[index_added] <- 
-        make.unique(colnames(result)[index_added], sep = "")
+    colnames(result)[i_added] <- 
+        make.unique(colnames(result)[i_added], sep = "")
     
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
@@ -239,7 +239,7 @@ cbind.dfm <- function(...) {
                 noBreaks. = TRUE, call. = FALSE)
     
     # TODO could be removed after upgrading as.dfm()
-    names(dimnames(result)) <- c("docs", "features") 
+    set_dfm_dimnames(result) <- dimnames(result)
     slots(result) <- attrs
     result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
     return(result)
@@ -278,8 +278,8 @@ rbind.dfm <- function(...) {
     if (identical(featnames(x), featnames(y))) {
         result <- new("dfm", Matrix::rbind2(x, y))
     } else {
-        feature <- union(featnames(x), featnames(y))
-        result <- new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))
+        featname <- union(featnames(x), featnames(y))
+        result <- new("dfm", Matrix::rbind2(pad_dfm(x, featname), pad_dfm(y, featname)))
     }
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
@@ -288,7 +288,7 @@ rbind.dfm <- function(...) {
     }
     
     # TODO could be removed after upgrading as.dfm()
-    names(dimnames(result)) <- c("docs", "features") 
+    set_dfm_dimnames(result) <- dimnames(result)
     slots(result) <- attrs
     result@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(result)))
     return(result)
