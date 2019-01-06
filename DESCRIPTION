@@ -124,6 +124,7 @@ Collate:
     'dfm_weight.R'
     'dictionaries.R'
     'docnames.R'
+    'dimnames.R'
     'docvars.R'
     'fcm-classes.R'
     'fcm-methods.R'

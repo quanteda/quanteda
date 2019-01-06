@@ -74,7 +74,7 @@ docnames.corpus <- function(x) {
 #' @noRd
 #' @export
 "docnames<-.dfm" <- function(x, value) {
-    docvars(x, '_document') <- rownames(x) <- value
+    docvars(x, '_document') <- x@Dimnames$docs <- value
     return(x)
 }
 

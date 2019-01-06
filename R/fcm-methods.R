@@ -181,9 +181,8 @@ matrix2fcm <- function(x, slots = NULL) {
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     
     x <- Matrix(x, sparse = TRUE)
-    dimnames(x) <- list(features = rowname, features = colname)
-    
     x <- new("fcm", as(x, 'dgCMatrix'))
+    set_fcm_dimnames(x) <- list(rowname, colname)
     set_fcm_slots(x, slots)
 }
 

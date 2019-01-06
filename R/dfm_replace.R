@@ -44,6 +44,6 @@ dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
         stop("Lengths of 'pattern' and 'replacement' must be the same")
     
     if (!length(pattern)) return(x)
-    colnames(x) <- replace_type(featnames(x), pattern, replacement, case_insensitive)
+    set_dfm_featnames(x) <- replace_type(featnames(x), pattern, replacement, case_insensitive)
     dfm_compress(x, 'features')
 }

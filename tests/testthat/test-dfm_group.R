@@ -1,6 +1,5 @@
 context("test dfm_select")
 
-
 test_that("test dfm_group", {
     
     testdfm <- dfm(c("a b c c", "b c d", "a"))

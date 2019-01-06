@@ -88,10 +88,10 @@ test_that("dfm_trim works with min_termfreq larger than total number (#1181)", {
     
     testdfm <- dfm(c(d1 = "a a a a b b", d2 = "a b b c"))
     expect_equal(dimnames(dfm_trim(testdfm, min_termfreq = 6)), 
-                list(docs = c("d1", "d2"), features = NULL)
+                list(docs = c("d1", "d2"), features = character())
     )
     expect_equal(dimnames(dfm_trim(testdfm, min_docfreq = 3)), 
-                 list(docs = c("d1", "d2"), features = NULL)
+                 list(docs = c("d1", "d2"), features = character())
     )
 
 })

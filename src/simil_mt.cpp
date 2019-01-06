@@ -23,8 +23,18 @@ double get_limit(std::vector<double> simils, const unsigned int rank, double lim
     return limit;
 }
 
+rowvec nnz(const sp_mat& mt) {
+    rowvec v(mt.n_cols, fill::zeros);
+    if (mt.is_empty()) return(v);
+    for (uword i = 0; i < mt.n_cols; i++) {
+        v[i] = sum(colvec(mt.col(i)) != 0);
+    }
+    return(v);
+}
+
 rowvec stddev(const sp_mat& mt, const int norm_type) {
-    rowvec v(mt.n_cols);
+    rowvec v(mt.n_cols, fill::zeros);
+    if (mt.is_empty()) return(v);
     for (uword i = 0; i < mt.n_cols; i++) {
         v[i] = stddev(colvec(mt.col(i)), norm_type);
     }
@@ -32,7 +42,8 @@ rowvec stddev(const sp_mat& mt, const int norm_type) {
 }
 
 rowvec mean(const sp_mat& mt) {
-    rowvec v(mt.n_cols);
+    rowvec v(mt.n_cols, fill::zeros);
+    if (mt.is_empty()) return(v);
     for (uword i = 0; i < mt.n_cols; i++) {
         v[i] = mean(colvec(mt.col(i)));
     }
@@ -330,3 +341,16 @@ S4 qatd_cpp_similarity(arma::sp_mat& mt1,
     return to_matrix(simil_tri, ncol1, ncol2, symm); 
 
 }
+
+// [[Rcpp::export]]
+NumericVector qatd_cpp_sd(arma::sp_mat& mt) {
+    std::vector<double> sds = to_vector(stddev(mt, 1));
+    return wrap(sds);
+}
+
+// [[Rcpp::export]]
+NumericVector qatd_cpp_nz(arma::sp_mat& mt) {
+    std::vector<double> nzs = to_vector(nnz(mt));
+    return wrap(nzs);
+}
+

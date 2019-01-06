@@ -177,3 +177,166 @@ test_that("selection takes integer or logical vector", {
     expect_error(textstat_dist(mt, 100, margin = "documents"))
 })
 
+test_that("textstat_dist() returns NA for empty dfm", {
+    skip("Skip until textstat_dist() has been corrected for empty dfms")
+    mt <- dfm_trim(data_dfm_lbgexample, 1000)
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "euclidean"),
+        stats::dist(as.matrix(mt), method = "euclidean")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "kullback"),
+        proxy::dist(as.matrix(mt), method = "kullback")
+    )
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "manhattan"),
+        stats::dist(as.matrix(mt), method = "manhattan")
+    )
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "maximum"),
+        stats::dist(as.matrix(mt), method = "maximum")
+    )
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "canberra"),
+        stats::dist(as.matrix(mt), method = "canberra")
+    )
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "minkowski"),
+        stats::dist(as.matrix(mt), method = "minkowski", p = 2)
+    )
+})
+
+test_that("textstat_simil() returns NA for empty dfm", {
+    skip("Skip until textstat_simil() has been corrected for empty dfms")
+    mt <- dfm_trim(data_dfm_lbgexample, 1000)
+    expect_equivalent(
+        textstat_simil(mt, method = "correlation"),
+        cor(t(as.matrix(mt)), method = "pearson") %>% as.dist()
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "cosine"),
+        proxy::simil(as.matrix(mt), method = "cosine")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "jaccard"),
+        proxy::simil(as.matrix(mt), method = "jaccard")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "ejaccard"),
+        proxy::simil(as.matrix(mt), method = "ejaccard")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "dice"),
+        proxy::simil(as.matrix(mt), method = "dice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "edice"),
+        proxy::simil(as.matrix(mt), method = "edice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "hamman"),
+        proxy::simil(as.matrix(mt), method = "hamman")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "simple matching"),
+        proxy::simil(as.matrix(mt), method = "simple matching")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "faith"),
+        proxy::simil(as.matrix(mt), method = "faith")
+    )
+})
+
+test_that("textstat_dist() returns NA for zero-variance documents", {
+    skip("skip until textstat_dist() works correctly for zero-variance documents")
+    mt <- data_dfm_lbgexample[1:5, 1:20]
+    mt[1:2, ] <- 0
+    mt[3:4, ] <- 1
+    mt <- as.dfm(mt)
+
+    expect_equivalent(
+        textstat_dist(mt, method = "euclidean"),
+        stats::dist(as.matrix(mt), method = "euclidean")
+    )
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "kullback"),
+        proxy::dist(as.matrix(mt), method = "kullback")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "manhattan"),
+        stats::dist(as.matrix(mt), method = "manhattan")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "maximum"),
+        stats::dist(as.matrix(mt), method = "maximum")
+    )
+    # fails
+    expect_equivalent(
+        textstat_dist(mt, method = "canberra"),
+        stats::dist(as.matrix(mt), method = "canberra")
+    )
+    expect_equivalent(
+        textstat_dist(mt, method = "minkowski"),
+        stats::dist(as.matrix(mt), method = "minkowski", p = 2)
+    )
+})
+
+test_that("textstat_simil() returns NA for zero-variance documents", {
+    skip("skip until textstat_simil() works correctly for zero-variance documents")
+    mt <- data_dfm_lbgexample[1:5, 1:20]
+    mt[1:2, ] <- 0
+    mt[3:4, ] <- 1
+    mt <- as.dfm(mt)
+
+    expect_equivalent(
+        textstat_simil(mt, method = "correlation") %>% as.matrix(),
+        suppressWarnings(stats::cor(t(as.matrix(mt)), method = "pearson"))
+    )
+    # fails
+    expect_equal(
+        textstat_simil(mt, method = "cosine"),
+        matrix(c(rep(NaN, 13), 1, rep(NaN, 3), 1, rep(NaN, 7)), nrow = 5,
+                 dimnames = list(paste0("R", 1:5), paste0("R", 1:5))) %>%
+            as.dist()
+    )
+    # fails
+    expect_equivalent(
+        textstat_simil(mt, method = "jaccard"),
+        proxy::simil(as.matrix(mt), method = "jaccard")
+    )
+    # fails
+    expect_equivalent(
+        textstat_simil(mt, method = "ejaccard"),
+        proxy::simil(as.matrix(mt), method = "ejaccard")
+    )
+    # fails
+    expect_equivalent(
+        textstat_simil(mt, method = "dice"),
+        proxy::simil(as.matrix(mt), method = "dice")
+    )
+    # fails
+    expect_equal(
+        textstat_simil(mt, method = "edice"),
+        # proxy has this wrong, since 2xy / (xx + yy) means that if 
+        # both x and y are empty then this should be NaN
+        proxy::simil(as.matrix(mt), method = "edice")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "hamman"),
+        proxy::simil(as.matrix(mt), method = "hamman")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "simple matching"),
+        proxy::simil(as.matrix(mt), method = "simple matching")
+    )
+    expect_equivalent(
+        textstat_simil(mt, method = "faith"),
+        proxy::simil(as.matrix(mt), method = "faith")
+    )
+})
