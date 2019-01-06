@@ -32,6 +32,7 @@
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
@@ -39,7 +40,7 @@
   <script src="../extra.js"></script>
 <meta property="og:title" content="Create a document-feature matrix — dfm" />
 
-<meta property="og:description" content="Construct a sparse document-feature matrix, from a character, corpus, 
+<meta property="og:description" content="Construct a sparse document-feature matrix, from a character, corpus,
 tokens, or even other dfm object." />
 <meta name="twitter:card" content="summary" />
 
@@ -81,7 +82,7 @@ tokens, or even other dfm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
       </span>
     </div>
 
@@ -202,7 +203,7 @@ tokens, or even other dfm object." />
 
     <div class="ref-description">
     
-    <p>Construct a sparse document-feature matrix, from a character, <a href='corpus.html'>corpus</a>, 
+    <p>Construct a sparse document-feature matrix, from a character, <a href='corpus.html'>corpus</a>,
 <a href='tokens.html'>tokens</a>, or even other dfm object.</p>
     
     </div>
@@ -228,35 +229,35 @@ tokens, or even other dfm object." />
     </tr>
     <tr>
       <th>select</th>
-      <td><p>a  <a href='pattern.html'>pattern</a>  of user-supplied features to keep, while 
-excluding all others.  This can be used in lieu of a dictionary if there 
-are only specific features that a user wishes to keep. To extract only 
-Twitter usernames, for example, set <code>select = "@*"</code> and make sure 
-that <code>remove_twitter = FALSE</code> as an additional argument passed to 
+      <td><p>a  <a href='pattern.html'>pattern</a>  of user-supplied features to keep, while
+excluding all others.  This can be used in lieu of a dictionary if there
+are only specific features that a user wishes to keep. To extract only
+Twitter usernames, for example, set <code>select = "@*"</code> and make sure
+that <code>remove_twitter = FALSE</code> as an additional argument passed to
 <a href='tokens.html'>tokens</a>.  Note: <code>select = "^@\\w+\\b"</code> would be the regular
-expression version of this matching pattern.  The pattern matching type 
+expression version of this matching pattern.  The pattern matching type
 will be set by <code>valuetype</code>.  See also <code><a href='tokens_select.html'>tokens_remove</a></code>.</p></td>
     </tr>
     <tr>
       <th>remove</th>
-      <td><p>a <a href='pattern.html'>pattern</a> of user-supplied features to ignore, such as 
-"stop words".  To access one possible list (from any list you wish), use 
-<code><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a>()</code>.  The pattern matching type will be set by 
+      <td><p>a <a href='pattern.html'>pattern</a> of user-supplied features to ignore, such as
+"stop words".  To access one possible list (from any list you wish), use
+<code><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a>()</code>.  The pattern matching type will be set by
 <code>valuetype</code>.  See also <code><a href='tokens_select.html'>tokens_select</a></code>.  For behaviour of
 <code>remove</code> with <code>ngrams &gt; 1</code>, see Details.</p></td>
     </tr>
     <tr>
       <th>dictionary</th>
-      <td><p>a <a href='dictionary.html'>dictionary</a> object to apply to the tokens when 
+      <td><p>a <a href='dictionary.html'>dictionary</a> object to apply to the tokens when
 creating the dfm</p></td>
     </tr>
     <tr>
       <th>thesaurus</th>
-      <td><p>a <a href='dictionary.html'>dictionary</a> object that will be applied as if 
-<code>exclusive = FALSE</code>. See also <code><a href='tokens_lookup.html'>tokens_lookup</a></code>.  For more 
-fine-grained control over this and other aspects of converting features 
-into dictionary/thesaurus keys from pattern matches to values, consider 
-creating the dfm first, and then applying <code><a href='dfm_lookup.html'>dfm_lookup</a></code> 
+      <td><p>a <a href='dictionary.html'>dictionary</a> object that will be applied as if
+<code>exclusive = FALSE</code>. See also <code><a href='tokens_lookup.html'>tokens_lookup</a></code>.  For more
+fine-grained control over this and other aspects of converting features
+into dictionary/thesaurus keys from pattern matches to values, consider
+creating the dfm first, and then applying <code><a href='dfm_lookup.html'>dfm_lookup</a></code>
 separately, or using <code><a href='tokens_lookup.html'>tokens_lookup</a></code> on the tokenized text
 before calling <code>dfm</code>.</p></td>
     </tr>
@@ -290,13 +291,13 @@ is a dfm</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The default behaviour for <code>remove</code>/<code>select</code> when 
-  constructing ngrams using <code>dfm(x, </code> <em>ngrams &gt; 1</em><code>)</code> is to 
-  remove/select any ngram constructed from a matching feature.  If you wish 
+    <p>The default behaviour for <code>remove</code>/<code>select</code> when
+  constructing ngrams using <code>dfm(x, </code> <em>ngrams &gt; 1</em><code>)</code> is to
+  remove/select any ngram constructed from a matching feature.  If you wish
   to remove these before constructing ngrams, you will need to first tokenize
-  the texts with ngrams, then remove the features to be ignored, and then 
-  construct the dfm using this modified tokenization object.  See the code 
-  examples for an illustration.</p>  
+  the texts with ngrams, then remove the features to be ignored, and then
+  construct the dfm using this modified tokenization object.  See the code
+  examples for an illustration.</p>
 <p>To select on and match the features of a another dfm, <code>x</code> must
   also be a dfm.</p>
     
@@ -318,11 +319,11 @@ is a dfm</p></td>
 <span class='co'># grouping documents by docvars in a corpus</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,260 features</span></div><div class='output co'>#&gt; <span class='message'>   ... grouping texts</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 5 x 3,260 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.037 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,260 features (64.2% sparse).</div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.038 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,260 features (64.2% sparse).</div><div class='input'>
 <span class='co'># with English stopwords and stemming</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,260 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>removed 131 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; <span class='message'>, trimmed 826 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 10 x 2,303 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.048 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,303 features (75.1% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
+#&gt; <span class='message'>Elapsed time: 0.07 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,303 features (75.1% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
 <span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0.0% sparse).
 #&gt; 1 x 1 sparse Matrix of class "dfm"
 #&gt;        features
@@ -421,11 +422,11 @@ is a dfm</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

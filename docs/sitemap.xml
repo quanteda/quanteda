@@ -85,6 +85,15 @@
     <loc>https://quanteda.io/reference/coef.textmodel_ca.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/compute_lexdiv_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/compute_mattr.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/compute_msttr.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/convert-wrappers.html</loc>
   </url>
   <url>
@@ -232,9 +241,6 @@
     <loc>https://quanteda.io/reference/flatten_dictionary.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/flatten_id.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/format_sparsity.html</loc>
   </url>
   <url>
@@ -271,9 +277,6 @@
     <loc>https://quanteda.io/reference/kwic.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/lexdiv.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/list2dictionary.html</loc>
   </url>
   <url>
@@ -302,6 +305,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/nest_dictionary.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/nfeature.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/nscrabble.html</loc>
@@ -397,6 +403,9 @@
     <loc>https://quanteda.io/reference/search_index.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/set_dfm_dimnames.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/set_dfm_slots.html</loc>
   </url>
   <url>
@@ -484,6 +493,9 @@
     <loc>https://quanteda.io/reference/textstat_collocations.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/textstat_entropy.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/textstat_frequency.html</loc>
   </url>
   <url>
@@ -515,6 +527,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/tokens_chunk.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens_compound.html</loc>
