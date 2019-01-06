@@ -282,6 +282,9 @@ textstat_proxy <- function(x, y = NULL,
             qatd_cpp_similarity_linear(x, y,
                                        match(method, c("cosine", "correlation", "euclidean")),
                                        rank, min_proxy)
+      if (method %in% c("cosine")) {
+          result[which(result > 1)] <- 1
+      }
     } else {
         result <-
             qatd_cpp_similarity(x, y,
