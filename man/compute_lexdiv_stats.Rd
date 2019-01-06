@@ -8,8 +8,8 @@
 \usage{
 compute_lexdiv_dfm_stats(x, measure = NULL, log.base = 10)
 
-compute_lexdiv_tokens_stats(x, measure = c("MATTR", "MSTTR", "MTLD"),
-  MATTR_window, MSTTR_segment, MTLD_threshold)
+compute_lexdiv_tokens_stats(x, measure = c("MATTR", "MSTTR"),
+  MATTR_window, MSTTR_segment)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -24,10 +24,6 @@ for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010
 
 \item{MSTTR_segment}{a numeric value defining the size of the each segment
 for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)}
-
-\item{MTLD_threshold}{a numeric value defining the Type-Token Ratio threshold
-below which the TTR for a sequential string of text cannot fall. This is required
-to compute the Measure of Textual Lexical Diversity  (McCarthy & Jarvis, 2010)}
 }
 \value{
 a \code{data.frame} with a \code{document} column containing the
