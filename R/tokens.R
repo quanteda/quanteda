@@ -552,6 +552,7 @@ tokens_internal <- function(x,
                             include_docvars = TRUE,
                             ...) {
 
+
     check_dots(list(...), names(formals("tokens")))
 
     what <- match.arg(what)
@@ -639,7 +640,6 @@ tokens_internal <- function(x,
         if (length(regex))
             x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex")
     }
-
 
     if (!identical(ngrams, 1L)) {
         if (verbose) catm("...creating ngrams\n")

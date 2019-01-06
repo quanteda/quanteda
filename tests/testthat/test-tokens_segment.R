@@ -169,6 +169,3 @@ test_that("tokens_segment works with tags", {
     expect_equal(as.list(toks_seg4),
                  list(d1.1 = c("##TEST", "One", "two"), d1.2 = c("##TEST2", "Three"), d2.1 = c("##TEST3", "Four")))
 })
-
-
-

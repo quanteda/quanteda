@@ -109,6 +109,8 @@ ignoredFeatures
 igraph
 inaugCorpus
 INFOSYS
+Jiong
+Jouni
 io
 Javascript
 json
@@ -154,9 +156,11 @@ metacorpus
 metadoc
 Michalke
 Michalke's
+Momtazi
+movie
+MSTTR
 minCount
 minDoc
-MLTD
 Momtazi
 MTLD
 mycorpus
@@ -282,6 +286,7 @@ travis
 Tribble
 trimdfm
 TTR
+TTRs
 twitteR
 TX
 Uber

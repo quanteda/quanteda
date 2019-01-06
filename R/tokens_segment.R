@@ -38,7 +38,7 @@
 #'                pattern_position = "after")
 tokens_segment <- function(x, pattern,
                            valuetype = c("glob", "regex", "fixed"),
-                           case_insensitive = TRUE, 
+                           case_insensitive = TRUE,
                            extract_pattern = FALSE,
                            pattern_position = c("before", "after"),
                            use_docvars = TRUE) {
@@ -52,19 +52,19 @@ tokens_segment <- function(x, pattern,
 #' @export
 tokens_segment.tokens <- function(x, pattern,
                                   valuetype = c("glob", "regex", "fixed"),
-                                  case_insensitive = TRUE, 
+                                  case_insensitive = TRUE,
                                   extract_pattern = FALSE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
-    
+
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    
+
     attrs <- attributes(x)
     types <- types(x)
     vars <- docvars(x)
 
-    ids <- pattern2list(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    ids <- pattern2list(pattern, types, valuetype, case_insensitive, attr(x, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
 
     if (pattern_position == "before") {
@@ -72,29 +72,28 @@ tokens_segment.tokens <- function(x, pattern,
     } else {
         x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 2)
     }
-    docname <- paste(attr(x, 'document'), as.character(attr(x, 'segid')), sep = '.')
-    
+    docname <- paste(attr(x, "document"), as.character(attr(x, "segid")), sep = ".")
+
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(vars)) {
-        vars <- vars[attr(x, 'docid'),,drop = FALSE] # repeat rows
+        vars <- vars[attr(x, "docid"), , drop = FALSE] # repeat rows
         rownames(vars) <- docname
     } else {
         attrs$docvars <- NULL
         vars <- NULL
     }
-    result <- create(x, what = 'tokens', 
-                     attrs = attrs, 
-                     docvars = vars, 
+    result <- create(x, what = "tokens",
+                     attrs = attrs,
+                     docvars = vars,
                      names = docname,
-                     document = NULL, 
-                     docid = NULL, 
+                     document = NULL,
+                     docid = NULL,
                      segid = NULL)
-    
-    docvars(result, '_document') <- attr(x, 'document')
-    docvars(result, '_docid') <- attr(x, 'docid')
-    docvars(result, '_segid') <- attr(x, 'segid')
-    if (extract_pattern) docvars(result, "pattern") <- attr(x, 'pattern')
-    
-    return(result)
 
+    docvars(result, "_document") <- attr(x, "document")
+    docvars(result, "_docid") <- attr(x, "docid")
+    docvars(result, "_segid") <- attr(x, "segid")
+    if (extract_pattern) docvars(result, "pattern") <- attr(x, "pattern")
+
+    result
 }

@@ -4,17 +4,16 @@
 \alias{textstat_lexdiv}
 \title{Calculate lexical diversity}
 \usage{
-textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
-  "K", "D", "Vm", "Maas"), log.base = 10, remove_numbers = TRUE,
-  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE)
+textstat_lexdiv(x, measure = c("TTR", "C", "R", "CTTR", "U", "S", "K",
+  "D", "Vm", "Maas", "MATTR", "MSTTR", "all"), remove_numbers = TRUE,
+  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE,
+  log.base = 10, MATTR_window = 100L, MSTTR_segment = 100L, ...)
 }
 \arguments{
-\item{x}{an input \link{dfm} or \link{tokens} input object}
+\item{x}{an \link{dfm} or \link{tokens} input object for whose documents
+lexical diversity will be computed}
 
-\item{measure}{a character vector defining the measure to calculate}
-
-\item{log.base}{a numeric value defining the base of the logarithm (for
-measures using logs)}
+\item{measure}{a character vector defining the measure to compute}
 
 \item{remove_numbers}{logical; if \code{TRUE} remove features or tokens that
 consist only of numerals (the Unicode "Number" [N] class)}
@@ -29,19 +28,31 @@ that consist only of the Unicode "Punctuation" [S] class)}
 by hyphenation and hyphenation-like characters in between words, e.g.
 "self-storage" becomes two features or tokens "self" and "storage". Default
 is FALSE to preserve such words as is, with the hyphens.}
+
+\item{log.base}{a numeric value defining the base of the logarithm (for
+measures using logarithms)}
+
+\item{MATTR_window}{a numeric value defining the size of the moving window 
+for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)}
+
+\item{MSTTR_segment}{a numeric value defining the size of the each segment
+for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)}
+
+\item{...}{for passing arguments to other methods}
 }
 \value{
-\code{textstat_lexdiv} returns a data.frame of documents and
-  their lexical diversity scores.
+A data.frame of documents and their lexical diversity scores.
 }
 \description{
-Calculate the lexical diversity or complexity of text(s).
+Calculate the lexical diversity of text(s).
 }
 \details{
-\code{textstat_lexdiv} calculates a variety of proposed indices for
-  lexical diversity. In the following formulas, \eqn{N} refers to the total
-  number of tokens, \eqn{V} to the number of types, and \eqn{f_v(i, N)} to the
-  numbers of types occurring \eqn{i} times in a sample of length \eqn{N}.
+\code{textstat_lexdiv} calculates the lexical diversity of documents
+  using a variety of indices.
+
+In the following formulas, \eqn{N} refers to the total number of
+  tokens, \eqn{V} to the number of types, and \eqn{f_v(i, N)} to the numbers
+  of types occurring \eqn{i} times in a sample of length \eqn{N}.
   \describe{
      
   \item{\code{"TTR"}:}{The ordinary \emph{Type-Token Ratio}: \deqn{TTR =
@@ -90,22 +101,20 @@ Calculate the lexical diversity or complexity of text(s).
   for the current method (for a dfm) there is no computation on separate
   halves of the text.}
   
+  \item{\code{"MATTR"}:}{The Moving-Average Type-Token Ratio (Covington &
+  McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
+  The MATTR is the mean of the TTRs of each window.}
+  
+  \item{\code{"MSTTR"}:}{Mean Segmental Type-Token Ratio (sometimes referred
+  to as \emph{Split TTR}) splits the tokens into segments of the given size,
+  TTR for each segment is calculated and the mean of these values returned.
+  When this value is < 1.0, it splits the tokens into equal, non-overlapping
+  sections of that size.  When this value is > 1, it defines the segments as
+  windows of that size. Tokens at the end which do not make a full segment
+  are ignored.}
   }
 }
-\note{
-This implements only the static measures of lexical diversity, not more
-  complex measures based on windows of text such as the Mean Segmental
-  Type-Token Ratio, the Moving-Average Type-Token Ratio (Covington & McFall,
-  2010), the MLTD or MLTD-MA (Moving-Average Measure of Textual Lexical
-  Diversity) proposed by McCarthy & Jarvis (2010) or Jarvis (no year), or the
-  HD-D version of vocd-D (see McCarthy & Jarvis, 2007).  These are available
-  from the package \pkg{korRpus}.
-}
 \examples{
-mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
-(result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
-cor(textstat_lexdiv(mydfm, "all")[,-1])
-
 txt <- c("Anyway, like I was sayin', shrimp is the fruit of the sea. You can
           barbecue it, boil it, broil it, bake it, saute it.",
          "There's shrimp-kabobs,
@@ -117,6 +126,9 @@ tokens(txt) \%>\%
     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
 dfm(txt) \%>\% 
     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
+    
+toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 2000))
+textstat_lexdiv(toks, c("CTTR", "TTR", "MATTR"), MATTR_window = 100)
 }
 \references{
 Covington, Michael A. and Joe D. McFall. 2010. 
@@ -150,7 +162,7 @@ Covington, Michael A. and Joe D. McFall. 2010.
   Humanities} 32(5): 323--352.
 }
 \author{
-Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
-  re-implemented from functions written by Meik Michalke in the \pkg{koRpus}
+Kenneth Benoit and Jiong Wei Lua.  Many of the formulas have been
+  reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
   package.
 }
