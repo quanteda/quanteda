@@ -128,9 +128,9 @@ S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1,
         square2 = rowvec(sqrt(mat(sum(mt2 % mt2, 0))));
         break;
     case 2: // correlation
-        square1 = stddev(mt1, 1);
+        square1 = stddev(mt1, 0);
         center1 = mean(mt1);
-        square2 = stddev(mt2, 1);
+        square2 = stddev(mt2, 0);
         center2 = mean(mt2);
         break;
     case 3: // euclidean distance
@@ -138,7 +138,6 @@ S4 qatd_cpp_similarity_linear(arma::sp_mat& mt1,
         square2 = rowvec(mat(sum(mt2 % mt2, 0)));
         break;
     }
-    
     //dev::stop_timer("Compute magnitude", timer);
     //dev::start_timer("Compute similarity", timer);
     
@@ -344,7 +343,7 @@ S4 qatd_cpp_similarity(arma::sp_mat& mt1,
 
 // [[Rcpp::export]]
 NumericVector qatd_cpp_sd(arma::sp_mat& mt) {
-    std::vector<double> sds = to_vector(stddev(mt, 1));
+    std::vector<double> sds = to_vector(stddev(mt, 0));
     return wrap(sds);
 }
 
