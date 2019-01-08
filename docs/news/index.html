@@ -32,6 +32,7 @@
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
@@ -77,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
       </span>
     </div>
 
@@ -218,8 +219,8 @@
 <li>Internal rewrite of <code>textfile()</code>, now supports more file types, more wildcard patterns, and is far more robust generally.<br>
 </li>
 <li>Add support for loading external dictionary formats:</li>
-<li>yoshikoder,</li>
-<li>lexicoder v2 and v3 (#228)</li>
+<li>Yoshikoder,</li>
+<li>Lexicoder v2 and v3 (#228)</li>
 <li>Autodetect dictionary file format from file extension, so no longer require <code>format</code> keyword for loading dictionaries (#227)</li>
 <li>Improved compatibility with rOpenSci guidelines (#218):
 <ul>
@@ -238,7 +239,7 @@
 <a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>(0.9.8.7) Solved #267 in which <code><a href="../reference/fcm.html">fcm(x, tri = TRUE)</a></code> temporarily created a dense logical matrix.</li>
-<li>(0.9.8.7) Added feature co-occurence matrix functions (<code>fcm</code>).</li>
+<li>(0.9.8.7) Added feature co-occurrence matrix functions (<code>fcm</code>).</li>
 <li>(0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)</li>
 <li>(0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)</li>
 <li>(0.9.8.4) Fix a bug in <code>selectFeatures.dfm()</code> that ignored <code>case_insensitive = TRUE</code> settings (#251) correct the documentation for this function.</li>
@@ -295,7 +296,7 @@
 <li><p>added version information when package is attached.</p></li>
 <li><p>improved rbind() and cbind() methods for dfm. Both now take any length sequence of dfms and perform better type checking.<br>
 rbind.dfm() also knits together dfms with different features, which can be useful for information and retrieval purposes or machine learning.</p></li>
-<li><p>selectFeatures(x, anyDfm) (where the second argument is a dfm) now works with a selection = “remove” option.</p></li>
+<li><p><code>selectFeatures(x, anyDfm)</code> (where the second argument is a dfm) now works with a selection = “remove” option.</p></li>
 <li><p>tokenize.character adds a removeURL option.</p></li>
 <li><p>added a corpus method for data.frame objects, so that a corpus can be constructed directly from a data.frame. Requires the addition of a <code>textField</code> argument (similar to textfile).</p></li>
 <li><p>added <code>compress.dfm()</code> to combine identically named columns or rows. #123</p></li>
@@ -342,7 +343,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Added presidents’ first names to inaugCorpus</p></li>
 <li><p>Added textmodel implementation of multinomial and Bernoulli Naive Bayes.</p></li>
 <li><p>Improved documentation.</p></li>
-<li><p>Added <code><a href="../reference/corpus-class.html">c.corpus()</a></code> method for concatenating arbitarily large sets of corpus objects.</p></li>
+<li><p>Added <code><a href="../reference/corpus-class.html">c.corpus()</a></code> method for concatenating arbitrarily large sets of corpus objects.</p></li>
 <li><p>Default for <code>similarity()</code> is now <code>margin = "documents"</code> – prevents overly massive results if <code>selection = NULL</code>.</p></li>
 <li><p>Defined <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowMeans()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">colMeans()</a></code> methods for dfm objects.</p></li>
 <li><p>Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.</p></li>
@@ -377,7 +378,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>added new methods for similarity(), including sparse matrix computation for method = “correlation” and “cosine”. (More planned soon.) Also allows easy conversion to a matrix using as.matrix() on similarity lists.</p></li>
 <li><p>more robust implementation of LIWC-formatted dictionary file imports</p></li>
 <li><p>better implementation of tf-idf, and relative frequency weighting, especially for very large sparse matrix objects. tf(), idf(), and tfidf() now provide relative term frequency, inverse document frequency, and tf-idf directly.</p></li>
-<li><p>textmodel_wordfish() now accepts an integer <code>dispersionFloor</code> argument to constrain the phi parameter to a minimium value (of underdispersion).</p></li>
+<li><p>textmodel_wordfish() now accepts an integer <code>dispersionFloor</code> argument to constrain the phi parameter to a minimum value (of underdispersion).</p></li>
 <li><p>textfile() now takes a vector of filenames, if you wish to construct these yourself. See ?textfile examples.</p></li>
 <li><p>removeFeatures() and selectFeatures.collocations() now all use a consistent interface and same underlying code, with removeFeatures() acting as a wrapper to selectFeatures().</p></li>
 <li><p>convert(x, to = “stm”) now about 3-4x faster because it uses index positions from the dgCMatrix to convert to the sparse matrix format expected by stm.</p></li>
@@ -388,7 +389,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <ul>
 <li><p>Fixed a bug in textfile() preventing encodingFrom and encodingTo from working properly.</p></li>
 <li><p>Fixed a nasty bug problem in <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> that mixed up the word indexes. Thanks Felix Haass for spotting this!</p></li>
-<li><p>Fixed a problem where wordstem was not working on ngram=1 tokenied objects</p></li>
+<li><p>Fixed a problem where wordstem was not working on ngram=1 tokenized objects</p></li>
 <li><p>Fixed toLower(x, keepAcronyms = TRUE) that caused an error when x contained no acronyms.</p></li>
 <li><p>Creating a corpus from a tm VCorpus now works if a “document” is a vector of texts rather than a single text</p></li>
 <li><p>Fixed a bug in texts(x, groups = MORE THAN ONE DOCVAR) that now groups correctly on combinations of multiple groups</p></li>
@@ -426,7 +427,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 </h1>
 <ul>
 <li><p>removeFeatures.dfm(x, stopwords), selectFeatures.dfm(x, features), and dfm(x, ignoredFeatures) now work on objects created with ngrams. (Any ngram containing a stopword is removed.) Performance on these functions is already good but will be improved further soon.</p></li>
-<li><p>selectFeatures(x, features = <anotherdfm>) is now possible, to produce a selection of features from x identical to those in <dfm>. Not only are only features kept in x that are in <anotherdfm>, but also fatures in <anotherdfm> not in x are added to x as padded zero counts. This functionality can also be accessed via dfm(x, keptFeatures = <anotherdfm>). This is useful when new data used in a test set needs to have identical features as a training set dfm constructed at an earlier stage.</anotherdfm></anotherdfm></anotherdfm></dfm></anotherdfm></p></li>
+<li><p>selectFeatures(x, features = <anotherdfm>) is now possible, to produce a selection of features from x identical to those in <dfm>. Not only are only features kept in x that are in <anotherdfm>, but also features in <anotherdfm> not in x are added to x as padded zero counts. This functionality can also be accessed via dfm(x, keptFeatures = <anotherdfm>). This is useful when new data used in a test set needs to have identical features as a training set dfm constructed at an earlier stage.</anotherdfm></anotherdfm></anotherdfm></dfm></anotherdfm></p></li>
 <li><p>head.dfm() and tail.dfm() methods added.</p></li>
 <li><p>kwic() has new formals and new functionality, including a completely flexible set of matching for phrases, as well as control over how the texts and matching keyword(s) are tokenized.</p></li>
 <li><p>segment(x, what = “sentence”), and changeunits(x, to = “sentences”) now uses tokenize(x, what = “sentence”). Annoying warning messages now gone.</p></li>
@@ -504,14 +505,17 @@ Code is also much simpler, based on using three new functions that are also avai
 <h2 class="hasAnchor">
 <a href="#deletions" class="anchor"></a>Deletions</h2>
 <ul>
-<li>clean() is no more.</li>
+<li>
+<code>clean()</code> is no more.</li>
 </ul>
 </div>
 <div id="api-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#api-changes" class="anchor"></a>API changes</h2>
 <ul>
-<li>addto option removed from dfm()</li>
+<li>
+<code>addto</code> option removed from <code><a href="../reference/dfm.html">dfm()</a></code>
+</li>
 </ul>
 </div>
 <div id="imminent-changes" class="section level2">
@@ -519,7 +523,8 @@ Code is also much simpler, based on using three new functions that are also avai
 <a href="#imminent-changes" class="anchor"></a>Imminent Changes</h2>
 <ul>
 <li>change behaviour of <code>ignoredFeatures</code> and <code>removeFeatures()</code> applied to ngrams; change behaviour of stem = TRUE applied to ngrams (in <code><a href="../reference/dfm.html">dfm()</a></code>)</li>
-<li>create ngrams.tokenizedTexts() method, replacing current ngrams(), bigrams()</li>
+<li>create <code>ngrams.tokenizedTexts()</code> method, replacing current <code>ngrams()</code>, <code>bigrams()</code>
+</li>
 </ul>
 </div>
 </div>
@@ -557,7 +562,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>textfile has a new option, cache = FALSE, for not writing the data to a temporary file, but rather storing the object in memory if that is preferred.</p></li>
 <li><p>language() is removed. (See Encoding… section above for changes to encoding().)</p></li>
 <li><p>new object encodedTexts contains some encoded character objects for testing.</p></li>
-<li><p>ie2010Corpus now has UTF-8 encoded texts (previously was unicode escaped for non-ASCII characters)</p></li>
+<li><p>ie2010Corpus now has UTF-8 encoded texts (previously was Unicode escaped for non-ASCII characters)</p></li>
 <li><p>texts() and docvars() methods added for corpusSource objects.</p></li>
 <li><p>new methods for <code>tokenizedTexts</code> objects: <code><a href="../reference/dfm.html">dfm()</a></code>, <code>removeFeatures()</code>, and <code>syllables()</code></p></li>
 <li><p><code>syllables()</code> is now much faster, using matching through <code>stringi</code> and merging using <code>data.table</code>.</p></li>
@@ -580,7 +585,7 @@ Code is also much simpler, based on using three new functions that are also avai
 </h1>
 <ul>
 <li><p>added an ntoken() method for dfm objects.</p></li>
-<li><p>fixed a bug wherein convert(anydfm, to=“tm”) created a DocumentTermMatrix, not a TermDocumentMatrix. Now correctly creates a TermDocumentMatrix. (Both worked previously in topicmodels::LDA() so many users may not notice the change.)</p></li>
+<li><p>fixed a bug wherein <code><a href="../reference/convert.html">convert(anydfm, to = "tm")</a></code> created a DocumentTermMatrix, not a TermDocumentMatrix. Now correctly creates a TermDocumentMatrix. (Both worked previously in topicmodels::LDA() so many users may not notice the change.)</p></li>
 </ul>
 </div>
     <div id="quanteda-072" class="section level1">
@@ -642,7 +647,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <ul>
 <li><p>New engine for dfm now implemented as standard, using data.table and Matrix for fast, efficient (sparse) matrixes.</p></li>
 <li><p>Added trigram collocations (n=3) to collocations().</p></li>
-<li><p>Improvements to clean(): Minor fixes to clean() so that removeDigits=TRUE removes €10bn entirely and not just the €10. clean() now removes http and https URLs by default, although does not preserve them (yet). clean also handles numbers better, to remove 1,000,000 and 3.14159 if removeDigits=TRUE but not crazy8 or 4sure.</p></li>
+<li><p>Improvements to clean(): Minor fixes to clean() so that removeDigits=TRUE removes “€10bn” entirely and not just the “€10”. clean() now removes http and https URLs by default, although does not preserve them (yet). clean also handles numbers better, to remove 1,000,000 and 3.14159 if removeDigits=TRUE but not crazy8 or 4sure.</p></li>
 <li><p>dfm works for documents that contain no features, including for dictionary counts. Thanks to Kevin Munger for catching this.</p></li>
 </ul>
 </div>
@@ -885,11 +890,11 @@ Mostly these related to documentation.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

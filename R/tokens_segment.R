@@ -38,7 +38,7 @@
 #'                pattern_position = "after")
 tokens_segment <- function(x, pattern,
                            valuetype = c("glob", "regex", "fixed"),
-                           case_insensitive = TRUE, 
+                           case_insensitive = TRUE,
                            extract_pattern = FALSE,
                            pattern_position = c("before", "after"),
                            use_docvars = TRUE) {
@@ -52,10 +52,11 @@ tokens_segment <- function(x, pattern,
 #' @export
 tokens_segment.tokens <- function(x, pattern,
                                   valuetype = c("glob", "regex", "fixed"),
-                                  case_insensitive = TRUE, 
+                                  case_insensitive = TRUE,
                                   extract_pattern = FALSE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
+
     
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
@@ -73,7 +74,7 @@ tokens_segment.tokens <- function(x, pattern,
     } else {
         result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 2)
     }
-    
+
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
     attrs$docvars[["_docid"]] <- docnames(x)[attr(result, "docnum")]
     if (any(duplicated(attrs$docvars[["_docid"]])))
@@ -90,5 +91,4 @@ tokens_segment.tokens <- function(x, pattern,
     attributes(result, FALSE) <- attrs
     
     return(result)
-    
 }

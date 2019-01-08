@@ -21,7 +21,6 @@ setClass("fcm",
                    count = "character", weights = "numeric", 
                    ordered = "logical", tri = "logical",
                    margin = "numeric"),
-         # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
          contains = c("dfm", "dgCMatrix"))
 
 ## S4 method fcm objects

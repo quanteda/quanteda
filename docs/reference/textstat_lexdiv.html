@@ -32,6 +32,7 @@
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
@@ -39,7 +40,7 @@
   <script src="../extra.js"></script>
 <meta property="og:title" content="Calculate lexical diversity — textstat_lexdiv" />
 
-<meta property="og:description" content="Calculate the lexical diversity or complexity of text(s)." />
+<meta property="og:description" content="Calculate the lexical diversity of text(s)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -80,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
       </span>
     </div>
 
@@ -201,29 +202,26 @@
 
     <div class="ref-description">
     
-    <p>Calculate the lexical diversity or complexity of text(s).</p>
+    <p>Calculate the lexical diversity of text(s).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
-  <span class='st'>"K"</span>, <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>, <span class='st'>"K"</span>,
+  <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>, <span class='st'>"MATTR"</span>, <span class='st'>"MSTTR"</span>, <span class='st'>"all"</span>), <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100L</span>, <span class='kw'>MSTTR_segment</span> <span class='kw'>=</span> <span class='fl'>100L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an input <a href='dfm.html'>dfm</a> or <a href='tokens.html'>tokens</a> input object</p></td>
+      <td><p>an <a href='dfm.html'>dfm</a> or <a href='tokens.html'>tokens</a> input object for whose documents
+lexical diversity will be computed</p></td>
     </tr>
     <tr>
       <th>measure</th>
-      <td><p>a character vector defining the measure to calculate</p></td>
-    </tr>
-    <tr>
-      <th>log.base</th>
-      <td><p>a numeric value defining the base of the logarithm (for
-measures using logs)</p></td>
+      <td><p>a character vector defining the measure to compute</p></td>
     </tr>
     <tr>
       <th>remove_numbers</th>
@@ -247,19 +245,38 @@ by hyphenation and hyphenation-like characters in between words, e.g.
 "self-storage" becomes two features or tokens "self" and "storage". Default
 is FALSE to preserve such words as is, with the hyphens.</p></td>
     </tr>
+    <tr>
+      <th>log.base</th>
+      <td><p>a numeric value defining the base of the logarithm (for
+measures using logarithms)</p></td>
+    </tr>
+    <tr>
+      <th>MATTR_window</th>
+      <td><p>a numeric value defining the size of the moving window 
+for computation of the Moving-Average Type-Token Ratio (Covington &amp; McFall, 2010)</p></td>
+    </tr>
+    <tr>
+      <th>MSTTR_segment</th>
+      <td><p>a numeric value defining the size of the each segment
+for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>for passing arguments to other methods</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>textstat_lexdiv</code> returns a data.frame of documents and
-  their lexical diversity scores.</p>
+    <p>A data.frame of documents and their lexical diversity scores.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>textstat_lexdiv</code> calculates a variety of proposed indices for
-  lexical diversity. In the following formulas, \(N\) refers to the total
-  number of tokens, \(V\) to the number of types, and \(f_v(i, N)\) to the
-  numbers of types occurring \(i\) times in a sample of length \(N\).</p><dl class='dl-horizontal'>
+    <p><code>textstat_lexdiv</code> calculates the lexical diversity of documents
+  using a variety of indices.</p>
+<p>In the following formulas, \(N\) refers to the total number of
+  tokens, \(V\) to the number of types, and \(f_v(i, N)\) to the numbers
+  of types occurring \(i\) times in a sample of length \(N\).</p><dl class='dl-horizontal'>
     <dt><code>"TTR"</code>:</dt><dd><p>The ordinary <em>Type-Token Ratio</em>: $$TTR =
   \frac{V}{N}$$</p></dd>
     <dt><code>"C"</code>:</dt><dd><p>Herdan's <em>C</em> (Herdan, 1960, as cited in Tweedie &amp; 
@@ -294,17 +311,17 @@ is FALSE to preserve such words as is, with the hyphens.</p></td>
   full text will be examined (see Maas, 1972, p. 67 ff. for details).  Note:
   for the current method (for a dfm) there is no computation on separate
   halves of the text.</p></dd>
-    </dl>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>This implements only the static measures of lexical diversity, not more
-  complex measures based on windows of text such as the Mean Segmental
-  Type-Token Ratio, the Moving-Average Type-Token Ratio (Covington &amp; McFall,
-  2010), the MLTD or MLTD-MA (Moving-Average Measure of Textual Lexical
-  Diversity) proposed by McCarthy &amp; Jarvis (2010) or Jarvis (no year), or the
-  HD-D version of vocd-D (see McCarthy &amp; Jarvis, 2007).  These are available
-  from the package <span class="pkg">korRpus</span>.</p>
+    <dt><code>"MATTR"</code>:</dt><dd><p>The Moving-Average Type-Token Ratio (Covington &amp;
+  McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
+  The MATTR is the mean of the TTRs of each window.</p></dd>
+    <dt><code>"MSTTR"</code>:</dt><dd><p>Mean Segmental Type-Token Ratio (sometimes referred
+  to as <em>Split TTR</em>) splits the tokens into segments of the given size,
+  TTR for each segment is calculated and the mean of these values returned.
+  When this value is &lt; 1.0, it splits the tokens into equal, non-overlapping
+  sections of that size.  When this value is &gt; 1, it defines the segments as
+  windows of that size. Tokens at the end which do not make a full segment
+  are ignored.</p></dd>
+  </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -333,44 +350,7 @@ is FALSE to preserve such words as is, with the hyphens.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;        document     CTTR       TTR        U
-#&gt; 1   1981-Reagan 12.07549 0.3463595 24.89515
-#&gt; 2   1985-Reagan 11.99335 0.3356835 24.48583
-#&gt; 3     1989-Bush 10.99287 0.3231102 23.07188
-#&gt; 4  1993-Clinton 10.61324 0.3754693 24.12386
-#&gt; 5  1997-Clinton 10.94684 0.3333333 23.29504
-#&gt; 6     2001-Bush 10.37904 0.3689198 23.63757
-#&gt; 7     2005-Bush 11.26505 0.3500724 24.12469
-#&gt; 8    2009-Obama 12.91628 0.3736402 26.69551
-#&gt; 9    2013-Obama 11.99681 0.3709369 25.60049
-#&gt; 10   2017-Trump 10.01461 0.3728344 23.29366</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/cor'>cor</a></span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>)[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt;               TTR           C           R        CTTR           U           S
-#&gt; TTR    1.00000000  0.87474824 -0.06890274 -0.06890274  0.43113568  0.54093379
-#&gt; C      0.87474824  1.00000000  0.42238766  0.42238766  0.81336016  0.88065570
-#&gt; R     -0.06890274  0.42238766  1.00000000  1.00000000  0.86988854  0.80053122
-#&gt; CTTR  -0.06890274  0.42238766  1.00000000  1.00000000  0.86988854  0.80053122
-#&gt; U      0.43113568  0.81336016  0.86988854  0.86988854  1.00000000  0.99092386
-#&gt; S      0.54093379  0.88065570  0.80053122  0.80053122  0.99092386  1.00000000
-#&gt; K      0.09869723 -0.05531017 -0.31164089 -0.31164089 -0.22536889 -0.19303493
-#&gt; D      0.04556277 -0.07140815 -0.24576843 -0.24576843 -0.19170973 -0.16897667
-#&gt; Vm     0.02173116 -0.03766314 -0.13161889 -0.13161889 -0.09963151 -0.08685865
-#&gt; Maas  -0.43150628 -0.81434842 -0.86944078 -0.86944078 -0.99943116 -0.99202024
-#&gt; lgV0   0.18391592  0.63653817  0.96757261  0.96757261  0.96608008  0.92549041
-#&gt; lgeV0  0.18391592  0.63653817  0.96757261  0.96757261  0.96608008  0.92549041
-#&gt;                 K           D          Vm       Maas       lgV0      lgeV0
-#&gt; TTR    0.09869723  0.04556277  0.02173116 -0.4315063  0.1839159  0.1839159
-#&gt; C     -0.05531017 -0.07140815 -0.03766314 -0.8143484  0.6365382  0.6365382
-#&gt; R     -0.31164089 -0.24576843 -0.13161889 -0.8694408  0.9675726  0.9675726
-#&gt; CTTR  -0.31164089 -0.24576843 -0.13161889 -0.8694408  0.9675726  0.9675726
-#&gt; U     -0.22536889 -0.19170973 -0.09963151 -0.9994312  0.9660801  0.9660801
-#&gt; S     -0.19303493 -0.16897667 -0.08685865 -0.9920202  0.9254904  0.9254904
-#&gt; K      1.00000000  0.99638586  0.98036518  0.2243634 -0.2745434 -0.2745434
-#&gt; D      0.99638586  1.00000000  0.99283358  0.1906940 -0.2227132 -0.2227132
-#&gt; Vm     0.98036518  0.99283358  1.00000000  0.0989224 -0.1157789 -0.1157789
-#&gt; Maas   0.22436335  0.19069398  0.09892240  1.0000000 -0.9658324 -0.9658324
-#&gt; lgV0  -0.27454341 -0.22271316 -0.11577890 -0.9658324  1.0000000  1.0000000
-#&gt; lgeV0 -0.27454341 -0.22271316 -0.11577890 -0.9658324  1.0000000  1.0000000</div><div class='input'>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Anyway, like I was sayin', shrimp is the fruit of the sea. You can
+    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Anyway, like I was sayin', shrimp is the fruit of the sea. You can
           barbecue it, boil it, broil it, bake it, saute it."</span>,
          <span class='st'>"There's shrimp-kabobs,
           shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
@@ -383,7 +363,14 @@ is FALSE to preserve such words as is, with the hyphens.</p></td>
 #&gt; 2    text2 0.6060606 2.461830 1551.8825</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>textstat_lexdiv</span>(<span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"K"</span>))</div><div class='output co'>#&gt;   document       TTR     CTTR         K
 #&gt; 1    text1 0.7916667 2.742414  798.6111
-#&gt; 2    text2 0.6060606 2.461830 1551.8825</div></pre>
+#&gt; 2    text2 0.6060606 2.461830 1551.8825</div><div class='input'>
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>))
+<span class='fu'>textstat_lexdiv</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"MATTR"</span>), <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt;     document     CTTR       TTR     MATTR
+#&gt; 1  2001-Bush 10.37904 0.3689198 0.6885984
+#&gt; 2  2005-Bush 11.26505 0.3500724 0.6781998
+#&gt; 3 2009-Obama 12.91628 0.3736402 0.7070275
+#&gt; 4 2013-Obama 11.99681 0.3709369 0.7029654
+#&gt; 5 2017-Trump 10.01461 0.3728344 0.6670238</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -394,27 +381,25 @@ is FALSE to preserve such words as is, with the hyphens.</p></td>
 
       <li><a href="#details">Details</a></li>
 
-      <li><a href="#note">Note</a></li>
-
       <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
-    <p>Kenneth Benoit and Jiang Wei Lua.  Many of the formulas have been
-  re-implemented from functions written by Meik Michalke in the <span class="pkg">koRpus</span>
+    <p>Kenneth Benoit and Jiong Wei Lua.  Many of the formulas have been
+  reimplemented from functions written by Meik Michalke in the <span class="pkg">koRpus</span>
   package.</p>
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

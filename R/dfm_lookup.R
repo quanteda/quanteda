@@ -118,7 +118,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             }
             x <- x[, id]
             col_new <- key[id_key]
-            colnames(x) <- col_new
+            set_dfm_featnames(x) <- col_new
             # merge identical keys and add non-existent keys
             result <- dfm_select(dfm_compress(x, margin = "features"),
                                  as.dfm(rbind(structure(rep(0, length(key)),
@@ -128,7 +128,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
                 warning("nomatch only applies if exclusive = TRUE")
             col_new <- type
             col_new[id] <- key[id_key]
-            colnames(x) <- col_new
+            set_dfm_featnames(x) <- col_new
             result <- dfm_compress(x, margin = "features")
         }
 

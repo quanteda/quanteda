@@ -32,6 +32,7 @@
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
@@ -39,10 +40,10 @@
   <script src="../extra.js"></script>
 <meta property="og:title" content="Locate keywords-in-context — kwic" />
 
-<meta property="og:description" content="For a text or a collection of texts (in a quanteda corpus object), return a 
-list of a keyword supplied by the user in its immediate context, identifying 
-the source text and the word index number within the source text.  (Not the 
-line number, since the text may or may not be segmented using end-of-line 
+<meta property="og:description" content="For a text or a collection of texts (in a quanteda corpus object), return a
+list of a keyword supplied by the user in its immediate context, identifying
+the source text and the word index number within the source text.  (Not the
+line number, since the text may or may not be segmented using end-of-line
 delimiters.)" />
 <meta name="twitter:card" content="summary" />
 
@@ -84,7 +85,7 @@ delimiters.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
       </span>
     </div>
 
@@ -205,10 +206,10 @@ delimiters.)" />
 
     <div class="ref-description">
     
-    <p>For a text or a collection of texts (in a quanteda corpus object), return a 
-list of a keyword supplied by the user in its immediate context, identifying 
-the source text and the word index number within the source text.  (Not the 
-line number, since the text may or may not be segmented using end-of-line 
+    <p>For a text or a collection of texts (in a quanteda corpus object), return a
+list of a keyword supplied by the user in its immediate context, identifying
+the source text and the word index number within the source text.  (Not the
+line number, since the text may or may not be segmented using end-of-line
 delimiters.)</p>
     
     </div>
@@ -250,19 +251,19 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable 
+      <td><p>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable
 object types</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>kwic</code> classed data.frame, with the document name 
-  (<code>docname</code>), the token index positions (<code>from</code> and <code>to</code>, 
-  which will be the same for single-word patterns, or a sequence equal in 
-  length to the number of elements for multi-word phrases), the context 
-  before (<code>pre</code>), the keyword in its original format (<code>keyword</code>, 
-  preserving case and attached punctuation), and the context after 
+    <p>A <code>kwic</code> classed data.frame, with the document name
+  (<code>docname</code>), the token index positions (<code>from</code> and <code>to</code>,
+  which will be the same for single-word patterns, or a sequence equal in
+  length to the number of elements for multi-word phrases), the context
+  before (<code>pre</code>), the keyword in its original format (<code>keyword</code>,
+  preserving case and attached punctuation), and the context after
   (<code>post</code>).  The return object has its own <code>print</code> method, plus
   some special attributes that are hidden in the print view.  If you want to
   turn this into a simple data.frame, simply wrap the result in
@@ -270,12 +271,12 @@ object types</p></td>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>pattern</code> will be a keyword pattern or phrase, possibly multiple 
-  patterns, that may include punctuation.  If a pattern contains whitespace, 
-  it is best to wrap it in <code><a href='phrase.html'>phrase</a></code> to make this explicit. 
-  However if <code>pattern</code> is a <a href='textstat_collocations.html'>collocations</a> 
+    <p><code>pattern</code> will be a keyword pattern or phrase, possibly multiple
+  patterns, that may include punctuation.  If a pattern contains whitespace,
+  it is best to wrap it in <code><a href='phrase.html'>phrase</a></code> to make this explicit.
+  However if <code>pattern</code> is a <a href='textstat_collocations.html'>collocations</a>
   or <a href='dictionary.html'>dictionary</a> object, then the collocations or multi-word dictionary
-  keys will automatically be considered phrases where each 
+  keys will automatically be considered phrases where each
   whitespace-separated element matches a token in sequence.</p>
     
 
@@ -356,11 +357,11 @@ object types</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

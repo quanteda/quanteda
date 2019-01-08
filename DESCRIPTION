@@ -16,6 +16,7 @@ Authors@R: c(
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "aut", comment = c(ORCID = "0000-0002-2906-4775")),
     person("Stefan", "Müller", email = "mullers@tcd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
     person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
+    person("Jiong Wei", "Lua", email = "J.W.Lua@lse.ac.uk", role = "aut"),
     person("Patrick O.", "Perry", email = "patperry@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-7460-127X")),
     person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-1156-8465")),
     person("Benjamin", "Lauderdale", email = "b.e.lauderdale@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-3090-0969")),    
@@ -121,6 +122,7 @@ Collate:
     'dfm_weight.R'
     'dictionaries.R'
     'docnames.R'
+    'dimnames.R'
     'docvars.R'
     'fcm-classes.R'
     'fcm-methods.R'

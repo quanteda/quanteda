@@ -104,9 +104,9 @@ textstat_simil.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x[, i], x, margin, method, 1)
+        result <- textstat_proxy(x[, i], x, margin, method, 1, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x[i, ], x, margin, method, 1)
+        result <- textstat_proxy(x[i, ], x, margin, method, 1, use_na = TRUE)
     }
     result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
     if (is.null(selection)) {
@@ -194,9 +194,9 @@ textstat_dist.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x[, i], x, margin, method, p)
+        result <- textstat_proxy(x[, i], x, margin, method, p, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x[i, ], x, margin, method, p)
+        result <- textstat_proxy(x[i, ], x, margin, method, p, use_na = TRUE)
     }
     as_dist(result, method, match.call(), diag = diag, upper = upper)
 }
@@ -208,6 +208,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' @keywords internal
 #' @param y if a \link{dfm} object is provided, proximity between documents or
 #'   features in \code{x} and \code{y} is computed.
+#' @param use_na if \code{TRUE}, return \code{NA} for proximity to empty
+#'   vectors. Note that use of \code{NA} makes the proximity matrices denser.
 #' @inheritParams textstat_dist
 #' @param min_proxy the minimum proximity value to be recoded.
 #' @param rank an integer value specifying top-n most proximity values to be
@@ -220,16 +222,14 @@ textstat_proxy <- function(x, y = NULL,
                                       "dice", "edice", "hamman", "simple matching", "faith",
                                       "euclidean", "chisquared", "hamming", "kullback",
                                       "manhattan", "maximum", "canberra", "minkowski"),
-                           p = 2, min_proxy = NULL, rank = NULL) {
+                           p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE) {
     x <- as.dfm(x)
-    if (!sum(x)) stop(message_error("dfm_empty"))
     if (is.null(y)) {
         y <- x
     } else {
         if (!is.dfm(y))
             stop("y must be a dfm")
         y <- as.dfm(y)
-        if (!sum(y)) stop(message_error("dfm_empty"))
     }
 
     margin <- match.arg(margin)
@@ -290,8 +290,21 @@ textstat_proxy <- function(x, y = NULL,
                                                 "maximum", "canberra", "minkowski")),
                                 rank, min_proxy, weight)
     }
-
     dimnames(result) <- list(colnames(x), colnames(y))
+    if (use_na) {
+        na1 <- na2 <- logical()
+        if (method == "cosine") {
+            na1 <- qatd_cpp_nz(x) == 0
+            na2 <- qatd_cpp_nz(y) == 0
+        } else if (method == "correlation") {
+            na1 <- qatd_cpp_sd(x) == 0
+            na2 <- qatd_cpp_sd(y) == 0
+        }
+        if (any(na1))
+            result[na1,,drop = FALSE] <- NA
+        if (any(na2))
+            result[,na2,drop = FALSE] <- NA
+    }
     return(result)
     # return(as(result, "CsparseMatrix"))
 }
@@ -303,16 +316,16 @@ as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
         result <- result[lower.tri(result)]
     attr(result, "Size") <- ncol(x)
     attr(result, "Labels") <- colnames(x)
-    attr(result, "call") <- call
     attr(result, "Diag") <- diag
     attr(result, "Upper") <- upper
     attr(result, "method") <- method
+    attr(result, "call") <- call
     if (ncol(x) == nrow(x)) {
         class(result) <- "dist"
     } else {
         class(result) <- "dist_selection"
     }
-    return(result)
+    result
 }
 
 #' Coerce a simil object into a matrix

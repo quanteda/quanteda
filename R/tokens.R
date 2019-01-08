@@ -359,6 +359,7 @@ tokens_internal <- function(x,
                             include_docvars = TRUE,
                             ...) {
 
+
     check_dots(list(...), names(formals("tokens")))
 
     what <- match.arg(what)

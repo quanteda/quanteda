@@ -5,12 +5,14 @@
 * Fixed bug in `dfm_compress()` and `dfm_group()` that changed or deleted docvars attributes of dfm objects (#1506).
 * Fixed a bug in `textplot_xray()` that caused incorrect facet labels when a pattern contained multiple list elements or values (#1514).
 * `kwic()` now correctly returns the pattern associated with each match as the `"keywords"` attribute, for all `pattern` types (#1515)
+* Implemented some improvements in efficiency and computation of unusual edge cases for `textstat_simil()` and `textstat_dist()`.
 
 ### New features
 
-* `textstat_lexdiv()` now works on tokens objects, not just dfm objects.
+* `textstat_lexdiv()` now works on tokens objects, not just dfm objects.  New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington & McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).
 * New function `tokens_split()` allows splitting single into multiple tokens based on a pattern match. (#1500)
 * New function `tokens_chunk()` allows splitting tokens into new documents of equally-sized "chunks". (#1520)
+* New function `textstat_entropy()` now computes entropy for a dfm across feature or document margins.
 
 ### Behaviour changes
 

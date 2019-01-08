@@ -1,16 +1,15 @@
 context("test fcm_methods")
 
-test_that("fcm_compress works as expected, not working for 'window' context",{
+test_that("fcm_compress works as expected, not working for 'window' context", {
     myfcm <- fcm(tokens("A D a C E a d F e B A C E D"), 
              context = "window", window = 3)
     expect_error(fcm_compress(myfcm), 
                  "compress_fcm invalid if fcm was created with a window context")
-    
 })
 
 myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
 
-test_that("fcm_tolower and fcm_compress work as expected",{
+test_that("fcm_tolower and fcm_compress work as expected", {
     lc_fcm <- fcm_tolower(myfcm)
     expect_equivalent(rownames(lc_fcm), 
                       c("b", "a", "d", "c", "e"))

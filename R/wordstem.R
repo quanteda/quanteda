@@ -100,10 +100,11 @@ dfm_wordstem.default <- function(x, language = quanteda_options("language_stemme
 #' @export
 dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
     x <- as.dfm(x)
-    if (identical(as.integer(x@ngrams), 1L)) 
-        colnames(x) <- char_wordstem(featnames(x), language = language)
-    else
-        colnames(x) <- wordstem_ngrams(featnames(x), x@concatenator, language)
+    if (identical(as.integer(x@ngrams), 1L)) {
+        set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language)
+    } else {
+        set_dfm_featnames(x) <- wordstem_ngrams(featnames(x), x@concatenator, language)
+    }
     dfm_compress(x, margin = "features")
 }
 

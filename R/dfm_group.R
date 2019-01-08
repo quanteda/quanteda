@@ -101,9 +101,8 @@ is_grouped <- function(x, group) {
 # on features and/or documents
 group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
 
-    if (!length(features) && !length(documents)) {
+    if (!length(features) && !length(documents))
         return(x)
-    }
     temp <- as(x, "dgTMatrix")
     if (is.null(features)) {
         featname <- temp@Dimnames[[2]]
@@ -128,11 +127,9 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
 
     x_new <- temp@x
     dims <- c(length(docname), length(featname))
-    dimnames <- list(docs = docname, features = featname)
-
     result <- new("dfm",
                   sparseMatrix(i = i_new, j = j_new, x = x_new,
-                               dims = dims, dimnames = dimnames),
+                               dims = dims),
                   settings = x@settings,
                   weightTf = x@weightTf,
                   weightDf = x@weightDf,
@@ -140,6 +137,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
                   ngrams = x@ngrams,
                   skip = x@skip,
                   concatenator = x@concatenator)
+    set_dfm_dimnames(result) <- list(docname, featname)
 
     if (is.null(documents)) {
         result@docvars <- x@docvars

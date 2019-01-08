@@ -188,9 +188,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, margin = margin,
                   weights = weights, tri = tri)
-    # set the names 
-    names(result@Dimnames) <- c("features", "features")
-    result
+    set_fcm_dimnames(result) <- list(rownames(result), colnames(result))
+    return(result)
 }
 
     
@@ -227,11 +226,11 @@ fcm.tokens <- function(x, context = c("document", "window"),
             }
         }
         if (!is.tokens(x)) x <- as.tokens(x)
-        types <- types(x)
+        type <- types(x)
         n <- sum(lengths(x)) * window * 2
-        result <- as(qatd_cpp_fcm(x, length(types), count, window, 
+        result <- as(qatd_cpp_fcm(x, length(type), count, window, 
                                   weights, ordered, tri, n), "dgCMatrix")
-        dimnames(result) <- list(features = types, features = types)
+        set_fcm_dimnames(result) <- list(type, type)
     }
 
     # discard the lower diagonal if tri == TRUE
@@ -241,9 +240,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, margin = colSums(dfm(x)),
                   weights = weights, tri = tri)
-    # set the names 
-    names(result@Dimnames) <- c("features", "features")
-    result
+    return(result)
 }     
 
 #' @rdname print.dfm
