@@ -185,8 +185,7 @@ dfm_weight.dfm <- function(
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
             x@weightTf[["base"]] <- base
             
-        } else stop("invalid scheme")
-        
+        }
         x@weightTf[["scheme"]] <- scheme
         return(x)
     }

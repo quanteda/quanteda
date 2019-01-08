@@ -1,4 +1,4 @@
-context("test dfm_select")
+context("test dfm_group")
 
 test_that("test dfm_group", {
     
@@ -217,5 +217,18 @@ test_that("is_grouped is working", {
                            c(1L, 1L, 2L, 2L)))
     expect_true(quanteda:::is_grouped(c("", "", "", ""), 
                            c(1L, 1L, 2L, 2L)))
+    
+})
+
+test_that("dfm_group resets weighting scheme to count (#1545)", {
+    
+    mt1 <- dfm_weight(dfm(c("a b c c", "b c d", "a")), "boolean")
+    expect_equal(mt1@weightTf$scheme, "boolean")
+    
+    mt2 <- dfm_group(mt1, c("doc1", "doc1", "doc2"))
+    expect_equal(mt2@weightTf$scheme, "count")
+    
+    mt3 <- dfm_weight(mt2, "logcount")
+    expect_equal(mt3@weightTf$scheme, "logcount")
     
 })
