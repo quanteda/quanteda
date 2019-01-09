@@ -340,3 +340,39 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
         proxy::simil(as.matrix(mt), method = "faith")
     )
 })
+
+test_that("selection is always on colums (#1549)", {
+    expect_equal(
+        colnames(textstat_simil(mt, selection = c("1985-Reagan", "1989-Bush"))), 
+        c("1985-Reagan", "1989-Bush")
+    )
+    expect_equal(
+        colnames(textstat_simil(mt, selection = c(2, 3))), 
+        c("1985-Reagan", "1989-Bush")
+    )
+    expect_equal(
+        colnames(textstat_simil(mt, margin = "features", selection = c("justice", "and"))), 
+        c("justice", "and")
+    )
+    expect_equal(
+        colnames(textstat_simil(mt, margin = "features", selection = c(4, 6))), 
+        c("justice", "and")
+    )
+    expect_equal(
+        colnames(textstat_dist(mt, selection = c("1985-Reagan", "1989-Bush"))), 
+        c("1985-Reagan", "1989-Bush")
+    )
+    expect_equal(
+        colnames(textstat_dist(mt, selection = c(2, 3))), 
+        c("1985-Reagan", "1989-Bush")
+    )
+    expect_equal(
+        colnames(textstat_dist(mt, margin = "features", selection = c("justice", "and"))), 
+        c("justice", "and")
+    )
+    expect_equal(
+        colnames(textstat_dist(mt, margin = "features", selection = c(4, 6))), 
+        c("justice", "and")
+    )
+})
+
