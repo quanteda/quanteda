@@ -2,6 +2,39 @@
 #'
 #' Calculate the readability of text(s) using one of a variety of computed 
 #' indexes.
+#' @details \code{textstat_readability} calculates the readability of documents 
+#'   using a variety of indices
+#' 
+#' @details In the following formulas, we define  Average Sentence Length \deqn{ASL = No. Of
+#'   Tokens / No. of Sentences} , Average Word Length \deqn{AWL = No. of 
+#'   Characters / No. of Tokens}, Average Familiar Words \deqn{AFL = No. of Tokens
+#'    in Dale-Chall List of 3000 Simple Words /  No. of Tokens}, Difficult Words = \deqn{Tokens 
+#'    not in the Dale-Chall List of 3000 Simple Words}.
+#'   \describe{
+#'   
+#'   \item{\code{"ARI"}:}{\emph{Automated Readability Index}: \deqn{ARI = 0.5 ASL  +
+#'   4.71 AWL - 21.34}{ARI = 0.5 ASL  + 4.71 AWL - 21.34}}
+#'   
+#'   \item{\code{"ARI.Simple"}:}{\emph{Simplified Automated Readability Index}: \deqn{
+#'   ARI.Simple =  ASL + 9 AWL}{ARI.Simple =  ASL + 9 AWL}}
+#'   
+#'   \item{\code{"Bormuth"}:}{\emph{Bormuth Readability Index}: \deqn{Bormuth = 
+#'   0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x ASL - 0.000577 x ASL - 
+#'   0.000005 x ASL }{Bormuth = 0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x 
+#'   ASL - 0.000577 x ASL -  0.000005 x ASL }}
+#'   
+#'   \item{\code{"Coleman.Liau"}:}{\emph{Coleman-Liau Index}: \deqn{Coleman-Liau = 
+#'   0.0588 * \frac{No. of Characters}{100 Tokens} + 0.296 \frac{No. of Sentences}{100 Tokens} 
+#'   - 1.58}{Coleman-Liau =  0.0588 x No. of Characters Per 100 Tokens + 0.296 x No. of Sentences Per
+#'    100 Tokens - 1.58}}
+#'    
+#'   \item{\code{"Dale.Chall.Old"}:}{\emph{Dale.Chall.Old}: \deqn{
+#'   Dale.Chall.Old =  0.1579 x 100 x \frac{No. of Difficult Words}{No. of Tokens} + 
+#'   0.0496 x ASL (+ 3.6365)}{Dale.Chall.Old = 0.1579 x 100 x No. of Difficult Words / No.
+#'    of Tokens  + 0.0496 x ASL (+3.6365 if No. of Difficult Words / No. of Tokens is > 0.05)}}
+#'   
+#'   }
+#'
 #' @param x a character or \link{corpus} object containing the texts
 #' @param measure character vector defining the readability measure to calculate.  
 #'   Matches are case-insensitive.
@@ -32,6 +65,8 @@
 #' 
 #' textstat_readability(data_corpus_inaugural[48:58], 
 #'                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
+#' @references 
+#'   Senter, R. J., & Smith, E. A. (1967). Automated readability index. CINCINNATI UNIV OH.
 textstat_readability <- function(x,
                         measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
                                     "Coleman", "Coleman.C2",
