@@ -7,16 +7,16 @@ subset_dfm <- function(x, i, j, ..., drop) {
             i <- match(i, rownames(x))
         if (is.numeric(i) && (any(is.na(i)) || any(i < nrow(x) * -1L) || any(nrow(x) < i)))
             error <- TRUE
-        if (is.logical(i) && length(i) != nrow(x))
-            error <- TRUE
+        #if (is.logical(i) && length(i) != nrow(x))
+        #    error <- TRUE
     }
     if (!missing(j)) {
         if (is.character(j))
             j <- match(j, colnames(x))
         if (is.numeric(j) && (any(is.na(j)) || any(j < ncol(x) * -1L) || any(ncol(x) < j)))
             error <- TRUE
-        if (is.logical(j) && length(j) != ncol(x))
-            error <- TRUE
+        #if (is.logical(j) && length(j) != ncol(x))
+        #    error <- TRUE
     }
     if (error) stop("Subscript out of bounds")
     
