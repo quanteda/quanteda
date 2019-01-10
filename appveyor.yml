@@ -42,4 +42,4 @@ artifacts:
     name: Bits
 
 environment:
-  R_VERSION: 3.5
+  R_VERSION: 3.5.2
