@@ -104,9 +104,9 @@ textstat_simil.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x[, i], x, margin, method, 1, use_na = TRUE)
+        result <- textstat_proxy(x, x[, i], margin, method, 1, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x[i, ], x, margin, method, 1, use_na = TRUE)
+        result <- textstat_proxy(x, x[i, ], margin, method, 1, use_na = TRUE)
     }
     result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
     if (is.null(selection)) {
@@ -194,9 +194,9 @@ textstat_dist.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x[, i], x, margin, method, p, use_na = TRUE)
+        result <- textstat_proxy(x, x[, i], margin, method, p, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x[i, ], x, margin, method, p, use_na = TRUE)
+        result <- textstat_proxy(x, x[i, ], margin, method, p, use_na = TRUE)
     }
     as_dist(result, method, match.call(), diag = diag, upper = upper)
 }
