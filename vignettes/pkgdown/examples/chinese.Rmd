@@ -38,8 +38,8 @@ corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qe
 ch_stop <- stopwords("zh", source = "misc")
 
 # tokenize
-ch_toks <- 
-    tokens(corp, remove_punct = TRUE) %>%
+ch_toks <- corp %>% 
+    tokens(remove_punct = TRUE) %>%
     tokens_remove(pattern = ch_stop)
 
 # construct a dfm
