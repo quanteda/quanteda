@@ -110,6 +110,8 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     } else {
         if (!is.factor(features))
             features <- factor(features)
+        if (!fill)
+            features <- droplevels(features)
         featname <- levels(features)
         j <- as.integer(features)
         j_new <- j[temp@j + 1]
@@ -120,6 +122,8 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     } else {
         if (!is.factor(documents))
             documents <- factor(documents)
+        if (!fill)
+            documents <- droplevels(documents)
         docname <- levels(documents)
         i <- as.integer(documents)
         i_new <- i[temp@i + 1]
