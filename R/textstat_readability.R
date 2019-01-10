@@ -5,33 +5,75 @@
 #' @details \code{textstat_readability} calculates the readability of documents 
 #'   using a variety of indices
 #' 
-#' @details In the following formulas, we define  Average Sentence Length \deqn{ASL = No. Of
-#'   Tokens / No. of Sentences} , Average Word Length \deqn{AWL = No. of 
-#'   Characters / No. of Tokens}, Average Familiar Words \deqn{AFL = No. of Tokens
-#'    in Dale-Chall List of 3000 Simple Words /  No. of Tokens}, Difficult Words = \deqn{Tokens 
+#' @details In the following formulas, we define  \deqn{Average Sentence Length \emph{ASL} = No. Of
+#'   Tokens / No. of Sentences} , \deqn{Average Word Length \emph{AWL} = No. of 
+#'   Characters / No. of Tokens}, \deqn{Average Familiar Words \emph{AFL} = No. of Tokens
+#'    in Dale-Chall List of 3000 Simple Words /  No. of Tokens}, \deqn{Difficult Words = Tokens 
 #'    not in the Dale-Chall List of 3000 Simple Words}.
 #'   \describe{
 #'   
-#'   \item{\code{"ARI"}:}{\emph{Automated Readability Index}: \deqn{ARI = 0.5 ASL  +
+#'   \item{\code{"ARI"}:}{\emph{Automated Readability Index (1967)}: \deqn{ARI = 0.5 ASL  +
 #'   4.71 AWL - 21.34}{ARI = 0.5 ASL  + 4.71 AWL - 21.34}}
 #'   
-#'   \item{\code{"ARI.Simple"}:}{\emph{Simplified Automated Readability Index}: \deqn{
+#'   \item{\code{"ARI.Simple"}:}{\emph{Simplified Automated Readability Index (1967)}: \deqn{
 #'   ARI.Simple =  ASL + 9 AWL}{ARI.Simple =  ASL + 9 AWL}}
 #'   
-#'   \item{\code{"Bormuth"}:}{\emph{Bormuth Readability Index}: \deqn{Bormuth = 
-#'   0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x ASL - 0.000577 x ASL - 
-#'   0.000005 x ASL }{Bormuth = 0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x 
-#'   ASL - 0.000577 x ASL -  0.000005 x ASL }}
+#'   \item{\code{"Bormuth"}:}{\emph{Bormuth Mean Cloze Formula (1969)}: \deqn{Bormuth = 
+#'   0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x ASL - 0.000577 x ASL^2 - 
+#'   0.000005 x ASL^3 }{Bormuth = 0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x 
+#'   ASL - 0.000577 x ASL^2 -  0.000005 x ASL^3 }}
 #'   
-#'   \item{\code{"Coleman.Liau"}:}{\emph{Coleman-Liau Index}: \deqn{Coleman-Liau = 
+#'   \item{\code{"Bormuth.GP"}:}{\emph{Bormuth Grade Placement (1969)}: \deqn{Bormuth.GP = 
+#'   4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194CCS - 2.046CCS^2 - 11.767CCS^3 - 
+#'   42.285(M x CCS) + 97.620(M x CCS)^2 - 59.538(M x CCS)^2 where M is the Bormuth Mean Cloze
+#'   Formula as in  \emph{"Bormuth"} above, and CCS is the Cloze Criterion Score (Bormuth, 1968)}{Bormuth.GP = 
+#'   4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194CCS - 2.046CCS^2 - 11.767CCS^3 - 
+#'   42.285(M x CCS) + 97.620(M x CCS)^2 - 59.538(M x CCS)^2 where M is the Bormuth Mean Cloze
+#'   Formula as in \emph{"Bormuth"} above, and CCS is the Cloze Criterion Score (Bormuth, 1968)}}
+#'   
+#'   \item{\code{"Coleman.Liau"}:}{\emph{Coleman-Liau Index (1975)}: \deqn{Coleman-Liau = 
 #'   0.0588 * \frac{No. of Characters}{100 Tokens} + 0.296 \frac{No. of Sentences}{100 Tokens} 
 #'   - 1.58}{Coleman-Liau =  0.0588 x No. of Characters Per 100 Tokens + 0.296 x No. of Sentences Per
 #'    100 Tokens - 1.58}}
 #'    
-#'   \item{\code{"Dale.Chall.Old"}:}{\emph{Dale.Chall.Old}: \deqn{
+#'   \item{\code{"Dale.Chall.Old"}:}{\emph{Dale-Chall (1948)}: \deqn{
 #'   Dale.Chall.Old =  0.1579 x 100 x \frac{No. of Difficult Words}{No. of Tokens} + 
 #'   0.0496 x ASL (+ 3.6365)}{Dale.Chall.Old = 0.1579 x 100 x No. of Difficult Words / No.
 #'    of Tokens  + 0.0496 x ASL (+3.6365 if No. of Difficult Words / No. of Tokens is > 0.05)}}
+#'   
+#'   \item{\code{"Danielson.Bryan"}:}{\emph{Danielson-Bryan (1963)}: \deqn{
+#'   Danielson-Bryan = 1.0364 x \frac{No. of Characters}{No. of Tokens} + 0.0194 x
+#'   \frac{No. of Characters}{No. of Sentences} - 0.6059}{Danielson-Bryan = 
+#'   1.0364 x No. of Characters / No. of Tokens + 0.0194 x No. of Characters / No. of
+#'    Sentences - 0.6059}}
+#'   
+#'   \item{\code{"Flesch"}:}{\emph{Flesch Reading Ease Score (FRES) (1948)}: \deqn{
+#'   FRES = 206.835 - 1.015 x ASL - 84.6 x \frac(No. of Syllables / No. of Tokens)}{FRES =
+#'   206.835 - 1.015 x ASL - 84.6 x (No. of Syllables / No. of Tokens)}}
+#'   
+#'   \item{\code{"Flesch.Kincaid"}:}{\emph{Flesch-Kincaid Score (1975)}: \deqn{
+#'   Flesch-Kincaid = 0.39 x ASL + 11.8  x(No. of Syllables / No. of Tokens) - 15.59}{Flesch-Kincaid =
+#'   0.39 x ASL + 11.8  x(No. of Syllables / No. of Tokens) - 15.59}}
+#'   
+#'   \item{\code{"Fucks"}:}{\emph{Fucks' Stilcharakteristik (Style Characteristic)}: \deqn{Fucks = 
+#'   AWL  x ASL }{Fucks = AWL x ASL}}
+#'   
+#'   \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 
+#'   0.4 x (ASL + 100 x (Complex Tokens / No. of Tokens))}{FOG = 
+#'   0.4 x (ASL + 100 x (Complex Tokens / No. of Tokens))}}
+#'   
+#'   \item{\code{"FORCAST"}:}{\emph{FORCAST (1973)}: \deqn{FORCAST = 20 - 
+#'   (No. of Single Syllabus Tokens x 150) / (No. of Tokens x 10)}{FORCAST = 20 - 
+#'   (No. of Single Syllabus Tokens x 150) / (No. of Tokens x 10)}}
+#'   
+#'   \item{\code{"SMOG"}:}{\emph{Simple Measure of Gobbledygook (1969)}: \deqn{SMOG = 1.043 x \sqrt{No. of
+#'    Tokens with >3 Syllables x \fract{30}{No. of Sentences}} + 3.1291}{SMOG = 1.043
+#'    x sqrt(No. of Tokens with >3 Syllables x 30 / No. Of Sentences) + 3.1291}}
+#'    
+#'    \item{\code{"SMOG.Simple"}:}{\emph{Simplified Version of SMOG (1969)}: \deqn{SMOG.Simple =
+#'    \sqrt{No. of Tokens with >3 Syllables x \fract{30}{No. of Sentences}} + 3}{SMOG.Simple = 
+#'    sqrt(No. of Tokens with >3 Syllables x 30 / No. of Sentences) + 3}}
+#'   
 #'   
 #'   }
 #'
@@ -66,7 +108,30 @@
 #' textstat_readability(data_corpus_inaugural[48:58], 
 #'                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
 #' @references 
+#'   Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development of Readability Analysis.}  
+#'   
+#'   Bormuth, J. R. (1968). Cloze test readability: Criterion reference scores. Journal of educational measurement, 5(3), 189-196.  
+#'   
+#'   Caylor, J. S. (1973). Methodologies for Determining Reading Requirements of Military Occupational Specialties.
+#'   
+#'   Coleman, M., & Liau, T. L. (1975). A computer readability formula designed for machine scoring. Journal of Applied Psychology, 60(2), 283.
+#'   
+#'   Dale, E., & Chall, J. S. (1948). A formula for predicting readability: Instructions. Educational research bulletin, 37-54.
+#'   
+#'   Danielson, W. A., & Bryan, S. D. (1963). Computer automation of two readability formulas. Journalism Quarterly, 40(2), 201-206.
+#'   
+#'   DuBay, W. H. (2004). The Principles of Readability.
+#'   
+#'   Flesch, R. (1948). A new readability yardstick. Journal of applied psychology, 32(3), 221.
+#'   
+#'   Gunning, R. (1952). The technique of clear writing.
+#'   
+#'   Kincaid, J. P., Fishburne Jr, R. P., Rogers, R. L., & Chissom, B. S. (1975). Derivation of new readability formulas (automated readability index, fog count and flesch reading ease formula) for navy enlisted personnel.
+#'   
+#'   Mc Laughlin, G. H. (1969). SMOG grading-a new readability formula. Journal of reading, 12(8), 639-646.
+#'   
 #'   Senter, R. J., & Smith, E. A. (1967). Automated readability index. CINCINNATI UNIV OH.
+
 textstat_readability <- function(x,
                         measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
                                     "Coleman", "Coleman.C2",
