@@ -112,17 +112,30 @@ In the following formulas, we define  \deqn{Average Sentence Length \emph{ASL} =
   0.4 x (ASL + 100 x (Complex Tokens / No. of Tokens))}}
   
   \item{\code{"FORCAST"}:}{\emph{FORCAST (1973)}: \deqn{FORCAST = 20 - 
-  (No. of Single Syllabus Tokens x 150) / (No. of Tokens x 10)}{FORCAST = 20 - 
-  (No. of Single Syllabus Tokens x 150) / (No. of Tokens x 10)}}
+  (No. of Single Syllables Tokens x 150) / (No. of Tokens x 10)}{FORCAST = 20 - 
+  (No. of Single Syllables Tokens x 150) / (No. of Tokens x 10)(The scaling by 150 arises because the initial FORCAST index is
+   based on just a sample of 150 tokens)}}
   
   \item{\code{"SMOG"}:}{\emph{Simple Measure of Gobbledygook (1969)}: \deqn{SMOG = 1.043 x \sqrt{No. of
    Tokens with >3 Syllables x \fract{30}{No. of Sentences}} + 3.1291}{SMOG = 1.043
    x sqrt(No. of Tokens with >3 Syllables x 30 / No. Of Sentences) + 3.1291}}
    
-   \item{\code{"SMOG.Simple"}:}{\emph{Simplified Version of SMOG (1969)}: \deqn{SMOG.Simple =
-   \sqrt{No. of Tokens with >3 Syllables x \fract{30}{No. of Sentences}} + 3}{SMOG.Simple = 
-   sqrt(No. of Tokens with >3 Syllables x 30 / No. of Sentences) + 3}}
+  \item{\code{"SMOG.Simple"}:}{\emph{Simplified Version of SMOG (1969)}: \deqn{SMOG.Simple =
+  \sqrt{No. of Tokens with >3 Syllables x \fract{30}{No. of Sentences}} + 3}{SMOG.Simple = 
+  sqrt(No. of Tokens with >3 Syllables x 30 / No. of Sentences) + 3}}
   
+  \item{\code{"Spache"}:}{\emph{Spache (1952)}: \deqn{Spache = 0.121 x ASL + 
+  0.082 x (Unique Tokens not in Spache Word List / No. of Tokens) + 0.659}{Spache = 0.121 x ASL + 
+  0.082 x (Unique Tokens not in Spache Word List / No. of Tokens) + 0.659}} 
+  
+  \item{\code{"Spache.old"}:}{\emph{Spache (1952)}: \deqn{Spache.old = 0.141 x ASL + 
+  0.086 x Unique Tokens not in Spache Word List / No. of Tokens) + 0.839}{Spache.old = 0.141 x ASL + 
+  0.086 x (Unique Tokens not in Spache Word List/ No. of Tokens) + 0.839}} 
+  
+  \item{\code{"Strain"}:}{\emph{Strain Index (2006)}: \deqn{ train = Number of 
+  Syllables / (Number of Sentences / 3) /10}{Strain = Number of Syllables / (Number of 
+  Sentences / 3) / 10 (The scaling by 3 arises because the initial Strain index is based on just the 
+  first 3 sentences )}}
   
   }
 }
@@ -159,6 +172,8 @@ Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{De
   Mc Laughlin, G. H. (1969). SMOG grading-a new readability formula. Journal of reading, 12(8), 639-646.
   
   Senter, R. J., & Smith, E. A. (1967). Automated readability index. CINCINNATI UNIV OH.
+  
+  Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.
 }
 \author{
 Kenneth Benoit, re-engineered from Meik Michalke's \pkg{koRpus}
