@@ -142,7 +142,7 @@ matrix2dfm <- function(x, slots = NULL) {
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     
     x <- Matrix(x, sparse = TRUE)
-    dimnames(x) <- list(docs = rowname, features = colname)
+    set_dfm_dimnames(x) <- list(rowname, colname)
     x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(nrow(x), rowname, FALSE))
     set_dfm_slots(x, slots)
 }
