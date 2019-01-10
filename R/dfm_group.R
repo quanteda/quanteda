@@ -126,19 +126,21 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     } else {
         docvars(result) <- data.frame(row.names = docname)
     }
-    result
+    return(result)
 }
 
 # select docvar fields that have all the same values within groups
 group_docvars <- function(x, group) {
     result <- x[match(levels(group), group), sapply(x, is_grouped, as.integer(group)), drop = FALSE]
     rownames(result) <- as.character(levels(group))
-    result
+    return(result)
 }
 
 # check if values are uniform within groups
 is_grouped <- function(x, group) {
-    if (is.character(x)) {
+    if (is.list(x)) {
+        FALSE
+    } else if (is.character(x)) {
         qatd_cpp_is_grouped_character(x, group)
     } else {
         qatd_cpp_is_grouped_numeric(as.numeric(x), group)
