@@ -122,6 +122,7 @@ Collate:
     'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'
+    'dfm_conform.R'
     'dictionaries.R'
     'docnames.R'
     'dimnames.R'
