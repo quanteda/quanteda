@@ -401,11 +401,11 @@ test_that("fcm feature names have encoding", {
     expect_true(all(Encoding(colnames(mt)) == "UTF-8"))
     expect_true(all(Encoding(rownames(mt)) == "UTF-8"))
     
-    mt1 <- dfm_sort(mt)
+    mt1 <- fcm_sort(mt)
     expect_true(all(Encoding(colnames(mt1)) == "UTF-8"))
     expect_true(all(Encoding(rownames(mt1)) == "UTF-8"))
     
-    mt2 <- dfm_remove(mt, c("あ"))
+    mt2 <- fcm_remove(mt, c("あ"))
     expect_true(all(Encoding(colnames(mt2)) == "UTF-8"))
     expect_true(all(Encoding(rownames(mt2)) == "UTF-8"))
 })
