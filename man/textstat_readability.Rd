@@ -101,47 +101,117 @@ In the following formulas, we define
   \item{\code{"Coleman.Liau.Short"}:}{\emph{Coleman-Liau Index (1975)}: \deqn{Coleman-Liau.Short= 
   5.88 \times AWL + 29.6 \times \frac{No. of Sentences}{No. of Words} - 15.8}{Coleman-Liau.Short = 
   5.88 x Average Word Length + 0.296 x (No. of Sentences / No. of Words) - 15.8}}
+  
+  \item{\code{"Dale.Chall"}:}{\emph{New Dale-Chall (1995)}: \deqn{Dale.Chall = 64 - (0.95 \times 100 
+  \times \frac{No. of Difficult Words}{No. of Words}) - (0.69 \times ASL)}{Dale.Chall = 64 - (0.95 x 100 
+  x No. of Difficult Words/No. of Words) - (0.69 x ASL)}}
    
   \item{\code{"Dale.Chall.Old"}:}{\emph{Dale-Chall (1948)}: \deqn{
   Dale.Chall.Old =  0.1579 \times 100 \times \frac{No. of Difficult Words}{No. of Words} + 
   0.0496 \times ASL (+ 3.6365)}{Dale.Chall.Old = 0.1579 x 100 x No. of Difficult Words / No.
    of Words  + 0.0496 x ASL (+3.6365 if No. of Difficult Words / No. of Words is > 0.05)}}
+   
+  \item{\code{"Dale.Chall.PSK"}:}{\emph{Dale-Chall Measure, Powers-Sumner-Kearl Variation (1958)}: 
+  \deqn{Dale.Chall.PSK = 0.1155 \times 100 \frac{No. of Difficult Words}{No. of Words}) + (0.0596 \times 
+  ASL) + 3.2672 }{Dale.Chall.PSK = (0.1155 x 100 x No. of Difficult Words / No. of Words) + (0.0596 x 
+  ASL) + 3.2672 }}
   
   \item{\code{"Danielson.Bryan"}:}{\emph{Danielson-Bryan (1963)}: \deqn{
-  Danielson-Bryan = 1.0364 \times \frac{No. of Characters}{No. of Words} + 0.0194 \times
-  \frac{No. of Characters}{No. of Sentences} - 0.6059}{Danielson-Bryan = 
-  1.0364 x No. of Characters / No. of Words + 0.0194 x No. of Characters / No. of
-   Sentences - 0.6059}}
+  Danielson-Bryan = (1.0364 \times \frac{No. of Characters}{No. of Blanks}) + (0.0194 \times
+  \frac{No. of Characters}{No. of Sentences}) - 0.6059}{Danielson-Bryan = 
+  (1.0364 x No. of Characters / No. of Blanks) + (0.0194 x No. of Characters / No. of
+   Sentences) - 0.6059}}
+   
+  \item{\code{"Danielson.Bryan2"}:}{\emph{Danielson-Bryan2 (1963)}: \deqn{
+  Danielson-Bryan = 131.059- (10.364 \times \frac{No. of Characters}{No. of Blanks}) + (0.0194 \times
+  \frac{No. of Characters}{No. of Sentences})}{Danielson-Bryan2 = 131.059 -
+  (10.364 x No. of Characters / No. of Blanks) + (0.0194 x No. of Characters / No. of
+   Sentences)}}
+   
+   \item{\code{"Dickes.Steiwer"}:}{\emph{Dickes-Steiwer Index (1977)}: \deqn{ Dickes-Steiwer = 
+  235.95993 - (7.3021 \times AWL)  - (12.56438 \times ASL) - (50.03293 \times
+   Type-Token Ratio)}{Dickes-Steiwer = 235.95993 - (73.021 x AWL) - (12.56438 x ASL) - (50.03293 x TTR)}}
+   
+  \item{\code{"DRP"}:}{\emph{Degrees of Reading Power (Relies on Bormuth.MC (1969) as in "Bormuth" above)}: \deqn{
+  DRP = (1 - Bormuth.MC) \times 100}{DRP = (1 - Bormuth.MC) x 100}}
+  
+  \item{\code{"ELF"}:}{\emph{Easy Listening Formula, Fang (1966)}: \deqn{
+  ELF = \frac{No. of Words with >= 2 Syllables}{No. of Sentences}}{ELF = (No. of Words with >= 2 Syllables / No. of Sentences)}}
+  
+  \item{\code{"Farr.Jenkins.Paterson"}:}{\emph{Farr-Jenkins-Paterson's Simplication of Flesch's Reading Ease Score (1951)}: \deqn{
+  Farr.Jenkins.Paterson = -31.517 - (1.015 \times ASL) + (1.599 \times \frac{No. of 1-Syllable Words}{No. of Words}}{Farr.Jenkins.Paterson
+  -31.517 - (1.015 x ASL) + (1.599 x No. of 1-Syllable Words / No. of Words)}}
   
   \item{\code{"Flesch"}:}{\emph{Flesch Reading Ease Score (FRES) (1948)}: \deqn{
-  FRES = 206.835 - 1.015 \times ASL - 84.6 \times \frac(No. of Syllables / No. of Words)}{FRES =
-  206.835 - 1.015 x ASL - 84.6 x (No. of Syllables / No. of Words)}}
+  FRES = 206.835 - (1.015 \times ASL) - (84.6 \times \frac{No. of Syllables}{No. of Words})}{FRES =
+  206.835 - (1.015 x ASL) - (84.6 x (No. of Syllables / No. of Words))}}
+  
+  \item{\code{"Flesch.PSK"}:}{\emph{Flesch Reading Ease Score, Powers-Sumner-Kearl's Variation (1958)}: 
+  \deqn{Flesch.PSK = (0.0778 \times ASL) + (4.55 \times \frac{No. of Syllables}{No. of Words}) - 2.2029}{Flesch.PSK =
+  (0.0078 x ASL) + (4.55 x No. of Syllables / No. of Words) - 2.2029}}
   
   \item{\code{"Flesch.Kincaid"}:}{\emph{Flesch-Kincaid Score (1975)}: \deqn{
   Flesch-Kincaid = 0.39 \times ASL + 11.8  \times \frac{No. of Syllables}{No. of Words}- 15.59}{Flesch-Kincaid =
   0.39 x ASL + 11.8  x(No. of Syllables / No. of Words) - 15.59}}
   
+  
+  \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 
+  0.4 \times (ASL + 100 \times (No. of Words with >= 3 Syllables  / No. of Words))}{FOG = 
+  0.4 x (ASL + 100 x (No. of Words with >= 3 Syllables / No. of Words))}}
+  
+  \item{\code{"FOG.PSK"}:}{\emph{FOG, Powers-Sumner-Kearl's Variation (1958)}: \deqn{FOG.PSK = 
+  3.0680 \times (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{No. of Words with >=3 
+  Syllables}{No. of Words})}{FOG.PSK = 3.0680 x (0.0877 x ASL) +(0.0984 x 100 x No. of Words with >=3 
+  Syllables / No. of Words}}
+  
+  \item{\code{"FOG.NRI"}:}{\emph{FOG, Navy Readability Index (1975)}: \deqn{FOG.NRI = 
+  ( \frac{(No. of Words with < 3 Syllables + 3 \times No. of 3-Syllables
+   Words)}{(100 \times \frac{No. of Sentences}{No. of Words})}  - 3) / 2 }{FOG = 
+  (((No. of Words with <3 Syllables + 3 x No. of 3-Syllables Words) / (100 x No. of 
+  Sentences / No. of Words))-3) / 2}}
+  
+  \item{\code{"FORCAST"}:}{\emph{FORCAST (Simplified FORCAST.RGL) (Caylor & Sticht, 1973)}: \deqn{FORCAST = 20 - 
+  \frac{(No. of 1-Syllable Words \times 150)}{(No. of Words \times 10)}}{FORCAST = 20 - 
+  (No. of 1-Syllable Words x 150) / (No. of Words x 10)
+  
+  (The scaling by 150 arises because the 
+  initial FORCAST index is based on just a sample of 150 tokens)}}
+  
+  \item{\code{"FORCAST"}:}{\emph{FORCAST.RGL (Caylor & Sticht, 1973)}: \deqn{FORCAST.RGL= 20.43 -
+   0.11 \times \frac{(No. of 1-Syllable Words \times 150)}{No. of Words}}{FORCAST.RGL
+   = 20.43 - 0.11 x (No. of 1-Syllable Words x 150) / (No. of Words)
+   
+   (The scaling by 150 arises because the 
+  initial FORCAST index is based on just a sample of 150 tokens)}}
+  
   \item{\code{"Fucks"}:}{\emph{Fucks' Stilcharakteristik (Style Characteristic)}: \deqn{Fucks = 
   AWL  \times ASL }{Fucks = AWL x ASL}}
   
-  \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 
-  0.4 \times (ASL + 100 \times (Complex Words / No. of Words))}{FOG = 
-  0.4 x (ASL + 100 x (Complex Words / No. of Words))}}
+  \item{\code{"LIW"}:}{\emph{Björnsson's Läsbarhetsindex (1968) (For Swedish Texts)}: \deqn{LIW = ASL +
+   \frac{100 \times No. of Words with >= 7 Syllables}{No. of Words}}{LIW = ASL + (100 * No. of Words
+    with >= 7 Syllables / No. of Words)}}
   
-  \item{\code{"FORCAST"}:}{\emph{FORCAST (1973)}: \deqn{FORCAST = 20 - 
-  \frac{(No. of Single Syllables Words \times 150)}{(No. of Words \times 10)}}{FORCAST = 20 - 
-  (No. of Single Syllables Words x 150) / (No. of Words x 10)(The scaling by 150 arises because the 
-  initial FORCAST index is based on just a sample of 150 tokens)}}
+  \item{\code{"RIX"}:}{\emph{Anderson's Readability Index (1983)}: \deqn{RIX  = \frac{No. of Words with
+   >= 7 Syllables}{No. of Sentences}}{RIX = No. of Words
+    with >= 7 Syllables / No. of Sentences)}}
   
   \item{\code{"Scrabble"}:}{\emph{Scrabble Measure}: {Scrabble = Mean Scrabble Letter Values of All Words}}
   
-  \item{\code{"SMOG"}:}{\emph{Simple Measure of Gobbledygook (1969)}: \deqn{SMOG = 1.043 \times \sqrt{No. of
-   Words with >3 Syllables \times \frac{30}{No. of Sentences}} + 3.1291}{SMOG = 1.043
-   x sqrt(No. of Words with >3 Syllables x 30 / No. Of Sentences) + 3.1291}}
+  \item{\code{"SMOG"}:}{\emph{Simple Measure of Gobbledygook (McLaughlin, 1969)}: \deqn{SMOG = 1.043 
+  \times \sqrt{No. of  Words with >=3 Syllables \times \frac{30}{No. of Sentences}} + 3.1291}{SMOG = 1.043
+   x sqrt(No. of Words with >=3 Syllables x 30 / No. Of Sentences) + 3.1291}}
    
-  \item{\code{"SMOG.Simple"}:}{\emph{Simplified Version of SMOG (1969)}: \deqn{SMOG.Simple =
-  \sqrt{No. of Words with >3 Syllables \times \frac{30}{No. of Sentences}} + 3}{SMOG.Simple = 
-  sqrt(No. of Words with >3 Syllables x 30 / No. of Sentences) + 3}}
+  \item{\code{"SMOG.C"}:}{\emph{SMOG.C}: \deqn{SMOG.C = 0.9986 \times 
+  \sqrt{No. of Words with >=3 Syllables \times \frac{30}{No. of Sentences} + 5} +  2.8795}{SMOG.C = 0.9986
+  x sqrt(No. of Words with >=3 Syllables x (30 / No. Of Sentences) + 5) + 2.8795}}
+   
+  \item{\code{"SMOG.Simple"}:}{\emph{SMOG Simplified}: \deqn{SMOG.Simple =
+  \sqrt{No. of Words with >=3 Syllables \times \frac{30}{No. of Sentences}} + 3}{SMOG.Simple = 
+  sqrt(No. of Words with >=3 Syllables x 30 / No. of Sentences) + 3}}
+  
+  \item{\code{"SMOG.de"}:}{\emph{SMOG.de (Adapted for German Texts)}: \deqn{SMOG.de = 
+  \sqrt{No. of Words with >=3 Syllables \times \frac{30}{No. of Sentences}}-2}{SMOG.de =
+  sqrt(No. of Words with >=3 Syllables x 30 / No. Of Sentences) - 2 }}
   
   \item{\code{"Spache"}:}{\emph{Spache (1952)}: \deqn{Spache = 0.121 \times ASL + 
   0.082 \times (Unique Words not in Spache Word List / No. of Words) + 0.659}{Spache = 0.121 x ASL + 
@@ -151,7 +221,7 @@ In the following formulas, we define
   0.086 \times Unique Words not in Spache Word List / No. of Words) + 0.839}{Spache.old = 0.141 x ASL + 
   0.086 x (Unique Words not in Spache Word List/ No. of Words) + 0.839}} 
   
-  \item{\code{"Strain"}:}{\emph{Strain Index (2006)}: \deqn{ Strain = Number of 
+  \item{\code{"Strain"}:}{\emph{Strain Index (Solomon, 2006)}: \deqn{ Strain = Number of 
   Syllables / (Number of Sentences / 3) /10}{Strain = Number of Syllables / (Number of 
   Sentences / 3) / 10 (The scaling by 3 arises because the initial Strain index is based on just the 
   first 3 sentences )}}
@@ -168,8 +238,8 @@ In the following formulas, we define
     of Words) - 1.02805 x 100 x (No. of Conjunctions/No. of Words)}}
   
   \item{\code{"Wheeler.Smith"}:}{\emph{Wheeler & Smith (1954)}: \deqn{Wheeler.Smith = 
-  ASL \times 10 \times \frac{No. of 2-Syllables Words}{No. of Words}}{Wheeler.Smith = 
-  ASL x 10 x (No. of 2-Syllables Words /No. of Words)}}
+  ASL \times 10 \times \frac{No. of Words with >= 2Syllables}{No. of Words}}{Wheeler.Smith = 
+  ASL x 10 x (No. of Words with >= 2Syllables /No. of Words)}}
   
   \item{\code{"meanSentenceLength"}:}{\emph{Average Sentence Length}: \deqn{Average Sentence Length = 
   \frac{No. of Words}{No. of Sentences}}{Average Sentence Length = No. of Words / No. of Sentences}}
@@ -189,7 +259,10 @@ textstat_readability(data_corpus_inaugural[48:58],
                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
 }
 \references{
-Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development 
+Anderson, J. (1983). Lix and rix: Variations on a little-known readability index. 
+  Journal of Reading, 26(6), 490-496.
+  
+  Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development 
   of Readability Analysis.}  
   
   Bormuth, J. R. (1968). Cloze test readability: Criterion reference scores. 
@@ -197,6 +270,9 @@ Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{De
   
   Caylor, J. S. (1973). Methodologies for Determining Reading Requirements of Military 
   Occupational Specialties.
+  
+  Caylor, J. S., & Sticht, T. G. (1973). Development of a Simple Readability Index for Job 
+  Reading Material.
   
   Coleman, E. B. (1971). Developing a technology of written instruction: Some determiners 
   of the complexity of prose. Verbal learning research and the technology of written 
@@ -208,10 +284,20 @@ Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{De
   Dale, E., & Chall, J. S. (1948). A formula for predicting readability: Instructions.
   Educational research bulletin, 37-54.
   
+  Chall, J. S., & Dale, E. (1995). Readability revisited: The new Dale-Chall readability 
+  formula. Brookline Books.
+  
+  Dickes, P. & Steiwer, L. (1977). Ausarbeitung von Lesbarkeitsformeln für die deutsche Sprache. 
+  Zeitschrift für Entwicklungspsychologie und Pädagogische Psychologie, 9(1), 20--28.
+  
   Danielson, W. A., & Bryan, S. D. (1963). Computer automation of two readability formulas.
   Journalism Quarterly, 40(2), 201-206.
   
   DuBay, W. H. (2004). The Principles of Readability.
+  
+  Fang, I. E. (1966). The “Easy listening formula”. Journal of Broadcasting & Electronic Media, 11(1), 63-68.
+  
+  Farr, J. N., Jenkins, J. J., & Paterson, D. G. (1951). Simplification of Flesch Reading Ease Formula. Journal of applied psychology, 35(5), 333.
   
   Flesch, R. (1948). A new readability yardstick. Journal of applied psychology, 32(3), 221.
   
@@ -222,6 +308,9 @@ Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{De
   for navy enlisted personnel.
   
   Mc Laughlin, G. H. (1969). SMOG grading-a new readability formula. Journal of reading, 12(8), 639-646.
+  
+  Powers, R. D., Sumner, W. A., & Kearl, B. E. (1958). A recalculation of four adult readability formulas. 
+  Journal of Educational Psychology, 49(2), 99.
   
   Senter, R. J., & Smith, E. A. (1967). Automated readability index. CINCINNATI UNIV OH.
   
