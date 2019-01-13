@@ -1058,3 +1058,25 @@ test_that("set_dfm_dimnames etc functions work", {
     expect_identical(docnames(x), c("docA", "docB"))
     expect_identical(featnames(x), c("A", "B", "C"))
 })
+
+test_that("dfm feature and document names have encoding", {
+    mt <- dfm(c("文書１" = "あ い い う", "文書２" = "え え え お"))
+    expect_true(all(Encoding(colnames(mt)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt)) == "UTF-8"))
+    
+    mt1 <- dfm_sort(mt)
+    expect_true(all(Encoding(colnames(mt1)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt1)) == "UTF-8"))
+    
+    mt2 <- dfm_group(mt, c("文書３", "文書３"))
+    expect_true(all(Encoding(colnames(mt2)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt2)) == "UTF-8"))
+    
+    mt3 <- dfm_remove(mt, c("あ"))
+    expect_true(all(Encoding(colnames(mt3)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt3)) == "UTF-8"))
+    
+    mt4 <- dfm_trim(mt, min_termfreq = 2)
+    expect_true(all(Encoding(colnames(mt4)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt4)) == "UTF-8"))
+})
