@@ -154,7 +154,6 @@ In the following formulas, we define
   Flesch-Kincaid = 0.39 \times ASL + 11.8  \times \frac{No. of Syllables}{No. of Words}- 15.59}{Flesch-Kincaid =
   0.39 x ASL + 11.8  x(No. of Syllables / No. of Words) - 15.59}}
   
-  
   \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 
   0.4 \times (ASL + 100 \times (No. of Words with >= 3 Syllables  / No. of Words))}{FOG = 
   0.4 x (ASL + 100 x (No. of Words with >= 3 Syllables / No. of Words))}}
@@ -177,7 +176,7 @@ In the following formulas, we define
   (The scaling by 150 arises because the 
   initial FORCAST index is based on just a sample of 150 tokens)}}
   
-  \item{\code{"FORCAST"}:}{\emph{FORCAST.RGL (Caylor & Sticht, 1973)}: \deqn{FORCAST.RGL= 20.43 -
+  \item{\code{"FORCAST.RGL"}:}{\emph{FORCAST.RGL (Caylor & Sticht, 1973)}: \deqn{FORCAST.RGL= 20.43 -
    0.11 \times \frac{(No. of 1-Syllable Words \times 150)}{No. of Words}}{FORCAST.RGL
    = 20.43 - 0.11 x (No. of 1-Syllable Words x 150) / (No. of Words)
    
@@ -187,9 +186,36 @@ In the following formulas, we define
   \item{\code{"Fucks"}:}{\emph{Fucks' Stilcharakteristik (Style Characteristic)}: \deqn{Fucks = 
   AWL  \times ASL }{Fucks = AWL x ASL}}
   
+  \item{\code{"Linsear.Write"}:}{\emph{Linsear Write (Klare, 1975)}: \deqn{Linsear Write = \frac{( (100 -
+   (\frac{100 \times No. of Words with <3 Syllables}{No. of Words})) + (3 \times \frac{100 
+   \times No. of Words with >= 3 Syllables}{No. of Words}) )}{(100 \times \frac{No. of
+   Sentences}{No. of Words})}}{((100 - (100 x No. of Words with <3 Syllables / No. of 
+   Words)) + (3 x 100 x No. of Words with >= 3 Syllables / No. of Words)) / (100 x No. 
+   of Sentences / No. of Words)}}
+ 
+  
   \item{\code{"LIW"}:}{\emph{Björnsson's Läsbarhetsindex (1968) (For Swedish Texts)}: \deqn{LIW = ASL +
    \frac{100 \times No. of Words with >= 7 Syllables}{No. of Words}}{LIW = ASL + (100 * No. of Words
     with >= 7 Syllables / No. of Words)}}
+  
+  \item{\code{"nWS"}:}{\emph{Neue Wiener Sachtextformeln 1 (Bamberger & Vanecek, 1984)}: \deqn{nwS = 
+  19.35 \times \frac{No. of Words with >=3 Syllables}{No. of Words} + 0.1672 \times ASL + 12.97 \times \frac{No. 
+  of Words with >= 6 Characters}{No. of Words} - 3.27 \times \frac{No. of 1-Syllable Words}{No. of Words} - 0.875}{ nwS =
+  (19.35 x No. of Words with >=3 Syllables / No. of Words) + (0.1672 x ASL) + (12.97 x No. of Words with >=6 Characters / 
+  No. of Words) - (3.27 x No. of 1-Syllable Words / No. of Words)- 0.875}}
+  
+  \item{\code{"nWS.2"}:}{\emph{Neue Wiener Sachtextformeln 2 (Bamberger & Vanecek, 1984)}: \deqn{nwS.2 = 
+  20.07 \times \frac{No. of Words with >=3 Syllables}{No. of Words} + 0.1682 \times ASL + 13.73 \times \frac{No. 
+  of Words with >= 6 Characters}{No. of Words} - 2.779}{ nWs.2 = (20.07 x No. of Words with >=3 Syllables
+   / No. of Words) + (0.1682 x ASL) + (13.73 x No. of Words with >=6 Characters / No. of Words) - 2.779}}
+  
+  \item{\code{"nWS.3"}:}{\emph{Neue Wiener Sachtextformeln 3 (Bamberger & Vanecek, 1984)}: \deqn{nwS.3 = 
+  29.63 \times \frac{No. of Words with >=3 Syllables}{No. of Words} + 0.1905 \times ASL - 1.1144}{ nWs.3 = 
+  (29.63 x No. of Words with >=3 Syllables / No. of Words) + (0.1905 x ASL) - 1.1144}}
+  
+  \item{\code{"nWS.4"}:}{\emph{Neue Wiener Sachtextformeln 4 (Bamberger & Vanecek, 1984)}: \deqn{nwS.4 = 
+  27.44 \times \frac{No. of Words with >=3 Syllables}{No. of Words} + 0.2656 \times ASL - 1.693}{ nWs.4 = 
+  (27.44 x No. of Words with >=3 Syllables / No. of Words) + (0.2656 x ASL) - 1.693}}
   
   \item{\code{"RIX"}:}{\emph{Anderson's Readability Index (1983)}: \deqn{RIX  = \frac{No. of Words with
    >= 7 Syllables}{No. of Sentences}}{RIX = No. of Words
@@ -262,6 +288,8 @@ textstat_readability(data_corpus_inaugural[48:58],
 Anderson, J. (1983). Lix and rix: Variations on a little-known readability index. 
   Journal of Reading, 26(6), 490-496.
   
+  Bamberger, R. & Vanecek, E. (1984). Lesen–Verstehen–Lernen–Schreiben. Wien: Jugend und Volk.
+  
   Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development 
   of Readability Analysis.}  
   
@@ -295,13 +323,20 @@ Anderson, J. (1983). Lix and rix: Variations on a little-known readability index
   
   DuBay, W. H. (2004). The Principles of Readability.
   
-  Fang, I. E. (1966). The “Easy listening formula”. Journal of Broadcasting & Electronic Media, 11(1), 63-68.
+  Fang, I. E. (1966). The “Easy listening formula”. Journal of Broadcasting & Electronic Media, 
+  11(1), 63-68.
   
-  Farr, J. N., Jenkins, J. J., & Paterson, D. G. (1951). Simplification of Flesch Reading Ease Formula. Journal of applied psychology, 35(5), 333.
+  Farr, J. N., Jenkins, J. J., & Paterson, D. G. (1951). Simplification of Flesch Reading Ease 
+  Formula. Journal of applied psychology, 35(5), 333.
   
   Flesch, R. (1948). A new readability yardstick. Journal of applied psychology, 32(3), 221.
   
+  Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern. 
+  Sprachforum, 1, 233–244.
+  
   Gunning, R. (1952). The technique of clear writing.
+  
+  Klare, G.R. (1975). Assessing readability. Reading Research Quarterly, 10(1), 62--102.
   
   Kincaid, J. P., Fishburne Jr, R. P., Rogers, R. L., & Chissom, B. S. (1975). Derivation of 
   new readability formulas (automated readability index, fog count and flesch reading ease formula) 
@@ -314,7 +349,19 @@ Anderson, J. (1983). Lix and rix: Variations on a little-known readability index
   
   Senter, R. J., & Smith, E. A. (1967). Automated readability index. CINCINNATI UNIV OH.
   
-  Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.
+  *Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.
+  
+  Spache, G. (1953). A new readability formula for primary-grade reading materials. The Elementary 
+  School Journal, 53, 410–413.
+  
+  Tränkle, U. & Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von Lesbarkeitsformeln für die
+   deutsche Sprache. Zeitschrift für Entwicklungspsychologie und Pädagogische Psychologie, 16(3), 231–244.
+  
+  Wheeler, L.R. & Smith, E.H. (1954). A practical readability formula for the classroom teacher in the primary 
+  grades. Elementary English, 31, 397–399.
+  
+  *Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of Journalism, School of 
+  Media Studies, SRM University, India.
 }
 \author{
 Kenneth Benoit, re-engineered from Meik Michalke's \pkg{koRpus}
