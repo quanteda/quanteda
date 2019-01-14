@@ -562,3 +562,20 @@ test_that("tokens.tokens(x, remove_hyphens = TRUE) behaves same as tokens.charac
         tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE) %>% as.list()
     )
 })
+
+test_that("types are encoded when necessarly", {
+    toks <- tokens(c("まずは最初の文書。そして、次の文書。", "最後の文書"))
+    expect_true(all(Encoding(types(toks)) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_wordstem(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_sample(toks, 1))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_tolower(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_toupper(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_ngrams(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_remove(toks, "の"))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_replace(toks, phrase("次 の"), phrase("次 は")))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_split(toks, "は"))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_chunk(toks, 2))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_subset(toks, c(TRUE, FALSE)))) == "UTF-8"))
+    
+})
+

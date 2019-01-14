@@ -388,13 +388,14 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
         index <- index + 1
     }
 
-    temp <- sparseMatrix(j = index,
-                         p = cumsum(c(1, lengths(x))) - 1,
-                         x = 1L,
-                         dims = c(length(names(x)), length(types)),
-                         dimnames = list(docs = names(x),
-                                         features = as.character(types)))
-    new("dfm", temp)
+    result <- new("dfm", 
+                  sparseMatrix(j = index,
+                               p = cumsum(c(1, lengths(x))) - 1,
+                               x = 1L,
+                               dims = c(length(names(x)), 
+                                        length(types))))
+    set_dfm_dimnames(result) <- list(names(x), types)
+    return(result)
 }
 
 
