@@ -186,7 +186,7 @@ List qatd_cpp_tokens_segment(const List &texts_,
         }
     }
     
-    Tokens segments_ = recompile(segments, types, remove, false, false);
+    Tokens segments_ = recompile(segments, types, remove, false, is_encoded(types_));
     segments_.attr("pattern") = matches_;
     segments_.attr("document") = names_document_;
     segments_.attr("docid") = ids_document_;
