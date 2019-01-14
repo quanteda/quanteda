@@ -89,7 +89,7 @@ List qatd_cpp_tokens_chunk(const List &texts_,
         }
     }
     
-    Tokens chunks_ = recompile(chunks, types, false, false, false);
+    Tokens chunks_ = recompile(chunks, types, false, false, is_encoded(types_));
     chunks_.attr("docnum") = docnum_;
     chunks_.attr("segnum") = segnum_;
     
