@@ -19,7 +19,7 @@ tokens_keep(x, ...)
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+or \link{collocations} object.  See \link{pattern} for details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens 
 matching \code{pattern}}
