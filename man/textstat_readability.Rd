@@ -56,7 +56,7 @@ The following readability formulas have been implemented, where
   \item{\code{"ARI.Simple"}:}{\emph{Simplified Automated Readability Index}: \deqn{
   ARI.Simple =  ASL + 9 AWL}{ARI.Simple =  ASL + 9 AWL}}
   
-  \item{\code{"Bormuth"}:}{\emph{Bormuth Mean Cloze Formula (1969)}: \deqn{Bormuth = 
+  \item{\code{"Bormuth.MC"}:}{\emph{Bormuth Mean Cloze Formula (1969)}: \deqn{Bormuth = 
   0.886593 - 0.03640 \times AWL + 0.161911 \times AFW  - 0.21401 \times ASL - 0.000577 \times ASL^2 - 
   0.000005 \times ASL^3 }{Bormuth = 0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x 
   ASL - 0.000577 x ASL^2 -  0.000005 x ASL^3 }}
@@ -81,7 +81,7 @@ The following readability formulas have been implemented, where
   -37.95 }{Coleman2 = 1.16 x (100 x No. of 1-Syllable Words / No. of Words) +
   1.48 x (100 x No. of Sentences / No. of Words) - 37.95}}
 
-  \item{\code{"Coleman.Liau"}:}{\emph{Coleman-Liau Estimated Cloze Percent
+  \item{\code{"Coleman.Liau.ECP"}:}{\emph{Coleman-Liau Estimated Cloze Percent
   (ECP) (1975)}: \deqn{Coleman-Liau ECP = 141.8401 - 0.214590 \times 100
   \times AWL + 1.079812 \times \frac{No. of Sentences \times 100}{No. of
   Words}}{Coleman-Liau ECP =  141.8401 - (0.214590 x 100 x AWL) + (1.079812 x

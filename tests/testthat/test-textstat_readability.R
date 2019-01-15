@@ -139,3 +139,10 @@ test_that("textstat_readability with intermediate = TRUE works", {
     )
     
 })
+
+test_that("textstat_readability works for renamed Bormuth.MC and Coleman.Liau.ECP", {
+    expect_identical(textstat_readability(data_char_sampletext, measure = 'Bormuth'),
+                      textstat_readability(data_char_sampletext, measure = 'Bormuth.MC'))
+    expect_identical(textstat_readability(data_char_sampletext, measure = 'Coleman.Liau'),
+                      textstat_readability(data_char_sampletext, measure = 'Coleman.Liau.ECP'))
+})
