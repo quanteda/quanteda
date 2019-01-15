@@ -30,7 +30,7 @@ fcm_keep(x, pattern = NULL, ...)
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+or \link{collocations} object.  See \link{pattern} for details.}
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
@@ -61,23 +61,12 @@ removed}
 A \link{dfm} or \link{fcm} object, after the feature selection has
   been applied.
 
-  When \code{pattern} is a \link{dfm} object and \code{selection = "keep"}, then the returned object will
-  be identical in its feature set to the dfm supplied as the \code{pattern}
-  argument. This means that any features in \code{x} not in the dfm provided
-  as \code{pattern} will be discarded, and that any features in found in the
-  dfm supplied as \code{pattern} but not found in \code{x} will be added with
-  all zero counts.  Because selecting on a dfm is designed to produce a
-  selected dfm with an exact feature match, when \code{pattern} is a
-  \link{dfm} object, then the following settings are always used:
-  \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
-  
-  Selecting on a \link{dfm} is useful when you have trained a model on one
-  dfm, and need to project this onto a test set whose features must be
-  identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
-
-  When \code{pattern} is a \link{dfm} object and \code{selection = "keep"},
-  the returned object will simply be the dfm without the featnames matching
-  those of the selection dfm.
+  For compatibility with earlier versions, when \code{pattern} is a
+  \link{dfm} object and \code{selection = "keep"}, then this will be
+  equivalent to calling \code{\link{dfm_match}}.  In this case, the following
+  settings are always used: \code{case_insensitive = FALSE}, and
+  \code{valuetype = "fixed"}.  This functionality is deprecated, however, and
+  you should use \code{\link{dfm_match}} instead.
 }
 \description{
 This function selects or removes features from a \link{dfm} or \link{fcm},
@@ -116,13 +105,6 @@ dfm_select(my_dfm, pattern = stopwords("english"), selection = "remove", valuety
 # select based on character length
 dfm_select(my_dfm, min_nchar = 5)
 
-# selecting on a dfm
-txts <- c("This is text one", "The second text", "This is text three")
-(dfm1 <- dfm(txts[1:2]))
-(dfm2 <- dfm(txts[2:3]))
-(dfm3 <- dfm_select(dfm1, pattern = dfm2, valuetype = "fixed", verbose = TRUE))
-setequal(featnames(dfm2), featnames(dfm3))
-
 tmpdfm <- dfm(c("This is a document with lots of stopwords.",
                 "No if, and, or but about it: lots of stopwords."),
               verbose = FALSE)
@@ -134,5 +116,8 @@ toks <- tokens(c("this contains lots of stopwords",
 tmpfcm <- fcm(toks)
 tmpfcm
 fcm_remove(tmpfcm, stopwords("english"))
+}
+\seealso{
+\code{\link{dfm_match}}
 }
 \keyword{dfm}
