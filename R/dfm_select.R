@@ -36,25 +36,16 @@
 #' @return A \link{dfm} or \link{fcm} object, after the feature selection has
 #'   been applied.
 #'
-#'   When \code{pattern} is a \link{dfm} object and \code{selection = "keep"}, then the returned object will
-#'   be identical in its feature set to the dfm supplied as the \code{pattern}
-#'   argument. This means that any features in \code{x} not in the dfm provided
-#'   as \code{pattern} will be discarded, and that any features in found in the
-#'   dfm supplied as \code{pattern} but not found in \code{x} will be added with
-#'   all zero counts.  Because selecting on a dfm is designed to produce a
-#'   selected dfm with an exact feature match, when \code{pattern} is a
-#'   \link{dfm} object, then the following settings are always used:
-#'   \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
+#'   For compatibility with earlier versions, when \code{pattern} is a
+#'   \link{dfm} object and \code{selection = "keep"}, then this will be
+#'   equivalent to calling \code{\link{dfm_match}}.  In this case, the following
+#'   settings are always used: \code{case_insensitive = FALSE}, and
+#'   \code{valuetype = "fixed"}.  This functionality is deprecated, however, and
+#'   you should use \code{\link{dfm_match}} instead.
 #'   
-#'   Selecting on a \link{dfm} is useful when you have trained a model on one
-#'   dfm, and need to project this onto a test set whose features must be
-#'   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
-#'
-#'   When \code{pattern} is a \link{dfm} object and \code{selection = "keep"},
-#'   the returned object will simply be the dfm without the featnames matching
-#'   those of the selection dfm.
 #' @export
 #' @keywords dfm
+#' @seealso \code{\link{dfm_match}}
 #' @examples
 #' my_dfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
 #'                "Does the United_States or Sweden have more progressive taxation?"),
@@ -71,13 +62,6 @@
 #'
 #' # select based on character length
 #' dfm_select(my_dfm, min_nchar = 5)
-#'
-#' # selecting on a dfm
-#' txts <- c("This is text one", "The second text", "This is text three")
-#' (dfm1 <- dfm(txts[1:2]))
-#' (dfm2 <- dfm(txts[2:3]))
-#' (dfm3 <- dfm_select(dfm1, pattern = dfm2, valuetype = "fixed", verbose = TRUE))
-#' setequal(featnames(dfm2), featnames(dfm3))
 #' 
 dfm_select <- function(x, pattern = NULL, 
                        selection = c("keep", "remove"), 

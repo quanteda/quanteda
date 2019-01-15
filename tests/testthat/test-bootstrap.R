@@ -4,6 +4,7 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.",
              textthree = "Sentence three is really short.")
+
     corp <- corpus(txt,
                    docvars = data.frame(country = c("UK", "USA", "UK"), 
                                         year = c(1990, 2000, 2005)))
@@ -26,8 +27,9 @@ test_that("bootstrap_dfm works with character and corpus objects", {
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {
-    txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+    txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.")
+
     corp <- corpus(txt, 
                        docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
     mydfm <- dfm(corpus_reshape(corp, to = "sentences"))

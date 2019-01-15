@@ -14,7 +14,7 @@ is.kwic(x)
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+or \link{collocations} object.  See \link{pattern} for details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 

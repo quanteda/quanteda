@@ -230,3 +230,22 @@ test_that("is_grouped is working", {
                            c(1L, 1L, 2L, 2L)))
     
 })
+
+test_that("group_docvar drops list column (#1553)", {
+    data <- data.frame(vec1 = c(1, 3, 3, 6),
+                       vec2 = c("a", "b", "b", "c"))
+    data$lis <- list(1:3, -5, 3:4, 1)
+    expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
+                 data.frame(data.frame(vec1 = c(1, 3, 6),
+                                       vec2 = c("a", "b", "c"),
+                                       row.names = c(1, 2, 3))))
+    
+    corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),
+                   docvars = data)
+    mt <- dfm(corp)
+    expect_equal(docvars(dfm_group(mt, c(1, 2, 2, 3))),
+                 data.frame(data.frame(vec1 = c(1, 3, 6),
+                                       vec2 = c("a", "b", "c"),
+                                       row.names = c(1, 2, 3))))
+    
+})

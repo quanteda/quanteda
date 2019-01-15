@@ -34,9 +34,9 @@ bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("ve
 #' @noRd
 #' @export
 bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
-    if (verbose) 
-        message("Segmenting the ", 
-                stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1], 
+    if (verbose)
+        message("Segmenting the ",
+                stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1],
                                        "bootstrap_dfm.", ""),
                 " into sentences...", appendLF = FALSE)
     x <- as.corpus(x)
@@ -57,8 +57,7 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' # bootstrapping from a dfm
 #' mydfm <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
 #' bootstrap_dfm(mydfm, n = 3)
-bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
-    
+bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {  
     x <- as.dfm(x)
     group <- attr(x, "docvars")[["_docname"]]
     if (length(unique(group)) == ndoc(x))
@@ -78,8 +77,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     names(result) <- paste0("dfm_", seq(0, n))
     if (verbose) 
         message("\n   ...complete.\n")
-    
+
     class(result) <- c("dfm_bootstrap")
     return(result)
 }
-
