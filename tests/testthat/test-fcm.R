@@ -394,3 +394,19 @@ test_that("fcm_setnames works", {
 
     quanteda:::set_fcm_dimnames(x) <- list(paste0("feature", 1:3), paste0("ALTFEAT", 1:3))
 })
+
+
+test_that("fcm feature names have encoding", {
+    mt <- fcm(c("文書１" = "あ い い う", "文書２" = "え え え お"))
+    expect_true(all(Encoding(colnames(mt)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt)) == "UTF-8"))
+    
+    mt1 <- fcm_sort(mt)
+    expect_true(all(Encoding(colnames(mt1)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt1)) == "UTF-8"))
+    
+    mt2 <- fcm_remove(mt, c("あ"))
+    expect_true(all(Encoding(colnames(mt2)) == "UTF-8"))
+    expect_true(all(Encoding(rownames(mt2)) == "UTF-8"))
+})
+
