@@ -11,7 +11,7 @@ textstat_select(x, pattern = NULL, selection = c("keep", "remove"),
 \item{x}{a \code{textstat} object}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+or \link{collocations} object.  See \link{pattern} for details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the rows that
 match the pattern}

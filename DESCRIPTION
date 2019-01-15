@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.3.18
+Version: 1.3.19
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -122,6 +122,7 @@ Collate:
     'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'
+    'dfm_match.R'
     'dictionaries.R'
     'docnames.R'
     'dimnames.R'

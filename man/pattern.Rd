@@ -5,7 +5,7 @@
 \title{Pattern for feature, token and keyword matching}
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+or \link{collocations} object.  See \link{pattern} for details.}
 }
 \description{
 Pattern(s) for use in matching Feature, tokens, and keywords through a
@@ -34,32 +34,30 @@ The \code{pattern} argument is a vector of patterns, including sequences,
   \item{\code{collocations}}{Collocations objects created from \code{\link{textstat_collocations}},
     which are treated as phrases automatically.
     }
-  \item{\code{dfm}}{Only \code{\link{dfm_select}} accepts \code{dfm} as features to create a new \code{dfm}
-    identical in its feature set, using a fixed match.
-    }
   }
 }
 \examples{
 # these are interpreted literally
-(patt1 <- c('president', 'white house', 'house of representatives'))
+(patt1 <- c("president", "white house", "house of representatives"))
 # as multi-word sequences
 phrase(patt1)
 
 # three single-word patterns
-(patt2 <- c('president', 'white_house', 'house_of_representatives'))
+(patt2 <- c("president", "white_house", "house_of_representatives"))
 phrase(patt2)
 
 # this is equivalent to phrase(patt1)
-(patt3 <- list(c('president'), c('white', 'house'), c('house', 'of', 'representatives')))
+(patt3 <- list(c("president"), c("white", "house"), 
+               c("house", "of", "representatives")))
 
 # glob expression can be used 
-phrase(patt4 <- c('president?', 'white house', 'house * representatives'))
+phrase(patt4 <- c("president?", "white house", "house * representatives"))
 
 # this is equivalent to phrase(patt4)
-(patt5 <- list(c('president?'), c('white', 'house'), c('house', '*', 'representatives')))
+(patt5 <- list(c("president?"), c("white", "house"), c("house", "*", "representatives")))
 
 # dictionary with multi-word matches
-(dict1 <- dictionary(list(us = c('president', 'white house', 'house of representatives'))))
+(dict1 <- dictionary(list(us = c("president", "white house", "house of representatives"))))
 phrase(dict1)
 }
 \keyword{internal}
