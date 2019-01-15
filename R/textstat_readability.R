@@ -419,9 +419,9 @@ textstat_readability.corpus <- function(x,
     
     unused_dots(...)
     
-    measure_option <- c("ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+    measure_option <- c("ARI", "ARI.simple", "Bormuth", "Bormuth.MC", "Bormuth.GP",
                         "Coleman", "Coleman.C2",
-                        "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                        "Coleman.Liau", "Coleman.Liau.ECP", "Coleman.Liau.grade", "Coleman.Liau.short",
                         "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
                         "Danielson.Bryan", "Danielson.Bryan.2",
                         "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
@@ -469,13 +469,13 @@ textstat_readability.corpus <- function(x,
     
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
-        W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.GP <- Coleman <- Coleman.C2 <-
+        W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.MC <- Bormuth.GP <- Coleman <- Coleman.C2 <-
         Coleman.Liau.ECP <- Coleman.Liau.grade <- Coleman.Liau.short <- Dale.Chall <- Dale.Chall.old <-
         Dale.Chall.PSK <- Danielson.Bryan <- Danielson.Bryan.2 <- Dickes.Steiwer <- DRP <- ELF <-
         Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <-
         FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <-
         RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <-
-        Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
+        Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
     
     # common statistics required by (nearly all) indexes
@@ -509,18 +509,18 @@ textstat_readability.corpus <- function(x,
     if ("ARI.simple" %in% measure)
         temp[, ARI.simple := W / St + 9 * C / W]
     
-    if ("Bormuth" %in% measure) {
-        temp[, Bormuth := 0.886593 - (0.08364 * C/W) + 0.161911 *
+    if (("Bormuth" %in% measure) | ("Bormuth.MC" %in% measure)) {
+        temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
     }
     if ("Bormuth.GP" %in% measure) {
         CCS <- 35 # Cloze criterion score, percent as integer
-        temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
+        temp[, Bormuth.MC.Temp := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
-        temp[, Bormuth.GP := 4.275 + 12.881 * Bormuth.MC - (34.934 * Bormuth.MC^2) + (20.388 * Bormuth.MC^3) +
-                         (26.194 * C - 2.046 * CCS ^ 2) - (11.767 * CCS ^ 3) - (44.285 * Bormuth.MC * CCS) +
-                         (97.620 * (Bormuth.MC * CCS)^2) - (59.538 * (Bormuth.MC * CCS)^3)]
-        temp[, Bormuth.MC := NULL]
+        temp[, Bormuth.GP := 4.275 + 12.881 * Bormuth.MC.Temp - (34.934 * Bormuth.MC.Temp^2) + (20.388 * Bormuth.MC.Temp^3) +
+                         (26.194 * C - 2.046 * CCS ^ 2) - (11.767 * CCS ^ 3) - (44.285 * Bormuth.MC.Temp * CCS) +
+                         (97.620 * (Bormuth.MC.Temp * CCS)^2) - (59.538 * (Bormuth.MC.Temp * CCS)^3)]
+        temp[, Bormuth.MC.Temp := NULL]
     }
     
     if ("Coleman" %in% measure)
@@ -531,13 +531,13 @@ textstat_readability.corpus <- function(x,
     
     ## cannot compute Coleman.C3, Coleman.C4 without knowing the number of pronouns or prepositions
     
-    if ("Coleman.Liau" %in% measure)
-        temp[, Coleman.Liau   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
+    if (("Coleman.Liau" %in% measure) | ("Coleman.Liau.ECP" %in% measure))
+        temp[, Coleman.Liau.ECP   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
     
     if ("Coleman.Liau.grade" %in% measure) {
-        temp[, Coleman.Liau.ECP   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
-        temp[, Coleman.Liau.grade := -27.4004 * Coleman.Liau.ECP / 100 + 23.06395]
-        temp[, Coleman.Liau.ECP   := NULL]
+        temp[, Coleman.Liau.ECP.Temp   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
+        temp[, Coleman.Liau.grade := -27.4004 * Coleman.Liau.ECP.Temp / 100 + 23.06395]
+        temp[, Coleman.Liau.ECP.Temp   := NULL]
     }
     
     if ("Coleman.Liau.short" %in% measure)
@@ -576,10 +576,10 @@ textstat_readability.corpus <- function(x,
     }
     
     if ("DRP" %in% measure) {
-        temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
+        temp[, Bormuth.MC.Temp := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
-        temp[, DRP := (1 - Bormuth.MC) * 100]
-        temp[, Bormuth.MC := NULL]
+        temp[, DRP := (1 - Bormuth.MC.Temp) * 100]
+        temp[, Bormuth.MC.Temp := NULL]
     }
     
     if ("ELF" %in% measure)
