@@ -488,7 +488,7 @@ textstat_readability.corpus <- function(x,
         Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <-
         FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <-
         RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <-
-        Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
+        Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <- Bormuth.MC.Temp <- Coleman.Liau.ECP.Temp <-
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
     
     # common statistics required by (nearly all) indexes
