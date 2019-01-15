@@ -419,9 +419,9 @@ textstat_readability.corpus <- function(x,
     
     unused_dots(...)
     
-    measure_option <- c("ARI", "ARI.simple", "Bormuth", "Bormuth.MC", "Bormuth.GP",
+    measure_option <- c("ARI", "ARI.simple", "Bormuth.MC", "Bormuth.GP",
                         "Coleman", "Coleman.C2",
-                        "Coleman.Liau", "Coleman.Liau.ECP", "Coleman.Liau.grade", "Coleman.Liau.short",
+                        "Coleman.Liau.ECP", "Coleman.Liau.grade", "Coleman.Liau.short",
                         "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
                         "Danielson.Bryan", "Danielson.Bryan.2",
                         "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
@@ -436,15 +436,28 @@ textstat_readability.corpus <- function(x,
                         "Wheeler.Smith",
                         "meanSentenceLength",
                         "meanWordSyllables")
+    accepted_measures <- c(measure_option, "Bormuth" , "Coleman.Liau")
     
     if (measure[1] == 'all') {
         measure <- measure_option
     } else {
-        is_valid <- measure %in% measure_option
+        is_valid <- measure %in% accepted_measures
         if (!all(is_valid))
             stop("Invalid measure(s): ", measure[!is_valid])
     }
     
+    if ("Bormuth" %in% measure) {
+        measure[measure=="Bormuth"] <- "Bormuth.MC"
+        measure <- unique(measure)
+    }
+        
+    
+    if ("Coleman.Liau" %in% measure) {
+        measure[measure=="Coleman.Liau"] <- "Coleman.Liau.ECP"
+        measure <- unique(measure)
+    }
+    
+
     x <- texts(x)
     if (!is.null(min_sentence_length) || !is.null(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
@@ -509,7 +522,7 @@ textstat_readability.corpus <- function(x,
     if ("ARI.simple" %in% measure)
         temp[, ARI.simple := W / St + 9 * C / W]
     
-    if (("Bormuth" %in% measure) | ("Bormuth.MC" %in% measure)) {
+    if ("Bormuth.MC" %in% measure) {
         temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
     }
@@ -531,7 +544,7 @@ textstat_readability.corpus <- function(x,
     
     ## cannot compute Coleman.C3, Coleman.C4 without knowing the number of pronouns or prepositions
     
-    if (("Coleman.Liau" %in% measure) | ("Coleman.Liau.ECP" %in% measure))
+    if ("Coleman.Liau.ECP" %in% measure)
         temp[, Coleman.Liau.ECP   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
     
     if ("Coleman.Liau.grade" %in% measure) {
@@ -702,6 +715,7 @@ textstat_readability.corpus <- function(x,
         temp[, Scrabble := nscrabble(x, mean)]
     
     result <- data.frame(document = names(x), stringsAsFactors = FALSE)
+    
     
     # if intermediate is desired, add intermediate quantities to output
     if (intermediate)
