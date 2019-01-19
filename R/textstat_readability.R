@@ -35,19 +35,28 @@
 #'  
 #'   \item{\code{"Coleman"}:}{\emph{Coleman's Readability Formula 1 (1971)}: \deqn{Coleman = 
 #'   1.29 \times \frac{100 \times No. of 1-Syllable Words}{No. of Words} - 38.45}{Coleman = 
-#'   1.29 x (100 x No. of 1-Syllable Words / No. of Words) - 38.45}}
+#'   1.29 x (100 x No. of 1-Syllable Words / No. of Words) - 38.45
+#'   
+#'   (The scaling by 100 arises because the Coleman measures are calculated on a 
+#'   per 100 words basis)}}
 #'   
 #'   \item{\code{"Coleman.C2"}:}{\emph{Coleman's Readability Formula 2 (1971)}:
 #'   \deqn{Coleman2 = 1.16 \times \frac{100 \times No. of 1-Syllable Words}{No.
 #'   of Words} + 1.48 \times \frac{100 \times No. of Sentences}{No. of Words}
 #'   -37.95 }{Coleman2 = 1.16 x (100 x No. of 1-Syllable Words / No. of Words) +
-#'   1.48 x (100 x No. of Sentences / No. of Words) - 37.95}}
+#'   1.48 x (100 x No. of Sentences / No. of Words) - 37.95
+#'   
+#'   (The scaling by 100 arises because the Coleman measures are calculated on a 
+#'   per 100 words basis)}}
 #' 
 #'   \item{\code{"Coleman.Liau.ECP"}:}{\emph{Coleman-Liau Estimated Cloze Percent
 #'   (ECP) (1975)}: \deqn{Coleman-Liau ECP = 141.8401 - 0.214590 \times 100
 #'   \times AWL + 1.079812 \times \frac{No. of Sentences \times 100}{No. of
 #'   Words}}{Coleman-Liau ECP =  141.8401 - (0.214590 x 100 x AWL) + (1.079812 x
-#'   No. of Sentences x 100 / No. of Words)}}
+#'   No. of Sentences x 100 / No. of Words)
+#'   
+#'   (The scaling by 100 arises because the Coleman.Liau measure is calculated on a 
+#'   per 100 words basis)}}
 #'   
 #'   \item{\code{"Coleman.Liau.Grade"}:}{\emph{Coleman-Liau Grade Level (1975)}:
 #'   \deqn{Coleman-Liau Grade = -27.4004 \times Coleman.Liau.ECP \times 100 +
@@ -126,19 +135,28 @@
 #'   \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 0.4
 #'   \times (ASL + 100 \times (No. of Words with >= 3 Syllables  / No. of
 #'   Words))}{FOG = 0.4 x (ASL + 100 x (No. of Words with >= 3 Syllables / No.
-#'   of Words))}}
+#'   of Words))
+#'   
+#'   (The scaling by 100 arises because the initial FOG index is based on
+#'   just a sample of 100 words)}}
 #'
 #'   \item{\code{"FOG.PSK"}:}{\emph{FOG, Powers-Sumner-Kearl's Variation
 #'   (1958)}: \deqn{FOG.PSK = 3.0680 \times (0.0877 \times ASL) +(0.0984 \times
 #'   100 \times \frac{No. of Words with >=3 Syllables}{No. of Words})}{FOG.PSK =
 #'   3.0680 x (0.0877 x ASL) +(0.0984 x 100 x No. of Words with >=3 Syllables /
-#'   No. of Words}}
+#'   No. of Words)
+#'   
+#'   (The scaling by 100 arises because the initial FOG index is based on
+#'   just a sample of 100 words)}}
 #'
 #'   \item{\code{"FOG.NRI"}:}{\emph{FOG, Navy Readability Index (1975)}:
 #'   \deqn{FOG.NRI = ( \frac{(No. of Words with < 3 Syllables + 3 \times No. of
 #'   3-Syllables Words)}{(100 \times \frac{No. of Sentences}{No. of Words})}  -
 #'   3) / 2 }{FOG = (((No. of Words with <3 Syllables + 3 x No. of 3-Syllables
-#'   Words) / (100 x No. of Sentences / No. of Words))-3) / 2}}
+#'   Words) / (100 x No. of Sentences / No. of Words))-3) / 2
+#'   
+#'   (The scaling by 100 arises because the initial FOG index is based on
+#'   just a sample of 100 words)}}
 #'
 #'   \item{\code{"FORCAST"}:}{\emph{FORCAST (Simplified FORCAST.RGL) (Caylor &
 #'   Sticht, 1973)}: \deqn{FORCAST = 20 - \frac{(No. of 1-Syllable Words \times
@@ -146,7 +164,7 @@
 #'   150) / (No. of Words x 10)
 #'
 #'   (The scaling by 150 arises because the initial FORCAST index is based on
-#'   just a sample of 150 tokens)}}
+#'   just a sample of 150 words)}}
 #'
 #'   \item{\code{"FORCAST.RGL"}:}{\emph{FORCAST.RGL (Caylor & Sticht, 1973)}:
 #'   \deqn{FORCAST.RGL= 20.43 - 0.11 \times \frac{(No. of 1-Syllable Words
@@ -154,7 +172,7 @@
 #'   Words x 150) / (No. of Words)
 #'
 #'   (The scaling by 150 arises because the initial FORCAST index is based on
-#'   just a sample of 150 tokens)}}
+#'   just a sample of 150 words)}}
 #'
 #'   \item{\code{"Fucks"}:}{\emph{Fucks' Stilcharakteristik (Style
 #'   Characteristic)}: \deqn{Fucks = AWL  \times ASL }{Fucks = AWL x ASL}}
@@ -165,13 +183,19 @@
 #'   >= 3 Syllables}{No. of Words}) )}{(100 \times \frac{No. of Sentences}{No.
 #'   of Words})}}{((100 - (100 x No. of Words with <3 Syllables / No. of Words))
 #'   + (3 x 100 x No. of Words with >= 3 Syllables / No. of Words)) / (100 x No.
-#'   of Sentences / No. of Words)}}
+#'   of Sentences / No. of Words)
+#'   
+#'   (The scaling by 100 arises because the initial Linsear.Write measure is based on
+#'   just a sample of 100 words)}}
 #'
 #'
 #'   \item{\code{"LIW"}:}{\emph{Björnsson's Läsbarhetsindex (1968) (For Swedish
 #'   Texts)}: \deqn{LIW = ASL + \frac{100 \times No. of Words with >= 7
 #'   Syllables}{No. of Words}}{LIW = ASL + (100 * No. of Words with >= 7
-#'   Syllables / No. of Words)}}
+#'   Syllables / No. of Words)
+#'   
+#'   (The scaling by 100 arises because the Läsbarhetsindex index is based on
+#'   just a sample of 100 words)}}
 #'
 #'   \item{\code{"nWS"}:}{\emph{Neue Wiener Sachtextformeln 1 (Bamberger &
 #'   Vanecek, 1984)}: \deqn{nwS = 19.35 \times \frac{No. of Words with >=3
@@ -245,7 +269,10 @@
 #'   \deqn{Tränkle.Bailer = 224.6814 - (79.8304 \times AWL) - (12.24032 \times
 #'   ASL) - (1.292857 \times 100 \times \frac{No. of Prepositions}{No. of
 #'   Words}}{Tränkle.Bailer = 224.6814 - (79.8304 x AWL) + (12.24032 x ASL) -
-#'   (1.292857 x 100 x No. of Prepositions / No. of Words)}}
+#'   (1.292857 x 100 x No. of Prepositions / No. of Words)
+#'   
+#'   (The scaling by 100 arises because the initial Tränkle & Bailer index is based on
+#'   just a sample of 100 words)}}
 #'
 #'   \item{\code{"Traenkle.Bailer2"}:}{\emph{Tränkle & Bailer (1984)}:
 #'   \deqn{Tränkle.Bailer2 = Tränkle.Bailer2 =  234.1063 - (96.11069 \times AWL
@@ -253,7 +280,10 @@
 #'   (1.02805 \times 100 \times \frac{No. of Conjucntions}{No. of
 #'   Words}}{Tränkle.Bailer2 = 234.1063 - 96.11069 x AWL  - 2.05444 x 100 x (No.
 #'   of Prepositions / No. of Words) - 1.02805 x 100 x (No. of Conjunctions/No.
-#'   of Words)}}
+#'   of Words)
+#'   
+#'   (The scaling by 100 arises because the initial Tränkle & Bailer index is based on
+#'   just a sample of 100 words)}}
 #'
 #'   \item{\code{"Wheeler.Smith"}:}{\emph{Wheeler & Smith (1954)}:
 #'   \deqn{Wheeler.Smith = ASL \times 10 \times \frac{No. of Words with >=
@@ -301,7 +331,8 @@
 #' textstat_readability(data_corpus_inaugural[48:58], 
 #'                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
 #' @references 
-#'   Anderson, J. (1983). Lix and rix: Variations on a little-known readability index. 
+#'   Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{"Lix and
+#'   rix: Variations on a little-known readability index."} 
 #'   Journal of Reading, 26(6), 490-496.
 #'   
 #'   Bamberger, R. & Vanecek, E. (1984). Lesen–Verstehen–Lernen–Schreiben. Wien: Jugend und Volk.
@@ -311,24 +342,24 @@
 #'   Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development 
 #'   of Readability Analysis.}  
 #'   
-#'   Bormuth, J. R. (1968). Cloze test readability: Criterion reference scores. 
-#'   Journal of educational measurement, 5(3), 189-196.  
+#'   Bormuth, J. R. (1968). \href{https://www.jstor.org/stable/1433978}{"Cloze test readability:
+#'   Criterion reference scores."} Journal of educational measurement, 5(3), 189-196.  
 #'   
-#'   Caylor, J. S. (1973). Methodologies for Determining Reading Requirements of Military 
-#'   Occupational Specialities.
+#'   Caylor, J. S. (1973). \href{https://eric.ed.gov/?id=ED074343}{"Methodologies for Determining 
+#'   Reading Requirements of Military Occupational Specialities."}
 #'   
-#'   Caylor, J. S., & Sticht, T. G. (1973). Development of a Simple Readability Index for Job 
-#'   Reading Material.
+#'   Caylor, J. S., & Sticht, T. G. (1973). \href{https://archive.org/details/ERIC_ED076707}{"Development 
+#'   of a Simple Readability Index for Job Reading Material."}
 #'   
 #'   Coleman, E. B. (1971). Developing a technology of written instruction: Some determiners 
 #'   of the complexity of prose. Verbal learning research and the technology of written 
 #'   instruction, 155-204.
 #'   
-#'   Coleman, M., & Liau, T. L. (1975). A computer readability formula designed for machine
-#'   scoring. Journal of Applied Psychology, 60(2), 283.
+#'   Coleman, M., & Liau, T. L. (1975). \href{https://psycnet.apa.org/record/1975-22007-001}{"A computer 
+#'   readability formula designed for machine scoring."} Journal of Applied Psychology, 60(2), 283.
 #'   
-#'   Dale, E., & Chall, J. S. (1948). "A formula for predicting readability: Instructions."
-#'   \emph{Educational Research Bulletin} 37-54.
+#'   Dale, E., & Chall, J. S. (1948). \href{https://www.jstor.org/stable/pdf/1473669}{"A formula 
+#'   for predicting readability: Instructions."} \emph{Educational Research Bulletin} 37-54.
 #'   
 #'   Chall, J. S., & Dale, E. (1995). \emph{Readability revisited: The new
 #'   Dale-Chall readability formula}. Brookline Books.
@@ -337,19 +368,20 @@
 #'   für die Deutsche Sprache." \emph{Zeitschrift für Entwicklungspsychologie und
 #'   Pädagogische Psychologie} 9(1), 20--28.
 #'   
-#'   Danielson, W. A., & Bryan, S. D. (1963). "Computer automation of two
-#'   readability formulas." \emph{Journalism Quarterly} 40(2), 201-206.
+#'   Danielson, W. A., & Bryan, S. D. (1963). \href{https://journals.sagepub.com/doi/abs/10.1177/107769906304000207}{"Computer 
+#'   automation of two readability formulas."} \emph{Journalism Quarterly} 40(2), 201-206.
 #'   
-#'   DuBay, W. H. (2004). \emph{The Principles of Readability.}
+#'   DuBay, W. H. (2004). \href{http://www.impact-information.com/impactinfo/readability02.pdf}{\emph{The 
+#'   Principles of Readability.}}
 #'   
-#'   Fang, I. E. (1966). "The 'Easy listening formula'". \emph{Journal of
-#'   Broadcasting & Electronic Media} 11(1): 63-68.
+#'   Fang, I. E. (1966). \href{https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19}{"The
+#'   "Easy listening formula""}. \emph{Journal of Broadcasting & Electronic Media} 11(1): 63-68.
 #'   
-#'   Farr, J. N., Jenkins, J. J., & Paterson, D. G. (1951).  "Simplification of
-#'   Flesch Reading Ease Formula." \emph{Journal of applied psychology} 35(5):
+#'   Farr, J. N., Jenkins, J. J., & Paterson, D. G. (1951).  \href{https://psycnet.apa.org/record/1952-03973-001}{"Simplification of
+#'   Flesch Reading Ease Formula."} \emph{Journal of applied psychology} 35(5):
 #'   333.
 #'   
-#'   Flesch, R. (1948). "A new readability yardstick." \emph{Journal of applied
+#'   Flesch, R. (1948). \href{https://psycnet.apa.org/record/1949-01274-001}{"A new readability yardstick."} \emph{Journal of applied
 #'   psychology} 32(3): 221.
 #'   
 #'   Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern. 
@@ -357,34 +389,34 @@
 #'   
 #'   Gunning, R. (1952). The technique of clear writing.
 #'   
-#'   Klare, G.R. (1975). Assessing readability. Reading Research Quarterly, 10(1), 62--102.
+#'   Klare, G.R. (1975). \href{https://www.jstor.org/stable/pdf/747086.pdf}{"Assessing readability."} \emph{Reading Research Quarterly}, 10(1), 62--102.
 #'   
 #'   Kincaid, J. P., Fishburne Jr, R. P., Rogers, R. L., & Chissom, B. S.
-#'   (1975). Derivation of new readability formulas (automated readability
+#'   (1975). \href{https://stars.library.ucf.edu/istlibrary/56/}{"Derivation of new readability formulas (automated readability
 #'   index, FOG count and Flesch reading ease formula) for navy enlisted
-#'   personnel.
+#'   personnel."}
 #'   
-#'   McLaughlin, G. H. (1969). SMOG grading-a new readability formula. Journal
-#'   of reading, 12(8), 639-646.
+#'   McLaughlin, G. H. (1969). \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{"SMOG grading-a new readability formula."} 
+#'   \emph{Journal of reading}, 12(8), 639-646.
 #'
-#'   Powers, R. D., Sumner, W. A., & Kearl, B. E. (1958). A recalculation of
-#'   four adult readability formulas. Journal of Educational Psychology, 49(2),
+#'   Powers, R. D., Sumner, W. A., & Kearl, B. E. (1958). \href{https://psycnet.apa.org/record/1962-03617-001}{"A recalculation of
+#'   four adult readability formulas."} \emph{Journal of Educational Psychology}, 49(2),
 #'   99.
 #'
-#'   Senter, R. J., & Smith, E. A. (1967). Automated readability index.
+#'   Senter, R. J., & Smith, E. A. (1967). \href{https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf}{Automated readability index.}
 #'   CINCINNATI UNIV OH.
 #'
 #'   *Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.
 #'
-#'   Spache, G. (1953). A new readability formula for primary-grade reading
-#'   materials. The Elementary School Journal, 53, 410–413.
+#'   Spache, G. (1953). \href{https://www.jstor.org/stable/998915}{"A new readability formula for primary-grade reading
+#'   materials."} \emph{The Elementary School Journal}, 53, 410–413.
 #'
 #'   Tränkle, U. & Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
 #'   Lesbarkeitsformeln für die deutsche Sprache. Zeitschrift für
 #'   Entwicklungspsychologie und Pädagogische Psychologie, 16(3), 231–244.
 #'
-#'   Wheeler, L.R. & Smith, E.H. (1954). A practical readability formula for the
-#'   classroom teacher in the primary grades. Elementary English, 31, 397–399.
+#'   Wheeler, L.R. & Smith, E.H. (1954). \href{https://www.jstor.org/stable/pdf/41384251}{A practical readability formula for the
+#'   classroom teacher in the primary grades.} \emph{Elementary English}, 31, 397–399.
 #'
 #'   *Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
 #'   Journalism, School of Media Studies, SRM University, India.
