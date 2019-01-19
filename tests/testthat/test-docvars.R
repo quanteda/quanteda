@@ -41,9 +41,11 @@ test_that("upgrade_docvars() workds", {
     docvar1 <- data.frame()
     docvar2 <- data.frame("var1" = c(100, 200, 300),
                           "var2" = c(TRUE, TRUE, FALSE))
+    docvar2$lis <- list(1:3, -5, 3:4)
     docvar3 <- data.frame("var1" = c(100, 200, 300),
                           "var2" = c(TRUE, TRUE, FALSE),
                           row.names = c("A", "B", "C"))
+    docvar3$lis <- list(1:3, -5, 3:4)
     docvar4 <- data.frame("_docid" = c("A", "B", "C"), 
                           "_docname" = factor(c("A", "B", "C")), 
                           "_docnum" = 1L:3L, 
@@ -52,6 +54,8 @@ test_that("upgrade_docvars() workds", {
                           "var2" = c(TRUE, TRUE, FALSE),
                           check.names = FALSE,
                           stringsAsFactors = FALSE)
+    docvar4$lis <- list(1:3, -5, 3:4)
+
     expect_identical(
         quanteda:::upgrade_docvars(docvar1, c("A", "B", "C")),
         docvar4[,1:4]
@@ -59,6 +63,10 @@ test_that("upgrade_docvars() workds", {
     expect_identical(
         quanteda:::upgrade_docvars(docvar3),
                      docvar4
+    )
+    expect_identical(
+        quanteda:::upgrade_docvars(docvar2, c("A", "B", "C")),
+        docvar4
     )
     expect_identical(
         quanteda:::upgrade_docvars(docvar2, c("A", "B", "C")),
