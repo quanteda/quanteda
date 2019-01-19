@@ -12,10 +12,10 @@ test_that("tokens_chunk works", {
                      list(d1 = c("a", "b", "c", "d"),
                           d2 = c("e", "f", "g")))
     expect_identical(attr(toks_chunk1, "docvars"),
-                     data.frame("_docid" = c("d1", "d2"),
-                                "_docname" = factor(c("d1", "d2")),
-                                "_docnum" = c(1L, 2L),
-                                "_segnum" = c(1L, 1L),
+                     data.frame("docid_" = c("d1", "d2"),
+                                "docname_" = factor(c("d1", "d2")),
+                                "docnum_" = c(1L, 2L),
+                                "segnum_" = c(1L, 1L),
                                 "title" = c("title1", "title2"),
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
@@ -27,10 +27,10 @@ test_that("tokens_chunk works", {
                           d2.1 = c("e", "f"),
                           d2.2 = c("g")))
     expect_identical(attr(toks_chunk2, "docvars"),
-                     data.frame("_docid" = c("d1.1", "d1.2", "d2.1", "d2.2"),
-                                "_docname" = factor(c("d1", "d1", "d2", "d2")),
-                                "_docnum" = c(1L, 1L, 2L, 2L),
-                                "_segnum" = c(1L, 2L, 1L, 2L),
+                     data.frame("docid_" = c("d1.1", "d1.2", "d2.1", "d2.2"),
+                                "docname_" = factor(c("d1", "d1", "d2", "d2")),
+                                "docnum_" = c(1L, 1L, 2L, 2L),
+                                "segnum_" = c(1L, 2L, 1L, 2L),
                                 "title" = c("title1", "title1", "title2", "title2"),
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
@@ -42,10 +42,10 @@ test_that("tokens_chunk works", {
                           d2.1 = c("e", "f"),
                           d2.2 = c("g")))
     expect_identical(attr(toks_chunk3, "docvars"),
-                     data.frame("_docid" = c("d1.1", "d1.2", "d2.1", "d2.2"),
-                                "_docname" = factor(c("d1", "d1", "d2", "d2")),
-                                "_docnum" = c(1L, 1L, 2L, 2L),
-                                "_segnum" = c(1L, 2L, 1L, 2L),
+                     data.frame("docid_" = c("d1.1", "d1.2", "d2.1", "d2.2"),
+                                "docname_" = factor(c("d1", "d1", "d2", "d2")),
+                                "docnum_" = c(1L, 1L, 2L, 2L),
+                                "segnum_" = c(1L, 2L, 1L, 2L),
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
 
@@ -59,10 +59,10 @@ test_that("tokens_chunk works", {
                           d2.2 = c("f", "g"),
                           d2.3 = c("g")))
     expect_identical(attr(toks_chunk4, "docvars"),
-                     data.frame("_docid" = c("d1.1", "d1.2", "d1.3", "d1.4", "d2.1", "d2.2", "d2.3"),
-                                "_docname" = factor(c("d1", "d1", "d1", "d1", "d2", "d2", "d2")),
-                                "_docnum" = c(1L, 1L, 1L, 1L, 2L, 2L, 2L),
-                                "_segnum" = c(1L, 2L, 3L, 4L, 1L, 2L, 3L),
+                     data.frame("docid_" = c("d1.1", "d1.2", "d1.3", "d1.4", "d2.1", "d2.2", "d2.3"),
+                                "docname_" = factor(c("d1", "d1", "d1", "d1", "d2", "d2", "d2")),
+                                "docnum_" = c(1L, 1L, 1L, 1L, 2L, 2L, 2L),
+                                "segnum_" = c(1L, 2L, 3L, 4L, 1L, 2L, 3L),
                                 "title" = c("title1", "title1", "title1", "title1", "title2",
                                             "title2", "title2"),
                                 stringsAsFactors = FALSE,
@@ -97,10 +97,10 @@ test_that("tokens_chunk works", {
     )
     expect_identical(
         attr(tokens_chunk(toks, 3), "docvars"),
-        data.frame("_docid" = c("text1.1", "text1.2", "text2.1", "text2.2"),
-                   "_docname" = factor(c("text1", "text1", "text2", "text2")),
-                   "_docnum" = c(1L, 1L, 2L, 2L),
-                   "_segnum" = c(1L, 2L, 1L, 2L),
+        data.frame("docid_" = c("text1.1", "text1.2", "text2.1", "text2.2"),
+                   "docname_" = factor(c("text1", "text1", "text2", "text2")),
+                   "docnum_" = c(1L, 1L, 2L, 2L),
+                   "segnum_" = c(1L, 2L, 1L, 2L),
                    stringsAsFactors = FALSE,
                    check.names = FALSE)
     )

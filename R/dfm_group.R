@@ -90,7 +90,7 @@ generate_groups <- function(x, groups, drop = FALSE) {
 group_docvars <- function(x, group) {
     l <- is_system(names(x)) | unlist(lapply(x, is_grouped, group), use.names = FALSE)
     result <- x[match(levels(group), group), l, drop = FALSE]
-    result[["_docid"]] <- levels(group)
+    result[["docid_"]] <- levels(group)
     rownames(result) <- NULL
     return(result)
 }

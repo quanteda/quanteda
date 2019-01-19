@@ -59,7 +59,7 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' bootstrap_dfm(mydfm, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {  
     x <- as.dfm(x)
-    group <- attr(x, "docvars")[["_docname"]]
+    group <- attr(x, "docvars")[["docname_"]]
     if (length(unique(group)) == ndoc(x))
         stop("x must contain more than one row per document")
 
@@ -72,7 +72,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
         temp <- x[unlist(lapply(split(seq_len(ndoc(x)), group), sample), use.names = FALSE), ]
-        result[[i + 1]] <- dfm_group(temp, groups = temp@docvars[["_docname"]], fill = TRUE)
+        result[[i + 1]] <- dfm_group(temp, groups = temp@docvars[["docname_"]], fill = TRUE)
     }
     names(result) <- paste0("dfm_", seq(0, n))
     if (verbose) 

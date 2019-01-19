@@ -130,9 +130,9 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                           extract_pattern, pattern_position)
     docvar <- reshape_docvars(docvar, temp$docnum)
     if (use_docvars) {
-        result <- corpus(temp$text, docvar[["_docname"]], select_docvars(docvar))
+        result <- corpus(temp$text, docvar[["docname_"]], select_docvars(docvar))
     } else {
-        result <- corpus(temp$text, docvar[["_docname"]])
+        result <- corpus(temp$text, docvar[["docname_"]])
     }
     if (extract_pattern) 
         docvars(result, "pattern") <- temp$pattern

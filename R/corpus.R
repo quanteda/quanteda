@@ -156,7 +156,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    names(x) <- docvar[["_docid"]]
+    names(x) <- docvar[["docid_"]]
     class(x) <- "corpus"
     attr(x, "unit") <- "documents"
     attr(x, "meta") <- meta("character")
@@ -195,7 +195,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", ..
     if (length(docid_field) != 1)
         stop("docid_field must refer to a single column")
     if (identical(docid_field, "row.names")) {
-        docname <- row.names(x)
+        docname <- rownames(x)
     } else {
         if (is.character(docid_field)) {
             docid_index <- match(docid_field, names(x))
@@ -205,7 +205,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", ..
         if (is.na(docid_index)) {
             if (identical(docid_field, "doc_id")) {
                 if (is.character(attr(x, "row.names"))) { 
-                    docname <- row.names(x)
+                    docname <- rownames(x)
                 } else {
                     docname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
                 }
@@ -221,7 +221,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", ..
     # detect missing or NA in names - for #1388
     is_empty <- (!nzchar(names(x)) | is.na(names(x)))
     docvars <- x[c(docid_index, text_index) * -1]
-    row.names(docvars) <- NULL
+    rownames(docvars) <- NULL
     
     is_empty <- is_empty[c(docid_index, text_index) * -1]
     if (any(is_empty))

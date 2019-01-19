@@ -12,27 +12,27 @@ test_that("make_docvars() works", {
     expect_equal(dim(docvar1), c(0, 4))
     expect_equal(dim(docvar2), c(3, 4))
     expect_equal(dim(docvar3), c(3, 4))
-    expect_equal(colnames(docvar1), c("_docid", "_docname", "_docnum", "_segnum"))
-    expect_equal(colnames(docvar2), c("_docid", "_docname", "_docnum", "_segnum"))
-    expect_equal(colnames(docvar3), c("_docid", "_docname", "_docnum", "_segnum"))
+    expect_equal(colnames(docvar1), c("docid_", "docname_", "docnum_", "segnum_"))
+    expect_equal(colnames(docvar2), c("docid_", "docname_", "docnum_", "segnum_"))
+    expect_equal(colnames(docvar3), c("docid_", "docname_", "docnum_", "segnum_"))
 
-    # expect_equal(colnames(docvar4), c("_docid", "_docname", "_docnum", "_segnum"))
-    # expect_equal(docvar4[["_docid"]], paste0("text", 1:10))
+    # expect_equal(colnames(docvar4), c("docid_", "docname_", "docnum_", "segnum_"))
+    # expect_equal(docvar4[["docid_"]], paste0("text", 1:10))
     # expect_error(quanteda:::make_docvars(n = 2, docname = c("A", "B", "C")))
-    # expect_equal(docvar5[["_docid"]], c("A", "B", "B.1"))
+    # expect_equal(docvar5[["docid_"]], c("A", "B", "B.1"))
     expect_error(quanteda:::make_docvars(n = "3"))
     expect_error(quanteda:::make_docvars(n = 1.4))
 
     docvar4 <- quanteda:::make_docvars(5L, c("A", "A", "B", "B", "C"))
-    expect_equal(docvar4[["_docid"]], c("A.1", "A.2", "B.1", "B.2", "C.1"))
-    expect_equal(docvar4[["_docnum"]], c(1, 1, 2, 2, 3))
+    expect_equal(docvar4[["docid_"]], c("A.1", "A.2", "B.1", "B.2", "C.1"))
+    expect_equal(docvar4[["docnum_"]], c(1, 1, 2, 2, 3))
     docvar5 <- quanteda:::make_docvars(5L, c("A", "B", "B", "A", "C"))
-    expect_equal(docvar5[["_docid"]], c("A.1", "B.1", "B.2", "A.2", "C.1"))
-    expect_equal(docvar5[["_docnum"]], c(1, 2, 2, 1, 3))
+    expect_equal(docvar5[["docid_"]], c("A.1", "B.1", "B.2", "A.2", "C.1"))
+    expect_equal(docvar5[["docnum_"]], c(1, 2, 2, 1, 3))
     docvar6 <- quanteda:::make_docvars(5L, c("A", "A", "B", "B", "C"), unique = FALSE)
-    expect_equal(docvar6[["_docid"]], c("A", "A", "B", "B", "C"))
-    expect_equal(docvar6[["_docnum"]], c(1, 2, 3, 4, 5))
-    expect_equal(docvar6[["_segnum"]], c(1, 1, 1, 1, 1))
+    expect_equal(docvar6[["docid_"]], c("A", "A", "B", "B", "C"))
+    expect_equal(docvar6[["docnum_"]], c(1, 2, 3, 4, 5))
+    expect_equal(docvar6[["segnum_"]], c(1, 1, 1, 1, 1))
 
 })
 
@@ -46,10 +46,10 @@ test_that("upgrade_docvars() workds", {
                           "var2" = c(TRUE, TRUE, FALSE),
                           row.names = c("A", "B", "C"))
     docvar3$lis <- list(1:3, -5, 3:4)
-    docvar4 <- data.frame("_docid" = c("A", "B", "C"), 
-                          "_docname" = factor(c("A", "B", "C")), 
-                          "_docnum" = 1L:3L, 
-                          "_segnum" = rep(1L, 3), 
+    docvar4 <- data.frame("docid_" = c("A", "B", "C"), 
+                          "docname_" = factor(c("A", "B", "C")), 
+                          "docnum_" = 1L:3L, 
+                          "segnum_" = rep(1L, 3), 
                           "var1" = c(100, 200, 300),
                           "var2" = c(TRUE, TRUE, FALSE),
                           check.names = FALSE,
@@ -76,10 +76,10 @@ test_that("upgrade_docvars() workds", {
 
 test_that("get_docvars() workds", {
     
-    data <- data.frame("_docid" = c("A", "B", "C"), 
-                         "_docname" = c("A", "B", "C"), 
-                         "_docnum" = 1L:3L, 
-                         "_segnum" = rep(1L, 3), 
+    data <- data.frame("docid_" = c("A", "B", "C"), 
+                         "docname_" = c("A", "B", "C"), 
+                         "docnum_" = 1L:3L, 
+                         "segnum_" = rep(1L, 3), 
                          "var1" = c(100, 200, 300),
                          "var2" = c(TRUE, TRUE, FALSE),
                          check.names = FALSE,
@@ -87,21 +87,21 @@ test_that("get_docvars() workds", {
     
     expect_identical(
         quanteda:::select_docvars(data, system = TRUE),
-        data.frame("_docid" = c("A", "B", "C"), 
-                   "_docname" = c("A", "B", "C"), 
-                   "_docnum" = 1L:3L, 
-                   "_segnum" = rep(1L, 3), 
+        data.frame("docid_" = c("A", "B", "C"), 
+                   "docname_" = c("A", "B", "C"), 
+                   "docnum_" = 1L:3L, 
+                   "segnum_" = rep(1L, 3), 
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
-    expect_error(quanteda:::select_docvars(data, "_docname", system = FALSE))
+    expect_error(quanteda:::select_docvars(data, "docname_", system = FALSE))
     expect_identical(
-        quanteda:::select_docvars(data, "_docname", system = TRUE),
-        data.frame("_docname" = c("A", "B", "C"), 
+        quanteda:::select_docvars(data, "docname_", system = TRUE),
+        data.frame("docname_" = c("A", "B", "C"), 
                    check.names = FALSE, stringsAsFactors = FALSE)
     )
     expect_identical(
-        quanteda:::select_docvars(data, "_docname", system = TRUE, drop = TRUE),
+        quanteda:::select_docvars(data, "docname_", system = TRUE, drop = TRUE),
         c("A", "B", "C")
     )
     expect_identical(
@@ -123,10 +123,10 @@ test_that("get_docvars() workds", {
 
 test_that("set_docvars() workds", {
     
-    data <- data.frame("_docid" = c("A", "B", "C"), 
-                       "_docname" = c("A", "B", "C"), 
-                       "_docnum" = 1L:3L, 
-                       "_segnum" = rep(1L, 3), 
+    data <- data.frame("docid_" = c("A", "B", "C"), 
+                       "docname_" = c("A", "B", "C"), 
+                       "docnum_" = 1L:3L, 
+                       "segnum_" = rep(1L, 3), 
                        "var1" = c(100, 200, 300),
                        "var2" = c(TRUE, TRUE, FALSE),
                        check.names = FALSE,
@@ -140,9 +140,9 @@ test_that("set_docvars() workds", {
                                                "var2" = c(TRUE, TRUE, TRUE))
     expect_identical(data[["var1"]], c(100, 200, 300))
     expect_identical(data[["var2"]], c(TRUE, TRUE, TRUE))
-    expect_identical(names(data), c("_docid", "_docname", "_docnum", "_segnum", "var1", "var2"))
+    expect_identical(names(data), c("docid_", "docname_", "docnum_", "segnum_", "var1", "var2"))
     quanteda:::set_docvars(data) <- NULL
-    expect_identical(names(data), c("_docid", "_docname", "_docnum", "_segnum"))
+    expect_identical(names(data), c("docid_", "docname_", "docnum_", "segnum_"))
 })
 
 test_that("docvars of corpus is a data.frame", {

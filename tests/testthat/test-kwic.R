@@ -1,4 +1,4 @@
-context("test kwic.R")
+context("test kwic")
 
 test_that("test attr(kwic, 'ntoken') with un-named texts", {
     testkwic <- kwic(c(
@@ -164,10 +164,8 @@ test_that("test kwic with multiple matches, where one is the last (fixed bug)", 
     )
 })
 
-
-txt <- data_corpus_inaugural["2005-Bush"]
-
 test_that("test that kwic works for glob types", {
+    txt <- data_corpus_inaugural["2005-Bush"]
     kwic_glob <- kwic(txt, "secur*", window = 3, valuetype = "glob", case_insensitive = TRUE)
     expect_true(
         setequal(c("security", "secured", "securing", "Security"),
@@ -183,6 +181,8 @@ test_that("test that kwic works for glob types", {
 })
 
 test_that("test that kwic works for regex types", {
+    
+    txt <- data_corpus_inaugural["2005-Bush"]
     kwic_regex <- kwic(txt, "^secur", window = 3, valuetype = "regex", case_insensitive = TRUE)
     expect_true(
         setequal(c("security", "secured", "securing", "Security"),

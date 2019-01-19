@@ -172,7 +172,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
     t2 <- lapply(t2, function(x, y) x + y, length(attrs1$types)) # shift IDs
     
     docvar <- make_docvars(length(t1) + length(t2), c(attrs1$names, attrs2$names))
-    result <- compile_tokens(c(t1, t2), docvar[["_docid"]],
+    result <- compile_tokens(c(t1, t2), docvar[["docid_"]],
                              what = attr(t1, "what"),
                              ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
                              skip = sort(unique(c(attrs1$skip, attrs2$skip))),

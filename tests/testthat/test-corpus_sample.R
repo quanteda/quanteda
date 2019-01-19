@@ -1,4 +1,4 @@
-context("corpus_sample tests")
+context("test corpus_sample")
 
 corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
                  two = "First sentence, doc2.  Second sentence, doc2."))

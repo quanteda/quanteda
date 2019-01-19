@@ -72,11 +72,10 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
         docname <- as.character(docname)
     }
     if (n == 0) {
-        data.frame("_docid" = character(),
-                   "_docname" = factor(),
-                   "_docnum" = integer(), 
-                   "_segnum" = integer(), 
-                   check.names = FALSE,
+        data.frame("docid_" = character(),
+                   "docname_" = factor(),
+                   "docnum_" = integer(), 
+                   "segnum_" = integer(), 
                    stringsAsFactors = FALSE)
     } else {
         if (unique) {
@@ -93,11 +92,10 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
             segnum <- rep(1L, n)
             docid <- docname
         }
-        data.frame("_docid" = docid,
-                   "_docname" = factor(docname, levels = unique(docname)),
-                   "_docnum" = docnum, 
-                   "_segnum" = segnum,
-                   check.names = FALSE,
+        data.frame("docid_" = docid,
+                   "docname_" = factor(docname, levels = unique(docname)),
+                   "docnum_" = docnum, 
+                   "segnum_" = segnum,
                    stringsAsFactors = FALSE)
     }
 }
@@ -127,19 +125,19 @@ upgrade_docvars <- function(x, docnames = NULL) {
         rownames(x) <- NULL
         result <- cbind(make_docvars(nrow(x), docnames, FALSE), 
                         x[!is_system(names(x)) & !is_system_old(names(x))])
-        if ("_document" %in% names(x))
-            result[["_docname"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
-        if ("_docid" %in% names(x))
-            result[["_docnum"]] <- as.integer(x[["_docid"]])
-        if ("_segid" %in% names(x))
-            result[["_segnum"]] <- as.integer(x[["_segid"]])
+        if ("document_" %in% names(x))
+            result[["docname_"]] <- factor(x[["document_"]], levels = unique(x[["document_"]]))
+        if ("docid" %in% names(x))
+            result[["docnum_"]] <- as.integer(x[["docid_"]])
+        if ("segid_" %in% names(x))
+            result[["segnum_"]] <- as.integer(x[["segid_"]])
     }
     return(result)
 }
 
 # internal function to check if variables are internal-only
 is_system <- function(x) {
-    x %in% c("_docid", "_docname", "_docnum", "_segnum")
+    x %in% c("docid_", "docname_", "docnum_", "segnum_")
 }
 
 # internal function to check if old variables are internal-only

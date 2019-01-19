@@ -294,27 +294,27 @@ test_that("corpus.data.frame sets docnames correctly", {
     
     df <- data.frame(other = txt, 
                      row.names = NULL, stringsAsFactors = FALSE)
-    df_docid <- data.frame(other = txt, doc_id = dnames, 
+    dfdocid_ <- data.frame(other = txt, doc_id = dnames, 
                            row.names = NULL, stringsAsFactors = FALSE)
     df_text <- data.frame(text = txt, 
                           row.names = NULL, stringsAsFactors = FALSE)
     df_rownames <- data.frame(other = txt, 
                               row.names = rnames, stringsAsFactors = FALSE)
-    df_docid_rownames <- data.frame(other = txt, doc_id = dnames, 
+    dfdocid__rownames <- data.frame(other = txt, doc_id = dnames, 
                                     row.names = rnames, stringsAsFactors = FALSE)
-    df_text_docid <- data.frame(text = txt,  doc_id = dnames, 
+    df_textdocid_ <- data.frame(text = txt,  doc_id = dnames, 
                                 row.names = NULL, stringsAsFactors = FALSE)
     df_text_rownames <- data.frame(text = txt, 
                                    row.names = rnames, stringsAsFactors = FALSE)
-    df_text_docid_rownames <- data.frame(text = txt, doc_id = dnames, 
+    df_textdocid_rownames <- data.frame(text = txt, doc_id = dnames, 
                                          row.names = rnames, stringsAsFactors = FALSE)
 
     expect_identical(
-        docnames(corpus(df_text_docid_rownames)),
+        docnames(corpus(df_textdocid_rownames)),
         c("A-dn", "B-dn", "C-dn")
     )
     expect_error(
-        corpus(df_text_docid_rownames, docid_field = "notfound"),
+        corpus(df_textdocid_rownames, docid_field = "notfound"),
         "docid_field column not found or invalid"
     )
     expect_identical(
@@ -416,19 +416,19 @@ test_that("handle data.frame variable renaming when one already exists", {
 test_that("upgrade_corpus is working", {
     corp1 <- quanteda:::upgrade_corpus(data_corpus_dailnoconf1991)
     expect_true(is.character(corp1))
-    expect_true(all(c("_docid", "_docname", "_docnum", "_segnum") %in% names(attr(corp1, "docvars"))))
+    expect_true(all(c("docid_", "docname_", "docnum_", "segnum_") %in% names(attr(corp1, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp1, "docvars"))))
-    expect_true(is.factor(attr(corp1, "docvars")[["_docname"]]))
+    expect_true(is.factor(attr(corp1, "docvars")[["docname_"]]))
     
     corp2 <- quanteda:::upgrade_corpus(data_corpus_inaugural)
     expect_true(is.character(corp2))
-    expect_true(all(c("_docid", "_docname", "_docnum", "_segnum") %in% names(attr(corp2, "docvars"))))
+    expect_true(all(c("docid_", "docname_", "docnum_", "segnum_") %in% names(attr(corp2, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp2, "docvars"))))
-    expect_true(is.factor(attr(corp2, "docvars")[["_docname"]]))
+    expect_true(is.factor(attr(corp2, "docvars")[["docname_"]]))
     
     corp3 <- quanteda:::upgrade_corpus(data_corpus_irishbudget2010)
     expect_true(is.character(corp3))
-    expect_true(all(c("_docid", "_docname", "_docnum", "_segnum") %in% names(attr(corp3, "docvars"))))
+    expect_true(all(c("docid_", "docname_", "docnum_", "segnum_") %in% names(attr(corp3, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp3, "docvars"))))
-    expect_true(is.factor(attr(corp3, "docvars")[["_docname"]]))
+    expect_true(is.factor(attr(corp3, "docvars")[["docname_"]]))
 })

@@ -70,10 +70,10 @@ test_that("dfm_compress preserves docvars (#1506)", {
     # this ensures the existence of _document
     docnames(thedfm) <- docnames(thedfm)
     
-    expect_true("_docid" %in% names(thedfm@docvars))
-    expect_true("_docname" %in% names(thedfm@docvars))
-    expect_true("_docnum" %in% names(thedfm@docvars))
-    expect_true("_segnum" %in% names(thedfm@docvars))
+    expect_true("docid_" %in% names(thedfm@docvars))
+    expect_true("docname_" %in% names(thedfm@docvars))
+    expect_true("docnum_" %in% names(thedfm@docvars))
+    expect_true("segnum_" %in% names(thedfm@docvars))
 
     expect_identical(
         thedfm@docvars,

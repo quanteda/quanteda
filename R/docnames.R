@@ -32,7 +32,7 @@ docnames.default <- function(x) {
 #' @export
 docnames.corpus <- function(x) {
     x <- as.corpus(x)
-    get_docvars(x, "_docid", TRUE, TRUE)
+    get_docvars(x, "docid_", TRUE, TRUE)
 }
 
 #' @param value a character vector of the same length as \code{x}
@@ -56,7 +56,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    names(x) <- attr(x, "docvars")[["_docid"]] <- value
+    names(x) <- attr(x, "docvars")[["docid_"]] <- value
     return(x)
 }
 
@@ -64,7 +64,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    names(x) <- attr(x, "docvars")[["_docid"]] <- value
+    names(x) <- attr(x, "docvars")[["docid_"]] <- value
     return(x)
 }
 
@@ -72,7 +72,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    rownames(x) <- attr(x, "docvars")[["_docid"]] <- value
+    rownames(x) <- attr(x, "docvars")[["docid_"]] <- value
     return(x)
 }
 

@@ -52,13 +52,13 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     
     if (to == "documents") {
         if (attr(x, 'unit') %in% c('sentences', 'paragraphs')) {
-            temp <- split(unclass(x), droplevels(docvar[["_docname"]]))
+            temp <- split(unclass(x), droplevels(docvar[["docname_"]]))
             if (identical(attrs$unit, "sentences")) {
                 temp <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
                 temp <- unlist(lapply(temp, paste0, collapse = "\n\n"))
             }
-            docvar <- reshape_docvars(docvar, !duplicated(docvar[["_docname"]]))
+            docvar <- reshape_docvars(docvar, !duplicated(docvar[["docname_"]]))
             result <- corpus(temp, docvars = select_docvars(docvar))
             attr(result, "unit") <- "documents"
         } else {
@@ -70,9 +70,9 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
                                   omit_empty = FALSE, what = to, ...)
             docvar <- reshape_docvars(docvar, temp$docnum)
             if (use_docvars) {
-                result <- corpus(temp$text, docvar[["_docname"]], select_docvars(docvar))
+                result <- corpus(temp$text, docvar[["docname_"]], select_docvars(docvar))
             } else {
-                result <- corpus(temp$text, docvar[["_docname"]])
+                result <- corpus(temp$text, docvar[["docname_"]])
             }
             attr(result, "unit") <- to
         } else {

@@ -42,7 +42,8 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
     x <- as.corpus(x)
     if (!is.null(by)) {
-        if (by == "document") by <- "_docnum"
+        if (by == "document") 
+            by <- "docnum_"
         docvar <- attr(x, "docvars")
         index <- unlist(lapply(split(seq_len(ndoc(x)), docvar[[by]]), base::sample), 
                         use.names = FALSE)

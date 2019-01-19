@@ -298,7 +298,7 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- serialize_tokens(x)
     docvar <- make_docvars(length(x), names(x))
-    compile_tokens(x, docvar[["_docid"]], 
+    compile_tokens(x, docvar[["docid_"]], 
                    concatenator = concatenator,
                    types = attr(x, "types"), source = "list",
                    docvars = docvar)
