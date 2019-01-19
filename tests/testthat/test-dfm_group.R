@@ -1,4 +1,4 @@
-context("test dfm_select")
+context("test dfm_group")
 
 test_that("test dfm_group", {
     
@@ -232,20 +232,33 @@ test_that("is_grouped is working", {
 })
 
 test_that("group_docvar drops list column (#1553)", {
-    data <- data.frame(vec1 = c(1, 3, 3, 6),
-                       vec2 = c("a", "b", "b", "c"))
+    data <- data.frame("_docid" = c("A", "B", "C", "D"),
+                       "_docname" = factor(c("text1", "text2", "text2", "text3")),
+                       "_docnum" = c(3L, 4L, 4L, 1L),
+                       "_segnum" = c(1L, 1L, 1L, 1L),
+                       vec1 = c(1, 3, 3, 6),
+                       vec2 = c("a", "b", "b", "c"),
+                       check.names = FALSE,
+                       stringsAsFactors = FALSE)
     data$lis <- list(1:3, -5, 3:4, 1)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
-                 data.frame(data.frame(vec1 = c(1, 3, 6),
-                                       vec2 = c("a", "b", "c"),
-                                       row.names = c(1, 2, 3))))
+                 data.frame("_docid" = c("1", "2", "3"),
+                            "_docname" = factor(c("text1", "text2", "text3")),
+                            "_docnum" = c(3L, 4L, 1L),
+                            "_segnum" = c(1L, 1L, 1L),
+                            vec1 = c(1, 3, 6),
+                            vec2 = c("a", "b", "c"),
+                            check.names = FALSE,
+                            stringsAsFactors = FALSE))
     
     corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),
-                   docvars = data)
+                   docvars = data.frame(vec1 = c(1, 3, 3, 6),
+                                        vec2 = c("a", "b", "b", "c"),
+                                        stringsAsFactors = FALSE))
     mt <- dfm(corp)
     expect_equal(docvars(dfm_group(mt, c(1, 2, 2, 3))),
                  data.frame(data.frame(vec1 = c(1, 3, 6),
                                        vec2 = c("a", "b", "c"),
-                                       row.names = c(1, 2, 3))))
+                                       stringsAsFactors = FALSE)))
     
 })

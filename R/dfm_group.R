@@ -79,25 +79,33 @@ generate_groups <- function(x, groups, drop = FALSE) {
 }
 
 
+# select docvar fields that have all the same values within groups
+# group_docvars <- function(x, group) {
+#     result <- x[match(levels(group), group), sapply(x, is_grouped, as.integer(group)), drop = FALSE]
+#     rownames(result) <- as.character(levels(group))
+#     return(result)
+# }
+
 # Reshape docvars keeping variables that have the same values within groups
 group_docvars <- function(x, group) {
-    l <- c(rep(TRUE, 4), unlist(lapply(select_docvars(x), is_grouped, as.integer(group)), 
-                                use.names = FALSE))
+    l <- unlist(lapply(select_docvars(x), is_grouped, group), use.names = FALSE)
+    l <- c(rep(TRUE, ncol(select_docvars(x, system = TRUE))), l)
     result <- x[match(levels(group), group), l, drop = FALSE]
     result[["_docid"]] <- levels(group)
     rownames(result) <- NULL
-    result
+    return(result)
 }
 
-# Check if values are uniform within groups
+# check if values are uniform within groups
 is_grouped <- function(x, group) {
-    if (is.character(x)) {
+    if (is.list(x)) {
+        FALSE
+    } else if (is.character(x)) {
         qatd_cpp_is_grouped_character(x, group)
     } else {
         qatd_cpp_is_grouped_numeric(as.numeric(x), group)
     }
 }
-
 
 # internal code to perform dfm compression and grouping
 # on features and/or documents
