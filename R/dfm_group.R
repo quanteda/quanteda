@@ -88,9 +88,9 @@ generate_groups <- function(x, groups, drop = FALSE) {
 
 # Reshape docvars keeping variables that have the same values within groups
 group_docvars <- function(x, group) {
-    l <- unlist(lapply(select_docvars(x), is_grouped, group), use.names = FALSE)
-    l <- c(rep(TRUE, ncol(select_docvars(x, system = TRUE))), l)
-    result <- x[match(levels(group), group), l, drop = FALSE]
+    sys <- rep(TRUE, ncol(select_docvars(x, system = TRUE)))
+    usr <- unlist(lapply(select_docvars(x), is_grouped, group), use.names = FALSE)
+    result <- x[match(levels(group), group), c(sys, usr), drop = FALSE]
     result[["_docid"]] <- levels(group)
     rownames(result) <- NULL
     return(result)
