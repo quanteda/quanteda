@@ -1,4 +1,4 @@
-context('Testing fcm*.R')
+context('testing fcm')
 
 test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
     skip_if_not_installed("text2vec")
