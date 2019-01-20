@@ -425,7 +425,7 @@ compute_msttr <- function(x, MSTTR_segment) {
     x <- x[lengths(x) >= MSTTR_segment]
 
     temp <- split(textstat_lexdiv(x, measure = "TTR")[["TTR"]],
-                  attr(x, "docvars")[["docname_"]])
+                  attr(x, "docvars")[["docid_"]])
     result <- unlist(lapply(temp, mean))
     return(result)
 }

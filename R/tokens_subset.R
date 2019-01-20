@@ -40,12 +40,12 @@ tokens_subset.tokens <- function(x, subset, ...) {
     x <- as.tokens(x)
     attrs <- attributes(x)
     #sys <- select_docvars(attr(x, "docvars"), system = TRUE)
-    usr <- select_docvars(attr(x, "docvars"), system = FALSE)
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {
         rep_len(TRUE, ndoc(x))
     } else {
         e <- substitute(subset)
-        r <- eval(e, usr, parent.frame())
+        r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
     # vars <- if (missing(select)) 

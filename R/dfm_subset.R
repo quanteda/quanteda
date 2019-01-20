@@ -47,12 +47,12 @@ dfm_subset.dfm <- function(x, subset, ...) {
     
     x <- as.dfm(x)
     #sys <- select_docvars(x@docvars, system = TRUE)
-    usr <- select_docvars(x@docvars, system = FALSE)
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {
         rep_len(TRUE, ndoc(x))
     } else {
         e <- substitute(subset)
-        r <- eval(e, usr, parent.frame())
+        r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
     # vars <- if (missing(select)) 

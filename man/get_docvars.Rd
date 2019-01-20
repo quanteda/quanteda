@@ -4,14 +4,17 @@
 \alias{get_docvars}
 \title{Internal function to extract docvars}
 \usage{
-get_docvars(x, field = NULL, system = FALSE, drop = FALSE)
+get_docvars(x, field = NULL, user = TRUE, system = FALSE,
+  drop = FALSE)
 }
 \arguments{
 \item{x}{an object from which docvars are extracted}
 
 \item{field}{name of docvar fields}
 
-\item{system}{if \code{TRUE}, return system-level variables}
+\item{user}{if \code{TRUE}, return user variables}
+
+\item{system}{if \code{TRUE}, return system variables}
 
 \item{drop}{if \code{TRUE}, convert data.frame with one variable to a vector}
 }

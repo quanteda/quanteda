@@ -193,9 +193,9 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens_internal(texts(x), ...)
     attributes(result, FALSE) <- attrs
     if (include_docvars) {
-        attr(result, "docvars") <- attr(x, "docvars")
+        attr(result, "docvars") <- get_docvars(x, user = TRUE, system = TRUE)
     } else {
-        attr(result, "docvars") <- select_docvars(attr(x, "docvars"), system = TRUE)
+        attr(result, "docvars") <- get_docvars(x, user = FALSE, system = TRUE)
     }
     attr(result, "unit") <- attr(x, "unit")
     attr(result, "meta") <- attr(x, "meta")
@@ -298,7 +298,7 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- serialize_tokens(x)
     docvar <- make_docvars(length(x), names(x))
-    compile_tokens(x, docvar[["docid_"]], 
+    compile_tokens(x, docvar[["docname_"]], 
                    concatenator = concatenator,
                    types = attr(x, "types"), source = "list",
                    docvars = docvar)
@@ -333,11 +333,7 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #' @noRd
 #' @export
 docnames.tokens <- function(x) {
-    if (is.null(names(x))) {
-        paste0("text", seq_along(x))
-    } else {
-        names(x)
-    }
+    names(x)
 }
 
 # ============== INTERNAL FUNCTIONS =======================================
@@ -428,7 +424,7 @@ tokens_internal <- function(x,
             x <- tokens_recompile(x)
         }
 
-        regex <- c()
+        regex <- character()
         if (remove_numbers)
             regex <- c(regex, "^[\\p{N}]+$")
         if (remove_punct)

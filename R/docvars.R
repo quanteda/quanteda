@@ -23,31 +23,32 @@
 #' Internal function to extract docvars
 #' @param x an object from which docvars are extracted
 #' @param field name of docvar fields
-#' @param system if \code{TRUE}, return system-level variables
+#' @param user if \code{TRUE}, return user variables
+#' @param system if \code{TRUE}, return system variables
 #' @param drop if \code{TRUE}, convert data.frame with one variable to a vector
 #' @keywords internal
-get_docvars <- function(x, field = NULL, system = FALSE, drop = FALSE) {
+get_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
     UseMethod("get_docvars")
 }
 
 #' @method get_docvars corpus
-get_docvars.corpus <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    select_docvars(attr(x, "docvars"), field, system, drop)
+get_docvars.corpus <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(attr(x, "docvars"), field, user, system, drop)
 }
 
 #' @method get_docvars tokens
-get_docvars.tokens <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    select_docvars(attr(x, "docvars"), field, system, drop)
+get_docvars.tokens <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(attr(x, "docvars"), field, user, system, drop)
 }
 
 #' @method get_docvars dfm
-get_docvars.dfm <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    select_docvars(x@docvars, field, system, drop)
+get_docvars.dfm <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(x@docvars, field, user, system, drop)
 }
 
 # Internal function to select columns of docvars
-select_docvars <- function(x, field = NULL, system = FALSE, drop = FALSE) {
-    x <- x[system == is_system(names(x))]
+select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    x <- x[user * !is_system(names(x)) | system * is_system(names(x))]
     if (is.null(field)) {
         return(x)
     } else {
@@ -72,8 +73,8 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
         docname <- as.character(docname)
     }
     if (n == 0) {
-        data.frame("docid_" = character(),
-                   "docname_" = factor(),
+        data.frame("docname_" = character(),
+                   "docid_" = factor(),
                    "docnum_" = integer(), 
                    "segnum_" = integer(), 
                    stringsAsFactors = FALSE)
@@ -92,8 +93,8 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
             segnum <- rep(1L, n)
             docid <- docname
         }
-        data.frame("docid_" = docid,
-                   "docname_" = factor(docname, levels = unique(docname)),
+        data.frame("docname_" = docid,
+                   "docid_" = factor(docname, levels = unique(docname)),
                    "docnum_" = docnum, 
                    "segnum_" = segnum,
                    stringsAsFactors = FALSE)
@@ -125,19 +126,19 @@ upgrade_docvars <- function(x, docnames = NULL) {
         rownames(x) <- NULL
         result <- cbind(make_docvars(nrow(x), docnames, FALSE), 
                         x[!is_system(names(x)) & !is_system_old(names(x))])
-        if ("document_" %in% names(x))
-            result[["docname_"]] <- factor(x[["document_"]], levels = unique(x[["document_"]]))
-        if ("docid" %in% names(x))
-            result[["docnum_"]] <- as.integer(x[["docid_"]])
-        if ("segid_" %in% names(x))
-            result[["segnum_"]] <- as.integer(x[["segid_"]])
+        if ("_document" %in% names(x))
+            result[["docid_"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
+        if ("_docid" %in% names(x))
+            result[["docnum_"]] <- as.integer(x[["_docid"]])
+        if ("_segid" %in% names(x))
+            result[["segnum_"]] <- as.integer(x[["_segid"]])
     }
     return(result)
 }
 
 # internal function to check if variables are internal-only
 is_system <- function(x) {
-    x %in% c("docid_", "docname_", "docnum_", "segnum_")
+    x %in% c("docname_", "docid_", "docnum_", "segnum_")
 }
 
 # internal function to check if old variables are internal-only
@@ -176,20 +177,20 @@ docvars.default <- function(x, field = NULL) {
 #' @export
 docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
-    select_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
+    select_docvars(attr(x, 'docvars'), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.tokens <- function(x, field = NULL) {
-    select_docvars(attr(x, 'docvars'), field, FALSE, TRUE)
+    select_docvars(attr(x, 'docvars'), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.dfm <- function(x, field = NULL) {
     x <- as.dfm(x)
-    select_docvars(x@docvars, field, FALSE, TRUE)
+    select_docvars(x@docvars, field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd

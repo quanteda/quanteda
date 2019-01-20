@@ -68,8 +68,9 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
 #' @return a factor
 #' @keywords internal
 generate_groups <- function(x, groups, drop = FALSE) {
-    if (is.character(groups) && all(groups %in% names(docvars(x)))) {
-        groups <- interaction(docvars(x, groups), drop = FALSE)
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
+    if (is.character(groups) && all(groups %in% names(docvar))) {
+        groups <- interaction(docvar[groups], drop = FALSE)
     } else {
         if (length(groups) != ndoc(x))
             stop("groups must name docvars or provide data matching the documents in x")
@@ -90,7 +91,7 @@ generate_groups <- function(x, groups, drop = FALSE) {
 group_docvars <- function(x, group) {
     l <- is_system(names(x)) | unlist(lapply(x, is_grouped, group), use.names = FALSE)
     result <- x[match(levels(group), group), l, drop = FALSE]
-    result[["docid_"]] <- levels(group)
+    result[["docname_"]] <- levels(group)
     rownames(result) <- NULL
     return(result)
 }

@@ -1,4 +1,4 @@
-context("test bootstrapping functions")
+context("test dfm_bootstrap")
 
 test_that("bootstrap_dfm works with character and corpus objects", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",

@@ -38,12 +38,7 @@ featnames.dfm <- function(x) {
 #' @noRd
 #' @export
 docnames.dfm <- function(x) {
-    x <- as.dfm(x)
-    if (is.null(rownames(x))) {
-        paste0('text', seq_len(ndoc(x)))
-    } else {
-        rownames(x)
-    }
+    rownames(x)
 }
 
 # as.dfm -----------

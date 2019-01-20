@@ -166,8 +166,8 @@ test_that("test dfm_group keeps group-level variables", {
     grp1 <- c("D", "D", "A", "C")
     expect_equal(
         dfm_group(testdfm, grp1)@docvars,
-                 data.frame("docid_" = c("A", "C", "D"),
-                            "docname_" = factor(c("text3", "text4", "text1"), 
+                 data.frame("docname_" = c("A", "C", "D"),
+                            "docid_" = factor(c("text3", "text4", "text1"), 
                                                 levels = c("text1", "text2", "text3", "text4")),
                             "docnum_" = c(3L, 4L, 1L),
                             "segnum_" = c(1L, 1L, 1L),
@@ -182,8 +182,8 @@ test_that("test dfm_group keeps group-level variables", {
     grp2 <- factor(c("D", "D", "A", "C"), levels = c("A", "B", "C", "D"))
     expect_equal(
         dfm_group(testdfm, grp2, fill = TRUE)@docvars,
-        data.frame("docid_" = c("A", "B", "C", "D"),
-                   "docname_" = factor(c("text3", NA, "text4", "text1"), 
+        data.frame("docname_" = c("A", "B", "C", "D"),
+                   "docid_" = factor(c("text3", NA, "text4", "text1"), 
                                        levels = c("text1", "text2", "text3", "text4")),
                    "docnum_" = c(3L, NA, 4L, 1L),
                    "segnum_" = c(1L, NA, 1L, 1L),
@@ -232,8 +232,8 @@ test_that("is_grouped is working", {
 })
 
 test_that("group_docvar drops list column (#1553)", {
-    data <- data.frame("docid_" = c("A", "B", "C", "D"),
-                       "docname_" = factor(c("text1", "text2", "text2", "text3")),
+    data <- data.frame("docname_" = c("A", "B", "C", "D"),
+                       "docid_" = factor(c("text1", "text2", "text2", "text3")),
                        "docnum_" = c(3L, 4L, 4L, 1L),
                        "segnum_" = c(1L, 1L, 1L, 1L),
                        vec1 = c(1, 3, 3, 6),
@@ -242,8 +242,8 @@ test_that("group_docvar drops list column (#1553)", {
                        stringsAsFactors = FALSE)
     data$lis <- list(1:3, -5, 3:4, 1)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
-                 data.frame("docid_" = c("1", "2", "3"),
-                            "docname_" = factor(c("text1", "text2", "text3")),
+                 data.frame("docname_" = c("1", "2", "3"),
+                            "docid_" = factor(c("text1", "text2", "text3")),
                             "docnum_" = c(3L, 4L, 1L),
                             "segnum_" = c(1L, 1L, 1L),
                             vec1 = c(1, 3, 6),
