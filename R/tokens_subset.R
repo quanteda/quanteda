@@ -55,9 +55,5 @@ tokens_subset.tokens <- function(x, subset, ...) {
     #     names(nl) <- names(usr)
     #     eval(substitute(select), nl, parent.frame())
     # }
-    x <- x[r]
-    #attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
-    #                            reshape_docvars(usr, r, vars))
-    #attributes(x, FALSE) <- attrs
-    return(x)
+    return(x[r])
 }

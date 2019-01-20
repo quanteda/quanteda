@@ -31,7 +31,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
     }
     
     if (!missing(i))
-        attrs$docvars <- reshape_docvars(attrs$docvars, i)
+        attrs$docvars <- subset_docvars(attrs$docvars, i)
     matrix2dfm(x, attrs)
 }
 

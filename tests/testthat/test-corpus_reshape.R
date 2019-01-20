@@ -25,8 +25,8 @@ No there is another."),
 
 test_that("corpus_reshape works to sentences and back", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-                         texttwo = "Premiere phrase.  Deuxieme phrase."), 
-                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
+                     texttwo = "Premiere phrase.  Deuxieme phrase."), 
+                     docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
     corp_reshaped <- corpus_reshape(corp, to = "sentences")
     corp_unshaped <- corpus_reshape(corp_reshaped, to = "documents")
     expect_equal(texts(corp),

@@ -17,8 +17,7 @@ test_that("tokens_chunk works", {
                                 "docnum_" = c(1L, 2L),
                                 "segnum_" = c(1L, 1L),
                                 "title" = c("title1", "title2"),
-                                stringsAsFactors = FALSE,
-                                check.names = FALSE))
+                                stringsAsFactors = FALSE))
 
     toks_chunk2 <- tokens_chunk(toks, size = 2)
     expect_identical(as.list(toks_chunk2),

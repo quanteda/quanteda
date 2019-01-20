@@ -102,11 +102,23 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
 }
 
 # internal function to duplicate or dedplicate docvar rows
-reshape_docvars <- function(x, i = NULL, j = NULL) {
-    if (is.null(i) && is.null(j)) return(x)
-    if (is.null(i)) i <- seq_len(nrow(x))
-    if (is.null(j)) j <- seq_len(ncol(x))
-    x <- x[i, j, drop = FALSE]
+reshape_docvars <- function(x, i = NULL) {
+    if (is.null(i)) return(x)
+    x <- x[i,, drop = FALSE]
+    rownames(x) <- NULL
+    if (is.integer(i) && any(duplicated(i))) {
+        x[["segnum_"]] <- stats::ave(i == i, i, FUN = cumsum)
+        x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segnum_"]])
+    } else {
+        x[["segnum_"]] <- rep(1L, nrow(x))
+        x[["docname_"]] <- as.character(x[["docid_"]])
+    }
+    return(x)
+}
+
+subset_docvars <- function(x, i = NULL) {
+    if (is.null(i)) return(x)
+    x <- x[i,, drop = FALSE]
     rownames(x) <- NULL
     return(x)
 }

@@ -76,19 +76,9 @@ tokens_segment.tokens <- function(x, pattern,
     }
 
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
-    attrs$docvars[["docid_"]] <- docnames(x)[attr(result, "docnum")]
-    if (any(duplicated(attrs$docvars[["docid_"]])))
-        attrs$docvars[["docid_"]] <- paste0(attrs$docvars[["docid_"]], ".", attr(result, "segnum"))
-    attrs$docvars[["docnum_"]] <- attr(result, "docnum")
-    attrs$docvars[["segnum_"]] <- attr(result, "segnum")
     if (extract_pattern)
         attrs$docvars[["pattern"]] <- attr(result, "pattern")
-    
-    attrs$names <- attrs$docvars[["docid_"]]
-    attr(result, "docnum") <- NULL
-    attr(result, "segnum") <- NULL
-    attr(result, "pattern") <- NULL
+    attrs$names <- attrs$docvars[["docname_"]]
     attributes(result, FALSE) <- attrs
-    
     return(result)
 }

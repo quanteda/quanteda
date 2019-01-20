@@ -66,21 +66,10 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i) {
     
-    # if (length(x) == 1 && is.null(x[[1]])) return(x)
-    # 
-    # error <- FALSE
-    # if (is.character(i) && any(!i %in% names(x))) error <- TRUE
-    # if (is.numeric(i) && any(i > length(x))) error <- TRUE
-    # if (error) stop("Subscript out of bounds")
-    # 
-    # attrs <- attributes(x)
-    # x <- unclass(x)[i]
-    # attrs$docvars <- reshape_docvars(attrs$docvars, i)
-    # attributes(x, FALSE) <- attrs
     x <- as.tokens(x)
     attrs <- attributes(x)
     if (is.character(i)) {
-        index <- fmatch(i, docnames(x))
+        index <- match(i, docnames(x))
     } else if (is.numeric(i)) {
         index <- match(i, seq_len(length(x)))
     } else {
@@ -91,7 +80,7 @@ print.tokens <- function(x, ...) {
         stop("Subscript out of bounds")
     index <- index[!is_na]
     x <- unclass(x)[index]
-    attrs$docvars <- reshape_docvars(attrs$docvars, index)
+    attrs$docvars <- subset_docvars(attrs$docvars, index)
     attributes(x, FALSE) <- attrs
     tokens_recompile(x)
 }
@@ -172,7 +161,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
     t2 <- lapply(t2, function(x, y) x + y, length(attrs1$types)) # shift IDs
     
     docvar <- make_docvars(length(t1) + length(t2), c(attrs1$names, attrs2$names))
-    result <- compile_tokens(c(t1, t2), docvar[["docid_"]],
+    result <- compile_tokens(c(t1, t2), docvar[["docname_"]],
                              what = attr(t1, "what"),
                              ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
                              skip = sort(unique(c(attrs1$skip, attrs2$skip))),

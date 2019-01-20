@@ -48,18 +48,8 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
     attrs <- attributes(x)
     type <- types(x)
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
-
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
-    attrs$docvars[["docid_"]] <- docnames(x)[attr(result, "docnum")]
-    if (any(duplicated(attrs$docvars[["docid_"]])))
-        attrs$docvars[["docid_"]] <- paste0(attrs$docvars[["docid_"]], ".", attr(result, "segnum"))
-    attrs$docvars[["docnum_"]] <- attr(result, "docnum")
-    attrs$docvars[["segnum_"]] <- attr(result, "segnum")
-    
-    attrs$names <- attrs$docvars[["docid_"]]
-    attr(result, "docnum") <- NULL
-    attr(result, "segnum") <- NULL
+    attrs$names <- attrs$docvars[["docname_"]]
     attributes(result, FALSE) <- attrs
-
     return(result)
 }

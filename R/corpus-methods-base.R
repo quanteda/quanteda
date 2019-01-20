@@ -218,7 +218,7 @@ c.corpus <- function(..., recursive = FALSE) {
     index <- index[!is_na]
     
     x <- unclass(x)[index]
-    attrs$docvars <- reshape_docvars(attrs$docvars, index)
+    attrs$docvars <- subset_docvars(attrs$docvars, index)
     attributes(x, FALSE) <- attrs
     return(x)
 }

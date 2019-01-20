@@ -125,18 +125,17 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     x <- as.corpus(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    docvar <- attr(x, "docvars")
+    attrs <- attributes(x)
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
-    docvar <- reshape_docvars(docvar, temp$docnum)
-    if (use_docvars) {
-        result <- corpus(temp$text, docvar[["docid_"]], select_docvars(docvar))
-    } else {
-        result <- corpus(temp$text, docvar[["docid_"]])
-    }
+    result <- temp$text
+    if (!use_docvars)
+        attrs$docvars <- select_docvars(attrs$docvars, user = FALSE, system = TRUE)
+    attrs$docvars <-reshape_docvars(attrs$docvars, temp$docnum)
     if (extract_pattern) 
-        docvars(result, "pattern") <- temp$pattern
-    attr(result, "unit") <- "documents"
+        attrs$docvars[["pattern"]] <- temp$pattern
+    attrs$unit <- "documents"
+    attributes(result, FALSE) <- attrs
     return(result)
 }
 
@@ -299,7 +298,6 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         if (omit_empty)
             result <- result[!is.na(result$text),]
     }
-    result$segnum <- stats::ave(result$docnum == result$docnum, result$docnum, FUN = cumsum)
     return(result)
 }
 

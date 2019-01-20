@@ -48,19 +48,16 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     x <- as.corpus(x)
     to <- match.arg(to)
     attrs <- attributes(x)
-    docvar <- attr(x, "docvars")
-    
     if (to == "documents") {
         if (attr(x, 'unit') %in% c('sentences', 'paragraphs')) {
-            temp <- split(unclass(x), droplevels(docvar[["docid_"]]))
+            temp <- split(unclass(x), attrs$docvars[["docnum_"]])
             if (identical(attrs$unit, "sentences")) {
-                temp <- unlist(lapply(temp, paste0, collapse = "  "))
+                result <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
-                temp <- unlist(lapply(temp, paste0, collapse = "\n\n"))
+                result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
             }
-            docvar <- reshape_docvars(docvar, !duplicated(docvar[["docid_"]]))
-            result <- corpus(temp, docvars = select_docvars(docvar))
-            attr(result, "unit") <- "documents"
+            attrs$docvars <-reshape_docvars(attrs$docvars, !duplicated(attrs$docvars[["docnum_"]]))
+            attrs$unit <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
@@ -68,16 +65,13 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         if (identical(attrs$unit, "documents")) {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
-            docvar <- reshape_docvars(docvar, temp$docnum)
-            if (use_docvars) {
-                result <- corpus(temp$text, docvar[["docid_"]], select_docvars(docvar))
-            } else {
-                result <- corpus(temp$text, docvar[["docid_"]])
-            }
-            attr(result, "unit") <- to
+            result <- temp$text
+            attrs$docvars <- reshape_docvars(attrs$docvars, temp$docnum)
+            attrs$unit <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
     } 
+    attributes(result, FALSE) <- attrs
     return (result)
 }

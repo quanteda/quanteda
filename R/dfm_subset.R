@@ -62,8 +62,5 @@ dfm_subset.dfm <- function(x, subset, ...) {
     #     names(nl) <- names(usr)
     #     eval(substitute(select), nl, parent.frame())
     # }
-    x <- x[r,]
-    #x@docvars <- cbind(reshape_docvars(sys, r),
-    #                   reshape_docvars(usr, r, vars))
-    return(x)
+    return(x[r,])
 }
