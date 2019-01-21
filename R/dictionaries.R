@@ -366,6 +366,7 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 #' @param x object to be coerced or checked; current legal values are a
 #'   data.frame with the fields \code{word} and \code{sentiment} (as per the 
 #'   \strong{tidytext} package)
+#' @param ... additional arguments passed to \link{dictionary}
 #' @return \code{as.dictionary} returns a \link{dictionary} object.  This
 #'   conversion function differs from the \code{\link{dictionary}} constructor
 #'   function in that it converts an existing object rather than creates one
@@ -385,9 +386,16 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 #'     )
 #' with(afinn, table(score, sentiment))
 #' as.dictionary(afinn)
+#' 
+#' df <- data.frame(
+#'     word = c("Great", "Horrible"),
+#'     sentiment = c("positive", "negative")
+#'     )
+#' as.dictionary(df)
+#' as.dictionary(df, tolower = FALSE)
 #' }
 #' 
-as.dictionary <- function(x) {
+as.dictionary <- function(x, ...) {
     UseMethod("as.dictionary")
 }
 
@@ -400,7 +408,7 @@ as.dictionary.default <- function(x) {
 #' @noRd
 #' @method as.dictionary data.frame
 #' @export
-as.dictionary.data.frame <- function(x) {
+as.dictionary.data.frame <- function(x, ...) {
     if (!all(c("word", "sentiment") %in% names(x)))
         stop("data.frame must contain word and sentiment columns")
     if ("lexicon" %in% names(x) && length(unique(x[["lexicon"]])) > 1)
@@ -408,7 +416,7 @@ as.dictionary.data.frame <- function(x) {
                 "you may be mixing different dictionaries")
     if (all(is.na(x[["sentiment"]])))
         stop("sentiment values are missing")
-     dictionary(with(x, split(as.character(word), as.character(sentiment))))
+    dictionary(with(x, split(as.character(word), as.character(sentiment))), ...)
 }
 
 #' @rdname as.dictionary
