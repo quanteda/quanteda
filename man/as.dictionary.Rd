@@ -5,7 +5,7 @@
 \alias{is.dictionary}
 \title{Coercion and checking functions for dictionary objects}
 \usage{
-as.dictionary(x)
+as.dictionary(x, ...)
 
 is.dictionary(x)
 }
@@ -13,6 +13,8 @@ is.dictionary(x)
 \item{x}{object to be coerced or checked; current legal values are a
 data.frame with the fields \code{word} and \code{sentiment} (as per the 
 \strong{tidytext} package)}
+
+\item{...}{additional arguments passed to \link{dictionary}}
 }
 \value{
 \code{as.dictionary} returns a \link{dictionary} object.  This
@@ -41,6 +43,13 @@ afinn[["sentiment"]] <-
     )
 with(afinn, table(score, sentiment))
 as.dictionary(afinn)
+
+df <- data.frame(
+    word = c("Great", "Horrible"),
+    sentiment = c("positive", "negative")
+    )
+as.dictionary(df)
+as.dictionary(df, tolower = FALSE)
 }
 
 is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))
