@@ -84,6 +84,6 @@ test_that("as.dictionary function passes additional arguments to dictionary", {
     dict <- as.dictionary(df, tolower = FALSE)
     
     expect_equal(
-        dict[["pos"]],  "A"
+        dict[["pos"]], "A"
     )
 })
