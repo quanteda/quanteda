@@ -9,8 +9,8 @@
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "#1F78B4", edge_alpha = 0.5, edge_size = 2,
   vertex_color = "#4D4D4D", vertex_size = 2,
-  vertex_labelcolor = NULL, vertex_labelfont = NULL, offset = NULL,
-  ...)
+  vertex_labelcolor = NULL, vertex_labelfont = NULL,
+  vertex_labelsize = NULL, offset = NULL, ...)
 
 \method{as.network}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)
 
@@ -42,6 +42,8 @@ instead of the maximum to reduce the impact of outliers.}
 
 \item{vertex_labelfont}{font-family of texts. Use default font if
 \code{NULL}.}
+
+\item{vertex_labelsize}{size of texts. Defaults to size 2.}
 
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}

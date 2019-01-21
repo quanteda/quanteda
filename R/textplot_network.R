@@ -16,10 +16,11 @@
 #' @param vertex_color color of vertices.
 #' @param vertex_labelcolor color of texts. Defaults to the same as
 #'   \code{vertex_color}. If \code{NA} is given, texts are not rendered.
-#' @param offset if \code{NULL}, the distance between vertices and texts are
-#'   determined automatically.
 #' @param vertex_labelfont font-family of texts. Use default font if
 #'   \code{NULL}.
+#' @param vertex_labelsize size of texts. Defaults to size 2.
+#' @param offset if \code{NULL}, the distance between vertices and texts are
+#'   determined automatically.
 #' @param ... additional arguments passed to \link[network]{network} or
 #'   \link[igraph]{graph_from_adjacency_matrix}.  Not used for \code{as.igraph}.
 #' @details Currently the size of the network is limited to 1000, because of the
@@ -51,6 +52,7 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                              vertex_color = "#4D4D4D", vertex_size = 2,
                              vertex_labelcolor = NULL,
                              vertex_labelfont = NULL, 
+                             vertex_labelsize = NULL,
                              offset = NULL, ...) {
     UseMethod("textplot_network")
 }
@@ -62,6 +64,7 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  vertex_labelfont = NULL, 
+                                 vertex_labelsize = 2,
                                  offset = NULL, ...) {
     
     if (!sum(x)) stop(message_error("dfm_empty"))
@@ -71,6 +74,7 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                      vertex_color = vertex_color, vertex_size = vertex_size,
                      vertex_labelcolor = vertex_labelcolor,
                      vertex_labelfont = vertex_labelfont, 
+                     vertex_labelsize = vertex_labelsize,
                      offset = NULL, ...)
 }
 
@@ -82,6 +86,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  vertex_labelfont = NULL, 
+                                 vertex_labelsize = NULL,
                                  offset = NULL, 
                                  ...) {
     
@@ -112,6 +117,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     if (length(vertex_labelcolor) > 1) vertex_labelcolor <- vertex_labelcolor[l]
     if (length(vertex_color) > 1) vertex_color <- vertex_color[l]
     if (length(vertex_size) > 1) vertex_size <- vertex_size[l]
+    if (length(vertex_labelsize) > 1) vertex_labelsize <- vertex_labelsize[l]
     
     edge$color <- edge_color
     edge$alpha <- edge_alpha
@@ -119,6 +125,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     vertex$color <- vertex_color
     vertex$size <- vertex_size
     vertex$labelcolor <- vertex_labelcolor
+    vertex$labelsize <- vertex_labelsize
     
     plot_network(edge, vertex, font, offset)
 }
@@ -242,14 +249,14 @@ plot_network <- function(edge, vertex, font, offset) {
     if (is.null(offset)) {
         plot <- plot + 
             ggrepel::geom_text_repel(data = vertex, 
-                                     aes(x, y, label = label),
+                                     aes(x, y, label = label, size = vertex$labelsize),
                                      segment.color = vertex$color, 
                                      segment.size = 0.2,
                                      color = vertex$labelcolor,
                                      family = font)
     } else {
         plot <- plot + 
-            geom_text(data = vertex, aes(x, y, label = label),
+            geom_text(data = vertex, aes(x, y, label = label, size = vertex$labelsize),
                       nudge_y = offset, 
                       color = vertex$labelcolor,
                       family = font)
