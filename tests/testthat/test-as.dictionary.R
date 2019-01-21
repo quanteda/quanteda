@@ -74,3 +74,16 @@ test_that("as.dictionary function works for tidytext sentiment", {
     )
 })
 
+
+test_that("as.dictionary function passes additional arguments to dictionary", {
+    df <- data.frame(
+        word = c("A", "B"),
+        sentiment = c("pos", "neg")
+    )
+    
+    dict <- as.dictionary(df, tolower = FALSE)
+    
+    expect_equal(
+        dict[["pos"]],  "A"
+    )
+})
