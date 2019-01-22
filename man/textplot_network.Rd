@@ -35,7 +35,7 @@ instead of the maximum to reduce the impact of outliers.}
 
 \item{vertex_color}{color of vertices.}
 
-\item{vertex_size}{size of vertices.}
+\item{vertex_size}{size of vertices}
 
 \item{vertex_labelcolor}{color of texts. Defaults to the same as
 \code{vertex_color}. If \code{NA} is given, texts are not rendered.}
@@ -43,7 +43,7 @@ instead of the maximum to reduce the impact of outliers.}
 \item{vertex_labelfont}{font-family of texts. Use default font if
 \code{NULL}.}
 
-\item{vertex_labelsize}{size of texts. Defaults to size 2.}
+\item{vertex_labelsize}{size of vertex labels in mm. Defaults to size 2.}
 
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}
@@ -69,9 +69,9 @@ toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens_remove(pattern = stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = "window", tri = FALSE)
 feat <- names(topfeatures(myfcm, 30))
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\% 
+fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
     textplot_network(min_freq = 0.5)
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\% 
+fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
     textplot_network(min_freq = 0.8)
 fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
     textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
