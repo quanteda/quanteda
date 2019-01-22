@@ -5,22 +5,28 @@
 \alias{is.dictionary}
 \title{Coercion and checking functions for dictionary objects}
 \usage{
-as.dictionary(x, ...)
+as.dictionary(x, format = c("tidytext"), separator = " ",
+  tolower = FALSE)
 
 is.dictionary(x)
 }
 \arguments{
-\item{x}{object to be coerced or checked; current legal values are a
-data.frame with the fields \code{word} and \code{sentiment} (as per the 
-\strong{tidytext} package)}
+\item{x}{a dictionary-like object to be coerced or checked}
 
-\item{...}{additional arguments passed to \link{dictionary}}
+\item{format}{input format for the object to be coerced to a
+\link{dictionary}; current legal values are a data.frame with the fields
+\code{word} and \code{sentiment} (as per the \strong{tidytext} package)}
+
+\item{separator}{the character in between multi-word dictionary values. This
+defaults to \code{" "}.}
+
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
 }
 \value{
-\code{as.dictionary} returns a \link{dictionary} object.  This
-  conversion function differs from the \code{\link{dictionary}} constructor
-  function in that it converts an existing object rather than creates one
-  from components or from a file.
+\code{as.dictionary} returns a \pkg{quanteda} \link{dictionary}
+  object.  This conversion function differs from the \code{\link{dictionary}}
+  constructor function in that it converts an existing object rather than
+  creates one from components or from a file.
 
 \code{is.dictionary} returns \code{TRUE} if an object is a
   \pkg{quanteda} \link{dictionary}.
