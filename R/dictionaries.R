@@ -194,22 +194,6 @@ dictionary.default <- function(x, file = NULL, format = NULL,
 }
 
 #' @export
-dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
-                                   separator = " ",
-                                   tolower = TRUE, encoding = "auto") {
-
-    if (!is.null(file) | !is.null(format) | encoding != "auto")
-        stop("cannot specify file, format, or encoding when x is a list")
-    if (!is.character(separator) || stri_length(separator) == 0)
-        stop("separator must be a non-empty character")
-
-    x@separator <- separator
-    if (tolower) x <- lowercase_dictionary_values(x)
-    x <- merge_dictionary_values(x)
-    return(x)
-}
-
-#' @export
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
                             tolower = TRUE, encoding = "auto") {
