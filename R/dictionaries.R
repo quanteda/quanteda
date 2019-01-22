@@ -281,6 +281,7 @@ as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", to
 #' @export
 as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
     format <- match.arg(format)
+    
     if (format == "tidytext") {
         if (!all(c("word", "sentiment") %in% names(x)))
             stop("data.frame must contain word and sentiment columns")
@@ -289,11 +290,10 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
                     "you may be mixing different dictionaries")
         if (all(is.na(x[["sentiment"]])))
             stop("sentiment values are missing")
-        return(dictionary(with(x, split(as.character(word), as.character(sentiment))), ...),
-               separator = separator, tolower = tolower)
-    } else {
-        stop("format ", format, " not currently supported")
     }
+    
+    dictionary(with(x, split(as.character(word), as.character(sentiment))),
+               separator = separator, tolower = tolower)
 }
 
 #' @rdname as.dictionary
