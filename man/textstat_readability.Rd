@@ -43,85 +43,90 @@ indexes.
 \details{
 The following readability formulas have been implemented, where
 \itemize{
-  \item \eqn{ASL} =  (Average Sentence Length) word count / sentence count
-  \item \eqn{AWL} = (Average Word Length) character count / word count
-  \item \eqn{AFL} = (Average Familiar Words) count of words matching the Dale-Chall List of 3000 "simple words" / total word count
-  \item \eqn{Difficult Words} = count of words not matching the Dale-Chall List of 3000 "simple words"
+  \item Nw = \eqn{n_w} = number of words
+  \item Nc = \eqn{n_{c}} = number of characters
+  \item Nst = \eqn{n_{st}} = number of sentences
+  \item Nsy = \eqn{n_{sy}} = number of syllables
+  \item Nwf = \eqn{n_{wf}} = number of words matching the Dale-Chall List
+        of 3000 "familiar words"
+  \item ASL = Average Sentence Length: number of words / number of sentences
+  \item AWL = Average Word Length: number of characters / number of words
+  \item AFW = Average Familiar Words: count of words matching the Dale-Chall 
+        list of 3000 "familiar words" / number of all words
+  \item Nwd = \eqn{n_{wd}} = number of "difficult" words not matching the
+        Dale-Chall list of "familiar" words
 }
 
 \describe{
-  \item{\code{"ARI"}:}{\emph{Automated Readability Index (1967)}: \deqn{ARI = 0.5 ASL  +
-  4.71 AWL - 21.34}{ARI = 0.5 ASL  + 4.71 AWL - 21.34}}
+  \item{\code{"ARI"}:}{Senter and Smith's (1967) Automated Readability Index.
+  \deqn{0.5 ASL  + 4.71 AWL - 21.34}}
   
-  \item{\code{"ARI.Simple"}:}{\emph{Simplified Automated Readability Index}: \deqn{
-  ARI.Simple =  ASL + 9 AWL}{ARI.Simple =  ASL + 9 AWL}}
+  \item{\code{"ARI.Simple"}:}{A simplified version of Senter and Smith's
+  (1967) Automated Readability Index. Automated Readability Index.
+  \deqn{ASL + 9 AWL}}
   
-  \item{\code{"Bormuth.MC"}:}{\emph{Bormuth Mean Cloze Formula (1969)}: \deqn{Bormuth = 
-  0.886593 - 0.03640 \times AWL + 0.161911 \times AFW  - 0.21401 \times ASL - 0.000577 \times ASL^2 - 
-  0.000005 \times ASL^3 }{Bormuth = 0.886593 - 0.03640 x AWL + 0.161911 x AFW  - 0.21401 x 
-  ASL - 0.000577 x ASL^2 -  0.000005 x ASL^3 }}
+  \item{\code{"Bormuth.MC"}:}{Bormuth's (1969) Mean Cloze Formula. 
+  \deqn{0.886593 - 0.03640 \times AWL + 0.161911 \times AFW  - 0.21401 \times
+  ASL - 0.000577 \times ASL^2 - 0.000005 \times ASL^3}{
+  0.886593 - 0.03640 * AWL + 0.161911 * AFW  - 0.21401 *
+  ASL - 0.000577 * ASL^2 - 0.000005 * ASL^3}}
   
-  \item{\code{"Bormuth.GP"}:}{\emph{Bormuth Grade Placement (1969)}:
-  \deqn{Bormuth.GP = 4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194CCS -
-  2.046CCS^2 - 11.767CCS^3 - 42.285(M \times CCS) + 97.620(M \times CCS)^2 -
-  59.538(M \times CCS)^2 where M is the Bormuth Mean Cloze Formula as in
-  \emph{"Bormuth"} above, and CCS is the Cloze Criterion Score (Bormuth,
-  1968)}{Bormuth.GP = 4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194CCS -
-  2.046CCS^2 - 11.767CCS^3 - 42.285(M x CCS) + 97.620(M x CCS)^2 - 59.538(M x
-  CCS)^2 where M is the Bormuth Mean Cloze Formula as in "Bormuth" above, and
-  CCS is the Cloze Criterion Score (Bormuth, 1968)}}
+  \item{\code{"Bormuth.GP"}:}{Bormuth's (1969) Grade Placement score.
+  \deqn{4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194 CCS -
+  2.046 CCS^2 - 11.767 CCS^3 - 42.285(M \times CCS) + 97.620(M \times CCS)^2 -
+  59.538(M \times CCS)^2}{
+  4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194 CCS -
+  2.046 CCS^2 - 11.767 CCS^3 - 42.285(M * CCS) + 97.620(M * CCS)^2 -
+  59.538(M * CCS)^2}
+  where \eqn{M} is the Bormuth Mean Cloze Formula as in
+  \code{"Bormuth"} above, and \eqn{CCS} is the Cloze Criterion Score (Bormuth,
+  1968).}
  
-  \item{\code{"Coleman"}:}{\emph{Coleman's Readability Formula 1 (1971)}: \deqn{Coleman = 
-  1.29 \times \frac{100 \times No. of 1-Syllable Words}{No. of Words} - 38.45}{Coleman = 
-  1.29 x (100 x No. of 1-Syllable Words / No. of Words) - 38.45
+  \item{\code{"Coleman"}:}{Coleman's (1971) Readability Formula 1.
+  \deqn{1.29 \times \frac{100 \times n_{wsy=1}}{n_w} - 38.45}{
+  1.29 x (100 x Nwsy1 / Nw) - 38.45}
   
-  (The scaling by 100 arises because the Coleman measures are calculated on a 
-  per 100 words basis)}}
+  where \eqn{n_{wsy=1}} = Nwsy1 = the number of one-syllable words.  The
+  scaling by 100 in this and the other Coleman-derived measures arises
+  because the Coleman measures are calculated on a per 100 words basis.}
   
-  \item{\code{"Coleman.C2"}:}{\emph{Coleman's Readability Formula 2 (1971)}:
-  \deqn{Coleman2 = 1.16 \times \frac{100 \times No. of 1-Syllable Words}{No.
-  of Words} + 1.48 \times \frac{100 \times No. of Sentences}{No. of Words}
-  -37.95 }{Coleman2 = 1.16 x (100 x No. of 1-Syllable Words / No. of Words) +
-  1.48 x (100 x No. of Sentences / No. of Words) - 37.95
-  
-  (The scaling by 100 arises because the Coleman measures are calculated on a 
-  per 100 words basis)}}
+  \item{\code{"Coleman.C2"}:}{Coleman's (1971) Readability Formula 2.
+  \deqn{1.16 \times \frac{100 \times n_{wsy=1}}{
+  Nw + 1.48 \times \frac{100 \times n_{st}}{n_w} - 37.95}}{
+  1.16 * (100 * Nwsy1 / Nw) + 1.48 * (100 * Nst / Nw) - 37.95}}
 
-  \item{\code{"Coleman.Liau.ECP"}:}{\emph{Coleman-Liau Estimated Cloze Percent
-  (ECP) (1975)}: \deqn{Coleman-Liau ECP = 141.8401 - 0.214590 \times 100
-  \times AWL + 1.079812 \times \frac{No. of Sentences \times 100}{No. of
-  Words}}{Coleman-Liau ECP =  141.8401 - (0.214590 x 100 x AWL) + (1.079812 x
-  No. of Sentences x 100 / No. of Words)
+  \item{\code{"Coleman.Liau.ECP"}:}{Coleman-Liau Estimated Cloze Percent
+  (ECP) (Coleman and Liau 1975).
+  \deqn{141.8401 - 0.214590 \times 100
+  \times AWL + 1.079812 \times \frac{n_{st} \times 100}{n_w}}{
+  141.8401 - (0.214590 * 100 * AWL) + (1.079812 * Nst x 100 / Nw)}}
   
-  (The scaling by 100 arises because the Coleman.Liau measure is calculated on a 
-  per 100 words basis)}}
+  \item{\code{"Coleman.Liau.Grade"}:}{Coleman-Liau Grade Level (Coleman
+  and Liau 1975).
+  \deqn{-27.4004 \times \mathtt{Coleman.Liau.ECP} \times 100 +
+  23.06395}{-27.4004 * Coleman.Liau.ECP / 100 + 23.06395}}
+
+  \item{\code{"Coleman.Liau.Short"}:}{Coleman-Liau Index (Coleman and Liau 1975).
+  \deqn{5.88 \times AWL + 29.6 \times \frac{n_{st}}{n_w} - 15.8}{
+  5.88 * AWL + 0.296 * Nst / Nw) - 15.8}}
   
-  \item{\code{"Coleman.Liau.Grade"}:}{\emph{Coleman-Liau Grade Level (1975)}:
-  \deqn{Coleman-Liau Grade = -27.4004 \times Coleman.Liau.ECP \times 100 +
-  23.06395}{Coleman-Liau Grade =  -27.4004 x Coleman.Liau.ECP / 100 +
-  23.06395}}
+  \item{\code{"Dale.Chall"}:}{The New Dale-Chall Readability formula (Chall
+  and Dale 1995).
+  \deqn{64 - (0.95 \times 100 \times \frac{n_{wd}}{n_w}) - (0.69 \times ASL)}{
+  64 - (0.95 * 100 * Nwd / Nw) - (0.69 * ASL)}}
 
-  \item{\code{"Coleman.Liau.Short"}:}{\emph{Coleman-Liau Index (1975)}:
-  \deqn{Coleman-Liau.Short= 5.88 \times AWL + 29.6 \times \frac{No. of
-  Sentences}{No. of Words} - 15.8}{Coleman-Liau.Short = 5.88 x Average Word
-  Length + 0.296 x (No. of Sentences / No. of Words) - 15.8}}
+  \item{\code{"Dale.Chall.Old"}:}{The original Dale-Chall Readability formula
+  (Dale and Chall (1948). 
+  \deqn{0.1579 \times 100 \times \frac{n_{wd}}{n_w} + 0.0496 \times ASL [+ 3.6365]}{
+  0.1579 x 100 x Nwd / Nw  + 0.0496 x ASL [+ 3.6365]}
   
-  \item{\code{"Dale.Chall"}:}{\emph{New Dale-Chall (1995)}: \deqn{Dale.Chall
-  = 64 - (0.95 \times 100 \times \frac{No. of Difficult Words}{No. of Words})
-  - (0.69 \times ASL)}{Dale.Chall = 64 - (0.95 x 100 x No. of Difficult
-  Words/No. of Words) - (0.69 x ASL)}}
+  The additional 3.6365 is only addded if (Nwd / Nw) > 0.05.}
 
-  \item{\code{"Dale.Chall.Old"}:}{\emph{Dale-Chall (1948)}: \deqn{
-  Dale.Chall.Old =  0.1579 \times 100 \times \frac{No. of Difficult
-  Words}{No. of Words} + 0.0496 \times ASL (+ 3.6365)}{Dale.Chall.Old =
-  0.1579 x 100 x No. of Difficult Words / No. of Words  + 0.0496 x ASL
-  (+3.6365 if No. of Difficult Words / No. of Words is > 0.05)}}
-
-  \item{\code{"Dale.Chall.PSK"}:}{\emph{Dale-Chall Measure,
-  Powers-Sumner-Kearl Variation (1958)}: \deqn{Dale.Chall.PSK = 0.1155 \times
-  100 \frac{No. of Difficult Words}{No. of Words}) + (0.0596 \times ASL) +
-  3.2672 }{Dale.Chall.PSK = (0.1155 x 100 x No. of Difficult Words / No. of
-  Words) + (0.0596 x ASL) + 3.2672 }}
+  \item{\code{"Dale.Chall.PSK"}:}{The Powers-Sumner-Kearl Variation of the 
+  Dale and Chall Readability formula (Powers, Sumner, and Kearl 1958).
+  \deqn{0.1155 \times
+  100 \frac{n_{wd}}{n_w}) + (0.0596 \times ASL) + 3.2672 }{
+  (0.1155 x 100 x Nwd / Nw) + (0.0596 x ASL) + 3.2672}}
 
   \item{\code{"Danielson.Bryan"}:}{\emph{Danielson-Bryan (1963)}: \deqn{
   Danielson-Bryan = (1.0364 \times \frac{No. of Characters}{No. of Blanks}) +
@@ -167,7 +172,7 @@ The following readability formulas have been implemented, where
 
   \item{\code{"Flesch.Kincaid"}:}{\emph{Flesch-Kincaid Score (1975)}: \deqn{
   Flesch-Kincaid = 0.39 \times ASL + 11.8  \times \frac{No. of Syllables}{No.
-  of Words}- 15.59}{Flesch-Kincaid = 0.39 x ASL + 11.8  x(No. of Syllables /
+  of Words} - 15.59}{Flesch-Kincaid = 0.39 x ASL + 11.8  x(No. of Syllables /
   No. of Words) - 15.59}}
 
   \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 0.4
@@ -375,10 +380,11 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{"Lix and
   Coleman, M., & Liau, T. L. (1975). \href{https://psycnet.apa.org/record/1975-22007-001}{"A computer 
   readability formula designed for machine scoring."} Journal of Applied Psychology, 60(2), 283.
   
-  Dale, E., & Chall, J. S. (1948). \href{https://www.jstor.org/stable/pdf/1473669}{"A formula 
-  for predicting readability: Instructions."} \emph{Educational Research Bulletin} 37-54.
+  Dale, E. and Chall, J. S. (1948).
+  \href{https://www.jstor.org/stable/pdf/1473669}{"A formula for predicting
+  readability: Instructions."} \emph{Educational Research Bulletin} 37-54.
   
-  Chall, J. S., & Dale, E. (1995). \emph{Readability revisited: The new
+  Chall, J. S. and Dale, E. (1995). \emph{Readability revisited: The new
   Dale-Chall readability formula}. Brookline Books.
   
   Dickes, P. & Steiwer, L. (1977). "Ausarbeitung von Lesbarkeitsformeln
@@ -416,9 +422,10 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{"Lix and
   McLaughlin, G. H. (1969). \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{"SMOG grading-a new readability formula."} 
   \emph{Journal of reading}, 12(8), 639-646.
 
-  Powers, R. D., Sumner, W. A., & Kearl, B. E. (1958). \href{https://psycnet.apa.org/record/1962-03617-001}{"A recalculation of
-  four adult readability formulas."} \emph{Journal of Educational Psychology}, 49(2),
-  99.
+  Powers, R. D., Sumner, W. A., and Kearl, B. E. (1958).
+  \href{https://psycnet.apa.org/record/1962-03617-001}{"A recalculation of
+  four adult readability formulas."} \emph{Journal of Educational
+  Psychology}, 49(2), 99.
 
   Senter, R. J., & Smith, E. A. (1967). \href{https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf}{Automated readability index.}
   CINCINNATI UNIV OH.
