@@ -117,8 +117,8 @@ textstat_keyness.dfm <- function(x, target = 1L,
         stop("number of target documents must be < ndoc")
     }
     
-    # use original docnames only when there are two documents
-    if (ndoc(x) == 2) {
+    # use original docnames only when there are two (different) documents
+    if (ndoc(x) == 2 && length(unique(docnames(x))) > 1) {
         label <- docnames(x)[order(target, decreasing = TRUE)]
     } else {
         if (sum(target) == 1 && !is.null(docnames(x)[target])) {

@@ -220,6 +220,7 @@ test_that("is_grouped is working", {
     
 })
 
+
 test_that("dfm_group resets weighting scheme to count (#1545)", {
     
     mt1 <- dfm_weight(dfm(c("a b c c", "b c d", "a")), "boolean")
@@ -230,5 +231,21 @@ test_that("dfm_group resets weighting scheme to count (#1545)", {
     
     mt3 <- dfm_weight(mt2, "logcount")
     expect_equal(mt3@weightTf$scheme, "logcount")
+
+test_that("group_docvar drops list column (#1553)", {
+    data <- data.frame(vec1 = c(1, 3, 3, 6),
+                       vec2 = c("a", "b", "b", "c"))
+    data$lis <- list(1:3, -5, 3:4, 1)
+    expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
+                 data.frame(data.frame(vec1 = c(1, 3, 6),
+                                       vec2 = c("a", "b", "c"),
+                                       row.names = c(1, 2, 3))))
     
+    corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),
+                   docvars = data)
+    mt <- dfm(corp)
+    expect_equal(docvars(dfm_group(mt, c(1, 2, 2, 3))),
+                 data.frame(data.frame(vec1 = c(1, 3, 6),
+                                       vec2 = c("a", "b", "c"),
+                                       row.names = c(1, 2, 3))))
 })
