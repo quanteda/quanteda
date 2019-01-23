@@ -120,7 +120,7 @@ The following readability formulas have been implemented, where
   \deqn{0.1579 \times 100 \times \frac{n_{wd}}{n_w} + 0.0496 \times ASL [+ 3.6365]}{
   0.1579 x 100 x Nwd / Nw  + 0.0496 x ASL [+ 3.6365]}
   
-  The additional 3.6365 is only addded if (Nwd / Nw) > 0.05.}
+  The additional 3.6365 is only added if (Nwd / Nw) > 0.05.}
 
   \item{\code{"Dale.Chall.PSK"}:}{The Powers-Sumner-Kearl Variation of the 
   Dale and Chall Readability formula (Powers, Sumner, and Kearl 1958).

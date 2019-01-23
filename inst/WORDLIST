@@ -1,5 +1,6 @@
 ACL
 ACLEACL
+AFW
 analyzed
 analyzing
 anderen
@@ -18,6 +19,7 @@ Blaheta
 bn
 Bondi
 Bormuth
+Bormuth's
 brkiter
 camelCase
 Caylor
@@ -198,6 +200,7 @@ mycorpus
 mydict
 naivebayes
 nb
+Nc
 NEEDFIXING
 Nenadic
 Neuberechnung
@@ -211,9 +214,15 @@ Nimaldasan
 NLP
 nscrabble
 nsentence
+Nst
+Nsy
 nsyllable
 ntoken
 nuls
+Nw
+Nwd
+Nwf
+Nwsy
 oauth
 Oecologia
 org
