@@ -231,7 +231,8 @@ test_that("dfm_group resets weighting scheme to count (#1545)", {
     
     mt3 <- dfm_weight(mt2, "logcount")
     expect_equal(mt3@weightTf$scheme, "logcount")
-
+})
+    
 test_that("group_docvar drops list column (#1553)", {
     data <- data.frame(vec1 = c(1, 3, 3, 6),
                        vec2 = c("a", "b", "b", "c"))
