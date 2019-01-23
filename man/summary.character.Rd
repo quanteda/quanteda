@@ -12,7 +12,7 @@
 \item{...}{for additional passing of arguments to default method}
 }
 \description{
-Necessary to prevent the \pkg{network} package's \code{summary.character} method 
+Necessary to prevent the \pkg{network} package's \code{summary.character} method
 from causing inconsistent behaviour with other summary methods.
 }
 \keyword{internal}

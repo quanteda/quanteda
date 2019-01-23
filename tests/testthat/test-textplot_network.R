@@ -22,6 +22,7 @@ test_that("test textplot_network works with vectorlized argument", {
     expect_silent(textplot_network(testfcm, vertex_color = rep(c(1, 2), nrow(testfcm) / 2)))
     expect_silent(textplot_network(testfcm, vertex_size = rowSums(testfcm) / 5))
     expect_silent(textplot_network(testfcm, vertex_labelcolor = rep(c(1, NA), nrow(testfcm) / 2)))
+    expect_silent(textplot_network(testfcm, vertex_labelsize = rowSums(testfcm) / 5))
 })
 
 test_that("textplot_network error when fcm is too large", {
