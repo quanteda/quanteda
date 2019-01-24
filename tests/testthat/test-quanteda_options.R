@@ -78,8 +78,23 @@ test_that("quanteda_options works with threads", {
     )
     quanteda_options(threads = 2)
     expect_equal(
-        quanteda_options("threads"),
-        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS'))
+        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
+        quanteda_options("threads")
     )
+    expect_equal(
+        as.numeric(Sys.getenv('OMP_THREAD_LIMIT')),
+        quanteda_options("threads")
+    )
+    quanteda_options(threads = 1.5)
+    expect_equal(
+        quanteda_options("threads"), 1L
+    )
+    expect_equal(
+        quanteda_options("threads"), 1L
+    )
+    expect_error(quanteda_options(threads = 0),
+                 "^Number of threads must be greater or equal to 1")
+    expect_warning(quanteda_options(threads = 100),
+                 "^Setting threads instead to maximum available.*")
 })
 
