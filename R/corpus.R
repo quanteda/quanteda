@@ -156,7 +156,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    names(x) <- docvar[["docid_"]]
+    names(x) <- docvar[["docname_"]]
     class(x) <- "corpus"
     attr(x, "unit") <- "documents"
     attr(x, "meta") <- meta("character")
