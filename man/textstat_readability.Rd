@@ -276,8 +276,11 @@ The following readability formulas have been implemented, where
   
   where \eqn{n_{wsy>=7}} = Nwmin7sy = the number of words with 7-syllables or more.}
 
-  \item{\code{"Scrabble"}:}{Scrabble Measure. \deqn{ Mean
-  Scrabble Letter Values of All Words}}
+  \item{\code{"Scrabble"}:}{Scrabble Measure. \deqn{Mean
+  Scrabble Letter Values of All Words}.  
+  Scabble values are for English.  There is no reference for this, as we
+  created it experimentally.  It's not part of any accepted readability
+  index!}
 
   \item{\code{"SMOG"}:}{Simple Measure of Gobbledygook (SMOG) (McLaughlin 1969). \deqn{ 1.043
    \times \sqrt{n_{wsy>=3}} \times \frac{30}{n_{st}} + 3.1291}{1.043 * sqrt(Nwmin3sy
