@@ -34,14 +34,16 @@ docnames.corpus <- function(x) {
     # didn't use accessor documents() because didn't want to pass
     # that large object
     if (is.null(rownames(x$documents))) {
-        paste0('text', seq_len(ndoc(x)))
+        paste0("text", seq_len(ndoc(x)))
     } else {
         rownames(x$documents)
     }
 }
 
 #' @param value a character vector of the same length as \code{x}
-#' @return \code{docnames <-} assigns new values to the document names of an object.
+#' @return \code{docnames <-} assigns new values to the document names of an object.  
+#' docnames can only be character, so any non-character value assigned to be a
+#' docname will be coerced to mode `character`.
 #' @export
 #' @examples 
 #' # reassign the document names of the inaugural speech corpus
@@ -60,21 +62,20 @@ docnames.corpus <- function(x) {
 #' @noRd
 #' @export
 "docnames<-.corpus" <- function(x, value) {
-    docvars(x, '_document') <- rownames(x$documents) <- value
+    docvars(x, "_document") <- rownames(x$documents) <- as.character(value)
     return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.tokens" <- function(x, value) {
-    docvars(x, '_document') <- names(x) <- value
+    docvars(x, "_document") <- names(x) <- as.character(value)
     return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.dfm" <- function(x, value) {
-    docvars(x, '_document') <- x@Dimnames$docs <- value
+    docvars(x, "_document") <- x@Dimnames$docs <- as.character(value)
     return(x)
 }
-
