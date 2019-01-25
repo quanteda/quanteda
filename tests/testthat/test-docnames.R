@@ -46,3 +46,12 @@ test_that("docnames are character only (#1574)", {
     rownames(dfmat) <- 1:2
     expect_is(docnames(dfmat), "character")
 })
+
+test_that("dfm docnames cannot be made integer before textstat_simil", {
+    dfmat <- data_dfm_lbgexample
+    dfmat@Dimnames$docs <- seq_len(ndoc(dfmat))
+    expect_identical(
+        dimnames(as.matrix(textstat_simil(dfmat)))[[1]],
+        as.character(1:6)
+    )
+})
