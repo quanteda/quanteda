@@ -278,7 +278,7 @@ The following readability formulas have been implemented, where
 
   \item{\code{"Scrabble"}:}{Scrabble Measure. \deqn{Mean
   Scrabble Letter Values of All Words}.  
-  Scabble values are for English.  There is no reference for this, as we
+  Scrabble values are for English.  There is no reference for this, as we
   created it experimentally.  It's not part of any accepted readability
   index!}
 
