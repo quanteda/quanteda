@@ -70,7 +70,7 @@
 #'
 #'   \item{\code{"Coleman.Liau.Short"}:}{Coleman-Liau Index (Coleman and Liau 1975).
 #'   \deqn{5.88 \times AWL + 29.6 \times \frac{n_{st}}{n_w} - 15.8}{
-#'   5.88 * AWL + 0.296 * Nst / Nw) - 15.8}}
+#'   5.88 * AWL + (0.296 * Nst / Nw) - 15.8}}
 #'   
 #'   \item{\code{"Dale.Chall"}:}{The New Dale-Chall Readability formula (Chall
 #'   and Dale 1995).
@@ -80,104 +80,108 @@
 #'   \item{\code{"Dale.Chall.Old"}:}{The original Dale-Chall Readability formula
 #'   (Dale and Chall (1948). 
 #'   \deqn{0.1579 \times 100 \times \frac{n_{wd}}{n_w} + 0.0496 \times ASL [+ 3.6365]}{
-#'   0.1579 x 100 x Nwd / Nw  + 0.0496 x ASL [+ 3.6365]}
+#'   0.1579 * 100 * Nwd / Nw  + 0.0496 * ASL [+ 3.6365]}
 #'   
 #'   The additional 3.6365 is only added if (Nwd / Nw) > 0.05.}
 #'
 #'   \item{\code{"Dale.Chall.PSK"}:}{The Powers-Sumner-Kearl Variation of the 
-#'   Dale and Chall Readability formula (Powers, Sumner, and Kearl 1958).
+#'   Dale and Chall Readability formula (Powers, Sumner and Kearl, 1958).
 #'   \deqn{0.1155 \times
 #'   100 \frac{n_{wd}}{n_w}) + (0.0596 \times ASL) + 3.2672 }{
-#'   (0.1155 x 100 x Nwd / Nw) + (0.0596 x ASL) + 3.2672}}
+#'   (0.1155 * 100 * Nwd / Nw) + (0.0596 * ASL) + 3.2672}}
 #'
-#'   \item{\code{"Danielson.Bryan"}:}{\emph{Danielson-Bryan (1963)}: \deqn{
-#'   Danielson-Bryan = (1.0364 \times \frac{No. of Characters}{No. of Blanks}) +
-#'   (0.0194 \times \frac{No. of Characters}{No. of Sentences}) -
-#'   0.6059}{Danielson-Bryan = (1.0364 x No. of Characters / No. of Blanks) +
-#'   (0.0194 x No. of Characters / No. of Sentences) - 0.6059}}
+#'   \item{\code{"Danielson.Bryan"}:}{Danielson-Bryan (1963). \deqn{
+#'   Danielson-Bryan = (1.0364 \times \frac{n_{c}}{n_{blank}}) +
+#'   (0.0194 \times \frac{n_{c}}{n_{st}}) -
+#'   0.6059}{Danielson-Bryan = (1.0364 * Nc / Nblank) +
+#'   (0.0194 * Nc / Nst) - 0.6059}
+#'   
+#'   where n_{blank} = Nblank = the number of blanks.}
 #'
-#'   \item{\code{"Danielson.Bryan2"}:}{\emph{Danielson-Bryan2 (1963)}: \deqn{
-#'   Danielson-Bryan = 131.059- (10.364 \times \frac{No. of Characters}{No. of
-#'   Blanks}) + (0.0194 \times \frac{No. of Characters}{No. of
-#'   Sentences})}{Danielson-Bryan2 = 131.059 - (10.364 x No. of Characters / No.
-#'   of Blanks) + (0.0194 x No. of Characters / No. of Sentences)}}
+#'   \item{\code{"Danielson.Bryan2"}:}{Danielson-Bryan2 (1963). \deqn{
+#'   Danielson-Bryan2 = 131.059- (10.364 \times \frac{n_{c}}{n_{blank}}) + (0.0194
+#'    \times \frac{n_{c}}{n_{st}})}{Danielson-Bryan2 = 131.059 - (10.364 * Nc / 
+#'    Nblank) + (0.0194 * Nc / Nst)}
+#'    
+#'    where n_{blank} = Nblank = the number of blanks.}
 #'
-#'   \item{\code{"Dickes.Steiwer"}:}{\emph{Dickes-Steiwer Index (1977)}: \deqn{
+#'   \item{\code{"Dickes.Steiwer"}:}{Dickes-Steiwer Index (1977). \deqn{
 #'   Dickes-Steiwer = 235.95993 - (7.3021 \times AWL)  - (12.56438 \times ASL) -
-#'   (50.03293 \times Type-Token Ratio)}{Dickes-Steiwer = 235.95993 - (73.021 x
-#'   AWL) - (12.56438 x ASL) - (50.03293 x TTR)}}
+#'   (50.03293 \times TTR)}{Dickes-Steiwer = 235.95993 - (73.021 *
+#'   AWL) - (12.56438 * ASL) - (50.03293 * TTR)}
+#'   
+#'   where TTR is the Type-Token Ratio (see textstat_lexdiv)}
 #'
-#'   \item{\code{"DRP"}:}{\emph{Degrees of Reading Power (Relies on Bormuth.MC
-#'   (1969) as in "Bormuth" above)}: \deqn{ DRP = (1 - Bormuth.MC) \times
-#'   100}{DRP = (1 - Bormuth.MC) x 100}}
+#'   \item{\code{"DRP"}:}{Degrees of Reading Power. \deqn{ DRP = (1 - Bormuth.MC) \times
+#'   100}
+#'   
+#'   where Bormuth.MC refers to Bormuth's (1969)  Mean Cloze Formula (documented above)}
 #'
 #'   \item{\code{"ELF"}:}{\emph{Easy Listening Formula, Fang (1966)}: \deqn{ ELF
 #'   = \frac{No. of Words with >= 2 Syllables}{No. of Sentences}}{ELF = (No. of
 #'   Words with >= 2 Syllables / No. of Sentences)}}
 #'
-#'   \item{\code{"Farr.Jenkins.Paterson"}:}{\emph{Farr-Jenkins-Paterson's
-#'   Simplification of Flesch's Reading Ease Score (1951)}: \deqn{
+#'   \item{\code{"Farr.Jenkins.Paterson"}:}{Farr-Jenkins-Paterson's
+#'   Simplification of Flesch's Reading Ease Score (1951). \deqn{
 #'   Farr.Jenkins.Paterson = -31.517 - (1.015 \times ASL) + (1.599 \times
-#'   \frac{No. of 1-Syllable Words}{No. of Words}}{Farr.Jenkins.Paterson -31.517
-#'   - (1.015 x ASL) + (1.599 x No. of 1-Syllable Words / No. of Words)}}
-#'
-#'   \item{\code{"Flesch"}:}{\emph{Flesch Reading Ease Score (FRES) (1948)}:
-#'   \deqn{ FRES = 206.835 - (1.015 \times ASL) - (84.6 \times \frac{No. of
-#'   Syllables}{No. of Words})}{FRES = 206.835 - (1.015 x ASL) - (84.6 x (No. of
-#'   Syllables / No. of Words))}}
-#'
-#'   \item{\code{"Flesch.PSK"}:}{\emph{Flesch Reading Ease Score,
-#'   Powers-Sumner-Kearl's Variation (1958)}: \deqn{Flesch.PSK = (0.0778 \times
-#'   ASL) + (4.55 \times \frac{No. of Syllables}{No. of Words}) -
-#'   2.2029}{Flesch.PSK = (0.0078 x ASL) + (4.55 x No. of Syllables / No. of
-#'   Words) - 2.2029}}
-#'
-#'   \item{\code{"Flesch.Kincaid"}:}{\emph{Flesch-Kincaid Score (1975)}: \deqn{
-#'   Flesch-Kincaid = 0.39 \times ASL + 11.8  \times \frac{No. of Syllables}{No.
-#'   of Words} - 15.59}{Flesch-Kincaid = 0.39 x ASL + 11.8  x(No. of Syllables /
-#'   No. of Words) - 15.59}}
-#'
-#'   \item{\code{"FOG"}:}{\emph{Gunning's Fog Index (1952)}: \deqn{FOG = 0.4
-#'   \times (ASL + 100 \times (No. of Words with >= 3 Syllables  / No. of
-#'   Words))}{FOG = 0.4 x (ASL + 100 x (No. of Words with >= 3 Syllables / No.
-#'   of Words))
+#'   \frac{n_{wsy=1}}{n_w}}{Farr.Jenkins.Paterson -31.517
+#'   - (1.015 * ASL) + (1.599 * Nwsy1 / Nw)}
 #'   
-#'   (The scaling by 100 arises because the initial FOG index is based on
-#'   just a sample of 100 words)}}
+#'   where n_{wsy=1} = Nwsy1 = the number of one-syllable words.}
 #'
-#'   \item{\code{"FOG.PSK"}:}{\emph{FOG, Powers-Sumner-Kearl's Variation
-#'   (1958)}: \deqn{FOG.PSK = 3.0680 \times (0.0877 \times ASL) +(0.0984 \times
-#'   100 \times \frac{No. of Words with >=3 Syllables}{No. of Words})}{FOG.PSK =
-#'   3.0680 x (0.0877 x ASL) +(0.0984 x 100 x No. of Words with >=3 Syllables /
-#'   No. of Words)
+#'   \item{\code{"Flesch"}:}{Flesch Reading Ease Score (FRES) (1948).
+#'   \deqn{ FRES = 206.835 - (1.015 \times ASL) - (84.6 \times \frac{n_{sy}}{n_{w}})}{FRES = 
+#'   206.835 - (1.015 * ASL) - (84.6 * (Nsy / Nw))}}
+#'
+#'   \item{\code{"Flesch.PSK"}:}{Flesch Reading Ease Score,
+#'   Powers-Sumner-Kearl's Variation (1958). \deqn{Flesch.PSK = (0.0778 \times
+#'   ASL) + (4.55 \times \frac{n_{sy}}{n_{w}}) -
+#'   2.2029}{Flesch.PSK = (0.0078 * ASL) + (4.55 * Nsy / Nw) - 2.2029}}
+#'
+#'   \item{\code{"Flesch.Kincaid"}:}{Flesch-Kincaid Score (1975). \deqn{
+#'   Flesch-Kincaid = 0.39 \times ASL + 11.8  \times \frac{n_{sy}}{n_{w}} -
+#'   15.59}{Flesch-Kincaid = 0.39 * ASL + 11.8  * (NSy /Nw) - 15.59}}
+#'
+#'   \item{\code{"FOG"}:}{Gunning's Fog Index (1952). \deqn{FOG = 0.4
+#'   \times (ASL + 100 \times \frac{n_{wsy>=3}}{n_{w}})}{FOG = 0.4 * 
+#'   (ASL + 100 * (Nwmin3sy / Nw)}
 #'   
-#'   (The scaling by 100 arises because the initial FOG index is based on
-#'   just a sample of 100 words)}}
+#'   where n_{wsy>=3} = Nwmin3sy = the number of words with 3-syllables or more.
+#'   The scaling by 100 arises because the initial FOG index is based on
+#'   just a sample of 100 words)}
 #'
-#'   \item{\code{"FOG.NRI"}:}{\emph{FOG, Navy Readability Index (1975)}:
-#'   \deqn{FOG.NRI = ( \frac{(No. of Words with < 3 Syllables + 3 \times No. of
-#'   3-Syllables Words)}{(100 \times \frac{No. of Sentences}{No. of Words})}  -
-#'   3) / 2 }{FOG = (((No. of Words with <3 Syllables + 3 x No. of 3-Syllables
-#'   Words) / (100 x No. of Sentences / No. of Words))-3) / 2
+#'   \item{\code{"FOG.PSK"}:}{The Powers-Sumner-Kearl Variation of Gunning's
+#'   Fog Index (Powers, Sumner and Kearl, 1958). \deqn{FOG.PSK = 3.0680 \times 
+#'   (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{n_{wsy>=3}}{n_{w}})}{FOG.PSK =
+#'   3.0680 * (0.0877 * ASL) +(0.0984 * 100 * (Nwmin3sy / Nw)}
 #'   
-#'   (The scaling by 100 arises because the initial FOG index is based on
-#'   just a sample of 100 words)}}
+#'   where n_{wsy>=3} = Nwmin3sy = the number of words with 3-syllables or more.
+#'   The scaling by 100 arises because the initial FOG index is based on
+#'   just a sample of 100 words)}
 #'
-#'   \item{\code{"FORCAST"}:}{\emph{FORCAST (Simplified FORCAST.RGL) (Caylor &
-#'   Sticht, 1973)}: \deqn{FORCAST = 20 - \frac{(No. of 1-Syllable Words \times
-#'   150)}{(No. of Words \times 10)}}{FORCAST = 20 - (No. of 1-Syllable Words x
-#'   150) / (No. of Words x 10)
+#'   \item{\code{"FOG.NRI"}:}{The Navy's Adaptation of Gunning's Fog Index (1975).
+#'   \deqn{FOG.NRI = (\frac{(n_{wsy<3} + 3 \times n_{wsy=3})}{(100 \times \frac{N_{st}}{N_{w}})}  -
+#'   3) / 2 }{FOG = (((Nwless3sy + 3 * Nw3sy) / (100 * Nst / Nw))-3) / 2}
+#'   
+#'   where n_{wsy<3} = Nwless3sy = the number of words with \emph{less than} 3 syllables, and
+#'   n_{wsy=3} = Nw3sy = the number of 3-syllable words. The scaling by 100
+#'   arises because the initial FOG index is based on just a sample of 100 words)}
 #'
-#'   (The scaling by 150 arises because the initial FORCAST index is based on
-#'   just a sample of 150 words)}}
+#'   \item{\code{"FORCAST"}:}{FORCAST (Simplified Version of FORCAST.RGL) (Caylor &
+#'   Sticht, 1973). \deqn{FORCAST = 20 - \frac{n_{wsy=1} \times
+#'   150)}{(n_{w} \times 10)}}{FORCAST = 20 - (Nwsy1 *
+#'   150) / (Nw * 10)}
 #'
-#'   \item{\code{"FORCAST.RGL"}:}{\emph{FORCAST.RGL (Caylor & Sticht, 1973)}:
-#'   \deqn{FORCAST.RGL= 20.43 - 0.11 \times \frac{(No. of 1-Syllable Words
-#'   \times 150)}{No. of Words}}{FORCAST.RGL = 20.43 - 0.11 x (No. of 1-Syllable
-#'   Words x 150) / (No. of Words)
+#'   where n_{wsy=1} = Nwsy1 = the number of one-syllable words. The scaling by 150 
+#'   arises because the initial FORCAST index is based on just a sample of 150 words.}
 #'
-#'   (The scaling by 150 arises because the initial FORCAST index is based on
-#'   just a sample of 150 words)}}
+#'   \item{\code{"FORCAST.RGL"}:}{FORCAST.RGL (Caylor & Sticht, 1973).
+#'   \deqn{FORCAST.RGL= 20.43 - 0.11 \times \frac{n_{wsy=1} \times
+#'   150)}{(n_{w} \times 10)}}{FORCAST.RGL = 20.43 - 0.11 * (Nwsy1 *
+#'   150) / (Nw * 10)}
+#'
+#'   where n_{wsy=1} = Nwsy1 = the number of one-syllable words. The scaling by 150 arises 
+#'   because the initial FORCAST index is based on just a sample of 150 words.}
 #'
 #'   \item{\code{"Fucks"}:}{\emph{Fucks' Stilcharakteristik (Style
 #'   Characteristic)}: \deqn{Fucks = AWL  \times ASL }{Fucks = AWL x ASL}}
