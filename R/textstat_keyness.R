@@ -94,7 +94,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
     # error checking
     if (ndoc(x) < 2 )
         stop("x must have at least two documents")
-    if (is.character(target) && !(target %in% docnames(x)))
+    if (is.character(target) && !(all(target %in% docnames(x))))
         stop("target not found in docnames(x)")
     if (is.numeric(target) && any(target < 1 | target > ndoc(x)))
         stop("target index outside range of documents")
@@ -117,8 +117,8 @@ textstat_keyness.dfm <- function(x, target = 1L,
         stop("number of target documents must be < ndoc")
     }
     
-    # use original docnames only when there are two documents
-    if (ndoc(x) == 2) {
+    # use original docnames only when there are two (different) documents
+    if (ndoc(x) == 2 && length(unique(docnames(x))) > 1) {
         label <- docnames(x)[order(target, decreasing = TRUE)]
     } else {
         if (sum(target) == 1 && !is.null(docnames(x)[target])) {
@@ -150,7 +150,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
         result <- result[order(result[, 2], decreasing = TRUE), ]
     
     attr(result, "groups") <- docnames(temp)
-    class(result) <- c('keyness', 'textstat', 'data.frame')
+    class(result) <- c("keyness", "textstat", "data.frame")
     rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
@@ -187,7 +187,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a+b+c+d)]
-    dt[, E := (a+b)*(a+c) / N]
+    dt[, E := (a+b) * (a+c) / N]
     
     if (correction == "default" | correction == "yates"){
         dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
@@ -279,8 +279,8 @@ keyness_exact <- function(x) {
     data.frame(feature = colnames(x), 
                or = result$or,
                p = result$p,
-               n_target = as.vector(x[1,]),
-               n_reference = as.vector(x[2,]),
+               n_target = as.vector(x[1, ]),
+               n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
 }
 
@@ -294,7 +294,7 @@ keyness_exact <- function(x) {
 #' @references
 #' \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
 keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")) {
-    
+
     correction <- match.arg(correction)
     epsilon <- 0.000000001; # to offset zero cell counts
     a <- b <- c <- d <- N <- E11 <- G2 <- p <- cor_app <- correction_sign <- q <- NULL 
@@ -305,19 +305,19 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
-    dt[, E11 := (a+b)*(a+c) / N]
+    dt[, E11 := (a + b) * (a + c) / N]
     
     
     if (correction == "default" | correction == "yates"){
         
-        dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+        dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5)
                          & abs(a*d - b*c) > N/2)]
         # the correction is usually only recommended if the smallest expected frequency is less than 5
         # the correction should not be applied if |ad − bc| is less than N/2.
         # implement Yates continuity correction
         # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
         # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
-        dt[, correction_sign := a*d - b*c > 0]
+        dt[, correction_sign := a * d - b * c > 0]
         dt[, c("a", "d", "b", "c") := list(a + ifelse(cor_app, ifelse(correction_sign, -0.5, 0.5), 0),
                                            d + ifelse(cor_app, ifelse(correction_sign, -0.5, 0.5), 0),
                                            b + ifelse(cor_app, ifelse(correction_sign, 0.5, -0.5), 0),
@@ -345,8 +345,8 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
     data.frame(feature = dt$feature, 
                G2 = dt[, G2],
                p = dt[, p],
-               n_target = as.vector(x[1,]),
-               n_reference = as.vector(x[2,]),
+               n_target = as.vector(x[1, ]),
+               n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
 }
 
@@ -365,7 +365,7 @@ keyness_pmi <- function(x) {
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
-    dt[, E11 := (a+b)*(a+c) / N]
+    dt[, E11 := (a + b) * (a + c) / N]
     epsilon <- .000000001  # to offset zero cell counts
     dt[, pmi :=   log(a /E11 + epsilon)]
     
@@ -378,7 +378,7 @@ keyness_pmi <- function(x) {
     data.frame(feature = dt$feature, 
                pmi = dt[, pmi],
                p = dt[, p],
-               n_target = as.vector(x[1,]),
-               n_reference = as.vector(x[2,]),
+               n_target = as.vector(x[1, ]),
+               n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
 }
