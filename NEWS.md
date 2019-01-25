@@ -13,6 +13,7 @@
 * New function `tokens_split()` allows splitting single into multiple tokens based on a pattern match. (#1500)
 * New function `tokens_chunk()` allows splitting tokens into new documents of equally-sized "chunks". (#1520)
 * New function `textstat_entropy()` now computes entropy for a dfm across feature or document margins.
+* The documentation for `textstat_readability()` is vastly improved, now providing detailing all formulas and providing full references.
 
 ### Behaviour changes
 
