@@ -58,14 +58,13 @@ The following readability formulas have been implemented, where
 }
 
 \describe{
-  \item{\code{"ARI"}:}{Senter and Smith's (1967) Automated Readability Index.
+  \item{\code{"ARI"}:}{Automated Readability Index (Senter and Smith 1967)
   \deqn{0.5 ASL  + 4.71 AWL - 21.34}}
   
-  \item{\code{"ARI.Simple"}:}{A simplified version of Senter and Smith's
-  (1967) Automated Readability Index. Automated Readability Index.
+  \item{\code{"ARI.Simple"}:}{A simplified version of Senter and Smith's (1967) Automated Readability Index.
   \deqn{ASL + 9 AWL}}
   
-  \item{\code{"Bormuth.MC"}:}{Bormuth's (1969) Mean Cloze Formula. 
+  \item{\code{"Bormuth.MC"}:}{Bormuth's (1969) Mean Cloze Formula.
   \deqn{0.886593 - 0.03640 \times AWL + 0.161911 \times AFW  - 0.21401 \times
   ASL - 0.000577 \times ASL^2 - 0.000005 \times ASL^3}{
   0.886593 - 0.03640 * AWL + 0.161911 * AFW  - 0.21401 *
@@ -84,7 +83,7 @@ The following readability formulas have been implemented, where
  
   \item{\code{"Coleman"}:}{Coleman's (1971) Readability Formula 1.
   \deqn{1.29 \times \frac{100 \times n_{wsy=1}}{n_{w}} - 38.45}{
-  1.29 x (100 x Nwsy1 / Nw) - 38.45}
+  1.29 * (100 * Nwsy1 / Nw) - 38.45}
   
   where \eqn{n_{wsy=1}} = Nwsy1 = the number of one-syllable words.  The
   scaling by 100 in this and the other Coleman-derived measures arises
@@ -99,7 +98,7 @@ The following readability formulas have been implemented, where
   (ECP) (Coleman and Liau 1975).
   \deqn{141.8401 - 0.214590 \times 100
   \times AWL + 1.079812 \times \frac{n_{st} \times 100}{n_{w}}}{
-  141.8401 - (0.214590 * 100 * AWL) + (1.079812 * Nst x 100 / Nw)}}
+  141.8401 - (0.214590 * 100 * AWL) + (1.079812 * Nst * 100 / Nw)}}
   
   \item{\code{"Coleman.Liau.Grade"}:}{Coleman-Liau Grade Level (Coleman
   and Liau 1975).
@@ -120,7 +119,7 @@ The following readability formulas have been implemented, where
   \deqn{0.1579 \times 100 \times \frac{n_{wd}}{n_{w}} + 0.0496 \times ASL [+ 3.6365]}{
   0.1579 * 100 * Nwd / Nw  + 0.0496 * ASL [+ 3.6365]}
   
-  The additional 3.6365 is only added if (Nwd / Nw) > 0.05.}
+  The additional constant 3.6365 is only added if (Nwd / Nw) > 0.05.}
 
   \item{\code{"Dale.Chall.PSK"}:}{The Powers-Sumner-Kearl Variation of the 
   Dale and Chall Readability formula (Powers, Sumner and Kearl, 1958).
@@ -128,226 +127,227 @@ The following readability formulas have been implemented, where
   100 \frac{n_{wd}}{n_{w}}) + (0.0596 \times ASL) + 3.2672 }{
   (0.1155 * 100 * Nwd / Nw) + (0.0596 * ASL) + 3.2672}}
 
-  \item{\code{"Danielson.Bryan"}:}{Danielson-Bryan (1963). \deqn{
-  Danielson-Bryan = (1.0364 \times \frac{n_{c}}{n_{blank}}) +
+  \item{\code{"Danielson.Bryan"}:}{Danielson-Bryan's (1963) Readability Measure 1. \deqn{
+  (1.0364 \times \frac{n_{c}}{n_{blank}}) +
   (0.0194 \times \frac{n_{c}}{n_{st}}) -
-  0.6059}{Danielson-Bryan = (1.0364 * Nc / Nblank) +
+  0.6059}{(1.0364 * Nc / Nblank) +
   (0.0194 * Nc / Nst) - 0.6059}
   
   where \eqn{n_{blank}} = Nblank = the number of blanks.}
 
-  \item{\code{"Danielson.Bryan2"}:}{Danielson-Bryan2 (1963). \deqn{
-  Danielson-Bryan2 = 131.059- (10.364 \times \frac{n_{c}}{n_{blank}}) + (0.0194
-   \times \frac{n_{c}}{n_{st}})}{Danielson-Bryan2 = 131.059 - (10.364 * Nc / 
+  \item{\code{"Danielson.Bryan2"}:}{Danielson-Bryan's (1963) Readability Measure 2. \deqn{
+  131.059- (10.364 \times \frac{n_{c}}{n_{blank}}) + (0.0194
+   \times \frac{n_{c}}{n_{st}})}{131.059 - (10.364 * Nc / 
    Nblank) + (0.0194 * Nc / Nst)}
    
    where \eqn{n_{blank}} = Nblank = the number of blanks.}
 
-  \item{\code{"Dickes.Steiwer"}:}{Dickes-Steiwer Index (1977). \deqn{
-  Dickes-Steiwer = 235.95993 - (7.3021 \times AWL)  - (12.56438 \times ASL) -
-  (50.03293 \times TTR)}{Dickes-Steiwer = 235.95993 - (73.021 *
+  \item{\code{"Dickes.Steiwer"}:}{Dickes-Steiwer Index (Dicks and Steiwer 1977). \deqn{
+  235.95993 - (7.3021 \times AWL)  - (12.56438 \times ASL) -
+  (50.03293 \times TTR)}{235.95993 - (73.021 *
   AWL) - (12.56438 * ASL) - (50.03293 * TTR)}
   
-  where TTR is the Type-Token Ratio (see \code{textstat_lexdiv})}
+  where TTR is the Type-Token Ratio (see \code{\link{textstat_lexdiv}})}
 
-  \item{\code{"DRP"}:}{Degrees of Reading Power. \deqn{ DRP = (1 - Bormuth.MC) *
+  \item{\code{"DRP"}:}{Degrees of Reading Power. \deqn{(1 - Bormuth.MC) *
   100}
   
   where Bormuth.MC refers to Bormuth's (1969)  Mean Cloze Formula (documented above)}
 
-  \item{\code{"ELF"}:}{\emph{Easy Listening Formula, Fang (1966)}: \deqn{ ELF
-  = \frac{n_{wsy>=2}}{n_{st}}}{ELF = (Nwmin2sy / Nst)}
+  \item{\code{"ELF"}:}{Easy Listening Formula (Fang 1966): \deqn{\frac{n_{wsy>=2}}{n_{st}}}{(Nwmin2sy / Nst)}
   
    where \eqn{n_{wsy>=2}} = Nwmin2sy = the number of words with 2 syllables or more.}
 
   \item{\code{"Farr.Jenkins.Paterson"}:}{Farr-Jenkins-Paterson's
-  Simplification of Flesch's Reading Ease Score (1951). \deqn{
-  Farr.Jenkins.Paterson = -31.517 - (1.015 \times ASL) + (1.599 \times
-  \frac{n_{wsy=1}}{n_{w}}}{Farr.Jenkins.Paterson -31.517
+  Simplification of Flesch's Reading Ease Score (Farr, Jenkins and Paterson 1951). \deqn{
+   -31.517 - (1.015 \times ASL) + (1.599 \times
+  \frac{n_{wsy=1}}{n_{w}}}{ -31.517
   - (1.015 * ASL) + (1.599 * Nwsy1 / Nw)}
   
   where \eqn{n_{wsy=1}} = Nwsy1 = the number of one-syllable words.}
 
-  \item{\code{"Flesch"}:}{Flesch Reading Ease Score (FRES) (1948).
-  \deqn{FRES = 206.835 - (1.015 \times ASL) - (84.6 \times \frac{n_{sy}}{n_{w}})}{FRES = 
+  \item{\code{"Flesch"}:}{Flesch's Reading Ease Score (Flesch 1948).
+  \deqn{206.835 - (1.015 \times ASL) - (84.6 \times \frac{n_{sy}}{n_{w}})}{
   206.835 - (1.015 * ASL) - (84.6 * (Nsy / Nw))}}
 
-  \item{\code{"Flesch.PSK"}:}{Flesch Reading Ease Score,
-  Powers-Sumner-Kearl's Variation (1958). \deqn{Flesch.PSK = (0.0778 \times
+  \item{\code{"Flesch.PSK"}:}{The Powers-Sumner-Kearl's Variation of Flesch Reading Ease Score 
+  (Powers, Sumner and Kearl, 1958). \deqn{ (0.0778 \times
   ASL) + (4.55 \times \frac{n_{sy}}{n_{w}}) -
-  2.2029}{Flesch.PSK = (0.0078 * ASL) + (4.55 * Nsy / Nw) - 2.2029}}
+  2.2029}{(0.0078 * ASL) + (4.55 * Nsy / Nw) - 2.2029}}
 
-  \item{\code{"Flesch.Kincaid"}:}{Flesch-Kincaid Score (1975). \deqn{
-  Flesch-Kincaid = 0.39 \times ASL + 11.8  \times \frac{n_{sy}}{n_{w}} -
-  15.59}{Flesch-Kincaid = 0.39 * ASL + 11.8  * (NSy /Nw) - 15.59}}
+  \item{\code{"Flesch.Kincaid"}:}{Flesch-Kincaid Readability Score (Flesch and Kincaid 1975). \deqn{
+  0.39 \times ASL + 11.8  \times \frac{n_{sy}}{n_{w}} -
+  15.59}{0.39 * ASL + 11.8  * (NSy /Nw) - 15.59}}
 
-  \item{\code{"FOG"}:}{Gunning's Fog Index (1952). \deqn{FOG = 0.4
-  \times (ASL + 100 \times \frac{n_{wsy>=3}}{n_{w}})}{FOG = 0.4 * 
+  \item{\code{"FOG"}:}{Gunning's Fog Index (Gunning 1952). \deqn{0.4
+  \times (ASL + 100 \times \frac{n_{wsy>=3}}{n_{w}})}{0.4 * 
   (ASL + 100 * (Nwmin3sy / Nw)}
   
   where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3-syllables or more.
-  The scaling by 100 arises because the initial FOG index is based on
+  The scaling by 100 arises because the original FOG index is based on
   just a sample of 100 words)}
 
   \item{\code{"FOG.PSK"}:}{The Powers-Sumner-Kearl Variation of Gunning's
-  Fog Index (Powers, Sumner and Kearl, 1958). \deqn{FOG.PSK = 3.0680 \times 
-  (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{n_{wsy>=3}}{n_{w}})}{FOG.PSK =
+  Fog Index (Powers, Sumner and Kearl, 1958). \deqn{3.0680 \times 
+  (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{n_{wsy>=3}}{n_{w}})}{
   3.0680 * (0.0877 * ASL) +(0.0984 * 100 * (Nwmin3sy / Nw)}
   
   where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3-syllables or more.
-  The scaling by 100 arises because the initial FOG index is based on
+  The scaling by 100 arises because the original FOG index is based on
   just a sample of 100 words)}
 
-  \item{\code{"FOG.NRI"}:}{The Navy's Adaptation of Gunning's Fog Index (1975).
-  \deqn{FOG.NRI = (\frac{(n_{wsy<3} + 3 \times n_{wsy=3})}{(100 \times \frac{N_{st}}{N_{w}})}  -
-  3) / 2 }{FOG = (((Nwless3sy + 3 * Nw3sy) / (100 * Nst / Nw))-3) / 2}
+  \item{\code{"FOG.NRI"}:}{The Navy's Adaptation of Gunning's Fog Index (Kincaid, Fishburne, Rogers and Chissom 1975).
+  \deqn{(\frac{(n_{wsy<3} + 3 \times n_{wsy=3})}{(100 \times \frac{N_{st}}{N_{w}})}  -
+  3) / 2 }{(((Nwless3sy + 3 * Nw3sy) / (100 * Nst / Nw))-3) / 2}
   
   where \eqn{n_{wsy<3}} = Nwless3sy = the number of words with \emph{less than} 3 syllables, and
   \eqn{n_{wsy=3}} = Nw3sy = the number of 3-syllable words. The scaling by 100
-  arises because the initial FOG index is based on just a sample of 100 words)}
+  arises because the original FOG index is based on just a sample of 100 words)}
 
-  \item{\code{"FORCAST"}:}{FORCAST (Simplified Version of FORCAST.RGL) (Caylor &
-  Sticht, 1973). \deqn{FORCAST = 20 - \frac{n_{wsy=1} \times
-  150)}{(n_{w} \times 10)}}{FORCAST = 20 - (Nwsy1 *
+  \item{\code{"FORCAST"}:}{FORCAST (Simplified Version of FORCAST.RGL) (Caylor and
+  Sticht 1973). \deqn{ 20 - \frac{n_{wsy=1} \times
+  150)}{(n_{w} \times 10)}}{ 20 - (Nwsy1 *
   150) / (Nw * 10)}
 
   where \eqn{n_{wsy=1}} = Nwsy1 = the number of one-syllable words. The scaling by 150 
-  arises because the initial FORCAST index is based on just a sample of 150 words.}
+  arises because the original FORCAST index is based on just a sample of 150 words.}
 
-  \item{\code{"FORCAST.RGL"}:}{FORCAST.RGL (Caylor & Sticht, 1973).
-  \deqn{FORCAST.RGL= 20.43 - 0.11 \times \frac{n_{wsy=1} \times
-  150)}{(n_{w} \times 10)}}{FORCAST.RGL = 20.43 - 0.11 * (Nwsy1 *
+  \item{\code{"FORCAST.RGL"}:}{FORCAST.RGL (Caylor and Sticht 1973).
+  \deqn{20.43 - 0.11 \times \frac{n_{wsy=1} \times
+  150)}{(n_{w} \times 10)}}{ 20.43 - 0.11 * (Nwsy1 *
   150) / (Nw * 10)}
 
   where \eqn{n_{wsy=1}} = Nwsy1 = the number of one-syllable words. The scaling by 150 arises 
-  because the initial FORCAST index is based on just a sample of 150 words.}
+  because the original FORCAST index is based on just a sample of 150 words.}
 
-  \item{\code{"Fucks"}:}{Fucks' Stilcharakteristik (Style
-  Characteristic). \deqn{Fucks = AWL * ASL}}
+  \item{\code{"Fucks"}:}{Fucks' (1955) Stilcharakteristik (Style
+  Characteristic). \deqn{AWL * ASL}}
 
-  \item{\code{"Linsear.Write"}:}{Linsear Write (Klare, 1975).
-  \deqn{Linsear Write = \frac{[(100 - (\frac{100 \times n_{wsy<3}}{n_{w}})) + 
+  \item{\code{"Linsear.Write"}:}{Linsear Write (Klare 1975).
+  \deqn{\frac{[(100 - (\frac{100 \times n_{wsy<3}}{n_{w}})) + 
   (3 \times \frac{100 \times n_{wsy>=3}}{n_{w}})]}{(100 \times 
-  \frac{n_{st}}{n_{w}})}}{((100 - (100 x Nwless3sy / Nw))
-  + (3 x 100 x Nwmin3sy / Nw)) / (100 x Nst / Nw)}
+  \frac{n_{st}}{n_{w}})}}{[(100 - (100 * Nwless3sy / Nw))
+  + (3 * 100 * Nwmin3sy / Nw)] / (100 * Nst / Nw)}
   
   where \eqn{n_{wsy<3}} = Nwless3sy = the number of words with \emph{less than} 3 syllables, and
   \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3-syllables or more. The scaling 
   by 100 arises because the original Linsear.Write measure is based on just a sample of 100 words)}
 
 
-  \item{\code{"LIW"}:}{Björnsson's Läsbarhetsindex (1968) (For Swedish
-  Texts). \deqn{LIW = ASL + \frac{100 \times n_{wsy>=7}}{n_{w}}}{LIW = ASL + (100 * 
+  \item{\code{"LIW"}:}{Björnsson's (1968) Läsbarhetsindex (For Swedish
+  Texts). \deqn{ASL + \frac{100 \times n_{wsy>=7}}{n_{w}}}{ ASL + (100 * 
   Nwmin7sy / Nw)}
   
   where \eqn{n_{wsy>=7}} = Nwmin7sy = the number of words with 7-syllables or more. The scaling 
   by 100 arises because the Läsbarhetsindex index is based on just a sample of 100 words)}
 
-  \item{\code{"nWS"}:}{Neue Wiener Sachtextformeln 1 (Bamberger &
-  Vanecek, 1984). \deqn{nwS = 19.35 \times \frac{n_{wsy>=3}}{n_{w}} +
+  \item{\code{"nWS"}:}{Neue Wiener Sachtextformeln 1 (Bamberger and
+  Vanecek 1984). \deqn{19.35 \times \frac{n_{wsy>=3}}{n_{w}} +
   0.1672 \times ASL + 12.97 \times \frac{b_{wchar>=6}}{n_{w}} - 3.27 \times
-   \frac{n_{wsy=1}}{n_{w}} - 0.875}{nwS = (19.35 x Nwmin3sy / Nw) +
-  (0.1672 x ASL) + (12.97 x Nwmin6char / Nw) - (3.27 x Nw1sy / Nw)- 0.875}
+   \frac{n_{wsy=1}}{n_{w}} - 0.875}{(19.35 * Nwmin3sy / Nw) +
+  (0.1672 * ASL) + (12.97 * Nwmin6char / Nw) - (3.27 * Nw1sy / Nw)- 0.875}
   
   where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more, 
   \eqn{n_{wchar>=6}} = Nwmin6char = the number of words with 6 characters or more, and
   \eqn{n_{wsy=1}} = Nwsy1 = the number of one-syllable words.}
 
-  \item{\code{"nWS.2"}:}{Neue Wiener Sachtextformeln 2 (Bamberger &
-  Vanecek, 1984). \deqn{nwS.2 = 20.07 \times \frac{n_{wsy>=3}}{n_{w}} + 0.1682 \times ASL +
-  13.73 \times \frac{n_{wchar>=6}}{n_{w}} - 2.779}{ nWs.2 = (20.07 x Nwmin3sy / Nw) + (0.1682 x ASL) + 
-  (13.73 x Nwmin6char / Nw) - 2.779}
+  \item{\code{"nWS.2"}:}{Neue Wiener Sachtextformeln 2 (Bamberger and
+  Vanecek 1984). \deqn{20.07 \times \frac{n_{wsy>=3}}{n_{w}} + 0.1682 \times ASL +
+  13.73 \times \frac{n_{wchar>=6}}{n_{w}} - 2.779}{ (20.07 * Nwmin3sy / Nw) + (0.1682 * ASL) + 
+  (13.73 * Nwmin6char / Nw) - 2.779}
   
   where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more, and
   \eqn{n_{wchar>=6}} = Nwmin6char = the number of words with 6 characters or more.}
 
-  \item{\code{"nWS.3"}:}{Neue Wiener Sachtextformeln 3 (Bamberger &
-  Vanecek, 1984). \deqn{nwS.3 = 29.63 \times \frac{n_{wsy>=3}}{n_{w}} + 0.1905 \times
-  ASL - 1.1144}{nWs.3 = (29.63 x Nwmin3sy / Nw) + (0.1905 x ASL) - 1.1144}
+  \item{\code{"nWS.3"}:}{Neue Wiener Sachtextformeln 3 (Bamberger and
+  Vanecek 1984). \deqn{29.63 \times \frac{n_{wsy>=3}}{n_{w}} + 0.1905 \times
+  ASL - 1.1144}{(29.63 * Nwmin3sy / Nw) + (0.1905 * ASL) - 1.1144}
   
   where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more.}
 
-  \item{\code{"nWS.4"}:}{Neue Wiener Sachtextformeln 4 (Bamberger &
-  Vanecek, 1984). \deqn{nwS.4 = 27.44 \times \frac{n_{wsy>=3}}{n_{w}} + 0.2656 \times
-  ASL - 1.693}{nWs.4 = (27.44 x Nwmin3sy / Nw) + (0.2656 * ASL) - 1.693}
+  \item{\code{"nWS.4"}:}{Neue Wiener Sachtextformeln 4 (Bamberger and
+  Vanecek 1984). \deqn{27.44 \times \frac{n_{wsy>=3}}{n_{w}} + 0.2656 \times
+  ASL - 1.693}{ (27.44 * Nwmin3sy / Nw) + (0.2656 * ASL) - 1.693}
   
   where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more.}
 
-  \item{\code{"RIX"}:}{Anderson's Readability Index (1983). \deqn{RIX
-  = \frac{n_{wsy>=7}}{n_{st}}}{RIX = Nwmin7sy / Nst}
+  \item{\code{"RIX"}:}{Anderson's (1983) Readability Index. \deqn{
+  \frac{n_{wsy>=7}}{n_{st}}}{ Nwmin7sy / Nst}
   
   where \eqn{n_{wsy>=7}} = Nwmin7sy = the number of words with 7-syllables or more.}
 
-  \item{\code{"Scrabble"}:}{Scrabble Measure. \deqn{Scrabble = Mean
+  \item{\code{"Scrabble"}:}{Scrabble Measure. \deqn{ Mean
   Scrabble Letter Values of All Words}}
 
-  \item{\code{"SMOG"}:}{Simple Measure of Gobbledygook (McLaughlin,
-  1969). \deqn{SMOG = 1.043 \times \sqrt{n_{wsy>=3}}
-  \times \frac{30}{n_{st}} + 3.1291}{SMOG = 1.043 * sqrt(Nwmin3sy
+  \item{\code{"SMOG"}:}{Simple Measure of Gobbledygook (SMOG) (McLaughlin 1969). \deqn{ 1.043
+   \times \sqrt{n_{wsy>=3}} \times \frac{30}{n_{st}} + 3.1291}{1.043 * sqrt(Nwmin3sy
    * 30 / Nst) + 3.1291}
    
-  where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more.}
+  where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more.
+  This measure is regression equation D in McLaughlin's original paper.}
 
-  \item{\code{"SMOG.C"}:}{SMOG.C. \deqn{SMOG.C = 0.9986 \times
+  \item{\code{"SMOG.C"}:}{SMOG (Regression Equation C) (McLaughlin's 1969) \deqn{0.9986 \times
   \sqrt{Nwmin3sy \times \frac{30}{n_{st}} +
-  5} +  2.8795}{SMOG.C = 0.9986 * sqrt(Nwmin3sy * (30 / Nst) +
-  5) + 2.8795}}
+  5} +  2.8795}{0.9986 * sqrt(Nwmin3sy * (30 / Nst) +
+  5) + 2.8795}
+  
+  where \eqn{n_{wsy>=3}} = Nwmin3sy = the number of words with 3 syllables or more.
+  This measure is regression equation C in McLaughlin's original paper.}
 
-  \item{\code{"SMOG.Simple"}:}{SMOG Simplified. \deqn{SMOG.Simple =
+  \item{\code{"SMOG.Simple"}:}{Simplified Version of McLaughlin's (1969) SMOG Measure. \deqn{
   \sqrt{Nwmin3sy \times \frac{30}{n_{st}}} +
-  3}{SMOG.Simple = sqrt(Nwmin3sy * 30 / Nst) + 3}}
+  3}{sqrt(Nwmin3sy * 30 / Nst) + 3}}
 
-  \item{\code{"SMOG.de"}:}{SMOG.de (Adapted for German Texts).
-  \deqn{SMOG.de = \sqrt{Nwmin3sy \times \frac{30}{n_{st}}-2}}{SMOG.de =
+  \item{\code{"SMOG.de"}:}{Adaptation of McLaughlin's (1969) SMOG Measure for German Texts.
+  \deqn{ \sqrt{Nwmin3sy \times \frac{30}{n_{st}}-2}}{
   sqrt(Nwmin3sy * 30 / Nst) - 2 }}
 
-  \item{\code{"Spache"}:}{Spache (1952). \deqn{Spache = 0.121 \times
+  \item{\code{"Spache"}:}{Spache's (1952) Readability Measure. \deqn{ 0.121 \times
   ASL + 0.082 \times \frac{n_{wnotinspache}}{n_{w}}  +
-  0.659}{Spache = 0.121 * ASL + 0.082 * Nwnotinspache / Nw) + 0.659}
+  0.659}{ 0.121 * ASL + 0.082 * Nwnotinspache / Nw) + 0.659}
   
   where \eqn{n_{wnotinspache}} = Nwnotinspache = number of unique words not in the Spache word list.}
 
-  \item{\code{"Spache.old"}:}{Spache (1952). \deqn{Spache.old = 0.141
+  \item{\code{"Spache.old"}:}{Spache's (1952) Readability Measure (Old). \deqn{0.141
   \times ASL + 0.086 \times \frac{n_{wnotinspache}}{n_{w}}  + 
-  0.839}{Spache.old = 0.141 * ASL + 0.086 * (Nwnotinspache/ Nw) + 0.839}
+  0.839}{0.141 * ASL + 0.086 * (Nwnotinspache/ Nw) + 0.839}
   
   where \eqn{n_{wnotinspache}} = Nwnotinspache = number of unique words not in the Spache word list.}
 
-  \item{\code{"Strain"}:}{Strain Index (Solomon, 2006). \deqn{ Strain
-  = n_{sy} / \frac{n_{st}}{3} /10}{Strain = Nsy / (Nst / 3) / 10 }
+  \item{\code{"Strain"}:}{Strain Index (Solomon 2006). \deqn{n_{sy} / 
+  \frac{n_{st}}{3} /10}{Nsy / (Nst / 3) / 10 }
   
   The scaling by 3 arises because the original Strain index is based on just the first 3 sentences.}
 
-  \item{\code{"Traenkle.Bailer"}:}{Tränkle & Bailer (1984).
-  \deqn{Tränkle.Bailer = 224.6814 - (79.8304 \times AWL) - (12.24032 \times
-  ASL) - (1.292857 \times 100 \times \frac{n_{prep}}{n_{w}}}{Tränkle.Bailer = 224.6814 - (79.8304 * AWL) + (12.24032 * ASL) -
+  \item{\code{"Traenkle.Bailer"}:}{Tränkle & Bailer's (1984) Readability Measure 1.
+  \deqn{224.6814 - (79.8304 \times AWL) - (12.24032 \times
+  ASL) - (1.292857 \times 100 \times \frac{n_{prep}}{n_{w}}}{ 224.6814 - (79.8304 * AWL) + (12.24032 * ASL) -
   (1.292857 * 100 * Nprep / Nw)}
   
-  where \eqn{n_{prep}} = Nprep = the number of prepositions. The scaling by 100 arises because the initial
+  where \eqn{n_{prep}} = Nprep = the number of prepositions. The scaling by 100 arises because the original
   Tränkle & Bailer index is based on just a sample of 100 words.}
 
-  \item{\code{"Traenkle.Bailer2"}:}{Tränkle & Bailer (1984).
-  \deqn{Tränkle.Bailer2 = Tränkle.Bailer2 =  234.1063 - (96.11069 \times AWL
+  \item{\code{"Traenkle.Bailer2"}:}{Tränkle & Bailer's (1984) Readability Measure 2.
+  \deqn{Tränkle.Bailer2 =  234.1063 - (96.11069 \times AWL
   ) - (2.05444 \times 100 \times \frac{n_{prep}}{n_{w}}) -
-  (1.02805 \times 100 \times \frac{n_{conj}}{n_{w}}}{Tränkle.Bailer2 = 
+  (1.02805 \times 100 \times \frac{n_{conj}}{n_{w}}}{
   234.1063 - 96.11069 * AWL  - 2.05444 * 100 * (Nprep / Nw) - 1.02805 * 100 * (Nconj / Nw).}
   
   where \eqn{n_{prep}} = Nprep = the number of prepositions, 
   \eqn{n_{conj}} = Nconj = the number of conjunctions, 
-  The scaling by 100 arises because the initial Tränkle & Bailer index is based on
+  The scaling by 100 arises because the original Tränkle & Bailer index is based on
   just a sample of 100 words)}
 
-  \item{\code{"Wheeler.Smith"}:}{\emph{Wheeler & Smith (1954)}:
-  \deqn{Wheeler.Smith = ASL \times 10 \times \frac{n_{wsy>=2}}{n_{words}}}{Wheeler.Smith
-   = ASL * 10 * (Nwmin2sy / Nw)}
+  \item{\code{"Wheeler.Smith"}:}{Wheeler & Smith's (1954) Readability Measure.
+  \deqn{ ASL \times 10 \times \frac{n_{wsy>=2}}{n_{words}}}{ ASL * 10 * (Nwmin2sy / Nw)}
    
    where \eqn{n_{wsy>=2}} = Nwmin2sy = the number of words with 2 syllables or more.}
 
-  \item{\code{"meanSentenceLength"}:}{\emph{Average Sentence Length (ASL)}:
-  \deqn{Average Sentence Length = \frac{n_{w}}{n_{st}}}{Average Sentence Length = Nw / Nst }}
+  \item{\code{"meanSentenceLength"}:}{Average Sentence Length (ASL).
+  \deqn{\frac{n_{w}}{n_{st}}}{ Nw / Nst }}
 
-  \item{\code{"meanWordSyllables"}:}{\emph{Average Word Syllables (AWL)}:
-  \deqn{Average Word Syllables = \frac{n_{sy}}{n_{w}}}{Average Word Syllables = Nsy / Nw}}
+  \item{\code{"meanWordSyllables"}:}{Average Word Syllables (AWL).
+  \deqn{\frac{n_{sy}}{n_{w}}}{ Nsy / Nw}}
   
 }
 }
