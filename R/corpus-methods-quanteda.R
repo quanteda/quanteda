@@ -146,6 +146,7 @@ as.corpus.corpuszip <- function(x) {
 # stracture
 upgrade_corpus <- function(x) {
     
+    x <- unclass(x)
     result <- corpus(x$documents, text_field = "texts")
     attr(result, "docvars") <- upgrade_docvars(x$documents)
     

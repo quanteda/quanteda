@@ -97,17 +97,6 @@ print.tokens <- function(x, ...) {
     types[unclass(x)[[i]] + 1] # shift index to show padding
 }
 
-#' @method "$" tokens
-#' @export
-#' @noRd
-#' @examples
-#' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-#' str(toks)
-#' toks$d3
-"$.tokens" <- function(x, i, ...) {
-    x[[i]]
-}
-
 #' @method "[<-" tokens
 #' @export
 #' @noRd

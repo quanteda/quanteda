@@ -211,6 +211,17 @@ test_that("docvars is working with dfm", {
     expect_equal(docvars(corp2), docvars(thedfm3))
 }) 
 
+test_that("$ returns docvars", {
+    corp <- data_corpus_irishbudget2010
+    toks <- tokens(corp, include_docvars = TRUE)
+    dfmat <- dfm(toks)
+    
+    expect_equal(docvars(corp, "party"), corp$party)
+    expect_equal(docvars(toks, "party"), toks$party)
+    expect_equal(docvars(dfmat, "party"), dfmat$party)
+}) 
+
+
 test_that("creating tokens and dfms with empty docvars", {
     expect_true(
         length(docvars(tokens(data_corpus_irishbudget2010, include_docvars = FALSE))) == 0
