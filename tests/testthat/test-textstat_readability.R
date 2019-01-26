@@ -19,10 +19,10 @@ test_that("readability works with sentence length filtering", {
     txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
              "PAGE 2. Very short! Shorter.",
              "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
-    rdb <- textstat_readability(txt)
+    rdb <- textstat_readability(txt, measure = "all")
     expect_equal(rdb$meanSentenceLength, c(3, 1.67, 5.50), tolerance = 0.01)
     
-    rdb2 <- textstat_readability(txt, min_sentence_length = 3)
+    rdb2 <- textstat_readability(txt, measure = "all", min_sentence_length = 3)
     expect_equal(rdb2$meanSentenceLength, c(4, 9))
 })
 
@@ -139,3 +139,17 @@ test_that("textstat_readability with intermediate = TRUE works", {
     )
     
 })
+
+test_that("textstat_readability works for renamed Bormuth.MC and Coleman.Liau.ECP", {
+    expect_identical(textstat_readability(data_char_sampletext, measure = 'Bormuth'),
+                      textstat_readability(data_char_sampletext, measure = 'Bormuth.MC'))
+    expect_identical(textstat_readability(data_char_sampletext, measure = 'Coleman.Liau'),
+                      textstat_readability(data_char_sampletext, measure = 'Coleman.Liau.ECP'))
+})
+
+test_that("textstat_readability raises error for non-included measures",{
+    expect_error(quanteda::textstat_readability(data_char_sampletext, measure = "Gibberish"),
+                 "Invalid measure(s): Gibberish", fixed = TRUE)
+})
+
+
