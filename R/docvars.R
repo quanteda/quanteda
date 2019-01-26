@@ -212,32 +212,26 @@ docvars.kwic <- function(x) {
     select_docvars(attr(x, 'docvars'), NULL)
 }
 
-#' @noRd
-#' @export
-`$.corpus` <- function(x, value) {
-    x <- as.corpus(x)
-    select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
-}
-
-#' @noRd
-#' @export
-`$.tokens` <- function(x, value) {
-    x <- as.tokens(x)
-    select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
-}
-
-#' @noRd
-#' @export
-`$.dfm` <- function(x, value) {
-    x <- as.dfm(x)
-    select_docvars(x@docvars, value, user = TRUE, system = FALSE, drop = TRUE)
-}
-
-#' @noRd
-#' @keywords internal
-docvars.kwic <- function(x) {
-    select_docvars(attr(x, 'docvars'), NULL)
-}
+#' #' @noRd
+#' #' @export
+#' `$.corpus` <- function(x, value) {
+#'     x <- as.corpus(x)
+#'     select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
+#' }
+#' 
+#' #' @noRd
+#' #' @export
+#' `$.tokens` <- function(x, value) {
+#'     x <- as.tokens(x)
+#'     select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
+#' }
+#' 
+#' #' @noRd
+#' #' @export
+#' `$.dfm` <- function(x, value) {
+#'     x <- as.dfm(x)
+#'     select_docvars(x@docvars, value, user = TRUE, system = FALSE, drop = TRUE)
+#' }
 
 
 

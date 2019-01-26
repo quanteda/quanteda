@@ -27,6 +27,21 @@ document-level variables will be read or set}
 \description{
 Get or set variables associated with a document in a \link{corpus},
 \link{tokens} or \link{dfm} object.
+
+#' @noRd
+#' @export
+`$.tokens` <- function(x, value) {
+    x <- as.tokens(x)
+    select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
+}
+}
+\details{
+#' @noRd
+#' @export
+`$.dfm` <- function(x, value) {
+    x <- as.dfm(x)
+    select_docvars(x@docvars, value, user = TRUE, system = FALSE, drop = TRUE)
+}
 }
 \note{
 Reassigning document variables for a \link{tokens} or \link{dfm} object
