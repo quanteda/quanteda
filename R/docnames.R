@@ -36,7 +36,9 @@ docnames.corpus <- function(x) {
 }
 
 #' @param value a character vector of the same length as \code{x}
-#' @return \code{docnames <-} assigns new values to the document names of an object.
+#' @return \code{docnames <-} assigns new values to the document names of an object.  
+#' docnames can only be character, so any non-character value assigned to be a
+#' docname will be coerced to mode `character`.
 #' @export
 #' @examples 
 #' # reassign the document names of the inaugural speech corpus
@@ -75,4 +77,3 @@ docnames.corpus <- function(x) {
     rownames(x) <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
-
