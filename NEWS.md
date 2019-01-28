@@ -1,4 +1,4 @@
-# quanteda > v1.3.14
+# quanteda v1.4.0
 
 ### Bug fixes and stability enhancements
 
