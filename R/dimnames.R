@@ -18,7 +18,8 @@
     if (is.null(value[[2]])) value[[2]] <- character()
     stopifnot(nrow(x) == length(value[[1]]))
     stopifnot(ncol(x) == length(value[[2]]))
-    x@Dimnames <- list("docs" = value[[1]], "features" = value[[2]])
+    x@Dimnames <- list("docs" = as.character(value[[1]]), 
+                       "features" = as.character(value[[2]]))
     Encoding(x@Dimnames[[1]]) <- Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
@@ -26,7 +27,7 @@
 #' @rdname set_dfm_dimnames
 "set_dfm_docnames<-" <- function(x, value) {
     stopifnot(nrow(x) == length(value))
-    x@Dimnames[[1]] <- value
+    x@Dimnames[[1]] <- as.character(value)
     Encoding(x@Dimnames[[1]]) <- "UTF-8"
     return(x)
 }
@@ -35,7 +36,7 @@
 "set_dfm_featnames<-" <- function(x, value) {
     if (is.null(value)) value <- character()
     stopifnot(ncol(x) == length(value))
-    x@Dimnames[[2]] <- value
+    x@Dimnames[[2]] <- as.character(value)
     Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
@@ -46,7 +47,8 @@
     if (is.null(value[[2]])) value[[2]] <- character()
     stopifnot(nrow(x) == length(value[[1]]))
     stopifnot(ncol(x) == length(value[[2]]))
-    x@Dimnames <- list("features" = value[[1]], "features" = value[[2]])
+    x@Dimnames <- list("features" = as.character(value[[1]]), 
+                       "features" = as.character(value[[2]]))
     Encoding(x@Dimnames[[1]]) <- Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
@@ -56,7 +58,7 @@
     if (is.null(value)) value <- character()
     stopifnot(nrow(x) == length(value))
     stopifnot(ncol(x) == length(value))
-    x@Dimnames[[1]] <- x@Dimnames[[2]] <- value
+    x@Dimnames[[1]] <- x@Dimnames[[2]] <- as.character(value)
     Encoding(x@Dimnames[[1]]) <- Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
