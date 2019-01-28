@@ -80,6 +80,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"),
                                upper = FALSE, diag = FALSE) {
+    x <- as.dfm(x)
 
     margin <- match.arg(margin)
     method <- match.arg(method)
@@ -170,6 +171,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
                               method = c("euclidean", "kullback",
                                          "manhattan", "maximum", "canberra", "minkowski"),
                               upper = FALSE, diag = FALSE, p = 2) {
+    x <- as.dfm(x)
 
     margin <- match.arg(margin)
     method <- match.arg(method)
