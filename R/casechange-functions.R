@@ -73,8 +73,8 @@ tokens_toupper.tokens <- function(x, ...) {
 #' @export
 #' @examples
 #' txt1 <- c(txt1 = "b A A", txt2 = "C C a b B")
-#' char_tolower(txt) 
-#' char_toupper(txt)
+#' char_tolower(txt1) 
+#' char_toupper(txt1)
 #' 
 #' # with acronym preservation
 #' txt2 <- c(text1 = "England and France are members of NATO and UNESCO", 
