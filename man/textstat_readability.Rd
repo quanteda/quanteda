@@ -422,23 +422,28 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
   
   Gunning, R. (1952). The Technique of Clear Writing.
   
-  Klare, G.R. (1975). \href{https://www.jstor.org/stable/pdf/747086.pdf}{Assessing Readability}. \emph{Reading Research Quarterly}, 10(1), 62--102.
+  Klare, G.R. (1975).
+  \href{https://www.jstor.org/stable/pdf/747086.pdf}{Assessing Readability}.
+  \emph{Reading Research Quarterly}, 10(1), 62--102.
   
   Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S.
   (1975). \href{https://stars.library.ucf.edu/istlibrary/56/}{Derivation of New Readability Formulas (Automated Readability
   Index, FOG count and Flesch Reading Ease Formula) for Navy Enlisted
   Personnel}.
   
-  McLaughlin, G.H. (1969). \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{"MOG Grading: A New Readability Formula.} 
-  \emph{Journal of reading}, 12(8), 639-646.
+  McLaughlin, G.H. (1969).
+  \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{"SMOG
+  Grading: A New Readability Formula.} \emph{Journal of Reading}, 12(8),
+  639-646.
 
   Powers, R.D., Sumner, W.A., and Kearl, B.E. (1958).
   \href{https://psycnet.apa.org/record/1962-03617-001}{A Recalculation of
   Four Adult Readability Formulas.}. \emph{Journal of Educational
   Psychology}, 49(2), 99.
 
-  Senter, R. J., & Smith, E. A. (1967). \href{https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf}{Automated readability index.}
-  CINCINNATI UNIV OH.
+  Senter, R. J., & Smith, E. A. (1967).
+  \href{https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf}{Automated
+  readability index.} CINCINNATI UNIV OH.
 
   *Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.
 

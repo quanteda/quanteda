@@ -39,7 +39,7 @@ Dale-Chall Readability Formula}. Brookline Books.
 Dale, E. & Chall, J.S. (1948). A Formula for Predicting
 Readability. \emph{Educational Research Bulletin}, 27(1): 11--20.
 
-DDale, E. & Chall, J.S. (1948). A Formula for Predicting Readability:
+Dale, E. & Chall, J.S. (1948). A Formula for Predicting Readability:
 Instructions. \emph{Educational Research Bulletin}, 27(2): 37--54.
 
 Klare, G.R. (1975). Assessing Readability. \emph{Reading Research Quarterly}
