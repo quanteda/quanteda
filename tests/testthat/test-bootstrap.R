@@ -9,10 +9,10 @@ test_that("bootstrap_dfm works with character and corpus objects", {
                                             year = c(1990, 2000, 2005)),
                        metacorpus = list(notes = "Example showing how corpus_reshape() works."))
     set.seed(10)
-    dfmresamp1 <- bootstrap_dfm(mycorpus, n = 10, verbose = TRUE)
+    dfmresamp1 <- bootstrap_dfm(mycorpus, n = 10)
     expect_equal(dfmresamp1[[1]], dfm(mycorpus))
 
-    dfmresamp2 <- bootstrap_dfm(txt, n = 10, verbose = TRUE)
+    dfmresamp2 <- bootstrap_dfm(txt, n = 10)
     expect_identical(dfmresamp2[[1]],
                      dfm(mycorpus, include_docvars = FALSE))
 
@@ -26,7 +26,7 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     L <- lapply(dfmresamp1, as.matrix)
     arrayL <- array(unlist(L), dim = c(nrow(L[[1]]), ncol(L[[1]]), length(L)))
     docsums <- apply(arrayL, c(1, 3), sum)
-    expect_true(all(docsums[c(2, 3), ] == 6))
+    expect_true(all(docsums[c(2, 3), ] >= 6))
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {
