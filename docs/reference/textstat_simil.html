@@ -85,7 +85,7 @@ sparse dfm objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -307,9 +307,9 @@ Only used when <code>value = "dist"</code>.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># similarities for documents</span>
-<span class='no'>mt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>),
+<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>),
           <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))
-(<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>mt</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
+(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
 #&gt; 1985-Reagan    0.6885376                                                
 #&gt; 1989-Bush      0.5342227   0.5569825                                    
 #&gt; 1993-Clinton   0.5588243   0.5929382 0.5463195                          
@@ -328,7 +328,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2005-Bush    0.5204355                                
 #&gt; 2009-Obama   0.5411649 0.4575297                      
 #&gt; 2013-Obama   0.5561972 0.5163644  0.6373318           
-#&gt; 2017-Trump   0.4518935 0.4349030  0.4481950  0.4546945</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
+#&gt; 2017-Trump   0.4518935 0.4349030  0.4481950  0.4546945</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
 #&gt; 1981-Reagan    1.0000000   0.6885376 0.5342227    0.5588243    0.5620486
 #&gt; 1985-Reagan    0.6885376   1.0000000 0.5569825    0.5929382    0.6409087
 #&gt; 1989-Bush      0.5342227   0.5569825 1.0000000    0.5463195    0.5723938
@@ -349,7 +349,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2005-Bush    0.5204355 1.0000000  0.4575297  0.5163644  0.4349030
 #&gt; 2009-Obama   0.5411649 0.4575297  1.0000000  0.6373318  0.4481950
 #&gt; 2013-Obama   0.5561972 0.5163644  0.6373318  1.0000000  0.4546945
-#&gt; 2017-Trump   0.4518935 0.4349030  0.4481950  0.4546945  1.0000000</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; $`1981-Reagan`
+#&gt; 2017-Trump   0.4518935 0.4349030  0.4481950  0.4546945  1.0000000</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt; $`1981-Reagan`
 #&gt;  1985-Reagan   2013-Obama   2009-Obama 1997-Clinton 1993-Clinton    1989-Bush 
 #&gt;    0.6885376    0.6054181    0.5768486    0.5620486    0.5588243    0.5342227 
 #&gt;    2001-Bush    2005-Bush   2017-Trump 
@@ -410,7 +410,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt;    0.4481950    0.4349030    0.4234273 
 #&gt; </div><div class='input'>
 <span class='co'># similarities for for specific documents</span>
-<span class='fu'>textstat_simil</span>(<span class='no'>mt</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
+<span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
 #&gt; 1981-Reagan   0.3635906
 #&gt; 1985-Reagan   0.4208903
 #&gt; 1989-Bush     0.3983633
@@ -420,7 +420,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2005-Bush     0.3814126
 #&gt; 2009-Obama    0.3870892
 #&gt; 2013-Obama    0.3996661
-#&gt; 2017-Trump    1.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>mt</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
+#&gt; 2017-Trump    1.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
 #&gt; 1981-Reagan   0.4234273
 #&gt; 1985-Reagan   0.4734261
 #&gt; 1989-Bush     0.4530407
@@ -430,7 +430,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2005-Bush     0.4349030
 #&gt; 2009-Obama    0.4481950
 #&gt; 2013-Obama    0.4546945
-#&gt; 2017-Trump    1.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>mt</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
+#&gt; 2017-Trump    1.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
 #&gt; 1981-Reagan   0.5159057  0.5545574
 #&gt; 1985-Reagan   0.5329123  0.5878448
 #&gt; 1989-Bush     0.5133582  0.4707774
@@ -442,9 +442,9 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2013-Obama    0.5869754  1.0000000
 #&gt; 2017-Trump    0.3870892  0.3996661</div><div class='input'>
 <span class='co'># compute some term similarities</span>
-<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>mt</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
+<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
                       <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>s2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                fair     health    terror
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                fair     health    terror
 #&gt; senator   0.7385489 0.00000000 0.1666667
 #&gt; hatfield  0.6030227 0.00000000 0.4082483
 #&gt; mr        0.3078596 0.09724333 0.1786474
@@ -454,7 +454,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; vice      0.8040303 0.33333333 0.2721655
 #&gt; bush      0.6154575 0.54433105 0.3333333
 #&gt; mondale   0.6030227 0.00000000 0.4082483
-#&gt; baker     0.6030227 0.00000000 0.4082483</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
+#&gt; baker     0.6030227 0.00000000 0.4082483</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
 #&gt;      size  economic       tax beginning  national   economy  republic    months 
 #&gt; 0.9045340 0.8922269 0.8869686 0.8864053 0.8775269 0.8775269 0.8703883 0.8703883 
 #&gt; 
@@ -471,11 +471,11 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt;   0.8660254   0.8660254 
 #&gt; </div><div class='input'>
 <span class='co'># create a dfm from inaugural addresses from Reagan onwards</span>
-<span class='no'>mt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1990</span>),
+<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1990</span>),
                <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># distances for documents </span>
-(<span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>mt</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
+(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
 #&gt; 1997-Clinton     58.90671                                            
 #&gt; 2001-Bush        52.82045     63.63961                               
 #&gt; 2005-Bush        62.79331     73.38256  54.32311                     
@@ -488,7 +488,7 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2005-Bush              
 #&gt; 2009-Obama             
 #&gt; 2013-Obama             
-#&gt; 2017-Trump     55.21775</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
+#&gt; 2017-Trump     55.21775</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
 #&gt; 1993-Clinton      0.00000     58.90671  52.82045  62.79331   51.66237
 #&gt; 1997-Clinton     58.90671      0.00000  63.63961  73.38256   59.95832
 #&gt; 2001-Bush        52.82045     63.63961   0.00000  54.32311   50.70503
@@ -505,47 +505,27 @@ Only used when <code>value = "dist"</code>.</p></td>
 #&gt; 2013-Obama      0.00000   55.21775
 #&gt; 2017-Trump     55.21775    0.00000</div><div class='input'>
 <span class='co'># distances for specific documents</span>
-<span class='fu'>textstat_dist</span>(<span class='no'>mt</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
+<span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
 #&gt; 1993-Clinton   52.14403
 #&gt; 1997-Clinton   65.85590
 #&gt; 2001-Bush      48.79549
 #&gt; 2005-Bush      58.00000
 #&gt; 2009-Obama     55.65968
 #&gt; 2013-Obama     55.21775
-#&gt; 2017-Trump      0.00000</div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>mt</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
+#&gt; 2017-Trump      0.00000</div><div class='input'>(<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
 #&gt; 1993-Clinton   51.66237   51.30302
 #&gt; 1997-Clinton   59.95832   60.81118
 #&gt; 2001-Bush      50.70503   49.03060
 #&gt; 2005-Bush      62.33779   57.90509
 #&gt; 2009-Obama      0.00000   48.48711
 #&gt; 2013-Obama     48.48711    0.00000
-#&gt; 2017-Trump     55.65968   55.21775</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; $`1993-Clinton`
-#&gt;    2005-Bush 1997-Clinton    2001-Bush   2017-Trump   2009-Obama   2013-Obama 
-#&gt;     62.79331     58.90671     52.82045     52.14403     51.66237     51.30302 
-#&gt; 
-#&gt; $`1997-Clinton`
-#&gt;    2005-Bush   2017-Trump    2001-Bush   2013-Obama   2009-Obama 1993-Clinton 
-#&gt;     73.38256     65.85590     63.63961     60.81118     59.95832     58.90671 
-#&gt; 
-#&gt; $`2001-Bush`
-#&gt; 1997-Clinton    2005-Bush 1993-Clinton   2009-Obama   2013-Obama   2017-Trump 
-#&gt;     63.63961     54.32311     52.82045     50.70503     49.03060     48.79549 
-#&gt; 
-#&gt; $`2005-Bush`
-#&gt; 1997-Clinton 1993-Clinton   2009-Obama   2017-Trump   2013-Obama    2001-Bush 
-#&gt;     73.38256     62.79331     62.33779     58.00000     57.90509     54.32311 
-#&gt; 
-#&gt; $`2009-Obama`
+#&gt; 2017-Trump     55.65968   55.21775</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat2</span>)</div><div class='output co'>#&gt; $`2009-Obama`
 #&gt;    2005-Bush 1997-Clinton   2017-Trump 1993-Clinton    2001-Bush   2013-Obama 
 #&gt;     62.33779     59.95832     55.65968     51.66237     50.70503     48.48711 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt; 1997-Clinton    2005-Bush   2017-Trump 1993-Clinton    2001-Bush   2009-Obama 
 #&gt;     60.81118     57.90509     55.21775     51.30302     49.03060     48.48711 
-#&gt; 
-#&gt; $`2017-Trump`
-#&gt; 1997-Clinton    2005-Bush   2009-Obama   2013-Obama 1993-Clinton    2001-Bush 
-#&gt;     65.85590     58.00000     55.65968     55.21775     52.14403     48.79549 
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

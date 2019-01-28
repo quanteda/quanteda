@@ -82,7 +82,7 @@ object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -274,56 +274,56 @@ unmatched tokens.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
+    <pre class="examples"><div class='input'><span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
+<span class='no'>dict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                    <span class='kw'>law</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'law*'</span>, <span class='st'>'constitution'</span>),
                    <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'free*'</span>, <span class='st'>'libert*'</span>)))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (14.9% sparse).</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>'NONE'</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 4 features (11.2% sparse).</div><div class='input'>
-<span class='no'>dict_fix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks1</span>, <span class='no'>dict1</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (14.9% sparse).</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks1</span>, <span class='no'>dict1</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>'NONE'</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 4 features (11.2% sparse).</div><div class='input'>
+<span class='no'>dict2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                        <span class='kw'>law</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'law'</span>, <span class='st'>'constitution'</span>),
                        <span class='kw'>freedom</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'freedom'</span>, <span class='st'>'liberty'</span>)))
-<span class='co'># dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (21.3% sparse).</div><div class='input'>
+<span class='co'># dfm(applyDictionary(toks1, dict2, valuetype='fixed'))</span>
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks1</span>, <span class='no'>dict2</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (21.3% sparse).</div><div class='input'>
 <span class='co'># hierarchical dictionary example</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"The United States has the Atlantic Ocean and the Pacific Ocean."</span>,
          <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Britain and Ireland have the Irish Sea and the English Channel."</span>)
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>)
-<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>US</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>Countries</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"States"</span>),
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>)
+<span class='no'>dict3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>US</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>Countries</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"States"</span>),
                                   <span class='kw'>oceans</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Atlantic"</span>, <span class='st'>"Pacific"</span>)),
                         <span class='kw'>Europe</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>Countries</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Britain"</span>, <span class='st'>"Ireland"</span>),
                                       <span class='kw'>oceans</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>west</span> <span class='kw'>=</span> <span class='st'>"Irish Sea"</span>,
                                                     <span class='kw'>east</span> <span class='kw'>=</span> <span class='st'>"English Channel"</span>))))
-<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; d1 :
 #&gt; [1] "US" "US" "US"
 #&gt; 
 #&gt; d2 :
 #&gt; [1] "Europe" "Europe" "Europe" "Europe"
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; d1 :
 #&gt; [1] "Countries" "oceans"    "oceans"   
 #&gt; 
 #&gt; d2 :
 #&gt; [1] "Countries" "Countries" "oceans"    "oceans"   
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; d1 :
 #&gt; [1] "US.Countries" "US.oceans"    "US.oceans"   
 #&gt; 
 #&gt; d2 :
 #&gt; [1] "Europe.Countries" "Europe.Countries" "Europe.oceans"    "Europe.oceans"   
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; d1 :
 #&gt; character(0)
 #&gt; 
 #&gt; d2 :
 #&gt; [1] "west" "east"
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; d1 :
 #&gt; [1] "US" "US" "US"
 #&gt; 
 #&gt; d2 :
 #&gt; [1] "Europe"      "Europe"      "Europe.west" "Europe.east"
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; d1 :
 #&gt; [1] "Countries" "oceans"    "oceans"   
 #&gt; 
@@ -331,18 +331,7 @@ unmatched tokens.</p></td>
 #&gt; [1] "Countries"   "Countries"   "oceans.west" "oceans.east"
 #&gt; </div><div class='input'>
 <span class='co'># show unmatched tokens</span>
-<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; d1 :
-#&gt;  [1] "_UNMATCHED"   "_UNMATCHED"   "US.Countries" "_UNMATCHED"   "_UNMATCHED"  
-#&gt;  [6] "US.oceans"    "_UNMATCHED"   "_UNMATCHED"   "_UNMATCHED"   "US.oceans"   
-#&gt; [11] "_UNMATCHED"   "_UNMATCHED"  
-#&gt; 
-#&gt; d2 :
-#&gt;  [1] "Europe.Countries"   "_UNMATCHED"         "Europe.Countries"  
-#&gt;  [4] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.west"
-#&gt;  [7] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.east"
-#&gt; [10] "_UNMATCHED"        
-#&gt; </div><div class='input'>
+<span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is(x, "dictionary2"): object 'dict' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
