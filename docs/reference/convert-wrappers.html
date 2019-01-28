@@ -269,14 +269,14 @@ of terms in documents used by the <span class="pkg">lda</span> package (a list w
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># shortcut conversion to austin package's wfm format</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>as.wfm</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in as.wfm(quantdfm): object 'quantdfm' not found</span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>as.wfm</span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># shortcut conversion to tm package's DocumentTermMatrix format</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>))
 <span class='co'># }</span><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># shortcut conversion to lda package list format</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/convert-wrappers.html'>dfm2lda</a></span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/convert-wrappers.html'>dfm2lda</a></span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

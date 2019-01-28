@@ -331,7 +331,18 @@ unmatched tokens.</p></td>
 #&gt; [1] "Countries"   "Countries"   "oceans.west" "oceans.east"
 #&gt; </div><div class='input'>
 <span class='co'># show unmatched tokens</span>
-<span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is(x, "dictionary2"): object 'dict' not found</span></div><div class='input'>
+<span class='fu'>tokens_lookup</span>(<span class='no'>toks2</span>, <span class='no'>dict3</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt;  [1] "_UNMATCHED"   "_UNMATCHED"   "US.Countries" "_UNMATCHED"   "_UNMATCHED"  
+#&gt;  [6] "US.oceans"    "_UNMATCHED"   "_UNMATCHED"   "_UNMATCHED"   "US.oceans"   
+#&gt; [11] "_UNMATCHED"   "_UNMATCHED"  
+#&gt; 
+#&gt; d2 :
+#&gt;  [1] "Europe.Countries"   "_UNMATCHED"         "Europe.Countries"  
+#&gt;  [4] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.west"
+#&gt;  [7] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.east"
+#&gt; [10] "_UNMATCHED"        
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

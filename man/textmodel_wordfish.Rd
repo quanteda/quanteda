@@ -101,7 +101,7 @@ plot(tmod3$phi, tmod4$phi, xlab = "Min underdispersion = 0", ylab = "Min underdi
      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
 underdispersedTerms <- sample(which(tmod3$phi < 1.0), 5)
 which(featnames(dfmat) \%in\% names(topfeatures(dfmat, 20)))
-text(tmod3$phi, wf2b$phi, tmod3$features, 
+text(tmod3$phi, tmod4$phi, tmod3$features, 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
 text(tmod3$phi['underdispersedTerms'], tmod4$phi['underdispersedTerms'], 
      tmod3$features['underdispersedTerms'], 

@@ -90,7 +90,8 @@ for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "lo
     head(dfmat8)
 }}
 # smooth the dfm
-dfm_smooth(my_dfm, 0.5)
+dfmat <- dfm(data_corpus_inaugural)
+dfm_smooth(dfmat, 0.5)
 }
 \references{
 Manning, C.D., Raghavan, P., & Schütze, H. (2008).

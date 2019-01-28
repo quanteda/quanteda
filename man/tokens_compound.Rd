@@ -46,7 +46,7 @@ toks1 <- tokens(txt, remove_punct = TRUE)
 # for lists of sequence elements
 myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("inheritance", "tax"))
 (toks2 <- tokens_compound(toks1, pattern = myseqs))
-dfm(cw)
+dfm(toks2)
 
 # when used as a dictionary for dfm creation
 dict1 <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
@@ -66,7 +66,7 @@ tokens_compound(toks5, pattern = dict2)
 tstat <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
                               size = 2, min_count = 1)
 toks6 <- tokens("The new law included capital gains taxes and inheritance taxes.")
-tokens_compound(toks6, pattern = cols)
+tokens_compound(toks6, pattern = tstat)
 }
 \author{
 Kenneth Benoit and Kohei Watanabe

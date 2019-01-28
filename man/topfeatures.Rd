@@ -45,7 +45,7 @@ topfeatures(dfmat2)
 topfeatures(dfmat2, decreasing = FALSE)
 
 # top features of individual documents  
-topfeatures(dfmat2, n = 5, groups = docnames(mydfm_nostopw))
+topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 
 # grouping by president last name
 topfeatures(dfmat2, n = 5, groups = "President")

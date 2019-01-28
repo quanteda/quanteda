@@ -60,7 +60,7 @@
 #' dfm_trim(dfmat, max_termfreq = 10, max_docfreq = 0.75)
 #'
 #' # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
-#' dfm_trim(mydfm, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
+#' dfm_trim(dfmat, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
 #'
 #' # keep only words occurring frequently (top 20%) and in <=2 documents
 #' dfm_trim(dfmat, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")

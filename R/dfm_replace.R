@@ -17,13 +17,13 @@
 #' # lemmatization
 #' lis <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
 #' lemma <- rep("focus", length(lis))
-#' dfmat2 <- dfm_replace(dfmat1, pattern = infle, replacement = lemma)
-#' featnames(dfm_select(dfmat2, pattern = infle))
+#' dfmat2 <- dfm_replace(dfmat1, pattern = lis, replacement = lemma)
+#' featnames(dfm_select(dfmat2, pattern = lis))
 #'
 #' # stemming
 #' feat <- featnames(dfmat1)
 #' featstem <- char_wordstem(feat, "porter")
-#' dfmat3 <- dfm_replace(dfmat1, pattern = feat, replacement = stem, case_insensitive = FALSE)
+#' dfmat3 <- dfm_replace(dfmat1, pattern = feat, replacement = featstem, case_insensitive = FALSE)
 #' identical(dfmat3, dfm_wordstem(dfmat1, "porter"))
 dfm_replace <- function(x, pattern, replacement, case_insensitive = TRUE, 
                            verbose = quanteda_options("verbose")) {

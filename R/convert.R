@@ -44,9 +44,9 @@
 #' str(tripletmat)
 #' 
 #' # illustrate what happens with zero-length documents
-#' dfmat2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
+#' dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]), verbose = FALSE)
 #' rowSums(dfmat2)
-#' str(convert(dfmat2, to = "stm", docvars = docvars(mycorpus)))
+#' str(convert(dfmat2, to = "stm", docvars = docvars(corp)))
 #' 
 #' \dontrun{
 #' # tm's DocumentTermMatrix format
@@ -146,7 +146,7 @@ NULL
 #' @export
 #' @examples 
 #' # shortcut conversion to austin package's wfm format
-#' identical(as.wfm(quantdfm), convert(quantdfm, to = "austin"))
+#' identical(as.wfm(dfmat), convert(dfmat, to = "austin"))
 #' 
 as.wfm <- function(x) {
     UseMethod("as.wfm")
@@ -173,7 +173,7 @@ as.wfm.dfm <- function(x) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to tm package's DocumentTermMatrix format
-#' identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
+#' identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
 #' }
 #' 
 as.DocumentTermMatrix <- function(x) {
@@ -229,7 +229,7 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
-#' identical(quanteda:::dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
+#' identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda")) 
 #' }
 #' 
 #' @keywords internal
@@ -249,7 +249,7 @@ dfm2lda <- function(x) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
-#' identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
+#' identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda")) 
 #' }
 #' @keywords internal
 dtm2lda <- function (x, omit_empty = TRUE) {

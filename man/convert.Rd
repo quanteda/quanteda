@@ -58,9 +58,9 @@ tripletmat <- convert(dfmat1, to = "tripletlist")
 str(tripletmat)
 
 # illustrate what happens with zero-length documents
-dfmat2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
+dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]), verbose = FALSE)
 rowSums(dfmat2)
-str(convert(dfmat2, to = "stm", docvars = docvars(mycorpus)))
+str(convert(dfmat2, to = "stm", docvars = docvars(corp)))
 
 \dontrun{
 # tm's DocumentTermMatrix format

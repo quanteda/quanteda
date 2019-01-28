@@ -49,7 +49,7 @@ fcm_compress.fcm <- function(x) {
 #' @author Kenneth Benoit
 #' @examples
 #' # with tri = FALSE
-#' fcmat 1<- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = FALSE)
+#' fcmat1 <- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = FALSE)
 #' rownames(fcmat1)[3] <- colnames(fcmat1)[3] <- "Z"
 #' fcmat1
 #' fcm_sort(fcmat1)

@@ -115,7 +115,7 @@ featnames(dfm(corp, ngrams = 2, select = stopwords("english"), remove_punct = TR
 featnames(dfm(corp, ngrams = 1:2, select = stopwords("english"), remove_punct = TRUE))
 
 # removing stopwords before constructing ngrams
-toks1 <- tokens(char_tolower(test_text), remove_punct = TRUE)
+toks1 <- tokens(char_tolower(txt), remove_punct = TRUE)
 toks2 <- tokens_remove(toks1, stopwords("english"))
 toks3 <- tokens_ngrams(toks2, 2)
 featnames(dfm(toks3, verbose = FALSE))

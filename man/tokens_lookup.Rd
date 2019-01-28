@@ -77,7 +77,7 @@ tokens_lookup(toks2, dict3, levels = c(1,3))
 tokens_lookup(toks2, dict3, levels = c(2,3))
 
 # show unmatched tokens
-tokens_lookup(toks2, dict, nomatch = "_UNMATCHED")
+tokens_lookup(toks2, dict3, nomatch = "_UNMATCHED")
 
 }
 \seealso{
