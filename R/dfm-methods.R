@@ -87,8 +87,8 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    # make sure those dimensions are character
-    x@Dimnames <- lapply(x@Dimnames, as.character)
+    # make sure the dimension names are character
+    set_dfm_dimnames(x) <- lapply(x@Dimnames, as.character)
     # for compatibility with older dfm objects
     if (identical(dim(x@docvars), c(0L, 0L)))
         x@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(x)))
