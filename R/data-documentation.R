@@ -192,17 +192,17 @@ NULL
 #' @examples
 #' \dontrun{
 #' data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, remove_punct = TRUE)
-#' fitted <- textmodel_affinity(data_dfm_dailnoconf1991, 
+#' tmod <- textmodel_affinity(data_dfm_dailnoconf1991, 
 #'                            c("Govt", "Opp", "Opp", rep(NA, 55)))
-#' (pred <- predict(fitted))
-#' tmpdf <- 
+#' (pred <- predict(tmod))
+#' dat <- 
 #'     data.frame(party = as.character(docvars(data_corpus_dailnoconf1991, "party")),
-#'                govt = coef(pred)[,"Govt"],
+#'                govt = coef(pred)[, "Govt"],
 #'                position = as.character(docvars(data_corpus_dailnoconf1991, "position")),
 #'                stringsAsFactors = FALSE)
-#' bymedian <- with(tmpdf, reorder(paste(party, position), govt, median))
+#' bymedian <- with(dat, reorder(paste(party, position), govt, median))
 #' par(mar = c(5, 6, 4, 2)+.1)
-#' boxplot(govt ~ bymedian, data = tmpdf,
+#' boxplot(govt ~ bymedian, data = dat,
 #'         horizontal = TRUE, las = 1,
 #'         xlab = "Degree of support for government")
 #' abline(h = 7.5, col = "red", lty = "dashed")

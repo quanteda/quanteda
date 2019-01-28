@@ -76,19 +76,19 @@
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #'  
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq"))
-#' summary(nb)
-#' coef(nb)
-#' predict(nb)
+#' (tmod1 <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq"))
+#' summary(tmod1)
+#' coef(tmod1)
+#' predict(tmod1)
 #' 
 #' # contrast with other priors
 #' predict(textmodel_nb(trainingset, y = trainingclass, prior = "uniform"))
 #' predict(textmodel_nb(trainingset, y = trainingclass, prior = "termfreq"))
 #' 
 #' ## replicate IIR p264 Bernoulli Naive Bayes
-#' nb_bern <- textmodel_nb(trainingset, y = trainingclass, distribution = "Bernoulli", 
+#' tmod2 <- textmodel_nb(trainingset, y = trainingclass, distribution = "Bernoulli", 
 #'                         prior = "docfreq")
-#' predict(nb_bern, newdata = trainingset[5, ])
+#' predict(tmod2, newdata = trainingset[5, ])
 #' @export
 textmodel_nb <- function(x, y, smooth = 1, 
                          prior = c("uniform", "docfreq", "termfreq"), 
@@ -191,9 +191,9 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' @seealso \code{\link{textmodel_nb}}
 #' @examples 
 #' # application to LBG (2003) example data
-#' (nb <- textmodel_nb(data_dfm_lbgexample, y = c("A", "A", "B", "C", "C", NA)))
-#' predict(nb)
-#' predict(nb, type = "logposterior")
+#' (tmod <- textmodel_nb(data_dfm_lbgexample, y = c("A", "A", "B", "C", "C", NA)))
+#' predict(tmod)
+#' predict(tmod, type = "logposterior")
 #' @keywords textmodel internal
 #' @export
 predict.textmodel_nb <- function(object, newdata = NULL, 

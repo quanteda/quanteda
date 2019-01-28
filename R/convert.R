@@ -29,37 +29,35 @@
 #'   of the return formats.
 #' @export
 #' @examples
-#' mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' quantdfm <- dfm(mycorpus, verbose = FALSE)
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+#' dfmat1 <- dfm(corp, verbose = FALSE)
 #' 
 #' # austin's wfm format
-#' identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
+#' identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
 #' 
 #' # stm package format
-#' stmdfm <- convert(quantdfm, to = "stm")
-#' str(stmdfm)
+#' stmmat <- convert(dfmat1, to = "stm")
+#' str(stmmat)
 #' 
 #' #' # triplet
-#' triplet <- convert(quantdfm, to = "tripletlist")
-#' str(triplet)
+#' tripletmat <- convert(dfmat1, to = "tripletlist")
+#' str(tripletmat)
 #' 
 #' # illustrate what happens with zero-length documents
-#' quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
-#' rowSums(quantdfm2)
-#' stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
-#' str(stmdfm2)
+#' dfmat2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
+#' rowSums(dfmat2)
+#' str(convert(dfmat2, to = "stm", docvars = docvars(mycorpus)))
 #' 
 #' \dontrun{
 #' # tm's DocumentTermMatrix format
-#' tmdfm <- convert(quantdfm, to = "tm")
+#' tmdfm <- convert(dfmat1, to = "tm")
 #' str(tmdfm)
 #' 
 #' # topicmodels package format
-#' str(convert(quantdfm, to = "topicmodels"))
+#' str(convert(dfmat1, to = "topicmodels"))
 #' 
 #' # lda package format
-#' ldadfm <- convert(quantdfm, to = "lda")
-#' str(ldadfm)
+#' str(convert(dfmat1, to = "lda"))
 #' 
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
@@ -136,8 +134,8 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples 
-#' mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' quantdfm <- dfm(mycorpus, verbose = FALSE)
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+#' dfmat <- dfm(corp, verbose = FALSE)
 #' 
 NULL
 
@@ -340,9 +338,9 @@ ijv.to.doc <- function(i, j, v) {
 #' @param x dfm to be converted
 #' @examples
 #' \dontrun{
-#' (mydfm <- dfm(c(d1 = "this is a first matrix", 
+#' (dfmat <- dfm(c(d1 = "this is a first matrix", 
 #'                 d2 = "this is second matrix as example")))
-#' lsa::lsa(convert(mydfm, to = "lsa"))
+#' lsa::lsa(convert(dfmat, to = "lsa"))
 #' }
 #' @keywords internal
 dfm2lsa <- function(x) {

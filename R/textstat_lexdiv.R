@@ -90,7 +90,7 @@
 #' @param MSTTR_segment a numeric value defining the size of the each segment
 #'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
 #' @param ... for passing arguments to other methods
-#' @author Kenneth Benoit and Jiong Wei Lua.  Many of the formulas have been
+#' @author Kenneth Benoit and Jiong Wei Lua. Many of the formulas have been
 #'   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
 #'   package.
 #' @references 
@@ -438,8 +438,8 @@ compute_msttr <- function(x, MSTTR_segment) {
 #' @param x input \link{dfm}
 #' @keywords internal dfm
 #' @examples
-#' (tmp <- dfm("One-two one two three."))
-#' quanteda:::dfm_split_hyphenated_features(tmp)
+#' (dfmat <- dfm("One-two one two three."))
+#' quanteda:::dfm_split_hyphenated_features(dfmat)
 dfm_split_hyphenated_features <- function(x) {
     # the global for matching the hyphens and similar characters
     hyphen_regex <- "^.+\\p{Pd}.+$"

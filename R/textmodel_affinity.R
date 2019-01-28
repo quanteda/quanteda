@@ -25,8 +25,8 @@
 #'
 #' \dontrun{
 #' # compute bootstrapped SEs
-#' bs_dfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
-#' textmodel_affinity(bs_dfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
+#' dfmat <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
+#' textmodel_affinity(dfmat, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 #' }
 #' @export
 #' @keywords textmodel experimental
@@ -562,9 +562,9 @@ rstandard.predict.textmodel_affinity <- function(model, ...) {
 #' @method influence predict.textmodel_affinity
 #' @import Matrix
 #' @examples 
-#' af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
-#' afpred <- predict(af) 
-#' influence(afpred)
+#' tmot <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+#' pred <- predict(tmot) 
+#' influence(pred)
 #' @export
 influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     # subset/training set

@@ -31,9 +31,9 @@
 #' @return \code{textmodel_ca()} returns a fitted CA textmodel that is a special
 #' class of \pkg{ca} object.
 #' @examples 
-#' ieDfm <- dfm(data_corpus_irishbudget2010)
-#' wca <- textmodel_ca(ieDfm)
-#' summary(wca)
+#' dfmat <- dfm(data_corpus_irishbudget2010)
+#' tmod <- textmodel_ca(dfmat)
+#' summary(tmod)
 #' @seealso \code{\link{coef.textmodel_lsa}}, \link[ca]{ca}
 #' @export
 textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, 

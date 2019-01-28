@@ -58,8 +58,8 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' @import data.table
 #' @examples 
 #' # bootstrapping from a dfm
-#' mydfm <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
-#' bootstrap_dfm(mydfm, n = 3)
+#' dfmat <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
+#' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
 
     if (! "_document" %in% names(x@docvars))

@@ -12,10 +12,10 @@
 #' @export
 #' @author Ken Benoit
 #' @examples
-#' dtm <- dfm(data_corpus_inaugural)
-#' head(dtm)
-#' head(dfm_sort(dtm))
-#' head(dfm_sort(dtm, decreasing = FALSE, "both"))
+#' dfmat <- dfm(data_corpus_inaugural)
+#' head(dfmat)
+#' head(dfm_sort(dfmat))
+#' head(dfm_sort(dfmat, decreasing = FALSE, "both"))
 dfm_sort <- function(x, decreasing = TRUE, 
                      margin = c("features", "documents", "both")) {
   UseMethod("dfm_sort")

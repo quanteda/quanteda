@@ -24,15 +24,15 @@
 #'   previously existed with that date.
 #' @export
 #' @examples
-#' mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
+#' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 #'                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
-#' mydfm <- dfm(mycorpus)
-#' dfm_group(mydfm, groups = "grp")
-#' dfm_group(mydfm, groups = c(1, 1, 2, 2))
+#' dfmat <- dfm(corp)
+#' dfm_group(dfmat, groups = "grp")
+#' dfm_group(dfmat, groups = c(1, 1, 2, 2))
 #'
 #' # equivalent
-#' dfm(mydfm, groups = "grp")
-#' dfm(mydfm, groups = c(1, 1, 2, 2))
+#' dfm(dfmat, groups = "grp")
+#' dfm(dfmat, groups = c(1, 1, 2, 2))
 dfm_group <- function(x, groups = NULL, fill = FALSE) {
     UseMethod("dfm_group")
 }
