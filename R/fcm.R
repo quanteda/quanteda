@@ -71,16 +71,17 @@
 #'    comparative study of word co-occurrence for term clustering in language 
 #'   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
 #'   2010 Annual Conference of the North American Chapter of the ACL}, Los 
-#'   Angeles, California, June 2010, pp. 325-328.
+#'   Angeles, California, June 2010, 325-328.
 #'   
-#'   Jurafsky, Daniel and James H. Martin (2018). "Chapter 6, Vector Semantics."
-#'   from \emph{Speech and Language Processing}.  Draft of September 23, 2018,
-#'   from \url{https://web.stanford.edu/~jurafsky/slp3/}.
+#'   Jurafsky, D. & Martin, J.H. (2018).
+#'   From \emph{Speech and Language Processing: An Introduction to Natural Language Processing, 
+#'   Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018 
+#'   (Chapter 6, Vector Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 #'   
-#'   Church, K. W. & P. Hanks (1990) 
-#'   "\href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
-#'   mutual information, and lexicography}" \emph{Computational Linguistics},
-#'   16(1):22–29.
+#'   Church, K. W. & P. Hanks (1990) .
+#'  \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
+#'   mutual information, and lexicography}. \emph{Computational Linguistics},
+#'   16(1), 22–29.
 #' @examples
 #' # see http://bit.ly/29b2zOA
 #' txt1 <- "A D A C E A D F E B A C E D"

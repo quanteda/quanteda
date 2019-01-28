@@ -42,17 +42,17 @@
 #' predict(tmod)
 #' predict(tmod, rescaling = "lbg")
 #' predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "mv")
-#' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
-#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy
-#'   Positions From Political Texts Using Words as Data.}" \emph{American
-#'   Political Science Review} 97(2): 311--331
+#' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
+#'   \href{https://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
+#'   Positions from Political Text using Words as Data}. \emph{American
+#'   Political Science Review}, 97(2), 311--331.
 #'   
-#'   Beauchamp, Nick. 2012. "\href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
-#'   Text to Scale Legislatures with Uninformative Voting}." New York University Mimeo.
+#'   Beauchamp, N. (2012). \href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
+#'   Text to Scale Legislatures with Uninformative Voting}. New York University Mimeo.
 #'   
-#'   Martin, Lanny W. and Georg Vanberg. 2007. "\href{https://doi.org/10.1093/pan/mpm010}{A Robust 
-#'   Transformation Procedure for Interpreting Political Text}." \emph{Political Analysis} 
-#'   16(1): 93--100.
+#'   Martin, L.W. & Vanberg, G. (2007). \href{https://doi.org/10.1093/pan/mpm010}{A Robust 
+#'   Transformation Procedure for Interpreting Political Text}. \emph{Political Analysis} 
+#'   16(1), 93--100.
 #' @export
 textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     UseMethod("textmodel_wordscores")

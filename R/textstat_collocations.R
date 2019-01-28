@@ -23,7 +23,7 @@
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
-#' @references Blaheta, D., & Johnson, M. (2001). 
+#' @references Blaheta, D. & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'   learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
 #'   Computational Extraction, Analysis and Exploitation of Collocations.

@@ -12,15 +12,15 @@
 #'   issue. While a reduction in \eqn{k} can remove much of the noise, keeping
 #'   too few dimensions or factors may lose important information.
 #' @references 
-#'   Rosario, Barbara. 2000.
-#'   "\href{http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf}{Latent 
-#'   Semantic Indexing: An Overview}". \emph{Technical report INFOSYS 240 Spring
+#'   Rosario, B. (2000).
+#'   \href{http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf}{Latent 
+#'   Semantic Indexing: An Overview}. \emph{Technical report INFOSYS 240 Spring
 #'   Paper, University of California, Berkeley.}
 #'   
-#'   Deerwester, Scott, Susan T. Dumais, George W. Furnas, Thomas K. Landauer, and 
-#'   Richard Harshman. 1990. "\href{https://search.proquest.com/docview/1301252034}{Indexing 
-#'   by Latent Semantic Analysis}". \emph{Journal of the American Society for 
-#'   Information Science} 41(6): 391.
+#'   Deerwester, S., Dumais, S.T., Furnas, G.W., Landauer, T.K., &  
+#'   Harshman, R. (1990). \href{https://search.proquest.com/docview/1301252034}{Indexing 
+#'   by Latent Semantic Analysis}. \emph{Journal of the American Society for 
+#'   Information Science}, 41(6): 391.
 #' @examples 
 #' dfmat <- dfm(data_corpus_irishbudget2010)
 #' # create an LSA space and return its truncated representation in the low-rank space

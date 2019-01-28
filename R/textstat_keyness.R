@@ -21,18 +21,18 @@
 #'   defaults, for instance to apply the Williams correction to the chi2 
 #'   measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
 #'   measures has no effect and produces a warning.
-#' @references Bondi, Marina and Mike Scott, eds. 2010. \emph{Keyness in 
+#' @references Bondi, M. & Scott, M. (eds) (2010). \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins.
 #'   
-#'   Stubbs, Michael. 2010. "Three Concepts of Keywords". In \emph{Keyness in 
-#'   Texts}, Marina Bondi and Mike Scott, eds: 1--42. Amsterdam, Philadelphia:
+#'   Stubbs, M. (2010). Three Concepts of Keywords. In \emph{Keyness in 
+#'   Texts}, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
 #'   John Benjamins.
 #'   
-#'   Scott, Mike and Christopher Tribble. 2006. \emph{Textual Patterns: keyword and corpus 
-#'   analysis in language education}. Amsterdam: Benjamins: 55.
+#'   Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus 
+#'   Analysis in Language Education}. Amsterdam: Benjamins: 55.
 #'   
-#'   Dunning, Ted. 1993. "\href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
-#'   for the Statistics of Surprise and Coincidence}." \emph{Computational Linguistics} 19(1): 61--74.
+#'   Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
+#'   for the Statistics of Surprise and Coincidence}. \emph{Computational Linguistics}, 19(1): 61--74.
 #' @return a data.frame of computed statistics and associated p-values, where 
 #'   the features scored name each row, and the number of occurrences for both 
 #'   the target and reference groups. For \code{measure = "chi2"} this is the 

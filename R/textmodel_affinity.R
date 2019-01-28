@@ -15,8 +15,8 @@
 #' @param verbose logical; if \code{TRUE} print diagnostic information during
 #'   fitting.
 #' @author Patrick Perry and Kenneth Benoit
-#' @references Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
-#'   the Class Affinity Model".
+#' @references Perry, P.O. & Benoit, K.R. (2017). Scaling Text with
+#'   the Class Affinity Model.
 #'   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 #' @examples
 #' (af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA)))

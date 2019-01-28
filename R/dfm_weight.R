@@ -65,8 +65,8 @@
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(dfmat8), "\n")
 #'     head(dfmat8)
 #' }}
-#' @references  Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
-#'   \emph{An Introduction to Information Retrieval}. Cambridge University Press. 
+#' @references  Manning, C.D., Raghavan, P., & Schütze, H. (2008).
+#'   \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press. 
 #'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 dfm_weight <- function(
     x, 
@@ -291,7 +291,8 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' docfreq(dfmat, scheme = "inversemax")
 #' docfreq(dfmat, scheme = "inverseprob")
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+#'   \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax", 
                                   "inverseprob", "unary"),
                     smoothing = 0, k = 0, base = 10, threshold = 0, 
@@ -372,7 +373,8 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #'   frequency (the relative term frequency within document), but this
 #'   can be overridden using \code{scheme_tf = "prop"}.
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+#'   \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 #' @seealso \code{\link{dfm_weight}}, \code{\link{docfreq}}
 #' @keywords dfm weighting
 #' @examples 
