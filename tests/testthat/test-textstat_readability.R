@@ -148,8 +148,6 @@ test_that("textstat_readability works for renamed Bormuth.MC and Coleman.Liau.EC
 })
 
 test_that("textstat_readability raises error for non-included measures",{
-    expect_error(quanteda::textstat_readability(data_char_sampletext, measure = "Gibberish"),
+    expect_error(textstat_readability(data_char_sampletext, measure = "Gibberish"),
                  "Invalid measure(s): Gibberish", fixed = TRUE)
 })
-
-
