@@ -29,11 +29,11 @@ Sample randomly from a dfm object, from documents or features.
 }
 \examples{
 set.seed(10)
-myDfm <- dfm(data_corpus_inaugural[1:10])
-head(myDfm)
-head(dfm_sample(myDfm))
-head(dfm_sample(myDfm, replace = TRUE))
-head(dfm_sample(myDfm, margin = "features"))
+dfmat <- dfm(data_corpus_inaugural[1:10])
+head(dfmat)
+head(dfm_sample(dfmat))
+head(dfm_sample(dfmat, replace = TRUE))
+head(dfm_sample(dfmat, margin = "features"))
 }
 \seealso{
 \link{sample}

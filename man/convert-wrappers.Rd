@@ -57,8 +57,8 @@ Additional coercion methods to base R objects are also available:
   \link{matrix}} }
 }
 \examples{
-mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-quantdfm <- dfm(mycorpus, verbose = FALSE)
+corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+dfmat <- dfm(corp, verbose = FALSE)
 
 # shortcut conversion to austin package's wfm format
 identical(as.wfm(quantdfm), convert(quantdfm, to = "austin"))

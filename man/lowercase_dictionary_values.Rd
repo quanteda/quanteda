@@ -13,13 +13,13 @@ lowercase_dictionary_values(dict)
 Internal function to lowercase dictionary values
 }
 \examples{
-hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
+dict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
                           SUBKEY2 = c("C", "D")),
               KEY2 = list(SUBKEY3 = c("E", "F"),
                           SUBKEY4 = c("G", "F", "I")),
               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-quanteda:::lowercase_dictionary_values(hdict)
+quanteda:::lowercase_dictionary_values(dict)
 }
 \keyword{dictionary}
 \keyword{internal}

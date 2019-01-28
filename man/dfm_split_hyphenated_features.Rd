@@ -15,8 +15,8 @@ Takes a dfm that contains features with hyphenated words, such as
 in the same was as `tokens(x, remove_hyphens = TRUE)` would have done.
 }
 \examples{
-(tmp <- dfm("One-two one two three."))
-quanteda:::dfm_split_hyphenated_features(tmp)
+(dfmat <- dfm("One-two one two three."))
+quanteda:::dfm_split_hyphenated_features(dfmat)
 }
 \keyword{dfm}
 \keyword{internal}
