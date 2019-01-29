@@ -253,3 +253,21 @@ message_error <- function(key = NULL) {
     }
     return(unname(msg[key]))
 } 
+
+#' Sample a vector by a group
+#' 
+#' Return a sample from a vector within a grouping variable.
+#' @param x any vector
+#' @param group a grouping vector equal in length to \code{length(x)}
+#' @param replace logical; should sampling be with replacement?
+#' @return \code{x} resampled within groups
+#' @keywords internal
+#' @examples 
+#' set.seed(100)
+#' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
+#' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
+#' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
+sample_bygroup <- function(x, group, replace = FALSE) {
+    result <- lapply(split(x, group), sample, replace = replace)
+    unlist(result, use.names = FALSE)
+} 
