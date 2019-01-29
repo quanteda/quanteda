@@ -1,4 +1,4 @@
-# quanteda > v1.3.14
+# quanteda v1.4.0
 
 ### Bug fixes and stability enhancements
 
@@ -13,6 +13,7 @@
 * New function `tokens_split()` allows splitting single into multiple tokens based on a pattern match. (#1500)
 * New function `tokens_chunk()` allows splitting tokens into new documents of equally-sized "chunks". (#1520)
 * New function `textstat_entropy()` now computes entropy for a dfm across feature or document margins.
+* The documentation for `textstat_readability()` is vastly improved, now providing detailing all formulas and providing full references.
 * New function `dfm_match()` allows a user to specify the features in a dfm according to a fixed vector of feature names, including those of another dfm.  Replaces `dfm_select(x, pattern)` where `pattern` was a dfm.
 * A new argument `vertex_labelsize` added to `textplot_network()` to allow more precise control of label sizes, either globally or individually.
 

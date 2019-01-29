@@ -9,6 +9,84 @@ Version: 0.3.3
       Note: found 438 marked UTF-8 strings
     ```
 
+# LexisNexisTools
+
+Version: 0.2.1
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    	...lengths extracted [0.007 secs]
+    	...newspapers extracted [0.0073 secs]
+    	...dates extracted [0.0094 secs]
+    	...authors extracted [0.12 secs]
+    	...sections extracted [0.12 secs]
+    	...editions extracted [0.12 secs]
+    	...headlines extracted [0.13 secs]
+    	...dates converted [0.13 secs]
+    	...metadata extracted [0.13 secs]
+    	...article texts extracted [0.13 secs]
+    	...paragraphs extracted [0.14 secs]
+    	...superfluous whitespace removed from articles [0.14 secs]
+    	...superfluous whitespace removed from paragraphs [0.14 secs]
+    Elapsed time: 0.14 secs
+    Checking similiarity for 10 articles over 4 dates...
+    	...quanteda dfm construced for similarity comparison [0.19 secs].
+    	...processing date 2010-01-08: 0 duplicates found [0.20 secs]. 		
+    	...processing date 2010-01-09: 0 duplicates found [0.20 secs]. 		Error in validObject(.Object) : 
+      invalid class “dfm” object: Dimnames[1] is not a character vector
+    Calls: lnt_similarity ... initialize -> callNextMethod -> .nextMethod -> validObject
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      16: initialize(value, ...)
+      17: callNextMethod()
+      18: .nextMethod(.Object = .Object, ... = ...)
+      19: validObject(.Object)
+      20: stop(msg, ": ", errors, domain = NA)
+      
+      Creating LNToutput from input 1 files...
+      ══ testthat results  ═══════════════════════════════════════════════════════════════════
+      OK: 38 SKIPPED: 0 FAILED: 3
+      1. Error: (unknown) (@test-lnt_diff.R#4) 
+      2. Error: Test similarity (@test-lnt_similarity.R#8) 
+      3. Error: Test similarity warnings and errors (@test-lnt_similarity.R#26) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    LexisNexisTools Version 0.2.1
+    
+    Attaching package: 'dplyr'
+    
+    The following objects are masked from 'package:stats':
+    
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    OMP: Warning #96: Cannot form a team with 12 threads, using 2 instead.
+    OMP: Hint Consider unsetting KMP_DEVICE_THREAD_LIMIT (KMP_ALL_THREADS), KMP_TEAMS_THREAD_LIMIT, and OMP_THREAD_LIMIT (if any are set).
+    Quitting from lines 199-205 (demo.Rmd) 
+    Error: processing vignette 'demo.Rmd' failed with diagnostics:
+    invalid class "dfm" object: Dimnames[1] is not a character vector
+    Execution halted
+    ```
+
 # newsmap
 
 Version: 0.6
@@ -70,7 +148,7 @@ Version: 1.1.2
       11: tryCatchOne(expr, names, parentenv, handlers[[1L]])
       12: value[[3L]](cond)
       
-      ══ testthat results  ═════════════════════════════════════════════════════════════════════════════════
+      ══ testthat results  ═══════════════════════════════════════════════════════════════════
       OK: 10 SKIPPED: 0 FAILED: 3
       1. Error: See if tagging five documents works, and if coarsening works (@test_POS_tag_documents.R#10) 
       2. Error: See if extractor works (@test_extract_phrases.R#10) 
@@ -131,7 +209,7 @@ Version: 1.0
 
 # sentometrics
 
-Version: 0.5.5
+Version: 0.5.6
 
 ## In both
 
@@ -171,7 +249,7 @@ ERROR: compilation failed for package ‘sentometrics’
 ```
 # spacyr
 
-Version: 0.9.91
+Version: 1.0
 
 ## In both
 
@@ -223,5 +301,23 @@ Version: 0.2.0
     ```
     Unable to find any JVMs matching version "(null)".
     No Java runtime present, try --request to install.
+    ```
+
+# tosca
+
+Version: 0.1-3
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.7Mb
+      sub-directories of 1Mb or more:
+        data   4.7Mb
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 1946 marked UTF-8 strings
     ```
 
