@@ -20,9 +20,9 @@ Data sets used for mainly internal purposes by the \pkg{quanteda} package.
 \code{data_int_syllables} provides an English-language syllables dictionary;
 it is an integer vector whose element names correspond to English words.
 
-\code{data_char_wordlists} provides word lists used in some readability indexes; 
-it is a named list of character vectors where each list element 
-corresponds to a different readability index.  
+\code{data_char_wordlists} provides word lists used in some readability indexes;
+it is a named list of character vectors where each list element
+corresponds to a different readability index.
 
 These are:
 \describe{
