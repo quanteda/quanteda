@@ -35,7 +35,7 @@ test_that("make_docvars() works", {
 
 })
 
-test_that("upgrade_docvars() workds", {
+test_that("upgrade_docvars() works", {
     
     docvar1 <- data.frame()
     docvar2 <- data.frame("var1" = c(100, 200, 300),
@@ -73,7 +73,7 @@ test_that("upgrade_docvars() workds", {
     )
 })
 
-test_that("get_docvars() workds", {
+test_that("get_docvars() works", {
     
     data <- data.frame("docname_" = c("A", "B", "C"), 
                          "docid_" = c("A", "B", "C"), 
@@ -120,7 +120,7 @@ test_that("get_docvars() workds", {
     )
 })
 
-test_that("set_docvars() workds", {
+test_that("set_docvars() works", {
     
     data <- data.frame("docname_" = c("A", "B", "C"), 
                        "docid_" = c("A", "B", "C"), 
