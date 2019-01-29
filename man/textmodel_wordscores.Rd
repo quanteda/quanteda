@@ -55,7 +55,7 @@ predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 }
 \references{
 Laver, M., Benoit, K.R., & Garry, J. (2003). 
-  \href{https://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
+  \href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
   Positions from Political Text using Words as Data}. \emph{American
   Political Science Review}, 97(2), 311--331.
   
