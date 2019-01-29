@@ -420,6 +420,7 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
+    warning("[[]] for tokens is deprecated")
     types <- c("", types(x))
     types[unclass(x)[[i]] + 1] # shift index to show padding
 }
@@ -432,6 +433,7 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks$d3
 "$.tokens" <- function(x, i, ...) {
+    warning("$ for tokens is deprecated")
     x[[i]]
 }
 
@@ -446,6 +448,7 @@ print.tokens <- function(x, ...) {
 #' @export
 #' @noRd
 "[[<-.tokens" <- function(x, i, value) {
+    warning("[[]] for tokens is deprecated")
     stop("assignment to tokens objects is not allowed", call. = FALSE)
 }
 
