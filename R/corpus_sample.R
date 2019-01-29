@@ -49,5 +49,5 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     } else {
         index <- base::sample(ndoc(x), size, replace, prob) 
     }
-    retrun(x[index])
+    return(x[index])
 }
