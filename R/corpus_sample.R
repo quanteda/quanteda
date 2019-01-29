@@ -7,7 +7,7 @@
 #' @param size a positive number, the number of documents to select
 #' @param replace Should sampling be with replacement?
 #' @param prob A vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
+#'   vector being sampled.  May not be applied when \code{by} is used.
 #' @param by a grouping variable for sampling.  Useful for resampling
 #'   sub-document units such as sentences, for instance by specifying \code{by =
 #'   "document"}
@@ -19,6 +19,7 @@
 #' @export
 #' @keywords corpus
 #' @examples
+#' set.seed(2000)
 #' # sampling from a corpus
 #' summary(corpus_sample(data_corpus_inaugural, 5))
 #' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
@@ -42,13 +43,11 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
     x <- as.corpus(x)
     if (!is.null(by)) {
-        if (by == "document") 
-            by <- "docnum_"
-        docvar <- attr(x, "docvars")
-        index <- unlist(lapply(split(seq_len(ndoc(x)), docvar[[by]]), base::sample), 
-                        use.names = FALSE)
+        if (!is.null(prob)) stop("prob not implemented with by")
+        if (by == "document") by <- "docid_"
+        index <- sample_bygroup(seq_len(ndoc(x)), group = docvars(x, by), replace = replace)
     } else {
         index <- base::sample(ndoc(x), size, replace, prob) 
     }
-    x[index]
+    retrun(x[index])
 }

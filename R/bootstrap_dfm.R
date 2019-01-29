@@ -18,9 +18,10 @@
 #' @keywords dfm experimental bootstrap
 #' @examples 
 #' # bootstrapping from the original text
+#' set.seed(10)
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
-#' bootstrap_dfm(txt, n = 3)
+#' bootstrap_dfm(txt, n = 3, verbose = TRUE)
 #'          
 bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
@@ -72,13 +73,13 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     for (i in seq_len(n)) {
         if (verbose) 
             message(", ", i, appendLF = FALSE)
-        j <- unlist(lapply(split(seq_len(ndoc(x)), group), sample), use.names = FALSE)
-        result[[i + 1]] <- dfm_group(x[j,], groups = "docid_", fill = TRUE)
+        temp <- x[sample_bygroup(seq_len(ndoc(x)), group = docvars(x, "docid_"), replace = TRUE), ]
+        temp <- dfm_group(temp, groups = docvars(temp, "docid_"))
+        result[[i + 1]] <-temp
     }
     names(result) <- paste0("dfm_", seq(0, n))
     if (verbose) 
         message("\n   ...complete.\n")
-
     class(result) <- c("dfm_bootstrap")
     return(result)
 }
