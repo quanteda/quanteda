@@ -69,11 +69,11 @@ toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens_remove(pattern = stopwords("english"), padding = FALSE)
 fcmat <- fcm(toks, context = "window", tri = FALSE)
 feat <- names(topfeatures(fcmat, 30))
-fcm_select(fcmat, pattern = feat, verbose = FALSE) \%>\%
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.5)
-fcm_select(fcmat, pattern = feat, verbose = FALSE) \%>\%
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.8)
-fcm_select(fcmat, pattern = feat, verbose = FALSE) \%>\%
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
 
 # as.igraph

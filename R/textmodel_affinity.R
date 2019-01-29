@@ -37,14 +37,14 @@
 #'   (other) documents.
 textmodel_affinity <- function(x, y, exclude = NULL,
                                smooth = 0.5, ref_smooth = 0.5,
-                               verbose = TRUE) {
+                               verbose = quanteda_options("verbose")) {
     UseMethod("textmodel_affinity")
 }
 
 #' @export
 textmodel_affinity.default <- function(x, y, exclude = NULL,
                                        smooth = 0.5, ref_smooth = 0.5,
-                                       verbose = TRUE) {
+                                       verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "textmodel_affinity"))
 }
     
@@ -52,7 +52,7 @@ textmodel_affinity.default <- function(x, y, exclude = NULL,
 #' @export
 textmodel_affinity.dfm <- function(x, y, exclude = NULL,
                                    smooth = 0.5, ref_smooth = 0.5,
-                                   verbose = TRUE) {
+                                   verbose = quanteda_options("verbose")) {
     
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
@@ -99,7 +99,7 @@ textmodel_affinity.dfm <- function(x, y, exclude = NULL,
 #' @export
 textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
                                              smooth = 0.5, ref_smooth = 0.5,
-                                             verbose = TRUE) {
+                                             verbose = quanteda_options("verbose")) {
     if (verbose)
         message("Bootstrapping textmodel_affinity for ", ndoc(x[[1]]), " documents:")
 

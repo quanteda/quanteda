@@ -49,7 +49,7 @@
 #' @examples
 #' dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
 #'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              tolower = FALSE, verbose = FALSE)
+#'              tolower = FALSE)
 #' dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
 #'                           wordsEndingInY = c("by", "my"),
 #'                           notintext = "blahblah"))
@@ -168,8 +168,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #' @export
 #' @examples 
 #' dfmat <- dfm(c("This is a document with lots of stopwords.",
-#'                 "No if, and, or but about it: lots of stopwords."),
-#'               verbose = FALSE)
+#'                "No if, and, or but about it: lots of stopwords."))
 #' dfmat
 #' dfm_remove(dfmat, stopwords("english"))
 dfm_remove <- function(x, ...) {

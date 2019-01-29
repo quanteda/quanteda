@@ -46,9 +46,9 @@ cbind(matrix(c(101, 102), ncol = 1), dfmat1)
 
 
 # rbind() for dfm objects
-(dfmat1 <- dfm(c(doc1 = "This is one sample text sample."), verbose = FALSE))
-(dfmat2 <- dfm(c(doc2 = "One two three text text."), verbose = FALSE))
-(dfmat3 <- dfm(c(doc3 = "This is the fourth sample text."), verbose = FALSE))
+(dfmat1 <- dfm(c(doc1 = "This is one sample text sample.")))
+(dfmat2 <- dfm(c(doc2 = "One two three text text.")))
+(dfmat3 <- dfm(c(doc3 = "This is the fourth sample text.")))
 rbind(dfmat1, dfmat2)
 rbind(dfmat1, dfmat2, dfmat3)
 }

@@ -30,7 +30,7 @@
 #' @export
 #' @examples
 #' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' dfmat1 <- dfm(corp, verbose = FALSE)
+#' dfmat1 <- dfm(corp)
 #' 
 #' # austin's wfm format
 #' identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
@@ -44,7 +44,7 @@
 #' str(tripletmat)
 #' 
 #' # illustrate what happens with zero-length documents
-#' dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]), verbose = FALSE)
+#' dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]))
 #' rowSums(dfmat2)
 #' str(convert(dfmat2, to = "stm", docvars = docvars(corp)))
 #' 
@@ -135,7 +135,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' @keywords internal
 #' @examples 
 #' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' dfmat <- dfm(corp, verbose = FALSE)
+#' dfmat <- dfm(corp)
 #' 
 NULL
 

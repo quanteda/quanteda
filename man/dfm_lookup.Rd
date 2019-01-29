@@ -60,7 +60,7 @@ dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           country = c("United_States", "Sweden")))
 dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             remove = stopwords("english"), verbose = FALSE)
+             remove = stopwords("english"))
 dfmat
 
 # glob format

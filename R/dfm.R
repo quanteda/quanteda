@@ -63,7 +63,7 @@
 #' # with English stopwords and stemming
 #' dfm(dfmat1, remove = stopwords("english"), stem = TRUE, verbose = TRUE)
 #' # works for both words in ngrams too
-#' dfm("Banking industry", stem = TRUE, ngrams = 2, verbose = FALSE)
+#' dfm("Banking industry", stem = TRUE, ngrams = 2)
 #'
 #' # with dictionaries
 #' dfmat2 <- corpus_subset(data_corpus_inaugural, Year > 1900)
@@ -90,11 +90,11 @@
 #' toks1 <- tokens(char_tolower(txt), remove_punct = TRUE)
 #' toks2 <- tokens_remove(toks1, stopwords("english"))
 #' toks3 <- tokens_ngrams(toks2, 2)
-#' featnames(dfm(toks3, verbose = FALSE))
+#' featnames(dfm(toks3))
 #'
 #' # keep only certain words
-#' dfm(corp, select = "*s", verbose = FALSE)  # keep only words ending in "s"
-#' dfm(corp, select = "s$", valuetype = "regex", verbose = FALSE)
+#' dfm(corp, select = "*s")  # keep only words ending in "s"
+#' dfm(corp, select = "s$", valuetype = "regex")
 #'
 #' # testing Twitter functions
 #' txttweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",

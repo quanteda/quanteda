@@ -91,7 +91,7 @@ This function selects features based on their labels.  To select
 \examples{
 dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
-             tolower = FALSE, verbose = FALSE)
+             tolower = FALSE)
 dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))
@@ -106,8 +106,7 @@ dfm_select(dfmat, pattern = stopwords("english"), selection = "remove", valuetyp
 dfm_select(dfmat, min_nchar = 5)
 
 dfmat <- dfm(c("This is a document with lots of stopwords.",
-                "No if, and, or but about it: lots of stopwords."),
-              verbose = FALSE)
+               "No if, and, or but about it: lots of stopwords."))
 dfmat
 dfm_remove(dfmat, stopwords("english"))
 toks <- tokens(c("this contains lots of stopwords",

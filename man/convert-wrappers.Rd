@@ -58,7 +58,7 @@ Additional coercion methods to base R objects are also available:
 }
 \examples{
 corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-dfmat <- dfm(corp, verbose = FALSE)
+dfmat <- dfm(corp)
 
 # shortcut conversion to austin package's wfm format
 identical(as.wfm(dfmat), convert(dfmat, to = "austin"))

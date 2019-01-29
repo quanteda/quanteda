@@ -430,7 +430,7 @@
 #'   Reading Ease Formula) for Navy Enlisted Personnel}.
 #'   
 #'   McLaughlin, G.H. (1969).
-#'   \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{"SMOG
+#'   \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{SMOG
 #'   Grading: A New Readability Formula.} \emph{Journal of Reading}, 12(8),
 #'   639-646.
 #'

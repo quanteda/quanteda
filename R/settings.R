@@ -44,9 +44,9 @@ settings.default <- function(x=NULL, ...) {
 #' @rdname settings
 #' @examples
 #' settings(data_corpus_inaugural, "stopwords")
-#' (dfmat1 <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
-#' (dfmat2 <- dfm(corpus_subset(data_corpus_inaugural, Year>1980),
-#'                  remove = stopwords("english"), verbose=FALSE))
+#' (dfmat1 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
+#' (dfmat2 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
+#'                remove = stopwords("english")))
 #' settings(data_corpus_inaugural, "stopwords") <- TRUE
 #' @export 
 settings.corpus <- function(x, field=NULL, ...) {

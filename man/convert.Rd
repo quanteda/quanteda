@@ -44,7 +44,7 @@ text analysis packages for which conversions are defined.
 }
 \examples{
 corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-dfmat1 <- dfm(corp, verbose = FALSE)
+dfmat1 <- dfm(corp)
 
 # austin's wfm format
 identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
@@ -58,7 +58,7 @@ tripletmat <- convert(dfmat1, to = "tripletlist")
 str(tripletmat)
 
 # illustrate what happens with zero-length documents
-dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]), verbose = FALSE)
+dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]))
 rowSums(dfmat2)
 str(convert(dfmat2, to = "stm", docvars = docvars(corp)))
 
