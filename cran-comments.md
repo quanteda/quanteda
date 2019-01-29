@@ -1,18 +1,18 @@
 # Submission notes
 
 ## Purpose
-
-- Responds to an email from Kurt Hornik (14 Nov 2018) asking us to fix the
-problems at https://cran.r-project.org/web/checks/check_results_quanteda.html,
+    
+- Implements a request in an email from Brian Ripley (21 Jan 2019) that we ensure a two-thread limit for OpenMP usage (by setting OMP_THREAD_LIMIT=2),
 caused by unit tests whose results differed on Debian versus other platforms.  
-- Bug fixes, stability enhancements, and one small feature addition (noted in NEWS).  
+- Implements bug fixes and stability enhancements.
+- Adds several new features documented in NEWS.md.
 
 ## Test environments
 
-* local macOS 10.14.1, R 3.5.1
-* ubuntu Ubuntu 16.04 LTS and 18.04 LTS, R 3.5.1
-* Windows Server 2012 R2 x64 (build 9600), R 3.5.1 (on Appveyor)
-* local Windows 10, R 3.5.1
+* local macOS 10.14.3, R 3.5.2
+* ubuntu Ubuntu 18.04 LTS and 18.04 LTS, R 3.5.2
+* Windows Server 2012 R2 x64 (build 9600), R 3.5.2 (on Appveyor)
+* local Windows 10, R 3.5.2
 * win-builder (devel and release)
 
 ## R CMD check results
