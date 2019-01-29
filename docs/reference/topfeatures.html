@@ -82,7 +82,7 @@ as a whole or separated by document." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -249,21 +249,21 @@ See <a href='groups.html'>groups</a> for details.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>) <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>mydfm_nostopw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm_select.html'>dfm_remove</a></span>(<span class='no'>mydfm</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))
+<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm_select.html'>dfm_remove</a></span>(<span class='no'>dfmat1</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))
 
 <span class='co'># most frequent features</span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;  the  and   of   to  our   we    a   in   is that 
-#&gt; 1100  927  761  584  565  539  426  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>)</div><div class='output co'>#&gt;      us    must america     new  people   world  nation    time     can freedom 
+<span class='fu'>topfeatures</span>(<span class='no'>dfmat1</span>)</div><div class='output co'>#&gt;  the  and   of   to  our   we    a   in   is that 
+#&gt; 1100  927  761  584  565  539  426  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>)</div><div class='output co'>#&gt;      us    must america     new  people   world  nation    time     can freedom 
 #&gt;     165      99      98      93      90      87      79      73      72      71 </div><div class='input'>
 <span class='co'># least frequent features</span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;     hatfield      mondale        baker       moomaw    momentous   occurrence 
+<span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;     hatfield      mondale        baker       moomaw    momentous   occurrence 
 #&gt;            1            1            1            1            1            1 
 #&gt;    routinely       unique       really every-4-year 
 #&gt;            1            1            1            1 </div><div class='input'>
 <span class='co'># top features of individual documents  </span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>mydfm_nostopw</span>))</div><div class='output co'>#&gt; $`1981-Reagan`
+<span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>dfmat2</span>))</div><div class='output co'>#&gt; $`1981-Reagan`
 #&gt;         us government       must    believe     people 
 #&gt;         25         16         10         10          9 
 #&gt; 
@@ -304,7 +304,7 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 #&gt;       18       11       10        9        8 
 #&gt; </div><div class='input'>
 <span class='co'># grouping by president last name</span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; $Reagan
+<span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; $Reagan
 #&gt;         us government     people      world        one 
 #&gt;         52         29         25         23         22 
 #&gt; 
@@ -325,7 +325,7 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 #&gt;       18       11       10        9        8 
 #&gt; </div><div class='input'>
 <span class='co'># features by document frequencies</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='fu'>topfeatures</span>(<span class='no'>mydfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>200</span>))</div><div class='output co'>#&gt;   congress       said throughout       came      heart       find 
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='fu'>topfeatures</span>(<span class='no'>dfmat1</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>200</span>))</div><div class='output co'>#&gt;   congress       said throughout       came      heart       find 
 #&gt;          7          7          7          7          7          7 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

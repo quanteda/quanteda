@@ -46,14 +46,13 @@ You may need to set \code{sparse = TRUE}) and
   \code{residual_floor} by 0.1, until the model can be fit.
 }
 \examples{
-ieDfm <- dfm(data_corpus_irishbudget2010)
-wca <- textmodel_ca(ieDfm)
-summary(wca)
+dfmat <- dfm(data_corpus_irishbudget2010)
+tmod <- textmodel_ca(dfmat)
+summary(tmod)
 }
 \references{
-Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
-  R, with two- and three-dimensional graphics: The ca package. \emph{Journal 
-  of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}.
+Nenadic, O. & Greenacre, M. (2007). \href{http://www.jstatsoft.org/v20/i03/}{Correspondence Analysis in R, with Two- and Three-dimensional Graphics: 
+  The ca package}. \emph{Journal of Statistical Software}, 20(3).
 }
 \seealso{
 \code{\link{coef.textmodel_lsa}}, \link[ca]{ca}

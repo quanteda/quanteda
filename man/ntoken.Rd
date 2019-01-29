@@ -47,8 +47,8 @@ ntoken(char_tolower(txt), remove_punct = TRUE)
 ntype(char_tolower(txt), remove_punct = TRUE)
 
 # with some real texts
-ntoken(corpus_subset(data_corpus_inaugural, Year<1806), remove_punct = TRUE)
-ntype(corpus_subset(data_corpus_inaugural, Year<1806), remove_punct = TRUE)
-ntoken(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
-ntype(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
+ntoken(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
+ntype(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
+ntoken(dfm(corpus_subset(data_corpus_inaugural, Year < 1800)))
+ntype(dfm(corpus_subset(data_corpus_inaugural, Year < 1800)))
 }

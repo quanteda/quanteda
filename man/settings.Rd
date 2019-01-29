@@ -43,12 +43,12 @@ Calling \code{settings()} with no arguments returns a list of system default set
 }
 \examples{
 settings(data_corpus_inaugural, "stopwords")
-(tempdfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
-(tempdfmSW <- dfm(corpus_subset(data_corpus_inaugural, Year>1980),
-                 remove = stopwords("english"), verbose=FALSE))
+(dfmat1 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
+(dfmat2 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
+               remove = stopwords("english")))
 settings(data_corpus_inaugural, "stopwords") <- TRUE
-tempdfm <- dfm(data_corpus_inaugural, stem=TRUE, verbose=FALSE)
-settings(tempdfm)
+dfmat <- dfm(data_corpus_inaugural, stem = TRUE, verbose = FALSE)
+settings(dfmat)
 }
 \keyword{internal}
 \keyword{settings}

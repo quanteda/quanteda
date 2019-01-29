@@ -27,27 +27,25 @@
 #' }
 #' @examples 
 #' \dontrun{
-#' data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
 #' # compare multiple documents
-#' textplot_xray(kwic(data_corpus_inauguralPost70, pattern = "american"))
-#' textplot_xray(kwic(data_corpus_inauguralPost70, pattern = "american"), scale = "absolute")
+#' textplot_xray(kwic(corp, pattern = "american"))
+#' textplot_xray(kwic(corp, pattern = "american"), scale = "absolute")
 #' 
 #' # compare multiple terms across multiple documents
-#' textplot_xray(kwic(data_corpus_inauguralPost70, pattern = "america*"), 
-#'               kwic(data_corpus_inauguralPost70, pattern = "people"))
+#' textplot_xray(kwic(corp, pattern = "america*"), 
+#'               kwic(corp, pattern = "people"))
 #' 
 #' # how to modify the ggplot with different options
 #' library(ggplot2)
-#' g <- textplot_xray(kwic(data_corpus_inauguralPost70, pattern = "american"), 
-#'                    kwic(data_corpus_inauguralPost70, pattern = "people"))
-#' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
+#' tplot <- textplot_xray(kwic(corp, pattern = "american"), 
+#'                    kwic(corp, pattern = "people"))
+#' tplot + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' 
 #' # adjust the names of the document names
-#' docnames(data_corpus_inauguralPost70) <- apply(docvars(data_corpus_inauguralPost70, 
-#'                                                        c("Year", "President")), 
-#'                                               1, paste, collapse = ", ")
-#' textplot_xray(kwic(data_corpus_inauguralPost70, pattern = "america*"), 
-#'               kwic(data_corpus_inauguralPost70, pattern = "people"))
+#' docnames(corp) <- apply(docvars(corp, c("Year", "President")), 1, paste, collapse = ", ")
+#' textplot_xray(kwic(corp, pattern = "america*"), 
+#'               kwic(corp, pattern = "people"))
 #' }
 #' @export
 #' @keywords textplot

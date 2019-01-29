@@ -58,7 +58,6 @@
 #' tokens_select(toks, "second", selection = "keep", window = 1)
 #' tokens_select(toks, "second", selection = "remove", window = 1)
 #' tokens_remove(toks, "is", window = c(0, 1))
-#' 
 tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0, 

@@ -90,39 +90,39 @@
 #' @param MSTTR_segment a numeric value defining the size of the each segment
 #'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
 #' @param ... for passing arguments to other methods
-#' @author Kenneth Benoit and Jiong Wei Lua.  Many of the formulas have been
+#' @author Kenneth Benoit and Jiong Wei Lua. Many of the formulas have been
 #'   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
 #'   package.
 #' @references 
-#'   Covington, Michael A. and Joe D. McFall. 2010. 
-#'   "\href{https://doi.org/10.1080/09296171003643098}{Cutting the Gordian Knot: The 
-#'   Moving-Average Type-Token Ratio (MATTR)}". \emph{Journal of Quantitative 
-#'   Linguistics} 17(2): 94--100.
+#'   Covington, M.A. & McFall, J.D. (2010). 
+#'   \href{https://doi.org/10.1080/09296171003643098}{Cutting the Gordian Knot: The 
+#'   Moving-Average Type-Token Ratio (MATTR)}. \emph{Journal of Quantitative 
+#'   Linguistics}, 17(2), 94--100.
 #'   
-#'   Herdan, Gustav. 1955. "\href{https://doi.org/10.1007/BF01587632}{A New Derivation 
-#'   and Interpretation of Yule's 'Characteristic' \emph{K}}." \emph{Zeitschrift für 
-#'   angewandte Mathematik und Physik} 6(4): 332--334.
+#'   Herdan, G. (1955). \href{https://doi.org/10.1007/BF01587632}{A New Derivation 
+#'   and Interpretation of Yule's 'Characteristic' \emph{K}}. \emph{Zeitschrift für 
+#'   angewandte Mathematik und Physik}, 6(4): 332--334.
 #'   
-#'   Maas, Heinz-Dieter. 1972. "Über den Zusammenhang zwischen Wortschatzumfang und 
-#'   Länge eines Textes". \emph{Zeitschrift für Literaturwissenschaft und 
-#'   Linguistik} 2(8): 73--96.
+#'   Maas, H.D. (1972). Über den Zusammenhang zwischen Wortschatzumfang und 
+#'   Länge eines Textes. \emph{Zeitschrift für Literaturwissenschaft und 
+#'   Linguistik}, 2(8), 73--96.
 #'   
-#'   McCarthy, Philip M. and Scott Jarvis. 2007. "\href{https://doi.org/10.1177/0265532207080767}{vocd: 
-#'   A Theoretical and Empirical Evaluation}". \emph{Language Testing} 24(4): 459--488.
+#'   McCarthy, P.M. &  Jarvis, S. (2007). \href{https://doi.org/10.1177/0265532207080767}{vocd: 
+#'   A Theoretical and Empirical Evaluation}. \emph{Language Testing}, 24(4), 459--488.
 #'   
-#'   McCarthy, Philip M. and Scott Jarvis. 2010. "\href{https://doi.org/10.3758/BRM.42.2.381}{MTLD, 
+#'   McCarthy, P.M. & Jarvis, S. (2010). \href{https://doi.org/10.3758/BRM.42.2.381}{MTLD, 
 #'   vocd-D, and HD-D: A Validation Study of Sophisticated Approaches to Lexical Diversity 
-#'   Assessment}". \emph{Behaviour Research Methods} 42(2): 381--392.
+#'   Assessment}. \emph{Behaviour Research Methods}, 42(2), 381--392.
 #'   
-#'   Michalke, Meik.  (2014) \emph{koRpus: An R Package for Text Analysis}. 
+#'   Michalke, M. (2014) \emph{koRpus: An R Package for Text Analysis}. 
 #'   R package version 0.05-5. \url{http://reaktanz.de/?c=hacking&s=koRpus}
 #'   
-#'   Simpson, Edward H. 1949. "\href{https://doi.org/10.1038/163688a0}{Measurement of Diversity}." 
-#'   \emph{Nature} 163: 688.
+#'   Simpson, E.H. (1949). \href{https://doi.org/10.1038/163688a0}{Measurement of Diversity}. 
+#'   \emph{Nature}, 163: 688.
 #'   
-#'   Tweedie. Fiona J. and R. Harald Baayen. 1998. "\href{https://doi.org/10.1023/A:1001749303137}{How 
-#'   Variable May a Constant Be? Measures of Lexical Richness in Perspective}". \emph{Computers and the 
-#'   Humanities} 32(5): 323--352.
+#'   Tweedie. F.J. and Baayen, R.H. (1998). \href{https://doi.org/10.1023/A:1001749303137}{How 
+#'   Variable May a Constant Be? Measures of Lexical Richness in Perspective}. \emph{Computers and the 
+#'   Humanities}, 32(5), 323--352.
 #'   
 #' @return A data.frame of documents and their lexical diversity scores.
 #' @export
@@ -438,8 +438,8 @@ compute_msttr <- function(x, MSTTR_segment) {
 #' @param x input \link{dfm}
 #' @keywords internal dfm
 #' @examples
-#' (tmp <- dfm("One-two one two three."))
-#' quanteda:::dfm_split_hyphenated_features(tmp)
+#' (dfmat <- dfm("One-two one two three."))
+#' quanteda:::dfm_split_hyphenated_features(dfmat)
 dfm_split_hyphenated_features <- function(x) {
     # the global for matching the hyphens and similar characters
     hyphen_regex <- "^.+\\p{Pd}.+$"

@@ -41,10 +41,10 @@ summary(corpus_sample(data_corpus_inaugural, 5))
 summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 
 # sampling sentences within document
-doccorpus <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
+corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
                       two = "First sentence, doc2.  Second sentence, doc2."))
-sentcorpus <- corpus_reshape(doccorpus, to = "sentences")
-texts(sentcorpus)
-texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
+corpsent <- corpus_reshape(corp, to = "sentences")
+texts(corpsent)
+texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
 }
 \keyword{corpus}

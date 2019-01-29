@@ -39,20 +39,20 @@ When \code{select} is a dfm, then the returned dfm will be equal in
   \code{dfm_subset} will match documents.
 }
 \examples{
-testcorp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
+corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
                      d3 = "b b c e", d4 = "e e f a b"),
                    docvars = data.frame(grp = c(1, 1, 2, 3)))
-testdfm <- dfm(testcorp)
+dfmat <- dfm(corp)
 # selecting on a docvars condition
-dfm_subset(testdfm, grp > 1)
+dfm_subset(dfmat, grp > 1)
 # selecting on a supplied vector
-dfm_subset(testdfm, c(TRUE, FALSE, TRUE, FALSE))
+dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
 
 # selecting on a dfm
-dfm1 <- dfm(c(d1 = "a b b c", d2 = "b b c d"))
-dfm2 <- dfm(c(d1 = "x y z", d2 = "a b c c d", d3 = "x x x"))
-dfm_subset(dfm1, subset = dfm2)
-dfm_subset(dfm1, subset = dfm2[c(3,1,2), ])
+dfmat1 <- dfm(c(d1 = "a b b c", d2 = "b b c d"))
+dfmat2 <- dfm(c(d1 = "x y z", d2 = "a b c c d", d3 = "x x x"))
+dfm_subset(dfmat1, subset = dfmat2)
+dfm_subset(dfmat1, subset = dfmat2[c(3,1,2), ])
 }
 \seealso{
 \code{\link{subset.data.frame}}

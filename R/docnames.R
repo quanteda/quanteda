@@ -7,16 +7,16 @@
 #' @seealso \code{\link{featnames}}
 #' @examples
 #' # get and set doument names to a corpus
-#' mycorp <- data_corpus_inaugural
-#' docnames(mycorp) <- char_tolower(docnames(mycorp))
+#' corp <- data_corpus_inaugural
+#' docnames(corp) <- char_tolower(docnames(corp))
 #' 
 #' # get and set doument names to a tokens
-#' mytoks <- tokens(data_corpus_inaugural)
-#' docnames(mytoks) <- char_tolower(docnames(mytoks))
+#' toks <- tokens(data_corpus_inaugural)
+#' docnames(toks) <- char_tolower(docnames(toks))
 #' 
 #' # get and set doument names to a dfm
-#' mydfm <- dfm(data_corpus_inaugural[1:5])
-#' docnames(mydfm) <- char_tolower(docnames(mydfm))
+#' dfmat <- dfm(data_corpus_inaugural[1:5])
+#' docnames(dfmat) <- char_tolower(docnames(dfmat))
 #' 
 #' @keywords corpus dfm
 docnames <- function(x) {

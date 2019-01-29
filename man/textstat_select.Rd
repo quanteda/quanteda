@@ -29,9 +29,9 @@ Users can subset output object of \code{textstat_collocations},
 }
 \examples{
 period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
-mydfm <- dfm(data_corpus_inaugural, groups = period)
-keyness <- textstat_keyness(mydfm)
-textstat_select(keyness, 'america*')
+dfmat <- dfm(data_corpus_inaugural, groups = period)
+tstat <- textstat_keyness(dfmat)
+textstat_select(tstat, 'america*')
 
 }
 \keyword{internal}

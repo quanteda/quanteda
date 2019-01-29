@@ -41,11 +41,11 @@ dfm_match(data_dfm_lbgexample, c("A", "B", "Z"))
 dfm_match(data_dfm_lbgexample, c("B", "newfeat1", "A", "newfeat2"))
 
 # matching one dfm to another
-txts <- c("This is text one", "The second text", "This is text three")
-(dfm1 <- dfm(txts[1:2]))
-(dfm2 <- dfm(txts[2:3]))
-(dfm3 <- dfm_match(dfm1, featnames(dfm2)))
-setequal(featnames(dfm2), featnames(dfm3))
+txt <- c("This is text one", "The second text", "This is text three")
+(dfmat1 <- dfm(txt[1:2]))
+(dfmat2 <- dfm(txt[2:3]))
+(dfmat3 <- dfm_match(dfmat1, featnames(dfmat2)))
+setequal(featnames(dfmat2), featnames(dfmat3))
 }
 \seealso{
 \code{\link{dfm_select}}

@@ -23,7 +23,7 @@
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
-#' @references Blaheta, D., & Johnson, M. (2001). 
+#' @references Blaheta, D. & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'   learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
@@ -78,17 +78,17 @@
 #' @aliases collocations
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
-#' txts <- data_corpus_inaugural[1:2]
-#' head(cols <- textstat_collocations(txts, size = 2, min_count = 2), 10)
-#' head(cols <- textstat_collocations(txts, size = 3, min_count = 2), 10)
+#' corp <- data_corpus_inaugural[1:2]
+#' head(cols <- textstat_collocations(corp, size = 2, min_count = 2), 10)
+#' head(cols <- textstat_collocations(corp, size = 3, min_count = 2), 10)
 #' 
 #' # extracting multi-part proper nouns (capitalized terms)
-#' toks2 <- tokens(data_corpus_inaugural)
-#' toks2 <- tokens_remove(toks2, pattern = stopwords("english"), padding = TRUE)
-#' toks2 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\-]{2,})", valuetype = "regex", 
+#' toks1 <- tokens(data_corpus_inaugural)
+#' toks2 <- tokens_remove(toks1, pattern = stopwords("english"), padding = TRUE)
+#' toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\-]{2,})", valuetype = "regex", 
 #'                        case_insensitive = FALSE, padding = TRUE)
-#' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
-#' head(seqs, 10)
+#' tstat <- textstat_collocations(toks3, size = 3, tolower = FALSE)
+#' head(tstat, 10)
 #' 
 #' # vectorized size
 #' txt <- c(". . . . a b c . . a b c . . . c d e",

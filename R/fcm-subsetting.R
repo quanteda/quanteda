@@ -33,11 +33,11 @@ subset_fcm <- function(x, i, j, ..., drop) {
 #' @export
 #' @examples 
 #' # fcm subsetting
-#' y <- fcm(tokens(c("this contains lots of stopwords",
+#' fcmat <- fcm(tokens(c("this contains lots of stopwords",
 #'                   "no if, and, or but about it: lots"),
 #'                 remove_punct = TRUE))
-#' y[1:3, ]
-#' y[4:5, 1:5]
+#' fcmat[1:3, ]
+#' fcmat[4:5, 1:5]
 #' 
 #' 
 setMethod("[", signature = c("fcm", i = "index", j = "index", drop = "missing"), subset_fcm)

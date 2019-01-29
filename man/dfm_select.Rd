@@ -89,33 +89,32 @@ This function selects features based on their labels.  To select
   \code{\link{dfm_trim}}.
 }
 \examples{
-my_dfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
+dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
-             tolower = FALSE, verbose = FALSE)
-my_dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
+             tolower = FALSE)
+dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))
-dfm_select(my_dfm, pattern = my_dict)
-dfm_select(my_dfm, pattern = my_dict, case_insensitive = FALSE)
-dfm_select(my_dfm, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
-dfm_select(my_dfm, pattern = c("s$", ".y"), selection = "remove", valuetype = "regex")
-dfm_select(my_dfm, pattern = stopwords("english"), selection = "keep", valuetype = "fixed")
-dfm_select(my_dfm, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
+dfm_select(dfmat, pattern = dict)
+dfm_select(dfmat, pattern = dict, case_insensitive = FALSE)
+dfm_select(dfmat, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(dfmat, pattern = c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(dfmat, pattern = stopwords("english"), selection = "keep", valuetype = "fixed")
+dfm_select(dfmat, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
 
 # select based on character length
-dfm_select(my_dfm, min_nchar = 5)
+dfm_select(dfmat, min_nchar = 5)
 
-tmpdfm <- dfm(c("This is a document with lots of stopwords.",
-                "No if, and, or but about it: lots of stopwords."),
-              verbose = FALSE)
-tmpdfm
-dfm_remove(tmpdfm, stopwords("english"))
+dfmat <- dfm(c("This is a document with lots of stopwords.",
+               "No if, and, or but about it: lots of stopwords."))
+dfmat
+dfm_remove(dfmat, stopwords("english"))
 toks <- tokens(c("this contains lots of stopwords",
                  "no if, and, or but about it: lots"),
                remove_punct = TRUE)
-tmpfcm <- fcm(toks)
-tmpfcm
-fcm_remove(tmpfcm, stopwords("english"))
+fcmat <- fcm(toks)
+fcmat
+fcm_remove(fcmat, stopwords("english"))
 }
 \seealso{
 \code{\link{dfm_match}}

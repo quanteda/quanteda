@@ -13,9 +13,9 @@
 #' @seealso \code{\link{influence.predict.textmodel_affinity}}
 #' @keywords textplot
 #' @examples
-#' af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
-#' afpred <- predict(af) 
-#' textplot_influence(influence(afpred))
+#' tmod <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+#' pred <- predict(tmod) 
+#' textplot_influence(influence(pred))
 textplot_influence <- function(x, n = 30, ...) {
     UseMethod("textplot_influence")
 }

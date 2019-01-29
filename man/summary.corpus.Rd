@@ -26,11 +26,11 @@ as date of number of texts, creation and source.
 \examples{
 summary(data_corpus_inaugural)
 summary(data_corpus_inaugural, n = 10)
-mycorpus <- corpus(data_char_ukimmig2010, 
+corp <- corpus(data_char_ukimmig2010, 
                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
-summary(mycorpus, showmeta=TRUE) # show the meta-data
-mysummary <- summary(mycorpus) # (quietly) assign the results
-mysummary$Types / mysummary$Tokens # crude type-token ratio
+summary(corp, showmeta = TRUE) # show the meta-data
+sumcorp <- summary(corp) # (quietly) assign the results
+sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 }
 \keyword{corpus}
 \keyword{internal}
