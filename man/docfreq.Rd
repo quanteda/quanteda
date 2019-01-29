@@ -52,29 +52,30 @@ is  zero, meaning that any feature occurring at least once in a document will
 be counted.)
 }
 \examples{
-mydfm <- dfm(data_corpus_inaugural[1:2])
-docfreq(mydfm[, 1:20])
+dfmat1 <- dfm(data_corpus_inaugural[1:2])
+docfreq(dfmat1[, 1:20])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-wiki_dfm <- 
+dfmat2 <- 
     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
            byrow = TRUE, nrow = 2,
            dimnames = list(docs = c("document1", "document2"),
                            features = c("this", "is", "a", "sample",
                                         "another", "example"))) \%>\%
     as.dfm()
-wiki_dfm
-docfreq(wiki_dfm)
-docfreq(wiki_dfm, scheme = "inverse")
-docfreq(wiki_dfm, scheme = "inverse", k = 1, smoothing = 1)
-docfreq(wiki_dfm, scheme = "unary")
-docfreq(wiki_dfm, scheme = "inversemax")
-docfreq(wiki_dfm, scheme = "inverseprob")
+dfmat2
+docfreq(dfmat2)
+docfreq(dfmat2, scheme = "inverse")
+docfreq(dfmat2, scheme = "inverse", k = 1, smoothing = 1)
+docfreq(dfmat2, scheme = "unary")
+docfreq(dfmat2, scheme = "inversemax")
+docfreq(dfmat2, scheme = "inverseprob")
 }
 \references{
 Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-  \emph{Introduction to Information Retrieval}. Cambridge University Press.
+  \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \keyword{dfm}
 \keyword{weighting}

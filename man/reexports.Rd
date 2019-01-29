@@ -11,7 +11,7 @@
  
 
 Stopword lists were formerly built into \pkg{quanteda}, but have been moved to the 
-\pkg{stopwords} package.  See \code{\link[stopwords]{stopwords}}.
+\pkg{stopwords} package. See \code{\link[stopwords]{stopwords}}.
 }
 
 \keyword{internal}

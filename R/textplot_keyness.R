@@ -25,22 +25,22 @@
 #' @keywords textplot
 #' @examples
 #' # compare Trump speeches to other Presidents by chi^2
-#' dem_dfm <- data_corpus_inaugural %>%
+#' dfmat1 <- data_corpus_inaugural %>%
 #'      corpus_subset(Year > 1980) %>%
 #'      dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE)
-#' dem_key <- textstat_keyness(dem_dfm, target = "Trump")
-#' textplot_keyness(dem_key, margin = 0.2, n = 10)
+#' tstat1 <- textstat_keyness(dfmat1, target = "Trump")
+#' textplot_keyness(tstat1, margin = 0.2, n = 10)
 #'
 #' # compare contemporary Democrats v. Republicans
-#' pres_corp <- data_corpus_inaugural %>%
+#' corp <- data_corpus_inaugural %>%
 #'     corpus_subset(Year > 1960)
-#' docvars(pres_corp, "party") <-
-#'     ifelse(docvars(pres_corp, "President") %in% c("Nixon", "Reagan", "Bush", "Trump"),
+#' docvars(corp, "party") <-
+#'     ifelse(docvars(corp, "President") %in% c("Nixon", "Reagan", "Bush", "Trump"),
 #'            "Republican", "Democrat")
-#' pres_dfm <- dfm(pres_corp, groups = "party", remove = stopwords("english"),
+#' dfmat2 <- dfm(corp, groups = "party", remove = stopwords("english"),
 #'                 remove_punct = TRUE)
-#' pres_key <- textstat_keyness(pres_dfm, target = "Democrat", measure = "lr")
-#' textplot_keyness(pres_key, color = c("blue", "red"), n = 10)
+#' tstat2 <- textstat_keyness(dfmat2, target = "Democrat", measure = "lr")
+#' textplot_keyness(tstat2, color = c("blue", "red"), n = 10)
 #' 
 textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE, 
                               n = 20L, min_count = 2L, margin = 0.05,

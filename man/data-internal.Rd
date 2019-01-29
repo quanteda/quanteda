@@ -33,28 +33,28 @@ to compute the Spache Revised Formula of readability (Spache 1974.}
 }
 }
 \references{
-Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New
+Chall, J.S., & Dale, E. (1995). \emph{Readability Revisited: The New
 Dale-Chall Readability Formula}. Brookline Books.
 
-Dale, Edgar, and Jeanne Sternlicht Chall. 1948. "A Formula for Predicting
-Readability". \emph{Educational Research Bulletin} 27(1): 11-20.
+Dale, E. & Chall, J.S. (1948). A Formula for Predicting
+Readability. \emph{Educational Research Bulletin}, 27(1): 11--20.
 
-Dale, Edgar, and Jeanne S Chall. 1948. "A Formula for Predicting Readability:
-Instructions." \emph{Educational Research Bulletin} 27(2): 37–54.
+Dale, E. & Chall, J.S. (1948). A Formula for Predicting Readability:
+Instructions. \emph{Educational Research Bulletin}, 27(2): 37--54.
 
-Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly}
-10(1): 62-102.
+Klare, G.R. (1975). Assessing Readability. \emph{Reading Research Quarterly}
+10(1), 62--102.
 
-Spache, G. 1953. "A new readability formula for primary-grade reading
-materials." \emph{The Elementary School Journal} 53: 410-413.
+Spache, G. (1953). A New Readability Formula for Primary-Grade Reading
+Materials. \emph{The Elementary School Journal}, 53, 410--413.
 
 Tränkle, U. & Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
 Lesbarkeitsformeln für die deutsche Sprache. \emph{Zeitschrift für
-Entwicklungspsychologie und Pädagogische Psychologie} 16(3), 231–244.
+Entwicklungspsychologie und Pädagogische Psychologie}, 16(3), 231--244.
 
-Wheeler, L.R. & Smith, E.H. (1954). A practical readability formula for the
-classroom teacher in the primary grades. \emph{Elementary English} 31,
-397–399.
+Wheeler, L.R. & Smith, E.H. (1954). A Practical Readability Formula for the
+Classroom Teacher in the Primary Grades. \emph{Elementary English}, 31, 
+397--399.
 }
 \keyword{data}
 \keyword{datasets}

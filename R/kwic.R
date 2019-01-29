@@ -133,8 +133,8 @@ kwic.tokens <- function(x, pattern, window = 5,
 #' @rdname kwic
 #' @export
 #' @examples
-#' mykwic <- kwic(data_corpus_inaugural, "provident*")
-#' is.kwic(mykwic)
+#' kw <- kwic(data_corpus_inaugural, "provident*")
+#' is.kwic(kw)
 #' is.kwic("Not a kwic")
 is.kwic <- function(x) "kwic" %in% class(x)
 

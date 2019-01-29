@@ -14,9 +14,8 @@
 #'   but might reduce accuracy; only applicable when \code{sparse = TRUE}
 
 #' @author Kenneth Benoit and Haiyan Wang
-#' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
-#'   R, with two- and three-dimensional graphics: The ca package. \emph{Journal 
-#'   of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}.
+#' @references Nenadic, O. & Greenacre, M. (2007). \href{http://www.jstatsoft.org/v20/i03/}{Correspondence Analysis in R, with Two- and Three-dimensional Graphics: 
+#'   The ca package}. \emph{Journal of Statistical Software}, 20(3).
 #'   
 #' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
 #'   enable the fast computation of the SVD.
@@ -31,9 +30,9 @@
 #' @return \code{textmodel_ca()} returns a fitted CA textmodel that is a special
 #' class of \pkg{ca} object.
 #' @examples 
-#' ieDfm <- dfm(data_corpus_irishbudget2010)
-#' wca <- textmodel_ca(ieDfm)
-#' summary(wca)
+#' dfmat <- dfm(data_corpus_irishbudget2010)
+#' tmod <- textmodel_ca(dfmat)
+#' summary(tmod)
 #' @seealso \code{\link{coef.textmodel_lsa}}, \link[ca]{ca}
 #' @export
 textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, 

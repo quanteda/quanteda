@@ -75,23 +75,23 @@
 #' ## segmenting a corpus
 #' 
 #' # segmenting a corpus using tags
-#' corp <- corpus(c("##INTRO This is the introduction.
+#' corp1 <- corpus(c("##INTRO This is the introduction.
 #'                   ##DOC1 This is the first document.  Second sentence in Doc 1.
 #'                   ##DOC3 Third document starts here.  End of third document.",
 #'                  "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-#' corp_seg <- corpus_segment(corp, pattern = "##*")
-#' cbind(texts(corp_seg), docvars(corp_seg), metadoc(corp_seg))
+#' corpseg1 <- corpus_segment(corp1, pattern = "##*")
+#' cbind(texts(corpseg1), docvars(corpseg1), metadoc(corpseg1))
 #' 
 #' # segmenting a transcript based on speaker identifiers
 #' corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
-#' corp_seg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
+#' corpseg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
 #'                             valuetype = "regex")
-#' cbind(texts(corp_seg2), docvars(corp_seg2), metadoc(corp_seg2))
+#' cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))
 #' 
 #' # segmenting a corpus using crude end-of-sentence segmentation
-#' corp_seg3 <- corpus_segment(corp, pattern = ".", valuetype = "fixed", 
+#' corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed", 
 #'                             pattern_position = "after", extract_pattern = FALSE)
-#' cbind(texts(corp_seg3), docvars(corp_seg3), metadoc(corp_seg3))
+#' cbind(texts(corpseg3), docvars(corpseg3), metadoc(corpseg3))
 #' 
 #' @import stringi
 #' @export

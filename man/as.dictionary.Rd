@@ -41,21 +41,21 @@ data(sentiments, package = "tidytext")
 as.dictionary(subset(sentiments, lexicon == "nrc"))
 as.dictionary(subset(sentiments, lexicon == "bing"))
 # to convert AFINN into polarities - adjust thresholds if desired
-afinn <- subset(sentiments, lexicon == "AFINN")
-afinn[["sentiment"]] <-
-    with(afinn,
+datafinn <- subset(sentiments, lexicon == "AFINN")
+datafinn[["sentiment"]] <-
+    with(datafinn,
          sentiment <- ifelse(score < 0, "negative",
                              ifelse(score > 0, "positive", "netural"))
     )
-with(afinn, table(score, sentiment))
-as.dictionary(afinn)
+with(datafinn, table(score, sentiment))
+as.dictionary(datafinn)
 
-df <- data.frame(
+dat <- data.frame(
     word = c("Great", "Horrible"),
     sentiment = c("positive", "negative")
     )
-as.dictionary(df)
-as.dictionary(df, tolower = FALSE)
+as.dictionary(dat)
+as.dictionary(dat, tolower = FALSE)
 }
 
 is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))

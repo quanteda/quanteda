@@ -39,34 +39,34 @@ to form a single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a \link{dfm}.
 }
 \examples{
-mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
+txt <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised taxes: an income tax and inheritance taxes.")
-mytoks <- tokens(mytexts, remove_punct = TRUE)
+toks1 <- tokens(txt, remove_punct = TRUE)
 
 # for lists of sequence elements
 myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("inheritance", "tax"))
-(cw <- tokens_compound(mytoks, pattern = myseqs))
-dfm(cw)
+(toks2 <- tokens_compound(toks1, pattern = myseqs))
+dfm(toks2)
 
 # when used as a dictionary for dfm creation
-mydict1 <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
-(cw2 <- tokens_compound(mytoks, pattern = mydict1))
+dict1 <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
+(toks3 <- tokens_compound(toks1, pattern = dict1))
 
 # to pick up "taxes" in the second text, set valuetype = "regex"
-(cw3 <- tokens_compound(mytoks, pattern = mydict1, valuetype = "regex"))
+(toks4 <- tokens_compound(toks1, pattern = dict1, valuetype = "regex"))
 
 # dictionaries w/glob matches
-mydict2 <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
+dict2 <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
                           positive = c("good stuff", "like? th??")))
-toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
+toks5 <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
                  txt2 = "Some damn good stuff, like the text, she likes that too."))
-tokens_compound(toks, pattern = mydict2)
+tokens_compound(toks5, pattern = dict2)
 
 # with collocations
-cols <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
+tstat <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
                               size = 2, min_count = 1)
-toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-tokens_compound(toks, pattern = cols)
+toks6 <- tokens("The new law included capital gains taxes and inheritance taxes.")
+tokens_compound(toks6, pattern = tstat)
 }
 \author{
 Kenneth Benoit and Kohei Watanabe

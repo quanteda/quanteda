@@ -41,31 +41,31 @@ document context.
 }
 \examples{
 # dfm_compress examples
-mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE),
+dfmat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE),
              dfm("A C C C C C", tolower = FALSE))
-colnames(mat) <- char_tolower(featnames(mat))
-mat
-dfm_compress(mat, margin = "documents")
-dfm_compress(mat, margin = "features")
-dfm_compress(mat)
+colnames(dfmat) <- char_tolower(featnames(dfmat))
+dfmat
+dfm_compress(dfmat, margin = "documents")
+dfm_compress(dfmat, margin = "features")
+dfm_compress(dfmat)
 
 # no effect if no compression needed
-compactdfm <- dfm(data_corpus_inaugural[1:5])
-dim(compactdfm)
-dim(dfm_compress(compactdfm))
+dfmatsubset <- dfm(data_corpus_inaugural[1:5])
+dim(dfmatsubset)
+dim(dfm_compress(dfmatsubset))
 
 # compress an fcm
-myfcm <- fcm(tokens("A D a C E a d F e B A C E D"), 
+fcmat1 <- fcm(tokens("A D a C E a d F e B A C E D"), 
              context = "window", window = 3)
 ## this will produce an error:
-# fcm_compress(myfcm)
+# fcm_compress(fcmat1)
 
 txt <- c("The fox JUMPED over the dog.",
          "The dog jumped over the fox.")
 toks <- tokens(txt, remove_punct = TRUE)
-myfcm <- fcm(toks, context = "document")
-colnames(myfcm) <- rownames(myfcm) <- tolower(colnames(myfcm))
-colnames(myfcm)[5] <- rownames(myfcm)[5] <- "fox"
-myfcm
-fcm_compress(myfcm)
+fcmat2 <- fcm(toks, context = "document")
+colnames(fcmat2) <- rownames(fcmat2) <- tolower(colnames(fcmat2))
+colnames(fcmat2)[5] <- rownames(fcmat2)[5] <- "fox"
+fcmat2
+fcm_compress(fcmat2)
 }

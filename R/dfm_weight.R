@@ -36,37 +36,37 @@
 #' @seealso \code{\link{dfm_tfidf}}, \code{\link{docfreq}}
 #' @keywords dfm
 #' @examples
-#' my_dfm <- dfm(data_corpus_inaugural)
+#' dfmat1 <- dfm(data_corpus_inaugural)
 #' 
-#' x <- apply(my_dfm, 1, function(tf) tf/max(tf))
-#' topfeatures(my_dfm)
-#' norm_dfm <- dfm_weight(my_dfm, scheme = "prop")
-#' topfeatures(norm_dfm)
-#' max_tf_dfm <- dfm_weight(my_dfm)
-#' topfeatures(max_tf_dfm)
-#' log_tf_dfm <- dfm_weight(my_dfm, scheme = "logcount")
-#' topfeatures(log_tf_dfm)
-#' log_ave_dfm <- dfm_weight(my_dfm, scheme = "logave")
-#' topfeatures(log_ave_dfm)
+#' x <- apply(dfmat1, 1, function(tf) tf/max(tf))
+#' topfeatures(dfmat1)
+#' dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
+#' topfeatures(dfmat2)
+#' dfmat3 <- dfm_weight(dfmat1)
+#' topfeatures(dfmat3)
+#' dfmat4 <- dfm_weight(dfmat1, scheme = "logcount")
+#' topfeatures(dfmat4)
+#' dfmat5 <- dfm_weight(dfmat1, scheme = "logave")
+#' topfeatures(dfmat5)
 #' 
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
-#' head(dfm_tfidf(my_dfm, scheme_tf = "logcount"))
+#' head(dfm_tfidf(dfmat1, scheme_tf = "logcount"))
 #' 
 #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
-#' (my_dfm <- dfm(str, remove = stopwords("english")))
-#' dfm_weight(my_dfm, weights = c(apple = 5, banana = 3, much = 0.5))
+#' (dfmat6 <- dfm(str, remove = stopwords("english")))
+#' dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 #' 
 #' \dontshow{
-#' testdfm <- dfm(data_corpus_inaugural[1:5])
+#' dfmat7 <- dfm(data_corpus_inaugural[1:5])
 #' for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave")) {
-#'     testw <- dfm_weight(testdfm, w)
-#'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
-#'     head(testw)
+#'     dfmat8 <- dfm_weight(dfmat7, w)
+#'     cat("\n\n=== weight() TEST for:", w, "; class:", class(dfmat8), "\n")
+#'     head(dfmat8)
 #' }}
-#' @references  Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
-#'   \emph{An Introduction to Information Retrieval}. Cambridge University Press. 
+#' @references  Manning, C.D., Raghavan, P., & Schütze, H. (2008).
+#'   \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press. 
 #'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 dfm_weight <- function(
     x, 
@@ -216,7 +216,8 @@ tf <- function(...) {
 #' @export
 #' @examples 
 #' # smooth the dfm
-#' dfm_smooth(my_dfm, 0.5)
+#' dfmat <- dfm(data_corpus_inaugural)
+#' dfm_smooth(dfmat, 0.5)
 dfm_smooth <- function(x, smoothing = 1) {
     UseMethod("dfm_smooth")
 }
@@ -271,27 +272,28 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' @keywords weighting dfm
 #' @export
 #' @examples 
-#' mydfm <- dfm(data_corpus_inaugural[1:2])
-#' docfreq(mydfm[, 1:20])
+#' dfmat1 <- dfm(data_corpus_inaugural[1:2])
+#' docfreq(dfmat1[, 1:20])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' wiki_dfm <- 
+#' dfmat2 <- 
 #'     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'            byrow = TRUE, nrow = 2,
 #'            dimnames = list(docs = c("document1", "document2"),
 #'                            features = c("this", "is", "a", "sample",
 #'                                         "another", "example"))) %>%
 #'     as.dfm()
-#' wiki_dfm
-#' docfreq(wiki_dfm)
-#' docfreq(wiki_dfm, scheme = "inverse")
-#' docfreq(wiki_dfm, scheme = "inverse", k = 1, smoothing = 1)
-#' docfreq(wiki_dfm, scheme = "unary")
-#' docfreq(wiki_dfm, scheme = "inversemax")
-#' docfreq(wiki_dfm, scheme = "inverseprob")
+#' dfmat2
+#' docfreq(dfmat2)
+#' docfreq(dfmat2, scheme = "inverse")
+#' docfreq(dfmat2, scheme = "inverse", k = 1, smoothing = 1)
+#' docfreq(dfmat2, scheme = "unary")
+#' docfreq(dfmat2, scheme = "inversemax")
+#' docfreq(dfmat2, scheme = "inverseprob")
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+#'   \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax", 
                                   "inverseprob", "unary"),
                     smoothing = 0, k = 0, base = 10, threshold = 0, 
@@ -372,35 +374,36 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #'   frequency (the relative term frequency within document), but this
 #'   can be overridden using \code{scheme_tf = "prop"}.
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+#'   \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 #' @seealso \code{\link{dfm_weight}}, \code{\link{docfreq}}
 #' @keywords dfm weighting
 #' @examples 
-#' mydfm <- as.dfm(data_dfm_lbgexample)
-#' head(mydfm[, 5:10])
-#' head(dfm_tfidf(mydfm)[, 5:10])
-#' docfreq(mydfm)[5:15]
-#' head(dfm_weight(mydfm)[, 5:10])
+#' dfmat1 <- as.dfm(data_dfm_lbgexample)
+#' head(dfmat1[, 5:10])
+#' head(dfm_tfidf(dfmat1)[, 5:10])
+#' docfreq(dfmat1)[5:15]
+#' head(dfm_weight(dfmat1)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' wiki_dfm <- 
+#' dfmat2 <- 
 #'     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'            byrow = TRUE, nrow = 2,
 #'            dimnames = list(docs = c("document1", "document2"),
 #'                            features = c("this", "is", "a", "sample", 
 #'                                         "another", "example"))) %>%
 #'     as.dfm()
-#' wiki_dfm    
-#' docfreq(wiki_dfm)
-#' dfm_tfidf(wiki_dfm, scheme_tf = "prop") %>% round(digits = 2)
+#' dfmat2    
+#' docfreq(dfmat2)
+#' dfm_tfidf(dfmat2, scheme_tf = "prop") %>% round(digits = 2)
 #' 
 #' \dontrun{
 #' # comparison with tm
 #' if (requireNamespace("tm")) {
-#'     convert(wiki_dfm, to = "tm") %>% tm::weightTfIdf() %>% as.matrix()
+#'     convert(dfmat2, to = "tm") %>% tm::weightTfIdf() %>% as.matrix()
 #'     # same as:
-#'     dfm_tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
+#'     dfm_tfidf(dfmat2, base = 2, scheme_tf = "prop")
 #' }
 #' }
 #' @keywords dfm weighting

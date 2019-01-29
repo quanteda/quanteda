@@ -25,10 +25,10 @@ Sorts a \link{dfm} by descending frequency of total features, total features
 in documents, or both.
 }
 \examples{
-dtm <- dfm(data_corpus_inaugural)
-head(dtm)
-head(dfm_sort(dtm))
-head(dfm_sort(dtm, decreasing = FALSE, "both"))
+dfmat <- dfm(data_corpus_inaugural)
+head(dfmat)
+head(dfm_sort(dfmat))
+head(dfm_sort(dfmat, decreasing = FALSE, "both"))
 }
 \author{
 Ken Benoit

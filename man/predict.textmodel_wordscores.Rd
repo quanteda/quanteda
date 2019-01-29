@@ -42,13 +42,13 @@ that of \code{\link[stats]{predict.lm}}.
 Predict textmodel_wordscores
 }
 \examples{
-ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-predict(ws)
-predict(ws, rescaling = "mv")
-predict(ws, rescaling = "lbg")
-predict(ws, se.fit = TRUE)
-predict(ws, se.fit = TRUE, interval = "confidence")
-predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "lbg")
+tmod <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+predict(tmod)
+predict(tmod, rescaling = "mv")
+predict(tmod, rescaling = "lbg")
+predict(tmod, se.fit = TRUE)
+predict(tmod, se.fit = TRUE, interval = "confidence")
+predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "lbg")
 }
 \keyword{internal}
 \keyword{textmodel}

@@ -1,6 +1,7 @@
 ACL
 ACLEACL
 AFW
+AMRL
 analyzed
 analyzing
 anderen
@@ -107,12 +108,10 @@ Flesch
 Flesch's
 FORCAST
 formals
-FRES
 fromJSON
 für
 Furnas
 gcc
-Georg
 getStemLanguages
 getTweets
 gfortran
@@ -125,7 +124,6 @@ Harshman
 Herdan
 Herdan's
 Herzog
-Hinrich
 httr
 idf
 ie
@@ -156,7 +154,6 @@ Kullback
 kwic
 Landauer
 Länge
-Lanny
 Läsbarhet
 Läsbarhetsindex
 LBG
@@ -214,8 +211,8 @@ nfeature
 ngram
 ngrams
 Nimaldasan
-Nprep
 NLP
+Nprep
 nscrabble
 nsentence
 Nst
@@ -244,7 +241,6 @@ Physik
 pkgdown
 pmi
 Poisson
-Prabhakar
 Proksch
 Proksch's
 Prosastils
@@ -255,7 +251,6 @@ QUANTESS
 R's
 Raghavan
 Rcpp
-rd
 Rdata
 readLIWCdict
 readtext
@@ -305,7 +300,6 @@ statLexdiv
 std
 Steiwer
 stemmer
-Sternlicht
 StG
 Sticht
 Stilcharakteristik
@@ -349,6 +343,7 @@ tokenizeOnly
 tokenizer
 toLower
 topicmodels
+TR
 Tränkle
 travis
 Tribble
@@ -365,7 +360,6 @@ underdispersed
 underdispersion
 unescaped
 unigrams
-UNIV
 unsmoothed
 Unterschied
 uXXXX

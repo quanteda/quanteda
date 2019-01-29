@@ -15,11 +15,11 @@
 #' @keywords dfm
 #' @examples
 #' set.seed(10)
-#' myDfm <- dfm(data_corpus_inaugural[1:10])
-#' head(myDfm)
-#' head(dfm_sample(myDfm))
-#' head(dfm_sample(myDfm, replace = TRUE))
-#' head(dfm_sample(myDfm, margin = "features"))
+#' dfmat <- dfm(data_corpus_inaugural[1:10])
+#' head(dfmat)
+#' head(dfm_sample(dfmat))
+#' head(dfm_sample(dfmat, replace = TRUE))
+#' head(dfm_sample(dfmat, margin = "features"))
 dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
                        margin = c("documents", "features")) {
     UseMethod("dfm_sample")

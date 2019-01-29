@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -226,9 +226,9 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># with tri = FALSE</span>
-<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A X Y C B A"</span>, <span class='st'>"X Y C A B B"</span>)), <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>myfcm</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>myfcm</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='st'>"Z"</span>
-<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
+<span class='no'>fcmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A X Y C B A"</span>, <span class='st'>"X Y C A B B"</span>)), <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>fcmat1</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>fcmat1</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='st'>"Z"</span>
+<span class='no'>fcmat1</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
 #&gt; 5 x 5 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features A X Z C B
@@ -236,7 +236,7 @@
 #&gt;        X 3 0 2 2 3
 #&gt;        Z 3 2 0 2 3
 #&gt;        C 3 2 2 0 3
-#&gt;        B 4 3 3 3 1</div><div class='input'><span class='fu'>fcm_sort</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; 5 x 5 sparse Matrix of class "dgTMatrix"
+#&gt;        B 4 3 3 3 1</div><div class='input'><span class='fu'>fcm_sort</span>(<span class='no'>fcmat1</span>)</div><div class='output co'>#&gt; 5 x 5 sparse Matrix of class "dgTMatrix"
 #&gt;         features
 #&gt; features A B C X Z
 #&gt;        A 1 4 3 3 3
@@ -245,9 +245,9 @@
 #&gt;        X 3 3 2 0 2
 #&gt;        Z 3 3 2 2 0</div><div class='input'>
 <span class='co'># with tri = TRUE</span>
-<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A X Y C B A"</span>, <span class='st'>"X Y C A B B"</span>)), <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>myfcm</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>myfcm</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='st'>"Z"</span>
-<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
+<span class='no'>fcmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A X Y C B A"</span>, <span class='st'>"X Y C A B B"</span>)), <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>fcmat2</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>fcmat2</span>)[<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='st'>"Z"</span>
+<span class='no'>fcmat2</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
 #&gt; 5 x 5 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features A X Z C B
@@ -255,7 +255,7 @@
 #&gt;        X 0 0 2 2 3
 #&gt;        Z 0 0 0 2 3
 #&gt;        C 0 0 0 0 3
-#&gt;        B 0 0 0 0 1</div><div class='input'><span class='fu'>fcm_sort</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
+#&gt;        B 0 0 0 0 1</div><div class='input'><span class='fu'>fcm_sort</span>(<span class='no'>fcmat2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
 #&gt; 5 x 5 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features A B C X Z
@@ -276,7 +276,7 @@
     </ul>
 
     <h2>Author</h2>
-    <p>Ken Benoit</p>
+    <p>Kenneth Benoit</p>
   </div>
 </div>
 
