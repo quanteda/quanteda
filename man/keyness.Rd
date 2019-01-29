@@ -59,13 +59,13 @@ application of \link[stats]{fisher.test}, returning the odds ratio.
   using vectorized computation
 }
 \examples{
-mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+dfmat <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                d2 = "a a b c c d d d d e f h"))
-quanteda:::keyness_chi2_dt(mydfm)
-quanteda:::keyness_chi2_stats(mydfm)
-quanteda:::keyness_exact(mydfm)
-quanteda:::keyness_lr(mydfm)
-quanteda:::keyness_pmi(mydfm)
+quanteda:::keyness_chi2_dt(dfmat)
+quanteda:::keyness_chi2_stats(dfmat)
+quanteda:::keyness_exact(dfmat)
+quanteda:::keyness_lr(dfmat)
+quanteda:::keyness_pmi(dfmat)
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}

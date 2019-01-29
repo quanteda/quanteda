@@ -14,17 +14,17 @@
 #'   including document-level meta-data identifying the original documents.
 #' @examples
 #' # simple example
-#' corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#' corp1 <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'                  textwo = "Premiere phrase.  Deuxieme phrase."), 
 #'                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
-#' summary(corp)
-#' summary(corpus_reshape(corp, to = "sentences"))
+#' summary(corp1)
+#' summary(corpus_reshape(corp1, to = "sentences"))
 #' 
 #' # example with inaugural corpus speeches
 #' (corp2 <- corpus_subset(data_corpus_inaugural, Year>2004))
-#' corp2_para <- corpus_reshape(corp2, to = "paragraphs")
-#' corp2_para
-#' summary(corp2_para, 50, showmeta = TRUE)
+#' corp2para <- corpus_reshape(corp2, to = "paragraphs")
+#' corp2para
+#' summary(corp2para, 50, showmeta = TRUE)
 #' ## Note that Bush 2005 is recorded as a single paragraph because that text 
 #' ## used a single \n to mark the end of a paragraph.
 #' @export

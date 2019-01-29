@@ -108,22 +108,22 @@ check_entries <- function (dict) {
 #'   \code{\link[=dictionary2-class]{as.list}}, \code{\link{is.dictionary}}
 #' @import stringi
 #' @examples
-#' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
-#' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+#' corp <- corpus_subset(data_corpus_inaugural, Year>1900)
+#' dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
 #'                           taxing = "taxing",
 #'                           taxation = "taxation",
 #'                           taxregex = "tax*",
 #'                           country = "america"))
-#' head(dfm(mycorpus, dictionary = mydict))
+#' head(dfm(corp, dictionary = dict))
 #'
 #' # subset a dictionary
-#' mydict[1:2]
-#' mydict[c("christmas", "opposition")]
-#' mydict[["opposition"]]
+#' dict[1:2]
+#' dict[c("christmas", "opposition")]
+#' dict[["opposition"]]
 #' 
 #' # combine dictionaries
-#' c(mydict["christmas"], mydict["country"])
+#' c(dict["christmas"], dict["country"])
 #'
 #' \dontrun{
 #' # import the Laver-Garry dictionary from Provalis Research
@@ -131,13 +131,13 @@ check_entries <- function (dict) {
 #' download.file("https://provalisresearch.com/Download/LaverGarry.zip", 
 #'               dictfile, mode = "wb")
 #' unzip(dictfile, exdir = (td <- tempdir()))
-#' lgdict <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-#' head(dfm(data_corpus_inaugural, dictionary = lgdict))
+#' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
+#' head(dfm(data_corpus_inaugural, dictionary = dictlg))
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("https://goo.gl/5gmwXq", tf <- tempfile())
-#' mfdict <- dictionary(file = tf, format = "LIWC")
-#' head(dfm(data_corpus_inaugural, dictionary = mfdict))
+#' dictliwc <- dictionary(file = tf, format = "LIWC")
+#' head(dfm(data_corpus_inaugural, dictionary = dictliwc))
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
@@ -249,21 +249,21 @@ setMethod("as.list",
 #' as.dictionary(subset(sentiments, lexicon == "nrc"))
 #' as.dictionary(subset(sentiments, lexicon == "bing"))
 #' # to convert AFINN into polarities - adjust thresholds if desired
-#' afinn <- subset(sentiments, lexicon == "AFINN")
-#' afinn[["sentiment"]] <-
-#'     with(afinn,
+#' datafinn <- subset(sentiments, lexicon == "AFINN")
+#' datafinn[["sentiment"]] <-
+#'     with(datafinn,
 #'          sentiment <- ifelse(score < 0, "negative",
 #'                              ifelse(score > 0, "positive", "netural"))
 #'     )
-#' with(afinn, table(score, sentiment))
-#' as.dictionary(afinn)
+#' with(datafinn, table(score, sentiment))
+#' as.dictionary(datafinn)
 #' 
-#' df <- data.frame(
+#' dat <- data.frame(
 #'     word = c("Great", "Horrible"),
 #'     sentiment = c("positive", "negative")
 #'     )
-#' as.dictionary(df)
-#' as.dictionary(df, tolower = FALSE)
+#' as.dictionary(dat)
+#' as.dictionary(dat, tolower = FALSE)
 #' }
 #' 
 as.dictionary <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
@@ -448,22 +448,22 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' @author Kohei Watanabe
 #' @export
 #' @examples
-#' dictPopulismEN <-
+#' dict1 <-
 #'     dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
 #'                                "corrupt*", "propagand", "politici*", "*deceit*",
 #'                                "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
 #'                                "dishonest*", "establishm*", "ruling*")))
-#' flatten_dictionary(dictPopulismEN)
+#' flatten_dictionary(dict1)
 #'
-#' hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+#' dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
 #'                             level1a2 = c("l1a21", "l1a22")),
 #'              level1b = list(level1b1 = c("l1b11", "l1b12"),
 #'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
 #'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
 #'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
-#' flatten_dictionary(hdict)
-#' flatten_dictionary(hdict, 2)
-#' flatten_dictionary(hdict, 1:2)
+#' flatten_dictionary(dict2)
+#' flatten_dictionary(dict2, 2)
+#' flatten_dictionary(dict2, 1:2)
 flatten_dictionary <- function(dict, levels = 1:100, level = 1,
                                key_parent = "", dict_flat = list()) {
     dict <- unclass(dict)
@@ -497,13 +497,13 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
 #' @param dict the dictionary whose values will be lowercased
 #' @keywords dictionary internal
 #' @examples
-#' hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
+#' dict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #'                           SUBKEY2 = c("C", "D")),
 #'               KEY2 = list(SUBKEY3 = c("E", "F"),
 #'                           SUBKEY4 = c("G", "F", "I")),
 #'               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #'                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-#' quanteda:::lowercase_dictionary_values(hdict)
+#' quanteda:::lowercase_dictionary_values(dict)
 lowercase_dictionary_values <- function(dict) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
@@ -690,10 +690,10 @@ remove_empty_keys <- function(dict) {
 #' @param depth depths of nested element
 #' @keywords internal
 #' @examples
-#' list_flat <- list("A" = c("a", "aa", "aaa"), "B" = c("b", "bb"), "C" = c("c", "cc"), "D" = c("ddd"))
-#' dict_flat <- quanteda:::list2dictionary(list_flat)
-#' quanteda:::nest_dictionary(dict_flat, c(1, 1, 2, 2))
-#' quanteda:::nest_dictionary(dict_flat, c(1, 2, 1, 2))
+#' lis <- list("A" = c("a", "aa", "aaa"), "B" = c("b", "bb"), "C" = c("c", "cc"), "D" = c("ddd"))
+#' dict <- quanteda:::list2dictionary(lis)
+#' quanteda:::nest_dictionary(dict, c(1, 1, 2, 2))
+#' quanteda:::nest_dictionary(dict, c(1, 2, 1, 2))
 #' 
 nest_dictionary <- function (dict, depth) {
     if (length(dict) != length(depth))

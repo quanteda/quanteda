@@ -9,14 +9,14 @@
 #' @param remove_separator if \code{TRUE}, remove separator from new tokens
 #' @examples
 #' # undo tokens_compound()
-#' ctoks <- tokens("pork barrel is an idiomatic multi-word expression")
-#' tokens_compound(ctoks, phrase("pork barrel"))
-#' tokens_compound(ctoks, phrase("pork barrel")) %>%
+#' toks1 <- tokens("pork barrel is an idiomatic multi-word expression")
+#' tokens_compound(toks1, phrase("pork barrel"))
+#' tokens_compound(toks1, phrase("pork barrel")) %>%
 #'     tokens_split(separator = "_")
 #'     
 #' # similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 
-#' toks <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
-#' tokens_split(toks, separator = "-", remove_separator = FALSE)
+#' toks2 <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
+#' tokens_split(toks2, separator = "-", remove_separator = FALSE)
 #' @keywords tokens
 #' @export 
 tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"),

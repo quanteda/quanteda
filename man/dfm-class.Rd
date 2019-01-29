@@ -103,12 +103,12 @@ named \code{docs} and \code{features} respectively.}
 
 \examples{
 # dfm subsetting
-x <- dfm(tokens(c("this contains lots of stopwords",
+dfmat <- dfm(tokens(c("this contains lots of stopwords",
                   "no if, and, or but about it: lots",
                   "and a third document is it"),
                 remove_punct = TRUE))
-x[1:2, ]
-x[1:2, 1:5]
+dfmat[1:2, ]
+dfmat[1:2, 1:5]
 }
 \seealso{
 \link{dfm}

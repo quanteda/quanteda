@@ -7,10 +7,10 @@
 #' # summarize texts
 #' quanteda:::summarize_texts(c("Testing this text. Second sentence.", "And this one."))
 #' quanteda:::summarize_texts(data_char_ukimmig2010)
-#' summ <- quanteda:::summarize_texts(data_char_ukimmig2010)
-#' head(summ)
+#' summary_ukimmig2010 <- quanteda:::summarize_texts(data_char_ukimmig2010)
+#' head(summary_ukimmig2010)
 summarize_texts <- function(object, n = 100, tolower = FALSE, ...) {
-    
+
     object <- head(object, n)
     if (is.null(names(object))) 
         names(object) <- paste0(quanteda_options("base_docname"), 

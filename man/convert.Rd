@@ -44,30 +44,29 @@ text analysis packages for which conversions are defined.
 }
 \examples{
 corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-quant_mt <- dfm(corp, verbose = FALSE)
+dfmat1 <- dfm(corp)
 
 # austin's wfm format
-identical(dim(quant_mt), dim(convert(quant_mt, to = "austin")))
+identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
 
 # stm package format
-stm_mt <- convert(quant_mt, to = "stm")
-str(stm_mt)
+stmmat <- convert(dfmat1, to = "stm")
+str(stmmat)
 
-#' # triplet
-triplet <- convert(quant_mt, to = "tripletlist")
-str(triplet)
+# triplet
+tripletmat <- convert(dfmat1, to = "tripletlist")
+str(tripletmat)
 
 \dontrun{
 # tm's DocumentTermMatrix format
-tm_mt <- convert(quant_mt, to = "tm")
-str(tm_mt)
+tmdfm <- convert(dfmat1, to = "tm")
+str(tmdfm)
 
 # topicmodels package format
-str(convert(quant_mt, to = "topicmodels"))
+str(convert(dfmat1, to = "topicmodels"))
 
 # lda package format
-lda_mt <- convert(quant_mt, to = "lda")
-str(lda_mt)
+str(convert(dfmat1, to = "lda"))
 
 }
 }

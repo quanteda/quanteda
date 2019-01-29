@@ -38,11 +38,11 @@ When \code{select} is a dfm, then the returned dfm will be equal in
 corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
                  d3 = "b b c e", d4 = "e e f a b"),
                docvars = data.frame(grp = c(1, 1, 2, 3)))
-mt <- dfm(corp)
+dfmat <- dfm(corp)
 # selecting on a docvars condition
-dfm_subset(mt, grp > 1)
+dfm_subset(dfmat, grp > 1)
 # selecting on a supplied vector
-dfm_subset(mt, c(TRUE, FALSE, TRUE, FALSE))
+dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
 }
 \seealso{
 \code{\link{subset.data.frame}}

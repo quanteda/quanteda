@@ -53,34 +53,34 @@ consisting of all other documents.
 \examples{
 # compare pre- v. post-war terms using grouping
 period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
-mydfm <- dfm(data_corpus_inaugural, groups = period)
-head(mydfm) # make sure 'post-war' is in the first row
-head(result <- textstat_keyness(mydfm), 10)
-tail(result, 10)
+dfmat1 <- dfm(data_corpus_inaugural, groups = period)
+head(dfmat1) # make sure 'post-war' is in the first row
+head(tstat1 <- textstat_keyness(dfmat1), 10)
+tail(tstat1, 10)
 
 # compare pre- v. post-war terms using logical vector
-mydfm2 <- dfm(data_corpus_inaugural)
-head(textstat_keyness(mydfm2, docvars(data_corpus_inaugural, "Year") >= 1945), 10)
+dfmat2 <- dfm(data_corpus_inaugural)
+head(textstat_keyness(dfmat2, docvars(data_corpus_inaugural, "Year") >= 1945), 10)
 
 # compare Trump 2017 to other post-war preseidents
-pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
-head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
+dfmat3 <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
+head(textstat_keyness(dfmat3, target = "2017-Trump"), 10)
 
 # using the likelihood ratio method
-head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
+head(textstat_keyness(dfm_smooth(dfmat3), measure = "lr", target = "2017-Trump"), 10)
 }
 \references{
-Bondi, Marina and Mike Scott, eds. 2010. \emph{Keyness in 
+Bondi, M. & Scott, M. (eds) (2010). \emph{Keyness in 
   Texts}. Amsterdam, Philadelphia: John Benjamins.
   
-  Stubbs, Michael. 2010. "Three Concepts of Keywords". In \emph{Keyness in 
-  Texts}, Marina Bondi and Mike Scott, eds: 1--42. Amsterdam, Philadelphia:
+  Stubbs, M. (2010). Three Concepts of Keywords. In \emph{Keyness in 
+  Texts}, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
   John Benjamins.
   
-  Scott, Mike and Christopher Tribble. 2006. \emph{Textual Patterns: keyword and corpus 
-  analysis in language education}. Amsterdam: Benjamins: 55.
+  Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus 
+  Analysis in Language Education}. Amsterdam: Benjamins: 55.
   
-  Dunning, Ted. 1993. "\href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
-  for the Statistics of Surprise and Coincidence}." \emph{Computational Linguistics} 19(1): 61--74.
+  Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
+  for the Statistics of Surprise and Coincidence}. \emph{Computational Linguistics}, 19(1): 61--74.
 }
 \keyword{textstat}

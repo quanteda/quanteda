@@ -15,8 +15,8 @@
 #' @param verbose logical; if \code{TRUE} print diagnostic information during
 #'   fitting.
 #' @author Patrick Perry and Kenneth Benoit
-#' @references Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
-#'   the Class Affinity Model".
+#' @references Perry, P.O. & Benoit, K.R. (2017). Scaling Text with
+#'   the Class Affinity Model.
 #'   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 #' @examples
 #' (af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA)))
@@ -25,8 +25,8 @@
 #'
 #' \dontrun{
 #' # compute bootstrapped SEs
-#' bs_dfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
-#' textmodel_affinity(bs_dfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
+#' dfmat <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
+#' textmodel_affinity(dfmat, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 #' }
 #' @export
 #' @keywords textmodel experimental
@@ -37,14 +37,14 @@
 #'   (other) documents.
 textmodel_affinity <- function(x, y, exclude = NULL,
                                smooth = 0.5, ref_smooth = 0.5,
-                               verbose = TRUE) {
+                               verbose = quanteda_options("verbose")) {
     UseMethod("textmodel_affinity")
 }
 
 #' @export
 textmodel_affinity.default <- function(x, y, exclude = NULL,
                                        smooth = 0.5, ref_smooth = 0.5,
-                                       verbose = TRUE) {
+                                       verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "textmodel_affinity"))
 }
     
@@ -52,7 +52,7 @@ textmodel_affinity.default <- function(x, y, exclude = NULL,
 #' @export
 textmodel_affinity.dfm <- function(x, y, exclude = NULL,
                                    smooth = 0.5, ref_smooth = 0.5,
-                                   verbose = TRUE) {
+                                   verbose = quanteda_options("verbose")) {
     
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
@@ -99,7 +99,7 @@ textmodel_affinity.dfm <- function(x, y, exclude = NULL,
 #' @export
 textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
                                              smooth = 0.5, ref_smooth = 0.5,
-                                             verbose = TRUE) {
+                                             verbose = quanteda_options("verbose")) {
     if (verbose)
         message("Bootstrapping textmodel_affinity for ", ndoc(x[[1]]), " documents:")
 
@@ -562,9 +562,9 @@ rstandard.predict.textmodel_affinity <- function(model, ...) {
 #' @method influence predict.textmodel_affinity
 #' @import Matrix
 #' @examples 
-#' af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
-#' afpred <- predict(af) 
-#' influence(afpred)
+#' tmot <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+#' pred <- predict(tmot) 
+#' influence(pred)
 #' @export
 influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     # subset/training set

@@ -26,13 +26,13 @@
 #' @examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 #'                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
-#' mt <- dfm(corp)
-#' dfm_group(mt, groups = "grp")
-#' dfm_group(mt, groups = c(1, 1, 2, 2))
+#' dfmat <- dfm(corp)
+#' dfm_group(dfmat, groups = "grp")
+#' dfm_group(dfmat, groups = c(1, 1, 2, 2))
 #'
 #' # equivalent
-#' dfm(mt, groups = "grp")
-#' dfm(mt, groups = c(1, 1, 2, 2))
+#' dfm(dfmat, groups = "grp")
+#' dfm(dfmat, groups = c(1, 1, 2, 2))
 dfm_group <- function(x, groups = NULL, fill = FALSE) {
     UseMethod("dfm_group")
 }

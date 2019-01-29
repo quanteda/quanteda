@@ -30,30 +30,29 @@
 #' @export
 #' @examples
 #' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' quant_mt <- dfm(corp, verbose = FALSE)
+#' dfmat1 <- dfm(corp)
 #' 
 #' # austin's wfm format
-#' identical(dim(quant_mt), dim(convert(quant_mt, to = "austin")))
+#' identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
 #' 
 #' # stm package format
-#' stm_mt <- convert(quant_mt, to = "stm")
-#' str(stm_mt)
+#' stmmat <- convert(dfmat1, to = "stm")
+#' str(stmmat)
 #' 
-#' #' # triplet
-#' triplet <- convert(quant_mt, to = "tripletlist")
-#' str(triplet)
+#' # triplet
+#' tripletmat <- convert(dfmat1, to = "tripletlist")
+#' str(tripletmat)
 #' 
 #' \dontrun{
 #' # tm's DocumentTermMatrix format
-#' tm_mt <- convert(quant_mt, to = "tm")
-#' str(tm_mt)
+#' tmdfm <- convert(dfmat1, to = "tm")
+#' str(tmdfm)
 #' 
 #' # topicmodels package format
-#' str(convert(quant_mt, to = "topicmodels"))
+#' str(convert(dfmat1, to = "topicmodels"))
 #' 
 #' # lda package format
-#' lda_mt <- convert(quant_mt, to = "lda")
-#' str(lda_mt)
+#' str(convert(dfmat1, to = "lda"))
 #' 
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
@@ -130,8 +129,8 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples 
-#' mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' quantdfm <- dfm(mycorpus, verbose = FALSE)
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+#' dfmat <- dfm(corp)
 #' 
 NULL
 
@@ -142,7 +141,7 @@ NULL
 #' @export
 #' @examples 
 #' # shortcut conversion to austin package's wfm format
-#' identical(as.wfm(quantdfm), convert(quantdfm, to = "austin"))
+#' identical(as.wfm(dfmat), convert(dfmat, to = "austin"))
 #' 
 as.wfm <- function(x) {
     UseMethod("as.wfm")
@@ -169,7 +168,7 @@ as.wfm.dfm <- function(x) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to tm package's DocumentTermMatrix format
-#' identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
+#' identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
 #' }
 #' 
 as.DocumentTermMatrix <- function(x) {
@@ -225,7 +224,7 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
-#' identical(quanteda:::dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
+#' identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda")) 
 #' }
 #' 
 #' @keywords internal
@@ -245,7 +244,7 @@ dfm2lda <- function(x) {
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
-#' identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
+#' identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda")) 
 #' }
 #' @keywords internal
 dtm2lda <- function (x, omit_empty = TRUE) {
@@ -334,9 +333,9 @@ ijv.to.doc <- function(i, j, v) {
 #' @param x dfm to be converted
 #' @examples
 #' \dontrun{
-#' (mydfm <- dfm(c(d1 = "this is a first matrix", 
+#' (dfmat <- dfm(c(d1 = "this is a first matrix", 
 #'                 d2 = "this is second matrix as example")))
-#' lsa::lsa(convert(mydfm, to = "lsa"))
+#' lsa::lsa(convert(dfmat, to = "lsa"))
 #' }
 #' @keywords internal
 dfm2lsa <- function(x) {

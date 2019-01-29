@@ -146,7 +146,7 @@ reference:
     - fcm_toupper
     - fcm_sort
     - is.fcm
-- title: Text Statistics
+- title: Text statistics
   desc: Functions for computing statistics from texts and dfm objects.
   contents:
     - textstat_collocations
@@ -171,14 +171,14 @@ reference:
     - is.collocations
     - is.kwic
     - kwic
+- title: Text model functions
+  desc: Fitting analytic models from text matrixes.
+  contents:
+    - starts_with("textmodel_")
 - title: Text plot functions
   desc: Plot functions for representing text and the analysis of texts.
   contents:
     - starts_with("textplot_")
-- title: Text Model Functions
-  desc: Plot functions for fitting analytic models from text matrixes.
-  contents:
-    - starts_with("textmodel_")
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:

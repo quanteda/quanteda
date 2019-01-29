@@ -81,45 +81,45 @@ In the rare situation where a warning message of "The algorithm did not
   converge." shows up, removing some documents may work.
 }
 \examples{
-(wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
-summary(wf, n = 10)
-coef(wf)
-predict(wf)
-predict(wf, se.fit = TRUE)
-predict(wf, interval = "confidence")
+(tmod1 <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
+summary(tmod1, n = 10)
+coef(tmod1)
+predict(tmod1)
+predict(tmod1, se.fit = TRUE)
+predict(tmod1, interval = "confidence")
 
 \dontrun{
-ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
-(wf1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
-(wf2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+dfmat <- dfm(data_corpus_irishbudget2010)
+(tmod2 <- textmodel_wordfish(dfmat, dir = c(6,5)))
+(tmod3 <- textmodel_wordfish(dfmat, dir = c(6,5), 
                              dispersion = "quasipoisson", dispersion_floor = 0))
-(wf2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+(tmod4 <- textmodel_wordfish(dfmat, dir = c(6,5), 
                              dispersion = "quasipoisson", dispersion_floor = .5))
-plot(wf2a$phi, wf2b$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+plot(tmod3$phi, tmod4$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0))
-plot(wf2a$phi, wf2b$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+plot(tmod3$phi, tmod4$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
-underdispersedTerms <- sample(which(wf2a$phi < 1.0), 5)
-which(featnames(ie2010dfm) \%in\% names(topfeatures(ie2010dfm, 20)))
-text(wf2a$phi, wf2b$phi, wf2a$features, 
+underdispersedTerms <- sample(which(tmod3$phi < 1.0), 5)
+which(featnames(dfmat) \%in\% names(topfeatures(dfmat, 20)))
+text(tmod3$phi, tmod4$phi, tmod3$features, 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
-text(wf2a$phi['underdispersedTerms'], wf2b$phi['underdispersedTerms'], 
-     wf2a$features['underdispersedTerms'], 
+text(tmod3$phi['underdispersedTerms'], tmod4$phi['underdispersedTerms'], 
+     tmod3$features['underdispersedTerms'], 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
 if (requireNamespace("austin")) {
-    wf_austin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
-    cor(wf1$theta, wf_austin$theta)
+    tmod5 <- austin::wordfish(quanteda::as.wfm(dfmat), dir = c(6,5))
+    cor(tmod1$theta, tmod5$theta)
 }}
 }
 \references{
-Jonathan Slapin and Sven-Oliver Proksch. 2008. 
-  "\href{https://doi.org/10.1111/j.1540-5907.2008.00338.x}{A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts}." \emph{American 
-  Journal of Political Science} 52(3): 705--772.
+Slapin, J. & Proksch, S.O. (2008). 
+  \href{https://doi.org/10.1111/j.1540-5907.2008.00338.x}{A Scaling Model 
+  for Estimating Time-Series Party Positions from Texts}. \emph{American 
+  Journal of Political Science}, 52(3), 705--772.
   
-  Lowe, Will and Kenneth Benoit. 2013. "\href{http://doi.org/10.1093/pan/mpt002}{Validating 
-  Estimates of Latent Traits from Textual Data Using Human Judgment as a Benchmark}." 
-  \emph{Political Analysis} 21(3): 298--313.
+  Lowe, W. & Benoit, K.R. (2013). \href{http://doi.org/10.1093/pan/mpt002}{Validating 
+  Estimates of Latent Traits from Textual Data Using Human Judgment as a Benchmark}.  
+  \emph{Political Analysis}, 21(3), 298--313.
 }
 \seealso{
 \code{\link{predict.textmodel_wordfish}}

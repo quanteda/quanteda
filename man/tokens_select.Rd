@@ -93,7 +93,6 @@ tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive
 tokens_select(toks, "second", selection = "keep", window = 1)
 tokens_select(toks, "second", selection = "remove", window = 1)
 tokens_remove(toks, "is", window = c(0, 1))
-
 # tokens_remove example: remove stopwords
 txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
                    execute the functions of its Chief Magistrate.",

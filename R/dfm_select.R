@@ -47,21 +47,21 @@
 #' @keywords dfm
 #' @seealso \code{\link{dfm_match}}
 #' @examples
-#' my_dfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
+#' dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
 #'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              tolower = FALSE, verbose = FALSE)
-#' my_dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
+#'              tolower = FALSE)
+#' dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
 #'                           wordsEndingInY = c("by", "my"),
 #'                           notintext = "blahblah"))
-#' dfm_select(my_dfm, pattern = my_dict)
-#' dfm_select(my_dfm, pattern = my_dict, case_insensitive = FALSE)
-#' dfm_select(my_dfm, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
-#' dfm_select(my_dfm, pattern = c("s$", ".y"), selection = "remove", valuetype = "regex")
-#' dfm_select(my_dfm, pattern = stopwords("english"), selection = "keep", valuetype = "fixed")
-#' dfm_select(my_dfm, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
+#' dfm_select(dfmat, pattern = dict)
+#' dfm_select(dfmat, pattern = dict, case_insensitive = FALSE)
+#' dfm_select(dfmat, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
+#' dfm_select(dfmat, pattern = c("s$", ".y"), selection = "remove", valuetype = "regex")
+#' dfm_select(dfmat, pattern = stopwords("english"), selection = "keep", valuetype = "fixed")
+#' dfm_select(dfmat, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
 #'
 #' # select based on character length
-#' dfm_select(my_dfm, min_nchar = 5)
+#' dfm_select(dfmat, min_nchar = 5)
 #' 
 dfm_select <- function(x, pattern = NULL, 
                        selection = c("keep", "remove"), 
@@ -167,11 +167,10 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #'   \code{selection}.
 #' @export
 #' @examples 
-#' tmpdfm <- dfm(c("This is a document with lots of stopwords.",
-#'                 "No if, and, or but about it: lots of stopwords."),
-#'               verbose = FALSE)
-#' tmpdfm
-#' dfm_remove(tmpdfm, stopwords("english"))
+#' dfmat <- dfm(c("This is a document with lots of stopwords.",
+#'                "No if, and, or but about it: lots of stopwords."))
+#' dfmat
+#' dfm_remove(dfmat, stopwords("english"))
 dfm_remove <- function(x, ...) {
     if ("selection" %in% names(list(...))) {
         stop("dfm_remove cannot include selection argument")

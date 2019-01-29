@@ -33,23 +33,23 @@ List the most (or least) frequently occurring features in a \link{dfm}, either
 as a whole or separated by document.
 }
 \examples{
-mydfm <- corpus_subset(data_corpus_inaugural, Year > 1980) \%>\%
+dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) \%>\%
     dfm(remove_punct = TRUE)
-mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
+dfmat2 <- dfm_remove(dfmat1, stopwords("english"))
 
 # most frequent features
-topfeatures(mydfm)
-topfeatures(mydfm_nostopw)
+topfeatures(dfmat1)
+topfeatures(dfmat2)
 
 # least frequent features
-topfeatures(mydfm_nostopw, decreasing = FALSE)
+topfeatures(dfmat2, decreasing = FALSE)
 
 # top features of individual documents  
-topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
+topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 
 # grouping by president last name
-topfeatures(mydfm_nostopw, n = 5, groups = "President")
+topfeatures(dfmat2, n = 5, groups = "President")
 
 # features by document frequencies
-tail(topfeatures(mydfm, scheme = "docfreq", n = 200))
+tail(topfeatures(dfmat1, scheme = "docfreq", n = 200))
 }

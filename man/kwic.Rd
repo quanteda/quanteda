@@ -66,7 +66,7 @@ toks <- tokens(data_corpus_inaugural)
 kwic(data_corpus_inaugural, pattern = phrase("war against"))
 kwic(data_corpus_inaugural, pattern = phrase("war against"), valuetype = "regex")
 
-mykwic <- kwic(data_corpus_inaugural, "provident*")
-is.kwic(mykwic)
+kw <- kwic(data_corpus_inaugural, "provident*")
+is.kwic(kw)
 is.kwic("Not a kwic")
 }

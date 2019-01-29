@@ -134,13 +134,14 @@ if (requireNamespace("tm", quietly = TRUE)) {
 }
 
 # construct a corpus from a data.frame
-df <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
-                 some_ints = 1L:6L,
-                 some_text = paste0("This is text number ", 1:6, "."),
-                 stringsAsFactors = FALSE,
-                 row.names = paste0("fromDf_", 1:6))
-df
-summary(corpus(df, text_field = "some_text"))
+dat <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+                  some_ints = 1L:6L,
+                  some_text = paste0("This is text number ", 1:6, "."),
+                  stringsAsFactors = FALSE,
+                  row.names = paste0("fromDf_", 1:6))
+dat
+summary(corpus(dat, text_field = "some_text",
+               metacorpus = list(source = "From a data.frame called mydf.")))
 
 # construct a corpus from a kwic object
 kw <- kwic(data_corpus_inaugural, "southern")

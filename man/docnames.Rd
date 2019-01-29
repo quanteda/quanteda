@@ -25,17 +25,17 @@ docname will be coerced to mode `character`.
 Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
 }
 \examples{
-# get and set document names to a corpus
-mycorp <- data_corpus_inaugural
-docnames(mycorp) <- char_tolower(docnames(mycorp))
+# get and set doument names to a corpus
+corp <- data_corpus_inaugural
+docnames(corp) <- char_tolower(docnames(corp))
 
 # get and set doument names to a tokens
-mytoks <- tokens(data_corpus_inaugural)
-docnames(mytoks) <- char_tolower(docnames(mytoks))
+toks <- tokens(data_corpus_inaugural)
+docnames(toks) <- char_tolower(docnames(toks))
 
 # get and set doument names to a dfm
-mydfm <- dfm(data_corpus_inaugural[1:5])
-docnames(mydfm) <- char_tolower(docnames(mydfm))
+dfmat <- dfm(data_corpus_inaugural[1:5])
+docnames(dfmat) <- char_tolower(docnames(dfmat))
 
 # reassign the document names of the inaugural speech corpus
 docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")

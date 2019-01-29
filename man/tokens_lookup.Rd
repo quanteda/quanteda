@@ -47,37 +47,37 @@ Convert tokens into equivalence classes defined by values of a dictionary
 object.
 }
 \examples{
-toks <- tokens(data_corpus_inaugural)
-dict <- dictionary(list(country = "united states", 
+toks1 <- tokens(data_corpus_inaugural)
+dict1 <- dictionary(list(country = "united states", 
                    law=c('law*', 'constitution'), 
                    freedom=c('free*', 'libert*')))
-dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
-dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
+dfm(tokens_lookup(toks1, dict1, valuetype='glob', verbose = TRUE))
+dfm(tokens_lookup(toks1, dict1, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
 
-dict_fix <- dictionary(list(country = "united states", 
+dict2 <- dictionary(list(country = "united states", 
                        law = c('law', 'constitution'), 
                        freedom = c('freedom', 'liberty'))) 
-# dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
-dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
+# dfm(applyDictionary(toks1, dict2, valuetype='fixed'))
+dfm(tokens_lookup(toks1, dict2, valuetype='fixed'))
 
 # hierarchical dictionary example
 txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
          d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
-toks <- tokens(txt)
-dict <- dictionary(list(US = list(Countries = c("States"), 
+toks2 <- tokens(txt)
+dict3 <- dictionary(list(US = list(Countries = c("States"), 
                                   oceans = c("Atlantic", "Pacific")),
                         Europe = list(Countries = c("Britain", "Ireland"),
                                       oceans = list(west = "Irish Sea", 
                                                     east = "English Channel"))))
-tokens_lookup(toks, dict, levels = 1)
-tokens_lookup(toks, dict, levels = 2)
-tokens_lookup(toks, dict, levels = 1:2)
-tokens_lookup(toks, dict, levels = 3)
-tokens_lookup(toks, dict, levels = c(1,3))
-tokens_lookup(toks, dict, levels = c(2,3))
+tokens_lookup(toks2, dict3, levels = 1)
+tokens_lookup(toks2, dict3, levels = 2)
+tokens_lookup(toks2, dict3, levels = 1:2)
+tokens_lookup(toks2, dict3, levels = 3)
+tokens_lookup(toks2, dict3, levels = c(1,3))
+tokens_lookup(toks2, dict3, levels = c(2,3))
 
 # show unmatched tokens
-tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
+tokens_lookup(toks2, dict3, nomatch = "_UNMATCHED")
 
 }
 \seealso{

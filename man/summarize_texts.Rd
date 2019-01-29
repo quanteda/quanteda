@@ -22,8 +22,8 @@ Internal-only function to compute summary statistics on a character object.
 # summarize texts
 quanteda:::summarize_texts(c("Testing this text. Second sentence.", "And this one."))
 quanteda:::summarize_texts(data_char_ukimmig2010)
-summ <- quanteda:::summarize_texts(data_char_ukimmig2010)
-head(summ)
+summary_ukimmig2010 <- quanteda:::summarize_texts(data_char_ukimmig2010)
+head(summary_ukimmig2010)
 }
 \keyword{char}
 \keyword{internal}

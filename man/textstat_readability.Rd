@@ -364,94 +364,116 @@ textstat_readability(data_corpus_inaugural[48:58],
                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
 }
 \references{
-Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{"Lix and
-  rix: Variations on a little-known readability index."}
-  Journal of Reading, 26(6), 490-496.
+Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
+  rix: Variations on a little-known readability index}. \emph{Journal of
+  Reading}, 26(6), 490--496.
 
-  Bamberger, R. & Vanecek, E. (1984). Lesen–Verstehen–Lernen–Schreiben. Wien: Jugend und Volk.
+  Bamberger, R. & Vanecek, E. (1984).
+  \emph{Lesen–Verstehen–Lernen–Schreiben}. Wien: Jugend und Volk.
 
   Björnsson, C. H. (1968). \emph{Läsbarhet}. Stockholm: Liber.
 
-  Bormuth, J. R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development
-  of Readability Analysis.}
+  Bormuth, J.R. (1969).
+  \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development of
+  Readability Analysis}.
 
-  Bormuth, J. R. (1968). \href{https://www.jstor.org/stable/1433978}{"Cloze test readability:
-  Criterion reference scores."} Journal of educational measurement, 5(3), 189-196.
+  Bormuth, J.R. (1968). \href{https://www.jstor.org/stable/1433978}{Cloze
+  test readability: Criterion reference scores}. \emph{Journal of educational
+  measurement}, 5(3), 189--196.
 
-  Caylor, J. S. (1973). \href{https://eric.ed.gov/?id=ED074343}{"Methodologies for Determining
-  Reading Requirements of Military Occupational Specialities."}
+  Caylor, J.S. (1973). \href{https://eric.ed.gov/?id=ED074343}{Methodologies
+  for Determining Reading Requirements of Military Occupational
+  Specialities}.
 
-  Caylor, J. S., & Sticht, T. G. (1973). \href{https://archive.org/details/ERIC_ED076707}{"Development
-  of a Simple Readability Index for Job Reading Material."}
+  Caylor, J.S. & Sticht, T.G. (1973).
+  \href{https://archive.org/details/ERIC_ED076707}{\emph{Development of a
+  Simple Readability Index for Job Reading Material}}.
 
-  Coleman, E. B. (1971). Developing a technology of written instruction: Some determiners
-  of the complexity of prose. Verbal learning research and the technology of written
-  instruction, 155-204.
+  Coleman, E.B. (1971). Developing a technology of written instruction: Some
+  determiners of the complexity of prose. \emph{Verbal learning research and
+  the technology of written instruction}, 155--204.
 
-  Coleman, M., & Liau, T. L. (1975). \href{https://psycnet.apa.org/record/1975-22007-001}{"A computer
-  readability formula designed for machine scoring."} Journal of Applied Psychology, 60(2), 283.
+  Coleman, M. & Liau, T.L. (1975).
+  \href{https://psycnet.apa.org/record/1975-22007-001}{A Computer Readability
+  Formula Designed for Machine Scoring}. \emph{Journal of Applied
+  Psychology}, 60(2), 283.
 
-  Dale, E. and Chall, J. S. (1948).
-  \href{https://www.jstor.org/stable/pdf/1473669}{"A formula for predicting
-  readability: Instructions."} \emph{Educational Research Bulletin} 37-54.
+  Dale, E. and Chall, J.S. (1948).
+  \href{https://www.jstor.org/stable/pdf/1473669}{A Formula for Predicting
+  Readability: Instructions}. \emph{Educational Research Bulletin}, 37-54.
 
-  Chall, J. S. and Dale, E. (1995). \emph{Readability revisited: The new
-  Dale-Chall readability formula}. Brookline Books.
+  Chall, J.S. and Dale, E. (1995). \emph{Readability Revisited: The New
+  Dale-Chall Readability Formula}. Brookline Books.
 
-  Dickes, P. & Steiwer, L. (1977). "Ausarbeitung von Lesbarkeitsformeln
-  für die Deutsche Sprache." \emph{Zeitschrift für Entwicklungspsychologie und
+  Dickes, P. & Steiwer, L. (1977). Ausarbeitung von Lesbarkeitsformeln für
+  die Deutsche Sprache. \emph{Zeitschrift für Entwicklungspsychologie und
   Pädagogische Psychologie} 9(1), 20--28.
 
-  Danielson, W. A., & Bryan, S. D. (1963). \href{https://journals.sagepub.com/doi/abs/10.1177/107769906304000207}{"Computer
-  automation of two readability formulas."} \emph{Journalism Quarterly} 40(2), 201-206.
+  Danielson, W.A., & Bryan, S.D. (1963).
+  \href{https://journals.sagepub.com/doi/abs/10.1177/107769906304000207}{Computer
+  Automation of Two Readability Formulas}. \emph{Journalism Quarterly},
+  40(2), 201--206.
+  
+  DuBay, W.H. (2004).
+  \href{http://www.impact-information.com/impactinfo/readability02.pdf}{\emph{The
+  Principles of Readability}}.
 
-  DuBay, W. H. (2004). \href{http://www.impact-information.com/impactinfo/readability02.pdf}{\emph{The
-  Principles of Readability.}}
+  Fang, I. E. (1966).
+  \href{https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19}{The
+  "Easy listening formula"}. \emph{Journal of Broadcasting & Electronic
+  Media}, 11(1), 63--68.
 
-  Fang, I. E. (1966). \href{https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19}{"The
-  "Easy listening formula""}. \emph{Journal of Broadcasting & Electronic Media} 11(1): 63-68.
-
-  Farr, J. N., Jenkins, J. J., & Paterson, D. G. (1951).  \href{https://psycnet.apa.org/record/1952-03973-001}{"Simplification of
-  Flesch Reading Ease Formula."} \emph{Journal of applied psychology} 35(5):
+  Farr, J. N., Jenkins, J.J., & Paterson, D.G. (1951).
+  \href{https://psycnet.apa.org/record/1952-03973-001}{Simplification of
+  Flesch Reading Ease Formula}. \emph{Journal of Applied Psychology}, 35(5):
   333.
+  
+  Flesch, R. (1948). \href{https://psycnet.apa.org/record/1949-01274-001}{A
+  New Readability Yardstick}. \emph{Journal of Applied Psychology}, 32(3),
+  221.
+  
+  Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern. 
+  \emph{Sprachforum}, 1, 233-–244.
+  
+  Gunning, R. (1952). \emph{The Technique of Clear Writing}.  New York: McGraw-Hill.
+  
+  Klare, G.R. (1975).
+  \href{https://www.jstor.org/stable/pdf/747086.pdf}{Assessing Readability}.
+  \emph{Reading Research Quarterly}, 10(1), 62--102.
+  
+  Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S. (1975).
+  \href{https://stars.library.ucf.edu/istlibrary/56/}{Derivation of New
+  Readability Formulas (Automated Readability Index, FOG count and Flesch
+  Reading Ease Formula) for Navy Enlisted Personnel}.
+  
+  McLaughlin, G.H. (1969).
+  \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{SMOG
+  Grading: A New Readability Formula.} \emph{Journal of Reading}, 12(8),
+  639-646.
 
-  Flesch, R. (1948). \href{https://psycnet.apa.org/record/1949-01274-001}{"A new readability yardstick."} \emph{Journal of applied
-  psychology} 32(3): 221.
-
-  Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern.
-  Sprachforum, 1, 233–244.
-
-  Gunning, R. (1952). The technique of clear writing.
-
-  Klare, G.R. (1975). \href{https://www.jstor.org/stable/pdf/747086.pdf}{"Assessing readability."} \emph{Reading Research Quarterly}, 10(1), 62--102.
-
-  Kincaid, J. P., Fishburne Jr, R. P., Rogers, R. L., & Chissom, B. S.
-  (1975). \href{https://stars.library.ucf.edu/istlibrary/56/}{"Derivation of new readability formulas (automated readability
-  index, FOG count and Flesch reading ease formula) for navy enlisted
-  personnel."}
-
-  McLaughlin, G. H. (1969). \href{https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf}{"SMOG grading-a new readability formula."}
-  \emph{Journal of reading}, 12(8), 639-646.
-
-  Powers, R. D., Sumner, W. A., and Kearl, B. E. (1958).
-  \href{https://psycnet.apa.org/record/1962-03617-001}{"A recalculation of
-  four adult readability formulas."} \emph{Journal of Educational
+  Powers, R.D., Sumner, W.A., and Kearl, B.E. (1958).
+  \href{https://psycnet.apa.org/record/1962-03617-001}{A Recalculation of
+  Four Adult Readability Formulas.}. \emph{Journal of Educational
   Psychology}, 49(2), 99.
 
-  Senter, R. J., & Smith, E. A. (1967). \href{https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf}{Automated readability index.}
-  CINCINNATI UNIV OH.
+  Senter, R. J., & Smith, E. A. (1967).
+  \href{https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf}{Automated
+  readability index.}  Wright-Patterson Air Force Base. Report No. AMRL-TR-6620.
 
-  *Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.
+  *Solomon, N. W. (2006). \emph{Qualitative Analysis of Media Language}. India.
 
-  Spache, G. (1953). \href{https://www.jstor.org/stable/998915}{"A new readability formula for primary-grade reading
-  materials."} \emph{The Elementary School Journal}, 53, 410–413.
+  Spache, G. (1953). \href{https://www.jstor.org/stable/998915}{"A new
+  readability formula for primary-grade reading materials."} \emph{The
+  Elementary School Journal}, 53, 410--413.
 
   Tränkle, U. & Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
-  Lesbarkeitsformeln für die deutsche Sprache. Zeitschrift für
-  Entwicklungspsychologie und Pädagogische Psychologie, 16(3), 231–244.
+  Lesbarkeitsformeln für die deutsche Sprache. \emph{Zeitschrift für
+  Entwicklungspsychologie und Pädagogische Psychologie}, 16(3), 231--244.
 
-  Wheeler, L.R. & Smith, E.H. (1954). \href{https://www.jstor.org/stable/pdf/41384251}{A practical readability formula for the
-  classroom teacher in the primary grades.} \emph{Elementary English}, 31, 397–399.
+  Wheeler, L.R. & Smith, E.H. (1954).
+  \href{https://www.jstor.org/stable/pdf/41384251}{A Practical Readability
+  Formula for the Classroom Teacher in the Primary Grades}. \emph{Elementary
+  English}, 31, 397--399.
 
   *Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
   Journalism, School of Media Studies, SRM University, India.
