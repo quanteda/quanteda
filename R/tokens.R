@@ -442,7 +442,6 @@ print.tokens <- function(x, ...) {
 #' @export
 #' @noRd
 "[[<-.tokens" <- function(x, i, value) {
-    warning("[[]] for tokens is deprecated")
     stop("assignment to tokens objects is not allowed", call. = FALSE)
 }
 
