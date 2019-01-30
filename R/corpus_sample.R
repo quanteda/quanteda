@@ -45,7 +45,7 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     if (!is.null(by)) {
         if (!is.null(prob)) stop("prob not implemented with by")
         if (by == "document") by <- "docid_"
-        index <- sample_bygroup(seq_len(ndoc(x)), group = docvars(x, by), replace = replace)
+        index <- sample_bygroup(seq_len(ndoc(x)), get_docvars(x, "docid_", system = TRUE), replace)
     } else {
         index <- base::sample(ndoc(x), size, replace, prob) 
     }
