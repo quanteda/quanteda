@@ -43,17 +43,17 @@ test_that("dfm_group works with docvars", {
 })
 
 test_that("dfm.character groups works (#794)", {
+    grp <- c(1, 1, 2)
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
     corp <- corpus(txt)
     toks <- tokens(corp)
-    grp <- c(1, 1, 2)
     expect_equal(
-        dfm(txt, groups = "grp"),
-        dfm(toks, groups = "grp")
+        dfm(txt, groups = grp),
+        dfm(toks, groups = grp)
     )
     expect_equal(
-        dfm(txt, groups = "grp"),
-        dfm(corp, groups = "grp")
+        dfm(txt, groups = grp),
+        dfm(corp, groups = grp)
     )
 })
 
