@@ -417,6 +417,7 @@ print.tokens <- function(x, ...) {
 #' @noRd
 #' @examples
 #' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+#' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
     types <- c("", types(x))
