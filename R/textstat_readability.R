@@ -421,7 +421,7 @@
 #'   Gunning, R. (1952). \emph{The Technique of Clear Writing}.  New York: McGraw-Hill.
 #'   
 #'   Klare, G.R. (1975).
-#'   \href{https://www.jstor.org/stable/pdf/747086.pdf}{Assessing Readability}.
+#'   \href{https://www.jstor.org/stable/pdf/747086}{Assessing Readability}.
 #'   \emph{Reading Research Quarterly}, 10(1), 62--102.
 #'   
 #'   Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S. (1975).
