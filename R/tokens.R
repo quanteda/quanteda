@@ -386,13 +386,11 @@ print.tokens <- function(x, ...) {
     print(x, ...)
 }
 
-
 #' @method "[" tokens
 #' @export
 #' @noRd
 #' @examples
 #' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-#' str(toks)
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
 
@@ -415,10 +413,6 @@ print.tokens <- function(x, ...) {
 #' @method "[[" tokens
 #' @export
 #' @noRd
-#' @examples
-#' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-#' str(toks)
-#' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
     warning("[[]] for tokens is deprecated")
     types <- c("", types(x))
@@ -428,10 +422,6 @@ print.tokens <- function(x, ...) {
 #' @method "$" tokens
 #' @export
 #' @noRd
-#' @examples
-#' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-#' str(toks)
-#' toks$d3
 "$.tokens" <- function(x, i, ...) {
     warning("$ for tokens is deprecated")
     x[[i]]
