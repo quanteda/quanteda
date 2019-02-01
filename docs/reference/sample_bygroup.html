@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set values to a dfm's S4 slots — set_dfm_slots • quanteda</title>
+<title>Sample a vector by a group — sample_bygroup • quanteda</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -38,9 +38,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Set values to a dfm's S4 slots — set_dfm_slots" />
+<meta property="og:title" content="Sample a vector by a group — sample_bygroup" />
 
-<meta property="og:description" content="Set values to a dfm's S4 slots" />
+<meta property="og:description" content="Return a sample from a vector within a grouping variable." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -195,43 +195,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set values to a dfm's S4 slots</h1>
+    <h1>Sample a vector by a group</h1>
     
-    <div class="hidden name"><code>set_dfm_slots.Rd</code></div>
+    <div class="hidden name"><code>sample_bygroup.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Set values to a dfm's S4 slots</p>
+    <p>Return a sample from a vector within a grouping variable.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>set_dfm_slots</span>(<span class='no'>x</span>, <span class='kw'>slots</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exceptions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>sample_bygroup</span>(<span class='no'>x</span>, <span class='no'>group</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a dfm</p></td>
+      <td><p>any vector</p></td>
     </tr>
     <tr>
-      <th>slots</th>
-      <td><p>a list of values extracted using <code>attributes</code> and to be assigned to slots</p></td>
+      <th>group</th>
+      <td><p>a grouping vector equal in length to <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(x)</a></code></p></td>
     </tr>
     <tr>
-      <th>exceptions</th>
-      <td><p>names of slots to be ignored</p></td>
+      <th>replace</th>
+      <td><p>logical; should sampling be with replacement?</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p><code>x</code> resampled within groups</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>100</span>)
+<span class='no'>grvec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='st'>"a"</span>, <span class='fl'>3</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='st'>"b"</span>, <span class='fl'>4</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='st'>"c"</span>, <span class='fl'>3</span>))
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/sample_bygroup.html'>sample_bygroup</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>grvec</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;  [1]  1  3  2  4  5  7  6  9 10  8</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/sample_bygroup.html'>sample_bygroup</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>grvec</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  [1]  2  3  1  5  7  6  4  9  9 10</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
