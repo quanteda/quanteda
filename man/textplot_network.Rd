@@ -63,6 +63,7 @@ Currently the size of the network is limited to 1000, because of the
   own plotting function using \code{\link[=as.network.fcm]{as.network}}.
 }
 \examples{
+set.seed(100)
 toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens(remove_punct = TRUE) \%>\%
     tokens_tolower() \%>\%

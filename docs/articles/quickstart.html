@@ -233,7 +233,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Fri Feb  1 14:34:37 2019
+## Created: Fri Feb  1 16:10:46 2019
 ## Notes:</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code><a href="https://www.rdocumentation.org/packages/base/topics/names">names()</a></code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<em>docvar</em>).</p>
@@ -254,7 +254,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Fri Feb  1 14:34:37 2019
+## Created: Fri Feb  1 16:10:46 2019
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(my_corpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -284,7 +284,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Fri Feb  1 14:34:37 2019
+## Created: Fri Feb  1 16:10:46 2019
 ## Notes:</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assigning just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol()</a></code>.</p>
 </div>
@@ -415,7 +415,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses my_corpus1 and my_corpus2
-## Created: Fri Feb  1 14:34:38 2019
+## Created: Fri Feb  1 16:10:47 2019
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -860,30 +860,30 @@
 <a class="sourceLine" id="cb87-4" title="4">    <span class="kw"><a href="https://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb87-5" title="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2     Topic 3     Topic 4     Topic 5   Topic 6  
-## [1,] "million" "taoiseach" "care"      "taoiseach" "welfare" "levy"   
-## [2,] "scheme"  "may"       "welfare"   "employees" "support" "million"
-## [3,] "rate"    "fine"      "per"       "rate"      "million" "carbon" 
-## [4,] "system"  "back"      "allowance" "referred"  "future"  "change" 
-## [5,] "pension" "stimulus"  "hit"       "debate"    "energy"  "welfare"
-##      Topic 7    Topic 8    Topic 9       Topic 10       Topic 11  
-## [1,] "spending" "fianna"   "taoiseach"   "society"      "system"  
-## [2,] "reduced"  "fáil"     "gael"        "equal"        "welfare" 
-## [3,] "irish"    "national" "opportunity" "enterprising" "fianna"  
-## [4,] "welfare"  "irish"    "fine"        "sense"        "taxation"
-## [5,] "per"      "support"  "irish"       "nation"       "fáil"    
-##      Topic 12    Topic 13  Topic 14      Topic 15     Topic 16    
-## [1,] "welfare"   "child"   "kind"        "measures"   "strategy"  
-## [2,] "proposals" "benefit" "imagination" "investment" "asking"    
-## [3,] "system"    "today"   "policies"    "reduce"     "employment"
-## [4,] "reality"   "day"     "wit"         "welfare"    "sort"      
-## [5,] "increased" "welfare" "create"      "review"     "failed"    
-##      Topic 17        Topic 18  Topic 19 Topic 20   
-## [1,] "investment"    "face"    "fáil"   "vision"   
-## [2,] "million"       "bank"    "fianna" "failed"   
-## [3,] "enterprise"    "benefit" "side"   "system"   
-## [4,] "back"          "private" "third"  "needed"   
-## [5,] "international" "power"   "level"  "ministers"</code></pre>
+<pre><code>##      Topic 1   Topic 2    Topic 3   Topic 4        Topic 5      
+## [1,] "levy"    "welfare"  "fáil"    "society"      "kind"       
+## [2,] "million" "system"   "fianna"  "enterprising" "imagination"
+## [3,] "carbon"  "taxation" "welfare" "sense"        "policies"   
+## [4,] "change"  "worst"    "banks"   "equal"        "wit"        
+## [5,] "welfare" "high"     "system"  "nation"       "create"     
+##      Topic 6     Topic 7   Topic 8       Topic 9     Topic 10   Topic 11  
+## [1,] "per"       "child"   "fianna"      "welfare"   "welfare"  "fianna"  
+## [2,] "hit"       "benefit" "fáil"        "months"    "policies" "fáil"    
+## [3,] "allowance" "day"     "citizenship" "pension"   "care"     "national"
+## [4,] "fianna"    "today"   "side"        "local"     "system"   "irish"   
+## [5,] "child"     "fianna"  "alternative" "programme" "back"     "support" 
+##      Topic 12    Topic 13     Topic 14  Topic 15     Topic 16   
+## [1,] "taoiseach" "welfare"    "much"    "gael"       "taoiseach"
+## [2,] "employees" "investment" "welfare" "less"       "fine"     
+## [3,] "rate"      "continue"   "benefit" "employment" "gael"     
+## [4,] "referred"  "scheme"     "child"   "fine"       "may"      
+## [5,] "debate"    "million"    "million" "per"        "irish"    
+##      Topic 17   Topic 18        Topic 19      Topic 20   
+## [1,] "spending" "investment"    "support"     "failed"   
+## [2,] "scheme"   "international" "million"     "strategy" 
+## [3,] "measures" "million"       "development" "needed"   
+## [4,] "review"   "reduction"     "create"      "ministers"
+## [5,] "million"  "pension"       "back"        "system"</code></pre>
 </div>
 </div>
   </div>

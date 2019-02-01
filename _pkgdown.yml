@@ -81,6 +81,7 @@ reference:
   desc: Functions for constructing and manipulating tokens class objects.
   contents:
     - tokens
+    - tokens_chunk
     - tokens_compound
     - tokens_lookup
     - tokens_ngrams
@@ -118,6 +119,7 @@ reference:
     - dfm_compress
     - dfm_group
     - dfm_lookup
+    - dfm_match
     - dfm_remove
     - dfm_replace
     - dfm_sample
@@ -151,6 +153,7 @@ reference:
   contents:
     - textstat_collocations
     - textstat_dist
+    - textstat_entropy
     - textstat_lexdiv
     - textstat_simil
     - textstat_frequency
