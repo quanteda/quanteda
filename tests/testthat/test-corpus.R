@@ -433,8 +433,16 @@ test_that("upgrade_corpus is working", {
     expect_true(is.factor(attr(corp3, "docvars")[["docid_"]]))
 })
 
-test_that("metacorpus argument works but raise deprecation warning", {
+test_that("metacorpus argument works", {
     corp <- corpus("aa bb cc", metacorpus = list("citation" = "My boook"))
     expect_equal(attr(corp, "meta")$citation, "My boook")
     expect_equal(attr(corp, "meta")$source, "character")
+})
+
+test_that("metadoc works but raise deprecation warning", {
+    corp <- corpus(c("aa bb cc", "ccc dd"))
+    expect_equal(colnames(metadoc(corp)), character())
+    metadoc(corp, "var1") <- c(1, 5)
+    metadoc(corp, "var2") <- c("T", "F")
+    expect_equal(colnames(metadoc(corp)), c("_var1", "_var2"))
 })

@@ -125,6 +125,7 @@ Collate:
     'docnames.R'
     'dimnames.R'
     'docvars.R'
+    'metadoc.R'
     'fcm-classes.R'
     'fcm-methods.R'
     'fcm-subsetting.R'
