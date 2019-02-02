@@ -30,6 +30,7 @@
 #'   own plotting function using \code{\link[=as.network.fcm]{as.network}}.
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
+#' set.seed(100)
 #' toks <- corpus_subset(data_corpus_irishbudget2010) %>%
 #'     tokens(remove_punct = TRUE) %>%
 #'     tokens_tolower() %>%

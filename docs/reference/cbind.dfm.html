@@ -125,6 +125,9 @@ returning a dfm with the combined documents or features, respectively." />
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -282,15 +285,15 @@ not confirming to the row or column dimension will be recycled as normal.</p></t
 #&gt;   text2   102 0 0 1 1 1 1</div><div class='input'>
 
 <span class='co'># rbind() for dfm objects</span>
-(<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0.0% sparse).
+(<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0.0% sparse).
 #&gt; 1 x 6 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   this is one sample text .
-#&gt;   doc1    1  1   1      2    1 1</div><div class='input'>(<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"One two three text text."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
+#&gt;   doc1    1  1   1      2    1 1</div><div class='input'>(<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"One two three text text."</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
 #&gt; 1 x 5 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   one two three text .
-#&gt;   doc2   1   1     1    2 1</div><div class='input'>(<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc3</span> <span class='kw'>=</span> <span class='st'>"This is the fourth sample text."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 7 features (0.0% sparse).
+#&gt;   doc2   1   1     1    2 1</div><div class='input'>(<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc3</span> <span class='kw'>=</span> <span class='st'>"This is the fourth sample text."</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 7 features (0.0% sparse).
 #&gt; 1 x 7 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   this is the fourth sample text .

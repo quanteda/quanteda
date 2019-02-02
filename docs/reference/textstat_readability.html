@@ -40,7 +40,7 @@
   <script src="../extra.js"></script>
 <meta property="og:title" content="Calculate readability — textstat_readability" />
 
-<meta property="og:description" content="Calculate the readability of text(s) using one of a variety of computed 
+<meta property="og:description" content="Calculate the readability of text(s) using one of a variety of computed
 indexes." />
 <meta name="twitter:card" content="summary" />
 
@@ -125,6 +125,9 @@ indexes." />
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -203,7 +206,7 @@ indexes." />
 
     <div class="ref-description">
     
-    <p>Calculate the readability of text(s) using one of a variety of computed 
+    <p>Calculate the readability of text(s) using one of a variety of computed
 indexes.</p>
     
     </div>
@@ -233,13 +236,13 @@ rather than as a single word of 15 characters</p></td>
     </tr>
     <tr>
       <th>min_sentence_length, max_sentence_length</th>
-      <td><p>set the minimum and maximum 
-sentence lengths (in tokens, excluding punctuation) to include in the
-computation of readability.  This makes it easy to exclude "sentences" that
-may not really be sentences, such as section titles, table elements, and 
-other cruft that might be in the texts following conversion.</p>
-<p>For finer-grained control, consider filtering sentences prior first, 
-including through pattern-matching, using <code><a href='corpus_trim.html'>corpus_trim</a></code>.</p></td>
+      <td><p>set the minimum and maximum
+  sentence lengths (in tokens, excluding punctuation) to include in the
+  computation of readability.  This makes it easy to exclude "sentences" that
+  may not really be sentences, such as section titles, table elements, and
+  other cruft that might be in the texts following conversion.</p>
+<p>For finer-grained control, consider filtering sentences prior first,
+  including through pattern-matching, using <code><a href='corpus_trim.html'>corpus_trim</a></code>.</p></td>
     </tr>
     <tr>
       <th>intermediate</th>
@@ -267,7 +270,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
         of 3000 "familiar words"</p></li>
 <li><p>ASL = Average Sentence Length: number of words / number of sentences</p></li>
 <li><p>AWL = Average Word Length: number of characters / number of words</p></li>
-<li><p>AFW = Average Familiar Words: count of words matching the Dale-Chall 
+<li><p>AFW = Average Familiar Words: count of words matching the Dale-Chall
         list of 3000 "familiar words" / number of all words</p></li>
 <li><p>Nwd = \(n_{wd}\) = number of "difficult" words not matching the
         Dale-Chall list of "familiar" words</p></li>
@@ -309,10 +312,10 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
   and Dale 1995).
   $$64 - (0.95 \times 100 \times \frac{n_{wd}}{n_{w}}) - (0.69 \times ASL)$$</p></dd>
     <dt><code>"Dale.Chall.Old"</code>:</dt><dd><p>The original Dale-Chall Readability formula
-  (Dale and Chall (1948). 
+  (Dale and Chall (1948).
   $$0.1579 \times 100 \times \frac{n_{wd}}{n_{w}} + 0.0496 \times ASL [+ 3.6365]$$
     The additional constant 3.6365 is only added if (Nwd / Nw) &gt; 0.05.</p></dd>
-    <dt><code>"Dale.Chall.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of the 
+    <dt><code>"Dale.Chall.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of the
   Dale and Chall Readability formula (Powers, Sumner and Kearl, 1958).
   $$0.1155 \times
   100 \frac{n_{wd}}{n_{w}}) + (0.0596 \times ASL) + 3.2672 $$</p></dd>
@@ -341,7 +344,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
     where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.</p></dd>
     <dt><code>"Flesch"</code>:</dt><dd><p>Flesch's Reading Ease Score (Flesch 1948).
   $$206.835 - (1.015 \times ASL) - (84.6 \times \frac{n_{sy}}{n_{w}})$$</p></dd>
-    <dt><code>"Flesch.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl's Variation of Flesch Reading Ease Score 
+    <dt><code>"Flesch.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl's Variation of Flesch Reading Ease Score
   (Powers, Sumner and Kearl, 1958). $$ (0.0778 \times
   ASL) + (4.55 \times \frac{n_{sy}}{n_{w}}) -
   2.2029$$</p></dd>
@@ -354,7 +357,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
   The scaling by 100 arises because the original FOG index is based on
   just a sample of 100 words)</p></dd>
     <dt><code>"FOG.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of Gunning's
-  Fog Index (Powers, Sumner and Kearl, 1958). $$3.0680 \times 
+  Fog Index (Powers, Sumner and Kearl, 1958). $$3.0680 \times
   (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{n_{wsy&gt;=3}}{n_{w}})$$
     where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more.
   The scaling by 100 arises because the original FOG index is based on
@@ -368,31 +371,31 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
     <dt><code>"FORCAST"</code>:</dt><dd><p>FORCAST (Simplified Version of FORCAST.RGL) (Caylor and
   Sticht 1973). $$ 20 - \frac{n_{wsy=1} \times
   150)}{(n_{w} \times 10)}$$
-    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150 
+    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150
   arises because the original FORCAST index is based on just a sample of 150 words.</p></dd>
     <dt><code>"FORCAST.RGL"</code>:</dt><dd><p>FORCAST.RGL (Caylor and Sticht 1973).
   $$20.43 - 0.11 \times \frac{n_{wsy=1} \times
   150)}{(n_{w} \times 10)}$$
-    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150 arises 
+    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150 arises
   because the original FORCAST index is based on just a sample of 150 words.</p></dd>
     <dt><code>"Fucks"</code>:</dt><dd><p>Fucks' (1955) Stilcharakteristik (Style
   Characteristic). $$AWL * ASL$$</p></dd>
     <dt><code>"Linsear.Write"</code>:</dt><dd><p>Linsear Write (Klare 1975).
-  $$\frac{[(100 - (\frac{100 \times n_{wsy&lt;3}}{n_{w}})) + 
-  (3 \times \frac{100 \times n_{wsy&gt;=3}}{n_{w}})]}{(100 \times 
+  $$\frac{[(100 - (\frac{100 \times n_{wsy&lt;3}}{n_{w}})) +
+  (3 \times \frac{100 \times n_{wsy&gt;=3}}{n_{w}})]}{(100 \times
   \frac{n_{st}}{n_{w}})}$$
     where \(n_{wsy&lt;3}\) = Nwless3sy = the number of words with <em>less than</em> 3 syllables, and
-  \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more. The scaling 
+  \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more. The scaling
   by 100 arises because the original Linsear.Write measure is based on just a sample of 100 words)</p></dd>
     <dt><code>"LIW"</code>:</dt><dd><p>Björnsson's (1968) Läsbarhetsindex (For Swedish
   Texts). $$ASL + \frac{100 \times n_{wsy&gt;=7}}{n_{w}}$$
-    where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more. The scaling 
+    where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more. The scaling
   by 100 arises because the Läsbarhetsindex index is based on just a sample of 100 words)</p></dd>
     <dt><code>"nWS"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 1 (Bamberger and
   Vanecek 1984). $$19.35 \times \frac{n_{wsy&gt;=3}}{n_{w}} +
   0.1672 \times ASL + 12.97 \times \frac{b_{wchar&gt;=6}}{n_{w}} - 3.27 \times
    \frac{n_{wsy=1}}{n_{w}} - 0.875$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more, 
+    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more,
   \(n_{wchar&gt;=6}\) = Nwmin6char = the number of words with 6 characters or more, and
   \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.</p></dd>
     <dt><code>"nWS.2"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 2 (Bamberger and
@@ -412,7 +415,7 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
   \frac{n_{wsy&gt;=7}}{n_{st}}$$
     where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more.</p></dd>
     <dt><code>"Scrabble"</code>:</dt><dd><p>Scrabble Measure. $$Mean
-  Scrabble Letter Values of All Words$$.  
+  Scrabble Letter Values of All Words$$.
   Scrabble values are for English.  There is no reference for this, as we
   created it experimentally.  It's not part of any accepted readability
   index!</p></dd>
@@ -435,10 +438,10 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
   0.659$$
     where \(n_{wnotinspache}\) = Nwnotinspache = number of unique words not in the Spache word list.</p></dd>
     <dt><code>"Spache.old"</code>:</dt><dd><p>Spache's (1952) Readability Measure (Old). $$0.141
-  \times ASL + 0.086 \times \frac{n_{wnotinspache}}{n_{w}}  + 
+  \times ASL + 0.086 \times \frac{n_{wnotinspache}}{n_{w}}  +
   0.839$$
     where \(n_{wnotinspache}\) = Nwnotinspache = number of unique words not in the Spache word list.</p></dd>
-    <dt><code>"Strain"</code>:</dt><dd><p>Strain Index (Solomon 2006). $$n_{sy} / 
+    <dt><code>"Strain"</code>:</dt><dd><p>Strain Index (Solomon 2006). $$n_{sy} /
   \frac{n_{st}}{3} /10$$
     The scaling by 3 arises because the original Strain index is based on just the first 3 sentences.</p></dd>
     <dt><code>"Traenkle.Bailer"</code>:</dt><dd><p>Tränkle &amp; Bailer's (1984) Readability Measure 1.
@@ -450,8 +453,8 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
   $$Tränkle.Bailer2 =  234.1063 - (96.11069 \times AWL
   ) - (2.05444 \times 100 \times \frac{n_{prep}}{n_{w}}) -
   (1.02805 \times 100 \times \frac{n_{conj}}{n_{w}}$$
-    where \(n_{prep}\) = Nprep = the number of prepositions, 
-  \(n_{conj}\) = Nconj = the number of conjunctions, 
+    where \(n_{prep}\) = Nprep = the number of prepositions,
+  \(n_{conj}\) = Nconj = the number of conjunctions,
   The scaling by 100 arises because the original Tränkle &amp; Bailer index is based on
   just a sample of 100 words)</p></dd>
     <dt><code>"Wheeler.Smith"</code>:</dt><dd><p>Wheeler &amp; Smith's (1954) Readability Measure.
@@ -466,65 +469,88 @@ including through pattern-matching, using <code><a href='corpus_trim.html'>corpu
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Anderson, J. (1983). <a href='https://www.jstor.org/stable/40031755'>Lix and
-  rix: Variations on a little-known readability index</a>. 
-  Journal of Reading, 26(6), 490--496.</p>  
-<p>Bamberger, R. &amp; Vanecek, E. (1984). Lesen–Verstehen–Lernen–Schreiben. Wien: Jugend und Volk.</p>  
-<p>Björnsson, C. H. (1968). <em>Läsbarhet</em>. Stockholm: Liber.</p>  
-<p>Bormuth, J.R. (1969). <a href='https://files.eric.ed.gov/fulltext/ED029166.pdf'>Development 
-  of Readability Analysis</a>.</p>  
-<p>Bormuth, J.R. (1968). <a href='https://www.jstor.org/stable/1433978'>Cloze test readability:
-  Criterion reference scores</a>. Journal of educational measurement, 5(3), 189--196.</p>  
-<p>Caylor, J.S. (1973). <a href='https://eric.ed.gov/?id=ED074343'>Methodologies for Determining 
-  Reading Requirements of Military Occupational Specialities</a>.</p>  
-<p>Caylor, J.S. &amp; Sticht, T.G. (1973). <a href='https://archive.org/details/ERIC_ED076707'>Development 
-  of a Simple Readability Index for Job Reading Material</a>.</p>  
-<p>Coleman, E.B. (1971). Developing a technology of written instruction: Some determiners 
-  of the complexity of prose. Verbal learning research and the technology of written 
-  instruction, 155--204.</p>  
-<p>Coleman, M. &amp; Liau, T.L. (1975). <a href='https://psycnet.apa.org/record/1975-22007-001'>A Computer 
-  Readability Formula Designed for Machine Scoring</a>. <em>Journal of Applied Psychology</em>, 60(2), 283.</p>  
+  rix: Variations on a little-known readability index</a>. <em>Journal of
+  Reading</em>, 26(6), 490--496.</p>
+<p>Bamberger, R. &amp; Vanecek, E. (1984).
+  <em>Lesen–Verstehen–Lernen–Schreiben</em>. Wien: Jugend und Volk.</p>
+<p>Björnsson, C. H. (1968). <em>Läsbarhet</em>. Stockholm: Liber.</p>
+<p>Bormuth, J.R. (1969).
+  <a href='https://files.eric.ed.gov/fulltext/ED029166.pdf'>Development of
+  Readability Analysis</a>.</p>
+<p>Bormuth, J.R. (1968). <a href='https://www.jstor.org/stable/1433978'>Cloze
+  test readability: Criterion reference scores</a>. <em>Journal of educational
+  measurement</em>, 5(3), 189--196.</p>
+<p>Caylor, J.S. (1973). <a href='https://eric.ed.gov/?id=ED074343'>Methodologies
+  for Determining Reading Requirements of Military Occupational
+  Specialities</a>.</p>
+<p>Caylor, J.S. &amp; Sticht, T.G. (1973).
+  <a href='https://archive.org/details/ERIC_ED076707'><em>Development of a
+  Simple Readability Index for Job Reading Material</em></a>.</p>
+<p>Coleman, E.B. (1971). Developing a technology of written instruction: Some
+  determiners of the complexity of prose. <em>Verbal learning research and
+  the technology of written instruction</em>, 155--204.</p>
+<p>Coleman, M. &amp; Liau, T.L. (1975).
+  <a href='https://psycnet.apa.org/record/1975-22007-001'>A Computer Readability
+  Formula Designed for Machine Scoring</a>. <em>Journal of Applied
+  Psychology</em>, 60(2), 283.</p>
 <p>Dale, E. and Chall, J.S. (1948).
   <a href='https://www.jstor.org/stable/pdf/1473669'>A Formula for Predicting
-  Readability: Instructions</a>. <em>Educational Research Bulletin</em>, 37-54.</p>  
+  Readability: Instructions</a>. <em>Educational Research Bulletin</em>, 37-54.</p>
 <p>Chall, J.S. and Dale, E. (1995). <em>Readability Revisited: The New
-  Dale-Chall Readability Formula</em>. Brookline Books.</p>  
-<p>Dickes, P. &amp; Steiwer, L. (1977). Ausarbeitung von Lesbarkeitsformeln
-  für die Deutsche Sprache. <em>Zeitschrift für Entwicklungspsychologie und
-  Pädagogische Psychologie</em> 9(1), 20--28.</p>  
-<p>Danielson, W.A., &amp; Bryan, S.D. (1963). <a href='https://journals.sagepub.com/doi/abs/10.1177/107769906304000207'>Computer 
-  Automation of Two Readability Formulas</a>. <em>Journalism Quarterly</em>, 40(2), 201--206.</p>  
-<p>DuBay, W.H. (2004). <a href='http://www.impact-information.com/impactinfo/readability02.pdf'><em>The 
-  Principles of Readability</em></a>.</p>  
-<p>Fang, I. E. (1966). <a href='https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19'>The
-  "Easy listening formula</a>. <em>Journal of Broadcasting &amp; Electronic Media</em>, 11(1), 63--68.</p>  
-<p>Farr, J. N., Jenkins, J.J., &amp; Paterson, D.G. (1951).  <a href='https://psycnet.apa.org/record/1952-03973-001'>Simplification of
+  Dale-Chall Readability Formula</em>. Brookline Books.</p>
+<p>Dickes, P. &amp; Steiwer, L. (1977). Ausarbeitung von Lesbarkeitsformeln für
+  die Deutsche Sprache. <em>Zeitschrift für Entwicklungspsychologie und
+  Pädagogische Psychologie</em> 9(1), 20--28.</p>
+<p>Danielson, W.A., &amp; Bryan, S.D. (1963).
+  <a href='https://journals.sagepub.com/doi/abs/10.1177/107769906304000207'>Computer
+  Automation of Two Readability Formulas</a>. <em>Journalism Quarterly</em>,
+  40(2), 201--206.</p>  
+<p>DuBay, W.H. (2004).
+  <a href='http://www.impact-information.com/impactinfo/readability02.pdf'><em>The
+  Principles of Readability</em></a>.</p>
+<p>Fang, I. E. (1966).
+  <a href='https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19'>The
+  "Easy listening formula"</a>. <em>Journal of Broadcasting &amp; Electronic
+  Media</em>, 11(1), 63--68.</p>
+<p>Farr, J. N., Jenkins, J.J., &amp; Paterson, D.G. (1951).
+  <a href='https://psycnet.apa.org/record/1952-03973-001'>Simplification of
   Flesch Reading Ease Formula</a>. <em>Journal of Applied Psychology</em>, 35(5):
   333.</p>  
-<p>Flesch, R. (1948). <a href='https://psycnet.apa.org/record/1949-01274-001'>A New Readability Yardstick</a>. <em>Journal of Applied Psychology</em>, 32(3), 221.</p>  
+<p>Flesch, R. (1948). <a href='https://psycnet.apa.org/record/1949-01274-001'>A
+  New Readability Yardstick</a>. <em>Journal of Applied Psychology</em>, 32(3),
+  221.</p>  
 <p>Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern. 
-  Sprachforum, 1, 233-–244.</p>  
-<p>Gunning, R. (1952). The Technique of Clear Writing.</p>  
-<p>Klare, G.R. (1975). <a href='https://www.jstor.org/stable/pdf/747086.pdf'>Assessing Readability</a>. <em>Reading Research Quarterly</em>, 10(1), 62--102.</p>  
-<p>Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., &amp; Chissom, B.S.
-  (1975). <a href='https://stars.library.ucf.edu/istlibrary/56/'>Derivation of New Readability Formulas (Automated Readability
-  Index, FOG count and Flesch Reading Ease Formula) for Navy Enlisted
-  Personnel</a>.</p>  
-<p>McLaughlin, G.H. (1969). <a href='https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf'>"MOG Grading: A New Readability Formula.</a> 
-  <em>Journal of reading</em>, 12(8), 639-646.</p>
+  <em>Sprachforum</em>, 1, 233-–244.</p>  
+<p>Gunning, R. (1952). <em>The Technique of Clear Writing</em>.  New York: McGraw-Hill.</p>  
+<p>Klare, G.R. (1975).
+  <a href='https://www.jstor.org/stable/pdf/747086'>Assessing Readability</a>.
+  <em>Reading Research Quarterly</em>, 10(1), 62--102.</p>  
+<p>Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., &amp; Chissom, B.S. (1975).
+  <a href='https://stars.library.ucf.edu/istlibrary/56/'>Derivation of New
+  Readability Formulas (Automated Readability Index, FOG count and Flesch
+  Reading Ease Formula) for Navy Enlisted Personnel</a>.</p>  
+<p>McLaughlin, G.H. (1969).
+  <a href='https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf'>SMOG
+  Grading: A New Readability Formula.</a> <em>Journal of Reading</em>, 12(8),
+  639-646.</p>
 <p>Powers, R.D., Sumner, W.A., and Kearl, B.E. (1958).
   <a href='https://psycnet.apa.org/record/1962-03617-001'>A Recalculation of
   Four Adult Readability Formulas.</a>. <em>Journal of Educational
   Psychology</em>, 49(2), 99.</p>
-<p>Senter, R. J., &amp; Smith, E. A. (1967). <a href='https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf'>Automated readability index.</a>
-  CINCINNATI UNIV OH.</p>
-<p>*Solomon, N. W. (2006). Qualitative Analysis of Media Language. India.</p>
-<p>Spache, G. (1953). <a href='https://www.jstor.org/stable/998915'>"A new readability formula for primary-grade reading
-  materials."</a> <em>The Elementary School Journal</em>, 53, 410--413.</p>
+<p>Senter, R. J., &amp; Smith, E. A. (1967).
+  <a href='https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf'>Automated
+  readability index.</a>  Wright-Patterson Air Force Base. Report No. AMRL-TR-6620.</p>
+<p>*Solomon, N. W. (2006). <em>Qualitative Analysis of Media Language</em>. India.</p>
+<p>Spache, G. (1953). <a href='https://www.jstor.org/stable/998915'>"A new
+  readability formula for primary-grade reading materials."</a> <em>The
+  Elementary School Journal</em>, 53, 410--413.</p>
 <p>Tränkle, U. &amp; Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
-  Lesbarkeitsformeln für die deutsche Sprache. Zeitschrift für
-  Entwicklungspsychologie und Pädagogische Psychologie, 16(3), 231--244.</p>
-<p>Wheeler, L.R. &amp; Smith, E.H. (1954). <a href='https://www.jstor.org/stable/pdf/41384251'>A Practical Readability Formula for the
-  Classroom Teacher in the Primary Grades</a>. <em>Elementary English</em>, 31, 397--399.</p>
+  Lesbarkeitsformeln für die deutsche Sprache. <em>Zeitschrift für
+  Entwicklungspsychologie und Pädagogische Psychologie</em>, 16(3), 231--244.</p>
+<p>Wheeler, L.R. &amp; Smith, E.H. (1954).
+  <a href='https://www.jstor.org/stable/pdf/41384251'>A Practical Readability
+  Formula for the Classroom Teacher in the Primary Grades</a>. <em>Elementary
+  English</em>, 31, 397--399.</p>
 <p>*Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
   Journalism, School of Media Studies, SRM University, India.</p>
     

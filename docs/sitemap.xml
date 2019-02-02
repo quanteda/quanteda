@@ -175,6 +175,9 @@
     <loc>https://quanteda.io/reference/dfm_lookup.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/dfm_match.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/dfm_replace.html</loc>
   </url>
   <url>
@@ -392,6 +395,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/replace_dictionary_values.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/sample_bygroup.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/scrabble.html</loc>

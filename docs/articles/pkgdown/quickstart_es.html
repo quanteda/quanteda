@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
     </li>
     <li>
       <a href="../../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -166,7 +169,7 @@
 <h1 class="hasAnchor">
 <a href="#instalando-el-paquete" class="anchor"></a>Instalando el paquete</h1>
 <p>Desde que <strong>quanteda</strong> está disponible en <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>, lo puedes instalar usando tu instalador de paquetes en R GUI’s o ejecutar las siguientes líneas:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"quanteda"</span>) </code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"quanteda"</span>) </a></code></pre></div>
 <p>Ver instrucciones (en inglés) en <a href="https://github.com/quanteda/quanteda" class="uri">https://github.com/quanteda/quanteda</a> para instalar la versión de GitHub.</p>
 <div id="paquetes-adicionales-recomendados" class="section level2">
 <h2 class="hasAnchor">
@@ -179,11 +182,11 @@
 <a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP usando la librería <a href="http://spacy.io">spaCy</a>, incluyendo etiquetado part-of-speech, entity recognition y dependency parsing.</li>
 <li>
 <p><a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: data textual adicional para uso con <strong>quanteda</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: una implementación en R del abordaje de análisis de texto <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</a></code></pre></div>
 </li>
 </ul>
 </div>
@@ -192,7 +195,7 @@
 <h1 class="hasAnchor">
 <a href="#creando-un-corpus" class="anchor"></a>Creando un corpus</h1>
 <p>Cargas el paquete para acceder a funciones y data en el paquete.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</a></code></pre></div>
 <div id="fuentes-disponibles-de-corpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fuentes-disponibles-de-corpus" class="anchor"></a>Fuentes disponibles de corpus</h2>
@@ -216,8 +219,8 @@
 <a href="#construyendo-un-corpus-de-un-vector-de-tipo-character" class="anchor"></a>Construyendo un corpus de un vector de tipo character</h3>
 <p>El caso más simple sería crear un corpus de un vector de textos que ya estén en la memoria en R. De esta manera, el usuario avanzado de R obtiene completa flexibilidad con su elección de textos dado que hay virtualmente infinitas posibilidades de obtener un vector de textos en R.</p>
 <p>Si ya se disponen de textos en este formato es posible llamar a la función de constructor de corpus directamente. Es posible demostrarlo en el objeto de tipo character integrado de los textos sobre políticas de inmigración extraídos de los manifiestos de partidos políticos compitiendo en la elección del Reino Unido en 2010 (llamado <code>data_char_ukimmig2010</code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># construye un corpus nuevo a partir de los textos</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpus)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># construye un corpus nuevo a partir de los textos</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpus)</a></code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences
@@ -231,14 +234,14 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source: /Users/smueller/Documents/GitHub/quanteda/vignettes/pkgdown/* on x86_64 by smueller
-## Created: Thu Jan 10 11:33:18 2019
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
+## Created: Sat Feb  2 14:16:58 2019
 ## Notes:</code></pre>
 <p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <em>docvars</em>.</p>
 <p>Esto lo hacemos utilizando la función de R llamada <code><a href="https://www.rdocumentation.org/packages/base/topics/names">names()</a></code> para obtener los nombres del vector de tipo character de <code>data_char_ukimmig2010</code> y asignárselos a una variable de documento (<code>docvar</code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(data_char_ukimmig2010)
-<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpus)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(data_char_ukimmig2010)</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpus)</a></code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year
@@ -252,13 +255,13 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source: /Users/smueller/Documents/GitHub/quanteda/vignettes/pkgdown/* on x86_64 by smueller
-## Created: Thu Jan 10 11:33:18 2019
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
+## Created: Sat Feb  2 14:16:58 2019
 ## Notes:</code></pre>
 <p>Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
-<span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences _language              _docsource
@@ -282,44 +285,44 @@
 ##           SNP 2010
 ##          UKIP 2010
 ## 
-## Source: /Users/smueller/Documents/GitHub/quanteda/vignettes/pkgdown/* on x86_64 by smueller
-## Created: Thu Jan 10 11:33:18 2019
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
+## Created: Sat Feb  2 14:16:58 2019
 ## Notes:</code></pre>
 <p>El último comando, <code>metadoc</code>, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor <code>"english"</code>, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento <code>docsource</code>, hemos usado la función de quanteda llamada <code><a href="../../reference/ndoc.html">ndoc()</a></code> para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow()</a></code> y <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol()</a></code>.</p>
 </div>
 <div id="cargando-archivos-usando-el-paquete-readtext" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cargando-archivos-usando-el-paquete-readtext" class="anchor"></a>Cargando archivos usando el paquete readtext</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(readtext)
-
-<span class="co"># Twitter json</span>
-mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
-myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf1)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpusTwitter, <span class="dv">5</span>)
-<span class="co"># generic json - needs a textfield specifier</span>
-mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
-                 <span class="dt">textfield =</span> <span class="st">"text"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)
-<span class="co"># text file</span>
-mytf3 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf3), <span class="dv">5</span>)
-<span class="co"># multiple text files</span>
-mytf4 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)
-<span class="co"># multiple text files with docvars from filenames</span>
-mytf5 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, 
-                 <span class="dt">docvarsfrom =</span> <span class="st">"filenames"</span>, <span class="dt">sep =</span> <span class="st">"-"</span>, <span class="dt">docvarnames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)
-<span class="co"># XML data</span>
-mytf6 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, 
-                 <span class="dt">textfield =</span> <span class="st">"COMMON"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)
-<span class="co"># csv file</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/write.table">write.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural), 
-                    <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),
-         <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
-mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textfield =</span> <span class="st">"inaugSpeech"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(readtext)</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co"># Twitter json</span></a>
+<a class="sourceLine" id="cb11-4" title="4">mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)</a>
+<a class="sourceLine" id="cb11-5" title="5">myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf1)</a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myCorpusTwitter, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co"># generic json - needs a textfield specifier</span></a>
+<a class="sourceLine" id="cb11-8" title="8">mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</a>
+<a class="sourceLine" id="cb11-9" title="9">                 <span class="dt">textfield =</span> <span class="st">"text"</span>)</a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co"># text file</span></a>
+<a class="sourceLine" id="cb11-12" title="12">mytf3 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf3), <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co"># multiple text files</span></a>
+<a class="sourceLine" id="cb11-15" title="15">mytf4 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="co"># multiple text files with docvars from filenames</span></a>
+<a class="sourceLine" id="cb11-18" title="18">mytf5 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, </a>
+<a class="sourceLine" id="cb11-19" title="19">                 <span class="dt">docvarsfrom =</span> <span class="st">"filenames"</span>, <span class="dt">sep =</span> <span class="st">"-"</span>, <span class="dt">docvarnames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))</a>
+<a class="sourceLine" id="cb11-20" title="20"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-21" title="21"><span class="co"># XML data</span></a>
+<a class="sourceLine" id="cb11-22" title="22">mytf6 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, </a>
+<a class="sourceLine" id="cb11-23" title="23">                 <span class="dt">textfield =</span> <span class="st">"COMMON"</span>)</a>
+<a class="sourceLine" id="cb11-24" title="24"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-25" title="25"><span class="co"># csv file</span></a>
+<a class="sourceLine" id="cb11-26" title="26"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/write.table">write.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural), </a>
+<a class="sourceLine" id="cb11-27" title="27">                    <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),</a>
+<a class="sourceLine" id="cb11-28" title="28">         <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-29" title="29">mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textfield =</span> <span class="st">"inaugSpeech"</span>)</a>
+<a class="sourceLine" id="cb11-30" title="30"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="como-funciona-un-corpus-de-quanteda" class="section level2">
@@ -331,11 +334,11 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocum
 <p>Un corpus está diseñado para ser una “librería” original de documentos que han sido convertidos a formato plano, texto codificado en UTF-8, y guardado junto con meta-data en a nivel de corpus y a nivel de documento. Tenemos un nombre especial para meta-data a nivel de documento: <em>docvars</em>. Estas son variables o características que describen atributos de cada documento.</p>
 <p>Un corpus está diseñado para ser un contenedor de textos más o menos estático en lo que respecta a su procesamiento y análisis. Esto significa que los textos en el corpus no están disenado para ser cambiados internamente a través de (por ejemplo) limpieza o preprocesamiento, como stemming o removiendo la puntuación. Más que nada, los textos pueden ser extraídos del corpus como parte del procesamiento y asignados a objetos nuevos, pero la idea es que los corpus se conserven como una copia de referencia original para que otros análisis, por ejemplo aquellos en que stems y puntuación son necesarios, como analizar un índice, pueden ser realizados sobre el mismo corpus.</p>
 <p>Para extraer texto de un corpus, es posible utilizar el extractor llamado <code><a href="../../reference/texts.html">texts()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</a></code></pre></div>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
 <p>Para obtener la data resumida de textos de un corpus, se puede llamar al método <code><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary()</a></code> definido para un corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(data_corpus_irishbudget2010)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(data_corpus_irishbudget2010)</a></code></pre></div>
 <pre><code>## Corpus consisting of 14 documents:
 ## 
 ##                       Text Types Tokens Sentences year debate number
@@ -373,14 +376,14 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocum
 ## Created: Wed Jun 28 22:04:18 2017
 ## Notes:</code></pre>
 <p>Se puede guardar el output del comando summary como un data frame y graficar algunos estadísticos descriptivos con esta información:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(data_corpus_inaugural)
-<span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(ggplot2))
-   <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
-<span class="st">       </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2012</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2012</span>, <span class="dv">12</span>)) </code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">tokenInfo &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(data_corpus_inaugural)</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(ggplot2))</a>
+<a class="sourceLine" id="cb16-3" title="3">   <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> tokenInfo, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="st">       </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2012</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2012</span>, <span class="dv">12</span>)) </a></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_es_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># El discurso inaugural más largo: William Henry Harrison</span>
-tokenInfo[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which.min">which.max</a></span>(tokenInfo<span class="op">$</span>Tokens), ] </code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># El discurso inaugural más largo: William Henry Harrison</span></a>
+<a class="sourceLine" id="cb18-2" title="2">tokenInfo[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which.min">which.max</a></span>(tokenInfo<span class="op">$</span>Tokens), ] </a></code></pre></div>
 <pre><code>##             Text Types Tokens Sentences Year President     FirstName
 ## 14 1841-Harrison  1896   9144       210 1841  Harrison William Henry</code></pre>
 </div>
@@ -392,11 +395,11 @@ tokenInfo[<span class="kw"><a href="https://www.rdocumentation.org/packages/base
 <h3 class="hasAnchor">
 <a href="#juntando-dos-objetos-de-corpus" class="anchor"></a>Juntando dos objetos de corpus</h3>
 <p>El operador <code>+</code> provee un método simple para concatenar dos objetos corpus. Si contenían diferentes sets de variables a nivel documento las unirá de manera que no se pierda nada de información. La meta-data a nivel corpus también queda concatenada.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)
-mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
-mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])
-mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span class="st"> </span>mycorpus2
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(mycorpus3)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</a>
+<a class="sourceLine" id="cb20-2" title="2">mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</a>
+<a class="sourceLine" id="cb20-3" title="3">mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])</a>
+<a class="sourceLine" id="cb20-4" title="4">mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span class="st"> </span>mycorpus2</a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(mycorpus3)</a></code></pre></div>
 <pre><code>## Corpus consisting of 11 documents:
 ## 
 ##             Text Types Tokens Sentences
@@ -413,14 +416,14 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu Jan 10 11:33:19 2019
+## Created: Sat Feb  2 14:16:59 2019
 ## Notes:</code></pre>
 </div>
 <div id="armando-subsets-dentro-de-objetos-corpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#armando-subsets-dentro-de-objetos-corpus" class="anchor"></a>Armando subsets dentro de objetos corpus</h3>
 <p>Hay un método de la función <code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code> definida por objetos corpus, donde un nuevo corpus puede ser extraído en base a condiciones lógicas aplicadas a docvars:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</a></code></pre></div>
 <pre><code>## Corpus consisting of 7 documents:
 ## 
 ##          Text Types Tokens Sentences Year President FirstName
@@ -435,7 +438,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
 ## Created: Tue Jun 13 14:51:47 2017
 ## Notes: http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President <span class="op">==</span><span class="st"> "Adams"</span>))</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President <span class="op">==</span><span class="st"> "Adams"</span>))</a></code></pre></div>
 <pre><code>## Corpus consisting of 2 documents:
 ## 
 ##        Text Types Tokens Sentences Year President   FirstName
@@ -451,7 +454,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <h2 class="hasAnchor">
 <a href="#explorando-textos-de-corpus" class="anchor"></a>Explorando textos de corpus</h2>
 <p>La función <code>kwic</code> (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</a></code></pre></div>
 <pre><code>##                                                                     
 ##     [1797-Adams, 1325]              fraud or violence, by | terror |
 ##  [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror |
@@ -470,7 +473,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  . And they torment the           
 ##  and destruction. Our children    
 ##  and slaughtering innocents, we</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)</a></code></pre></div>
 <pre><code>##                                                                           
 ##     [1797-Adams, 1325]                   fraud or violence, by |  terror  
 ##  [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror  
@@ -495,7 +498,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  | and destruction. Our children    
 ##  | and slaughtering innocents, we   
 ##  | , which we will eradicate</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)</a></code></pre></div>
 <pre><code>##                                                                   
 ##   [1949-Truman, 834] the actions resulting from the | Communist  |
 ##  [1961-Kennedy, 519]             -- not because the | Communists |
@@ -503,8 +506,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  philosophy are a threat to
 ##  may be doing it,</code></pre>
 <p>En el summary de arriba, las variables <code>Year</code> (año) y <code>President</code> (presidente) son variables asociadas a cada documento. Es posible acceder a dichas variables con la función ‘docvars()’</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1"><span class="co"># inspect the document-level variables</span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))</a></code></pre></div>
 <pre><code>##                 Year  President FirstName
 ## 1789-Washington 1789 Washington    George
 ## 1793-Washington 1793 Washington    George
@@ -512,8 +515,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 1801-Jefferson  1801  Jefferson    Thomas
 ## 1805-Jefferson  1805  Jefferson    Thomas
 ## 1809-Madison    1809    Madison     James</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the corpus-level metadata</span>
-<span class="kw"><a href="../../reference/metacorpus.html">metacorpus</a></span>(data_corpus_inaugural)</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="co"># inspect the corpus-level metadata</span></a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="kw"><a href="../../reference/metacorpus.html">metacorpus</a></span>(data_corpus_inaugural)</a></code></pre></div>
 <pre><code>## $source
 ## [1] "Gerhard Peters and John T. Woolley. The American Presidency Project."
 ## 
@@ -534,9 +537,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <a href="#convirtiendo-textos-en-tokens" class="anchor"></a>Convirtiendo textos en tokens</h2>
 <p>Para convertir un texto en tokens de manera simple, quanteda provee un poderoso comando denominado<code><a href="../../reference/tokens.html">tokens()</a></code>. Produce un objeto intermedio que consiste en una lista de tokens en forma de vectores de caracteres, donde cada elemento de la lista corresponde con un documento de input.</p>
 <p>El comando <code><a href="../../reference/tokens.html">tokens()</a></code> es deliberadamente conservador, es decir, que no remueve nada del texto excepto que se le especifique explícitamente que lo haga.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, 
-        <span class="dt">text2 =</span> <span class="st">"@kenbenoit working: on #quanteda 2day</span><span class="ch">\t</span><span class="st">4ever, http://textasdata.com?page=123."</span>)
-<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt)</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">txt &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, </a>
+<a class="sourceLine" id="cb36-2" title="2">        <span class="dt">text2 =</span> <span class="st">"@kenbenoit working: on #quanteda 2day</span><span class="ch">\t</span><span class="st">4ever, http://textasdata.com?page=123."</span>)</a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt)</a></code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"       
@@ -550,7 +553,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [9] "http"           ":"              "/"              "/"             
 ## [13] "textasdata.com" "?"              "page"           "="             
 ## [17] "123"            "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "in"        "different" "ways"     
@@ -561,7 +564,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
 ## [5] "2day"           "4ever"          "http"           "textasdata.com"
 ## [9] "page"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "10"        "in"        "999"      
@@ -572,7 +575,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
 ##  [5] "2day"           "4ever"          "http"           "textasdata.com"
 ##  [9] "page"           "123"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "in"        "different"
@@ -585,7 +588,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [9] "http"           ":"              "/"              "/"             
 ## [13] "textasdata.com" "?"              "page"           "="             
 ## [17] "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"       
@@ -599,7 +602,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [9] "http"           ":"              "/"              "/"             
 ## [13] "textasdata.com" "?"              "page"           "="             
 ## [17] "123"            "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      " "         "is"        " "         "$"        
@@ -617,25 +620,25 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [17] "/"              "/"              "textasdata.com" "?"             
 ## [21] "page"           "="              "123"            "."</code></pre>
 <p>También existe la opción de convertir en token los caracteres:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)</code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)</a></code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ##  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e" ":" "h" "t" "t" "p"
 ## [18] ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m"
 ## [35] "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, 
-        <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, </a>
+<a class="sourceLine" id="cb50-2" title="2">        <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ##  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t" "e" ":" " " "h" "t"
 ## [18] "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c"
 ## [35] "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre>
 <p>y las oraciones:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sentence level         </span>
-<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
-          <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, 
-          <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span>), 
-         <span class="dt">what =</span> <span class="st">"sentence"</span>)</code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># sentence level         </span></a>
+<a class="sourceLine" id="cb52-2" title="2"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, </a>
+<a class="sourceLine" id="cb52-3" title="3">          <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, </a>
+<a class="sourceLine" id="cb52-4" title="4">          <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span>), </a>
+<a class="sourceLine" id="cb52-5" title="5">         <span class="dt">what =</span> <span class="st">"sentence"</span>)</a></code></pre></div>
 <pre><code>## tokens from 3 documents.
 ## text1 :
 ## [1] "Kurt Vongeut said; only assholes use semi-colons."
@@ -650,11 +653,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <h2 class="hasAnchor">
 <a href="#construyendo-una-matriz-de-documentos-y-atributos" class="anchor"></a>Construyendo una matriz de documentos y atributos</h2>
 <p>Convertir los textos en tokens es una opción intermedia y la mayoría de los usuarios querrán directamente construir la matriz de documentos y atributos. Para hacer esto existe la función de navaja suiza llamada <code><a href="../../reference/dfm.html">dfm()</a></code>, que realiza la tokenización y tabula los atributos extraídos dentro de una matriz de documentos por atributos. A diferencia del enfoque conservador de <code><a href="../../reference/tokens.html">tokens()</a></code>, la función <code><a href="../../reference/dfm.html">dfm()</a></code> aplica ciertas opciones por default, como <code><a href="https://www.rdocumentation.org/packages/base/topics/chartr">tolower()</a></code> – una función separada para transformar textos a minúsculas – y remueve puntuación. De todos modos, todas las opciones de <code><a href="../../reference/tokens.html">tokens()</a></code> se pueden pasar a <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
-
-<span class="co"># make a dfm</span>
-myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus)
-myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)</a>
+<a class="sourceLine" id="cb54-2" title="2"></a>
+<a class="sourceLine" id="cb54-3" title="3"><span class="co"># make a dfm</span></a>
+<a class="sourceLine" id="cb54-4" title="4">myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus)</a>
+<a class="sourceLine" id="cb54-5" title="5">myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (0.0% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
 ##               features
@@ -667,9 +670,9 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 ##   2013-Obama    3      3        6  99     4
 ##   2017-Trump    1      1        4  96     4</code></pre>
 <p>Otras opciones para incluyen remover las stopwords y realizar stemming de los tokens.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
-myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1"><span class="co"># make a dfm, removing stopwords and applying stemming</span></a>
+<a class="sourceLine" id="cb56-2" title="2">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb56-3" title="3">myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
 ##               features
@@ -682,24 +685,24 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
 <p>La opción ‘remove’ provee una lista de tokens a ser ignorados. La mayoría de los usuarios proveerán una lista de ‘stop words’ predefinidas para varios idiomas, accediendo a través de la función <code><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"en"</span>), <span class="dv">20</span>)</code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"en"</span>), <span class="dv">20</span>)</a></code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"ru"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"ru"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"ar"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"ar"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="visualizando-la-matriz-de-documentos-y-atributos" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualizando-la-matriz-de-documentos-y-atributos" class="anchor"></a>Visualizando la matriz de documentos y atributos</h3>
 <p>El dfm puede ser inspeccionado en el panel de ‘Environment’ en Rstudio o llamando la función <code>View</code> en R. Llamando la función <code>plot</code> en un dfm se presentará una nube de palabras usando el paquete <a href="https://cran.r-project.org/web/packages/wordcloud">wordcloud package</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-mydfm</code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb64-2" title="2">mydfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>Para acceder a la lista de los atributos más frecuentes es posible utilizar <code><a href="../../reference/topfeatures.html">topfeatures()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span></a></code></pre></div>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
 ##      system  population     country         new  immigrants      ensure 
@@ -709,20 +712,20 @@ mydfm</code></pre></div>
 ##        work     percent 
 ##          13          12</code></pre>
 <p>Para un objeto <code>dfm</code> se puede graficar una nube de palabras usando <code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>. Esta función pasa argumentos a <code><a href="../../reference/wordcloud.html">wordcloud()</a></code> del paquete <strong>wordcloud</strong> y puede embellecer el gráfico usando los mismos argumentos:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)
-<span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min_freq =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,
-                  <span class="dt">rotation =</span> .<span class="dv">25</span>, 
-                  <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb68-2" title="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min_freq =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb68-3" title="3">                  <span class="dt">rotation =</span> <span class="fl">.25</span>, </a>
+<a class="sourceLine" id="cb68-4" title="4">                  <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</a></code></pre></div>
 <p><img src="quickstart_es_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 <div id="agrupando-documentos-por-variable" class="section level3">
 <h3 class="hasAnchor">
 <a href="#agrupando-documentos-por-variable" class="anchor"></a>Agrupando documentos por variable</h3>
 <p>Frecuentemente estamos interesados en analizar cómo textos difieren según factores sustantivos que pueden estar codificados en las variables de documento en vez de simplemente por los límites de los archivos. En esos casos es posible agrupar los documentos que comparten el mismo valor por variable de documento cuando se crea un dfm:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
-                  <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, </a>
+<a class="sourceLine" id="cb69-2" title="2">                  <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0.0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
 ##        features
@@ -745,13 +748,13 @@ mydfm</code></pre></div>
 <a href="#agrupando-palabras-por-diccionario-o-clase-de-equivalencia" class="anchor"></a>Agrupando palabras por diccionario o clase de equivalencia</h3>
 <p>Para algunas aplicaciones se tiene conocimiento previo del conjunto de palabras que son indicativas de rasgos que quisiéramos medir. Por ejemplo, una lista general de palabras positivas puede indicar sentimiento positivo en un reseña de una película tal tenemos un diccionario de términos políticos asociados a una tendencia ideológica en particular. En estos casos, a veces es útil tratar estos grupos de palabras como equivalentes para los propósitos del análisis y sumar las veces en que se utiliza agregándolas por clase.</p>
 <p>Por ejemplo, observemos cómo palabras asociadas al terrorismo y palabras asociadas con la economía varían por presidente en el corpus de discursos inaugurales de presidentes de Estados Unidos. Del corpus original seleccionamos los presidentes desde Clinton:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</a></code></pre></div>
 <p>Ahora definimos un diccionario de muestra:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">terror =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
-                         <span class="dt">economy =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">terror =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),</a>
+<a class="sourceLine" id="cb73-2" title="2">                         <span class="dt">economy =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</a></code></pre></div>
 <p>Se puede usar el diccionario cuando creamos el dfm:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
-byPresMat</code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)</a>
+<a class="sourceLine" id="cb74-2" title="2">byPresMat</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
 ## 7 x 2 sparse Matrix of class "dfm"
 ##               features
@@ -764,10 +767,10 @@ byPresMat</code></pre></div>
 ##   2013-Obama        1       6
 ##   2017-Trump        1       5</code></pre>
 <p>El constructor de la función <code><a href="../../reference/dictionary.html">dictionary()</a></code> también funciona con el formato de dos diccionarios externos comunes: los formatos LIWC y Provalis Research’s Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
-                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)
-liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)
-liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,</a>
+<a class="sourceLine" id="cb76-2" title="2">                       <span class="dt">format =</span> <span class="st">"LIWC"</span>)</a>
+<a class="sourceLine" id="cb76-3" title="3">liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)</a>
+<a class="sourceLine" id="cb76-4" title="4">liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 </div>
 </div>
 </div>
@@ -777,11 +780,11 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 <div id="similitudes-entre-textos" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similitudes-entre-textos" class="anchor"></a>Similitudes entre textos</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
-              <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="dt">selection =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
-                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
-obamaSimil</code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), </a>
+<a class="sourceLine" id="cb77-2" title="2">              <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb77-3" title="3">obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="dt">selection =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), </a>
+<a class="sourceLine" id="cb77-4" title="4">                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
+<a class="sourceLine" id="cb77-5" title="5">obamaSimil</a></code></pre></div>
 <pre><code>##              2009-Obama 2013-Obama
 ## 1981-Reagan   0.6229949  0.6376412
 ## 1985-Reagan   0.6434472  0.6629428
@@ -793,26 +796,26 @@ obamaSimil</code></pre></div>
 ## 2009-Obama    1.0000000  0.6815711
 ## 2013-Obama    0.6815711  1.0000000
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></a></code></pre></div>
 <p>Se puede utilizar estas distancias para graficar un dendrograma, armando clusters por presidente:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="st">"1980-01-01"</span>)), 
-              <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
-              <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
-
-<span class="co"># Clustering jerárquico- obtener distancias en dfm normalizado</span>
-presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>))
-<span class="co"># Clustering jerárquico de los objetos de distancia</span>
-presCluster &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/hclust">hclust</a></span>(presDistMat)
-<span class="co"># etiqueta con nombres de documentos</span>
-presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(presDfm)
-<span class="co"># graficar como dendrograma</span>
-<span class="kw">lot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)</a>
+<a class="sourceLine" id="cb80-2" title="2">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="st">"1980-01-01"</span>)), </a>
+<a class="sourceLine" id="cb80-3" title="3">              <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb80-4" title="4">              <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb80-5" title="5">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb80-6" title="6"></a>
+<a class="sourceLine" id="cb80-7" title="7"><span class="co"># Clustering jerárquico- obtener distancias en dfm normalizado</span></a>
+<a class="sourceLine" id="cb80-8" title="8">presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>))</a>
+<a class="sourceLine" id="cb80-9" title="9"><span class="co"># Clustering jerárquico de los objetos de distancia</span></a>
+<a class="sourceLine" id="cb80-10" title="10">presCluster &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/hclust">hclust</a></span>(presDistMat)</a>
+<a class="sourceLine" id="cb80-11" title="11"><span class="co"># etiqueta con nombres de documentos</span></a>
+<a class="sourceLine" id="cb80-12" title="12">presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(presDfm)</a>
+<a class="sourceLine" id="cb80-13" title="13"><span class="co"># graficar como dendrograma</span></a>
+<a class="sourceLine" id="cb80-14" title="14"><span class="kw">lot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
 <p>También se puede observar similitudes de los términos:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="dt">selection =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), 
-                      <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(sim), head, <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="dt">selection =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), </a>
+<a class="sourceLine" id="cb81-2" title="2">                      <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
+<a class="sourceLine" id="cb81-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(sim), head, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## $fair
 ##   economi     begin jefferson    author     faith      call   struggl 
 ## 0.9080252 0.9075951 0.8981462 0.8944272 0.8866586 0.8608285 0.8451543 
@@ -835,9 +838,9 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 <h2 class="hasAnchor">
 <a href="#escalamiento-de-posiciones-de-documentos" class="anchor"></a>Escalamiento de posiciones de documentos</h2>
 <p>Aquí realizamos una demostración de escalamiento de documentos unsupervised comparado con el modelo “wordfish”:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make prettier document names</span>
-ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
-<span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>))</code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="co"># make prettier document names</span></a>
+<a class="sourceLine" id="cb83-2" title="2">ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
+<a class="sourceLine" id="cb83-3" title="3"><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">1</span>))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## textmodel_wordfish.dfm(x = ieDfm, dir = c(2, 1))
@@ -848,40 +851,40 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/df
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>Topic models</h2>
 <p><strong>quanteda</strong> hace muy sencillo ajustar topic models también. Por ejemplo:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
-               <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
-quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_termfreq =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
-quantdfm</code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </a>
+<a class="sourceLine" id="cb85-2" title="2">               <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb85-3" title="3">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_termfreq =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb85-4" title="4">quantdfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(topicmodels)) {
-   myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)
-   <span class="kw"><a href="https://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
-}</code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(topicmodels)) {</a>
+<a class="sourceLine" id="cb87-2" title="2">   myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb87-3" title="3">   <span class="kw"><a href="https://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb87-4" title="4">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2   Topic 3     Topic 4     Topic 5      
-## [1,] "taoiseach" "benefit" "gael"      "failed"    "fianna"     
-## [2,] "problem"   "child"   "taoiseach" "strategy"  "fáil"       
-## [3,] "banks"     "today"   "fine"      "needed"    "citizenship"
-## [4,] "child"     "banks"   "may"       "ministers" "side"       
-## [5,] "increased" "fáil"    "irish"     "system"    "alternative"
-##      Topic 6    Topic 7     Topic 8        Topic 9       Topic 10    
-## [1,] "deficit"  "care"      "society"      "kind"        "continue"  
-## [2,] "families" "welfare"   "enterprising" "imagination" "support"   
-## [3,] "seen"     "per"       "sense"        "policies"    "million"   
-## [4,] "savings"  "allowance" "equal"        "wit"         "investment"
-## [5,] "courage"  "hit"       "nation"       "create"      "confidence"
-##      Topic 11       Topic 12   Topic 13        Topic 14   Topic 15  
-## [1,] "government's" "fianna"   "measures"      "welfare"  "welfare" 
-## [2,] "fianna"       "fáil"     "million"       "million"  "system"  
-## [3,] "child"        "national" "spending"      "key"      "stimulus"
-## [4,] "taxation"     "irish"    "international" "support"  "recovery"
-## [5,] "fáil"         "support"  "level"         "national" "worst"   
-##      Topic 16  Topic 17  Topic 18   Topic 19     Topic 20   
-## [1,] "levy"    "day"     "measures" "reduction"  "taoiseach"
-## [2,] "million" "child"   "welfare"  "investment" "employees"
-## [3,] "carbon"  "benefit" "spending" "details"    "rate"     
-## [4,] "change"  "welfare" "making"   "reduced"    "referred" 
-## [5,] "welfare" "per"     "child"    "review"     "debate"</code></pre>
+<pre><code>##      Topic 1      Topic 2    Topic 3   Topic 4         Topic 5       
+## [1,] "million"    "fianna"   "failed"  "investment"    "spending"    
+## [2,] "measures"   "fáil"     "vision"  "confidence"    "details"     
+## [3,] "pension"    "national" "adopted" "future"        "apply"       
+## [4,] "scheme"     "irish"    "system"  "back"          "contribution"
+## [5,] "investment" "support"  "address" "international" "local"       
+##      Topic 6     Topic 7   Topic 8     Topic 9       Topic 10   
+## [1,] "care"      "levy"    "taoiseach" "kind"        "fianna"   
+## [2,] "welfare"   "million" "fine"      "imagination" "fáil"     
+## [3,] "per"       "carbon"  "gael"      "policies"    "know"     
+## [4,] "allowance" "change"  "may"       "wit"         "societies"
+## [5,] "hit"       "welfare" "irish"     "create"      "exiles"   
+##      Topic 11   Topic 12   Topic 13       Topic 14  Topic 15   
+## [1,] "welfare"  "welfare"  "society"      "system"  "taoiseach"
+## [2,] "scheme"   "fáil"     "enterprising" "earners" "debate"   
+## [3,] "spending" "system"   "sense"        "care"    "referred" 
+## [4,] "measures" "fianna"   "equal"        "welfare" "employees"
+## [5,] "future"   "taxation" "nation"       "even"    "rate"     
+##      Topic 16     Topic 17   Topic 18  Topic 19      Topic 20   
+## [1,] "million"    "hope"     "child"   "alternative" "ministers"
+## [2,] "support"    "stimulus" "benefit" "citizenship" "strategy" 
+## [3,] "welfare"    "rate"     "day"     "wealth"      "confront" 
+## [4,] "employment" "order"    "bank"    "adjustment"  "needed"   
+## [5,] "enterprise" "welfare"  "today"   "breaks"      "failed"</code></pre>
 </div>
 </div>
   </div>

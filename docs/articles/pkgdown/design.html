@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
     </li>
     <li>
       <a href="../../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -240,7 +243,7 @@
 <div id="extensions-of-core-r-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extensions-of-core-r-functions" class="anchor"></a>Extensions of core R functions</h2>
-<p>Many simple base R functions – simpler at least than the example of <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample()</a></code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code> combining two dfm objects by joining columns. Similar functions extended in this way include <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">head()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail()</a></code>, and <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
+<p>Many simple base R functions – simpler at least than the example of <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample()</a></code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code> combining two dfm objects by joining columns. Similar functions extended in this way include <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">head()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail()</a></code>, and <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
 </div>
 <div id="additions-to-core-r-like-functions" class="section level2">
 <h2 class="hasAnchor">
@@ -342,12 +345,12 @@ These steps don’t necessarily require the processing steps above.
 <a href="#dfm-the-swiss-army-knife" class="anchor"></a>dfm, the Swiss Army knife</h2>
 <p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code><a href="../../reference/dfm.html">dfm()</a></code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available in <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
 <p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code>%&gt;%</code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(mycorpus, <span class="dt">group =</span> <span class="st">"party"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(mycorpus, <span class="dt">group =</span> <span class="st">"party"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="st">    </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="st">    </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>()</a></code></pre></div>
 <p>We recognize however that not all sequences will make sense, for instance <code><a href="../../reference/tokens_wordstem.html">tokens_wordstem()</a></code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p>
 </div>
 </div>

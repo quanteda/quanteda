@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -163,21 +166,21 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</a></code></pre></div>
 <div id="download" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
 <p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem APIから、キーワード“選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
-corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span>)
-<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stringi/topics/stri_trans_nf">stri_trans_nfkc</a></span>(<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp)) <span class="co"># 表記を標準化</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2">corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span>)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stringi/topics/stri_trans_nf">stri_trans_nfkc</a></span>(<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp)) <span class="co"># 表記を標準化</span></a></code></pre></div>
 </div>
 <div id="number-of-tweets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#number-of-tweets" class="anchor"></a>投稿の数と期間を取得</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(corp)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(corp)</a></code></pre></div>
 <pre><code>## [1] 132346</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/range">range</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corp, <span class="st">"created_at"</span>))</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/range">range</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corp, <span class="st">"created_at"</span>))</a></code></pre></div>
 <pre><code>## [1] "2017-10-19 16:55:25 GMT" "2017-10-31 15:09:19 GMT"</code></pre>
 </div>
 <div id="pre-processing" class="section level1">
@@ -186,31 +189,31 @@ corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><sp
 <div id="tokenization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tokenization" class="anchor"></a>トークン化</h2>
-<p>ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために<code>remove_separator = FALSE</code>とし，次の<code><a href="../../../reference/tokens_select.html">tokens_remove()</a></code>で，語の位置関係を維持しながら，改行，空白，‘#’<a href="mailto:%E3%81%A8'@'%E4%BB%A5%E5%A4%96%E3%81%AE%E8%A8%98%E5%8F%B7%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">と'@'以外の記号を削除する</a>．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>で文書行列を作成する前に結合する．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp, <span class="dt">remove_separator =</span> <span class="ot">FALSE</span>, <span class="dt">remove_url =</span> <span class="ot">TRUE</span>)
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[</span><span class="ch">\\</span><span class="st">w#@]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
-
-min_count &lt;-<span class="st"> </span><span class="dv">10</span>
-
-<span class="co"># 漢字</span>
-kanji_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_keep</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[一-龠]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">             </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, kanji_col[kanji_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">""</span>)
-
-<span class="co"># カタカナ</span>
-kana_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_keep</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[ァ-ヶー]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">            </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, kana_col[kana_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">""</span>)
-
-<span class="co"># 漢字，カタカナおよび数字</span>
-any_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[0-9ァ-ヶー一-龠]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">           </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> any_col[any_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">""</span>)
-
-<span class="co"># ハッシュと語の結合</span>
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="st">"# *"</span>), <span class="dt">concatenator =</span> <span class="st">""</span>) 
-
-tweet_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks)</code></pre></div>
+<p>ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために<code>remove_separator = FALSE</code>とし，次の<code><a href="../../../reference/tokens_select.html">tokens_remove()</a></code>で，語の位置関係を維持しながら，改行，空白，‘#’<a href="mailto:%E3%81%A8'@'%E4%BB%A5%E5%A4%96%E3%81%AE%E8%A8%98%E5%8F%B7%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B" class="email">と'@'以外の記号を削除する</a>．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>で文書行列を作成する前に結合する．</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp, <span class="dt">remove_separator =</span> <span class="ot">FALSE</span>, <span class="dt">remove_url =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-2" title="2">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[</span><span class="ch">\\</span><span class="st">w#@]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4">min_count &lt;-<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co"># 漢字</span></a>
+<a class="sourceLine" id="cb7-7" title="7">kanji_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_keep</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[一-龠]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="st">             </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)</a>
+<a class="sourceLine" id="cb7-9" title="9">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, kanji_col[kanji_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">""</span>)</a>
+<a class="sourceLine" id="cb7-10" title="10"></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co"># カタカナ</span></a>
+<a class="sourceLine" id="cb7-12" title="12">kana_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_keep</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[ァ-ヶー]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="st">            </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)</a>
+<a class="sourceLine" id="cb7-14" title="14">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, kana_col[kana_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">""</span>)</a>
+<a class="sourceLine" id="cb7-15" title="15"></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co"># 漢字，カタカナおよび数字</span></a>
+<a class="sourceLine" id="cb7-17" title="17">any_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="st">"^[0-9ァ-ヶー一-龠]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-18" title="18"><span class="st">           </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)</a>
+<a class="sourceLine" id="cb7-19" title="19">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> any_col[any_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">""</span>)</a>
+<a class="sourceLine" id="cb7-20" title="20"></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="co"># ハッシュと語の結合</span></a>
+<a class="sourceLine" id="cb7-22" title="22">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="st">"# *"</span>), <span class="dt">concatenator =</span> <span class="st">""</span>) </a>
+<a class="sourceLine" id="cb7-23" title="23"></a>
+<a class="sourceLine" id="cb7-24" title="24">tweet_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks)</a></code></pre></div>
 </div>
 </div>
 <div id="analysis" class="section level1">
@@ -220,31 +223,31 @@ tweet_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../refer
 <h2 class="hasAnchor">
 <a href="#network-tag" class="anchor"></a>タグの共起ネットワーク</h2>
 <p>ここでは，<code><a href="../../../reference/dfm_select.html">dfm_select()</a></code>によってハッシュタグを選択しているが，そこに多くに含まれる’#選挙’や’#衆院選’などのハッシュタグは，クラスターを明確にするために削除している．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tag_fcm &lt;-<span class="st"> </span>
-<span class="st">    </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> <span class="st">"#*"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"*選挙*"</span>, <span class="st">"*衆院選*"</span>, <span class="st">"*衆議院*"</span>, <span class="st">"*投票*"</span>), <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()
-feat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(tag_fcm, <span class="dv">100</span>))
-<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(tag_fcm, <span class="dt">pattern =</span> feat), 
-                 <span class="dt">min_freq =</span> <span class="fl">0.8</span>,
-                 <span class="dt">vertex_labelfont =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">tag_fcm &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="st">    </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> <span class="st">"#*"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"*選挙*"</span>, <span class="st">"*衆院選*"</span>, <span class="st">"*衆議院*"</span>, <span class="st">"*投票*"</span>), <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()</a>
+<a class="sourceLine" id="cb8-7" title="7">feat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(tag_fcm, <span class="dv">100</span>))</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(tag_fcm, <span class="dt">pattern =</span> feat), </a>
+<a class="sourceLine" id="cb8-9" title="9">                 <span class="dt">min_freq =</span> <span class="fl">0.8</span>,</a>
+<a class="sourceLine" id="cb8-10" title="10">                 <span class="dt">vertex_labelfont =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div id="network-word" class="section level2">
 <h2 class="hasAnchor">
 <a href="#network-word" class="anchor"></a>語の共起ネットワーク</h2>
 <p>ツイートのメッセージを分析するためには，<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msg_fcm &lt;-<span class="st"> </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"#*"</span>, <span class="st">"@*"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="dt">pattern =</span> <span class="st">"^[ぁ-ん]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()
-feat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(msg_fcm, <span class="dv">50</span>))
-<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(msg_fcm, <span class="dt">pattern =</span> feat), <span class="dt">min_freq =</span> <span class="fl">0.3</span>,
-                 <span class="dt">vertex_labelfont =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">msg_fcm &lt;-<span class="st"> </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"#*"</span>, <span class="st">"@*"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="dt">pattern =</span> <span class="st">"^[ぁ-ん]+$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()</a>
+<a class="sourceLine" id="cb9-7" title="7">feat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(msg_fcm, <span class="dv">50</span>))</a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(msg_fcm, <span class="dt">pattern =</span> feat), <span class="dt">min_freq =</span> <span class="fl">0.3</span>,</a>
+<a class="sourceLine" id="cb9-9" title="9">                 <span class="dt">vertex_labelfont =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 </div>

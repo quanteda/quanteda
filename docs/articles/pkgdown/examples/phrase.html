@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -164,11 +167,11 @@
     
     
 <p><strong>quanteda</strong> has the functionality to select, remove or compound multi-word expressions, such as phrasal verbs (“try on”, “wake up” etc.) and place names (“New York”, “South Korea” etc.).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</a></code></pre></div>
 <div id="tokenize" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tokenize" class="anchor"></a>Tokenize</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_inaugural)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_inaugural)</a></code></pre></div>
 </div>
 <div id="define-multi-word-expressions" class="section level1">
 <h1 class="hasAnchor">
@@ -178,12 +181,12 @@
 <h2 class="hasAnchor">
 <a href="#character-vector" class="anchor"></a>Character vector</h2>
 <p>The most basic way to define multi-word expressions is separating words by whitespaces and wrap the character vector by <code><a href="../../../reference/phrase.html">phrase()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">multiword &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United States"</span>, <span class="st">"New York"</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">multiword &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United States"</span>, <span class="st">"New York"</span>)</a></code></pre></div>
 <div id="keyword-in-context" class="section level3">
 <h3 class="hasAnchor">
 <a href="#keyword-in-context" class="anchor"></a>Keyword-in-context</h3>
-<p><code><a href="../../../reference/kwic.html">kwic()</a></code> is useful to find multi-word expressions in tokens. If you are not sure if “United” and “States” are separated, check their positions (e.g. “434:435”).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword)))</code></pre></div>
+<p><code><a href="../../../reference/kwic.html">kwic()</a></code> is useful to find multi-word expressions in tokens. If you are not sure if “United” and “States” are separated, check their positions (e.g. “434:435”).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword)))</a></code></pre></div>
 <pre><code>##                                                              
 ##  [1789-Washington, 434:435]            of the people of the |
 ##  [1789-Washington, 530:531]          more than those of the |
@@ -203,7 +206,7 @@
 <h3 class="hasAnchor">
 <a href="#select-tokens" class="anchor"></a>Select tokens</h3>
 <p>Similarly, you can select or remove multi-word expression using <code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword)))</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword)))</a></code></pre></div>
 <pre><code>## tokens from 6 documents.
 ## 1789-Washington :
 ## [1] "United" "States" "United" "States"
@@ -227,8 +230,8 @@
 <h3 class="hasAnchor">
 <a href="#compound-tokens" class="anchor"></a>Compound tokens</h3>
 <p><code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> joins elements of multi-word expressions by underscore, so they become “United_States” and “New_York”.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">comp_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(comp_toks, <span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">comp_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword))</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(comp_toks, <span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</a></code></pre></div>
 <pre><code>## tokens from 6 documents.
 ## 1789-Washington :
 ## [1] "United_States" "United_States"
@@ -253,12 +256,12 @@
 <h2 class="hasAnchor">
 <a href="#dictionary" class="anchor"></a>Dictionary</h2>
 <p>Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do not use <code><a href="../../../reference/phrase.html">phrase()</a></code> here.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">multiword_dict &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">country =</span> <span class="st">"United States"</span>, 
-                                  <span class="dt">city =</span> <span class="st">"New York"</span>))</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">multiword_dict &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">country =</span> <span class="st">"United States"</span>, </a>
+<a class="sourceLine" id="cb10-2" title="2">                                  <span class="dt">city =</span> <span class="st">"New York"</span>))</a></code></pre></div>
 <div id="lookup-dictionary" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lookup-dictionary" class="anchor"></a>Lookup dictionary</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span>(toks, <span class="dt">dictionary =</span> multiword_dict))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span>(toks, <span class="dt">dictionary =</span> multiword_dict))</a></code></pre></div>
 <pre><code>## tokens from 6 documents.
 ## 1789-Washington :
 ## [1] "country" "country"
@@ -287,12 +290,12 @@
 <h3 class="hasAnchor">
 <a href="#discover-collocations" class="anchor"></a>Discover collocations</h3>
 <p>If <code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code> is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">col &lt;-<span class="st"> </span>toks <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">       </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"en"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">       </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="dt">pattern =</span> <span class="st">"^[A-Z]"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, 
-                     <span class="dt">case_insensitive =</span> <span class="ot">FALSE</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">       </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">tolower =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(col)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">col &lt;-<span class="st"> </span>toks <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="st">       </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"en"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="st">       </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="dt">pattern =</span> <span class="st">"^[A-Z]"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, </a>
+<a class="sourceLine" id="cb13-4" title="4">                     <span class="dt">case_insensitive =</span> <span class="ot">FALSE</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="st">       </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">tolower =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(col)</a></code></pre></div>
 <pre><code>##           collocation count count_nested length   lambda        z
 ## 1       United States   157            0      2 8.648770 28.48952
 ## 2  Federal Government    32            0      2 5.579973 21.89541
@@ -305,8 +308,8 @@
 <h3 class="hasAnchor">
 <a href="#compound-collocations" class="anchor"></a>Compound collocations</h3>
 <p>Collocations are automatically recognized as multi-word expressions by <code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> in <em>case-sensitive fixed pattern matching</em>. This is the fastest way to compound large numbers of multi-word expressions, but make sure that <code>tolower = FALSE</code> in <code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code> to do this.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">comp_toks2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> col)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(comp_toks2, <span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">comp_toks2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> col)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(comp_toks2, <span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</a></code></pre></div>
 <pre><code>##                                                                          
 ##  [1789-Washington, 434]            of the people of the | United_States |
 ##  [1789-Washington, 529]          more than those of the | United_States |
@@ -322,8 +325,8 @@
 ##  , I entertain no doubt               
 ##  ? These contributions enable us</code></pre>
 <p>You can use <code><a href="../../../reference/phrase.html">phrase()</a></code> on collocations if more flexibility is needed. This is usually the case if you compound tokens from different corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">comp_toks3 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(col<span class="op">$</span>collocation))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(comp_toks3, <span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">comp_toks3 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(col<span class="op">$</span>collocation))</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(comp_toks3, <span class="dt">pattern =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</a></code></pre></div>
 <pre><code>##                                                                          
 ##  [1789-Washington, 434]            of the people of the | United_States |
 ##  [1789-Washington, 529]          more than those of the | United_States |

@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -164,39 +167,39 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"quanteda"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"quanteda"</span>)</a></code></pre></div>
 <p>In this vignette we show how the <strong>quanteda</strong> package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai’s book <a href="http://qss.princeton.press"><em>Quantitative Social Science: An Introduction</em></a> (Princeton: Princeton University Press, 2017).</p>
 <div id="download-the-corpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download-the-corpus" class="anchor"></a>Download the Corpus</h2>
 <p>To get the textual data, you need to install and load the <strong>qss</strong> package first that comes with the book.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kosukeimai/qss-package"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kosukeimai/qss-package"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="section-5-1-1-the-disputed-authorship-of-the-federalist-papers" class="section level2">
 <h2 class="hasAnchor">
 <a href="#section-5-1-1-the-disputed-authorship-of-the-federalist-papers" class="anchor"></a>Section 5.1.1: The Disputed Authorship of ‘The Federalist Papers’</h2>
 <p>First, we use the <strong>readtext</strong> package to import the Federalist Papers as a data frame and create a <strong>quanteda</strong> corpus.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"readtext"</span>)
-<span class="co"># use readtext package to import all documents as a dataframe</span>
-corpus_texts &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata/federalist/"</span>, <span class="dt">package =</span> <span class="st">"qss"</span>))
-
-<span class="co"># create docvar with number of paper</span>
-corpus_texts<span class="op">$</span>paper_number &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"No."</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(corpus_texts)), <span class="dt">sep =</span> <span class="st">" "</span>)
-
-<span class="co"># transform to a quanteda corpus object</span>
-corpus_raw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(corpus_texts, <span class="dt">text_field =</span> <span class="st">"text"</span>, <span class="dt">docid_field =</span> <span class="st">"paper_number"</span>)
-
-<span class="co"># create docvar with authorship (used in Section  5.1.4)</span>
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"paper_numeric"</span>) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(corpus_raw))
-
-<span class="co"># create docvar with authorship (used in Section  5.1.4)</span>
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"author"</span>) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(<span class="ot">NA</span>, <span class="dt">levels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"madison"</span>, <span class="st">"hamilton"</span>))
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"author"</span>)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">6</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">13</span>, <span class="dv">15</span><span class="op">:</span><span class="dv">17</span>, <span class="dv">21</span><span class="op">:</span><span class="dv">36</span>, <span class="dv">59</span><span class="op">:</span><span class="dv">61</span>, <span class="dv">65</span><span class="op">:</span><span class="dv">85</span>)] &lt;-<span class="st"> "hamilton"</span>
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"author"</span>)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">37</span><span class="op">:</span><span class="dv">48</span>, <span class="dv">58</span>)] &lt;-<span class="st"> "madison"</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect Paper No. 10 (output suppressed)</span>
-<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corpus_raw)[<span class="dv">10</span>] <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span>stringi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(<span class="dv">1</span>, <span class="dv">240</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"readtext"</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># use readtext package to import all documents as a dataframe</span></a>
+<a class="sourceLine" id="cb3-3" title="3">corpus_texts &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata/federalist/"</span>, <span class="dt">package =</span> <span class="st">"qss"</span>))</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co"># create docvar with number of paper</span></a>
+<a class="sourceLine" id="cb3-6" title="6">corpus_texts<span class="op">$</span>paper_number &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"No."</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(corpus_texts)), <span class="dt">sep =</span> <span class="st">" "</span>)</a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co"># transform to a quanteda corpus object</span></a>
+<a class="sourceLine" id="cb3-9" title="9">corpus_raw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(corpus_texts, <span class="dt">text_field =</span> <span class="st">"text"</span>, <span class="dt">docid_field =</span> <span class="st">"paper_number"</span>)</a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co"># create docvar with authorship (used in Section  5.1.4)</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"paper_numeric"</span>) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(corpus_raw))</a>
+<a class="sourceLine" id="cb3-13" title="13"></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co"># create docvar with authorship (used in Section  5.1.4)</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"author"</span>) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(<span class="ot">NA</span>, <span class="dt">levels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"madison"</span>, <span class="st">"hamilton"</span>))</a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"author"</span>)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">6</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">13</span>, <span class="dv">15</span><span class="op">:</span><span class="dv">17</span>, <span class="dv">21</span><span class="op">:</span><span class="dv">36</span>, <span class="dv">59</span><span class="op">:</span><span class="dv">61</span>, <span class="dv">65</span><span class="op">:</span><span class="dv">85</span>)] &lt;-<span class="st"> "hamilton"</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw, <span class="st">"author"</span>)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">37</span><span class="op">:</span><span class="dv">48</span>, <span class="dv">58</span>)] &lt;-<span class="st"> "madison"</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># inspect Paper No. 10 (output suppressed)</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corpus_raw)[<span class="dv">10</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="st">    </span>stringi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(<span class="dv">1</span>, <span class="dv">240</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>()</a></code></pre></div>
 <pre><code>## AMONG the numerous advantages promised by a well-constructed Union, none 
 ##         deserves to be more accurately developed than its tendency to break and 
 ##         control the violence of faction. The friend of popular governments never 
@@ -206,26 +209,26 @@ corpus_raw &lt;-<span class="st"> </span><span class="kw"><a href="../../../refe
 <h2 class="hasAnchor">
 <a href="#section-5-1-2-document-term-matrix" class="anchor"></a>Section 5.1.2: Document-Term Matrix</h2>
 <p>Next, we transform the corpus to a document-feature matrix. <code>dfm_prep</code> (used in sections 5.1.4 and 5.1.5) is a dfm in which numbers and punctuation have been removed, and in which terms have been converted to lowercase. In <code>dfm_papers</code>, the words have also been stemmed and a standard set of stopwords removed.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># transform corpus to a document-feature matrix</span>
-dfm_prep &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(corpus_raw, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>,
-                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># transform corpus to a document-feature matrix</span></a>
+<a class="sourceLine" id="cb6-2" title="2">dfm_prep &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(corpus_raw, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb6-3" title="3">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## Creating a dfm from a corpus input...</code></pre>
 <pre><code>##    ... lowercasing</code></pre>
 <pre><code>##    ... found 85 documents, 8,630 features</code></pre>
 <pre><code>##    ... created a 85 x 8,630 sparse dfm
 ##    ... complete. 
-## Elapsed time: 0.153 seconds.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># remove stop words and stem words</span>
-dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(dfm_prep, <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
-
-<span class="co"># inspect</span>
-dfm_papers</code></pre></div>
+## Elapsed time: 0.301 seconds.</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># remove stop words and stem words</span></a>
+<a class="sourceLine" id="cb11-2" title="2">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(dfm_prep, <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co"># inspect</span></a>
+<a class="sourceLine" id="cb11-5" title="5">dfm_papers</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 85 documents, 4,859 features (89.1% sparse).</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sort into alphabetical order of features, to match book example</span>
-dfm_papers &lt;-<span class="st"> </span>dfm_papers[, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/order">order</a></span>(<span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers))]
-
-<span class="co"># inspect some documents in the dfm</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># sort into alphabetical order of features, to match book example</span></a>
+<a class="sourceLine" id="cb13-2" title="2">dfm_papers &lt;-<span class="st"> </span>dfm_papers[, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/order">order</a></span>(<span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers))]</a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co"># inspect some documents in the dfm</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 8 features (97.9% sparse).
 ## 6 x 8 sparse Matrix of class "dfm"
 ##        features
@@ -237,9 +240,9 @@ dfm_papers &lt;-<span class="st"> </span>dfm_papers[, <span class="kw"><a href="
 ##   No. 5   1  0  0   0   0       0    0   0
 ##   No. 6   0  0  0   0   0       0    0   0</code></pre>
 <p>The <strong>tm</strong> package considers features such as “1st” to be numbers, whereas <strong>quanteda</strong> does not. We can remove these easily using a wildcard removal:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(dfm_papers, <span class="st">"[0-9]"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(dfm_papers, <span class="st">"[0-9]"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## removed 5 features</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 8 features (91.7% sparse).
 ## 6 x 8 sparse Matrix of class "dfm"
 ##        features
@@ -255,50 +258,50 @@ dfm_papers &lt;-<span class="st"> </span>dfm_papers[, <span class="kw"><a href="
 <h2 class="hasAnchor">
 <a href="#section-5-1-3-topic-discovery" class="anchor"></a>Section 5.1.3: Topic Discovery</h2>
 <p>We can use the <code><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code> function to plot word clouds of the most frequent words in Papers 12 and 24.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_papers[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"No. 12"</span>, <span class="st">"No. 24"</span>), ], 
-                   <span class="dt">max.words =</span> <span class="dv">50</span>, <span class="dt">comparison =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_papers[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"No. 12"</span>, <span class="st">"No. 24"</span>), ], </a>
+<a class="sourceLine" id="cb19-3" title="3">                   <span class="dt">max.words =</span> <span class="dv">50</span>, <span class="dt">comparison =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="qss_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 <p>Since <strong>quanteda</strong> cannot do stem completion, we will skip that part.</p>
 <p>Next, we identify clusters of similar essay based on term frequency-inverse document frequency (<em>tf-idf</em>) and apply the <span class="math inline">\(k\)</span>-means algorithm to the weighted dfm.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tf-idf calculation</span>
-dfm_papers_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_tfidf.html">dfm_tfidf</a></span>(dfm_papers, <span class="dt">base =</span> <span class="dv">2</span>)
-
-<span class="co"># 10 most important words for Paper No. 12</span>
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">12</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># tf-idf calculation</span></a>
+<a class="sourceLine" id="cb20-2" title="2">dfm_papers_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_tfidf.html">dfm_tfidf</a></span>(dfm_papers, <span class="dt">base =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb20-3" title="3"></a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co"># 10 most important words for Paper No. 12</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">12</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##     revenu contraband     patrol      excis      coast      trade 
 ##   19.42088   19.22817   19.22817   19.12214   16.22817   15.01500 
 ##        per        tax       cent     gallon 
 ##   14.47329   13.20080   12.81878   12.81878</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 10 most important words for Paper No. 24</span>
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">24</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># 10 most important words for Paper No. 24</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">24</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##   garrison  dock-yard settlement      spain       armi   frontier 
 ##  24.524777  19.228173  16.228173  13.637564  12.770999  12.262389 
 ##    arsenal    western       post     nearer 
 ##  10.818782  10.806108  10.228173   9.648857</code></pre>
 <p>We can match the clustering as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="dv">4</span>  <span class="co"># number of clusters</span>
-
-<span class="co"># subset The Federalist papers written by Hamilton</span>
-
-dfm_papers_tfidf_hamilton &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(dfm_papers_tfidf, author <span class="op">==</span><span class="st"> "hamilton"</span>)
-
-<span class="co"># run k-means</span>
-km_out &lt;-<span class="st"> </span>stats<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/kmeans">kmeans</a></span>(dfm_papers_tfidf_hamilton, <span class="dt">centers =</span> k)
-
-km_out<span class="op">$</span>iter <span class="co"># check the convergence; number of iterations may vary</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">k &lt;-<span class="st"> </span><span class="dv">4</span>  <span class="co"># number of clusters</span></a>
+<a class="sourceLine" id="cb24-2" title="2"></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="co"># subset The Federalist papers written by Hamilton</span></a>
+<a class="sourceLine" id="cb24-4" title="4"></a>
+<a class="sourceLine" id="cb24-5" title="5">dfm_papers_tfidf_hamilton &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(dfm_papers_tfidf, author <span class="op">==</span><span class="st"> "hamilton"</span>)</a>
+<a class="sourceLine" id="cb24-6" title="6"></a>
+<a class="sourceLine" id="cb24-7" title="7"><span class="co"># run k-means</span></a>
+<a class="sourceLine" id="cb24-8" title="8">km_out &lt;-<span class="st"> </span>stats<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/kmeans">kmeans</a></span>(dfm_papers_tfidf_hamilton, <span class="dt">centers =</span> k)</a>
+<a class="sourceLine" id="cb24-9" title="9"></a>
+<a class="sourceLine" id="cb24-10" title="10">km_out<span class="op">$</span>iter <span class="co"># check the convergence; number of iterations may vary</span></a></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(km_out<span class="op">$</span>centers) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers_tfidf_hamilton)
-
-<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>k) { <span class="co"># loop for each cluster</span>
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"CLUSTER"</span>, i, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Top 10 words:</span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># 10 most important terms at the centroid</span>
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sort">sort</a></span>(km_out<span class="op">$</span>centers[i, ], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="dv">10</span>))
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Federalist Papers classified: </span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># extract essays classified</span>
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(dfm_papers_tfidf_hamilton)[km_out<span class="op">$</span>cluster <span class="op">==</span><span class="st"> </span>i])
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-}</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(km_out<span class="op">$</span>centers) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers_tfidf_hamilton)</a>
+<a class="sourceLine" id="cb26-2" title="2"></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>k) { <span class="co"># loop for each cluster</span></a>
+<a class="sourceLine" id="cb26-4" title="4">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"CLUSTER"</span>, i, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb26-5" title="5">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Top 10 words:</span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># 10 most important terms at the centroid</span></a>
+<a class="sourceLine" id="cb26-6" title="6">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sort">sort</a></span>(km_out<span class="op">$</span>centers[i, ], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb26-7" title="7">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb26-8" title="8">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Federalist Papers classified: </span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># extract essays classified</span></a>
+<a class="sourceLine" id="cb26-9" title="9">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(dfm_papers_tfidf_hamilton)[km_out<span class="op">$</span>cluster <span class="op">==</span><span class="st"> </span>i])</a>
+<a class="sourceLine" id="cb26-10" title="10">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb26-11" title="11">}</a></code></pre></div>
 <pre><code>## CLUSTER 1 
 ## Top 10 words:
 ##     court     appel jurisdict    suprem      juri    tribun    cogniz 
@@ -349,34 +352,34 @@ km_out<span class="op">$</span>iter <span class="co"># check the convergence; nu
 <h2 class="hasAnchor">
 <a href="#section-5-1-4-authorship-prediction" class="anchor"></a>Section 5.1.4: Authorship Prediction</h2>
 <p>In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predicte authorship.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># term frequency per 1000 words</span>
-tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(dfm_prep, <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>
-
-<span class="co"># select words of interest</span>
-words &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"although"</span>, <span class="st">"always"</span>, <span class="st">"commonly"</span>, <span class="st">"consequently"</span>,
-           <span class="st">"considerable"</span>, <span class="st">"enough"</span>, <span class="st">"there"</span>, <span class="st">"upon"</span>, <span class="st">"while"</span>, <span class="st">"whilst"</span>)
-tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(tfm, words, <span class="dt">valuetype =</span> <span class="st">"fixed"</span>)
-
-<span class="co"># average among Hamilton/Madison essays</span>
-tfm_ave &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_group.html">dfm_group</a></span>(<span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(author)), <span class="st">"author"</span>) <span class="op">/</span>
-<span class="st">           </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(tfm, <span class="st">"author"</span>)))
-    
-<span class="co"># bind docvars from corpus and tfm to a data frame</span>
-author_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw), tfm)</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># term frequency per 1000 words</span></a>
+<a class="sourceLine" id="cb28-2" title="2">tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(dfm_prep, <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb28-3" title="3"></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="co"># select words of interest</span></a>
+<a class="sourceLine" id="cb28-5" title="5">words &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"although"</span>, <span class="st">"always"</span>, <span class="st">"commonly"</span>, <span class="st">"consequently"</span>,</a>
+<a class="sourceLine" id="cb28-6" title="6">           <span class="st">"considerable"</span>, <span class="st">"enough"</span>, <span class="st">"there"</span>, <span class="st">"upon"</span>, <span class="st">"while"</span>, <span class="st">"whilst"</span>)</a>
+<a class="sourceLine" id="cb28-7" title="7">tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(tfm, words, <span class="dt">valuetype =</span> <span class="st">"fixed"</span>)</a>
+<a class="sourceLine" id="cb28-8" title="8"></a>
+<a class="sourceLine" id="cb28-9" title="9"><span class="co"># average among Hamilton/Madison essays</span></a>
+<a class="sourceLine" id="cb28-10" title="10">tfm_ave &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_group.html">dfm_group</a></span>(<span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(author)), <span class="st">"author"</span>) <span class="op">/</span></a>
+<a class="sourceLine" id="cb28-11" title="11"><span class="st">           </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(tfm, <span class="st">"author"</span>)))</a>
+<a class="sourceLine" id="cb28-12" title="12">    </a>
+<a class="sourceLine" id="cb28-13" title="13"><span class="co"># bind docvars from corpus and tfm to a data frame</span></a>
+<a class="sourceLine" id="cb28-14" title="14">author_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw), tfm)</a></code></pre></div>
 <pre><code>## Warning: 'as.data.frame.dfm' is deprecated.
 ## Use 'convert(x, to = "data.frame")' instead.
 ## See help("Deprecated")</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create numeric variable that takes value 1 for Hamilton's essays,</span>
-<span class="co"># -1 for Madison's essays and NA for the essays with unknown authorship</span>
-author_data<span class="op">$</span>author_numeric &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>, <span class="dv">1</span>, 
-                                     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>, <span class="op">-</span><span class="dv">1</span>, <span class="ot">NA</span>))
-
-<span class="co"># use only known authors for training set</span>
-author_data_known &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/na.fail">na.omit</a></span>(author_data)
-
-hm_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,
-             <span class="dt">data =</span> author_data_known)
-hm_fit</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="co"># create numeric variable that takes value 1 for Hamilton's essays,</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="co"># -1 for Madison's essays and NA for the essays with unknown authorship</span></a>
+<a class="sourceLine" id="cb30-3" title="3">author_data<span class="op">$</span>author_numeric &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>, <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb30-4" title="4">                                     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>, <span class="dv">-1</span>, <span class="ot">NA</span>))</a>
+<a class="sourceLine" id="cb30-5" title="5"></a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="co"># use only known authors for training set</span></a>
+<a class="sourceLine" id="cb30-7" title="7">author_data_known &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/na.fail">na.omit</a></span>(author_data)</a>
+<a class="sourceLine" id="cb30-8" title="8"></a>
+<a class="sourceLine" id="cb30-9" title="9">hm_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,</a>
+<a class="sourceLine" id="cb30-10" title="10">             <span class="dt">data =</span> author_data_known)</a>
+<a class="sourceLine" id="cb30-11" title="11">hm_fit</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = author_numeric ~ upon + there + consequently + whilst, 
@@ -385,44 +388,44 @@ hm_fit</code></pre></div>
 ## Coefficients:
 ##  (Intercept)          upon         there  consequently        whilst  
 ##      -0.2729        0.2240        0.1278       -0.5596       -0.8378</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hm_fitted &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/fitted.values">fitted</a></span>(hm_fit) <span class="co"># fitted values</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(hm_fitted)</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">hm_fitted &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/fitted.values">fitted</a></span>(hm_fit) <span class="co"># fitted values</span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(hm_fitted)</a></code></pre></div>
 <pre><code>## [1] 0.7175527</code></pre>
 </div>
 <div id="section-5-1-5-cross-validation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#section-5-1-5-cross-validation" class="anchor"></a>Section 5.1.5: Cross-Validation</h2>
 <p>Finally, we assess how well the model fits the data by classifying each essay based on its fitted value.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># proportion of correctly classified essays by Hamilton</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="co"># proportion of correctly classified essays by Hamilton</span></a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># proportion of correctly classified essays by Madison</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="co"># proportion of correctly classified essays by Madison</span></a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(author_data_known)
-hm_classify &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">NA</span>, n) <span class="co"># a container vector with missing values</span>
-
-<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {
-  <span class="co"># fit the model to the data after removing the ith observation</span>
-  sub_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,
-                <span class="dt">data =</span> author_data_known[<span class="op">-</span>i, ]) <span class="co"># exclude ith row</span>
-  <span class="co"># predict the authorship for the ith observation</span>
-  hm_classify[i] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(sub_fit, <span class="dt">newdata =</span> author_data_known[i, ])
-}
-
-<span class="co"># proportion of correctly classified essays by Hamilton</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">n &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(author_data_known)</a>
+<a class="sourceLine" id="cb38-2" title="2">hm_classify &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">NA</span>, n) <span class="co"># a container vector with missing values</span></a>
+<a class="sourceLine" id="cb38-3" title="3"></a>
+<a class="sourceLine" id="cb38-4" title="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb38-5" title="5">  <span class="co"># fit the model to the data after removing the ith observation</span></a>
+<a class="sourceLine" id="cb38-6" title="6">  sub_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,</a>
+<a class="sourceLine" id="cb38-7" title="7">                <span class="dt">data =</span> author_data_known[<span class="op">-</span>i, ]) <span class="co"># exclude ith row</span></a>
+<a class="sourceLine" id="cb38-8" title="8">  <span class="co"># predict the authorship for the ith observation</span></a>
+<a class="sourceLine" id="cb38-9" title="9">  hm_classify[i] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(sub_fit, <span class="dt">newdata =</span> author_data_known[i, ])</a>
+<a class="sourceLine" id="cb38-10" title="10">}</a>
+<a class="sourceLine" id="cb38-11" title="11"></a>
+<a class="sourceLine" id="cb38-12" title="12"><span class="co"># proportion of correctly classified essays by Hamilton</span></a>
+<a class="sourceLine" id="cb38-13" title="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># proportion of correctly classified essays by Madison</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="co"># proportion of correctly classified essays by Madison</span></a>
+<a class="sourceLine" id="cb40-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">disputed &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">49</span>, <span class="dv">50</span><span class="op">:</span><span class="dv">57</span>, <span class="dv">62</span>, <span class="dv">63</span>) <span class="co"># 11 essays with disputed authorship</span>
-tf_disputed &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(author)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(<span class="dt">to =</span> <span class="st">"data.frame"</span>)
-
-author_data<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(hm_fit, <span class="dt">newdata =</span> author_data)
-
-author_data<span class="op">$</span>prediction <span class="co"># predicted values</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1">disputed &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">49</span>, <span class="dv">50</span><span class="op">:</span><span class="dv">57</span>, <span class="dv">62</span>, <span class="dv">63</span>) <span class="co"># 11 essays with disputed authorship</span></a>
+<a class="sourceLine" id="cb42-2" title="2">tf_disputed &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(author)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb42-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(<span class="dt">to =</span> <span class="st">"data.frame"</span>)</a>
+<a class="sourceLine" id="cb42-4" title="4"></a>
+<a class="sourceLine" id="cb42-5" title="5">author_data<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(hm_fit, <span class="dt">newdata =</span> author_data)</a>
+<a class="sourceLine" id="cb42-6" title="6"></a>
+<a class="sourceLine" id="cb42-7" title="7">author_data<span class="op">$</span>prediction <span class="co"># predicted values</span></a></code></pre></div>
 <pre><code>##  [1]  0.73682138 -0.13810334 -1.35072048 -0.03823549 -0.27285552
 ##  [6]  0.71537231  1.33178340  0.19414036  0.37516964 -0.20369832
 ## [11]  0.67584796  0.99478176  1.39348825 -1.18908379  1.20446180
@@ -441,18 +444,18 @@ author_data<span class="op">$</span>prediction <span class="co"># predicted valu
 ## [76]  1.05480578  1.05926761  0.90585578  0.54292995  0.64035410
 ## [81]  0.91773469  0.31189155  0.80869221  0.73649069  1.00895939</code></pre>
 <p>Finally, we plot the fitted values for each Federalist paper with the <strong>ggplot2</strong> package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">author_data<span class="op">$</span>author_plot &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(author_data<span class="op">$</span>author), <span class="st">"unknown"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(author_data<span class="op">$</span>author))
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> author_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> paper_numeric, 
-                               <span class="dt">y =</span> prediction, 
-                               <span class="dt">shape =</span> author_plot, 
-                               <span class="dt">colour =</span> author_plot)) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Federalist Papers"</span>, <span class="dt">y =</span> <span class="st">"Predicted values"</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title=</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1">author_data<span class="op">$</span>author_plot &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(author_data<span class="op">$</span>author), <span class="st">"unknown"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(author_data<span class="op">$</span>author))</a>
+<a class="sourceLine" id="cb44-2" title="2"></a>
+<a class="sourceLine" id="cb44-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb44-4" title="4"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> author_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> paper_numeric, </a>
+<a class="sourceLine" id="cb44-5" title="5">                               <span class="dt">y =</span> prediction, </a>
+<a class="sourceLine" id="cb44-6" title="6">                               <span class="dt">shape =</span> author_plot, </a>
+<a class="sourceLine" id="cb44-7" title="7">                               <span class="dt">colour =</span> author_plot)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-8" title="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb44-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Federalist Papers"</span>, <span class="dt">y =</span> <span class="st">"Predicted values"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-11" title="11"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb44-12" title="12"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title=</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
 <p><img src="qss_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 </div>
   </div>

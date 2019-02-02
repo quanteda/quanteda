@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -81,6 +81,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../../../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -163,30 +166,30 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</a></code></pre></div>
 <div id="download-corpus" class="section level1">
 <h1 class="hasAnchor">
 <a href="#download-corpus" class="anchor"></a>Download corpus</h1>
 <p>Download corpus constructed from <em>Report on the Work of the Government</em> published by Premier of the State Council between 1954 and 2017. You can download the corpus using the <strong>quanteda.corpora</strong> package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read text files</span>
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda.corpora)
-corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># read text files</span></a>
+<a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda.corpora)</a>
+<a class="sourceLine" id="cb3-2" title="2">corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</a></code></pre></div>
 </div>
 <div id="tokenization" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tokenization" class="anchor"></a>Tokenization</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Chinese stopwords</span>
-ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)
-
-<span class="co"># tokenize</span>
-ch_toks &lt;-<span class="st"> </span>corp <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="dt">pattern =</span> ch_stop)
-
-<span class="co"># construct a dfm</span>
-ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(ch_toks)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Chinese stopwords</span></a>
+<a class="sourceLine" id="cb4-2" title="2">ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># tokenize</span></a>
+<a class="sourceLine" id="cb4-5" title="5">ch_toks &lt;-<span class="st"> </span>corp <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="dt">pattern =</span> ch_stop)</a>
+<a class="sourceLine" id="cb4-8" title="8"></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co"># construct a dfm</span></a>
+<a class="sourceLine" id="cb4-10" title="10">ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(ch_toks)</a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</a></code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
 </div>
@@ -196,46 +199,46 @@ ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../referenc
 <div id="word-cloud" class="section level2">
 <h2 class="hasAnchor">
 <a href="#word-cloud" class="anchor"></a>Word cloud</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot a word cloud</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)
-
-<span class="co"># to set the font correctly for macOS</span>
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(ch_dfm, <span class="dt">min_count =</span> <span class="dv">500</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,
-                   <span class="dt">rotation =</span> .<span class="dv">25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>,
-                   <span class="dt">min_size =</span> <span class="fl">0.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,
-                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,
-                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>, <span class="st">"Dark2"</span>))</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># plot a word cloud</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co"># to set the font correctly for macOS</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(ch_dfm, <span class="dt">min_count =</span> <span class="dv">500</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb6-6" title="6">                   <span class="dt">rotation =</span> <span class="fl">.25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb6-7" title="7">                   <span class="dt">min_size =</span> <span class="fl">0.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,</a>
+<a class="sourceLine" id="cb6-8" title="8">                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb6-9" title="9">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>, <span class="st">"Dark2"</span>))</a></code></pre></div>
 <p><img src="chinese_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div id="feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feature-co-occurrence-matrix" class="anchor"></a>Feature co-occurrence matrix</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm within the window size of 5</span>
-ch17_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(corp, Year <span class="op">==</span><span class="st"> "2017"</span>)
-ch17_toks &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17_corp, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)
-ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># fcm within the window size of 5</span></a>
+<a class="sourceLine" id="cb7-2" title="2">ch17_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(corp, Year <span class="op">==</span><span class="st"> "2017"</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3">ch17_toks &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17_corp, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)</a>
+<a class="sourceLine" id="cb7-6" title="6">ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
 </div>
 <div id="unsupervised-document-scaling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#unsupervised-document-scaling" class="anchor"></a>Unsupervised document scaling</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)
-y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
-y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]
-y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)</a>
+<a class="sourceLine" id="cb9-2" title="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb9-3" title="3">y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]</a>
+<a class="sourceLine" id="cb9-4" title="4">y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
 <p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocations" class="anchor"></a>Collocations</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams cross the whole dataset</span>
-ch_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch_toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>)
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(ch_col, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># bigrams cross the whole dataset</span></a>
+<a class="sourceLine" id="cb10-2" title="2">ch_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch_toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb10-3" title="3">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(ch_col, <span class="dv">10</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">collocation</th>
@@ -328,9 +331,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams in 2017 report</span>
-ch17_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17_toks, <span class="dt">size =</span> <span class="dv">2</span>)
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(ch17_col, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># bigrams in 2017 report</span></a>
+<a class="sourceLine" id="cb11-2" title="2">ch17_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17_toks, <span class="dt">size =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb11-3" title="3">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(ch17_col, <span class="dv">10</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">collocation</th>

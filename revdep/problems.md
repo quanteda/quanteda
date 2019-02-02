@@ -1,3 +1,72 @@
+# clustRcompaR
+
+Version: 0.2.0
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    
+    > library(quanteda)
+    Package version: 1.4.0
+    Parallel computing: 2 of 12 threads used.
+    See https://quanteda.io for tutorials and examples.
+    
+    Attaching package: ‘quanteda’
+    
+    The following object is masked from ‘package:utils’:
+    
+        View
+    
+    > 
+    > d <- inaugural_addresses
+    > d <- mutate(d, century = ifelse(Year < 1800, "17th",
+    +                                 ifelse(Year >= 1800 & Year < 1900, "18th",
+    +                                        ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
+    > 
+    > three_clusters <- cluster(d, century, n_clusters = 3)
+    Error: 'metadoc<-' is not an exported object from 'namespace:quanteda'
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      [31m──[39m [31m1. Error: (unknown) (@test_cases.R#9) [39m [31m───────────────────────────────────────────────────────────────[39m
+      'metadoc<-' is not an exported object from 'namespace:quanteda'
+      1: cluster(d, n_clusters = 3) at testthat/test_cases.R:9
+      2: assemble_corpus(data, stopwords = all_stopwords, remove_twitter = remove_twitter)
+      3: quanteda::`metadoc<-`
+      4: getExportedValue(pkg, name)
+      5: stop(gettextf("'%s' is not an exported object from 'namespace:%s'", name, getNamespaceName(ns)), call. = FALSE, 
+             domain = NA)
+      
+      ══ testthat results  ════════════════════════════════════════════════════════════════════════════════════
+      OK: 0 SKIPPED: 0 FAILED: 1
+      1. Error: (unknown) (@test_cases.R#9) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 40-52 (introduction-to-clustRcompaR.Rmd) 
+    Error: processing vignette 'introduction-to-clustRcompaR.Rmd' failed with diagnostics:
+    'metadoc<-' is not an exported object from 'namespace:quanteda'
+    Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Missing or unexported object: ‘quanteda::metadoc’
+    ```
+
 # corpustools
 
 Version: 0.3.3
@@ -11,80 +80,30 @@ Version: 0.3.3
 
 # LexisNexisTools
 
-Version: 0.2.1
+Version: 0.2.2
 
 ## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    	...lengths extracted [0.007 secs]
-    	...newspapers extracted [0.0073 secs]
-    	...dates extracted [0.0094 secs]
-    	...authors extracted [0.12 secs]
-    	...sections extracted [0.12 secs]
-    	...editions extracted [0.12 secs]
-    	...headlines extracted [0.13 secs]
-    	...dates converted [0.13 secs]
-    	...metadata extracted [0.13 secs]
-    	...article texts extracted [0.13 secs]
-    	...paragraphs extracted [0.14 secs]
-    	...superfluous whitespace removed from articles [0.14 secs]
-    	...superfluous whitespace removed from paragraphs [0.14 secs]
-    Elapsed time: 0.14 secs
-    Checking similiarity for 10 articles over 4 dates...
-    	...quanteda dfm construced for similarity comparison [0.19 secs].
-    	...processing date 2010-01-08: 0 duplicates found [0.20 secs]. 		
-    	...processing date 2010-01-09: 0 duplicates found [0.20 secs]. 		Error in validObject(.Object) : 
-      invalid class “dfm” object: Dimnames[1] is not a character vector
-    Calls: lnt_similarity ... initialize -> callNextMethod -> .nextMethod -> validObject
-    Execution halted
-    ```
 
 *   checking tests ...
     ```
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      16: initialize(value, ...)
-      17: callNextMethod()
-      18: .nextMethod(.Object = .Object, ... = ...)
-      19: validObject(.Object)
-      20: stop(msg, ": ", errors, domain = NA)
-      
-      Creating LNToutput from input 1 files...
-      ══ testthat results  ═══════════════════════════════════════════════════════════════════
-      OK: 38 SKIPPED: 0 FAILED: 3
-      1. Error: (unknown) (@test-lnt_diff.R#4) 
-      2. Error: Test similarity (@test-lnt_similarity.R#8) 
-      3. Error: Test similarity warnings and errors (@test-lnt_similarity.R#26) 
+      	...processing date 2010-01-09: 0 duplicates found [0.025 secs]. 		
+      	...processing date 2010-01-10: 0 duplicates found [0.041 secs]. 		
+      	...processing date 2010-01-11: 9 duplicates found [1.89 secs]. 		
+      Threshold = 0.99; 4 days processed; 4 duplicates found; in 1.89 secsChecking similiarity for 10 articles over 3 dates...
+      	...quanteda dfm construced for similarity comparison [0.027 secs].
+      	...processing date 2010-01-08: 0 duplicates found [0.027 secs]. 		
+      	...processing date 2010-01-10: 0 duplicates found [0.043 secs]. 		
+      	...processing date 2010-01-11: 9 duplicates found [1.86 secs]. 		
+      Threshold = 0.99; 3 days processed; 4 duplicates found; in 1.86 secsCreating LNToutput from input 1 files...
+      ══ testthat results  ════════════════════════════════════════════════════════════════════════════════════
+      OK: 48 SKIPPED: 0 FAILED: 1
+      1. Error: Convert LNToutput to quanteda (@test-lnt_convert.R#19) 
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    LexisNexisTools Version 0.2.1
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    OMP: Warning #96: Cannot form a team with 12 threads, using 2 instead.
-    OMP: Hint Consider unsetting KMP_DEVICE_THREAD_LIMIT (KMP_ALL_THREADS), KMP_TEAMS_THREAD_LIMIT, and OMP_THREAD_LIMIT (if any are set).
-    Quitting from lines 199-205 (demo.Rmd) 
-    Error: processing vignette 'demo.Rmd' failed with diagnostics:
-    invalid class "dfm" object: Dimnames[1] is not a character vector
-    Execution halted
     ```
 
 # newsmap
@@ -148,10 +167,10 @@ Version: 1.1.2
       11: tryCatchOne(expr, names, parentenv, handlers[[1L]])
       12: value[[3L]](cond)
       
-      ══ testthat results  ═══════════════════════════════════════════════════════════════════
-      OK: 10 SKIPPED: 0 FAILED: 3
-      1. Error: See if tagging five documents works, and if coarsening works (@test_POS_tag_documents.R#10) 
-      2. Error: See if extractor works (@test_extract_phrases.R#10) 
+      ══ testthat results  ════════════════════════════════════════════════════════════════════════════════════
+      OK: 8 SKIPPED: 0 FAILED: 3
+      1. Error: See if tagging five documents works, and if coarsening works (@test_POS_tag_documents.R#7) 
+      2. Error: See if extractor works (@test_extract_phrases.R#7) 
       3. Error: extract right spans (@test_phrasemachine.R#4) 
       
       Error: testthat unit tests failed
@@ -162,16 +181,9 @@ Version: 1.1.2
     ```
     Error in re-building vignettes:
       ...
-    Unable to find any JVMs matching version "(null)".
-    No Java runtime present, try --request to install.
-    Quitting from lines 116-124 (getting_started_with_phrasemachine.Rmd) 
+    Quitting from lines 82-91 (getting_started_with_phrasemachine.Rmd) 
     Error: processing vignette 'getting_started_with_phrasemachine.Rmd' failed with diagnostics:
-    .onLoad failed in loadNamespace() for 'rJava', details:
-      call: dyn.load(file, DLLpath = DLLpath, ...)
-      error: unable to load shared object '/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/phrasemachine/rJava/libs/rJava.so':
-      dlopen(/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/phrasemachine/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
-      Referenced from: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/phrasemachine/rJava/libs/rJava.so
-      Reason: image not found
+    unused argument (alist())
     Execution halted
     ```
 
@@ -179,6 +191,44 @@ Version: 1.1.2
     ```
     Unable to find any JVMs matching version "(null)".
     No Java runtime present, try --request to install.
+    ```
+
+# preText
+
+Version: 0.6.2
+
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+                          Arthur Spirling, NYU
+      Type vignette('getting_started_with_preText') to get started.
+      Development website: https://github.com/matthewjdenny/preText
+      > 
+      > test_check("preText")
+      [31m──[39m [31m1. Error: Small example works (@test_factorial_preprocessing.R#6) [39m [31m───────────────────────────────────[39m
+      unused argument (alist())
+      1: documents[1:10, ] at testthat/test_factorial_preprocessing.R:6
+      
+      ══ testthat results  ════════════════════════════════════════════════════════════════════════════════════
+      OK: 0 SKIPPED: 0 FAILED: 1
+      1. Error: Small example works (@test_factorial_preprocessing.R#6) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 60-69 (getting_started_with_preText.Rmd) 
+    Error: processing vignette 'getting_started_with_preText.Rmd' failed with diagnostics:
+    unused argument (alist())
+    Execution halted
     ```
 
 # readtext
@@ -211,42 +261,73 @@ Version: 1.0
 
 Version: 0.5.6
 
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    Running examples in ‘sentometrics-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: add_features
+    > ### Title: Add feature columns to a (sento)corpus object
+    > ### Aliases: add_features
+    > 
+    > ### ** Examples
+    > 
+    > data("usnews", package = "sentometrics")
+    > 
+    > set.seed(505)
+    > 
+    > # construct a corpus and add (a) feature(s) to it
+    > corpus <- quanteda::corpus_sample(sento_corpus(corpusdf = usnews), 500)
+    Warning: metacorpus argument is not used in sento_corpus()
+    Warning in corp$tokens <- NULL : Coercing LHS to a list
+    Error in corpus_sample.default(sento_corpus(corpusdf = usnews), 500) : 
+      corpus_sample() only works on corpus objects.
+    Calls: <Anonymous> -> corpus_sample.default
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      ══ testthat results  ════════════════════════════════════════════════════════════════════════════════════
+      OK: 15 SKIPPED: 0 FAILED: 10
+      1.  Error: (unknown) (@test_aggregation.R#11) 
+      2.  Error: (unknown) (@test_attribution.R#11) 
+      3.  Failure: Corpus building works and fails when appropriate (@test_corpus_building.R#15) 
+      4.  Error: Corpus building works and fails when appropriate (@test_corpus_building.R#17) 
+      5.  Error: Conversion to sentocorpus from quanteda corpus (@test_corpus_building.R#26) 
+      6.  Error: (unknown) (@test_corpus_building.R#35) 
+      7.  Error: (unknown) (@test_measures_manipulation.R#11) 
+      8.  Error: (unknown) (@test_methods_sentomeasures.R#11) 
+      9.  Error: (unknown) (@test_model_specification.R#11) 
+      10. Error: (unknown) (@test_sentiment_computation.R#21) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 ## In both
 
-*   checking whether package ‘sentometrics’ can be installed ... ERROR
+*   checking Rd cross-references ... NOTE
     ```
-    Installation failed.
-    See ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/sentometrics/new/sentometrics.Rcheck/00install.out’ for details.
+    Package unavailable to check Rd xrefs: ‘MCS’
     ```
 
-## Installation
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 4436 marked UTF-8 strings
+    ```
 
-### Devel
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
+    ```
 
-```
-* installing *source* package ‘sentometrics’ ...
-** package ‘sentometrics’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=gnu++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/sentometrics/Rcpp/include" -I"/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/sentometrics/RcppArmadillo/include" -I"/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/sentometrics/RcppParallel/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘sentometrics’
-* removing ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/sentometrics/new/sentometrics.Rcheck/sentometrics’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘sentometrics’ ...
-** package ‘sentometrics’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -std=gnu++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/sentometrics/Rcpp/include" -I"/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/sentometrics/RcppArmadillo/include" -I"/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/library.noindex/sentometrics/RcppParallel/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2 -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘sentometrics’
-* removing ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/sentometrics/old/sentometrics.Rcheck/sentometrics’
-
-```
 # spacyr
 
 Version: 1.0
@@ -295,17 +376,83 @@ Version: 0.9.0
 
 Version: 0.2.0
 
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      3: purrr::compact(quanteda::metacorpus(x))
+      4: discard(.x, function(x) is_empty(.f(x)))
+      5: probe(.x, .p, ...)
+      6: map_lgl(.x, .p, ...)
+      7: quanteda::metacorpus
+      8: getExportedValue(pkg, name)
+      9: stop(gettextf("'%s' is not an exported object from 'namespace:%s'", name, getNamespaceName(ns)), call. = FALSE, 
+             domain = NA)
+      
+      ══ testthat results  ════════════════════════════════════════════════════════════════════════════════════
+      OK: 276 SKIPPED: 0 FAILED: 1
+      1. Error: Can glance a corpus from quanteda using accessor functions (@test-corpus-tidiers.R#62) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Unable to find any JVMs matching version "(null)".
     No Java runtime present, try --request to install.
+    Missing or unexported object: ‘quanteda::metacorpus’
     ```
 
 # tosca
 
 Version: 0.1-3
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > ### Name: as.corpus.textmeta
+    > ### Title: Transform textmeta to corpus
+    > ### Aliases: as.corpus.textmeta
+    > ### Keywords: manip
+    > 
+    > ### ** Examples
+    > 
+    > texts <- list(A="Give a Man a Fish, and You Feed Him for a Day.
+    +  Teach a Man To Fish, and You Feed Him for a Lifetime",
+    +  B="So Long, and Thanks for All the Fish",
+    +  C="A very able manipulative mathematician, Fisher enjoys a real mastery
+    +  in evaluating complicated multiple integrals.")
+    > 
+    > obj <- textmeta(meta=data.frame(id=c("A", "B", "C", "D"),
+    +  title=c("Fishing", "Don't panic!", "Sir Ronald", "Berlin"),
+    +  date=c("1885-01-02", "1979-03-04", "1951-05-06", "1967-06-02"),
+    +  additionalVariable=1:4, stringsAsFactors=FALSE), text=texts)
+    > 
+    > corp <- as.corpus.textmeta(obj)
+    Error: 'metadoc<-' is not an exported object from 'namespace:quanteda'
+    Execution halted
+    ```
+
+*   checking Rd cross-references ... WARNING
+    ```
+    Missing link or links in documentation object 'as.corpus.textmeta.Rd':
+      ‘[quanteda]{metadoc}’
+    
+    See section 'Cross-references' in the 'Writing R Extensions' manual.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Missing or unexported object: ‘quanteda::metadoc’
+    ```
 
 ## In both
 
