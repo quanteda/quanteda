@@ -314,19 +314,19 @@ corpus.Corpus <- function(x, ...) {
 # Internal function to create corpus meta data
 meta <- function(source = c("character", "corpus", "kwic", "list"), metacorpus = NULL) {
     source <- match.arg(source)
-    l <- list(
-         "source" = source,
-         "package-version" = utils::packageVersion("quanteda"),
-         "r-version" = getRversion(),
-         "system" = Sys.info()[c("sysname", "machine", "user")],
-         "directory" = getwd(),
-         "created" = Sys.Date()
-         )
+    result <- list(
+          "source" = source,
+          "package-version" = utils::packageVersion("quanteda"),
+          "r-version" = getRversion(),
+          "system" = Sys.info()[c("sysname", "machine", "user")],
+          "directory" = getwd(),
+          "created" = Sys.Date()
+          )
     
     # only for backward compatibility
     if (is.list(metacorpus)) 
-        l <- c(l, metacorpus)
-    return(l)
+        result <- c(result, metacorpus)
+    return(result)
 }
 
 # internal function to rbind data.frames that have different columns
