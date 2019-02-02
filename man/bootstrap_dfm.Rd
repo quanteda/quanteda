@@ -32,9 +32,10 @@ Function produces multiple, resampled \link{dfm} objects, based on
 }
 \examples{
 # bootstrapping from the original text
+set.seed(10)
 txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
          texttwo = "Premiere phrase.  Deuxieme phrase.")
-bootstrap_dfm(txt, n = 3)
+bootstrap_dfm(txt, n = 3, verbose = TRUE)
          
 }
 \author{

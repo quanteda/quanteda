@@ -15,7 +15,7 @@ corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
 \item{replace}{Should sampling be with replacement?}
 
 \item{prob}{A vector of probability weights for obtaining the elements of the
-vector being sampled.}
+vector being sampled.  May not be applied when \code{by} is used.}
 
 \item{by}{a grouping variable for sampling.  Useful for resampling
 sub-document units such as sentences, for instance by specifying \code{by =
@@ -35,6 +35,7 @@ or without replacement.  Works just as \code{\link{sample}} works for the
 documents and their associated document-level variables.
 }
 \examples{
+set.seed(2000)
 # sampling from a corpus
 summary(corpus_sample(data_corpus_inaugural, 5))
 summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))

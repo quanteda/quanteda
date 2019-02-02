@@ -4,7 +4,6 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.",
              textthree = "Sentence three is really short.")
-
     corp <- corpus(txt,
                    docvars = data.frame(country = c("UK", "USA", "UK"), 
                                         year = c(1990, 2000, 2005)))
@@ -29,6 +28,11 @@ test_that("bootstrap_dfm works with character and corpus objects", {
 test_that("bootstrap_dfm works as planned with dfm", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.")
+    corp <- corpus(txt,
+                       docvars = data.frame(country = c("UK", "USA"),
+                                            year = c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    dfmat <- dfm(corpus_reshape(corp, to = "sentences"))
 
     corp <- corpus(txt, 
                        docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
@@ -55,3 +59,16 @@ test_that("bootstrap_dfm works as planned with dfm", {
     )
 })
 
+test_that("verbose messages work", {
+    txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
+             texttwo = "Premiere phrase.  Deuxieme phrase.",
+             textthree = "Sentence three is really short.")
+    expect_message(
+        bootstrap_dfm(txt, n = 1, verbose = TRUE),
+        "Segmenting the .+ into sentences"
+    )
+    expect_message(
+        bootstrap_dfm(txt, n = 1, verbose = TRUE),
+        "resampling and forming dfms: 0"
+    )
+})

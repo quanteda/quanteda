@@ -252,7 +252,7 @@ test_that("create a corpus on a corpus", {
 
 test_that("corpus constructor works with tibbles", {
     skip_if_not_installed("tibble")
-    dd <- tibble::data_frame(a=1:3, text=c("Hello", "quanteda", "world"))
+    dd <- tibble::tibble(a=1:3, text=c("Hello", "quanteda", "world"))
     expect_is(
         corpus(dd),
         "corpus"

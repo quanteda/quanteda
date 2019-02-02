@@ -51,7 +51,6 @@ test_that("upgrade_docvars() works", {
                           "segnum_" = rep(1L, 3), 
                           "var1" = c(100, 200, 300),
                           "var2" = c(TRUE, TRUE, FALSE),
-                          check.names = FALSE,
                           stringsAsFactors = FALSE)
     docvar4$lis <- list(1:3, -5, 3:4)
 
@@ -81,7 +80,6 @@ test_that("get_docvars() works", {
                          "segnum_" = rep(1L, 3), 
                          "var1" = c(100, 200, 300),
                          "var2" = c(TRUE, TRUE, FALSE),
-                         check.names = FALSE,
                          stringsAsFactors = FALSE)
     
     expect_identical(
@@ -90,14 +88,13 @@ test_that("get_docvars() works", {
                    "docid_" = c("A", "B", "C"), 
                    "docnum_" = 1L:3L, 
                    "segnum_" = rep(1L, 3), 
-                   check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
     expect_error(quanteda:::select_docvars(data, "docid_", user = FALSE, system = FALSE))
     expect_identical(
         quanteda:::select_docvars(data, "docid_", user = FALSE, system = TRUE),
         data.frame("docid_" = c("A", "B", "C"), 
-                   check.names = FALSE, stringsAsFactors = FALSE)
+                   stringsAsFactors = FALSE)
     )
     expect_identical(
         quanteda:::select_docvars(data, "docid_", user = FALSE, system = TRUE, drop = TRUE),
@@ -107,7 +104,6 @@ test_that("get_docvars() works", {
         quanteda:::select_docvars(data),
         data.frame("var1" = c(100, 200, 300),
                    "var2" = c(TRUE, TRUE, FALSE),
-                   check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
     expect_identical(
@@ -128,7 +124,6 @@ test_that("set_docvars() works", {
                        "segnum_" = rep(1L, 3), 
                        "var1" = c(100, 200, 300),
                        "var2" = c(TRUE, TRUE, FALSE),
-                       check.names = FALSE,
                        stringsAsFactors = FALSE)
     
     quanteda:::set_docvars(data, "var2") <- c(10, 20, 30)
@@ -277,67 +272,67 @@ test_that("object always have docvars in the same rows as documents", {
     txt <- data_char_ukimmig2010
     corp1 <- corpus(txt)
     expect_true(nrow(docvars(corp1)) == ndoc(corp1))
-    expect_true(all(rownames(docvars(corp1)) == seq_len(ndoc(corp1))))
+    expect_true(all(row.names(docvars(corp1)) == seq_len(ndoc(corp1))))
     
     corp2 <- corpus_segment(corp1, "\\p{P}", valuetype = "regex")
     expect_true(nrow(docvars(corp2)) == ndoc(corp2))
-    expect_true(all(rownames(docvars(corp2)) == seq_len(ndoc(corp2))))
+    expect_true(all(row.names(docvars(corp2)) == seq_len(ndoc(corp2))))
     
     corp3 <- corpus_reshape(corp1, to = "sentences")
     expect_true(nrow(docvars(corp3)) == ndoc(corp3))
-    expect_true(all(rownames(docvars(corp3)) == seq_len(ndoc(corp3))))
+    expect_true(all(row.names(docvars(corp3)) == seq_len(ndoc(corp3))))
     
     corp4 <- corpus_sample(corp1, size = 5)
     expect_true(nrow(docvars(corp4)) == ndoc(corp4))
-    expect_true(all(rownames(docvars(corp4)) == seq_len(ndoc(corp4))))
+    expect_true(all(row.names(docvars(corp4)) == seq_len(ndoc(corp4))))
     
     toks1 <- tokens(txt)
     expect_true(nrow(docvars(toks1)) == ndoc(toks1))
-    expect_true(all(rownames(docvars(toks1)) == seq_len(ndoc(toks1))))
+    expect_true(all(row.names(docvars(toks1)) == seq_len(ndoc(toks1))))
     
     toks2 <- tokens(corpus(txt))
     expect_true(nrow(docvars(toks2)) == ndoc(toks2))
-    expect_true(all(rownames(docvars(toks2)) == seq_len(ndoc(toks2))))
+    expect_true(all(row.names(docvars(toks2)) == seq_len(ndoc(toks2))))
     
     toks3 <- quanteda:::tokens_group(toks1, rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(toks3)) == ndoc(toks3))
-    expect_true(all(rownames(docvars(toks3)) == seq_len(ndoc(toks3))))
+    expect_true(all(row.names(docvars(toks3)) == seq_len(ndoc(toks3))))
     
     toks4 <- tokens_select(toks1, stopwords())
     expect_true(nrow(docvars(toks4)) == ndoc(toks4))
-    expect_true(all(rownames(docvars(toks4)) == seq_len(ndoc(toks4))))
+    expect_true(all(row.names(docvars(toks4)) == seq_len(ndoc(toks4))))
     
     dfm1 <- dfm(txt)
     expect_true(nrow(docvars(dfm1)) == ndoc(dfm1))
-    expect_true(all(rownames(docvars(dfm1)) == seq_len(ndoc(dfm1))))
+    expect_true(all(row.names(docvars(dfm1)) == seq_len(ndoc(dfm1))))
     
     dfm2 <- dfm(tokens(txt))
     expect_true(nrow(docvars(dfm2)) == ndoc(dfm2))
-    expect_true(all(rownames(docvars(dfm2)) == seq_len(ndoc(dfm2))))
+    expect_true(all(row.names(docvars(dfm2)) == seq_len(ndoc(dfm2))))
     
     dfm3 <- dfm(corpus(txt))
     expect_true(nrow(docvars(dfm3)) == ndoc(dfm3))
-    expect_true(all(rownames(docvars(dfm3)) == seq_len(ndoc(dfm3))))
+    expect_true(all(row.names(docvars(dfm3)) == seq_len(ndoc(dfm3))))
     
     dfm4 <- dfm_group(dfm1, rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(dfm4)) == ndoc(dfm4))
-    expect_true(all(rownames(docvars(dfm4)) == seq_len(ndoc(dfm4))))
+    expect_true(all(row.names(docvars(dfm4)) == seq_len(ndoc(dfm4))))
     
     dfm5 <- dfm(dfm1, group = rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(dfm5)) == ndoc(dfm5))
-    expect_true(all(rownames(docvars(dfm5)) == seq_len(ndoc(dfm5))))
+    expect_true(all(row.names(docvars(dfm5)) == seq_len(ndoc(dfm5))))
     
     dfm6 <- dfm_subset(dfm1, rep(c(TRUE, TRUE, FALSE), 3))
     expect_true(nrow(docvars(dfm6)) == ndoc(dfm6))
-    expect_true(all(rownames(docvars(dfm6)) == seq_len(ndoc(dfm6))))
+    expect_true(all(row.names(docvars(dfm6)) == seq_len(ndoc(dfm6))))
     
     dfm7 <- rbind(dfm1, dfm1)
     expect_true(nrow(docvars(dfm7)) == ndoc(dfm7))
-    expect_true(all(rownames(docvars(dfm7)) == seq_len(ndoc(dfm7))))
+    expect_true(all(row.names(docvars(dfm7)) == seq_len(ndoc(dfm7))))
     
     dfm8 <- suppressWarnings(cbind(dfm1, dfm1))
     expect_true(nrow(docvars(dfm8)) == ndoc(dfm8))
-    expect_true(all(rownames(docvars(dfm8)) == seq_len(ndoc(dfm8))))
+    expect_true(all(row.names(docvars(dfm8)) == seq_len(ndoc(dfm8))))
     
 })
 
