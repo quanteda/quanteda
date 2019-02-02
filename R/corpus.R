@@ -160,7 +160,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
     names(x) <- docvar[["docname_"]]
     class(x) <- "corpus"
     attr(x, "unit") <- "documents"
-    attr(x, "meta") <- meta("character")
+    attr(x, "meta") <- meta("character", ...)
     attr(x, "docvars") <- docvar
     return(x)
 }
@@ -312,15 +312,21 @@ corpus.Corpus <- function(x, ...) {
 }
 
 # Internal function to create corpus meta data
-meta <- function(source = c("character", "corpus", "kwic", "list")) {
+meta <- function(source = c("character", "corpus", "kwic", "list"), metacorpus = NULL) {
     source <- match.arg(source)
-    list("source" = source,
+    l <- list(
+         "source" = source,
          "package-version" = utils::packageVersion("quanteda"),
          "r-version" = getRversion(),
          "system" = Sys.info()[c("sysname", "machine", "user")],
          "directory" = getwd(),
          "created" = Sys.Date()
-    )
+         )
+    
+    # only for backward compatibility
+    if (is.list(metacorpus)) 
+        l <- c(l, metacorpus)
+    return(l)
 }
 
 # internal function to rbind data.frames that have different columns
