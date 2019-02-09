@@ -168,3 +168,53 @@ test_that("raises error when dfm is empty (#1419)",  {
     
 })
 
+
+test_that("gain.text_modelnb raises error for exception handlers",  {
+    
+    txt <- c(d1 = "Chinese Beijing Chinese",
+             d2 = "Chinese Chinese Shanghai",
+             d3 = "Chinese Macao",
+             d4 = "Tokyo Japan Chinese",
+             d5 = "Chinese Chinese Chinese Tokyo Japan")
+    trainingset <- dfm(txt, tolower = FALSE)
+    trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
+    
+    ## replicate IIR p261 prediction for test set (document 5)
+    nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
+    
+    expect_error(gain.textmodel_nb(trainingclass),
+                 "model must be a textmodel_nb object")
+    
+    expect_error(gain.textmodel_nb(nb,class_specific = 123),
+                 "class_specific must be a logical (TRUE or FALSE)",
+                 fixed = TRUE)
+
+})
+
+
+test_that("gain.text_modelnb works accurately",  {
+    
+    txt <- c(d1 = "Chinese",
+             d2 = "Tokyo",
+             d3 = "Macao")
+    trainingset <- dfm(txt, tolower = FALSE)
+    trainingclass <- factor(c("Y", "Y", "N"), ordered = TRUE)
+    nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
+    
+    
+    # Term 1: P(class) * log (P (class))
+    initial_entropy = -(2/3 * log(2/3,base=2)) + -(1/3 * log(1/3, base = 2))
+    
+    # Term 2: P(w) * summation over c P(class | w) * log(P(class|w))
+    unconditional_entropy_1 = nb$Pw * (apply(nb$PcGw, MARGIN = 2, function(x) sum (x * log(x,base=2))))
+    
+    # Term 3: P(w') * summation over c P(class|w) * log(P(class|w))
+    PcGwcomp = t(data.frame(t(nb$Pc - (nb$PwGc * nb$Pc))) / (1-nb$Pw))
+    unconditional_entropy_2 = (1-nb$Pw) * apply(PcGwcomp, MARGIN = 2, function(x) sum(x * log(x,base=2)))
+    
+    info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy_1 + unconditional_entropy_2)))[[1]]
+    expect_equal(info_gain, 
+                 gain.textmodel_nb(nb, class_specific = F))
+    
+})
+

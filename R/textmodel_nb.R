@@ -348,12 +348,7 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
 #' gain.textmodel_nb(nb)
-#'  Chinese      Beijing     Shanghai        Macao       Tokyo       Japan
-#'  N 0.019878397 0.0009238016 0.0009238016 0.0009238016 0.018915497 0.018915497
-#'  Y 0.006033503 0.0002872741 0.0002872741 0.0002872741 0.008886182 0.008886182
 #' gain.textmodel_nb(nb,class_specific = FALSE)
-#'  Chinese     Beijing    Shanghai       Macao      Tokyo      Japan
-#'  info_gain 0.0259119 0.001211076 0.001211076 0.001211076 0.02780168 0.02780168
 #' @export
 
 gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
