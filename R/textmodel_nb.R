@@ -331,3 +331,69 @@ colNorm <- function(x) {
 print.predict.textmodel_nb <- function(x, ...) {
     print(unclass(x))
 }
+
+
+#' Computes the information gain of features from a fitted \link{textmodel_nb} object
+#' @param model a \link{textmodel_nb} object
+#' @param class_specific  whether to return class specific information gain scores or not. Defaults to TRUE.
+#' @param base the base of the logarithmic function to be used. Defaults to 2.
+#' @keywords  textmodel textmodel_nb
+#' @examples 
+#' nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
+#' gain.textmodel_nb(nb)
+#'  Chinese      Beijing     Shanghai        Macao       Tokyo       Japan
+#'  N 0.019878397 0.0009238016 0.0009238016 0.0009238016 0.018915497 0.018915497
+#'  Y 0.006033503 0.0002872741 0.0002872741 0.0002872741 0.008886182 0.008886182
+#' gain.textmodel_nb(nb,class_specific = FALSE)
+#'  Chinese     Beijing    Shanghai       Macao      Tokyo      Japan
+#'  info_gain 0.0259119 0.001211076 0.001211076 0.001211076 0.02780168 0.02780168
+#' @method gain textmodel.nb
+#' @export
+
+gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
+    if (!('textmodel_nb' %in% class(model))) stop('model must be a textmodel_nb object')
+    
+    # The formula for entropy of word w is 
+    # - summation over all classes ( P(class) * log P(class))  (Term 1)
+    # + P(w) * summation over all classes (P(class |w ) * log(P(class|w)) ) (Term 2)
+    # + P(w') * summation over all classes (P(class | w') * log(P(class|w')) ) (Term 3)
+    
+    # Term 1: Initial Entropy
+    # Get summation over all classes of  P(class) * log P(class)
+    initial_entropy <- apply(data.frame(model$Pc),MARGIN = 2, function(x) -1 * x * log(x,base = base))
+    if (class_specific == F) initial_entropy = sum(initial_entropy)
+    
+    # Term 2: Entropy Given w
+    # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
+    conditional_entropy <- apply(model$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
+    if (class_specific == F) conditional_entropy = colSums(conditional_entropy)
+    
+    # Now get the unconditional entropy  := P(w) * conditional entropy
+    unconditional_entropy <-  t(data.frame(t(conditional_entropy)) * model$Pw)
+    
+    
+    # Term 3: Entropy Given w'
+    # Get the second conditional entropy := summation over all classes P(class | w') * log(P(class|w'))
+    # where P(w') denotes the probability that a word is not in a document
+    # To derive P(class|w'), we note:
+    # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w') 
+    # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w'))
+    Pcintersectw <- data.frame(model$PwGc) * model$Pc
+    Pcintersectwcomp <- (model$Pc - Pcintersectw)
+    PcGwcomp <- t(data.frame(t(Pcintersectwcomp)) / (1-model$Pw)) # P(class | w') =  P(class ∩ w') / P(w')
+    #PcGwcomp is a dataframe that captures conditional on a word not being in the document, what is the probability that it belongs to a class?
+    
+    conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
+    if (class_specific == F) conditional_entropy_comp = colSums(conditional_entropy_comp)
+    
+    unconditional_entromp_comp <- t((1-model$Pw) * data.frame(t(conditional_entropy_comp)))
+    
+    # Add the three terms and return either as matrix of named-list 
+    if (class_specific == T) {
+        info_gain <-  apply(unconditional_entropy + unconditional_entromp_comp, MARGIN = 2, function(x) x + initial_entropy)
+        rownames(info_gain) <- rownames(initial_entropy)
+    } else if (class_specific == F) {
+        info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy + unconditional_entromp_comp)))[[1]]
+    }
+    return(info_gain)
+}
