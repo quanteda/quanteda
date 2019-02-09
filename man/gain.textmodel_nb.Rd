@@ -4,7 +4,7 @@
 \alias{gain.textmodel_nb}
 \title{Computes the information gain of features from a fitted \link{textmodel_nb} object}
 \usage{
-\method{gain}{textmodel.nb}(model, base = 2, class_specific = TRUE)
+gain.textmodel_nb(model, base = 2, class_specific = TRUE)
 }
 \arguments{
 \item{model}{a \link{textmodel_nb} object}
@@ -17,6 +17,13 @@
 Computes the information gain of features from a fitted \link{textmodel_nb} object
 }
 \examples{
+txt <- c(d1 = "Chinese Beijing Chinese",
+d2 = "Chinese Chinese Shanghai",
+d3 = "Chinese Macao",
+d4 = "Tokyo Japan Chinese",
+d5 = "Chinese Chinese Chinese Tokyo Japan")
+trainingset <- dfm(txt, tolower = FALSE)
+trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
 gain.textmodel_nb(nb)
  Chinese      Beijing     Shanghai        Macao       Tokyo       Japan

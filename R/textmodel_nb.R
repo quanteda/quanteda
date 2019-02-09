@@ -354,7 +354,6 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' gain.textmodel_nb(nb,class_specific = FALSE)
 #'  Chinese     Beijing    Shanghai       Macao      Tokyo      Japan
 #'  info_gain 0.0259119 0.001211076 0.001211076 0.001211076 0.02780168 0.02780168
-#' @method gain textmodel.nb
 #' @export
 
 gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
