@@ -339,6 +339,13 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' @param base the base of the logarithmic function to be used. Defaults to 2.
 #' @keywords  textmodel textmodel_nb
 #' @examples 
+#' txt <- c(d1 = "Chinese Beijing Chinese",
+#' d2 = "Chinese Chinese Shanghai",
+#' d3 = "Chinese Macao",
+#' d4 = "Tokyo Japan Chinese",
+#' d5 = "Chinese Chinese Chinese Tokyo Japan")
+#' trainingset <- dfm(txt, tolower = FALSE)
+#' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
 #' gain.textmodel_nb(nb)
 #'  Chinese      Beijing     Shanghai        Macao       Tokyo       Japan
@@ -352,6 +359,7 @@ print.predict.textmodel_nb <- function(x, ...) {
 
 gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
     if (!('textmodel_nb' %in% class(model))) stop('model must be a textmodel_nb object')
+    if (class(class_specific) != 'logical') stop('class_specific must be a logical (TRUE or FALSE)')
     
     # The formula for entropy of word w is 
     # - summation over all classes ( P(class) * log P(class))  (Term 1)
@@ -377,7 +385,7 @@ gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
     # where P(w') denotes the probability that a word is not in a document
     # To derive P(class|w'), we note:
     # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w') 
-    # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w'))
+    # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
     Pcintersectw <- data.frame(model$PwGc) * model$Pc
     Pcintersectwcomp <- (model$Pc - Pcintersectw)
     PcGwcomp <- t(data.frame(t(Pcintersectwcomp)) / (1-model$Pw)) # P(class | w') =  P(class ∩ w') / P(w')
@@ -386,14 +394,14 @@ gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
     conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
     if (class_specific == F) conditional_entropy_comp = colSums(conditional_entropy_comp)
     
-    unconditional_entromp_comp <- t((1-model$Pw) * data.frame(t(conditional_entropy_comp)))
+    unconditional_entropy_comp <- t((1-model$Pw) * data.frame(t(conditional_entropy_comp)))
     
     # Add the three terms and return either as matrix of named-list 
     if (class_specific == T) {
-        info_gain <-  apply(unconditional_entropy + unconditional_entromp_comp, MARGIN = 2, function(x) x + initial_entropy)
+        info_gain <-  apply(unconditional_entropy + unconditional_entropy_comp, MARGIN = 2, function(x) x + initial_entropy)
         rownames(info_gain) <- rownames(initial_entropy)
     } else if (class_specific == F) {
-        info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy + unconditional_entromp_comp)))[[1]]
+        info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy + unconditional_entropy_comp)))[[1]]
     }
     return(info_gain)
 }
