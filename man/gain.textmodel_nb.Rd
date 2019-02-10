@@ -2,7 +2,8 @@
 % Please edit documentation in R/textmodel_nb.R
 \name{gain.textmodel_nb}
 \alias{gain.textmodel_nb}
-\title{Computes the information gain of features from a fitted \link{textmodel_nb} object}
+\title{Compute the information gain of features from a fitted \link{textmodel_nb}
+object}
 \usage{
 gain.textmodel_nb(model, base = 2, class_specific = TRUE)
 }
@@ -11,22 +12,30 @@ gain.textmodel_nb(model, base = 2, class_specific = TRUE)
 
 \item{base}{the base of the logarithmic function to be used. Defaults to 2.}
 
-\item{class_specific}{whether to return class specific information gain scores or not. Defaults to TRUE.}
+\item{class_specific}{whether to return class specific information gain
+scores or not. Defaults to \code{TRUE}.}
 }
 \description{
-Computes the information gain of features from a fitted \link{textmodel_nb} object
+Computes the information gain of features from a fitted \link{textmodel_nb}
+object.  See
 }
 \examples{
 txt <- c(d1 = "Chinese Beijing Chinese",
-d2 = "Chinese Chinese Shanghai",
-d3 = "Chinese Macao",
-d4 = "Tokyo Japan Chinese",
-d5 = "Chinese Chinese Chinese Tokyo Japan")
+         d2 = "Chinese Chinese Shanghai",
+         d3 = "Chinese Macao",
+         d4 = "Tokyo Japan Chinese",
+         d5 = "Chinese Chinese Chinese Tokyo Japan")
 trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
-nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-gain.textmodel_nb(nb)
-gain.textmodel_nb(nb,class_specific = FALSE)
+tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
+gain.textmodel_nb(tmod)
+gain.textmodel_nb(tmod, class_specific = FALSE)
+}
+\references{
+Jurafsky, Daniel and James H. Martin.  (2018).
+\href{https://web.stanford.edu/~jurafsky/slp3/4.pdf}{\emph{Speech and
+Language Processing}}.   Stanford University typescript.  Draft of September
+23.
 }
 \keyword{textmodel}
 \keyword{textmodel_nb}

@@ -90,41 +90,41 @@
 #'                         prior = "docfreq")
 #' predict(tmod2, newdata = trainingset[5, ])
 #' @export
-textmodel_nb <- function(x, y, smooth = 1, 
-                         prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb <- function(x, y, smooth = 1,
+                         prior = c("uniform", "docfreq", "termfreq"),
                          distribution = c("multinomial", "Bernoulli")) {
     UseMethod("textmodel_nb")
 }
 
 #' @export
-textmodel_nb.default <- function(x, y, smooth = 1, 
-                                 prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb.default <- function(x, y, smooth = 1,
+                                 prior = c("uniform", "docfreq", "termfreq"),
                                  distribution = c("multinomial", "Bernoulli")) {
     stop(friendly_class_undefined_message(class(x), "textmodel_nb"))
-}    
+} 
     
 #' @export
-textmodel_nb.dfm <- function(x, y, smooth = 1, 
-                             prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb.dfm <- function(x, y, smooth = 1,
+                             prior = c("uniform", "docfreq", "termfreq"),
                              distribution = c("multinomial", "Bernoulli")) {
-    
+
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
-    
+
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
     call <- match.call()
-    
+
     y <- factor(y)
-    temp <- x[!is.na(y),]
+    temp <- x[!is.na(y), ]
     class <- y[!is.na(y)]
-    
+
     ## distribution
     if (distribution == "Bernoulli")
         temp <- dfm_weight(temp, "boolean")
 
     temp <- dfm_group(temp, class)
-    
+
     freq <- rowSums(as.matrix(table(class)))
     if (prior == "uniform") {
         Pc <- rep(1 / ndoc(temp), ndoc(temp))
@@ -136,7 +136,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         Pc <- rowSums(temp)
         Pc <- Pc / sum(Pc)
     }
-    
+
     if (distribution == "multinomial") {
         PwGc <- dfm_weight(dfm_smooth(temp, smooth), scheme = "prop")
     } else if (distribution == "Bernoulli") {
@@ -144,16 +144,16 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         PwGc <- (temp + smooth) / (freq + smooth * ndoc(temp))
         PwGc <- as(PwGc, "dgeMatrix")
     }
-    
+
     # order Pc so that these are the same order as rows of PwGc
     Pc <- Pc[rownames(PwGc)]
 
     ## posterior: class x words, cols sum to 1
-    PcGw <- colNorm(PwGc * base::outer(Pc, rep(1, ncol(PwGc))))  
+    PcGw <- colNorm(PwGc * base::outer(Pc, rep(1, ncol(PwGc))))
 
     # rename row dimensions
     names(dimnames(PcGw))[1] <- names(dimnames(PwGc))[1] <- "classes"
-    
+
     ## P(w)
     Pw <- t(PwGc) %*% as.numeric(Pc)
 
@@ -196,14 +196,14 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' predict(tmod, type = "logposterior")
 #' @keywords textmodel internal
 #' @export
-predict.textmodel_nb <- function(object, newdata = NULL, 
+predict.textmodel_nb <- function(object, newdata = NULL,
                                  type = c("class", "probability", "logposterior"),
                                  force = FALSE, ...) {
-    
+
     unused_dots(...)
-    
+
     type <- match.arg(type)
-    
+
     if (!is.null(newdata)) {
         data <- as.dfm(newdata)
     } else {
@@ -218,21 +218,21 @@ predict.textmodel_nb <- function(object, newdata = NULL,
     #     object$Pw <- object$Pw[!is_zero,,drop = FALSE]
     # }
     data <- force_conformance(data, colnames(object$PwGc), force)
-    
+
     if (object$distribution == "multinomial") {
-        
+
         # log P(d|c) class conditional document likelihoods
         log_lik <- data %*% t(log(object$PwGc))
         # weight by class priors
         logpos <- t(apply(log_lik, 1, "+", log(object$Pc)))
-        
+
     } else if (object$distribution == "Bernoulli") {
-        
+
         data <- dfm_weight(data, "boolean")
         Nc <- length(object$Pc)
-        
+
         # initialize log posteriors with class priors
-        logpos <- matrix(log(object$Pc), byrow = TRUE, 
+        logpos <- matrix(log(object$Pc), byrow = TRUE,
                             ncol = Nc, nrow = nrow(data),
                             dimnames = list(rownames(data), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
@@ -243,32 +243,32 @@ predict.textmodel_nb <- function(object, newdata = NULL,
             tmp0[is.infinite(tmp0)] <- 0
             logpos[, c] <- logpos[, c] + colSums(tmp0) + colSums(tmp1)
         }
-    } 
+    }
 
     # predict MAP class
     nb.predicted <- colnames(logpos)[apply(logpos, 1, which.max)]
-    
-    
+
+
     if (type == "class") {
         names(nb.predicted) <- docnames(data)
         return(factor(nb.predicted, levels = names(object$Pc)))
     } else if (type == "probability") {
-        
+
         ## compute class posterior probabilities
         post_prob <- matrix(NA, ncol = ncol(logpos), nrow = nrow(logpos),
                             dimnames = dimnames(logpos))
-        
+
         # compute posterior probabilities
         for (j in seq_len(ncol(logpos))) {
             base_lpl <- logpos[, j]
             post_prob[, j] <- 1 / (1 + rowSums(exp(logpos[, -j, drop = FALSE] - base_lpl)))
         }
-        
+
         # result <- list(probability = post_prob)
         result <- post_prob
-        
+
     } else if (type == "logposterior") {
-        
+
         # result <- list(logposterior = logpos)
         result <- logpos
     }
@@ -282,7 +282,7 @@ print.textmodel_nb <- function(x, ...) {
     cat("\nCall:\n")
     print(x$call)
     cat("\n",
-        "Distribution: ", x$distribution, "; ", 
+        "Distribution: ", x$distribution, "; ",
         "prior: ", x$prior, "; ",
         "smoothing value: ", x$smooth, "; ",
         length(na.omit(x$y)), " training documents; ",
@@ -300,9 +300,9 @@ print.textmodel_nb <- function(x, ...) {
 #' @export
 summary.textmodel_nb <- function(object, n = 30, ...) {
     result <- list(
-        'call' = object$call,
-        'class.priors' = as.coefficients_textmodel(object$Pc),
-        'estimated.feature.scores' = as.coefficients_textmodel(head(coef(object), n))
+        "call" = object$call,
+        "class.priors" = as.coefficients_textmodel(object$Pc),
+        "estimated.feature.scores" = as.coefficients_textmodel(head(coef(object), n))
     )
     as.summary.textmodel(result)
 }
@@ -318,7 +318,7 @@ coef.textmodel_nb <- function(object, ...) {
 #' @method coefficients textmodel_nb
 #' @export
 coefficients.textmodel_nb <- function(object, ...) {
-    UseMethod("coef")   
+    UseMethod("coef")
 }
 
 ## make cols add up to one
@@ -333,64 +333,73 @@ print.predict.textmodel_nb <- function(x, ...) {
 }
 
 
-#' Computes the information gain of features from a fitted \link{textmodel_nb} object
+#' Compute the information gain of features from a fitted \link{textmodel_nb}
+#' object
+#' 
+#' Computes the information gain of features from a fitted \link{textmodel_nb}
+#' object.  See  
 #' @param model a \link{textmodel_nb} object
-#' @param class_specific  whether to return class specific information gain scores or not. Defaults to TRUE.
+#' @param class_specific  whether to return class specific information gain
+#'   scores or not. Defaults to \code{TRUE}.
 #' @param base the base of the logarithmic function to be used. Defaults to 2.
-#' @keywords  textmodel textmodel_nb
+#' @references 
+#' Jurafsky, Daniel and James H. Martin.  (2018).
+#' \href{https://web.stanford.edu/~jurafsky/slp3/4.pdf}{\emph{Speech and
+#' Language Processing}}.   Stanford University typescript.  Draft of September
+#' 23.
+#' @keywords textmodel textmodel_nb
 #' @examples 
 #' txt <- c(d1 = "Chinese Beijing Chinese",
-#' d2 = "Chinese Chinese Shanghai",
-#' d3 = "Chinese Macao",
-#' d4 = "Tokyo Japan Chinese",
-#' d5 = "Chinese Chinese Chinese Tokyo Japan")
+#'          d2 = "Chinese Chinese Shanghai",
+#'          d3 = "Chinese Macao",
+#'          d4 = "Tokyo Japan Chinese",
+#'          d5 = "Chinese Chinese Chinese Tokyo Japan")
 #' trainingset <- dfm(txt, tolower = FALSE)
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
-#' nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-#' gain.textmodel_nb(nb)
-#' gain.textmodel_nb(nb,class_specific = FALSE)
+#' tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
+#' gain.textmodel_nb(tmod)
+#' gain.textmodel_nb(tmod, class_specific = FALSE)
 #' @export
+gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE) {
+    if (!("textmodel_nb" %in% class(model))) stop("model must be a textmodel_nb object")
+    if (class(class_specific) != "logical") stop("class_specific must be a logical (TRUE or FALSE)")
 
-gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE){
-    if (!('textmodel_nb' %in% class(model))) stop('model must be a textmodel_nb object')
-    if (class(class_specific) != 'logical') stop('class_specific must be a logical (TRUE or FALSE)')
-    
-    # The formula for entropy of word w is 
+    # The formula for entropy of word w is
     # - summation over all classes ( P(class) * log P(class))  (Term 1)
     # + P(w) * summation over all classes (P(class |w ) * log(P(class|w)) ) (Term 2)
     # + P(w') * summation over all classes (P(class | w') * log(P(class|w')) ) (Term 3)
-    
+
     # Term 1: Initial Entropy
     # Get summation over all classes of  P(class) * log P(class)
-    initial_entropy <- apply(data.frame(model$Pc),MARGIN = 2, function(x) -1 * x * log(x,base = base))
-    if (class_specific == F) initial_entropy = sum(initial_entropy)
-    
+    initial_entropy <- apply(data.frame(model$Pc), MARGIN = 2, function(x) -1 * x * log(x, base = base))
+    if (class_specific == F) initial_entropy <- sum(initial_entropy)
+
     # Term 2: Entropy Given w
     # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
     conditional_entropy <- apply(model$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
-    if (class_specific == F) conditional_entropy = colSums(conditional_entropy)
-    
+    if (class_specific == F) conditional_entropy <- colSums(conditional_entropy)
+
     # Now get the unconditional entropy  := P(w) * conditional entropy
     unconditional_entropy <-  t(data.frame(t(conditional_entropy)) * model$Pw)
-    
-    
+
     # Term 3: Entropy Given w'
     # Get the second conditional entropy := summation over all classes P(class | w') * log(P(class|w'))
     # where P(w') denotes the probability that a word is not in a document
     # To derive P(class|w'), we note:
-    # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w') 
+    # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w')
     # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
     Pcintersectw <- data.frame(model$PwGc) * model$Pc
     Pcintersectwcomp <- (model$Pc - Pcintersectw)
     PcGwcomp <- t(data.frame(t(Pcintersectwcomp)) / (1-model$Pw)) # P(class | w') =  P(class ∩ w') / P(w')
-    #PcGwcomp is a dataframe that captures conditional on a word not being in the document, what is the probability that it belongs to a class?
-    
+    # PcGwcomp is a dataframe that captures conditional on a word not being in the document,
+    # what is the probability that it belongs to a class?
+
     conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
-    if (class_specific == F) conditional_entropy_comp = colSums(conditional_entropy_comp)
-    
-    unconditional_entropy_comp <- t((1-model$Pw) * data.frame(t(conditional_entropy_comp)))
-    
-    # Add the three terms and return either as matrix of named-list 
+    if (class_specific == F) conditional_entropy_comp <- colSums(conditional_entropy_comp)
+
+    unconditional_entropy_comp <- t((1 - model$Pw) * data.frame(t(conditional_entropy_comp)))
+
+    # Add the three terms and return either as matrix of named-list
     if (class_specific == T) {
         info_gain <-  apply(unconditional_entropy + unconditional_entropy_comp, MARGIN = 2, function(x) x + initial_entropy)
         rownames(info_gain) <- rownames(initial_entropy)
