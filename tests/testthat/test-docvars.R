@@ -189,6 +189,40 @@ test_that("docvars is working with tokens", {
     # )
 }) 
 
+test_that("metadoc for tokens works", {
+    skip("Until we resolve metadoc issues")
+    corp <- data_corpus_irishbudget2010
+    metadoc(corp, "language") <- "english"
+    toks <- tokens(corp, include_docvars = TRUE)
+    
+    expect_equal(docvars(toks), docvars(corp))
+    expect_equal(metadoc(toks), metadoc(corp))
+    
+    expect_equal(docvars(toks, 'name'), docvars(corp, 'name'))
+    
+    # Subset
+    toks2 <- toks[metadoc(toks, 'language') == "english"]
+    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
+}) 
+
+test_that("metadoc works with selection", {
+    skip("Until we resolve metadoc issues")
+    mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+                         texttwo = "Premiere phrase.  Deuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    mycorpus_reshaped <- corpus_reshape(mycorpus, to = "sentences")
+    expect_equal(metadoc(mycorpus_reshaped, "document"),
+                 c("textone", "textone", "textone", "texttwo", "texttwo"))
+    expect_equal(
+        metadoc(mycorpus_reshaped, c("document", "segid")),
+        data.frame("_document" = c("textone", "textone", "textone", "texttwo", "texttwo"),
+                   "_segid" = c(1, 2, 3, 1, 2),
+                   check.names = FALSE, stringsAsFactors = FALSE,
+                   row.names = c(paste0("textone.", 1:3), paste0("texttwo.", 1:2)))
+    )
+}) 
+
 test_that("docvars is working with dfm", {
     corp <- data_corpus_irishbudget2010
     toks <- tokens(corp, include_docvars = TRUE)
@@ -384,5 +418,58 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     expect_identical(
         docvars(toks),
         data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+    )
+})
+
+test_that("docvar assignment is fully robust including to renaming (#1603)", {
+    # assigning a data.frame to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- data.frame(testdv = 10:11)
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11)
+    )
+    
+    # assigning a vector to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- c("x", "y")
+    expect_identical(
+        docvars(corp),
+        data.frame(V1 = c("x", "y"), stringsAsFactors = FALSE)
+    )
+    
+    # renaming a docvar
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+               docvars = data.frame(testdv = 10:11))
+    names(docvars(corp))[1] <- "renamed_dv"
+    expect_identical(
+        docvars(corp),
+        data.frame(renamed_dv = 10:11)
+    )
+    expect_identical(
+        texts(corp),
+        c(text1 = "A b c d.", text2 = "A a b. B c.")
+    )
+})
+ 
+test_that("docvars<-.corpus error trapping works", {
+    skip("We should consider whether we want to allow this...")
+    expect_error(
+        docvars(data_corpus_irishbudget2010, "texts") <- 
+            paste0("newtext", seq_len(ndoc(data_corpus_irishbudget2010))),
+        "You should use texts"
+    )
+})
+
+test_that("docvars<-.corpus and name uniqueness", {
+    
+    # preexisting docvars keep unique names
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- data.frame(docvar1 = 1:2)
+    docvars(corp)[2] <- 11:12
+    docvars(corp)[3] <- c("a", "b")
+    expect_identical(
+        docvars(corp),
+        data.frame(docvar1 = 1:2, V2 = 11:12, V3 = c("a", "b"), stringsAsFactors = FALSE)
     )
 })

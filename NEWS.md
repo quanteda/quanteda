@@ -1,3 +1,10 @@
+# quanteda > 1.4.0
+
+## Bug fixes and stability enhancements
+
+* Fixed the operation of `docvars<-.corpus()` in a way that solves #1603 (reassignment of docvar names).
+
+
 # quanteda 1.4.0
 
 ## Bug fixes and stability enhancements
