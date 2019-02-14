@@ -376,3 +376,50 @@ test_that("docvars<-.corpus error trapping works", {
                    row.names = c("text1", "text2"))
     )
 })
+
+test_that("docvars<- NULL removes docvars", {
+    # can NULL the only docvar
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11))
+    docvars(corp)["testdv"] <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(row.names = docnames(corp))
+    )
+
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11))
+    docvars(corp, "testdv") <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(row.names = docnames(corp))
+    )
+
+        
+    # can NULL one of severeal docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp)["seconddv"] <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11, row.names = docnames(corp))
+    )
+    
+    # can NULL one of severeal docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp, "seconddv") <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11, row.names = docnames(corp))
+    )
+    
+    # can NULL all docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp) <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(row.names = docnames(corp))
+    )
+})

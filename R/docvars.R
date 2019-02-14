@@ -118,9 +118,14 @@ docvars.kwic <- function(x) {
     if ("texts" %in% field)
         stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
-        newdv <- data.frame(value, stringsAsFactors = FALSE, check.names = FALSE)
-        # uses the V1, V2 etc scheme
-        names(newdv) <- names(as.data.frame(as.matrix(value)))
+        if (is.null(value)) {
+            cat("ISNULLVALUE")
+            newdv <- data.frame(row.names = docnames(x))
+        } else {
+            newdv <- data.frame(value, stringsAsFactors = FALSE, check.names = FALSE)
+            # uses the V1, V2 etc scheme
+            names(newdv) <- names(as.data.frame(as.matrix(value)))
+        }
     } else {
         newdv <- docvars(x)
         newdv[field] <- value
