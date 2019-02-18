@@ -292,23 +292,23 @@ test_that("tokens arguments works with values from parent frame (#721)", {
 })
 
 test_that("tokens works for strange spaces (#796)", {
-    txt <- "space tab\t newline\n non-breakingspace\u00A0, em-space\u2003 variationselector16 \uFE0F."
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 8))
+    txt <- "space tab\t newline\n non-breakingspace\u00A0, variationselector16 \uFE0F."
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 7))
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = TRUE)),
-        c("space", "tab", "newline", "non-breakingspace", "em-space", "variationselector16")
+        c("space", "tab", "newline", "non-breakingspace", "variationselector16")
     )
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 18))
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 15))
     expect_equal(
-        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[16:18],
+        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[13:15],
         c("variationselector16", " ", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        c(text1 = 16)
+        c(text1 = 13)
     )
     expect_equal(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[15:16],
+        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[12:13],
         c("variationselector16", " ")
     )
 })
