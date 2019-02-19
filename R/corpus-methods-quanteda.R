@@ -121,7 +121,7 @@ as.corpus.default <- function(x) {
 as.corpus.corpus <- function(x) {
     if (is.character(x)) {
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
-    } else if (is.null(meta(data_corpus_irishbudget2010, type = "system")[["package-version"]])) {
+    } else if (is.null(meta(x, type = "system")[["package-version"]])) {
         x <- upgrade_corpus(x)
     }
     return(x)
