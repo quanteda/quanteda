@@ -135,7 +135,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames
     } else if (!is.null(names(x))) {
         docnames <- names(x)
     }
-    if (any(duplicated(docnames) && unique_docnames))
+    if (any(duplicated(docnames)) && unique_docnames)
         stop("docnames are duplicated")
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
