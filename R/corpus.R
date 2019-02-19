@@ -21,6 +21,7 @@
 #'   length to the number of documents.  If none of these are round, then
 #'   "text1", "text2", etc. are assigned automatically.
 #' @param docvars a data.frame of document-level variables associated with each text
+#' @param unique_docnames if \code{TRUE}, check duplication in \code{docnames}.
 #' @param text_field the character name or numeric index of the source
 #'   \code{data.frame} indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be
@@ -114,16 +115,16 @@ corpus.default <- function(x, ...) {
 
 #' @rdname corpus
 #' @export
-corpus.corpus <- function(x, docnames = NULL, docvars = NULL, ...) {
+corpus.corpus <- function(x, docnames = NULL, docvars = NULL, unique_docnames = TRUE, ...) {
     x <- as.corpus(x)
     if (is.null(docnames) && is.null(docvars))
         return(x)
-    corpus(texts(x), docnames, docvars)
+    corpus(texts(x), docnames, docvars, unique_docnames)
 }
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     x[is.na(x)] <- ""
@@ -134,7 +135,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
     } else if (!is.null(names(x))) {
         docnames <- names(x)
     }
-    
+    if (any(duplicated(docnames) && unique_docnames))
+        stop("docnames are duplicated")
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
             message_error("docvar_invalid")
