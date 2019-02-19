@@ -49,14 +49,15 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     to <- match.arg(to)
     attrs <- attributes(x)
     if (to == "documents") {
-        if (attr(x, 'unit') %in% c('sentences', 'paragraphs')) {
-            temp <- split(unclass(x), attrs$docvars[["docnum_"]])
+        if (attr(x, 'unit') %in% c("sentences", "paragraphs", "segments")) {
+            docid <- as.integer(droplevels(attrs$docvars[["docid_"]]))
+            temp <- split(unclass(x), docid)
             if (identical(attrs$unit, "sentences")) {
                 result <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
                 result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
             }
-            attrs$docvars <-reshape_docvars(attrs$docvars, !duplicated(attrs$docvars[["docnum_"]]))
+            attrs$docvars <- reshape_docvars(attrs$docvars, !duplicated(docid))
             attrs$unit <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
