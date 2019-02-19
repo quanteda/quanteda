@@ -3,11 +3,14 @@
 \name{meta_init}
 \alias{meta_init}
 \alias{meta_init.corpus}
+\alias{meta_init.tokens}
 \title{Internal function to initialize meta-data}
 \usage{
 meta_init(x, source, user = list())
 
 \method{meta_init}{corpus}(x, source, user = list())
+
+\method{meta_init}{tokens}(x, source, user = list())
 }
 \arguments{
 \item{x}{input object for which the metadata will be set}

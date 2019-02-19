@@ -41,6 +41,10 @@ meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
     return(if (is.null(field)) result else result[field])
 }
 
+#' @export
+meta.tokens <- meta.corpus
+
+
 # meta<-   -----------
 
 #' Replacement function for corpus-level data
@@ -61,7 +65,7 @@ meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
 }
 
 #' @export
-"meta<-.corpus" <- function(x, field = NULL, value) {
+`meta<-.corpus` <- function(x, field = NULL, value) {
     if (is.null(field)) {
         attr(x, "meta")$user <- value
     } else {
@@ -69,6 +73,9 @@ meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
     }
     return(x)
 }
+
+#' @export
+`meta<-.tokens` <- `meta<-.corpus`
 
 # legacy functions ----------
 
@@ -120,3 +127,6 @@ meta_init.corpus <- function(x, source, user = list()) {
     meta(x) <- user
     return(x)
 }
+
+#' @rdname meta_init
+meta_init.tokens <- meta_init.corpus

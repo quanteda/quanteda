@@ -408,8 +408,11 @@ tokens_internal <- function(x,
     }
 
     x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names, 
-                        what = what, ngrams = ngrams, skip = skip, concatenator = concatenator,
-                        types = attr(x[[length(x)]], "types"), unit = "documents", source = "corpus")
+                        what = what, ngrams = ngrams, skip = skip, 
+                        concatenator = concatenator,
+                        types = attr(x[[length(x)]], "types"), 
+                        unit = "documents", 
+                        source = "corpus")
     
     if (what %in% c("word", "fasterword")) {
 
@@ -465,7 +468,7 @@ compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
               padding = padding,
               types = types,
               unit = unit,
-              meta = meta(source),
+              meta = list(),
               docvars = docvars)
 }
 
