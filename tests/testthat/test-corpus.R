@@ -449,11 +449,11 @@ test_that("metadoc works but raise deprecation warning", {
 
 test_that("metadoc works but raise deprecation warning", {
     expect_error(
-        corpus(c("aa bb cc", "ccc dd"), docnames = c("A", "A"), 
+        corpus(c("aa bb cc", "ccc dd"), docnames = c("text1", "text1"), 
                "docnames are duplicated")
     )
     expect_silent(
-        corpus(c("aa bb cc", "ccc dd"), docnames = c("A", "A"), unique_docnames = FALSE)
+        corpus(c("aa bb cc", "ccc dd"), docnames = c("text1", "text1"), unique_docnames = FALSE)
     )
 })
 

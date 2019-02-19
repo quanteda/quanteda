@@ -11,9 +11,11 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{corpus}(x, docnames = NULL, docvars = NULL, ...)
+\method{corpus}{corpus}(x, docnames = NULL, docvars = NULL,
+  unique_docnames = TRUE, ...)
 
-\method{corpus}{character}(x, docnames = NULL, docvars = NULL, ...)
+\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
+  unique_docnames = TRUE, ...)
 
 \method{corpus}{data.frame}(x, docid_field = "doc_id",
   text_field = "text", ...)
@@ -35,6 +37,8 @@ length to the number of documents.  If none of these are round, then
 "text1", "text2", etc. are assigned automatically.}
 
 \item{docvars}{a data.frame of document-level variables associated with each text}
+
+\item{unique_docnames}{if \code{TRUE}, check duplication in \code{docnames}.}
 
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the
