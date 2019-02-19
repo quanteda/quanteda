@@ -230,7 +230,7 @@ test_that("corpus works for texts with duplicate filenames", {
 })
 
 test_that("create a corpus on a corpus", {
-    expect_identical(
+    expect_equivalent(
         as.corpus(data_corpus_irishbudget2010),
         corpus(data_corpus_irishbudget2010)
     )
@@ -435,8 +435,8 @@ test_that("upgrade_corpus is working", {
 
 test_that("metacorpus argument works", {
     corp <- corpus("aa bb cc", metacorpus = list("citation" = "My boook"))
-    expect_equal(attr(corp, "meta")$citation, "My boook")
-    expect_equal(attr(corp, "meta")$source, "character")
+    expect_equal(meta(corp)$citation, "My boook")
+    expect_equal(meta(corp, type = "system")$source, "character")
 })
 
 test_that("metadoc works but raise deprecation warning", {

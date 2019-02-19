@@ -5,9 +5,7 @@ test_that("as.tokens list version works as expected", {
              doc2 = "Told you so.")
     toks_list <- as.list(tokens(txt))
     toks <- tokens(txt)
-    attr(toks, "meta")$source <- "list" # source should bethe only difference 
-    expect_equal(as.tokens(toks_list), 
-                 toks)
+    expect_equivalent(as.tokens(toks_list), toks)
 })
 
 test_that("tokens indexing works as expected", {
