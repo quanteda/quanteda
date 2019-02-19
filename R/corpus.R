@@ -159,7 +159,11 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, ...) {
     
     names(x) <- docvar[["docname_"]]
     class(x) <- "corpus"
-    attr(x, "unit") <- "documents"
+    if (any(duplicated(docvar[["docid_"]]))) {
+        attr(x, "unit") <- "segments"    
+    } else {
+        attr(x, "unit") <- "documents"
+    }
     attr(x, "meta") <- meta("character", ...)
     attr(x, "docvars") <- docvar
     return(x)

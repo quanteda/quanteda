@@ -50,6 +50,7 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
     attrs$names <- attrs$docvars[["docname_"]]
+    attrs$unit <- "segments"
     attributes(result, FALSE) <- attrs
     return(result)
 }
