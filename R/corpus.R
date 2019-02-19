@@ -266,7 +266,8 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         docnames(pre) <- paste0(docnames(pre), ".pre")
         
         post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], 
-                       docid_field = "docname", text_field = "post")
+                       docid_field = "docname", text_field = "post",
+                       meta = meta)
         docvars(post, "context") <- "post"
         docnames(post) <- paste0(docnames(post), ".post")
         result <- pre + post
