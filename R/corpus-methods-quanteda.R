@@ -1,4 +1,3 @@
-
 #' Get or assign corpus texts
 #' 
 #' Get or replace the texts in a \link{corpus}, with grouping options. 
@@ -120,10 +119,9 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    
     if (is.character(x)) {
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
-    } else {
+    } else if (is.null(meta(data_corpus_irishbudget2010, type = "system")[["package-version"]])) {
         x <- upgrade_corpus(x)
     }
     return(x)
@@ -163,5 +161,3 @@ upgrade_corpus <- function(x) {
     }
     return(result)
 }
-
-
