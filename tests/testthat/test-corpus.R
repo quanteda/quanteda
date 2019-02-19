@@ -416,19 +416,19 @@ test_that("handle data.frame variable renaming when one already exists", {
 test_that("upgrade_corpus is working", {
     corp1 <- quanteda:::upgrade_corpus(data_corpus_dailnoconf1991)
     expect_true(is.character(corp1))
-    expect_true(all(c("docname_", "docid_", "docnum_", "segnum_") %in% names(attr(corp1, "docvars"))))
+    expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp1, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp1, "docvars"))))
     expect_true(is.factor(attr(corp1, "docvars")[["docid_"]]))
     
     corp2 <- quanteda:::upgrade_corpus(data_corpus_inaugural)
     expect_true(is.character(corp2))
-    expect_true(all(c("docname_", "docid_", "docnum_", "segnum_") %in% names(attr(corp2, "docvars"))))
+    expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp2, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp2, "docvars"))))
     expect_true(is.factor(attr(corp2, "docvars")[["docid_"]]))
     
     corp3 <- quanteda:::upgrade_corpus(data_corpus_irishbudget2010)
     expect_true(is.character(corp3))
-    expect_true(all(c("docname_", "docid_", "docnum_", "segnum_") %in% names(attr(corp3, "docvars"))))
+    expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp3, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp3, "docvars"))))
     expect_true(is.factor(attr(corp3, "docvars")[["docid_"]]))
 })
@@ -446,3 +446,14 @@ test_that("metadoc works but raise deprecation warning", {
     metadoc(corp, "var2") <- c("T", "F")
     expect_equal(colnames(metadoc(corp)), c("_var1", "_var2"))
 })
+
+test_that("metadoc works but raise deprecation warning", {
+    expect_error(
+        corpus(c("aa bb cc", "ccc dd"), docnames = c("A", "A"), 
+               "docnames are duplicated")
+    )
+    expect_silent(
+        corpus(c("aa bb cc", "ccc dd"), docnames = c("A", "A"), unique_docnames = FALSE)
+    )
+})
+

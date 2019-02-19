@@ -72,8 +72,7 @@ test_that("dfm_compress preserves docvars (#1506)", {
     
     expect_true("docname_" %in% names(thedfm@docvars))
     expect_true("docid_" %in% names(thedfm@docvars))
-    expect_true("docnum_" %in% names(thedfm@docvars))
-    expect_true("segnum_" %in% names(thedfm@docvars))
+    expect_true("segid_" %in% names(thedfm@docvars))
 
     expect_identical(
         thedfm@docvars,
