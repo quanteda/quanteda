@@ -65,6 +65,7 @@ select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = 
 
 # internal function to make new system-level docvars
 make_docvars <- function(n, docname = NULL, unique = TRUE) {
+
     stopifnot(is.integer(n))
     if (is.null(docname)) {
         docname <- paste0(quanteda_options("base_docname"), seq_len(n))
@@ -75,28 +76,26 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
     if (n == 0) {
         data.frame("docname_" = character(),
                    "docid_" = factor(),
-                   "docnum_" = integer(), 
-                   "segnum_" = integer(), 
+                   "segid_" = integer(), 
                    stringsAsFactors = FALSE)
     } else {
         if (unique) {
             docnum <- match(docname, unique(docname))
             if (any(duplicated(docname))) {
-                segnum <- stats::ave(docname == docname, docname, FUN = cumsum)
-                docid <- paste0(docname, ".", segnum)
+                segid <- stats::ave(docname == docname, docname, FUN = cumsum)
+                docid <- paste0(docname, ".", segid)
             } else {
-                segnum <- rep(1L, n)
+                segid <- rep(1L, n)
                 docid <- docname
             }
         } else {
             docnum <- seq(1L, n)
-            segnum <- rep(1L, n)
+            segid <- rep(1L, n)
             docid <- docname
         }
         data.frame("docname_" = docid,
                    "docid_" = factor(docname, levels = unique(docname)),
-                   "docnum_" = docnum, 
-                   "segnum_" = segnum,
+                   "segid_" = segid,
                    stringsAsFactors = FALSE)
     }
 }
@@ -106,11 +105,11 @@ reshape_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
     rownames(x) <- NULL
-    if (is.integer(i) && any(duplicated(i))) {
-        x[["segnum_"]] <- stats::ave(i == i, i, FUN = cumsum)
-        x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segnum_"]])
+    if (is.numeric(i) && any(duplicated(i))) {
+        x[["segid_"]] <- stats::ave(i == i, i, FUN = cumsum)
+        x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
     } else {
-        x[["segnum_"]] <- rep(1L, nrow(x))
+        x[["segid_"]] <- rep(1L, nrow(x))
         x[["docname_"]] <- as.character(x[["docid_"]])
     }
     return(x)
@@ -125,14 +124,11 @@ subset_docvars <- function(x, i = NULL) {
 
 # internal function to upgrade docvars to modern format
 upgrade_docvars <- function(x, docnames = NULL) {
-    if (sum(is_system(colnames(x))) == 4) 
+    if (sum(is_system(colnames(x))) == 3) 
         return(x)
-    if (is.null(docnames)) {
-        stopifnot(!is.null(x))
+    if (is.null(docnames))
         docnames <- rownames(x)
-    }
     if (is.null(x) || length(x) == 0) {
-        stopifnot(!is.null(docnames))
         result <- make_docvars(length(docnames), docnames, FALSE)
     } else {
         rownames(x) <- NULL
@@ -140,17 +136,15 @@ upgrade_docvars <- function(x, docnames = NULL) {
                         x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
             result[["docid_"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
-        if ("_docid" %in% names(x))
-            result[["docnum_"]] <- as.integer(x[["_docid"]])
         if ("_segid" %in% names(x))
-            result[["segnum_"]] <- as.integer(x[["_segid"]])
+            result[["segid_"]] <- as.integer(x[["_segid"]])
     }
     return(result)
 }
 
 # internal function to check if variables are internal-only
 is_system <- function(x) {
-    x %in% c("docname_", "docid_", "docnum_", "segnum_")
+    x %in% c("docname_", "docid_", "segid_")
 }
 
 # internal function to check if old variables are internal-only
