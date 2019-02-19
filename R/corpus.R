@@ -179,7 +179,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", ...) {
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", 
+                              unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     # coerce data.frame variants to data.frame - for #1232
@@ -234,7 +235,8 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", ..
     if (any(is_empty))
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
     
-    corpus(x[[text_index]], docvars = docvars, docnames = docname)
+    corpus(x[[text_index]], docvars = docvars, docnames = docname, 
+           unique_docnames = unique_docnames)
 }
 
 
@@ -274,7 +276,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
         
     } else {
         result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
-                         docnames = x[["docname"]])
+                         docnames = x[["docname"]], unique_docnames = FALSE)
         docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
@@ -314,7 +316,7 @@ corpus.Corpus <- function(x, ...) {
     } else {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
-    corpus(txt, docvars = docvars)
+    corpus(txt, docvars = docvars, unique_docnames = FALSE)
 }
 
 # Internal function to create corpus meta data
