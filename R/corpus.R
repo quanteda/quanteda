@@ -102,9 +102,10 @@ corpus <- function(x, ...) {
     dots <- list(...)
     if ("metacorpus" %in% names(dots)) {
         names(dots)[which(names(dots) == "metacorpus")] <- "meta"
-        do.call(corpus, c(list(x = x, docnames = docnames, docvars = docvars), dots))
+        do.call(corpus, c(list(x = x), dots))
+    } else {
+        UseMethod("corpus")
     }
-    UseMethod("corpus")
 }
 
 #' @rdname corpus
