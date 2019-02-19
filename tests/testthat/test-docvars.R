@@ -416,7 +416,7 @@ test_that("can assign docvars when value is a dfm (#1417)", {
 })
 
 test_that("docvar can be remaned (#1603)", {
-    
+
     corp <- data_corpus_irishbudget2010
     names(docvars(corp))[c(1, 3)] <- c("time", "order")
     expect_identical(names(docvars(corp)),
@@ -431,7 +431,7 @@ test_that("docvar can be remaned (#1603)", {
     names(docvars(dfmt))[c(1, 3)] <- c("time", "order")
     expect_identical(names(docvars(dfmt)),
                      c("time", "debate", "order", "foren", "name", "party"))
-    
+   
 })
  
 test_that("docvars<-.corpus and name uniqueness", {
@@ -480,3 +480,16 @@ test_that("docvars<- NULL removes docvars", {
                      c("debate", "foren", "name", "party"))
     
 })
+
+test_that("can assign a vector to docvars and get a default name", {
+    skip("Until we decide on the appropriate policy for unnamed docvars")
+    
+    # assigning a vector to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- c("x", "y")
+    expect_identical(
+        docvars(corp),
+        data.frame(V1 = c("x", "y"), stringsAsFactors = FALSE)
+    )
+})
+
