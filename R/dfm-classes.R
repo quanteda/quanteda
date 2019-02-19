@@ -229,7 +229,7 @@ cbind.dfm <- function(...) {
     
     # make any added feature names unique
     i_added <- stri_startswith_fixed(colnames(result), 
-                                         quanteda_options("base_featname"))
+                                     quanteda_options("base_featname"))
     colnames(result)[i_added] <- 
         make.unique(colnames(result)[i_added], sep = "")
     
@@ -241,7 +241,7 @@ cbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     set_dfm_dimnames(result) <- dimnames(result)
     slots(result) <- attrs
-    result@docvars <- make_docvars(ndoc(result), rownames(result))
+    result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 
 }
@@ -290,6 +290,6 @@ rbind.dfm <- function(...) {
     # TODO could be removed after upgrading as.dfm()
     set_dfm_dimnames(result) <- dimnames(result)
     slots(result) <- attrs
-    result@docvars <- make_docvars(ndoc(result), rownames(result))
+    result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 }
