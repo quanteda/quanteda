@@ -74,3 +74,14 @@ test_that("corpus_reshape produces error message for non-available to values", {
     )
 })
 
+
+test_that("corpus_reshape works with segmented corpus", {
+    corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+                     texttwo = "Premiere phrase.  Deuxieme phrase."))
+    corp_segmented <- corpus_segment(corp, ".", pattern_position = "after")
+    corp_reshaped <- corpus_reshape(corp_segmented, to = "documents")
+    expect_equal(texts(corp_reshaped),
+                 c(textone = "This is a sentence  Another sentence  Yet another",
+                   texttwo = "Premiere phrase  Deuxieme phrase"))
+})
+

@@ -52,7 +52,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         if (attr(x, 'unit') %in% c("sentences", "paragraphs", "segments")) {
             docid <- as.integer(droplevels(attrs$docvars[["docid_"]]))
             temp <- split(unclass(x), docid)
-            if (identical(attrs$unit, "sentences")) {
+            if (attr(x, 'unit') %in% c("sentences", "segments")) {
                 result <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
                 result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
@@ -63,7 +63,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             stop("reshape to documents only goes from sentences or paragraphs")
         }
     } else if (to %in% c("sentences", "paragraphs")) {
-        if (identical(attrs$unit, "documents")) {
+        if ((attrs$unit %in% "documents")) {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE, 
                                   omit_empty = FALSE, what = to, ...)
             result <- temp$text
