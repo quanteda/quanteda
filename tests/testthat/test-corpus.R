@@ -64,11 +64,10 @@ test_that("test corpus constructors works for kwic", {
                      paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = TRUE, extract_keyword = FALSE
-    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
-                                    split_context = FALSE, extract_keyword = FALSE)),
-                     paste0("text1.L", as.character(kw[["from"]]))
-    )
-    
+    corptemp <- corpus(kwic(data_char_sampletext, "econom*"), 
+                       split_context = TRUE, extract_keyword = FALSE)
+    expect_identical(docnames(corptemp), paste0("text", seq_len(ndoc(corptemp))))
+
     # test text handling for punctuation - there should be no space before the ?
     corp <- corpus(kwic(data_char_sampletext, "econom*", window = 10,
                         separator = "",
@@ -112,6 +111,8 @@ test_that("test corpus constructors works for kwic", {
                      split_context = FALSE)),
         txt
     )
+    
+    corp <- corpus(kw, split_context = TRUE, extract_keyword = FALSE)
 })
 
 
@@ -451,4 +452,29 @@ test_that("metadoc works but raise deprecation warning", {
     metadoc(corp, "var1") <- c(1, 5)
     metadoc(corp, "var2") <- c("T", "F")
     expect_equal(colnames(metadoc(corp)), c("_var1", "_var2"))
+})
+
+test_that("setting wrong docnames is trapped", {
+    skip("KOHEI PLEASE CHECK SECOND TEST")
+    expect_error(
+        corpus(c("a b c", "b c d"), docnames = "onedoc"),
+        "docnames must the the same length as x"
+    )
+    expect_error(
+        corpus(c("a b c", "b c d"), docvars = data.frame(docid_ = c("s1", "s2"))),
+        "document variables cannot begin with the underscore"
+    )
+    
+})
+
+test_that("c.corpus errors work as expected", {
+    corp1 <- corpus("one two three", docvars = data.frame(dvc1 = "A"))
+    corp2 <- corpus("four five", docvars = data.frame(dvc1 = "B"))
+    expect_identical(c(corp1), corp1)
+    expect_identical(c(corp1, corp2), corp1 + corp2)
+})
+
+test_that("[.corpus out of bounds generates expected error", {
+    corp1 <- corpus("one two three", docvars = data.frame(dvc1 = "A"))
+    expect_error(corp1[2], "Subscript out of bounds")
 })
