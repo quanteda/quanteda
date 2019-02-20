@@ -87,32 +87,26 @@ metacorpus <- meta
 #' @export
 `metacorpus<-` <- `meta<-`
 
+# internal: meta_system ----------------
 
-
-# internal: meta_initialize ----------------
-
-#' Internal function to initialize meta-data
+#' Internal function to set or initialize system meta-data
 #' 
-#' Initializes meta-data for new objects.  The "system" element of this list is
-#' for automatically set system data; the "user" element of this list is set by
-#' the user and replaces the \link{metacorpus} function.
+#' Sets or initializes system meta-data for new objects.
 #' @param x input object for which the metadata will be set
 #' @param source character; the input object class
 #' @param list; key-value set of user metadata
-#' @keywords internal corpus
-meta_init <- function(x, source, user = list()) {
-    # type checking
-    stopifnot(is.character(source))
-    stopifnot(is.list(user))
-    # make sure every element of user is named
-    if (length(user)) stopifnot(length(names(user)) == length(user))
-    UseMethod("meta_init")
+#' @keywords internal
+`meta_system<-` <- function(x, field = NULL, value, initialize = TRUE) {
+    if (is.null(field) && !is.list(value)) stop("value must be a named list")
+    if (length(names(value)) > 0 && length(names(value)) != length(value))
+        stop("every element of value must be named")
+    UseMethod("meta_system<-")
 }
-    
-#' @rdname meta_init
-meta_init.corpus <- function(x, source, user = list()) {
-    # set system meta, initialize user meta
-    attr(x, "meta") <- 
+
+#' @rdname "meta_system<-"
+`meta_system<-.corpus` <- function(x, field = NULL, value, initialize = TRUE) {
+    if (initialize) {
+        attr(x, "meta") <- 
         list(user = list(),
              system = list(
                  "source" = source,
@@ -123,10 +117,14 @@ meta_init.corpus <- function(x, source, user = list()) {
                  "created" = Sys.Date()
              )
         )
-    # set the user meta
-    meta(x) <- user
+    }
+    if (is.null(field) && !missing(value)) {
+        attr(x, "meta")$system <- value
+    } else {
+        attr(x, "meta")$system[field] <- value
+    }
     return(x)
 }
 
-#' @rdname meta_init
-meta_init.tokens <- meta_init.corpus
+#' @rdname "meta_system<-"
+`meta_system<-.tokens` <- `meta_system<-.corpus`
