@@ -39,7 +39,11 @@ meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
         result <- c(result, attr(x, "meta")$user)
     if (type %in% c("system", "all"))
         result <- c(result, attr(x, "meta")$system)
-    return(if (is.null(field)) result else result[field])
+    if (is.null(field)) {
+        return(result)
+    } else {
+        return(result[[field]])
+    }
 }
 
 #' @export
@@ -70,7 +74,7 @@ meta.tokens <- meta.corpus
     if (is.null(field)) {
         attr(x, "meta")$user <- value
     } else {
-        attr(x, "meta")$user[field] <- value
+        attr(x, "meta")$user[[field]] <- value
     }
     return(x)
 }
