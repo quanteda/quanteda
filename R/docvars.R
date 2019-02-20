@@ -5,10 +5,10 @@
     flag <- is_system(names(x))
     if (is.dfm(value))
         value <- convert(value, to = "data.frame")[-1]
-    if (is.null(value)) {
-        x <- x[flag]
-    } else if (is.null(field)) {
-        if (is.data.frame(value)) {
+    if (is.null(field)) {
+        if (is.null(value)) {
+            x <- x[flag]
+        } else if (is.data.frame(value)) {
             if (nrow(value) != nrow(x))
                 stop(message_error("docvar_mismatch"))
             x <- cbind(x[flag], value)

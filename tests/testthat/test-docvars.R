@@ -456,47 +456,46 @@ test_that("docvars<- NULL removes docvars", {
     
     corp2 <- data_corpus_irishbudget2010
     docvars(corp2)[c("year", "number")] <- NULL
-    expect_identical(names(docvars(corp1)),
+    expect_identical(names(docvars(corp2)),
                      c("debate", "foren", "name", "party"))
     
-    toks1 <- tokens(data_corpus_irishbudget2010)
+    corp3 <- data_corpus_irishbudget2010
+    docvars(corp3, c("year", "number")) <- NULL
+    expect_identical(names(docvars(corp3)),
+                     c("debate", "foren", "name", "party"))
+    
+    toks <- tokens(data_corpus_irishbudget2010)
+    toks1 <- toks
     docvars(toks1)[c(1, 3)] <- NULL
     expect_identical(names(docvars(toks1)),
                      c("debate", "foren", "name", "party"))
     
-    toks2 <- tokens(data_corpus_irishbudget2010)
+    toks2 <- toks
     docvars(toks2)[c("year", "number")] <- NULL
     expect_identical(names(docvars(toks2)),
                      c("debate", "foren", "name", "party"))
     
-    dfmt1 <- dfm(data_corpus_irishbudget2010)
+    toks3 <- toks
+    docvars(toks3, c("year", "number")) <- NULL
+    expect_identical(names(docvars(toks3)),
+                     c("debate", "foren", "name", "party"))
+    
+    dfmt <- dfm(toks)
+    dfmt1 <- dfmt
     docvars(dfmt1)[c(1, 3)] <- NULL
     expect_identical(names(docvars(dfmt1)),
                      c("debate", "foren", "name", "party"))
     
-    dfmt2 <- dfm(data_corpus_irishbudget2010)
+    dfmt2 <- dfmt
     docvars(dfmt2)[c("year", "number")] <- NULL
     expect_identical(names(docvars(dfmt2)),
                      c("debate", "foren", "name", "party"))
     
-    corp <- corpus(c("A b c d.", "A a b. B c."),
-                  docvars = data.frame(testdv = 10:11))
-    docvars(corp, "testdv") <- NULL
-    expect_equal(dim(docvars(corp)), c(2, 0))
-    expect_is(docvars(corp), "data.frame")
-
-    # can NULL one of severeal docvars
-    corp <- corpus(c("A b c d.", "A a b. B c."),
-                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
-    docvars(corp, "seconddv") <- NULL
-    expect_equal(docvars(corp), data.frame(testdv = 10:11))
+    dfmt3 <- dfmt
+    docvars(dfmt3, c("year", "number")) <- NULL
+    expect_identical(names(docvars(dfmt3)),
+                     c("debate", "foren", "name", "party"))
     
-    # can NULL all docvars
-    corp <- corpus(c("A b c d.", "A a b. B c."),
-                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
-    docvars(corp) <- NULL
-    expect_equal(dim(docvars(corp)), c(2, 0))
-    expect_is(docvars(corp), "data.frame")
 })
 
 test_that("can assign a vector to docvars and get a default name", {
