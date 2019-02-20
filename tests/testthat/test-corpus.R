@@ -225,8 +225,9 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 
 test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
-    corp <- corpus(txt)
+    corp <- corpus(txt, unique_docnames = FALSE)
     expect_equal(docnames(corp), c("one.1", "two.1", "one.2"))
+    expect_error(corpus(txt, unique_docnames = TRUE))
 })
 
 test_that("create a corpus on a corpus", {
@@ -334,9 +335,9 @@ test_that("corpus.data.frame sets docnames correctly", {
 
     df3_text <- data.frame(df_text, new = c(TRUE, FALSE, TRUE))
     expect_identical(
-        docnames(corpus(df3_text, docid_field = "new")),
+        docnames(corpus(df3_text, docid_field = "new", unique_docnames = FALSE)),
         c("TRUE.1", "FALSE.1", "TRUE.2")
-    )        
+    )
 })
 
 test_that("corpus handles NA correctly (#1372)", {

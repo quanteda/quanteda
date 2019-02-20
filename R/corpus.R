@@ -114,7 +114,7 @@ corpus.corpus <- function(x, docnames = NULL, docvars = NULL, unique_docnames = 
     x <- as.corpus(x)
     if (is.null(docnames) && is.null(docvars))
         return(x)
-    corpus(texts(x), docnames, docvars, unique_docnames)
+    corpus(texts(x), docnames = docnames, docvars = docvars, unique_docnames = unique_docnames)
 }
 
 #' @rdname corpus
