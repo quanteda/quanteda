@@ -122,7 +122,7 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
     result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta)
-    meta_system(result) <- meta_system_defaults("corpus")
+    meta_system(result, "source") <- "corpus"
     result
 }
 
@@ -235,7 +235,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", me
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
     
     result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta)
-    meta_system(result) <- meta_system_defaults("data.frame")
+    meta_system(result, "source") <- "data.frame"
     return(result)
 }
 
@@ -282,7 +282,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
     
-    meta_system(result) <- meta_system_defaults("kwic")
+    meta_system(result, "source") <- "kwic"
     return(result)
 }
 
@@ -318,7 +318,7 @@ corpus.Corpus <- function(x, ...) {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
     result <- corpus(txt, docvars = docvars, meta = unclass(unclass(x)$meta))
-    meta_system(result) <- meta_system_defaults("tm")
+    meta_system(result, "source") <- "tm"
     return(result)
 }
 

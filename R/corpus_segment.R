@@ -188,7 +188,7 @@ char_segment.character <- function(x, pattern = "##*",
                            pattern, valuetype, 
                            case_insensitive, remove_pattern, 
                            pattern_position)
-    
+    meta_system(temp, "source") <- "corpus_segment"
     result <- texts(temp)
     if (is.null(names(x)))
         result <- unname(result)
