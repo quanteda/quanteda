@@ -493,3 +493,16 @@ test_that("can assign a vector to docvars and get a default name", {
     )
 })
 
+test_that("works correctly in edge cases", {
+    corp <- corpus(c("A b c d.", "A a b. B c.", "D f. e g.", "H i j."))
+    expect_error({docvars(corp) <- 1:4},
+                 quanteda:::message_error("docvar_noname"))
+    expect_silent({docvars(corp, "var1") <- 1})
+    expect_equal(docvars(corp, "var1"), rep(1, 4))
+    expect_silent(docvars(corp, "var2") <- 1:4)
+    expect_equal(docvars(corp, "var2"), 1:4)
+    expect_silent(docvars(corp, "var3") <- 1:2)
+    expect_equal(docvars(corp, "var3"), c(1, 2, 1, 2))
+    expect_error(docvars(corp, "var4") <- 1:3)
+})
+

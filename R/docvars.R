@@ -7,10 +7,14 @@
         value <- convert(value, to = "data.frame")[-1]
     if (is.null(value)) {
         x <- x[flag]
-    } else if (is.null(field) && (is.data.frame(value))) {
-        if (nrow(value) != nrow(x))
-            stop(message_error("docvar_mismatch"))
-        x <- cbind(x[flag], value)
+    } else if (is.null(field)) {
+        if (is.data.frame(value)) {
+            if (nrow(value) != nrow(x))
+                stop(message_error("docvar_mismatch"))
+            x <- cbind(x[flag], value)
+        } else {
+            stop(message_error("docvar_noname"))
+        }
     } else {
         if (any(is_system(field)))
             stop(message_error("docvar_invalid"))
