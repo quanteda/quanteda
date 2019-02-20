@@ -415,7 +415,7 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     )
 })
 
-test_that("docvar can be remaned (#1603)", {
+test_that("docvar can be renamed (#1603)", {
 
     corp <- data_corpus_irishbudget2010
     names(docvars(corp))[c(1, 3)] <- c("time", "order")
@@ -479,6 +479,24 @@ test_that("docvars<- NULL removes docvars", {
     expect_identical(names(docvars(dfmt2)),
                      c("debate", "foren", "name", "party"))
     
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                  docvars = data.frame(testdv = 10:11))
+    docvars(corp, "testdv") <- NULL
+    expect_equal(dim(docvars(corp)), c(2, 0))
+    expect_is(docvars(corp), "data.frame")
+
+    # can NULL one of severeal docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp, "seconddv") <- NULL
+    expect_equal(docvars(corp), data.frame(testdv = 10:11))
+    
+    # can NULL all docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp) <- NULL
+    expect_equal(dim(docvars(corp)), c(2, 0))
+    expect_is(docvars(corp), "data.frame")
 })
 
 test_that("can assign a vector to docvars and get a default name", {
