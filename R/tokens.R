@@ -448,7 +448,7 @@ tokens_internal <- function(x,
     }
 
     if (verbose){
-        catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
+        catm("...total elapsed:", round((proc.time() - time_start)[3], digits = getOption("digits")), "seconds.\n")
         catm("Finished tokenizing and cleaning", format(length(x), big.mark = ","), "texts.\n")
     }
 
@@ -704,14 +704,6 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
     }
     Encoding(types(x)) <- "UTF-8"
     return(x)
-}
-
-get_tokens <- function(x) {
-    UseMethod("get_tokens")
-}
-
-get_tokens.tokens <- function(x) {
-    as.list(x)
 }
 
 #' Get word types from a tokens object
