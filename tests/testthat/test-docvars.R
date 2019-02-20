@@ -456,7 +456,12 @@ test_that("docvars<- NULL removes docvars", {
     
     corp2 <- data_corpus_irishbudget2010
     docvars(corp2)[c("year", "number")] <- NULL
-    expect_identical(names(docvars(corp1)),
+    expect_identical(names(docvars(corp2)),
+                     c("debate", "foren", "name", "party"))
+    
+    corp3 <- data_corpus_irishbudget2010
+    docvars(corp3, c("year", "number")) <- NULL
+    expect_identical(names(docvars(corp3)),
                      c("debate", "foren", "name", "party"))
     
     toks1 <- tokens(data_corpus_irishbudget2010)
@@ -469,6 +474,11 @@ test_that("docvars<- NULL removes docvars", {
     expect_identical(names(docvars(toks2)),
                      c("debate", "foren", "name", "party"))
     
+    toks3 <- tokens(data_corpus_irishbudget2010)
+    docvars(toks3, c("year", "number")) <- NULL
+    expect_identical(names(docvars(toks3)),
+                     c("debate", "foren", "name", "party"))
+    
     dfmt1 <- dfm(data_corpus_irishbudget2010)
     docvars(dfmt1)[c(1, 3)] <- NULL
     expect_identical(names(docvars(dfmt1)),
@@ -477,6 +487,11 @@ test_that("docvars<- NULL removes docvars", {
     dfmt2 <- dfm(data_corpus_irishbudget2010)
     docvars(dfmt2)[c("year", "number")] <- NULL
     expect_identical(names(docvars(dfmt2)),
+                     c("debate", "foren", "name", "party"))
+    
+    dfmt3 <- dfm(data_corpus_irishbudget2010)
+    docvars(dfmt3, c("year", "number")) <- NULL
+    expect_identical(names(docvars(dfmt3)),
                      c("debate", "foren", "name", "party"))
     
 })
