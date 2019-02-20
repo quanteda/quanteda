@@ -248,7 +248,7 @@ message_error <- function(key = NULL) {
     msg <- c("dfm_empty" = "dfm must have at least one non-zero value",
              "fcm_empty" = "fcm must have at least one non-zero value",
              "docvar_mismatch" = "data.frame must have the same number of rows as documents",
-             "docvar_invalid" = "Document variables cannot beging with the underscore",
+             "docvar_invalid" = "Document variables cannot begin with the underscore",
              "docvar_noname" = "Name of the document variable must be specified"
              )
     if (is.null(key) || !key %in% names(msg)) {

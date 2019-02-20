@@ -227,7 +227,7 @@ test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
     corp <- corpus(txt, unique_docnames = FALSE)
     expect_equal(docnames(corp), c("one.1", "two.1", "one.2"))
-    expect_error(corpus(txt, unique_docnames = TRUE))
+    expect_error(corpus(txt, unique_docnames = TRUE), "docnames must be unique")
 })
 
 test_that("create a corpus on a corpus", {
@@ -451,7 +451,7 @@ test_that("metadoc works but raise deprecation warning", {
 test_that("metadoc works but raise deprecation warning", {
     expect_error(
         corpus(c("aa bb cc", "ccc dd"), docnames = c("text1", "text1"), 
-               "docnames are duplicated")
+               "docnames must be unique")
     )
     expect_silent(
         corpus(c("aa bb cc", "ccc dd"), docnames = c("text1", "text1"), unique_docnames = FALSE)

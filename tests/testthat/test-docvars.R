@@ -415,7 +415,7 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     )
 })
 
-test_that("docvar can be remaned (#1603)", {
+test_that("docvar can be renamed (#1603)", {
 
     corp <- data_corpus_irishbudget2010
     names(docvars(corp))[c(1, 3)] <- c("time", "order")
@@ -464,32 +464,34 @@ test_that("docvars<- NULL removes docvars", {
     expect_identical(names(docvars(corp3)),
                      c("debate", "foren", "name", "party"))
     
-    toks1 <- tokens(data_corpus_irishbudget2010)
+    toks <- tokens(data_corpus_irishbudget2010)
+    toks1 <- toks
     docvars(toks1)[c(1, 3)] <- NULL
     expect_identical(names(docvars(toks1)),
                      c("debate", "foren", "name", "party"))
     
-    toks2 <- tokens(data_corpus_irishbudget2010)
+    toks2 <- toks
     docvars(toks2)[c("year", "number")] <- NULL
     expect_identical(names(docvars(toks2)),
                      c("debate", "foren", "name", "party"))
     
-    toks3 <- tokens(data_corpus_irishbudget2010)
+    toks3 <- toks
     docvars(toks3, c("year", "number")) <- NULL
     expect_identical(names(docvars(toks3)),
                      c("debate", "foren", "name", "party"))
     
-    dfmt1 <- dfm(data_corpus_irishbudget2010)
+    dfmt <- dfm(toks)
+    dfmt1 <- dfmt
     docvars(dfmt1)[c(1, 3)] <- NULL
     expect_identical(names(docvars(dfmt1)),
                      c("debate", "foren", "name", "party"))
     
-    dfmt2 <- dfm(data_corpus_irishbudget2010)
+    dfmt2 <- dfmt
     docvars(dfmt2)[c("year", "number")] <- NULL
     expect_identical(names(docvars(dfmt2)),
                      c("debate", "foren", "name", "party"))
     
-    dfmt3 <- dfm(data_corpus_irishbudget2010)
+    dfmt3 <- dfmt
     docvars(dfmt3, c("year", "number")) <- NULL
     expect_identical(names(docvars(dfmt3)),
                      c("debate", "foren", "name", "party"))
