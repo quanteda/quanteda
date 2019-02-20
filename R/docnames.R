@@ -77,8 +77,6 @@ docnames.corpus <- function(x) {
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
     x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
-    x@docvars$docname_ <- x@Dimnames[["docs"]]
-    print("we think this is not dispatching")
     return(x)
 }
 
@@ -107,6 +105,9 @@ docnames.corpus <- function(x) {
 #' @rdname names.corpus
 #' @aliases rownames<-.dfm
 #' @export
-"rownames<-.dfm" <- function(x, value) {
-    UseMethod("docnames<-")
-}
+setMethod("rownames<-",
+          signature(x = "dfm"),
+          function(x, value) {
+              docnames(x) <- value
+              return(x)
+          })
