@@ -82,7 +82,7 @@ docnames.corpus <- function(x) {
 
 # names<- ----------------
 
-#' @name names.corpus
+#' @name names-quanteda
 #' @title Special handling for names of quanteda objects
 #' @description Keeps the element names and rownames in sync with the system docvar
 #' \code{docname_}.
@@ -95,14 +95,17 @@ docnames.corpus <- function(x) {
     UseMethod("docnames<-")
 }
 
-#' @rdname names.corpus
+#' @rdname names-quanteda
 #' @aliases names<-.tokens
+#' @method names<- tokens
 #' @export
 "names<-.tokens" <- function(x, value) {
     UseMethod("docnames<-")
 }
 
-#' @rdname names.corpus
+setGeneric("rownames<-")
+
+#' @rdname names-quanteda
 #' @aliases rownames<-.dfm
 #' @export
 setMethod("rownames<-",
