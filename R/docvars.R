@@ -9,11 +9,11 @@
         x <- x[flag]
     } else if (is.null(field) && (is.data.frame(value))) {
         if (nrow(value) != nrow(x))
-            stop(message_error("docvar_mismatch"))
+            stop(message_error("docvars_mismatch"))
         x <- cbind(x[flag], value)
     } else {
         if (any(is_system(field)))
-            stop(message_error("docvar_invalid"))
+            stop(message_error("docvars_invalid"))
         x[field] <- value
     }
     rownames(x) <- NULL

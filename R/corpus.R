@@ -135,14 +135,14 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     
     if (!is.null(docnames)) {
         if (length(docnames) != length(x))
-            stop("docnames must the the same length as x")
+            stop(message_error("docnames_mismatch"))
     } else if (!is.null(names(x))) {
         docnames <- names(x)
     }
     
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
-            message_error("docvar_invalid")
+            stop(message_error("docvars_invalid"))
         docvar <- cbind(make_docvars(length(x), docnames), docvars)
     } else {
         docvar <- make_docvars(length(x), docnames)

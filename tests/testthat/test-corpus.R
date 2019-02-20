@@ -454,15 +454,15 @@ test_that("metadoc works but raise deprecation warning", {
     expect_equal(colnames(metadoc(corp)), c("_var1", "_var2"))
 })
 
-test_that("setting wrong docnames is trapped", {
-    skip("KOHEI PLEASE CHECK SECOND TEST")
+test_that("raise error when docnames or docvars are invalid", {
+    
     expect_error(
         corpus(c("a b c", "b c d"), docnames = "onedoc"),
-        "docnames must the the same length as x"
+        quanteda:::message_error("docnames_mismatch")
     )
     expect_error(
         corpus(c("a b c", "b c d"), docvars = data.frame(docid_ = c("s1", "s2"))),
-        "document variables cannot begin with the underscore"
+        quanteda:::message_error("docvars_invalid")
     )
     
 })
