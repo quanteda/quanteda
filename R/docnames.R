@@ -68,7 +68,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    attributes(x)$names <- attr(x, "docvars")[["docname_"]] <- value
+    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
@@ -76,8 +76,9 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    x@Dimnames$docs <- value
-    x@docvars$docname_ <- x@Dimnames$docs
+    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
+    x@docvars$docname_ <- x@Dimnames[["docs"]]
+    print("we think this is not dispatching")
     return(x)
 }
 
@@ -98,12 +99,14 @@ docnames.corpus <- function(x) {
 
 #' @rdname names.corpus
 #' @aliases names<-.tokens
+#' @export
 "names<-.tokens" <- function(x, value) {
     UseMethod("docnames<-")
 }
 
 #' @rdname names.corpus
 #' @aliases rownames<-.dfm
+#' @export
 "rownames<-.dfm" <- function(x, value) {
     UseMethod("docnames<-")
 }
