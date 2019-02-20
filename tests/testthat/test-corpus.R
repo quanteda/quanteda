@@ -434,9 +434,15 @@ test_that("upgrade_corpus is working", {
 })
 
 test_that("metacorpus argument works", {
-    corp <- corpus("aa bb cc", metacorpus = list("citation" = "My boook"))
-    expect_equal(meta(corp)$citation, "My boook")
+    expect_identical(
+        meta(corpus("aa bb cc", metacorpus = list(citation = "My book"))),
+        meta(corpus("aa bb cc", meta = list(citation = "My book")))
+    )
+    corp <- corpus("aa bb cc", metacorpus = list(citation = "My book"))
+    expect_equal(meta(corp)$citation, "My book")
     expect_equal(meta(corp, type = "system")$source, "character")
+    expect_equal(meta(corpus(corp), type = "system")$source, "corpus")
+    expect_equal(meta(corpus(kwic(corp, "bb", window = 1)), type = "system")$source, "kwic")
 })
 
 test_that("metadoc works but raise deprecation warning", {

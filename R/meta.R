@@ -5,15 +5,16 @@
 #' Get or set the corpus-level metadata in a \link{corpus} object.
 #' 
 #' \code{metacorpus} and \code{metacorpus<-} are synonyms but are deprecated.
-#' @param x a \link{corpus} object
-#' @param field metadata field name(s);  if \code{NULL} (default), return all 
+#' @param x an object for which the metadata will be read or set
+#' @param field metadata field name(s); if \code{NULL} (default), return all 
 #'   metadata names
-#' @param type \code{"user"} for user-provided corpus-level meta-data; \code{"system"} for 
-#' meta-data set automatically when the corpus is created; or \code{"all"} for all meta-data.
+#' @param type \code{"user"} for user-provided corpus-level metadata;
+#'   \code{"system"} for metadata set automatically when the corpus is created;
+#'   or \code{"all"} for all metadata.
 #' @return For \code{meta}, a named list of the metadata fields in the corpus.
 #'
 #'   For \code{meta <-}, the corpus with the updated user-level metadata.  Only
-#'   user-level meta-data may be assigned.
+#'   user-level metadata may be assigned.
 #' @export
 #' @keywords corpus
 #' @aliases metacorpus
@@ -48,7 +49,7 @@ meta.tokens <- meta.corpus
 # meta<-   -----------
 
 #' Replacement function for corpus-level data
-#' @param value new value of the corpus metadata field
+#' @param value new value of the metadata field
 #' @export
 #' @rdname meta
 #' @aliases "metacorpus<-"
@@ -89,35 +90,33 @@ metacorpus <- meta
 
 # internal: meta_system ----------------
 
-#' Internal function to set or initialize system meta-data
+#' Internal function to get, set or initialize system metadata
 #' 
-#' Sets or initializes system meta-data for new objects.
-#' @param x input object for which the metadata will be set
-#' @param source character; the input object class
-#' @param list; key-value set of user metadata
+#' Sets or initializes system metadata for new objects.
+#' @inheritParams meta
+#' @return \code{meta_system} returns a list with the object's system metadata.
+#'   It is literally a wrapper to \code{\link[=meta]{meta(x, field, type =
+#'   "system")}}.
 #' @keywords internal
-`meta_system<-` <- function(x, field = NULL, value, initialize = TRUE) {
+#' @examples 
+#' corp <- corpus(c(d1 = "one two three", d2 = "two three four"))
+#' # quanteda:::`meta_system<-`(corp, value = quanteda:::meta_system_defaults("example"))
+#' quanteda:::meta_system(corp)
+meta_system <- function(x, field = NULL) 
+    meta(x, field = field, type = "system")
+
+#' @rdname meta_system
+#' @return \code{meta_system<-} returns the object with the system metadata
+#'   modified. This is an internal function and not designed for users!
+`meta_system<-` <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
     if (length(names(value)) > 0 && length(names(value)) != length(value))
         stop("every element of value must be named")
     UseMethod("meta_system<-")
 }
 
-#' @rdname "meta_system<-"
-`meta_system<-.corpus` <- function(x, field = NULL, value, initialize = TRUE) {
-    if (initialize) {
-        attr(x, "meta") <- 
-        list(user = list(),
-             system = list(
-                 "source" = source,
-                 "package-version" = utils::packageVersion("quanteda"),
-                 "r-version" = getRversion(),
-                 "system" = Sys.info()[c("sysname", "machine", "user")],
-                 "directory" = getwd(),
-                 "created" = Sys.Date()
-             )
-        )
-    }
+#' @rdname meta_system
+`meta_system<-.corpus` <- function(x, field = NULL, value) {
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
     } else {
@@ -126,5 +125,20 @@ metacorpus <- meta
     return(x)
 }
 
-#' @rdname "meta_system<-"
+#' @rdname meta_system
 `meta_system<-.tokens` <- `meta_system<-.corpus`
+
+#' @rdname meta_system
+#' @param source character; the input object class
+#' @return \code{meta_system_defaults} returns a list of default system
+#'   values, with the user setting the "source" value.  This should be used
+#'   to set initial system meta information.
+meta_system_defaults <- function(source) {
+    list("source" = source,
+         "package-version" = utils::packageVersion("quanteda"),
+         "r-version" = getRversion(),
+         "system" = Sys.info()[c("sysname", "machine", "user")],
+         "directory" = getwd(),
+         "created" = Sys.Date()
+    )
+}

@@ -154,10 +154,10 @@ upgrade_corpus <- function(x) {
         attr(result, "unit") <- "documents"
     }
     if ("created" %in% names(x$metadata)) {
-        attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
-                                                   format = "%a %b %d %H:%M:%S %Y")
+        meta_system(result, "created") <- as.POSIXct(x$metadata$created, 
+                                                     format = "%a %b %d %H:%M:%S %Y")
     } else {
-        attr(result, "meta")$created <- as.POSIXlt(Sys.time())
+        meta_system(result, "created") <- as.POSIXlt(Sys.time())
     }
     return(result)
 }

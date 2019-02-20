@@ -158,8 +158,9 @@ tail.corpus <- function(x, n = 6L, ...) {
     c1 <- as.corpus(c1)
     c2 <- as.corpus(c2)
     result <- corpus(c(as.character(unclass(c1)), as.character(unclass(c2))),
-                     docvars = rbind_fill(get_docvars(c1), get_docvars(c2)))
-    result <- meta_init(result, "corpus+", user = meta(c1))
+                     docvars = rbind_fill(get_docvars(c1), get_docvars(c2)),
+                     meta = meta(c1, type = "user"))
+    meta_system(result) <- meta_system_defaults("corpus+")
     return(result)
 }
 
@@ -222,4 +223,3 @@ c.corpus <- function(..., recursive = FALSE) {
     attributes(x, FALSE) <- attrs
     return(x)
 }
-

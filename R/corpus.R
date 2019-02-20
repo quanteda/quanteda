@@ -122,7 +122,7 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
     result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta)
-    attr(result, "meta")$system["source"] <- "corpus"
+    meta_system(result) <- meta_system_defaults("corpus")
     result
 }
 
@@ -166,7 +166,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     class(x) <- "corpus"
     attr(x, "unit") <- "documents"
     attr(x, "docvars") <- docvar
-    x <- meta_init(x, source = "character", user = meta)
+    meta_system(x) <- meta_system_defaults("character") # system metadata
+    meta(x) <- meta                                     # user metadata
     return(x)
 }
 
@@ -234,7 +235,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", me
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
     
     result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta)
-    attr(result, "meta")$system["source"] <- "data.frame"
+    meta_system(result) <- meta_system_defaults("data.frame")
     return(result)
 }
 
@@ -262,7 +263,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
     
     if (split_context) {
         pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], 
-                      docid_field = "docname", text_field = "pre")
+                      docid_field = "docname", text_field = "pre", meta = meta)
         docvars(pre, "context") <- "pre"
         docnames(pre) <- paste0(docnames(pre), ".pre")
         
@@ -281,7 +282,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
     
-    attr(result, "meta")$system["source"] <- "kwic"
+    meta_system(result) <- meta_system_defaults("kwic")
     return(result)
 }
 
@@ -317,7 +318,7 @@ corpus.Corpus <- function(x, ...) {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
     result <- corpus(txt, docvars = docvars, meta = unclass(unclass(x)$meta))
-    attr(result, "meta")$system["source"] <- "tm"
+    meta_system(result) <- meta_system_defaults("tm")
     return(result)
 }
 

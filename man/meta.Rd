@@ -17,21 +17,22 @@ metacorpus(x, field = NULL, type = c("user", "system", "all"))
 metacorpus(x, field = NULL) <- value
 }
 \arguments{
-\item{x}{a \link{corpus} object}
+\item{x}{an object for which the metadata will be read or set}
 
-\item{field}{metadata field name(s);  if \code{NULL} (default), return all 
+\item{field}{metadata field name(s); if \code{NULL} (default), return all 
 metadata names}
 
-\item{type}{\code{"user"} for user-provided corpus-level meta-data; \code{"system"} for 
-meta-data set automatically when the corpus is created; or \code{"all"} for all meta-data.}
+\item{type}{\code{"user"} for user-provided corpus-level metadata;
+\code{"system"} for metadata set automatically when the corpus is created;
+or \code{"all"} for all metadata.}
 
-\item{value}{new value of the corpus metadata field}
+\item{value}{new value of the metadata field}
 }
 \value{
 For \code{meta}, a named list of the metadata fields in the corpus.
 
   For \code{meta <-}, the corpus with the updated user-level metadata.  Only
-  user-level meta-data may be assigned.
+  user-level metadata may be assigned.
 }
 \description{
 Get or set the corpus-level metadata in a \link{corpus} object.
