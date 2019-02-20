@@ -34,3 +34,27 @@ test_that("dfm docnames cannot be made integer before textstat_simil", {
         as.character(1:6)
     )
 })
+
+test_that("special names<- operator works as planned", {
+    
+    corp <- corpus(LETTERS[1:3], docnames = letters[1:3])
+    names(corp)[1] <- "X"
+    expect_identical(
+        names(corp),
+        quanteda:::get_docvars.corpus(corp, "docname_", system = TRUE)$docname_
+    )
+
+    toks <- tokens(corpus(LETTERS[1:3], docnames = letters[1:3]))
+    names(toks)[1] <- "X"
+    expect_identical(
+        names(toks),
+        quanteda:::get_docvars.tokens(toks, "docname_", system = TRUE)$docname_
+    )
+    
+    dfmat <- dfm(corpus(LETTERS[1:3], docnames = letters[1:3]))
+    rownames(dfmat)[1] <- "X"
+    expect_identical(
+        rownames(dfmat),
+        quanteda:::get_docvars.dfm(dfmat, "docname_", system = TRUE)$docname_
+    )
+})
