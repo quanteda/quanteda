@@ -364,6 +364,7 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' Language Processing}}.   Stanford University typescript.  Draft of September
 #' 23.
 #' @keywords textmodel textmodel_nb
+#' @export
 #' @examples 
 #' txt <- c(d1 = "Chinese Beijing Chinese",
 #'          d2 = "Chinese Chinese Shanghai",
@@ -375,10 +376,15 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
 #' gain.textmodel_nb(tmod)
 #' gain.textmodel_nb(tmod, class_specific = FALSE)
+gain <- function(object, base = 2, class_specific = TRUE){
+    UseMethod("gain")
+}
+
 #' @export
+#' @method gain textmodel_nb
 gain.textmodel_nb <- function(object, base = 2, class_specific = TRUE) {
     if (!("textmodel_nb" %in% class(object))) stop("model must be a textmodel_nb object")
-    if (is.logical(class_specific)) stop("class_specific must be a logical (TRUE or FALSE)")
+    if (!is.logical(class_specific)) stop("class_specific must be a logical (TRUE or FALSE)")
 
     # The formula for entropy of word w is
     # - summation over all classes ( P(class) * log P(class))  (Term 1)

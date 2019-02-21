@@ -214,7 +214,7 @@ test_that("gain.text_modelnb works accurately",  {
     
     info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy_1 + unconditional_entropy_2)))[[1]]
     expect_equal(info_gain, 
-                 gain.textmodel_nb(nb, class_specific = F))
+                 gain(nb, class_specific = F))
     
 })
 
