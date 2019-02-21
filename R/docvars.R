@@ -17,7 +17,7 @@
         }
     } else {
         if (any(is_system(field)))
-            stop(message_error("docvar_invalid"))
+            stop(message_error("docvars_invalid"))
         x[field] <- value
     }
     rownames(x) <- NULL

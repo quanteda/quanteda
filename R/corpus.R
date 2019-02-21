@@ -26,24 +26,25 @@
 #'   \code{data.frame} indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be
 #'   imported as docvars.  This argument is only used for \code{data.frame}
-#'   objects (including those created by \pkg{readtext}). \itemize{
-#'   \item{\code{source }}{a description of the source of the texts, used for
-#'   referencing;} \item{\code{citation }}{information on how to cite the
-#'   corpus; and} \item{\code{notes }}{any additional information about who
-#'   created the text, warnings, to do lists, etc.} }
+#'   objects (including those created by \pkg{readtext}).
+#' @param meta a named list that will be added to the corpus as corpus-level,
+#'   user meta-data.  This can later be accessed or updated using
+#'   \code{\link{meta}}.
 #' @param ... not used directly
 #' @return A \link{corpus-class} class object containing the original texts,
 #'   document-level variables, document-level metadata, corpus-level metadata,
 #'   and default settings for subsequent processing of the corpus.
-#' @section A warning on accessing corpus elements: A corpus currently consists
-#'   of an S3 specially classed list of elements, but \strong{you should not
-#'   access these elements directly}. Use the extractor and replacement
-#'   functions instead, or else your code is not only going to be uglier, but
-#'   also likely to break should the internal structure of a corpus object
-#'   change (as it inevitably will as we continue to develop the package,
-#'   including moving corpus objects to the S4 class system).
-#' @seealso \link{corpus-class}, \code{\link{docvars}}, \code{\link{settings}},
-#'   \code{\link{texts}}, \code{\link{ndoc}}, \code{\link{docnames}}
+#' 
+#'   For \pkg{quanteda} >= 1.5, this is a specially classed character vector. It
+#'   has many additional attributes but \strong{you should not access these
+#'   attributes directly}, especially if you are another package author. Use the
+#'   extractor and replacement functions instead, or else your code is not only
+#'   going to be uglier, but also likely to break should the internal structure
+#'   of a corpus object change.  Using the accessor and replacement functions 
+#'   ensures that future code to manipulate corpus objects will continue to work.
+#' @seealso \link{corpus-class}, \code{\link{docvars}}, 
+#'   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
+#'   \code{\link{docnames}}
 #' @details The texts and document variables of corpus objects can also be
 #'   accessed using index notation. Indexing a corpus object as a vector will
 #'   return its text, equivalent to \code{texts(x)}.  Note that this is not the
@@ -57,7 +58,6 @@
 #'   \code{myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))}.
 #'
 #'   For details, see \link{corpus-class}.
-#' @author Kenneth Benoit and Paul Nulty
 #' @export
 #' @keywords corpus
 #' @examples
@@ -92,13 +92,20 @@
 #'                   row.names = paste0("fromDf_", 1:6))
 #' dat
 #' summary(corpus(dat, text_field = "some_text",
-#'                metacorpus = list(source = "From a data.frame called mydf.")))
+#'                meta = list(source = "From a data.frame called mydf.")))
 #'
 #' # construct a corpus from a kwic object
 #' kw <- kwic(data_corpus_inaugural, "southern")
 #' summary(corpus(kw))
 corpus <- function(x, ...) {
-    UseMethod("corpus")
+    # trap old usage of metacorpus
+    dots <- list(...)
+    if ("metacorpus" %in% names(dots)) {
+        names(dots)[which(names(dots) == "metacorpus")] <- "meta"
+        do.call(corpus, c(list(x = x), dots))
+    } else {
+        UseMethod("corpus")
+    }
 }
 
 #' @rdname corpus
@@ -110,23 +117,25 @@ corpus.default <- function(x, ...) {
 
 #' @rdname corpus
 #' @export
-corpus.corpus <- function(x, docnames = NULL, docvars = NULL, unique_docnames = TRUE, ...) {
+corpus.corpus <- function(x, docnames = quanteda::docnames(x), 
+                          docvars = quanteda::docvars(x),
+                          meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
-    if (is.null(docnames) && is.null(docvars))
-        return(x)
-    corpus(texts(x), docnames = docnames, docvars = docvars, unique_docnames = unique_docnames)
+    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, unique_docnames = TRUE, )
+    meta_system(result, "source") <- "corpus"
+    return(result)
 }
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames = TRUE, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     x[is.na(x)] <- ""
     
     if (!is.null(docnames)) {
-        if(length(docnames) != length(x))
-            stop("docnames must the the same length as x")
+        if (length(docnames) != length(x))
+            stop(message_error("docnames_mismatch"))
     } else if (!is.null(names(x))) {
         docnames <- names(x)
     }
@@ -134,7 +143,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames
         stop("docnames must be unique")
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
-            message_error("docvar_invalid")
+            stop(message_error("docvars_invalid"))
         docvar <- cbind(make_docvars(length(x), docnames), docvars)
     } else {
         docvar <- make_docvars(length(x), docnames)
@@ -163,6 +172,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames
     }
     attr(x, "meta") <- meta("character", ...)
     attr(x, "docvars") <- docvar
+    meta_system(x) <- meta_system_defaults("character") # system metadata
+    meta(x) <- meta                                     # user metadata
     return(x)
 }
 
@@ -174,8 +185,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, unique_docnames
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", 
-                              unique_docnames = TRUE, ...) {
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", meta = list(), unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     # coerce data.frame variants to data.frame - for #1232
@@ -229,9 +239,9 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     is_empty <- is_empty[c(docid_index, text_index) * -1]
     if (any(is_empty))
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
-    
-    corpus(x[[text_index]], docvars = docvars, docnames = docname, 
-           unique_docnames = unique_docnames)
+    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta, unique_docnames = TRUE)
+    meta_system(result, "source") <- "data.frame"
+    return(result)
 }
 
 
@@ -251,21 +261,20 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #' texts(corpus(kw, split_context = FALSE))
 #' 
 #' @export
-corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
+corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
     
     unused_dots(...)
     class(x) <- "data.frame"
     
     if (split_context) {
         pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], 
-                      docid_field = "docname", text_field = "pre", 
-                      unique_docnames = FALSE)
+                      docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = TRUE)
         docvars(pre, "context") <- "pre"
         docnames(pre) <- paste0(docnames(pre), ".pre")
         
         post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], 
                        docid_field = "docname", text_field = "post",
-                       unique_docnames = FALSE)
+                       meta = meta, unique_docnames = TRUE, )
         docvars(post, "context") <- "post"
         docnames(post) <- paste0(docnames(post), ".post")
         result <- pre + post
@@ -273,12 +282,12 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, ...) {
         
     } else {
         result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
-                         docnames = x[["docname"]], unique_docnames = FALSE)
+                         docnames = x[["docname"]], meta = meta, unique_docnames = TRUE)
         docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
     
-    attr(result, "meta") <- meta("kwic")
+    meta_system(result, "source") <- "kwic"
     return(result)
 }
 
@@ -313,24 +322,8 @@ corpus.Corpus <- function(x, ...) {
     } else {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
-    corpus(txt, docvars = docvars, unique_docnames = FALSE)
-}
-
-# Internal function to create corpus meta data
-meta <- function(source = c("character", "corpus", "kwic", "list"), metacorpus = NULL) {
-    source <- match.arg(source)
-    result <- list(
-          "source" = source,
-          "package-version" = utils::packageVersion("quanteda"),
-          "r-version" = getRversion(),
-          "system" = Sys.info()[c("sysname", "machine", "user")],
-          "directory" = getwd(),
-          "created" = Sys.Date()
-          )
-    
-    # only for backward compatibility
-    if (is.list(metacorpus)) 
-        result <- c(result, metacorpus)
+    result <- corpus(txt, docvars = docvars, meta = unclass(unclass(x)$meta))
+    meta_system(result, "source") <- "tm"
     return(result)
 }
 

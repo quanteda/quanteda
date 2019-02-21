@@ -408,8 +408,11 @@ tokens_internal <- function(x,
     }
 
     x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names, 
-                        what = what, ngrams = ngrams, skip = skip, concatenator = concatenator,
-                        types = attr(x[[length(x)]], "types"), unit = "documents", source = "corpus")
+                        what = what, ngrams = ngrams, skip = skip, 
+                        concatenator = concatenator,
+                        types = attr(x[[length(x)]], "types"), 
+                        unit = "documents", 
+                        source = "corpus")
     
     if (what %in% c("word", "fasterword")) {
 
@@ -445,7 +448,7 @@ tokens_internal <- function(x,
     }
 
     if (verbose){
-        catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
+        catm("...total elapsed:", round((proc.time() - time_start)[3], digits = getOption("digits")), "seconds.\n")
         catm("Finished tokenizing and cleaning", format(length(x), big.mark = ","), "texts.\n")
     }
 
@@ -465,7 +468,7 @@ compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
               padding = padding,
               types = types,
               unit = unit,
-              meta = meta(source),
+              meta = list(),
               docvars = docvars)
 }
 
@@ -701,14 +704,6 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
     }
     Encoding(types(x)) <- "UTF-8"
     return(x)
-}
-
-get_tokens <- function(x) {
-    UseMethod("get_tokens")
-}
-
-get_tokens.tokens <- function(x) {
-    as.list(x)
 }
 
 #' Get word types from a tokens object
