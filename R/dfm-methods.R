@@ -70,7 +70,7 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    if (identical(get_object_version(x), c(1L, 4L, 0L)))
+    if (is_pre15(x))
         x@docvars <- upgrade_docvars(x@docvars, rownames(x))
     return(x)
 }

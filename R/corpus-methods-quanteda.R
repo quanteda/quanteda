@@ -119,7 +119,7 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    if (identical(get_object_version(x), c(1L, 4L, 0L)))
+    if (is_pre15(x))
         x <- upgrade_corpus(x)
     return(x)
 }

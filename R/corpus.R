@@ -121,7 +121,7 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           docvars = quanteda::docvars(x),
                           meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
-    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, unique_docnames = TRUE, )
+    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, ...)
     meta_system(result, "source") <- "corpus"
     return(result)
 }
