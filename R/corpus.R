@@ -238,7 +238,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", me
     is_empty <- is_empty[c(docid_index, text_index) * -1]
     if (any(is_empty))
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
-    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta, unique_docnames = TRUE)
+    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta, unique_docnames = unique_docnames)
     meta_system(result, "source") <- "data.frame"
     return(result)
 }
