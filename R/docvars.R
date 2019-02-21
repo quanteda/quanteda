@@ -20,7 +20,7 @@
             stop(message_error("docvars_invalid"))
         x[field] <- value
     }
-    rownames(x) <- NULL
+    rownames(x) <- as.character(seq_len(nrow(x)))
     return(x)
 }
 
@@ -108,7 +108,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
 reshape_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
-    rownames(x) <- NULL
+    rownames(x) <- as.character(seq_len(nrow(x)))
     if (is.numeric(i) && any(duplicated(i))) {
         x[["segid_"]] <- stats::ave(i == i, i, FUN = cumsum)
         x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
@@ -122,7 +122,7 @@ reshape_docvars <- function(x, i = NULL) {
 subset_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
-    rownames(x) <- NULL
+    rownames(x) <- as.character(seq_len(nrow(x)))
     return(x)
 }
 
@@ -135,7 +135,7 @@ upgrade_docvars <- function(x, docnames = NULL) {
     if (is.null(x) || length(x) == 0) {
         result <- make_docvars(length(docnames), docnames, FALSE)
     } else {
-        rownames(x) <- NULL
+        rownames(x) <- as.character(seq_len(nrow(x)))
         result <- cbind(make_docvars(nrow(x), docnames, FALSE), 
                         x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
