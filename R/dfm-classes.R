@@ -29,7 +29,8 @@ setClass("dfm",
                    smooth = "numeric", 
                    ngrams = "integer", skip = "integer", 
                    concatenator = "character", version = "integer",
-                   docvars = "data.frame"),
+                   docvars = "data.frame",
+                   meta = "list"),
          prototype = list(settings = list(),
                           Dim = integer(2), 
                           Dimnames = list(docs = character(), features = character()),
@@ -41,7 +42,8 @@ setClass("dfm",
                           skip = 0L,
                           concatenator = "_",
                           version = unlist(utils::packageVersion("quanteda")),
-                          docvars = data.frame(row.names = character())),
+                          docvars = data.frame(row.names = character()),
+                          meta = list(user = list(), system = list())),
          contains = "dgCMatrix")
 
 # deprecated dfmSparse class for backward compatibility
@@ -156,7 +158,6 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
     if (!is.null(document)) df <- cbind(document, df, stringsAsFactors = FALSE)
     df
 }
-
 
 
 #' Combine dfm objects by Rows or Columns

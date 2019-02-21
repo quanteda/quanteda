@@ -159,6 +159,16 @@ meta_system <- function(x, field = NULL)
 `meta_system<-.tokens` <- `meta_system<-.corpus`
 
 #' @rdname meta_system
+`meta_system<-.dfm` <- function(x, field = NULL, value) {
+    if (is.null(field)) {
+        x@meta$system <- value
+    } else {
+        x@meta$system[[field]] <- value
+    }
+}
+
+
+#' @rdname meta_system
 #' @param source character; the input object class
 #' @return \code{meta_system_defaults} returns a list of default system
 #'   values, with the user setting the "source" value.  This should be used

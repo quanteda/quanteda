@@ -280,7 +280,7 @@ sample_bygroup <- function(x, group, replace = FALSE) {
 #' Return the the \pkg{quanteda} 
 #' package version in which a \link{dfm}, \link{tokens}, or \link{corpus}
 #' object was created.
-#' @value a three-element integer vector of class "package_version"
+#' @return a three-element integer vector of class "package_version"
 #' @keywords internal utils
 get_object_version <- function(x) {
     if (is.null(meta(x, type = "system")[["package-version"]])) {

@@ -6,6 +6,9 @@
 \usage{
 get_object_version(x)
 }
+\value{
+a three-element integer vector of class "package_version"
+}
 \description{
 Return the the \pkg{quanteda} 
 package version in which a \link{dfm}, \link{tokens}, or \link{corpus}
