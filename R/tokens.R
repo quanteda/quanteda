@@ -307,7 +307,8 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
-    attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
+    if (identical(get_object_version(x), c(1L, 4L, 0L)))
+        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
     return(x)
 }
 

@@ -70,10 +70,8 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    # make sure the dimension names are character
-    set_dfm_dimnames(x) <- x@Dimnames
-    # for compatibility with older dfm objects
-    x@docvars <- upgrade_docvars(x@docvars, rownames(x))
+    if (identical(get_object_version(x), c(1L, 4L, 0L)))
+        x@docvars <- upgrade_docvars(x@docvars, rownames(x))
     return(x)
 }
 
