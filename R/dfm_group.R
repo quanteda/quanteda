@@ -150,6 +150,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
                   smooth = x@smooth,
                   ngrams = x@ngrams,
                   skip = x@skip,
+                  meta = x@meta,
                   concatenator = x@concatenator)
     set_dfm_dimnames(result) <- list(docname, featname)
 
