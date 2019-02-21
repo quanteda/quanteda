@@ -44,8 +44,8 @@ txt <- c(d1 = "Chinese Beijing Chinese",
 trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-gain.textmodel_nb(tmod)
-gain.textmodel_nb(tmod, class_specific = FALSE)
+gain(tmod)
+gain(tmod, class_specific = FALSE)
 }
 \references{
 Jurafsky, Daniel and James H. Martin.  (2018).

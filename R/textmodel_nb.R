@@ -63,7 +63,7 @@
 #'   Processing, Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018 
 #'   (Chapter 6, Naive Bayes). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 #'   
-#' @seealso \code{\link{predict.textmodel_nb}}
+#' @seealso \code{\link{predict.textmodel_nb}}, \code{\link{gain}}
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -374,8 +374,8 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' trainingset <- dfm(txt, tolower = FALSE)
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-#' gain.textmodel_nb(tmod)
-#' gain.textmodel_nb(tmod, class_specific = FALSE)
+#' gain(tmod)
+#' gain(tmod, class_specific = FALSE)
 gain <- function(object, base = 2, class_specific = TRUE){
     UseMethod("gain")
 }

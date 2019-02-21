@@ -118,7 +118,7 @@ Manning, C.D., Raghavan, P., & Schütze, H. (2008).
   (Chapter 6, Naive Bayes). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 }
 \seealso{
-\code{\link{predict.textmodel_nb}}
+\code{\link{predict.textmodel_nb}}, \code{\link{gain}}
 }
 \author{
 Kenneth Benoit
