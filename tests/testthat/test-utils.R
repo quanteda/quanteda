@@ -118,26 +118,17 @@ test_that("check_font is working", {
 
 test_that("get_package_version works", {
     load("../data/pre15objects/data_corpus_pre15.rda")
-    expect_equal(
-        quanteda:::get_object_version(data_corpus_pre15),
-        c(1, 4, 0)
-    )
+    expect_true(quanteda:::get_object_version(data_corpus_pre15) == "1.4.0")
     expect_true(quanteda:::is_pre15(data_corpus_pre15))
     expect_true(quanteda:::get_object_version(corpus("one")) > "1.4.9")
     
     load("../data/pre15objects/data_tokens_pre15.rda")
-    expect_equal(
-        quanteda:::get_object_version(data_tokens_pre15),
-        c(1, 4, 0)
-    )
+    expect_true(quanteda:::get_object_version(data_tokens_pre15) == "1.4.0")
     expect_true(quanteda:::is_pre15(data_tokens_pre15))
     expect_true(quanteda:::get_object_version(tokens("one")) > "1.4.9")
     
     load("../data/pre15objects/data_dfm_pre15.rda")
-    expect_equal(
-        quanteda:::get_object_version(data_dfm_pre15),
-        c(1, 4, 0)
-    )
+    expect_true(quanteda:::get_object_version(data_dfm_pre15) == "1.4.0")
     expect_true(quanteda:::is_pre15(data_dfm_pre15))
     expect_true(quanteda:::get_object_version(dfm("one")) > "1.4.9")
 })
