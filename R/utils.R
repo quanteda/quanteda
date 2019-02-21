@@ -273,3 +273,19 @@ sample_bygroup <- function(x, group, replace = FALSE) {
     result <- lapply(split(x, group), sample, replace = replace)
     unlist(result, use.names = FALSE)
 } 
+
+
+#' Get the object version
+#' 
+#' Return the the \pkg{quanteda} 
+#' package version in which a \link{dfm}, \link{tokens}, or \link{corpus}
+#' object was created.
+#' @value a three-element integer vector of class "package_version"
+#' @keywords internal utils
+get_object_version <- function(x) {
+    if (is.null(meta(x, type = "system")[["package-version"]])) {
+        as.integer(c(1, 4, 0))
+    } else {
+        meta(x, field = "package-version", type = "system")
+    }
+}
