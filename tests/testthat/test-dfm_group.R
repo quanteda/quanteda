@@ -174,7 +174,6 @@ test_that("test dfm_group keeps group-level variables", {
                             var1 = c(2, 2, 1),
                             var3 = c("y", NA, "x"),
                             var5 = as.Date(c("2015-03-01", "2012-12-15", "2018-01-01")),
-                            row.names = c("1", "2", "3"),
                             stringsAsFactors = FALSE)
     )
     
@@ -189,7 +188,6 @@ test_that("test dfm_group keeps group-level variables", {
                    var1 = c(2, NA, 2, 1),
                    var3 = c("y", NA, NA, "x"),
                    var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
-                   row.names = c("1", "2", "3", "4"),
                    stringsAsFactors = FALSE)
     )
 })
@@ -235,7 +233,6 @@ test_that("group_docvar drops list column (#1553)", {
                        "segid_" = c(1L, 1L, 1L, 1L),
                        vec1 = c(1, 3, 3, 6),
                        vec2 = c("a", "b", "b", "c"),
-                       row.names = c("1", "2", "3", "4"),
                        stringsAsFactors = FALSE)
     data$lis <- list(1:3, -5, 3:4, 1)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
@@ -244,19 +241,16 @@ test_that("group_docvar drops list column (#1553)", {
                             "segid_" = c(1L, 1L, 1L),
                             vec1 = c(1, 3, 6),
                             vec2 = c("a", "b", "c"),
-                            row.names = c("1", "2", "3"),
                             stringsAsFactors = FALSE))
     
     corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),
                    docvars = data.frame(vec1 = c(1, 3, 3, 6),
                                         vec2 = c("a", "b", "b", "c"),
-                                        row.names = c("1", "2", "3", "4"),
                                         stringsAsFactors = FALSE))
     mt <- dfm(corp)
     expect_equal(docvars(dfm_group(mt, c(1, 2, 2, 3))),
                  data.frame(data.frame(vec1 = c(1, 3, 6),
                                        vec2 = c("a", "b", "c"),
-                                       row.names = c("1", "2", "3"),
                                        stringsAsFactors = FALSE)))
     
 })
