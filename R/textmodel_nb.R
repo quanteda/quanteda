@@ -355,8 +355,6 @@ print.predict.textmodel_nb <- function(x, ...) {
 #'  }
 #' }
 #' @param object a \link{textmodel_nb} object
-#' @param class_specific  whether to return class specific information gain
-#'   scores or not. Defaults to \code{TRUE}.
 #' @param base the base of the logarithmic function to be used. Defaults to 2.
 #' @references 
 #' Jurafsky, Daniel and James H. Martin.  (2018).
@@ -364,6 +362,7 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' Language Processing}}.   Stanford University typescript.  Draft of September
 #' 23.
 #' @keywords textmodel textmodel_nb
+#' @return \code{gain} returns a matrix containing class specific information gain values and overall values aggregated over all classes
 #' @export
 #' @examples 
 #' txt <- c(d1 = "Chinese Beijing Chinese",
@@ -375,8 +374,8 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
 #' gain(tmod)
-#' gain(tmod, class_specific = FALSE)
-gain <- function(object, base = 2, class_specific = TRUE){
+#' gain(tmod)
+gain <- function(object, base = 2){
     UseMethod("gain")
 }
 
@@ -387,9 +386,7 @@ gain.default <- function(object, ...){
 
 #' @export
 #' @method gain textmodel_nb
-gain.textmodel_nb <- function(object, base = 2, class_specific = TRUE) {
-    if (!is.logical(class_specific)) stop("class_specific must be a logical (TRUE or FALSE)")
-
+gain.textmodel_nb <- function(object, base = 2) {
     # The formula for entropy of word w is
     # - summation over all classes ( P(class) * log P(class))  (Term 1)
     # + P(w) * summation over all classes (P(class |w ) * log(P(class|w)) ) (Term 2)
@@ -398,12 +395,12 @@ gain.textmodel_nb <- function(object, base = 2, class_specific = TRUE) {
     # Term 1: Initial Entropy
     # Get summation over all classes of  P(class) * log P(class)
     initial_entropy <- sapply(object$Pc, function(x) -1 * x * log(x, base = base), USE.NAMES = TRUE)
-    if (class_specific == FALSE) initial_entropy <- sum(initial_entropy)
-
+    initial_entropy <- c(initial_entropy, overallgain = sum(initial_entropy)) # Add a new row for overall gain
+    
     # Term 2: Entropy Given w
     # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
     conditional_entropy <- apply(object$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
-    if (class_specific == FALSE) conditional_entropy <- colSums(conditional_entropy)
+    conditional_entropy <- rbind(conditional_entropy, overallgain = colSums(conditional_entropy)) # Add a new row for overall gain
 
     # Now get the unconditional entropy  := P(w) * conditional entropy
     unconditional_entropy <-  t(apply(conditional_entropy, 1, `*`, object$Pw))
@@ -417,23 +414,19 @@ gain.textmodel_nb <- function(object, base = 2, class_specific = TRUE) {
     # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
     Pcintersectw <- data.frame(object$PwGc) * object$Pc
     Pcintersectwcomp <- (object$Pc - Pcintersectw)
-    PcGwcomp <- t(apply(Pcintersectwcomp, 1, `/`, 1-object$Pw))  # P(class | w') =  P(class ∩ w') / P(w')
-    colnames(PcGwcomp) <- colnames(Pcintersectwcomp)
+    PcGwcomp <- t(apply(Pcintersectwcomp, 1, `/`, 1-object$Pw))
+    colnames(PcGwcomp) <- colnames(Pcintersectwcomp) # P(class | w') =  P(class ∩ w') / P(w')
     # PcGwcomp is a dataframe that captures conditional on a word not being in the document,
     # what is the probability that it belongs to a class?
-
+    
     conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
-    if (class_specific == FALSE) conditional_entropy_comp <- colSums(conditional_entropy_comp)
-
+    conditional_entropy_comp <- rbind(conditional_entropy_comp, overallgain = colSums(conditional_entropy_comp)) # Add a new row for overall gain
+    
     unconditional_entropy_comp <- t(apply(conditional_entropy_comp, 1, `*`, 1-object$Pw))
     colnames(unconditional_entropy_comp) <- colnames(conditional_entropy_comp)
     
-    # Add the three terms and return either as matrix of named-list
-    if (class_specific == TRUE) {
-        info_gain <-  apply(unconditional_entropy + unconditional_entropy_comp, MARGIN = 2, function(x) x + initial_entropy)
-        rownames(info_gain) <- names(initial_entropy)
-    } else {
-        info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy + unconditional_entropy_comp)))[[1]]
-    }
+    # Add the three terms and return as matrix 
+    info_gain <-  apply(unconditional_entropy + unconditional_entropy_comp, MARGIN = 2, function(x) x + initial_entropy)
+    
     return(info_gain)
 }

@@ -5,15 +5,15 @@
 \title{Compute the information gain of features from a fitted \link{textmodel_nb}
 object}
 \usage{
-gain(object, base = 2, class_specific = TRUE)
+gain(object, base = 2)
 }
 \arguments{
 \item{object}{a \link{textmodel_nb} object}
 
 \item{base}{the base of the logarithmic function to be used. Defaults to 2.}
-
-\item{class_specific}{whether to return class specific information gain
-scores or not. Defaults to \code{TRUE}.}
+}
+\value{
+\code{gain} returns a matrix containing class specific information gain values and overall values aggregated over all classes
 }
 \description{
 Computes the information gain of features from a fitted \link{textmodel_nb}
@@ -45,7 +45,7 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
 gain(tmod)
-gain(tmod, class_specific = FALSE)
+gain(tmod)
 }
 \references{
 Jurafsky, Daniel and James H. Martin.  (2018).
