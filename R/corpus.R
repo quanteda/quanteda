@@ -267,13 +267,13 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
     
     if (split_context) {
         pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], 
-                      docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = TRUE)
+                      docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = FALSE)
         docvars(pre, "context") <- "pre"
         docnames(pre) <- paste0(docnames(pre), ".pre")
         
         post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], 
                        docid_field = "docname", text_field = "post",
-                       meta = meta, unique_docnames = TRUE, )
+                       meta = meta, unique_docnames = FALSE)
         docvars(post, "context") <- "post"
         docnames(post) <- paste0(docnames(post), ".post")
         result <- pre + post
@@ -281,7 +281,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         
     } else {
         result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
-                         docnames = x[["docname"]], meta = meta, unique_docnames = TRUE)
+                         docnames = x[["docname"]], meta = meta, unique_docnames = FALSE)
         docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
