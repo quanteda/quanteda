@@ -381,9 +381,13 @@ gain <- function(object, base = 2, class_specific = TRUE){
 }
 
 #' @export
+gain.default <- function(object, ...){
+    if (!("textmodel_nb" %in% class(object))) stop("model must be a textmodel_nb object")
+}
+
+#' @export
 #' @method gain textmodel_nb
 gain.textmodel_nb <- function(object, base = 2, class_specific = TRUE) {
-    if (!("textmodel_nb" %in% class(object))) stop("model must be a textmodel_nb object")
     if (!is.logical(class_specific)) stop("class_specific must be a logical (TRUE or FALSE)")
 
     # The formula for entropy of word w is
