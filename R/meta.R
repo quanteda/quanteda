@@ -49,6 +49,21 @@ meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
 #' @export
 meta.tokens <- meta.corpus
 
+#' @export
+meta.dfm <- function(x, field = NULL, type = c("user", "system", "all")) {
+    type <- match.arg(type)
+    result <- list()
+    if (type %in% c("user", "all"))
+        result <- c(result, x@meta$user)
+    if (type %in% c("system", "all"))
+        result <- c(result, x@meta$system)
+    if (is.null(field)) {
+        return(result)
+    } else {
+        return(result[[field]])
+    }
+}
+
 
 # meta<-   -----------
 
@@ -81,6 +96,17 @@ meta.tokens <- meta.corpus
 
 #' @export
 `meta<-.tokens` <- `meta<-.corpus`
+
+#' @export
+`meta<-.dfm` <- function(x, field = NULL, value) {
+    if (is.null(field)) {
+        x@meta$user <- value
+    } else {
+        x@meta$user[[field]] <- value
+    }
+    return(x)
+}
+
 
 # legacy functions ----------
 
