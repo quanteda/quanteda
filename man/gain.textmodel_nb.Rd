@@ -5,10 +5,10 @@
 \title{Compute the information gain of features from a fitted \link{textmodel_nb}
 object}
 \usage{
-gain.textmodel_nb(model, base = 2, class_specific = TRUE)
+gain.textmodel_nb(object, base = 2, class_specific = TRUE)
 }
 \arguments{
-\item{model}{a \link{textmodel_nb} object}
+\item{object}{a \link{textmodel_nb} object}
 
 \item{base}{the base of the logarithmic function to be used. Defaults to 2.}
 
@@ -17,7 +17,23 @@ scores or not. Defaults to \code{TRUE}.}
 }
 \description{
 Computes the information gain of features from a fitted \link{textmodel_nb}
-object.  See
+object.
+\describe{
+  \item{Formula:}{
+  \deqn{G(w) = \sum_{i=1}^{C}{P(c_i) \log{P(c_i)}}
+  + P(w) \sum_{i=1}^{C}{P(c_i | w) \log{P(c_i | w)}}
+  + P(w^{c}) \sum_{i=1}^{C}{P(c_i | w^{c}) \log{P(c_i | w^{c})}}
+  }
+  where \itemize{
+  \item \eqn{G(w)} is the information gain from word \eqn{w},
+  \item \eqn{P(c_i)} is the prior probability of class \eqn{i}, 
+  \item \eqn{P(w)} is the probability of word \eqn{w} being present in a document ,
+  \item \eqn{P(w^c)} is the probability of word \eqn{w} being absent in a document,
+  \item \eqn{P(c_i | w)} is the posterior probability of class \eqn{i} given that word \eqn{w} is present and 
+  \item \eqn{P(c_i | w^c)} is the posterior probability  of class\eqn{i} given that word \eqn{w} is absent.
+  }
+ }
+}
 }
 \examples{
 txt <- c(d1 = "Chinese Beijing Chinese",

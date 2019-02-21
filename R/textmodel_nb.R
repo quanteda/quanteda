@@ -337,8 +337,24 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' object
 #' 
 #' Computes the information gain of features from a fitted \link{textmodel_nb}
-#' object.  See  
-#' @param model a \link{textmodel_nb} object
+#' object.
+#' \describe{
+#'   \item{Formula:}{
+#'   \deqn{G(w) = \sum_{i=1}^{C}{P(c_i) \log{P(c_i)}}
+#'   + P(w) \sum_{i=1}^{C}{P(c_i | w) \log{P(c_i | w)}}
+#'   + P(w^{c}) \sum_{i=1}^{C}{P(c_i | w^{c}) \log{P(c_i | w^{c})}}
+#'   }
+#'   where \itemize{
+#'   \item \eqn{G(w)} is the information gain from word \eqn{w},
+#'   \item \eqn{P(c_i)} is the prior probability of class \eqn{i}, 
+#'   \item \eqn{P(w)} is the probability of word \eqn{w} being present in a document ,
+#'   \item \eqn{P(w^c)} is the probability of word \eqn{w} being absent in a document,
+#'   \item \eqn{P(c_i | w)} is the posterior probability of class \eqn{i} given that word \eqn{w} is present and 
+#'   \item \eqn{P(c_i | w^c)} is the posterior probability  of class\eqn{i} given that word \eqn{w} is absent.
+#'   }
+#'  }
+#' }
+#' @param object a \link{textmodel_nb} object
 #' @param class_specific  whether to return class specific information gain
 #'   scores or not. Defaults to \code{TRUE}.
 #' @param base the base of the logarithmic function to be used. Defaults to 2.
@@ -360,9 +376,9 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' gain.textmodel_nb(tmod)
 #' gain.textmodel_nb(tmod, class_specific = FALSE)
 #' @export
-gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE) {
-    if (!("textmodel_nb" %in% class(model))) stop("model must be a textmodel_nb object")
-    if (class(class_specific) != "logical") stop("class_specific must be a logical (TRUE or FALSE)")
+gain.textmodel_nb <- function(object, base = 2, class_specific = TRUE) {
+    if (!("textmodel_nb" %in% class(object))) stop("model must be a textmodel_nb object")
+    if (is.logical(class_specific)) stop("class_specific must be a logical (TRUE or FALSE)")
 
     # The formula for entropy of word w is
     # - summation over all classes ( P(class) * log P(class))  (Term 1)
@@ -371,16 +387,16 @@ gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE) {
 
     # Term 1: Initial Entropy
     # Get summation over all classes of  P(class) * log P(class)
-    initial_entropy <- apply(data.frame(model$Pc), MARGIN = 2, function(x) -1 * x * log(x, base = base))
-    if (class_specific == F) initial_entropy <- sum(initial_entropy)
+    initial_entropy <- apply(data.frame(object$Pc), MARGIN = 2, function(x) -1 * x * log(x, base = base))
+    if (class_specific == FALSE) initial_entropy <- sum(initial_entropy)
 
     # Term 2: Entropy Given w
     # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
-    conditional_entropy <- apply(model$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
-    if (class_specific == F) conditional_entropy <- colSums(conditional_entropy)
+    conditional_entropy <- apply(object$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
+    if (class_specific == FALSE) conditional_entropy <- colSums(conditional_entropy)
 
     # Now get the unconditional entropy  := P(w) * conditional entropy
-    unconditional_entropy <-  t(data.frame(t(conditional_entropy)) * model$Pw)
+    unconditional_entropy <-  t(data.frame(t(conditional_entropy)) * object$Pw)
 
     # Term 3: Entropy Given w'
     # Get the second conditional entropy := summation over all classes P(class | w') * log(P(class|w'))
@@ -388,22 +404,22 @@ gain.textmodel_nb <- function(model, base = 2, class_specific = TRUE) {
     # To derive P(class|w'), we note:
     # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w')
     # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
-    Pcintersectw <- data.frame(model$PwGc) * model$Pc
-    Pcintersectwcomp <- (model$Pc - Pcintersectw)
-    PcGwcomp <- t(data.frame(t(Pcintersectwcomp)) / (1-model$Pw)) # P(class | w') =  P(class ∩ w') / P(w')
+    Pcintersectw <- data.frame(object$PwGc) * object$Pc
+    Pcintersectwcomp <- (object$Pc - Pcintersectw)
+    PcGwcomp <- t(data.frame(t(Pcintersectwcomp)) / (1-object$Pw)) # P(class | w') =  P(class ∩ w') / P(w')
     # PcGwcomp is a dataframe that captures conditional on a word not being in the document,
     # what is the probability that it belongs to a class?
 
     conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
-    if (class_specific == F) conditional_entropy_comp <- colSums(conditional_entropy_comp)
+    if (class_specific == FALSE) conditional_entropy_comp <- colSums(conditional_entropy_comp)
 
-    unconditional_entropy_comp <- t((1 - model$Pw) * data.frame(t(conditional_entropy_comp)))
+    unconditional_entropy_comp <- t((1 - object$Pw) * data.frame(t(conditional_entropy_comp)))
 
     # Add the three terms and return either as matrix of named-list
-    if (class_specific == T) {
+    if (class_specific == TRUE) {
         info_gain <-  apply(unconditional_entropy + unconditional_entropy_comp, MARGIN = 2, function(x) x + initial_entropy)
         rownames(info_gain) <- rownames(initial_entropy)
-    } else if (class_specific == F) {
+    } else {
         info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy + unconditional_entropy_comp)))[[1]]
     }
     return(info_gain)
