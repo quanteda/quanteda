@@ -78,10 +78,10 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
         docname <- as.character(docname)
     }
     if (n == 0) {
-        data.frame("docname_" = character(),
-                   "docid_" = factor(),
-                   "segid_" = integer(), 
-                   stringsAsFactors = FALSE)
+        result <- data.frame("docname_" = character(),
+                             "docid_" = factor(),
+                             "segid_" = integer(), 
+                              stringsAsFactors = FALSE)
     } else {
         if (unique) {
             docnum <- match(docname, unique(docname))
@@ -97,11 +97,13 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
             segid <- rep(1L, n)
             docid <- docname
         }
-        data.frame("docname_" = docid,
-                   "docid_" = factor(docname, levels = unique(docname)),
-                   "segid_" = segid,
-                   stringsAsFactors = FALSE)
+        result <- data.frame("docname_" = docid,
+                             "docid_" = factor(docname, levels = unique(docname)),
+                             "segid_" = segid,
+                             stringsAsFactors = FALSE)
     }
+    rownames(result) <- as.character(seq_len(nrow(result)))
+    return(result)
 }
 
 # internal function to duplicate or dedplicate docvar rows
@@ -125,6 +127,16 @@ subset_docvars <- function(x, i = NULL) {
     rownames(x) <- as.character(seq_len(nrow(x)))
     return(x)
 }
+
+# Reshape docvars keeping variables that have the same values within groups
+group_docvars <- function(x, group) {
+    l <- is_system(names(x)) | unlist(lapply(x, is_grouped, group), use.names = FALSE)
+    result <- x[match(levels(group), group), l, drop = FALSE]
+    result[["docname_"]] <- levels(group)
+    rownames(result) <- as.character(seq_len(nrow(result)))
+    return(result)
+}
+
 
 # internal function to upgrade docvars to modern format
 upgrade_docvars <- function(x, docnames = NULL) {

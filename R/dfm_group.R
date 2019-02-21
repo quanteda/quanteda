@@ -87,15 +87,6 @@ generate_groups <- function(x, groups, drop = FALSE) {
 #     return(result)
 # }
 
-# Reshape docvars keeping variables that have the same values within groups
-group_docvars <- function(x, group) {
-    l <- is_system(names(x)) | unlist(lapply(x, is_grouped, group), use.names = FALSE)
-    result <- x[match(levels(group), group), l, drop = FALSE]
-    result[["docname_"]] <- levels(group)
-    rownames(result) <- NULL
-    return(result)
-}
-
 # check if values are uniform within groups
 is_grouped <- function(x, group) {
     if (is.list(x)) {
