@@ -1,4 +1,3 @@
-
 #' Get or assign corpus texts
 #' 
 #' Get or replace the texts in a \link{corpus}, with grouping options. 
@@ -120,10 +119,9 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    
     if (is.character(x)) {
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
-    } else {
+    } else if (is.null(meta(x, type = "system")[["package-version"]])) {
         x <- upgrade_corpus(x)
     }
     return(x)
@@ -156,12 +154,10 @@ upgrade_corpus <- function(x) {
         attr(result, "unit") <- "documents"
     }
     if ("created" %in% names(x$metadata)) {
-        attr(result, "meta")$created <- as.POSIXct(x$metadata$created, 
-                                                   format = "%a %b %d %H:%M:%S %Y")
+        meta_system(result, "created") <- as.POSIXct(x$metadata$created, 
+                                                     format = "%a %b %d %H:%M:%S %Y")
     } else {
-        attr(result, "meta")$created <- as.POSIXlt(Sys.time())
+        meta_system(result, "created") <- as.POSIXlt(Sys.time())
     }
     return(result)
 }
-
-

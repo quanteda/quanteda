@@ -5,9 +5,7 @@ test_that("as.tokens list version works as expected", {
              doc2 = "Told you so.")
     toks_list <- as.list(tokens(txt))
     toks <- tokens(txt)
-    attr(toks, "meta")$source <- "list" # source should bethe only difference 
-    expect_equal(as.tokens(toks_list), 
-                 toks)
+    expect_equivalent(as.tokens(toks_list), toks)
 })
 
 test_that("tokens indexing works as expected", {
@@ -577,5 +575,20 @@ test_that("types are encoded when necessarly", {
     expect_true(all(Encoding(types(tokens_chunk(toks, 2))) == "UTF-8"))
     expect_true(all(Encoding(types(tokens_subset(toks, c(TRUE, FALSE)))) == "UTF-8"))
     
+})
+
+test_that("tokens verbose = TRUE produces expected messages", {
+    expect_message(
+        tokens(c("one two three", "four five."), verbose = TRUE),
+        "Starting tokenization"
+    )
+})
+
+test_that("types<- with wrong value generates error", {
+    toks <- tokens(c("one two three", "four five."))
+    expect_error(
+        quanteda:::"types<-.tokens"(toks, value = 1:6),
+        "replacement value must be character"
+    )
 })
 

@@ -11,15 +11,17 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{corpus}(x, docnames = NULL, docvars = NULL, ...)
+\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x), meta = quanteda::meta(x), ...)
 
-\method{corpus}{character}(x, docnames = NULL, docvars = NULL, ...)
+\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
+  meta = list(), ...)
 
 \method{corpus}{data.frame}(x, docid_field = "doc_id",
-  text_field = "text", ...)
+  text_field = "text", meta = list(), ...)
 
 \method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE,
-  ...)
+  meta = list(), ...)
 
 \method{corpus}{Corpus}(x, ...)
 }
@@ -36,23 +38,20 @@ length to the number of documents.  If none of these are round, then
 
 \item{docvars}{a data.frame of document-level variables associated with each text}
 
+\item{meta}{a named list that will be added to the corpus as corpus-level,
+user meta-data.  This can later be accessed or updated using
+\code{\link{meta}}.}
+
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the
 data.frame; if the rownames are not set, it will use the default sequence
 based on \code{(\link{quanteda_options}("base_docname")}.}
 
 \item{text_field}{the character name or numeric index of the source
-  \code{data.frame} indicating the variable to be read in as text, which must
-  be a character vector. All other variables in the data.frame will be
-  imported as docvars.  This argument is only used for \code{data.frame}
-  objects (including those created by \pkg{readtext}).
-\itemize{
-\item{\code{source }}{a description of the source of the texts, used for
-  referencing;}
-\item{\code{citation }}{information on how to cite the corpus; and}
-\item{\code{notes }}{any additional information about who created the text, warnings,
-  to do lists, etc.}
-}}
+\code{data.frame} indicating the variable to be read in as text, which must
+be a character vector. All other variables in the data.frame will be
+imported as docvars.  This argument is only used for \code{data.frame}
+objects (including those created by \pkg{readtext}).}
 
 \item{split_context}{logical; if \code{TRUE}, split each kwic row into two
 "documents", one for "pre" and one for "post", with this designation saved
@@ -66,6 +65,14 @@ therefore being twice the number of rows in the kwic.}
 A \link{corpus-class} class object containing the original texts,
   document-level variables, document-level metadata, corpus-level metadata,
   and default settings for subsequent processing of the corpus.
+
+  For \pkg{quanteda} >= 1.5, this is a specially classed character vector. It
+  has many additional attributes but \strong{you should not access these
+  attributes directly}, especially if you are another package author. Use the
+  extractor and replacement functions instead, or else your code is not only
+  going to be uglier, but also likely to break should the internal structure
+  of a corpus object change.  Using the accessor and replacement functions 
+  ensures that future code to manipulate corpus objects will continue to work.
 }
 \description{
 Creates a corpus object from available sources.  The currently available
@@ -99,16 +106,6 @@ The texts and document variables of corpus objects can also be
 
   For details, see \link{corpus-class}.
 }
-\section{A warning on accessing corpus elements}{
- A corpus currently consists
-  of an S3 specially classed list of elements, but \strong{you should not
-  access these elements directly}. Use the extractor and replacement
-  functions instead, or else your code is not only going to be uglier, but
-  also likely to break should the internal structure of a corpus object
-  change (as it inevitably will as we continue to develop the package,
-  including moving corpus objects to the S4 class system).
-}
-
 \examples{
 # create a corpus from texts
 corpus(data_char_ukimmig2010)
@@ -141,7 +138,7 @@ dat <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                   row.names = paste0("fromDf_", 1:6))
 dat
 summary(corpus(dat, text_field = "some_text",
-               metacorpus = list(source = "From a data.frame called mydf.")))
+               meta = list(source = "From a data.frame called mydf.")))
 
 # construct a corpus from a kwic object
 kw <- kwic(data_corpus_inaugural, "southern")
@@ -158,8 +155,5 @@ texts(corpus(kw, split_context = FALSE))
 \link{corpus-class}, \code{\link{docvars}}, 
   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
   \code{\link{docnames}}
-}
-\author{
-Kenneth Benoit and Paul Nulty
 }
 \keyword{corpus}
