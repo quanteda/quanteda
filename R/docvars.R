@@ -20,7 +20,7 @@
             stop(message_error("docvars_invalid"))
         x[field] <- value
     }
-    rownames(x) <- as.character(seq_len(nrow(x)))
+    rownames(x) <- NULL
     return(x)
 }
 
@@ -102,7 +102,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
                              "segid_" = segid,
                              stringsAsFactors = FALSE)
     }
-    rownames(result) <- as.character(seq_len(nrow(result)))
+    rownames(result) <- NULL
     return(result)
 }
 
@@ -110,7 +110,6 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
 reshape_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
-    rownames(x) <- as.character(seq_len(nrow(x)))
     if (is.numeric(i) && any(duplicated(i))) {
         x[["segid_"]] <- stats::ave(i == i, i, FUN = cumsum)
         x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
@@ -118,13 +117,14 @@ reshape_docvars <- function(x, i = NULL) {
         x[["segid_"]] <- rep(1L, nrow(x))
         x[["docname_"]] <- as.character(x[["docid_"]])
     }
+    rownames(x) <- NULL
     return(x)
 }
 
 subset_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
-    rownames(x) <- as.character(seq_len(nrow(x)))
+    rownames(x) <- NULL
     return(x)
 }
 
@@ -133,7 +133,7 @@ group_docvars <- function(x, group) {
     l <- is_system(names(x)) | unlist(lapply(x, is_grouped, group), use.names = FALSE)
     result <- x[match(levels(group), group), l, drop = FALSE]
     result[["docname_"]] <- levels(group)
-    rownames(result) <- as.character(seq_len(nrow(result)))
+    rownames(result) <- NULL
     return(result)
 }
 
@@ -147,7 +147,6 @@ upgrade_docvars <- function(x, docnames = NULL) {
     if (is.null(x) || length(x) == 0) {
         result <- make_docvars(length(docnames), docnames, FALSE)
     } else {
-        rownames(x) <- as.character(seq_len(nrow(x)))
         result <- cbind(make_docvars(nrow(x), docnames, FALSE), 
                         x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
@@ -155,6 +154,7 @@ upgrade_docvars <- function(x, docnames = NULL) {
         if ("_segid" %in% names(x))
             result[["segid_"]] <- as.integer(x[["_segid"]])
     }
+    rownames(result) <- NULL
     return(result)
 }
 
