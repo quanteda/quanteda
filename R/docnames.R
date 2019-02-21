@@ -114,3 +114,13 @@ setMethod("rownames<-",
               docnames(x) <- value
               return(x)
           })
+
+#' @rdname names-quanteda
+#' @aliases rownames<-.fcm
+#' @export
+setMethod("rownames<-",
+          signature(x = "fcm"),
+          function(x, value) {
+              set_fcm_dimnames(x) <- list(value, colnames(x))
+              return(x)
+          })

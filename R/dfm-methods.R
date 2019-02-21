@@ -70,8 +70,12 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    if (is_pre15(x))
-        x@docvars <- upgrade_docvars(x@docvars, rownames(x))
+    if (is_pre15(x)) {
+        x <- new("dfm", x, 
+                 meta = list(user = list(), 
+                             system = list()),
+                 docvars = upgrade_docvars(x@docvars, rownames(x)))
+    }
     return(x)
 }
 
