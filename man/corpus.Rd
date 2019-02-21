@@ -11,16 +11,14 @@
 \usage{
 corpus(x, ...)
 
-
-\method{corpus}{corpus}(x, docnames = NULL, docvars = NULL,
-  unique_docnames = TRUE, ...)
+\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x), meta = quanteda::meta(x), ...)
 
 \method{corpus}{character}(x, docnames = NULL, docvars = NULL,
-  unique_docnames = TRUE, ...)
+  meta = list(), unique_docnames = TRUE, ...)
 
 \method{corpus}{data.frame}(x, docid_field = "doc_id",
-  text_field = "text", unique_docnames = TRUE, ...)
-
+  text_field = "text", meta = list(), unique_docnames = TRUE, ...)
 
 \method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE,
   meta = list(), ...)
@@ -41,13 +39,13 @@ length to the number of documents.  If none of these are round, then
 \item{docvars}{a data.frame of document-level variables associated with each
 text}
 
-\item{unique_docnames}{if \code{TRUE}, check duplication in \code{docnames}.
-Units with duplicated \code{docnames} are treated as segments of the
-same document.}
-
 \item{meta}{a named list that will be added to the corpus as corpus-level,
 user meta-data.  This can later be accessed or updated using
 \code{\link{meta}}.}
+
+\item{unique_docnames}{if \code{TRUE}, check duplication in \code{docnames}.
+Units with duplicated \code{docnames} are treated as segments of the
+same document.}
 
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the
@@ -58,13 +56,7 @@ based on \code{(\link{quanteda_options}("base_docname")}.}
 \code{data.frame} indicating the variable to be read in as text, which must
 be a character vector. All other variables in the data.frame will be
 imported as docvars.  This argument is only used for \code{data.frame}
-
-objects (including those created by \pkg{readtext}). \itemize{
-\item{\code{source }}{a description of the source of the texts, used for
-referencing;} \item{\code{citation }}{information on how to cite the
-corpus; and} \item{\code{notes }}{any additional information about who
-created the text, warnings, to do lists, etc.} }}
-
+objects (including those created by \pkg{readtext}).}
 
 \item{split_context}{logical; if \code{TRUE}, split each kwic row into two
 "documents", one for "pre" and one for "post", with this designation saved
@@ -161,7 +153,8 @@ texts(corpus(kw, split_context = FALSE))
 
 }
 \seealso{
-\link{corpus-class}, \code{\link{docvars}}, \code{\link{settings}},
-  \code{\link{texts}}, \code{\link{ndoc}}, \code{\link{docnames}}
+\link{corpus-class}, \code{\link{docvars}}, 
+  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
+  \code{\link{docnames}}
 }
 \keyword{corpus}
