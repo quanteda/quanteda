@@ -42,7 +42,7 @@ setClass("dfm",
                           skip = 0L,
                           concatenator = "_",
                           version = unlist(utils::packageVersion("quanteda")),
-                          docvars = data.frame(row.names = character()),
+                          docvars = data.frame(row.names = integer()),
                           meta = list(user = list(), system = list())),
          contains = "dgCMatrix")
 

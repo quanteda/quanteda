@@ -7,6 +7,8 @@
 \alias{names<-.tokens}
 \alias{rownames<-,dfm-method}
 \alias{rownames<-.dfm}
+\alias{rownames<-,fcm-method}
+\alias{rownames<-.fcm}
 \title{Special handling for names of quanteda objects}
 \usage{
 \method{names}{corpus}(x) <- value
@@ -14,6 +16,8 @@
 \method{names}{tokens}(x) <- value
 
 \S4method{rownames}{dfm}(x) <- value
+
+\S4method{rownames}{fcm}(x) <- value
 }
 \arguments{
 \item{x}{an \R object.}

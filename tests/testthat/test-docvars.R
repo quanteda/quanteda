@@ -52,7 +52,7 @@ test_that("upgrade_docvars() works", {
 
     expect_identical(
         quanteda:::upgrade_docvars(docvar1, c("A", "B", "C")),
-        docvar4[,1:3]
+        docvar4[, 1:3]
     )
     expect_identical(
         quanteda:::upgrade_docvars(docvar3),
