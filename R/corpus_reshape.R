@@ -30,40 +30,41 @@
 #' @export
 #' @import stringi
 #' @keywords corpus
-corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), 
+corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"),
                            use_docvars = TRUE, ...) {
     UseMethod("corpus_reshape")
 }
     
 #' @export
-corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"), 
+corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"),
                                    use_docvars = TRUE, ...) {
     stop(friendly_class_undefined_message(class(x), "corpus_reshape"))
 }
 
 #' @export
-corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), 
+corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"),
                                   use_docvars = TRUE, ...) {
-    
+
     x <- as.corpus(x)
     to <- match.arg(to)
     attrs <- attributes(x)
     if (to == "documents") {
-        if (attr(x, 'unit') %in% c('sentences', 'paragraphs')) {
-            temp <- split(unclass(x), attrs$docvars[["docnum_"]])
-            if (identical(attrs$unit, "sentences")) {
+        if (attr(x, "unit") %in% c("sentences", "paragraphs", "segments")) {
+            docid <- as.integer(droplevels(attrs$docvars[["docid_"]]))
+            temp <- split(unclass(x), docid)
+            if (attr(x, "unit") %in% c("sentences", "segments")) {
                 result <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
                 result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
             }
-            attrs$docvars <-reshape_docvars(attrs$docvars, !duplicated(attrs$docvars[["docnum_"]]))
+            attrs$docvars <- reshape_docvars(attrs$docvars, !duplicated(docid))
             attrs$unit <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
     } else if (to %in% c("sentences", "paragraphs")) {
-        if (identical(attrs$unit, "documents")) {
-            temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE, 
+        if (attrs$unit %in% "documents") {
+            temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE,
                                   omit_empty = FALSE, what = to, ...)
             result <- temp$text
             attrs$docvars <- reshape_docvars(attrs$docvars, temp$docnum)
@@ -71,7 +72,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
-    } 
+    }
     attributes(result, FALSE) <- attrs
-    return (result)
+    return(result)
 }

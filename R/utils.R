@@ -273,3 +273,26 @@ sample_bygroup <- function(x, group, replace = FALSE) {
     result <- lapply(split(x, group), sample, replace = replace)
     unlist(result, use.names = FALSE)
 } 
+
+#' Get the package version that created an object
+#' 
+#' Return the the \pkg{quanteda} package version in which a \link{dfm},
+#' \link{tokens}, or \link{corpus} object was created.
+#' @return A three-element integer vector of class "package_version". For
+#'   versions of the package < 1.5 for which no version was recorded in the
+#'   object, \code{c(1, 4, 0)} is returned.
+#' @keywords internal utils
+get_object_version <- function(x) {
+    if (is_pre15(x)) {
+        as.package_version("1.4.0")
+    } else {
+        meta(x, field = "package-version", type = "system")
+    }
+}
+
+#' @rdname get_object_version
+#' @return \code{ispre15} returns \code{TRUE} if the object was created before
+#' \pkg{quanteda} version 1.5, or \code{FALSE} otherwise
+is_pre15 <- function(x) {
+    (! "meta" %in% names(attributes(x)))
+}

@@ -119,11 +119,8 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    if (is.character(x)) {
-        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"))
-    } else if (is.null(meta(x, type = "system")[["package-version"]])) {
+    if (is_pre15(x))
         x <- upgrade_corpus(x)
-    }
     return(x)
 }
 

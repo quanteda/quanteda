@@ -1,26 +1,27 @@
 #' Construct a corpus object
 #'
 #' Creates a corpus object from available sources.  The currently available
-#' sources are:
-#' \itemize{
-#' \item a \link{character} vector, consisting of one document per element; if
-#'   the elements are named, these names will be used as document names.
-#' \item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}), whose default
-#' document id is a variable identified by \code{docid_field}; the text of the
-#' document is a variable identified by \code{textid_field}; and other variables
-#' are imported as document-level meta-data.  This matches the format of
-#' data.frames constructed by the the \pkg{readtext} package.
-#' \item a \link{kwic} object constructed by \code{\link{kwic}}.
-#' \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class object.
-#' \item a \link{corpus} object.
-#' }
+#' sources are: \itemize{ \item a \link{character} vector, consisting of one
+#' document per element; if the elements are named, these names will be used as
+#' document names. \item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}),
+#' whose default document id is a variable identified by \code{docid_field}; the
+#' text of the document is a variable identified by \code{textid_field}; and
+#' other variables are imported as document-level meta-data.  This matches the
+#' format of data.frames constructed by the the \pkg{readtext} package. \item a
+#' \link{kwic} object constructed by \code{\link{kwic}}. \item a \pkg{tm}
+#' \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class object. \item a
+#' \link{corpus} object. }
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts.  Defaults to the names of
 #'   the character vector (if any); \code{doc_id} for a data.frame; the document
 #'   names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in
 #'   length to the number of documents.  If none of these are round, then
 #'   "text1", "text2", etc. are assigned automatically.
-#' @param docvars a data.frame of document-level variables associated with each text
+#' @param docvars a data.frame of document-level variables associated with each
+#'   text
+#' @param unique_docnames if \code{TRUE}, check duplication in \code{docnames}.
+#'   Units with duplicated \code{docnames} are treated as segments of the
+#'   same document.
 #' @param text_field the character name or numeric index of the source
 #'   \code{data.frame} indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be
@@ -54,8 +55,7 @@
 #'   the document variables, equivalent to \code{docvars(x)}.  It is also
 #'   possible to access, create, or replace docvars using list notation, e.g.
 #'
-#'   \code{myCorpus[["newSerialDocvar"]] <-
-#'   paste0("tag", 1:ndoc(myCorpus))}.
+#'   \code{myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))}.
 #'
 #'   For details, see \link{corpus-class}.
 #' @export
@@ -121,14 +121,14 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           docvars = quanteda::docvars(x),
                           meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
-    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta)
+    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, ...)
     meta_system(result, "source") <- "corpus"
-    result
+    return(result)
 }
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     x[is.na(x)] <- ""
@@ -139,7 +139,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     } else if (!is.null(names(x))) {
         docnames <- names(x)
     }
-    
+    if (any(duplicated(docnames)) && unique_docnames)
+        stop("docnames must be unique")
     if (!is.null(docvars) && nrow(docvars) > 0) {
         if (any(is_system(names(docvars))))
             stop(message_error("docvars_invalid"))
@@ -164,7 +165,11 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     
     names(x) <- docvar[["docname_"]]
     class(x) <- "corpus"
-    attr(x, "unit") <- "documents"
+    if (any(duplicated(docvar[["docid_"]]))) {
+        attr(x, "unit") <- "segments"    
+    } else {
+        attr(x, "unit") <- "documents"
+    }
     attr(x, "docvars") <- docvar
     meta_system(x) <- meta_system_defaults("character") # system metadata
     meta(x) <- meta                                     # user metadata
@@ -179,7 +184,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", meta = list(), ...) {
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", meta = list(), unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     # coerce data.frame variants to data.frame - for #1232
@@ -233,8 +238,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", me
     is_empty <- is_empty[c(docid_index, text_index) * -1]
     if (any(is_empty))
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
-    
-    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta)
+    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta, unique_docnames = unique_docnames)
     meta_system(result, "source") <- "data.frame"
     return(result)
 }
@@ -263,13 +267,13 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
     
     if (split_context) {
         pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], 
-                      docid_field = "docname", text_field = "pre", meta = meta)
+                      docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = FALSE)
         docvars(pre, "context") <- "pre"
         docnames(pre) <- paste0(docnames(pre), ".pre")
         
         post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], 
                        docid_field = "docname", text_field = "post",
-                       meta = meta)
+                       meta = meta, unique_docnames = FALSE)
         docvars(post, "context") <- "post"
         docnames(post) <- paste0(docnames(post), ".post")
         result <- pre + post
@@ -277,7 +281,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         
     } else {
         result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
-                         docnames = x[["docname"]], meta = meta)
+                         docnames = x[["docname"]], meta = meta, unique_docnames = FALSE)
         docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }

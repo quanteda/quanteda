@@ -169,13 +169,11 @@ test_that("test dfm_group keeps group-level variables", {
                  data.frame("docname_" = c("A", "C", "D"),
                             "docid_" = factor(c("text3", "text4", "text1"), 
                                                 levels = c("text1", "text2", "text3", "text4")),
-                            "docnum_" = c(3L, 4L, 1L),
-                            "segnum_" = c(1L, 1L, 1L),
+                            "segid_" = c(1L, 1L, 1L),
                             grp = c("A", "C", "D"),
                             var1 = c(2, 2, 1),
                             var3 = c("y", NA, "x"),
                             var5 = as.Date(c("2015-03-01", "2012-12-15", "2018-01-01")),
-                            check.names = FALSE,
                             stringsAsFactors = FALSE)
     )
     
@@ -185,13 +183,11 @@ test_that("test dfm_group keeps group-level variables", {
         data.frame("docname_" = c("A", "B", "C", "D"),
                    "docid_" = factor(c("text3", NA, "text4", "text1"), 
                                        levels = c("text1", "text2", "text3", "text4")),
-                   "docnum_" = c(3L, NA, 4L, 1L),
-                   "segnum_" = c(1L, NA, 1L, 1L),
+                   "segid_" = c(1L, NA, 1L, 1L),
                    grp = c("A", NA, "C", "D"),
                    var1 = c(2, NA, 2, 1),
                    var3 = c("y", NA, NA, "x"),
                    var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
-                   check.names = FALSE,
                    stringsAsFactors = FALSE)
     )
 })
@@ -234,21 +230,17 @@ test_that("is_grouped is working", {
 test_that("group_docvar drops list column (#1553)", {
     data <- data.frame("docname_" = c("A", "B", "C", "D"),
                        "docid_" = factor(c("text1", "text2", "text2", "text3")),
-                       "docnum_" = c(3L, 4L, 4L, 1L),
-                       "segnum_" = c(1L, 1L, 1L, 1L),
+                       "segid_" = c(1L, 1L, 1L, 1L),
                        vec1 = c(1, 3, 3, 6),
                        vec2 = c("a", "b", "b", "c"),
-                       check.names = FALSE,
                        stringsAsFactors = FALSE)
     data$lis <- list(1:3, -5, 3:4, 1)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
                  data.frame("docname_" = c("1", "2", "3"),
                             "docid_" = factor(c("text1", "text2", "text3")),
-                            "docnum_" = c(3L, 4L, 1L),
-                            "segnum_" = c(1L, 1L, 1L),
+                            "segid_" = c(1L, 1L, 1L),
                             vec1 = c(1, 3, 6),
                             vec2 = c("a", "b", "c"),
-                            check.names = FALSE,
                             stringsAsFactors = FALSE))
     
     corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),

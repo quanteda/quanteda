@@ -48,8 +48,8 @@ test_that("char_segment works for glob customized tags, test 2", {
 test_that("corpus_segment works with blank before tag", {
     corp <- corpus(c("\n##INTRO This is the introduction.
                         ##DOC1 This is the first document.  Second sentence in Doc 1.
-                           ##DOC3 Third document starts here.  End of third document.",
-                           "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+                        ##DOC3 Third document starts here.  End of third document.",
+                        "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
     corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                pattern_position = "before", extract_pattern = TRUE)
     summ <- summary(corp_seg)
@@ -61,7 +61,7 @@ test_that("corpus_segment works with blank before tag", {
 test_that("corpus_segment works with use_docvars TRUE or FALSE", {
     corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
                      d2 = "##TEST3 Four"),
-                   docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
+                     docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
     corp_seg1 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, 
                                 use_docvars = TRUE)
@@ -215,7 +215,4 @@ test_that("corpus_segment works with multiple patterns (#1394)", {
                      c(text1.1 = "This is a test\\n", text1.2 = "John Doe", text1.3 = "Library of Congress"))
     
 })
-
-
-
 

@@ -226,8 +226,9 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 
 test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
-    corp <- corpus(txt)
+    corp <- corpus(txt, unique_docnames = FALSE)
     expect_equal(docnames(corp), c("one.1", "two.1", "one.2"))
+    expect_error(corpus(txt, unique_docnames = TRUE), "docnames must be unique")
 })
 
 test_that("create a corpus on a corpus", {
@@ -335,9 +336,9 @@ test_that("corpus.data.frame sets docnames correctly", {
 
     df3_text <- data.frame(df_text, new = c(TRUE, FALSE, TRUE))
     expect_identical(
-        docnames(corpus(df3_text, docid_field = "new")),
+        docnames(corpus(df3_text, docid_field = "new", unique_docnames = FALSE)),
         c("TRUE.1", "FALSE.1", "TRUE.2")
-    )        
+    )
 })
 
 test_that("corpus handles NA correctly (#1372)", {
@@ -417,19 +418,19 @@ test_that("handle data.frame variable renaming when one already exists", {
 test_that("upgrade_corpus is working", {
     corp1 <- quanteda:::upgrade_corpus(data_corpus_dailnoconf1991)
     expect_true(is.character(corp1))
-    expect_true(all(c("docname_", "docid_", "docnum_", "segnum_") %in% names(attr(corp1, "docvars"))))
+    expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp1, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp1, "docvars"))))
     expect_true(is.factor(attr(corp1, "docvars")[["docid_"]]))
     
     corp2 <- quanteda:::upgrade_corpus(data_corpus_inaugural)
     expect_true(is.character(corp2))
-    expect_true(all(c("docname_", "docid_", "docnum_", "segnum_") %in% names(attr(corp2, "docvars"))))
+    expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp2, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp2, "docvars"))))
     expect_true(is.factor(attr(corp2, "docvars")[["docid_"]]))
     
     corp3 <- quanteda:::upgrade_corpus(data_corpus_irishbudget2010)
     expect_true(is.character(corp3))
-    expect_true(all(c("docname_", "docid_", "docnum_", "segnum_") %in% names(attr(corp3, "docvars"))))
+    expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp3, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp3, "docvars"))))
     expect_true(is.factor(attr(corp3, "docvars")[["docid_"]]))
 })
@@ -452,6 +453,16 @@ test_that("metadoc works but raise deprecation warning", {
     metadoc(corp, "var1") <- c(1, 5)
     metadoc(corp, "var2") <- c("T", "F")
     expect_equal(colnames(metadoc(corp)), c("_var1", "_var2"))
+})
+
+test_that("metadoc works but raise deprecation warning", {
+    expect_error(
+        corpus(c("aa bb cc", "ccc dd"), docnames = c("text1", "text1"), 
+               "docnames must be unique")
+    )
+    expect_silent(
+        corpus(c("aa bb cc", "ccc dd"), docnames = c("text1", "text1"), unique_docnames = FALSE)
+    )
 })
 
 test_that("raise error when docnames or docvars are invalid", {
@@ -478,3 +489,4 @@ test_that("[.corpus out of bounds generates expected error", {
     corp1 <- corpus("one two three", docvars = data.frame(dvc1 = "A"))
     expect_error(corp1[2], "Subscript out of bounds")
 })
+

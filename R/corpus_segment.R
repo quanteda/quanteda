@@ -134,7 +134,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     attrs$docvars <-reshape_docvars(attrs$docvars, temp$docnum)
     if (extract_pattern) 
         attrs$docvars[["pattern"]] <- temp$pattern
-    attrs$unit <- "documents"
+    attrs$unit <- "segments"
     attributes(result, FALSE) <- attrs
     return(result)
 }

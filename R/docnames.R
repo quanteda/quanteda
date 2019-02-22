@@ -1,3 +1,5 @@
+# docnames ----------------
+
 #' Get or set document names
 #' 
 #' Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
@@ -58,7 +60,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    names(x) <- attr(x, "docvars")[["docname_"]] <- value
+    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
@@ -66,7 +68,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    names(x) <- attr(x, "docvars")[["docname_"]] <- value
+    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
@@ -74,6 +76,51 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    rownames(x) <- attr(x, "docvars")[["docname_"]] <- value
+    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
     return(x)
 }
+
+# names<- ----------------
+
+#' @name names-quanteda
+#' @title Special handling for names of quanteda objects
+#' @description Keeps the element names and rownames in sync with the system docvar
+#' \code{docname_}.
+#' @inheritParams base::names
+#' @method names<- corpus
+#' @keywords internal corpus
+#' @aliases names<-.corpus
+#' @export
+"names<-.corpus" <- function(x, value) {
+    UseMethod("docnames<-")
+}
+
+#' @rdname names-quanteda
+#' @aliases names<-.tokens
+#' @method names<- tokens
+#' @export
+"names<-.tokens" <- function(x, value) {
+    UseMethod("docnames<-")
+}
+
+setGeneric("rownames<-")
+
+#' @rdname names-quanteda
+#' @aliases rownames<-.dfm
+#' @export
+setMethod("rownames<-",
+          signature(x = "dfm"),
+          function(x, value) {
+              docnames(x) <- value
+              return(x)
+          })
+
+#' @rdname names-quanteda
+#' @aliases rownames<-.fcm
+#' @export
+setMethod("rownames<-",
+          signature(x = "fcm"),
+          function(x, value) {
+              set_fcm_dimnames(x) <- list(value, colnames(x))
+              return(x)
+          })
