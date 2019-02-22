@@ -3,7 +3,7 @@
 ## Bug fixes and stability enhancements
 
 * Fixed the operation of `docvars<-.corpus()` in a way that solves #1603 (reassignment of docvar names).
-
+* Fixed an issue with special handling of whitespace variants that caused a test to fail when running Ubuntu 18.10 system with libicu-dev version 63.1 (#1604).
 
 # quanteda 1.4.0
 
