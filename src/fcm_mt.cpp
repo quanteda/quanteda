@@ -4,7 +4,7 @@ using namespace quanteda;
 
 
 struct hash_pair {
-  size_t operator()(const pair<unsigned int, unsigned int> &p) const {
+  size_t operator()(const std::pair<unsigned int, unsigned int> &p) const {
     
     unsigned int seed = 0;
     seed = p.first;
@@ -14,8 +14,8 @@ struct hash_pair {
 };
 
 struct equal_pair {
-  bool operator() (const pair<unsigned int, unsigned int> &p1, 
-                   const pair<unsigned int, unsigned int> &p2) const { 
+  bool operator() (const std::pair<unsigned int, unsigned int> &p1,
+                   const std::pair<unsigned int, unsigned int> &p2) const {
     return (p1.first == p2.first && p1.second == p2.second);
   }
 };
