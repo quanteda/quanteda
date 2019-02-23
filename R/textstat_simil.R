@@ -382,6 +382,6 @@ as.Matrix <- function(x, ...) {
 as.Matrix.simil_pairwise <- function(x, ...) {
     sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
                  x = x$similarity,
-                 dims = c(length(levels(x$x)), length(levels(x$y))),
+                 dims = c(nlevels(x$x), nlevels(x$y)),
                  dimnames = list(levels(x$x), levels(x$y)))
 }
