@@ -123,8 +123,8 @@ textstat_simil.dfm <- function(x, selection = NULL,
     # } else {
     #     class(result) <- c("simil_selection", "dist_selection")
     # }
-    result <- data.frame(x = factor(rownames(x)[temp@i + 1L], rownames(x)), 
-                         y = factor(colnames(y)[temp@j + 1L], colnames(y)),
+    result <- data.frame(x = factor(temp@i + 1L, labels = rownames(x)), 
+                         y = factor(temp@j + 1L, labels = colnames(y)),
                          similarity = temp@x)
     class(result) <- c("simil_pairwise", "data.frame")
     return(result)
