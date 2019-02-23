@@ -44,7 +44,11 @@
 #' (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 #' as.matrix(tstat1)
 #' as.list(tstat1)
-#'
+#' 
+#' # min_simil
+#' (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
+#' as.Matrix(tstat2)
+#' 
 #' # similarities for for specific documents
 #' textstat_simil(dfmat, selection = "2017-Trump", margin = "documents")
 #' textstat_simil(dfmat, selection = "2017-Trump", method = "cosine", margin = "documents")
@@ -60,6 +64,7 @@ textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching", "faith"),
+                           min_simil = NULL,
                            upper = FALSE, diag = FALSE) {
     UseMethod("textstat_simil")
 }
@@ -70,6 +75,7 @@ textstat_simil.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"),
+                               min_simil = NULL,
                                upper = FALSE, diag = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
@@ -79,6 +85,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"),
+                               min_simil = NULL,
                                upper = FALSE, diag = FALSE) {
     x <- as.dfm(x)
 
@@ -104,18 +111,23 @@ textstat_simil.dfm <- function(x, selection = NULL,
         if (any(is.na(i)))
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
+    y <- x[i, ]
     if (margin == "features") {
-        result <- textstat_proxy(x, x[, i], margin, method, 1, use_na = TRUE)
+        temp <- textstat_proxy(x, y, margin, method, 1, min_proxy = min_simil, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x, x[i, ], margin, method, 1, use_na = TRUE)
+        temp <- textstat_proxy(x, y, margin, method, 1, min_proxy = min_simil, use_na = TRUE)
     }
-    result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
-    if (is.null(selection)) {
-        class(result) <- c("simil", "dist")
-    } else {
-        class(result) <- c("simil_selection", "dist_selection")
-    }
-    result
+    # result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
+    # if (is.null(selection)) {
+    #     class(result) <- c("simil", "dist")
+    # } else {
+    #     class(result) <- c("simil_selection", "dist_selection")
+    # }
+    result <- data.frame(x = factor(rownames(x)[temp@i + 1L], rownames(x)), 
+                         y = factor(colnames(y)[temp@j + 1L], colnames(y)),
+                         similarity = temp@x)
+    class(result) <- c("simil_pairwise", "data.frame")
+    return(result)
 }
 
 
@@ -357,4 +369,19 @@ as.matrix.simil <- function(x, diag = 1.0, ...) {
     }
     diag(df) <- diag
     df
+}
+
+#' @export
+as.Matrix <- function(x, ...) {
+    UseMethod("as.Matrix")
+}
+
+#' @export
+#' @method as.Matrix simil_pairwise
+#' @keywords textstat internal
+as.Matrix.simil_pairwise <- function(x, ...) {
+    sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
+                 x = x$similarity,
+                 dims = c(length(levels(x$x)), length(levels(x$y))),
+                 dimnames = list(levels(x$x), levels(x$y)))
 }

@@ -7,8 +7,8 @@
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching", "faith"), upper = FALSE,
-  diag = FALSE)
+  "dice", "edice", "hamman", "simple matching", "faith"),
+  min_simil = NULL, upper = FALSE, diag = FALSE)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
@@ -74,6 +74,10 @@ dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 as.matrix(tstat1)
 as.list(tstat1)
+
+# min_simil
+(tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
+as.Matrix(tstat2)
 
 # similarities for for specific documents
 textstat_simil(dfmat, selection = "2017-Trump", margin = "documents")
