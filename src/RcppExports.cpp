@@ -155,6 +155,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_keyness
+Rcpp::DataFrame qatd_cpp_keyness(arma::sp_mat& dfm, const std::string measure, const std::string correction);
+RcppExport SEXP _quanteda_qatd_cpp_keyness(SEXP dfmSEXP, SEXP measureSEXP, SEXP correctionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type dfm(dfmSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type measure(measureSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type correction(correctionSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_keyness(dfm, measure, correction));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_kwic
 DataFrame qatd_cpp_kwic(const List& texts_, const CharacterVector types_, const List& words_, const unsigned int& window, const String& delim_);
 RcppExport SEXP _quanteda_qatd_cpp_kwic(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP windowSEXP, SEXP delim_SEXP) {
@@ -441,6 +454,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_minkowski", (DL_FUNC) &_quanteda_qatd_cpp_minkowski, 3},
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
+    {"_quanteda_qatd_cpp_keyness", (DL_FUNC) &_quanteda_qatd_cpp_keyness, 3},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_similarity_linear", (DL_FUNC) &_quanteda_qatd_cpp_similarity_linear, 5},
     {"_quanteda_qatd_cpp_similarity", (DL_FUNC) &_quanteda_qatd_cpp_similarity, 6},
