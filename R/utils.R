@@ -123,9 +123,13 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
     if (is.collocations(pattern)) {
         if (nrow(pattern) == 0) return(list())
         temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
-        temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
-        names(temp) <- pattern$collocation
-        result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
+        if (case_insensitive) {
+            result <- pattern2id(temp, types, valuetype, TRUE)
+        } else {
+            temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
+            names(temp) <- pattern$collocation
+            result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
+        }
         attr(result, "pattern") <- match(names(result), pattern$collocation)
     } else {
         if (length(pattern) == 0) return(list())
