@@ -380,8 +380,8 @@ gain <- function(object, base = 2){
 }
 
 #' @export
-gain.default <- function(object, ...){
-    if (!("textmodel_nb" %in% class(object))) stop("model must be a textmodel_nb object")
+gain.default <- function(object, base = 2){
+    stop(friendly_class_undefined_message(class(x), "gain"))
 }
 
 #' @export

@@ -182,13 +182,16 @@ test_that("gain.text_modelnb raises error for exception handlers",  {
     ## replicate IIR p261 prediction for test set (document 5)
     nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
     
-    # Temporarily skip this 
-    # expect_error(gain(trainingclass), "model must be a textmodel_nb object")
-    
-    expect_error(gain(nb,class_specific = 123),
-                 "class_specific must be a logical (TRUE or FALSE)",
-                 fixed = TRUE)
-
+    expect_error(
+        gain(trainingclass), 
+        "gain() only works on textmodel_nb objects",
+        fixed = TRUE
+    )
+    expect_error(
+        gain(nb, class_specific = 123),
+        "unused argument (class_specific = 123)",
+        fixed = TRUE
+    )
 })
 
 
