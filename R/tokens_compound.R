@@ -1,23 +1,26 @@
 #' Convert token sequences into compound tokens
-#' 
+#'
 #' Replace multi-token sequences with a multi-word, or "compound" token.  The
-#' resulting compound tokens will represent a phrase or multi-word expression, 
-#' concatenated with  \code{concatenator} (by default, the "\code{_}" character)
+#' resulting compound tokens will represent a phrase or multi-word expression,
+#' concatenated with \code{concatenator} (by default, the "\code{_}" character)
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
 #' @inheritParams pattern
-#' @param concatenator the concatenation character that will connect the words 
-#'   making up the multi-word sequences.  The default \code{_} is  
-#'   recommended since it will not be removed during normal cleaning and 
-#'   tokenization (while nearly all other punctuation characters, at least those
-#'   in the Unicode punctuation class [P] will be removed).
+#' @param concatenator the concatenation character that will connect the words
+#'   making up the multi-word sequences.  The default \code{_} is recommended
+#'   since it will not be removed during normal cleaning and tokenization (while
+#'   nearly all other punctuation characters, at least those in the Unicode
+#'   punctuation class [P] will be removed).
 #' @inheritParams valuetype
-#' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
-#' @param join logical; if \code{TRUE}, join overlapping compounds
-#' @return a \link{tokens} object in which the token sequences matching
+#' @param case_insensitive logical; if \code{TRUE}, ignore case when matching.
+#'   When \code{pattern} is a \code{collocations}, case-sensitive operation is
+#'   significantly faster than case-insensitive operation.
+#' @param join logical; if \code{TRUE}, join overlapping compounds into a single
+#'   compound; otherwise, form these separately.  See examples.
+#' @return A \link{tokens} object in which the token sequences matching
 #'   \code{pattern} have been replaced by  compound "tokens" joined by the
-#'   concatenator
+#'   concatenator.
 #' @note Patterns to be compounded (naturally) consist of multi-word sequences,
 #'   and how these are expected in \code{pattern} is very specific.  If the elements
 #'   to be compounded are supplied as space-delimited elements of a character vector,
@@ -27,7 +30,6 @@
 #'   
 #'   See the examples below.
 #' @export
-#' @author Kenneth Benoit and Kohei Watanabe
 #' @examples
 #' txt <- "The United Kingdom is leaving the European Union."
 #' toks <- tokens(txt, remove_punct = TRUE)
@@ -55,6 +57,11 @@
 #' colls <- tokens("The new European Union is not the old European Union.") %>%
 #'     textstat_collocations(size = 2, min_count = 1, tolower = FALSE)
 #' tokens_compound(toks, colls)
+#' 
+#' # note the differences caused by join = FALSE
+#' compounds <- list(c("the", "European"), c("European", "Union"))
+#' tokens_compound(toks, join = TRUE)
+#' tokens_compound(toks, join = FALSE)
 tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     case_insensitive = TRUE, join = TRUE) {
