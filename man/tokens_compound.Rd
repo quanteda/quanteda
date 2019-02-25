@@ -13,28 +13,31 @@ tokens_compound(x, pattern, concatenator = "_", valuetype = c("glob",
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 or \link{collocations} object.  See \link{pattern} for details.}
 
-\item{concatenator}{the concatenation character that will connect the words 
-making up the multi-word sequences.  The default \code{_} is  
-recommended since it will not be removed during normal cleaning and 
-tokenization (while nearly all other punctuation characters, at least those
-in the Unicode punctuation class [P] will be removed).}
+\item{concatenator}{the concatenation character that will connect the words
+making up the multi-word sequences.  The default \code{_} is recommended
+since it will not be removed during normal cleaning and tokenization (while
+nearly all other punctuation characters, at least those in the Unicode
+punctuation class [P] will be removed).}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching.
+When \code{pattern} is a \code{collocations}, case-sensitive operation is
+significantly faster than case-insensitive operation.}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds}
 }
 \value{
-a \link{tokens} object in which the token sequences matching \code{pattern}
-have been replaced by  compound "tokens" joined by the concatenator
+a \link{tokens} object in which the token sequences matching
+  \code{pattern} have been replaced by  compound "tokens" joined by the
+  concatenator
 }
 \description{
 Replace multi-token sequences with a multi-word, or "compound" token.  The
-resulting compound tokens will represent a phrase or multi-word expression, 
-concatenated with  \code{concatenator} (by default, the "\code{_}" character)
+resulting compound tokens will represent a phrase or multi-word expression,
+concatenated with \code{concatenator} (by default, the "\code{_}" character)
 to form a single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a \link{dfm}.
 }
@@ -63,11 +66,8 @@ toks5 <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text
 tokens_compound(toks5, pattern = dict2)
 
 # with collocations
-tstat <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
+tstat <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"),
                               size = 2, min_count = 1)
 toks6 <- tokens("The new law included capital gains taxes and inheritance taxes.")
 tokens_compound(toks6, pattern = tstat)
-}
-\author{
-Kenneth Benoit and Kohei Watanabe
 }
