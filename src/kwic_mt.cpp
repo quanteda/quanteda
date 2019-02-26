@@ -3,7 +3,7 @@
 //#include "dev.h"
 using namespace quanteda;
 
-typedef pair<size_t, size_t> Target;
+typedef std::pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
 
@@ -20,7 +20,7 @@ Targets kwic(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
             if (is_in) {
-                targets.push_back(make_pair(i, i + span - 1));
+                targets.push_back(std::make_pair(i, i + span - 1));
             }
         }
     }

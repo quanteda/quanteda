@@ -43,7 +43,7 @@ docvars.tokens <- function(x, field = NULL) {
     dvars <- attr(x, "docvars")
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)    
+    get_docvars(dvars, field)  
 }
 
 #' @noRd
@@ -53,18 +53,18 @@ docvars.dfm <- function(x, field = NULL) {
     dvars <- x@docvars
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)    
+    get_docvars(dvars, field)  
 }
 
 #' @noRd
 #' @keywords internal
 docvars.kwic <- function(x) {
-    dvars <- attr(x, 'docvars')
+    dvars <- attr(x, "docvars")
     if (is.null(dvars))
         dvars <- data.frame()
-    dvars <- structure(dvars[attr(x, 'docid'),], 
-                       class = 'data.frame',
-                       row.names = paste(x$docname, attr(x, 'segid'), sep = "."))
+    dvars <- structure(dvars[attr(x, "docid"), ],
+                       class = "data.frame",
+                       row.names = paste(x$docname, attr(x, "segid"), sep = "."))
     select_fields(dvars)
 }
 
@@ -115,21 +115,29 @@ docvars.kwic <- function(x) {
 "docvars<-.corpus" <- function(x, field = NULL, value) {
     if (is.dfm(value))
         value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if ("texts" %in% field) 
+    if ("texts" %in% field)
         stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
-        field <- names(value)
-        if (is.null(field))
-            field <- paste("docvar", seq_len(ncol(as.data.frame(value))), 
-                           sep = "")
+        if (is.null(value)) {
+            cat("ISNULLVALUE")
+            newdv <- data.frame(row.names = docnames(x))
+        } else {
+            newdv <- data.frame(value, stringsAsFactors = FALSE, check.names = FALSE)
+            # uses the V1, V2 etc scheme
+            names(newdv) <- names(as.data.frame(as.matrix(value)))
+        }
+    } else {
+        newdv <- docvars(x)
+        newdv[field] <- value
     }
-    documents(x)[field] <- value
-    x
+    meta_names_not_in_newdv <- setdiff(grep("^_.+", names(documents(x)), value = TRUE), names(newdv))
+    documents(x) <- cbind(documents(x)[, c("texts", meta_names_not_in_newdv), drop = FALSE], newdv)
+    return(x)
 }
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    if (is.dfm(value)) 
+    if (is.dfm(value))
         value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
     if (is.null(value)) {
         attr(x, "docvars") <- attr(x, "docvars")[, seq(ncol(attr(x, "docvars"))) * -1, drop = FALSE]
@@ -152,7 +160,7 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
-    if (is.dfm(value)) 
+    if (is.dfm(value))
         value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
     if (is.null(value)) {
         x@docvars <- x@docvars[, seq(ncol(x@docvars)) * -1, drop = FALSE]
@@ -206,7 +214,7 @@ docvars.kwic <- function(x) {
 #' @seealso \code{\link{metacorpus}}
 #' @export
 #' @keywords corpus
-metadoc <- function(x, field = NULL) 
+metadoc <- function(x, field = NULL)
     UseMethod("metadoc")
 
 #' @export
@@ -221,7 +229,7 @@ metadoc.corpus <- function(x, field = NULL) {
         field <- paste0("_", field)
         check_fields(x, field)
     }
-    dvars <- documents(x)[, which(substring(names(documents(x)), 1, 1) == "_"), 
+    dvars <- documents(x)[, which(substring(names(documents(x)), 1, 1) == "_"),
                           drop = FALSE]
     get_docvars(dvars, field)
 }
@@ -251,7 +259,7 @@ metadoc.dfm <- function(x, field = NULL) {
 #' @rdname metadoc
 #' @param value the new value of the new meta-data field
 #' @export
-"metadoc<-" <- function(x, field = NULL, value) 
+"metadoc<-" <- function(x, field = NULL, value)
     UseMethod("metadoc<-")
 
 #' @export
@@ -265,11 +273,11 @@ metadoc.dfm <- function(x, field = NULL) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
     if (is.null(field)) {
-        field <- paste("_", names(value), sep="")
+        field <- paste("_", names(value), sep = "")
         if (is.null(field))
             field <- paste("_metadoc", seq_len(ncol(as.data.frame(value))), sep = "")
     } else {
-        field <- paste("_", field, sep="")
+        field <- paste("_", field, sep = "")
     }
     documents(x)[field] <- value
     x
@@ -306,7 +314,7 @@ docvars_internal <- function(x) {
     if (is.corpus(x)) {
         return(documents(x))
     } else if (is.tokens(x)) {
-        return(attr(x, 'docvars'))
+        return(attr(x, "docvars"))
     } else if (is.dfm(x)) {
         return(x@docvars)
     }
@@ -315,7 +323,7 @@ docvars_internal <- function(x) {
 get_docvars2 <- function(x, fields) {
     is_field <- check_docvars(x, fields)
     if (any(is_field)) {
-        return(docvars_internal(x)[,is_field, drop = FALSE])
+        return(docvars_internal(x)[, is_field, drop = FALSE])
     } else {
         return(NULL)
     }
@@ -324,28 +332,27 @@ get_docvars2 <- function(x, fields) {
 ## helper function to check fields
 check_docvars <- function(x, fields) {
     dvars <- docvars_internal(x)
-    if (is.null(dvars)) 
+    if (is.null(dvars))
         return(rep(FALSE, length(fields)))
     return(fields %in% names(dvars))
 }
 
 ## internal function to select docvar fields
-select_fields <- function(x, types = c('user', 'system')) {
+select_fields <- function(x, types = c("user", "system")) {
 
     names <- names(x)
-    is_system <- stri_startswith_fixed(names, '_') 
-    is_text <- stri_detect_fixed(names, 'texts') | stri_detect_fixed(names, '_texts')
-    
+    is_system <- stri_startswith_fixed(names, "_")
+    is_text <- stri_detect_fixed(names, "texts") | stri_detect_fixed(names, "_texts")
+
     result <- data.frame(row.names = row.names(x))
-    if ('text' %in% types) {
+    if ("text" %in% types) {
         result <- cbind(result, x[is_text])
-    } 
-    if ('system' %in% types) {
+    }
+    if ("system" %in% types) {
         result <- cbind(result, x[is_system & !is_text])
     }
-    if ('user' %in% types) {
+    if ("user" %in% types) {
         result <- cbind(result, x[!is_system & !is_text])
-    } 
+    }
     return(result)
 }
-
