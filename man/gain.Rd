@@ -12,8 +12,8 @@ gain(object, base = 2)
 \item{base}{the base of the logarithmic function to be used. Defaults to 2.}
 }
 \value{
-\code{gain} returns a data.frame of gain values for each feature by
-  class and overall.
+\code{gain} returns a named vector of \eqn{G(w)} values, with the
+  feature as the element name.
 }
 \description{
 Computes the information gain of features from a fitted \link{textmodel_nb}
@@ -26,31 +26,38 @@ object.
   }
   where \itemize{
   \item \eqn{G(w)} is the information gain from word \eqn{w},
-  \item \eqn{P(c_i)} is the prior probability of class \eqn{i}, 
-  \item \eqn{P(w)} is the probability of word \eqn{w} being present in a document ,
-  \item \eqn{P(w^c)} is the probability of word \eqn{w} being absent in a document,
-  \item \eqn{P(c_i | w)} is the posterior probability of class \eqn{i} given that word \eqn{w} is present and 
-  \item \eqn{P(c_i | w^c)} is the posterior probability  of class\eqn{i} given that word \eqn{w} is absent.
+  \item \eqn{P(c_i)} is the prior probability of class \eqn{i},
+  \item \eqn{P(w)} is the probability of word \eqn{w} being present in a
+  document ,
+  \item \eqn{P(w^c)} is the probability of word \eqn{w} being absent in a
+  document,
+  \item \eqn{P(c_i | w)} is the posterior probability of class \eqn{i} given
+  that word \eqn{w}, and
+  \item \eqn{P(c_i | w^c)} is the posterior probability  of class\eqn{i} of
+  the complement set from \eqn{w}.
   }
  }
 }
 }
 \examples{
-txt <- c(d1 = "Chinese Beijing Chinese",
-         d2 = "Chinese Chinese Shanghai",
-         d3 = "Chinese Macao",
-         d4 = "Tokyo Japan Chinese",
-         d5 = "Chinese Chinese Chinese Tokyo Japan")
-trainingset <- dfm(txt, tolower = FALSE)
-trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
-tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-gain(tmod)
+dfmat <- data_corpus_inaugural[c("1865-Lincoln", "2017-Trump")] \%>\% 
+    dfm(remove_punct = TRUE) \%>\%
+    dfm_remove(stopwords("en")) \%>\%
+    dfm_trim(min_docfreq = 2)
+tmod <- textmodel_nb(dfmat, y = c("Lincoln", "Trump"))
+gw <- gain(tmod)
+sort(gw, decreasing = TRUE)
 }
 \references{
 Jurafsky, Daniel and James H. Martin.  (2018).
 \href{https://web.stanford.edu/~jurafsky/slp3/4.pdf}{\emph{Speech and
 Language Processing}}.   Stanford University typescript.  Draft of September
 23.
+
+Yang, Y. and Pedersen, J. O. (1997).
+\href{http://www.surdeanu.info/mihai/teaching/ista555-spring15/readings/yang97comparative.pdf}{A
+comparative study on feature selection in text categorization.} In
+\emph{ICML} 97(412-420, July).
 }
 \keyword{textmodel}
 \keyword{textmodel_nb}

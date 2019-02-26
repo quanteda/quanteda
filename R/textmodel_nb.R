@@ -345,35 +345,42 @@ print.predict.textmodel_nb <- function(x, ...) {
 #'   }
 #'   where \itemize{
 #'   \item \eqn{G(w)} is the information gain from word \eqn{w},
-#'   \item \eqn{P(c_i)} is the prior probability of class \eqn{i}, 
-#'   \item \eqn{P(w)} is the probability of word \eqn{w} being present in a document ,
-#'   \item \eqn{P(w^c)} is the probability of word \eqn{w} being absent in a document,
-#'   \item \eqn{P(c_i | w)} is the posterior probability of class \eqn{i} given that word \eqn{w} is present and 
-#'   \item \eqn{P(c_i | w^c)} is the posterior probability  of class\eqn{i} given that word \eqn{w} is absent.
+#'   \item \eqn{P(c_i)} is the prior probability of class \eqn{i},
+#'   \item \eqn{P(w)} is the probability of word \eqn{w} being present in a
+#'   document ,
+#'   \item \eqn{P(w^c)} is the probability of word \eqn{w} being absent in a
+#'   document,
+#'   \item \eqn{P(c_i | w)} is the posterior probability of class \eqn{i} given
+#'   that word \eqn{w}, and
+#'   \item \eqn{P(c_i | w^c)} is the posterior probability  of class\eqn{i} of
+#'   the complement set from \eqn{w}.
 #'   }
 #'  }
 #' }
 #' @param object a \link{textmodel_nb} object
 #' @param base the base of the logarithmic function to be used. Defaults to 2.
+#' @return \code{gain} returns a named vector of \eqn{G(w)} values, with the
+#'   feature as the element name.
 #' @references 
 #' Jurafsky, Daniel and James H. Martin.  (2018).
 #' \href{https://web.stanford.edu/~jurafsky/slp3/4.pdf}{\emph{Speech and
 #' Language Processing}}.   Stanford University typescript.  Draft of September
 #' 23.
+#' 
+#' Yang, Y. and Pedersen, J. O. (1997).
+#' \href{http://www.surdeanu.info/mihai/teaching/ista555-spring15/readings/yang97comparative.pdf}{A
+#' comparative study on feature selection in text categorization.} In
+#' \emph{ICML} 97(412-420, July).
 #' @keywords textmodel textmodel_nb
-#' @return \code{gain} returns a data.frame of gain values for each feature by
-#'   class and overall.
 #' @export
 #' @examples 
-#' txt <- c(d1 = "Chinese Beijing Chinese",
-#'          d2 = "Chinese Chinese Shanghai",
-#'          d3 = "Chinese Macao",
-#'          d4 = "Tokyo Japan Chinese",
-#'          d5 = "Chinese Chinese Chinese Tokyo Japan")
-#' trainingset <- dfm(txt, tolower = FALSE)
-#' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
-#' tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-#' gain(tmod)
+#' dfmat <- data_corpus_inaugural[c("1865-Lincoln", "2017-Trump")] %>% 
+#'     dfm(remove_punct = TRUE) %>%
+#'     dfm_remove(stopwords("en")) %>%
+#'     dfm_trim(min_docfreq = 2)
+#' tmod <- textmodel_nb(dfmat, y = c("Lincoln", "Trump"))
+#' gw <- gain(tmod)
+#' sort(gw, decreasing = TRUE)
 gain <- function(object, base = 2){
     UseMethod("gain")
 }
@@ -386,49 +393,50 @@ gain.default <- function(object, base = 2){
 #' @export
 #' @method gain textmodel_nb
 gain.textmodel_nb <- function(object, base = 2) {
-    # The formula for entropy of word w is
-    # - summation over all classes ( P(class) * log P(class))  (Term 1)
-    # + P(w) * summation over all classes (P(class |w ) * log(P(class|w)) ) (Term 2)
-    # + P(w') * summation over all classes (P(class | w') * log(P(class|w')) ) (Term 3)
+    H_Pc <- -1 * sum(object$Pc * log(object$Pc, base = base))
+    
+    H_feat <- sapply(featnames(object$x), function(y) {
+        sum(get_H_feature(y, model = object, base = base))
+    })
+    
+    H_Pc + H_feat
+}    
 
-    # Term 1: Initial Entropy
-    # Get summation over all classes of  P(class) * log P(class)
-    initial_entropy <- -1 * object$Pc * -log(object$Pc, base = base)
-    initial_entropy <- c(initial_entropy, overall = sum(initial_entropy))
-    
-    # Term 2: Entropy Given w
-    # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
-    conditional_entropy <- apply(object$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
-    conditional_entropy <- rbind(conditional_entropy, overall = colSums(conditional_entropy))
-
-    # Now get the unconditional entropy  := P(w) * conditional entropy
-    # works because of column-wise recycling of the vector
-    unconditional_entropy <-  t(t(conditional_entropy) * as.vector(object$Pw))
-    
-    # Term 3: Entropy Given w'
-    # Get the second conditional entropy := summation over all classes P(class | w') * log(P(class|w'))
-    # where P(w') denotes the probability that a word is not in a document
-    # To derive P(class|w'), we note:
-    # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w')
-    # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
-    Pcintersectw <- object$PwGc * object$Pc
-    Pcintersectwcomp <- object$Pc - Pcintersectw
-    PcGwcomp <- t(t(Pcintersectwcomp) / as.vector(1-object$Pw))
-    # P(class | w') =  P(class ∩ w') / P(w')
-    # PcGwcomp is a dataframe that captures conditional on a word not being in the document,
-    # what is the probability that it belongs to a class?
-    
-    conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
-    # Add a new row for overall gain
-    conditional_entropy_comp <- 
-        rbind(conditional_entropy_comp, overall = colSums(conditional_entropy_comp))
-    
-    # these work because of column-wise recycling
-    unconditional_entropy_comp <- t(t(conditional_entropy_comp) * as.vector(1 - object$Pw))
-    result <- unconditional_entropy + unconditional_entropy_comp + initial_entropy
-    
-    # make into data.frame
-    rownames(result) <- paste0("gain_", rownames(result))
-    return(data.frame(feature = colnames(result), t(result), 
-                      row.names = NULL, stringsAsFactors = FALSE))
+#' Compute H for a word and its complement
+#' 
+#' Computes the conditional entropy quantities H for a word and for its
+#' complement, from a \link{textmodel_nb} object.  Used for the multinomial
+#' variant of Naive Bayes, to compute the information gain for a single feature.
+#' @param feature character; the name of the feature for which H will be computed
+#' @param model a \link{textmodel_nb} object
+#' @param base base for logarithm function
+#' @return a vector of length 2, named "<feature>" and "~<feature>",
+#'   corresponding to the two Pr(w) weighted terms in the formula for the
+#'   computation of G(w).  See Jurafsky and Martin (2018, 17) and 
+#'   Yang and Pedersen (1997).
+#' @references 
+#' Jurafsky, Daniel and James H. Martin.  (2018).
+#' \href{https://web.stanford.edu/~jurafsky/slp3/4.pdf}{\emph{Speech and
+#' Language Processing}}.   Stanford University typescript.  Draft of September
+#' 23.
+#' 
+#' Yang, Y. and Pedersen, J. O. (1997).
+#' \href{http://www.surdeanu.info/mihai/teaching/ista555-spring15/readings/yang97comparative.pdf}{A
+#' comparative study on feature selection in text categorization.} In
+#' \emph{ICML} 97(412-420, July).
+#' @keywords internal textmodel
+get_H_feature <- function(feature, model, base) {
+    dfmat <- model$x
+    # reorder dfm so that target feature is first column
+    # (makes indexing easier and fixes the output sort order)
+    feature_index <- which(featnames(dfmat) %in% feature)
+    dfmat <- dfmat[, c(feature_index, seq_len(nfeat(dfmat))[-feature_index])]
+    # rename every feature except target to "w_bar"
+    colnames(dfmat)[-1] <- rep(paste0("~", feature), nfeat(dfmat) - 1)
+    # make into a two-feature dfm
+    dfmat <- dfm_compress(dfmat, margin = "feature")
+    # fit new NB model
+    tmod <- textmodel_nb(dfmat, y = model$y, prior = model$prior, smooth = model$smooth)
+    textstat_entropy(as.dfm(tmod$PcGw), margin = "features", base = base) *
+        as.vector(tmod$Pw)
 }
