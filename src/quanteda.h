@@ -1,3 +1,6 @@
+#ifndef QUANTEDA // prevent redefining
+#define QUANTEDA
+
 #include <Rcpp.h>
 #include <RcppParallel.h>
 #include <unordered_map>
@@ -9,10 +12,7 @@
 using namespace Rcpp;
 // [[Rcpp::depends(RcppParallel)]]
 using namespace RcppParallel;
-using namespace std;
 
-#ifndef QUANTEDA // prevent redefining
-#define QUANTEDA
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 

@@ -16,8 +16,9 @@ char_segment(x, pattern = "##*", valuetype = c("glob", "regex",
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
