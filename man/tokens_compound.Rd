@@ -50,11 +50,8 @@ Patterns to be compounded (naturally) consist of multi-word sequences,
   character vector, wrap the vector in \code{\link{phrase}}.  If the elements
   to be compounded are separate elements of a character vector, supply it as
   a list where each list element is the sequence of character elements.
-  See the examples below.
   
-  When \code{pattern} is a a \link{collocations} object, performance can be
-  significantly improved using case-sensitive matching.  See the example
-  below for how to match and compound with \code{case_insensitive = FALSE}.
+  See the examples below.
 }
 \examples{
 txt <- "The United Kingdom is leaving the European Union."
