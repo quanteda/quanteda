@@ -70,7 +70,7 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    if (is_pre15(x)) {
+    if (is_pre2(x)) {
         x <- new("dfm", x, 
                  meta = list(user = list(), 
                              system = list()),

@@ -416,8 +416,8 @@ test_that("handle data.frame variable renaming when one already exists", {
 })
 
 test_that("upgrade_corpus is working", {
-    load("../data/pre15objects/data_corpus_pre15.rda")
-    corp1 <- quanteda:::upgrade_corpus(data_corpus_pre15)
+    load("../data/pre_v2_objects/data_corpus_pre2.rda")
+    corp1 <- quanteda:::upgrade_corpus(data_corpus_pre2)
     expect_true(is.character(corp1))
     expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp1, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp1, "docvars"))))

@@ -283,7 +283,7 @@ sample_bygroup <- function(x, group, replace = FALSE) {
 #'   object, \code{c(1, 4, 0)} is returned.
 #' @keywords internal utils
 get_object_version <- function(x) {
-    if (is_pre15(x)) {
+    if (is_pre2(x)) {
         as.package_version("1.4.0")
     } else {
         meta(x, field = "package-version", type = "system")
@@ -291,8 +291,8 @@ get_object_version <- function(x) {
 }
 
 #' @rdname get_object_version
-#' @return \code{ispre15} returns \code{TRUE} if the object was created before
-#' \pkg{quanteda} version 1.5, or \code{FALSE} otherwise
-is_pre15 <- function(x) {
+#' @return \code{ispr2} returns \code{TRUE} if the object was created before
+#' \pkg{quanteda} version 2, or \code{FALSE} otherwise
+is_pre2 <- function(x) {
     (! "meta" %in% names(attributes(x)))
 }

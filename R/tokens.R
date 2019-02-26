@@ -307,7 +307,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
-    if (is_pre15(x))
+    if (is_pre2(x))
         attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
     return(x)
 }
