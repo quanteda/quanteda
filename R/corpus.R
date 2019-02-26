@@ -172,7 +172,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     }
     attr(x, "docvars") <- docvar
     meta_system(x) <- meta_system_defaults("character") # system metadata
-    meta(x) <- meta                                     # user metadata
+    if (length(meta)) meta(x) <- meta                     # user metadata
     return(x)
 }
 
