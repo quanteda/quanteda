@@ -16,40 +16,52 @@
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching.
 #'   When \code{pattern} is a \code{collocations}, case-sensitive operation is
 #'   significantly faster than case-insensitive operation.
-#' @param join logical; if \code{TRUE}, join overlapping compounds
-#' @return a \link{tokens} object in which the token sequences matching
+#' @param join logical; if \code{TRUE}, join overlapping compounds into a single
+#'   compound; otherwise, form these separately.  See examples.
+#' @return A \link{tokens} object in which the token sequences matching
 #'   \code{pattern} have been replaced by  compound "tokens" joined by the
-#'   concatenator
+#'   concatenator.
+#' @note Patterns to be compounded (naturally) consist of multi-word sequences,
+#'   and how these are expected in \code{pattern} is very specific.  If the
+#'   elements to be compounded are supplied as space-delimited elements of a
+#'   character vector, wrap the vector in \code{\link{phrase}}.  If the elements
+#'   to be compounded are separate elements of a character vector, supply it as
+#'   a list where each list element is the sequence of character elements.
+#'   
+#'   See the examples below.
 #' @export
 #' @examples
-#' txt <- c("The new law included a capital gains tax, and an inheritance tax.",
-#'              "New York City has raised taxes: an income tax and inheritance taxes.")
-#' toks1 <- tokens(txt, remove_punct = TRUE)
+#' txt <- "The United Kingdom is leaving the European Union."
+#' toks <- tokens(txt, remove_punct = TRUE)
+#' 
+#' # character vector - not compounded
+#' tokens_compound(toks, c("United", "Kingdom", "European", "Union"))
 #'
-#' # for lists of sequence elements
-#' myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("inheritance", "tax"))
-#' (toks2 <- tokens_compound(toks1, pattern = myseqs))
-#' dfm(toks2)
+#' # elements separated by spaces - not compounded
+#' tokens_compound(toks, c("United Kingdom", "European Union"))
+#' 
+#' # list of characters - is compounded
+#' tokens_compound(toks, list(c("United", "Kingdom"), c("European", "Union")))
 #'
-#' # when used as a dictionary for dfm creation
-#' dict1 <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
-#' (toks3 <- tokens_compound(toks1, pattern = dict1))
-#'
-#' # to pick up "taxes" in the second text, set valuetype = "regex"
-#' (toks4 <- tokens_compound(toks1, pattern = dict1, valuetype = "regex"))
-#'
-#' # dictionaries w/glob matches
-#' dict2 <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
-#'                           positive = c("good stuff", "like? th??")))
-#' toks5 <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
-#'                  txt2 = "Some damn good stuff, like the text, she likes that too."))
-#' tokens_compound(toks5, pattern = dict2)
-#'
-#' # with collocations
-#' tstat <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"),
-#'                               size = 2, min_count = 1)
-#' toks6 <- tokens("The new law included capital gains taxes and inheritance taxes.")
-#' tokens_compound(toks6, pattern = tstat)
+#' # elements separated by spaces, wrapped in phrase)() - is compounded
+#' tokens_compound(toks, phrase(c("United Kingdom", "European Union")))
+#' 
+#' # supplied as values in a dictionary (same as list) - is compounded
+#' # (keys do not matter)
+#' tokens_compound(toks, dictionary(list(key1 = "United Kingdom", 
+#'                                       key2 = "European Union")))
+#' # pattern as dictionaries with glob matches
+#' tokens_compound(toks, dictionary(list(key1 = c("U* K*"))), valuetype = "glob")
+#' 
+#' # supplied as collocations - is compounded
+#' colls <- tokens("The new European Union is not the old European Union.") %>%
+#'     textstat_collocations(size = 2, min_count = 1, tolower = FALSE)
+#' tokens_compound(toks, colls, case_insensitive = FALSE)
+#' 
+#' # note the differences caused by join = FALSE
+#' compounds <- list(c("the", "European"), c("European", "Union"))
+#' tokens_compound(toks, pattern = compounds, join = TRUE)
+#' tokens_compound(toks, pattern = compounds, join = FALSE)
 tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     case_insensitive = TRUE, join = TRUE) {

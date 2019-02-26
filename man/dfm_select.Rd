@@ -29,8 +29,9 @@ fcm_keep(x, pattern = NULL, ...)
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
