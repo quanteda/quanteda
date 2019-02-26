@@ -247,8 +247,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
 #' @rdname print.dfm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = NULL, show.settings = FALSE, 
-                   show.summary = TRUE, 
+          function(x, show.values = NULL, show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    nfeature = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {
@@ -258,7 +257,7 @@ setMethod("print", signature(x = "fcm"),
                       if (nfeat(x) != 1L) "s" else "",
                       ".\n", sep = "")
               }
-              print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)
+              print_dfm(x, ndoc, nfeature, show.values, ...)
           })
 
 #' @rdname print.dfm

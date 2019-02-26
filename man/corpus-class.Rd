@@ -76,11 +76,6 @@ summary(c(corpus1, corpus2, corpus3))
 data_corpus_inaugural["1793-Washington"]
 data_corpus_inaugural[2] 
 
-# create a new document variable
-data_corpus_irishbudget2010[["govtopp"]] <- 
-    ifelse(data_corpus_irishbudget2010[["party"]] \%in\% c("FF", "Greens"), 
-           "Government", "Opposition")
-docvars(data_corpus_irishbudget2010)
 }
 \seealso{
 \code{\link{summary.corpus}}

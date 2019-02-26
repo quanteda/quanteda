@@ -14,9 +14,7 @@
 \alias{[,fcm,index,missing,logical-method}
 \alias{[,fcm,missing,index,missing-method}
 \alias{[,fcm,missing,index,logical-method}
-\title{Virtual class "fcm" for a feature co-occurrence matrix
-The fcm class of object is a special type of \link{fcm} object with
-additional slots, described below.}
+\title{Virtual class "fcm" for a feature co-occurrence matrix}
 \usage{
 \S4method{t}{fcm}(x)
 
@@ -56,7 +54,6 @@ additional slots, described below.}
 \item{drop}{always set to \code{FALSE}}
 }
 \description{
-Virtual class "fcm" for a feature co-occurrence matrix
 The fcm class of object is a special type of \link{fcm} object with
 additional slots, described below.
 }
@@ -92,4 +89,5 @@ fcmat[4:5, 1:5]
 \seealso{
 \link{fcm}
 }
+\keyword{fcm}
 \keyword{internal}

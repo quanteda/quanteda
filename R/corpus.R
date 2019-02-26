@@ -43,7 +43,7 @@
 #'   of a corpus object change.  Using the accessor and replacement functions 
 #'   ensures that future code to manipulate corpus objects will continue to work.
 #' @seealso \link{corpus-class}, \code{\link{docvars}}, 
-#'   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
+#'   \code{\link{meta}}, \code{\link{texts}}, \code{\link{ndoc}},
 #'   \code{\link{docnames}}
 #' @details The texts and document variables of corpus objects can also be
 #'   accessed using index notation. Indexing a corpus object as a vector will
