@@ -20,7 +20,25 @@ None.
 
 ### NOTES
 
-None.
+Some of the URLs linking to JSTOR articles in `textstat_readability.Rd` generate these:
+```
+Found the following (possibly) invalid URLs:
+  URL: https://www.jstor.org/stable/1433978
+    From: man/textstat_readability.Rd
+    Status: 403
+    Message: Forbidden
+```
+but in correspondence with Uwe Ligges, he told me that this is due more to a CRAN configuration issue than something that should be fixed in the package, so I am leaving these.
+
+In the current (but not development) version tests, we also see this:
+```
+* checking installed package size ... NOTE
+  installed size is  6.6Mb
+  sub-directories of 1Mb or more:
+    R      1.0Mb
+    data   1.3Mb
+    libs   3.3Mb
+```
 
 ## Downstream dependencies
 
