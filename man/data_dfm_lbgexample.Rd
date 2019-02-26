@@ -20,9 +20,9 @@ This is the example word count data from Laver, Benoit and Garry's
   raw text score of approximately -0.45 when computed as per LBG (2003).
 }
 \references{
-Laver, Michael, Kenneth Benoit, and John Garry.  2003. 
-  "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
-  positions from political text using words as data.}" \emph{American
-  Political Science Review} 97(2): 311-331.
+Laver, M., Benoit, K.R., & Garry, J. (2003). 
+  \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
+  Positions from Political Text using Words as Data}. \emph{American
+  Political Science Review}, 97(2), 311--331.
 }
 \keyword{data}

@@ -15,7 +15,7 @@ Texts chunk(Text &tokens,
     step = size - overlap;
     chunks.reserve(ceil(tokens.size() / step));
     for (size_t i = 0; i < tokens.size(); i += step) {
-        Text chunk(tokens.begin() + i, tokens.begin() + min(i + size, tokens.size()));
+        Text chunk(tokens.begin() + i, tokens.begin() + std::min(i + size, tokens.size()));
         chunks.push_back(chunk);
         count++;
     }

@@ -17,14 +17,14 @@ Get the features from a document-feature matrix, which are stored as the
 column names of the \link{dfm} object.
 }
 \examples{
-inaugDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
+dfmat <- dfm(data_corpus_inaugural)
 
 # first 50 features (in original text order)
-head(featnames(inaugDfm), 50)
+head(featnames(dfmat), 50)
 
 # first 50 features alphabetically
-head(sort(featnames(inaugDfm)), 50)
+head(sort(featnames(dfmat)), 50)
 
 # contrast with descending total frequency order from topfeatures()
-names(topfeatures(inaugDfm, 50))
+names(topfeatures(dfmat, 50))
 }

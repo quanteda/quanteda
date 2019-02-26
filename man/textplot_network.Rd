@@ -63,17 +63,18 @@ Currently the size of the network is limited to 1000, because of the
   own plotting function using \code{\link[=as.network.fcm]{as.network}}.
 }
 \examples{
+set.seed(100)
 toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens(remove_punct = TRUE) \%>\%
     tokens_tolower() \%>\%
     tokens_remove(pattern = stopwords("english"), padding = FALSE)
-myfcm <- fcm(toks, context = "window", tri = FALSE)
-feat <- names(topfeatures(myfcm, 30))
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
+fcmat <- fcm(toks, context = "window", tri = FALSE)
+feat <- names(topfeatures(fcmat, 30))
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.5)
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.8)
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
 
 # as.igraph

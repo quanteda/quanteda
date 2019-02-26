@@ -35,12 +35,12 @@ subset_dfm <- function(x, i, j, ..., drop) {
 #' @export
 #' @examples 
 #' # dfm subsetting
-#' x <- dfm(tokens(c("this contains lots of stopwords",
+#' dfmat <- dfm(tokens(c("this contains lots of stopwords",
 #'                   "no if, and, or but about it: lots",
 #'                   "and a third document is it"),
 #'                 remove_punct = TRUE))
-#' x[1:2, ]
-#' x[1:2, 1:5]
+#' dfmat[1:2, ]
+#' dfmat[1:2, 1:5]
 setMethod("[", signature = c("dfm", i = "index", j = "index", drop = "missing"), subset_dfm)
 
 #' @rdname dfm-class

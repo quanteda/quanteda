@@ -87,7 +87,7 @@ additional slots, described below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -129,6 +129,9 @@ additional slots, described below." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -303,16 +306,16 @@ are counted separately</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fcm subsetting</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
+<span class='no'>fcmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>),
                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='no'>y</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
+<span class='no'>fcmat</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
 #&gt; 3 x 12 sparse Matrix of class "fcm"
 #&gt;           features
 #&gt; features   this contains lots of stopwords no if and or but about it
 #&gt;   this        0        1    1  1         1  0  0   0  0   0     0  0
 #&gt;   contains    0        0    1  1         1  0  0   0  0   0     0  0
-#&gt;   lots        0        0    0  1         1  1  1   1  1   1     1  1</div><div class='input'><span class='no'>y</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
+#&gt;   lots        0        0    0  1         1  1  1   1  1   1     1  1</div><div class='input'><span class='no'>fcmat</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
 #&gt; 2 x 5 sparse Matrix of class "fcm"
 #&gt;            features
 #&gt; features    this contains lots of stopwords

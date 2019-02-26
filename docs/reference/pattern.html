@@ -40,7 +40,7 @@
   <script src="../extra.js"></script>
 <meta property="og:title" content="Pattern for feature, token and keyword matching — pattern" />
 
-<meta property="og:description" content="Pattern(s) for use in matching Feature, tokens, and keywords through a
+<meta property="og:description" content="Pattern(s) for use in matching features, tokens, and keywords through a
 valuetype pattern." />
 <meta name="twitter:card" content="summary" />
 
@@ -82,7 +82,7 @@ valuetype pattern." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -124,6 +124,9 @@ valuetype pattern." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -203,7 +206,7 @@ valuetype pattern." />
 
     <div class="ref-description">
     
-    <p>Pattern(s) for use in matching Feature, tokens, and keywords through a
+    <p>Pattern(s) for use in matching features, tokens, and keywords through a
 <a href='valuetype.html'>valuetype</a> pattern.</p>
     
     </div>
@@ -214,38 +217,42 @@ valuetype pattern." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pattern</th>
-      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
-<a href='textstat_collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See pattern for details.</p></td>
+      <td><p>a character vector, list of character vectors,
+<a href='dictionary.html'>dictionary</a>, or <a href='textstat_collocations.html'>collocations</a> object.  See pattern for
+details.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>pattern</code> argument is a vector of patterns, including sequences, 
-  to match in a target object, whose match type is specified by <code><a href='valuetype.html'>valuetype</a></code>.
-  Note that an empty pattern (<code>""</code>) will match "padding" in a <a href='tokens.html'>tokens</a> object.</p><dl class='dl-horizontal'>
-  <dt><code>character</code></dt><dd><p>A character vector of token patterns to be selected or removed. 
-    Whitespace is not privileged, so that in a character vector, white space is interpreted 
-    literally. If you wish to consider whitespace-separated elements as sequences of tokens,
-    wrap the argument in <code><a href='phrase.html'>phrase</a></code>.</p></dd>
-  <dt><code>list of character objects</code></dt><dd><p>If the list elements are character vectors of 
-    length 1, then this is equivalent to a vector of characters.  If a list element contains
-    a vector of characters longer than length 1, then for matching will consider these
-    as sequences of matches, equivalent to wrapping the argument in <code><a href='phrase.html'>phrase</a></code>, 
-    except for matching to <a href='dfm.html'>dfm</a> features where this does not apply.</p></dd>
-  <dt><code>dictionary</code></dt><dd><p>Values in <a href='dictionary.html'>dictionary</a> are used as patterns, for literal matches.  
-    Multi-word values are automatically converted into phrases, so performing selection or
-    compounding using a dictionary is the same as wrapping the dictionary in <code><a href='phrase.html'>phrase</a></code>.</p></dd> 
-  <dt><code>collocations</code></dt><dd><p>Collocations objects created from <code><a href='textstat_collocations.html'>textstat_collocations</a></code>,
-    which are treated as phrases automatically.</p></dd>
-  <dt><code>dfm</code></dt><dd><p>Only <code><a href='dfm_select.html'>dfm_select</a></code> accepts <code>dfm</code> as features to create a new <code>dfm</code>
-    identical in its feature set, using a fixed match.</p></dd>
+    <p>The <code>pattern</code> argument is a vector of patterns, including
+  sequences, to match in a target object, whose match type is specified by
+  <code><a href='valuetype.html'>valuetype</a></code>. Note that an empty pattern (<code>""</code>) will match
+  "padding" in a <a href='tokens.html'>tokens</a> object.</p><dl class='dl-horizontal'>
+  <dt><code>character</code></dt><dd><p>A character vector of token patterns to be selected
+  or removed. Whitespace is not privileged, so that in a character vector,
+  white space is interpreted literally. If you wish to consider
+  whitespace-separated elements as sequences of tokens, wrap the argument in
+  <code><a href='phrase.html'>phrase</a></code>.</p></dd>
+  <dt><code>list of character objects</code></dt><dd><p>If the list elements are character
+  vectors of length 1, then this is equivalent to a vector of characters.  If
+  a list element contains a vector of characters longer than length 1, then
+  for matching will consider these as sequences of matches, equivalent to
+  wrapping the argument in <code><a href='phrase.html'>phrase</a></code>, except for matching to
+  <a href='dfm.html'>dfm</a> features where this does not apply.</p></dd>
+  <dt><code>dictionary</code></dt><dd><p>Values in <a href='dictionary.html'>dictionary</a> are used as patterns,
+  for literal matches. Multi-word values are automatically converted into
+  phrases, so performing selection or compounding using a dictionary is the
+  same as wrapping the dictionary in <code><a href='phrase.html'>phrase</a></code>.</p></dd>
+  <dt><code>collocations</code></dt><dd><p>Collocations objects created from
+  <code><a href='textstat_collocations.html'>textstat_collocations</a></code>, which are treated as phrases
+  automatically.</p></dd>
   </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># these are interpreted literally</span>
-(<span class='no'>patt1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'president'</span>, <span class='st'>'white house'</span>, <span class='st'>'house of representatives'</span>))</div><div class='output co'>#&gt; [1] "president"                "white house"             
+(<span class='no'>patt1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white house"</span>, <span class='st'>"house of representatives"</span>))</div><div class='output co'>#&gt; [1] "president"                "white house"             
 #&gt; [3] "house of representatives"</div><div class='input'><span class='co'># as multi-word sequences</span>
 <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt1</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
@@ -257,7 +264,7 @@ valuetype pattern." />
 #&gt; [1] "house"           "of"              "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># three single-word patterns</span>
-(<span class='no'>patt2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'president'</span>, <span class='st'>'white_house'</span>, <span class='st'>'house_of_representatives'</span>))</div><div class='output co'>#&gt; [1] "president"                "white_house"             
+(<span class='no'>patt2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white_house"</span>, <span class='st'>"house_of_representatives"</span>))</div><div class='output co'>#&gt; [1] "president"                "white_house"             
 #&gt; [3] "house_of_representatives"</div><div class='input'><span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt2</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
 #&gt; 
@@ -268,7 +275,8 @@ valuetype pattern." />
 #&gt; [1] "house_of_representatives"
 #&gt; </div><div class='input'>
 <span class='co'># this is equivalent to phrase(patt1)</span>
-(<span class='no'>patt3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'president'</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'white'</span>, <span class='st'>'house'</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'house'</span>, <span class='st'>'of'</span>, <span class='st'>'representatives'</span>)))</div><div class='output co'>#&gt; [[1]]
+(<span class='no'>patt3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"president"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"white"</span>, <span class='st'>"house"</span>),
+               <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"house"</span>, <span class='st'>"of"</span>, <span class='st'>"representatives"</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
 #&gt; 
 #&gt; [[2]]
@@ -278,7 +286,7 @@ valuetype pattern." />
 #&gt; [1] "house"           "of"              "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># glob expression can be used </span>
-<span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'president?'</span>, <span class='st'>'white house'</span>, <span class='st'>'house * representatives'</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"president?"</span>, <span class='st'>"white house"</span>, <span class='st'>"house * representatives"</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president?"
 #&gt; 
 #&gt; [[2]]
@@ -288,7 +296,7 @@ valuetype pattern." />
 #&gt; [1] "house"           "*"               "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># this is equivalent to phrase(patt4)</span>
-(<span class='no'>patt5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'president?'</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'white'</span>, <span class='st'>'house'</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'house'</span>, <span class='st'>'*'</span>, <span class='st'>'representatives'</span>)))</div><div class='output co'>#&gt; [[1]]
+(<span class='no'>patt5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"president?"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"white"</span>, <span class='st'>"house"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"house"</span>, <span class='st'>"*"</span>, <span class='st'>"representatives"</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president?"
 #&gt; 
 #&gt; [[2]]
@@ -298,7 +306,7 @@ valuetype pattern." />
 #&gt; [1] "house"           "*"               "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># dictionary with multi-word matches</span>
-(<span class='no'>dict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>us</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'president'</span>, <span class='st'>'white house'</span>, <span class='st'>'house of representatives'</span>))))</div><div class='output co'>#&gt; Dictionary object with 1 key entry.
+(<span class='no'>dict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>us</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white house"</span>, <span class='st'>"house of representatives"</span>))))</div><div class='output co'>#&gt; Dictionary object with 1 key entry.
 #&gt; - [us]:
 #&gt;   - president, white house, house of representatives</div><div class='input'><span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>dict1</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"

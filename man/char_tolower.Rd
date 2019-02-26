@@ -28,9 +28,9 @@ Unicode.  In addition, the \code{*_tolower} functions provide an option for
 preserving acronyms.
 }
 \examples{
-txt <- c(txt1 = "b A A", txt2 = "C C a b B")
-char_tolower(txt) 
-char_toupper(txt)
+txt1 <- c(txt1 = "b A A", txt2 = "C C a b B")
+char_tolower(txt1) 
+char_toupper(txt1)
 
 # with acronym preservation
 txt2 <- c(text1 = "England and France are members of NATO and UNESCO", 

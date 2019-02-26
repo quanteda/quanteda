@@ -6,19 +6,19 @@
 #' @export
 #' @examples
 #' # compress an fcm
-#' myfcm <- fcm(tokens("A D a C E a d F e B A C E D"), 
+#' fcmat1 <- fcm(tokens("A D a C E a d F e B A C E D"), 
 #'              context = "window", window = 3)
 #' ## this will produce an error:
-#' # fcm_compress(myfcm)
+#' # fcm_compress(fcmat1)
 #' 
 #' txt <- c("The fox JUMPED over the dog.",
 #'          "The dog jumped over the fox.")
 #' toks <- tokens(txt, remove_punct = TRUE)
-#' myfcm <- fcm(toks, context = "document")
-#' colnames(myfcm) <- rownames(myfcm) <- tolower(colnames(myfcm))
-#' colnames(myfcm)[5] <- rownames(myfcm)[5] <- "fox"
-#' myfcm
-#' fcm_compress(myfcm)
+#' fcmat2 <- fcm(toks, context = "document")
+#' colnames(fcmat2) <- rownames(fcmat2) <- tolower(colnames(fcmat2))
+#' colnames(fcmat2)[5] <- rownames(fcmat2)[5] <- "fox"
+#' fcmat2
+#' fcm_compress(fcmat2)
 fcm_compress <- function(x) {
     UseMethod("fcm_compress")
 }
@@ -46,19 +46,19 @@ fcm_compress.fcm <- function(x) {
 #'   Differs from \code{\link{fcm_sort}} in that this function sorts the fcm by
 #'   the feature labels, not the counts of the features.
 #' @export
-#' @author Ken Benoit
+#' @author Kenneth Benoit
 #' @examples
 #' # with tri = FALSE
-#' myfcm <- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = FALSE)
-#' rownames(myfcm)[3] <- colnames(myfcm)[3] <- "Z"
-#' myfcm
-#' fcm_sort(myfcm)
+#' fcmat1 <- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = FALSE)
+#' rownames(fcmat1)[3] <- colnames(fcmat1)[3] <- "Z"
+#' fcmat1
+#' fcm_sort(fcmat1)
 #' 
 #' # with tri = TRUE
-#' myfcm <- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = TRUE)
-#' rownames(myfcm)[3] <- colnames(myfcm)[3] <- "Z"
-#' myfcm
-#' fcm_sort(myfcm)
+#' fcmat2 <- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = TRUE)
+#' rownames(fcmat2)[3] <- colnames(fcmat2)[3] <- "Z"
+#' fcmat2
+#' fcm_sort(fcmat2)
 fcm_sort <- function(x) {
     UseMethod("fcm_sort")    
 }
@@ -89,9 +89,9 @@ fcm_sort.fcm <- function(x) {
 #' toks <- tokens(c("this contains lots of stopwords",
 #'                  "no if, and, or but about it: lots"),
 #'                remove_punct = TRUE)
-#' tmpfcm <- fcm(toks)
-#' tmpfcm
-#' fcm_remove(tmpfcm, stopwords("english"))
+#' fcmat <- fcm(toks)
+#' fcmat
+#' fcm_remove(fcmat, stopwords("english"))
 fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,

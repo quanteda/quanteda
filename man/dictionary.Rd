@@ -56,22 +56,22 @@ Dictionaries can be subsetted using
   \code{\link{is.dictionary}}.
 }
 \examples{
-mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
-mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+corp <- corpus_subset(data_corpus_inaugural, Year>1900)
+dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           opposition = c("Opposition", "reject", "notincorpus"),
                           taxing = "taxing",
                           taxation = "taxation",
                           taxregex = "tax*",
                           country = "america"))
-head(dfm(mycorpus, dictionary = mydict))
+head(dfm(corp, dictionary = dict))
 
 # subset a dictionary
-mydict[1:2]
-mydict[c("christmas", "opposition")]
-mydict[["opposition"]]
+dict[1:2]
+dict[c("christmas", "opposition")]
+dict[["opposition"]]
 
 # combine dictionaries
-c(mydict["christmas"], mydict["country"])
+c(dict["christmas"], dict["country"])
 
 \dontrun{
 # import the Laver-Garry dictionary from Provalis Research
@@ -79,13 +79,13 @@ dictfile <- tempfile()
 download.file("https://provalisresearch.com/Download/LaverGarry.zip", 
               dictfile, mode = "wb")
 unzip(dictfile, exdir = (td <- tempdir()))
-lgdict <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-head(dfm(data_corpus_inaugural, dictionary = lgdict))
+dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
+head(dfm(data_corpus_inaugural, dictionary = dictlg))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 download.file("https://goo.gl/5gmwXq", tf <- tempfile())
-mfdict <- dictionary(file = tf, format = "LIWC")
-head(dfm(data_corpus_inaugural, dictionary = mfdict))
+dictliwc <- dictionary(file = tf, format = "LIWC")
+head(dfm(data_corpus_inaugural, dictionary = dictliwc))
 }
 }
 \references{

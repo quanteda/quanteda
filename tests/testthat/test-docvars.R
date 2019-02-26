@@ -122,7 +122,6 @@ test_that("metadoc works with selection", {
     )
 }) 
 
-
 test_that("docvars is working with dfm", {
     corp <- data_corpus_irishbudget2010
     toks <- tokens(corp, include_docvars = TRUE)
@@ -325,5 +324,102 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     expect_identical(
         docvars(toks),
         data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+    )
+})
+
+test_that("docvar assignment is fully robust including to renaming (#1603)", {
+    # assigning a data.frame to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- data.frame(testdv = 10:11)
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11, row.names = docnames(corp))
+    )
+    
+    # assigning a vector to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- c("x", "y")
+    expect_identical(
+        docvars(corp),
+        data.frame(V1 = c("x", "y"), row.names = docnames(corp), stringsAsFactors = FALSE)
+    )
+    
+    # renaming a docvar
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+               docvars = data.frame(testdv = 10:11))
+    names(docvars(corp))[1] <- "renamed_dv"
+    expect_identical(
+        docvars(corp),
+        data.frame(renamed_dv = 10:11, row.names = docnames(corp))
+    )
+    expect_identical(
+        texts(corp),
+        c(text1 = "A b c d.", text2 = "A a b. B c.")
+    )
+})
+
+test_that("docvars<-.corpus error trapping works", {
+    expect_error(
+        docvars(data_corpus_irishbudget2010, "texts") <- 
+            paste0("newtext", seq_len(ndoc(data_corpus_irishbudget2010))),
+        "You should use texts"
+    )
+    
+    # preexisting docvars keep unique names
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- data.frame(docvar1 = 1:2)
+    docvars(corp)[2] <- 11:12
+    docvars(corp)[3] <- c("a", "b")
+    expect_identical(
+        docvars(corp),
+        data.frame(docvar1 = 1:2, V2 = 11:12, V3 = c("a", "b"), stringsAsFactors = FALSE, 
+                   row.names = c("text1", "text2"))
+    )
+})
+
+test_that("docvars<- NULL removes docvars", {
+    # can NULL the only docvar
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11))
+    docvars(corp)["testdv"] <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(row.names = docnames(corp))
+    )
+
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11))
+    docvars(corp, "testdv") <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(row.names = docnames(corp))
+    )
+
+        
+    # can NULL one of severeal docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp)["seconddv"] <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11, row.names = docnames(corp))
+    )
+    
+    # can NULL one of severeal docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp, "seconddv") <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11, row.names = docnames(corp))
+    )
+    
+    # can NULL all docvars
+    corp <- corpus(c("A b c d.", "A a b. B c."),
+                   docvars = data.frame(testdv = 10:11, seconddv = letters[1:2]))
+    docvars(corp) <- NULL
+    expect_identical(
+        docvars(corp),
+        data.frame(row.names = docnames(corp))
     )
 })

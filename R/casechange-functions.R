@@ -72,9 +72,9 @@ tokens_toupper.tokens <- function(x, ...) {
 #' @import stringi
 #' @export
 #' @examples
-#' txt <- c(txt1 = "b A A", txt2 = "C C a b B")
-#' char_tolower(txt) 
-#' char_toupper(txt)
+#' txt1 <- c(txt1 = "b A A", txt2 = "C C a b B")
+#' char_tolower(txt1) 
+#' char_toupper(txt1)
 #' 
 #' # with acronym preservation
 #' txt2 <- c(text1 = "England and France are members of NATO and UNESCO", 
@@ -140,10 +140,10 @@ char_toupper.character <- function(x, ...) {
 #' @export
 #' @examples
 #' # for a document-feature matrix
-#' mydfm <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
-#' mydfm
-#' dfm_tolower(mydfm) 
-#' dfm_toupper(mydfm)
+#' dfmat <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
+#' dfmat
+#' dfm_tolower(dfmat) 
+#' dfm_toupper(dfmat)
 #'    
 dfm_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("dfm_tolower")
@@ -190,11 +190,11 @@ dfm_toupper.dfm <- function(x, ...) {
 #' @export
 #' @examples
 #' # for a feature co-occurrence matrix
-#' myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), 
+#' fcmat <- fcm(tokens(c("b A A d", "C C a b B e")), 
 #'              context = "document")
-#' myfcm
-#' fcm_tolower(myfcm) 
-#' fcm_toupper(myfcm)   
+#' fcmat
+#' fcm_tolower(fcmat) 
+#' fcm_toupper(fcmat)   
 fcm_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("fcm_tolower")   
 }

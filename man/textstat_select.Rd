@@ -10,8 +10,9 @@ textstat_select(x, pattern = NULL, selection = c("keep", "remove"),
 \arguments{
 \item{x}{a \code{textstat} object}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the rows that
 match the pattern}
@@ -29,9 +30,9 @@ Users can subset output object of \code{textstat_collocations},
 }
 \examples{
 period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
-mydfm <- dfm(data_corpus_inaugural, groups = period)
-keyness <- textstat_keyness(mydfm)
-textstat_select(keyness, 'america*')
+dfmat <- dfm(data_corpus_inaugural, groups = period)
+tstat <- textstat_keyness(dfmat)
+textstat_select(tstat, 'america*')
 
 }
 \keyword{internal}

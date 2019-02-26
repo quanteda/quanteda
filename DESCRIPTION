@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.3.19
+Version: 1.4.1
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,

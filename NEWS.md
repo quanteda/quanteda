@@ -1,41 +1,49 @@
-# quanteda > v1.3.14
+# quanteda 1.4.1
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
+
+* Fixed an issue with special handling of whitespace variants that caused a test to fail when running Ubuntu 18.10 system with libicu-dev version 63.1 (#1604).
+* Fixed the operation of `docvars<-.corpus()` in a way that solves #1603 (reassignment of docvar names).
+
+# quanteda 1.4.0
+
+## Bug fixes and stability enhancements
 
 * Fixed bug in `dfm_compress()` and `dfm_group()` that changed or deleted docvars attributes of dfm objects (#1506).
 * Fixed a bug in `textplot_xray()` that caused incorrect facet labels when a pattern contained multiple list elements or values (#1514).
 * `kwic()` now correctly returns the pattern associated with each match as the `"keywords"` attribute, for all `pattern` types (#1515)
 * Implemented some improvements in efficiency and computation of unusual edge cases for `textstat_simil()` and `textstat_dist()`.
 
-### New features
+## New features
 
 * `textstat_lexdiv()` now works on tokens objects, not just dfm objects.  New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington & McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).
 * New function `tokens_split()` allows splitting single into multiple tokens based on a pattern match. (#1500)
 * New function `tokens_chunk()` allows splitting tokens into new documents of equally-sized "chunks". (#1520)
 * New function `textstat_entropy()` now computes entropy for a dfm across feature or document margins.
+* The documentation for `textstat_readability()` is vastly improved, now providing detailing all formulas and providing full references.
 * New function `dfm_match()` allows a user to specify the features in a dfm according to a fixed vector of feature names, including those of another dfm.  Replaces `dfm_select(x, pattern)` where `pattern` was a dfm.
 * A new argument `vertex_labelsize` added to `textplot_network()` to allow more precise control of label sizes, either globally or individually.
 
-### Behaviour changes
+## Behaviour changes
 
 * `tokens.tokens(x, remove_hyphens = TRUE)` where `x` was generated with `remove_hyphens = FALSE` now behaves similarly to how the same tokens would be handled had this option been called on character input as `tokens.character(x, remove_hyphens = TRUE)`. (#1498)
 
 
-# quanteda v1.3.14
+# quanteda 1.3.14
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Improved the robustness of `textstat_keyness()` (#1482).
 * Improved the accuracy of sparsity reporting for the print method of a dfm (#1473).
 * Diagonals on a `textstat_simil()` return object coerced to matrix now default to 1.0, rather than 0.0 (#1494).
 
-### New Features
+## New Features
 
 * Added the following measures to `textstat_lexdiv()`: Yule's _K_, Simpson's _D_, and Herdan's _Vm_.
 
-# quanteda v1.3.13
+# quanteda 1.3.13
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Fixed a bug causing incorrect counting in `fcm(x, ordered = TRUE)`. (#1413)  Also set the condition that `window` can be of size 1 (formerly the limit was 2 or greater).
 * Fixed deprecation warnings from adding a dfm as docvars, and this now imports the feature names as docvar names automatically. (related to #1417)
@@ -46,21 +54,21 @@
 * Fixed problem in `textplot_scale1d()` when input a predicted wordscores object with `se.fit = TRUE` (#1440).
 * Improved the stability of `textplot_network()`. (#1460)
 
-### New Features
+## New Features
 
 * Added new argument `intermediate` to `textstat_readability(x, measure, intermediate = FALSE)`, which if `TRUE` returns intermediate quantities used in the computation of readability statistics.  Useful for verification or direct use of the intermediate quantities.
 * Added a new `separator` argument to `kwic()` to allow a user to define which characters will be added between tokens returned from a keywords in context search.  (#1449)
 * Reimplemented `textstat_dist()` and `textstat_simil()` in C++ for enhanced performance.  (#1210)
 * Added a `tokens_sample()` function (#1478).
 
-### Behaviour changes
+## Behaviour changes
 
 * Removed the Hamming distance method from `textstat_dist()` (#1443), based on the reasoning in #1442.
 * Removed the "chisquared" and "chisquared2" distance measures from `textstat_simil()`. (#1442)
 
-# quanteda v1.3.4
+# quanteda 1.3.4
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Keep encodings of types when a tokens object is recompiled. (#1387)
 * More robust handling in `predict.textmodel_worscores()` when training and test feature sets are difference (#1380).  
@@ -69,59 +77,59 @@
 * `corpus.data.frame()` is now robust to handling data.frame inputs with improper or missing variable names (#1388).  
 
 
-### New Features
+## New Features
 
 * Added `as.igraph.fcm()` method for converting an fcm object into an **igraph** graph object.
 * Added a `case_insensitive` argument to `char_segment()` and `corpus_segment()`.  
 
 
-# quanteda v1.3.0
+# quanteda 1.3.0
 
-### New Features
+## New Features
 
 * Added `to = "tripletlist"` output type for `convert()`, to convert a dfm into a simple triplet list. (#1321) 
 * Added `tokens_tortl()` and `char_tortl()` to add markers for right-to-left language tokens and character objects. (#1322)
 
-### Behaviour changes
+## Behaviour changes
 
 * Improved `corpus.kwic()` by adding new arguments `split_context` and `extract_keyword`.
 * `dfm_remove(x, selection = anydfm)` is now equivalent to `dfm_remove(x, selection = featnames(anydfm))`.  (#1320)
 * Improved consistency of `predict.textmodel_nb()` returns, and added `type = ` argument. (#1329)
 
-### Bug fixes
+## Bug fixes
 
 * Fixed a bug in `textmodel_affinity()` that caused failure when the input dfm had been compiled with `tolower = FALSE`.  (#1338)
 * Fixed a bug affecting `tokens_lookup()` and `dfm_lookup()` when `nomatch` is used. (#1347)
 * Fixed a problem whereby NA texts created a "document" (or tokens) containing `"NA"` (#1372)
 
-# quanteda v1.2.0
+# quanteda 1.2.0
 
-### New Features
+## New Features
 
 * Added an `nsentence()` method for **spacyr** parsed objects.  (#1289)
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Fix bug in `nsyllable()` that incorrectly handled cased words, and returned wrong names with `use.names = TRUE`. (#1282)
 * Fix the overwriting of `summary.character()` caused by previous import of the **network** package namespace. (#1285)
 * `dfm_smooth()` now correctly sets the smooth value in the dfm (#1274).  Arithmetic operations on dfm objects are now much more consistent and do not drop attributes of the dfm, as sometimes happened with earlier versions.
 
-### Behaviour changes
+## Behaviour changes
 
 * `tokens_toupper()` and `tokens_tolower()` no longer remove unused token types.  Solves #1278.
 * `dfm_trim()` now takes more options, and these are implemented more consistently.  `min_termfreq` and `max_termfreq` have replaced `min_count` and `max_count`, and these can be modified using a `termfreq_type` argument.  (Similar options are implemented for `docfreq_type`.)  Solves #1253, #1254.
 * `textstat_simil()` and `textstat_dist()` now take valid dfm indexes for the relevant margin for the `selection` argument.  Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed.  Solves #1266.
 * Improved performance for `dfm_group()` (#1295).
 
-# quanteda v1.1.1
+# quanteda 1.1.1
 
-### New Features
+## New Features
 
 * Added `as.dfm()` methods for **tm** `DocumentTermMatrix` and `TermDocumentMatrix` objects. (#1222)
 * `predict.textmodel_wordscores()` now includes an `include_reftexts` argument to exclude training texts from the predicted model object (#1229).  The default behaviour is `include_reftexts = TRUE`, producing the same behaviour as existed before the introduction of this argument.  This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.
 * `textplot_wordcloud()` now uses code entirely internal to **quanteda**, instead of using the **wordcloud** package.
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Fixed a problem in the examples for `textplot_scale1d()` by adjusting the refscores for `data_corpus_irishbudget2010`.
 * Eliminated unnecessary dependency on the **digest** package.
@@ -132,20 +140,20 @@
 * Issues in the color generation and labels for `textplot_keyness()` are now resolved (#1233, #1233).
 
 
-### Performance improvements
+## Performance improvements
 
 * textmodel methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
 
-### Behaviour changes
+## Behaviour changes
 
 * Changed the default in `textmodel_wordfish()` to `sparse = FALSE`, in response to #1216.
 * `dfm_group()` now preserves docvars that are constant for the group aggregation (#1228).
 * The default threads is now 2, to comply with CRAN policies.  (The user can increase this via `quanteda_options(threads = ...)`.
 
 
-# quanteda v1.0.0
+# quanteda 1.0.0
 
-### New Features
+## New Features
 
 * Added `vertex_labelfont` to `textplot_network()`.
 * Added `textmodel_lsa()` for Latent Semantic Analysis models.  
@@ -156,7 +164,7 @@
 * The `stopwords()` function and the associated internal data object `data_char_stopwords` have been removed from **quanteda**, and replaced by equivalent functionality in the **stopwords** package.
 * Added `tokens_subset()`, now consistent with other `*_subset()` functions (#1149).
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
@@ -164,7 +172,7 @@
 * Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
 * Fixed a bug preventing `textplot_influence()` from working (#1116).
 
-### Behaviour Changes
+## Behaviour Changes
 
 * The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
@@ -174,20 +182,20 @@
 * The GitHub home for the repository has been moved to https://github.com/quanteda/quanteda.
 
 
-## Changes since v0.99.12
+# quanteda 0.99.12
 
-### New Features
+## New Features
 
 * `tokens_segment()` has a new `window` argument, permitting selection within an asymmetric window around the `pattern` of selection. (#521)
 * `tokens_replace()` now allows token types to be substituted directly and quickly. 
 * `textmodel_affinity()` now adds functionality to fit the Perry and Benoit (2017) class affinity model.
 * Added a `spacy_parse` method for corpus objects.  Also restored quanteda methods for **spacyr** `spacy_parsed` objects.
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Improved documentation for `textmodel_nb()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
 
-### Behaviour Changes
+## Behaviour Changes
 
 * All of the deprecated functions are now removed. (#991)
 * `tokens_group()` is now significantly faster.
@@ -195,22 +203,22 @@
 * Added convenience functions for keeping tokens or features: `tokens_keep()`, `dfm_keep()`, and `fcm_keep()`. (#1037)
 * `textmodel_NB()` has been replaced by `textmodel_nb()`.
 
-## Changes since v0.99.9
+# quanteda 0.99.9
 
-### New Features
+## New Features
 
 * Added methods for changing the docnames of tokens and dfm objects (#987).
 * Added new function `textmodel_lsa()` for Latent Semantic Analysis.
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * The computation of tfidf has been more thoroughly described in the documentation for this function (#997).
 * Fixed a bug discovered in #1011 for unused keys in `tokens_lookup(..., exclusive = FALSE)`.
 
 
-## Changes since v0.99
+# quanteda 0.99
 
-### New Features
+## New Features
 
 * Added `tokens_segment()`, which works on tokens objects in the same way as `corpus_segment()` does on corpus objects (#902).
 * Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)  
@@ -219,7 +227,7 @@
 * Significant improvements to the performance of `tokens_lookup()` and `dfm_lookup()` (#960).
 * New functions `head.corpus()`, `tail.corpus()` provide fast subsetting of the first or last documents in a corpus. (#952)
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
 * Added documentation for `regex2fixed()` and associated functions.
@@ -228,8 +236,7 @@
 * Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)
 * Number of threads now set correctly by `quanteda_options()`. (#966)
 
-
-### Behaviour changes
+## Behaviour changes
 
 * `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output (#926).
 * `textstat_collocations()` is now multi-threaded.
@@ -237,11 +244,9 @@
 *  Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (#959)
 
 
+# quanteda 0.9.9-65
 
-
-## Changes since v0.9.9-65
-
-### New features
+## New features
 
 *  Improvements and consolidation of methods for detecting multi-word expressions, now active only through `textstat_collocations()`, which computes only the `lambda` method for now, but does so accurately and efficiently.  (#753, #803).  This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
@@ -259,7 +264,7 @@
 *  Added a new function `textstat_frequency()` to compile feature frequencies, possibly by groups. (#825)
 *  Added `nomatch` option to `tokens_lookup()` and `dfm_lookup()`, to provide tokens or feature counts for categories not matched to any dictionary key. (#496)
 
-### Behaviour changes
+## Behaviour changes
 
 *  The functions `sequences()` and `collocations()` have been removed and replaced by `textstat_collocations()`.
 *  (Finally) we added "will" to the list of English stopwords (#818).
@@ -271,7 +276,7 @@
 *  Some changes to the behaviour of `tokens()` have improved the behaviour of  `remove_hyphens = FALSE`, which now behaves more correctly regardless of the setting of `remove_punct` (#887).
 *  Improved `cbind.dfm()` function allows cbinding vectors, matrixes, and (recyclable) scalars to dfm objects.
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 *  For the underlying methods behind `textstat_collocations()`, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before.  We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size > 2.  
 *  LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.
@@ -285,9 +290,9 @@
 *  Fixed a bug causing failure when functions that use `quanteda_options()` are called without the namespace or package being attached or loaded (#864).
 *  Fixed a bug in overloading the View method that caused all named objects in the RStudio/Source pane to be named "x". (#893) 
 
-## Changes since v0.9.9-50
+#  quanteda 0.9.9-50
 
-### New features
+## New features
 
 * Corpus construction using `corpus()` now works for a `tm::SimpleCorpus` object. (#680)
 * Added `corpus_trim()` and `char_trim()` functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.
@@ -296,7 +301,7 @@
 * Methods for extending quanteda functions to readtext objects updated to match CRAN release of readtext package.
 * Corpus constructor methods for data.frame objects now conform to the "text interchange format" for corpus data.frames, automatically recognizing `doc_id` and `text` fields, which also provides interoperability with the **readtext** package.  corpus construction methods are now more explicitly tailored to input object classes.
 
-### Bug fixes and stability enhancements
+## Bug fixes and stability enhancements
 
 * `dfm_lookup()` behaves more robustly on different platforms, especially for keys whose values match no features (#704).
 * `textstat_simil()` and `textstat_dist()` no longer take the `n` argument, as this was not sorting features in correct order.
@@ -316,9 +321,9 @@
 * Dictionary import using the LIWC format is more robust to improperly formatted input files (#685).
 * Weights applied using `dfm_weight()` now print friendlier error messages when the weight vector contains features not found in the dfm.  See [this Stack Overflow question](https://stackoverflow.com/questions/44132313/can-the-anew-dictionary-be-used-for-sentiment-analysis-in-quanteda/) for the use case that sparked this improvement.
 
-## Changes since v0.9.9-24
+# quanteda 0.9.9-24
 
-### New features
+## New features
 
 * `corpus_reshape()` can now go from sentences and paragraph units back to documents.
 * Added a `by = ` argument to `corpus_sample()`, for use in bootstrap resampling of sub-document units.
@@ -335,7 +340,7 @@
 * Indexing now works for dictionaries, for slicing out keys and values (`[`), or accessing values directly (`[[`).  (#651)
 * Began the consolidation of collocation detection and scoring into a new function `textstat_collocations()`, which combines the existing `collocations()` and `sequences()` functions.  (#434)  Collocations now behave as sequences for other functions (such as `tokens_compound()`) and have a greatly improved performance for such uses.
 
-### Behaviour changes 
+## Behaviour changes 
 
 * `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
 * `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
@@ -344,7 +349,7 @@
 * All remaining camelCase arguments are gone.  For commonly used ones, such as those in `tokens()`, the old arguments (e.g. `removePunct`) still produce the same behaviour but with a deprecation warning.
 * Added `n_target` and `n_reference` columns to `textstat_keyness()` to return counts for each category being compared for keyness.
 
-### Bug fixes
+## Bug fixes
 
 * Fixed an problem in tokens generation for some irregular characters (#554).
 * Fixed a problem in setting the parallel thread size on single-core machines (#556).
@@ -357,9 +362,9 @@
 * Fixed some problems with dictionary construction and reading some dictionary formats (#454, #455, #459).
 
 
-## Changes since v0.9.9-17
+# quanteda 0.9.9-17
 
-### New features
+## New features
 
 * `textstat_keyness()` now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature.  This is more consistent with the other textstat functions.
 * `tokens_lookup()` implements new rules for nested and linked sequences in dictionary values.  See #502.
@@ -368,7 +373,7 @@
 * `dfm()` now works with multi-word dictionaries and thesauruses, which previously worked only with `tokens_lookup()`.
 * `fcm()` is now parallelized for improved performance on multi-core systems.
 
-### Bug fixes
+## Bug fixes
 
 * Fixed C++ incompatibilities on older platforms due to compiler incompatibilities with the required TBB libraries (for multi-threading) (#531, #532, #535), in addition to safeguarding against other compiler warnings across a variety of new tested undefined behaviours.  
 * Fixed a bug in `convert(x, to = "lsa")` that transposed row and column names (#526)
@@ -376,9 +381,9 @@
 * Fixed some minor issues with reading in Lexicoder format dictionaries (Improvements to Lexicoder dictionary handling 
 
 
-## Changes since v0.9.9-3
+## quanteda 0.9.9-3
 
-### Bug fixes
+## Bug fixes
 
 * Fixed a bug causing `dfm` and `tokens` to break on > 10,000 documents. (#438)
 * Fixed a bug in `tokens(x, what = "character", removeSeparators = TRUE)` that returned an empty string.  
@@ -386,7 +391,7 @@
 * Fixed a bug in `dfm_compress` in which the function failed on documents that contained zero feature counts. (#467)
 * Fixed a bug in `textmodel_NB` that caused the class priors `Pc` to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).
 
-### New features
+## New features
 
 * New textstat function `textstat_keyness()` discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher's exact test, and the G^2 likelihood ratio test to measure the strength of associations).  
 * Added 2017-Trump to the inaugural corpus datasets (`data_corpus_inaugual` and `data_char_inaugural`).  

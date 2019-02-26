@@ -53,30 +53,30 @@ If using \code{dfm_lookup} with dictionaries containing multi-word
   and then construct the dfm.
 }
 \examples{
-my_dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           opposition = c("Opposition", "reject", "notincorpus"),
                           taxglob = "tax*",
                           taxregex = "tax.+$",
                           country = c("United_States", "Sweden")))
-my_dfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
+dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             remove = stopwords("english"), verbose = FALSE)
-my_dfm
+             remove = stopwords("english"))
+dfmat
 
 # glob format
-dfm_lookup(my_dfm, my_dict, valuetype = "glob")
-dfm_lookup(my_dfm, my_dict, valuetype = "glob", case_insensitive = FALSE)
+dfm_lookup(dfmat, dict, valuetype = "glob")
+dfm_lookup(dfmat, dict, valuetype = "glob", case_insensitive = FALSE)
 
 # regex v. glob format: note that "united_states" is a regex match for "tax*"
-dfm_lookup(my_dfm, my_dict, valuetype = "glob")
-dfm_lookup(my_dfm, my_dict, valuetype = "regex", case_insensitive = TRUE)
+dfm_lookup(dfmat, dict, valuetype = "glob")
+dfm_lookup(dfmat, dict, valuetype = "regex", case_insensitive = TRUE)
 
 # fixed format: no pattern matching
-dfm_lookup(my_dfm, my_dict, valuetype = "fixed")
-dfm_lookup(my_dfm, my_dict, valuetype = "fixed", case_insensitive = FALSE)
+dfm_lookup(dfmat, dict, valuetype = "fixed")
+dfm_lookup(dfmat, dict, valuetype = "fixed", case_insensitive = FALSE)
 
 # show unmatched tokens
-dfm_lookup(my_dfm, my_dict, nomatch = "_UNMATCHED")
+dfm_lookup(dfmat, dict, nomatch = "_UNMATCHED")
 
 }
 \seealso{

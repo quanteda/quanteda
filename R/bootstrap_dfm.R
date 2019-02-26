@@ -18,9 +18,10 @@
 #' @keywords dfm experimental bootstrap
 #' @examples 
 #' # bootstrapping from the original text
+#' set.seed(10)
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
-#' bootstrap_dfm(txt, n = 3)
+#' bootstrap_dfm(txt, n = 3, verbose = TRUE)
 #'          
 bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
@@ -55,11 +56,10 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 
 #' @noRd
 #' @export
-#' @import data.table
 #' @examples 
 #' # bootstrapping from a dfm
-#' mydfm <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
-#' bootstrap_dfm(mydfm, n = 3)
+#' dfmat <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
+#' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
 
     if (! "_document" %in% names(x@docvars))
@@ -77,20 +77,15 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     # construct the original dfm
     result[["dfm_0"]] <- dfm_group(x, groups = docvars(x, "_document"))
 
-    # randomly resample dfm
+    # randomly resample dfm indexes within document and recompile sampled sentences
     id <- index <- NULL
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        dt <- data.table(index = seq_len(ndoc(x)), id = docvars(x, "_document"))
-        dt[, temp := sample(seq_len(.N), replace = TRUE), by = id]
-        dt[, sample_index := index[temp], by = id]
-        sample_index <- dt[, sample_index]
-        temp <- x[sample_index, ]
+        temp <- x[sample_bygroup(seq_len(ndoc(x)), group = docvars(x, "_document"), replace = TRUE), ]
         temp <- dfm_group(temp, groups = docvars(temp, "_document"))
-        result[[paste0("dfm_", i)]] <- dfm_match(temp, featnames(result[[1]]))
+        result[[paste0("dfm_", i)]] <- temp
     }
-    if (verbose)
-        message("\n   ...complete.\n")
+    if (verbose) message("\n   ...complete.\n")
 
     class(result) <- c("dfm_bootstrap")
     return(result)

@@ -6,6 +6,8 @@ template:
     docsearch:
       api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
       index_name: quanteda
+news:
+- one_page: false
 navbar:
   title: "Quanteda"
   type: inverse
@@ -28,6 +30,8 @@ navbar:
           href: articles/pkgdown/comparison.html
         - text: "Package design"
           href: articles/pkgdown/design.html
+        - text: "Changelog"
+          href: news/index.html
     - text: "Examples"
       menu:
         - text: "Multi-word expressions"
@@ -81,6 +85,7 @@ reference:
   desc: Functions for constructing and manipulating tokens class objects.
   contents:
     - tokens
+    - tokens_chunk
     - tokens_compound
     - tokens_lookup
     - tokens_ngrams
@@ -118,6 +123,7 @@ reference:
     - dfm_compress
     - dfm_group
     - dfm_lookup
+    - dfm_match
     - dfm_remove
     - dfm_replace
     - dfm_sample
@@ -146,11 +152,12 @@ reference:
     - fcm_toupper
     - fcm_sort
     - is.fcm
-- title: Text Statistics
+- title: Text statistics
   desc: Functions for computing statistics from texts and dfm objects.
   contents:
     - textstat_collocations
     - textstat_dist
+    - textstat_entropy
     - textstat_lexdiv
     - textstat_simil
     - textstat_frequency
@@ -171,14 +178,14 @@ reference:
     - is.collocations
     - is.kwic
     - kwic
+- title: Text model functions
+  desc: Fitting analytic models from text matrixes.
+  contents:
+    - starts_with("textmodel_")
 - title: Text plot functions
   desc: Plot functions for representing text and the analysis of texts.
   contents:
     - starts_with("textplot_")
-- title: Text Model Functions
-  desc: Plot functions for fitting analytic models from text matrixes.
-  contents:
-    - starts_with("textmodel_")
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:

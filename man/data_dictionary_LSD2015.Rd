@@ -24,7 +24,7 @@ The dictionary consists of 2,858 "negative" sentiment words and 1,709
 negative and positive words, respectively, is also included. While many users
 will find the non-negation sentiment forms of the LSD adequate for sentiment
 analysis, Young and Soroka (2012) did find a small, but non-negligible
-increase in performance when accounting for negations.  Users wishing to test
+increase in performance when accounting for negations. Users wishing to test
 this or include the negations are encouraged to subtract negated positive
 words from the count of positive words, and subtract the negated negative
 words from the negative count.  
@@ -63,11 +63,12 @@ dfm_lookup(dfm(toks), data_dictionary_LSD2015)
 The objectives, development and reliability of the dictionary are discussed
   in detail in Young and Soroka (2012). Please cite this article when using the
   Lexicoder Sentiment Dictionary and related resources.
-  Young, Lori and Stuart Soroka. 2012. \emph{Lexicoder Sentiment
+  Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
   Dictionary}. Available at \url{http://lexicoder.com}.
   
-  Young, Lori and Stuart Soroka.  2012.  "Affective News: The Automated
-  Coding of Sentiment in Political Texts." \emph{Political Communication} 29(2):
-  205-231.
+  Young, L. & Soroka, S. (2012). 
+  \href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: 
+  The Automated Coding of Sentiment in Political Texts}. 
+  \emph{Political Communication}, 29(2), 205--231.
 }
 \keyword{data}

@@ -17,23 +17,25 @@ docnames(x) <- value
 \value{
 \code{docnames} returns a character vector of the document names
 
-\code{docnames <-} assigns new values to the document names of an object.
+\code{docnames <-} assigns new values to the document names of an object.  
+docnames can only be character, so any non-character value assigned to be a
+docname will be coerced to mode `character`.
 }
 \description{
 Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
 }
 \examples{
 # get and set doument names to a corpus
-mycorp <- data_corpus_inaugural
-docnames(mycorp) <- char_tolower(docnames(mycorp))
+corp <- data_corpus_inaugural
+docnames(corp) <- char_tolower(docnames(corp))
 
 # get and set doument names to a tokens
-mytoks <- tokens(data_corpus_inaugural)
-docnames(mytoks) <- char_tolower(docnames(mytoks))
+toks <- tokens(data_corpus_inaugural)
+docnames(toks) <- char_tolower(docnames(toks))
 
 # get and set doument names to a dfm
-mydfm <- dfm(data_corpus_inaugural[1:5])
-docnames(mydfm) <- char_tolower(docnames(mydfm))
+dfmat <- dfm(data_corpus_inaugural[1:5])
+docnames(dfmat) <- char_tolower(docnames(dfmat))
 
 # reassign the document names of the inaugural speech corpus
 docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")

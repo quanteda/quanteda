@@ -82,7 +82,7 @@ dictionary, or check to see if an object is a dictionary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -124,6 +124,9 @@ dictionary, or check to see if an object is a dictionary." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -208,7 +211,8 @@ dictionary, or check to see if an object is a dictionary.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>as.dictionary</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>as.dictionary</span>(<span class='no'>x</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tidytext"</span>), <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+  <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>is.dictionary</span>(<span class='no'>x</span>)</pre>
     
@@ -217,18 +221,31 @@ dictionary, or check to see if an object is a dictionary.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>object to be coerced or checked; current legal values are a
-data.frame with the fields <code>word</code> and <code>sentiment</code> (as per the 
-<strong>tidytext</strong> package)</p></td>
+      <td><p>a dictionary-like object to be coerced or checked</p></td>
+    </tr>
+    <tr>
+      <th>format</th>
+      <td><p>input format for the object to be coerced to a
+<a href='dictionary.html'>dictionary</a>; current legal values are a data.frame with the fields
+<code>word</code> and <code>sentiment</code> (as per the <strong>tidytext</strong> package)</p></td>
+    </tr>
+    <tr>
+      <th>separator</th>
+      <td><p>the character in between multi-word dictionary values. This
+defaults to <code>" "</code>.</p></td>
+    </tr>
+    <tr>
+      <th>tolower</th>
+      <td><p>if <code>TRUE</code>, convert all dictionary values to lowercase</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>as.dictionary</code> returns a <a href='dictionary.html'>dictionary</a> object.  This
-  conversion function differs from the <code><a href='dictionary.html'>dictionary</a></code> constructor
-  function in that it converts an existing object rather than creates one
-  from components or from a file.</p>
+    <p><code>as.dictionary</code> returns a <span class="pkg">quanteda</span> <a href='dictionary.html'>dictionary</a>
+  object.  This conversion function differs from the <code><a href='dictionary.html'>dictionary</a></code>
+  constructor function in that it converts an existing object rather than
+  creates one from components or from a file.</p>
 <p><code>is.dictionary</code> returns <code>TRUE</code> if an object is a
   <span class="pkg">quanteda</span> <a href='dictionary.html'>dictionary</a>.</p>
     
@@ -239,14 +256,21 @@ data.frame with the fields <code>word</code> and <code>sentiment</code> (as per 
 <span class='fu'>as.dictionary</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>sentiments</span>, <span class='no'>lexicon</span> <span class='kw'>==</span> <span class='st'>"nrc"</span>))
 <span class='fu'>as.dictionary</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>sentiments</span>, <span class='no'>lexicon</span> <span class='kw'>==</span> <span class='st'>"bing"</span>))
 <span class='co'># to convert AFINN into polarities - adjust thresholds if desired</span>
-<span class='no'>afinn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>sentiments</span>, <span class='no'>lexicon</span> <span class='kw'>==</span> <span class='st'>"AFINN"</span>)
-<span class='no'>afinn</span><span class='kw'>[[</span><span class='st'>"sentiment"</span>]] <span class='kw'>&lt;-</span>
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>afinn</span>,
+<span class='no'>datafinn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>sentiments</span>, <span class='no'>lexicon</span> <span class='kw'>==</span> <span class='st'>"AFINN"</span>)
+<span class='no'>datafinn</span><span class='kw'>[[</span><span class='st'>"sentiment"</span>]] <span class='kw'>&lt;-</span>
+    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>datafinn</span>,
          <span class='no'>sentiment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>score</span> <span class='kw'>&lt;</span> <span class='fl'>0</span>, <span class='st'>"negative"</span>,
                              <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>score</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>, <span class='st'>"positive"</span>, <span class='st'>"netural"</span>))
     )
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>afinn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>score</span>, <span class='no'>sentiment</span>))
-<span class='fu'>as.dictionary</span>(<span class='no'>afinn</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/with'>with</a></span>(<span class='no'>datafinn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>score</span>, <span class='no'>sentiment</span>))
+<span class='fu'>as.dictionary</span>(<span class='no'>datafinn</span>)
+
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(
+    <span class='kw'>word</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Great"</span>, <span class='st'>"Horrible"</span>),
+    <span class='kw'>sentiment</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"positive"</span>, <span class='st'>"negative"</span>)
+    )
+<span class='fu'>as.dictionary</span>(<span class='no'>dat</span>)
+<span class='fu'>as.dictionary</span>(<span class='no'>dat</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='co'># }</span><div class='input'>
 <span class='fu'>is.dictionary</span>(<span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"val1"</span>, <span class='st'>"val2"</span>), <span class='kw'>key2</span> <span class='kw'>=</span> <span class='st'>"val3"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'># [1] TRUE</span>
 <span class='fu'>is.dictionary</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"val1"</span>, <span class='st'>"val2"</span>), <span class='kw'>key2</span> <span class='kw'>=</span> <span class='st'>"val3"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'># [1] FALSE

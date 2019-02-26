@@ -7,7 +7,7 @@
 #' @param size a positive number, the number of documents to select
 #' @param replace Should sampling be with replacement?
 #' @param prob A vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
+#'   vector being sampled.  May not be applied when \code{by} is used.
 #' @param by a grouping variable for sampling.  Useful for resampling
 #'   sub-document units such as sentences, for instance by specifying \code{by =
 #'   "document"}
@@ -19,16 +19,17 @@
 #' @export
 #' @keywords corpus
 #' @examples
+#' set.seed(2000)
 #' # sampling from a corpus
 #' summary(corpus_sample(data_corpus_inaugural, 5)) 
 #' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 #' 
 #' # sampling sentences within document
-#' doccorpus <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
+#' corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
 #'                       two = "First sentence, doc2.  Second sentence, doc2."))
-#' sentcorpus <- corpus_reshape(doccorpus, to = "sentences")
-#' texts(sentcorpus)
-#' texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
+#' corpsent <- corpus_reshape(corp, to = "sentences")
+#' texts(corpsent)
+#' texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
 corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
     UseMethod("corpus_sample")
 }
@@ -44,11 +45,9 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     index <- docID <- temp <- NULL
     
     if (!is.null(by)) {
+        if (!is.null(prob)) stop("prob not implemented with by")
         if (by == "document") by <- "_document"
-        dt <- data.table(index = 1:ndoc(x), docID = docvars(x, by))
-        dt[, temp := sample(1:.N, replace = TRUE), by = docID]
-        dt[, sample_index := index[temp], by = docID]
-        sample_index <- dt[, sample_index]
+        sample_index <- sample_bygroup(seq_len(ndoc(x)), group = docvars(x, by), replace = replace)
     } else {
         sample_index <- base::sample(ndoc(x), size, replace, prob) 
     }
@@ -58,7 +57,7 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
         texts(x) <- texts(x)[sample_index]
         x$docnames <- x$docnames[sample_index]
     }
-    x
+    return(x)
 }
 
 # ---------- internal functions from older resample.R ---------

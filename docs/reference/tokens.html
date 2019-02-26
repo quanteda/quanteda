@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -123,6 +123,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -357,9 +360,9 @@ objects.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is a sample: of tokens."</span>,
+    <pre class="examples"><div class='input'><span class='no'>txt1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is a sample: of tokens."</span>,
          <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"Another sentence, to demonstrate how tokens works."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
 #&gt; [1] "This"   "is"     "a"      "sample" ":"      "of"     "tokens" "."     
 #&gt; 
@@ -367,7 +370,7 @@ objects.</p></td>
 #&gt; [1] "Another"     "sentence"    ","           "to"          "demonstrate"
 #&gt; [6] "how"         "tokens"      "works"       "."          
 #&gt; </div><div class='input'><span class='co'># removing punctuation marks and lowecasing texts</span>
-<span class='fu'>tokens</span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt1</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
 #&gt; [1] "this"   "is"     "a"      "sample" "of"     "tokens"
 #&gt; 
@@ -397,36 +400,36 @@ objects.</p></td>
 #&gt; [1] "&lt;tags&gt;"   "and"      "other"    "symbols."
 #&gt; </div><div class='input'>
 <span class='co'># examples with URLs - hardly perfect!</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."</span>
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='no'>txt2</span> <span class='kw'>&lt;-</span> <span class='st'>"Repo https://githib.com/quanteda/quanteda, and www.stackoverflow.com."</span>
+<span class='fu'>tokens</span>(<span class='no'>txt2</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "Repo"                  "and"                   "www.stackoverflow.com"
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt2</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "Repo"                  "https"                 "githib.com"           
-#&gt; [4] "kbenoit"               "quanteda"              "and"                  
+#&gt; [4] "quanteda"              "quanteda"              "and"                  
 #&gt; [7] "www.stackoverflow.com"
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt2</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt; [1] "Repo"                                
-#&gt; [2] "https://githib.com/kbenoit/quanteda,"
-#&gt; [3] "and"                                 
-#&gt; [4] "www.stackoverflow.com."              
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; [1] "Repo"                                 
+#&gt; [2] "https://githib.com/quanteda/quanteda,"
+#&gt; [3] "and"                                  
+#&gt; [4] "www.stackoverflow.com."               
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt2</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt; [1] "Repo"                                
-#&gt; [2] "https://githib.com/kbenoit/quanteda,"
-#&gt; [3] "and"                                 
-#&gt; [4] "www.stackoverflow.com."              
+#&gt; [1] "Repo"                                 
+#&gt; [2] "https://githib.com/quanteda/quanteda,"
+#&gt; [3] "and"                                  
+#&gt; [4] "www.stackoverflow.com."               
 #&gt; </div><div class='input'>
 
 <span class='co'>## MORE COMPARISONS</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"#textanalysis is MY &lt;3 4U @myhandle gr8 #stuff :-)"</span>
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='no'>txt3</span> <span class='kw'>&lt;-</span> <span class='st'>"#textanalysis is MY &lt;3 4U @myhandle gr8 #stuff :-)"</span>
+<span class='fu'>tokens</span>(<span class='no'>txt3</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "#textanalysis" "is"            "MY"            "3"            
 #&gt; [5] "4U"            "@myhandle"     "gr8"           "#stuff"       
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt3</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "textanalysis" "is"           "MY"           "3"            "4U"          
 #&gt; [6] "myhandle"     "gr8"          "stuff"       
@@ -438,9 +441,9 @@ objects.</p></td>
 #&gt; text1 :
 #&gt; [1] "great"   "website"
 #&gt; </div><div class='input'>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
+<span class='no'>txt4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving hyphens</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>34 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00900000000000034 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving hyphens</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>34 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00900000000000034 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
 #&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     
@@ -452,7 +455,7 @@ objects.</p></td>
 #&gt;  [9] "http"           ":"              "/"              "/"             
 #&gt; [13] "textasdata.com" "?"              "page"           "="             
 #&gt; [17] "123"            "."             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "in"        "different" "ways"      "up"       
 #&gt;  [7] "and"       "down"      "left"      "and"       "right"    
@@ -461,7 +464,7 @@ objects.</p></td>
 #&gt; [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
 #&gt; [5] "2day"           "4ever"          "http"           "textasdata.com"
 #&gt; [9] "page"          
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "10"        "in"        "999"       "different"
 #&gt;  [7] "ways"      "up"        "and"       "down"      "left"      "and"      
@@ -471,7 +474,7 @@ objects.</p></td>
 #&gt;  [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
 #&gt;  [5] "2day"           "4ever"          "http"           "textasdata.com"
 #&gt;  [9] "page"           "123"           
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "$"         "in"        "different" "ways"     
 #&gt;  [7] ","         "up"        "and"       "down"      ";"         "left"     
@@ -483,7 +486,7 @@ objects.</p></td>
 #&gt;  [9] "http"           ":"              "/"              "/"             
 #&gt; [13] "textasdata.com" "?"              "page"           "="             
 #&gt; [17] "."             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
 #&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     
@@ -495,7 +498,7 @@ objects.</p></td>
 #&gt;  [9] "http"           ":"              "/"              "/"             
 #&gt; [13] "textasdata.com" "?"              "page"           "="             
 #&gt; [17] "123"            "."             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      " "         "is"        " "         "$"         "10"       
 #&gt;  [7] " "         "in"        " "         "999"       " "         "different"
@@ -510,7 +513,7 @@ objects.</p></td>
 #&gt; [13] ","              " "              "http"           ":"             
 #&gt; [17] "/"              "/"              "textasdata.com" "?"             
 #&gt; [21] "page"           "="              "123"            "."             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt4</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "in"        "different" "ways"      "up"       
 #&gt;  [7] "and"       "down"      "left"      "and"       "right"    
@@ -585,10 +588,10 @@ objects.</p></td>
 #&gt; [26] "So we pray to Him now for the vision to see our way clearly -- to see the way that leads to a better life for ourselves and for all our fellow men -- to the achievement of His will to peace on earth."
 #&gt; </div><div class='input'>
 <span class='co'># removing features (stopwords) from tokenized texts</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>mytext1</span> <span class='kw'>=</span> <span class='st'>"This is a short test sentence."</span>,
+<span class='no'>txt5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>mytext1</span> <span class='kw'>=</span> <span class='st'>"This is a short test sentence."</span>,
                       <span class='kw'>mytext2</span> <span class='kw'>=</span> <span class='st'>"Short."</span>,
                       <span class='kw'>mytext3</span> <span class='kw'>=</span> <span class='st'>"Short, shorter, and shortest."</span>))
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt5</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "this"     "is"       "a"        "short"    "test"     "sentence"
 #&gt; 
@@ -597,7 +600,7 @@ objects.</p></td>
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] "short"    "shorter"  "and"      "shortest"
-#&gt; </div><div class='input'><span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; </div><div class='input'><span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'>tokens</span>(<span class='no'>txt5</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "short"    "test"     "sentence"
 #&gt; 
@@ -608,7 +611,7 @@ objects.</p></td>
 #&gt; [1] "short"    "shorter"  "shortest"
 #&gt; </div><div class='input'>
 <span class='co'># ngram tokenization</span>
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt5</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "this_is"       "is_a"          "a_short"       "short_test"   
 #&gt; [5] "test_sentence"
@@ -618,7 +621,7 @@ objects.</p></td>
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] "short_shorter" "shorter_and"   "and_shortest" 
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt5</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "this a"         "is short"       "a test"         "short sentence"
 #&gt; 
@@ -627,7 +630,7 @@ objects.</p></td>
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] "short and"        "shorter shortest"
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt5</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt;  [1] "this"          "is"            "a"             "short"        
 #&gt;  [5] "test"          "sentence"      "this_is"       "is_a"         
@@ -640,7 +643,7 @@ objects.</p></td>
 #&gt; [1] "short"         "shorter"       "and"           "shortest"     
 #&gt; [5] "short_shorter" "shorter_and"   "and_shortest" 
 #&gt; </div><div class='input'><span class='co'># removing features from ngram tokens</span>
-<span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
+<span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'>tokens</span>(<span class='no'>txt5</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "short"         "test"          "sentence"      "this_is"      
 #&gt; [5] "is_a"          "a_short"       "short_test"    "test_sentence"

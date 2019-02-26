@@ -43,37 +43,35 @@ conversion from a dfm to the document-term representations used in all other
 text analysis packages for which conversions are defined.
 }
 \examples{
-mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-quantdfm <- dfm(mycorpus, verbose = FALSE)
+corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+dfmat1 <- dfm(corp)
 
 # austin's wfm format
-identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
+identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
 
 # stm package format
-stmdfm <- convert(quantdfm, to = "stm")
-str(stmdfm)
+stmmat <- convert(dfmat1, to = "stm")
+str(stmmat)
 
 #' # triplet
-triplet <- convert(quantdfm, to = "tripletlist")
-str(triplet)
+tripletmat <- convert(dfmat1, to = "tripletlist")
+str(tripletmat)
 
 # illustrate what happens with zero-length documents
-quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
-rowSums(quantdfm2)
-stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
-str(stmdfm2)
+dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]))
+rowSums(dfmat2)
+str(convert(dfmat2, to = "stm", docvars = docvars(corp)))
 
 \dontrun{
 # tm's DocumentTermMatrix format
-tmdfm <- convert(quantdfm, to = "tm")
+tmdfm <- convert(dfmat1, to = "tm")
 str(tmdfm)
 
 # topicmodels package format
-str(convert(quantdfm, to = "topicmodels"))
+str(convert(dfmat1, to = "topicmodels"))
 
 # lda package format
-ldadfm <- convert(quantdfm, to = "lda")
-str(ldadfm)
+str(convert(dfmat1, to = "lda"))
 
 }
 }

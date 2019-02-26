@@ -8,17 +8,18 @@
 #'   for dimnames
 #' @keywords internal
 #' @examples 
-#' x <- dfm(c("a a b b c", "b b b c"))
-#' quanteda:::set_dfm_featnames(x) <- paste0("feature", 1:3)
-#' quanteda:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
-#' quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
+#' dfmat <- dfm(c("a a b b c", "b b b c"))
+#' quanteda:::set_dfm_featnames(dfmat) <- paste0("feature", 1:3)
+#' quanteda:::set_dfm_docnames(dfmat) <- paste0("DOC", 1:2)
+#' quanteda:::set_dfm_dimnames(dfmat) <- list(c("docA", "docB"), LETTERS[1:3])
 #' @rdname set_dfm_dimnames
 "set_dfm_dimnames<-" <- function(x, value) {
     if (is.null(value[[1]])) value[[1]] <- character()
     if (is.null(value[[2]])) value[[2]] <- character()
     stopifnot(nrow(x) == length(value[[1]]))
     stopifnot(ncol(x) == length(value[[2]]))
-    x@Dimnames <- list("docs" = value[[1]], "features" = value[[2]])
+    x@Dimnames <- list("docs" = as.character(value[[1]]), 
+                       "features" = as.character(value[[2]]))
     Encoding(x@Dimnames[[1]]) <- Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
@@ -26,7 +27,7 @@
 #' @rdname set_dfm_dimnames
 "set_dfm_docnames<-" <- function(x, value) {
     stopifnot(nrow(x) == length(value))
-    x@Dimnames[[1]] <- value
+    x@Dimnames[[1]] <- as.character(value)
     Encoding(x@Dimnames[[1]]) <- "UTF-8"
     return(x)
 }
@@ -35,7 +36,7 @@
 "set_dfm_featnames<-" <- function(x, value) {
     if (is.null(value)) value <- character()
     stopifnot(ncol(x) == length(value))
-    x@Dimnames[[2]] <- value
+    x@Dimnames[[2]] <- as.character(value)
     Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
@@ -46,7 +47,8 @@
     if (is.null(value[[2]])) value[[2]] <- character()
     stopifnot(nrow(x) == length(value[[1]]))
     stopifnot(ncol(x) == length(value[[2]]))
-    x@Dimnames <- list("features" = value[[1]], "features" = value[[2]])
+    x@Dimnames <- list("features" = as.character(value[[1]]), 
+                       "features" = as.character(value[[2]]))
     Encoding(x@Dimnames[[1]]) <- Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }
@@ -56,7 +58,7 @@
     if (is.null(value)) value <- character()
     stopifnot(nrow(x) == length(value))
     stopifnot(ncol(x) == length(value))
-    x@Dimnames[[1]] <- x@Dimnames[[2]] <- value
+    x@Dimnames[[1]] <- x@Dimnames[[2]] <- as.character(value)
     Encoding(x@Dimnames[[1]]) <- Encoding(x@Dimnames[[2]]) <- "UTF-8"
     return(x)
 }

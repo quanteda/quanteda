@@ -42,13 +42,13 @@ This function has been superseded by \code{\link{corpus_trim}}; use
 txt <- c("PAGE 1. A single sentence.  Short sentence. Three word sentence.",
          "PAGE 2. Very short! Shorter.",
          "Very long sentence, with three parts, separated by commas.  PAGE 3.")
-mycorp <- corpus(txt, docvars = data.frame(serial = 1:3))
-texts(mycorp)
+corp <- corpus(txt, docvars = data.frame(serial = 1:3))
+texts(corp)
 
 # exclude sentences shorter than 3 tokens
-texts(corpus_trimsentences(mycorp, min_length = 3))
+texts(corpus_trimsentences(corp, min_length = 3))
 # exclude sentences that start with "PAGE <digit(s)>"
-texts(corpus_trimsentences(mycorp, exclude_pattern = "^PAGE \\\\d+"))
+texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\\\d+"))
 
 # on a character
 char_trimsentences(txt, min_length = 3)

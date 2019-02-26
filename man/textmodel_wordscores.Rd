@@ -46,25 +46,25 @@ The \code{textmodel_wordscores()} function and the associated
   a nice summary of the fitted object.
 }
 \examples{
-(ws <- textmodel_wordscores(data_dfm_lbgexample, y = c(seq(-1.5, 1.5, .75), NA)))
-summary(ws)
-coef(ws)
-predict(ws)
-predict(ws, rescaling = "lbg")
-predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
+(tmod <- textmodel_wordscores(data_dfm_lbgexample, y = c(seq(-1.5, 1.5, .75), NA)))
+summary(tmod)
+coef(tmod)
+predict(tmod)
+predict(tmod, rescaling = "lbg")
+predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 }
 \references{
-Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
-  "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy
-  Positions From Political Texts Using Words as Data.}" \emph{American
-  Political Science Review} 97(2): 311--331
+Laver, M., Benoit, K.R., & Garry, J. (2003). 
+  \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating
+  Policy Positions from Political Text using Words as Data}. \emph{American
+  Political Science Review}, 97(2), 311--331.
   
-  Beauchamp, Nick. 2012. "\href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
-  Text to Scale Legislatures with Uninformative Voting}." New York University Mimeo.
+  Beauchamp, N. (2012). \href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
+  Text to Scale Legislatures with Uninformative Voting}. New York University Mimeo.
   
-  Martin, Lanny W. and Georg Vanberg. 2007. "\href{https://doi.org/10.1093/pan/mpm010}{A Robust 
-  Transformation Procedure for Interpreting Political Text}." \emph{Political Analysis} 
-  16(1): 93--100.
+  Martin, L.W. & Vanberg, G. (2007). \href{https://doi.org/10.1093/pan/mpm010}{A Robust 
+  Transformation Procedure for Interpreting Political Text}. \emph{Political Analysis} 
+  16(1), 93--100.
 }
 \seealso{
 \code{\link{predict.textmodel_wordscores}} for methods of applying a

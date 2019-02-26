@@ -21,18 +21,18 @@
 #'   defaults, for instance to apply the Williams correction to the chi2 
 #'   measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
 #'   measures has no effect and produces a warning.
-#' @references Bondi, Marina and Mike Scott, eds. 2010. \emph{Keyness in 
+#' @references Bondi, M. & Scott, M. (eds) (2010). \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins.
 #'   
-#'   Stubbs, Michael. 2010. "Three Concepts of Keywords". In \emph{Keyness in 
-#'   Texts}, Marina Bondi and Mike Scott, eds: 1--42. Amsterdam, Philadelphia:
+#'   Stubbs, M. (2010). Three Concepts of Keywords. In \emph{Keyness in 
+#'   Texts}, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
 #'   John Benjamins.
 #'   
-#'   Scott, Mike and Christopher Tribble. 2006. \emph{Textual Patterns: keyword and corpus 
-#'   analysis in language education}. Amsterdam: Benjamins: 55.
+#'   Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus 
+#'   Analysis in Language Education}. Amsterdam: Benjamins: 55.
 #'   
-#'   Dunning, Ted. 1993. "\href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
-#'   for the Statistics of Surprise and Coincidence}." \emph{Computational Linguistics} 19(1): 61--74.
+#'   Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
+#'   for the Statistics of Surprise and Coincidence}. \emph{Computational Linguistics}, 19(1): 61--74.
 #' @return a data.frame of computed statistics and associated p-values, where 
 #'   the features scored name each row, and the number of occurrences for both 
 #'   the target and reference groups. For \code{measure = "chi2"} this is the 
@@ -49,21 +49,21 @@
 #' @examples
 #' # compare pre- v. post-war terms using grouping
 #' period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
-#' mydfm <- dfm(data_corpus_inaugural, groups = period)
-#' head(mydfm) # make sure 'post-war' is in the first row
-#' head(result <- textstat_keyness(mydfm), 10)
-#' tail(result, 10)
+#' dfmat1 <- dfm(data_corpus_inaugural, groups = period)
+#' head(dfmat1) # make sure 'post-war' is in the first row
+#' head(tstat1 <- textstat_keyness(dfmat1), 10)
+#' tail(tstat1, 10)
 #' 
 #' # compare pre- v. post-war terms using logical vector
-#' mydfm2 <- dfm(data_corpus_inaugural)
-#' head(textstat_keyness(mydfm2, docvars(data_corpus_inaugural, "Year") >= 1945), 10)
+#' dfmat2 <- dfm(data_corpus_inaugural)
+#' head(textstat_keyness(dfmat2, docvars(data_corpus_inaugural, "Year") >= 1945), 10)
 #' 
 #' # compare Trump 2017 to other post-war preseidents
-#' pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
-#' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
+#' dfmat3 <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
+#' head(textstat_keyness(dfmat3, target = "2017-Trump"), 10)
 #' 
 #' # using the likelihood ratio method
-#' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
+#' head(textstat_keyness(dfm_smooth(dfmat3), measure = "lr", target = "2017-Trump"), 10)
 textstat_keyness <- function(x, target = 1L, 
                              measure = c("chi2", "exact", "lr", "pmi"), 
                              sort = TRUE, 
@@ -94,7 +94,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
     # error checking
     if (ndoc(x) < 2 )
         stop("x must have at least two documents")
-    if (is.character(target) && !(target %in% docnames(x)))
+    if (is.character(target) && !(all(target %in% docnames(x))))
         stop("target not found in docnames(x)")
     if (is.numeric(target) && any(target < 1 | target > ndoc(x)))
         stop("target index outside range of documents")
@@ -150,7 +150,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
         result <- result[order(result[, 2], decreasing = TRUE), ]
     
     attr(result, "groups") <- docnames(temp)
-    class(result) <- c('keyness', 'textstat', 'data.frame')
+    class(result) <- c("keyness", "textstat", "data.frame")
     rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
@@ -166,9 +166,9 @@ textstat_keyness.dfm <- function(x, target = 1L,
 #' objects.
 #' @return a data.frame of chi2 and p-values with rows named for each feature
 #' @examples
-#' mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+#' dfmat <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
 #'                d2 = "a a b c c d d d d e f h"))
-#' quanteda:::keyness_chi2_dt(mydfm)
+#' quanteda:::keyness_chi2_dt(dfmat)
 #' @keywords textstat internal
 #' @import data.table
 #' @importFrom stats dchisq
@@ -187,7 +187,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a+b+c+d)]
-    dt[, E := (a+b)*(a+c) / N]
+    dt[, E := (a+b) * (a+c) / N]
     
     if (correction == "default" | correction == "yates"){
         dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
@@ -224,7 +224,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
 #' \code{keyness_chi2_stats} uses element-by-element application of
 #' \link[stats]{chisq.test}.
 #' @examples 
-#' quanteda:::keyness_chi2_stats(mydfm)
+#' quanteda:::keyness_chi2_stats(dfmat)
 keyness_chi2_stats <- function(x) {
     
     sums <- rowSums(x)
@@ -263,7 +263,7 @@ keyness <- function(t, f, sum_t, sum_f) {
 #' application of \link[stats]{fisher.test}, returning the odds ratio.
 #' @importFrom stats fisher.test
 #' @examples
-#' quanteda:::keyness_exact(mydfm)
+#' quanteda:::keyness_exact(dfmat)
 keyness_exact <- function(x) {
     sums <- rowSums(x)
     result <- as.data.frame(
@@ -279,8 +279,8 @@ keyness_exact <- function(x) {
     data.frame(feature = colnames(x), 
                or = result$or,
                p = result$p,
-               n_target = as.vector(x[1,]),
-               n_reference = as.vector(x[2,]),
+               n_target = as.vector(x[1, ]),
+               n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
 }
 
@@ -290,11 +290,11 @@ keyness_exact <- function(x) {
 #' @details \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
 #'   using vectorized computation
 #' @examples
-#' quanteda:::keyness_lr(mydfm)
+#' quanteda:::keyness_lr(dfmat)
 #' @references
 #' \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
 keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")) {
-    
+
     correction <- match.arg(correction)
     epsilon <- 0.000000001; # to offset zero cell counts
     a <- b <- c <- d <- N <- E11 <- G2 <- p <- cor_app <- correction_sign <- q <- NULL 
@@ -305,19 +305,19 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
-    dt[, E11 := (a+b)*(a+c) / N]
+    dt[, E11 := (a + b) * (a + c) / N]
     
     
     if (correction == "default" | correction == "yates"){
         
-        dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+        dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5)
                          & abs(a*d - b*c) > N/2)]
         # the correction is usually only recommended if the smallest expected frequency is less than 5
         # the correction should not be applied if |ad − bc| is less than N/2.
         # implement Yates continuity correction
         # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
         # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
-        dt[, correction_sign := a*d - b*c > 0]
+        dt[, correction_sign := a * d - b * c > 0]
         dt[, c("a", "d", "b", "c") := list(a + ifelse(cor_app, ifelse(correction_sign, -0.5, 0.5), 0),
                                            d + ifelse(cor_app, ifelse(correction_sign, -0.5, 0.5), 0),
                                            b + ifelse(cor_app, ifelse(correction_sign, 0.5, -0.5), 0),
@@ -345,8 +345,8 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
     data.frame(feature = dt$feature, 
                G2 = dt[, G2],
                p = dt[, p],
-               n_target = as.vector(x[1,]),
-               n_reference = as.vector(x[2,]),
+               n_target = as.vector(x[1, ]),
+               n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
 }
 
@@ -354,7 +354,7 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
 #' @details \code{keyness_pmi} computes the Pointwise Mutual Information stat
 #'   using vectorized computation
 #' @examples
-#' quanteda:::keyness_pmi(mydfm)
+#' quanteda:::keyness_pmi(dfmat)
 keyness_pmi <- function(x) {
     
     a <- b <- c <- d <- N <- E11 <- pmi <- p <-NULL 
@@ -365,7 +365,7 @@ keyness_pmi <- function(x) {
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
-    dt[, E11 := (a+b)*(a+c) / N]
+    dt[, E11 := (a + b) * (a + c) / N]
     epsilon <- .000000001  # to offset zero cell counts
     dt[, pmi :=   log(a /E11 + epsilon)]
     
@@ -378,7 +378,7 @@ keyness_pmi <- function(x) {
     data.frame(feature = dt$feature, 
                pmi = dt[, pmi],
                p = dt[, p],
-               n_target = as.vector(x[1,]),
-               n_reference = as.vector(x[2,]),
+               n_target = as.vector(x[1, ]),
+               n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
 }
