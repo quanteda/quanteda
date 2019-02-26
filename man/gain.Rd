@@ -2,8 +2,7 @@
 % Please edit documentation in R/textmodel_nb.R
 \name{gain}
 \alias{gain}
-\title{Compute the information gain of features from a fitted \link{textmodel_nb}
-object}
+\title{Compute the information gain of features}
 \usage{
 gain(object, base = 2)
 }
@@ -13,7 +12,8 @@ gain(object, base = 2)
 \item{base}{the base of the logarithmic function to be used. Defaults to 2.}
 }
 \value{
-\code{gain} returns a matrix containing class specific information gain values and overall values aggregated over all classes
+\code{gain} returns a data.frame of gain values for each feature by
+  class and overall.
 }
 \description{
 Computes the information gain of features from a fitted \link{textmodel_nb}
@@ -44,7 +44,6 @@ txt <- c(d1 = "Chinese Beijing Chinese",
 trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-gain(tmod)
 gain(tmod)
 }
 \references{

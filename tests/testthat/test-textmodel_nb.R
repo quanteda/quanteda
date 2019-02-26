@@ -194,10 +194,8 @@ test_that("gain.text_modelnb raises error for exception handlers",  {
     )
 })
 
-
 test_that("gain.text_modelnb works accurately",  {
-    skip("to be rewritten to test when returning of both class_specific and overall information gain values")
-    
+    skip("Until JWL can verify")
     txt <- c(d1 = "Chinese",
              d2 = "Tokyo",
              d3 = "Macao")
@@ -205,20 +203,21 @@ test_that("gain.text_modelnb works accurately",  {
     trainingclass <- factor(c("Y", "Y", "N"), ordered = TRUE)
     nb <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
     
-    
     # Term 1: P(class) * log (P (class))
-    initial_entropy = -(2/3 * log(2/3,base=2)) + -(1/3 * log(1/3, base = 2))
+    initial_entropy <- -(2/3 * log(2/3,base=2)) + -(1/3 * log(1/3, base = 2))
     
     # Term 2: P(w) * summation over c P(class | w) * log(P(class|w))
-    unconditional_entropy_1 = nb$Pw * (apply(nb$PcGw, MARGIN = 2, function(x) sum (x * log(x,base=2))))
+    unconditional_entropy_1 <- nb$Pw * 
+        (apply(nb$PcGw, MARGIN = 2, function(x) sum (x * log(x,base=2))))
     
     # Term 3: P(w') * summation over c P(class|w) * log(P(class|w))
-    PcGwcomp = t(data.frame(t(nb$Pc - (nb$PwGc * nb$Pc))) / (1-nb$Pw))
-    unconditional_entropy_2 = (1-nb$Pw) * apply(PcGwcomp, MARGIN = 2, function(x) sum(x * log(x,base=2)))
+    PcGwcomp <- t(data.frame(t(nb$Pc - (nb$PwGc * nb$Pc))) / (1-nb$Pw))
+    unconditional_entropy_2 <- (1-nb$Pw) * apply(PcGwcomp, MARGIN = 2, function(x) sum(x * log(x,base=2)))
     
-    info_gain <- list(t(data.frame(info_gain = initial_entropy + unconditional_entropy_1 + unconditional_entropy_2)))[[1]]
-    expect_equal(info_gain, 
-                 gain(nb))
-    
+    info_gain_manual <- 
+        data.frame(feature = rownames(unconditional_entropy_2),
+                   gain_N = initial_entropy + unconditional_entropy_1 + unconditional_entropy_2,
+                   stringsAsFactors = FALSE, row.names = NULL)
+    expect_identical(info_gain, 
+                     gain(nb)[, c("feature", "gain_overall")])
 })
-

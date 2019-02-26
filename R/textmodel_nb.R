@@ -333,8 +333,7 @@ print.predict.textmodel_nb <- function(x, ...) {
 }
 
 
-#' Compute the information gain of features from a fitted \link{textmodel_nb}
-#' object
+#' Compute the information gain of features
 #' 
 #' Computes the information gain of features from a fitted \link{textmodel_nb}
 #' object.
@@ -362,7 +361,8 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' Language Processing}}.   Stanford University typescript.  Draft of September
 #' 23.
 #' @keywords textmodel textmodel_nb
-#' @return \code{gain} returns a matrix containing class specific information gain values and overall values aggregated over all classes
+#' @return \code{gain} returns a data.frame of gain values for each feature by
+#'   class and overall.
 #' @export
 #' @examples 
 #' txt <- c(d1 = "Chinese Beijing Chinese",
@@ -373,7 +373,6 @@ print.predict.textmodel_nb <- function(x, ...) {
 #' trainingset <- dfm(txt, tolower = FALSE)
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' tmod <- textmodel_nb(trainingset, y = trainingclass, prior = "docfreq")
-#' gain(tmod)
 #' gain(tmod)
 gain <- function(object, base = 2){
     UseMethod("gain")
@@ -394,17 +393,17 @@ gain.textmodel_nb <- function(object, base = 2) {
 
     # Term 1: Initial Entropy
     # Get summation over all classes of  P(class) * log P(class)
-    initial_entropy <- sapply(object$Pc, function(x) -1 * x * log(x, base = base), USE.NAMES = TRUE)
-    initial_entropy <- c(initial_entropy, overallgain = sum(initial_entropy)) # Add a new row for overall gain
+    initial_entropy <- -1 * object$Pc * -log(object$Pc, base = base)
+    initial_entropy <- c(initial_entropy, overall = sum(initial_entropy))
     
     # Term 2: Entropy Given w
     # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
     conditional_entropy <- apply(object$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
-    conditional_entropy <- rbind(conditional_entropy, overallgain = colSums(conditional_entropy)) # Add a new row for overall gain
+    conditional_entropy <- rbind(conditional_entropy, overall = colSums(conditional_entropy))
 
     # Now get the unconditional entropy  := P(w) * conditional entropy
-    unconditional_entropy <-  t(apply(conditional_entropy, 1, `*`, object$Pw))
-    colnames(unconditional_entropy) <- colnames(conditional_entropy)
+    # works because of column-wise recycling of the vector
+    unconditional_entropy <-  t(t(conditional_entropy) * as.vector(object$Pw))
     
     # Term 3: Entropy Given w'
     # Get the second conditional entropy := summation over all classes P(class | w') * log(P(class|w'))
@@ -412,21 +411,24 @@ gain.textmodel_nb <- function(object, base = 2) {
     # To derive P(class|w'), we note:
     # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w')
     # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
-    Pcintersectw <- data.frame(object$PwGc) * object$Pc
-    Pcintersectwcomp <- (object$Pc - Pcintersectw)
-    PcGwcomp <- t(apply(Pcintersectwcomp, 1, `/`, 1-object$Pw))
-    colnames(PcGwcomp) <- colnames(Pcintersectwcomp) # P(class | w') =  P(class ∩ w') / P(w')
+    Pcintersectw <- object$PwGc * object$Pc
+    Pcintersectwcomp <- object$Pc - Pcintersectw
+    PcGwcomp <- t(t(Pcintersectwcomp) / as.vector(1-object$Pw))
+    # P(class | w') =  P(class ∩ w') / P(w')
     # PcGwcomp is a dataframe that captures conditional on a word not being in the document,
     # what is the probability that it belongs to a class?
     
     conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
-    conditional_entropy_comp <- rbind(conditional_entropy_comp, overallgain = colSums(conditional_entropy_comp)) # Add a new row for overall gain
+    # Add a new row for overall gain
+    conditional_entropy_comp <- 
+        rbind(conditional_entropy_comp, overall = colSums(conditional_entropy_comp))
     
-    unconditional_entropy_comp <- t(apply(conditional_entropy_comp, 1, `*`, 1-object$Pw))
-    colnames(unconditional_entropy_comp) <- colnames(conditional_entropy_comp)
+    # these work because of column-wise recycling
+    unconditional_entropy_comp <- t(t(conditional_entropy_comp) * as.vector(1 - object$Pw))
+    result <- unconditional_entropy + unconditional_entropy_comp + initial_entropy
     
-    # Add the three terms and return as matrix 
-    info_gain <-  apply(unconditional_entropy + unconditional_entropy_comp, MARGIN = 2, function(x) x + initial_entropy)
-    
-    return(info_gain)
+    # make into data.frame
+    rownames(result) <- paste0("gain_", rownames(result))
+    return(data.frame(feature = colnames(result), t(result), 
+                      row.names = NULL, stringsAsFactors = FALSE))
 }
