@@ -45,13 +45,16 @@ subsequently as single tokens, for instance in constructing a \link{dfm}.
 }
 \note{
 Patterns to be compounded (naturally) consist of multi-word sequences,
-  and how these are expected in \code{pattern} is very specific.  If the elements
-  to be compounded are supplied as space-delimited elements of a character vector,
-  wrap the vector in \code{\link{phrase}}.  If the elements to be compounded are separate elements
-  of a character vector, supply it as a list where each list element is the sequence 
-  of character elements.  
-  
+  and how these are expected in \code{pattern} is very specific.  If the
+  elements to be compounded are supplied as space-delimited elements of a
+  character vector, wrap the vector in \code{\link{phrase}}.  If the elements
+  to be compounded are separate elements of a character vector, supply it as
+  a list where each list element is the sequence of character elements.
   See the examples below.
+  
+  When \code{pattern} is a a \link{collocations} object, performance can be
+  significantly improved using case-sensitive matching.  See the example
+  below for how to match and compound with \code{case_insensitive = FALSE}.
 }
 \examples{
 txt <- "The United Kingdom is leaving the European Union."
@@ -79,10 +82,10 @@ tokens_compound(toks, dictionary(list(key1 = c("U* K*"))), valuetype = "glob")
 # supplied as collocations - is compounded
 colls <- tokens("The new European Union is not the old European Union.") \%>\%
     textstat_collocations(size = 2, min_count = 1, tolower = FALSE)
-tokens_compound(toks, colls)
+tokens_compound(toks, colls, case_insensitive = FALSE)
 
 # note the differences caused by join = FALSE
 compounds <- list(c("the", "European"), c("European", "Union"))
-tokens_compound(toks, join = TRUE)
-tokens_compound(toks, join = FALSE)
+tokens_compound(toks, pattern = compounds, join = TRUE)
+tokens_compound(toks, pattern = compounds, join = FALSE)
 }
