@@ -24,14 +24,14 @@ Segments segment(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
-                targets.push_back(make_pair(i, i + span - 1));
+                targets.push_back(std::make_pair(i, i + span - 1));
             }
         }
     }
     
     Segments segments;
     if (targets.size() == 0) {
-        segments.push_back(make_tuple(0, tokens.size() - 1, -1, -1));
+        segments.push_back(std::make_tuple(0, tokens.size() - 1, -1, -1));
         return segments;
     }
     
@@ -43,7 +43,7 @@ Segments segment(Text tokens,
     if (position == 1) {
         // preceeded by delimiter
         if (0 < targets.front().first) {
-            segments.push_back(make_tuple(0, targets.front().first - 1, -1, -1));
+            segments.push_back(std::make_tuple(0, targets.front().first - 1, -1, -1));
         }
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first;
@@ -54,7 +54,7 @@ Segments segment(Text tokens,
             if (i < targets.size() - 1) {
                 to = targets[i + 1].first - 1;
             }
-            segments.push_back(make_tuple(from, to, targets[i].first, targets[i].second));
+            segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         
@@ -70,11 +70,11 @@ Segments segment(Text tokens,
             if (remove) {
                 to = targets[i].first - 1;
             }
-            segments.push_back(make_tuple(from, to, targets[i].first, targets[i].second));
+            segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         if (targets.back().second < tokens.size() - 1) {
-            segments.push_back(make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
+            segments.push_back(std::make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
         }
     }
     
