@@ -63,24 +63,25 @@ S4 qatd_cpp_ca(const arma::sp_mat &dfm, const double residual_floor){
     }
 #endif
     
-    std::size_t residual_size = residual_tri.size();
-    IntegerVector dim_ = IntegerVector::create(N, K);
-    IntegerVector i_(residual_size), j_(residual_size);
-    NumericVector x_(residual_size);
-    
-    for (std::size_t k = 0; k < residual_tri.size(); k++) {
-        i_[k] = std::get<0>(residual_tri[k]);
-        j_[k] = std::get<1>(residual_tri[k]);
-        x_[k] = std::get<2>(residual_tri[k]);
-    }
-    
-    S4 res_("dgTMatrix");
-    res_.slot("i") = i_;
-    res_.slot("j") = j_;
-    res_.slot("x") = x_;
-    res_.slot("Dim") = dim_;
-    
-    return res_;
+    return to_matrix( residual_tri, N, K, false );
+//     std::size_t residual_size = residual_tri.size();
+//     IntegerVector dim_ = IntegerVector::create(N, K);
+//     IntegerVector i_(residual_size), j_(residual_size);
+//     NumericVector x_(residual_size);
+//
+//     for (std::size_t k = 0; k < residual_tri.size(); k++) {
+//         i_[k] = std::get<0>(residual_tri[k]);
+//         j_[k] = std::get<1>(residual_tri[k]);
+//         x_[k] = std::get<2>(residual_tri[k]);
+//     }
+//
+//     S4 res_("dgTMatrix");
+//     res_.slot("i") = i_;
+//     res_.slot("j") = j_;
+//     res_.slot("x") = x_;
+//     res_.slot("Dim") = dim_;
+//
+//     return res_;
     
 }
 

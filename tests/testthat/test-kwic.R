@@ -264,8 +264,12 @@ test_that("kwic works as expected with and without phrases", {
     list_bi <- list("a b", "g j")
     dict_uni <- dictionary(list(one = c("a", "b"), two = c("g", "j")))
     dict_bi <- dictionary(list(one = "a b", two = "g j"))
-    coll_bi <- textstat_collocations(toks_uni, size = 2, min_count = 2)
-    coll_tri <- textstat_collocations(toks_uni, size = 3, min_count = 2)[1, ]
+    coll_bi <- data.frame(collocation = c("a b", "e g", "g h"),
+                          stringsAsFactors = FALSE)
+    class(coll_bi) <- c("collocations", "data.frame")
+    coll_tri <- data.frame(collocation = c("e g h"),
+                           stringsAsFactors = FALSE)
+    class(coll_tri) <- c("collocations", "data.frame")
 
     expect_equal(
         kwic(txt, char_uni)$keyword,
@@ -392,7 +396,8 @@ test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {
     expect_identical(kwic_dict1$pattern, factor(c("ukey", "ukey")))
     expect_identical(kwic_dict2$pattern, factor(rep(c("fkey", "ukey"), 2),
                                                 levels = c("ukey", "fkey")))
-    expect_identical(kwic_col$pattern, factor(c("e f", "u v"), levels = c("u v", "e f")))
+    expect_identical(kwic_col$pattern, factor(c("e f", "u v", "e f", "u v"), 
+                                              levels = c("u v", "e f")))
 })
 
 test_that("keywords match pattern match and map_keywords() is working as expected", {
