@@ -55,7 +55,15 @@ test_that("dfm_weight exceptions work", {
     mydfm_tfprop <- dfm_weight(mydfm, "prop")
     expect_error(
         dfm_tfidf(mydfm_tfprop),
-        "this dfm has already been term weighted as: prop"
+        "will not weight a dfm already term-weighted as 'prop'; use force = TRUE to override"
+    )
+    expect_is(
+        dfm_tfidf(mydfm_tfprop, force = TRUE),
+        "dfm"
+    )
+    expect_is(
+        dfm_weight(mydfm_tfprop, scheme = "logcount", force = TRUE),
+        "dfm"
     )
 })
 
@@ -297,4 +305,11 @@ test_that("smooth slot is correctly set (#1274)", {
     # smoothed by 1 and then by another 2
     dfms1_2 <- dfm_smooth(dfms1, smoothing = 2)
     expect_equal(dfms1_2@smooth, 3)
+})
+
+test_that("dfm_weight invalid scheme produces error", {
+    expect_error(
+        dfm_weight(data_dfm_lbgexample, scheme = "nonexistent"),
+        "\'arg\' should be one of",
+    )
 })
