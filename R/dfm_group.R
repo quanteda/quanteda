@@ -5,6 +5,11 @@
 #' functionality to using the \code{"groups"} argument in \code{\link{dfm}}.
 #' @param x a \link{dfm}
 #' @inheritParams groups
+#' @param force logical; if \code{TRUE}, group by summing existing counts, even
+#'   if the dfm has been weighted.  This can result in invalid sums, such as
+#'   adding log counts (when a dfm has been weighted by \code{"logcount"} for
+#'   instance using \code{\link{dfm_weight}}).  Does not apply to the term
+#'   weight schemes "count" and "prop".
 #' @param fill logical; if \code{TRUE} and \code{groups} is a factor, then use
 #'   all levels of the factor when forming the new "documents" of the grouped
 #'   dfm.  This will result in documents with zero feature counts for levels not
@@ -33,20 +38,28 @@
 #' # equivalent
 #' dfm(dfmat, groups = "grp")
 #' dfm(dfmat, groups = c(1, 1, 2, 2))
-dfm_group <- function(x, groups = NULL, fill = FALSE) {
+dfm_group <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     UseMethod("dfm_group")
 }
 
 #' @export
-dfm_group.default <- function(x, groups = NULL, fill = FALSE) {
+dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_group"))
 }
     
 #' @export
-dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
+dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 
     if (is.null(groups)) return(x)
-
+    
+    if (!force && 
+        (( (! x@weightTf[["scheme"]] %in% c("count", "prop")) &&
+         x@weightDf[["scheme"]] != "unary" ) ||
+         x@weightDf[["scheme"]] != "unary")) {
+        stop("will not group a weighted dfm; use force = TRUE to override",
+             call. = FALSE)
+    }
+    
     x <- as.dfm(x)
     dvars <- docvars_internal(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
