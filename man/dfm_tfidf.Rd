@@ -5,7 +5,7 @@
 \title{Weight a dfm by \emph{tf-idf}}
 \usage{
 dfm_tfidf(x, scheme_tf = "count", scheme_df = "inverse", base = 10,
-  ...)
+  force = FALSE, ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 
@@ -19,6 +19,11 @@ through the ellipsis (\code{...}).}
 
 \item{base}{the base for the logarithms in the \code{\link{tf}} and
 \code{\link{docfreq}} calls; default is 10}
+
+\item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
+has been weighted before.  This can result in invalid weights, such as as
+weighting by \code{"prop"} after applying \code{"logcount"}, or after
+having grouped a dfm using \code{\link{dfm_group}}.}
 
 \item{...}{additional arguments passed to \code{\link{docfreq}}.}
 }
