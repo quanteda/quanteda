@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -203,9 +203,9 @@
 <h1 class="page-header">
 <a href="#quanteda-140" class="anchor"></a>quanteda 1.4.0<small> 2019-01-30 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed bug in <code><a href="../reference/dfm_compress.html">dfm_compress()</a></code> and <code><a href="../reference/dfm_group.html">dfm_group()</a></code> that changed or deleted docvars attributes of dfm objects (#1506).</li>
 <li>Fixed a bug in <code><a href="../reference/textplot_xray.html">textplot_xray()</a></code> that caused incorrect facet labels when a pattern contained multiple list elements or values (#1514).</li>
@@ -237,6 +237,19 @@
 </ul>
 </div>
 </div>
+    <div id="quanteda-141" class="section level1">
+<h1 class="page-header">
+<a href="#quanteda-141" class="anchor"></a>quanteda 1.4.1<small> Unreleased </small>
+</h1>
+<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<ul>
+<li>Fixed an issue with special handling of whitespace variants that caused a test to fail when running Ubuntu 18.10 system with libicu-dev version 63.1 (#1604).</li>
+<li>Fixed the operation of <code>docvars&lt;-.corpus()</code> in a way that solves #1603 (reassignment of docvar names).</li>
+</ul>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -244,6 +257,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#quanteda-140">1.4.0</a></li>
+        <li><a href="#quanteda-141">1.4.1</a></li>
       </ul>
     </div>
   </div>
