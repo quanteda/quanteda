@@ -67,7 +67,7 @@
 textstat_keyness <- function(x, target = 1L, 
                              measure = c("chi2", "exact", "lr", "pmi"), 
                              sort = TRUE, 
-                             correction = c("default", "yates", "williams", "none")) {
+                             correction = c("default", "yates", "williams", "none"), ... ) {
     UseMethod("textstat_keyness")
 }
 
@@ -80,12 +80,11 @@ textstat_keyness.default <- function(x, target = 1L,
 }
 
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, 
-                                 measure = c("chi2", "exact", "lr", "pmi"), 
-                                 sort = TRUE, 
-                                 correction = c("default", "yates", "williams", "none")) {
-    
-    
+textstat_keyness.dfm <- function(
+    x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
+    sort = TRUE, correction = c("default", "yates", "williams", "none" ),
+    use_mt=FALSE
+) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     
@@ -100,7 +99,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
         stop("target index outside range of documents")
     if (is.logical(target) && length(target) != ndoc(x))
         stop("logical target value length must equal the number of documents")
-
+    
     # convert all inputs into logical vector
     if (is.numeric(target)) {
         target <- seq(ndoc(x)) %in% target
@@ -129,25 +128,42 @@ textstat_keyness.dfm <- function(x, target = 1L,
     }
     grouping <- factor(target, levels = c(TRUE, FALSE), labels = label)
     temp <- dfm_group(x, groups = grouping)
-
-    if (measure == "chi2") {
-        result <- keyness_chi2_dt(temp, correction)
-    } else if (measure == "lr") {
-        result <- keyness_lr(temp, correction)
-    } else if (measure == "exact") {
-        if (!correction %in% c("default", "none"))
-            warning("correction is always none for measure exact")
-        result <- keyness_exact(temp)
-    } else if (measure == "pmi") {
-        if (!correction %in% c("default", "none"))
-            warning("correction is always none for measure pmi")
-        result <- keyness_pmi(temp)
+    
+    if( use_mt ) {
+        if( measure != "exact" ) {
+            pvdf <- qatd_cpp_keyness( temp, measure, correction )
+            result <- data.frame(
+                feature     = featnames( temp ), 
+                v           = pvdf$v,
+                p           = pvdf$p,
+                n_target    = as.vector( temp[1, ] ),
+                n_reference = as.vector( temp[2, ] ),
+                stringsAsFactors = FALSE
+            )    
+        } else {
+            warning( "No exact test MT implementation: defaulting to single threaded R code" )
+            result <- keyness_exact( temp )
+        }    
     } else {
-        stop(measure, " not yet implemented for textstat_keyness")
+        if (measure == "chi2") {
+            result <- keyness_chi2_dt(temp, correction)
+        } else if (measure == "lr") {
+            result <- keyness_lr(temp, correction)
+        } else if (measure == "exact") {
+            if (!correction %in% c("default", "none"))
+                warning("correction is always none for measure exact")
+            result <- keyness_exact(temp)
+        } else if (measure == "pmi") {
+            if (!correction %in% c("default", "none"))
+                warning("correction is always none for measure pmi")
+            result <- keyness_pmi(temp)
+        } else {
+            stop(measure, " not yet implemented for textstat_keyness")
+        }    
     }
     
-    if (sort)
-        result <- result[order(result[, 2], decreasing = TRUE), ]
+    if (sort) result <- result[order(result[, 2], decreasing = TRUE), ]
+    names( result )[2] <- switch( measure, chi2 = 'chi2', exact = 'exact', lr = "G2", pmi = "pmi" )
     
     attr(result, "groups") <- docnames(temp)
     class(result) <- c("keyness", "textstat", "data.frame")
@@ -381,72 +397,4 @@ keyness_pmi <- function(x) {
                n_target = as.vector(x[1, ]),
                n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
-}
-
-#' @export
-nukeyness <- function(
-    x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
-    sort = TRUE, correction = c("default", "yates", "williams", "none" )
-) {
-    x <- as.dfm(x)
-    if (!sum(x)) stop(message_error("dfm_empty"))
-    
-    measure <- match.arg(measure)
-    correction <- match.arg(correction)
-    # error checking
-    if (ndoc(x) < 2 )
-        stop("x must have at least two documents")
-    if (is.character(target) && !(all(target %in% docnames(x))))
-        stop("target not found in docnames(x)")
-    if (is.numeric(target) && any(target < 1 | target > ndoc(x)))
-        stop("target index outside range of documents")
-    if (is.logical(target) && length(target) != ndoc(x))
-        stop("logical target value length must equal the number of documents")
-    
-    # convert all inputs into logical vector
-    if (is.numeric(target)) {
-        target <- seq(ndoc(x)) %in% target
-    } else if (is.character(target)) {
-        target <- docnames(x) %in% target
-    } else if (is.logical(target)) {
-        target <- target
-    } else {
-        stop("target must be numeric, character or logical")
-    }
-    
-    # check if number of target documents < ndoc
-    if (!(sum(target) < ndoc(x))) {
-        stop("number of target documents must be < ndoc")
-    }
-    
-    # use original docnames only when there are two (different) documents
-    if (ndoc(x) == 2 && length(unique(docnames(x))) > 1) {
-        label <- docnames(x)[order(target, decreasing = TRUE)]
-    } else {
-        if (sum(target) == 1 && !is.null(docnames(x)[target])) {
-            label <- c(docnames(x)[target], "reference")
-        } else {
-            label <- c("target", "reference")
-        }
-    }
-    grouping <- factor(target, levels = c(TRUE, FALSE), labels = label)
-    temp <- dfm_group(x, groups = grouping)
-    
-    pvdf <- qatd_cpp_keyness( temp, measure, correction )
-    result <- data.frame(
-         feature     = featnames( temp ), 
-         v           = pvdf$v,
-         p           = pvdf$p,
-         n_target    = as.vector( temp[1, ] ),
-         n_reference = as.vector( temp[2, ] ),
-         stringsAsFactors = FALSE
-     )
-    
-    if (sort) result <- result[order(result[, 2], decreasing = TRUE), ]
-    names( result )[2] <- switch( measure, chi2 = 'chi2', exact = 'exact', lr = "G2", pmi = "pmi" )
-    
-    attr(result, "groups") <- docnames(temp)
-    class(result) <- c("keyness", "textstat", "data.frame")
-    rownames(result) <- as.character(seq_len(nrow(result)))
-    return(result)
 }

@@ -1,5 +1,6 @@
 #include "armadillo.h"
 #include "quanteda.h"
+#include "Rcpp/Rmath.h"
 
 using namespace quanteda;
 
@@ -7,6 +8,8 @@ typedef Rcpp::NumericVector RVecD;
 
 using VFunc = std::function<double(double,double)>;
 using PFunc = std::function<double(double)>;
+
+static const double EPSILON = 0.000000001;
 
 inline double yates_correction( const double& a, const double& b, const double& c, const double& d ) {
     double N = a + b + c + d;
@@ -16,7 +19,7 @@ inline double yates_correction( const double& a, const double& b, const double& 
           || ( a + c ) * ( c + d ) / N < 5
           || ( c + d ) * ( b + d ) / N < 5
         )
-    ) return N * 0.5;
+    ) return 0.5;
     return 0.0;
 }
 
@@ -34,27 +37,58 @@ inline VFunc chisq_lambda( const arma::sp_mat& dfm, const std::string& cor ) {
         double c = tN - a, d = rN - b, N = a + b + c + d, E = ( a + b ) * ( a + c ) / N;
         double delta = ( cor == "default" || cor == "yates" ) ? yates_correction( a, b, c, d ) : 0.0;
         double q     = ( cor == "williams" ) ? williams_correction( a, b, c, d ) : 1.0;
-        double num = N * std::pow( std::abs( ( a * d ) - ( b * c ) ) - delta, 2.0 );
+        double num = N * std::pow( std::abs( ( a * d ) - ( b * c ) ) - ( N * delta ), 2.0 );
         double den = ( a + b ) * ( c + d ) * ( a + c ) * ( b + d ) * ( a > E ? 1.0 : -1.0 ) / q;
         return num / den;
     };
 }
 
 inline VFunc exact_lambda( const arma::sp_mat& dfm, const std::string& cor ) {
+    Rcpp::warning( "Exact keyness not supported yet" );
     return [&]( const double& t, const double& r ) -> double {
-        return -2.0;
+        return -99.0;
     };
 }
 
 inline VFunc lr_lambda( const arma::sp_mat& dfm, const std::string& cor ) {
-    return [&]( const double& t, const double& r ) -> double {
-        return -3.0;
+    arma::colvec mrg( arma::sum( dfm, 1 ) );
+    const double tN = mrg( 0 );
+    const double rN = mrg( 1 );
+    return [&]( const double& a, const double& b ) -> double {
+        double c = tN - a, d = rN - b, N = a + b + c + d, E = ( a + b ) * ( a + c ) / N;
+        double aa = a, bb = b, cc = c , dd = d;
+        if( cor == "default" || cor == "yates" ) {
+            double delta = yates_correction( a, b, c, d );
+            bool sign = a * d - b * c > 0;
+            aa += sign ? -delta : delta;
+            bb += sign ? delta : -delta;
+            cc += sign ? delta : -delta;
+            dd += sign ? -delta : delta;
+        }
+        
+        double res = ( 2 * (
+            aa * std::log( aa / ( ( aa + bb ) * ( aa + cc ) / N ) + EPSILON ) + 
+            bb * std::log( bb / ( ( aa + bb ) * ( bb + dd ) / N ) + EPSILON ) +
+            cc * std::log( cc / ( ( aa + cc ) * ( cc + dd ) / N ) + EPSILON ) +
+            dd * std::log( dd / ( ( bb + dd ) * ( cc + dd ) / N ) + EPSILON )
+        ) ) * ( a > E ? 1.0 : -1.0 );
+        
+        if( cor == "williams" ) res /= williams_correction( a, b, c, d );
+        return res;
     };
 }
 
-inline VFunc pmi_lambda( const arma::sp_mat& dfm, const std::string& cor ) {
-    return [&]( const double& t, const double& r ) -> double {
-        return -4.0;
+inline VFunc pmi_lambda( const arma::sp_mat& dfm, const std::string& cor, bool normal = false ) {
+    arma::colvec mrg( arma::sum( dfm, 1 ) );
+    const double tN = mrg( 0 );
+    const double rN = mrg( 1 );
+    return [&]( const double& a, const double& b ) -> double {
+        double c = tN - a, d = rN - b, N = a + b + c + d, E = ( a + b ) * ( a + c ) / N;
+        double res = std::log( a / E + EPSILON );
+        if( normal ) {
+            res *= ( a > E ? 1.0 : -1.0 ) / ( std::log( a / N ) * -1.0 );
+        }
+        return res;
     };
 }
 
@@ -73,7 +107,16 @@ inline VFunc get_v_func( const arma::sp_mat& dfm, const std::string& msr, const 
 }
 
 PFunc get_p_func( const arma::sp_mat& dfm, const std::string& msr, const std::string& cor ) {
-    return []( double v ){ return -1.0; };
+    if( msr == "chi2" || msr == "lr" || msr == "pmi" ) {
+        return []( double x ) -> double {
+            return 1.0 - R::pchisq( std::abs( x ), 1.0, 1, 0 );
+        };
+    } else {
+        Rcpp::warning( "P-function for exact test not implemented" );
+        return []( double x ) -> double {
+            return 0.0;
+        };
+    }
 }
 
 struct KeynessWorker : public Worker {
