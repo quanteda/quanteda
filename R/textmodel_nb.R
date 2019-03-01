@@ -393,6 +393,56 @@ gain.default <- function(object, base = 2){
 #' @export
 #' @method gain textmodel_nb
 gain.textmodel_nb <- function(object, base = 2) {
+    # The formula for entropy of word w is
+    # - summation over all classes ( P(class) * log P(class))  (Term 1)
+    # + P(w) * summation over all classes (P(class |w ) * log(P(class|w)) ) (Term 2)
+    # + P(w') * summation over all classes (P(class | w') * log(P(class|w')) ) (Term 3)
+    
+    # Term 1: Initial Entropy
+    # Get summation over all classes of  P(class) * log P(class)
+    initial_entropy <- -1 * object$Pc * log(object$Pc, base = base)
+    initial_entropy <- c(initial_entropy, overall = sum(initial_entropy))
+    
+    # Term 2: Entropy Given w
+    # Get the conditional entropy := summation over all classes P(class|w) * log(P(class|w))
+    conditional_entropy <- apply(object$PcGw, MARGIN = 2, function(x) x * log(x, base = base))
+    conditional_entropy <- rbind(conditional_entropy, overall = colSums(conditional_entropy))
+    
+    # Now get the unconditional entropy  := P(w) * conditional entropy
+    # works because of column-wise recycling of the vector
+    unconditional_entropy <-  t(t(conditional_entropy) * as.vector(object$Pw))
+    
+    # Term 3: Entropy Given w'
+    # Get the second conditional entropy := summation over all classes P(class | w') * log(P(class|w'))
+    # where P(w') denotes the probability that a word is not in a document
+    # To derive P(class|w'), we note:
+    # P(class | w') = P(class ∩ w') / P(w') = (P(class) - p(class ∩ w)) / P(w')
+    # = ( P(class) - [P(w|c) * P(c)] ) / ( 1 - P(w')) # Bayes Rule
+    Pcintersectw <- object$PwGc * object$Pc
+    Pcintersectwcomp <- object$Pc - Pcintersectw
+    PcGwcomp <- t(t(Pcintersectwcomp) / as.vector(1-object$Pw))
+    # P(class | w') =  P(class ∩ w') / P(w')
+    # PcGwcomp is a dataframe that captures conditional on a word not being in the document,
+    # what is the probability that it belongs to a class?
+    
+    conditional_entropy_comp <- apply(PcGwcomp, MARGIN = 2, function(x) x * log(x, base = base))
+    # Add a new row for overall gain
+    conditional_entropy_comp <- 
+        rbind(conditional_entropy_comp, overall = colSums(conditional_entropy_comp))
+    
+    # these work because of column-wise recycling
+    unconditional_entropy_comp <- t(t(conditional_entropy_comp) * as.vector(1 - object$Pw))
+    result <- unconditional_entropy + unconditional_entropy_comp + initial_entropy
+    
+    # make into data.frame
+    rownames(result) <- paste0("gain_", rownames(result))
+    return(data.frame(feature = colnames(result), t(result), 
+                      row.names = NULL, stringsAsFactors = FALSE))
+}
+
+
+# Ken's reimplementation
+gain_ken <- function(object, base = 2) {
     H_Pc <- -1 * sum(object$Pc * log(object$Pc, base = base))
     
     H_feat <- sapply(featnames(object$x), function(y) {
