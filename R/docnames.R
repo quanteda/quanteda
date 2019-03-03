@@ -105,6 +105,7 @@ docnames.corpus <- function(x) {
 
 setGeneric("rownames<-")
 
+#' @include dfm-classes.R
 #' @rdname names-quanteda
 #' @aliases rownames<-.dfm
 #' @export
@@ -115,6 +116,7 @@ setMethod("rownames<-",
               return(x)
           })
 
+#' @include fcm-classes.R
 #' @rdname names-quanteda
 #' @aliases rownames<-.fcm
 #' @export

@@ -198,11 +198,6 @@ c.corpus <- function(..., recursive = FALSE) {
 #' data_corpus_inaugural["1793-Washington"]
 #' data_corpus_inaugural[2] 
 #' 
-#' # create a new document variable
-#' data_corpus_irishbudget2010[["govtopp"]] <- 
-#'     ifelse(data_corpus_irishbudget2010[["party"]] %in% c("FF", "Greens"), 
-#'            "Government", "Opposition")
-#' docvars(data_corpus_irishbudget2010)
 `[.corpus` <- function(x, i) {
     x <- as.corpus(x)
     attrs <- attributes(x)

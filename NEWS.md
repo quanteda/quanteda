@@ -26,6 +26,10 @@
 
     Now defaults to a data.frame of pairwise similarities or distances, making these functions return a data.frame just like the other textstat functions.  Coercion methods are provided for `as.dist()`, `as.simil()`, `as.matrix()`, and `as.Matrix()` (producing a ?? sparse symmetric matrix).
     
+6.  settings functions (and related slots and object attributes) are gone.
+
+7.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
+    
 ## Bug fixes and stability enhancements
 
 *  As if we had any bugs!

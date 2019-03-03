@@ -345,15 +345,13 @@ test_that("more cbind tests for dfms", {
 })
 
 test_that("cbind.dfm keeps attributes of the dfm",{
-    
     mx1 <- as.dfm(matrix(c(0, 0, 0, 0, 1, 2), nrow = 2,
                          dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
     mx2 <- as.dfm(matrix(c(2, 3, 0, 0, 0, 0), nrow = 2,
                          dimnames = list(c("doc1", "doc2"), c("dd", "ee", "ff"))))
-    slot(mx1, "settings") <- list(somesetting = "somevalue")
+    meta(mx1, "settings") <- list(somesetting = "somevalue")
     mx3 <- cbind(mx1, mx2)
-    expect_equal(mx3@settings, list(somesetting = "somevalue"))
-    
+    expect_equal(meta(mx3), list(settings = list(somesetting = "somevalue")))
 })
 
 test_that("rbind.dfm works as expected", {
@@ -415,14 +413,14 @@ test_that("dfm addition (+) keeps attributes #1279", {
     tmp <- head(data_dfm_lbgexample, 4, nf = 3)
 
     # @settings slot
-    tmp@settings <- list(test = 1)
+    meta(tmp, "testsetting") <- list(test = 1)
     expect_equal(
-        (tmp + 1)@settings,
-        list(test = 1)
+        meta(tmp + 1)["testsetting"],
+        list(testsetting = list(test = 1))
     )
     expect_equal(
-        (1 + tmp)@settings,
-        list(test = 1)
+        meta(1 + tmp)["testsetting"],
+        list(testsetting = list(test = 1))
     )
 
     # @weightTf slot

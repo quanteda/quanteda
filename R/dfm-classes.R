@@ -5,14 +5,12 @@
 #' \code{dfm} class, depending on whether the object can be represented by a
 #' sparse matrix, in which case it is a \code{dfm} class object, or if dense,
 #' then a \code{dfmDense} object.  See Details.
-#'
-#' @slot settings settings that govern corpus handling and subsequent downstream
-#'   operations, including the settings used to clean and tokenize the texts,
-#'   and to create the dfm.  See \code{\link{settings}}.
-#' @slot weighting the feature weighting applied to the dfm.  Default is
+#' @slot weightTf the type of term frequency weighting applied to the dfm.  Default is
 #'   \code{"frequency"}, indicating that the values in the cells of the dfm are
 #'   simple feature counts. To change this, use the \code{\link{dfm_weight}}
 #'   method.
+#' @slot weightFf the type of document frequency weighting applied to the dfm. See
+#'   \code{\link{docfreq}}.
 #' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using
 #'   the \code{\link{dfm_smooth}} method.
 #' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are
@@ -22,17 +20,15 @@
 #' @seealso \link{dfm}
 #' @name dfm-class
 #' @rdname dfm-class
-#' @import methods
 #' @keywords internal dfm
 setClass("dfm",
-         slots = c(settings = "list", weightTf = "list", weightDf = "list", 
+         slots = c(weightTf = "list", weightDf = "list", 
                    smooth = "numeric", 
                    ngrams = "integer", skip = "integer", 
                    concatenator = "character", version = "integer",
                    docvars = "data.frame",
                    meta = "list"),
-         prototype = list(settings = list(),
-                          Dim = integer(2), 
+         prototype = list(Dim = integer(2), 
                           Dimnames = list(docs = character(), features = character()),
                           weightTf = list(scheme = "count", base = NULL, K = NULL),
                           weightDf = list(scheme = "unary", base = NULL, c = NULL,

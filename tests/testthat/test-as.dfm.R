@@ -189,6 +189,15 @@ test_that("as.dfm to and from a matrix works with docvars", {
     )
 })
 
+test_that("as.dfm works on old objects", {
+    load("../data/pre_v2_objects/data_dfm_pre2.rda")
+    expect_is(as.dfm(data_dfm_pre2), "dfm")
+    expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
+    expect_identical(
+        names(as.dfm(data_dfm_pre2)@meta),
+        c("user", "system")
+    )
+})
 
 # test_that("rbind duplicates docvars", {
 #     txt <- c(docA = "a a a b c c f",

@@ -149,7 +149,6 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     result <- new("dfm",
                   sparseMatrix(i = i_new, j = j_new, x = x_new,
                                dims = dims),
-                  settings = x@settings,
                   weightTf = x@weightTf,
                   weightDf = x@weightDf,
                   smooth = x@smooth,

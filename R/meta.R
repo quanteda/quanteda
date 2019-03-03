@@ -33,7 +33,7 @@ meta.default <- function(x, field = NULL, type = c("user", "system", "all")) {
 
 #' @export
 meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
-    if (is_pre15(x)) return(if (is.corpus(x)) x$metadata else NULL)
+    if (is_pre2(x)) return(if (is.corpus(x)) x$metadata else NULL)
     type <- match.arg(type)
     result <- list()
     if (type %in% c("user", "all"))
@@ -52,7 +52,7 @@ meta.tokens <- meta.corpus
 
 #' @export
 meta.dfm <- function(x, field = NULL, type = c("user", "system", "all")) {
-    if (is_pre15(x)) return(NULL)
+    if (is_pre2(x)) return(NULL)
     type <- match.arg(type)
     result <- list()
     if (type %in% c("user", "all"))
@@ -76,15 +76,15 @@ meta.dfm <- function(x, field = NULL, type = c("user", "system", "all")) {
 #' @aliases "metacorpus<-"
 "meta<-" <- "metacorpus<-" <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
-    if (length(names(value)) > 0 && length(names(value)) != length(value))
-        stop("every element of value must be named")
+    if (is.list(value) && length(names(value)) != length(value))
+        stop("every element of the meta list must be named")
     UseMethod("meta<-")
 }
 
-#' @export
-"meta<-.default" <- function(x, field = NULL, value) {
-    stop(friendly_class_undefined_message(class(x), "meta<-"))
-}
+# #' @export
+# "meta<-.default" <- function(x, field = NULL, value) {
+#     stop(friendly_class_undefined_message(class(x), "meta<-"))
+# }
 
 #' @export
 `meta<-.corpus` <- function(x, field = NULL, value) {
@@ -150,8 +150,8 @@ meta_system <- function(x, field = NULL)
 #'   modified. This is an internal function and not designed for users!
 `meta_system<-` <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
-    if (length(names(value)) > 0 && length(names(value)) != length(value))
-        stop("every element of value must be named")
+    if (is.list(value) && length(names(value)) != length(value))
+        stop("every element of the meta list must be named")
     UseMethod("meta_system<-")
 }
 
@@ -183,6 +183,7 @@ meta_system <- function(x, field = NULL)
     } else {
         x@meta$system[[field]] <- value
     }
+    return(x)
 }
 
 

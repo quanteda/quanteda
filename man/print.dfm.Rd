@@ -11,14 +11,14 @@
 \alias{tail.fcm}
 \title{Print a dfm object}
 \usage{
-\S4method{print}{dfm}(x, show.values = NULL, show.settings = FALSE,
-  show.summary = TRUE, ndoc = quanteda_options("print_dfm_max_ndoc"),
+\S4method{print}{dfm}(x, show.values = NULL, show.summary = TRUE,
+  ndoc = quanteda_options("print_dfm_max_ndoc"),
   nfeat = quanteda_options("print_dfm_max_nfeat"), ...)
 
 \S4method{show}{dfm}(object)
 
-\S4method{print}{fcm}(x, show.values = NULL, show.settings = FALSE,
-  show.summary = TRUE, ndoc = quanteda_options("print_dfm_max_ndoc"),
+\S4method{print}{fcm}(x, show.values = NULL, show.summary = TRUE,
+  ndoc = quanteda_options("print_dfm_max_ndoc"),
   nfeature = quanteda_options("print_dfm_max_nfeat"), ...)
 
 \S4method{show}{fcm}(object)
@@ -32,9 +32,6 @@
 
 \item{show.values}{print the dfm values; if called explicitly this will print
 all values.}
-
-\item{show.settings}{print the settings used to create the dfm. See 
-\link{settings}.}
 
 \item{show.summary}{print a brief summary indicating the number of documents 
 and features}

@@ -119,7 +119,7 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    if (is_pre15(x))
+    if (is_pre2(x))
         x <- upgrade_corpus(x)
     return(x)
 }
@@ -140,7 +140,7 @@ as.corpus.corpuszip <- function(x) {
 # Internal function to convert corpus from data.frame character vector-based
 # stracture
 upgrade_corpus <- function(x) {
-    
+    if (!is_pre2(x)) return(x)
     x <- unclass(x)
     result <- corpus(x$documents, text_field = "texts")
     attr(result, "docvars") <- upgrade_docvars(x$documents)

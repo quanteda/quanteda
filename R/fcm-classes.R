@@ -1,5 +1,5 @@
 #' Virtual class "fcm" for a feature co-occurrence matrix
-
+#'
 #' The fcm class of object is a special type of \link{fcm} object with
 #' additional slots, described below.
 #' @slot context the context definition
@@ -10,12 +10,10 @@
 #' @slot tri whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded
 #' @slot ordered whether a term appears before or after the target feature 
 #'      are counted separately
-#' @seealso \link{fcm}
-#' @export
-#' @import methods
-#' @docType class
 #' @name fcm-class
-#' @keywords internal
+#' @rdname fcm-class
+#' @keywords internal fcm
+#' @seealso \link{fcm}
 setClass("fcm",
          slots = c(context = "character", window = "integer", 
                    count = "character", weights = "numeric", 

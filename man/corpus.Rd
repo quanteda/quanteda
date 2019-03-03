@@ -154,7 +154,7 @@ texts(corpus(kw, split_context = FALSE))
 }
 \seealso{
 \link{corpus-class}, \code{\link{docvars}}, 
-  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
+  \code{\link{meta}}, \code{\link{texts}}, \code{\link{ndoc}},
   \code{\link{docnames}}
 }
 \keyword{corpus}
