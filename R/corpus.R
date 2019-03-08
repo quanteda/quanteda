@@ -149,6 +149,9 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
         docvar <- make_docvars(length(x), docnames)
     }
     
+    # normalize Unicode
+    x <- stri_trans_nfc(x)
+    
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
                                 c("\u201C", "\u201D", "\u201F", 
