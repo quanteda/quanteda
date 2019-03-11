@@ -3,6 +3,7 @@
 ## Bug fixes and stability enhancements
 
 * Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)
+* Changed the default value of the `size` argument in `dfm_sample()` to the number of features, not the number of documents.  (#1643)
 
 
 # quanteda 1.4.1
