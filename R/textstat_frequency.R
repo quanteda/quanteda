@@ -6,9 +6,10 @@
 #' @param x a \link{dfm} object
 #' @param n (optional) integer specifying the top \code{n} features to be returned,
 #' within group if \code{groups} is specified
-#' @param ties.method character string specifying how ties are treated.  See
+#' @param ties_method character string specifying how ties are treated.  See
 #'   \code{\link[data.table]{frank}} for details.  Unlike that function,
-#'   however, the default is \code{"random"}.
+#'   however, the default is \code{"min"}, so that frequencies of 10, 10, 11
+#'   would be ranked 1, 1, 3.
 #' @inheritParams groups
 #' @return a data.frame containing the following variables:
 #' \describe{
@@ -28,8 +29,8 @@
 #' set.seed(20)
 #' dfmat1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
 #' textstat_frequency(dfmat1)
-#' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties.method = "first")
-#' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties.method = "dense")
+#' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "first")
+#' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "dense")
 #' 
 #' dfmat2 <- corpus_subset(data_corpus_inaugural, President == "Obama") %>%
 #'    dfm(remove_punct = TRUE, remove = stopwords("english"))
@@ -68,25 +69,22 @@
 #' @export
 #' @keywords plot
 textstat_frequency <- function(x, n = NULL, groups = NULL, 
-                               ties.method = c("random", "average",
-                                               "first", "max", "min", "dense")) {
+                               ties_method = c("min", "average", "first", "random", "max", "dense")) {
     UseMethod("textstat_frequency")
 }
     
 #' @export
 textstat_frequency.default <- function(x, n = NULL, groups = NULL,
-                                       ties.method = c("random", "average",
-                                                       "first", "max", "min", "dense")) {
+                               ties_method = c("min", "average", "first", "random", "max", "dense")) {
     stop(friendly_class_undefined_message(class(x), "textstat_frequency"))
 }
 
 #' @importFrom data.table data.table setcolorder setorder frank
 #' @export
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
-                                   ties.method = c("random", "average",
-                                                   "first", "max", "min", "dense")) {
+                               ties_method = c("min", "average", "first", "random", "max", "dense")) {
     group <- frequency <- NULL
-    ties.method <- match.arg(ties.method)
+    ties_method <- match.arg(ties_method)
     
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
@@ -103,7 +101,7 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
                        group = rownames(x)[x@i + 1])
 
     # get the frequency rank
-    result[, rank := frank(-frequency, ties.method = ties.method), by = group]
+    result[, rank := frank(-frequency, ties.method = ties_method), by = group]
     setorder(result, group, rank)
     
     # keep only first n items by group, if n is specified

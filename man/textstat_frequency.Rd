@@ -4,8 +4,8 @@
 \alias{textstat_frequency}
 \title{Tabulate feature frequencies}
 \usage{
-textstat_frequency(x, n = NULL, groups = NULL,
-  ties.method = c("random", "average", "first", "max", "min", "dense"))
+textstat_frequency(x, n = NULL, groups = NULL, ties_method = c("min",
+  "average", "first", "random", "max", "dense"))
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -18,9 +18,10 @@ variables to be used for grouping; or a factor or object that can be
 coerced into a factor equal in length or rows to the number of documents. 
 See \link{groups} for details.}
 
-\item{ties.method}{character string specifying how ties are treated.  See
+\item{ties_method}{character string specifying how ties are treated.  See
 \code{\link[data.table]{frank}} for details.  Unlike that function,
-however, the default is \code{"random"}.}
+however, the default is \code{"min"}, so that frequencies of 10, 10, 11
+would be ranked 1, 1, 3.}
 }
 \value{
 a data.frame containing the following variables:
@@ -50,8 +51,8 @@ grouping variable.
 set.seed(20)
 dfmat1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
 textstat_frequency(dfmat1)
-textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties.method = "first")
-textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties.method = "dense")
+textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "first")
+textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "dense")
 
 dfmat2 <- corpus_subset(data_corpus_inaugural, President == "Obama") \%>\%
    dfm(remove_punct = TRUE, remove = stopwords("english"))
