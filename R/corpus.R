@@ -132,6 +132,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     
     unused_dots(...)
     x[is.na(x)] <- ""
+    x <- stri_trans_nfc(x)
     
     if (!is.null(docnames)) {
         if (length(docnames) != length(x))
