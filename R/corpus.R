@@ -149,6 +149,7 @@ corpus.character <- function(x, docnames = NULL,
     unused_dots(...)
     name <- names(x)
     x[is.na(x)] <- ""
+    x <- stri_trans_nfc(x)
     
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
