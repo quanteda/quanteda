@@ -42,6 +42,7 @@
 #' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
 #'           remove_punct = TRUE, remove = stopwords("english"))
 #' (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
+#' as.Matrix(tstat1)
 #' as.matrix(tstat1)
 #' as.list(tstat1)
 #' 
@@ -384,4 +385,18 @@ as.Matrix.simil_pairwise <- function(x, ...) {
                  x = x$similarity,
                  dims = c(nlevels(x$x), nlevels(x$y)),
                  dimnames = list(levels(x$x), levels(x$y)))
+}
+
+#' @export
+#' @method as.matrix simil_pairwise
+#' @keywords textstat internal
+as.matrix.simil_pairwise <- function(x, ...) {
+    as.matrix(as.Matrix(x))
+}
+
+#' @export
+#' @method as.list simil_pairwise
+#' @keywords textstat internal
+as.list.simil_pairwise <- function(x, ...) {
+    split(structure(x$similarity, names = as.character(x$x)), x$y)
 }
