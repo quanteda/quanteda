@@ -2,8 +2,12 @@
 
 ## Bug fixes and stability enhancements
 
-* Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)
 * Changed the default value of the `size` argument in `dfm_sample()` to the number of features, not the number of documents.  (#1643)
+
+## Behaviour changes
+
+* Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)  The function `textstat_frequency()` now allows passing this argument to `dfm_group()` via `...`.  (#1646)
+* `textstat_frequency()` now has a new argument for resolving ties when ranking term frequencies, defaulting to the "min" method.  (#1634)
 
 
 # quanteda 1.4.1

@@ -10,6 +10,9 @@
 #'   \code{\link[data.table]{frank}} for details.  Unlike that function,
 #'   however, the default is \code{"min"}, so that frequencies of 10, 10, 11
 #'   would be ranked 1, 1, 3.
+#' @param ... additional arguments passed to \code{\link{dfm_group}}.  This can
+#'   be useful in passing `force = TRUE`, for instance, if you are grouping a
+#'   dfm that has been weighted.
 #' @inheritParams groups
 #' @return a data.frame containing the following variables:
 #' \describe{
@@ -69,20 +72,23 @@
 #' @export
 #' @keywords plot
 textstat_frequency <- function(x, n = NULL, groups = NULL, 
-                               ties_method = c("min", "average", "first", "random", "max", "dense")) {
+                               ties_method = c("min", "average", "first", "random", "max", "dense"),
+                               ...) {
     UseMethod("textstat_frequency")
 }
     
 #' @export
 textstat_frequency.default <- function(x, n = NULL, groups = NULL,
-                               ties_method = c("min", "average", "first", "random", "max", "dense")) {
+                               ties_method = c("min", "average", "first", "random", "max", "dense"),
+                               ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_frequency"))
 }
 
 #' @importFrom data.table data.table setcolorder setorder frank
 #' @export
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
-                               ties_method = c("min", "average", "first", "random", "max", "dense")) {
+                               ties_method = c("min", "average", "first", "random", "max", "dense"),
+                               ...) {
     group <- frequency <- NULL
     ties_method <- match.arg(ties_method)
     
@@ -92,9 +98,9 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
     if (is.null(groups)) groups <- rep("all", ndoc(x))
     
     x@weightTf[["scheme"]] <- "count" # reset for docfreq
-    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups)@x
+    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups, ...)@x
     
-    x <- as(dfm_group(x, groups), "dgTMatrix")
+    x <- as(dfm_group(x, groups, ...), "dgTMatrix")
     result <- data.table(feature = colnames(x)[x@j + 1],
                        frequency = x@x,
                        docfreq = docfreq,
