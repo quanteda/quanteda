@@ -193,7 +193,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
         dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
                          & abs(a*d - b*c) >= N/2)]
         # the correction is usually only recommended if the smallest expected frequency is less than 5
-        # the correction should not be applied if |ad − bc| is less than N/2.
+        # the correction should not be applied if |ad - bc| is less than N/2.
         # compute using the direct formula - see link above (adds sign)
         dt[, chi2 := ifelse(cor_app, 
                             (N * (abs(a*d - b*c) - N * 0.5)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1), 
@@ -313,7 +313,7 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
         dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5)
                          & abs(a*d - b*c) > N/2)]
         # the correction is usually only recommended if the smallest expected frequency is less than 5
-        # the correction should not be applied if |ad − bc| is less than N/2.
+        # the correction should not be applied if |ad - bc| is less than N/2.
         # implement Yates continuity correction
         # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
         # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.

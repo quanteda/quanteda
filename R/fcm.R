@@ -81,7 +81,7 @@
 #'   Church, K. W. & P. Hanks (1990) .
 #'  \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
 #'   mutual information, and lexicography}. \emph{Computational Linguistics},
-#'   16(1), 22–29.
+#'   16(1), 22-29.
 #' @examples
 #' # see http://bit.ly/29b2zOA
 #' txt1 <- "A D A C E A D F E B A C E D"
