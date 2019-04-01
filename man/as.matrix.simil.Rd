@@ -4,7 +4,7 @@
 \alias{as.matrix.simil}
 \title{Coerce a simil object into a matrix}
 \usage{
-\method{as.matrix}{simil}(x, diag = 1, ...)
+\method{as.matrix}{simil}(x, diag = 1, upper = TRUE, ...)
 }
 \arguments{
 \item{diag}{the value to use on the diagonal representing self-similarities}
