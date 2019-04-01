@@ -179,7 +179,7 @@ namespace quanteda{
             simil_.slot("j") = j_;
             simil_.slot("x") = x_;
             simil_.slot("Dim") = dim_;
-            simil_.slot("uplo") = "L";
+            simil_.slot("uplo") = "U";
             return simil_;
         } else {
             S4 simil_("dgTMatrix");

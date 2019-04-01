@@ -97,7 +97,7 @@ struct similarity_linear : public Worker {
             for (std::size_t k = 0; k < simils.size(); k++) {
                 if (symm && k > i) continue;
                 if (simils[k] >= l) {
-                    simil_tri.push_back(std::make_tuple(i, k, simils[k]));
+                    simil_tri.push_back(std::make_tuple(k, i, simils[k]));
                 }
             }
         }
@@ -307,7 +307,7 @@ struct similarity : public Worker {
             double l = get_limit(simils, rank, limit);
             for (std::size_t k = 0; k < simils.size(); k++) {
                 if (simils[k] >= l) {
-                    simil_tri.push_back(std::make_tuple(i, k, simils[k]));
+                    simil_tri.push_back(std::make_tuple(k, i, simils[k]));
                 }
             }
             simils.clear();

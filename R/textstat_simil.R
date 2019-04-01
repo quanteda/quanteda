@@ -112,22 +112,21 @@ textstat_simil.dfm <- function(x, selection = NULL,
         if (any(is.na(i)))
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
-    y <- x[i, ]
     if (margin == "features") {
-        temp <- textstat_proxy(x, y, margin, method, 1, min_proxy = min_simil, use_na = TRUE)
+        temp <- textstat_proxy(x, x[,i], margin, method, 1, min_proxy = min_simil, use_na = TRUE)
     } else {
-        temp <- textstat_proxy(x, y, margin, method, 1, min_proxy = min_simil, use_na = TRUE)
+        temp <- textstat_proxy(x, x[i,], margin, method, 1, min_proxy = min_simil, use_na = TRUE)
     }
-    # result <- as_dist(result, method, match.call(), diag = diag, upper = upper)
-    # if (is.null(selection)) {
-    #     class(result) <- c("simil", "dist")
-    # } else {
-    #     class(result) <- c("simil_selection", "dist_selection")
-    # }
-    result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)), 
-                         y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
-                         similarity = temp@x)
-    class(result) <- c("simil_pairwise", "data.frame")
+    result <- as_dist(temp, method, match.call(), diag = diag, upper = upper)
+    if (is.null(selection)) {
+        class(result) <- c("simil", "dist")
+    } else {
+        class(result) <- c("simil_selection", "dist_selection")
+    }
+    # result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)), 
+    #                      y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
+    #                      similarity = temp@x)
+    # class(result) <- c("simil_pairwise", "data.frame")
     return(result)
 }
 
@@ -357,11 +356,12 @@ as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
 #' @export
 #' @method as.matrix simil
 #' @keywords textstat internal
-as.matrix.simil <- function(x, diag = 1.0, ...) {
+as.matrix.simil <- function(x, diag = 1.0, upper = TRUE, ...) {
     size <- attr(x, "Size")
     df <- matrix(0, size, size)
     df[row(df) > col(df)] <- x
-    df <- df + t(df)
+    if (upper)
+        df <- df + t(df)
     label <- attr(x, "Labels")
      if (is.null(label)) {
         dimnames(df) <- list(seq_len(size), seq_len(size))
