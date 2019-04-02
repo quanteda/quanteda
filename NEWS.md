@@ -1,8 +1,9 @@
-# quanteda > 1.4.1
+# quanteda 1.4.3
 
 ## Bug fixes and stability enhancements
 
 * Changed the default value of the `size` argument in `dfm_sample()` to the number of features, not the number of documents.  (#1643)
+* Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)
 
 ## Behaviour changes
 

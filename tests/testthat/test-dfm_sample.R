@@ -13,6 +13,7 @@ test_that("dfm_sample works as expected", {
 })
 
 test_that("dfm_sample for features works as expected", {
+    RNGversion("3.5.3")
     dfmat <- dfm(c("a b c c d", "a a c c d d d"))
     expect_identical({
         set.seed(100)
