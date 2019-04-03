@@ -13,10 +13,8 @@
 #'   \code{"features"} for word/term features.
 #' @param method method the similarity or distance measure to be used; see
 #'   Details.
-#' @param upper whether the upper triangle of the symmetric \eqn{V \times V}
-#'   matrix is recorded. Only used when \code{value = "dist"}.
-#' @param diag whether the diagonal of the distance matrix should be recorded. .
-#'   Only used when \code{value = "dist"}.
+#' @param tri if \code{TRUE} return only upper triangle (including diagonal).
+#'   Ignored if \code{selection} is used.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
@@ -66,7 +64,7 @@ textstat_simil <- function(x, selection = NULL,
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching", "faith"),
                            min_simil = NULL,
-                           upper = FALSE, diag = FALSE) {
+                           tri = TRUE) {
     UseMethod("textstat_simil")
 }
     
@@ -77,7 +75,7 @@ textstat_simil.default <- function(x, selection = NULL,
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"),
                                min_simil = NULL,
-                               upper = FALSE, diag = FALSE) {
+                               tri = TRUE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
@@ -87,7 +85,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching", "faith"),
                                min_simil = NULL,
-                               upper = FALSE, diag = FALSE) {
+                               tri = FALSE) {
     x <- as.dfm(x)
 
     margin <- match.arg(margin)
@@ -117,16 +115,20 @@ textstat_simil.dfm <- function(x, selection = NULL,
     } else {
         temp <- textstat_proxy(x, x[i,], margin, method, 1, min_proxy = min_simil, use_na = TRUE)
     }
-    result <- as_dist(temp, method, match.call(), diag = diag, upper = upper)
-    if (is.null(selection)) {
-        class(result) <- c("simil", "dist")
-    } else {
-        class(result) <- c("simil_selection", "dist_selection")
-    }
-    # result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)), 
-    #                      y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
-    #                      similarity = temp@x)
-    # class(result) <- c("simil_pairwise", "data.frame")
+    # result <- as_dist(temp, method, match.call(), diag = diag, upper = upper)
+    # if (is.null(selection)) {
+    #     class(result) <- c("simil", "dist")
+    # } else {
+    #     class(result) <- c("simil_selection", "dist_selection")
+    # }
+    
+    if (!tri)
+        temp <- as(temp, "dgTMatrix")
+    
+    result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)),
+                         y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
+                         similarity = temp@x)
+    class(result) <- c("simil_pairwise", "data.frame")
     return(result)
 }
 
@@ -306,13 +308,12 @@ textstat_proxy <- function(x, y = NULL,
     }
     dimnames(result) <- list(colnames(x), colnames(y))
     if (use_na) {
-        na1 <- na2 <- logical()
-        if (method == "cosine") {
-            na1 <- qatd_cpp_nz(x) == 0
-            na2 <- qatd_cpp_nz(y) == 0
-        } else if (method == "correlation") {
+        if (method == "correlation") {
             na1 <- qatd_cpp_sd(x) == 0
             na2 <- qatd_cpp_sd(y) == 0
+        } else {
+            na1 <- qatd_cpp_nz(x) == 0
+            na2 <- qatd_cpp_nz(y) == 0
         }
         if (any(na1))
             result[na1,,drop = FALSE] <- NA

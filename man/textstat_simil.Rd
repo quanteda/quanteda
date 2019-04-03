@@ -8,7 +8,7 @@
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
   "dice", "edice", "hamman", "simple matching", "faith"),
-  min_simil = NULL, upper = FALSE, diag = FALSE)
+  min_simil = NULL, tri = TRUE)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
@@ -27,11 +27,8 @@ difference will be computed:  \code{"documents"} for documents or
 \item{method}{method the similarity or distance measure to be used; see
 Details.}
 
-\item{upper}{whether the upper triangle of the symmetric \eqn{V \times V}
-matrix is recorded. Only used when \code{value = "dist"}.}
-
-\item{diag}{whether the diagonal of the distance matrix should be recorded. .
-Only used when \code{value = "dist"}.}
+\item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
+Ignored if \code{selection} is used.}
 
 \item{p}{The power of the Minkowski distance.}
 }
