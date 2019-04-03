@@ -2,8 +2,7 @@
 
 ## New features
 
-* Add `flatten` and `levels` to arguments to `as.list.dictionary2()` to enable more flexible conversion of dictionary objects.
-
+* Add `flatten` and `levels` arguments to `as.list.dictionary2()` to enable more flexible conversion of dictionary objects.
 
 # quanteda 1.4.3
 
