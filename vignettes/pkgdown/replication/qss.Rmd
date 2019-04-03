@@ -143,7 +143,7 @@ for (i in 1:k) { # loop for each cluster
 
 ## Section 5.1.4: Authorship Prediction
 
-In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predicte authorship.
+In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predict authorship.
 
 ```{r}
 # term frequency per 1000 words
