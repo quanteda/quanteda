@@ -7,7 +7,7 @@
 \usage{
 dfm_weight(x, scheme = c("count", "prop", "propmax", "logcount",
   "boolean", "augmented", "logave"), weights = NULL, base = 10,
-  K = 0.5)
+  K = 0.5, force = FALSE)
 
 dfm_smooth(x, smoothing = 1)
 }
@@ -42,6 +42,11 @@ named features.  Any features not named will be assigned a weight of 1.0
 
 \item{K}{the K for the augmentation when \code{scheme = "augmented"}}
 
+\item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
+has been weighted before.  This can result in invalid weights, such as as
+weighting by \code{"prop"} after applying \code{"logcount"}, or after
+having grouped a dfm using \code{\link{dfm_group}}.}
+
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
@@ -62,8 +67,6 @@ Weight the feature frequencies in a dfm
 \examples{
 dfmat1 <- dfm(data_corpus_inaugural)
 
-x <- apply(dfmat1, 1, function(tf) tf/max(tf))
-topfeatures(dfmat1)
 dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
 topfeatures(dfmat2)
 dfmat3 <- dfm_weight(dfmat1)
@@ -82,13 +85,6 @@ str <- c("apple is better than banana", "banana banana apple much better")
 (dfmat6 <- dfm(str, remove = stopwords("english")))
 dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 
-\dontshow{
-dfmat7 <- dfm(data_corpus_inaugural[1:5])
-for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave")) {
-    dfmat8 <- dfm_weight(dfmat7, w)
-    cat("\\n\\n=== weight() TEST for:", w, "; class:", class(dfmat8), "\\n")
-    head(dfmat8)
-}}
 # smooth the dfm
 dfmat <- dfm(data_corpus_inaugural)
 dfm_smooth(dfmat, 0.5)

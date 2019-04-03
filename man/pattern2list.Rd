@@ -10,8 +10,9 @@ pattern2list(pattern, types, valuetype, case_insensitive,
   keep_nomatch = FALSE)
 }
 \arguments{
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;

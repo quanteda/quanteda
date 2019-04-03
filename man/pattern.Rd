@@ -4,35 +4,38 @@
 \alias{pattern}
 \title{Pattern for feature, token and keyword matching}
 \arguments{
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 }
 \description{
-Pattern(s) for use in matching Feature, tokens, and keywords through a
+Pattern(s) for use in matching features, tokens, and keywords through a
 \link{valuetype} pattern.
 }
 \details{
-The \code{pattern} argument is a vector of patterns, including sequences, 
-  to match in a target object, whose match type is specified by \code{\link{valuetype}}.
-  Note that an empty pattern (\code{""}) will match "padding" in a \link{tokens} object.
+The \code{pattern} argument is a vector of patterns, including
+  sequences, to match in a target object, whose match type is specified by
+  \code{\link{valuetype}}. Note that an empty pattern (\code{""}) will match
+  "padding" in a \link{tokens} object.
   \describe{
-  \item{\code{character}}{A character vector of token patterns to be selected or removed. 
-    Whitespace is not privileged, so that in a character vector, white space is interpreted 
-    literally. If you wish to consider whitespace-separated elements as sequences of tokens,
-    wrap the argument in \code{\link{phrase}}.  
-    }
-  \item{\code{list of character objects}}{If the list elements are character vectors of 
-    length 1, then this is equivalent to a vector of characters.  If a list element contains
-    a vector of characters longer than length 1, then for matching will consider these
-    as sequences of matches, equivalent to wrapping the argument in \code{\link{phrase}}, 
-    except for matching to \link{dfm} features where this does not apply.
-    }
-  \item{\code{dictionary}}{Values in \link{dictionary} are used as patterns, for literal matches.  
-    Multi-word values are automatically converted into phrases, so performing selection or
-    compounding using a dictionary is the same as wrapping the dictionary in \code{\link{phrase}}.
-    } 
-  \item{\code{collocations}}{Collocations objects created from \code{\link{textstat_collocations}},
-    which are treated as phrases automatically.
+  \item{\code{character}}{A character vector of token patterns to be selected
+  or removed. Whitespace is not privileged, so that in a character vector,
+  white space is interpreted literally. If you wish to consider
+  whitespace-separated elements as sequences of tokens, wrap the argument in
+  \code{\link{phrase}}. }
+  \item{\code{list of character objects}}{If the list elements are character
+  vectors of length 1, then this is equivalent to a vector of characters.  If
+  a list element contains a vector of characters longer than length 1, then
+  for matching will consider these as sequences of matches, equivalent to
+  wrapping the argument in \code{\link{phrase}}, except for matching to
+  \link{dfm} features where this does not apply. }
+  \item{\code{dictionary}}{Values in \link{dictionary} are used as patterns,
+  for literal matches. Multi-word values are automatically converted into
+  phrases, so performing selection or compounding using a dictionary is the
+  same as wrapping the dictionary in \code{\link{phrase}}. }
+  \item{\code{collocations}}{Collocations objects created from
+  \code{\link{textstat_collocations}}, which are treated as phrases
+  automatically.
     }
   }
 }

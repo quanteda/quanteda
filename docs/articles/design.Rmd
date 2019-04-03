@@ -19,7 +19,7 @@ See https://quanteda.io for additional tutorials, examples, and general document
 
 # Introduction
 
-# The logic of Quanteda's design
+# The logic of **quanteda**'s design
 
 ## Grammatical rules
 
@@ -83,7 +83,7 @@ Many simple base R functions -- simpler at least than the example of `sample()` 
 
 ## Additions to core R(-like) functions
 
-Additional functions have been defined for **quanteda** objects that are [very similar to simple base R functions](#r-like-functions), but are not named using the `class_action` format because they do not return a modified object of the same class.  These follow as closely as possible the naming conventions found in the base R functions that are similar.  For instance, `docnames()` and `featnames()` return the document names of various **quanteda** objects, in the same way that `rownames()` does for matrix-like objects (a matrix, data.frame, data.table, etc.).  The abbreviation of `featnames()` is intentionally modeled on `colnames()`.  Likewise, `ndoc()` returns the number of documents, using the singular form similar to `nrow()` and `ncol()`.  
+Additional functions have been defined for **quanteda** objects that are [very similar to simple base R functions](#r-like-functions), but are not named using the `class_action` format because they do not return a modified object of the same class.  These follow as closely as possible the naming conventions found in the base R functions that are similar.  For instance, `docnames()` and `featnames()` return the document names of various **quanteda** objects, in the same way that `rownames()` does for matrix-like objects (a matrix, data.frame, data.table, etc.).  The abbreviation of `featnames()` is intentionally modelled on `colnames()`.  Likewise, `ndoc()` returns the number of documents, using the singular form similar to `nrow()` and `ncol()`.  
 
 
 # Workflow principles

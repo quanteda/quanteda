@@ -4,7 +4,8 @@
 \alias{textstat_frequency}
 \title{Tabulate feature frequencies}
 \usage{
-textstat_frequency(x, n = NULL, groups = NULL)
+textstat_frequency(x, n = NULL, groups = NULL, ties_method = c("min",
+  "average", "first", "random", "max", "dense"), ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -16,6 +17,15 @@ within group if \code{groups} is specified}
 variables to be used for grouping; or a factor or object that can be 
 coerced into a factor equal in length or rows to the number of documents. 
 See \link{groups} for details.}
+
+\item{ties_method}{character string specifying how ties are treated.  See
+\code{\link[data.table]{frank}} for details.  Unlike that function,
+however, the default is \code{"min"}, so that frequencies of 10, 10, 11
+would be ranked 1, 1, 3.}
+
+\item{...}{additional arguments passed to \code{\link{dfm_group}}.  This can
+be useful in passing `force = TRUE`, for instance, if you are grouping a
+dfm that has been weighted.}
 }
 \value{
 a data.frame containing the following variables:
@@ -42,9 +52,11 @@ Produces counts and document frequencies summaries of the features in a
 grouping variable.
 }
 \examples{
+set.seed(20)
 dfmat1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
 textstat_frequency(dfmat1)
-textstat_frequency(dfmat1, groups = c("one", "two", "one"))
+textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "first")
+textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "dense")
 
 dfmat2 <- corpus_subset(data_corpus_inaugural, President == "Obama") \%>\%
    dfm(remove_punct = TRUE, remove = stopwords("english"))
@@ -67,8 +79,7 @@ dfmat3 <- data_corpus_inaugural \%>\%
     dfm_weight(scheme = "prop")
 
 # calculate relative frequency by president
-tstat2 <- textstat_frequency(dfmat3, n = 10,
-                                  groups = "President")
+tstat2 <- textstat_frequency(dfmat3, n = 10, groups = "President")
 
 # plot frequencies
 ggplot(data = tstat2, aes(x = nrow(tstat2):1, y = frequency)) +
