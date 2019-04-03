@@ -172,7 +172,6 @@ tokeninfo[which.max(tokeninfo$Tokens), ]
 The `+` operator provides a simple method for concatenating two corpus objects.  If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost.  Corpus-level meta-data is also concatenated.
 
 ```{r}
-library(quanteda)
 corp1 <- corpus(data_corpus_inaugural[1:5])
 corp2 <- corpus(data_corpus_inaugural[53:58])
 corp3 <- corp1 + corp2
@@ -289,7 +288,9 @@ dfmat_inaug_post1990[, 1:5]
 Other options for a `dfm()` include removing stopwords, and stemming the tokens.
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990, 
+                            remove = stopwords("english"), 
+                            stem = TRUE, remove_punct = TRUE)
 dfmat_inaug_post1990[, 1:5]
 ```
 
@@ -313,7 +314,7 @@ dfmat_uk
 
 To access a list of the most frequently occurring features, we can use `topfeatures()`:
 ```{r}
-topfeatures(dfmat_uk, 20)  # 20 top words
+topfeatures(dfmat_uk, 20) # 20 most frequent words
 ```
 
 Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class object.  This function passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
@@ -358,8 +359,8 @@ dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
 
 We can use the dictionary when making the dfm:
 ```{r}
-dfmat_inaug_post1992 <- dfm(corp_inaug_post1991, dictionary = dict)
-dfmat_inaug_post1992
+dfmat_inaug_post1991_dict <- dfm(corp_inaug_post1991, dictionary = dict)
+dfmat_inaug_post1991_dict
 ```
 
 The constructor function `dictionary()` also works with two common "foreign" dictionary formats: the 
@@ -396,9 +397,9 @@ dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-tstatdist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
+tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
 # hiarchical clustering the distance object
-pres_cluster <- hclust(tstatdist)
+pres_cluster <- hclust(tstat_dist)
 # label with document names
 pres_cluster$labels <- docnames(dfmat_sotu)
 # plot as a dendrogram
@@ -408,9 +409,9 @@ plot(pres_cluster, xlab = "", sub = "",
 
 We can also look at term similarities:
 ```{r}
-tstatsim <- textstat_simil(dfmat_sotu, selection = c("fair", "health", "terror"), 
+tstat_sim <- textstat_simil(dfmat_sotu, selection = c("fair", "health", "terror"), 
                           method = "cosine", margin = "features")
-lapply(as.list(tstatsim), head, 10)
+lapply(as.list(tstat_sim), head, 10)
 ```
 
 ## Scaling document positions
