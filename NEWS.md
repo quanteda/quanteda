@@ -2,7 +2,7 @@
 
 ## New features
 
-* Add `flatten` and `levels` to `as.list.dictionary2()` to allow convesion of dictionaries more flexible
+* Add `flatten` and `levels` to `as.list.dictionary2()` to allow convesion of dictionaries more flexible (#1661)
 
 # quanteda 1.4.3
 
