@@ -369,7 +369,7 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
   Reading}, 26(6), 490--496.
 
   Bamberger, R. & Vanecek, E. (1984).
-  \emph{Lesen–Verstehen–Lernen–Schreiben}. Wien: Jugend und Volk.
+  \emph{Lesen-Verstehen-Lernen-Schreiben}. Wien: Jugend und Volk.
 
   Björnsson, C. H. (1968). \emph{Läsbarhet}. Stockholm: Liber.
 
@@ -433,13 +433,13 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
   221.
   
   Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern. 
-  \emph{Sprachforum}, 1, 233-–244.
+  \emph{Sprachforum}, 1, 233-244.
   
   Gunning, R. (1952). \emph{The Technique of Clear Writing}.  New York: McGraw-Hill.
   
   Klare, G.R. (1975).
   \href{https://www.jstor.org/stable/pdf/747086}{Assessing Readability}.
-  \emph{Reading Research Quarterly}, 10(1), 62--102.
+  \emph{Reading Research Quarterly}, 10(1), 62-102.
   
   Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S. (1975).
   \href{https://stars.library.ucf.edu/istlibrary/56/}{Derivation of New

@@ -11,7 +11,7 @@
 \alias{c,dictionary2-method}
 \title{Coerce a dictionary object into a list}
 \usage{
-\S4method{as.list}{dictionary2}(x)
+\S4method{as.list}{dictionary2}(x, flatten = FALSE, levels = 1:100)
 
 \S4method{show}{dictionary2}(object)
 
@@ -24,6 +24,11 @@
 \S4method{c}{dictionary2}(x, ...)
 }
 \arguments{
+\item{flatten}{flatten the nested structure if \code{TRUE}}
+
+\item{levels}{integer vector indicating levels in the dictionary. Used only
+when \code{flatten = TRUE}.}
+
 \item{object}{the dictionary to be coerced}
 
 \item{i}{index for entries}
