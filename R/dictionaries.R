@@ -41,9 +41,8 @@ check_entries <- function (dict) {
         is_category <- vapply(entry, is.list, logical(1))
         if (any(!is_category)) {
             word <- unlist(entry[!is_category], use.names = FALSE)
-            if (any(!is.character(word))) {
-                word_error <- word[!is.character(word)]
-                stop("Non-character entries found: ", word_error)
+            if (!is.character(word) || any(is.na(word))) {
+                stop("Non-character entries found in ", names(dict[i]))
             }
         }
         if (any(is_category)) {

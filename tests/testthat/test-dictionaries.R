@@ -16,7 +16,9 @@ test_that("dictionary constructors fail if all elements unnamed: implicit", {
 
 test_that("dictionary constructors fail if a value is numeric", {
     expect_error(dictionary(list(first =  c("a", "b"), second = 2016)),
-                 "Non-character entries found: 2016")
+                 "Non-character entries found in second")
+    expect_error(dictionary(list(first =  c("a", "b"), second = c("c", NA))),
+                 "Non-character entries found in second")
 })
 
 test_that("dictionary constructor ignores extra arguments", {
