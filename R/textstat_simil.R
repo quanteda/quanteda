@@ -13,8 +13,11 @@
 #'   \code{"features"} for word/term features.
 #' @param method method the similarity or distance measure to be used; see
 #'   Details.
-#' @param tri if \code{TRUE} return only upper triangle (including diagonal).
-#'   Ignored if \code{selection} is used.
+#' @param min_simil numeric; a threshold for the similarity values below which similarity
+#'   values will not be returned
+#' @param tri logical; if \code{TRUE} return only upper triangle (including
+#'   diagonal), if the result were returned in a matrix-like format. Ignored if
+#'   \code{selection} is used.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
@@ -135,6 +138,10 @@ textstat_simil.dfm <- function(x, selection = NULL,
 
 #' @rdname textstat_simil
 #' @export
+#' @param upper whether the upper triangle of the symmetric \eqn{V \times V}
+#'   matrix is recorded. Only used when \code{value = "dist"}.
+#' @param diag whether the diagonal of the distance matrix should be recorded. .
+#'   Only used when \code{value = "dist"}.
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
 #'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
@@ -373,15 +380,20 @@ as.matrix.simil <- function(x, diag = 1.0, upper = TRUE, ...) {
     df
 }
 
+#' Coerce a textstat_simil or textstat_dist to a sparse Matrix format
+#' 
+#' Coerce a \link{textstat_simil} or \link{textstat_dist} to a sparse \pkg{Matrix} format.
+#' @param x input textstat object
+#' @keywords textstat internal
 #' @export
-as.Matrix <- function(x, ...) {
+as.Matrix <- function(x) {
     UseMethod("as.Matrix")
 }
 
 #' @export
 #' @method as.Matrix simil_pairwise
 #' @keywords textstat internal
-as.Matrix.simil_pairwise <- function(x, ...) {
+as.Matrix.simil_pairwise <- function(x) {
     sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
                  x = x$similarity,
                  dims = c(nlevels(x$x), nlevels(x$y)),

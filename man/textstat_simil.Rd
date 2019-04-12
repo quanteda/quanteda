@@ -27,8 +27,18 @@ difference will be computed:  \code{"documents"} for documents or
 \item{method}{method the similarity or distance measure to be used; see
 Details.}
 
-\item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
-Ignored if \code{selection} is used.}
+\item{min_simil}{numeric; a threshold for the similarity values below which similarity
+values will not be returned}
+
+\item{tri}{logical; if \code{TRUE} return only upper triangle (including
+diagonal), if the result were returned in a matrix-like format. Ignored if
+\code{selection} is used.}
+
+\item{upper}{whether the upper triangle of the symmetric \eqn{V \times V}
+matrix is recorded. Only used when \code{value = "dist"}.}
+
+\item{diag}{whether the diagonal of the distance matrix should be recorded. .
+Only used when \code{value = "dist"}.}
 
 \item{p}{The power of the Minkowski distance.}
 }
