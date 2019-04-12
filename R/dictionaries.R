@@ -42,7 +42,7 @@ check_entries <- function (dict) {
         if (any(!is_category)) {
             word <- unlist(entry[!is_category], use.names = FALSE)
             if (!is.character(word) || any(is.na(word))) {
-                stop("Non-character entries found in ", names(dict[i]))
+                stop("Non-character entries found in dictionary key \'", names(dict[i]), "\'")
             }
         }
         if (any(is_category)) {
