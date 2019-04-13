@@ -59,11 +59,11 @@
 #' tstat2 <- textstat_frequency(dfmat3, n = 10, groups = "President")
 #' 
 #' # plot frequencies
-#' ggplot(data = tstat2, aes(x = nrow(tstat2):1, y = frequency)) +
+#' ggplot(data = tstat2, aes(x = factor(nrow(tstat2):1), y = frequency)) +
 #'     geom_point() +
 #'     facet_wrap(~ group, scales = "free") +
 #'     coord_flip() +
-#'     scale_x_continuous(breaks = nrow(tstat2):1,
+#'     scale_x_discrete(breaks = nrow(tstat2):1,
 #'                        labels = tstat2$feature) +
 #'     labs(x = NULL, y = "Relative frequency")
 #' }
