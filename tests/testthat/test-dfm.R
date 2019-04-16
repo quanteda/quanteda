@@ -238,19 +238,6 @@ test_that("dfm.dfm works as expected", {
     )
 })
 
-test_that("dfm_sample works as expected", {
-    mt <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
-    expect_equal(ndoc(dfm_sample(mt, margin = "documents", size = 5)), 5)
-    expect_equal(ndoc(dfm_sample(mt, margin = "documents", size = 15, replace = TRUE)), 15)
-    expect_error(dfm_sample(mt, margin = "documents", size = 20),
-                 "size cannot exceed the number of documents \\(10\\)")
-    expect_error(dfm_sample(mt, margin = "features", size = 3500),
-                 "size cannot exceed the number of features \\(33\\d{2}\\)")
-    expect_error(dfm_sample(data_corpus_inaugural[1:10]),
-                 "only works on dfm objects")
-})
-
-
 test_that("cbind.dfm works as expected", {
     dfm1 <- dfm("This is one sample text sample")
     dfm2 <- dfm("More words here")

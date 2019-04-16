@@ -41,9 +41,8 @@ check_entries <- function (dict) {
         is_category <- vapply(entry, is.list, logical(1))
         if (any(!is_category)) {
             word <- unlist(entry[!is_category], use.names = FALSE)
-            if (any(!is.character(word))) {
-                word_error <- word[!is.character(word)]
-                stop("Non-character entries found: ", word_error)
+            if (!is.character(word) || any(is.na(word))) {
+                stop("Non-character entries found in dictionary key \'", names(dict[i]), "\'")
             }
         }
         if (any(is_category)) {
@@ -221,12 +220,21 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 
 #' Coerce a dictionary object into a list
 #' @param object the dictionary to be coerced
+#' @param flatten flatten the nested structure if \code{TRUE}
+#' @param levels integer vector indicating levels in the dictionary. Used only
+#'   when \code{flatten = TRUE}.
 #' @rdname dictionary-class
 #' @export
 setMethod("as.list",
           signature = c("dictionary2"),
-          function(x) {
-              simplify_dictionary(x)
+          function(x, flatten = FALSE, levels = 1:100) {
+              if (flatten) {
+                result <- flatten_dictionary(x, levels)
+                attr(result, "concatenator") <- NULL
+                return(result)
+              } else {                                
+                simplify_dictionary(x)
+              }
           })
 
 #' Coercion and checking functions for dictionary objects

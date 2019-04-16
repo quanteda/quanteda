@@ -81,16 +81,23 @@ A \link{corpus-class} class object containing the original texts,
 }
 \description{
 Creates a corpus object from available sources.  The currently available
-sources are: \itemize{ \item a \link{character} vector, consisting of one
-document per element; if the elements are named, these names will be used as
-document names. \item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}),
-whose default document id is a variable identified by \code{docid_field}; the
-text of the document is a variable identified by \code{textid_field}; and
-other variables are imported as document-level meta-data.  This matches the
-format of data.frames constructed by the the \pkg{readtext} package. \item a
-\link{kwic} object constructed by \code{\link{kwic}}. \item a \pkg{tm}
-\link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class object. \item a
-\link{corpus} object. }
+sources are:
+\itemize{
+\item a \link{character} vector, consisting of one document per 
+element; if the elements are named, these names will be used as document 
+names.
+\item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}), whose default
+document id is a variable identified by \code{docid_field}; the text of the
+document is a variable identified by \code{text_field}; and other variables
+are imported as document-level meta-data.  This matches the format of
+data.frames constructed by the the \pkg{readtext} package.
+\item a \link{kwic} object constructed by \code{\link{kwic}}.
+\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
+  with the fixed metadata
+  fields imported as \link{docvars} and corpus-level metadata imported
+  as \link{metacorpus} information.
+\item a \link{corpus} object.
+}
 }
 \details{
 The texts and document variables of corpus objects can also be

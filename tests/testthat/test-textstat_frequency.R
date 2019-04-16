@@ -20,7 +20,6 @@ test_that("test textstat_frequency without groups", {
                  group = rep('all', 4),
                  stringsAsFactors = FALSE)[1:2, ]
     )
-    
 })
 
 test_that("test textstat_frequency without groups", {
@@ -91,5 +90,26 @@ test_that("test textstat_frequency ties methods defaults work (min)", {
         data.frame(feature = c("a", "b", "d", "c"),
                    frequency = c(1, 1, 3, 4),
                    stringsAsFactors = FALSE)
+    )
+})
+
+test_that("test textstat_frequency with groups and weighted dfm (#1646)", {
+    dfmat <- dfm(c("a a b b c d", "a d d d", "a a a")) %>%
+        dfm_tfidf()
+    
+    expect_error(
+        textstat_frequency(dfmat, groups = c(1, 2, 2)),
+        "will not group a weighted dfm; use force = TRUE to override",
+        fixed = TRUE
+    )
+    expect_equivalent(
+        textstat_frequency(dfmat, groups = c(1, 2, 2), force = TRUE),
+        data.frame(feature = c("b", "c", "d", "a", "d", "a"),
+                   frequency = c(.95, .48, .18, 0, .53, .00),
+                   rank = c(1, 2, 3, 4, 1, 2),
+                   docfreq = c(1, 1, 1, 0, 1, 0),
+                   group = as.character(c(rep(1, 4), 2, 2)),
+                   stringsAsFactors = FALSE),
+        tolerance = .01
     )
 })

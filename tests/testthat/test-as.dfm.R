@@ -139,7 +139,7 @@ test_that("dfm2dataframe same as as.data.frame.dfm", {
 
 test_that("as.data.frame.dfm handles irregular feature names correctly", {
     skip_on_os("windows")
-    skip_on_appveyor()
+    skip_on_cran()
     mydfm <- dfm(data_char_sampletext, 
                  dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
                                               "飛機" = "if", "spec+ial" = "of")))
