@@ -367,8 +367,7 @@ tstat_obama
 Se puede utilizar estas distancias para graficar un dendrograma, armando clusters por presidente:
 
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
-library(quanteda.corpora)
-data(data_corpus_sotu, package = "quanteda.corpora")
+data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 
 dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
