@@ -268,7 +268,7 @@ textplot_scale1d(wf, doclabels = doclab,
 
 ## Correspondence Analysis
 
-You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).
+You can also plot the estimated document positions of a correspondence analysis (Nenadic and Greenacre 2007).
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Transform corpus to dfm

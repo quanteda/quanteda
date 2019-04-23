@@ -41,8 +41,8 @@
 <meta property="og:title" content="Convert token sequences into compound tokens — tokens_compound" />
 
 <meta property="og:description" content="Replace multi-token sequences with a multi-word, or &quot;compound&quot; token.  The
-resulting compound tokens will represent a phrase or multi-word expression, 
-concatenated with  concatenator (by default, the &quot;_&quot; character)
+resulting compound tokens will represent a phrase or multi-word expression,
+concatenated with concatenator (by default, the &quot;_&quot; character)
 to form a single &quot;token&quot;.  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a dfm." />
 <meta name="twitter:card" content="summary" />
@@ -85,7 +85,7 @@ subsequently as single tokens, for instance in constructing a dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -210,8 +210,8 @@ subsequently as single tokens, for instance in constructing a dfm." />
     <div class="ref-description">
     
     <p>Replace multi-token sequences with a multi-word, or "compound" token.  The
-resulting compound tokens will represent a phrase or multi-word expression, 
-concatenated with  <code>concatenator</code> (by default, the "<code>_</code>" character)
+resulting compound tokens will represent a phrase or multi-word expression,
+concatenated with <code>concatenator</code> (by default, the "<code>_</code>" character)
 to form a single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a <a href='dfm.html'>dfm</a>.</p>
     
@@ -229,16 +229,17 @@ subsequently as single tokens, for instance in constructing a <a href='dfm.html'
     </tr>
     <tr>
       <th>pattern</th>
-      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
-or <a href='textstat_collocations.html'>collocations</a> object.  See <a href='pattern.html'>pattern</a> for details.</p></td>
+      <td><p>a character vector, list of character vectors,
+<a href='dictionary.html'>dictionary</a>, or <a href='textstat_collocations.html'>collocations</a> object.  See <a href='pattern.html'>pattern</a> for
+details.</p></td>
     </tr>
     <tr>
       <th>concatenator</th>
-      <td><p>the concatenation character that will connect the words 
-making up the multi-word sequences.  The default <code>_</code> is  
-recommended since it will not be removed during normal cleaning and 
-tokenization (while nearly all other punctuation characters, at least those
-in the Unicode punctuation class [P] will be removed).</p></td>
+      <td><p>the concatenation character that will connect the words
+making up the multi-word sequences.  The default <code>_</code> is recommended
+since it will not be removed during normal cleaning and tokenization (while
+nearly all other punctuation characters, at least those in the Unicode
+punctuation class [P] will be removed).</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
@@ -248,99 +249,93 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>logical; if <code>TRUE</code>, ignore case when matching</p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching.
+When <code>pattern</code> is a <code>collocations</code>, case-sensitive operation is
+significantly faster than case-insensitive operation.</p></td>
     </tr>
     <tr>
       <th>join</th>
-      <td><p>logical; if <code>TRUE</code>, join overlapping compounds</p></td>
+      <td><p>logical; if <code>TRUE</code>, join overlapping compounds into a single
+compound; otherwise, form these separately.  See examples.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <a href='tokens.html'>tokens</a> object in which the token sequences matching <code>pattern</code>
-have been replaced by  compound "tokens" joined by the concatenator</p>
+    <p>A <a href='tokens.html'>tokens</a> object in which the token sequences matching
+  <code>pattern</code> have been replaced by  compound "tokens" joined by the
+  concatenator.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Patterns to be compounded (naturally) consist of multi-word sequences,
+  and how these are expected in <code>pattern</code> is very specific.  If the
+  elements to be compounded are supplied as space-delimited elements of a
+  character vector, wrap the vector in <code><a href='phrase.html'>phrase</a></code>.  If the elements
+  to be compounded are separate elements of a character vector, supply it as
+  a list where each list element is the sequence of character elements.</p>  
+<p>See the examples below.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"The new law included a capital gains tax, and an inheritance tax."</span>,
-             <span class='st'>"New York City has raised taxes: an income tax and inheritance taxes."</span>)
-<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"The United Kingdom is leaving the European Union."</span>
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># for lists of sequence elements</span>
-<span class='no'>myseqs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tax"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"income"</span>, <span class='st'>"tax"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"capital"</span>, <span class='st'>"gains"</span>, <span class='st'>"tax"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"inheritance"</span>, <span class='st'>"tax"</span>))
-(<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>toks1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>myseqs</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='co'># character vector - not compounded</span>
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>, <span class='st'>"European"</span>, <span class='st'>"Union"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt; [1] "The"               "new"               "law"              
-#&gt; [4] "included"          "a"                 "capital_gains_tax"
-#&gt; [7] "and"               "an"                "inheritance_tax"  
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "New"         "York"        "City"        "has"         "raised"     
-#&gt;  [6] "taxes"       "an"          "income_tax"  "and"         "inheritance"
-#&gt; [11] "taxes"      
-#&gt; </div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (40.6% sparse).
-#&gt; 2 x 16 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    the new law included a and an inheritance york city has raised taxes
-#&gt;   text1   1   1   1        1 1   1  1           0    0    0   0      0     0
-#&gt;   text2   0   1   0        0 0   1  1           1    1    1   1      1     2
-#&gt;        features
-#&gt; docs    income_tax capital_gains_tax inheritance_tax
-#&gt;   text1          0                 1               1
-#&gt;   text2          1                 0               0</div><div class='input'>
-<span class='co'># when used as a dictionary for dfm creation</span>
-<span class='no'>dict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax*"</span>)))
-(<span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>toks1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>dict1</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; text1 :
-#&gt; [1] "The"               "new"               "law"              
-#&gt; [4] "included"          "a"                 "capital_gains_tax"
-#&gt; [7] "and"               "an"                "inheritance_tax"  
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "New"               "York"              "City"             
-#&gt;  [4] "has"               "raised"            "taxes"            
-#&gt;  [7] "an"                "income_tax"        "and"              
-#&gt; [10] "inheritance_taxes"
+#&gt; [1] "The"      "United"   "Kingdom"  "is"       "leaving"  "the"      "European"
+#&gt; [8] "Union"   
 #&gt; </div><div class='input'>
-<span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
-(<span class='no'>toks4</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>toks1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>dict1</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='co'># elements separated by spaces - not compounded</span>
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt; [1] "The"               "new"               "law"              
-#&gt; [4] "included"          "a"                 "capital_gains_tax"
-#&gt; [7] "and"               "an"                "inheritance_tax"  
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "New"               "York"              "City"             
-#&gt;  [4] "has"               "raised"            "taxes"            
-#&gt;  [7] "an"                "income_tax"        "and"              
-#&gt; [10] "inheritance_taxes"
+#&gt; [1] "The"      "United"   "Kingdom"  "is"       "leaving"  "the"      "European"
+#&gt; [8] "Union"   
 #&gt; </div><div class='input'>
-<span class='co'># dictionaries w/glob matches</span>
-<span class='no'>dict2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>negative</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"bad* word*"</span>, <span class='st'>"negative"</span>, <span class='st'>"awful text"</span>),
-                          <span class='kw'>positive</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"good stuff"</span>, <span class='st'>"like? th??"</span>)))
-<span class='no'>toks5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"I liked this, when we can use bad words, in awful text."</span>,
-                 <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"Some damn good stuff, like the text, she likes that too."</span>))
-<span class='fu'>tokens_compound</span>(<span class='no'>toks5</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>dict2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; txt1 :
-#&gt;  [1] "I"          "liked_this" ","          "when"       "we"        
-#&gt;  [6] "can"        "use"        "bad_words"  ","          "in"        
-#&gt; [11] "awful_text" "."         
-#&gt; 
-#&gt; txt2 :
-#&gt;  [1] "Some"       "damn"       "good_stuff" ","          "like"      
-#&gt;  [6] "the"        "text"       ","          "she"        "likes_that"
-#&gt; [11] "too"        "."         
-#&gt; </div><div class='input'>
-<span class='co'># with collocations</span>
-<span class='no'>tstat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"capital gains taxes are worse than inheritance taxes"</span>),
-                              <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>toks6</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new law included capital gains taxes and inheritance taxes."</span>)
-<span class='fu'>tokens_compound</span>(<span class='no'>toks6</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>tstat</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='co'># list of characters - is compounded</span>
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt; [1] "The"                 "new"                 "law"                
-#&gt; [4] "included"            "capital_gains_taxes" "and"                
-#&gt; [7] "inheritance_taxes"   "."                  
+#&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
+#&gt; [5] "the"            "European_Union"
+#&gt; </div><div class='input'>
+<span class='co'># elements separated by spaces, wrapped in phrase)() - is compounded</span>
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
+#&gt; [5] "the"            "European_Union"
+#&gt; </div><div class='input'>
+<span class='co'># supplied as values in a dictionary (same as list) - is compounded</span>
+<span class='co'># (keys do not matter)</span>
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='st'>"United Kingdom"</span>,
+                                      <span class='kw'>key2</span> <span class='kw'>=</span> <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
+#&gt; [5] "the"            "European_Union"
+#&gt; </div><div class='input'><span class='co'># pattern as dictionaries with glob matches</span>
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"U* K*"</span>))), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
+#&gt; [5] "the"            "European"       "Union"         
+#&gt; </div><div class='input'>
+<span class='co'># supplied as collocations - is compounded</span>
+<span class='no'>colls</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new European Union is not the old European Union."</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>colls</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "The"            "United"         "Kingdom"        "is"            
+#&gt; [5] "leaving"        "the"            "European_Union"
+#&gt; </div><div class='input'>
+<span class='co'># note the differences caused by join = FALSE</span>
+<span class='no'>compounds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"the"</span>, <span class='st'>"European"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>))
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>compounds</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "The"                "United"             "Kingdom"           
+#&gt; [4] "is"                 "leaving"            "the_European_Union"
+#&gt; </div><div class='input'><span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>compounds</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "The"            "United"         "Kingdom"        "is"            
+#&gt; [5] "leaving"        "the_European"   "European_Union"
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -349,12 +344,12 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Kenneth Benoit and Kohei Watanabe</p>
   </div>
 </div>
 

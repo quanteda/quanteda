@@ -87,7 +87,7 @@ ggplot2 object, you can modify the plot by adding ggplot2 layers
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -275,7 +275,7 @@ list to <code>textplot_xray</code>.</p></li>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='no'>tplot</span> <span class='kw'>&lt;-</span> <span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"american"</span>),
                    <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"people"</span>))
-<span class='no'>tplot</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>keyword</span>) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>))
+<span class='no'>tplot</span> + <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>keyword</span>) + <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/scale_manual'>scale_color_manual</a></span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>))
 
 <span class='co'># adjust the names of the document names</span>
 <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>corp</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Year"</span>, <span class='st'>"President"</span>)), <span class='fl'>1</span>, <span class='no'>paste</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>", "</span>)

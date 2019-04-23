@@ -4,7 +4,7 @@
 \alias{dfm_group}
 \title{Combine documents in a dfm by a grouping variable}
 \usage{
-dfm_group(x, groups = NULL, fill = FALSE)
+dfm_group(x, groups = NULL, fill = FALSE, force = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm}}
@@ -18,6 +18,12 @@ See \link{groups} for details.}
 all levels of the factor when forming the new "documents" of the grouped
 dfm.  This will result in documents with zero feature counts for levels not
 observed.  Has no effect if the \code{groups} variable(s) are not factors.}
+
+\item{force}{logical; if \code{TRUE}, group by summing existing counts, even
+if the dfm has been weighted.  This can result in invalid sums, such as
+adding log counts (when a dfm has been weighted by \code{"logcount"} for
+instance using \code{\link{dfm_weight}}).  Does not apply to the term
+weight schemes "count" and "prop".}
 }
 \value{
 \code{dfm_group} returns a \link{dfm} whose documents are equal to

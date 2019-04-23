@@ -1,7 +1,6 @@
-context("test dfm_select")
+context("test dfm_group")
 
 test_that("test dfm_group", {
-    
     testdfm <- dfm(c("a b c c", "b c d", "a"))
     expect_equivalent(
         as.matrix(dfm_group(testdfm, c("doc1", "doc1", "doc2"))),
@@ -17,7 +16,6 @@ test_that("test dfm_group", {
 })
 
 test_that("dfm_group works with empty documents", {
-    
     testdfm <- dfm(c("a b c c", "b c d", ""))
     expect_equivalent(
         as.matrix(dfm_group(testdfm, c("doc1", "doc1", "doc2"))),
@@ -57,7 +55,6 @@ test_that("dfm.character groups works (#794)", {
 })
 
 test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
-    
     corp <- corpus(c("a b c c", "b c d", "a"),
                    docvars = data.frame(grp = factor(c("A", "A", "B"), levels = LETTERS[1:4])))
     testdfm <- dfm(corp)
@@ -148,9 +145,7 @@ test_that("test dfm_group with wrongly dimensioned groups variables", {
     )
 })
 
-
 test_that("test dfm_group keeps group-level variables", {
-    
     corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
                    docvars = data.frame(grp = c("D", "D", "A", "C"), 
                                         var1 = c(1, 1, 2, 2),
@@ -220,6 +215,36 @@ test_that("is_grouped is working", {
     
 })
 
+test_that("dfm_group resets weighting scheme to count (#1545)", {
+    mt1 <- dfm_weight(dfm(c("a b c c", "b c d", "a")), "boolean")
+    expect_equal(mt1@weightTf$scheme, "boolean")
+    
+    mt2 <- dfm_group(mt1, c("doc1", "doc1", "doc2"))
+    expect_equal(mt2@weightTf$scheme, "boolean")
+    
+    mt3 <- dfm_weight(mt2, "logcount", force = TRUE)
+    expect_equal(mt3@weightTf$scheme, "logcount")
+})
+
+test_that("force argument works as expected (#1545)", {
+    corp <- corpus(c("He went out to buy a car", 
+                     "He went out and bought pickles and onions",
+                     "He stayed home instead."),
+                   docvars = data.frame(grp = c(1, 1, 2)))
+    dfmat <- dfm(corp)
+    dfmat_tfprop <- dfm_weight(dfmat, "prop")
+    dfmat_tfidf <- dfm_tfidf(dfmat)
+
+    expect_is(dfm_group(dfmat_tfprop, groups = "grp", force = FALSE), "dfm")
+    expect_is(dfm_group(dfmat_tfprop, groups = "grp", force = TRUE), "dfm")
+    
+    expect_error(
+        dfm_group(dfm_group(dfmat_tfidf, groups = "grp", force = FALSE)),
+        "will not group a weighted dfm; use force = TRUE to override"
+    )
+    expect_is(dfm_group(dfmat_tfidf, groups = "grp", force = TRUE), "dfm")
+})
+
 test_that("group_docvar drops list column (#1553)", {
     data <- data.frame(vec1 = c(1, 3, 3, 6),
                        vec2 = c("a", "b", "b", "c"))
@@ -236,5 +261,4 @@ test_that("group_docvar drops list column (#1553)", {
                  data.frame(data.frame(vec1 = c(1, 3, 6),
                                        vec2 = c("a", "b", "c"),
                                        row.names = c(1, 2, 3))))
-    
 })

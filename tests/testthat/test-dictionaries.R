@@ -16,7 +16,9 @@ test_that("dictionary constructors fail if all elements unnamed: implicit", {
 
 test_that("dictionary constructors fail if a value is numeric", {
     expect_error(dictionary(list(first =  c("a", "b"), second = 2016)),
-                 "Non-character entries found: 2016")
+                 "Non-character entries found in dictionary key 'second'")
+    expect_error(dictionary(list(first =  c("a", "b"), second = c("c", NA))),
+                 "Non-character entries found in dictionary key 'second'")
 })
 
 test_that("dictionary constructor ignores extra arguments", {
@@ -167,14 +169,35 @@ test_that("dictionary_depth works correctly", {
 
 test_that("as.list is working", {
     
-    dict <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
+    lis <- list(top1 = c("a", "b"), top2 = c("c", "d"), 
+                top3 = list(sub1 = c("e", "f"),
+                            sub2 = c("f", "h")))
+    dict <- dictionary(lis)
     expect_equal(
         as.list(dict),
-        list(one = c("a", "b"), two = c("c", "d"))
+        lis
     )
     expect_equal(
-        as.list(dict)[[1]],
-        c("a", "b")
+      as.list(dict, flatten = FALSE, levels = 1),
+      lis
+    )
+    expect_equal(
+        as.list(dict, flatten = TRUE),
+        list(top1 = c("a", "b"),
+             top2 = c("c", "d"),
+             top3.sub1 = c("e", "f"),
+             top3.sub2 = c("f", "h"))
+    )
+    expect_equal(
+      as.list(dict, flatten = TRUE, levels = 1),
+      list(top1 = c("a", "b"),
+           top2 = c("c", "d"),
+           top3 = c("e", "f", "f", "h"))
+    )
+    expect_equal(
+      as.list(dict, flatten = TRUE, levels = 2),
+      list(sub1 = c("e", "f"),
+           sub2 = c("f", "h"))
     )
 })
 

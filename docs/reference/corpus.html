@@ -46,7 +46,7 @@ a character vector, consisting of one document per element; if
   the elements are named, these names will be used as document names.
 a data.frame (or a tibble tbl_df), whose default
 document id is a variable identified by docid_field; the text of the
-document is a variable identified by textid_field; and other variables
+document is a variable identified by text_field; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the readtext package.
 a kwic object constructed by kwic.
@@ -96,7 +96,7 @@ a corpus object.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -226,7 +226,7 @@ sources are:</p><ul>
   the elements are named, these names will be used as document names.</p></li>
 <li><p>a <a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a> (or a <span class="pkg">tibble</span> <code>tbl_df</code>), whose default
 document id is a variable identified by <code>docid_field</code>; the text of the
-document is a variable identified by <code>textid_field</code>; and other variables
+document is a variable identified by <code>text_field</code>; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the <span class="pkg">readtext</span> package.</p></li>
 <li><p>a <a href='kwic.html'>kwic</a> object constructed by <code><a href='kwic.html'>kwic</a></code>.</p></li>
@@ -384,8 +384,8 @@ therefore being twice the number of rows in the kwic.</p></td>
 #&gt;        Greens   322    679        21       Greens
 #&gt;        Labour   298    683        29       Labour
 #&gt; 
-#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Sat Feb  2 14:11:46 2019
+#&gt; Source: /Users/smueller/Documents/GitHub/quanteda/docs/reference/* on x86_64 by smueller
+#&gt; Created: Tue Apr 16 17:08:50 2019
 #&gt; Notes: </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
@@ -403,18 +403,18 @@ therefore being twice the number of rows in the kwic.</p></td>
 }</div><div class='output co'>#&gt; Corpus consisting of 9 documents:
 #&gt; 
 #&gt;   Text Types Tokens Sentences       datetimestamp id language
-#&gt;  text1  1125   3280        88 2019-02-02 03:11:46  1       en
-#&gt;  text2   142    260         4 2019-02-02 03:11:46  2       en
-#&gt;  text3   251    499        15 2019-02-02 03:11:46  3       en
-#&gt;  text4   322    679        21 2019-02-02 03:11:46  4       en
-#&gt;  text5   298    683        29 2019-02-02 03:11:46  5       en
-#&gt;  text6   251    483        14 2019-02-02 03:11:46  6       en
-#&gt;  text7    77    114         5 2019-02-02 03:11:46  7       en
-#&gt;  text8    88    134         4 2019-02-02 03:11:46  8       en
-#&gt;  text9   346    723        27 2019-02-02 03:11:46  9       en
+#&gt;  text1  1125   3280        88 2019-04-16 15:08:50  1       en
+#&gt;  text2   142    260         4 2019-04-16 15:08:50  2       en
+#&gt;  text3   251    499        15 2019-04-16 15:08:50  3       en
+#&gt;  text4   322    679        21 2019-04-16 15:08:50  4       en
+#&gt;  text5   298    683        29 2019-04-16 15:08:50  5       en
+#&gt;  text6   251    483        14 2019-04-16 15:08:50  6       en
+#&gt;  text7    77    114         5 2019-04-16 15:08:50  7       en
+#&gt;  text8    88    134         4 2019-04-16 15:08:50  8       en
+#&gt;  text9   346    723        27 2019-04-16 15:08:50  9       en
 #&gt; 
 #&gt; Source: Converted from tm Corpus 'tmCorp'
-#&gt; Created: Sat Feb  2 14:11:46 2019
+#&gt; Created: Tue Apr 16 17:08:50 2019
 #&gt; Notes: </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
 <span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>letter_factor</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
@@ -440,7 +440,7 @@ therefore being twice the number of rows in the kwic.</p></td>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source: From a data.frame called mydf.
-#&gt; Created: Sat Feb  2 14:11:46 2019
+#&gt; Created: Tue Apr 16 17:08:51 2019
 #&gt; Notes: </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
@@ -477,7 +477,7 @@ therefore being twice the number of rows in the kwic.</p></td>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source: Corpus created from kwic(x, keywords = "")
-#&gt; Created: Sat Feb  2 14:11:46 2019
+#&gt; Created: Tue Apr 16 17:08:51 2019
 #&gt; Notes: </div><div class='input'><span class='co'># from a kwic</span>
 <span class='no'>kw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_char_sampletext</span>, <span class='st'>"econom*"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>))</div><div class='output co'>#&gt; Corpus consisting of 10 documents:
@@ -495,7 +495,7 @@ therefore being twice the number of rows in the kwic.</p></td>
 #&gt;  text5.post     5      5         1   text1  504 504 economy    post
 #&gt; 
 #&gt; Source: Corpus created from kwic(x, keywords = "")
-#&gt; Created: Sat Feb  2 14:11:46 2019
+#&gt; Created: Tue Apr 16 17:08:51 2019
 #&gt; Notes: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>, <span class='kw'>split_context</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
 #&gt; 
 #&gt;        Text Types Tokens Sentences keyword
@@ -506,7 +506,7 @@ therefore being twice the number of rows in the kwic.</p></td>
 #&gt;  text1.L504    10     11         1 economy
 #&gt; 
 #&gt; Source: Corpus created from kwic(x, keywords = "")
-#&gt; Created: Sat Feb  2 14:11:46 2019
+#&gt; Created: Tue Apr 16 17:08:51 2019
 #&gt; Notes: </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>, <span class='kw'>split_context</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;                                                                text1.L162 
 #&gt;                  "reefed out of the Irish economy in pursuit of a policy" 
 #&gt;                                                                text1.L202 
