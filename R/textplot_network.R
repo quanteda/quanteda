@@ -72,7 +72,7 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  vertex_labelfont = NULL,
-                                 vertex_labelsize = 2,
+                                 vertex_labelsize = 5,
                                  offset = NULL, ...) {
 
     if (!sum(x)) stop(message_error("dfm_empty"))
@@ -94,7 +94,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = "#4D4D4D", vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  vertex_labelfont = NULL,
-                                 vertex_labelsize = 2,
+                                 vertex_labelsize = 5,
                                  offset = NULL,
                                  ...) {
 
