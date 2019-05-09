@@ -13,11 +13,7 @@ knitr::opts_chunk$set(
 
 # quanteda: Quantitative Analysis of Textual Data
 
-<div class="panel panel-default">
-<div class="panel-body"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Submit your paper to <a href="https://www.poltextconference.org/">POLTEXT symposium in Tokyo</a> on 14-15 September 2019</div>
-</div>
-
-**quanteda** is an R package for managing and analysing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
+**quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 The package is designed for R users needing to apply natural language
 processing to texts, from documents to final analysis.  Its
