@@ -4,6 +4,10 @@
 
 * Add `flatten` and `levels` arguments to `as.list.dictionary2()` to enable more flexible conversion of dictionary objects. (#1661)
 
+## Bug fixes and stability enhancements
+
+* `kwic.corpus()` and `kwic.tokens()` behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (#1684)
+
 # quanteda 1.4.3
 
 ## Bug fixes and stability enhancements
