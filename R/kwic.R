@@ -70,9 +70,6 @@ kwic.corpus <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-
-    if (is.collocations(pattern) || is.dictionary(pattern))
-        pattern <- phrase(pattern)
     kwic(tokens(x, ...),
          pattern, window, valuetype, separator, case_insensitive)
 }
