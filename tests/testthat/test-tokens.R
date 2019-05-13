@@ -580,3 +580,128 @@ test_that("types are encoded when necessarly", {
     
 })
 
+test_that("tokens.tokens warns about unused arguments", {
+    expect_warning(fixed = TRUE,
+        tokens(tokens("one two three"), notanarg = TRUE),
+        "Argument notanarg not used."
+    )
+})
+
+test_that("tokens.tokens(x, remove_hyphens = TRUE, verbose = TRUE) works as expected  (#1683)", {
+    expect_message(
+        tokens(tokens("No hyphens here."), remove_hyphens = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Hyphens oft-cited here."), remove_hyphens = TRUE, verbose = TRUE),
+        "separating hyphenated words"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Hyphens oft-cited here."), remove_hyphens = TRUE, verbose = TRUE)),
+        c("Hyphens", "oft", "-", "cited", "here", ".")
+    )
+})
+
+test_that("tokens.tokens(x, remove_twitter = TRUE, verbose = TRUE) works as expected  (#1683)", {
+    expect_message(
+        tokens(tokens("No Twitter."), remove_twitter = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing #hashtags."), remove_twitter = TRUE, verbose = TRUE),
+        "removing Twitter characters"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing #hashtags."), remove_twitter = TRUE, verbose = TRUE)),
+        c("Removing", "hashtags", ".")
+    )
+})
+    
+test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing no number words."), remove_numbers = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing 1 number words."), remove_numbers = TRUE, verbose = TRUE),
+        "removing numbers"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing 1 number words."), remove_numbers = TRUE, verbose = TRUE)),
+        c("Removing", "number", "words", ".")
+    )
+})
+
+test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing no £ punctuation"), remove_punct = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing £ punctuation."), remove_punct = TRUE, verbose = TRUE),
+        "removing punctuation"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing £ punctuation."), remove_punct = TRUE, verbose = TRUE)),
+        c("Removing", "£", "punctuation")
+    )
+})
+
+test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing no symbols."), remove_symbols = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing € symbols."), remove_symbols = TRUE, verbose = TRUE),
+        "removing symbols"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing € symbols."), remove_symbols = TRUE, verbose = TRUE)),
+        c("Removing", "symbols", ".")
+    )
+})
+
+test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing separators", remove_separators = FALSE), remove_separators = TRUE, verbose = TRUE),
+        "removing separators"
+    )
+    expect_message(
+        tokens(tokens("Removing no separators", remove_separators = TRUE), remove_separators = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_identical(
+        as.character(
+            tokens(tokens("Removing separators", remove_separators = FALSE), remove_separators = TRUE, verbose = TRUE)
+        ),
+        c("Removing", "separators")
+    )
+    expect_message(
+        tokens(tokens("Removing separators", remove_separators = TRUE), verbose = TRUE),
+        c("total elapsed:  0.+ seconds")
+    )
+})
+
+
+test_that("tokens.tokens(x, remove_url = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"), remove_url = TRUE, verbose = TRUE),
+        "removing URLs"
+    )
+    expect_message(
+        tokens(tokens("Removing no URLs"), remove_url = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"), remove_url = TRUE, verbose = TRUE)),
+            c("Removing", "URLs")
+    )
+})
+
+test_that("tokens.tokens(x, nrgams = 2, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("one two three"), ngrams = 2L, verbose = TRUE),
+        "creating ngrams"
+    )
+})
