@@ -677,7 +677,7 @@ test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as e
     )
     expect_message(
         tokens(tokens("Removing separators", remove_separators = TRUE), verbose = TRUE),
-        c("total elapsed:  0.+ seconds")
+        c("total elapsed:  .+ seconds")
     )
 })
 
