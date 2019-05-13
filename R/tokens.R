@@ -704,7 +704,7 @@ tokens_internal <- function(x,
         if (remove_numbers)
             regex <- c(regex, "^[\\p{N}]+$")
         if (remove_punct)
-            regex <- c(regex, "^[\\p{P}\\p{S}]+$")
+            regex <- c(regex, "^[\\p{P}]+$")
         if (remove_symbols)
             regex <- c(regex, "^[\\p{S}]+$")
         if (remove_separators)
@@ -749,10 +749,9 @@ tokens_word <- function(txt,
         txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", "")
         tok <- stri_split_boundaries(txt, type = "word",
                                      # this is what kills currency symbols, Twitter tags, URLs
-                                     skip_word_none = remove_punct && remove_separators,
+                                     skip_word_none = FALSE, # remove_punct && remove_separators,
                                      # but does not remove 4u, 2day, etc.
                                      skip_word_number = remove_numbers)
-
     }
     return(tok)
 }

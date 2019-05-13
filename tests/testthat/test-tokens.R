@@ -705,3 +705,19 @@ test_that("tokens.tokens(x, nrgams = 2, verbose = TRUE) works as expected (#1683
         "creating ngrams"
     )
 })
+
+test_that("symbols and punctuation are handled separately (#1445)", {
+    txt <- "£ € 👏 Rock on❗ 💪️🎸"
+    expect_identical(
+        as.character(tokens(txt, what = "word", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.character(tokens(txt, what = "word", remove_symbols = FALSE, remove_punct = FALSE))
+    )
+    expect_identical(
+        as.character(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.character(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = FALSE))
+    )
+    expect_identical(
+        as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = FALSE))
+    )
+})
