@@ -653,12 +653,15 @@ tokens_internal <- function(x,
     for (i in seq_along(x)) {
 
         if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
-        if (what %in% c("word", "fasterword")) {
+        if (what %in% c("word", "fasterword", "fastestword")) {
             temp <- preserve_special(x[[i]], remove_hyphens, remove_url, remove_twitter, verbose)
             temp <- tokens_word(temp, what, remove_numbers, remove_punct, remove_symbols,
                                 remove_separators, verbose)
-        } else if (what == "fastestword") {
-            temp <- tokens_word(x[[i]], what, FALSE, FALSE, FALSE, FALSE, verbose)
+            if (remove_twitter && remove_punct && what %in% c("fasterword", "fastestword")) {
+                temp <- lapply(temp, stri_replace_all_fixed, c("#", "@"), c("", ""), vectorize_all = FALSE)
+            }
+        # } else if (what == "fastestword") {
+        #     temp <- tokens_word(x[[i]], what, FALSE, FALSE, FALSE, FALSE, verbose)
         } else if (what == "character") {
             temp <- tokens_character(x[[i]], remove_punct, remove_symbols,
                                      remove_separators, verbose)
@@ -688,7 +691,7 @@ tokens_internal <- function(x,
                    padding = FALSE,
                    types = attr(x[[length(x)]], "types") # last block has all the types
                    )
-    if (what %in% c("word", "fasterword")) {
+    if (what %in% c("word", "fasterword", "fastestword")) {
 
         types <- types(x)
         if (!remove_punct || remove_punct)
@@ -714,7 +717,7 @@ tokens_internal <- function(x,
         if (length(regex))
             x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex")
     }
-
+    
     if (!identical(ngrams, 1L)) {
         if (verbose) catm("...creating ngrams\n")
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)

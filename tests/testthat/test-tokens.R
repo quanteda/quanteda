@@ -340,7 +340,6 @@ test_that("remove_hyphens is working correctly", {
 })
 
 test_that("tokens.tokens() does nothing by default", {
-    
     toks <- tokens(data_corpus_inaugural, 
                    remove_numbers = FALSE,
                    remove_punct = FALSE,
@@ -350,7 +349,6 @@ test_that("tokens.tokens() does nothing by default", {
                    remove_hyphens = FALSE,
                    remove_url = FALSE)
     expect_equal(toks, tokens(toks))
-    
 })
 
 test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
@@ -720,4 +718,43 @@ test_that("symbols and punctuation are handled separately (#1445)", {
         as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = TRUE)),
         as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = FALSE))
     )
+})
+
+test_that("test that what = \"word\" works the same as \"fast(er|est)\" word", {
+    
+    chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003",
+               "#tag @user", "abc be-fg hi 100kg 2017", "a b c d e")
+    
+    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_numbers = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_numbers = TRUE) %>% as.list())
+    
+    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_symbols = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_symbols = TRUE) %>% as.list())
+    
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_punct = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_punct = TRUE) %>% as.list())
+    
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
+    suppressWarnings(
+        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list(),
+                     tokens(chars, what = "fasterword", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list())
+    )
+    suppressWarnings(
+        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list(),
+                     tokens(chars, what = "fastestword", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list())
+    )
+    
+    expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_hyphens = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_hyphens = TRUE) %>% as.list())
 })
