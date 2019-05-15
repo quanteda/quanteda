@@ -262,6 +262,10 @@ message_error <- function(key = NULL) {
 #' 
 #' Return a sample from a vector within a grouping variable.
 #' @param x any vector
+#' @param size the number of items to sample within each group, as a positive
+#'   number or a vector of numbers equal in length to the number of groups. If
+#'   \code{NULL}, the sampling is stratified by group in the original group
+#'   sizes.
 #' @param group a grouping vector equal in length to \code{length(x)}
 #' @param replace logical; should sampling be with replacement?
 #' @return \code{x} resampled within groups
@@ -271,7 +275,18 @@ message_error <- function(key = NULL) {
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
 #' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
 #' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
-sample_bygroup <- function(x, group, replace = FALSE) {
-    result <- lapply(split(x, group), sample, replace = replace)
+#' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
+#' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
+sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
+    xsplit <- split(x, group)
+    if (is.null(size)) 
+        size <- lengths(xsplit)
+    if (length(size) > 1 && length(size) != length(xsplit))
+        stop("size not equal in length to the number of groups")
+    if (length(size) == 1)
+        size <- rep(size, length(xsplit))
+    result <- lapply(seq_along(xsplit), function(y) {
+        sample(xsplit[[y]], size = size[y], replace = replace)
+    })
     unlist(result, use.names = FALSE)
 } 
