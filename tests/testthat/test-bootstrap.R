@@ -8,8 +8,8 @@ test_that("bootstrap_dfm works with character and corpus objects", {
                    docvars = data.frame(country = c("UK", "USA", "UK"),
                                         year = c(1990, 2000, 2005)),
                    metacorpus = list(notes = "Example showing how corpus_reshape() works."))
-    set.seed(10)
 
+    set.seed(10)
     dfmatresamp1 <- bootstrap_dfm(corp, n = 10)
     expect_equal(dfmatresamp1[[1]], dfm(corp))
 

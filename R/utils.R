@@ -286,7 +286,10 @@ sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
     if (length(size) == 1)
         size <- rep(size, length(xsplit))
     result <- lapply(seq_along(xsplit), function(y) {
-        sample(xsplit[[y]], size = size[y], replace = replace)
+        # workaround for the problem that sample(2) is the same as sample(1:2)!
+        as.integer(
+            sample(as.character(xsplit[[y]]), size = size[y], replace = replace)
+        )
     })
     unlist(result, use.names = FALSE)
 } 
