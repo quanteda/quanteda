@@ -20,8 +20,8 @@ features in \code{x} and \code{y} is computed.}
 difference will be computed:  \code{"documents"} for documents or
 \code{"features"} for word/term features.}
 
-\item{method}{method the similarity or distance measure to be used; see
-Details.}
+\item{method}{character; the method identifying the similarity or distance
+measure to be used; see Details.}
 
 \item{p}{The power of the Minkowski distance.}
 

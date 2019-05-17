@@ -3,6 +3,8 @@
 \name{textstat_simil}
 \alias{textstat_simil}
 \alias{textstat_dist}
+\alias{as.matrix.textstat_simil}
+\alias{as.list.textstat_simil}
 \title{Similarity and distance computation between documents or features}
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
@@ -13,19 +15,25 @@ textstat_simil(x, selection = NULL, margin = c("documents",
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
   "minkowski"), upper = FALSE, diag = FALSE, p = 2)
+
+\method{as.matrix}{textstat_simil}(x, ...)
+
+\method{as.list}{textstat_simil}(x, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
 \item{selection}{a valid index for document or feature names (depending on
-\code{margin}) from \code{x}, to be selected for comparison}
+\code{margin}) from \code{x}, to be selected for comparison.  The selected
+document(s) or feature(s) will form the second of the pairs returned.  
+(See Value.)}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or
 \code{"features"} for word/term features.}
 
-\item{method}{method the similarity or distance measure to be used; see
-Details.}
+\item{method}{character; the method identifying the similarity or distance
+measure to be used; see Details.}
 
 \item{min_simil}{numeric; a threshold for the similarity values below which similarity
 values will not be returned}
@@ -43,13 +51,16 @@ Only used when \code{value = "dist"}.}
 \item{p}{The power of the Minkowski distance.}
 }
 \value{
-By default, \code{textstat_simil} and \code{textstat_dist} return
-  \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
-  matrix is returned matching distances to the documents or features
-  identified in the selection.
+A \link{data.frame} containing the pairs of documents or features
+  whose similarity or distance will be compared.  
+     
+  These can be transformed easily into a list format using
+  \code{as.list()}, which returns a list for each unique element of the
+  second of the pairs.
   
-  These can be transformed into a list format using
-  \code{\link{as.list.dist}}, if that format is preferred.
+  You can also transform the output in matrix object using
+  \code{as.matrix()}, which could (for a \code{textstat_dist} object) be
+  further transformed into a \link{dist} object.)
 }
 \description{
 These functions compute matrixes of distances and similarities between
@@ -76,7 +87,7 @@ If you want to compute similarity on a "normalized" dfm object
 \examples{
 # similarities for documents
 dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-          remove_punct = TRUE, remove = stopwords("english"))
+             remove_punct = TRUE, remove = stopwords("english"))
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 as.matrix(tstat1)
 as.list(tstat1)
@@ -120,8 +131,7 @@ as.list(tstat2)
   All other measures are described in the \pkg{proxy} package.
 }
 \seealso{
-\code{\link{textstat_dist}},
-  \code{\link[quanteda]{as.matrix.simil}},
-  \code{\link[quanteda]{as.list.dist}}, \code{\link[stats]{dist}},
-  \code{\link[stats]{as.dist}}
+\code{\link[stats]{as.dist}}
 }
+\keyword{internal}
+\keyword{textstat}

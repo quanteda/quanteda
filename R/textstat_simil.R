@@ -7,12 +7,14 @@
 #' sparse \link{dfm} objects.
 #' @param x a \link{dfm} object
 #' @param selection a valid index for document or feature names (depending on
-#'   \code{margin}) from \code{x}, to be selected for comparison
+#'   \code{margin}) from \code{x}, to be selected for comparison.  The selected
+#'   document(s) or feature(s) will form the second of the pairs returned.  
+#'   (See Value.)
 #' @param margin identifies the margin of the dfm on which similarity or
 #'   difference will be computed:  \code{"documents"} for documents or
 #'   \code{"features"} for word/term features.
-#' @param method method the similarity or distance measure to be used; see
-#'   Details.
+#' @param method character; the method identifying the similarity or distance
+#'   measure to be used; see Details.
 #' @param min_simil numeric; a threshold for the similarity values below which similarity
 #'   values will not be returned
 #' @param tri logical; if \code{TRUE} return only upper triangle (including
@@ -25,22 +27,22 @@
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in
 #'   \code{\link{dfm_weight}(x, "prop")}.
-#' @return By default, \code{textstat_simil} and \code{textstat_dist} return
-#'   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
-#'   matrix is returned matching distances to the documents or features
-#'   identified in the selection.
+#' @return A \link{data.frame} containing the pairs of documents or features
+#'   whose similarity or distance will be compared.  
+#'      
+#'   These can be transformed easily into a list format using
+#'   \code{as.list()}, which returns a list for each unique element of the
+#'   second of the pairs.
 #'   
-#'   These can be transformed into a list format using
-#'   \code{\link{as.list.dist}}, if that format is preferred.
+#'   You can also transform the output in matrix object using
+#'   \code{as.matrix()}, which could (for a \code{textstat_dist} object) be
+#'   further transformed into a \link{dist} object.)
 #' @export
-#' @seealso \code{\link{textstat_dist}},
-#'   \code{\link[quanteda]{as.matrix.simil}},
-#'   \code{\link[quanteda]{as.list.dist}}, \code{\link[stats]{dist}},
-#'   \code{\link[stats]{as.dist}}
+#' @seealso \code{\link[stats]{as.dist}}
 #' @examples
 #' # similarities for documents
 #' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-#'           remove_punct = TRUE, remove = stopwords("english"))
+#'              remove_punct = TRUE, remove = stopwords("english"))
 #' (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 #' as.matrix(tstat1)
 #' as.list(tstat1)
@@ -409,6 +411,7 @@ as.Matrix.textstat_simil <- function(x) {
 }
 
 #' @export
+#' @rdname textstat_simil
 #' @method as.matrix textstat_simil
 #' @keywords textstat internal
 as.matrix.textstat_simil <- function(x, ...) {
@@ -419,6 +422,7 @@ as.matrix.textstat_simil <- function(x, ...) {
 }
 
 #' @export
+#' @rdname textstat_simil
 #' @method as.list textstat_simil
 #' @keywords textstat internal
 as.list.textstat_simil <- function(x, ...) {
