@@ -640,7 +640,7 @@ test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expect
         "removing punctuation"
     )
     expect_identical(
-        as.character(tokens(tokens("Removing £ punctuation."), remove_punct = TRUE, verbose = TRUE)),
+        as.character(tokens(tokens("Removing £ punctuation."), remove_punct = TRUE, remove_symbol = FALSE, verbose = TRUE)),
         c("Removing", "£", "punctuation")
     )
 })
