@@ -7,8 +7,8 @@
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching", "faith"),
-  min_simil = NULL, tri = TRUE)
+  "dice", "edice", "hamman", "simple matching"), min_simil = NULL,
+  tri = TRUE)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
@@ -61,8 +61,7 @@ sparse \link{dfm} objects.
 \details{
 \code{textstat_simil} options are: \code{"correlation"} (default),
   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-  \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
-  \code{"faith"}.
+  \code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
 
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},

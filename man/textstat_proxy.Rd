@@ -6,7 +6,7 @@
 \usage{
 textstat_proxy(x, y = NULL, margin = c("documents", "features"),
   method = c("cosine", "correlation", "jaccard", "ejaccard", "dice",
-  "edice", "hamman", "simple matching", "faith", "euclidean", "chisquared",
+  "edice", "hamman", "simple matching", "euclidean", "chisquared",
   "hamming", "kullback", "manhattan", "maximum", "canberra", "minkowski"),
   p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE)
 }

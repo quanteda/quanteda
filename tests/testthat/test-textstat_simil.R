@@ -24,7 +24,7 @@ test_that("test old and new textstat_dist are the same", {
                       textstat_dist_old(mt, method = "euclidean"),
                       tolerance = 0.01)
     
-    # equialent only when the dfm is dense
+    # equivalent only when the dfm is dense
     expect_equivalent(textstat_dist(mt + 1, method = "kullback"), 
                       textstat_dist_old(mt + 1, method = "kullback"),
                       tolerance = 0.01)
@@ -246,10 +246,6 @@ test_that("textstat_simil() returns NA for empty dfm", {
     expect_equivalent(
         as.dist(textstat_simil(mt, method = "simple matching")),
         proxy::dist(as.matrix(mt), method = "simple matching")
-    )
-    expect_equivalent(
-        as.dist(textstat_simil(mt, method = "faith")),
-        proxy::dist(as.matrix(mt), method = "faith")
     )
 })
 

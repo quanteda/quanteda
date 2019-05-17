@@ -110,11 +110,6 @@ test_that("test textstat_proxy hamman similarity", {
     test_simil(test_mt, "hamman", "features")
 })
 
-test_that("test textstat_proxy faith similarity", {
-    skip_if_not_installed("proxy")
-    test_simil(test_mt, "faith", "documents", ignore_upper = TRUE)
-    test_simil(test_mt, "faith", "features", ignore_upper = TRUE)
-})
 
 # Distance measures -------------------------------------------
 

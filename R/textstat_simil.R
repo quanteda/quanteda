@@ -20,8 +20,7 @@
 #'   \code{selection} is used.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-#'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and
-#'   \code{"faith"}.
+#'   \code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
 #' @note If you want to compute similarity on a "normalized" dfm object
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in
@@ -65,7 +64,7 @@
 textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
-                                      "dice", "edice", "hamman", "simple matching", "faith"),
+                                      "dice", "edice", "hamman", "simple matching"),
                            min_simil = NULL,
                            tri = TRUE) {
     UseMethod("textstat_simil")
@@ -76,7 +75,7 @@ textstat_simil <- function(x, selection = NULL,
 textstat_simil.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
-                                          "dice", "edice", "hamman", "simple matching", "faith"),
+                                          "dice", "edice", "hamman", "simple matching"),
                                min_simil = NULL,
                                tri = TRUE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
@@ -86,7 +85,7 @@ textstat_simil.default <- function(x, selection = NULL,
 textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
-                                          "dice", "edice", "hamman", "simple matching", "faith"),
+                                          "dice", "edice", "hamman", "simple matching"),
                                min_simil = NULL,
                                tri = FALSE) {
     x <- as.dfm(x)
@@ -242,7 +241,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 textstat_proxy <- function(x, y = NULL,
                            margin = c("documents", "features"),
                            method = c("cosine", "correlation", "jaccard", "ejaccard",
-                                      "dice", "edice", "hamman", "simple matching", "faith",
+                                      "dice", "edice", "hamman", "simple matching",
                                       "euclidean", "chisquared", "hamming", "kullback",
                                       "manhattan", "maximum", "canberra", "minkowski"),
                            p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE) {
@@ -286,8 +285,6 @@ textstat_proxy <- function(x, y = NULL,
     } else if (method == "edice") {
         weight <- 2
     } else if (method == "hamman") {
-        boolean <- TRUE
-    } else if (method == "faith") {
         boolean <- TRUE
     } else if (method == "simple matching") {
         boolean <- TRUE
