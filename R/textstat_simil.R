@@ -130,7 +130,9 @@ textstat_simil.dfm <- function(x, selection = NULL,
     result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)),
                          y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
                          similarity = temp@x)
-    class(result) <- c("simil_pairwise", "data.frame")
+    # replace x and y with margin counts
+    names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
+    class(result) <- c("textstat_simil", "data.frame")
     return(result)
 }
 
@@ -388,9 +390,10 @@ as.Matrix <- function(x) {
 }
 
 #' @export
-#' @method as.Matrix simil_pairwise
+#' @method as.Matrix textstat_simil
 #' @keywords textstat internal
-as.Matrix.simil_pairwise <- function(x) {
+as.Matrix.textstat_simil <- function(x) {
+    names(x)[1:2] <- c("x", "y")
     sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
                  x = x$similarity,
                  dims = c(nlevels(x$x), nlevels(x$y)),
@@ -398,15 +401,16 @@ as.Matrix.simil_pairwise <- function(x) {
 }
 
 #' @export
-#' @method as.matrix simil_pairwise
+#' @method as.matrix textstat_simil
 #' @keywords textstat internal
-as.matrix.simil_pairwise <- function(x, ...) {
+as.matrix.textstat_simil <- function(x, ...) {
     as.matrix(as.Matrix(x))
 }
 
 #' @export
-#' @method as.list simil_pairwise
+#' @method as.list textstat_simil
 #' @keywords textstat internal
-as.list.simil_pairwise <- function(x, ...) {
+as.list.textstat_simil <- function(x, ...) {
+    names(x)[1:2] <- c("x", "y")
     split(structure(x$similarity, names = as.character(x$x)), x$y)
 }
