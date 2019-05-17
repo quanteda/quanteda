@@ -347,25 +347,25 @@ test_that("selection is always on colums (#1549)", {
     mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
     expect_equal(
         textstat_simil(mt, margin = "documents", selection = c("1985-Reagan", "1989-Bush")) %>% 
-            as.Matrix() %>% 
+            quanteda:::as.Matrix.textstat_simil() %>% 
             colnames(), 
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(
         textstat_simil(mt, margin = "documents", selection = c(2, 3)) %>% 
-            as.Matrix() %>% 
+            quanteda:::as.Matrix.textstat_simil() %>% 
             colnames(), 
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(
         textstat_simil(mt, margin = "features", selection = c("justice", "and"))%>% 
-            as.Matrix() %>% 
+            quanteda:::as.Matrix.textstat_simil() %>% 
             colnames(), 
         c("justice", "and")
     )
     expect_equal(
         textstat_simil(mt, margin = "features", selection = c(4, 6))%>% 
-            as.Matrix() %>% 
+            quanteda:::as.Matrix.textstat_simil() %>% 
             colnames(), 
         c("mr", "chief")
     )
@@ -387,3 +387,15 @@ test_that("selection is always on colums (#1549)", {
         c("mr", "chief")
     )
 })
+
+test_that("all similarities are between 0 and 1", {
+    methods <- c("correlation", "cosine", "jaccard", "ejaccard",
+                 "dice", "edice", "hamman", "simple matching")
+    for (m in methods) {
+        minmax <- range(textstat_simil(dfmat, method = m, margin = "documents")$similarity)
+        tol <- .000001
+        expect_gte(minmax[1], 0)
+        expect_lte(minmax[2], 1.0 + tol)
+    }
+})
+

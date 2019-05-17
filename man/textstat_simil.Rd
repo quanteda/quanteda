@@ -78,13 +78,12 @@ If you want to compute similarity on a "normalized" dfm object
 dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
           remove_punct = TRUE, remove = stopwords("english"))
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
-as.Matrix(tstat1)
 as.matrix(tstat1)
 as.list(tstat1)
 
 # min_simil
 (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
-as.Matrix(tstat2)
+as.matrix(tstat2)
 
 # similarities for for specific documents
 textstat_simil(dfmat, selection = "2017-Trump", margin = "documents")
@@ -93,7 +92,7 @@ textstat_simil(dfmat, selection = c("2009-Obama" , "2013-Obama"), margin = "docu
 
 # compute some term similarities
 tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
-                      margin = "features")
+                         margin = "features")
 head(as.matrix(tstat2), 10)
 as.list(tstat2, n = 8)
 

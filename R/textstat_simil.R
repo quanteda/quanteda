@@ -42,13 +42,12 @@
 #' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
 #'           remove_punct = TRUE, remove = stopwords("english"))
 #' (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
-#' as.Matrix(tstat1)
 #' as.matrix(tstat1)
 #' as.list(tstat1)
 #' 
 #' # min_simil
 #' (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
-#' as.Matrix(tstat2)
+#' as.matrix(tstat2)
 #' 
 #' # similarities for for specific documents
 #' textstat_simil(dfmat, selection = "2017-Trump", margin = "documents")
@@ -57,7 +56,7 @@
 #'
 #' # compute some term similarities
 #' tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
-#'                       margin = "features")
+#'                          margin = "features")
 #' head(as.matrix(tstat2), 10)
 #' as.list(tstat2, n = 8)
 #' 
@@ -130,9 +129,19 @@ textstat_simil.dfm <- function(x, selection = NULL,
     result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)),
                          y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
                          similarity = temp@x)
+    
+    # make selection the first column, if that was chosen
+    # if (!missing(selection)) {
+    #     result <- result[, c(2, 1, 3:ncol(result))]
+    # }
+    
     # replace x and y with margin counts
     names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
+    
     class(result) <- c("textstat_simil", "data.frame")
+    attr(result, "selection") <- selection
+    attr(result, "method") <- method
+    attr(result, "min_simil") <- min_simil
     return(result)
 }
 
@@ -384,16 +393,15 @@ as.matrix.simil <- function(x, diag = 1.0, upper = TRUE, ...) {
 #' Coerce a \link{textstat_simil} or \link{textstat_dist} to a sparse \pkg{Matrix} format.
 #' @param x input textstat object
 #' @keywords textstat internal
-#' @export
 as.Matrix <- function(x) {
     UseMethod("as.Matrix")
 }
 
-#' @export
 #' @method as.Matrix textstat_simil
 #' @keywords textstat internal
 as.Matrix.textstat_simil <- function(x) {
     names(x)[1:2] <- c("x", "y")
+    # if (!is.null(attr(x, "selection"))) x <- x[, c(2, 1, 3:ncol(x))]
     sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
                  x = x$similarity,
                  dims = c(nlevels(x$x), nlevels(x$y)),
@@ -404,7 +412,10 @@ as.Matrix.textstat_simil <- function(x) {
 #' @method as.matrix textstat_simil
 #' @keywords textstat internal
 as.matrix.textstat_simil <- function(x, ...) {
-    as.matrix(as.Matrix(x))
+    result <- as.Matrix(x)
+    # return NA for missings, not 0
+    if (!is.null(attr(x, "min_simil"))) result[result == 0] <- NA
+    as.matrix(result)
 }
 
 #' @export
