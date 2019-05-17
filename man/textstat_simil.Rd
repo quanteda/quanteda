@@ -9,8 +9,8 @@
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching"), min_simil = NULL,
-  tri = TRUE)
+  "dice", "edice", "hamman", "simple matching"), upper = TRUE,
+  diag = TRUE, min_simil = 0)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
@@ -18,7 +18,7 @@ textstat_dist(x, selection = NULL, margin = c("documents", "features"),
 
 \method{as.matrix}{textstat_simil}(x, ...)
 
-\method{as.list}{textstat_simil}(x, ...)
+\method{as.list}{textstat_simil}(x, sorted = TRUE, n = NULL, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -35,20 +35,28 @@ difference will be computed:  \code{"documents"} for documents or
 \item{method}{character; the method identifying the similarity or distance
 measure to be used; see Details.}
 
+\item{upper}{logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.
+Similar to returning just the lower trinagle from a \link{dist} object, or the
+upper triangle when transforming the output into a matrix.}
+
+\item{diag}{logical; whether to record the similarity of an item with itself.
+(similar to the "diagonal" were the output in matrix form).}
+
 \item{min_simil}{numeric; a threshold for the similarity values below which similarity
 values will not be returned}
 
-\item{tri}{logical; if \code{TRUE} return only upper triangle (including
-diagonal), if the result were returned in a matrix-like format. Ignored if
-\code{selection} is used.}
+\item{p}{The power of the Minkowski distance.}
+
+\item{sorted}{sort results in descending order if \code{TRUE}}
+
+\item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
+\code{NULL}, return all items.}
 
 \item{upper}{whether the upper triangle of the symmetric \eqn{V \times V}
 matrix is recorded. Only used when \code{value = "dist"}.}
 
 \item{diag}{whether the diagonal of the distance matrix should be recorded. .
 Only used when \code{value = "dist"}.}
-
-\item{p}{The power of the Minkowski distance.}
 }
 \value{
 A \link{data.frame} containing the pairs of documents or features
@@ -86,12 +94,16 @@ If you want to compute similarity on a "normalized" dfm object
 }
 \examples{
 # similarities for documents
-dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 
              remove_punct = TRUE, remove = stopwords("english"))
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 as.matrix(tstat1)
 as.list(tstat1)
 
+textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE)
+textstat_simil(dfmat, method = "cosine", margin = "documents", upper = FALSE)
+textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE, upper = FALSE)
+ 
 # min_simil
 (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
 as.matrix(tstat2)

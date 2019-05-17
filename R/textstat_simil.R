@@ -15,11 +15,13 @@
 #'   \code{"features"} for word/term features.
 #' @param method character; the method identifying the similarity or distance
 #'   measure to be used; see Details.
+#' @param diag logical; whether to record the similarity of an item with itself.
+#'   (similar to the "diagonal" were the output in matrix form).
+#' @param upper logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.  
+#'   Similar to returning just the lower trinagle from a \link{dist} object, or the
+#'   upper triangle when transforming the output into a matrix.
 #' @param min_simil numeric; a threshold for the similarity values below which similarity
 #'   values will not be returned
-#' @param tri logical; if \code{TRUE} return only upper triangle (including
-#'   diagonal), if the result were returned in a matrix-like format. Ignored if
-#'   \code{selection} is used.
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
@@ -41,12 +43,16 @@
 #' @seealso \code{\link[stats]{as.dist}}
 #' @examples
 #' # similarities for documents
-#' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+#' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 
 #'              remove_punct = TRUE, remove = stopwords("english"))
 #' (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 #' as.matrix(tstat1)
 #' as.list(tstat1)
 #' 
+#' textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE)
+#' textstat_simil(dfmat, method = "cosine", margin = "documents", upper = FALSE)
+#' textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE, upper = FALSE)
+#'  
 #' # min_simil
 #' (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
 #' as.matrix(tstat2)
@@ -66,8 +72,9 @@ textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching"),
-                           min_simil = NULL,
-                           tri = TRUE) {
+                           upper = TRUE, 
+                           diag = TRUE,
+                           min_simil = 0) {
     UseMethod("textstat_simil")
 }
     
@@ -77,8 +84,9 @@ textstat_simil.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               min_simil = NULL,
-                               tri = TRUE) {
+                               upper = TRUE, 
+                               diag = TRUE,
+                               min_simil = 0) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
@@ -87,10 +95,11 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               min_simil = NULL,
-                               tri = FALSE) {
+                               upper = TRUE, 
+                               diag = TRUE,
+                               min_simil = 0) {
     x <- as.dfm(x)
-
+    
     margin <- match.arg(margin)
     method <- match.arg(method)
 
@@ -114,39 +123,36 @@ textstat_simil.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        temp <- textstat_proxy(x, x[,i], margin, method, 1, min_proxy = min_simil, use_na = TRUE)
+        temp <- textstat_proxy(x, x[,i], margin, method, 1, 
+                               min_proxy = if (min_simil == 0) NULL else min_simil, use_na = TRUE)
+                               
     } else {
-        temp <- textstat_proxy(x, x[i,], margin, method, 1, min_proxy = min_simil, use_na = TRUE)
+        temp <- textstat_proxy(x, x[i,], margin, method, 1, 
+                               min_proxy = if (min_simil == 0) NULL else min_simil, use_na = TRUE)
     }
-    # result <- as_dist(temp, method, match.call(), diag = diag, upper = upper)
-    # if (is.null(selection)) {
-    #     class(result) <- c("simil", "dist")
-    # } else {
-    #     class(result) <- c("simil_selection", "dist_selection")
-    # }
     
-    if (!tri)
-        temp <- as(temp, "dgTMatrix")
+    if (upper) temp <- as(temp, "dgTMatrix")
     
     result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)),
                          y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
                          similarity = temp@x)
     
-    # make selection the first column, if that was chosen
-    # if (!missing(selection)) {
-    #     result <- result[, c(2, 1, 3:ncol(result))]
-    # }
+    # eliminate identical pairs when diag = FALSE
+    if (!diag) {
+        result <- result[result[1] != result[2], ]
+    }
     
-    # replace x and y with margin counts
+    # replace x and y with margin names
     names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
     
     class(result) <- c("textstat_simil", "data.frame")
     attr(result, "selection") <- selection
     attr(result, "method") <- method
     attr(result, "min_simil") <- min_simil
+    attr(result, "diag") <- diag
+    attr(result, "upper") <- upper
     return(result)
 }
-
 
 #' @rdname textstat_simil
 #' @export
@@ -415,17 +421,65 @@ as.Matrix.textstat_simil <- function(x) {
 #' @method as.matrix textstat_simil
 #' @keywords textstat internal
 as.matrix.textstat_simil <- function(x, ...) {
+    # pad the missing diagonal if did not exist
+    if (!attr(x, "diag") & is.null(attr(x, "selection"))) {
+        selected <- as.character(unique(unlist(x[c(1,2)])))
+        samerows <- data.frame(selected, selected, 
+                               similarity = rep(1.0, length(selected)), 
+                               stringsAsFactors = FALSE)
+        names(samerows) <- names(x)
+        x <- rbind(x, samerows)
+    }
     result <- as.Matrix(x)
     # return NA for missings, not 0
-    if (!is.null(attr(x, "min_simil"))) result[result == 0] <- NA
+    if (attr(x, "min_simil") > 0) result[result == 0] <- NA
+    # NA the lower triangle if upper = FALSE
+    if (!attr(x, "upper")) result[upper.tri(result)] <- NA
     as.matrix(result)
 }
 
-#' @export
 #' @rdname textstat_simil
 #' @method as.list textstat_simil
+#' @param sorted sort results in descending order if \code{TRUE}
+#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
+#'   \code{NULL}, return all items.
 #' @keywords textstat internal
-as.list.textstat_simil <- function(x, ...) {
+#' @export
+as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
+    if (!is.null(n) && n >= 1) 
+        stop("n must be 1 or greater")
+    if (!is.null(n) && sorted) {
+        warning("ignoring n when sorted = FALSE")
+        n <- NULL
+    }
+    
+    # make symmetric if upper = FALSE
+    if (!attr(x, "upper")) {
+        reflected <- x[, c(2, 1, 3:ncol(x))]
+        if (attr(x, "diag")) {
+            reflected <- reflected[reflected[1] != reflected[2], ]
+            attr(x, "diag") <- FALSE
+        }
+        names(reflected) <- names(x)
+        x <- rbind(x, reflected)
+    }
+
+    if (!attr(x, "diag")) {
+        selected <- unique(x[2])
+        samerows <- data.frame(selected, selected, 
+                               similarity = rep(1.0, length(selected)), 
+                               stringsAsFactors = FALSE)
+        names(samerows) <- names(x)
+        rbind(x, samerows)
+    }
+    
     names(x)[1:2] <- c("x", "y")
-    split(structure(x$similarity, names = as.character(x$x)), x$y)
+    result <- split(structure(x$similarity, names = as.character(x$x)), x$y)
+    if (sorted)
+        result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
+    if (!is.null(n))
+        result <- lapply(result, "[", seq_len(n))
+    # remove any missing because n was greater than the length of the list item
+    result <- lapply(result, function(y) y[!is.na(y)])
+    result
 }

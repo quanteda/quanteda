@@ -392,10 +392,93 @@ test_that("all similarities are between 0 and 1", {
     methods <- c("correlation", "cosine", "jaccard", "ejaccard",
                  "dice", "edice", "hamman", "simple matching")
     for (m in methods) {
-        minmax <- range(textstat_simil(dfmat, method = m, margin = "documents")$similarity)
+        minmax <- range(textstat_simil(mt, method = m, margin = "documents")$similarity)
         tol <- .000001
         expect_gte(minmax[1], 0)
         expect_lte(minmax[2], 1.0 + tol)
     }
 })
 
+test_that("textstat_simil is stable across repetitions", {
+    skip("until the rest of this PR is complete")
+    
+    res <- textstat_simil(mt, c(2,4), margin = "documents")
+
+    set.seed(10)
+    resv <- list()
+    for (i in 1:100) {
+        resv[[i]] <- textstat_simil(mt, c(2,4), margin = "documents")$similarity
+    }
+    rescols <- do.call(cbind, resv)
+    
+    plot(rescols[12, ], type = "b", ylim = c(.8, 1))
+    plot(rescols[1, ], type = "b", ylim = c(.8, 1))
+
+    apply(col, 1, sd)
+})
+
+test_that("textstat_simil coercion methods work with options", {
+    mt2 <- mt[6:10, ]
+
+    # upper = TRUE, diag = TRUE
+    tstat <- textstat_simil(mt2, margin = "documents", upper = TRUE, diag = TRUE)
+    expect_equal(nrow(tstat), nrow(mt2)^2)
+    mat <- as.matrix(tstat)
+    expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
+    # in matrix, diagonal is 1.0
+    iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
+    expect_equal(diag(mat), iden)
+    lis <- as.list(tstat, sort = TRUE)
+    lislen <- rep(ndoc(mt2), 5); names(lislen) <- docnames(mt2)
+    expect_equivalent(lengths(lis), rep(ndoc(mt2), ndoc(mt2)))
+    # in list, sorted first item is comparison to itself
+    expect_identical(names(lis), names(sapply(lis, "[[", 1)))
+    expect_equal(iden, sapply(lis, "[[", 1))
+
+    # upper = TRUE, diag = FALSE
+    tstat <- textstat_simil(mt2, margin = "documents", upper = TRUE, diag = FALSE)
+    expect_equal(nrow(tstat), nrow(mt2)^2 - ndoc(mt2))
+    mat <- as.matrix(tstat)
+    expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
+    # # in matrix, diagonal is NA
+    # iden <- rep(as.numeric(NA), ndoc(mt2)); names(iden) <- docnames(mt2)
+    # expect_equal(diag(as.matrix(tstat)), iden)
+    # in matrix, diagonal is 1.0
+    iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
+    expect_equal(diag(mat), iden)
+    lis <- as.list(tstat, sort = TRUE)
+    expect_equivalent(lengths(lis), rep(ndoc(mt2) - 1, ndoc(mt2)))
+    expect_identical(names(lis), names(sapply(lis, "[[", 1)))
+    # in list, item not compared to itself
+    expect_true(all(sapply(seq_along(lis), function(y) ! names(lis[y]) %in% names(y))))
+
+    # upper = FALSE, diag = TRUE
+    tstat <- textstat_simil(mt2, margin = "documents", upper = FALSE, diag = TRUE)
+    expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2 + ndoc(mt2))
+    mat <- as.matrix(tstat)
+    expect_true(all(is.na(mat[upper.tri(mat)])))
+    # in matrix, diagonal is 1.0
+    iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
+    expect_equal(diag(as.matrix(tstat)), iden)
+    # in matrix, lower is NA
+    lis <- as.list(tstat, sort = TRUE)
+    lislen <- rep(ndoc(mt2), ndoc(mt2)); names(lislen) <- docnames(mt2)
+    expect_equivalent(lengths(lis), rep(ndoc(mt2), ndoc(mt2)))
+    # in list, sorted first item is comparison to itself
+    expect_identical(names(lis), names(sapply(lis, "[[", 1)))
+    expect_equal(iden, sapply(lis, "[[", 1))
+
+    # upper = FALSE, diag = FALSE
+    tstat <- textstat_simil(mt2, margin = "documents", upper = FALSE, diag = FALSE)
+    expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2)
+    mat <- as.matrix(tstat)
+    loweranddiag <- upper.tri(mat); diag(loweranddiag) <- TRUE
+    expect_true(all(is.na(mat[upper.tri(mat)])))
+    # in matrix, diagonal is 1.0
+    iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
+    expect_equal(diag(mat), iden)
+    lis <- as.list(tstat, sort = TRUE)
+    expect_equivalent(lengths(lis), rep(ndoc(mt2) - 1, ndoc(mt2)))
+    # in list, item not compared to itself
+    expect_true(all(sapply(seq_along(lis), function(y) ! names(lis[y]) %in% names(y))))
+})
