@@ -117,7 +117,7 @@ textstat_simil(dfmat, selection = c("2009-Obama" , "2013-Obama"), margin = "docu
 tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
                          margin = "features")
 head(as.matrix(tstat2), 10)
-as.list(tstat2, n = 8)
+as.list(tstat2, n = 3)
 
 # create a dfm from inaugural addresses from Reagan onwards
 dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 

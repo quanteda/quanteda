@@ -482,3 +482,22 @@ test_that("textstat_simil coercion methods work with options", {
     # in list, item not compared to itself
     expect_true(all(sapply(seq_along(lis), function(y) ! names(lis[y]) %in% names(y))))
 })
+
+test_that("as.list.texstat_simil() is robust", {
+    expect_error(
+        as.list(textstat_simil(mt), n = 0),
+        "n must be 1 or greater"
+    )
+    expect_equivalent(
+        lengths(as.list(textstat_simil(mt), n = 2)),
+        rep(2, ndoc(mt))
+    )
+    expect_equivalent(
+        lengths(as.list(textstat_simil(mt), n = ndoc(mt) + 20)),
+        rep(ndoc(mt), ndoc(mt))
+    )
+    expect_warning(
+        as.list(textstat_simil(mt), n = 2, sort = FALSE),
+        "ignoring n when sorted = FALSE"
+    )
+})

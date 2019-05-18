@@ -66,7 +66,7 @@
 #' tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
 #'                          margin = "features")
 #' head(as.matrix(tstat2), 10)
-#' as.list(tstat2, n = 8)
+#' as.list(tstat2, n = 3)
 #' 
 textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
@@ -434,7 +434,10 @@ as.matrix.textstat_simil <- function(x, ...) {
     # return NA for missings, not 0
     if (attr(x, "min_simil") > 0) result[result == 0] <- NA
     # NA the lower triangle if upper = FALSE
-    if (!attr(x, "upper")) result[upper.tri(result)] <- NA
+    if (!attr(x, "upper")) {
+        result <- t(result)
+        result[upper.tri(result)] <- NA
+    }
     as.matrix(result)
 }
 
@@ -446,9 +449,9 @@ as.matrix.textstat_simil <- function(x, ...) {
 #' @keywords textstat internal
 #' @export
 as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
-    if (!is.null(n) && n >= 1) 
+    if (!is.null(n) && n < 1) 
         stop("n must be 1 or greater")
-    if (!is.null(n) && sorted) {
+    if (!is.null(n) && !sorted) {
         warning("ignoring n when sorted = FALSE")
         n <- NULL
     }
