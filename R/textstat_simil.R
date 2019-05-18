@@ -17,9 +17,9 @@
 #'   measure to be used; see Details.
 #' @param diag logical; whether to record the similarity of an item with itself.
 #'   (similar to the "diagonal" were the output in matrix form).
-#' @param upper logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.  
-#'   Similar to returning just the lower trinagle from a \link{dist} object, or the
-#'   upper triangle when transforming the output into a matrix.
+#' @param upper logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.
+#'   Similar to returning just the lower triangle from a \link{dist} object, or
+#'   the upper triangle when transforming the output into a matrix.
 #' @param min_simil numeric; a threshold for the similarity values below which similarity
 #'   values will not be returned
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),

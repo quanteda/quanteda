@@ -36,8 +36,8 @@ difference will be computed:  \code{"documents"} for documents or
 measure to be used; see Details.}
 
 \item{upper}{logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.
-Similar to returning just the lower trinagle from a \link{dist} object, or the
-upper triangle when transforming the output into a matrix.}
+Similar to returning just the lower triangle from a \link{dist} object, or
+the upper triangle when transforming the output into a matrix.}
 
 \item{diag}{logical; whether to record the similarity of an item with itself.
 (similar to the "diagonal" were the output in matrix form).}
