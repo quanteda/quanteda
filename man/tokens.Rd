@@ -6,7 +6,7 @@
 \usage{
 tokens(x, what = c("word", "sentence", "character", "fastestword",
   "fasterword"), remove_numbers = FALSE, remove_punct = FALSE,
-  remove_symbols = FALSE, remove_separators = TRUE,
+  remove_symbols = remove_punct, remove_separators = TRUE,
   remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
   ngrams = 1L, skip = 0L, concatenator = "_",
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
