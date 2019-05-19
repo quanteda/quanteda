@@ -428,7 +428,7 @@ as.Matrix.textstat_simil <- function(x) {
 as.matrix.textstat_simil <- function(x, ...) {
     # pad the missing diagonal if did not exist
     if (!attr(x, "diag") & is.null(attr(x, "selection"))) {
-        selected <- as.character(unique(unlist(x[c(1,2)])))
+        selected <- as.character(unique(unlist(unclass(x[c(1,2)]))))
         samerows <- data.frame(selected, selected, 
                                similarity = rep(1.0, length(selected)), 
                                stringsAsFactors = FALSE)
