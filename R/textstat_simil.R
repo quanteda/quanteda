@@ -491,32 +491,3 @@ as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
     result <- lapply(result, function(y) y[!is.na(y)])
     result
 }
-
-# y <- c("e", "b")
-# original <- x <- letters[1:10]
-# 
-# sort_mat <- function(x, names) {
-#     
-# }
-
-# get_sort_order(x, y, original) {
-#     order_y_dt <- data.table(name_y = y, order_y = seq_along(y))
-#     order_x_dt <- data.table(
-#         name_x = x, order_x = 
-#         )
-#     
-#     sortdt <- data.table(name = original, order = seq_along(original))
-#     setkey(sortdt, name)
-#     pairsdt <- as.character(interaction(x, y, sep = "$")) %>%
-#         strsplit("$", fixed = TRUE) %>%
-#         do.call(rbind, .) %>%
-#         data.table()
-#     setnames(pairsdt, c("name1", "name2"))
-#     
-#     setkey(pairsdt, name2, name1)
-#     sortdt[pairsdt]
-#     pairs <- pairs[order(pairs[, 2], pairs[, 1]), ]
-#     
-#     y <- 
-# }
-# 
