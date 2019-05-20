@@ -171,10 +171,8 @@ print.kwic <- function(x, ...) {
 #' @noRd
 "[.kwic" <- function(x, i, j, ...) {
     x <- NextMethod()
-    if (!is.kwic(x)) {
-        kwicattrs <- names(attributes)
-        kwicattrs <- kwicattrs[kwicattrs %in% c("row.names", "class")]
-        class(x) <- "data.frame"
+    if (!is.kwic(x) && is.data.frame(x)) {
+        x <- data.frame(x, stringsAsFactors = FALSE)
     }
     return(x)
 }
