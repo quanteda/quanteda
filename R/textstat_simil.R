@@ -15,7 +15,7 @@
 #'   \code{"features"} for word/term features.
 #' @param method character; the method identifying the similarity or distance
 #'   measure to be used; see Details.
-#' @param diag logical; whether to record the similarity of an item with itself.
+#' @param diag logical; whether to record the similarity of an item with itself
 #'   (similar to the "diagonal" were the output in matrix form).
 #' @param upper logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.
 #'   Similar to returning just the lower triangle from a \link{dist} object, or
@@ -138,13 +138,13 @@ textstat_simil.dfm <- function(x, selection = NULL,
     ynames <- if (is.null(selection)) xnames else xnames[i]
     temp <- temp[xnames, ynames, drop = FALSE]
 
-    result <- data.frame(x = factor(temp@i + 1L, seq_len(nrow(temp)), rownames(temp)),
-                         y = factor(temp@j + 1L, seq_len(ncol(temp)), colnames(temp)),
+    result <- data.frame(x = factor(temp@i + 1L, levels = seq_along(xnames), labels = xnames),
+                         y = factor(match(ynames[temp@j + 1L], xnames), levels = seq_along(xnames), labels = xnames),
                          similarity = temp@x)
-    
+
     # eliminate identical pairs when diag = FALSE
     if (!diag) {
-        result <- result[result[1] != result[2], ]
+        result <- result[result[, 1] != result[, 2], ]
     }
     
     # replace x and y with margin names
@@ -161,10 +161,6 @@ textstat_simil.dfm <- function(x, selection = NULL,
 
 #' @rdname textstat_simil
 #' @export
-#' @param upper whether the upper triangle of the symmetric \eqn{V \times V}
-#'   matrix is recorded. Only used when \code{value = "dist"}.
-#' @param diag whether the diagonal of the distance matrix should be recorded. .
-#'   Only used when \code{value = "dist"}.
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
 #'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
@@ -414,7 +410,7 @@ as.Matrix <- function(x) {
 #' @keywords textstat internal
 as.Matrix.textstat_simil <- function(x) {
     names(x)[1:2] <- c("x", "y")
-    # if (!is.null(attr(x, "selection"))) x <- x[, c(2, 1, 3:ncol(x))]
+    x$y <- factor(x$y)  # refactor to remove unused levels
     sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
                  x = x$similarity,
                  dims = c(nlevels(x$x), nlevels(x$y)),
@@ -423,8 +419,9 @@ as.Matrix.textstat_simil <- function(x) {
 
 #' @export
 #' @rdname textstat_simil
+#' @param ... unused
 #' @method as.matrix textstat_simil
-#' @keywords textstat internal
+#' @keywords textstat
 as.matrix.textstat_simil <- function(x, ...) {
     # pad the missing diagonal if did not exist
     if (!attr(x, "diag") & is.null(attr(x, "selection"))) {
@@ -451,7 +448,7 @@ as.matrix.textstat_simil <- function(x, ...) {
 #' @param sorted sort results in descending order if \code{TRUE}
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
 #'   \code{NULL}, return all items.
-#' @keywords textstat internal
+#' @keywords textstat
 #' @export
 as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
     if (!is.null(n) && n < 1) 

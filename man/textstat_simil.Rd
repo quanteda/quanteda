@@ -39,7 +39,7 @@ measure to be used; see Details.}
 Similar to returning just the lower triangle from a \link{dist} object, or
 the upper triangle when transforming the output into a matrix.}
 
-\item{diag}{logical; whether to record the similarity of an item with itself.
+\item{diag}{logical; whether to record the similarity of an item with itself
 (similar to the "diagonal" were the output in matrix form).}
 
 \item{min_simil}{numeric; a threshold for the similarity values below which similarity
@@ -47,16 +47,12 @@ values will not be returned}
 
 \item{p}{The power of the Minkowski distance.}
 
+\item{...}{unused}
+
 \item{sorted}{sort results in descending order if \code{TRUE}}
 
 \item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
 \code{NULL}, return all items.}
-
-\item{upper}{whether the upper triangle of the symmetric \eqn{V \times V}
-matrix is recorded. Only used when \code{value = "dist"}.}
-
-\item{diag}{whether the diagonal of the distance matrix should be recorded. .
-Only used when \code{value = "dist"}.}
 }
 \value{
 A \link{data.frame} containing the pairs of documents or features
@@ -145,5 +141,4 @@ as.list(tstat2)
 \seealso{
 \code{\link[stats]{as.dist}}
 }
-\keyword{internal}
 \keyword{textstat}
