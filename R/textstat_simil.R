@@ -460,9 +460,9 @@ as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
     
     # make symmetric if upper = FALSE
     if (!attr(x, "upper")) {
-        reflected <- x[, c(2, 1, 3:ncol(x))]
+        reflected <- x[, c(2, 1, 3:ncol(x)), drop = FALSE]
         if (attr(x, "diag")) {
-            reflected <- reflected[reflected[1] != reflected[2], ]
+            reflected <- reflected[reflected[1] != reflected[2], , drop = FALSE]
             attr(x, "diag") <- FALSE
         }
         names(reflected) <- names(x)
@@ -470,7 +470,7 @@ as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
     }
 
     if (!attr(x, "diag")) {
-        selected <- unique(x[2])
+        selected <- unique(x[, 2])
         samerows <- data.frame(selected, selected, 
                                similarity = rep(1.0, length(selected)), 
                                stringsAsFactors = FALSE)
@@ -479,7 +479,7 @@ as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
     }
     
     names(x)[1:2] <- c("x", "y")
-    result <- split(structure(x$similarity, names = as.character(x$x)), x$y)
+    result <- split(structure(x$similarity, names = as.character(x$x)), factor(x$y))
     if (sorted)
         result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
     if (!is.null(n))

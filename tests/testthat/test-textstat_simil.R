@@ -501,3 +501,18 @@ test_that("as.list.texstat_simil() is robust", {
         "ignoring n when sorted = FALSE"
     )
 })
+
+test_that("as.list.textstat_simil works with features margin", {
+    tstat <- textstat_simil(mt, selection = c("world", "freedom"),
+                            method = "cosine", margin = "features",
+                            diag = TRUE)
+    lis <- as.list(tstat, n = 5)
+    expect_equal(sapply(lis, head, 1), c("world.world" = 1, "freedom.freedom" = 1))
+    expect_identical(names(lis), c("world", "freedom"))
+
+    tstat <- textstat_simil(mt, selection = "freedom",
+                            method = "cosine", margin = "features",
+                            diag = TRUE)
+    lis <- as.list(tstat, n = 5)
+    expect_equal(sapply(lis, head, 1), c("freedom.freedom" = 1))
+})
