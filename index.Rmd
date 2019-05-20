@@ -13,10 +13,6 @@ knitr::opts_chunk$set(
 
 # quanteda: Quantitative Analysis of Textual Data
 
-<div class="panel panel-default">
-<div class="panel-body"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Submit your paper to <a href="https://www.poltextconference.org/">POLTEXT symposium in Tokyo</a> on 14-15 September 2019</div>
-</div>
-
 **quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 The package is designed for R users needing to apply natural language
@@ -56,7 +52,7 @@ namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requ
  
 ## System Requirements
 
-**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
+**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyse. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
 
 | | Minimum | Recommended |
 | --- | :---: | :---: |

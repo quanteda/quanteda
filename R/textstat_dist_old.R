@@ -9,13 +9,13 @@
 #'   E. D. (2001).
 #'   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
 #'    meaningful transformations for ordination of species data}".
-#'   \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
+#'   \emph{Oecologia}, 129(2), 271-280. doi.org/10.1007/s004420100716
 #'   
 #'   The \code{"chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
 #'   O., & Werman, M. (2010). 
 #'   "\href{https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54}{The
-#'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
-#'   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
+#'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision - ECCV
+#'   2010} (Vol. 6312, pp. 749-762). Berlin, Heidelberg: Springer, Berlin,
 #'   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
 #'
 #'   \code{"kullback"} is the Kullback-Leibler distance, which assumes that

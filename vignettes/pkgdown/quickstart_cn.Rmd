@@ -31,10 +31,10 @@ install.packages("quanteda")
 ```{r eval = FALSE}
 devtools::install_github("quanteda/quanteda.corpora")
 ```
-*  [**LIWCalike**](https://github.com/quanteda/LIWCalike): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件
+*  [**quanteda.dictionaries**](https://github.com/kbenoit/quanteda.dictionaries): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件
 
 ```{r eval = FALSE}
-devtools::install_github("kbenoit/LIWCalike")
+devtools::install_github("kbenoit/quanteda.dictionaries")
 ```
 
 # 创建语料库 {#creating-a-corpus}
@@ -71,8 +71,8 @@ library(quanteda)
 一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（`data_char_ukimmig2010`）中提取的有关移民政策的文本为例：
 
 ```{r}
-my_corpus <- corpus(data_char_ukimmig2010)  # 从文本构建语料库
-summary(my_corpus)
+corp_uk <- corpus(data_char_ukimmig2010)  # 从文本构建语料库
+summary(corp_uk)
 ```
 
 我们也可以添加一些文档变量-- **quanteda** 称之为此语料库的`docvars()`。
@@ -80,17 +80,17 @@ summary(my_corpus)
 我们可以使用R的`names()`函数来读取字符向量`data_char_ukimmig2010`的名称，并且将其给文档变量赋值。
 
 ```{r}
-docvars(my_corpus, "Party") <- names(data_char_ukimmig2010)
-docvars(my_corpus, "Year") <- 2010
-summary(my_corpus)
+docvars(corp_uk, "Party") <- names(data_char_ukimmig2010)
+docvars(corp_uk, "Year") <- 2010
+summary(corp_uk)
 ```
 
 如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。
 
 ```{r}
-metadoc(my_corpus, "language") <- "english"
-metadoc(my_corpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(my_corpus), sep = "_")
-summary(my_corpus, showmeta = TRUE)
+metadoc(corp_uk, "language") <- "english"
+metadoc(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
+summary(corp_uk, showmeta = TRUE)
 ```
 
 上面的命令`metadoc()`允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域`docsource`创建一个简单的标签时，我们使用了quanteda函数`ndoc()`来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如`nrow()`和`ncol()`。
@@ -101,33 +101,33 @@ summary(my_corpus, showmeta = TRUE)
 require(readtext)
 
 # Twitter json
-mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-my_corpusTwitter <- corpus(mytf1)
-summary(my_corpusTwitter, 5)
+dat_json <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+corp_twitter <- corpus(dat_json)
+summary(corp_twitter, 5)
 # 通用json - 需要“textfield”说明符
-mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
-                  textfield = "text")
-summary(corpus(mytf2), 5)
+dat_sotu <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+                     textfield = "text")
+summary(corpus(dat_sotu), 5)
 # 文本文件
-mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
-summary(corpus(mytf3), 5)
+dat_txtone <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+summary(corpus(dat_txtone), 5)
 # 多文本文件
-mytf4 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
-summary(corpus(mytf4), 5)
+dat_txtmultiple1 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+summary(corpus(dat_txtmultiple1), 5)
 # 包含取自文件名的docvars的多个文本文件
-mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
-                  docvarsfrom = "filenames", sep = "-", docvarnames = c("Year", "President"))
-summary(corpus(mytf5), 5)
+dat_txtmultiple2 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
+                             docvarsfrom = "filenames", sep = "-", docvarnames = c("Year", "President"))
+summary(corpus(dat_txtmultiple2), 5)
 # XML 数据
-mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
-                  textfield = "COMMON")
-summary(corpus(mytf6), 5)
+dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+                    dat_xml = "COMMON")
+summary(corpus(dat_xml), 5)
 # csv 文件
-write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), 
+write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural), 
                      docvars(data_corpus_inaugural)),
           file = "/tmp/inaug_texts.csv", row.names = FALSE)
-mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
-summary(corpus(mytf7), 5)
+dat_csv <- readtext("/tmp/inaug_texts.csv", textfield = "inaug_speech")
+summary(corpus(dat_csv), 5)
 ```
 
 
@@ -154,13 +154,15 @@ summary(data_corpus_irishbudget2010)
 我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(data_corpus_inaugural)
+tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data = tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
+    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) + 
+    geom_line() + 
+    geom_point() +
+    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
 
 # 最长的就职演说: William Henry Harrison
-tokenInfo[which.max(tokenInfo$Tokens), ] 
+tokeninfo[which.max(tokeninfo$Tokens), ] 
 ```
 
 
@@ -172,10 +174,10 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 
 ```{r}
 library(quanteda)
-my_corpus1 <- corpus(data_corpus_inaugural[1:5])
-my_corpus2 <- corpus(data_corpus_inaugural[53:58])
-my_corpus3 <- my_corpus1 + my_corpus2
-summary(my_corpus3)
+corp1 <- corpus(data_corpus_inaugural[1:5])
+corp2 <- corpus(data_corpus_inaugural[53:58])
+corp3 <- corp1 + corp2
+summary(corp3)
 ```
 
 ### 提取语料库的子集 {#subsetting-corpus-objects}
@@ -249,9 +251,9 @@ tokens("Great website: http://textasdata.com?page=123.", what = "character",
 ```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
-           "Today is Thursday in Canberra:  It is yesterday in London.", 
-           "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
-          what = "sentence")
+         "Today is Thursday in Canberra:  It is yesterday in London.", 
+         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
+       what = "sentence")
 ```
 
 ## 构建文档特征矩阵 {#constructing-a-document-feature-matrix}
@@ -259,11 +261,11 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能`dfm()`，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于`tokens()`所采用的保守方法，`dfm()`函数默认某些应用选项，比如`toLower()` - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过`tokens()`的所有选项都可以传递给`dfm()`。
 
 ```{r}
-my_corpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
+corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # 构建dfm
-myDfm <- dfm(my_corpus)
-myDfm[, 1:5]
+dfmat_inaug_post1990 <- dfm(corp_inaug_post1990)
+dfmat_inaug_post1990[, 1:5]
 ```
 
 `dfm()`的其他选项还包括去除停用词和分词的词干提取。
@@ -271,8 +273,10 @@ myDfm[, 1:5]
 ```{r}
 # 构建dfm, 去除停用词以及提取词干
 
-myStemMat <- dfm(my_corpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-myStemMat[, 1:5]
+dfmat_inaug_post1990_stem <- dfm(corp_inaug_post1990,
+                                 remove = stopwords("english"), 
+                                 stem = TRUE, remove_punct = TRUE)
+dfmat_inaug_post1990_stem[, 1:5]
 ```
 
 `remove`选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过`stopwords()`函数获取：
@@ -288,21 +292,21 @@ head(stopwords("ar", source = "misc"), 10)
 可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用`plot`dfm将调用[wordcloud软件包](https://cran.r-project.org/web/packages/wordcloud/index.html)绘制词云图。
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
-mydfm
+dfmat_uk <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+dfmat_uk
 ```
 
 使用`topfeatures()`可以访问出现频率最高的特征：
 
 ```{r}
-topfeatures(mydfm, 20)  # 20 词频最高的词
+topfeatures(dfmat_uk, 20)  # 20 词频最高的词
 ```
 
 使用`textplot_wordcloud()`可以绘制`dfm`对象的词云图。这个函数将参数传递给**wordcloud**包的`wordcloud()`函数，并且可以使用相同的参数来对图进行美化：
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
-textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+textplot_wordcloud(dfmat_uk, min.freq = 6, random.order = FALSE,
                    rotation = .25, 
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
@@ -312,13 +316,13 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
 通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：
 
 ```{r}
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
-                  remove = stopwords("english"), remove_punct = TRUE)
+dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party", 
+                 remove = stopwords("english"), remove_punct = TRUE)
 ```
 
 我们可以对这个dfm进行排序，并查看：
 ```{r}
-dfm_sort(byPartyDfm)[, 1:10]
+dfm_sort(dfmat_ire)[, 1:10]
 ```
 
 请注意，最常出现的特征是“will”，这个词通常出现在英语停用词表中，但是并不包含在quanteda的内置英语停用词表中。
@@ -330,28 +334,28 @@ dfm_sort(byPartyDfm)[, 1:10]
 例如，我们来看看总统在就职演讲的语料库中，与恐怖主义有关的词汇和与经济相关的词语在总统之间是如何变化的。从原语料库中，我们选择自克林顿以来的总统：
 
 ```{r}
-recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
+corp_inaug_post1991 <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
 现在我们定义一个用于展示的字典：
 ```{r}
-myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
-                          economy = c("jobs", "business", "grow", "work")))
+dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
+                        economy = c("jobs", "business", "grow", "work")))
 ```
 
 我们也可在构建dfm时使用字典：
 ```{r}
-byPresMat <- dfm(recentCorpus, dictionary = myDict)
-byPresMat
+dfmat_inaug_post1991_dict <- dfm(corp_inaug_post1991, dictionary = dict)
+dfmat_inaug_post1991_dict
 ```
 
 构造函数`dictionary()`也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research' Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：
 
 ```{r, eval = FALSE}
-liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
+dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict)
-liwcdfm[, 1:10]
+dfmat_inaug_subset <- dfm(data_corpus_inaugural[52:58], dictionary = dicliwc)
+dfmat_inaug_subset[, 1:10]
 ```
 
 # 更多范例 {#further-examples}
@@ -359,37 +363,40 @@ liwcdfm[, 1:10]
 ## 文本之间的相似度 {#similarities-between-texts}
 
 ```{r fig.width = 6}
-pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obama_simil <- textstat_simil(pres_dfm, selection = c("2009-Obama" , "2013-Obama"), 
-                             margin = "documents", method = "cosine")
-obama_simil
+tstat_obama <- textstat_simil(dfmat_inaug_post1980, 
+                              selection = c("2009-Obama" , "2013-Obama"), 
+                              margin = "documents", method = "cosine")
+tstat_obama
 # dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")
 ```
 
 我们可以用这些距离来绘制树状图，聚类分析总统：
-```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_sotu, package = "quanteda.corpora")
-pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
+```{r, fig.width = 10, fig.height = 7, eval = TRUE}
+data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+
+dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
-pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
+dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 
 #分层聚类 -  在归一化dfm上计算距离
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, scheme = "prop"))
+tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
 # 聚类分析文本距离
-pres_cluster <- hclust(pres_dist_mat)
+pres_cluster <- hclust(tstat_dist)
 # 按文档名标注
-pres_cluster$labels <- docnames(pres_dfm)
+pres_cluster$labels <- docnames(dfmat_sotu)
 # 绘制树状图
-plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+plot(pres_cluster, xlab = "", sub = "", 
+     main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 我们也可查看特征相似度:
 ```{r}
-sim <- textstat_simil(pres_dfm, selection = c("fair", "health", "terror"),
+tstat_sim <- textstat_simil(dfmat_sotu, selection = c("fair", "health", "terror"),
                       method = "cosine", margin = "features")
-lapply(as.list(sim), head, 10)
+lapply(as.list(tstat_sim), head, 10)
 ```
 
 ## 文档位置的缩放分析 {#scaling-document-positions}
@@ -398,8 +405,11 @@ lapply(as.list(sim), head, 10)
 
 ```{r}
 # make prettier document names
-ie_dfm <- dfm(data_corpus_irishbudget2010)
-textmodel_wordfish(ie_dfm, dir = c(2, 1))
+dfmat_ire <- dfm(data_corpus_irishbudget2010)
+tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
+
+# plot the Wordfish estimates by party
+textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 ```
 
 ## 主题模型 {#topic-models}
@@ -407,13 +417,15 @@ textmodel_wordfish(ie_dfm, dir = c(2, 1))
 **quanteda**可以很轻松训练主题模型：
 
 ```{r}
-quant_dfm <- dfm(data_corpus_irishbudget2010, 
-                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
-quant_dfm
+dfmat_ire2 <- dfm(data_corpus_irishbudget2010, 
+                  remove_punct = TRUE, remove_numbers = TRUE, 
+                  remove = stopwords("english"))
+dfmat_ire2 <- dfm_trim(dfmat_ire2, min_termfreq = 4, max_docfreq = 10)
+dfmat_ire2
 
+set.seed(100)
 if (require(topicmodels)) {
-    my_lda_fit20 <- LDA(convert(quant_dfm, to = "topicmodels"), k = 20)
+    my_lda_fit20 <- LDA(convert(dfmat_ire2, to = "topicmodels"), k = 20)
     get_terms(my_lda_fit20, 5)
 }
 ```
@@ -426,7 +438,7 @@ if (require(topicmodels)) {
 
 ```{r}
 # 读取中文停用词
-csw <- stopwords("zh", source = "misc")
+stopw_zh <- stopwords("zh", source = "misc")
 
 tokens("中华人民共和国成立于1949 年")
 
@@ -444,21 +456,22 @@ load("examples/data/data_corpus_chinesegovreport.rda")
 summary(data_corpus_chinesegovreport, 10)
 
 # 分词
-chtoks <- 
-    tokens(data_corpus_chinesegovreport, remove_punct = TRUE) %>%
+toks_china <- data_corpus_chinesegovreport %>% 
+    tokens(remove_punct = TRUE) %>%
     tokens_remove(stopwords("zh", source = "misc"))
 
 # 创建 dfm
-chdfm <- dfm(chtoks)
-topfeatures(chdfm)
+dfmat_china <- dfm(toks_china)
+topfeatures(dfmat_china)
 #发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 #5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 
 
 # 绘制词云图
 set.seed(100)
-chdfm_tf <- dfm_trim(chdfm, min_termfreq = 500)
+dfmat_china_trim <- dfm_trim(dfmat_china, min_termfreq = 500)
 # 设置适用于MacOS的字体
-textplot_wordcloud(chdfm_tf, min_count = 6, random_order = FALSE,
+textplot_wordcloud(dfmat_china_trim, 
+                   min_count = 6, random_order = FALSE,
                    rot_per = .25, max_words = 100, 
                    min_size = .5, max_size = 2.8,
                    font = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL,
@@ -466,26 +479,27 @@ textplot_wordcloud(chdfm_tf, min_count = 6, random_order = FALSE,
 ```
 
 
-## 特征共现矩阵 {#features-co-occurrence-matrix}
+## 特征共现矩阵 {#feature-co-occurrence-matrix}
 
 ```{r}
 # fcm -共现窗口为5，2017政府工作报告
-ch17txt <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
-ch17toks <- 
-    tokens(ch17txt, remove_punct = TRUE) %>% 
+corp_china2 <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
+toks_china2 <- corp_china2 %>% 
+    tokens(remove_punct = TRUE) %>% 
     tokens_remove(stopwords("zh", source = "misc"))
-chfcm <- fcm(ch17toks, context = "window")  
-topfeatures(chfcm["改革", ])
+
+fcmat_china1 <- fcm(corp_china2, context = "window")  
+topfeatures(fcmat_china1["改革", ])
 
 # fcm 共现窗口为："改革" + “xx”
-chfcm <- fcm(ch17toks, context = "window", ordered = TRUE, tri = FALSE)
-topfeatures(chfcm["改革", ])
+fcmat_china2 <- fcm(toks_china2, context = "window", ordered = TRUE, tri = FALSE)
+topfeatures(fcmat_china2["改革", ])
 ```
 
 ## 文本缩放模型 {#wordfish}
 
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
-wfm <- textmodel_wordfish(chdfm)
+wfm <- textmodel_wordfish(dfmat_china)
 y <- 1954:2017
 y <- y[-which(y==1963 | y==1961 | y==1962 | (y>1964 & y<1975) | y==1976 | y==1977)]
 plot(y, wfm$theta, xlab = "Year", ylab = "Position")
@@ -495,11 +509,11 @@ plot(y, wfm$theta, xlab = "Year", ylab = "Position")
 
 ```{r}
 # 所有报告中的双词词组
-ch_mw <- textstat_collocations(chtoks, size = 2, min_count = 20, tolower = TRUE)
-head(ch_mw, 10)
+tstat_col <- textstat_collocations(toks_china, size = 2, min_count = 20, tolower = TRUE)
+head(tstat_col, 10)
 
 # 2017 报告中的双词词组
-ch_mw17 <- textstat_collocations(ch17toks, size = 2, tolower = TRUE)
-head(ch_mw17, 10)
+tstat_col2 <- textstat_collocations(toks_china2, size = 2, tolower = TRUE)
+head(tstat_col2, 10)
 ```
 注：以上这部分介绍翻译于[英文版](https://quanteda.io/articles/pkgdown/examples/chinese.html).

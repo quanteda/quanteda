@@ -5,7 +5,7 @@
 \title{Tabulate feature frequencies}
 \usage{
 textstat_frequency(x, n = NULL, groups = NULL, ties_method = c("min",
-  "average", "first", "random", "max", "dense"))
+  "average", "first", "random", "max", "dense"), ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -22,6 +22,10 @@ See \link{groups} for details.}
 \code{\link[data.table]{frank}} for details.  Unlike that function,
 however, the default is \code{"min"}, so that frequencies of 10, 10, 11
 would be ranked 1, 1, 3.}
+
+\item{...}{additional arguments passed to \code{\link{dfm_group}}.  This can
+be useful in passing `force = TRUE`, for instance, if you are grouping a
+dfm that has been weighted.}
 }
 \value{
 a data.frame containing the following variables:
@@ -78,11 +82,11 @@ dfmat3 <- data_corpus_inaugural \%>\%
 tstat2 <- textstat_frequency(dfmat3, n = 10, groups = "President")
 
 # plot frequencies
-ggplot(data = tstat2, aes(x = nrow(tstat2):1, y = frequency)) +
+ggplot(data = tstat2, aes(x = factor(nrow(tstat2):1), y = frequency)) +
     geom_point() +
     facet_wrap(~ group, scales = "free") +
     coord_flip() +
-    scale_x_continuous(breaks = nrow(tstat2):1,
+    scale_x_discrete(breaks = nrow(tstat2):1,
                        labels = tstat2$feature) +
     labs(x = NULL, y = "Relative frequency")
 }
