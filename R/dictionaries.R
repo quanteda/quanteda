@@ -58,7 +58,7 @@ check_entries <- function (dict) {
 #'
 #' Create a \pkg{quanteda} dictionary class object, either from a list or by
 #' importing from a foreign format.  Currently supported input file formats are
-#' the Wordstat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+#' the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
 #' using the LIWC format works with all currently available dictionary files
 #' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
 #' @param x a named list of character vector dictionary entries, including
@@ -69,7 +69,7 @@ check_entries <- function (dict) {
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
 #'   extension. Available options are: \describe{
-#'   \item{\code{"wordstat"}}{format used by Provalis Research's Wordstat
+#'   \item{\code{"wordstat"}}{format used by Provalis Research's WordStat
 #'   software} \item{\code{"LIWC"}}{format used by the Linguistic Inquiry and
 #'   Word Count software} \item{\code{"yoshikoder"}}{ format used by Yoshikoder
 #'   software} \item{\code{"lexicoder"}}{format used by Lexicoder}
@@ -91,7 +91,7 @@ check_entries <- function (dict) {
 #'   coerced to named lists of characters using
 #'   \code{\link[=dictionary2-class]{as.list}}, and checked using
 #'   \code{\link{is.dictionary}}.
-#' @references Wordstat dictionaries page, from Provalis Research
+#' @references WordStat dictionaries page, from Provalis Research
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
 #'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
