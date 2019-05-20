@@ -217,6 +217,7 @@ test_that("is.kwic works as expected", {
     mykwic <- kwic(data_corpus_inaugural[1:3], "provident*")
     expect_true(is.kwic(mykwic))
     expect_false(is.kwic("Not a kwic"))
+    expect_false(is.kwic(mykwic[, c("pre", "post")]))
 })
 
 test_that("textplot_xray works with new kwic, one token phrase", {
@@ -457,4 +458,13 @@ test_that("kwic with pattern overlaps works as expected", {
         as.character(kw$pattern),
         char_tolower(kw$keyword)
     )
+})
+
+test_that("subsetting and printing a subsetted kwic works (#1665)", {
+    kw <- kwic(data_corpus_inaugural, "terror")
+    expect_output(print(kw[, c("pre", "keyword", "post")]), "pre keyword")
+    expect_is(kw[, c("pre", "keyword", "post")], "data.frame")
+    expect_is(kw[1:3, ], "data.frame")
+    expect_is(kw[1:3, ], "kwic")
+    expect_is(kw[1:3, names(kw)], "kwic")
 })

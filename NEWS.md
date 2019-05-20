@@ -8,6 +8,7 @@
 
 * `kwic.corpus()` and `kwic.tokens()` behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (#1684)
 * Improved formatting of `tokens()` verbose output. (#1683)
+* Subsetting and printing of subsetted kwic objects is more robust. (#1665)
 
 # quanteda 1.4.3
 
