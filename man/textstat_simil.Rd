@@ -4,6 +4,7 @@
 \alias{textstat_simil}
 \alias{textstat_dist}
 \alias{as.matrix.textstat_simil}
+\alias{as.matrix.textstat_dist}
 \alias{as.list.textstat_simil}
 \title{Similarity and distance computation between documents or features}
 \usage{
@@ -13,10 +14,12 @@ textstat_simil(x, selection = NULL, margin = c("documents",
   diag = TRUE, min_simil = 0)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
-  method = c("euclidean", "kullback", "manhattan", "maximum", "canberra",
-  "minkowski"), upper = FALSE, diag = FALSE, p = 2)
+  method = c("euclidean", "manhattan", "maximum", "canberra",
+  "minkowski"), upper = TRUE, diag = TRUE, p = 2)
 
 \method{as.matrix}{textstat_simil}(x, ...)
+
+\method{as.matrix}{textstat_dist}(x, ...)
 
 \method{as.list}{textstat_simil}(x, sorted = TRUE, n = NULL, ...)
 }
@@ -53,6 +56,8 @@ values will not be returned}
 
 \item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
 \code{NULL}, return all items.}
+
+\item{...}{unused}
 }
 \value{
 A \link{data.frame} containing the pairs of documents or features
@@ -79,7 +84,7 @@ sparse \link{dfm} objects.
   \code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
 
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+  \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
   and \code{"minkowski"}.
 }
 \note{
@@ -115,28 +120,20 @@ tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), metho
 head(as.matrix(tstat2), 10)
 as.list(tstat2, n = 3)
 
-# create a dfm from inaugural addresses from Reagan onwards
-dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-               remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
                
 # distances for documents 
-(tstat1 <- textstat_dist(dfmat, margin = "documents"))
-as.matrix(tstat1)
+(tstat3 <- textstat_dist(dfmat, margin = "documents"))
+as.matrix(tstat3)
 
 # distances for specific documents
 textstat_dist(dfmat, "2017-Trump", margin = "documents")
-(tstat2 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
-as.list(tstat2)
+(tstat4 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
+as.matrix(tstat2)
 
+\dontrun{
+# plot a dendrogram after converting the object into distances
+plot(hclust(as.dist(tstat3)))
 }
-\references{
-\code{"kullback"} is the Kullback-Leibler distance, which assumes that
-  \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case either \eqn{P(x_i)} or
-  \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
-  assumed to be zero as the limit value.  The formula is:
-   \deqn{\sum{P(x)*log(P(x)/p(y))}}
-   
-  All other measures are described in the \pkg{proxy} package.
 }
 \seealso{
 \code{\link[stats]{as.dist}}

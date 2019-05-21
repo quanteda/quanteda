@@ -397,7 +397,7 @@ dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 # hierarchical clustering - get distances on normalized dfm
 tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
 # hiarchical clustering the distance object
-pres_cluster <- hclust(tstat_dist)
+pres_cluster <- hclust(as.dist(tstat_dist))
 # label with document names
 pres_cluster$labels <- docnames(dfmat_sotu)
 # plot as a dendrogram

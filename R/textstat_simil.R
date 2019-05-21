@@ -163,54 +163,47 @@ textstat_simil.dfm <- function(x, selection = NULL,
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+#'   \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
 #'   and \code{"minkowski"}.
-#' @references 
-#'   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
-#'   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case either \eqn{P(x_i)} or
-#'   \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
-#'   assumed to be zero as the limit value.  The formula is:
-#'    \deqn{\sum{P(x)*log(P(x)/p(y))}}
-#'    
-#'   All other measures are described in the \pkg{proxy} package.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @examples
-#' # create a dfm from inaugural addresses from Reagan onwards
-#' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-#'                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 #'                
 #' # distances for documents 
-#' (tstat1 <- textstat_dist(dfmat, margin = "documents"))
-#' as.matrix(tstat1)
+#' (tstat3 <- textstat_dist(dfmat, margin = "documents"))
+#' as.matrix(tstat3)
 #' 
 #' # distances for specific documents
 #' textstat_dist(dfmat, "2017-Trump", margin = "documents")
-#' (tstat2 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
-#' as.list(tstat2)
+#' (tstat4 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
+#' as.matrix(tstat2)
 #' 
+#' \dontrun{
+#' # plot a dendrogram after converting the object into distances
+#' plot(hclust(as.dist(tstat3)))
+#' }
 textstat_dist <- function(x, selection = NULL,
                           margin = c("documents", "features"),
-                          method = c("euclidean", "kullback",
+                          method = c("euclidean",
                                      "manhattan", "maximum", "canberra", "minkowski"),
-                          upper = FALSE, diag = FALSE, p = 2) {
+                          upper = TRUE, diag = TRUE, p = 2) {
     UseMethod("textstat_dist")
 }
 
 #' @export
 textstat_dist.default <- function(x, selection = NULL,
                                   margin = c("documents", "features"),
-                                  method = c("euclidean", "kullback",
+                                  method = c("euclidean",
                                              "manhattan", "maximum", "canberra", "minkowski"),
-                                  upper = FALSE, diag = FALSE, p = 2) {
+                                  upper = TRUE, diag = TRUE, p = 2) {
     stop(friendly_class_undefined_message(class(x), "textstat_dist"))
 }
 
 #' @export
 textstat_dist.dfm <- function(x, selection = NULL,
                               margin = c("documents", "features"),
-                              method = c("euclidean", "kullback",
+                              method = c("euclidean",
                                          "manhattan", "maximum", "canberra", "minkowski"),
-                              upper = FALSE, diag = FALSE, p = 2) {
+                              upper = TRUE, diag = TRUE, p = 2) {
     x <- as.dfm(x)
 
     margin <- match.arg(margin)
@@ -236,11 +229,36 @@ textstat_dist.dfm <- function(x, selection = NULL,
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
     }
     if (margin == "features") {
-        result <- textstat_proxy(x, x[, i], margin, method, p, use_na = TRUE)
+        temp <- textstat_proxy(x, x[, i], margin, method, p, use_na = TRUE)
     } else {
-        result <- textstat_proxy(x, x[i, ], margin, method, p, use_na = TRUE)
+        temp <- textstat_proxy(x, x[i, ], margin, method, p, use_na = TRUE)
     }
-    as_dist(result, method, match.call(), diag = diag, upper = upper)
+    
+    if (upper) temp <- as(temp, "dgTMatrix")
+    
+    # ensure original sort order
+    xnames <- if (margin == "documents") docnames(x) else featnames(x)
+    ynames <- if (is.null(selection)) xnames else xnames[i]
+    temp <- temp[xnames, ynames, drop = FALSE]
+
+    result <- data.frame(x = factor(temp@i + 1L, levels = seq_along(xnames), labels = xnames),
+                         y = factor(match(ynames[temp@j + 1L], xnames), levels = seq_along(xnames), labels = xnames),
+                         distance = temp@x)
+
+    # eliminate identical pairs when diag = FALSE
+    if (!diag) {
+        result <- result[result[, 1] != result[, 2], ]
+    }
+    
+    # replace x and y with margin names
+    names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
+    
+    class(result) <- c("textstat_dist", "data.frame")
+    attr(result, "selection") <- selection
+    attr(result, "method") <- method
+    attr(result, "diag") <- diag
+    attr(result, "upper") <- upper
+    return(result)
 }
 
 #' [Experimental] Compute document/feature proximity
@@ -348,25 +366,6 @@ textstat_proxy <- function(x, y = NULL,
     # return(as(result, "CsparseMatrix"))
 }
 
-# internal function to coerce to dist object
-as_dist <- function(x, method, call, diag = FALSE, upper = FALSE) {
-    result <- as.matrix(x)
-    if (ncol(x) == nrow(x))
-        result <- result[lower.tri(result)]
-    attr(result, "Size") <- ncol(x)
-    attr(result, "Labels") <- colnames(x)
-    attr(result, "Diag") <- diag
-    attr(result, "Upper") <- upper
-    attr(result, "method") <- method
-    attr(result, "call") <- call
-    if (ncol(x) == nrow(x)) {
-        class(result) <- "dist"
-    } else {
-        class(result) <- "dist_selection"
-    }
-    result
-}
-
 #' Coerce a simil object into a matrix
 #' 
 #' \code{as.matrix.simil} coerces an object returned from
@@ -397,26 +396,6 @@ as.matrix.simil <- function(x, diag = 1.0, upper = TRUE, ...) {
     df
 }
 
-#' Coerce a textstat_simil or textstat_dist to a sparse Matrix format
-#' 
-#' Coerce a \link{textstat_simil} or \link{textstat_dist} to a sparse \pkg{Matrix} format.
-#' @param x input textstat object
-#' @keywords textstat internal
-as.Matrix <- function(x) {
-    UseMethod("as.Matrix")
-}
-
-#' @method as.Matrix textstat_simil
-#' @keywords textstat internal
-as.Matrix.textstat_simil <- function(x) {
-    names(x)[1:2] <- c("x", "y")
-    x$y <- factor(x$y)  # refactor to remove unused levels
-    sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
-                 x = x$similarity,
-                 dims = c(nlevels(x$x), nlevels(x$y)),
-                 dimnames = list(levels(x$x), levels(x$y)))
-}
-
 #' @export
 #' @rdname textstat_simil
 #' @param ... unused
@@ -424,23 +403,42 @@ as.Matrix.textstat_simil <- function(x) {
 #' @keywords textstat
 as.matrix.textstat_simil <- function(x, ...) {
     # pad the missing diagonal if did not exist
+    diagval <- if (inherits(x, "textstat_dist")) 0.0 else 1.0
     if (!attr(x, "diag") & is.null(attr(x, "selection"))) {
-        selected <- as.character(unique(unlist(unclass(x[c(1,2)]))))
-        samerows <- data.frame(selected, selected, 
-                               similarity = rep(1.0, length(selected)), 
+        selected <- as.character(unique(unlist(unclass(x[c(1, 2)]))))
+        samerows <- data.frame(selected, 
+                               selected, 
+                               rep(diagval, length(selected)), 
                                stringsAsFactors = FALSE)
         names(samerows) <- names(x)
         x <- rbind(x, samerows)
     }
-    result <- as.Matrix(x)
-    # return NA for missings, not 0
-    if (attr(x, "min_simil") > 0) result[result == 0] <- NA
+    
+    names(x)[1:2] <- c("x", "y")
+    x$y <- factor(x$y)  # refactor to remove unused levels
+    result <- sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
+                           x = x[[3]],
+                           dims = c(nlevels(x$x), nlevels(x$y)),
+                           dimnames = list(levels(x$x), levels(x$y)))
+    
+    # return NA for missings, not 0, for textstat_simil
+    if (!is.null(attr(x, "min_simil")) && attr(x, "min_simil") > 0) 
+        result[result == 0] <- NA
     # NA the lower triangle if upper = FALSE
     if (!attr(x, "upper")) {
         result <- t(result)
         result[upper.tri(result)] <- NA
     }
     as.matrix(result)
+}
+
+#' @export
+#' @rdname textstat_simil
+#' @param ... unused
+#' @method as.matrix textstat_dist
+#' @keywords textstat
+as.matrix.textstat_dist <- function(x, ...) {
+    as.matrix.textstat_simil(x, ...)
 }
 
 #' @rdname textstat_simil
