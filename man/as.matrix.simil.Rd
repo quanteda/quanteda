@@ -8,8 +8,6 @@
 }
 \arguments{
 \item{diag}{the value to use on the diagonal representing self-similarities}
-
-\item{...}{unused}
 }
 \description{
 \code{as.matrix.simil} coerces an object returned from

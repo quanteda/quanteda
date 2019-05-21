@@ -56,8 +56,6 @@ values will not be returned}
 
 \item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
 \code{NULL}, return all items.}
-
-\item{...}{unused}
 }
 \value{
 A \link{data.frame} containing the pairs of documents or features

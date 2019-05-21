@@ -376,7 +376,6 @@ textstat_proxy <- function(x, y = NULL,
 #'   similarity of an object with itself will be 1.0, \code{diag} defaults to
 #'   this value. This differs the default \code{diag = NA} in
 #'   \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
-#' @param ... unused
 #' @export
 #' @method as.matrix simil
 #' @keywords textstat internal
@@ -434,7 +433,6 @@ as.matrix.textstat_simil <- function(x, ...) {
 
 #' @export
 #' @rdname textstat_simil
-#' @param ... unused
 #' @method as.matrix textstat_dist
 #' @keywords textstat
 as.matrix.textstat_dist <- function(x, ...) {
