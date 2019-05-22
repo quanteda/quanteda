@@ -19,6 +19,8 @@ test_simil <- function(x, method, margin, ignore_upper = FALSE, ...) {
     s1 <- as.matrix(textstat_proxy(x, method = method, margin = margin, ...))
     s2 <- as.matrix(proxy::simil(as.matrix(x), 
                                 method = method, by_rows = by_rows, diag = TRUE, ...))
+    diag(s1) <- NA
+    diag(s2) <- NA
 
     if (ignore_upper)
         s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
