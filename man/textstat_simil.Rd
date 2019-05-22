@@ -3,25 +3,19 @@
 \name{textstat_simil}
 \alias{textstat_simil}
 \alias{textstat_dist}
-\alias{as.matrix.textstat_simil}
-\alias{as.matrix.textstat_dist}
-\alias{as.list.textstat_simil}
+\alias{as.list.textstat_simildist}
 \title{Similarity and distance computation between documents or features}
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching"), upper = TRUE,
-  diag = TRUE, min_simil = 0)
+  "dice", "edice", "hamman", "simple matching"), min_simil = 0, ...)
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "manhattan", "maximum", "canberra",
-  "minkowski"), upper = TRUE, diag = TRUE, p = 2)
+  "minkowski"), p = 2)
 
-\method{as.matrix}{textstat_simil}(x, ...)
-
-\method{as.matrix}{textstat_dist}(x, ...)
-
-\method{as.list}{textstat_simil}(x, sorted = TRUE, n = NULL, ...)
+\method{as.list}{textstat_simildist}(x, sorted = TRUE, n = NULL,
+  diag = FALSE, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -38,36 +32,26 @@ difference will be computed:  \code{"documents"} for documents or
 \item{method}{character; the method identifying the similarity or distance
 measure to be used; see Details.}
 
-\item{upper}{logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.
-Similar to returning just the lower triangle from a \link{dist} object, or
-the upper triangle when transforming the output into a matrix.}
-
-\item{diag}{logical; whether to record the similarity of an item with itself
-(similar to the "diagonal" were the output in matrix form).}
-
 \item{min_simil}{numeric; a threshold for the similarity values below which similarity
 values will not be returned}
 
 \item{p}{The power of the Minkowski distance.}
 
-\item{...}{unused}
-
 \item{sorted}{sort results in descending order if \code{TRUE}}
 
 \item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
 \code{NULL}, return all items.}
+
+\item{diag}{logical; if \code{FALSE}, exclude the item's comparison with itself}
 }
 \value{
-A \link{data.frame} containing the pairs of documents or features
-  whose similarity or distance will be compared.  
+A sparse matrix from the \pkg{Matrix} package that will be symmetric 
+  if no target is selected (using \code{selection}).
      
-  These can be transformed easily into a list format using
-  \code{as.list()}, which returns a list for each unique element of the
-  second of the pairs.
-  
-  You can also transform the output in matrix object using
-  \code{as.matrix()}, which could (for a \code{textstat_dist} object) be
-  further transformed into a \link{dist} object.)
+  These can be transformed easily into a list format using \code{as.list()},
+  which returns a list for each unique element of the second of the pairs,
+  \code{as.dist} to be transformed into a \link[stats]{dist} object, or
+  \code{as.matrix} to convert it into an ordinary matrix.
 }
 \description{
 These functions compute matrixes of distances and similarities between
@@ -98,13 +82,10 @@ dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000),
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 as.matrix(tstat1)
 as.list(tstat1)
+as.list(tstat1, diag = TRUE)
 
-textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE)
-textstat_simil(dfmat, method = "cosine", margin = "documents", upper = FALSE)
-textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE, upper = FALSE)
- 
 # min_simil
-(tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
+(tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.6))
 as.matrix(tstat2)
 
 # similarities for for specific documents
@@ -116,17 +97,20 @@ textstat_simil(dfmat, selection = c("2009-Obama" , "2013-Obama"), margin = "docu
 tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
                          margin = "features")
 head(as.matrix(tstat2), 10)
-as.list(tstat2, n = 3)
+as.list(tstat2, n = 6)
 
                
 # distances for documents 
 (tstat3 <- textstat_dist(dfmat, margin = "documents"))
 as.matrix(tstat3)
+as.list(tstat3)
+as.dist(tstat3)
 
 # distances for specific documents
 textstat_dist(dfmat, "2017-Trump", margin = "documents")
 (tstat4 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
-as.matrix(tstat2)
+as.matrix(tstat4)
+as.list(tstat4)
 
 \dontrun{
 # plot a dendrogram after converting the object into distances

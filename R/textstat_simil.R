@@ -1,3 +1,86 @@
+# class definition and class functions --------
+
+#' @title textstat_simil/dist classes
+#' @description Sparse classes for similarity and distance matrices created by
+#'   \code{\link{textstat_simil}} and \code{\link{textstat_dist}}.
+#' @rdname textstat_simildist-class
+#' @export
+#' @keywords internal textstat
+#' @slot .Data a sparse \pkg{Matrix} object, symmetric if selection is
+#'   \code{NULL}
+#' @slot method the method used for computing similarity or distance
+#' @slot min_simil numeric; a threshold for the similarity values below which similarity
+#'   values are not computed
+#' @slot margin identifies the margin of the dfm on which similarity or
+#'   difference was computed:  \code{"documents"} for documents or
+#'   \code{"features"} for word/term features.
+#' @slot type either \code{"textstat_simil"} or \code{"textstat_dist"}
+#' @seealso \code{\link{textstat_simil}}
+setClass("textstat_simildist", contains = "dsparseMatrix",
+         slots = c(method = "character",
+                   margin = "character",
+                   type = "character"))
+
+#' @rdname textstat_simildist-class
+setClass("textstat_dist", contains = c("textstat_simildist", "dsTMatrix"))
+
+#' @rdname textstat_simildist-class
+#' @slot selection target units, if any
+setClass("textstat_dist_sel", contains = c("textstat_simildist", "dgTMatrix"),
+         slots = c(selection = "character"))
+
+#' @rdname textstat_simildist-class
+setClass("textstat_simil", contains = c("textstat_simildist", "dsTMatrix"))
+
+#' @rdname textstat_simildist-class
+setClass("textstat_simil_sel", contains = c("textstat_simildist", "dgTMatrix"),
+         slots = c(selection = "character"))
+
+#' @rdname textstat_simildist-class
+setClass("textstat_simil_sparse", contains = c("textstat_simildist", "dsCMatrix"),
+         slots = c(min_simil = "numeric"))
+
+#' @rdname textstat_simildist-class
+setClass("textstat_simil_sel_sparse", contains = c("textstat_simildist", "dgCMatrix"),
+         slots = c(selection = "character", min_simil = "numeric"))
+
+validate_min_simil <- function(object) {
+    if (object@min_simil < 0 || object@min_simil > 1.0)
+        paste("min_simil must range from 0 to 1.0")
+    else 
+        TRUE
+}
+
+setValidity("textstat_simil_sparse", function(object) {
+    validate_min_simil(object)
+})
+
+setValidity("textstat_simil_sel_sparse", function(object) {
+    validate_min_simil(object)
+})
+
+setMethod("show", "textstat_simildist",
+          function(object) {
+              cat(object@type, " object; method = \"", object@method, "\"\n\n", sep = "")
+              print(as.matrix(object))
+          })
+
+#' @rdname textstat_simildist-class
+#' @inheritParams utils::head
+#' @export
+head.textstat_simildist <- function(x, n = 6L, ...) {
+    head(as.matrix(x, n = n, ...))
+}
+
+#' @rdname textstat_simildist-class
+#' @export
+tail.textstat_simildist <- function(x, n = 6L, ...) {
+    tail(as.matrix(x, n = n, ...))
+}
+
+
+# core functions ------
+
 #' Similarity and distance computation between documents or features
 #'
 #' These functions compute matrixes of distances and similarities between
@@ -15,11 +98,6 @@
 #'   \code{"features"} for word/term features.
 #' @param method character; the method identifying the similarity or distance
 #'   measure to be used; see Details.
-#' @param diag logical; whether to record the similarity of an item with itself
-#'   (similar to the "diagonal" were the output in matrix form).
-#' @param upper logical; if \code{TRUE}, record both (A, B) and (B, A) pairs.
-#'   Similar to returning just the lower triangle from a \link{dist} object, or
-#'   the upper triangle when transforming the output into a matrix.
 #' @param min_simil numeric; a threshold for the similarity values below which similarity
 #'   values will not be returned
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
@@ -29,16 +107,13 @@
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in
 #'   \code{\link{dfm_weight}(x, "prop")}.
-#' @return A \link{data.frame} containing the pairs of documents or features
-#'   whose similarity or distance will be compared.  
+#' @return A sparse matrix from the \pkg{Matrix} package that will be symmetric 
+#'   if no target is selected (using \code{selection}).
 #'      
-#'   These can be transformed easily into a list format using
-#'   \code{as.list()}, which returns a list for each unique element of the
-#'   second of the pairs.
-#'   
-#'   You can also transform the output in matrix object using
-#'   \code{as.matrix()}, which could (for a \code{textstat_dist} object) be
-#'   further transformed into a \link{dist} object.)
+#'   These can be transformed easily into a list format using \code{as.list()},
+#'   which returns a list for each unique element of the second of the pairs,
+#'   \code{as.dist} to be transformed into a \link[stats]{dist} object, or
+#'   \code{as.matrix} to convert it into an ordinary matrix.
 #' @export
 #' @seealso \code{\link[stats]{as.dist}}
 #' @examples
@@ -48,13 +123,10 @@
 #' (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 #' as.matrix(tstat1)
 #' as.list(tstat1)
+#' as.list(tstat1, diag = TRUE)
 #' 
-#' textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE)
-#' textstat_simil(dfmat, method = "cosine", margin = "documents", upper = FALSE)
-#' textstat_simil(dfmat, method = "cosine", margin = "documents", diag = FALSE, upper = FALSE)
-#'  
 #' # min_simil
-#' (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.5))
+#' (tstat2 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.6))
 #' as.matrix(tstat2)
 #' 
 #' # similarities for for specific documents
@@ -66,15 +138,13 @@
 #' tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
 #'                          margin = "features")
 #' head(as.matrix(tstat2), 10)
-#' as.list(tstat2, n = 3)
+#' as.list(tstat2, n = 6)
 #' 
 textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching"),
-                           upper = TRUE, 
-                           diag = TRUE,
-                           min_simil = 0) {
+                           min_simil = 0, ...) {
     UseMethod("textstat_simil")
 }
     
@@ -84,9 +154,7 @@ textstat_simil.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               upper = TRUE, 
-                               diag = TRUE,
-                               min_simil = 0) {
+                               min_simil = 0, ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
@@ -95,8 +163,6 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               upper = TRUE, 
-                               diag = TRUE,
                                min_simil = 0) {
     x <- as.dfm(x)
     
@@ -131,32 +197,23 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                min_proxy = if (min_simil == 0) NULL else min_simil, use_na = TRUE)
     }
     
-    if (upper) temp <- as(temp, "dgTMatrix")
-    
-    # ensure original sort order
-    xnames <- if (margin == "documents") docnames(x) else featnames(x)
-    ynames <- if (is.null(selection)) xnames else xnames[i]
-    temp <- temp[xnames, ynames, drop = FALSE]
-
-    result <- data.frame(x = factor(temp@i + 1L, levels = seq_along(xnames), labels = xnames),
-                         y = factor(match(ynames[temp@j + 1L], xnames), levels = seq_along(xnames), labels = xnames),
-                         similarity = temp@x)
-
-    # eliminate identical pairs when diag = FALSE
-    if (!diag) {
-        result <- result[result[, 1] != result[, 2], ]
+    if (min_simil == 0) {
+        if (is.null(selection))
+            return(new("textstat_simil", temp, method = method, type = "textstat_simil"))
+        else
+            return(new("textstat_simil_sel", temp, method = method, type = "textstat_simil",
+                       selection = selection))
+    } else {
+        if (is.null(selection)) {
+            temp <- as(temp, "dsCMatrix")
+            return(new("textstat_simil_sparse", temp, method = method, type = "textstat_simil",
+                       min_simil = min_simil))
+        } else {
+            temp <- as(temp, "dgCMatrix")
+            return(new("textstat_simil_sel_sparse", temp, method = method, type = "textstat_simil", 
+                       min_simil = min_simil, selection = selection))
+        }
     }
-    
-    # replace x and y with margin names
-    names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
-    
-    class(result) <- c("textstat_simil", "data.frame")
-    attr(result, "selection") <- selection
-    attr(result, "method") <- method
-    attr(result, "min_simil") <- min_simil
-    attr(result, "diag") <- diag
-    attr(result, "upper") <- upper
-    return(result)
 }
 
 #' @rdname textstat_simil
@@ -171,11 +228,14 @@ textstat_simil.dfm <- function(x, selection = NULL,
 #' # distances for documents 
 #' (tstat3 <- textstat_dist(dfmat, margin = "documents"))
 #' as.matrix(tstat3)
+#' as.list(tstat3)
+#' as.dist(tstat3)
 #' 
 #' # distances for specific documents
 #' textstat_dist(dfmat, "2017-Trump", margin = "documents")
 #' (tstat4 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
-#' as.matrix(tstat2)
+#' as.matrix(tstat4)
+#' as.list(tstat4)
 #' 
 #' \dontrun{
 #' # plot a dendrogram after converting the object into distances
@@ -185,7 +245,7 @@ textstat_dist <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = c("euclidean",
                                      "manhattan", "maximum", "canberra", "minkowski"),
-                          upper = TRUE, diag = TRUE, p = 2) {
+                          p = 2) {
     UseMethod("textstat_dist")
 }
 
@@ -194,7 +254,7 @@ textstat_dist.default <- function(x, selection = NULL,
                                   margin = c("documents", "features"),
                                   method = c("euclidean",
                                              "manhattan", "maximum", "canberra", "minkowski"),
-                                  upper = TRUE, diag = TRUE, p = 2) {
+                                  p = 2) {
     stop(friendly_class_undefined_message(class(x), "textstat_dist"))
 }
 
@@ -203,7 +263,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
                               margin = c("documents", "features"),
                               method = c("euclidean",
                                          "manhattan", "maximum", "canberra", "minkowski"),
-                              upper = TRUE, diag = TRUE, p = 2) {
+                              p = 2) {
     x <- as.dfm(x)
 
     margin <- match.arg(margin)
@@ -234,32 +294,59 @@ textstat_dist.dfm <- function(x, selection = NULL,
         temp <- textstat_proxy(x, x[i, ], margin, method, p, use_na = TRUE)
     }
     
-    if (upper) temp <- as(temp, "dgTMatrix")
-    
-    # ensure original sort order
-    xnames <- if (margin == "documents") docnames(x) else featnames(x)
-    ynames <- if (is.null(selection)) xnames else xnames[i]
-    temp <- temp[xnames, ynames, drop = FALSE]
+    if (is.null(selection))
+        return(new("textstat_dist", temp, method = method, type = "textstat_dist"))
+    else
+        return(new("textstat_dist_sel", temp, method = method, type = "textstat_dist",
+                       selection = selection))
+}
 
-    result <- data.frame(x = factor(temp@i + 1L, levels = seq_along(xnames), labels = xnames),
-                         y = factor(match(ynames[temp@j + 1L], xnames), levels = seq_along(xnames), labels = xnames),
-                         distance = temp@x)
+# coercion methods ----------
 
-    # eliminate identical pairs when diag = FALSE
-    if (!diag) {
-        result <- result[result[, 1] != result[, 2], ]
+#' @rdname textstat_simil
+#' @method as.list textstat_simildist
+#' @param sorted sort results in descending order if \code{TRUE}
+#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
+#'   \code{NULL}, return all items.
+#' @param diag logical; if \code{FALSE}, exclude the item's comparison with itself
+#' @keywords textstat
+#' @export
+as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...) {
+    if (!is.null(n) && n < 1) 
+        stop("n must be 1 or greater")
+    if (!is.null(n) && !sorted) {
+        warning("ignoring n when sorted = FALSE")
+        n <- NULL
     }
     
-    # replace x and y with margin names
-    names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
-    
-    class(result) <- c("textstat_dist", "data.frame")
-    attr(result, "selection") <- selection
-    attr(result, "method") <- method
-    attr(result, "diag") <- diag
-    attr(result, "upper") <- upper
-    return(result)
+    # NA the diagonal, if diag = FALSE
+    if (!diag) {
+        if (is(x, "symmetricMatrix")) {
+            diag(x) <- NA
+        } else {
+            # NA same-item pairs
+            toNA <- list(x = which(rownames(x) %in% colnames(x)), 
+                         y = seq_along(colnames(x)))
+            for (i in seq_len(lengths(toNA)[1]))
+                x[toNA$x[i], toNA$y[i]] <- NA
+        }
+    }
+
+    x <- as(x, "dgTMatrix")
+    result <- split(structure(x@x, names = rownames(x)[x@i+1]), colnames(x)[x@j+1])
+
+    if (sorted)
+        result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
+    if (!is.null(n))
+        result <- lapply(result, "[", seq_len(n))
+    # remove any missing
+    result <- lapply(result, function(y) y[!is.na(y)])
+
+    result
 }
+
+
+# textstat_proxy ---------
 
 #' [Experimental] Compute document/feature proximity
 #'
@@ -364,123 +451,4 @@ textstat_proxy <- function(x, y = NULL,
     }
     return(result)
     # return(as(result, "CsparseMatrix"))
-}
-
-#' Coerce a simil object into a matrix
-#' 
-#' \code{as.matrix.simil} coerces an object returned from
-#'   `textstat_simil()` into a matrix
-#' @param diag  the value to use on the diagonal representing self-similarities
-#' @note 
-#'   Because for the similarity methods implemented in  \pkg{quanteda}, the
-#'   similarity of an object with itself will be 1.0, \code{diag} defaults to
-#'   this value. This differs the default \code{diag = NA} in
-#'   \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
-#' @export
-#' @method as.matrix simil
-#' @keywords textstat internal
-as.matrix.simil <- function(x, diag = 1.0, upper = TRUE, ...) {
-    size <- attr(x, "Size")
-    df <- matrix(0, size, size)
-    df[row(df) > col(df)] <- x
-    if (upper)
-        df <- df + t(df)
-    label <- attr(x, "Labels")
-     if (is.null(label)) {
-        dimnames(df) <- list(seq_len(size), seq_len(size))
-    } else {
-        dimnames(df) <- list(label, label)
-    }
-    diag(df) <- diag
-    df
-}
-
-#' @export
-#' @rdname textstat_simil
-#' @param ... unused
-#' @method as.matrix textstat_simil
-#' @keywords textstat
-as.matrix.textstat_simil <- function(x, ...) {
-    # pad the missing diagonal if did not exist
-    diagval <- if (inherits(x, "textstat_dist")) 0.0 else 1.0
-    if (!attr(x, "diag") & is.null(attr(x, "selection"))) {
-        selected <- as.character(unique(unlist(unclass(x[c(1, 2)]))))
-        samerows <- data.frame(selected, 
-                               selected, 
-                               rep(diagval, length(selected)), 
-                               stringsAsFactors = FALSE)
-        names(samerows) <- names(x)
-        x <- rbind(x, samerows)
-    }
-    
-    names(x)[1:2] <- c("x", "y")
-    x$y <- factor(x$y)  # refactor to remove unused levels
-    result <- sparseMatrix(i = as.integer(x$x), j = as.integer(x$y),
-                           x = x[[3]],
-                           dims = c(nlevels(x$x), nlevels(x$y)),
-                           dimnames = list(levels(x$x), levels(x$y)))
-    
-    # return NA for missings, not 0, for textstat_simil
-    if (!is.null(attr(x, "min_simil")) && attr(x, "min_simil") > 0) 
-        result[result == 0] <- NA
-    # NA the lower triangle if upper = FALSE
-    if (!attr(x, "upper")) {
-        result <- t(result)
-        result[upper.tri(result)] <- NA
-    }
-    as.matrix(result)
-}
-
-#' @export
-#' @rdname textstat_simil
-#' @method as.matrix textstat_dist
-#' @keywords textstat
-as.matrix.textstat_dist <- function(x, ...) {
-    as.matrix.textstat_simil(x, ...)
-}
-
-#' @rdname textstat_simil
-#' @method as.list textstat_simil
-#' @param sorted sort results in descending order if \code{TRUE}
-#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
-#'   \code{NULL}, return all items.
-#' @keywords textstat
-#' @export
-as.list.textstat_simil <- function(x, sorted = TRUE, n = NULL, ...) {
-    if (!is.null(n) && n < 1) 
-        stop("n must be 1 or greater")
-    if (!is.null(n) && !sorted) {
-        warning("ignoring n when sorted = FALSE")
-        n <- NULL
-    }
-    
-    # make symmetric if upper = FALSE
-    if (!attr(x, "upper")) {
-        reflected <- x[, c(2, 1, 3:ncol(x)), drop = FALSE]
-        if (attr(x, "diag")) {
-            reflected <- reflected[reflected[1] != reflected[2], , drop = FALSE]
-            attr(x, "diag") <- FALSE
-        }
-        names(reflected) <- names(x)
-        x <- rbind(x, reflected)
-    }
-
-    if (!attr(x, "diag")) {
-        selected <- unique(x[, 2])
-        samerows <- data.frame(selected, selected, 
-                               similarity = rep(1.0, length(selected)), 
-                               stringsAsFactors = FALSE)
-        names(samerows) <- names(x)
-        rbind(x, samerows)
-    }
-    
-    names(x)[1:2] <- c("x", "y")
-    result <- split(structure(x$similarity, names = as.character(x$x)), factor(x$y))
-    if (sorted)
-        result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
-    if (!is.null(n))
-        result <- lapply(result, "[", seq_len(n))
-    # remove any missing because n was greater than the length of the list item
-    result <- lapply(result, function(y) y[!is.na(y)])
-    result
 }
