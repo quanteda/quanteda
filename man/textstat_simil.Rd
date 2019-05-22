@@ -4,6 +4,7 @@
 \alias{textstat_simil}
 \alias{textstat_dist}
 \alias{as.list.textstat_simildist}
+\alias{as.data.frame.textstat_simildist}
 \title{Similarity and distance computation between documents or features}
 \usage{
 textstat_simil(x, selection = NULL, margin = c("documents",
@@ -16,6 +17,9 @@ textstat_dist(x, selection = NULL, margin = c("documents", "features"),
 
 \method{as.list}{textstat_simildist}(x, sorted = TRUE, n = NULL,
   diag = FALSE, ...)
+
+\method{as.data.frame}{textstat_simildist}(x, diag = FALSE,
+  upper = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -52,6 +56,10 @@ A sparse matrix from the \pkg{Matrix} package that will be symmetric
   which returns a list for each unique element of the second of the pairs,
   \code{as.dist} to be transformed into a \link[stats]{dist} object, or
   \code{as.matrix} to convert it into an ordinary matrix.
+
+\code{as.data.frame} for a \code{textstat_simil} or
+  \code{textstat_dist} object returns a data.frame of pairwise combinations
+  and the and their similarity or distance value.
 }
 \description{
 These functions compute matrixes of distances and similarities between

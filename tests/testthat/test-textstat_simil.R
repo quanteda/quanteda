@@ -4,6 +4,7 @@ mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
 mt <- dfm_trim(mt, min_termfreq = 10)
 
 test_that("test old and new textstat_simil are the same", {
+    skip("diagonals on on old object are 0")
     expect_equivalent(as.matrix(textstat_simil(mt)), 
                       as.matrix(textstat_simil_old(mt, diag = TRUE, upper = TRUE)), 
                       tolerance = 0.01)
@@ -192,7 +193,7 @@ test_that("all similarities are between 0 and 1", {
     methods <- c("correlation", "cosine", "jaccard", "ejaccard",
                  "dice", "edice", "hamman", "simple matching")
     for (m in methods) {
-        minmax <- range(textstat_simil(mt, method = m, margin = "documents")$similarity)
+        minmax <- range(textstat_simil(mt, method = m, margin = "documents"))
         tol <- .000001
         expect_gte(minmax[1], 0)
         expect_lte(minmax[2], 1.0 + tol)
@@ -221,14 +222,17 @@ test_that("textstat_simil coercion methods work with options", {
     mt2 <- mt[6:10, ]
 
     # upper = TRUE, diag = TRUE
-    tstat <- textstat_simil(mt2, margin = "documents", upper = TRUE, diag = TRUE)
-    expect_equal(nrow(tstat), nrow(mt2)^2)
+    tstat <- textstat_simil(mt2, margin = "documents")
+    expect_equal(
+        nrow(as.data.frame(tstat, diag = TRUE, upper = TRUE)), 
+        nrow(mt2)^2
+    )
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
     # in matrix, diagonal is 1.0
     iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
-    lis <- as.list(tstat, sort = TRUE)
+    lis <- as.list(tstat, sort = TRUE, diag = TRUE)
     lislen <- rep(ndoc(mt2), 5); names(lislen) <- docnames(mt2)
     expect_equivalent(lengths(lis), rep(ndoc(mt2), ndoc(mt2)))
     # in list, sorted first item is comparison to itself
@@ -236,8 +240,11 @@ test_that("textstat_simil coercion methods work with options", {
     expect_equal(iden, sapply(lis, "[[", 1))
 
     # upper = TRUE, diag = FALSE
-    tstat <- textstat_simil(mt2, margin = "documents", upper = TRUE, diag = FALSE)
-    expect_equal(nrow(tstat), nrow(mt2)^2 - ndoc(mt2))
+    tstat <- textstat_simil(mt2, margin = "documents")
+    expect_equal(
+        nrow(as.data.frame(tstat, upper = TRUE, diag = FALSE)),
+        nrow(mt2)^2 - ndoc(mt2)
+    )
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
     # # in matrix, diagonal is NA
@@ -246,22 +253,25 @@ test_that("textstat_simil coercion methods work with options", {
     # in matrix, diagonal is 1.0
     iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
-    lis <- as.list(tstat, sort = TRUE)
+    lis <- as.list(tstat, sort = TRUE, diag = FALSE)
     expect_equivalent(lengths(lis), rep(ndoc(mt2) - 1, ndoc(mt2)))
     expect_identical(names(lis), names(sapply(lis, "[[", 1)))
     # in list, item not compared to itself
     expect_true(all(sapply(seq_along(lis), function(y) ! names(lis[y]) %in% names(y))))
 
     # upper = FALSE, diag = TRUE
-    tstat <- textstat_simil(mt2, margin = "documents", upper = FALSE, diag = TRUE)
-    expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2 + ndoc(mt2))
+    tstat <- textstat_simil(mt2, margin = "documents")
+    expect_equal(
+        nrow(as.data.frame(tstat, upper = FALSE, diag = TRUE)),
+        (nrow(mt2)^2 - ndoc(mt2)) / 2 + ndoc(mt2)
+    )
     mat <- as.matrix(tstat)
-    expect_true(all(is.na(mat[upper.tri(mat)])))
+    # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 1.0
     iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(as.matrix(tstat)), iden)
     # in matrix, lower is NA
-    lis <- as.list(tstat, sort = TRUE)
+    lis <- as.list(tstat, sort = TRUE, diag = TRUE)
     lislen <- rep(ndoc(mt2), ndoc(mt2)); names(lislen) <- docnames(mt2)
     expect_equivalent(lengths(lis), rep(ndoc(mt2), ndoc(mt2)))
     # in list, sorted first item is comparison to itself
@@ -269,15 +279,18 @@ test_that("textstat_simil coercion methods work with options", {
     expect_equal(iden, sapply(lis, "[[", 1))
 
     # upper = FALSE, diag = FALSE
-    tstat <- textstat_simil(mt2, margin = "documents", upper = FALSE, diag = FALSE)
-    expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2)
+    tstat <- textstat_simil(mt2, margin = "documents")
+    expect_equal(
+        nrow(as.data.frame(tstat, upper = FALSE, diag = FALSE)), 
+        (nrow(mt2)^2 - ndoc(mt2)) / 2
+    )
     mat <- as.matrix(tstat)
     loweranddiag <- upper.tri(mat); diag(loweranddiag) <- TRUE
-    expect_true(all(is.na(mat[upper.tri(mat)])))
+    # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 1.0
     iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
-    lis <- as.list(tstat, sort = TRUE)
+    lis <- as.list(tstat, sort = TRUE, diag = FALSE)
     expect_equivalent(lengths(lis), rep(ndoc(mt2) - 1, ndoc(mt2)))
     # in list, item not compared to itself
     expect_true(all(sapply(seq_along(lis), function(y) ! names(lis[y]) %in% names(y))))
@@ -293,7 +306,7 @@ test_that("as.list.texstat_simil() is robust", {
         rep(2, ndoc(mt))
     )
     expect_equivalent(
-        lengths(as.list(textstat_simil(mt), n = ndoc(mt) + 20)),
+        lengths(as.list(textstat_simil(mt), n = ndoc(mt) + 20, diag = TRUE)),
         rep(ndoc(mt), ndoc(mt))
     )
     expect_warning(
@@ -304,15 +317,60 @@ test_that("as.list.texstat_simil() is robust", {
 
 test_that("as.list.textstat_simil works with features margin", {
     tstat <- textstat_simil(mt, selection = c("world", "freedom"),
-                            method = "cosine", margin = "features",
-                            diag = TRUE)
-    lis <- as.list(tstat, n = 5)
-    expect_equal(sapply(lis, head, 1), c("world.world" = 1, "freedom.freedom" = 1))
+                            method = "cosine", margin = "features")
+    lis <- as.list(tstat, n = 5, diag = FALSE)
+    expect_equal(
+        sapply(lis, head, 1), 
+        c("world.today" = 0.952, "freedom.independence" = 0.937),
+        tol = .01
+    )
     expect_identical(names(lis), c("world", "freedom"))
 
     tstat <- textstat_simil(mt, selection = "freedom",
-                            method = "cosine", margin = "features",
-                            diag = TRUE)
-    lis <- as.list(tstat, n = 5)
-    expect_equal(sapply(lis, head, 1), c("freedom.freedom" = 1))
+                            method = "cosine", margin = "features")
+    lis <- as.list(tstat, n = 5, diag = TRUE)
+    expect_equal(
+        sapply(lis, head, 1), 
+        c("freedom.freedom" = 1)
+    )
+})
+
+test_that("as.data.frame.textstat_simildist works with selection", {
+    mt2 <- mt[6:10, ]
+    tstat <- textstat_simil(mt2, selection = c("2017-Trump", "2001-Bush"), method = "cosine")
+    
+    expect_equal(
+        as.character(as.data.frame(tstat, diag = FALSE, upper = FALSE)$document2),
+        c(rep("2017-Trump", 3), rep("2001-Bush", 3))
+    )
+    expect_equal(
+        as.character(as.data.frame(tstat, diag = TRUE, upper = FALSE)$document2),
+        c(rep("2017-Trump", 5), rep("2001-Bush", 5))
+    )
+    expect_equal(
+        as.character(as.data.frame(tstat, diag = FALSE, upper = TRUE)$document2),
+        c(rep("2017-Trump", 3), rep("2001-Bush", 3))
+    )
+    expect_equal(
+        as.character(as.data.frame(tstat, diag = TRUE, upper = TRUE)$document2),
+        c(rep("2017-Trump", 5), rep("2001-Bush", 5))
+    )
+    
+    expect_warning(
+        as.data.frame(tstat, upper = TRUE),
+        "upper = TRUE has no effect when columns have been selected"
+    )
+    
+    expect_identical(
+        names(as.data.frame(textstat_simil(mt2, method = "cosine")))[3],
+        "cosine"
+    )
+    expect_identical(
+        names(as.data.frame(textstat_simil(mt2, method = "correlation")))[3],
+        "correlation"
+    )
+    expect_identical(
+        names(as.data.frame(textstat_dist(mt2, method = "euclidean")))[3],
+        "euclidean"
+    )
 })

@@ -167,9 +167,9 @@ test_that("selection is always on columns (#1549)", {
 })
 
 test_that("all distances are bounded at 0", {
-    methods <- c("euclidean", "manhattan", "maximum", "canberra", "minkowski") # "kullback"
+    methods <- c("euclidean", "manhattan", "maximum", "canberra", "minkowski")
     for (m in methods) {
-      expect_gte(min(textstat_dist(mt, method = m, margin = "features")$distance), 0)
+        expect_gte(min(textstat_dist(mt, method = m, margin = "features")), 0)
     }
 })
 
@@ -177,8 +177,8 @@ test_that("textstat_dist coercion methods work with options", {
     mt2 <- mt[6:10, ]
 
     # upper = TRUE, diag = TRUE
-    tstat <- textstat_dist(mt2, margin = "documents", upper = TRUE, diag = TRUE)
-    expect_equal(nrow(tstat), nrow(mt2)^2)
+    tstat <- textstat_dist(mt2, margin = "documents")
+    # expect_equal(nrow(tstat), nrow(mt2)^2)
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
     # in matrix, diagonal is 0
@@ -186,28 +186,28 @@ test_that("textstat_dist coercion methods work with options", {
     expect_equal(diag(mat), iden)
 
     # upper = TRUE, diag = FALSE
-    tstat <- textstat_dist(mt2, margin = "documents", upper = TRUE, diag = FALSE)
-    expect_equal(nrow(tstat), nrow(mt2)^2 - ndoc(mt2))
+    tstat <- textstat_dist(mt2, margin = "documents")
+    # expect_equal(nrow(tstat), nrow(mt2)^2 - ndoc(mt2))
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
     iden <- rep(0, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
 
     # upper = FALSE, diag = TRUE
-    tstat <- textstat_dist(mt2, margin = "documents", upper = FALSE, diag = TRUE)
-    expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2 + ndoc(mt2))
+    tstat <- textstat_dist(mt2, margin = "documents")
+    # expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2 + ndoc(mt2))
     mat <- as.matrix(tstat)
-    expect_true(all(is.na(mat[upper.tri(mat)])))
+    # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 0
     iden <- rep(0, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(as.matrix(tstat)), iden)
     
     # upper = FALSE, diag = FALSE
-    tstat <- textstat_dist(mt2, margin = "documents", upper = FALSE, diag = FALSE)
-    expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2)
+    tstat <- textstat_dist(mt2, margin = "documents")
+    # expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2)
     mat <- as.matrix(tstat)
     loweranddiag <- upper.tri(mat); diag(loweranddiag) <- TRUE
-    expect_true(all(is.na(mat[upper.tri(mat)])))
+    # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 0
     iden <- rep(0, ndoc(mt2)); names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)

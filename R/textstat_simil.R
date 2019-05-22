@@ -184,6 +184,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
                 selection <- which(selection)
             i <- selection
             i[i < 1 | length(name) < i] <- NA
+            selection <- featnames(x)[selection]
         }
         if (any(is.na(i)))
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
@@ -199,18 +200,26 @@ textstat_simil.dfm <- function(x, selection = NULL,
     
     if (min_simil == 0) {
         if (is.null(selection))
-            return(new("textstat_simil", temp, method = method, type = "textstat_simil"))
+            return(new("textstat_simil", temp, 
+                       method = method,  margin = margin,
+                       type = "textstat_simil"))
         else
-            return(new("textstat_simil_sel", temp, method = method, type = "textstat_simil",
+            return(new("textstat_simil_sel", temp, 
+                       method = method, margin = margin,
+                       type = "textstat_simil",
                        selection = selection))
     } else {
         if (is.null(selection)) {
             temp <- as(temp, "dsCMatrix")
-            return(new("textstat_simil_sparse", temp, method = method, type = "textstat_simil",
+            return(new("textstat_simil_sparse", temp, 
+                       method = method, margin = margin,
+                       type = "textstat_simil",
                        min_simil = min_simil))
         } else {
             temp <- as(temp, "dgCMatrix")
-            return(new("textstat_simil_sel_sparse", temp, method = method, type = "textstat_simil", 
+            return(new("textstat_simil_sel_sparse", temp, 
+                       method = method,  margin = margin,
+                       type = "textstat_simil", 
                        min_simil = min_simil, selection = selection))
         }
     }
@@ -284,6 +293,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
                 selection <- which(selection)
             i <- selection
             i[i < 1 | length(name) < i] <- NA
+            selection <- featnames(x)[selection]
         }
         if (any(is.na(i)))
             stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
@@ -295,10 +305,13 @@ textstat_dist.dfm <- function(x, selection = NULL,
     }
     
     if (is.null(selection))
-        return(new("textstat_dist", temp, method = method, type = "textstat_dist"))
+        return(new("textstat_dist", temp, 
+                   method = method,  margin = margin,
+                   type = "textstat_dist"))
     else
-        return(new("textstat_dist_sel", temp, method = method, type = "textstat_dist",
-                       selection = selection))
+        return(new("textstat_dist_sel", temp, 
+                   method = method,  margin = margin,
+                   type = "textstat_dist", selection = selection))
 }
 
 # coercion methods ----------
@@ -320,20 +333,11 @@ as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE,
     }
     
     # NA the diagonal, if diag = FALSE
-    if (!diag) {
-        if (is(x, "symmetricMatrix")) {
-            diag(x) <- NA
-        } else {
-            # NA same-item pairs
-            toNA <- list(x = which(rownames(x) %in% colnames(x)), 
-                         y = seq_along(colnames(x)))
-            for (i in seq_len(lengths(toNA)[1]))
-                x[toNA$x[i], toNA$y[i]] <- NA
-        }
-    }
+    if (!diag) x <- diag_to_NA(x)
 
     x <- as(x, "dgTMatrix")
-    result <- split(structure(x@x, names = rownames(x)[x@i+1]), colnames(x)[x@j+1])
+    result <- split(structure(x@x, names = rownames(x)[x@i+1]), 
+                    f = factor(colnames(x)[x@j+1], levels = colnames(x)))
 
     if (sorted)
         result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
@@ -345,6 +349,65 @@ as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE,
     result
 }
 
+#' @rdname textstat_simil
+#' @method as.data.frame textstat_simildist
+#' @return \code{as.data.frame} for a \code{textstat_simil} or
+#'   \code{textstat_dist} object returns a data.frame of pairwise combinations
+#'   and the and their similarity or distance value.
+#' @export
+as.data.frame.textstat_simildist <- function(x, diag = FALSE, upper = FALSE) {
+    method <- x@method
+    margin <- x@margin
+    
+    if (!diag)
+        x <- diag_to_NA(x)
+    if (upper) {
+        if (is(x, "symmetricMatrix")) {
+            x <- as(x, "dgTMatrix")
+        } else {
+            warning("upper = TRUE has no effect when columns have been selected")
+        }
+    }
+
+    result <- data.frame(x = factor(x@i + 1L, levels = seq_along(rownames(x)), labels = rownames(x)),
+                         y = factor(match(colnames(x)[x@j + 1L], rownames(x)), 
+                                    levels = seq_along(rownames(x)), labels = rownames(x)),
+                         stat = x@x,
+                         stringsAsFactors = FALSE)
+    result <- subset(result, !is.na(stat))
+    
+    # eliminate same pairs when selection was used
+    if (!diag && !setequal(rownames(x), colnames(x))) 
+        result <- result[result[, 1] != result[, 2], ]
+
+    # replace x and y with margin names
+    names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
+    # replace stat with measure name
+    names(result)[3] <- method
+    
+    result
+} 
+
+#' convert same-value pairs to NA in a textstat_simildist object
+#' 
+#' Converts the diagonal, or the same-pair equivalent in an object 
+#' where the columns have been selected, to NA.
+#' @param x the return from \code{\link{texstat_simil}} or \code{\link{texstat_dist}}
+#' @return sparse Matrix format with same-pair values replaced with \code{NA}
+#' @keywords textstat internal
+diag_to_NA <- function(x) {
+    # NA the diagonal, if diag = FALSE
+    if (is(x, "symmetricMatrix")) {
+        diag(x) <- NA
+    } else {
+        # NA same-item pairs
+        toNA <- list(x = which(rownames(x) %in% colnames(x)), 
+                     y = seq_along(colnames(x)))
+        for (i in seq_len(lengths(toNA)[1]))
+            x[toNA$x[i], toNA$y[i]] <- NA
+    }
+    x
+}
 
 # textstat_proxy ---------
 
