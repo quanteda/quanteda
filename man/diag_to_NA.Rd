@@ -7,7 +7,7 @@
 diag_to_NA(x)
 }
 \arguments{
-\item{x}{the return from \code{\link{texstat_simil}} or \code{\link{texstat_dist}}}
+\item{x}{the return from \code{\link{textstat_simil}} or \code{\link{textstat_dist}}}
 }
 \value{
 sparse Matrix format with same-pair values replaced with \code{NA}

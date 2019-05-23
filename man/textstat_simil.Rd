@@ -13,13 +13,13 @@ textstat_simil(x, selection = NULL, margin = c("documents",
 
 textstat_dist(x, selection = NULL, margin = c("documents", "features"),
   method = c("euclidean", "manhattan", "maximum", "canberra",
-  "minkowski"), p = 2)
+  "minkowski"), p = 2, ...)
 
 \method{as.list}{textstat_simildist}(x, sorted = TRUE, n = NULL,
   diag = FALSE, ...)
 
-\method{as.data.frame}{textstat_simildist}(x, diag = FALSE,
-  upper = FALSE)
+\method{as.data.frame}{textstat_simildist}(x, row.names = NULL,
+  optional = FALSE, diag = FALSE, upper = FALSE, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -39,6 +39,8 @@ measure to be used; see Details.}
 \item{min_simil}{numeric; a threshold for the similarity values below which similarity
 values will not be returned}
 
+\item{...}{unused}
+
 \item{p}{The power of the Minkowski distance.}
 
 \item{sorted}{sort results in descending order if \code{TRUE}}
@@ -47,6 +49,19 @@ values will not be returned}
 \code{NULL}, return all items.}
 
 \item{diag}{logical; if \code{FALSE}, exclude the item's comparison with itself}
+
+\item{row.names}{\code{NULL} or a character vector giving the row
+    names for the data frame.  Missing values are not allowed.}
+
+\item{optional}{logical. If \code{TRUE}, setting row names and
+    converting column names (to syntactic names: see
+    \code{\link{make.names}}) is optional.  Note that all of \R's
+    \pkg{base} package \code{as.data.frame()} methods use
+    \code{optional} only for column names treatment, basically with the
+    meaning of \code{\link{data.frame}(*, check.names = !optional)}.
+    See also the \code{make.names} argument of the \code{matrix} method.}
+
+\item{upper}{logical; if \code{TRUE}, return pairs as both (A, B) and (B, A)}
 }
 \value{
 A sparse matrix from the \pkg{Matrix} package that will be symmetric 
@@ -56,6 +71,12 @@ A sparse matrix from the \pkg{Matrix} package that will be symmetric
   which returns a list for each unique element of the second of the pairs,
   \code{as.dist} to be transformed into a \link[stats]{dist} object, or
   \code{as.matrix} to convert it into an ordinary matrix.
+
+\code{as.data.list} for a \code{textstat_simil} or
+  \code{textstat_dist} object returns a list equal in length to the columns of the 
+  simil or dist object, with the rows and their values as named  elements.  By default,
+  this list excludes same-time pairs (when \code{diag = FALSE}) and sorts the values
+  in descending order (when \code{sorted = TRUE}).
 
 \code{as.data.frame} for a \code{textstat_simil} or
   \code{textstat_dist} object returns a data.frame of pairwise combinations

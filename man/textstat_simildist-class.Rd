@@ -9,15 +9,20 @@
 \alias{textstat_simil_sel-class}
 \alias{textstat_simil_sparse-class}
 \alias{textstat_simil_sel_sparse-class}
+\alias{show,textstat_simildist-method}
 \alias{head.textstat_simildist}
 \alias{tail.textstat_simildist}
 \title{textstat_simil/dist classes}
 \usage{
-head.textstat_simildist(x, n = 6L, ...)
+\S4method{show}{textstat_simildist}(object)
 
-tail.textstat_simildist(x, n = 6L, ...)
+\method{head}{textstat_simildist}(x, n = 6L, ...)
+
+\method{tail}{textstat_simildist}(x, n = 6L, ...)
 }
 \arguments{
+\item{object}{the textstat_simildist object to be printed}
+
 \item{x}{an object}
 
 \item{n}{a single integer.  If positive or zero, size for the resulting
@@ -30,6 +35,9 @@ tail.textstat_simildist(x, n = 6L, ...)
 \description{
 Sparse classes for similarity and distance matrices created by
   \code{\link{textstat_simil}} and \code{\link{textstat_dist}}.
+
+Print/show method for objects created by \code{textstat_simil} and
+\code{textstat_dist}.
 }
 \section{Slots}{
 

@@ -59,6 +59,13 @@ setValidity("textstat_simil_sel_sparse", function(object) {
     validate_min_simil(object)
 })
 
+#' Print a textstat_simildist object
+#' 
+#' Print/show method for objects created by \code{textstat_simil} and
+#' \code{textstat_dist}.
+#' @param object the textstat_simildist object to be printed
+#' @rdname textstat_simildist-class
+#' @export
 setMethod("show", "textstat_simildist",
           function(object) {
               cat(object@type, " object; method = \"", object@method, "\"\n\n", sep = "")
@@ -66,6 +73,7 @@ setMethod("show", "textstat_simildist",
           })
 
 #' @rdname textstat_simildist-class
+#' @method head textstat_simildist
 #' @inheritParams utils::head
 #' @export
 head.textstat_simildist <- function(x, n = 6L, ...) {
@@ -73,6 +81,7 @@ head.textstat_simildist <- function(x, n = 6L, ...) {
 }
 
 #' @rdname textstat_simildist-class
+#' @method tail textstat_simildist
 #' @export
 tail.textstat_simildist <- function(x, n = 6L, ...) {
     tail(as.matrix(x, n = n, ...))
@@ -100,6 +109,7 @@ tail.textstat_simildist <- function(x, n = 6L, ...) {
 #'   measure to be used; see Details.
 #' @param min_simil numeric; a threshold for the similarity values below which similarity
 #'   values will not be returned
+#' @param ... unused
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
 #'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
 #'   \code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
@@ -163,7 +173,8 @@ textstat_simil.dfm <- function(x, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               min_simil = 0) {
+                               min_simil = 0, ...) {
+    check_dots(list(...))
     x <- as.dfm(x)
     
     margin <- match.arg(margin)
@@ -254,7 +265,7 @@ textstat_dist <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = c("euclidean",
                                      "manhattan", "maximum", "canberra", "minkowski"),
-                          p = 2) {
+                          p = 2, ...) {
     UseMethod("textstat_dist")
 }
 
@@ -263,7 +274,7 @@ textstat_dist.default <- function(x, selection = NULL,
                                   margin = c("documents", "features"),
                                   method = c("euclidean",
                                              "manhattan", "maximum", "canberra", "minkowski"),
-                                  p = 2) {
+                                  p = 2, ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_dist"))
 }
 
@@ -272,7 +283,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
                               margin = c("documents", "features"),
                               method = c("euclidean",
                                          "manhattan", "maximum", "canberra", "minkowski"),
-                              p = 2) {
+                              p = 2, ...) {
+    check_dots(list(...))
     x <- as.dfm(x)
 
     margin <- match.arg(margin)
@@ -322,6 +334,11 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
 #'   \code{NULL}, return all items.
 #' @param diag logical; if \code{FALSE}, exclude the item's comparison with itself
+#' @return \code{as.data.list} for a \code{textstat_simil} or
+#'   \code{textstat_dist} object returns a list equal in length to the columns of the 
+#'   simil or dist object, with the rows and their values as named  elements.  By default,
+#'   this list excludes same-time pairs (when \code{diag = FALSE}) and sorts the values
+#'   in descending order (when \code{sorted = TRUE}).
 #' @keywords textstat
 #' @export
 as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...) {
@@ -351,11 +368,13 @@ as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE,
 
 #' @rdname textstat_simil
 #' @method as.data.frame textstat_simildist
+#' @inheritParams base::as.data.frame
+#' @param upper logical; if \code{TRUE}, return pairs as both (A, B) and (B, A)
 #' @return \code{as.data.frame} for a \code{textstat_simil} or
 #'   \code{textstat_dist} object returns a data.frame of pairwise combinations
 #'   and the and their similarity or distance value.
 #' @export
-as.data.frame.textstat_simildist <- function(x, diag = FALSE, upper = FALSE) {
+as.data.frame.textstat_simildist <- function(x, row.names = NULL, optional = FALSE, diag = FALSE, upper = FALSE,  ...) {
     method <- x@method
     margin <- x@margin
     
@@ -392,7 +411,7 @@ as.data.frame.textstat_simildist <- function(x, diag = FALSE, upper = FALSE) {
 #' 
 #' Converts the diagonal, or the same-pair equivalent in an object 
 #' where the columns have been selected, to NA.
-#' @param x the return from \code{\link{texstat_simil}} or \code{\link{texstat_dist}}
+#' @param x the return from \code{\link{textstat_simil}} or \code{\link{textstat_dist}}
 #' @return sparse Matrix format with same-pair values replaced with \code{NA}
 #' @keywords textstat internal
 diag_to_NA <- function(x) {
