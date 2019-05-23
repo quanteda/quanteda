@@ -284,6 +284,7 @@ segmentSentence
 selectFeatures
 Senter
 simil
+simildist
 skipgram
 skipgrams
 Slapin
