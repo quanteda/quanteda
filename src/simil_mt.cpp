@@ -169,13 +169,6 @@ double simil_hamman(colvec& col_i, colvec& col_j, double weight = 1) {
     return (e - (u * weight)) / (e + u);
 }
 
-double simil_faith(colvec& col_i, colvec& col_j) {
-    double t = accu(col_i == 1 && col_j == 1);
-    double f = accu(col_i == 0 && col_j == 0);
-    double n = col_i.n_rows;
-    return (t + (f / 2)) / n;
-}
-
 double simil_matching(colvec& col_i, colvec& col_j) {
     uvec m = col_i == col_j;
     double n = m.n_rows;
@@ -186,12 +179,6 @@ double simil_matching(colvec& col_i, colvec& col_j) {
 //     return sqrt(accu(square(col_i - col_j)));
 // }
  
-double dist_chisquare(colvec& col_i, colvec& col_j) {
-    double s1 = accu(square(col_i));
-    double s2 = accu(square(col_j));
-    return (s1 + s2) - accu(2 * trans(col_i) * col_j);
-}
-
 double dist_kullback(colvec& col_i, colvec& col_j) {
     
     double s1 = accu(col_i);
@@ -280,10 +267,8 @@ struct similarity : public Worker {
                     simil = simil_matching(col_i, col_j);
                     break;
                 case 5:
-                    simil = simil_faith(col_i, col_j);
                     break;
                 case 6:
-                    simil = dist_chisquare(col_i, col_j);
                     break;
                 case 7:
                     simil = dist_kullback(col_i, col_j);
