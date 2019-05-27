@@ -45,8 +45,8 @@ setClass("textstat_simil_sel_sparse", contains = c("textstat_simildist", "dgCMat
          slots = c(selection = "character", min_simil = "numeric"))
 
 validate_min_simil <- function(object) {
-    if (object@min_simil < 0 || object@min_simil > 1.0)
-        paste("min_simil must range from 0 to 1.0")
+    if (object@min_simil < -1.0 || object@min_simil > 1.0)
+        paste("min_simil must range from -1.0 to 1.0")
     else 
         TRUE
 }
@@ -77,14 +77,14 @@ setMethod("show", "textstat_simildist",
 #' @inheritParams utils::head
 #' @export
 head.textstat_simildist <- function(x, n = 6L, ...) {
-    head(as.matrix(x, n = n, ...))
+    head(as.matrix(x), n = n, ...)
 }
 
 #' @rdname textstat_simildist-class
 #' @method tail textstat_simildist
 #' @export
 tail.textstat_simildist <- function(x, n = 6L, ...) {
-    tail(as.matrix(x, n = n, ...))
+    tail(as.matrix(x), n = n, ...)
 }
 
 

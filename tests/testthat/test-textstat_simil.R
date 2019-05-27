@@ -374,3 +374,25 @@ test_that("as.data.frame.textstat_simildist works with selection", {
         "euclidean"
     )
 })
+
+test_that("textstat_simil validator works", {
+    expect_error(
+        textstat_simil(data_dfm_lbgexample, min_simil = -1.1),
+        "min_simil must range from -1.0 to 1.0"
+    )
+})
+
+test_that("textstat_simil show/head/tail methods work", {
+    expect_output(
+        show(textstat_simil(data_dfm_lbgexample, method = "cosine")),
+        "textstat_simil object;"
+    )
+    expect_equal(
+        head(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3),
+        as.matrix(textstat_simil(data_dfm_lbgexample, method = "cosine"))[1:3, ]
+    )
+    expect_equal(
+        tail(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3),
+        as.matrix(textstat_simil(data_dfm_lbgexample, method = "cosine"))[4:6, ]
+    )
+})
