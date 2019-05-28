@@ -68,8 +68,9 @@ setValidity("textstat_simil_sel_sparse", function(object) {
 #' @export
 setMethod("show", "textstat_simildist",
           function(object) {
-              cat(object@type, " object; method = \"", object@method, "\"\n\n", sep = "")
-              print(as.matrix(object))
+              cat(object@type, " object; method = \"", object@method, "\"\n", sep = "")
+              Matrix::printSpMatrix(object, digits = min(getOption("digits"), 3), 
+                                     col.names = TRUE, align = "right")
           })
 
 #' @rdname textstat_simildist-class
@@ -211,7 +212,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
     
     if (min_simil == 0) {
         if (is.null(selection))
-            return(new("textstat_simil", temp, 
+            return(new("textstat_simil", as(temp, "dsTMatrix"), 
                        method = method,  margin = margin,
                        type = "textstat_simil"))
         else
@@ -362,7 +363,8 @@ as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE,
         result <- lapply(result, "[", seq_len(n))
     # remove any missing
     result <- lapply(result, function(y) y[!is.na(y)])
-
+    # remove any empty
+    result <- result[lengths(result) > 0]
     result
 }
 
@@ -381,13 +383,14 @@ as.data.frame.textstat_simildist <- function(x, row.names = NULL, optional = FAL
     if (!diag)
         x <- diag_to_NA(x)
     if (upper) {
-        if (is(x, "symmetricMatrix")) {
-            x <- as(x, "dgTMatrix")
-        } else {
+        if (!setequal(rownames(x), colnames(x)))
             warning("upper = TRUE has no effect when columns have been selected")
-        }
+        else
+            x <- as(x, "dgTMatrix")
+    } else if (setequal(rownames(x), colnames(x))) {
+        x <- as(x, "dsTMatrix")
     }
-
+        
     result <- data.frame(x = factor(x@i + 1L, levels = seq_along(rownames(x)), labels = rownames(x)),
                          y = factor(match(colnames(x)[x@j + 1L], rownames(x)), 
                                     levels = seq_along(rownames(x)), labels = rownames(x)),
@@ -403,7 +406,8 @@ as.data.frame.textstat_simildist <- function(x, row.names = NULL, optional = FAL
     names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
     # replace stat with measure name
     names(result)[3] <- method
-    
+    # drop row names
+    row.names(result) <- NULL
     result
 } 
 

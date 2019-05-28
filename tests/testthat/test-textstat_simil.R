@@ -4,7 +4,6 @@ mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
 mt <- dfm_trim(mt, min_termfreq = 10)
 
 test_that("test old and new textstat_simil are the same", {
-    skip("diagonals on on old object are 0")
     expect_equivalent(as.matrix(textstat_simil(mt)), 
                       as.matrix(textstat_simil_old(mt, diag = TRUE, upper = TRUE)), 
                       tolerance = 0.01)
@@ -201,21 +200,14 @@ test_that("all similarities are between 0 and 1", {
 })
 
 test_that("textstat_simil is stable across repetitions", {
-    skip("until the rest of this PR is complete")
-    
-    res <- textstat_simil(mt, c(2,4), margin = "documents")
-
+    res <- textstat_simil(mt, c(2, 4), margin = "documents")
     set.seed(10)
     resv <- list()
     for (i in 1:100) {
-        resv[[i]] <- textstat_simil(mt, c(2,4), margin = "documents")$similarity
+        resv[[i]] <- as.matrix(textstat_simil(mt, 2, margin = "documents"))
     }
     rescols <- do.call(cbind, resv)
-    
-    plot(rescols[12, ], type = "b", ylim = c(.8, 1))
-    plot(rescols[1, ], type = "b", ylim = c(.8, 1))
-
-    apply(col, 1, sd)
+    expect_true(all(apply(rescols, 1, sd) == 0))
 })
 
 test_that("textstat_simil coercion methods work with options", {
@@ -347,14 +339,14 @@ test_that("as.data.frame.textstat_simildist works with selection", {
         as.character(as.data.frame(tstat, diag = TRUE, upper = FALSE)$document2),
         c(rep("2017-Trump", 5), rep("2001-Bush", 5))
     )
-    expect_equal(
+    suppressWarnings(expect_equal(
         as.character(as.data.frame(tstat, diag = FALSE, upper = TRUE)$document2),
         c(rep("2017-Trump", 3), rep("2001-Bush", 3))
-    )
-    expect_equal(
+    ))
+    suppressWarnings(expect_equal(
         as.character(as.data.frame(tstat, diag = TRUE, upper = TRUE)$document2),
         c(rep("2017-Trump", 5), rep("2001-Bush", 5))
-    )
+    ))
     
     expect_warning(
         as.data.frame(tstat, upper = TRUE),
@@ -394,5 +386,45 @@ test_that("textstat_simil show/head/tail methods work", {
     expect_equal(
         tail(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3),
         as.matrix(textstat_simil(data_dfm_lbgexample, method = "cosine"))[4:6, ]
+    )
+})
+
+test_that("min_simil argument works", {
+    tstat <- textstat_simil(mt, method = "cosine", min_simil = 0.98)
+    expect_output(
+        show(tstat),
+        "1.000       0.982         .            .         ",
+        fixed = TRUE
+    )
+    
+    expect_equal(
+        as.data.frame(tstat, diag = FALSE, upper = FALSE),
+        data.frame(document1 = factor(c("1981-Reagan"),
+                                      levels = rownames(tstat)),
+                   document2 = factor(c("1985-Reagan"),
+                                      levels = rownames(tstat)),
+                   cosine = c(0.9817)),
+        tol = .0001
+    )
+    
+    expect_equal(
+        as.data.frame(tstat, diag = FALSE, upper = TRUE),
+        data.frame(document1 = factor(c("1985-Reagan", "1981-Reagan"),
+                                      levels = rownames(tstat)),
+                   document2 = factor(c("1981-Reagan", "1985-Reagan"),
+                                      levels = rownames(tstat)),
+                   cosine = c(0.9817, 0.9817)),
+        tol = .0001
+    )
+    
+    expect_equal(
+        as.list(tstat, diag = FALSE),
+        list("1981-Reagan" = c("1985-Reagan" = 0.981771),
+             "1985-Reagan" = c("1981-Reagan" = 0.981771)),
+    )
+    expect_equal(
+        sapply(as.list(tstat, diag = TRUE), "[", 1),
+        structure(rep(1, ndoc(mt)), 
+                      names = paste(docnames(mt), docnames(mt), sep = "."))
     )
 })
