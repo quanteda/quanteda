@@ -73,13 +73,8 @@ setMethod("show", "textstat_simildist",
                                      col.names = TRUE, align = "right")
           })
 
-#' @rdname textstat_simildist-class
-#' @inheritParams utils::head
-#' @export
-setMethod("head", signature(x = "textstat_simildist"), utils::head.matrix)
 
-#' @rdname textstat_simildist-class
-#' @export
+setMethod("head", signature(x = "textstat_simildist"), utils::head.matrix)
 setMethod("tail", signature(x = "textstat_simildist"), utils::tail.matrix)
 
 # core functions ------
