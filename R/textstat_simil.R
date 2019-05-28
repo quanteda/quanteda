@@ -74,19 +74,13 @@ setMethod("show", "textstat_simildist",
           })
 
 #' @rdname textstat_simildist-class
-#' @method head textstat_simildist
 #' @inheritParams utils::head
 #' @export
-head.textstat_simildist <- function(x, n = 6L, ...) {
-    head(as.matrix(x), n = n, ...)
-}
+setMethod("head", signature(x = "textstat_simildist"), utils::head.matrix)
 
 #' @rdname textstat_simildist-class
-#' @method tail textstat_simildist
 #' @export
-tail.textstat_simildist <- function(x, n = 6L, ...) {
-    tail(as.matrix(x), n = n, ...)
-}
+setMethod("tail", signature(x = "textstat_simildist"), utils::tail.matrix)
 
 # core functions ------
 

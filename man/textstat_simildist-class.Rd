@@ -10,15 +10,15 @@
 \alias{textstat_simil_sparse-class}
 \alias{textstat_simil_sel_sparse-class}
 \alias{show,textstat_simildist-method}
-\alias{head.textstat_simildist}
-\alias{tail.textstat_simildist}
+\alias{head,textstat_simildist-method}
+\alias{tail,textstat_simildist-method}
 \title{textstat_simil/dist classes}
 \usage{
 \S4method{show}{textstat_simildist}(object)
 
-\method{head}{textstat_simildist}(x, n = 6L, ...)
+\S4method{head}{textstat_simildist}(x, n = 6L, ...)
 
-\method{tail}{textstat_simildist}(x, n = 6L, ...)
+\S4method{tail}{textstat_simildist}(x, n = 6L, addrownums = TRUE, ...)
 }
 \arguments{
 \item{object}{the textstat_simildist object to be printed}
@@ -31,6 +31,9 @@
     the \code{n} last/first number of elements of \code{x}.}
 
 \item{...}{arguments to be passed to or from other methods.}
+
+\item{addrownums}{if there are no row names, create them from the row
+    numbers.}
 }
 \description{
 Sparse classes for similarity and distance matrices created by

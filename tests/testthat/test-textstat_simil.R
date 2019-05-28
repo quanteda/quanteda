@@ -380,11 +380,11 @@ test_that("textstat_simil show/head/tail methods work", {
         "textstat_simil object;"
     )
     expect_equal(
-        head(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3),
+        as.matrix(head(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3)),
         as.matrix(textstat_simil(data_dfm_lbgexample, method = "cosine"))[1:3, ]
     )
     expect_equal(
-        tail(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3),
+        as.matrix(tail(textstat_simil(data_dfm_lbgexample, method = "cosine"), n = 3)),
         as.matrix(textstat_simil(data_dfm_lbgexample, method = "cosine"))[4:6, ]
     )
 })
