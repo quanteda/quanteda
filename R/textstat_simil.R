@@ -73,9 +73,45 @@ setMethod("show", "textstat_simildist",
                                      col.names = TRUE, align = "right")
           })
 
+setMethod("head", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+    selectMethod(x, "Matrix")
+})
+setMethod("tail", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+    selectMethod(x, "Matrix")
+})
 
-setMethod("head", signature(x = "textstat_simildist"), utils::head.matrix)
-setMethod("tail", signature(x = "textstat_simildist"), utils::tail.matrix)
+#' Return the first or last part of a textstat_simildist object
+#' 
+#' For a similarity or distance object computed via \link{textstat_simil} or
+#' \link{textstat_dist}, returns the first or last \code{n} rows.
+#' @param x a textstat_simildist object
+#' @param n a single, positive integer.  If positive, size for the resulting
+#'   object: number of first/last documents for the dfm. If negative, all but
+#'   the n last/first number of documents of x.
+#' @param ... unused
+#' @return A \link{matrix} corresponding to the subset defined 
+#'   by \code{n}.
+#' @export
+#' @name head.textstat_simildist
+#' @method head textstat_simildist
+#' @keywords textstat internal
+head.textstat_simildist <- function(x, n = 6L, ...) { 
+    head(as.matrix(x), n)
+}
+
+#' @rdname head.textstat_simildist
+#' @method tail textstat_simildist
+#' @export
+tail.textstat_simildist <- function(x, n = 6L, ...) { 
+    tail(as.matrix(x), n)
+}
+
+setMethod("head", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+    UseMethod("head")
+})
+setMethod("tail", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+    UseMethod("tail")
+})
 
 # core functions ------
 
