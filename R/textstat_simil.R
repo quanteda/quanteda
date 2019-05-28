@@ -88,7 +88,6 @@ tail.textstat_simildist <- function(x, n = 6L, ...) {
     tail(as.matrix(x), n = n, ...)
 }
 
-
 # core functions ------
 
 #' Similarity and distance computation between documents or features
@@ -317,14 +316,16 @@ textstat_dist.dfm <- function(x, selection = NULL,
         temp <- textstat_proxy(x, x[i, ], margin, method, p, use_na = TRUE)
     }
     
-    if (is.null(selection))
+    if (is.null(selection)) {
+        temp <- as(temp, "dsTMatrix")
         return(new("textstat_dist", temp, 
                    method = method,  margin = margin,
                    type = "textstat_dist"))
-    else
+    } else {
         return(new("textstat_dist_sel", temp, 
                    method = method,  margin = margin,
                    type = "textstat_dist", selection = selection))
+    }
 }
 
 # coercion methods ----------
