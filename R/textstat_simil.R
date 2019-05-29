@@ -458,7 +458,7 @@ diag_to_NA <- function(x) {
     x
 }
 
-#' as.matrix method for texttat_simil_sparse
+#' as.matrix method for textstat_simil_sparse
 #'
 #' @param x an object returned by \link{textstat_simil} when \code{min_simil >
 #'   0}

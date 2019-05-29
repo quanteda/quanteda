@@ -4,7 +4,7 @@
 \name{as.matrix,textstat_simil_sparse-method}
 \alias{as.matrix,textstat_simil_sparse-method}
 \alias{as.matrix,textstat_simil_sel_sparse-method}
-\title{as.matrix method for texttat_simil_sparse}
+\title{as.matrix method for textstat_simil_sparse}
 \usage{
 \S4method{as.matrix}{textstat_simil_sparse}(x, omitted = NA, ...)
 
@@ -22,7 +22,7 @@
 a \link{matrix} object
 }
 \description{
-as.matrix method for texttat_simil_sparse
+as.matrix method for textstat_simil_sparse
 }
 \keyword{internal}
 \keyword{textstat}
