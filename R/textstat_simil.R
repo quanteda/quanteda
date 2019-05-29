@@ -458,6 +458,29 @@ diag_to_NA <- function(x) {
     x
 }
 
+#' as.matrix method for texttat_simil_sparse
+#'
+#' @param x an object returned by \link{textstat_simil} when \code{min_simil >
+#'   0}
+#' @param omitted value that will replace the omitted cells
+#' @param ... unused
+#' @return a \link{matrix} object
+#' @export
+#' @keywords textstat internal
+#' @rdname as.matrix.textstat_simil_sparse
+setMethod("as.matrix", "textstat_simil_sparse",
+          function(x, omitted = NA, ...) {
+              x[x == 0] <- omitted
+              as.matrix(x)
+          })
+
+#' @rdname as.matrix.textstat_simil_sparse
+setMethod("as.matrix", "textstat_simil_sel_sparse",
+          function(x, omitted = NA, ...) {
+              x[x == 0] <- omitted
+              as.matrix(x)
+          })
+
 # textstat_proxy ---------
 
 #' [Experimental] Compute document/feature proximity

@@ -428,3 +428,33 @@ test_that("min_simil argument works", {
                       names = paste(docnames(mt), docnames(mt), sep = "."))
     )
 })
+
+test_that("test that min_simil coercion to matrix works as expected", {
+    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 
+                 remove_punct = TRUE, remove = stopwords("english"))
+
+    tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.6)
+    expect_equal(
+        as.matrix(tstat1)[3, 4:5],
+        c("2013-Obama" = 0.6373, "2017-Trump" = NA),
+        tol = .0001
+    )
+    expect_equal(
+        as.matrix(tstat1, omitted = 0)[3, 4:5],
+        c("2013-Obama" = 0.6373, "2017-Trump" = 0),
+        tol = .0001
+    )
+    
+    tstat2 <- textstat_simil(dfmat, selection = c("2009-Obama", "2013-Obama"),
+                             method = "cosine", margin = "documents", min_simil = 0.6)
+    expect_equal(
+        as.matrix(tstat2)[3:5, 1],
+        c("2009-Obama" = 1, "2013-Obama" = 0.6373, "2017-Trump" = NA),
+        tol = .0001
+    )
+    expect_equal(
+        as.matrix(tstat2, omitted = 0)[3:5, 1],
+        c("2009-Obama" = 1, "2013-Obama" = 0.6373, "2017-Trump" = 0),
+        tol = .0001
+    )
+})
