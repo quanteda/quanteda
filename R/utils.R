@@ -285,10 +285,8 @@ sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
         size <- lengths(x)
     if (length(size) > 1 && length(size) != length(x))
         stop("size not equal in length to the number of groups")
-    if (length(size) == 1)
-        size <- rep(size, length(x))
     result <- mapply(function(x, size, replace) {
                  x[sample.int(length(x), size = size, replace = replace)]
-              }, x, size, replace)
+              }, x, size, replace, SIMPLIFY = FALSE)
     unlist(result, use.names = FALSE)
 }
