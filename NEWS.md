@@ -3,6 +3,7 @@
 ## New features
 
 * Add `flatten` and `levels` arguments to `as.list.dictionary2()` to enable more flexible conversion of dictionary objects. (#1661)
+* In `corpus_sample()`, the `size` now works with the `by` argument, to control the size of units sampled from each group.
 
 ## Bug fixes and stability enhancements
 
