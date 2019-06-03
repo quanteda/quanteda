@@ -145,6 +145,10 @@ test_that("sample_bygroup works with sizes", {
     expect_true(all(tmp[6:10] >= 100 & tmp[6:10] <= 102))
     
     expect_error(
+        quanteda:::sample_bygroup(1:10, group = grvec[1:6], size = c(2, 3), replace = TRUE),
+        "group not equal in length of x"
+    )
+    expect_error(
         quanteda:::sample_bygroup(1:10, group = grvec, size = c(2, 3), replace = TRUE),
         "size not equal in length to the number of groups"
     )

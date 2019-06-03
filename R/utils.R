@@ -278,18 +278,17 @@ message_error <- function(key = NULL) {
 #' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
 #' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
 sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
-    xsplit <- split(x, group)
+    if (length(x) != length(group))
+        stop("group not equal in length of x")
+    x <- split(x, group)
     if (is.null(size)) 
-        size <- lengths(xsplit)
-    if (length(size) > 1 && length(size) != length(xsplit))
+        size <- lengths(x)
+    if (length(size) > 1 && length(size) != length(x))
         stop("size not equal in length to the number of groups")
     if (length(size) == 1)
-        size <- rep(size, length(xsplit))
-    result <- lapply(seq_along(xsplit), function(y) {
-        # workaround for the problem that sample(2) is the same as sample(1:2)!
-        as.integer(
-            sample(as.character(xsplit[[y]]), size = size[y], replace = replace)
-        )
-    })
+        size <- rep(size, length(x))
+    result <- mapply(function(x, size, replace) {
+                 x[sample.int(length(x), size = size, replace = replace)]
+              }, x, size, replace)
     unlist(result, use.names = FALSE)
-} 
+}
