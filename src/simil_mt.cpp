@@ -22,9 +22,9 @@ rowvec stddev(const sp_mat& mt, const int norm_type) {
     return(v);
 }
 
-std::vector<double> to_vector(const sp_mat& mt) {
-    return conv_to< std::vector<double> >::from(mat(mt));
-}
+// std::vector<double> to_vector(const sp_mat& mt) {
+//     return conv_to< std::vector<double> >::from(mat(mt));
+// }
 
 std::vector<double> to_vector(const rowvec& v) {
     return conv_to< std::vector<double> >::from(v);
