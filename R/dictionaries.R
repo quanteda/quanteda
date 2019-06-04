@@ -58,7 +58,7 @@ check_entries <- function (dict) {
 #'
 #' Create a \pkg{quanteda} dictionary class object, either from a list or by
 #' importing from a foreign format.  Currently supported input file formats are
-#' the Wordstat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+#' the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
 #' using the LIWC format works with all currently available dictionary files
 #' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
 #' @param x a named list of character vector dictionary entries, including
@@ -69,7 +69,7 @@ check_entries <- function (dict) {
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
 #'   extension. Available options are: \describe{
-#'   \item{\code{"wordstat"}}{format used by Provalis Research's Wordstat
+#'   \item{\code{"wordstat"}}{format used by Provalis Research's WordStat
 #'   software} \item{\code{"LIWC"}}{format used by the Linguistic Inquiry and
 #'   Word Count software} \item{\code{"yoshikoder"}}{ format used by Yoshikoder
 #'   software} \item{\code{"lexicoder"}}{format used by Lexicoder}
@@ -91,7 +91,7 @@ check_entries <- function (dict) {
 #'   coerced to named lists of characters using
 #'   \code{\link[=dictionary2-class]{as.list}}, and checked using
 #'   \code{\link{is.dictionary}}.
-#' @references Wordstat dictionaries page, from Provalis Research
+#' @references WordStat dictionaries page, from Provalis Research
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
 #'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
@@ -607,14 +607,23 @@ list2dictionary <- function(dict) {
 
 # import/export functions --------------
 
-#' Import a Lexicoder dictionary
+#' @title Internal functions to import dictionary files
 #' 
-#' @param path the path from which to read in the Lexicoder dictionary
+#' @description Internal functions to import dictionary files in a variety of formats
+#' @name read_dict_functions
+#' @return a \pkg{quanteda} \link{dictionary} object
+#' @keywords internal
+NULL
+
+#' @rdname read_dict_functions
+#' @description \code{read_dict_lexicoder} imports Lexicoder files in the \code{.lc3} format.
+#' @param path the full path and filename of the dictionary file to be read
 #' @keywords dictionary internal
 #' @examples
-#' \dontrun{
-#' # dict <- read_dict_lexicoder("/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3")
-#' }
+#' dict <- quanteda:::read_dict_lexicoder(
+#'     system.file("extdata", "LSD2015.lc3", package = "quanteda")
+#' )
+#' 
 read_dict_lexicoder <- function(path) {
     lines <- stri_read_lines(path, encoding = "utf-8") # Lexicoder 3.0 is always UTF-8
     lines <- stri_trim_both(lines)
@@ -628,12 +637,14 @@ read_dict_lexicoder <- function(path) {
     return(dict)
 }
 
-#' Import a Wordstat dictionary
-#' @param path path to file to be imported
+#' @rdname read_dict_functions
+#' @description \code{read_dict_wordstat} imports WordStat files in the
+#'   \code{.cat} format.
 #' @param encoding the encoding of the file to be imported
-#' @keywords internal dictionary
 #' @examples
+#'
 #' \dontrun{
+#' dict <- quanteda:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat", 
@@ -654,7 +665,7 @@ read_dict_wordstat <- function(path, encoding = "auto") {
     return(dict)
 }
 
-# Internal functin for read_dict_wordstat
+# Internal function for read_dict_wordstat
 list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
     if (omit) {
         for (i in seq_along(entry)) {
@@ -724,21 +735,14 @@ nest_dictionary <- function (dict, depth) {
     return(dict)
 }
 
-#' Import a LIWC-formatted dictionary
-#' @param path a path to LIWC-formatted dictionary file
-#' @param encoding encoding of a dictionary file
-#' @keywords internal
+#' @rdname read_dict_functions
+#' @description \code{read_dict_liwc} imports LIWC dictionary files in the
+#'   \code{.dic} format.
 #' @examples
-#' \dontrun{
-#' # quanteda:::read_dict_liwc("/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic")
-#' # quanteda:::read_dict_liwc("/home/kohei/Documents/Dictionary/LIWC/LIWC2015_English.dic")
 #' 
-#' # dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English.dic")      # WORKS
-#' # dictionary(file = "/home/kohei/Documents/Dictionary/LIWC/LIWC2015_English.dic") # WORKS
-#' # dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2015_English_Flat.dic") # WORKS
-#' # dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic")       # FAILS
-#' # dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic") # FAILS
-#' }
+#' dict <- quanteda:::read_dict_liwc(
+#'     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
+#' )
 read_dict_liwc <- function(path, encoding = "auto") {
 
     line <- stri_read_lines(path, encoding = encoding, fallback_encoding = "windows-1252")
@@ -812,11 +816,13 @@ read_dict_liwc <- function(path, encoding = "auto") {
     dict
 }
 
-#' Import a Yoshikoder dictionary file.
-#' @param path to filename to be imported
-#' @keywords internal dictionary
+#' @rdname read_dict_functions
+#' @description \code{read_dict_yoshikoder} imports Yoshikoder files in the
+#'   \code{.ykd} format.
 #' @examples
-#' # dict <- read_dict_yoshikoder("/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd")
+#' 
+#' dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd", 
+#'                                                     package = "quanteda"))
 read_dict_yoshikoder <- function(path) {
     xml <- xml2::read_xml(path)
     root <- xml2::xml_find_first(xml, paste0("/", "dictionary"))
