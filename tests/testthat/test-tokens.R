@@ -192,6 +192,47 @@ test_that("+ operator works with tokens", {
     expect_equal(ndoc(toks_added), 3)
 })
 
+test_that("+ works with empty padded tokens (#1695)", {
+    toks1 <- tokens(c(d1 = "a b"))
+    toks2 <- tokens(c(d2 = ""))
+    toks3 <- tokens(c(d3 = "c"))
+    toks4 <- tokens(c(d4 = "c d"))
+    
+    expect_identical(
+        as.list(toks1 + toks2),
+        list(d1 = c("a", "b"), d2 = character(0))
+    )
+    expect_identical(
+        as.list(toks1 + toks3),
+        list(d1 = c("a", "b"), d3 = "c")
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks3, pattern = "c", pad = FALSE)),
+        list(d1 = c("a", "b"), d3 = character(0))
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks3, pattern = "c", pad = TRUE)),
+        list(d1 = c("a", "b"), d3 = "")
+    )
+    expect_identical(
+        as.list(tokens_remove(toks3, pattern = "c", pad = TRUE) + toks1),
+        list(d3 = "", d1 = c("a", "b"))
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks4, pattern = "c", pad = FALSE)),
+        list(d1 = c("a", "b"), d4 = "d")
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks4, pattern = "c", pad = TRUE)),
+        list(d1 = c("a", "b"), d4 = c("", "d"))
+    )
+    expect_identical(
+        as.list(tokens_remove(toks4, pattern = "c", pad = TRUE) + 
+                    tokens_remove(toks3, pattern = "c", pad = TRUE)),
+        list(d4 = c("", "d"), d3 = "")
+    )
+})
+
 test_that("c() works with tokens", {
     
     txt1 <- c(d1 = "This is sample document one.",

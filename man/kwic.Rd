@@ -70,4 +70,5 @@ kwic(data_corpus_inaugural, pattern = phrase("war against"), valuetype = "regex"
 kw <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(kw)
 is.kwic("Not a kwic")
+is.kwic(kw[, c("pre", "post")])
 }

@@ -562,7 +562,10 @@ lengths.tokens <- function(x, use.names = TRUE) {
     types1 <- types(t1)
     t2 <- unclass(t2)
     t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + y, length(types1)) # shift IDs
+    t2 <- lapply(t2, function(x) {
+        x[x > 0] <- x[x > 0] + length(types1 > 0)
+        x
+    })
     t1 <- c(t1, t2)
     class(t1) <- "tokens"
     types(t1) <- c(types1, types2)
