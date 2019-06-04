@@ -79,3 +79,14 @@ docnames.corpus <- function(x) {
     docvars(x, "_document") <- x@Dimnames$docs <- as.character(value)
     return(x)
 }
+
+#' Internal function to extract docid
+#' @noRd
+docid <- function(x) {
+    # docid is missing from some object before v2.0 
+    tryCatch({
+        docvars(x, "_docid") # TODO should be exported in v2.0
+    }, error = function(e) {
+        seq_len(ndoc(x))  
+    })
+} 

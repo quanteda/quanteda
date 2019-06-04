@@ -5,12 +5,16 @@
 \title{Randomly sample documents from a corpus}
 \usage{
 corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
-  by = NULL, ...)
+  by = NULL)
 }
 \arguments{
 \item{x}{a corpus object whose documents will be sampled}
 
-\item{size}{a positive number, the number of documents to select}
+\item{size}{a positive number, the number of documents to select; when used
+with groups, the number to select from each group or a vector equal in
+length to the number of groups defining the samples to be chosen in each
+group category.  By defining a size larger than the number of documents, it
+is possible to \emph{over}sample groups.}
 
 \item{replace}{Should sampling be with replacement?}
 
@@ -20,8 +24,6 @@ vector being sampled.  May not be applied when \code{by} is used.}
 \item{by}{a grouping variable for sampling.  Useful for resampling
 sub-document units such as sentences, for instance by specifying \code{by =
 "document"}}
-
-\item{...}{unused}
 }
 \value{
 A corpus object with number of documents equal to \code{size}, drawn 

@@ -39,12 +39,12 @@ text(c(0.9, 0.9), c(8.5, 6.5), c("Goverment", "Opposition"))
 }
 \references{
 Laver, M. & Benoit, K.R. (2002). 
-  \href{http://www.kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
+  \href{https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
   TDs in Policy Spaces: Wordscoring Dáil Speeches}. \emph{Irish Political 
   Studies}, 17(1), 59--73.
 
 Laver, M., Benoit, K.R., & Garry, J. (2003). 
-  \href{https://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
+  \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
   Positions from Political Text using Words as Data}. \emph{American
   Political Science Review}, 97(2), 311--331.
 }

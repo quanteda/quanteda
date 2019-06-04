@@ -53,6 +53,7 @@ CTM
 cutoffs
 Dáil
 Datatables
+debian
 Deerwester
 des
 deutsche
@@ -166,9 +167,11 @@ lexdiv
 Lexicoder
 Liau
 Liber
+libicu
 libstemmer
 Linguistik
 Linsear
+linux
 Literaturwissenschaft
 LIWC
 Lix
@@ -387,6 +390,7 @@ Wordscoring
 wordshoal
 Wordshoal
 Wordstat
+WordStat
 wordstem
 wordStem
 Wortschatzumfang

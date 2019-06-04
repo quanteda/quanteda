@@ -15,8 +15,9 @@ pattern2fixed(pattern, types, valuetype = c("glob", "fixed", "regex"),
 index_types(types, valuetype, case_insensitive, max_len = NULL)
 }
 \arguments{
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{types}{unique types of tokens obtained by \code{\link{types}}}
 

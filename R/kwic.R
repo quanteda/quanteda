@@ -70,9 +70,6 @@ kwic.corpus <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-
-    if (is.collocations(pattern) || is.dictionary(pattern))
-        pattern <- phrase(pattern)
     kwic(tokens(x, ...),
          pattern, window, valuetype, separator, case_insensitive)
 }
@@ -106,11 +103,11 @@ kwic.tokens <- function(x, pattern, window = 5,
 
     valuetype <- match.arg(valuetype)
     type <- types(x)
-    
+
     # add document names if none (TODO: should be removed after corpus upgrade)
     if (is.null(names(x)))
         names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
-    
+
     ids <- pattern2list(pattern, type,
                         valuetype, case_insensitive, attr(x, "concatenator"))
     result <- data.frame()
@@ -121,11 +118,11 @@ kwic.tokens <- function(x, pattern, window = 5,
     }
     result[["pattern"]] <- factor(result[["pattern"]], levels = unique(names(ids)))
     if (nrow(result))
-        result <- result[order(match(result[["docname"]], docnames(x)), 
-                               result[["from"]], result[["to"]]),]
+        result <- result[order(match(result[["docname"]], docnames(x)),
+                               result[["from"]], result[["to"]]), ]
     rownames(result) <- NULL
     attr(result, "ntoken") <- ntoken(x)
-    class(result) = c("kwic", "data.frame")
+    class(result) <- c("kwic", "data.frame")
     attributes(result, FALSE)  <- attributes(x)
     return(result)
 }
@@ -136,7 +133,11 @@ kwic.tokens <- function(x, pattern, window = 5,
 #' kw <- kwic(data_corpus_inaugural, "provident*")
 #' is.kwic(kw)
 #' is.kwic("Not a kwic")
-is.kwic <- function(x) "kwic" %in% class(x)
+#' is.kwic(kw[, c("pre", "post")])
+is.kwic <- function(x) {
+    (inherits(x, "kwic") &&
+         all(c("docname", "from", "to", "pre", "keyword", "post", "pattern") %in% names(x)))
+}
 
 #' @method print kwic
 #' @noRd
@@ -144,6 +145,8 @@ is.kwic <- function(x) "kwic" %in% class(x)
 print.kwic <- function(x, ...) {
     if (!nrow(x)) {
         cat("kwic object with 0 rows")
+    } else if (!is.kwic(x)) {
+        NextMethod()
     } else {
         if (all(x$from == x$to)) {
             labels <- stri_c("[", x$docname, ", ", x$from, "]")
@@ -161,4 +164,15 @@ print.kwic <- function(x, ...) {
         colnames(kwic) <- NULL
         print(kwic, row.names = FALSE)
     }
+}
+
+#' @method "[" kwic
+#' @export
+#' @noRd
+"[.kwic" <- function(x, i, j, ...) {
+    x <- NextMethod()
+    if (!is.kwic(x) && is.data.frame(x)) {
+        x <- data.frame(x, stringsAsFactors = FALSE)
+    }
+    return(x)
 }

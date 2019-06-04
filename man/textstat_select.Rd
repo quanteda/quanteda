@@ -10,8 +10,9 @@ textstat_select(x, pattern = NULL, selection = c("keep", "remove"),
 \arguments{
 \item{x}{a \code{textstat} object}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the rows that
 match the pattern}

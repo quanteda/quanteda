@@ -84,7 +84,7 @@ or to select only terms of interest from a dictionary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -126,6 +126,9 @@ or to select only terms of interest from a dictionary." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -238,8 +241,9 @@ or to select only terms of interest from a dictionary.</p>
     </tr>
     <tr>
       <th>pattern</th>
-      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
-or <a href='textstat_collocations.html'>collocations</a> object.  See <a href='pattern.html'>pattern</a> for details.</p></td>
+      <td><p>a character vector, list of character vectors,
+<a href='dictionary.html'>dictionary</a>, or <a href='textstat_collocations.html'>collocations</a> object.  See <a href='pattern.html'>pattern</a> for
+details.</p></td>
     </tr>
     <tr>
       <th>selection</th>
@@ -313,7 +317,7 @@ removed</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"My Christmas was ruined by your opposition tax plan."</span>,
                <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span>),
-             <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+             <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>countries</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United_States"</span>, <span class='st'>"Sweden"</span>, <span class='st'>"France"</span>),
                           <span class='kw'>wordsEndingInY</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"by"</span>, <span class='st'>"my"</span>),
                           <span class='kw'>notintext</span> <span class='kw'>=</span> <span class='st'>"blahblah"</span>))
@@ -364,8 +368,7 @@ removed</p></td>
 #&gt;   text1         1      1          1             0      0           0        0
 #&gt;   text2         0      0          0             1      1           1        1</div><div class='input'>
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"This is a document with lots of stopwords."</span>,
-                <span class='st'>"No if, and, or but about it: lots of stopwords."</span>),
-              <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+               <span class='st'>"No if, and, or but about it: lots of stopwords."</span>))
 <span class='no'>dfmat</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 18 features (38.9% sparse).
 #&gt; 2 x 18 sparse Matrix of class "dfm"
 #&gt;        features

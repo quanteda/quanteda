@@ -83,7 +83,7 @@ functionality to using the &quot;groups&quot; argument in dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -125,6 +125,9 @@ functionality to using the &quot;groups&quot; argument in dfm." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -210,7 +213,7 @@ functionality to using the <code>"groups"</code> argument in <code><a href='dfm.
     
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,6 +235,14 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 all levels of the factor when forming the new "documents" of the grouped
 dfm.  This will result in documents with zero feature counts for levels not
 observed.  Has no effect if the <code>groups</code> variable(s) are not factors.</p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>logical; if <code>TRUE</code>, group by summing existing counts, even
+if the dfm has been weighted.  This can result in invalid sums, such as
+adding log counts (when a dfm has been weighted by <code>"logcount"</code> for
+instance using <code><a href='dfm_weight.html'>dfm_weight</a></code>).  Does not apply to the term
+weight schemes "count" and "prop".</p></td>
     </tr>
     </table>
     

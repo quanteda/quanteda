@@ -130,19 +130,31 @@ test_that("tokens_compound works as expected with nested and overlapping tokens"
 })
 
 test_that("tokens_compound works as expected with collocations", {
-    cols <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"),
-                                  size = 2, min_count = 1)
-    toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     
-    expect_equal(
-        as.character(tokens_compound(toks, phrase(cols), join = FALSE))[c(5, 6, 8)],
-        c("capital_gains", "gains_taxes", "inheritance_taxes")
-    )
-    expect_equal(
-        as.character(tokens_compound(toks, phrase(cols), join = TRUE))[c(5, 7)],
-        c("capital_gains_taxes", "inheritance_taxes")
-    )
-
+    toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+    cols <- data.frame(collocation = c("the new", "capital gains", "gains taxes"), stringsAsFactors = FALSE)
+    class(cols) <- c("collocations", "data.frame")
+    
+    expect_true(all(
+      c("The_new", "capital_gains", "gains_taxes") %in% 
+      as.character(tokens_compound(toks, phrase(cols), join = FALSE))
+    ))
+    
+    expect_true(all(
+      c("The_new", "capital_gains_taxes") %in% 
+        as.character(tokens_compound(toks, phrase(cols), join = TRUE))
+    ))
+    
+    expect_true(all(
+      c("The_new", "capital_gains_taxes") %in% 
+        as.character(tokens_compound(toks, cols, case_insensitive = TRUE))
+    ))
+    
+    expect_true(all(
+      c("capital_gains_taxes") %in% 
+        as.character(tokens_compound(toks, cols, case_insensitive = FALSE))
+    ))
+    
     expect_equal(
          tokens_compound(toks, cols),
          tokens_compound(toks, phrase(cols))

@@ -82,7 +82,7 @@ one-dimensional document positions using conditional maximum likelihood." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -124,6 +124,9 @@ one-dimensional document positions using conditional maximum likelihood." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -415,7 +418,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; V1 -0.35945025 -0.38042330 -0.33847721
 #&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
-<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
 (<span class='no'>tmod2</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>dfmat</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
 (<span class='no'>tmod3</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>dfmat</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
                              <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='st'>"quasipoisson"</span>, <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>))
