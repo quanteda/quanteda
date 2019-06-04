@@ -94,7 +94,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
     # error checking
     if (ndoc(x) < 2 )
         stop("x must have at least two documents")
-    if (is.character(target) && !(target %in% docnames(x)))
+    if (is.character(target) && !any(target %in% docnames(x)))
         stop("target not found in docnames(x)")
     if (is.numeric(target) && any(target < 1 | target > ndoc(x)))
         stop("target index outside range of documents")
@@ -113,8 +113,8 @@ textstat_keyness.dfm <- function(x, target = 1L,
     }
     
     # check if number of target documents < ndoc
-    if (!(sum(target) < ndoc(x))) {
-        stop("number of target documents must be < ndoc")
+    if (sum(target) >= ndoc(x)) {
+        stop("target cannot be all the documents")
     }
     
     # use original docnames only when there are two documents
