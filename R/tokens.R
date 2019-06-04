@@ -428,7 +428,7 @@ print.tokens <- function(x, ...) {
 #' @export
 #' @noRd
 "$.tokens" <- function(x, i, ...) {
-    warning("$ for tokens is deprecated")
+    .Deprecated("[].tokens")
     x[[i]]
 }
 
