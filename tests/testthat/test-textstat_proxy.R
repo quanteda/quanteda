@@ -263,18 +263,18 @@ test_that("raises error when p is smaller than 1", {
     expect_error(textstat_proxy(test_mt, method = "minkowski", p = -1))
 })
 
-# test_that("sparse objects are of expected class and occur when expected", {
-#     
-#     expect_is(textstat_proxy(test_mt),
-#               "dsTMatrix")
-#     expect_is(textstat_proxy(test_mt, min_proxy = 10),
-#               "dsTMatrix")
-#     expect_is(textstat_proxy(test_mt, rank = 2),
-#               "dgTMatrix")
-#     expect_is(textstat_proxy(test_mt, method = "kullback"),
-#               "dgTMatrix")
-#     
-# })
+test_that("sparse objects are of expected class and occur when expected", {
+
+    expect_is(textstat_proxy(test_mt),
+              "dsTMatrix")
+    expect_is(textstat_proxy(test_mt, min_proxy = 10),
+              "dsTMatrix")
+    expect_is(textstat_proxy(test_mt, rank = 2),
+              "dgTMatrix")
+    expect_is(textstat_proxy(test_mt, method = "kullback"),
+              "dgTMatrix")
+
+})
 
 test_that("rank argument is working", {
 
@@ -338,5 +338,19 @@ test_that("no value is greater than 1.0 (#1543)", {
     expect_equal(sum(cos1 > 1), 0)
     cor1 <- textstat_proxy(test_mt[1:5,], test_mt[1:5,], method = "correlation")
     expect_equal(sum(cor1 > 1), 0)
+})
+
+test_that("non-zero values are counted correctly", {
+    expect_equal(
+        quanteda:::qatd_cpp_nz(test_mt),
+        unname(apply(test_mt, 2, function(x) sum(x != 0)))
+    )
+})
+
+test_that("standard deviation is calculated correctly", {
+    expect_equal(
+        quanteda:::qatd_cpp_sd(test_mt),
+        unname(apply(test_mt, 2, function(x) sd(x)))
+    )
 })
 

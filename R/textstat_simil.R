@@ -279,12 +279,19 @@ textstat_proxy <- function(x, y = NULL,
         x <- dfm_weight(x, "boolean")
         y <- dfm_weight(y, "boolean")
     }
-
     if (method %in% c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", 
                       "hamman", "simple matching", "faith")) {
-        result <- proxyC::simil(x, y, 2, method, min_simil = min_proxy, rank = rank)
+        if (identical(x, y)) {
+            result <- proxyC::simil(x, NULL, 2, method, min_simil = min_proxy, rank = rank)
+        } else {
+            result <- proxyC::simil(x, y, 2, method, min_simil = min_proxy, rank = rank)
+        }
     } else {
-        result <- proxyC::dist(x, y, 2, method, p = weight)
+        if (identical(x, y)) {
+            result <- proxyC::dist(x, NULL, 2, method, p = weight)
+        } else {
+            result <- proxyC::dist(x, y, 2, method, p = weight)
+        }
     }
     dimnames(result) <- list(colnames(x), colnames(y))
     if (use_na) {
