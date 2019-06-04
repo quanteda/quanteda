@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -199,21 +199,21 @@
       
     </div>
 
-    <div id="quanteda-130" class="section level1">
+    <div id="quanteda-1-3-0" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-130" class="anchor"></a>quanteda 1.3.0<small> 2018-06-05 </small>
+<a href="#quanteda-1-3-0" class="anchor"></a>quanteda 1.3.0<small> 2018-06-05 </small>
 </h1>
-<div id="new-features-4" class="section level2">
+<div id="new-features-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-4" class="anchor"></a>New Features</h2>
+<a href="#new-features-5" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code>to = "tripletlist"</code> output type for <code><a href="../reference/convert.html">convert()</a></code>, to convert a dfm into a simple triplet list. (#1321)</li>
 <li>Added <code><a href="../reference/tokens_tortl.html">tokens_tortl()</a></code> and <code><a href="../reference/tokens_tortl.html">char_tortl()</a></code> to add markers for right-to-left language tokens and character objects. (#1322)</li>
 </ul>
 </div>
-<div id="behaviour-changes-2" class="section level2">
+<div id="behaviour-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#behaviour-changes-2" class="anchor"></a>Behaviour changes</h2>
+<a href="#behaviour-changes-3" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>Improved <code><a href="../reference/corpus.html">corpus.kwic()</a></code> by adding new arguments <code>split_context</code> and <code>extract_keyword</code>.</li>
 <li>
@@ -231,13 +231,13 @@
 </ul>
 </div>
 </div>
-    <div id="quanteda-134" class="section level1">
+    <div id="quanteda-1-3-4" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-134" class="anchor"></a>quanteda 1.3.4<small> 2018-07-15 </small>
+<a href="#quanteda-1-3-4" class="anchor"></a>quanteda 1.3.4<small> 2018-07-15 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-4" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-4" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-5" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Keep encodings of types when a tokens object is recompiled. (#1387)</li>
 <li>More robust handling in <code>predict.textmodel_worscores()</code> when training and test feature sets are difference (#1380).<br>
@@ -252,22 +252,22 @@
 <code><a href="../reference/corpus.html">corpus.data.frame()</a></code> is now robust to handling data.frame inputs with improper or missing variable names (#1388).</li>
 </ul>
 </div>
-<div id="new-features-3" class="section level2">
+<div id="new-features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-3" class="anchor"></a>New Features</h2>
+<a href="#new-features-4" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code><a href="../reference/textplot_network.html">as.igraph.fcm()</a></code> method for converting an fcm object into an <strong>igraph</strong> graph object.</li>
 <li>Added a <code>case_insensitive</code> argument to <code><a href="../reference/corpus_segment.html">char_segment()</a></code> and <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>.</li>
 </ul>
 </div>
 </div>
-    <div id="quanteda-1313" class="section level1">
+    <div id="quanteda-1-3-13" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1313" class="anchor"></a>quanteda 1.3.13<small> 2018-11-01 </small>
+<a href="#quanteda-1-3-13" class="anchor"></a>quanteda 1.3.13<small> 2018-11-01 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-4" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed a bug causing incorrect counting in <code><a href="../reference/fcm.html">fcm(x, ordered = TRUE)</a></code>. (#1413) Also set the condition that <code>window</code> can be of size 1 (formerly the limit was 2 or greater).</li>
 <li>Fixed deprecation warnings from adding a dfm as docvars, and this now imports the feature names as docvar names automatically. (related to #1417)</li>
@@ -279,9 +279,9 @@
 <li>Improved the stability of <code><a href="../reference/textplot_network.html">textplot_network()</a></code>. (#1460)</li>
 </ul>
 </div>
-<div id="new-features-2" class="section level2">
+<div id="new-features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-2" class="anchor"></a>New Features</h2>
+<a href="#new-features-3" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added new argument <code>intermediate</code> to <code><a href="../reference/textstat_readability.html">textstat_readability(x, measure, intermediate = FALSE)</a></code>, which if <code>TRUE</code> returns intermediate quantities used in the computation of readability statistics. Useful for verification or direct use of the intermediate quantities.</li>
 <li>Added a new <code>separator</code> argument to <code><a href="../reference/kwic.html">kwic()</a></code> to allow a user to define which characters will be added between tokens returned from a keywords in context search. (#1449)</li>
@@ -289,31 +289,31 @@
 <li>Added a <code><a href="../reference/tokens_sample.html">tokens_sample()</a></code> function (#1478).</li>
 </ul>
 </div>
-<div id="behaviour-changes-1" class="section level2">
+<div id="behaviour-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h2>
+<a href="#behaviour-changes-2" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>Removed the Hamming distance method from <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> (#1443), based on the reasoning in #1442.</li>
 <li>Removed the “chisquared” and “chisquared2” distance measures from <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code>. (#1442)</li>
 </ul>
 </div>
 </div>
-    <div id="quanteda-1314" class="section level1">
+    <div id="quanteda-1-3-14" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1314" class="anchor"></a>quanteda 1.3.14<small> 2018-11-19 </small>
+<a href="#quanteda-1-3-14" class="anchor"></a>quanteda 1.3.14<small> 2018-11-19 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Improved the robustness of <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> (#1482).</li>
 <li>Improved the accuracy of sparsity reporting for the print method of a dfm (#1473).</li>
 <li>Diagonals on a <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> return object coerced to matrix now default to 1.0, rather than 0.0 (#1494).</li>
 </ul>
 </div>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New Features</h2>
+<a href="#new-features-2" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added the following measures to <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>: Yule’s <em>K</em>, Simpson’s <em>D</em>, and Herdan’s <em>Vm</em>.</li>
 </ul>
@@ -325,10 +325,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-130">1.3.0</a></li>
-        <li><a href="#quanteda-134">1.3.4</a></li>
-        <li><a href="#quanteda-1313">1.3.13</a></li>
-        <li><a href="#quanteda-1314">1.3.14</a></li>
+        <li><a href="#quanteda-1-3-0">1.3.0</a></li>
+        <li><a href="#quanteda-1-3-4">1.3.4</a></li>
+        <li><a href="#quanteda-1-3-13">1.3.13</a></li>
+        <li><a href="#quanteda-1-3-14">1.3.14</a></li>
       </ul>
     </div>
   </div>

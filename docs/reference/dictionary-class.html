@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -210,7 +210,7 @@
     </div>
 
     <pre class="usage"># S4 method for dictionary2
-as.list(x)
+as.list(x, flatten = FALSE, levels = 1:100)
 
 # S4 method for dictionary2
 show(object)
@@ -230,6 +230,15 @@ c(x, ...)</pre>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>flatten</th>
+      <td><p>flatten the nested structure if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>levels</th>
+      <td><p>integer vector indicating levels in the dictionary. Used only
+when <code>flatten = TRUE</code>.</p></td>
+    </tr>
     <tr>
       <th>object</th>
       <td><p>the dictionary to be coerced</p></td>

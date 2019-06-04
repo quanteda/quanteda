@@ -158,7 +158,7 @@
 tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                     remove_numbers = FALSE,
                     remove_punct = FALSE,
-                    remove_symbols = FALSE,
+                    remove_symbols = remove_punct,
                     remove_separators = TRUE,
                     remove_twitter = FALSE,
                     remove_hyphens = FALSE,
@@ -209,7 +209,7 @@ tokens.tokens <-  function(x,
                            what = c("word", "sentence", "character", "fastestword", "fasterword"),
                            remove_numbers = FALSE,
                            remove_punct = FALSE,
-                           remove_symbols = FALSE,
+                           remove_symbols = remove_punct,
                            remove_separators = TRUE,
                            remove_twitter = FALSE,
                            remove_hyphens = FALSE,
@@ -221,31 +221,104 @@ tokens.tokens <-  function(x,
                            include_docvars = TRUE,
                            ...) {
     
+    check_dots(list(...), names(formals("tokens")))
+    
     x <- as.tokens(x)
-    if (remove_hyphens)
-        x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
-
-    if (remove_twitter)
-        x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""))
+    check_dots(list(...), names(formals("tokens")))
+    
+    if (verbose) catm("Starting tokenization...\n")
+    time_start <- proc.time()
+    
+    what <- match.arg(what)
+    if (stri_detect_regex(what, "word$") && !stri_detect_regex(attr(x, "what"), "word$"))
+        stop("Cannot change the tokenization unit of existing tokens.")
+    
+    if (remove_hyphens) {
+        if (verbose) catm("...separating hyphenated words")
+        if (!any(stri_detect_regex(types(x), "\\p{Pd}"))) {
+            if (verbose) catm("...none found")
+        } else {
+            x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
+        }
+        if (verbose) catm("\n")
+    }
+    
+    if (remove_twitter) {
+        if (verbose) catm("...removing Twitter characters")
+        if (!any(stri_detect_charclass(types(x), "[@#]"))) {
+            if (verbose) catm("...none found")
+        } else {
+            x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""))
+        }
+        if (verbose) catm("\n")
+    }
 
     regex <- character()
-    if (remove_numbers)
-        regex <- c(regex, "^[\\p{N}]+$")
-    if (remove_punct)
-        regex <- c(regex, "^[\\p{P}\\p{S}]+$")
-    if (remove_symbols)
-        regex <- c(regex, "^[\\p{S}]+$")
-    if (remove_separators)
-        regex <- c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$")
-    if (remove_url)
-        regex <- c(regex, "^https?")
+    if (remove_numbers) {
+        if (verbose) catm("...removing numbers") 
+        if (!any(stri_detect_charclass(types(x), "[\\p{N}]"))) {
+            if (verbose) catm("...none found")
+        } else {
+            regex <- c(regex, "^[\\p{N}]+$")
+        }
+        if (verbose) catm("\n")
+    }
+    
+    if (remove_punct) {
+        if (verbose) catm("...removing punctuation") 
+        if (!any(stri_detect_charclass(types(x), "[\\p{P}]"))) {
+            if (verbose) catm("...none found")
+        } else {
+            regex <- c(regex, "^[\\p{P}]+$")
+        }
+        if (verbose) catm("\n")
+    }
+    
+    if (remove_symbols) {
+        if (verbose) catm("...removing symbols") 
+        if (!any(stri_detect_charclass(types(x), "[\\p{S}]"))) {
+            if (verbose) catm("...none found")
+        } else {
+            regex <- c(regex, "^[\\p{S}]+$")
+        }
+        if (verbose) catm("\n")
+    }
+    
+    if (remove_separators) {
+        if (verbose) catm("...removing separators")
+        if (!any(stri_detect_charclass(types(x), "[\uFE00-\uFE0F\\p{Z}\\p{C}]"))) {
+            if (verbose) catm("...none found")
+        } else {
+            regex <- c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$")
+        }
+        if (verbose) catm("\n")
+    }
+    
+    if (remove_url) {
+        if (verbose) catm("...removing URLs")
+        if (!any(stri_detect_regex(types(x), "^https?"))) {
+            if (verbose) catm("...none found")
+        } else {
+            regex <- c(regex, "^https?")
+        }
+        if (verbose) catm("\n")
+    }
 
     if (length(regex))
         x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", padding = FALSE)
-    if (!identical(ngrams, 1L) || !identical(skip, 0L))
+    if (!identical(ngrams, 1L) || !identical(skip, 0L)) {
+        if (verbose) catm("...creating ngrams\n")
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
+    }
     if (!include_docvars)
         docvars(x) <- NULL
+    
+    if (verbose){
+        catm("...total elapsed: ", 
+             format((proc.time() - time_start)[3], digits = 3), "seconds.\n")
+        catm("Finished re-tokenizing tokens from ", format(length(x), big.mark = ","), " text",
+             if (length(x) > 1) "s", ".\n", sep = "")
+    }
     return(x)
 }
 
@@ -344,7 +417,7 @@ tokens_internal <- function(x,
                             what = c("word", "sentence", "character", "fastestword", "fasterword"),
                             remove_numbers = FALSE,
                             remove_punct = FALSE,
-                            remove_symbols = FALSE,
+                            remove_symbols = remove_punct,
                             remove_separators = TRUE,
                             remove_twitter = FALSE,
                             remove_hyphens = FALSE,
@@ -383,12 +456,12 @@ tokens_internal <- function(x,
     for (i in seq_along(x)) {
 
         if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
-        if (what %in% c("word", "fasterword")) {
+        if (what %in% c("word", "fasterword", "fastestword")) {
             temp <- preserve_special(x[[i]], remove_hyphens, remove_url, remove_twitter, verbose)
             temp <- tokens_word(temp, what, remove_numbers, remove_punct, remove_symbols,
                                 remove_separators, verbose)
-        } else if (what == "fastestword") {
-            temp <- tokens_word(x[[i]], what, FALSE, FALSE, FALSE, FALSE, verbose)
+            if (remove_twitter && remove_punct && what %in% c("fasterword", "fastestword"))
+                temp <- lapply(temp, stri_replace_all_fixed, c("#", "@"), c("", ""), vectorize_all = FALSE)
         } else if (what == "character") {
             temp <- tokens_character(x[[i]], remove_punct, remove_symbols,
                                      remove_separators, verbose)
@@ -415,7 +488,7 @@ tokens_internal <- function(x,
                         unit = "documents", 
                         source = "corpus")
     
-    if (what %in% c("word", "fasterword")) {
+    if (what %in% c("word", "fasterword", "fastestword")) {
 
         types <- types(x)
         if (!remove_punct || remove_punct)
@@ -432,7 +505,7 @@ tokens_internal <- function(x,
         if (remove_numbers)
             regex <- c(regex, "^[\\p{N}]+$")
         if (remove_punct)
-            regex <- c(regex, "^[\\p{P}\\p{S}]+$")
+            regex <- c(regex, "^[\\p{P}]+$")
         if (remove_symbols)
             regex <- c(regex, "^[\\p{S}]+$")
         if (remove_separators)
@@ -449,8 +522,10 @@ tokens_internal <- function(x,
     }
 
     if (verbose){
-        catm("...total elapsed:", round((proc.time() - time_start)[3], digits = getOption("digits")), "seconds.\n")
-        catm("Finished tokenizing and cleaning", format(length(x), big.mark = ","), "texts.\n")
+        catm("...total elapsed: ", 
+             format((proc.time() - time_start)[3], digits = 3), "seconds.\n")
+        catm("Finished tokenizing and cleaning ", format(length(x), big.mark = ","), " text",
+             if (length(x) > 1) "s", ".\n", sep = "")
     }
 
     return(x)
@@ -492,7 +567,7 @@ tokens_word <- function(txt,
         txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", "")
         tok <- stri_split_boundaries(txt, type = "word",
                                      # this is what kills currency symbols, Twitter tags, URLs
-                                     skip_word_none = remove_punct && remove_separators,
+                                     skip_word_none = FALSE,
                                      # but does not remove 4u, 2day, etc.
                                      skip_word_number = remove_numbers)
 

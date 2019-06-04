@@ -149,6 +149,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     if (any(duplicated(docnames)) && unique_docnames)
         stop("docnames must be unique")
     if (!is.null(docvars) && nrow(docvars) > 0) {
+        row.names(docvars) <- NULL
         if (any(is_system(names(docvars))))
             stop(message_error("docvars_invalid"))
         docvar <- cbind(make_docvars(length(x), docnames), docvars)

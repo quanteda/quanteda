@@ -73,7 +73,8 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     for (i in seq_len(n)) {
         if (verbose) 
             message(", ", i, appendLF = FALSE)
-        temp <- x[sample_bygroup(seq_len(ndoc(x)), get_docvars(x, "docid_", system = TRUE), TRUE), ]
+        temp <- x[sample_bygroup(seq_len(ndoc(x)), get_docvars(x, "docid_", system = TRUE, drop = TRUE), 
+                                 replace = TRUE), ]
         temp <- dfm_group(temp, groups = "docid_")
         result[[i + 1]] <-temp
     }

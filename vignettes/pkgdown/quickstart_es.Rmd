@@ -29,9 +29,9 @@ Los siguientes paquetes funcionan bien con con **quanteda** o lo complementan y 
     ```{r, eval = FALSE}
     devtools::install_github("quanteda/quanteda.corpora")
     ```
-*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): una implementación en R del abordaje de análisis de texto [Linguistic Inquiry and Word Count](http://liwc.wpengine.com).
+*  [**LIWCalike**](https://github.com/kbenoit/quanteda.dictionaries): una implementación en R del abordaje de análisis de texto [Linguistic Inquiry and Word Count](http://liwc.wpengine.com).
     ```{r, eval = FALSE}
-    devtools::install_github("kbenoit/LIWCalike")
+    devtools::install_github("kbenoit/quanteda.dictionaries")
     ```
 
 # Creando un corpus
@@ -67,17 +67,17 @@ El caso más simple sería crear un corpus de un vector de textos que ya estén 
 Si ya se disponen de textos en este formato es posible llamar a la función de constructor de corpus directamente. Es posible demostrarlo en el objeto de tipo character integrado de los textos sobre políticas de inmigración extraídos de los manifiestos de partidos políticos compitiendo en la elección del Reino Unido en 2010 (llamado `data_char_ukimmig2010`).
 
 ```{r}
-myCorpus <- corpus(data_char_ukimmig2010)  # construye un corpus nuevo a partir de los textos
-summary(myCorpus)
+corp_uk <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
+summary(corp_uk)
 ```
 
 Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento -- lo que quanteda llama *docvars*.
 
 Esto lo hacemos utilizando la función de R llamada `names()` para obtener los nombres del vector de tipo character de `data_char_ukimmig2010` y asignárselos a una variable de documento (`docvar`).
 ```{r}
-docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
-docvars(myCorpus, "Year") <- 2010
-summary(myCorpus)
+docvars(corp_uk, "Party") <- names(data_char_ukimmig2010)
+docvars(corp_uk, "Year") <- 2010
+summary(corp_uk)
 ```
 
 ### Cargando archivos usando el paquete readtext
@@ -86,33 +86,34 @@ summary(myCorpus)
 require(readtext)
 
 # Twitter json
-mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-myCorpusTwitter <- corpus(mytf1)
-summary(myCorpusTwitter, 5)
+dat_json <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+corp_twitter <- corpus(dat_json)
+summary(corp_twitter, 5)
 # generic json - needs a textfield specifier
-mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
-                 textfield = "text")
-summary(corpus(mytf2), 5)
+dat_sotu <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+                  textfield = "text")
+summary(corpus(dat_sotu), 5)
 # text file
-mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
-summary(corpus(mytf3), 5)
+dat_txtone <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+summary(corpus(dat_txtone), 5)
 # multiple text files
-mytf4 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
-summary(corpus(mytf4), 5)
+dat_txtmultiple1 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+summary(corpus(dat_txtmultiple1), 5)
 # multiple text files with docvars from filenames
-mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
-                 docvarsfrom = "filenames", sep = "-", docvarnames = c("Year", "President"))
-summary(corpus(mytf5), 5)
+dat_txtmultiple2 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
+                             docvarsfrom = "filenames", sep = "-", 
+                             docvarnames = c("Year", "President"))
+summary(corpus(dat_txtmultiple2), 5)
 # XML data
-mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
-                 textfield = "COMMON")
-summary(corpus(mytf6), 5)
+dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+                  textfield = "COMMON")
+summary(corpus(dat_xml), 5)
 # csv file
-write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), 
-                    docvars(data_corpus_inaugural)),
-         file = "/tmp/inaug_texts.csv", row.names = FALSE)
-mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
-summary(corpus(mytf7), 5)
+write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural), 
+                     docvars(data_corpus_inaugural)),
+          file = "/tmp/inaug_texts.csv", row.names = FALSE)
+dat_csv <- readtext("/tmp/inaug_texts.csv", textfield = "inaug_speech")
+summary(corpus(dat_csv), 5)
 ```
 
 
@@ -139,14 +140,16 @@ summary(data_corpus_irishbudget2010)
 Se puede guardar el output del comando summary como un data frame y graficar algunos estadísticos descriptivos con esta información:
 
 ```{r, fig.width = 8}
-summ <- summary(data_corpus_inaugural)
-summ$Year <- docvars(data_corpus_inaugural, "Year")
+tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-   ggplot(data = summ, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-       scale_x_continuous(labels = c(seq(1789, 2012, 12)), breaks = seq(1789, 2012, 12)) 
+    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
+    geom_line() + 
+    geom_point() +
+    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
+    theme_bw()
 
 # El discurso inaugural más largo: William Henry Harrison
-summ[which.max(summ$Tokens), ] 
+tokeninfo[which.max(tokeninfo$Tokens), ]
 ```
 
 ## Herramientas para manejar objetos de corpus
@@ -156,11 +159,10 @@ summ[which.max(summ$Tokens), ]
 El operador `+` provee un método simple para concatenar dos objetos corpus. Si contenían diferentes sets de variables a nivel documento las unirá de manera que no se pierda nada de información. La meta-data a nivel corpus también queda concatenada.
 
 ```{r}
-library(quanteda)
-mycorpus1 <- corpus(data_corpus_inaugural[1:5])
-mycorpus2 <- corpus(data_corpus_inaugural[53:58])
-mycorpus3 <- mycorpus1 + mycorpus2
-summary(mycorpus3)
+corp1 <- corpus(data_corpus_inaugural[1:5])
+corp2 <- corpus(data_corpus_inaugural[53:58])
+corp3 <- corp1 + corp2
+summary(corp3)
 ```
 
 ### Armando subsets dentro de objetos corpus
@@ -177,15 +179,15 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 La función `kwic` (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, "communist*")
+kwic(data_corpus_inaugural, pattern = "communist*")
 ```
 
 En el summary de arriba, las variables `Year` (año) y `President` (presidente) son variables asociadas a cada documento. Es posible acceder a dichas variables con la función 'docvars()'
@@ -241,19 +243,21 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 Convertir los textos en tokens es una opción intermedia y la mayoría de los usuarios querrán directamente construir la matriz de documentos y atributos. Para hacer esto existe la función de navaja suiza llamada `dfm()`, que realiza la tokenización y tabula los atributos extraídos dentro de una matriz de documentos por atributos. A diferencia del enfoque conservador de `tokens()`, la función `dfm()` aplica ciertas opciones por default, como `tolower()` -- una función separada para transformar textos a minúsculas -- y remueve puntuación. De todos modos, todas las opciones de `tokens()` se pueden pasar a `dfm()`.
 
 ```{r}
-myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
+corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
-myDfm <- dfm(myCorpus)
-myDfm[, 1:5]
+dfmat_inaug_post1990 <- dfm(corp_inaug_post1990)
+dfmat_inaug_post1990[, 1:5]
 ```
 
 Otras opciones para incluyen remover las stopwords y realizar stemming de los tokens.
 
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-myStemMat[, 1:5]
+dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990, 
+                            remove = stopwords("english"), 
+                            stem = TRUE, remove_punct = TRUE)
+dfmat_inaug_post1990[, 1:5]
 ```
 La opción 'remove' provee una lista de tokens a ser ignorados. La mayoría de los usuarios proveerán una lista de 'stop words' predefinidas para varios idiomas, accediendo a través de la función `stopwords()`:
 
@@ -268,20 +272,20 @@ head(stopwords("ar", source = "misc"), 10)
 El dfm puede ser inspeccionado en el panel de 'Environment' en Rstudio o llamando la función `View` en R. Llamando la función `plot` en un dfm se presentará una nube de palabras usando el paquete [wordcloud package](https://cran.r-project.org/web/packages/wordcloud)
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
-mydfm
+dfmat_uk <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+dfmat_uk
 ```
 
 Para acceder a la lista de los atributos más frecuentes es posible utilizar `topfeatures()`:
 
 ```{r}
-topfeatures(mydfm, 20)  # 20 top words
+topfeatures(dfmat_uk, 20) # 20 most frequent words
 ```
 Para un objeto `dfm` se puede graficar una nube de palabras usando `textplot_wordcloud()`. Esta función pasa argumentos a `wordcloud()` del paquete **wordcloud** y puede embellecer el gráfico usando los mismos argumentos:
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
-textplot_wordcloud(mydfm, min_freq = 6, random_order = FALSE,
+textplot_wordcloud(dfmat_uk, min_freq = 6, random_order = FALSE,
                   rotation = .25, 
                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
@@ -291,13 +295,13 @@ textplot_wordcloud(mydfm, min_freq = 6, random_order = FALSE,
 Frecuentemente estamos interesados en analizar cómo textos difieren según factores sustantivos que pueden estar codificados en las variables de documento en vez de simplemente por los límites de los archivos. En esos casos es posible agrupar los documentos que comparten el mismo valor por variable de documento cuando se crea un dfm:
 
 ```{r}
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
+dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party", 
                   remove = stopwords("english"), remove_punct = TRUE)
 ```
 
 We can sort this dfm, and inspect it:
 ```{r}
-dfm_sort(byPartyDfm)[, 1:10]
+dfm_sort(dfmat_ire)[, 1:10]
 ```
 
 ### Agrupando palabras por diccionario o clase de equivalencia
@@ -307,30 +311,30 @@ Para algunas aplicaciones se tiene conocimiento previo del conjunto de palabras 
 Por ejemplo, observemos cómo palabras asociadas al terrorismo y palabras asociadas con la economía varían por presidente en el corpus de discursos inaugurales de presidentes de Estados Unidos. Del corpus original seleccionamos los presidentes desde Clinton:
 
 ```{r}
-recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
+corp_inaug_post1991 <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
 Ahora definimos un diccionario de muestra:
 
 ```{r}
-myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
-                         economy = c("jobs", "business", "grow", "work")))
+dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
+                        economy = c("jobs", "business", "grow", "work")))
 ```
 
 Se puede usar el diccionario cuando creamos el dfm:
 
 ```{r}
-byPresMat <- dfm(recentCorpus, dictionary = myDict)
-byPresMat
+dfmat_inaug_post1991_dict <- dfm(corp_inaug_post1991, dictionary = dict)
+dfmat_inaug_post1991_dict
 ```
 
 El constructor de la función `dictionary()` también funciona con el formato de dos diccionarios externos comunes: los formatos LIWC y Provalis Research's Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:
 
 ```{r, eval = FALSE}
-liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
+dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict)
-liwcdfm[, 1:10]
+dfmat_inaug_subset <- dfm(data_corpus_inaugural[52:58], dictionary = dictliwc)
+dfmat_inaug_subset[, 1:10]
 ```
 
 # Más ejemplos
@@ -338,38 +342,41 @@ liwcdfm[, 1:10]
 ## Similitudes entre textos
 
 ```{r fig.width = 6}
-presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-              remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obamaSimil <- textstat_simil(presDfm, selection = c("2009-Obama" , "2013-Obama"), 
-                            margin = "documents", method = "cosine")
-obamaSimil
-# dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
+dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
+                            remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+tstat_obama <- textstat_simil(dfmat_inaug_post1980, 
+                              c("2009-Obama" , "2013-Obama"), 
+                              margin = "documents", method = "cosine")
+tstat_obama
+# dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")
 ```
 
 Se puede utilizar estas distancias para graficar un dendrograma, armando clusters por presidente:
 
-```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quanteda.corpora")
-presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
-              stem = TRUE, remove_punct = TRUE,
-              remove = stopwords("english"))
-presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
+```{r, fig.width = 10, fig.height = 7, eval = TRUE}
+data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 
-# Clustering jerárquico- obtener distancias en dfm normalizado
-presDistMat <- textstat_dist(dfm_weight(presDfm, scheme = "prop"))
-# Clustering jerárquico de los objetos de distancia
-presCluster <- hclust(presDistMat)
-# etiqueta con nombres de documentos
-presCluster$labels <- docnames(presDfm)
-# graficar como dendrograma
-lot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
+               stem = TRUE, remove_punct = TRUE,
+               remove = stopwords("english"))
+dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
+
+# hierarchical clustering - get distances on normalized dfm
+tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
+# hiarchical clustering the distance object
+pres_cluster <- hclust(tstat_dist)
+# label with document names
+pres_cluster$labels <- docnames(dfmat_sotu)
+# plot as a dendrogram
+plot(pres_cluster, xlab = "", sub = "", 
+     main = "Euclidean Distance on Normalized Token Frequency")
 ```
 También se puede observar similitudes de los términos:
 
 ```{r}
-sim <- textstat_simil(presDfm, selection = c("fair", "health", "terror"), 
-                      method = "cosine", margin = "features")
-lapply(as.list(sim), head, 10)
+tstat_sim <- textstat_simil(dfmat_sotu, selection = c("fair", "health", "terror"), 
+                          method = "cosine", margin = "features")
+lapply(as.list(tstat_sim), head, 10)
 ```
 
 ## Escalamiento de posiciones de documentos
@@ -377,9 +384,11 @@ lapply(as.list(sim), head, 10)
 Aquí realizamos una demostración de escalamiento de documentos unsupervised comparado con el modelo "wordfish":
 
 ```{r}
-# make prettier document names
-ieDfm <- dfm(data_corpus_irishbudget2010)
-textmodel_wordfish(ieDfm, dir = c(2, 1))
+dfmat_ire <- dfm(data_corpus_irishbudget2010)
+tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
+
+# plot the Wordfish estimates by party
+textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 ```
 
 ## Topic models
@@ -387,13 +396,14 @@ textmodel_wordfish(ieDfm, dir = c(2, 1))
 **quanteda** hace muy sencillo ajustar topic models también. Por ejemplo:
 
 ```{r}
-quantdfm <- dfm(data_corpus_irishbudget2010, 
-               remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quantdfm <- dfm_trim(quantdfm, min_termfreq = 4, max_docfreq = 10)
-quantdfm
+dfmat_ire2 <- dfm(data_corpus_irishbudget2010, 
+                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+dfmat_ire2 <- dfm_trim(dfmat_ire2, min_termfreq = 4, max_docfreq = 10)
+dfmat_ire2
 
+set.seed(100)
 if (require(topicmodels)) {
-   myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)
-   get_terms(myLDAfit20, 5)
+    my_lda_fit20 <- LDA(convert(dfmat_ire2, to = "topicmodels"), k = 20)
+    get_terms(my_lda_fit20, 5)
 }
 ```

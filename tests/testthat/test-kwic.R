@@ -217,6 +217,7 @@ test_that("is.kwic works as expected", {
     mykwic <- kwic(data_corpus_inaugural[1:3], "provident*")
     expect_true(is.kwic(mykwic))
     expect_false(is.kwic("Not a kwic"))
+    expect_false(is.kwic(mykwic[, c("pre", "post")]))
 })
 
 test_that("textplot_xray works with new kwic, one token phrase", {
@@ -317,11 +318,6 @@ test_that("kwic works as expected with and without phrases", {
         kwic(txt, phrase(dict_bi))$keyword,
         c("a b", "a b")
     )
-
-    expect_equivalent(
-        kwic(txt, dict_uni),
-        kwic(txt, char_uni)
-    )
     expect_equal(
         kwic(txt, dict_bi)$keyword,
         c("a b", "a b")
@@ -377,25 +373,31 @@ test_that("kwic error when dfm is given, #1006", {
 })
 
 test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {
-    toks <- tokens(c(alpha1 = paste(letters, collapse = " "),
+    corp <- corpus(c(alpha1 = paste(letters, collapse = " "),
                      alpha2 = paste(LETTERS, collapse = " ")))
+    toks <- tokens(corp)
     kwic1 <- kwic(toks, "f", window = 3)
     kwic2 <- kwic(toks, "u", window = 3)
     kwic3 <- kwic(toks, c("u", "f"), window = 3)
-
-    kwic_dict1 <- kwic(toks, dictionary(list(ukey = "u")), window = 3)
-    kwic_dict2 <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")), window = 3)
-
-    col <- data.frame(collocations = c("u v", "e f"), stringsAsFactors = FALSE)
-    class(col) <- c("collocations", "data.frame")
-    kwic_col <- kwic(toks, col, window = 3)
-
+    
     expect_identical(kwic1$pattern, factor(c("f", "f")))
     expect_identical(kwic2$pattern, factor(c("u", "u")))
     expect_identical(kwic3$pattern, factor(c("f", "u", "f", "u"), levels = c("u", "f")))
+    
+    kwic_dict1 <- kwic(corp, dictionary(list(ukey = "u")), window = 3)
+    kwic_dict2 <- kwic(toks, dictionary(list(ukey = "u")), window = 3)
+    kwic_dict3 <- kwic(corp, dictionary(list(ukey = "u", fkey = "f")), window = 3)
+    kwic_dict4 <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")), window = 3)
+    
+    expect_identical(kwic_dict1, kwic_dict2)
+    expect_identical(kwic_dict3, kwic_dict4)
     expect_identical(kwic_dict1$pattern, factor(c("ukey", "ukey")))
-    expect_identical(kwic_dict2$pattern, factor(rep(c("fkey", "ukey"), 2),
+    expect_identical(kwic_dict3$pattern, factor(rep(c("fkey", "ukey"), 2),
                                                 levels = c("ukey", "fkey")))
+    
+    col <- data.frame(collocations = c("u v", "e f"), stringsAsFactors = FALSE)
+    class(col) <- c("collocations", "data.frame")
+    kwic_col <- kwic(toks, col, window = 3)
     expect_identical(kwic_col$pattern, factor(c("e f", "u v", "e f", "u v"), 
                                               levels = c("u v", "e f")))
 })
@@ -456,4 +458,13 @@ test_that("kwic with pattern overlaps works as expected", {
         as.character(kw$pattern),
         char_tolower(kw$keyword)
     )
+})
+
+test_that("subsetting and printing a subsetted kwic works (#1665)", {
+    kw <- kwic(data_corpus_inaugural, "terror")
+    expect_output(print(kw[, c("pre", "keyword", "post")]), "pre keyword")
+    expect_is(kw[, c("pre", "keyword", "post")], "data.frame")
+    expect_is(kw[1:3, ], "data.frame")
+    expect_is(kw[1:3, ], "kwic")
+    expect_is(kw[1:3, names(kw)], "kwic")
 })

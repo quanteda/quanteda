@@ -158,7 +158,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
     attrs1 <- attributes(t1)
     t2 <- unclass(t2)
     t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + y, length(attrs1$types)) # shift IDs
+    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), length(attrs1$types)) # shift non-zero IDs
     
     docvar <- make_docvars(length(t1) + length(t2), c(attrs1$names, attrs2$names))
     result <- compile_tokens(c(t1, t2), docvar[["docname_"]],

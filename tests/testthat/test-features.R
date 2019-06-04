@@ -17,7 +17,7 @@ test_that("character vector works consistently on tokens", {
         c("d", "e", "a_b_c", "d", "e"))
     
     expect_equivalent(
-        kwic(toks, pattern = feat)[,5],
+        kwic(toks, pattern = feat)[, 5],
         c("a", "b", "c"))
 })
 
