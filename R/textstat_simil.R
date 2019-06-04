@@ -277,18 +277,12 @@ textstat_proxy <- function(x, y = NULL,
         x <- dfm_weight(x, "boolean")
         y <- dfm_weight(y, "boolean")
     }
-    if (method %in% c("cosine", "correlation", "euclidean")) {
-        result <-
-            qatd_cpp_similarity_linear(x, y,
-                                       match(method, c("cosine", "correlation", "euclidean")),
-                                       rank, min_proxy)
+
+    if (method %in% c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", 
+                      "hamman", "simple matching", "faith")) {
+        result <- proxyC::simil(x, y, 2, method, min_simil = min_proxy, rank = rank)
     } else {
-        result <-
-            qatd_cpp_similarity(x, y,
-                                match(method, c("ejaccard", "edice", "hamman", "simple matching",
-                                                "faith", "chisquared", "kullback", "manhattan",
-                                                "maximum", "canberra", "minkowski")),
-                                rank, min_proxy, weight)
+        result <- proxyC::dist(x, y, 2, method, p = weight)
     }
     dimnames(result) <- list(colnames(x), colnames(y))
     if (use_na) {

@@ -49,14 +49,6 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window, delim_) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window, delim_)
 }
 
-qatd_cpp_similarity_linear <- function(mt1, mt2, method, rank, limit = -1.0) {
-    .Call(`_quanteda_qatd_cpp_similarity_linear`, mt1, mt2, method, rank, limit)
-}
-
-qatd_cpp_similarity <- function(mt1, mt2, method, rank, limit = -1.0, weight = 1.0) {
-    .Call(`_quanteda_qatd_cpp_similarity`, mt1, mt2, method, rank, limit, weight)
-}
-
 qatd_cpp_sd <- function(mt) {
     .Call(`_quanteda_qatd_cpp_sd`, mt)
 }
