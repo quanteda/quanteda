@@ -57,20 +57,20 @@ Additional coercion methods to base R objects are also available:
   \link{matrix}} }
 }
 \examples{
-mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
-quantdfm <- dfm(mycorpus, verbose = FALSE)
+corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
+dfmat <- dfm(corp)
 
 # shortcut conversion to austin package's wfm format
-identical(as.wfm(quantdfm), convert(quantdfm, to = "austin"))
+identical(as.wfm(dfmat), convert(dfmat, to = "austin"))
 
 \dontrun{
 # shortcut conversion to tm package's DocumentTermMatrix format
-identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
+identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
 }
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(quanteda:::dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
+identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda")) 
 }
 
 }

@@ -37,15 +37,15 @@ fcm to lower and upper case, respectively, and then recombine the counts.
 }
 \examples{
 # for a document-feature matrix
-mydfm <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
-mydfm
-dfm_tolower(mydfm) 
-dfm_toupper(mydfm)
+dfmat <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
+dfmat
+dfm_tolower(dfmat) 
+dfm_toupper(dfmat)
    
 # for a feature co-occurrence matrix
-myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), 
+fcmat <- fcm(tokens(c("b A A d", "C C a b B e")), 
              context = "document")
-myfcm
-fcm_tolower(myfcm) 
-fcm_toupper(myfcm)   
+fcmat
+fcm_tolower(fcmat) 
+fcm_toupper(fcmat)   
 }

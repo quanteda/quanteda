@@ -5,20 +5,28 @@
 \alias{is.dictionary}
 \title{Coercion and checking functions for dictionary objects}
 \usage{
-as.dictionary(x)
+as.dictionary(x, format = c("tidytext"), separator = " ",
+  tolower = FALSE)
 
 is.dictionary(x)
 }
 \arguments{
-\item{x}{object to be coerced or checked; current legal values are a
-data.frame with the fields \code{word} and \code{sentiment} (as per the 
-\strong{tidytext} package)}
+\item{x}{a dictionary-like object to be coerced or checked}
+
+\item{format}{input format for the object to be coerced to a
+\link{dictionary}; current legal values are a data.frame with the fields
+\code{word} and \code{sentiment} (as per the \strong{tidytext} package)}
+
+\item{separator}{the character in between multi-word dictionary values. This
+defaults to \code{" "}.}
+
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
 }
 \value{
-\code{as.dictionary} returns a \link{dictionary} object.  This
-  conversion function differs from the \code{\link{dictionary}} constructor
-  function in that it converts an existing object rather than creates one
-  from components or from a file.
+\code{as.dictionary} returns a \pkg{quanteda} \link{dictionary}
+  object.  This conversion function differs from the \code{\link{dictionary}}
+  constructor function in that it converts an existing object rather than
+  creates one from components or from a file.
 
 \code{is.dictionary} returns \code{TRUE} if an object is a
   \pkg{quanteda} \link{dictionary}.
@@ -33,14 +41,21 @@ data(sentiments, package = "tidytext")
 as.dictionary(subset(sentiments, lexicon == "nrc"))
 as.dictionary(subset(sentiments, lexicon == "bing"))
 # to convert AFINN into polarities - adjust thresholds if desired
-afinn <- subset(sentiments, lexicon == "AFINN")
-afinn[["sentiment"]] <-
-    with(afinn,
+datafinn <- subset(sentiments, lexicon == "AFINN")
+datafinn[["sentiment"]] <-
+    with(datafinn,
          sentiment <- ifelse(score < 0, "negative",
                              ifelse(score > 0, "positive", "netural"))
     )
-with(afinn, table(score, sentiment))
-as.dictionary(afinn)
+with(datafinn, table(score, sentiment))
+as.dictionary(datafinn)
+
+dat <- data.frame(
+    word = c("Great", "Horrible"),
+    sentiment = c("positive", "negative")
+    )
+as.dictionary(dat)
+as.dictionary(dat, tolower = FALSE)
 }
 
 is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))

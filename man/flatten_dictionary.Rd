@@ -28,22 +28,22 @@ vectors. Works like \code{unlist(dictionary, recursive=TRUE)} except that
 the recursion does not go to the bottom level.  Called by \code{\link{dfm}}.
 }
 \examples{
-dictPopulismEN <-
+dict1 <-
     dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
                                "corrupt*", "propagand", "politici*", "*deceit*",
                                "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
                                "dishonest*", "establishm*", "ruling*")))
-flatten_dictionary(dictPopulismEN)
+flatten_dictionary(dict1)
 
-hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
                             level1a2 = c("l1a21", "l1a22")),
              level1b = list(level1b1 = c("l1b11", "l1b12"),
                              level1b2 = c("l1b21", "l1b22", "l1b23")),
               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
                              level1c1b = list(level1c1b1 = c("lowestalone"))))
-flatten_dictionary(hdict)
-flatten_dictionary(hdict, 2)
-flatten_dictionary(hdict, 1:2)
+flatten_dictionary(dict2)
+flatten_dictionary(dict2, 2)
+flatten_dictionary(dict2, 1:2)
 }
 \author{
 Kohei Watanabe

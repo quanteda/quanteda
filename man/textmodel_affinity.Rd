@@ -5,7 +5,7 @@
 \title{Class affinity maximum likelihood text scaling model}
 \usage{
 textmodel_affinity(x, y, exclude = NULL, smooth = 0.5,
-  ref_smooth = 0.5, verbose = TRUE)
+  ref_smooth = 0.5, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{bootstrap_dfm} object on which the model
@@ -37,13 +37,13 @@ predict(af, newdata = data_dfm_lbgexample[6, ])
 
 \dontrun{
 # compute bootstrapped SEs
-bs_dfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
-textmodel_affinity(bs_dfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
+dfmat <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
+textmodel_affinity(dfmat, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 }
 }
 \references{
-Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
-  the Class Affinity Model".
+Perry, P.O. & Benoit, K.R. (2017). Scaling Text with
+  the Class Affinity Model.
   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 }
 \seealso{

@@ -33,7 +33,7 @@ We can load the text from _Moby Dick_ using the **readtext** package, directly f
 ```{r}
 library(readtext)
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
-names(data_char_mobydick) <- "mobydick"
+names(data_char_mobydick) <- "Moby Dick"
 ```
 
 The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object), using the `texts()` or the `View()` method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `stri_sub()` function from the **stringi** package, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
@@ -52,7 +52,7 @@ The Gutenburg edition of the text contains some metadata before and after the te
 (end_v <- stri_locate_last_fixed(data_char_mobydick, "orphan.")[1])
 ```
 
-Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar.  If we want to verify that "orpan." is the end of the novel, we can use the `kwic()` function:
+Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar.  If we want to verify that "orphan." is the end of the novel, we can use the `kwic()` function:
 ```{r out.width="\\textwidth"}
 # verify that "orphan" is the end of the novel
 kwic(data_char_mobydick, "orphan")
@@ -112,8 +112,8 @@ length(moby_word_v[which(moby_word_v == "whale")])
 length(moby_word_v[which(moby_word_v == "whale")]) + length(moby_word_v[which(moby_word_v == "whale's")])
 
 # same thing using kwic()
-nrow(kwic(novel_lower_v, "whale"))
-nrow(kwic(novel_lower_v, "whale*")) # includes words like "whalemen"
+nrow(kwic(novel_lower_v, pattern = "whale"))
+nrow(kwic(novel_lower_v, pattern = "whale*")) # includes words like "whalemen"
 (total_whale_hits <- nrow(kwic(novel_lower_v, pattern = "^whale('s){0,1}$", valuetype = "regex")))
 ```
 
@@ -192,7 +192,8 @@ sorted_moby_rel_freqs_t["the"]
 
 # by weighting the dfm directly
 moby_dfm_pct <- dfm_weight(moby_dfm, scheme = "prop") * 100
-moby_dfm_pct[, "the"]
+
+dfm_select(moby_dfm_pct, pattern = "the")
 ```
 
 Plotting the most frequent terms, replicating the plot from the book:
@@ -217,15 +218,16 @@ textstat_frequency(moby_dfm_pct, n = 10) %>%
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot. The **quanteda** `textplot_` objects are based on **ggplot2**, so you can easily change the plot, for example by adding custom title.
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
-textplot_xray(kwic(novel_v, "whale")) + ggtitle("Lexical dispersion")
+textplot_xray(kwic(novel_v, pattern = "whale")) + 
+    ggtitle("Lexical dispersion")
 ```
 
 To produce multiple dispersion plots for comparison, you can simply send more than one `kwic()` output to `textplot_xray()`:
 ```{r eval=TRUE, fig.width=8, fig.height=2.5}
 textplot_xray(
-     kwic(novel_v, "whale"),
-     kwic(novel_v, "Ahab")
-) + ggtitle("Lexical dispersion")
+    kwic(novel_v, pattern = "whale"),
+    kwic(novel_v, pattern = "Ahab")) + 
+    ggtitle("Lexical dispersion")
 ```
 
 ## 4.2 Searching with regular expression
@@ -295,7 +297,8 @@ head(rel_dfm)
 
 
 # subset dfm and convert to data.frame object
-rel_chap_freq <- rel_dfm[, c("whale", "ahab")] %>% 
+rel_chap_freq <- rel_dfm %>% 
+    dfm_keep(pattern = c("whale", "ahab")) %>% 
     convert(to = "data.frame")
 
 rel_chap_freq$chapter <- 1:nrow(rel_chap_freq)
@@ -393,7 +396,7 @@ sort(mean_word_use_m, decreasing = TRUE) %>% head()
 
 ## 6.5 Calculating the TTR 
 
-Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculcated for each document of the `dfm`.
+Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculated for each document of the `dfm`.
 
 ```{r}
 dfm(chapters_corp) %>% 
@@ -434,11 +437,13 @@ This is going to be super easy since we don't need to reinvent the wheel here, s
 Let's create a corpus containing _Moby Dick_ but also Jane Austen's _Sense and Sensibility_.
 ```{r}
 data_char_senseandsensibility <- texts(readtext("http://www.gutenberg.org/files/161/161.txt"))
-litcorpus <- corpus(c(data_char_mobydick, austen = data_char_senseandsensibility))
+names(data_char_senseandsensibility) <- "Sense and Sensibility"
+
+litcorpus <- corpus(c(data_char_mobydick, data_char_senseandsensibility))
 ```
 Now we can use `kwic()` to find out where in each novel this occurred:
 ```{r}
-(dogkwic <- kwic(litcorpus, "dog"))
+(dogkwic <- kwic(litcorpus, pattern = "dog"))
 ```
 
 We can plot this easily too, as a lexical dispersion plot.  By specifying the scale as "absolute", we are looking at absolute token index position rather than relative position, and therefore we see that _Moby Dick_ is nearly twice as long as _Sense and Sensibility_.
@@ -447,7 +452,6 @@ textplot_xray(dogkwic, scale = "absolute")
 ```
 
 # 10 Text Quality, Text Variety, and Parsing XML
-
 
 
 # 11 Clustering
@@ -462,7 +466,7 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"),
     dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- dfm_weight(pres_dfm, "prop") %>%
+pres_dist_mat <- dfm_weight(pres_dfm, scheme = "prop") %>%
     textstat_dist(method = "euclidean")
 
 # hiarchical clustering the distance object
@@ -472,19 +476,21 @@ pres_cluster <- hclust(pres_dist_mat)
 pres_cluster$labels <- docnames(pres_dfm)
 
 # plot as a dendrogram
-plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+plot(pres_cluster, xlab = "", sub = "", 
+     main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 # 12 Classification
 
 
-# 13 Topic Modeling
+# 13 Topic Modelling
 
-Finally, Jockers' book introduces topic modeling of a corpus and the visualisation through wordclouds. In our example, we use the State of the Union addresses again. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 and classify 20 topics using Latent Dirichlet Allocation.
+Finally, Jockers' book introduces topic modelling of a corpus and the visualisation through wordclouds. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 (`data_corpus_irishbudget2010`) and classify 20 topics using Latent Dirichlet Allocation.
 
 ```{r}
 dfm_speeches <- dfm(data_corpus_irishbudget2010, 
-                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english")) %>% 
+                remove_punct = TRUE, remove_numbers = TRUE, 
+                remove = stopwords("english")) %>% 
     dfm_trim(min_termfreq = 4, max_docfreq = 10)
 
 library(topicmodels)

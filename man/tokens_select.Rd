@@ -18,8 +18,9 @@ tokens_keep(x, ...)
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens 
 matching \code{pattern}}
@@ -93,7 +94,6 @@ tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive
 tokens_select(toks, "second", selection = "keep", window = 1)
 tokens_select(toks, "second", selection = "remove", window = 1)
 tokens_remove(toks, "is", window = c(0, 1))
-
 # tokens_remove example: remove stopwords
 txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
                    execute the functions of its Chief Magistrate.",

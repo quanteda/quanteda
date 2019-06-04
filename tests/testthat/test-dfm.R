@@ -238,19 +238,6 @@ test_that("dfm.dfm works as expected", {
     )
 })
 
-test_that("dfm_sample works as expected", {
-    mt <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
-    expect_equal(ndoc(dfm_sample(mt, margin = "documents", size = 5)), 5)
-    expect_equal(ndoc(dfm_sample(mt, margin = "documents", size = 15, replace = TRUE)), 15)
-    expect_error(dfm_sample(mt, margin = "documents", size = 20),
-                 "size cannot exceed the number of documents \\(10\\)")
-    expect_error(dfm_sample(mt, margin = "features", size = 3500),
-                 "size cannot exceed the number of features \\(33\\d{2}\\)")
-    expect_error(dfm_sample(data_corpus_inaugural[1:10]),
-                 "only works on dfm objects")
-})
-
-
 test_that("cbind.dfm works as expected", {
     dfm1 <- dfm("This is one sample text sample")
     dfm2 <- dfm("More words here")
@@ -1057,4 +1044,26 @@ test_that("set_dfm_dimnames etc functions work", {
     quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
     expect_identical(docnames(x), c("docA", "docB"))
     expect_identical(featnames(x), c("A", "B", "C"))
+})
+
+test_that("dfm feature and document names have encoding", {
+    mt <- dfm(c("文書１" = "あ い い う", "文書２" = "え え え お"))
+    expect_true(all(Encoding(colnames(mt)) == "UTF-8"))
+    #expect_true(all(Encoding(rownames(mt)) == "UTF-8")) fix in new corpus
+    
+    mt1 <- dfm_sort(mt)
+    expect_true(all(Encoding(colnames(mt1)) == "UTF-8"))
+    #expect_true(all(Encoding(rownames(mt1)) == "UTF-8")) fix in new corpus
+    
+    mt2 <- dfm_group(mt, c("文書３", "文書３"))
+    expect_true(all(Encoding(colnames(mt2)) == "UTF-8"))
+    #expect_true(all(Encoding(rownames(mt2)) == "UTF-8")) fix in new corpus
+    
+    mt3 <- dfm_remove(mt, c("あ"))
+    expect_true(all(Encoding(colnames(mt3)) == "UTF-8"))
+    #expect_true(all(Encoding(rownames(mt3)) == "UTF-8")) fix in new corpus
+    
+    mt4 <- dfm_trim(mt, min_termfreq = 2)
+    expect_true(all(Encoding(colnames(mt4)) == "UTF-8"))
+    #expect_true(all(Encoding(rownames(mt4)) == "UTF-8")) fix in new corpus
 })

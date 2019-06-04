@@ -11,7 +11,7 @@ test_that("as.dictionary works for data.frame", {
         dictionary(list(neg = c("a", "b"), 
                         neutral = c("c", "d"), 
                         pos = c("e", "f"))),
-        as.dictionary(df)
+        as.dictionary(df, format = "tidytext")
     )
     df <- data.frame(
         word = letters[1:6],
@@ -22,7 +22,7 @@ test_that("as.dictionary works for data.frame", {
     expect_equal(
         dictionary(list(neg = c("a", "b"), 
                         neutral = c("c", "d"), pos = c("e", "f"))),
-        as.dictionary(df)
+        as.dictionary(df, format = "tidytext")
     )
 })
 
@@ -33,27 +33,25 @@ test_that("as.dictionary warnings and errors", {
         lexicon = rep("madeup", 6)
     )
     expect_error(
-        as.dictionary(df),
+        as.dictionary(df, format = "tidytext"),
         "data\\.frame must contain word and sentiment columns"
     )
-
     df <- data.frame(
         word = letters[1:6],
         sentiment = c("neg", "neg", "neutral", "neutral", "pos", "pos"),
         lexicon = c(rep("madeup", 3), rep("other", 3))
     )
     expect_warning(
-        as.dictionary(df),
+        as.dictionary(df, format = "tidytext"),
         "you may be mixing different dictionaries"
     )
-    
     df <- data.frame(
         word = letters[1:6],
         sentiment = NA,
         lexicon = "madeup"
     )
     expect_error(
-        as.dictionary(df),
+        as.dictionary(df, format = "tidytext"),
         "sentiment values are missing"
     )
 })
@@ -69,8 +67,32 @@ test_that("as.dictionary function works for tidytext sentiment", {
         is.dictionary(as.dictionary(subset(sentiments, lexicon == "bing")))
     )
     expect_warning(
-        as.dictionary(sentiments),
+        as.dictionary(sentiments, format = "tidytext"),
         "you may be mixing different dictionaries"
     )
 })
 
+
+test_that("as.dictionary function passes additional arguments to dictionary", {
+    df <- data.frame(
+        word = c("A", "B"),
+        sentiment = c("pos", "neg")
+    )
+    
+    dict <- as.dictionary(df, tolower = FALSE)
+    
+    expect_equal(
+        dict[["pos"]], "A"
+    )
+})
+
+test_that("options for tidytext only currently supported", {
+    df <- data.frame(
+        word = c("A", "B"),
+        sentiment = c("pos", "neg")
+    )
+    expect_error(
+        as.dictionary(df, format = "koRpus"),
+        "\'arg\' should be one of [“\"]tidytext[”\"]"
+    )
+})

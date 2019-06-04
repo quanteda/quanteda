@@ -113,12 +113,16 @@ set_option_value <- function(key, value) {
     
     # special setting for threads
     if (key == "threads") {
-        available_threads <- RcppParallel::defaultNumThreads()
-        if (value > available_threads) {
-            warning("setting threads instead to maximum available ", available_threads)
-            value <- available_threads
+        value <- as.integer(value)
+        value_default <- RcppParallel::defaultNumThreads()
+        if (value < 1)
+            stop("Number of threads must be greater or equal to 1")
+        if (value > value_default) {
+            warning("Setting threads instead to maximum available ", value_default, call. = FALSE)
+            value <- value_default
         }
         RcppParallel::setThreadOptions(value)
+        Sys.setenv("OMP_THREAD_LIMIT" = value)
     }
     
     # assign the key-value

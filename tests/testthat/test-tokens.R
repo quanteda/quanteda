@@ -192,6 +192,47 @@ test_that("+ operator works with tokens", {
     expect_equal(ndoc(toks_added), 3)
 })
 
+test_that("+ works with empty padded tokens (#1695)", {
+    toks1 <- tokens(c(d1 = "a b"))
+    toks2 <- tokens(c(d2 = ""))
+    toks3 <- tokens(c(d3 = "c"))
+    toks4 <- tokens(c(d4 = "c d"))
+    
+    expect_identical(
+        as.list(toks1 + toks2),
+        list(d1 = c("a", "b"), d2 = character(0))
+    )
+    expect_identical(
+        as.list(toks1 + toks3),
+        list(d1 = c("a", "b"), d3 = "c")
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks3, pattern = "c", pad = FALSE)),
+        list(d1 = c("a", "b"), d3 = character(0))
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks3, pattern = "c", pad = TRUE)),
+        list(d1 = c("a", "b"), d3 = "")
+    )
+    expect_identical(
+        as.list(tokens_remove(toks3, pattern = "c", pad = TRUE) + toks1),
+        list(d3 = "", d1 = c("a", "b"))
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks4, pattern = "c", pad = FALSE)),
+        list(d1 = c("a", "b"), d4 = "d")
+    )
+    expect_identical(
+        as.list(toks1 + tokens_remove(toks4, pattern = "c", pad = TRUE)),
+        list(d1 = c("a", "b"), d4 = c("", "d"))
+    )
+    expect_identical(
+        as.list(tokens_remove(toks4, pattern = "c", pad = TRUE) + 
+                    tokens_remove(toks3, pattern = "c", pad = TRUE)),
+        list(d4 = c("", "d"), d3 = "")
+    )
+})
+
 test_that("c() works with tokens", {
     
     txt1 <- c(d1 = "This is sample document one.",
@@ -292,23 +333,23 @@ test_that("tokens arguments works with values from parent frame (#721)", {
 })
 
 test_that("tokens works for strange spaces (#796)", {
-    txt <- "space tab\t newline\n non-breakingspace\u00A0, em-space\u2003 variationselector16 \uFE0F."
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 8))
+    txt <- "space tab\t newline\n non-breakingspace\u00A0, variationselector16 \uFE0F."
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 7))
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = TRUE)),
-        c("space", "tab", "newline", "non-breakingspace", "em-space", "variationselector16")
+        c("space", "tab", "newline", "non-breakingspace", "variationselector16")
     )
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 18))
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 15))
     expect_equal(
-        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[16:18],
+        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[13:15],
         c("variationselector16", " ", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        c(text1 = 16)
+        c(text1 = 13)
     )
     expect_equal(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[15:16],
+        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[12:13],
         c("variationselector16", " ")
     )
 })
@@ -340,7 +381,6 @@ test_that("remove_hyphens is working correctly", {
 })
 
 test_that("tokens.tokens() does nothing by default", {
-    
     toks <- tokens(data_corpus_inaugural, 
                    remove_numbers = FALSE,
                    remove_punct = FALSE,
@@ -350,7 +390,6 @@ test_that("tokens.tokens() does nothing by default", {
                    remove_hyphens = FALSE,
                    remove_url = FALSE)
     expect_equal(toks, tokens(toks))
-    
 })
 
 test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
@@ -562,4 +601,201 @@ test_that("tokens.tokens(x, remove_hyphens = TRUE) behaves same as tokens.charac
         tokens(txt, remove_hyphens = TRUE) %>% as.list(),
         tokens(txt, remove_hyphens = FALSE) %>% tokens(remove_hyphens = TRUE) %>% as.list()
     )
+})
+
+test_that("types are encoded when necessarly", {
+    toks <- tokens(c("まずは最初の文書。そして、次の文書。", "最後の文書"))
+    expect_true(all(Encoding(types(toks)) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_wordstem(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_sample(toks, 1))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_tolower(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_toupper(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_ngrams(toks))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_remove(toks, "の"))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_replace(toks, phrase("次 の"), phrase("次 は")))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_split(toks, "は"))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_chunk(toks, 2))) == "UTF-8"))
+    expect_true(all(Encoding(types(tokens_subset(toks, c(TRUE, FALSE)))) == "UTF-8"))
+    
+})
+
+test_that("tokens.tokens warns about unused arguments", {
+    expect_warning(fixed = TRUE,
+        tokens(tokens("one two three"), notanarg = TRUE),
+        "Argument notanarg not used."
+    )
+})
+
+test_that("tokens.tokens(x, remove_hyphens = TRUE, verbose = TRUE) works as expected  (#1683)", {
+    expect_message(
+        tokens(tokens("No hyphens here."), remove_hyphens = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Hyphens oft-cited here."), remove_hyphens = TRUE, verbose = TRUE),
+        "separating hyphenated words"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Hyphens oft-cited here."), remove_hyphens = TRUE, verbose = TRUE)),
+        c("Hyphens", "oft", "-", "cited", "here", ".")
+    )
+})
+
+test_that("tokens.tokens(x, remove_twitter = TRUE, verbose = TRUE) works as expected  (#1683)", {
+    expect_message(
+        tokens(tokens("No Twitter."), remove_twitter = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing #hashtags."), remove_twitter = TRUE, verbose = TRUE),
+        "removing Twitter characters"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing #hashtags."), remove_twitter = TRUE, verbose = TRUE)),
+        c("Removing", "hashtags", ".")
+    )
+})
+    
+test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing no number words."), remove_numbers = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing 1 number words."), remove_numbers = TRUE, verbose = TRUE),
+        "removing numbers"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing 1 number words."), remove_numbers = TRUE, verbose = TRUE)),
+        c("Removing", "number", "words", ".")
+    )
+})
+
+test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing no £ punctuation"), remove_punct = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing £ punctuation."), remove_punct = TRUE, verbose = TRUE),
+        "removing punctuation"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing £ punctuation."), remove_punct = TRUE, remove_symbol = FALSE, verbose = TRUE)),
+        c("Removing", "£", "punctuation")
+    )
+})
+
+test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing no symbols."), remove_symbols = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_message(
+        tokens(tokens("Removing € symbols."), remove_symbols = TRUE, verbose = TRUE),
+        "removing symbols"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing € symbols."), remove_symbols = TRUE, verbose = TRUE)),
+        c("Removing", "symbols", ".")
+    )
+})
+
+test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing separators", remove_separators = FALSE), remove_separators = TRUE, verbose = TRUE),
+        "removing separators"
+    )
+    expect_message(
+        tokens(tokens("Removing no separators", remove_separators = TRUE), remove_separators = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_identical(
+        as.character(
+            tokens(tokens("Removing separators", remove_separators = FALSE), remove_separators = TRUE, verbose = TRUE)
+        ),
+        c("Removing", "separators")
+    )
+    expect_message(
+        tokens(tokens("Removing separators", remove_separators = TRUE), verbose = TRUE),
+        c("total elapsed:  .+ seconds")
+    )
+})
+
+
+test_that("tokens.tokens(x, remove_url = TRUE, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"), remove_url = TRUE, verbose = TRUE),
+        "removing URLs"
+    )
+    expect_message(
+        tokens(tokens("Removing no URLs"), remove_url = TRUE, verbose = TRUE),
+        "none found"
+    )
+    expect_identical(
+        as.character(tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"), remove_url = TRUE, verbose = TRUE)),
+            c("Removing", "URLs")
+    )
+})
+
+test_that("tokens.tokens(x, nrgams = 2, verbose = TRUE) works as expected (#1683)", {
+    expect_message(
+        tokens(tokens("one two three"), ngrams = 2L, verbose = TRUE),
+        "creating ngrams"
+    )
+})
+
+test_that("symbols and punctuation are handled separately (#1445)", {
+    txt <- "£ € 👏 Rock on❗ 💪️🎸"
+    expect_identical(
+        as.character(tokens(txt, what = "word", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.character(tokens(txt, what = "word", remove_symbols = FALSE, remove_punct = FALSE))
+    )
+    expect_identical(
+        as.character(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.character(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = FALSE))
+    )
+    expect_identical(
+        as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = FALSE))
+    )
+})
+
+test_that("test that what = \"word\" works the same as \"fast(er|est)\" word", {
+    
+    chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003",
+               "#tag @user", "abc be-fg hi 100kg 2017", "a b c d e")
+    
+    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_numbers = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_numbers = TRUE) %>% as.list())
+    
+    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_symbols = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_symbols = TRUE) %>% as.list())
+    
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_punct = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_punct = TRUE) %>% as.list())
+    
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
+    suppressWarnings(
+        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list(),
+                     tokens(chars, what = "fasterword", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list())
+    )
+    suppressWarnings(
+        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list(),
+                     tokens(chars, what = "fastestword", remove_punct = FALSE, remove_twitter = TRUE) %>% as.list())
+    )
+    
+    expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
+                 tokens(chars, what = "fasterword", remove_hyphens = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
+                 tokens(chars, what = "fastestword", remove_hyphens = TRUE) %>% as.list())
 })

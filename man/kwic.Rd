@@ -13,8 +13,9 @@ is.kwic(x)
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
@@ -66,7 +67,8 @@ toks <- tokens(data_corpus_inaugural)
 kwic(data_corpus_inaugural, pattern = phrase("war against"))
 kwic(data_corpus_inaugural, pattern = phrase("war against"), valuetype = "regex")
 
-mykwic <- kwic(data_corpus_inaugural, "provident*")
-is.kwic(mykwic)
+kw <- kwic(data_corpus_inaugural, "provident*")
+is.kwic(kw)
 is.kwic("Not a kwic")
+is.kwic(kw[, c("pre", "post")])
 }

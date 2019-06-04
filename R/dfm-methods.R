@@ -7,16 +7,16 @@
 #' @param x the dfm whose features will be extracted
 #' @return character vector of the feature labels
 #' @examples
-#' inaugDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
+#' dfmat <- dfm(data_corpus_inaugural)
 #' 
 #' # first 50 features (in original text order)
-#' head(featnames(inaugDfm), 50)
+#' head(featnames(dfmat), 50)
 #' 
 #' # first 50 features alphabetically
-#' head(sort(featnames(inaugDfm)), 50)
+#' head(sort(featnames(dfmat)), 50)
 #' 
 #' # contrast with descending total frequency order from topfeatures()
-#' names(topfeatures(inaugDfm, 50))
+#' names(topfeatures(dfmat, 50))
 #' @export
 featnames <- function(x) {
     UseMethod("featnames")
@@ -87,6 +87,8 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
+    # make sure the dimension names are character
+    set_dfm_dimnames(x) <- x@Dimnames
     # for compatibility with older dfm objects
     if (identical(dim(x@docvars), c(0L, 0L)))
         x@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(x)))
@@ -209,25 +211,25 @@ is.dfm <- function(x) {
 #' @return A named numeric vector of feature counts, where the names are the 
 #'   feature labels, or a list of these if \code{groups} is given.
 #' @examples
-#' mydfm <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
+#' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
 #'     dfm(remove_punct = TRUE)
-#' mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
+#' dfmat2 <- dfm_remove(dfmat1, stopwords("english"))
 #' 
 #' # most frequent features
-#' topfeatures(mydfm)
-#' topfeatures(mydfm_nostopw)
+#' topfeatures(dfmat1)
+#' topfeatures(dfmat2)
 #' 
 #' # least frequent features
-#' topfeatures(mydfm_nostopw, decreasing = FALSE)
+#' topfeatures(dfmat2, decreasing = FALSE)
 #' 
 #' # top features of individual documents  
-#' topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
+#' topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 #' 
 #' # grouping by president last name
-#' topfeatures(mydfm_nostopw, n = 5, groups = "President")
+#' topfeatures(dfmat2, n = 5, groups = "President")
 #'
 #' # features by document frequencies
-#' tail(topfeatures(mydfm, scheme = "docfreq", n = 200))
+#' tail(topfeatures(dfmat1, scheme = "docfreq", n = 200))
 #' @export
 topfeatures <- function(x, n = 10, decreasing = TRUE, 
                         scheme = c("count", "docfreq"), groups = NULL) {
@@ -294,9 +296,9 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 #' to the proportion of cells that have zero counts.
 #' @param x the document-feature matrix
 #' @examples 
-#' inaug_dfm <- dfm(data_corpus_inaugural, verbose = FALSE)
-#' sparsity(inaug_dfm)
-#' sparsity(dfm_trim(inaug_dfm, min_termfreq = 5))
+#' dfmat <- dfm(data_corpus_inaugural)
+#' sparsity(dfmat)
+#' sparsity(dfm_trim(dfmat, min_termfreq = 5))
 #' @export
 sparsity <- function(x) {
     UseMethod("sparsity")

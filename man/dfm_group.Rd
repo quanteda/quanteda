@@ -4,7 +4,7 @@
 \alias{dfm_group}
 \title{Combine documents in a dfm by a grouping variable}
 \usage{
-dfm_group(x, groups = NULL, fill = FALSE)
+dfm_group(x, groups = NULL, fill = FALSE, force = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm}}
@@ -18,12 +18,20 @@ See \link{groups} for details.}
 all levels of the factor when forming the new "documents" of the grouped
 dfm.  This will result in documents with zero feature counts for levels not
 observed.  Has no effect if the \code{groups} variable(s) are not factors.}
+
+\item{force}{logical; if \code{TRUE}, group by summing existing counts, even
+if the dfm has been weighted.  This can result in invalid sums, such as
+adding log counts (when a dfm has been weighted by \code{"logcount"} for
+instance using \code{\link{dfm_weight}}).  Does not apply to the term
+weight schemes "count" and "prop".}
 }
 \value{
 \code{dfm_group} returns a \link{dfm} whose documents are equal to
   the unique group combinations, and whose cell values are the sums of the
   previous values summed by group. Document-level variables that have no
-  variation within groups are saved in \link{docvars}.
+  variation within groups are saved in \link{docvars}.  Document-level
+  variables that are lists are dropped from grouping, even when these exhibit
+  no variation within groups.
 
   Setting the \code{fill = TRUE} offers a way to "pad" a dfm with document
   groups that may not have been observed, but for which an empty document is
@@ -38,13 +46,13 @@ one of the \link{docvars} attached to the dfm. This is identical in
 functionality to using the \code{"groups"} argument in \code{\link{dfm}}.
 }
 \examples{
-mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
+corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
-mydfm <- dfm(mycorpus)
-dfm_group(mydfm, groups = "grp")
-dfm_group(mydfm, groups = c(1, 1, 2, 2))
+dfmat <- dfm(corp)
+dfm_group(dfmat, groups = "grp")
+dfm_group(dfmat, groups = c(1, 1, 2, 2))
 
 # equivalent
-dfm(mydfm, groups = "grp")
-dfm(mydfm, groups = c(1, 1, 2, 2))
+dfm(dfmat, groups = "grp")
+dfm(dfmat, groups = c(1, 1, 2, 2))
 }

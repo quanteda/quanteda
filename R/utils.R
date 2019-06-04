@@ -123,10 +123,14 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
     if (is.collocations(pattern)) {
         if (nrow(pattern) == 0) return(list())
         temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
-        temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
         names(temp) <- pattern$collocation
-        result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
-        attr(result, "pattern") <- match(names(result), pattern$collocation)
+        if (case_insensitive) {
+            result <- pattern2id(temp, types, valuetype = "fixed", TRUE)
+        } else {
+            temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
+            result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
+        }
+        attr(result, "pattern") <- match(names(result), names(temp))
     } else {
         if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
@@ -253,3 +257,36 @@ message_error <- function(key = NULL) {
     }
     return(unname(msg[key]))
 } 
+
+#' Sample a vector by a group
+#' 
+#' Return a sample from a vector within a grouping variable.
+#' @param x any vector
+#' @param size the number of items to sample within each group, as a positive
+#'   number or a vector of numbers equal in length to the number of groups. If
+#'   \code{NULL}, the sampling is stratified by group in the original group
+#'   sizes.
+#' @param group a grouping vector equal in length to \code{length(x)}
+#' @param replace logical; should sampling be with replacement?
+#' @return \code{x} resampled within groups
+#' @keywords internal
+#' @examples 
+#' set.seed(100)
+#' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
+#' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
+#' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
+#' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
+#' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
+sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
+    if (length(x) != length(group))
+        stop("group not equal in length of x")
+    x <- split(x, group)
+    if (is.null(size)) 
+        size <- lengths(x)
+    if (length(size) > 1 && length(size) != length(x))
+        stop("size not equal in length to the number of groups")
+    result <- mapply(function(x, size, replace) {
+                 x[sample.int(length(x), size = size, replace = replace)]
+              }, x, size, replace, SIMPLIFY = FALSE)
+    unlist(result, use.names = FALSE)
+}

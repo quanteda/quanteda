@@ -6,6 +6,13 @@
 #' @param x a \link{dfm} object
 #' @param n (optional) integer specifying the top \code{n} features to be returned,
 #' within group if \code{groups} is specified
+#' @param ties_method character string specifying how ties are treated.  See
+#'   \code{\link[data.table]{frank}} for details.  Unlike that function,
+#'   however, the default is \code{"min"}, so that frequencies of 10, 10, 11
+#'   would be ranked 1, 1, 3.
+#' @param ... additional arguments passed to \code{\link{dfm_group}}.  This can
+#'   be useful in passing `force = TRUE`, for instance, if you are grouping a
+#'   dfm that has been weighted.
 #' @inheritParams groups
 #' @return a data.frame containing the following variables:
 #' \describe{
@@ -22,85 +29,98 @@
 #' column is omitted from the returned data.frame.}
 #' }
 #' @examples 
-#' dfm1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
-#' textstat_frequency(dfm1)
-#' textstat_frequency(dfm1, groups = c("one", "two", "one"))
+#' set.seed(20)
+#' dfmat1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
+#' textstat_frequency(dfmat1)
+#' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "first")
+#' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "dense")
 #' 
-#' obamadfm <- 
-#'     corpus_subset(data_corpus_inaugural, President == "Obama") %>%
-#'     dfm(remove_punct = TRUE, remove = stopwords("english"))
-#' freq <- textstat_frequency(obamadfm)
-#' head(freq, 10)
+#' dfmat2 <- corpus_subset(data_corpus_inaugural, President == "Obama") %>%
+#'    dfm(remove_punct = TRUE, remove = stopwords("english"))
+#' tstat1 <- textstat_frequency(dfmat2)
+#' head(tstat1, 10)
 #'
 #' \donttest{
 #' # plot 20 most frequent words
 #' library("ggplot2")
-#' ggplot(freq[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
+#' ggplot(tstat1[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
 #'     geom_point() + 
 #'     coord_flip() +
 #'     labs(x = NULL, y = "Frequency")
 #' 
 #' # plot relative frequencies by group
-#' dfm_weight_pres <- data_corpus_inaugural %>% 
+#' dfmat3 <- data_corpus_inaugural %>% 
 #'     corpus_subset(Year > 2000) %>% 
 #'     dfm(remove = stopwords("english"), remove_punct = TRUE) %>% 
 #'     dfm_group(groups = "President") %>%
 #'     dfm_weight(scheme = "prop")
 #' 
 #' # calculate relative frequency by president
-#' freq_weight <- textstat_frequency(dfm_weight_pres, n = 10,
-#'                                   groups = "President")
+#' tstat2 <- textstat_frequency(dfmat3, n = 10, groups = "President")
 #' 
 #' # plot frequencies
-#' ggplot(data = freq_weight, aes(x = nrow(freq_weight):1, y = frequency)) +
+#' ggplot(data = tstat2, aes(x = factor(nrow(tstat2):1), y = frequency)) +
 #'     geom_point() +
 #'     facet_wrap(~ group, scales = "free") +
 #'     coord_flip() +
-#'     scale_x_continuous(breaks = nrow(freq_weight):1,
-#'                        labels = freq_weight$feature) +
+#'     scale_x_discrete(breaks = nrow(tstat2):1,
+#'                        labels = tstat2$feature) +
 #'     labs(x = NULL, y = "Relative frequency")
 #' }
 #' @return \code{textstat_frequency} returns a data.frame of features and
 #'   their term and document frequencies within groups.
 #' @export
 #' @keywords plot
-textstat_frequency <- function(x, n = NULL, groups = NULL) {
+textstat_frequency <- function(x, n = NULL, groups = NULL, 
+                               ties_method = c("min", "average", "first", "random", "max", "dense"),
+                               ...) {
     UseMethod("textstat_frequency")
 }
     
 #' @export
-textstat_frequency.default <- function(x, n = NULL, groups = NULL) { 
+textstat_frequency.default <- function(x, n = NULL, groups = NULL,
+                               ties_method = c("min", "average", "first", "random", "max", "dense"),
+                               ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_frequency"))
 }
 
-#' @importFrom data.table data.table setorder setcolorder
+#' @importFrom data.table data.table setcolorder setorder frank
 #' @export
-textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) { 
+textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
+                               ties_method = c("min", "average", "first", "random", "max", "dense"),
+                               ...) {
+    group <- frequency <- NULL
+    ties_method <- match.arg(ties_method)
     
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
-    
+
     if (is.null(groups)) groups <- rep("all", ndoc(x))
+    
     x@weightTf[["scheme"]] <- "count" # reset for docfreq
-    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups)@x
-    x <- as(dfm_group(x, groups), "dgTMatrix")
-    temp <- data.table(feature = colnames(x)[x@j + 1],
+    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups, ...)@x
+    
+    x <- as(dfm_group(x, groups, ...), "dgTMatrix")
+    result <- data.table(feature = colnames(x)[x@j + 1],
                        frequency = x@x,
                        docfreq = docfreq,
                        group = rownames(x)[x@i + 1])
+
+    # get the frequency rank
+    result[, rank := frank(-frequency, ties.method = ties_method), by = group]
+    setorder(result, group, rank)
     
-    group <- frequency <- NULL
-    setorder(temp, group, -frequency)
-    temp[, rank := 1:.N, by = group]
-    if (!is.null(n)) temp <- temp[rank <= n]
+    # keep only first n items by group, if n is specified
+    if (!is.null(n)) {
+        stopifnot(is.numeric(n))
+        result <- result[, .SD[seq_len(n)], by = group]
+    }
+
+    setcolorder(result, c("feature", "frequency", "rank", "docfreq", "group"))
     
-    result <- data.frame(feature = temp$feature,
-                         frequency = temp$frequency,
-                         rank = temp$rank,
-                         docfreq = temp$docfreq,
-                         group = temp$group,
-                         stringsAsFactors = FALSE)
-    class(result) <- c('frequency', 'textstat', 'data.frame')
+    # make into data.frame, class it, and return
+    result <- setDF(result)
+    class(result) <- c("frequency", "textstat", "data.frame")
     rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }

@@ -13,9 +13,9 @@ Texts chunk(Text &tokens,
     std::size_t step;
     Texts chunks;
     step = size - overlap;
-    chunks.reserve(ceil(tokens.size() / step));
+    chunks.reserve(ceil((double)tokens.size() / step));
     for (size_t i = 0; i < tokens.size(); i += step) {
-        Text chunk(tokens.begin() + i, tokens.begin() + min(i + size, tokens.size()));
+        Text chunk(tokens.begin() + i, tokens.begin() + std::min(i + size, tokens.size()));
         chunks.push_back(chunk);
         count++;
     }
@@ -89,7 +89,7 @@ List qatd_cpp_tokens_chunk(const List &texts_,
         }
     }
     
-    Tokens chunks_ = recompile(chunks, types, false, false, false);
+    Tokens chunks_ = recompile(chunks, types, false, false, is_encoded(types_));
     chunks_.attr("docnum") = docnum_;
     chunks_.attr("segnum") = segnum_;
     

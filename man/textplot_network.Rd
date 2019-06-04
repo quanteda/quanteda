@@ -9,8 +9,8 @@
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "#1F78B4", edge_alpha = 0.5, edge_size = 2,
   vertex_color = "#4D4D4D", vertex_size = 2,
-  vertex_labelcolor = NULL, vertex_labelfont = NULL, offset = NULL,
-  ...)
+  vertex_labelcolor = NULL, vertex_labelfont = NULL,
+  vertex_labelsize = 5, offset = NULL, ...)
 
 \method{as.network}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)
 
@@ -35,13 +35,16 @@ instead of the maximum to reduce the impact of outliers.}
 
 \item{vertex_color}{color of vertices.}
 
-\item{vertex_size}{size of vertices.}
+\item{vertex_size}{size of vertices}
 
 \item{vertex_labelcolor}{color of texts. Defaults to the same as
 \code{vertex_color}. If \code{NA} is given, texts are not rendered.}
 
 \item{vertex_labelfont}{font-family of texts. Use default font if
 \code{NULL}.}
+
+\item{vertex_labelsize}{size of vertex labels in mm. Defaults to size 5. Supports
+both integer values and vector values.}
 
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}
@@ -61,18 +64,25 @@ Currently the size of the network is limited to 1000, because of the
   own plotting function using \code{\link[=as.network.fcm]{as.network}}.
 }
 \examples{
+set.seed(100)
 toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens(remove_punct = TRUE) \%>\%
     tokens_tolower() \%>\%
     tokens_remove(pattern = stopwords("english"), padding = FALSE)
-myfcm <- fcm(toks, context = "window", tri = FALSE)
-feat <- names(topfeatures(myfcm, 30))
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\% 
+fcmat <- fcm(toks, context = "window", tri = FALSE)
+feat <- names(topfeatures(fcmat, 30))
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.5)
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\% 
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.8)
-fcm_select(myfcm, pattern = feat, verbose = FALSE) \%>\%
+fcm_select(fcmat, pattern = feat) \%>\%
     textplot_network(min_freq = 0.8, vertex_labelcolor = rep(c('gray40', NA), 15))
+fcm_select(fcmat, pattern = feat) \%>\%
+    textplot_network(vertex_labelsize = 10)
+fcm_30 <- fcm_select(fcmat, pattern = feat)
+textplot_network(fcm_30, vertex_labelsize = rowSums(fcm_30)/min(rowSums(fcm_30)))
+# Vector inputs to vertex_labelsize can be scaled if too small / large
+textplot_network(fcm_30, vertex_labelsize = 1.5 * rowSums(fcm_30)/min(rowSums(fcm_30)))
 
 # as.igraph
 if (requireNamespace("igraph", quietly = TRUE)) {

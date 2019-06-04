@@ -5,7 +5,7 @@
 \title{Weight a dfm by \emph{tf-idf}}
 \usage{
 dfm_tfidf(x, scheme_tf = "count", scheme_df = "inverse", base = 10,
-  ...)
+  force = FALSE, ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 
@@ -20,6 +20,11 @@ through the ellipsis (\code{...}).}
 \item{base}{the base for the logarithms in the \code{\link{tf}} and
 \code{\link{docfreq}} calls; default is 10}
 
+\item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
+has been weighted before.  This can result in invalid weights, such as as
+weighting by \code{"prop"} after applying \code{"logcount"}, or after
+having grouped a dfm using \code{\link{dfm_group}}.}
+
 \item{...}{additional arguments passed to \code{\link{docfreq}}.}
 }
 \description{
@@ -33,37 +38,38 @@ with full control over options.  Uses fully sparse methods for efficiency.
   can be overridden using \code{scheme_tf = "prop"}.
 }
 \examples{
-mydfm <- as.dfm(data_dfm_lbgexample)
-head(mydfm[, 5:10])
-head(dfm_tfidf(mydfm)[, 5:10])
-docfreq(mydfm)[5:15]
-head(dfm_weight(mydfm)[, 5:10])
+dfmat1 <- as.dfm(data_dfm_lbgexample)
+head(dfmat1[, 5:10])
+head(dfm_tfidf(dfmat1)[, 5:10])
+docfreq(dfmat1)[5:15]
+head(dfm_weight(dfmat1)[, 5:10])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-wiki_dfm <- 
+dfmat2 <- 
     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
            byrow = TRUE, nrow = 2,
            dimnames = list(docs = c("document1", "document2"),
                            features = c("this", "is", "a", "sample", 
                                         "another", "example"))) \%>\%
     as.dfm()
-wiki_dfm    
-docfreq(wiki_dfm)
-dfm_tfidf(wiki_dfm, scheme_tf = "prop") \%>\% round(digits = 2)
+dfmat2    
+docfreq(dfmat2)
+dfm_tfidf(dfmat2, scheme_tf = "prop") \%>\% round(digits = 2)
 
 \dontrun{
 # comparison with tm
 if (requireNamespace("tm")) {
-    convert(wiki_dfm, to = "tm") \%>\% tm::weightTfIdf() \%>\% as.matrix()
+    convert(dfmat2, to = "tm") \%>\% tm::weightTfIdf() \%>\% as.matrix()
     # same as:
-    dfm_tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
+    dfm_tfidf(dfmat2, base = 2, scheme_tf = "prop")
 }
 }
 }
 \references{
 Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-  \emph{Introduction to Information Retrieval}. Cambridge University Press.
+  \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
 \code{\link{dfm_weight}}, \code{\link{docfreq}}

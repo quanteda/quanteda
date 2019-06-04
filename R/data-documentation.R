@@ -36,10 +36,10 @@
 #' @keywords data
 #' @aliases data_dfm_LBGexample
 #' @format A \link{dfm} object with 6 documents and 37 features.
-#' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003. 
-#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
-#'   positions from political text using words as data.}" \emph{American
-#'   Political Science Review} 97(2): 311-331.
+#' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
+#'   \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
+#'   Positions from Political Text using Words as Data}. \emph{American
+#'   Political Science Review}, 97(2), 311--331.
 "data_dfm_lbgexample"  
 
 #' Irish budget speeches from 2010
@@ -51,14 +51,15 @@
 #' @format The corpus object for the 2010 budget speeches, with document-level 
 #'   variables for year, debate, serial number, first and last name of the 
 #'   speaker, and the speaker's party.
-#' @references Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
-#'   Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
-#'   \emph{Political Analysis} 21(3): 298-313.
+#' @references Lowe, W. & Benoit, K.R. (2013). 
+#'   \href{https://doi.org/10.1093/pan/mpt002}{Validating Estimates of Latent Traits 
+#'   From Textual Data Using Human Judgment as a Benchmark}.
+#'   \emph{Political Analysis}, 21(3), 298--313.
 #' @keywords data
 #' @source 
 #' Dáil Éireann Debate, 
 #' \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2009120900022?opendocument}{Budget Statement 2010.}
-#' 9 December 2009.  vol. 697, no. 3.
+#' 9 December 2009. vol. 697, no. 3.
 #' 
 #' @examples
 #' summary(data_corpus_irishbudget2010)
@@ -73,7 +74,7 @@
 #     txts[i] <- temptxt
 # }
 # texts(data_corpus_irishbudget2010) <- txts
-# save(data_corpus_irishbudget2010, file="data/data_corpus_irishbudget2010.RData")
+# save(data_corpus_irishbudget2010, file = "data/data_corpus_irishbudget2010.RData")
 
 
 #' Internal data sets
@@ -119,7 +120,7 @@ NULL
 #' negative and positive words, respectively, is also included. While many users
 #' will find the non-negation sentiment forms of the LSD adequate for sentiment
 #' analysis, Young and Soroka (2012) did find a small, but non-negligible
-#' increase in performance when accounting for negations.  Users wishing to test
+#' increase in performance when accounting for negations. Users wishing to test
 #' this or include the negations are encouraged to subtract negated positive
 #' words from the count of positive words, and subtract the negated negative
 #' words from the negative count.  
@@ -146,12 +147,13 @@ NULL
 #'   in detail in Young and Soroka (2012). Please cite this article when using the
 #'   Lexicoder Sentiment Dictionary and related resources.
 #
-#'   Young, Lori and Stuart Soroka. 2012. \emph{Lexicoder Sentiment
+#'   Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
 #'   Dictionary}. Available at \url{http://lexicoder.com}.
 #'   
-#'   Young, Lori and Stuart Soroka.  2012.  "Affective News: The Automated
-#'   Coding of Sentiment in Political Texts." \emph{Political Communication} 29(2):
-#'   205-231.
+#'   Young, L. & Soroka, S. (2012). 
+#'   \href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: 
+#'   The Automated Coding of Sentiment in Political Texts}. 
+#'   \emph{Political Communication}, 29(2), 205--231.
 #' @keywords data
 #' @examples 
 #' # simple example
@@ -178,31 +180,31 @@ NULL
 #' coalition.  (See Laver and Benoit 2002 for details.)
 #' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
 #'   including docvars for \code{name}, \code{party}, and \code{position}.
-#' @references Laver, Michael, and Kenneth Benoit. 2002. 
-#'   "\href{http://www.kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
-#'   TDs in Policy Spaces: Wordscoring Dáil Speeches}." \emph{Irish Political 
-#'   Studies} 17 (Summer): 59-73.
+#' @references Laver, M. & Benoit, K.R. (2002). 
+#'   \href{https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
+#'   TDs in Policy Spaces: Wordscoring Dáil Speeches}. \emph{Irish Political 
+#'   Studies}, 17(1), 59--73.
 #'   
-#'   Laver, Michael, Kenneth Benoit, and John Garry. 2003. 
-#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
-#'   positions from political text using words as data.}" \emph{American 
-#'   Political Science Review} 97(2): 311-331.
+#' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
+#'   \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
+#'   Positions from Political Text using Words as Data}. \emph{American
+#'   Political Science Review}, 97(2), 311--331.
 #' @source \url{https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/}
 #' @keywords data
 #' @examples
 #' \dontrun{
 #' data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, remove_punct = TRUE)
-#' fitted <- textmodel_affinity(data_dfm_dailnoconf1991, 
+#' tmod <- textmodel_affinity(data_dfm_dailnoconf1991, 
 #'                            c("Govt", "Opp", "Opp", rep(NA, 55)))
-#' (pred <- predict(fitted))
-#' tmpdf <- 
+#' (pred <- predict(tmod))
+#' dat <- 
 #'     data.frame(party = as.character(docvars(data_corpus_dailnoconf1991, "party")),
-#'                govt = coef(pred)[,"Govt"],
+#'                govt = coef(pred)[, "Govt"],
 #'                position = as.character(docvars(data_corpus_dailnoconf1991, "position")),
 #'                stringsAsFactors = FALSE)
-#' bymedian <- with(tmpdf, reorder(paste(party, position), govt, median))
+#' bymedian <- with(dat, reorder(paste(party, position), govt, median))
 #' par(mar = c(5, 6, 4, 2)+.1)
-#' boxplot(govt ~ bymedian, data = tmpdf,
+#' boxplot(govt ~ bymedian, data = dat,
 #'         horizontal = TRUE, las = 1,
 #'         xlab = "Degree of support for government")
 #' abline(h = 7.5, col = "red", lty = "dashed")

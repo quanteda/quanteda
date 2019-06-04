@@ -36,23 +36,23 @@
 #'   (other) documents.
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel_wordscores(data_dfm_lbgexample, y = c(seq(-1.5, 1.5, .75), NA)))
-#' summary(ws)
-#' coef(ws)
-#' predict(ws)
-#' predict(ws, rescaling = "lbg")
-#' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
-#' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
-#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy
-#'   Positions From Political Texts Using Words as Data.}" \emph{American
-#'   Political Science Review} 97(2): 311--331
+#' (tmod <- textmodel_wordscores(data_dfm_lbgexample, y = c(seq(-1.5, 1.5, .75), NA)))
+#' summary(tmod)
+#' coef(tmod)
+#' predict(tmod)
+#' predict(tmod, rescaling = "lbg")
+#' predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "mv")
+#' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
+#'   \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating
+#'   Policy Positions from Political Text using Words as Data}. \emph{American
+#'   Political Science Review}, 97(2), 311--331.
 #'   
-#'   Beauchamp, Nick. 2012. "\href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
-#'   Text to Scale Legislatures with Uninformative Voting}." New York University Mimeo.
+#'   Beauchamp, N. (2012). \href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
+#'   Text to Scale Legislatures with Uninformative Voting}. New York University Mimeo.
 #'   
-#'   Martin, Lanny W. and Georg Vanberg. 2007. "\href{https://doi.org/10.1093/pan/mpm010}{A Robust 
-#'   Transformation Procedure for Interpreting Political Text}." \emph{Political Analysis} 
-#'   16(1): 93--100.
+#'   Martin, L.W. & Vanberg, G. (2007). \href{https://doi.org/10.1093/pan/mpm010}{A Robust 
+#'   Transformation Procedure for Interpreting Political Text}. \emph{Political Analysis} 
+#'   16(1), 93--100.
 #' @export
 textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     UseMethod("textmodel_wordscores")
@@ -137,13 +137,13 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' "confidence"}, the predicted values will be a matrix.  This behaviour matches
 #' that of \code{\link[stats]{predict.lm}}.
 #' @examples 
-#' ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-#' predict(ws)
-#' predict(ws, rescaling = "mv")
-#' predict(ws, rescaling = "lbg")
-#' predict(ws, se.fit = TRUE)
-#' predict(ws, se.fit = TRUE, interval = "confidence")
-#' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "lbg")
+#' tmod <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
+#' predict(tmod)
+#' predict(tmod, rescaling = "mv")
+#' predict(tmod, rescaling = "lbg")
+#' predict(tmod, se.fit = TRUE)
+#' predict(tmod, se.fit = TRUE, interval = "confidence")
+#' predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "lbg")
 #' @keywords textmodel internal
 #' @export
 #' @importFrom stats qnorm median sd

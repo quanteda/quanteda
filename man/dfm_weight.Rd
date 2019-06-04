@@ -7,7 +7,7 @@
 \usage{
 dfm_weight(x, scheme = c("count", "prop", "propmax", "logcount",
   "boolean", "augmented", "logave"), weights = NULL, base = 10,
-  K = 0.5)
+  K = 0.5, force = FALSE)
 
 dfm_smooth(x, smoothing = 1)
 }
@@ -42,6 +42,11 @@ named features.  Any features not named will be assigned a weight of 1.0
 
 \item{K}{the K for the augmentation when \code{scheme = "augmented"}}
 
+\item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
+has been weighted before.  This can result in invalid weights, such as as
+weighting by \code{"prop"} after applying \code{"logcount"}, or after
+having grouped a dfm using \code{\link{dfm_group}}.}
+
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
@@ -60,41 +65,33 @@ named features.  Any features not named will be assigned a weight of 1.0
 Weight the feature frequencies in a dfm
 }
 \examples{
-my_dfm <- dfm(data_corpus_inaugural)
+dfmat1 <- dfm(data_corpus_inaugural)
 
-x <- apply(my_dfm, 1, function(tf) tf/max(tf))
-topfeatures(my_dfm)
-norm_dfm <- dfm_weight(my_dfm, scheme = "prop")
-topfeatures(norm_dfm)
-max_tf_dfm <- dfm_weight(my_dfm)
-topfeatures(max_tf_dfm)
-log_tf_dfm <- dfm_weight(my_dfm, scheme = "logcount")
-topfeatures(log_tf_dfm)
-log_ave_dfm <- dfm_weight(my_dfm, scheme = "logave")
-topfeatures(log_ave_dfm)
+dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
+topfeatures(dfmat2)
+dfmat3 <- dfm_weight(dfmat1)
+topfeatures(dfmat3)
+dfmat4 <- dfm_weight(dfmat1, scheme = "logcount")
+topfeatures(dfmat4)
+dfmat5 <- dfm_weight(dfmat1, scheme = "logave")
+topfeatures(dfmat5)
 
 # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 # of Introduction to Information Retrieval
-head(dfm_tfidf(my_dfm, scheme_tf = "logcount"))
+head(dfm_tfidf(dfmat1, scheme_tf = "logcount"))
 
 # apply numeric weights
 str <- c("apple is better than banana", "banana banana apple much better")
-(my_dfm <- dfm(str, remove = stopwords("english")))
-dfm_weight(my_dfm, weights = c(apple = 5, banana = 3, much = 0.5))
+(dfmat6 <- dfm(str, remove = stopwords("english")))
+dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 
-\dontshow{
-testdfm <- dfm(data_corpus_inaugural[1:5])
-for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave")) {
-    testw <- dfm_weight(testdfm, w)
-    cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")
-    head(testw)
-}}
 # smooth the dfm
-dfm_smooth(my_dfm, 0.5)
+dfmat <- dfm(data_corpus_inaugural)
+dfm_smooth(dfmat, 0.5)
 }
 \references{
-Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2008.
-  \emph{An Introduction to Information Retrieval}. Cambridge University Press. 
+Manning, C.D., Raghavan, P., & Schütze, H. (2008).
+  \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press. 
   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{

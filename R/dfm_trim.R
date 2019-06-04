@@ -45,32 +45,32 @@
 #'   removing features matching a stopword list, use \code{\link{dfm_select}}.
 #' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
 #' @examples
-#' (mydfm <- dfm(data_corpus_inaugural[1:5]))
+#' (dfmat <- dfm(data_corpus_inaugural[1:5]))
 #'
 #' # keep only words occurring >= 10 times and in >= 2 documents
-#' dfm_trim(mydfm, min_termfreq = 10, min_docfreq = 2)
+#' dfm_trim(dfmat, min_termfreq = 10, min_docfreq = 2)
 #'
 #' # keep only words occurring >= 10 times and in at least 0.4 of the documents
-#' dfm_trim(mydfm, min_termfreq = 10, min_docfreq = 0.4)
+#' dfm_trim(dfmat, min_termfreq = 10, min_docfreq = 0.4)
 #'
 #' # keep only words occurring <= 10 times and in <=2 documents
-#' dfm_trim(mydfm, max_termfreq = 10, max_docfreq = 2)
+#' dfm_trim(dfmat, max_termfreq = 10, max_docfreq = 2)
 #'
 #' # keep only words occurring <= 10 times and in at most 3/4 of the documents
-#' dfm_trim(mydfm, max_termfreq = 10, max_docfreq = 0.75)
+#' dfm_trim(dfmat, max_termfreq = 10, max_docfreq = 0.75)
 #'
 #' # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
-#' dfm_trim(mydfm, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
+#' dfm_trim(dfmat, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
 #'
 #' # keep only words occurring frequently (top 20%) and in <=2 documents
-#' dfm_trim(mydfm, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")
+#' dfm_trim(dfmat, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")
 #'
 #' \dontrun{
 #' # compare to removeSparseTerms from the tm package
-#' (mydfm_tm <- convert(mydfm, "tm"))
-#' tm::removeSparseTerms(mydfm_tm, 0.7)
-#' dfm_trim(mydfm, min_docfreq = 0.3)
-#' dfm_trim(mydfm, sparsity = 0.7)
+#' (dfmattm <- convert(dfmat, "tm"))
+#' tm::removeSparseTerms(dfmattm, 0.7)
+#' dfm_trim(dfmat, min_docfreq = 0.3)
+#' dfm_trim(dfmat, sparsity = 0.7)
 #' }
 #'
 #' @export

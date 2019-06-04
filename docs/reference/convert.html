@@ -84,7 +84,7 @@ text analysis packages for which conversions are defined." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -126,6 +126,9 @@ text analysis packages for which conversions are defined." />
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -227,7 +230,7 @@ text analysis packages for which conversions are defined.</p>
       <td><p>target conversion format, consisting of the name of the package 
 into whose document-term matrix representation the dfm will be converted:</p><dl class='dl-horizontal'>
 <dt><code>"lda"</code></dt><dd><p>a list with components "documents" and 
-"vocab" as needed by the function <a href='https://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a> from the 
+"vocab" as needed by the function lda.collapsed.gibbs.sampler from the 
 <span class="pkg">lda</span> package</p></dd> <dt><code>"tm"</code></dt><dd><p>a <a href='https://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a> from 
 the <span class="pkg">tm</span> package</p></dd> <dt><code>"stm"</code></dt><dd><p>the  format for the <span class="pkg">stm</span> 
 package</p></dd> <dt><code>"austin"</code></dt><dd><p>the <code>wfm</code> format from the 
@@ -257,14 +260,14 @@ documents with non-zero counts.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mycorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1970</span>)
-<span class='no'>quantdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1970</span>)
+<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>)
 
 <span class='co'># austin's wfm format</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>dfmat1</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># stm package format</span>
-<span class='no'>stmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>stmdfm</span>)</div><div class='output co'>#&gt; List of 3
+<span class='no'>stmmat</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>stmmat</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
 #&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 1 34 2 96 3 1 4 5 6 3 ...
 #&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 18 2 65 3 7 4 4 7 52 ...
@@ -284,18 +287,17 @@ documents with non-zero counts.</p></td>
 #&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
 #&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'>
 <span class='co'>#' # triplet</span>
-<span class='no'>triplet</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tripletlist"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>triplet</span>)</div><div class='output co'>#&gt; List of 3
+<span class='no'>tripletmat</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tripletlist"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>tripletmat</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ document : chr [1:8389] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
 #&gt;  $ feature  : chr [1:8389] "mr" "mr" "mr" "mr" ...
 #&gt;  $ frequency: num [1:8389] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
 <span class='co'># illustrate what happens with zero-length documents</span>
-<span class='no'>quantdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>punctOnly</span> <span class='kw'>=</span> <span class='st'>"!!!"</span>, <span class='no'>mycorpus</span>[-<span class='fl'>1</span>]), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colSums'>rowSums</a></span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt;    punctOnly  1977-Carter  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 
+<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>punctOnly</span> <span class='kw'>=</span> <span class='st'>"!!!"</span>, <span class='no'>corp</span>[-<span class='fl'>1</span>]))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colSums'>rowSums</a></span>(<span class='no'>dfmat2</span>)</div><div class='output co'>#&gt;    punctOnly  1977-Carter  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 
 #&gt;            3         1376         2790         2921         2681         1833 
 #&gt; 1997-Clinton    2001-Bush    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;         2449         1808         2319         2711         2317         1660 </div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; List of 3
+#&gt;         2449         1808         2319         2711         2317         1660 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp</span>)))</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
 #&gt;   ..$ punctOnly   : int [1:2, 1] 5 3
 #&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 18 2 65 3 7 4 4 7 52 ...
@@ -316,15 +318,14 @@ documents with non-zero counts.</p></td>
 #&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># tm's DocumentTermMatrix format</span>
-<span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
+<span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>tmdfm</span>)
 
 <span class='co'># topicmodels package format</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
 
 <span class='co'># lda package format</span>
-<span class='no'>ldadfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>ldadfm</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
 
 <span class='co'># }</span></pre>
   </div>

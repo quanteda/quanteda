@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
       </span>
     </div>
 
@@ -123,6 +123,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
@@ -264,13 +267,13 @@ that of <code><a href='https://www.rdocumentation.org/packages/stats/topics/pred
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordscores.html'>textmodel_wordscores</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt;            R1            R2            R3            R4            R5 
+    <pre class="examples"><div class='input'><span class='no'>tmod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordscores.html'>textmodel_wordscores</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;            R1            R2            R3            R4            R5 
 #&gt; -1.317931e+00 -7.395598e-01 -8.673617e-18  7.395598e-01  1.317931e+00 
 #&gt;            V1 
-#&gt; -4.480591e-01 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt;         R1         R2         R3         R4         R5         V1 
-#&gt; -1.5000000 -0.8417280  0.0000000  0.8417280  1.5000000 -0.5099572 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
-#&gt; -1.58967683 -0.88488724  0.01632248  0.91753220  1.62232179 -0.52967149 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $fit
+#&gt; -4.480591e-01 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt;         R1         R2         R3         R4         R5         V1 
+#&gt; -1.5000000 -0.8417280  0.0000000  0.8417280  1.5000000 -0.5099572 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
+#&gt; -1.58967683 -0.88488724  0.01632248  0.91753220  1.62232179 -0.52967149 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $fit
 #&gt;            R1            R2            R3            R4            R5 
 #&gt; -1.317931e+00 -7.395598e-01 -8.673617e-18  7.395598e-01  1.317931e+00 
 #&gt;            V1 
@@ -278,7 +281,7 @@ that of <code><a href='https://www.rdocumentation.org/packages/stats/topics/pred
 #&gt; 
 #&gt; $se.fit
 #&gt; [1] 0.006699613 0.011433605 0.012005250 0.011433605 0.006699613 0.011897667
-#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>)</div><div class='output co'>#&gt; $fit
+#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>)</div><div class='output co'>#&gt; $fit
 #&gt;              fit         lwr         upr
 #&gt; R1 -1.317931e+00 -1.33106234 -1.30480034
 #&gt; R2 -7.395598e-01 -0.76196925 -0.71715035
@@ -289,7 +292,7 @@ that of <code><a href='https://www.rdocumentation.org/packages/stats/topics/pred
 #&gt; 
 #&gt; $se.fit
 #&gt; [1] 0.006699613 0.011433605 0.012005250 0.011433605 0.006699613 0.011897667
-#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>ws</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; $fit
+#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; $fit
 #&gt;            fit         lwr        upr
 #&gt; R1 -1.58967683 -1.60567795 -1.5736757
 #&gt; R2 -0.88488724 -0.91219485 -0.8575796
