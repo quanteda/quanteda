@@ -418,12 +418,13 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
 make_null_dfm <- function(feature = NULL, document = NULL) {
     if (is.null(feature)) feature <- character()
     if (is.null(document)) document <- character()
-    result <- new("dfm",
-        as(sparseMatrix(
+    temp <- as(sparseMatrix(
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature))
-    ), "dgCMatrix"))
+    ), "dgCMatrix")
+    result <- new("dfm", temp, 
+                  docvars = quanteda:::make_docvars(n = 0L))
     set_dfm_dimnames(result) <- list(document, feature)
     return(result)
 }
