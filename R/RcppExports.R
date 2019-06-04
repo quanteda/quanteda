@@ -49,14 +49,6 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window, delim_) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window, delim_)
 }
 
-qatd_cpp_sd <- function(mt) {
-    .Call(`_quanteda_qatd_cpp_sd`, mt)
-}
-
-qatd_cpp_nz <- function(mt) {
-    .Call(`_quanteda_qatd_cpp_nz`, mt)
-}
-
 qatd_cpp_tokens_chunk <- function(texts_, types_, size, overlap) {
     .Call(`_quanteda_qatd_cpp_tokens_chunk`, texts_, types_, size, overlap)
 }

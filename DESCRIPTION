@@ -52,7 +52,7 @@ Imports:
     stringi,
     xml2,
     yaml,
-    proxyC
+    proxyC (>= 0.1.4)
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     ca,

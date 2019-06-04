@@ -340,17 +340,4 @@ test_that("no value is greater than 1.0 (#1543)", {
     expect_equal(sum(cor1 > 1), 0)
 })
 
-test_that("non-zero values are counted correctly", {
-    expect_equal(
-        quanteda:::qatd_cpp_nz(test_mt),
-        unname(apply(test_mt, 2, function(x) sum(x != 0)))
-    )
-})
-
-test_that("standard deviation is calculated correctly", {
-    expect_equal(
-        quanteda:::qatd_cpp_sd(test_mt),
-        unname(apply(test_mt, 2, function(x) sd(x)))
-    )
-})
 

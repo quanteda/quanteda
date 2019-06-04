@@ -170,28 +170,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_sd
-NumericVector qatd_cpp_sd(arma::sp_mat& mt);
-RcppExport SEXP _quanteda_qatd_cpp_sd(SEXP mtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt(mtSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sd(mt));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_nz
-NumericVector qatd_cpp_nz(arma::sp_mat& mt);
-RcppExport SEXP _quanteda_qatd_cpp_nz(SEXP mtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type mt(mtSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_nz(mt));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_chunk
 List qatd_cpp_tokens_chunk(const List& texts_, const CharacterVector types_, const int size, const int overlap);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_chunk(SEXP texts_SEXP, SEXP types_SEXP, SEXP sizeSEXP, SEXP overlapSEXP) {
@@ -411,8 +389,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
-    {"_quanteda_qatd_cpp_sd", (DL_FUNC) &_quanteda_qatd_cpp_sd, 1},
-    {"_quanteda_qatd_cpp_nz", (DL_FUNC) &_quanteda_qatd_cpp_nz, 1},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
