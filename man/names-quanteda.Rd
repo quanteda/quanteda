@@ -9,6 +9,7 @@
 \alias{rownames<-.dfm}
 \alias{rownames<-,fcm-method}
 \alias{rownames<-.fcm}
+\alias{docid}
 \title{Special handling for names of quanteda objects}
 \usage{
 \method{names}{corpus}(x) <- value
@@ -18,6 +19,8 @@
 \S4method{rownames}{dfm}(x) <- value
 
 \S4method{rownames}{fcm}(x) <- value
+
+docid(x)
 }
 \arguments{
 \item{x}{an \R object.}

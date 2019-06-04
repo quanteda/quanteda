@@ -126,3 +126,11 @@ setMethod("rownames<-",
               set_fcm_dimnames(x) <- list(value, colnames(x))
               return(x)
           })
+
+#' Internal function to extract docid
+#' @rdname names-quanteda
+#' @export
+docid <- function(x) {
+    get_docvars(x, "docid_", system = TRUE, drop = TRUE)
+} 
+

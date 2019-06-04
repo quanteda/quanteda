@@ -51,7 +51,8 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 
     if (is.null(groups))
-        return(x)
+        groups <- docid(x)
+
 
     if (!force && 
         (( (! x@weightTf[["scheme"]] %in% c("count", "prop")) &&
