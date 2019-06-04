@@ -50,8 +50,9 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 
-    if (is.null(groups)) return(x)
-    
+    if (is.null(groups))
+        groups <- docid(x)
+
     if (!force && 
         (( (! x@weightTf[["scheme"]] %in% c("count", "prop")) &&
          x@weightDf[["scheme"]] != "unary" ) ||
