@@ -135,7 +135,8 @@ dfm_weight.dfm <- function(
         names(weight) <- featnames(x)
         weights <- weights[!ignore]
         weight[match(names(weights), names(weight))] <- weights
-        weight <- diag(weight)
+        
+        weight <- Diagonal(x = weight)
         colnames(weight) <- colnames(x)
         return(as.dfm(x %*% weight))
 
