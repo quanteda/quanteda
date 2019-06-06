@@ -6,7 +6,7 @@
 \usage{
 textstat_proxy(x, y = NULL, margin = c("documents", "features"),
   method = c("cosine", "correlation", "jaccard", "ejaccard", "dice",
-  "edice", "hamman", "simple matching", "faith", "euclidean", "chisquared",
+  "edice", "hamman", "simple matching", "euclidean", "chisquared",
   "hamming", "kullback", "manhattan", "maximum", "canberra", "minkowski"),
   p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE)
 }
@@ -20,8 +20,8 @@ features in \code{x} and \code{y} is computed.}
 difference will be computed:  \code{"documents"} for documents or
 \code{"features"} for word/term features.}
 
-\item{method}{method the similarity or distance measure to be used; see
-Details.}
+\item{method}{character; the method identifying the similarity or distance
+measure to be used; see Details.}
 
 \item{p}{The power of the Minkowski distance.}
 

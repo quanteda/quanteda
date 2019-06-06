@@ -1,5 +1,7 @@
+#include "armadillo.h"
 #include "quanteda.h"
 using namespace quanteda;
+using namespace arma;
 
 /* 
  * This function removes a string from of a list of string vectors.

@@ -407,3 +407,12 @@ test_that("raises error when dfm is empty (#1419)", {
                  quanteda:::message_error("dfm_empty"))
     
 })
+
+test_that("as.matrix.simil with no Labels attr", {
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    similold <- textstat_simil_old(presDfm, method = "correlation", margin = "documents")
+    attr(similold, "Labels") <- NULL
+    expect_equal(colnames(quanteda:::as.matrix.simil(similold)),
+                 rownames(quanteda:::as.matrix.simil(similold)))
+})

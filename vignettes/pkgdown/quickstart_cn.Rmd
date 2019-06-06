@@ -384,7 +384,7 @@ dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 #分层聚类 -  在归一化dfm上计算距离
 tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
 # 聚类分析文本距离
-pres_cluster <- hclust(tstat_dist)
+pres_cluster <- hclust(as.dist(tstat_dist))
 # 按文档名标注
 pres_cluster$labels <- docnames(dfmat_sotu)
 # 绘制树状图

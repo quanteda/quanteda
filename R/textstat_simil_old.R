@@ -382,3 +382,33 @@ faith_simil <- function(x, y = NULL, margin = 1) {
     dimnames(faithmat) <- list(rowname, colname)
     faithmat
 }
+
+#' Coerce a simil object into a matrix
+#' 
+#' \code{as.matrix.simil} coerces an object returned from
+#'   `textstat_simil()` into a matrix
+#' @param diag  the value to use on the diagonal representing self-similarities
+#' @note 
+#'   Because for the similarity methods implemented in  \pkg{quanteda}, the
+#'   similarity of an object with itself will be 1.0, \code{diag} defaults to
+#'   this value. This differs the default \code{diag = NA} in
+#'   \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
+#' @param ... unused
+#' @export
+#' @method as.matrix simil
+#' @keywords textstat internal
+as.matrix.simil <- function(x, diag = 1.0, ...) {
+    size <- attr(x, "Size")
+    df <- matrix(0, size, size)
+    df[row(df) > col(df)] <- x
+    df <- df + t(df)
+    label <- attr(x, "Labels")
+     if (is.null(label)) {
+        dimnames(df) <- list(seq_len(size), seq_len(size))
+    } else {
+        dimnames(df) <- list(label, label)
+    }
+    diag(df) <- diag
+    df
+}
+
