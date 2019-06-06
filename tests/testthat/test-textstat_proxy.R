@@ -261,7 +261,7 @@ test_that("raises error when p is smaller than 1", {
 })
 
 test_that("sparse objects are of expected class and occur when expected", {
-    
+
     expect_is(textstat_proxy(test_mt),
               "dsTMatrix")
     expect_is(textstat_proxy(test_mt, min_proxy = 10),
@@ -270,7 +270,7 @@ test_that("sparse objects are of expected class and occur when expected", {
               "dgTMatrix")
     expect_is(textstat_proxy(test_mt, method = "kullback"),
               "dgTMatrix")
-    
+
 })
 
 test_that("rank argument is working", {
@@ -320,12 +320,19 @@ test_that("use_na is working", {
     euc1 <- textstat_proxy(mt, margin = "features", method = "euclidean", use_na = TRUE)
     expect_equal(sum(is.na(cos1)), 5)
     expect_equal(sum(is.na(cor1)), 8)
-    expect_equal(sum(is.na(euc1)), 5)
+    expect_equal(sum(is.na(euc1)), 0)
     
     cos2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "cosine", use_na = TRUE)
     cor2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "correlation", use_na = TRUE)
     euc2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "euclidean", use_na = TRUE)
     expect_equal(sum(is.na(cos2)), 1)
     expect_equal(sum(is.na(cor2)), 2)
-    expect_equal(sum(is.na(euc2)), 1)
+    expect_equal(sum(is.na(euc2)), 0)
+})
+
+test_that("no value is greater than 1.0 (#1543)", {
+    cos1 <- textstat_proxy(test_mt[1:5,], test_mt[1:5,], method = "cosine")
+    expect_equal(sum(cos1 > 1), 0)
+    cor1 <- textstat_proxy(test_mt[1:5,], test_mt[1:5,], method = "correlation")
+    expect_equal(sum(cor1 > 1), 0)
 })

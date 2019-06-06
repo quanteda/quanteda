@@ -367,7 +367,7 @@ test_that("keyness works correctly for default, single, and multiple targets", {
     # for all documents as targets
     expect_error(
         textstat_keyness(d, target = docnames(d)[1:3]),
-        "number of target documents must be < ndoc"
+        "target cannot be all the documents"
     )
   
   # for numeric values that exceed range
