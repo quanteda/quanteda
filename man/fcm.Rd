@@ -36,7 +36,7 @@ target feature}
 
 \item{weights}{a vector of weights applied to each distance from
 \code{1:window}, strictly decreasing by default; can be a custom-defined
-vector of the same length as \code{length(weights)}}
+vector of the same length as \code{window}}
 
 \item{ordered}{if \code{TRUE} the number of times that a term appears before
 or after the target feature are counted separately. Only makes sense for

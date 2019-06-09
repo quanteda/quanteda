@@ -86,7 +86,7 @@ test_that("customized weighting function",{
 # Testing 'ordered' 
 test_that("ordered setting: window",{
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)           
+    fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)     
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c( 2, 0, 3, 3, 3, 1,
                       1, 0, 1, 0, 1, 0,

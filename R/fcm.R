@@ -27,7 +27,7 @@
 #'   }
 #' @param weights a vector of weights applied to each distance from
 #'   \code{1:window}, strictly decreasing by default; can be a custom-defined
-#'   vector of the same length as \code{length(weights)}
+#'   vector of the same length as \code{window}
 #' @param ordered if \code{TRUE} the number of times that a term appears before
 #'   or after the target feature are counted separately. Only makes sense for
 #'   context = "window".
@@ -135,7 +135,7 @@ fcm.corpus <- function(x, ...) {
 fcm.dfm <- function(x, context = c("document", "window"), 
                        count = c("frequency", "boolean", "weighted"),
                        window = 5L,
-                       weights = 1L,
+                       weights = 1,
                        ordered = FALSE,
                        span_sentence = TRUE, tri = TRUE, ...) {
     
@@ -201,7 +201,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
 fcm.tokens <- function(x, context = c("document", "window"), 
                        count = c("frequency", "boolean", "weighted"),
                        window = 5L,
-                       weights = 1L,
+                       weights = 1,
                        ordered = FALSE,
                        span_sentence = TRUE, tri = TRUE, ...) {
     context <- match.arg(context)
@@ -219,16 +219,20 @@ fcm.tokens <- function(x, context = c("document", "window"),
     if (context == "window") { 
         if (any(window < 1L)) stop("The window size is too small.")
         if (count == "weighted") {
-            if (!missing(weights) && length(weights) != window) {
+            if (length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
-                weights <- 1
+                weights <- 1 / seq_len(window)
             }
+        } else {
+            weights <- rep(1, window)
         }
         if (!is.tokens(x)) x <- as.tokens(x)
         type <- types(x)
         n <- sum(lengths(x)) * window * 2
-        result <- as(qatd_cpp_fcm(x, length(type), count, window, 
-                                  weights, ordered, tri, n), "dgCMatrix")
+        result <- as(
+                qatd_cpp_fcm(x, length(type), count, window, 
+                             c(0, weights), ordered, tri, n), 
+            "dgCMatrix")
         set_fcm_dimnames(result) <- list(type, type)
     }
 
