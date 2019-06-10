@@ -228,11 +228,9 @@ fcm.tokens <- function(x, context = c("document", "window"),
         }
         if (!is.tokens(x)) x <- as.tokens(x)
         type <- types(x)
-        n <- sum(lengths(x)) * window * 2
-        result <- as(
-                qatd_cpp_fcm(x, length(type), count, window, 
-                             c(0, weights), ordered, tri, n), 
-            "dgCMatrix")
+        boolean <- count == "boolean"
+        result <- as(qatd_cpp_fcm(x, length(type), weights, boolean, ordered, tri),
+                     "dgCMatrix")
         set_fcm_dimnames(result) <- list(type, type)
     }
 

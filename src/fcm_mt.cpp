@@ -44,43 +44,47 @@ void count_col(const Text &text,
     set_pair.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
     unsigned int j_ini, j_lim;
     double weight;
+    Triplet tripl;
     for (unsigned int i = 0; i < text.size(); i++) {
         if (text[i] == 0) continue; // skip padding
         j_ini = std::max((int)(i - window), 0);
+        //j_ini = std::min((int)(i + 1), (int)text.size());
         j_lim = std::min((int)(i + window + 1), (int)text.size());
         for(unsigned int j = j_ini; j < j_lim; j++) {
             if (text[j] == 0) continue; // skip padding
-            weight = weights[std::abs((int)j - (int)i)];
+            if (i == j) continue; 
+            weight = weights[std::abs((int)j - (int)i) - 1];
             if (ordered) {
-                if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                    Rcout << "i=" << i << ", j=" << j << ", weight=" << weight << "\n";
-                    Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                    fcm_tri.push_back(mat_triplet);
-                }
-            } else {
-                if (text[i] <= text[j]) {
+                if (i < j) {
+                    Rcout << "R " << text[i] << "-" << text[j] << " ";
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                        fcm_tri.push_back(mat_triplet);
+                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                     }
-                    
-                    if (!tri && (text[i] != text[j])) { // add symmetric elements
-                        if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
-                            Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, weight);
-                            fcm_tri.push_back(mat_triplet);
+                } else {
+                    Rcout << "L " << text[j] << "-" << text[i] << " ";
+                    if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
+                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                    }
+                }
+                Rcout << " i=" << i << ", j=" << j << ", weight=" << weight << "\n"; 
+                fcm_tri.push_back(tripl);
+            } else {
+                if (i < j) {
+                    if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
+                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                        fcm_tri.push_back(tripl);
+                        if (!tri) {
+                            tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                            fcm_tri.push_back(tripl);
                         }
                     }
                 } else {
-                    // because it is not ordered, for locations (x,y)(x>y) counts for location (y,x)
                     if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
-                        Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, weight);
-                        fcm_tri.push_back(mat_triplet);
-                    }
-                    
-                    if (!tri && (text[i] != text[j])) {
-                        if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                            Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                            fcm_tri.push_back(mat_triplet);
+                        tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
+                        fcm_tri.push_back(tripl);
+                        if (!tri) {
+                            tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
+                            fcm_tri.push_back(tripl);
                         }
                     }
                 }
@@ -114,26 +118,22 @@ struct count_col_mt : public Worker{
 };
 
 
-
 // [[Rcpp::export]]
 S4 qatd_cpp_fcm(const Rcpp::List &texts_,
                 const int n_types,
-                const String &count,
-                const unsigned int window,
                 const NumericVector &weights_,
+                const bool boolean,
                 const bool ordered,
-                const bool tri,
-                const unsigned int nvec){
+                const bool tri){
     
     // triplets are constructed according to tri & ordered settings to be efficient
     Texts texts = Rcpp::as<Texts>(texts_);
     std::vector<double> weights = Rcpp::as< std::vector<double> >(weights_);
-    bool boolean = count == "boolean";
+    unsigned int window = weights.size();
 
     // declare the vector returned by parallelized procedure
     Triplets fcm_tri;
-    fcm_tri.reserve(nvec);
-    
+
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
     
@@ -148,42 +148,27 @@ S4 qatd_cpp_fcm(const Rcpp::List &texts_,
     
     //dev::stop_timer("Count", timer);
     //dev::start_timer("Convert", timer);
-    
-    std::size_t fcm_size = fcm_tri.size();
-    IntegerVector dim_ = IntegerVector::create(n_types, n_types);
-    IntegerVector i_(fcm_size), j_(fcm_size);
-    NumericVector x_(fcm_size);
-    
-    for (std::size_t k = 0; k < fcm_tri.size(); k++) {
-        i_[k] = std::get<0>(fcm_tri[k]);
-        j_[k] = std::get<1>(fcm_tri[k]);
-        x_[k] = std::get<2>(fcm_tri[k]);
-    }
-    
-    S4 fcm_("dgTMatrix");
-    fcm_.slot("i") = i_;
-    fcm_.slot("j") = j_;
-    fcm_.slot("x") = x_;
-    fcm_.slot("Dim") = dim_;
-    
-    //dev::stop_timer("Convert", timer);
-    
-    return fcm_;
+    return to_matrix(fcm_tri, n_types, n_types, false);
 }
 
 
 /***R
-
+RcppParallel::setThreadOptions(1)
 toks <- list(rep(1:10, 10), rep(5:15, 10))
+toks <- list(c(1, 4, 2, 3))
 types <- unique(unlist(toks))
-window <- 2
-n <- length(unlist(toks)) * window * 2
-qatd_cpp_fcm(toks, length(types), 'weighted', window, c(1, 0.5, 0.1), TRUE, TRUE, n)
+qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, TRUE, FALSE)
+qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, FALSE, FALSE)
 
-qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
-microbenchmark::microbenchmark(
-  boolean=qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840),
-  weighted=qatd_cpp_fcm(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
-)
+# for c(1, 2, 2, 3), window = 2
+# 0 2 0
+# 2 0 2
+# 0 2 0
+
+# qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
+# microbenchmark::microbenchmark(
+#   boolean=qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840),
+#   weighted=qatd_cpp_fcm(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
+# )
 
 */
