@@ -47,26 +47,17 @@ void count_col(const Text &text,
     Triplet tripl;
     for (unsigned int i = 0; i < text.size(); i++) {
         if (text[i] == 0) continue; // skip padding
-        j_ini = std::max((int)(i - window), 0);
-        //j_ini = std::min((int)(i + 1), (int)text.size());
+        //j_ini = std::max((int)(i - window), 0);
+        j_ini = std::min((int)(i + 1), (int)text.size());
         j_lim = std::min((int)(i + window + 1), (int)text.size());
         for(unsigned int j = j_ini; j < j_lim; j++) {
             if (text[j] == 0) continue; // skip padding
             if (i == j) continue; 
             weight = weights[std::abs((int)j - (int)i) - 1];
             if (ordered) {
-                if (i < j) {
-                    Rcout << "R " << text[i] << "-" << text[j] << " ";
-                    if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                    }
-                } else {
-                    Rcout << "L " << text[j] << "-" << text[i] << " ";
-                    if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                    }
-                }
-                Rcout << " i=" << i << ", j=" << j << ", weight=" << weight << "\n"; 
+                  if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
+                      tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                  }
                 fcm_tri.push_back(tripl);
             } else {
                 if (i < j) {
@@ -74,7 +65,7 @@ void count_col(const Text &text,
                         tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                         fcm_tri.push_back(tripl);
                         if (!tri) {
-                            tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                            tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
                             fcm_tri.push_back(tripl);
                         }
                     }
@@ -83,7 +74,7 @@ void count_col(const Text &text,
                         tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
                         fcm_tri.push_back(tripl);
                         if (!tri) {
-                            tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
+                            tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                             fcm_tri.push_back(tripl);
                         }
                     }
