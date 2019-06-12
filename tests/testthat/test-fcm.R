@@ -260,10 +260,17 @@ test_that("fcm works the same for different object types", {
     expect_identical(fcm(txt), fcm(tokens(txt)))
 })
 
-test_that("fcm expects warning for a wrong weights length", {
+test_that("fcm expects error for wrong weight or window", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
-    expect_warning(fcm(tokens(txt), context = "window", window = 2, count = "weighted", weights = c(1,2,3)),
-                 "weights length is not equal to the window size, weights are assigned by default!")
+    toks <- tokens(txt)
+    expect_error(fcm(toks, context = "window", window = 0),
+                "window size must be at least 1")
+    expect_error(fcm(toks, context = "window", window = 2, weight = 0.1,
+                     count = "weighted", weights = c(1,2,3)),
+                 "weights length must be equal to the window size")
+    expect_error(fcm(toks, context = "window", window = 2, weight = c(0.1, 0.2, 0.3),
+                     count = "weighted", weights = c(1,2,3)),
+                 "weights length must be equal to the window size")
 })
 
 

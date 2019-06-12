@@ -74,7 +74,7 @@ fcm_sort.fcm <- function(x) {
     x <- as(x, "dgTMatrix") # make a triplet
     x <- x[order(rownames(x)), order(colnames(x))]
     if (attrs$tri) {
-        swap <- which(x@i > x@j)
+        swap <- x@i > x@j
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i

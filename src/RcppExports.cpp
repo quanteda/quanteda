@@ -138,8 +138,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_fcm
-S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered, const bool tri);
-RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP, SEXP triSEXP) {
+S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered);
+RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -148,8 +148,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type weights_(weights_SEXP);
     Rcpp::traits::input_parameter< const bool >::type boolean(booleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type ordered(orderedSEXP);
-    Rcpp::traits::input_parameter< const bool >::type tri(triSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(texts_, n_types, weights_, boolean, ordered, tri));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(texts_, n_types, weights_, boolean, ordered));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -385,7 +384,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_canberra2", (DL_FUNC) &_quanteda_qatd_cpp_canberra2, 3},
     {"_quanteda_qatd_cpp_minkowski", (DL_FUNC) &_quanteda_qatd_cpp_minkowski, 3},
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
-    {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 6},
+    {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},

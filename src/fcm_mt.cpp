@@ -2,7 +2,6 @@
 #include "dev.h"
 using namespace quanteda;
 
-
 struct hash_pair {
   size_t operator()(const std::pair<unsigned int, unsigned int> &p) const {
     
@@ -20,14 +19,15 @@ struct equal_pair {
   }
 };
 
-typedef std::unordered_set<std::pair<unsigned int, unsigned int>, hash_pair, equal_pair> SetPair;
+
+typedef std::unordered_set<std::pair<unsigned int, unsigned int>, 
+                           hash_pair, equal_pair> SetPair;
 
 // find out if a pair of token exists in a document
 bool exist(const unsigned int &x, const unsigned int &y,
            SetPair &set_pair){
     
     auto it = set_pair.insert(std::make_pair(x, y));
-    //Rcout << x << "-" << y << " " << it.second << "\n";
     return !it.second;
 }
 
@@ -35,75 +35,64 @@ bool exist(const unsigned int &x, const unsigned int &y,
 void count_col(const Text &text,
                const std::vector<double> &weights,    
                const unsigned int &window,
-               const bool &tri,
                const bool &ordered,
                const bool &boolean,
                Triplets &fcm_tri) {
     
     SetPair set_pair;
     set_pair.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
+    
     unsigned int j_ini, j_lim;
     double weight;
     Triplet tripl;
     for (unsigned int i = 0; i < text.size(); i++) {
         if (text[i] == 0) continue; // skip padding
-        //j_ini = std::max((int)(i - window), 0);
         j_ini = std::min((int)(i + 1), (int)text.size());
         j_lim = std::min((int)(i + window + 1), (int)text.size());
         for(unsigned int j = j_ini; j < j_lim; j++) {
             if (text[j] == 0) continue; // skip padding
-            if (i == j) continue; 
             weight = weights[std::abs((int)j - (int)i) - 1];
             if (ordered) {
-                  if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                      tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                  }
-                fcm_tri.push_back(tripl);
+                if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
+                    //Rcout << i << " " << j << "\n";
+                    tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                    fcm_tri.push_back(tripl);
+                }
             } else {
-                if (i < j) {
+                if (text[i] <= text[j]) {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
                         tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                         fcm_tri.push_back(tripl);
-                        if (!tri) {
-                            tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
-                            fcm_tri.push_back(tripl);
-                        }
                     }
                 } else {
                     if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
                         tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
                         fcm_tri.push_back(tripl);
-                        if (!tri) {
-                            tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                            fcm_tri.push_back(tripl);
-                        }
                     }
                 }
-            } // end of if-ordered
-        } // end of j-loop
-    }// end of i-loop
+            }
+        }
+    }
 }
 
 struct count_col_mt : public Worker{
-    // input list to read from
     const Texts &texts;
     const std::vector<double> &weights;    
     const unsigned int window;
-    const bool tri;
     const bool ordered;
     const bool boolean;
     Triplets &fcm_tri; // output vector to write to, each Triplet contains i, j, x for the sparse matrix fcm.
 
     //initialization
     count_col_mt(const Texts &texts_, const std::vector<double> &weights_, const unsigned int window_, 
-             const bool tri_, const bool ordered_, const bool boolean_, Triplets &fcm_tri_): 
+             const bool ordered_, const bool boolean_, Triplets &fcm_tri_): 
              texts(texts_),  weights(weights_),
-             window(window_), tri(tri_), ordered(ordered_), boolean(boolean_), fcm_tri(fcm_tri_) {}
+             window(window_), ordered(ordered_), boolean(boolean_), fcm_tri(fcm_tri_) {}
 
     // function call operator that work for the specified range (begin/end)
     void operator()(std::size_t begin, std::size_t end) {
         for (std::size_t h = begin; h < end; h++) {
-            count_col(texts[h], weights, window, tri, ordered, boolean, fcm_tri);
+            count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
         }
     }
 };
@@ -114,8 +103,7 @@ S4 qatd_cpp_fcm(const Rcpp::List &texts_,
                 const int n_types,
                 const NumericVector &weights_,
                 const bool boolean,
-                const bool ordered,
-                const bool tri){
+                const bool ordered){
     
     // triplets are constructed according to tri & ordered settings to be efficient
     Texts texts = Rcpp::as<Texts>(texts_);
@@ -129,11 +117,11 @@ S4 qatd_cpp_fcm(const Rcpp::List &texts_,
     //dev::start_timer("Count", timer);
     
 #if QUANTEDA_USE_TBB
-    count_col_mt count_col_mt(texts, weights, window, tri, ordered, boolean, fcm_tri);
+    count_col_mt count_col_mt(texts, weights, window, ordered, boolean, fcm_tri);
     parallelFor(0, texts.size(), count_col_mt);
 #else        
     for (std::size_t h = 0; h < texts.size(); h++) {
-        count_col(texts[h], weights, window, tri, ordered, boolean, fcm_tri);
+        count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
     }
 #endif
     
@@ -148,18 +136,13 @@ RcppParallel::setThreadOptions(1)
 toks <- list(rep(1:10, 10), rep(5:15, 10))
 toks <- list(c(1, 4, 2, 3))
 types <- unique(unlist(toks))
-qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, TRUE, FALSE)
-qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, FALSE, FALSE)
+qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, TRUE)
+qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, FALSE)
 
 # for c(1, 2, 2, 3), window = 2
 # 0 2 0
 # 2 0 2
 # 0 2 0
 
-# qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
-# microbenchmark::microbenchmark(
-#   boolean=qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840),
-#   weighted=qatd_cpp_fcm(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
-# )
 
 */
