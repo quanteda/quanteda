@@ -135,7 +135,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        window = 5L,
                        weights = NULL,
                        ordered = FALSE,
-                       span_sentence = TRUE, tri = TRUE, ...) {
+                       tri = TRUE, ...) {
     
     context <- match.arg(context)
     count <- match.arg(count)
@@ -198,7 +198,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
                        window = 5L,
                        weights = NULL,
                        ordered = FALSE,
-                       span_sentence = TRUE, tri = TRUE, ...) {
+                       tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)
