@@ -1,6 +1,6 @@
-//#include "dev.h"
 #include "quanteda.h"
 #include "recompile.h"
+//#include "dev.h"
 using namespace quanteda;
 
 Text lookup(Text tokens, 
@@ -13,11 +13,11 @@ Text lookup(Text tokens,
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     // Match flag for each token
-    std::vector<bool> flags_match_any(tokens.size(), false);
+    std::vector<bool> flags_match_global(tokens.size(), false);
     
     // Match flag for each token for each key
     std::vector< std::vector<bool> > flags_match(id_max);
-    if (overlap == 1) {
+    if (overlap == 1 | overlap == 2) {
         std::vector<bool> flags_init(tokens.size(), false);
         for (unsigned int h = 0; h < id_max; h++) {
             flags_match[h] = flags_init;
@@ -27,38 +27,57 @@ Text lookup(Text tokens,
     
     std::size_t match = 0;
     std::vector< std::vector<unsigned int> > keys(tokens.size());
-    bool flagged = false;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto range = map_keys.equal_range(ngram);
-            for (auto it = range.first; it != range.second; ++it){
-                //Rcout << it->second << "\n";
-                unsigned int id = it->second;
-                //Rcout << "id " << id << "\n";
-                if (overlap == 1) {
-                    std::vector< bool > &flags_match_temp = flags_match[id - 1];
-                    flagged = std::any_of(flags_match_temp.begin() + i, flags_match_temp.begin() + i + span, [](bool v) { return v; });
+            if (overlap == 1) { // local
+                bool match_temp = false;
+                for (auto it = range.first; it != range.second; ++it) {
+                    unsigned int id = it->second;
+                    std::vector< bool > &flags_match_local = flags_match[id - 1];
+                    bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
                     if (!flagged) {
                         keys[i].push_back(id); // keep multiple keys in the same position
-                        std::fill(flags_match_temp.begin() + i, flags_match_temp.begin() + i + span, true); // for each key
-                        std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); // for all keys
+                        std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
+                        match_temp = true;
                         match++;
                     }
-                } else if (overlap == 2) {
-                    flagged = std::any_of(flags_match_any.begin() + i, flags_match_any.begin() + i + span, [](bool v) { return v; });
-                    if (!flagged) {
-                        keys[i].push_back(id); // keep multiple keys in the same position
-                        std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); // for all keys
-                        match++;
-                    }
-                } else {
-                    keys[i].push_back(id); // keep multiple keys in the same position
-                    flags_match_any[i] = true;
-                    std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); //  for all keys
-                    match++;
                 }
+                if (match_temp)
+                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
+            } else if (overlap == 2) { // global
+                bool match_temp = false;
+                bool flagged = std::any_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
+                if (!flagged) {
+                    for (auto it = range.first; it != range.second; ++it) {
+                        unsigned int id = it->second;
+                        std::vector< bool > &flags_match_local = flags_match[id - 1];
+                        bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
+                        if (!flagged) {
+                            keys[i].push_back(id); // keep multiple keys in the same position
+                            std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
+                            match_temp = true;
+                            match++;
+                        }
+                    }
+                }
+                if (match_temp)
+                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
+            } else {
+                bool match_temp = false;
+                for (auto it = range.first; it != range.second; ++it) {
+                    //Rcout << it->second << "\n";
+                    unsigned int id = it->second;
+                    //Rcout << "id " << id << "\n";
+                    keys[i].push_back(id); // keep multiple keys in the same position
+                    flags_match_global[i] = true;
+                    match++;
+                    match_temp = true;
+                }
+                if (match_temp)
+                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
             }
         }
     }
@@ -89,7 +108,7 @@ Text lookup(Text tokens,
         keys_flat.reserve(match);
     }
     for (size_t i = 0; i < keys.size(); i++) {
-        if (flags_match_any[i]) {
+        if (flags_match_global[i]) {
             std::vector<unsigned int> key_sub = keys[i];
             if (key_sub.size() > 1) {
                 std::sort(key_sub.begin(), key_sub.end()); // sort in order of keys
