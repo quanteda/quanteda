@@ -437,3 +437,37 @@ test_that("tokens_lookup with nomatch works with key that do not appear in the t
                       list(c(4, 4, 1, 1, 4), c(4, 4, 2, 4, 4, 4), c(4, 4, 4), c(4, 4, 4)))
     expect_identical(types(toks_dict), c("CR", "CB", "CA", "NONE"))
 })
+
+test_that("overlap function is working", { 
+    dict <- dictionary(list(
+        'AS' = c("American Samoa", "American Samoan*", "Pago Pago"),
+        'WS' = c("Samoa", "Samoan*", "Apia"),
+        'VG' = c("British Virgin Islands", "Virgin Island*", "Road Town"),
+        'GB' = c("UK", "United Kingdom", "Britain", "British", "Briton*", "Brit*", "London"),
+        'US' = c("United States", "US", "American*", "Washington", "New York")
+    ))
+    txt <- c(
+        'British Virgin Islands is a British overseas territory',
+        'Samoa is an independent state',
+        'American Samoa is in the South Pacific'
+    )
+    toks <- tokens(txt)
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, overlap = "local")),
+        list(text1 = c("VG", "GB", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS", "US", "WS"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, overlap = "global")),
+        list(text1 = c("VG", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, overlap = "none")),
+        list(text1 = c("VG", "GB", "GB", "VG", "GB", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS", "US", "WS"))
+    )
+})
