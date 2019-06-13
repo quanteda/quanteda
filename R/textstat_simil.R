@@ -534,9 +534,9 @@ textstat_proxy <- function(x, y = NULL,
         }
     } else {
         if (identical(x, y)) {
-            result <- proxyC::dist(x, NULL, 2, method, p = weight)
+            result <- proxyC::dist(x, NULL, 2, method, p = p)
         } else {
-            result <- proxyC::dist(x, y, 2, method, p = weight)
+            result <- proxyC::dist(x, y, 2, method, p = p)
         }
     }
     dimnames(result) <- list(colnames(x), colnames(y))
