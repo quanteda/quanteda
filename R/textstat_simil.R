@@ -541,7 +541,6 @@ textstat_proxy <- function(x, y = NULL,
     }
     dimnames(result) <- list(colnames(x), colnames(y))
     if (use_na) {
-        na1 <- na2 <- logical()
         if (method == "correlation") {
             na1 <- proxyC::colSds(x) == 0
             na2 <- proxyC::colSds(y) == 0
@@ -555,5 +554,4 @@ textstat_proxy <- function(x, y = NULL,
             result[,na2,drop = FALSE] <- NA
     }
     return(result)
-    # return(as(result, "CsparseMatrix"))
 }
