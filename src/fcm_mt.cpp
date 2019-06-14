@@ -59,17 +59,22 @@ void count_col(const Text &text,
                     fcm_tri.push_back(tripl);
                 }
             } else {
-                if (text[i] <= text[j]) {
+                if (text[i] < text[j]) {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
                         tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                         fcm_tri.push_back(tripl);
                     }
-                } else {
+                } else if (text[i] > text[j]){
                     if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
                         tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
                         fcm_tri.push_back(tripl);
                     }
-                }
+                } else {
+                    if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
+                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight * 2);
+                        fcm_tri.push_back(tripl);
+                    }
+                } 
             }
         }
     }
