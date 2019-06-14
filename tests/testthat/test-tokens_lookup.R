@@ -467,18 +467,18 @@ test_that("overlap function is working", {
 })
 
 test_that("global overlap is independent of orders", {
-    toks <- tokens("Virgin Islands are near the Dominican Republic")
+    toks <- tokens("Virgin Islands are near Dominica and the Dominican Republic")
     dict <- dictionary(list("VG" = "Virgin Islands",
                             "VI" = "Virgin Islands",
                             "DM" = "Dominica*",
                             "DO" = "Dominican Republic"))
     expect_equal(
         as.list(tokens_lookup(toks, dict, overlap = "global")),
-        list(text1 = c("VG", "VI", "DO"))
+        list(text1 = c("VG", "VI", "DM", "DO"))
     )
     expect_equal(
         as.list(tokens_lookup(toks, rev(dict), overlap = "global")),
-        list(text1 = c("VI", "VG", "DO"))
+        list(text1 = c("VI", "VG", "DM", "DO"))
     )
 })
 
