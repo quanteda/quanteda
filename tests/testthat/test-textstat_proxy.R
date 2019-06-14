@@ -320,14 +320,14 @@ test_that("use_na is working", {
     euc1 <- textstat_proxy(mt, margin = "features", method = "euclidean", use_na = TRUE)
     expect_equal(sum(is.na(cos1)), 5)
     expect_equal(sum(is.na(cor1)), 8)
-    expect_equal(sum(is.na(euc1)), 0)
+    expect_equal(sum(is.na(euc1)), 5)
     
     cos2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "cosine", use_na = TRUE)
     cor2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "correlation", use_na = TRUE)
     euc2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "euclidean", use_na = TRUE)
     expect_equal(sum(is.na(cos2)), 1)
     expect_equal(sum(is.na(cor2)), 2)
-    expect_equal(sum(is.na(euc2)), 0)
+    expect_equal(sum(is.na(euc2)), 1)
 })
 
 test_that("no value is greater than 1.0 (#1543)", {
