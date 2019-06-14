@@ -6,8 +6,8 @@
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
-  exclusive = TRUE, nomatch = NULL, overlap = c("local", "global",
-  "none"), verbose = quanteda_options("verbose"))
+  exclusive = TRUE, nomatch = NULL, overlap = c("local", "global"),
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -41,8 +41,7 @@ matched to a dictionary values  If \code{NULL} (default), do not record
 unmatched tokens.}
 
 \item{overlap}{ignore overlapped words for the same key if \code{local}, or
-any key in the dictionary if \code{global}.  Do not detect overlapping if
-if \code{none}.}
+any key in the dictionary if \code{global}.}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }

@@ -23,8 +23,7 @@
 #'   otherwise, replace values in dictionary with keys while leaving other
 #'   features unaffected
 #' @param overlap ignore overlapped words for the same key if \code{local}, or
-#'   any key in the dictionary if \code{global}.  Do not detect overlapping if
-#'   if \code{none}.
+#'   any key in the dictionary if \code{global}.
 #' @param verbose print status messages if \code{TRUE}
 #' @keywords tokens
 #' @seealso tokens_replace
@@ -69,7 +68,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
-                          overlap = c("local", "global", "none"),
+                          overlap = c("local", "global"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")    
 }
@@ -81,7 +80,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  capkeys = !exclusive,
                                  exclusive = TRUE,
                                  nomatch = NULL,
-                                 overlap = c("local", "global", "none"),
+                                 overlap = c("local", "global"),
                                  verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_lookup"))
 }
@@ -93,7 +92,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
-                          overlap = c("local", "global", "none"),
+                          overlap = c("local", "global"),
                           verbose = quanteda_options("verbose")) {
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -116,7 +115,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (capkeys)
         key <- char_toupper(key)
     if (exclusive) {
-        overlap <- match(overlap, c("local", "global", "none"))
+        overlap <- match(overlap, c("local", "global"))
         if (!is.null(nomatch)) {
             x <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, overlap, 1)
         } else {

@@ -17,7 +17,7 @@ Text lookup(Text tokens,
     
     // Match flag for each token for each key
     std::vector< std::vector<bool> > flags_match(id_max);
-    if (overlap == 1 | overlap == 2) {
+    if (overlap == 1 || overlap == 2) {
         std::vector<bool> flags_init(tokens.size(), false);
         for (unsigned int h = 0; h < id_max; h++) {
             flags_match[h] = flags_init;
@@ -25,15 +25,15 @@ Text lookup(Text tokens,
         }
     }
     
-    std::size_t match = 0;
+    std::size_t match_count = 0;
     std::vector< std::vector<unsigned int> > keys(tokens.size());
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto range = map_keys.equal_range(ngram);
+            bool match = false;
             if (overlap == 1) { // local
-                bool match_temp = false;
                 for (auto it = range.first; it != range.second; ++it) {
                     unsigned int id = it->second;
                     std::vector< bool > &flags_match_local = flags_match[id - 1];
@@ -41,15 +41,12 @@ Text lookup(Text tokens,
                     if (!flagged) {
                         keys[i].push_back(id); // keep multiple keys in the same position
                         std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
-                        match_temp = true;
-                        match++;
+                        match = true;
+                        match_count++;
                     }
                 }
-                if (match_temp)
-                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
             } else if (overlap == 2) { // global
-                bool match_temp = false;
-                bool flagged = std::any_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
+                bool flagged = std::all_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
                 if (!flagged) {
                     for (auto it = range.first; it != range.second; ++it) {
                         unsigned int id = it->second;
@@ -58,31 +55,29 @@ Text lookup(Text tokens,
                         if (!flagged) {
                             keys[i].push_back(id); // keep multiple keys in the same position
                             std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
-                            match_temp = true;
-                            match++;
+                            match = true;
+                            match_count++;
                         }
                     }
                 }
-                if (match_temp)
-                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
             } else {
-                bool match_temp = false;
                 for (auto it = range.first; it != range.second; ++it) {
                     //Rcout << it->second << "\n";
                     unsigned int id = it->second;
                     //Rcout << "id " << id << "\n";
                     keys[i].push_back(id); // keep multiple keys in the same position
                     flags_match_global[i] = true;
-                    match++;
-                    match_temp = true;
+                    match = true;
+                    match_count++;
+                    
                 }
-                if (match_temp)
-                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
             }
+            if (match)
+                std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
         }
     }
     
-    if (match == 0) {
+    if (match_count == 0) {
         if (nomatch == 0) {
             // return empty vector
             return {}; 
@@ -103,9 +98,9 @@ Text lookup(Text tokens,
     // Flatten the vector of vectors
     Text keys_flat;
     if (nomatch > 0) {
-        keys_flat.reserve(match + tokens.size());
+        keys_flat.reserve(match_count + tokens.size());
     } else {
-        keys_flat.reserve(match);
+        keys_flat.reserve(match_count);
     }
     for (size_t i = 0; i < keys.size(); i++) {
         if (flags_match_global[i]) {
