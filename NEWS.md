@@ -3,10 +3,19 @@
 ## New features
 
 * Add `flatten` and `levels` arguments to `as.list.dictionary2()` to enable more flexible conversion of dictionary objects. (#1661)
+* In `corpus_sample()`, the `size` now works with the `by` argument, to control the size of units sampled from each group.
+* Improvements to `textstat_dist()` and `textstat_simil()`, see below.
+
+## Behaviour changes
+
+* `textstat_dist()` and `textstat_simil()` now return sparse symmetric matrix objects using classes from the **Matrix** package.  This replaces the former structure based on the `dist` class.  Computation of these classes is now also based on the fast implementation in the **proxyC** package.  When computing similarities, the new `min_simil` argument allows a user to ignore certain values below a specified similarity threshold.  A new coercion method `as.data.frame.textstat_simildist()` now exists for converting these returns into a data.frame of pairwise comparisons.  Existing methods such as `as.matrix()`, `as.dist()`, and `as.list()` work as they did before.
+* We have removed the "faith", "chi-squared", and "kullback" methods from `textstat_dist()` and `textstat_simil()` because these were either not symmetric or not invariant to document or feature ordering.
 
 ## Bug fixes and stability enhancements
 
 * `kwic.corpus()` and `kwic.tokens()` behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (#1684)
+* Improved formatting of `tokens()` verbose output. (#1683)
+* Subsetting and printing of subsetted kwic objects is more robust. (#1665)
 
 # quanteda 1.4.3
 

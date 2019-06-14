@@ -54,5 +54,7 @@ test_that("test ntype tokens", {
 })
 
 test_that("deprecated nfeature still works", {
+    suppressWarnings(
         expect_error(nfeature(data_dfm_lbgexample), "Use 'nfeat' instead")
+    )
 })

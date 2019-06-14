@@ -262,3 +262,14 @@ test_that("group_docvar drops list column (#1553)", {
                                        vec2 = c("a", "b", "c"),
                                        row.names = c(1, 2, 3))))
 })
+
+
+test_that("restore original unit when groups = NULL", {
+    corp <- head(data_corpus_inaugural, 2)
+    corp_sent <- corpus_reshape(corp)
+    dfmt_sent <- dfm(corp_sent)
+    dfmt <- dfm_group(dfmt_sent)
+    expect_equal(ndoc(corp), ndoc(dfmt))
+    expect_equal(ndoc(corp_sent), ndoc(dfmt_sent))
+    expect_equivalent(as.matrix(dfmt), as.matrix(dfm(corp))) # TODO should be equal after v2.0
+})

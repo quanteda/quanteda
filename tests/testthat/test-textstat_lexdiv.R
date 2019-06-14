@@ -314,7 +314,7 @@ test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
                       wsize4_MSTTR)
 
     # Test segment size = ntoken
-    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = length(mytoken$text1))[[2]],
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = length(mytoken[["text1"]]))[[2]],
                       textstat_lexdiv(mytoken, measure = "TTR")[[2]])
 })
 

@@ -19,6 +19,8 @@ test_simil <- function(x, method, margin, ignore_upper = FALSE, ...) {
     s1 <- as.matrix(textstat_proxy(x, method = method, margin = margin, ...))
     s2 <- as.matrix(proxy::simil(as.matrix(x), 
                                 method = method, by_rows = by_rows, diag = TRUE, ...))
+    diag(s1) <- NA
+    diag(s2) <- NA
 
     if (ignore_upper)
         s1[upper.tri(s1, TRUE)] <- s2[upper.tri(s2, TRUE)] <- 0
@@ -110,11 +112,6 @@ test_that("test textstat_proxy hamman similarity", {
     test_simil(test_mt, "hamman", "features")
 })
 
-test_that("test textstat_proxy faith similarity", {
-    skip_if_not_installed("proxy")
-    test_simil(test_mt, "faith", "documents", ignore_upper = TRUE)
-    test_simil(test_mt, "faith", "features", ignore_upper = TRUE)
-})
 
 # Distance measures -------------------------------------------
 
@@ -264,7 +261,7 @@ test_that("raises error when p is smaller than 1", {
 })
 
 test_that("sparse objects are of expected class and occur when expected", {
-    
+
     expect_is(textstat_proxy(test_mt),
               "dsTMatrix")
     expect_is(textstat_proxy(test_mt, min_proxy = 10),
@@ -273,7 +270,7 @@ test_that("sparse objects are of expected class and occur when expected", {
               "dgTMatrix")
     expect_is(textstat_proxy(test_mt, method = "kullback"),
               "dgTMatrix")
-    
+
 })
 
 test_that("rank argument is working", {
@@ -323,12 +320,19 @@ test_that("use_na is working", {
     euc1 <- textstat_proxy(mt, margin = "features", method = "euclidean", use_na = TRUE)
     expect_equal(sum(is.na(cos1)), 5)
     expect_equal(sum(is.na(cor1)), 8)
-    expect_equal(sum(is.na(euc1)), 0)
+    expect_equal(sum(is.na(euc1)), 5)
     
     cos2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "cosine", use_na = TRUE)
     cor2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "correlation", use_na = TRUE)
     euc2 <- textstat_proxy(mt, mt[,3], margin = "features", method = "euclidean", use_na = TRUE)
     expect_equal(sum(is.na(cos2)), 1)
     expect_equal(sum(is.na(cor2)), 2)
-    expect_equal(sum(is.na(euc2)), 0)
+    expect_equal(sum(is.na(euc2)), 1)
+})
+
+test_that("no value is greater than 1.0 (#1543)", {
+    cos1 <- textstat_proxy(test_mt[1:5,], test_mt[1:5,], method = "cosine")
+    expect_equal(sum(cos1 > 1), 0)
+    cor1 <- textstat_proxy(test_mt[1:5,], test_mt[1:5,], method = "correlation")
+    expect_equal(sum(cor1 > 1), 0)
 })
