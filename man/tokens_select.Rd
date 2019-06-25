@@ -8,7 +8,7 @@
 \usage{
 tokens_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 79L,
+  padding = FALSE, window = 0, min_nchar = NULL, max_nchar = NULL,
   verbose = quanteda_options("verbose"))
 
 tokens_remove(x, ...)
@@ -48,12 +48,10 @@ needs to be computed.}
   returned in the pattern match. This is because \code{tokens_select} never
   redefines the document units; for this, see \code{\link{kwic}}.}
 
-\item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
-in characters for tokens to be removed or kept; defaults are 1 and 
-\href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
- (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
-applied after (and hence, in addition to) any selection based on pattern 
-matches.}
+\item{min_nchar, max_nchar}{optional numerics specifying the minimum and
+maximum length in characters for tokens to be removed or kept; defaults are
+\code{NULL} for no limits.  These are applied after (and hence, in addition
+to) any selection based on pattern matches.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were 
 selected or removed}

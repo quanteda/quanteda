@@ -805,3 +805,11 @@ test_that("test that what = \"word\" works the same as \"fast(er|est)\" word", {
     expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
                  tokens(chars, what = "fastestword", remove_hyphens = TRUE) %>% as.list())
 })
+
+test_that("really long words are not removed in tokens() (#1713)", {
+    expect_equal(
+        length(as.character(tokens("one two
+DonaudampfschiffahrtselektrizittenhauptbetriebswerkbauunterbeamtengesellschaftXXX"))),
+        3
+    )
+})
