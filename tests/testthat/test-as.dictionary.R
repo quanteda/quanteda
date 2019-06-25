@@ -61,14 +61,7 @@ test_that("as.dictionary function works for tidytext sentiment", {
     skip_if_not_installed("tidytext")
     data(sentiments, package = "tidytext")
     expect_true(
-        is.dictionary(as.dictionary(subset(sentiments, lexicon == "nrc")))
-    )
-    expect_true(
-        is.dictionary(as.dictionary(subset(sentiments, lexicon == "bing")))
-    )
-    expect_warning(
-        as.dictionary(sentiments, format = "tidytext"),
-        "you may be mixing different dictionaries"
+        is.dictionary(as.dictionary(sentiments))
     )
 })
 
