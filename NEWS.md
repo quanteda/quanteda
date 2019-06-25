@@ -10,12 +10,14 @@
 
 * `textstat_dist()` and `textstat_simil()` now return sparse symmetric matrix objects using classes from the **Matrix** package.  This replaces the former structure based on the `dist` class.  Computation of these classes is now also based on the fast implementation in the **proxyC** package.  When computing similarities, the new `min_simil` argument allows a user to ignore certain values below a specified similarity threshold.  A new coercion method `as.data.frame.textstat_simildist()` now exists for converting these returns into a data.frame of pairwise comparisons.  Existing methods such as `as.matrix()`, `as.dist()`, and `as.list()` work as they did before.
 * We have removed the "faith", "chi-squared", and "kullback" methods from `textstat_dist()` and `textstat_simil()` because these were either not symmetric or not invariant to document or feature ordering.
+* `textstat_readability()` now defaults to `measure = "Flesch"` if no measure is supplied.  This makes it consistent with `textstat_lexdiv()` that also takes a default measure ("TTR") if none is supplied.  (#1715)
 
 ## Bug fixes and stability enhancements
 
 * `kwic.corpus()` and `kwic.tokens()` behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (#1684)
 * Improved formatting of `tokens()` verbose output. (#1683)
 * Subsetting and printing of subsetted kwic objects is more robust. (#1665)
+* The "Bormuth" and "DRP" measures are now fixed for `textstat_readability()`. (#1701)
 
 # quanteda 1.4.3
 
