@@ -4,7 +4,7 @@
 \alias{textstat_readability}
 \title{Calculate readability}
 \usage{
-textstat_readability(x, measure, remove_hyphens = TRUE,
+textstat_readability(x, measure = "Flesch", remove_hyphens = TRUE,
   min_sentence_length = 1, max_sentence_length = 10000,
   intermediate = FALSE, ...)
 }
@@ -12,7 +12,7 @@ textstat_readability(x, measure, remove_hyphens = TRUE,
 \item{x}{a character or \link{corpus} object containing the texts}
 
 \item{measure}{character vector defining the readability measure to calculate.
-Matches are case-insensitive.}
+Matches are case-insensitive.  See other valid measures under Details.}
 
 \item{remove_hyphens}{if \code{TRUE}, treat constituent words in hyphenated as
 separate terms, for purposes of computing word lengths, e.g.

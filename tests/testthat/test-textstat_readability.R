@@ -151,3 +151,16 @@ test_that("textstat_readability raises error for non-included measures",{
     expect_error(textstat_readability(data_char_sampletext, measure = "Gibberish"),
                  "Invalid measure(s): Gibberish", fixed = TRUE)
 })
+
+test_that("textstat_readability computes all measures (#1701)",{
+    expect_true(
+        all(!is.na(textstat_readability(data_char_sampletext, measure = "all")))
+    )
+})
+
+test_that("textstat_readability has a default measure (#1715)",{
+    expect_identical(
+        names(textstat_readability(data_char_sampletext)),
+        c("document", "Flesch")
+    )
+})
