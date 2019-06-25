@@ -111,57 +111,49 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
     mt[1:2, ] <- 0
     mt[3:4, ] <- 1
     mt <- as.dfm(mt)
+    mt_na_all <- matrix(NA, nrow = 5, ncol = 5,
+                    dimnames = list(paste0("R", 1:5), paste0("R", 1:5)))
+    mt_na_some <- mt_na_all
+    mt_na_some[3:4,3:4] <- 1
     
-    expect_true(
-        all(is.na(as.matrix(textstat_simil(mt, method = "correlation"))))
+    expect_equivalent(
+        as.matrix(textstat_simil(mt, method = "correlation")),
+        mt_na_all
+    )
+    expect_equal(
+        as.matrix(textstat_simil(mt, method = "cosine")),
+        mt_na_some
     )
     
-    # stats::cor() is wrong (KW)
-    # expect_equivalent(
-    #     as.matrix(textstat_simil(mt, method = "correlation")),
-    #     suppressWarnings(stats::cor(t(as.matrix(mt)), method = "pearson"))
-    # )
-    # # fails
-    # expect_equal(
-    #     textstat_simil(mt, method = "cosine"),
-    #     matrix(c(rep(NaN, 13), 1, rep(NaN, 3), 1, rep(NaN, 7)), nrow = 5,
-    #              dimnames = list(paste0("R", 1:5), paste0("R", 1:5))) %>%
-    #         as.dist()
-    # )
-    # # fails
-    # expect_equivalent(
-    #     textstat_simil(mt, method = "jaccard"),
-    #     proxy::simil(as.matrix(mt), method = "jaccard")
-    # )
-    # # fails
-    # expect_equivalent(
-    #     textstat_simil(mt, method = "ejaccard"),
-    #     proxy::simil(as.matrix(mt), method = "ejaccard")
-    # )
-    # # fails
-    # expect_equivalent(
-    #     textstat_simil(mt, method = "dice"),
-    #     proxy::simil(as.matrix(mt), method = "dice")
-    # )
-    # # fails
-    # expect_equal(
-    #     textstat_simil(mt, method = "edice"),
-    #     # proxy has this wrong, since 2xy / (xx + yy) means that if 
-    #     # both x and y are empty then this should be NaN
-    #     proxy::simil(as.matrix(mt), method = "edice")
-    # )
-    # expect_equivalent(
-    #     textstat_simil(mt, method = "hamman"),
-    #     proxy::simil(as.matrix(mt), method = "hamman")
-    # )
-    # expect_equivalent(
-    #     textstat_simil(mt, method = "simple matching"),
-    #     proxy::simil(as.matrix(mt), method = "simple matching")
-    # )
-    # expect_equivalent(
-    #     textstat_simil(mt, method = "faith"),
-    #     proxy::simil(as.matrix(mt), method = "faith")
-    # )
+    expect_equivalent(
+         as.matrix(textstat_simil(mt, method = "jaccard")),
+         mt_na_some
+    )
+    
+    expect_equivalent(
+        as.matrix(textstat_simil(mt, method = "ejaccard")),
+        mt_na_some
+    )
+    
+    expect_equivalent(
+        as.matrix(textstat_simil(mt, method = "dice")),
+        mt_na_some
+    )
+    
+    expect_equal(
+        as.matrix(textstat_simil(mt, method = "edice")),
+        mt_na_some
+    )
+    
+    expect_equal(
+        as.matrix(textstat_simil(mt, method = "hamman")),
+        mt_na_some
+    )
+    
+    expect_equal(
+        as.matrix(textstat_simil(mt, method = "simple matching")),
+        mt_na_some
+    )
 })
 
 test_that("selection is always on columns (#1549)", {
