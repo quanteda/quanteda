@@ -3,7 +3,7 @@
 #' @title textstat_simil/dist classes
 #' @description Sparse classes for similarity and distance matrices created by
 #'   \code{\link{textstat_simil}} and \code{\link{textstat_dist}}.
-#' @rdname textstat_simildist-class
+#' @rdname textstat_proxy-class
 #' @export
 #' @keywords internal textstat
 #' @slot .Data a sparse \pkg{Matrix} object, symmetric if selection is
@@ -16,75 +16,68 @@
 #'   \code{"features"} for word/term features.
 #' @slot type either \code{"textstat_simil"} or \code{"textstat_dist"}
 #' @seealso \code{\link{textstat_simil}}
-setClass("textstat_simildist", contains = "dsparseMatrix",
+setClass("textstat_proxy", contains = "Matrix",
          slots = c(method = "character",
                    margin = "character",
                    type = "character"))
 
-#' @rdname textstat_simildist-class
-setClass("textstat_dist", contains = c("textstat_simildist", "dsTMatrix"))
+#' @rdname textstat_proxy-class
+setClass("textstat_dist_symm", contains = c("textstat_proxy", "dspMatrix"))
 
-#' @rdname textstat_simildist-class
+#' @rdname textstat_proxy-class
 #' @slot selection target units, if any
-setClass("textstat_dist_sel", contains = c("textstat_simildist", "dgTMatrix"),
-         slots = c(selection = "character"))
+setClass("textstat_dist", contains = c("textstat_proxy", "dgeMatrix"))
 
-#' @rdname textstat_simildist-class
-setClass("textstat_simil", contains = c("textstat_simildist", "dsTMatrix"))
+#' @rdname textstat_proxy-class
+setClass("textstat_simil_symm", contains = c("textstat_proxy", "dspMatrix"))
 
-#' @rdname textstat_simildist-class
-setClass("textstat_simil_sel", contains = c("textstat_simildist", "dgTMatrix"),
-         slots = c(selection = "character"))
+#' @rdname textstat_proxy-class
+setClass("textstat_simil", contains = c("textstat_proxy", "dgeMatrix"))
 
-#' @rdname textstat_simildist-class
-setClass("textstat_simil_sparse", contains = c("textstat_simildist", "dsCMatrix"),
+#' @rdname textstat_proxy-class
+setClass("textstat_simil_sparse", contains = c("textstat_proxy", "dgTMatrix"),
          slots = c(min_simil = "numeric"))
 
-#' @rdname textstat_simildist-class
-setClass("textstat_simil_sel_sparse", contains = c("textstat_simildist", "dgCMatrix"),
-         slots = c(selection = "character", min_simil = "numeric"))
-
 validate_min_simil <- function(object) {
-    if (object@min_simil < -1.0 || object@min_simil > 1.0)
+    if (object@min_simil < -1.0 || object@min_simil > 1.0) {
         paste("min_simil must range from -1.0 to 1.0")
-    else 
-        TRUE
+    } else {
+        return(TRUE)
+    }
 }
 
 setValidity("textstat_simil_sparse", function(object) {
     validate_min_simil(object)
 })
 
-setValidity("textstat_simil_sel_sparse", function(object) {
-    validate_min_simil(object)
-})
-
-#' Print a textstat_simildist object
+#' Print a textstat_proxy object
 #' 
 #' Print/show method for objects created by \code{textstat_simil} and
 #' \code{textstat_dist}.
-#' @param object the textstat_simildist object to be printed
-#' @rdname textstat_simildist-class
+#' @param object the textstat_proxy object to be printed
+#' @rdname textstat_proxy-class
 #' @export
-setMethod("show", "textstat_simildist",
+setMethod("show", "textstat_proxy",
           function(object) {
               cat(object@type, " object; method = \"", object@method, "\"\n", sep = "")
-              Matrix::printSpMatrix(object, digits = min(getOption("digits"), 3), 
-                                     col.names = TRUE, align = "right")
+              Matrix::printSpMatrix(as(object, "sparseMatrix"), 
+                                    digits = min(getOption("digits"), 3), 
+                                    col.names = TRUE, align = "right")
           })
 
-setMethod("head", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
-    selectMethod(x, "Matrix")
-})
-setMethod("tail", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+setMethod("head", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
     selectMethod(x, "Matrix")
 })
 
-#' Return the first or last part of a textstat_simildist object
+setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
+    selectMethod(x, "Matrix")
+})
+
+#' Return the first or last part of a textstat_proxy object
 #' 
 #' For a similarity or distance object computed via \link{textstat_simil} or
 #' \link{textstat_dist}, returns the first or last \code{n} rows.
-#' @param x a textstat_simildist object
+#' @param x a textstat_proxy object
 #' @param n a single, positive integer.  If positive, size for the resulting
 #'   object: number of first/last documents for the dfm. If negative, all but
 #'   the n last/first number of documents of x.
@@ -92,24 +85,24 @@ setMethod("tail", signature(x = "textstat_simildist"), function(x, n = 6L, ...) 
 #' @return A \link{matrix} corresponding to the subset defined 
 #'   by \code{n}.
 #' @export
-#' @name head.textstat_simildist
-#' @method head textstat_simildist
+#' @name head.textstat_proxy
+#' @method head textstat_proxy
 #' @keywords textstat internal
-head.textstat_simildist <- function(x, n = 6L, ...) { 
+head.textstat_proxy <- function(x, n = 6L, ...) { 
     head(as.matrix(x), n)
 }
 
-#' @rdname head.textstat_simildist
-#' @method tail textstat_simildist
+#' @rdname head.textstat_proxy
+#' @method tail textstat_proxy
 #' @export
-tail.textstat_simildist <- function(x, n = 6L, ...) { 
+tail.textstat_proxy <- function(x, n = 6L, ...) { 
     tail(as.matrix(x), n)
 }
 
-setMethod("head", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+setMethod("head", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
     UseMethod("head")
 })
-setMethod("tail", signature(x = "textstat_simildist"), function(x, n = 6L, ...) { 
+setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
     UseMethod("tail")
 })
 
@@ -165,40 +158,43 @@ setMethod("tail", signature(x = "textstat_simildist"), function(x, n = 6L, ...) 
 #' as.matrix(tstat2)
 #' 
 #' # similarities for for specific documents
-#' textstat_simil(dfmat, selection = "2017-Trump", margin = "documents")
-#' textstat_simil(dfmat, selection = "2017-Trump", method = "cosine", margin = "documents")
-#' textstat_simil(dfmat, selection = c("2009-Obama" , "2013-Obama"), margin = "documents")
+#' textstat_simil(dfmat, dfmat["2017-Trump",], margin = "documents")
+#' textstat_simil(dfmat, dfmat["2017-Trump",], method = "cosine", margin = "documents")
+#' textstat_simil(dfmat, dfmat[c("2009-Obama" , "2013-Obama"),], margin = "documents")
 #'
 #' # compute some term similarities
-#' tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
+#' tstat2 <- textstat_simil(dfmat, dfmat[,c("fair", "health", "terror")], method = "cosine",
 #'                          margin = "features")
 #' head(as.matrix(tstat2), 10)
 #' as.list(tstat2, n = 6)
 #' 
-textstat_simil <- function(x, selection = NULL,
+textstat_simil <- function(x, y = NULL, selection = NULL,
                            margin = c("documents", "features"),
                            method = c("correlation", "cosine", "jaccard", "ejaccard",
                                       "dice", "edice", "hamman", "simple matching"),
-                           min_simil = 0, ...) {
+                           min_simil = NULL, ...) {
     UseMethod("textstat_simil")
 }
     
 
 #' @export    
-textstat_simil.default <- function(x, selection = NULL,
+textstat_simil.default <- function(x, y = NULL, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               min_simil = 0, ...) {
+                               min_simil = NULL, ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil"))
 }
     
 #' @export    
-textstat_simil.dfm <- function(x, selection = NULL,
+textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                                margin = c("documents", "features"),
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
-                               min_simil = 0, ...) {
+                               min_simil = NULL, ...) {
+    
+    if (!is.null(selection))
+        .Deprecated(msg = "'selection' is deprecated. Use 'y' instead.")
     check_dots(list(...))
     x <- as.dfm(x)
     
@@ -210,54 +206,48 @@ textstat_simil.dfm <- function(x, selection = NULL,
     } else {
         name <- rownames(x)
     }
-    if (is.null(selection)) {
-        i <- seq_along(name)
-    } else {
-        if (is.character(selection)) {
-            i <- match(selection, name)
+    if (is.null(y)) {
+        if (is.null(selection)) {
+            i <- seq_along(name)
         } else {
-            if (is.logical(selection))
-                selection <- which(selection)
-            i <- selection
-            i[i < 1 | length(name) < i] <- NA
-            selection <- featnames(x)[selection]
+            if (is.character(selection)) {
+                i <- match(selection, name)
+            } else {
+                if (is.logical(selection))
+                    selection <- which(selection)
+                i <- selection
+                i[i < 1 | length(name) < i] <- NA
+                selection <- featnames(x)[selection]
+            }
+            if (any(is.na(i)))
+                stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
+            if (margin == "features") {
+                y <- x[,i]
+            } else {
+                y <- x[i,]
+            }
         }
-        if (any(is.na(i)))
-            stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
-    }
-    if (margin == "features") {
-        temp <- textstat_proxy(x, x[, i], margin, method, 1, 
-                               min_proxy = if (min_simil == 0) NULL else min_simil, use_na = TRUE)
-                               
     } else {
-        temp <- textstat_proxy(x, x[i, ], margin, method, 1, 
-                               min_proxy = if (min_simil == 0) NULL else min_simil, use_na = TRUE)
+        y <- as.dfm(y)
     }
+    temp <- textstat_proxy(x, y, margin, method, p, use_na = TRUE)
     
-    if (min_simil == 0) {
-        if (is.null(selection))
-            return(new("textstat_simil", as(temp, "dsTMatrix"), 
+    if (is.null(min_simil)) {
+        if (identical(x, y)) {
+            return(new("textstat_simil_symm", as(temp, "dsyMatrix"), 
                        method = method,  margin = margin,
                        type = "textstat_simil"))
-        else
-            return(new("textstat_simil_sel", temp, 
-                       method = method, margin = margin,
-                       type = "textstat_simil",
-                       selection = selection))
-    } else {
-        if (is.null(selection)) {
-            temp <- as(temp, "dsCMatrix")
-            return(new("textstat_simil_sparse", temp, 
-                       method = method, margin = margin,
-                       type = "textstat_simil",
-                       min_simil = min_simil))
         } else {
-            temp <- as(temp, "dgCMatrix")
-            return(new("textstat_simil_sel_sparse", temp, 
-                       method = method,  margin = margin,
-                       type = "textstat_simil", 
-                       min_simil = min_simil, selection = selection))
+            return(new("textstat_simil", as(temp, "dgeMatrix"), 
+                       method = method, margin = margin,
+                       type = "textstat_simil"))
         }
+    } else {
+        return(new("textstat_simil_sparse", as(temp, "dgTMatrix"), 
+                   method = method, margin = margin,
+                   type = "textstat_simil",
+                   min_simil = min_simil))
+    
     }
 }
 
@@ -286,7 +276,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
 #' # plot a dendrogram after converting the object into distances
 #' plot(hclust(as.dist(tstat3)))
 #' }
-textstat_dist <- function(x, selection = NULL,
+textstat_dist <- function(x, y = NULL, selection = NULL,
                           margin = c("documents", "features"),
                           method = c("euclidean",
                                      "manhattan", "maximum", "canberra", "minkowski"),
@@ -295,7 +285,7 @@ textstat_dist <- function(x, selection = NULL,
 }
 
 #' @export
-textstat_dist.default <- function(x, selection = NULL,
+textstat_dist.default <- function(x, y = NULL, selection = NULL,
                                   margin = c("documents", "features"),
                                   method = c("euclidean",
                                              "manhattan", "maximum", "canberra", "minkowski"),
@@ -304,11 +294,13 @@ textstat_dist.default <- function(x, selection = NULL,
 }
 
 #' @export
-textstat_dist.dfm <- function(x, selection = NULL,
+textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
                               margin = c("documents", "features"),
                               method = c("euclidean",
                                          "manhattan", "maximum", "canberra", "minkowski"),
                               p = 2, ...) {
+    if (!is.null(selection))
+        .Deprecated(msg = "'selection' is deprecated. Use 'y' instead.")
     check_dots(list(...))
     x <- as.dfm(x)
 
@@ -320,43 +312,47 @@ textstat_dist.dfm <- function(x, selection = NULL,
     } else {
         name <- rownames(x)
     }
-    if (is.null(selection)) {
-        i <- seq_along(name)
-    } else {
-        if (is.character(selection)) {
-            i <- match(selection, name)
+    if (is.null(y)) {
+        if (is.null(selection)) {
+            i <- seq_along(name)
         } else {
-            if (is.logical(selection))
-                selection <- which(selection)
-            i <- selection
-            i[i < 1 | length(name) < i] <- NA
-            selection <- featnames(x)[selection]
+            if (is.character(selection)) {
+                i <- match(selection, name)
+            } else {
+                if (is.logical(selection))
+                    selection <- which(selection)
+                i <- selection
+                i[i < 1 | length(name) < i] <- NA
+                selection <- featnames(x)[selection]
+            }
+            if (any(is.na(i)))
+                stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
+            if (margin == "features") {
+                y <- x[,i]
+            } else {
+                y <- x[i,]
+            }
         }
-        if (any(is.na(i)))
-            stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
-    }
-    if (margin == "features") {
-        temp <- textstat_proxy(x, x[, i], margin, method, p, use_na = TRUE)
     } else {
-        temp <- textstat_proxy(x, x[i, ], margin, method, p, use_na = TRUE)
+        y <- as.dfm(y)
     }
+    temp <- textstat_proxy(x, y, margin, method, p, use_na = TRUE)
     
-    if (is.null(selection)) {
-        temp <- as(temp, "dsTMatrix")
-        return(new("textstat_dist", temp, 
+    if (identical(x, y)) {
+        return(new("textstat_dist_symm", as(temp, "dsyMatrix"), 
+                   method = method,  margin = margin,
+                   type = "textstat_dist_symm"))
+    } else {
+        return(new("textstat_dist", as(temp, "dgeMatrix"), 
                    method = method,  margin = margin,
                    type = "textstat_dist"))
-    } else {
-        return(new("textstat_dist_sel", temp, 
-                   method = method,  margin = margin,
-                   type = "textstat_dist", selection = selection))
     }
 }
 
 # coercion methods ----------
 
 #' @rdname textstat_simil
-#' @method as.list textstat_simildist
+#' @method as.list textstat_proxy
 #' @param sorted sort results in descending order if \code{TRUE}
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
 #'   \code{NULL}, return all items.
@@ -368,7 +364,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #'   in descending order (when \code{sorted = TRUE}).
 #' @keywords textstat
 #' @export
-as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...) {
+as.list.textstat_proxy <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...) {
     if (!is.null(n) && n < 1) 
         stop("n must be 1 or greater")
     if (!is.null(n) && !sorted) {
@@ -377,7 +373,7 @@ as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE,
     }
     
     # NA the diagonal, if diag = FALSE
-    if (!diag) x <- diag_to_NA(x)
+    if (!diag) x <- diag_to_na(x)
 
     x <- as(x, "dgTMatrix")
     result <- split(structure(x@x, names = rownames(x)[x@i+1]), 
@@ -395,29 +391,32 @@ as.list.textstat_simildist <- function(x, sorted = TRUE, n = NULL, diag = FALSE,
 }
 
 #' @rdname textstat_simil
-#' @method as.data.frame textstat_simildist
+#' @method as.data.frame textstat_proxy
 #' @inheritParams base::as.data.frame
 #' @param upper logical; if \code{TRUE}, return pairs as both (A, B) and (B, A)
 #' @return \code{as.data.frame} for a \code{textstat_simil} or
 #'   \code{textstat_dist} object returns a data.frame of pairwise combinations
 #'   and the and their similarity or distance value.
 #' @export
-as.data.frame.textstat_simildist <- function(x, row.names = NULL, optional = FALSE, diag = FALSE, upper = FALSE,  ...) {
+as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE, 
+                                            diag = FALSE, upper = FALSE,  ...) {
     method <- x@method
     margin <- x@margin
     
     if (!diag)
-        x <- diag_to_NA(x)
+        x <- diag_to_na(x)
     if (upper) {
-        if (!setequal(rownames(x), colnames(x)))
+        if (!setequal(rownames(x), colnames(x))) {
             warning("upper = TRUE has no effect when columns have been selected")
-        else
+        } else {
             x <- as(x, "dgTMatrix")
+        }
     } else if (setequal(rownames(x), colnames(x))) {
         x <- as(x, "dsTMatrix")
     }
         
-    result <- data.frame(x = factor(x@i + 1L, levels = seq_along(rownames(x)), labels = rownames(x)),
+    result <- data.frame(x = factor(x@i + 1L, 
+                                    levels = seq_along(rownames(x)), labels = rownames(x)),
                          y = factor(match(colnames(x)[x@j + 1L], rownames(x)), 
                                     levels = seq_along(rownames(x)), labels = rownames(x)),
                          stat = x@x,
@@ -437,23 +436,23 @@ as.data.frame.textstat_simildist <- function(x, row.names = NULL, optional = FAL
     result
 } 
 
-#' convert same-value pairs to NA in a textstat_simildist object
+#' convert same-value pairs to NA in a textstat_proxy object
 #' 
 #' Converts the diagonal, or the same-pair equivalent in an object 
 #' where the columns have been selected, to NA.
 #' @param x the return from \code{\link{textstat_simil}} or \code{\link{textstat_dist}}
 #' @return sparse Matrix format with same-pair values replaced with \code{NA}
 #' @keywords textstat internal
-diag_to_NA <- function(x) {
+diag_to_na <- function(x) {
     # NA the diagonal, if diag = FALSE
     if (is(x, "symmetricMatrix")) {
         diag(x) <- NA
     } else {
         # NA same-item pairs
-        toNA <- list(x = which(rownames(x) %in% colnames(x)), 
+        to_na <- list(x = which(rownames(x) %in% colnames(x)), 
                      y = seq_along(colnames(x)))
-        for (i in seq_len(lengths(toNA)[1]))
-            x[toNA$x[i], toNA$y[i]] <- NA
+        for (i in seq_len(lengths(to_na)[1]))
+            x[to_na$x[i], to_na$y[i]] <- NA
     }
     x
 }
@@ -469,13 +468,6 @@ diag_to_NA <- function(x) {
 #' @keywords textstat internal
 #' @rdname as.matrix.textstat_simil_sparse
 setMethod("as.matrix", "textstat_simil_sparse",
-          function(x, omitted = NA, ...) {
-              x[x == 0] <- omitted
-              as.matrix(x)
-          })
-
-#' @rdname as.matrix.textstat_simil_sparse
-setMethod("as.matrix", "textstat_simil_sel_sparse",
           function(x, omitted = NA, ...) {
               x[x == 0] <- omitted
               as.matrix(x)
@@ -587,5 +579,4 @@ textstat_proxy <- function(x, y = NULL,
             result[,na2,drop = FALSE] <- NA
     }
     return(result)
-    # return(as(result, "CsparseMatrix"))
 }

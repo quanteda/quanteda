@@ -3,22 +3,22 @@
 \name{textstat_simil}
 \alias{textstat_simil}
 \alias{textstat_dist}
-\alias{as.list.textstat_simildist}
-\alias{as.data.frame.textstat_simildist}
+\alias{as.list.textstat_proxy}
+\alias{as.data.frame.textstat_proxy}
 \title{Similarity and distance computation between documents or features}
 \usage{
-textstat_simil(x, selection = NULL, margin = c("documents",
+textstat_simil(x, y = NULL, selection = NULL, margin = c("documents",
   "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching"), min_simil = 0, ...)
+  "dice", "edice", "hamman", "simple matching"), min_simil = NULL, ...)
 
-textstat_dist(x, selection = NULL, margin = c("documents", "features"),
-  method = c("euclidean", "manhattan", "maximum", "canberra",
-  "minkowski"), p = 2, ...)
+textstat_dist(x, y = NULL, selection = NULL, margin = c("documents",
+  "features"), method = c("euclidean", "manhattan", "maximum",
+  "canberra", "minkowski"), p = 2, ...)
 
-\method{as.list}{textstat_simildist}(x, sorted = TRUE, n = NULL,
+\method{as.list}{textstat_proxy}(x, sorted = TRUE, n = NULL,
   diag = FALSE, ...)
 
-\method{as.data.frame}{textstat_simildist}(x, row.names = NULL,
+\method{as.data.frame}{textstat_proxy}(x, row.names = NULL,
   optional = FALSE, diag = FALSE, upper = FALSE, ...)
 }
 \arguments{
@@ -118,12 +118,12 @@ as.list(tstat1, diag = TRUE)
 as.matrix(tstat2)
 
 # similarities for for specific documents
-textstat_simil(dfmat, selection = "2017-Trump", margin = "documents")
-textstat_simil(dfmat, selection = "2017-Trump", method = "cosine", margin = "documents")
-textstat_simil(dfmat, selection = c("2009-Obama" , "2013-Obama"), margin = "documents")
+textstat_simil(dfmat, dfmat["2017-Trump",], margin = "documents")
+textstat_simil(dfmat, dfmat["2017-Trump",], method = "cosine", margin = "documents")
+textstat_simil(dfmat, dfmat[c("2009-Obama" , "2013-Obama"),], margin = "documents")
 
 # compute some term similarities
-tstat2 <- textstat_simil(dfmat, selection = c("fair", "health", "terror"), method = "cosine",
+tstat2 <- textstat_simil(dfmat, dfmat[,c("fair", "health", "terror")], method = "cosine",
                          margin = "features")
 head(as.matrix(tstat2), 10)
 as.list(tstat2, n = 6)
