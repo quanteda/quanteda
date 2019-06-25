@@ -10,7 +10,7 @@
 \method{tail}{textstat_proxy}(x, n = 6L, ...)
 }
 \arguments{
-\item{x}{a textstat_proxy object}
+\item{x}{a textstat_simil/textstat_dist object}
 
 \item{n}{a single, positive integer.  If positive, size for the resulting
 object: number of first/last documents for the dfm. If negative, all but

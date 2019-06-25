@@ -45,22 +45,22 @@ test_that("test old and new textstat_simil are the same", {
 })
 
 test_that("selection takes integer or logical vector", {
-    expect_equivalent(textstat_simil(mt, c(2, 5), margin = "features"),
-                      textstat_simil(mt, c("mr", "president"), margin = "features"))
+    expect_equivalent(textstat_simil(mt, selection = c(2, 5), margin = "features"),
+                      textstat_simil(mt, selection = c("mr", "president"), margin = "features"))
     l1 <- featnames(mt) %in% c("mr", "president")
-    expect_equivalent(textstat_simil(mt, l1, margin = "features"),
-                      textstat_simil(mt, c("mr", "president"), margin = "features"))
+    expect_equivalent(textstat_simil(mt, selection = l1, margin = "features"),
+                      textstat_simil(mt, selection = c("mr", "president"), margin = "features"))
     
     expect_error(textstat_simil(mt, "xxxx", margin = "features"))
     expect_error(textstat_simil(mt, 1000, margin = "features"))
     
-    expect_equivalent(textstat_simil(mt, c(2,4), margin = "documents"),
-                      textstat_simil(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    expect_equivalent(textstat_simil(mt, selection = c(2,4), margin = "documents"),
+                      textstat_simil(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
     l2 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
-    expect_equivalent(textstat_simil(mt, l2, margin = "documents"),
-                      textstat_simil(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    expect_equivalent(textstat_simil(mt, selection = l2, margin = "documents"),
+                      textstat_simil(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
     
-    expect_error(textstat_simil(mt, "nothing", margin = "documents"))
+    expect_error(textstat_simil(mt, selection = "nothing", margin = "documents"))
     expect_error(textstat_simil(mt, 100, margin = "documents"))
 })
 
@@ -204,11 +204,13 @@ test_that("all similarities are between 0 and 1", {
 })
 
 test_that("textstat_simil is stable across repetitions", {
-    res <- textstat_simil(mt, c(2, 4), margin = "documents")
+    res <- textstat_simil(mt, selection = c(2, 4), 
+                          margin = "documents")
     set.seed(10)
     resv <- list()
     for (i in 1:100) {
-        resv[[i]] <- as.matrix(textstat_simil(mt, 2, margin = "documents"))
+        resv[[i]] <- as.matrix(textstat_simil(mt, selection = 2, 
+                                              margin = "documents"))
     }
     rescols <- do.call(cbind, resv)
     expect_true(all(apply(rescols, 1, sd) == 0))
@@ -247,7 +249,8 @@ test_that("textstat_simil coercion methods work with options", {
     # iden <- rep(as.numeric(NA), ndoc(mt2)); names(iden) <- docnames(mt2)
     # expect_equal(diag(as.matrix(tstat)), iden)
     # in matrix, diagonal is 1.0
-    iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
+    iden <- rep(1, ndoc(mt2))
+    names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
     lis <- as.list(tstat, sort = TRUE, diag = FALSE)
     expect_equivalent(lengths(lis), rep(ndoc(mt2) - 1, ndoc(mt2)))
@@ -281,10 +284,12 @@ test_that("textstat_simil coercion methods work with options", {
         (nrow(mt2)^2 - ndoc(mt2)) / 2
     )
     mat <- as.matrix(tstat)
-    loweranddiag <- upper.tri(mat); diag(loweranddiag) <- TRUE
+    loweranddiag <- upper.tri(mat)
+    diag(loweranddiag) <- TRUE
     # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 1.0
-    iden <- rep(1, ndoc(mt2)); names(iden) <- docnames(mt2)
+    iden <- rep(1, ndoc(mt2))
+    names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
     lis <- as.list(tstat, sort = TRUE, diag = FALSE)
     expect_equivalent(lengths(lis), rep(ndoc(mt2) - 1, ndoc(mt2)))
@@ -461,4 +466,28 @@ test_that("test that min_simil coercion to matrix works as expected", {
         c("2009-Obama" = 1, "2013-Obama" = 0.6373, "2017-Trump" = 0),
         tol = .0001
     )
+})
+
+
+test_that("y is working in the same way as selection (#1714)", {
+    
+    expect_identical(textstat_simil(dfmat, selection = c("2009-Obama", "2013-Obama"),
+                                    margin = "documents"),
+                     textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"),],
+                                    margin = "documents"))
+    
+    expect_identical(textstat_simil(dfmat, selection = c("world", "freedom"),
+                                    margin = "features"),
+                     textstat_simil(dfmat, dfmat[,c("world", "freedom")],
+                                    margin = "features"))
+    
+    expect_identical(textstat_dist(dfmat, selection = c("2009-Obama", "2013-Obama"),
+                                    margin = "documents"),
+                     textstat_dist(dfmat, dfmat[c("2009-Obama", "2013-Obama"),],
+                                    margin = "documents"))
+    
+    expect_identical(textstat_dist(dfmat, selection = c("world", "freedom"),
+                                    margin = "features"),
+                     textstat_dist(dfmat, dfmat[,c("world", "freedom")],
+                                    margin = "features"))
 })

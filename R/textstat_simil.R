@@ -77,7 +77,7 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' 
 #' For a similarity or distance object computed via \link{textstat_simil} or
 #' \link{textstat_dist}, returns the first or last \code{n} rows.
-#' @param x a textstat_proxy object
+#' @param x a textstat_simil/textstat_dist object
 #' @param n a single, positive integer.  If positive, size for the resulting
 #'   object: number of first/last documents for the dfm. If negative, all but
 #'   the n last/first number of documents of x.
@@ -116,6 +116,7 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' selected).  They are fast and robust because they operate directly on the
 #' sparse \link{dfm} objects.
 #' @param x a \link{dfm} object
+#' @param y a \link{dfm} object
 #' @param selection a valid index for document or feature names (depending on
 #'   \code{margin}) from \code{x}, to be selected for comparison.  The selected
 #'   document(s) or feature(s) will form the second of the pairs returned.  
@@ -230,7 +231,8 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
     } else {
         y <- as.dfm(y)
     }
-    temp <- textstat_proxy(x, y, margin, method, p, use_na = TRUE)
+    temp <- textstat_proxy(x, y, margin, method, 
+                           min_proxy = min_simil, use_na = TRUE)
     
     if (is.null(min_simil)) {
         if (identical(x, y)) {
@@ -336,7 +338,8 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
     } else {
         y <- as.dfm(y)
     }
-    temp <- textstat_proxy(x, y, margin, method, p, use_na = TRUE)
+    temp <- textstat_proxy(x, y, margin, method, 
+                           p = p, use_na = TRUE)
     
     if (identical(x, y)) {
         return(new("textstat_dist_symm", as(temp, "dsyMatrix"), 
@@ -405,14 +408,16 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
     
     if (!diag)
         x <- diag_to_na(x)
-    if (upper) {
-        if (!setequal(rownames(x), colnames(x))) {
-            warning("upper = TRUE has no effect when columns have been selected")
-        } else {
+    if (setequal(rownames(x), colnames(x))) {
+        if (upper) {
             x <- as(x, "dgTMatrix")
+        } else {
+            x <- as(x, "dsTMatrix")
         }
-    } else if (setequal(rownames(x), colnames(x))) {
-        x <- as(x, "dsTMatrix")
+    } else {
+        if (upper)
+            warning("upper = TRUE has no effect when columns have been selected")
+        x <- as(x, "dgTMatrix")
     }
         
     result <- data.frame(x = factor(x@i + 1L, 
@@ -433,7 +438,7 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
     names(result)[3] <- method
     # drop row names
     row.names(result) <- NULL
-    result
+    return(result)
 } 
 
 #' convert same-value pairs to NA in a textstat_proxy object
@@ -449,12 +454,12 @@ diag_to_na <- function(x) {
         diag(x) <- NA
     } else {
         # NA same-item pairs
-        to_na <- list(x = which(rownames(x) %in% colnames(x)), 
-                     y = seq_along(colnames(x)))
-        for (i in seq_len(lengths(to_na)[1]))
+        to_na <- data.frame(x = which(rownames(x) %in% colnames(x)), 
+                            y = which(colnames(x) %in% rownames(x)))
+        for (i in seq_len(nrow(to_na)))
             x[to_na$x[i], to_na$y[i]] <- NA
     }
-    x
+    return(x)
 }
 
 #' as.matrix method for textstat_simil_sparse
@@ -470,7 +475,7 @@ diag_to_na <- function(x) {
 setMethod("as.matrix", "textstat_simil_sparse",
           function(x, omitted = NA, ...) {
               x[x == 0] <- omitted
-              as.matrix(x)
+              as.matrix(as(x, "dgeMatrix"))
           })
 
 # textstat_proxy ---------

@@ -24,6 +24,8 @@ textstat_dist(x, y = NULL, selection = NULL, margin = c("documents",
 \arguments{
 \item{x}{a \link{dfm} object}
 
+\item{y}{a \link{dfm} object}
+
 \item{selection}{a valid index for document or feature names (depending on
 \code{margin}) from \code{x}, to be selected for comparison.  The selected
 document(s) or feature(s) will form the second of the pairs returned.  

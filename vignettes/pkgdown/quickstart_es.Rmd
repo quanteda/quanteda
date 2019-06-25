@@ -358,7 +358,7 @@ dfmat_inaug_subset[, 1:10]
 dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
                             remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 tstat_obama <- textstat_simil(dfmat_inaug_post1980, 
-                              c("2009-Obama" , "2013-Obama"), 
+                              dfmat_inaug_post1980[c("2009-Obama" , "2013-Obama"),], 
                               margin = "documents", method = "cosine")
 tstat_obama
 # dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")
@@ -387,7 +387,7 @@ plot(pres_cluster, xlab = "", sub = "",
 También se puede observar similitudes de los términos:
 
 ```{r}
-tstat_sim <- textstat_simil(dfmat_sotu, selection = c("fair", "health", "terror"), 
+tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[,c("fair", "health", "terror")], 
                           method = "cosine", margin = "features")
 lapply(as.list(tstat_sim), head, 10)
 ```

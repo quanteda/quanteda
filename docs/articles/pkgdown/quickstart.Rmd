@@ -362,7 +362,7 @@ liwcdfm[, 1:10]
 ```{r fig.width = 6}
 pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obama_simil <- textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), 
+obama_simil <- textstat_simil(pres_dfm, pres_dfm[c("2009-Obama" , "2013-Obama"),], 
                              margin = "documents", method = "cosine")
 obama_simil
 # dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
@@ -388,7 +388,7 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 We can also look at term similarities:
 ```{r}
-sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, pres_dfm[,c("fair", "health", "terror")], method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
