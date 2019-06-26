@@ -112,10 +112,10 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                         attr(x, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)
+    overlap <- match(overlap, c("local", "global"))
     if (capkeys)
         key <- char_toupper(key)
     if (exclusive) {
-        overlap <- match(overlap, c("local", "global"))
         if (!is.null(nomatch)) {
             x <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, overlap, 1)
         } else {
@@ -125,7 +125,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
-        x <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), FALSE, 2)
+        x <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), overlap, 2)
     }
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
