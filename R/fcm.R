@@ -27,12 +27,10 @@
 #'   }
 #' @param weights a vector of weights applied to each distance from
 #'   \code{1:window}, strictly decreasing by default; can be a custom-defined
-#'   vector of the same length as \code{length(weights)}
+#'   vector of the same length as \code{window}
 #' @param ordered if \code{TRUE} the number of times that a term appears before
 #'   or after the target feature are counted separately. Only makes sense for
 #'   context = "window".
-#' @param span_sentence if \code{FALSE}, then word windows will not span
-#'   sentences
 #' @param tri if \code{TRUE} return only upper triangle (including diagonal).
 #'   Ignored if \code{ordered = TRUE}
 #' @param ... not used here
@@ -106,9 +104,9 @@
 fcm <- function(x, context = c("document", "window"), 
                 count = c("frequency", "boolean", "weighted"),
                 window = 5L,
-                weights = 1L,
+                weights = NULL,
                 ordered = FALSE,
-                span_sentence = TRUE, tri = TRUE, ...) {
+                tri = TRUE, ...) {
     UseMethod("fcm")
 }
 
@@ -135,9 +133,9 @@ fcm.corpus <- function(x, ...) {
 fcm.dfm <- function(x, context = c("document", "window"), 
                        count = c("frequency", "boolean", "weighted"),
                        window = 5L,
-                       weights = 1L,
+                       weights = NULL,
                        ordered = FALSE,
-                       span_sentence = TRUE, tri = TRUE, ...) {
+                       tri = TRUE, ...) {
     
     context <- match.arg(context)
     count <- match.arg(count)
@@ -147,13 +145,10 @@ fcm.dfm <- function(x, context = c("document", "window"),
     
     if (!nfeat(x)) {
         result <- new("fcm", as(make_null_dfm(), "dgCMatrix"), count = count,
-                      context = context, window = window, margin = numeric(),
-                      weights = weights, tri = tri)
+                      context = context, margin = margin, weights = 1, tri = tri)
         return(result)
     }
     
-    if (!span_sentence) 
-        warning("spanSentence = FALSE not yet implemented")
     if (context != "document") 
         stop("fcm.dfm only works on context = \"document\"")
 
@@ -172,23 +167,23 @@ fcm.dfm <- function(x, context = c("document", "window"),
     feature <- sum_col >= 1
     index_diag <- which(feature)
     length_feature <- length(feature)
-    temp2 <- Matrix::sparseMatrix(i = index_diag,
-                                  j = index_diag,
-                                  x = sum_col[feature],
-                                  dims = c(length_feature , length_feature))
+    temp <- Matrix::sparseMatrix(i = index_diag,
+                                 j = index_diag,
+                                 x = sum_col[feature],
+                                 dims = c(length_feature , length_feature))
     
     result <- Matrix::crossprod(x)
     diag(result) <- 0
-    result <- result + temp2
+    result <- result + temp
     result <- result[rownames(result), colnames(result)]
     
     # discard the lower diagonal if tri == TRUE
-    if (tri) result <- Matrix::triu(result)
+    if (tri) result <- triu(result)
 
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
-                  context = context, window = window, margin = margin,
-                  weights = weights, tri = tri)
+                  context = context, margin = margin, weights = 1,
+                  tri = tri)
     set_fcm_dimnames(result) <- list(rownames(result), colnames(result))
     return(result)
 }
@@ -201,44 +196,46 @@ fcm.dfm <- function(x, context = c("document", "window"),
 fcm.tokens <- function(x, context = c("document", "window"), 
                        count = c("frequency", "boolean", "weighted"),
                        window = 5L,
-                       weights = 1L,
+                       weights = NULL,
                        ordered = FALSE,
-                       span_sentence = TRUE, tri = TRUE, ...) {
+                       tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)
-    # TODO could add a warning if not roundly coerced to integer
-    
-    if (ordered) tri <- FALSE
-    if (!span_sentence) 
-        warning("spanSentence = FALSE not yet implemented")
-    
-    if (context == "document")
+    if (ordered)
+        tri <- FALSE
+    if (context == "document") {
         result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
-        
-    if (context == "window") { 
-        if (any(window < 1L)) stop("The window size is too small.")
+    } else { 
+        if (any(window < 1L)) 
+            stop("window size must be at least 1")
         if (count == "weighted") {
-            if (!missing(weights) && length(weights) != window) {
-                warning ("weights length is not equal to the window size, weights are assigned by default!")
-                weights <- 1
+            if (is.null(weights))
+                weights <- 1 / seq_len(window)
+            if (length(weights) != window) {
+                stop ("weights length must be equal to the window size")
             }
+        } else {
+            weights <- rep(1, window)
         }
         if (!is.tokens(x)) x <- as.tokens(x)
         type <- types(x)
-        n <- sum(lengths(x)) * window * 2
-        result <- as(qatd_cpp_fcm(x, length(type), count, window, 
-                                  weights, ordered, tri, n), "dgCMatrix")
+        boolean <- count == "boolean"
+        result <- as(qatd_cpp_fcm(x, length(type), weights, boolean, ordered), 
+                     "dgCMatrix")
         set_fcm_dimnames(result) <- list(type, type)
+        if (!ordered) {
+            if (tri) {
+                result <- triu(result)
+            } else {
+                result <- forceSymmetric(result)
+            }
+        }
+        # create a new feature context matrix
+        result <- new("fcm", as(result, "dgCMatrix"), count = count,
+                      context = context, window = window, margin = colSums(dfm(x)),
+                      weights = weights, tri = tri)
     }
-
-    # discard the lower diagonal if tri == TRUE
-    if (tri) result <- Matrix::triu(result)
-    
-    # create a new feature context matrix
-    result <- new("fcm", as(result, "dgCMatrix"), count = count,
-                  context = context, window = window, margin = colSums(dfm(x)),
-                  weights = weights, tri = tri)
     return(result)
 }     
 

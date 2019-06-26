@@ -138,20 +138,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_fcm
-S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const String& count, const unsigned int window, const NumericVector& weights, const bool ordered, const bool tri, const unsigned int nvec);
-RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP triSEXP, SEXP nvecSEXP) {
+S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered);
+RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const int >::type n_types(n_typesSEXP);
-    Rcpp::traits::input_parameter< const String& >::type count(countSEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type window(windowSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights_(weights_SEXP);
+    Rcpp::traits::input_parameter< const bool >::type boolean(booleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type ordered(orderedSEXP);
-    Rcpp::traits::input_parameter< const bool >::type tri(triSEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type nvec(nvecSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(texts_, n_types, count, window, weights, ordered, tri, nvec));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(texts_, n_types, weights_, boolean, ordered));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -387,7 +384,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_canberra2", (DL_FUNC) &_quanteda_qatd_cpp_canberra2, 3},
     {"_quanteda_qatd_cpp_minkowski", (DL_FUNC) &_quanteda_qatd_cpp_minkowski, 3},
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
-    {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
+    {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},

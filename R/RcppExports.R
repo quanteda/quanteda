@@ -41,8 +41,8 @@ qatd_cpp_minkowski2 <- function(A, B, margin = 1L, p = 2) {
     .Call(`_quanteda_qatd_cpp_minkowski2`, A, B, margin, p)
 }
 
-qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, nvec) {
-    .Call(`_quanteda_qatd_cpp_fcm`, texts_, n_types, count, window, weights, ordered, tri, nvec)
+qatd_cpp_fcm <- function(texts_, n_types, weights_, boolean, ordered) {
+    .Call(`_quanteda_qatd_cpp_fcm`, texts_, n_types, weights_, boolean, ordered)
 }
 
 qatd_cpp_kwic <- function(texts_, types_, words_, window, delim_) {

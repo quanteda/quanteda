@@ -6,8 +6,8 @@
 \title{Create a feature co-occurrence matrix}
 \usage{
 fcm(x, context = c("document", "window"), count = c("frequency",
-  "boolean", "weighted"), window = 5L, weights = 1L, ordered = FALSE,
-  span_sentence = TRUE, tri = TRUE, ...)
+  "boolean", "weighted"), window = 5L, weights = NULL,
+  ordered = FALSE, tri = TRUE, ...)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object from
@@ -36,14 +36,11 @@ target feature}
 
 \item{weights}{a vector of weights applied to each distance from
 \code{1:window}, strictly decreasing by default; can be a custom-defined
-vector of the same length as \code{length(weights)}}
+vector of the same length as \code{window}}
 
 \item{ordered}{if \code{TRUE} the number of times that a term appears before
 or after the target feature are counted separately. Only makes sense for
 context = "window".}
-
-\item{span_sentence}{if \code{FALSE}, then word windows will not span
-sentences}
 
 \item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
 Ignored if \code{ordered = TRUE}}

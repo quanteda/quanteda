@@ -526,38 +526,6 @@ textstat_proxy <- function(x, y = NULL,
         if (!identical(docnames(x), docnames(y)))
             stop("x and y must contain the same documents")
     }
-    if (is.null(min_proxy))
-        min_proxy <- -1.0
-    if (is.null(rank))
-        rank <- ncol(x)
-    if (rank < 1)
-        stop("rank must be great than or equal to 1")
-
-    boolean <- FALSE
-    weight <- 1
-    if (method == "jaccard") {
-        boolean <- TRUE
-        method <- "ejaccard"
-    } else if (method == "ejaccard") {
-        weight <- 2
-    } else if (method == "dice") {
-        boolean <- TRUE
-        method <- "edice"
-    } else if (method == "edice") {
-        weight <- 2
-    } else if (method == "hamman") {
-        boolean <- TRUE
-    } else if (method == "simple matching") {
-        boolean <- TRUE
-    } else if (method == "minkowski") {
-        if (p <= 0)
-            stop("p must be greater than zero")
-        weight <- p
-    }
-    if (boolean) {
-        x <- dfm_weight(x, "boolean")
-        y <- dfm_weight(y, "boolean")
-    }
     if (method %in% c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", 
                       "hamman", "simple matching", "faith")) {
         if (identical(x, y)) {
@@ -567,20 +535,19 @@ textstat_proxy <- function(x, y = NULL,
         }
     } else {
         if (identical(x, y)) {
-            result <- proxyC::dist(x, NULL, 2, method, p = weight)
+            result <- proxyC::dist(x, NULL, 2, method, p = p)
         } else {
-            result <- proxyC::dist(x, y, 2, method, p = weight)
+            result <- proxyC::dist(x, y, 2, method, p = p)
         }
     }
     dimnames(result) <- list(colnames(x), colnames(y))
     if (use_na) {
-        na1 <- na2 <- logical()
-        if (method == "cosine") {
-            na1 <- proxyC::colZeros(x) == nrow(x)
-            na2 <- proxyC::colZeros(y) == nrow(y)
-        } else if (method == "correlation") {
+        if (method == "correlation") {
             na1 <- proxyC::colSds(x) == 0
             na2 <- proxyC::colSds(y) == 0
+        } else {
+            na1 <- proxyC::colZeros(x) == nrow(x)
+            na2 <- proxyC::colZeros(y) == nrow(y)
         }
         if (any(na1))
             result[na1,,drop = FALSE] <- NA

@@ -61,7 +61,7 @@ test_that("as.dictionary function works for tidytext sentiment", {
     skip_if_not_installed("tidytext")
     data(sentiments, package = "tidytext")
     expect_true(
-        is.dictionary(as.dictionary(subset(sentiments)))
+        is.dictionary(as.dictionary(sentiments))
     )
 })
 

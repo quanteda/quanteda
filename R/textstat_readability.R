@@ -318,7 +318,7 @@
 #'
 #' @param x a character or \link{corpus} object containing the texts
 #' @param measure character vector defining the readability measure to calculate.
-#'   Matches are case-insensitive.
+#'   Matches are case-insensitive.  See other valid measures under Details.
 #' @param remove_hyphens if \code{TRUE}, treat constituent words in hyphenated as
 #'   separate terms, for purposes of computing word lengths, e.g.
 #'   "decision-making" as two terms of lengths 8 and 6 characters respectively,
@@ -462,7 +462,7 @@
 #'   Journalism, School of Media Studies, SRM University, India.
 #'
 textstat_readability <- function(x,
-                                 measure,
+                                 measure = "Flesch",
                                  remove_hyphens = TRUE,
                                  min_sentence_length = 1,
                                  max_sentence_length = 10000,
@@ -472,7 +472,7 @@ textstat_readability <- function(x,
 
 #' @export
 textstat_readability.default <- function(x,
-                                        measure,
+                                        measure = "Flesch",
                                         remove_hyphens = TRUE,
                                         min_sentence_length = 1,
                                         max_sentence_length = 10000,
@@ -483,7 +483,7 @@ textstat_readability.default <- function(x,
 #' @importFrom stringi stri_length
 #' @export
 textstat_readability.corpus <- function(x,
-                                        measure,
+                                        measure = "Flesch",
                                         remove_hyphens = TRUE,
                                         min_sentence_length = 1,
                                         max_sentence_length = 10000,
@@ -577,7 +577,7 @@ textstat_readability.corpus <- function(x,
     temp[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
 
     # look up D-C words if needed
-    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK", "Bormuth", "Bormuth.GP") %in% measure)) {
+    if (any(c("Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK", "Bormuth.MC", "Bormuth.GP", "DRP") %in% measure)) {
         temp[, W_wl.Dale.Chall := lengths(tokens_remove(toks,
                                                         pattern = quanteda::data_char_wordlists$dalechall,
                                                         valuetype = "fixed",
@@ -804,7 +804,7 @@ textstat_readability.corpus <- function(x,
 #' @noRd
 #' @export
 textstat_readability.character <- function(x,
-                                           measure,
+                                           measure = "Flesch",
                                            remove_hyphens = TRUE,
                                            min_sentence_length = 1,
                                            max_sentence_length = 10000, ...) {

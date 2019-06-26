@@ -1,31 +1,42 @@
 context('Testing fcm*.R')
 
-test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
-    skip_if_not_installed("text2vec")
-    library("text2vec")
-    
+# test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
+#     skip_if_not_installed("text2vec")
+#     library("text2vec")
+#     
+#     txt <- "A D A C E A D F E B A C E D"
+#     tokens <- txt %>% tolower %>% word_tokenizer
+#     it <- itoken(tokens)
+#     v <- create_vocabulary(it)
+#     vectorizer <- vocab_vectorizer(v)
+#     tcm <- create_tcm(itoken(tokens), vectorizer, skip_grams_window = 3L)
+#     
+#     # convert to a symmetric matrix to facilitate the sorting
+#     tcm <- as.matrix(tcm)
+#     ttcm <- tcm
+#     diag(ttcm) <- 0
+#     tcm <- tcm + t(ttcm)
+#     
+#     # sort the matrix according to rowname-colname and convert back to a upper triangle matrix
+#     tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
+#     tcm[lower.tri(tcm, diag = FALSE)] <- 0
+#     
+#     toks <- tokens(char_tolower(txt), remove_punct = TRUE)
+#     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
+#     fcm <- fcm_sort(fcm)
+#     expect_true(all(round(fcm, 2) == round(tcm, 2)))
+#     
+# })
+
+test_that("fcm works with character and tokens in the same way", {
     txt <- "A D A C E A D F E B A C E D"
-    tokens <- txt %>% tolower %>% word_tokenizer
-    it <- itoken(tokens)
-    v <- create_vocabulary(it)
-    vectorizer <- vocab_vectorizer(v)
-    tcm <- create_tcm(itoken(tokens), vectorizer, skip_grams_window = 3L)
-    
-    # convert to a symmetric matrix to facilitate the sorting
-    tcm <- as.matrix(tcm)
-    ttcm <- tcm
-    diag(ttcm) <- 0
-    tcm <- tcm + t(ttcm)
-    
-    # sort the matrix according to rowname-colname and convert back to a upper triangle matrix
-    tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
-    tcm[lower.tri(tcm, diag = FALSE)] <- 0
-    
-    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
-    fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
-    fcm <- fcm_sort(fcm)
-    expect_true(all(round(fcm, 2) == round(tcm, 2)))
-    
+    fcm_char <- fcm(txt, context = "window", count = "weighted", 
+                    weights = c(3, 2, 1), window = 3)           
+    toks <- tokens(txt)
+    fcm_toks <- fcm(toks, context = "window", count = "weighted",  
+                    weights = c(3, 2, 1), window = 3) 
+    expect_equivalent(round(as.matrix(fcm_char), 2), 
+                      round(as.matrix(fcm_toks), 2))
 })
 
 # Testing weighting function
@@ -34,7 +45,7 @@ test_that("not weighted",{
     txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", window = 3) 
 
-    aMat <- matrix(c(2, 1, 4, 4, 5, 2,
+    mat <- matrix(c(4, 1, 4, 4, 5, 2,
                      0, 0, 1, 1, 2, 1,
                      0, 0, 0, 3, 3, 0,
                      0, 0, 0, 0, 4, 1,
@@ -42,18 +53,14 @@ test_that("not weighted",{
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     fcm <- fcm_sort(fcm)
-    expect_equivalent(as.matrix(fcm), aMat)
+    expect_equivalent(as.matrix(fcm), mat)
 })
 
 test_that("weighted by default",{
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", count = "weighted", window = 3)           
-
-    toks <- tokens(txt)
-    fcmTexts <- fcm(toks, context = "window", count = "weighted", window = 3) 
-    expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
+    fcm <- fcm(txt, context = "window", count = "weighted", window = 3)
     
-    aMat <- matrix(c(0.83, 1, 2.83, 3.33, 2.83, 0.83,
+    mat <- matrix(c(1.67, 1, 2.83, 3.33, 2.83, 0.83,
                      0, 0, 0.5, 0.33, 1.33, 0.50,
                      0, 0, 0, 1.33, 2.33, 0,
                      0, 0, 0, 0, 2.33, 1.00,
@@ -61,18 +68,14 @@ test_that("weighted by default",{
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     fcm <- fcm_sort(fcm)
-    expect_equivalent(aMat, round(as.matrix(fcm), 2))
+    expect_equivalent(mat, round(as.matrix(fcm), 2))
 })
 
 test_that("customized weighting function",{
     txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
 
-    toks <- tokens(txt)
-    fcmTexts <- fcm(toks, context = "window", count = "weighted",  weights = c(3,2,1), window = 3) 
-    expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
-    
-    aMat <- matrix(c(3, 3, 9, 10, 10, 3,
+    mat <- matrix(c(6, 3, 9, 10, 10, 3,
                      0, 0, 2, 1, 4, 2,
                      0, 0, 0, 5, 7, 0,
                      0, 0, 0, 0, 8, 3,
@@ -80,130 +83,87 @@ test_that("customized weighting function",{
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     fcm <- fcm_sort(fcm)
-    expect_equivalent(aMat, round(as.matrix(fcm), 2))
+    expect_equivalent(mat, round(as.matrix(fcm), 2))
 })
 
-# Testing 'ordered' 
-test_that("ordered setting: window",{
+test_that("ordered setting: window", {
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)           
+    fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)     
     fcm <- fcm_sort(fcm)
-    aMat <- matrix(c( 2, 0, 3, 3, 3, 1,
-                      1, 0, 1, 0, 1, 0,
-                      1, 0, 0, 2, 2, 0,
-                      1, 1, 1, 0, 2, 1,
-                      2, 1, 1, 2, 0, 1,
-                      1, 1, 0, 0, 1, 0),
+    mat <- matrix(c(2, 0, 3, 3, 3, 1,
+                     1, 0, 1, 0, 1, 0,
+                     1, 0, 0, 2, 2, 0,
+                     1, 1, 1, 0, 2, 1,
+                     2, 1, 1, 2, 0, 1,
+                     1, 1, 0, 0, 1, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(aMat, 2)))
+    expect_true(all(round(fcm, 2) == round(mat, 2)))
     
-    # Not ordered
     fcm_nOrd <- fcm(txt, context = "window", window = 3, ordered = FALSE, tri = FALSE) 
     fcm_nOrd <- fcm_sort(fcm_nOrd)
-    aMat <- matrix(c(2, 1, 4, 4, 5, 2,
+    mat <- matrix(c(4, 1, 4, 4, 5, 2,
                      1, 0, 1, 1, 2, 1,
                      4, 1, 0, 3, 3, 0,
                      4, 1, 3, 0, 4, 1,
                      5, 2, 3, 4, 0, 2,
                      2, 1, 0, 1, 2, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm_nOrd, 2) == round(aMat, 2)))
+    expect_true(all(round(fcm_nOrd, 2) == round(mat, 2)))
 })
 
 test_that("ordered setting: boolean",{
-    txts <- c("b a b c", "a a c b e", "a c e f g")
-    fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = TRUE, tri = TRUE)           
+    txt <- c("b a b c", "a a c b e", "a c e f g")
+    fcm <- fcm(txt, context = "window", count = "boolean", window = 2, 
+               ordered = TRUE, tri = TRUE)
     fcm <- fcm_sort(fcm)
-    aMat <- matrix(c(1, 2, 3, 1, 0, 0,
+    mat <- matrix(c(1, 2, 3, 1, 0, 0,
                      1, 1, 1, 1, 0, 0,
                      0, 1, 0, 2, 1, 0,
                      0, 0, 0, 0, 1, 1,
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(aMat, as.matrix(fcm))
+    expect_equivalent(mat, as.matrix(fcm))
     
-    #**** not ordered********************
-    fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = FALSE, tri = TRUE)           
-
-    # parallal version
+    fcm <- fcm(txt, context = "window", count = "boolean", window = 2, 
+               ordered = FALSE, tri = TRUE)
     fcm <- fcm_sort(fcm)
-    aMat <- matrix(c(1, 2, 3, 1, 0, 0,
-                     0, 1, 2, 1, 0, 0,
+    mat <- matrix(c(2, 2, 3, 1, 0, 0,
+                     0, 2, 2, 1, 0, 0,
                      0, 0, 0, 2, 1, 0,
                      0, 0, 0, 0, 1, 1,
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(aMat, as.matrix(fcm))
+    expect_equivalent(mat, as.matrix(fcm))
 })
 
-# Testing "count" with multiple documents
-test_that("counting the frequency of the co-occurrences",{
+test_that("window = 2", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
-    fcm <- fcm(txt, context = "document", count = "frequency", tri = TRUE)           
-    fcm <- fcm_sort(fcm)
-    aMat <- matrix(c(4, 6, 6, 3, 1, 1,
-                     0, 1, 2, 0, 0, 0,
-                     0, 0, 0, 2, 1, 1,
-                     0, 0, 0, 0, 1, 1,
-                     0, 0, 0, 0, 0, 1,
-                     0, 0, 0, 0, 0, 0),
-                   nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(aMat, 2)))
-    expect_equal(fcm@margin, colSums(dfm(txt)))
-})
-
-test_that("counting the co-occurrences in 'boolean' way",{
-    txt <- c("a a a b b c", "a a c e", "a c e f g")
-    fcm <- fcm(txt, context = "document", count = "boolean")           
-    fcm <- fcm_sort(fcm)
-    
-    mt <- matrix(c(2, 1, 3, 2, 1, 1,
-                   0, 1, 1, 0, 0, 0,
-                   0, 0, 0, 2, 1, 1,
-                   0, 0, 0, 0, 1, 1,
-                   0, 0, 0, 0, 0, 1,
-                   0, 0, 0, 0, 0, 0),
-                   nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(mt, 2)))
-    expect_equal(fcm@margin, colSums(dfm(txt)))
-})
-
-# Testing the setting of window size
-test_that("window = 2",{
-    txts <- c("a a a b b c", "a a c e", "a c e f g")
-    fcm <- fcm(txts, context = "window", count = "boolean", window = 2)           
-
-    
-    toks <- tokens(txts)
-    fcmTexts <- fcm(toks, context = "window", count = "boolean", window = 2) 
-    expect_equivalent(as.matrix(fcm), as.matrix(fcmTexts))
-    
-    mt <- matrix(c(2, 1, 2, 2, 0, 0,
-                   0, 1, 1, 0, 0, 0,
+    fcm <- fcm(txt, context = "window", count = "boolean", window = 2)           
+    mat <- matrix(c(4, 1, 2, 2, 0, 0,
+                   0, 2, 1, 0, 0, 0,
                    0, 0, 0, 2, 1, 0,
                    0, 0, 0, 0, 1, 1,
                    0, 0, 0, 0, 0, 1,
                    0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     fcm <- fcm_sort(fcm)
-    expect_equivalent(mt, as.matrix(fcm))
-    expect_equal(fcm@margin, colSums(dfm(toks)))
+    expect_equivalent(mat, as.matrix(fcm))
 })
 
-test_that("window = 3",{
-    txts <- c("a a a b b c", "a a c e", "a c e f g")
-    fcm <- fcm(txts, context = "window", count = "boolean", window = 3)           
+test_that("window = 3", {
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    fcm <- fcm(txt, context = "window", count = "boolean", window = 3)           
     fcm <- fcm_sort(fcm)
-    aMat <- matrix(c(2, 1, 3, 2, 1, 0,
-                     0, 1, 1, 0, 0, 0,
-                     0, 0, 0, 2, 1, 1,
-                     0, 0, 0, 0, 1, 1,
-                     0, 0, 0, 0, 0, 1,
-                     0, 0, 0, 0, 0, 0),
+    mat <- matrix(c(4, 1, 3, 2, 1, 0,
+                    0, 2, 1, 0, 0, 0,
+                    0, 0, 0, 2, 1, 1,
+                    0, 0, 0, 0, 1, 1,
+                    0, 0, 0, 0, 0, 1,
+                    0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(aMat, 2)))
+    expect_equivalent(mat, as.matrix(fcm))
 })
 
 test_that("fcm.dfm works same as fcm.tokens", {
@@ -241,8 +201,8 @@ test_that("fcm works as expected for tokens_hashed", {
 })
 
 test_that("fcm print works as expected", {
-    txts <- c("a a a b b c", "a a c e", "a c e f g")
-    testfcm <- fcm(txts, context = "document", count = "frequency", tri = TRUE) 
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    testfcm <- fcm(txt, context = "document", count = "frequency", tri = TRUE) 
     expect_output(print(testfcm),
                   "^Feature co-occurrence matrix of: 6 by 6 features.")
     expect_output(print(testfcm[1:5, 1:5]),
@@ -260,10 +220,17 @@ test_that("fcm works the same for different object types", {
     expect_identical(fcm(txt), fcm(tokens(txt)))
 })
 
-test_that("fcm expects warning for a wrong weights length", {
+test_that("fcm expects error for wrong weight or window", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
-    expect_warning(fcm(tokens(txt), context = "window", window = 2, count = "weighted", weights = c(1,2,3)),
-                 "weights length is not equal to the window size, weights are assigned by default!")
+    toks <- tokens(txt)
+    expect_error(fcm(toks, context = "window", window = 0),
+                "window size must be at least 1")
+    expect_error(fcm(toks, context = "window", window = 2, weight = 0.1,
+                     count = "weighted", weights = c(1,2,3)),
+                 "weights length must be equal to the window size")
+    expect_error(fcm(toks, context = "window", window = 2, weight = c(0.1, 0.2, 0.3),
+                     count = "weighted", weights = c(1,2,3)),
+                 "weights length must be equal to the window size")
 })
 
 
