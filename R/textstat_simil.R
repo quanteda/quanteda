@@ -376,11 +376,12 @@ as.list.textstat_proxy <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...
     }
     
     # NA the diagonal, if diag = FALSE
-    if (!diag) x <- diag_to_na(x)
+    if (!diag) 
+        x <- diag_to_na(x)
 
     x <- as(x, "dgTMatrix")
-    result <- split(structure(x@x, names = rownames(x)[x@i+1]), 
-                    f = factor(colnames(x)[x@j+1], levels = colnames(x)))
+    result <- split(structure(x@x, names = rownames(x)[x@i + 1L]), 
+                    f = factor(colnames(x)[x@j + 1], levels = colnames(x)))
 
     if (sorted)
         result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
@@ -453,11 +454,14 @@ diag_to_na <- function(x) {
     if (is(x, "symmetricMatrix")) {
         diag(x) <- NA
     } else {
-        # NA same-item pairs
-        to_na <- data.frame(x = which(rownames(x) %in% colnames(x)), 
-                            y = which(colnames(x) %in% rownames(x)))
-        for (i in seq_len(nrow(to_na)))
-            x[to_na$x[i], to_na$y[i]] <- NA
+        x <- as(x, "dgTMatrix")
+        i <- which(rownames(x) %in% colnames(x)) - 1L
+        j <- which(colnames(x) %in% rownames(x)) - 1L
+        l <- match(x@i, i) == match(x@j, j)
+        l[is.na(l)] <- FALSE
+        x@x <- c(x@x[!l], rep(NA, length(i)))
+        x@i <- c(x@i[!l], i)
+        x@j <- c(x@j[!l], j)
     }
     return(x)
 }
