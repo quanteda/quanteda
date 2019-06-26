@@ -139,7 +139,7 @@ as.dist(tstat3)
 
 # distances for specific documents
 textstat_dist(dfmat, dfmat["2017-Trump",], margin = "documents")
-(tstat4 <- textstat_dist(dfmat, c("2009-Obama" , "2013-Obama"), margin = "documents"))
+(tstat4 <- textstat_dist(dfmat, dfmat[c("2009-Obama" , "2013-Obama"),], margin = "documents"))
 as.matrix(tstat4)
 as.list(tstat4)
 
