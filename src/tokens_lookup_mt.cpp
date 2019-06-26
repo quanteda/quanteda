@@ -60,17 +60,6 @@ Text lookup(Text tokens,
                         }
                     }
                 }
-            } else {
-                for (auto it = range.first; it != range.second; ++it) {
-                    //Rcout << it->second << "\n";
-                    unsigned int id = it->second;
-                    //Rcout << "id " << id << "\n";
-                    keys[i].push_back(id); // keep multiple keys in the same position
-                    flags_match_global[i] = true;
-                    match = true;
-                    match_count++;
-                    
-                }
             }
             if (match)
                 std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
