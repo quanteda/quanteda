@@ -337,12 +337,12 @@ is_glob <- function(pattern) {
     return(any(stri_detect_fixed(pattern, "*")) || any(stri_detect_fixed(pattern, "?")))
 }
 
-#' Unlist a list of IntegerVector safely
+#' Unlist a list of integer vectors safely
 #' @param x a list of integers
 #' @param unique if \code{TURE} remove duplicated elements
 #' @param ... passed to \code{unlist}
 #' @keywords internal
-#' @return IntegerVector
+#' @return integer vector
 unlist_integer <- function(x, unique = FALSE, ...) {
     stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "integer"))
     result <- integer()
@@ -354,12 +354,12 @@ unlist_integer <- function(x, unique = FALSE, ...) {
     return(result)
 }
 
-#' Unlist a list of CharacterVector safely
+#' Unlist a list of character vectors safely
 #' @param x a list of integers
 #' @param unique if \code{TURE} remove duplicated elements
 #' @param ... passed to \code{unlist}
 #' @keywords internal
-#' @return CharacterVector
+#' @return character vactor
 unlist_character <- function(x, unique = FALSE, ...) {
     stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "character"))
     result <- character()

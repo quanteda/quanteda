@@ -2,7 +2,7 @@
 % Please edit documentation in R/pattern2fixed.R
 \name{unlist_character}
 \alias{unlist_character}
-\title{Unlist a list of CharacterVector safely}
+\title{Unlist a list of character vectors safely}
 \usage{
 unlist_character(x, unique = FALSE, ...)
 }
@@ -14,9 +14,9 @@ unlist_character(x, unique = FALSE, ...)
 \item{...}{passed to \code{unlist}}
 }
 \value{
-CharacterVector
+character vactor
 }
 \description{
-Unlist a list of CharacterVector safely
+Unlist a list of character vectors safely
 }
 \keyword{internal}

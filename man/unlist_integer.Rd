@@ -2,7 +2,7 @@
 % Please edit documentation in R/pattern2fixed.R
 \name{unlist_integer}
 \alias{unlist_integer}
-\title{Unlist a list of IntegerVector safely}
+\title{Unlist a list of integer vectors safely}
 \usage{
 unlist_integer(x, unique = FALSE, ...)
 }
@@ -14,9 +14,9 @@ unlist_integer(x, unique = FALSE, ...)
 \item{...}{passed to \code{unlist}}
 }
 \value{
-IntegerVector
+integer vector
 }
 \description{
-Unlist a list of IntegerVector safely
+Unlist a list of integer vectors safely
 }
 \keyword{internal}
