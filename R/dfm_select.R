@@ -93,15 +93,14 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     is_dfm <- FALSE
-    padding <- FALSE
     feat <- featnames(x)
     
-    id_keep <- seq_len(nfeat(x))
+    id <- seq_len(nfeat(x))
     if (is.null(pattern)) {
         if (selection == "keep") {
-            id <- seq_len(nfeat(x))
+            id_pat <- seq_len(nfeat(x))
         } else {
-            id <- integer()
+            id_pat <- integer()
         }
     } else {
         # special handling if pattern is a dfm
@@ -111,7 +110,6 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             case_insensitive <- FALSE
             if (selection == "keep") {
                 is_dfm <- TRUE
-                padding <- TRUE
             }
         } else if (is.dictionary(pattern)) {
             pattern <- stri_replace_all_fixed(
@@ -120,19 +118,20 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                 attr(x, "concatenator")
             )
         }
-        ids <- pattern2id(pattern, feat, valuetype, case_insensitive)
-        id <- unlist_integer(ids, use.names = FALSE)
-        id[id == 0] <- 1 # padding is in the first column
+        ids_pat <- pattern2id(pattern, feat, valuetype, case_insensitive)
+        id_pat <- unlist_integer(ids_pat, unique = TRUE, use.names = FALSE)
+        if ("" %in% feat) id_pat[id_pat == 0] <- 1L
     }
-    
     if (selection == "keep") {
-        id_keep <- id
+        id <- sort(id_pat)
     } else {
-        id_keep <- setdiff(id_keep, id)
+        id <- setdiff(id, id_pat)
     }
     
     # select features based on feature length
-    if (!padding) {
+    if (is_dfm) {
+        x <- dfm_match(x, pattern)
+    } else {
         if (!is.null(min_nchar) | !is.null(max_nchar)) {
             len <- stri_length(feat)
             is_short <- is_long <- rep(FALSE, length(len))
@@ -141,26 +140,17 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             if (!is.null(max_nchar))
                 is_long <- max_nchar < len
             id_out <- which(is_short | is_long)
-            id_keep <- setdiff(id_keep, id_out)
+            id <- setdiff(id, id_out)
+        }
+        x <- x[, id] 
+    } 
+    if (verbose) {
+        if ("keep" == selection) {
+            message_select("keep", nfeat(x), 0)
+        } else {
+            message_select("remove", length(feat) - nfeat(x), 0)
         }
     }
-    
-    if (!length(id_keep)) id_keep <- 0
-    x <- x[, id_keep]    
-
-    if (valuetype == "fixed" && padding) {
-        x <- pad_dfm(x, pattern)
-        x <- set_dfm_slots(x, attrs)
-    }
-    if (is_dfm) {
-        x <- x[, pattern] # sort features into original order
-    } else {
-        x <- x
-    }
-    
-    if (verbose)
-        message_select(selection, length(id), 0, nfeat(x) - length(feat), 0)
-    #attributes(x, FALSE) <- attrs
     return(x)
 }
 
