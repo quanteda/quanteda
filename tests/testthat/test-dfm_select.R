@@ -336,3 +336,9 @@ test_that("dfm_remove works when selection is a dfm (#1320)", {
         c("b", "c")
     )
 })
+
+test_that("really long words are not removed in tokens() (#1713)", {
+    dfmat <- dfm("one two DonaudampfschiffahrtselektrizittenhauptbetriebswerkbauunterbeamtengesellschaftXXX")
+    expect_equivalent(nfeat(dfmat), 3)
+})
+
