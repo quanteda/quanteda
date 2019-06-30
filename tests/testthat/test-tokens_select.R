@@ -541,3 +541,9 @@ test_that("tokens_removekeep fail if selection argument is used", {
         "tokens_keep cannot include selection argument"
     )
 })
+
+test_that("really long words are not removed in tokens() (#1713)", {
+    toks <- tokens("one two DonaudampfschiffahrtselektrizittenhauptbetriebswerkbauunterbeamtengesellschaftXXX")
+    expect_equivalent(ntoken(toks), 3)
+})
+

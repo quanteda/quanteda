@@ -300,7 +300,7 @@ tokens.tokens <-  function(x,
     }
 
     if (length(regex))
-        x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", padding = FALSE)
+        x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", max_nchar = NULL, padding = FALSE)
     
     if (!identical(ngrams, 1L) || !identical(skip, 0L)) {
         if (verbose) catm("...creating ngrams\n")
@@ -715,7 +715,7 @@ tokens_internal <- function(x,
         if (remove_punct & !remove_twitter)
             regex <- c(regex, "^#+$|^@+$") # remove @ # only if not part of Twitter names
         if (length(regex))
-            x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex")
+            x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", max_nchar = NULL)
     }
     
     if (!identical(ngrams, 1L)) {
