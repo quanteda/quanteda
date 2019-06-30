@@ -11,7 +11,7 @@
 \usage{
 dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1L, max_nchar = 79L,
+  min_nchar = NULL, max_nchar = NULL,
   verbose = quanteda_options("verbose"))
 
 dfm_remove(x, ...)
@@ -44,12 +44,10 @@ details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
-\item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
-in characters for features to be removed or kept; defaults are 1 and
-\href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
- (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
-applied after (and hence, in addition to) any selection based on pattern
-matches.}
+\item{min_nchar, max_nchar}{optional numerics specifying the minimum and
+maximum length in characters for tokens to be removed or kept; defaults are
+\code{NULL} for no limits.  These are applied after (and hence, in addition
+to) any selection based on pattern matches.}
 
 \item{verbose}{if \code{TRUE} print message about how many pattern were
 removed}
