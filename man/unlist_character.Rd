@@ -14,7 +14,7 @@ unlist_character(x, unique = FALSE, ...)
 \item{...}{passed to \code{unlist}}
 }
 \value{
-character vactor
+character vector
 }
 \description{
 Unlist a list of character vectors safely

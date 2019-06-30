@@ -359,7 +359,7 @@ unlist_integer <- function(x, unique = FALSE, ...) {
 #' @param unique if \code{TURE} remove duplicated elements
 #' @param ... passed to \code{unlist}
 #' @keywords internal
-#' @return character vactor
+#' @return character vector
 unlist_character <- function(x, unique = FALSE, ...) {
     stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "character"))
     result <- character()
