@@ -1,5 +1,5 @@
 #include "armadillo.h"
-#include "quanteda.h"
+#include "../include/quanteda.h"
 using namespace quanteda;
 using namespace RcppParallel;
 using namespace Rcpp;
