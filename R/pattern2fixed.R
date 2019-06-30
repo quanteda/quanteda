@@ -337,6 +337,42 @@ is_glob <- function(pattern) {
     return(any(stri_detect_fixed(pattern, "*")) || any(stri_detect_fixed(pattern, "?")))
 }
 
+#' Unlist a list of integer vectors safely
+#' @param x a list of integers
+#' @param unique if \code{TURE} remove duplicated elements
+#' @param ... passed to \code{unlist}
+#' @keywords internal
+#' @return integer vector
+unlist_integer <- function(x, unique = FALSE, ...) {
+    stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "integer"))
+    result <- integer()
+    if (!length(x))
+        return(result)
+    result <- unlist(x, ...)
+    if (unique)
+        result <- unique(result)
+    return(result)
+}
+
+#' Unlist a list of character vectors safely
+#' @param x a list of integers
+#' @param unique if \code{TURE} remove duplicated elements
+#' @param ... passed to \code{unlist}
+#' @keywords internal
+#' @return character vector
+unlist_character <- function(x, unique = FALSE, ...) {
+    stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "character"))
+    result <- character()
+    if (!length(x))
+        return(result)
+    result <- unlist(x, ...)
+    if (unique)
+        result <- unique(result)
+    return(result)
+}
+
+
+
 # internal-only aliases for backward compatibility
 # TODO: this should be removed with in a year (by April 2019).
 regex2id <- pattern2id

@@ -15,12 +15,10 @@
 #'   For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
 #'   below.
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
-#' @param min_nchar,max_nchar numerics specifying the minimum and maximum length
-#'   in characters for features to be removed or kept; defaults are 1 and
-#'   \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
-#'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
-#'   applied after (and hence, in addition to) any selection based on pattern
-#'   matches.
+#' @param min_nchar,max_nchar optional numerics specifying the minimum and
+#'   maximum length in characters for tokens to be removed or kept; defaults are
+#'   \code{NULL} for no limits.  These are applied after (and hence, in addition
+#'   to) any selection based on pattern matches.
 #' @param verbose if \code{TRUE} print message about how many pattern were
 #'   removed
 #' @details \code{dfm_remove} and \code{fcm_remove} are simply a convenience
@@ -67,7 +65,7 @@ dfm_select <- function(x, pattern = NULL,
                        selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
-                       min_nchar = 1L, max_nchar = 79L,
+                       min_nchar = NULL, max_nchar = NULL,
                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_select")
 }
@@ -77,7 +75,7 @@ dfm_select.default <-  function(x, pattern = NULL,
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
-                            min_nchar = 1L, max_nchar = 79L,
+                            min_nchar = NULL, max_nchar = NULL,
                             verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "dfm_select"))
 }
@@ -87,7 +85,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
-                            min_nchar = 1L, max_nchar = 79L,
+                            min_nchar = NULL, max_nchar = NULL,
                             verbose = quanteda_options("verbose")) {
     
     x <- as.dfm(x)
@@ -95,69 +93,65 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     is_dfm <- FALSE
-    padding <- FALSE
-    nfeat_org <- nfeat(x)
+    feat <- featnames(x)
     
-    feature_keep <- seq_len(nfeat(x))
-    if (!is.null(pattern)) {
+    id <- seq_len(nfeat(x))
+    if (is.null(pattern)) {
+        if (selection == "keep") {
+            id_pat <- seq_len(nfeat(x))
+        } else {
+            id_pat <- integer()
+        }
+    } else {
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
+            #.Deprecated(msg = "pattern = dfm is deprecated; use dfm_match() instead")
             pattern <- featnames(pattern)
             valuetype <- "fixed"
             case_insensitive <- FALSE
             if (selection == "keep") {
                 is_dfm <- TRUE
-                padding <- TRUE
             }
         } else if (is.dictionary(pattern)) {
-            pattern <- 
-                stri_replace_all_fixed(unlist(pattern, use.names = FALSE), 
-                                       ' ', 
-                                       attr(x, "concatenator"))
+            pattern <- stri_replace_all_fixed(
+                unlist(pattern, use.names = FALSE), 
+                ' ', 
+                attr(x, "concatenator")
+            )
         }
-        feature_id <- unlist(pattern2id(pattern, featnames(x), valuetype, 
-                                         case_insensitive), use.names = FALSE)
-        
-        if (!is.null(feature_id)) 
-            feature_id <- sort(feature_id) # keep the original column order
-    } else {
-        if (selection == "keep") {
-            feature_id <- seq_len(nfeat(x))
-        } else {
-            feature_id <- NULL
-        }
+        ids_pat <- pattern2id(pattern, feat, valuetype, case_insensitive)
+        id_pat <- unlist_integer(ids_pat, unique = TRUE, use.names = FALSE)
+        if ("" %in% feat) id_pat[id_pat == 0] <- 1L
     }
-    
     if (selection == "keep") {
-        feature_keep <- feature_id
+        id <- sort(id_pat)
     } else {
-        feature_keep <- setdiff(feature_keep, feature_id)
+        id <- setdiff(id, id_pat)
     }
     
     # select features based on feature length
-    if (!padding) {
-        feature_keep <- intersect(feature_keep, which(stri_length(featnames(x)) >= min_nchar & 
-                                                      stri_length(featnames(x)) <= max_nchar))
-    }
-    
-    if (!length(feature_keep)) feature_keep <- 0
-    x <- x[, feature_keep]    
-
-    if (valuetype == "fixed" && padding) {
-        x <- pad_dfm(x, pattern)
-        x <- set_dfm_slots(x, attrs)
-    }
     if (is_dfm) {
-        x <- x[, pattern] # sort features into original order
+        x <- dfm_match(x, pattern)
     } else {
-        x <- x
-    }
-    
+        if (!is.null(min_nchar) | !is.null(max_nchar)) {
+            len <- stri_length(feat)
+            is_short <- is_long <- rep(FALSE, length(len))
+            if (!is.null(min_nchar))
+                is_short <- len < min_nchar
+            if (!is.null(max_nchar))
+                is_long <- max_nchar < len
+            id_out <- which(is_short | is_long)
+            id <- setdiff(id, id_out)
+        }
+        x <- x[, id] 
+    } 
     if (verbose) {
-        message_select(selection, 
-                       length(feature_id), 0, nfeat(x) - nfeat_org, 0)
+        if ("keep" == selection) {
+            message_select("keep", nfeat(x), 0)
+        } else {
+            message_select("remove", length(feat) - nfeat(x), 0)
+        }
     }
-    #attributes(x, FALSE) <- attrs
     return(x)
 }
 
