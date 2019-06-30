@@ -128,14 +128,17 @@ tokens_select.tokens <- function(x, pattern = NULL,
         }
     } else {
         ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, "concatenator"))
-        if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     }
 
     # selection by nchar
     if (!is.null(min_nchar) | !is.null(max_nchar)) {
-        if (is.null(min_nchar)) min_nchar <- 0
-        if (is.null(max_nchar)) max_nchar <- 10000
-        id_out <- which(stri_length(type) < min_nchar | max_nchar < stri_length(type))
+        len <- stri_length(type)
+        is_short <- is_long <- rep(FALSE, length(len))
+        if (!is.null(min_nchar))
+            is_short <- len < min_nchar
+        if (!is.null(max_nchar))
+            is_long <- max_nchar < len
+        id_out <- which(is_short | is_long)
         if (length(id_out)) {
             if (selection == "keep") {
                 if (all(lengths(ids) == 1)) {
