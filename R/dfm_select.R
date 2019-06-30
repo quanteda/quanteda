@@ -120,11 +120,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                 attr(x, "concatenator")
             )
         }
-        ids <- pattern2id(pattern, featnames(x), valuetype, case_insensitive)
-        id <- unique(unlist(ids, use.names = FALSE))
+        ids <- pattern2id(pattern, feat, valuetype, case_insensitive)
+        id <- unlist_integer(ids, use.names = FALSE)
         id[id == 0] <- 1 # padding is in the first column
-        if (!is.null(id)) 
-            id <- sort(id) # keep the original column order
     }
     
     if (selection == "keep") {
