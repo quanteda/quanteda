@@ -103,9 +103,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             id_pat <- integer()
         }
     } else {
-        .Deprecated(msg = "pattern = dfm is deprecated; use dfm_match() instead")
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
+            #.Deprecated(msg = "pattern = dfm is deprecated; use dfm_match() instead")
             pattern <- featnames(pattern)
             valuetype <- "fixed"
             case_insensitive <- FALSE
