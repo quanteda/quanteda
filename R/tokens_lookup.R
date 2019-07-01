@@ -143,7 +143,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (capkeys)
         key <- char_toupper(key)
     if (exclusive) {
-        overlap <- match(overlap, c("local", "global"))
         if (!is.null(nomatch)) {
             x <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, overlap, 1)
         } else {
