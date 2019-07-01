@@ -60,16 +60,16 @@ setValidity("textstat_simil_sparse", function(object) {
 setMethod("show", "textstat_proxy",
           function(object) {
               cat(object@type, " object; method = \"", object@method, "\"\n", sep = "")
-              Matrix::printSpMatrix(as(object, "sparseMatrix"), 
-                                    digits = min(getOption("digits"), 3), 
+              Matrix::printSpMatrix(as(object, "sparseMatrix"),
+                                    digits = min(getOption("digits"), 3),
                                     col.names = TRUE, align = "right")
           })
 
-setMethod("head", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
+setMethod("head", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
     selectMethod(x, "Matrix")
 })
 
-setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
+setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
     selectMethod(x, "Matrix")
 })
 
@@ -88,21 +88,21 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' @name head.textstat_proxy
 #' @method head textstat_proxy
 #' @keywords textstat internal
-head.textstat_proxy <- function(x, n = 6L, ...) { 
+head.textstat_proxy <- function(x, n = 6L, ...) {
     head(as.matrix(x), n)
 }
 
 #' @rdname head.textstat_proxy
 #' @method tail textstat_proxy
 #' @export
-tail.textstat_proxy <- function(x, n = 6L, ...) { 
+tail.textstat_proxy <- function(x, n = 6L, ...) {
     tail(as.matrix(x), n)
 }
 
-setMethod("head", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
+setMethod("head", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
     UseMethod("head")
 })
-setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) { 
+setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
     UseMethod("tail")
 })
 
@@ -193,12 +193,12 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                                method = c("correlation", "cosine", "jaccard", "ejaccard",
                                           "dice", "edice", "hamman", "simple matching"),
                                min_simil = NULL, ...) {
-    
+
     if (!is.null(selection))
         .Deprecated(msg = "'selection' is deprecated. Use 'y' instead.")
     check_dots(list(...))
     x <- as.dfm(x)
-    
+
     margin <- match.arg(margin)
     method <- match.arg(method)
 
@@ -223,33 +223,33 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
             if (any(is.na(i)))
                 stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
             if (margin == "features") {
-                y <- x[,i]
+                y <- x[, i]
             } else {
-                y <- x[i,]
+                y <- x[i, ]
             }
         }
     } else {
         y <- as.dfm(y)
     }
-    temp <- textstat_proxy(x, y, margin, method, 
+    temp <- textstat_proxy(x, y, margin, method,
                            min_proxy = min_simil, use_na = TRUE)
-    
+
     if (is.null(min_simil)) {
         if (identical(x, y)) {
-            return(new("textstat_simil_symm", as(temp, "dsyMatrix"), 
+            return(new("textstat_simil_symm", as(temp, "dsyMatrix"),
                        method = method,  margin = margin,
                        type = "textstat_simil"))
         } else {
-            return(new("textstat_simil", as(temp, "dgeMatrix"), 
+            return(new("textstat_simil", as(temp, "dgeMatrix"),
                        method = method, margin = margin,
                        type = "textstat_simil"))
         }
     } else {
-        return(new("textstat_simil_sparse", as(temp, "dgTMatrix"), 
+        return(new("textstat_simil_sparse", as(temp, "dgTMatrix"),
                    method = method, margin = margin,
                    type = "textstat_simil",
                    min_simil = min_simil))
-    
+
     }
 }
 
@@ -330,23 +330,23 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
             if (any(is.na(i)))
                 stop(paste(selection[is.na(i)], collapse = ", "), " does not exist")
             if (margin == "features") {
-                y <- x[,i]
+                y <- x[, i]
             } else {
-                y <- x[i,]
+                y <- x[i, ]
             }
         }
     } else {
         y <- as.dfm(y)
     }
-    temp <- textstat_proxy(x, y, margin, method, 
+    temp <- textstat_proxy(x, y, margin, method,
                            p = p, use_na = TRUE)
-    
+
     if (identical(x, y)) {
-        return(new("textstat_dist_symm", as(temp, "dsyMatrix"), 
+        return(new("textstat_dist_symm", as(temp, "dsyMatrix"),
                    method = method,  margin = margin,
                    type = "textstat_dist_symm"))
     } else {
-        return(new("textstat_dist", as(temp, "dgeMatrix"), 
+        return(new("textstat_dist", as(temp, "dgeMatrix"),
                    method = method,  margin = margin,
                    type = "textstat_dist"))
     }
@@ -368,19 +368,19 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
 #' @keywords textstat
 #' @export
 as.list.textstat_proxy <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...) {
-    if (!is.null(n) && n < 1) 
+    if (!is.null(n) && n < 1)
         stop("n must be 1 or greater")
     if (!is.null(n) && !sorted) {
         warning("ignoring n when sorted = FALSE")
         n <- NULL
     }
-    
+
     # NA the diagonal, if diag = FALSE
-    if (!diag) 
+    if (!diag)
         x <- diag_to_na(x)
 
     x <- as(x, "dgTMatrix")
-    result <- split(structure(x@x, names = rownames(x)[x@i + 1L]), 
+    result <- split(structure(x@x, names = rownames(x)[x@i + 1L]),
                     f = factor(colnames(x)[x@j + 1], levels = colnames(x)))
 
     if (sorted)
@@ -402,11 +402,11 @@ as.list.textstat_proxy <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...
 #'   \code{textstat_dist} object returns a data.frame of pairwise combinations
 #'   and the and their similarity or distance value.
 #' @export
-as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE, 
+as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
                                             diag = FALSE, upper = FALSE,  ...) {
     method <- x@method
     margin <- x@margin
-    
+
     if (!diag)
         x <- diag_to_na(x)
     if (setequal(rownames(x), colnames(x))) {
@@ -420,17 +420,17 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
             warning("upper = TRUE has no effect when columns have been selected")
         x <- as(x, "dgTMatrix")
     }
-        
-    result <- data.frame(x = factor(x@i + 1L, 
+
+    result <- data.frame(x = factor(x@i + 1L,
                                     levels = seq_along(rownames(x)), labels = rownames(x)),
-                         y = factor(match(colnames(x)[x@j + 1L], rownames(x)), 
+                         y = factor(match(colnames(x)[x@j + 1L], rownames(x)),
                                     levels = seq_along(rownames(x)), labels = rownames(x)),
                          stat = x@x,
                          stringsAsFactors = FALSE)
     result <- subset(result, !is.na(stat))
-    
+
     # eliminate same pairs when selection was used
-    if (!diag && !setequal(rownames(x), colnames(x))) 
+    if (!diag && !setequal(rownames(x), colnames(x)))
         result <- result[result[, 1] != result[, 2], ]
 
     # replace x and y with margin names
@@ -440,7 +440,7 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
     # drop row names
     row.names(result) <- NULL
     return(result)
-} 
+}
 
 #' convert same-value pairs to NA in a textstat_proxy object
 #' 
@@ -526,7 +526,7 @@ textstat_proxy <- function(x, y = NULL,
         if (!identical(docnames(x), docnames(y)))
             stop("x and y must contain the same documents")
     }
-    if (method %in% c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", 
+    if (method %in% c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice",
                       "hamman", "simple matching", "faith")) {
         if (identical(x, y)) {
             result <- proxyC::simil(x, NULL, 2, method, min_simil = min_proxy, rank = rank)
@@ -550,9 +550,9 @@ textstat_proxy <- function(x, y = NULL,
             na2 <- proxyC::colZeros(y) == nrow(y)
         }
         if (any(na1))
-            result[na1,,drop = FALSE] <- NA
+            result[na1, , drop = FALSE] <- NA
         if (any(na2))
-            result[,na2,drop = FALSE] <- NA
+            result[, na2, drop = FALSE] <- NA
     }
     return(result)
 }

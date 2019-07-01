@@ -6,8 +6,7 @@ output:
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE, 
-                      comment = "##")
+knitr::opts_chunk$set(collapse = FALSE, comment = "##")
 ```
 
 本ページは[Quick Start Guide](../quickstart.html)の日本語訳であり，英語のテキスト分析を通じて**quanteda**の基本的な使い方を説明する．日本語の分析法に関しては，以下のページを参照．
@@ -20,7 +19,7 @@ knitr::opts_chunk$set(collapse = FALSE,
 **quanteda**は[CRAN](https://CRAN.R-project.org/package=quanteda)からインストールできる．GUIのRパッケージインストーラを使用してインストールするか，次のコマンドを実行する．
 
 ```{r, eval = FALSE}
-install.packages("quanteda") 
+install.packages("quanteda")
 ```
 
 GitHubから最新の開発バージョンをインストールする方法については，https://github.com/quanteda/quanteda を参照．
@@ -121,16 +120,16 @@ summary(corpus(dat_txtone), 5)
 dat_txtmultiple1 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 summary(corpus(dat_txtmultiple1), 5)
 # multiple text files with docvars from filenames
-dat_txtmultiple2 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
-                             docvarsfrom = "filenames", sep = "-", 
+dat_txtmultiple2 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
+                             docvarsfrom = "filenames", sep = "-",
                              docvarnames = c("Year", "President"))
 summary(corpus(dat_txtmultiple2), 5)
 # XML data
-dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
                   textfield = "COMMON")
 summary(corpus(dat_xml), 5)
 # csv file
-write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural), 
+write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural),
                      docvars(data_corpus_inaugural)),
           file = "/tmp/inaug_texts.csv", row.names = FALSE)
 dat_csv <- readtext("/tmp/inaug_texts.csv", textfield = "inaug_speech")
@@ -162,7 +161,7 @@ summary(data_corpus_irishbudget2010)
 tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
-    geom_line() + 
+    geom_line() +
     geom_point() +
     scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
     theme_bw()
@@ -232,7 +231,7 @@ head(docvars(data_corpus_inaugural))
 `tokens()`は保守的に設計されており、ユーザーが明示的に指示を与えないかぎりは，要素を削除しない．
 
 ```{r}
-txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
+txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!",
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokens(txt)
 tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
@@ -245,16 +244,16 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FA
 また，`tokens()`には個々の文字をトークン化するオプションもある．
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
-tokens("Great website: http://textasdata.com?page=123.", what = "character", 
+tokens("Great website: http://textasdata.com?page=123.", what = "character",
          remove_separators = FALSE)
 ```
 
 もしくは，一文ごとにトークン化するオプションもある．
 ```{r}
 # sentence level         
-tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
-         "Today is Thursday in Canberra:  It is yesterday in London.", 
-         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
+tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
+         "Today is Thursday in Canberra:  It is yesterday in London.",
+         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"),
          what = "sentence")
 ```
 
@@ -274,8 +273,8 @@ dfmat_inaug_post1990[, 1:5]
 
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990, 
-                            remove = stopwords("english"), 
+dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990,
+                            remove = stopwords("english"),
                             stem = TRUE, remove_punct = TRUE)
 dfmat_inaug_post1990[, 1:5]
 ```
@@ -308,7 +307,7 @@ dfmを`textplot_wordcloud()`に渡すことで，ワードクラウドを描画�
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
 textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
-                   rotation = .25, 
+                   rotation = .25,
                    color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
@@ -317,7 +316,7 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 **quanteda**では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．
 
 ```{r}
-dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party", 
+dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party",
                   remove = stopwords("english"), remove_punct = TRUE)
 ```
 
@@ -368,8 +367,8 @@ dfmat_inaug_subset[, 1:10]
 ```{r fig.width = 6}
 dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
                             remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-tstat_obama <- textstat_simil(dfmat_inaug_post1980, 
-                              dfmat_inaug_post1980[c("2009-Obama" , "2013-Obama"),], 
+tstat_obama <- textstat_simil(dfmat_inaug_post1980,
+                              dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ],
                               margin = "documents", method = "cosine")
 tstat_obama
 # dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")
@@ -379,7 +378,7 @@ tstat_obama
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
 data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 
-dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
+dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
@@ -391,13 +390,13 @@ pres_cluster <- hclust(as.dist(tstat_dist))
 # label with document names
 pres_cluster$labels <- docnames(dfmat_sotu)
 # plot as a dendrogram
-plot(pres_cluster, xlab = "", sub = "", 
+plot(pres_cluster, xlab = "", sub = "",
      main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 文書間と同様に用語間の類似性も測定できる．
 ```{r}
-tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[,c("fair", "health", "terror")], 
+tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                           method = "cosine", margin = "features")
 lapply(as.list(tstat_sim), head, 10)
 ```
@@ -419,7 +418,7 @@ textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 `convert()`を用いると，dfmを**topicmodels**の`LDA()`形式のデータに転換し，簡単にトピックモデルを適用できる．
 
 ```{r}
-dfmat_ire2 <- dfm(data_corpus_irishbudget2010, 
+dfmat_ire2 <- dfm(data_corpus_irishbudget2010,
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
 dfmat_ire2 <- dfm_trim(dfmat_ire2, min_termfreq = 4, max_docfreq = 10)
 dfmat_ire2

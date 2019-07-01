@@ -388,7 +388,8 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 We can also look at term similarities:
 ```{r}
-sim <- textstat_simil(pres_dfm, pres_dfm[,c("fair", "health", "terror")], method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, pres_dfm[, c("fair", "health", "terror")], 
+                      method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
