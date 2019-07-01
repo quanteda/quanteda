@@ -11,7 +11,7 @@ textstat_proxy(x, y = NULL, margin = c("documents", "features"),
   p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE)
 }
 \arguments{
-\item{x}{a \link{dfm} object}
+\item{x}{a \link{dfm} objects; \code{y} is optional}
 
 \item{y}{if a \link{dfm} object is provided, proximity between documents or
 features in \code{x} and \code{y} is computed.}

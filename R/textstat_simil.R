@@ -111,12 +111,12 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' Similarity and distance computation between documents or features
 #'
 #' These functions compute matrixes of distances and similarities between
-#' documents or features from a \code{\link{dfm}} and return a
-#' \code{\link[stats]{dist}} object (or a matrix if specific targets are
-#' selected).  They are fast and robust because they operate directly on the
-#' sparse \link{dfm} objects.
-#' @param x a \link{dfm} object
-#' @param y a \link{dfm} object
+#' documents or features from a \code{\link{dfm}} and return a matrix of
+#' similarities or distances in a sparse format.  These methods are fast
+#' and robust because they operate directly on the sparse \link{dfm} objects.
+#' The output can easily be coerced to an ordinary matrix, a data.frame of 
+#' pairwise comparisons, or a \link[stats]{dist} format.
+#' @param x,y a \link{dfm} objects; \code{y} is optional
 #' @param selection a valid index for document or feature names (depending on
 #'   \code{margin}) from \code{x}, to be selected for comparison.  The selected
 #'   document(s) or feature(s) will form the second of the pairs returned.  
@@ -161,10 +161,10 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' # similarities for for specific documents
 #' textstat_simil(dfmat, dfmat["2017-Trump",], margin = "documents")
 #' textstat_simil(dfmat, dfmat["2017-Trump",], method = "cosine", margin = "documents")
-#' textstat_simil(dfmat, dfmat[c("2009-Obama" , "2013-Obama"),], margin = "documents")
+#' textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"),], margin = "documents")
 #'
 #' # compute some term similarities
-#' tstat2 <- textstat_simil(dfmat, dfmat[,c("fair", "health", "terror")], method = "cosine",
+#' tstat2 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method = "cosine",
 #'                          margin = "features")
 #' head(as.matrix(tstat2), 10)
 #' as.list(tstat2, n = 6)
@@ -249,7 +249,6 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                    method = method, margin = margin,
                    type = "textstat_simil",
                    min_simil = min_simil))
-
     }
 }
 
