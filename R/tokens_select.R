@@ -32,12 +32,10 @@
 #'   Terms from overlapping windows are never double-counted, but simply
 #'   returned in the pattern match. This is because \code{tokens_select} never
 #'   redefines the document units; for this, see \code{\link{kwic}}.
-#' @param min_nchar,max_nchar numerics specifying the minimum and maximum length
-#'   in characters for tokens to be removed or kept; defaults are 1 and 
-#'   \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
-#'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
-#'   applied after (and hence, in addition to) any selection based on pattern 
-#'   matches.
+#' @param min_nchar,max_nchar optional numerics specifying the minimum and
+#'   maximum length in characters for tokens to be removed or kept; defaults are
+#'   \code{NULL} for no limits.  These are applied after (and hence, in addition
+#'   to) any selection based on pattern matches.
 #' @return a \link{tokens} object with tokens selected or removed based on their
 #'   match to \code{pattern}
 #' @export
@@ -58,20 +56,20 @@
 #' tokens_select(toks, "second", selection = "keep", window = 1)
 #' tokens_select(toks, "second", selection = "remove", window = 1)
 #' tokens_remove(toks, "is", window = c(0, 1))
-tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
+tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, window = 0, 
-                          min_nchar = 1L, max_nchar = 79L,
+                          case_insensitive = TRUE, padding = FALSE, window = 0,
+                          min_nchar = NULL, max_nchar = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
 
 #' @export
-tokens_select.default <- function(x, pattern = NULL, 
-                                  selection = c("keep", "remove"), 
+tokens_select.default <- function(x, pattern = NULL,
+                                  selection = c("keep", "remove"),
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
-                                  min_nchar = 1L, max_nchar = 79L,
+                                  min_nchar = NULL, max_nchar = NULL,
                                   verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_select"))
 }
@@ -102,57 +100,64 @@ tokens_select.default <- function(x, pattern = NULL,
 #' tokens_select(toks2, stopwords("english"), "keep", padding = TRUE)
 #' 
 #' # With multiple words
-#' tokens_select(toks2, list(c('President', '*')), "keep")
-#' tokens_select(toks2, 'President *', "keep") # simplified form
-#' tokens_select(toks2, list(c('*', 'crisis')), "keep")
-#' tokens_select(toks2, '* crisis', "keep") # simplified form
+#' tokens_select(toks2, list(c("President", "*")), "keep")
+#' tokens_select(toks2, "President *", "keep") # simplified form
+#' tokens_select(toks2, list(c("*", "crisis")), "keep")
+#' tokens_select(toks2, "* crisis", "keep") # simplified form
 #' 
 #' # With minimun length
 #' tokens_select(toks2, min_nchar = 2, "keep") # simplified form
-tokens_select.tokens <- function(x, pattern = NULL, 
-                                 selection = c("keep", "remove"), 
+tokens_select.tokens <- function(x, pattern = NULL,
+                                 selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
-                                 min_nchar = 1L, max_nchar = 79L,
+                                 min_nchar = NULL, max_nchar = NULL,
                                  verbose = quanteda_options("verbose")) {
-    
+
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     type <- types(x)
-    
+
     # selection by pattern
     if (is.null(pattern)) {
-        if (selection == 'keep') {
+        if (selection == "keep") {
             ids <- as.list(seq_along(type))
         } else {
             ids <- list()
         }
     } else {
-        ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
-        if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
+        ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, "concatenator"))
     }
-    
+
     # selection by nchar
-    id_out <- which(stri_length(type) < min_nchar | max_nchar < stri_length(type))
-    if (length(id_out)) {
-        if (selection == 'keep') {
-            if (all(lengths(ids) == 1)) {
-                ids <- setdiff(ids, as.list(id_out))
+    if (!is.null(min_nchar) | !is.null(max_nchar)) {
+        len <- stri_length(type)
+        is_short <- is_long <- rep(FALSE, length(len))
+        if (!is.null(min_nchar))
+            is_short <- len < min_nchar
+        if (!is.null(max_nchar))
+            is_long <- max_nchar < len
+        id_out <- which(is_short | is_long)
+        if (length(id_out)) {
+            if (selection == "keep") {
+                if (all(lengths(ids) == 1)) {
+                    ids <- setdiff(ids, as.list(id_out))
+                } else {
+                    has_out <- unlist(lapply(ids, function(x, y) length(intersect(x, y)) > 0, id_out))
+                    ids <- ids[!has_out]
+                }
             } else {
-                has_out <- unlist(lapply(ids, function(x, y) length(intersect(x, y)) > 0, id_out))
-                ids <- ids[!has_out]
+                ids <- union(ids, as.list(id_out))
             }
-        } else {
-            ids <- union(ids, as.list(id_out))
         }
     }
-    
+
     if (verbose) message_select(selection, length(ids), 0)
-    if (any(window < 0)) stop('window sizes cannot be negative')
+    if (any(window < 0)) stop("window sizes cannot be negative")
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
-    if (selection == 'keep') {
+    if (selection == "keep") {
         x <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2])
     } else {
         x <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2])

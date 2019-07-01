@@ -176,6 +176,31 @@ test_that("keep_unmatched is working", {
                    list(c(1L, 2L), integer(), integer()))
 })
 
+test_that("unlist_integer() is working", {
+  
+  expect_error(quanteda:::unlist_integer(list(c(1, 6), 6, 0)))
+  expect_error(quanteda:::unlist_integer(list(c("a", "d"), "d", "e", "")))
+  expect_equal(quanteda:::unlist_integer(list(c(1L, 6L), 6L, 0L)),
+               c(1L, 6L, 6L, 0L))
+  expect_equal(quanteda:::unlist_integer(list(c(1L, 6L), 6L, 0L), unique = TRUE),
+               c(1L, 6L, 0L))
+  expect_equal(quanteda:::unlist_integer(list()),
+               integer())
+  
+})
+
+test_that("unlist_character() is working", {
+  
+  expect_error(quanteda:::unlist_character(list(c(1, 6), 6, 0)))
+  expect_error(quanteda:::unlist_character(list(c(1L, 6L), 6L, 0L)))
+  expect_equal(quanteda:::unlist_character(list(c("a", "d"), "d", "e", "")),
+               c("a", "d", "d", "e", ""))
+  expect_equal(quanteda:::unlist_character(list(c("a", "d"), "d", "e", ""), unique = TRUE),
+               c("a", "d", "e", ""))
+  expect_equal(quanteda:::unlist_character(list()),
+               character())
+  
+})
 
 # test_that("flatten_id() is working", {
 #   expect_identical(

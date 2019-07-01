@@ -1,6 +1,6 @@
-#include "quanteda.h"
-#include "recompile.h"
-//#include "dev.h"
+//#include "../include/dev.h"
+#include "../include/quanteda.h"
+#include "../include/recompile.h"
 using namespace quanteda;
 
 Text lookup(Text tokens, 

@@ -126,7 +126,6 @@ test_that("selection that is out of bounds", {
 test_that("longer selection than longer than features that exist (related to #447)", {
     dfmtest <- dfm(tokens(c(d1 = 'a b', d2 = 'a b c d e')))
     feat <- c('b', 'c', 'd', 'e', 'f', 'g')
-    # bugs in C++ needs repeated tests
     expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
                    "kept 4 features")
     expect_message(dfm_remove(dfmtest, feat, verbose = TRUE),
@@ -336,3 +335,9 @@ test_that("dfm_remove works when selection is a dfm (#1320)", {
         c("b", "c")
     )
 })
+
+test_that("really long words are not removed in tokens() (#1713)", {
+    dfmat <- dfm("one two DonaudampfschiffahrtselektrizittenhauptbetriebswerkbauunterbeamtengesellschaftXXX")
+    expect_equivalent(nfeat(dfmat), 3)
+})
+
