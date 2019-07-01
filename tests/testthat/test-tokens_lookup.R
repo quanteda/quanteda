@@ -437,3 +437,60 @@ test_that("tokens_lookup with nomatch works with key that do not appear in the t
                       list(c(4, 4, 1, 1, 4), c(4, 4, 2, 4, 4, 4), c(4, 4, 4), c(4, 4, 4)))
     expect_identical(types(toks_dict), c("CR", "CB", "CA", "NONE"))
 })
+
+test_that("nested_scope function is working", { 
+    dict <- dictionary(list(
+        'AS' = c("American Samoa", "American Samoan*", "Pago Pago"),
+        'WS' = c("Samoa", "Samoan*", "Apia"),
+        'VG' = c("British Virgin Islands", "Virgin Island*", "Road Town"),
+        'GB' = c("UK", "United Kingdom", "Britain", "British", "Briton*", "Brit*", "London"),
+        'US' = c("United States", "US", "American*", "Washington", "New York")
+    ))
+    txt <- c(
+        'British Virgin Islands is a British overseas territory',
+        'Samoa is an independent state',
+        'American Samoa is in the South Pacific'
+    )
+    toks <- tokens(txt)
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, nested_scope = "key")),
+        list(text1 = c("VG", "GB", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS", "US", "WS"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, nested_scope = "dictionary")),
+        list(text1 = c("VG", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS"))
+    )
+})
+
+test_that("dictionary nested_scope is independent of orders", {
+    toks1 <- tokens("Virgin Islands are near Dominica and the Dominican Republic")
+    dict1 <- dictionary(list("VG" = "Virgin Islands",
+                            "VI" = "Virgin Islands",
+                            "DM" = "Dominica*",
+                            "DO" = "Dominican Republic"))
+    expect_equal(
+        as.list(tokens_lookup(toks1, dict1, nested_scope = "dictionary")),
+        list(text1 = c("VG", "VI", "DM", "DO"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks1, rev(dict1), nested_scope = "dictionary")),
+        list(text1 = c("VI", "VG", "DM", "DO"))
+    )
+    
+    toks2 <- tokens("Congolese are people in Republic of Congo or Democratic Republic of Congo")
+    dict2 <- dictionary(list("CD" = c("Democratic Republic of Congo", "Congolese"),
+                             "CG" = c("Republic of Congo", "Congolese")))
+    expect_equal(
+        as.list(tokens_lookup(toks2, dict2, nested_scope = "dictionary")),
+        list(text1 = c("CD", "CG", "CG", "CD"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks2, rev(dict2), nested_scope = "dictionary")),
+        list(text1 = c("CG", "CD", "CG", "CD"))
+    )
+})
+
