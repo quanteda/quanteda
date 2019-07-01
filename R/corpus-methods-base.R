@@ -290,6 +290,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [[ corpus
 #' @rdname corpus-class
 `[[.corpus` <- function(x, i, ...) {
+    .Deprecated("docvars")
     if (is.null(docvars(x)))
         stop("cannot index docvars this way because none exist")
     x$documents[i, ...]
@@ -300,6 +301,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [[<- corpus
 #' @rdname corpus-class
 `[[<-.corpus` <- function(x, i, value) {
+    .Deprecated("docvars")
     x$documents[i] <- value
     x
 }
