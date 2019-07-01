@@ -116,7 +116,8 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' and robust because they operate directly on the sparse \link{dfm} objects.
 #' The output can easily be coerced to an ordinary matrix, a data.frame of 
 #' pairwise comparisons, or a \link[stats]{dist} format.
-#' @param x,y a \link{dfm} objects; \code{y} is optional
+#' @param x,y a \link{dfm} objects; \code{y} is an optional target matrix matching
+#'   \code{x} in the margin on which the similarity or distance will be computed.
 #' @param selection a valid index for document or feature names (depending on
 #'   \code{margin}) from \code{x}, to be selected for comparison.  The selected
 #'   document(s) or feature(s) will form the second of the pairs returned.  
@@ -159,9 +160,9 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' as.matrix(tstat2)
 #' 
 #' # similarities for for specific documents
-#' textstat_simil(dfmat, dfmat["2017-Trump",], margin = "documents")
-#' textstat_simil(dfmat, dfmat["2017-Trump",], method = "cosine", margin = "documents")
-#' textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"),], margin = "documents")
+#' textstat_simil(dfmat, dfmat["2017-Trump", ], margin = "documents")
+#' textstat_simil(dfmat, dfmat["2017-Trump", ], method = "cosine", margin = "documents")
+#' textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"), ], margin = "documents")
 #'
 #' # compute some term similarities
 #' tstat2 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method = "cosine",

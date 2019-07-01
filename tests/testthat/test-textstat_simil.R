@@ -465,12 +465,12 @@ test_that("y is working in the same way as selection (#1714)", {
     
     expect_identical(textstat_simil(mt, selection = c("2009-Obama", "2013-Obama"),
                                     margin = "documents"),
-                     textstat_simil(mt, mt[c("2009-Obama", "2013-Obama"),],
+                     textstat_simil(mt, mt[c("2009-Obama", "2013-Obama"), ],
                                     margin = "documents"))
     
     expect_identical(textstat_simil(mt, selection = c("world", "freedom"),
                                     margin = "features"),
-                     textstat_simil(mt, mt[,c("world", "freedom")],
+                     textstat_simil(mt, mt[, c("world", "freedom")],
                                     margin = "features"))
     
     expect_identical(textstat_dist(mt, selection = c("2009-Obama", "2013-Obama"),

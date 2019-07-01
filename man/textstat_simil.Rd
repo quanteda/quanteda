@@ -22,7 +22,8 @@ textstat_dist(x, y = NULL, selection = NULL, margin = c("documents",
   optional = FALSE, diag = FALSE, upper = FALSE, ...)
 }
 \arguments{
-\item{x, y}{a \link{dfm} objects; \code{y} is optional}
+\item{x, y}{a \link{dfm} objects; \code{y} is an optional target matrix matching
+\code{x} in the margin on which the similarity or distance will be computed.}
 
 \item{selection}{a valid index for document or feature names (depending on
 \code{margin}) from \code{x}, to be selected for comparison.  The selected
@@ -119,9 +120,9 @@ as.list(tstat1, diag = TRUE)
 as.matrix(tstat2)
 
 # similarities for for specific documents
-textstat_simil(dfmat, dfmat["2017-Trump",], margin = "documents")
-textstat_simil(dfmat, dfmat["2017-Trump",], method = "cosine", margin = "documents")
-textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"),], margin = "documents")
+textstat_simil(dfmat, dfmat["2017-Trump", ], margin = "documents")
+textstat_simil(dfmat, dfmat["2017-Trump", ], method = "cosine", margin = "documents")
+textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"), ], margin = "documents")
 
 # compute some term similarities
 tstat2 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method = "cosine",
