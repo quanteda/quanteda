@@ -25,8 +25,8 @@
 #' @param nested_scope how to treat matches from different dictionary keys that
 #'   are nested.  When one value is nested within another, such as "a b" being 
 #'   nested within "a b c", `the `tokens_lookup()` will match the longer.  When
-#'   \code{nested_scope = "local"}, this longer-match priority is applied only 
-#'   within the key, while \code{"global"} applies it across keys, matching only 
+#'   \code{nested_scope = "key"}, this longer-match priority is applied only 
+#'   within the key, while \code{"dictionary"} applies it across keys, matching only 
 #'   the key with the longer pattern, not the matches nested within that longer 
 #'   pattern from other keys.  See Details.
 #' @param verbose print status messages if \code{TRUE}
@@ -36,8 +36,8 @@
 #'
 #'   When two different keys in a dictionary are nested matches of one another,
 #'   the \code{nested_scope} options provide the choice of matching each key's
-#'   values independently (the \code{"local"}) option, or just counting the
-#'   longest match (the \code{"global"} option).  Values that are nested
+#'   values independently (the \code{"key"}) option, or just counting the
+#'   longest match (the \code{"dictionary"} option).  Values that are nested
 #'   \emph{within} the same key are always counted as a single match.  See the
 #'   last example below comparing the \emph{New York} and \emph{New York Times}
 #'   for these two different behaviours.
@@ -51,16 +51,16 @@
 #' @examples
 #' toks1 <- tokens(data_corpus_inaugural)
 #' dict1 <- dictionary(list(country = "united states",
-#'                    law=c('law*', 'constitution'),
-#'                    freedom=c('free*', 'libert*')))
-#' dfm(tokens_lookup(toks1, dict1, valuetype='glob', verbose = TRUE))
-#' dfm(tokens_lookup(toks1, dict1, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
+#'                    law=c("law*", "constitution"),
+#'                    freedom=c("free*", "libert*")))
+#' dfm(tokens_lookup(toks1, dict1, valuetype = "glob", verbose = TRUE))
+#' dfm(tokens_lookup(toks1, dict1, valuetype = "glob", verbose = TRUE, nomatch = "NONE"))
 #'
 #' dict2 <- dictionary(list(country = "united states",
-#'                        law = c('law', 'constitution'),
-#'                        freedom = c('freedom', 'liberty')))
-#' # dfm(applyDictionary(toks1, dict2, valuetype='fixed'))
-#' dfm(tokens_lookup(toks1, dict2, valuetype='fixed'))
+#'                        law = c("law", "constitution"),
+#'                        freedom = c("freedom", "liberty")))
+#' # dfm(applyDictionary(toks1, dict2, valuetype = "fixed"))
+#' dfm(tokens_lookup(toks1, dict2, valuetype = "fixed"))
 #'
 #' # hierarchical dictionary example
 #' txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
@@ -84,8 +84,8 @@
 #' # nested matching differences
 #' dict4 <- dictionary(list(paper = "New York Times", city = "New York"))
 #' toks4 <- tokens("The New York Times is a New York paper.")
-#' tokens_lookup(toks4, dict4, nested_scope = "local", exclusive = FALSE)
-#' tokens_lookup(toks4, dict4, nested_scope = "global", exclusive = FALSE)
+#' tokens_lookup(toks4, dict4, nested_scope = "key", exclusive = FALSE)
+#' tokens_lookup(toks4, dict4, nested_scope = "dictionary", exclusive = FALSE)
 #'
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
@@ -95,7 +95,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
-                          nested_scope = c("local", "global"),
+                          nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")    
 }
@@ -107,7 +107,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  capkeys = !exclusive,
                                  exclusive = TRUE,
                                  nomatch = NULL,
-                                 nested_scope = c("local", "global"),
+                                 nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_lookup"))
 }
@@ -119,7 +119,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
-                          nested_scope = c("local", "global"),
+                          nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -139,7 +139,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                         attr(x, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)
-    overlap <- match(nested_scope, c("local", "global"))
+    overlap <- match(nested_scope, c("key", "dictionary"))
     if (capkeys)
         key <- char_toupper(key)
     if (exclusive) {

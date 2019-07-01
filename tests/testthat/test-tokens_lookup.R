@@ -438,7 +438,7 @@ test_that("tokens_lookup with nomatch works with key that do not appear in the t
     expect_identical(types(toks_dict), c("CR", "CB", "CA", "NONE"))
 })
 
-test_that("overlap function is working", { 
+test_that("nested_scope function is working", { 
     dict <- dictionary(list(
         'AS' = c("American Samoa", "American Samoan*", "Pago Pago"),
         'WS' = c("Samoa", "Samoan*", "Apia"),
@@ -453,31 +453,31 @@ test_that("overlap function is working", {
     )
     toks <- tokens(txt)
     expect_equal(
-        as.list(tokens_lookup(toks, dict, nested_scope = "local")),
+        as.list(tokens_lookup(toks, dict, nested_scope = "key")),
         list(text1 = c("VG", "GB", "GB"), 
              text2 = c("WS"), 
              text3 = c("AS", "US", "WS"))
     )
     expect_equal(
-        as.list(tokens_lookup(toks, dict, nested_scope = "global")),
+        as.list(tokens_lookup(toks, dict, nested_scope = "dictionary")),
         list(text1 = c("VG", "GB"), 
              text2 = c("WS"), 
              text3 = c("AS"))
     )
 })
 
-test_that("global overlap is independent of orders", {
+test_that("dictionary nested_scope is independent of orders", {
     toks1 <- tokens("Virgin Islands are near Dominica and the Dominican Republic")
     dict1 <- dictionary(list("VG" = "Virgin Islands",
                             "VI" = "Virgin Islands",
                             "DM" = "Dominica*",
                             "DO" = "Dominican Republic"))
     expect_equal(
-        as.list(tokens_lookup(toks1, dict1, nested_scope = "global")),
+        as.list(tokens_lookup(toks1, dict1, nested_scope = "dictionary")),
         list(text1 = c("VG", "VI", "DM", "DO"))
     )
     expect_equal(
-        as.list(tokens_lookup(toks1, rev(dict1), nested_scope = "global")),
+        as.list(tokens_lookup(toks1, rev(dict1), nested_scope = "dictionary")),
         list(text1 = c("VI", "VG", "DM", "DO"))
     )
     
@@ -485,11 +485,11 @@ test_that("global overlap is independent of orders", {
     dict2 <- dictionary(list("CD" = c("Democratic Republic of Congo", "Congolese"),
                              "CG" = c("Republic of Congo", "Congolese")))
     expect_equal(
-        as.list(tokens_lookup(toks2, dict2, nested_scope = "global")),
+        as.list(tokens_lookup(toks2, dict2, nested_scope = "dictionary")),
         list(text1 = c("CD", "CG", "CG", "CD"))
     )
     expect_equal(
-        as.list(tokens_lookup(toks2, rev(dict2), nested_scope = "global")),
+        as.list(tokens_lookup(toks2, rev(dict2), nested_scope = "dictionary")),
         list(text1 = c("CG", "CD", "CG", "CD"))
     )
 })
