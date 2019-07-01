@@ -6,8 +6,8 @@
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
-  exclusive = TRUE, nomatch = NULL, overlap = c("local", "global"),
-  verbose = quanteda_options("verbose"))
+  exclusive = TRUE, nomatch = NULL, nested_scope = c("local",
+  "global"), verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -40,14 +40,37 @@ features unaffected}
 matched to a dictionary values  If \code{NULL} (default), do not record
 unmatched tokens.}
 
-\item{overlap}{ignore overlapped words for the same key if \code{local}, or
-any key in the dictionary if \code{global}.}
+\item{nested_scope}{how to treat matches from different dictionary keys that
+are nested.  When one value is nested within another, such as "a b" being 
+nested within "a b c", `the `tokens_lookup()` will match the longer.  When
+\code{nested_scope = "local"}, this longer-match priority is applied only 
+within the key, while \code{"global"} applies it across keys, matching only 
+the key with the longer pattern, not the matches nested within that longer 
+pattern from other keys.  See Details.}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
 Convert tokens into equivalence classes defined by values of a dictionary
 object.
+}
+\details{
+Dictionary values may consist of sequences, and there are different
+  methods of counting key matches based on values that are nested or that
+  overlap.
+
+  When two different keys in a dictionary are nested matches of one another,
+  the \code{nested_scope} options provide the choice of matching each key's
+  values independently (the \code{"local"}) option, or just counting the
+  longest match (the \code{"global"} option).  Values that are nested
+  \emph{within} the same key are always counted as a single match.  See the
+  last example below comparing the \emph{New York} and \emph{New York Times}
+  for these two different behaviours.
+
+  \emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
+  currently always considered as separate matches if they are in different
+  keys, or as one match if the overlap is within the same key.
+\emph{Overlapped}
 }
 \examples{
 toks1 <- tokens(data_corpus_inaugural)
@@ -81,6 +104,12 @@ tokens_lookup(toks2, dict3, levels = c(2,3))
 
 # show unmatched tokens
 tokens_lookup(toks2, dict3, nomatch = "_UNMATCHED")
+
+# nested matching differences
+dict4 <- dictionary(list(paper = "New York Times", city = "New York"))
+toks4 <- tokens("The New York Times is a New York paper.")
+tokens_lookup(toks4, dict4, nested_scope = "local", exclusive = FALSE)
+tokens_lookup(toks4, dict4, nested_scope = "global", exclusive = FALSE)
 
 }
 \seealso{
