@@ -1,6 +1,7 @@
 //#include "../include/dev.h"
 #include "../include/quanteda.h"
 #include "../include/recompile.h"
+
 using namespace quanteda;
 
 Text lookup(Text tokens, 
@@ -59,17 +60,6 @@ Text lookup(Text tokens,
                             match_count++;
                         }
                     }
-                }
-            } else {
-                for (auto it = range.first; it != range.second; ++it) {
-                    //Rcout << it->second << "\n";
-                    unsigned int id = it->second;
-                    //Rcout << "id " << id << "\n";
-                    keys[i].push_back(id); // keep multiple keys in the same position
-                    flags_match_global[i] = true;
-                    match = true;
-                    match_count++;
-                    
                 }
             }
             if (match)
