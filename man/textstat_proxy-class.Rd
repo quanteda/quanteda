@@ -3,11 +3,12 @@
 \docType{class}
 \name{textstat_proxy-class}
 \alias{textstat_proxy-class}
-\alias{textstat_dist_symm-class}
 \alias{textstat_dist-class}
-\alias{textstat_simil_symm-class}
+\alias{textstat_dist_symm-class}
 \alias{textstat_simil-class}
+\alias{textstat_simil_symm-class}
 \alias{textstat_simil_sparse-class}
+\alias{textstat_simil_symm_sparse-class}
 \alias{show,textstat_proxy-method}
 \title{textstat_simil/dist classes}
 \usage{
