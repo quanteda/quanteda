@@ -22,20 +22,24 @@ setClass("textstat_proxy", contains = "Matrix",
                    type = "character"))
 
 #' @rdname textstat_proxy-class
-setClass("textstat_dist_symm", contains = c("textstat_proxy", "dspMatrix"))
-
-#' @rdname textstat_proxy-class
 #' @slot selection target units, if any
 setClass("textstat_dist", contains = c("textstat_proxy", "dgeMatrix"))
 
 #' @rdname textstat_proxy-class
-setClass("textstat_simil_symm", contains = c("textstat_proxy", "dspMatrix"))
+setClass("textstat_dist_symm", contains = c("textstat_proxy", "dspMatrix"))
 
 #' @rdname textstat_proxy-class
 setClass("textstat_simil", contains = c("textstat_proxy", "dgeMatrix"))
 
 #' @rdname textstat_proxy-class
+setClass("textstat_simil_symm", contains = c("textstat_proxy", "dspMatrix"))
+
+#' @rdname textstat_proxy-class
 setClass("textstat_simil_sparse", contains = c("textstat_proxy", "dgTMatrix"),
+         slots = c(min_simil = "numeric"))
+
+#' @rdname textstat_proxy-class
+setClass("textstat_simil_symm_sparse", contains = c("textstat_proxy", "dsTMatrix"),
          slots = c(min_simil = "numeric"))
 
 validate_min_simil <- function(object) {
@@ -47,6 +51,10 @@ validate_min_simil <- function(object) {
 }
 
 setValidity("textstat_simil_sparse", function(object) {
+    validate_min_simil(object)
+})
+
+setValidity("textstat_simil_symm_sparse", function(object) {
     validate_min_simil(object)
 })
 
@@ -236,9 +244,10 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                            min_proxy = min_simil, use_na = TRUE)
 
     if (is.null(min_simil)) {
-        if (identical(x, y)) {
-            return(new("textstat_simil_symm", as(temp, "dsyMatrix"),
-                       method = method,  margin = margin,
+        if (is.null(y)) {
+            temp <- as(forceSymmetric(temp), "dsyMatrix")
+            return(new("textstat_simil_symm", as(temp, "dspMatrix"),
+                       method = method, margin = margin,
                        type = "textstat_simil"))
         } else {
             return(new("textstat_simil", as(temp, "dgeMatrix"),
@@ -246,10 +255,17 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                        type = "textstat_simil"))
         }
     } else {
-        return(new("textstat_simil_sparse", as(temp, "dgTMatrix"),
-                   method = method, margin = margin,
-                   type = "textstat_simil",
-                   min_simil = min_simil))
+        if (is.null(y)) {
+            return(new("textstat_simil_symm_sparse", temp,
+                       method = method, margin = margin,
+                       type = "textstat_simil",
+                       min_simil = min_simil))
+        } else {
+            return(new("textstat_simil_sparse", temp,
+                       method = method, margin = margin,
+                       type = "textstat_simil",
+                       min_simil = min_simil))
+        }
     }
 }
 
@@ -341,13 +357,14 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
     temp <- textstat_proxy(x, y, margin, method,
                            p = p, use_na = TRUE)
 
-    if (identical(x, y)) {
-        return(new("textstat_dist_symm", as(temp, "dsyMatrix"),
-                   method = method,  margin = margin,
-                   type = "textstat_dist_symm"))
+    if (is.null(y)) {
+        temp <- as(forceSymmetric(temp), "dsyMatrix")
+        return(new("textstat_dist_symm", as(temp, "dspMatrix"),
+                   method = method, margin = margin,
+                   type = "textstat_dist"))
     } else {
         return(new("textstat_dist", as(temp, "dgeMatrix"),
-                   method = method,  margin = margin,
+                   method = method, margin = margin,
                    type = "textstat_dist"))
     }
 }
@@ -375,23 +392,21 @@ as.list.textstat_proxy <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...
         n <- NULL
     }
 
-    # NA the diagonal, if diag = FALSE
+    x <- proxy2triplet(x, upper = TRUE)
     if (!diag)
-        x <- diag_to_na(x)
-
-    x <- as(x, "dgTMatrix")
+        x <- diag2na(x)
     result <- split(structure(x@x, names = rownames(x)[x@i + 1L]),
                     f = factor(colnames(x)[x@j + 1], levels = colnames(x)))
 
     if (sorted)
         result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
     if (!is.null(n))
-        result <- lapply(result, "[", seq_len(n))
+        result <- lapply(result, head, n)
     # remove any missing
     result <- lapply(result, function(y) y[!is.na(y)])
     # remove any empty
     result <- result[lengths(result) > 0]
-    result
+    return(result)
 }
 
 #' @rdname textstat_simil
@@ -406,21 +421,10 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
                                             diag = FALSE, upper = FALSE,  ...) {
     method <- x@method
     margin <- x@margin
-
+    
+    x <- proxy2triplet(x, upper)
     if (!diag)
-        x <- diag_to_na(x)
-    if (setequal(rownames(x), colnames(x))) {
-        if (upper) {
-            x <- as(x, "dgTMatrix")
-        } else {
-            x <- as(x, "dsTMatrix")
-        }
-    } else {
-        if (upper)
-            warning("upper = TRUE has no effect when columns have been selected")
-        x <- as(x, "dgTMatrix")
-    }
-
+        x <- diag2na(x)
     result <- data.frame(x = factor(x@i + 1L,
                                     levels = seq_along(rownames(x)), labels = rownames(x)),
                          y = factor(match(colnames(x)[x@j + 1L], rownames(x)),
@@ -428,10 +432,6 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
                          stat = x@x,
                          stringsAsFactors = FALSE)
     result <- subset(result, !is.na(stat))
-
-    # eliminate same pairs when selection was used
-    if (!diag && !setequal(rownames(x), colnames(x)))
-        result <- result[result[, 1] != result[, 2], ]
 
     # replace x and y with margin names
     names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
@@ -449,19 +449,36 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
 #' @param x the return from \code{\link{textstat_simil}} or \code{\link{textstat_dist}}
 #' @return sparse Matrix format with same-pair values replaced with \code{NA}
 #' @keywords textstat internal
-diag_to_na <- function(x) {
-    # NA the diagonal, if diag = FALSE
-    if (is(x, "symmetricMatrix")) {
-        diag(x) <- NA
-    } else {
+diag2na <- function(x) {
+    if (is(x, "dsTMatrix")) {
+        Matrix::diag(x) <- NA
+    } else if (is(x, "dgTMatrix")) {
+        name <- intersect(colnames(x), rownames(x))
+        i <- match(name, rownames(x))
+        j <- match(name, colnames(x))
+        x <- x + Matrix::sparseMatrix(
+            i = i, j = j, x = NA,
+            dims = dim(x), dimnames = dimnames(x)
+        )
         x <- as(x, "dgTMatrix")
-        i <- which(rownames(x) %in% colnames(x)) - 1L
-        j <- which(colnames(x) %in% rownames(x)) - 1L
-        l <- match(x@i, i) == match(x@j, j)
-        l[is.na(l)] <- FALSE
-        x@x <- c(x@x[!l], rep(NA, length(i)))
-        x@i <- c(x@i[!l], i)
-        x@j <- c(x@j[!l], j)
+    } else {
+        stop("x must be a triplet matrix")
+    }
+    return(x)
+}
+
+proxy2triplet <- function(x, upper) {
+    if (class(x) %in% c("textstat_dist_symm", "textstat_simil_symm")) {
+        x <- as(as(x, "dsyMatrix"), "dsTMatrix")
+    } else if (class(x) %in% c("textstat_dist", "textstat_simil")) {
+        x <- as(x, "dgTMatrix")
+    }
+    if (isSymmetric(x)) {
+        if (upper)
+            x <- as(x, "dgTMatrix")
+    } else {
+        if (upper)
+            warning("upper = TRUE has no effect when columns have been selected")
     }
     return(x)
 }
@@ -477,6 +494,15 @@ diag_to_na <- function(x) {
 #' @keywords textstat internal
 #' @rdname as.matrix.textstat_simil_sparse
 setMethod("as.matrix", "textstat_simil_sparse",
+          function(x, omitted = NA, ...) {
+              x[x == 0] <- omitted
+              as.matrix(as(x, "dgeMatrix"))
+          })
+
+#' @export
+#' @keywords textstat internal
+#' @rdname as.matrix.textstat_simil_sparse
+setMethod("as.matrix", "textstat_simil_symm_sparse",
           function(x, omitted = NA, ...) {
               x[x == 0] <- omitted
               as.matrix(as(x, "dgeMatrix"))
