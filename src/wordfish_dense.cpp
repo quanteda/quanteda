@@ -1,4 +1,6 @@
-#include "quadmath.h"
+//#include "dev.h"
+#include "quanteda.h"
+#include "math.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
