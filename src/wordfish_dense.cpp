@@ -1,5 +1,5 @@
 //#include "dev.h"
-#include "quanteda.h"
+#include "lib.h"
 #include "math.h"
 using namespace Rcpp;
 

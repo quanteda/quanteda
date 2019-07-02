@@ -1,4 +1,4 @@
-#include "quanteda.h"
+#include "lib.h"
 //#include "dev.h"
 #include "recompile.h"
 using namespace quanteda;

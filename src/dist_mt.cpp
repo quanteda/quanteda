@@ -1,4 +1,4 @@
-#include "quanteda.h"
+#include "lib.h"
 using namespace quanteda;
 using std::pow;
 using std::exp;
