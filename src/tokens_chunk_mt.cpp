@@ -1,6 +1,6 @@
-#include "../include/quanteda.h"
-#include "../include/recompile.h"
-//#include "../include/dev.h"
+#include "lib.h"
+#include "recompile.h"
+//#include "dev.h"
 using namespace quanteda;
 
 Texts chunk(Text &tokens,
