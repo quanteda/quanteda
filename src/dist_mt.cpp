@@ -1,4 +1,3 @@
-#include "armadillo.h"
 #include "quanteda.h"
 using namespace quanteda;
 using std::pow;

@@ -1,4 +1,4 @@
-#include "armadillo.h"
+#include "quadmath.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
