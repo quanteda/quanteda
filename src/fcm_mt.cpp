@@ -1,5 +1,5 @@
-#include "../include/quanteda.h"
-#include "../include/dev.h"
+#include "quanteda.h"
+#include "dev.h"
 using namespace quanteda;
 
 struct hash_pair {

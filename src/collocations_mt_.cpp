@@ -1,5 +1,5 @@
-#include "../include/quanteda.h"
-#include "../include/dev.h"
+#include "quanteda.h"
+#include "dev.h"
 #include <bitset>
 using namespace quanteda;
 

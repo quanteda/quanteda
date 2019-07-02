@@ -1,7 +1,7 @@
 #ifndef QUANTEDA // prevent redefining
 #define QUANTEDA
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 #include <RcppParallel.h>
 #include <unordered_map>
 #include <unordered_set>
