@@ -215,7 +215,7 @@ test_that("textstat_simil coercion methods work with options", {
     tstat <- textstat_simil(mt2, margin = "documents")
     expect_equal(
         nrow(as.data.frame(tstat, diag = TRUE, upper = TRUE)), 
-        nrow(mt2)^2
+        nrow(mt2) ^ 2
     )
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
@@ -233,7 +233,7 @@ test_that("textstat_simil coercion methods work with options", {
     tstat <- textstat_simil(mt2, margin = "documents")
     expect_equal(
         nrow(as.data.frame(tstat, upper = TRUE, diag = FALSE)),
-        nrow(mt2)^2 - ndoc(mt2)
+        nrow(mt2) ^ 2 - ndoc(mt2)
     )
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
@@ -254,7 +254,7 @@ test_that("textstat_simil coercion methods work with options", {
     tstat <- textstat_simil(mt2, margin = "documents")
     expect_equal(
         nrow(as.data.frame(tstat, upper = FALSE, diag = TRUE)),
-        (nrow(mt2)^2 - ndoc(mt2)) / 2 + ndoc(mt2)
+        (nrow(mt2) ^ 2 - ndoc(mt2)) / 2 + ndoc(mt2)
     )
     mat <- as.matrix(tstat)
     # expect_true(all(is.na(mat[upper.tri(mat)])))
@@ -273,7 +273,7 @@ test_that("textstat_simil coercion methods work with options", {
     tstat <- textstat_simil(mt2, margin = "documents")
     expect_equal(
         nrow(as.data.frame(tstat, upper = FALSE, diag = FALSE)), 
-        (nrow(mt2)^2 - ndoc(mt2)) / 2
+        (nrow(mt2) ^ 2 - ndoc(mt2)) / 2
     )
     mat <- as.matrix(tstat)
     loweranddiag <- upper.tri(mat)
@@ -334,7 +334,7 @@ test_that("as.data.frame.textstat_simildist works with selection", {
     
     expect_equal(
         as.character(as.data.frame(tstat, diag = FALSE, upper = FALSE)$document2),
-        c(rep("2017-Trump", 3), rep("2001-Bush", 3))
+        c(rep("2017-Trump", 4), rep("2001-Bush", 4))
     )
     expect_equal(
         as.character(as.data.frame(tstat, diag = TRUE, upper = FALSE)$document2),
@@ -342,7 +342,7 @@ test_that("as.data.frame.textstat_simildist works with selection", {
     )
     suppressWarnings(expect_equal(
         as.character(as.data.frame(tstat, diag = FALSE, upper = TRUE)$document2),
-        c(rep("2017-Trump", 3), rep("2001-Bush", 3))
+        c(rep("2017-Trump", 4), rep("2001-Bush", 4))
     ))
     suppressWarnings(expect_equal(
         as.character(as.data.frame(tstat, diag = TRUE, upper = TRUE)$document2),
@@ -482,4 +482,37 @@ test_that("y is working in the same way as selection (#1714)", {
                                     margin = "features"),
                      textstat_dist(mt, mt[,c("world", "freedom")],
                                     margin = "features"))
+})
+
+test_that("diag2na is working", {
+    
+    mat1 <- Matrix::Matrix(1:9, nrow = 3, 
+                           dimnames = list(c("a", "b", "c"), c("b", "c", "d")))
+    expect_equal(as.matrix(quanteda:::diag2na(as(mat1, "dgTMatrix"))),
+                 matrix(c(1, NA, 3, 4, 5, NA, 7, 8, 9), nrow = 3, 
+                        dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
+                 
+    mat2 <- Matrix::Matrix(1:9, nrow = 3, 
+                           dimnames = list(c("a", "b", "c"), c("d", "c", "b")))
+    expect_equal(as.matrix(quanteda:::diag2na(as(mat2, "dgTMatrix"))),
+                 matrix(c(1, 2, 3, 4, 5, NA, 7, NA, 9), nrow = 3, 
+                        dimnames = list(c("a", "b", "c"), c("d", "c", "b"))))
+    
+    mat3 <- Matrix::Matrix(1:6, nrow = 3, 
+                           dimnames = list(c("a", "b", "c"), c("c", "b")))
+    expect_equal(as.matrix(quanteda:::diag2na(as(mat3, "dgTMatrix"))),
+                 matrix(c(1, 2, NA, 4, NA, 6), nrow = 3, 
+                        dimnames = list(c("a", "b", "c"), c("c", "b"))))
+    
+    mat4 <- forceSymmetric(mat1)
+    expect_equal(as.matrix(quanteda:::diag2na(as(mat4, "dsTMatrix"))),
+                 matrix(c(NA, 4, 7, 4, NA, 8, 7, 8, NA), nrow = 3, 
+                        dimnames = list(c("b", "c", "d"), c("b", "c", "d"))))
+    
+    mat5 <- Matrix::Matrix(rep(0, 9), nrow = 3, 
+                           dimnames = list(c("a", "b", "c"), c("b", "c", "d")))
+    expect_equal(as.matrix(quanteda:::diag2na(as(mat5, "dgTMatrix"))),
+                 matrix(c(0, NA, 0, 0, 0, NA, 0, 0, 0), nrow = 3, 
+                        dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
+
 })
