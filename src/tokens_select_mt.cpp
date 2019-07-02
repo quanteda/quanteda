@@ -1,6 +1,6 @@
-#include "../include/quanteda.h"
-//#include "../include/dev.h"
-#include "../include/recompile.h"
+#include "lib.h"
+//#include "dev.h"
+#include "recompile.h"
 using namespace quanteda;
 
 
