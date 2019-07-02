@@ -37,17 +37,6 @@ matrix.  Recognizing that in some cases, you may need to modify or add
 document variables to downstream objects, the assignment operator is defined
 for \link{tokens} or \link{dfm} objects as well.  Use with caution.
 }
-\section{Index access to docvars in a corpus}{
-
-Another way to access and set docvars is through indexing of the corpus 
-\code{j} element, such as \code{data_corpus_irishbudget2010[, c("foren", 
-"name"]}; or, for a single docvar, 
-\code{data_corpus_irishbudget2010[["name"]]}.  The latter also permits 
-assignment, including the easy creation of new document variables, e.g. 
-\code{data_corpus_irishbudget2010[["newvar"]] <- 
-1:ndoc(data_corpus_irishbudget2010)}. See \code{\link{[.corpus}} for details.
-}
-
 \examples{
 # retrieving docvars from a corpus
 head(docvars(data_corpus_inaugural))
@@ -56,11 +45,6 @@ tail(docvars(data_corpus_inaugural, "President"), 10)
 # assigning document variables to a corpus
 corp <- data_corpus_inaugural
 docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
-head(docvars(corp))
-
-# alternative using indexing
-head(corp[, "Year"])
-corp[["President2"]] <- paste("prezTwo", 1:ndoc(corp), sep = "")
 head(docvars(corp))
 
 }
