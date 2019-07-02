@@ -1,0 +1,21 @@
+if (!exists("meta") || is.null(meta)) 
+    meta <- packageDescription("quanteda")
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "article",
+         title = "quanteda: An R package for the quantitative analysis of textual data",
+         journal = "Journal of Open Source Software",
+         author = c(person("Kenneth", "Benoit"),
+                    person("Kohei", "Watanabe"),
+                    person("Haiyan", "Wang"),
+                    person("Paul", "Nulty"),
+                    person("Adam", "Obeng"),
+                    person("Stefan", "Müller"),
+                    person("Akitaka", "Matsuo")),
+         doi = "10.21105/joss.00774",
+         url = "https://quanteda.io",
+         volume = 3,
+         number = 30,
+         pages = 774,
+         year = 2018
+)

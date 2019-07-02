@@ -98,13 +98,13 @@ data_corpus_inaugural[2]                    # same
 # access the docvars from data_corpus_irishbudget2010
 data_corpus_irishbudget2010[, "year"]
 # same
-data_corpus_irishbudget2010[["year"]]            
+# data_corpus_irishbudget2010[["year"]]            
 
 # create a new document variable
-data_corpus_irishbudget2010[["govtopp"]] <- 
-    ifelse(data_corpus_irishbudget2010[["party"]] \%in\% c("FF", "Greens"), 
-           "Government", "Opposition")
-docvars(data_corpus_irishbudget2010)
+# data_corpus_irishbudget2010[["govtopp"]] <- 
+#   ifelse(data_corpus_irishbudget2010[["party"]] \%in\% c("FF", "Greens"), 
+#             "Government", "Opposition")
+# docvars(data_corpus_irishbudget2010)
 }
 \seealso{
 \code{\link{summary.corpus}}

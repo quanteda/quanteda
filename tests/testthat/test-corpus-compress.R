@@ -122,19 +122,20 @@ test_that("texts<- works with corpuszip", {
 })
 
 test_that("[[ and [ methods are the same for corpus and corpuszip", {
-    
-    suppressWarnings({
+    suppressWarnings(
         expect_equal(data_corpus_test[[c("varfactor", "varchar")]],
-                     data_corpuszip_test[[c("varfactor", "varchar")]])
+                 data_corpuszip_test[[c("varfactor", "varchar")]])
+    )
+    suppressWarnings(
         expect_equal(data_corpus_test[c(2,4)],
-                     data_corpuszip_test[c(2,4)])
-    
-        # assignment using `[[`
-        data_corpus_test[["newvar"]] <- 4:1
-        data_corpuszip_test[["newvar"]] <- 4:1
-        expect_equal(docvars(data_corpus_test),
-                     docvars(data_corpuszip_test))
-    })
+                 data_corpuszip_test[c(2,4)])
+    )
+
+    # assignment using `[[`
+    suppressWarnings(data_corpus_test[["newvar"]] <- 4:1)
+    suppressWarnings(data_corpuszip_test[["newvar"]] <- 4:1)
+    expect_equal(docvars(data_corpus_test),
+                 docvars(data_corpuszip_test))
 })
 
 test_that("n* methods are the same for corpus and corpuszip", {
