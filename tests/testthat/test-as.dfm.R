@@ -84,14 +84,14 @@ test_that("as.dfm for tm matrix objects", {
     skip_if_not_installed("tm")
     dtm <- tm::DocumentTermMatrix(tm::Corpus(tm::VectorSource(txt)),
                                   control = list(wordLengths = c(1, Inf)))
-    expect_equal(
+    expect_equivalent(
         as.dfm(dtm),
         dfm(txt)
     )
     
     tdm <- tm::TermDocumentMatrix(tm::Corpus(tm::VectorSource(txt)),
                                   control = list(wordLengths = c(1, Inf)))
-    expect_equal(
+    expect_equivalent(
         as.dfm(tdm),
         dfm(txt)
     )
@@ -183,26 +183,19 @@ test_that("as.dfm to and from a matrix works with docvars", {
         attributes(dfm(txt)@docvars)$row.names,
         attributes(as.dfm(as.matrix(dfm(txt)))@docvars)$row.names
     )
-    expect_equal(
+    expect_equivalent(
         dfm(txt),
         as.dfm(as.matrix(dfm(txt)))
     )
 })
 
-test_that("repeat row index for dfm makes unique row.names for @docvars", {
-    txt <- c(docA = "a a a b c c f",
-             docB = "a b b b c d",
-             docC = "c c c f f")
-    crp <- corpus(txt, 
-                  docvars = data.frame(y = 1:3))
-    d <- dfm(crp)
+test_that("as.dfm works on old objects", {
+    load("../data/pre_v2_objects/data_dfm_pre2.rda")
+    expect_is(as.dfm(data_dfm_pre2), "dfm")
+    expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
     expect_identical(
-        row.names(docvars(d[c(1,2,2), ])),
-        c("docA", "docB", "docB.1")
-    )
-    expect_identical(
-        attributes(d[c(1,2,2), ]@docvars)$row.names,
-        c("docA", "docB", "docB.1")
+        names(as.dfm(data_dfm_pre2)@meta),
+        c("user", "system")
     )
 })
 

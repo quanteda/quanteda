@@ -117,18 +117,18 @@ corp1 <- corpus(c("##INTRO This is the introduction.
                   ##DOC3 Third document starts here.  End of third document.",
                  "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 corpseg1 <- corpus_segment(corp1, pattern = "##*")
-cbind(texts(corpseg1), docvars(corpseg1), metadoc(corpseg1))
+cbind(texts(corpseg1), docvars(corpseg1))
 
 # segmenting a transcript based on speaker identifiers
 corp2 <- corpus("Mr. Smith: Text.\\nMrs. Jones: More text.\\nMr. Smith: I'm speaking, again.")
 corpseg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
                             valuetype = "regex")
-cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))
+cbind(texts(corpseg2), docvars(corpseg2))
 
 # segmenting a corpus using crude end-of-sentence segmentation
 corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed", 
                             pattern_position = "after", extract_pattern = FALSE)
-cbind(texts(corpseg3), docvars(corpseg3), metadoc(corpseg3))
+cbind(texts(corpseg3), docvars(corpseg3))
 
 ## segmenting a character vector
 

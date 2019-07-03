@@ -53,6 +53,7 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     if (is.null(groups))
         groups <- docid(x)
 
+
     if (!force && 
         (( (! x@weightTf[["scheme"]] %in% c("count", "prop")) &&
          x@weightDf[["scheme"]] != "unary" ) ||
@@ -62,95 +63,44 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     }
     
     x <- as.dfm(x)
-    dvars <- docvars_internal(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
     x <- group_dfm(x, documents = groups, fill = fill)
-    x <- x[as.character(levels(groups)), ]
-    if (length(dvars)) {
-        x@docvars <- group_docvars(dvars, groups)
-    } else {
-        x@docvars <- data.frame(row.names = docnames(x))
-    }
+    x <- x[levels(groups),]
     return(x)
 }
 
 
-# ----- internal -------
-
-# internal code to perform dfm compression and grouping
-# on features and/or documents
-group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
-
-    if (is.null(features) && is.null(documents))
-        return(x)
-
-    temp <- as(x, "dgTMatrix")
-    if (is.null(features)) {
-        featname <- temp@Dimnames[[2]]
-        j_new <- temp@j + 1
+#' Generate a grouping vector from docvars
+#'
+#' Internal function to generate a grouping vector from docvars used in
+#' dfm.corpus, dfm.tokens, dfm.group, and tokens_group
+#' @param x corpus, tokens or dfm
+#' @param groups names of docvars or vector that can be coerced to a factor
+#' @return a factor
+#' @keywords internal
+generate_groups <- function(x, groups, drop = FALSE) {
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
+    if (is.character(groups) && all(groups %in% names(docvar))) {
+        groups <- interaction(docvar[groups], drop = FALSE)
     } else {
-        featname_unique <- unique(features)
-        j <- match(features, featname_unique)
-        j_new <- j[temp@j + 1]
-
-        if (!is.factor(features))
-            features <- factor(features, levels = featname_unique)
-        featname <- as.character(featname_unique)
-        if (fill && !identical(levels(features), featname_unique)) {
-            featname <- c(featname, setdiff(as.character(levels(features)),
-                                            as.character(featname_unique)))
-        }
+        if (length(groups) != ndoc(x))
+            stop("groups must name docvars or provide data matching the documents in x")
+        groups <- factor(groups)
     }
-    if (is.null(documents)) {
-        docname <- temp@Dimnames[[1]]
-        i_new <- temp@i + 1
-    } else {
-        docname_unique <- unique(documents)
-        i <- match(documents, docname_unique)
-        i_new <- i[temp@i + 1]
-
-        if (!is.factor(documents))
-            documents <- factor(documents, levels = docname_unique)
-        docname <- as.character(docname_unique)
-        if (fill && !identical(levels(documents), docname_unique)) {
-            docname <-
-                c(docname, setdiff(as.character(levels(documents)),
-                                   as.character(docname_unique)))
-        }
-    }
-
-    x_new <- temp@x
-    dims <- c(length(docname), length(featname))
-    result <- new("dfm",
-                  sparseMatrix(i = i_new, j = j_new, x = x_new,
-                               dims = dims),
-                  settings = x@settings,
-                  weightTf = x@weightTf,
-                  weightDf = x@weightDf,
-                  smooth = x@smooth,
-                  ngrams = x@ngrams,
-                  skip = x@skip,
-                  concatenator = x@concatenator)
-    set_dfm_dimnames(result) <- list(docname, featname)
-
-    if (is.null(documents)) {
-        docvars(result) <- cbind(docvars(x), metadoc(x))
-    } else {
-        docvars(result) <- data.frame(row.names = docname)
-    }
-    return(result)
+    return(groups)
 }
+
 
 # select docvar fields that have all the same values within groups
-group_docvars <- function(x, group) {
-    result <- x[match(levels(group), group), sapply(x, is_grouped, as.integer(group)), drop = FALSE]
-    rownames(result) <- as.character(levels(group))
-    return(result)
-}
+# group_docvars <- function(x, group) {
+#     result <- x[match(levels(group), group), sapply(x, is_grouped, as.integer(group)), drop = FALSE]
+#     rownames(result) <- as.character(levels(group))
+#     return(result)
+# }
 
 # check if values are uniform within groups
 is_grouped <- function(x, group) {
@@ -161,4 +111,58 @@ is_grouped <- function(x, group) {
     } else {
         qatd_cpp_is_grouped_numeric(as.numeric(x), group)
     }
+}
+
+# internal code to perform dfm compression and grouping
+# on features and/or documents
+group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
+
+    if (!length(features) && !length(documents))
+        return(x)
+    temp <- as(x, "dgTMatrix")
+    if (is.null(features)) {
+        featname <- temp@Dimnames[[2]]
+        j_new <- temp@j + 1
+    } else {
+        if (!is.factor(features))
+            features <- factor(features)
+        if (!fill)
+            features <- droplevels(features)
+        featname <- levels(features)
+        j <- as.integer(features)
+        j_new <- j[temp@j + 1]
+    }
+    if (is.null(documents)) {
+        docname <- temp@Dimnames[[1]]
+        i_new <- temp@i + 1
+    } else {
+        if (!is.factor(documents))
+            documents <- factor(documents)
+        if (!fill)
+            documents <- droplevels(documents)
+        docname <- levels(documents)
+        i <- as.integer(documents)
+        i_new <- i[temp@i + 1]
+    }
+
+    x_new <- temp@x
+    dims <- c(length(docname), length(featname))
+    result <- new("dfm",
+                  sparseMatrix(i = i_new, j = j_new, x = x_new,
+                               dims = dims),
+                  weightTf = x@weightTf,
+                  weightDf = x@weightDf,
+                  smooth = x@smooth,
+                  ngrams = x@ngrams,
+                  skip = x@skip,
+                  meta = x@meta,
+                  concatenator = x@concatenator)
+    set_dfm_dimnames(result) <- list(docname, featname)
+
+    if (is.null(documents)) {
+        result@docvars <- x@docvars
+    } else {
+        result@docvars <- group_docvars(x@docvars, documents)
+    }
+    return(result)
 }

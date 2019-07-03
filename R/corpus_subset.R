@@ -8,7 +8,7 @@
 #' @param x \link{corpus} object to be subsetted
 #' @param subset logical expression indicating the documents to keep: missing
 #'   values are taken as false
-#' @param select expression, indicating the \link{docvars} to keep
+# @param select expression, indicating the \link{docvars} to keep
 #' @param ... not used
 #' @return corpus object, with a subset of documents (and docvars) selected according to arguments
 #' @export
@@ -16,42 +16,43 @@
 #' @keywords corpus
 #' @examples
 #' summary(corpus_subset(data_corpus_inaugural, Year > 1980))
-#' summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt", 
-#'                       select = Year))
-corpus_subset <- function(x, subset, select, ...) {
+#' summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt"))
+corpus_subset <- function(x, subset, ...) {
     UseMethod("corpus_subset")
 }
     
 #' @export
-corpus_subset.default <- function(x, subset, select, ...) {
+corpus_subset.default <- function(x, subset, ...) {
     stop(friendly_class_undefined_message(class(x), "corpus_subset"))
 }
 
 #' @export
-corpus_subset.corpus <- function(x, subset, select, ...) {
+corpus_subset.corpus <- function(x, subset, ...) {
     
     unused_dots(...)
+
+    x <- as.corpus(x)
+    attrs <- attributes(x)
+    #sys <- select_docvars(attr(x, "docvars"), system = TRUE)
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(documents(x)))
+        rep_len(TRUE, ndoc(x))
     } else {
         e <- substitute(subset)
-        r <- eval(e, documents(x), parent.frame())
+        r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    vars <- if (missing(select)) 
-        TRUE
-    else {
-        nl <- as.list(seq_along(documents(x)))
-        names(nl) <- names(documents(x))
-        c(1, eval(substitute(select), nl, parent.frame()))
-    }
-    
-    documents(x) <- documents(x)[r, vars, drop = FALSE]
-    if (is.corpuszip(x)) {
-        texts(x) <- texts(x)[r]
-        x$docnames <- rownames(documents(x))
-    }
-    
-    x
+    # vars <- if (missing(select)) 
+    #     rep_len(TRUE, ncol(usr))
+    # else {
+    #     nl <- as.list(seq_along(usr))
+    #     names(nl) <- names(usr)
+    #     eval(substitute(select), nl, parent.frame())
+    # }
+    x <- x[r]
+    #attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
+    #                            reshape_docvars(usr, r, vars))
+    #attributes(x, FALSE) <- attrs
+    return(x)
 }
 

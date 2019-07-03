@@ -1,4 +1,4 @@
-context('Testing fcm*.R')
+context('testing fcm')
 
 # test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
 #     skip_if_not_installed("text2vec")
@@ -207,8 +207,6 @@ test_that("fcm print works as expected", {
                   "^Feature co-occurrence matrix of: 6 by 6 features.")
     expect_output(print(testfcm[1:5, 1:5]),
                   "^Feature co-occurrence matrix of: 5 by 5 features.")
-    expect_output(print(testfcm, show.settings = TRUE),
-                  "Settings: TO BE IMPLEMENTED")
     expect_output(show(testfcm),
                   "^Feature co-occurrence matrix of: 6 by 6 features.")
 })

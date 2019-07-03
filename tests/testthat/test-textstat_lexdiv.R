@@ -1,4 +1,4 @@
-context("test textstat_lexdiv.dfm")
+context("test textstat_lexdiv")
 
 test_that("textstat_lexdiv computation is correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
@@ -159,15 +159,15 @@ test_that("textstat_lexdiv works similarly for corpus and tokens", {
 test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols", {
     txt <- c(d1 = "a a  b b  c c",
              d2 = "a a , b b . c c / & ^ *** ### 1 2 3 4")
-    mydfm <- dfm(txt)
-    mytokens <- tokens(txt)
+    mt <- dfm(txt)
+    toks <- tokens(txt)
     expect_identical(
-        textstat_lexdiv(mydfm["d1", ], measure = static_measures)[, -1],
-        textstat_lexdiv(mydfm["d2", ], measure = static_measures)[, -1]
+        textstat_lexdiv(mt["d1", ], measure = static_measures)[, -1],
+        textstat_lexdiv(mt["d2", ], measure = static_measures)[, -1]
     )
     expect_identical(
-        textstat_lexdiv(mytokens["d1", ], measure = static_measures)[, -1],
-        textstat_lexdiv(mytokens["d2", ], measure = static_measures)[, -1]
+        textstat_lexdiv(toks["d1"], measure = static_measures)[, -1],
+        textstat_lexdiv(toks["d2"], measure = static_measures)[, -1]
     )
 })
 

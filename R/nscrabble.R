@@ -16,7 +16,7 @@
 #'   function} if you send us the values for your language!
 #' @examples
 #' nscrabble(c("muzjiks", "excellency"))
-#' nscrabble(data_corpus_inaugural[1:5], mean)
+#' nscrabble(texts(data_corpus_inaugural)[1:5], mean)
 #' @export
 nscrabble <- function(x, FUN = sum) {
     UseMethod("nscrabble")

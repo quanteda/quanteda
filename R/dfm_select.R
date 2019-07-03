@@ -129,7 +129,6 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         id <- setdiff(id, id_pat)
     }
     
-    # select features based on feature length
     if (is_dfm) {
         x <- dfm_match(x, pattern)
     } else {

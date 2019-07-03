@@ -8,8 +8,6 @@ NULL
 #' @param x the dfm to be printed
 #' @param show.values print the dfm values; if called explicitly this will print
 #'   all values.
-#' @param show.settings print the settings used to create the dfm. See 
-#'   \link{settings}.
 #' @param show.summary print a brief summary indicating the number of documents 
 #'   and features
 #' @param ndoc max number of documents to print; default is from the
@@ -22,8 +20,7 @@ NULL
 #' @rdname print.dfm
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
-          function(x, show.values = NULL, show.settings = FALSE, 
-                   show.summary = TRUE, 
+          function(x, show.values = NULL, show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    nfeat = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {
@@ -32,13 +29,12 @@ setMethod("print", signature(x = "dfm"),
                       if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
                       format(nfeat(x), big.mark=","), " feature",
                       if (nfeat(x) > 1L || nfeat(x) == 0L) "s" else "",
-                      if (is.resampled(x)) paste0(", ", nresample(x), " resamples") else "",
                       if (prod(dim(x))) format_sparsity(sparsity(x)),
                           # paste0(" (", format(sparsity(x)*100, digits = 3), "% sparse)"),
                           # paste0(" (", format(sparsity(x)*100, digits = 6, nsmall = 2, scientific = 4), "% sparse)"),
                       ".\n", sep = "")
               }
-              print_dfm(x, ndoc, nfeat, show.values, show.settings, ...)
+              print_dfm(x, ndoc, nfeat, show.values, ...)
           })
 
 #' @rdname print.dfm
@@ -93,8 +89,6 @@ format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
 # internal function for print.dfm and print.fcm
 print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
     
-    if (show_settings)
-        cat("Settings: TO BE IMPLEMENTED.")
     if (!is.null(show_values)) {
         # if show.values is set to TRUE, show full matrix
         ndoc <- nrow(x)

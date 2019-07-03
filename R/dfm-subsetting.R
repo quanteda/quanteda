@@ -3,12 +3,20 @@ subset_dfm <- function(x, i, j, ..., drop) {
     attrs <- attributes(x)
     error <- FALSE
     if (!missing(i)) {
-        if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
-        if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+        if (is.character(i))
+            i <- match(i, rownames(x))
+        if (is.numeric(i) && (any(is.na(i)) || any(i < nrow(x) * -1L) || any(nrow(x) < i)))
+            error <- TRUE
+        #if (is.logical(i) && length(i) != nrow(x))
+        #    error <- TRUE
     }
     if (!missing(j)) {
-        if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
-        if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+        if (is.character(j))
+            j <- match(j, colnames(x))
+        if (is.numeric(j) && (any(is.na(j)) || any(j < ncol(x) * -1L) || any(ncol(x) < j)))
+            error <- TRUE
+        #if (is.logical(j) && length(j) != ncol(x))
+        #    error <- TRUE
     }
     if (error) stop("Subscript out of bounds")
     
@@ -23,7 +31,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
     }
     
     if (!missing(i))
-        attrs$docvars <- attrs$docvars[i, , drop = FALSE]
+        attrs$docvars <- subset_docvars(attrs$docvars, i)
     matrix2dfm(x, attrs)
 }
 

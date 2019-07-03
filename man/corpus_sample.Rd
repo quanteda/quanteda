@@ -4,7 +4,7 @@
 \alias{corpus_sample}
 \title{Randomly sample documents from a corpus}
 \usage{
-corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
+corpus_sample(x, size = NULL, replace = FALSE, prob = NULL,
   by = NULL)
 }
 \arguments{
@@ -39,7 +39,7 @@ documents and their associated document-level variables.
 \examples{
 set.seed(2000)
 # sampling from a corpus
-summary(corpus_sample(data_corpus_inaugural, 5)) 
+summary(corpus_sample(data_corpus_inaugural, 5))
 summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 
 # sampling sentences within document

@@ -199,6 +199,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
                        weights = NULL,
                        ordered = FALSE,
                        tri = TRUE, ...) {
+    
+    x <- as.tokens(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)
@@ -242,8 +244,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
 #' @rdname print.dfm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = NULL, show.settings = FALSE, 
-                   show.summary = TRUE, 
+          function(x, show.values = NULL, show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    nfeature = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {
@@ -251,10 +252,9 @@ setMethod("print", signature(x = "fcm"),
                       format(ndoc(x), big.mark = ","), " by ",
                       format(nfeat(x), big.mark = ","), " feature",
                       if (nfeat(x) != 1L) "s" else "",
-                      if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep = "") else "",
                       ".\n", sep = "")
               }
-              print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)
+              print_dfm(x, ndoc, nfeature, show.values, ...)
           })
 
 #' @rdname print.dfm

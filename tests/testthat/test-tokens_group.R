@@ -82,33 +82,26 @@ test_that("generate_groups works for tokens objects", {
 })
 
 test_that("generate_groups works for corpus objects", {
-    toks <- data_corpus_irishbudget2010
+    corp <- as.corpus(data_corpus_irishbudget2010)
     expect_equal(
-        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
+        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 7)),
         factor(rep(c("A", "B"), each = 7))
     )
     expect_equal(
-        quanteda:::generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
+        quanteda:::generate_groups(corp, factor(rep(c("A", "B"), each = 7))),
         factor(rep(c("A", "B"), each = 7))
     )
     expect_equal(
-        quanteda:::generate_groups(toks, factor(rep(c(1, 2), each = 7))),
+        quanteda:::generate_groups(corp, factor(rep(c(1, 2), each = 7))),
         factor(rep(c(1, 2), each = 7))
     )
     expect_equal(
-        quanteda:::generate_groups(toks, "party"),
+        quanteda:::generate_groups(corp, "party"),
         factor(docvars(data_corpus_irishbudget2010, "party"))
     )
     expect_error(
-        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
+        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 6)),
         "groups must name docvars or provide data matching the documents in x"
-    )
-    
-    sents <- corpus_reshape(data_corpus_irishbudget2010, to = "sentences")
-    expect_equal(
-        quanteda:::generate_groups(sents, "_document"),
-        factor(metadoc(sents, "document"),
-               levels = sort(unique(metadoc(sents, "document"))))
     )
     
 })

@@ -80,16 +80,6 @@ docvars(corp_uk, "Year") <- 2010
 summary(corp_uk)
 ```
 
-Si quisiéramos etiquetar cada documento con meta-data adicional no considerada como una variable de documento de interés para el análisis, sino como algo que precisamos conocer como un atributo del documento también sería posible añadirla al corpus.
-
-```{r}
-metadoc(corp_uk, "language") <- "english"
-metadoc(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
-summary(corp_uk, showmeta = TRUE)
-```
-
-El último comando, `metadoc`, permite definir tu propios campos de meta-data del documento. Nota que al asignar solo el valor `"english"`, R ha reciclado el valor hasta que coincide con el número de documentos en el corpus. Creando una simple etiqueta para nuestro campo de metadocumento `docsource`, hemos usado la función de quanteda llamada `ndoc()` para recuperar el número de documentos en nuestro corpus. Esta función es deliberadamente designada para trabajar en una manera similar a las funciones que probablemente ya utilices en R, como `nrow()` y `ncol()`. 
-
 ### Cargando archivos usando el paquete readtext
 
 ```{r, eval=FALSE}
@@ -158,7 +148,7 @@ if (require(ggplot2))
     scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
     theme_bw()
 
-# Longest inaugural address: William Henry Harrison
+# El discurso inaugural más largo: William Henry Harrison
 tokeninfo[which.max(tokeninfo$Tokens), ]
 ```
 
@@ -205,9 +195,6 @@ En el summary de arriba, las variables `Year` (año) y `President` (presidente) 
 ```{r}
 # inspect the document-level variables
 head(docvars(data_corpus_inaugural))
-
-# inspect the corpus-level metadata
-metacorpus(data_corpus_inaugural)
 ```
 
 Más corpora están disponibles en el repositorio [quanteda.corpora](http://github.com/quanteda/quanteda.corpora).

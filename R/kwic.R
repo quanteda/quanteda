@@ -70,6 +70,7 @@ kwic.corpus <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
+    x <- as.corpus(x)
     kwic(tokens(x, ...),
          pattern, window, valuetype, separator, case_insensitive)
 }
@@ -103,11 +104,6 @@ kwic.tokens <- function(x, pattern, window = 5,
 
     valuetype <- match.arg(valuetype)
     type <- types(x)
-
-    # add document names if none (TODO: should be removed after corpus upgrade)
-    if (is.null(names(x)))
-        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
-
     ids <- pattern2list(pattern, type,
                         valuetype, case_insensitive, attr(x, "concatenator"))
     result <- data.frame()

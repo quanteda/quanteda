@@ -85,16 +85,6 @@ docvars(corp_uk, "Year") <- 2010
 summary(corp_uk)
 ```
 
-如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。
-
-```{r}
-metadoc(corp_uk, "language") <- "english"
-metadoc(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
-summary(corp_uk, showmeta = TRUE)
-```
-
-上面的命令`metadoc()`允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域`docsource`创建一个简单的标签时，我们使用了quanteda函数`ndoc()`来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如`nrow()`和`ncol()`。
-
 ### readtext软件包加载文件 {#loading-in-files-using-the-readtext-package}
 
 ```{r, eval=FALSE}
@@ -211,9 +201,6 @@ kwic(data_corpus_inaugural, pattern = "communist*")
 ```{r}
 # 浏览文档变量
 head(docvars(data_corpus_inaugural))
-
-# 浏览语料库变量
-metacorpus(data_corpus_inaugural)
 ```
 
 [**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)软件包提供更多语料库资源。

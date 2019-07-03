@@ -127,27 +127,16 @@ test_that("test default docvars methods", {
     )
 })
 
-test_that("test default metadoc methods", {
-    expect_error(
-        metadoc(0),
-        "metadoc\\(\\) only works on.*corpus.*tokens objects"
-    )   
-    expect_error(
-        metadoc(data_char_sampletext) <- "X",
-        "metadoc<-\\(\\) only works on corpus objects"
-    )
-})
-
-test_that("test default metacorpus method", {
-    expect_error(
-        metacorpus(0),
-        "metacorpus\\(\\) only works on corpus objects"
-    )   
-    expect_error(
-        metacorpus(data_char_sampletext) <- "X",
-        "metacorpus<-\\(\\) only works on corpus objects"
-    )
-})
+# test_that("test default metadoc methods", {
+#     expect_error(
+#         metadoc(0),
+#         "metadoc\\(\\) only works on.*corpus.*tokens objects"
+#     )   
+#     expect_error(
+#         metadoc(data_char_sampletext) <- "X",
+#         "metadoc<-\\(\\) only works on corpus objects"
+#     )
+# })
 
 test_that("kwic default works", {
     expect_error(

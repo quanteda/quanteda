@@ -40,12 +40,10 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("ver
                 stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1],
                                        "bootstrap_dfm.", ""),
                 " into sentences...", appendLF = FALSE)
-    corp_sentences <- corpus_reshape(x, to = "sentences")
+    x <- as.corpus(x)
+    x <- corpus_reshape(x, to = "sentences")
     if (verbose) message("done.")
-    result <- bootstrap_dfm(dfm(corp_sentences, ...),  n = n, ..., verbose = verbose)
-    # replace original dfm with the one created pre-splitting
-    result[["dfm_0"]] <- dfm(x, ...)
-    result
+    bootstrap_dfm(dfm(x, ...),  n = n, ..., verbose = verbose)
 }
 
 #' @noRd
@@ -60,33 +58,29 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' # bootstrapping from a dfm
 #' dfmat <- dfm(corpus_reshape(corpus(txt), to = "sentences"))
 #' bootstrap_dfm(dfmat, n = 3)
-bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
-
-    if (! "_document" %in% names(x@docvars))
-        stop("x must be a dfm with a _document field")
-    if (length(unique(docvars(x, "_document"))) == ndoc(x))
+bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {  
+    x <- as.dfm(x)
+    group <- get_docvars(x, "docid_", system = TRUE, drop = TRUE)
+    if (length(levels(group)) == ndoc(x))
         stop("x must contain more than one row per document")
 
     if (verbose) {
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
-
-    x <- as.dfm(x)
     result <- list()
-    # construct the original dfm
-    result[["dfm_0"]] <- dfm_group(x, groups = docvars(x, "_document"))
-
-    # randomly resample dfm indexes within document and recompile sampled sentences
-    id <- index <- NULL
+    result[[1]] <- dfm_group(x, groups = "docid_", fill = TRUE)
     for (i in seq_len(n)) {
-        if (verbose) message(", ", i, appendLF = FALSE)
-        temp <- x[sample_bygroup(seq_len(ndoc(x)), group = docvars(x, "_document"), replace = TRUE), ]
-        temp <- dfm_group(temp, groups = docvars(temp, "_document"))
-        result[[paste0("dfm_", i)]] <- temp
+        if (verbose) 
+            message(", ", i, appendLF = FALSE)
+        temp <- x[sample_bygroup(seq_len(ndoc(x)), get_docvars(x, "docid_", system = TRUE, drop = TRUE), 
+                                 replace = TRUE), ]
+        temp <- dfm_group(temp, groups = "docid_")
+        result[[i + 1]] <-temp
     }
-    if (verbose) message("\n   ...complete.\n")
-
+    names(result) <- paste0("dfm_", seq(0, n))
+    if (verbose) 
+        message("\n   ...complete.\n")
     class(result) <- c("dfm_bootstrap")
     return(result)
 }

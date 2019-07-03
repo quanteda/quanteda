@@ -70,7 +70,9 @@ test_that("dfm_compress preserves docvars (#1506)", {
     # this ensures the existence of _document
     docnames(thedfm) <- docnames(thedfm)
     
-    expect_true("_document" %in% names(thedfm@docvars))
+    expect_true("docname_" %in% names(thedfm@docvars))
+    expect_true("docid_" %in% names(thedfm@docvars))
+    expect_true("segid_" %in% names(thedfm@docvars))
 
     expect_identical(
         thedfm@docvars,
@@ -89,8 +91,8 @@ test_that("add test for group_dfm with features and fill = TRUE", {
     expect_identical(
         as.matrix(quanteda:::group_dfm(x, fill = TRUE,
                                        features = factor(featnames(x), levels = letters[1:5]))),
-        matrix(c(2, 0, 1, 1, 1, 1, 1, 2, 0, 0), nrow = 2,
-               dimnames = list(docs = paste0("text", 1:2), features = c("a", "b", "c", "e", "d")))
+        matrix(c(2, 0, 1, 1, 1, 1, 0, 0, 1, 2), nrow = 2,
+               dimnames = list(docs = paste0("text", 1:2), features = c("a", "b", "c", "d", "e")))
     )
     expect_identical(
         as.matrix(quanteda:::group_dfm(x, fill = FALSE,

@@ -35,10 +35,9 @@ to sentences, and then back to documents (possibly after modifying the sentences
 # simple example
 corp1 <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
                  textwo = "Premiere phrase.  Deuxieme phrase."), 
-                 docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-                 metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+                 docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
 summary(corp1)
-summary(corpus_reshape(corp1, to = "sentences"), showmeta = TRUE)
+summary(corpus_reshape(corp1, to = "sentences"))
 
 # example with inaugural corpus speeches
 (corp2 <- corpus_subset(data_corpus_inaugural, Year>2004))

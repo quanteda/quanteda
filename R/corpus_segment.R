@@ -80,18 +80,18 @@
 #'                   ##DOC3 Third document starts here.  End of third document.",
 #'                  "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 #' corpseg1 <- corpus_segment(corp1, pattern = "##*")
-#' cbind(texts(corpseg1), docvars(corpseg1), metadoc(corpseg1))
+#' cbind(texts(corpseg1), docvars(corpseg1))
 #' 
 #' # segmenting a transcript based on speaker identifiers
 #' corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
 #' corpseg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
 #'                             valuetype = "regex")
-#' cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))
+#' cbind(texts(corpseg2), docvars(corpseg2))
 #' 
 #' # segmenting a corpus using crude end-of-sentence segmentation
 #' corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed", 
 #'                             pattern_position = "after", extract_pattern = FALSE)
-#' cbind(texts(corpseg3), docvars(corpseg3), metadoc(corpseg3))
+#' cbind(texts(corpseg3), docvars(corpseg3))
 #' 
 #' @import stringi
 #' @export
@@ -121,34 +121,21 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
+    
+    x <- as.corpus(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    vars <- docvars(x)
-    
-    # get the relevant function call
-    commands <- as.character(sys.calls())
-    commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
-    
+    attrs <- attributes(x)
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
-
-    # create the new corpus
-    result <- corpus(temp$texts, docnames = rownames(temp),
-                     metacorpus = list(source = metacorpus(x, "source"),
-                                       notes = commands))
-    
-    # add repeated versions of remaining docvars
-    if (use_docvars && !is.null(vars)) {
-        vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
-        rownames(vars) <- rownames(temp)
-        docvars(result) <- vars
-    }
-    docvars(result, '_document') <- temp$docname
-    docvars(result, '_docid') <- temp$docid
-    docvars(result, '_segid') <- temp$segid
-    if (extract_pattern) docvars(result, "pattern") <- temp$pattern
-    settings(result, "units") <- 'other'
-    
+    result <- temp$text
+    if (!use_docvars)
+        attrs$docvars <- select_docvars(attrs$docvars, user = FALSE, system = TRUE)
+    attrs$docvars <-reshape_docvars(attrs$docvars, temp$docnum)
+    if (extract_pattern) 
+        attrs$docvars[["pattern"]] <- temp$pattern
+    attrs$unit <- "segments"
+    attributes(result, FALSE) <- attrs
     return(result)
 }
 
@@ -197,13 +184,14 @@ char_segment.character <- function(x, pattern = "##*",
     
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    
-    temp <- segment_texts(x, pattern, valuetype, 
-                          case_insensitive, remove_pattern, 
-                          pattern_position)
-    result <- temp$texts
-    if (!is.null(names(x)))
-        names(result) <- rownames(temp)
+    temp <- corpus_segment(corpus(x, docnames = names(x)), 
+                           pattern, valuetype, 
+                           case_insensitive, remove_pattern, 
+                           pattern_position)
+    meta_system(temp, "source") <- "corpus_segment"
+    result <- texts(temp)
+    if (is.null(names(x)))
+        result <- unname(result)
     return(result)
 }
 
@@ -214,8 +202,6 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           case_insensitive = TRUE,
                           extract_pattern = FALSE, pattern_position = "after", 
                           omit_empty = TRUE, what = "other", ...){
-    
-    docname <- names(x)
     
     # normalize EOL
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
@@ -296,32 +282,22 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         } else {
             txt <- stri_sub(x, pos[,2] + 1L, -1L)
         }
-        result <- data.frame(texts = stri_trim_both(txt), 
+        result <- data.frame(text = stri_trim_both(txt), 
                              pattern = stri_sub(x, pos[,1], pos[,2]),
+                             docnum = rep(seq_along(n), n),
                              stringsAsFactors = FALSE)
-        
     } else {
-        result <- data.frame(texts = stri_trim_both(x),
+        result <- data.frame(text = stri_trim_both(x), 
+                             docnum = rep(seq_along(n), n),
                              stringsAsFactors = FALSE)
     }
-
-    result$docid <- rep(seq_along(n), n)
-    if (!is.null(docname)) result$docname <- rep(docname, n)
-    
+    result$docnum <- rep(seq_along(n), n)
     if (extract_pattern) {
         result <- result[!is.na(result$pattern),]
     } else {
         if (omit_empty)
-            result <- result[!is.na(result$texts),]
+            result <- result[!is.na(result$text),]
     }
-    
-    result$segid <- unlist(lapply(rle(result$docid)$lengths, seq_len))
-
-    if (!is.null(docname)) {
-        # to make names doc1.1, doc1.2, doc2.1, ...
-        rownames(result) <- stri_c(result$docname, ".", result$segid)
-    }
-    
     return(result)
 }
 

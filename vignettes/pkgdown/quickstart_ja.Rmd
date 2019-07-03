@@ -89,18 +89,6 @@ docvars(corp_uk, "Year") <- 2010
 summary(corp_uk)
 ```
 
-分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，`docvars()`を使って，コーパスに追加することができる．
-
-```{r}
-metadoc(corp_uk, "language") <- "english"
-metadoc(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
-summary(corp_uk, showmeta = TRUE)
-```
-
-`metadoc()`を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（"english"）を文書変数（"language"）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．
-
-独自の文書メタデータのフィールド（`docsource`）を作成するために，**quanteda**の関数である`ndoc()`を使ってコーパスに含まれる文書の総数を取得している．`ndoc()`は，`nrow()`や`ncol()`などのRの標準の関数と同じような方法で動作するように設計されている．
-
 ### readtextパッケージを用いたファイルの読み込み {#loading-in-files-using-the-readtext-package}
 
 ```{r, eval=FALSE}
@@ -148,7 +136,6 @@ summary(corpus(dat_csv), 5)
 ```{r}
 texts(data_corpus_inaugural)[2]
 ```
-
 
 `summary()`により，コーパス内のテキストの要約を行うことができる．
 

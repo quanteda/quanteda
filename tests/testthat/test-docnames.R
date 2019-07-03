@@ -21,37 +21,40 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
     expect_equal(docnames(corp), name_new)
     expect_equal(docnames(toks), name_new)
     expect_equal(docnames(mx), name_new)
-
-    expect_equal(docvars(corp, "_document"), name_new)
-    expect_equal(docvars(toks, "_document"), name_new)
-    expect_equal(docvars(mx, "_document"), name_new)
-})
-
-test_that("docnames are character only (#1574)", {
-    # for corpus
-    corp <- corpus(c("a b c", "x y z"), docnames = 1:2)
-    expect_is(docnames(corp), "character")
-
-    # for tokens
-    toks <- tokens(c("a b c", "x y z"))
-    docnames(toks) <- 1:2
-    expect_is(docnames(toks), "character")
-    names(toks) <- 1:2
-    expect_is(docnames(toks), "character")
-
-    # for tokens
-    dfmat <- dfm(c("a b c", "x y z"))
-    docnames(dfmat) <- 1:2
-    expect_is(docnames(dfmat), "character")
-    rownames(dfmat) <- 1:2
-    expect_is(docnames(dfmat), "character")
+    expect_equal(attr(corp, "docvars")[["docname_"]], name_new)
+    expect_equal(attr(toks, "docvars")[["docname_"]], name_new)
+    expect_equal(attr(mx, "docvars")[["docname_"]], name_new)
 })
 
 test_that("dfm docnames cannot be made integer before textstat_simil", {
-    dfmat <- data_dfm_lbgexample
+    dfmat <- as.dfm(data_dfm_lbgexample)
     dfmat@Dimnames$docs <- seq_len(ndoc(dfmat))
     expect_identical(
         dimnames(as.matrix(textstat_simil(dfmat)))[[1]],
         as.character(1:6)
+    )
+})
+
+test_that("special names<- operator works as planned", {
+    
+    corp <- corpus(LETTERS[1:3], docnames = letters[1:3])
+    names(corp)[1] <- "X"
+    expect_identical(
+        names(corp),
+        quanteda:::get_docvars.corpus(corp, "docname_", system = TRUE)$docname_
+    )
+
+    toks <- tokens(corpus(LETTERS[1:3], docnames = letters[1:3]))
+    names(toks)[1] <- "X"
+    expect_identical(
+        names(toks),
+        quanteda:::get_docvars.tokens(toks, "docname_", system = TRUE)$docname_
+    )
+    
+    dfmat <- dfm(corpus(LETTERS[1:3], docnames = letters[1:3]))
+    rownames(dfmat)[1] <- "X"
+    expect_identical(
+        rownames(dfmat),
+        quanteda:::get_docvars.dfm(dfmat, "docname_", system = TRUE)$docname_
     )
 })

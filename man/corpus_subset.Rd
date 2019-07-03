@@ -4,15 +4,13 @@
 \alias{corpus_subset}
 \title{Extract a subset of a corpus}
 \usage{
-corpus_subset(x, subset, select, ...)
+corpus_subset(x, subset, ...)
 }
 \arguments{
 \item{x}{\link{corpus} object to be subsetted}
 
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
-
-\item{select}{expression, indicating the \link{docvars} to keep}
 
 \item{...}{not used}
 }
@@ -27,8 +25,7 @@ evaluation to evaluate conditions based on the \link{docvars} in the corpus.
 }
 \examples{
 summary(corpus_subset(data_corpus_inaugural, Year > 1980))
-summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt", 
-                      select = Year))
+summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt"))
 }
 \seealso{
 \code{\link{subset.data.frame}}

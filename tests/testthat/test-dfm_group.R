@@ -41,16 +41,17 @@ test_that("dfm_group works with docvars", {
 })
 
 test_that("dfm.character groups works (#794)", {
+    grp <- c(1, 1, 2)
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    corp <- corpus(txt, docvars = data.frame(grp = c(1, 1, 2)))
+    corp <- corpus(txt)
     toks <- tokens(corp)
     expect_equal(
-        dfm(txt, groups = docvars(corp, "grp")),
-        dfm(toks, groups = "grp")
+        dfm(txt, groups = grp),
+        dfm(toks, groups = grp)
     )
     expect_equal(
-        dfm(txt, groups = docvars(corp, "grp")),
-        dfm(corp, groups = "grp")
+        dfm(txt, groups = grp),
+        dfm(corp, groups = grp)
     )
 })
 
@@ -159,23 +160,29 @@ test_that("test dfm_group keeps group-level variables", {
     
     grp1 <- c("D", "D", "A", "C")
     expect_equal(
-        docvars(dfm_group(testdfm, grp1)),
-                 data.frame(grp = c("A", "C", "D"),
+        dfm_group(testdfm, grp1)@docvars,
+                 data.frame("docname_" = c("A", "C", "D"),
+                            "docid_" = factor(c("text3", "text4", "text1"), 
+                                                levels = c("text1", "text2", "text3", "text4")),
+                            "segid_" = c(1L, 1L, 1L),
+                            grp = c("A", "C", "D"),
                             var1 = c(2, 2, 1),
                             var3 = c("y", NA, "x"),
                             var5 = as.Date(c("2015-03-01", "2012-12-15", "2018-01-01")),
-                            row.names = c("A", "C", "D"),
                             stringsAsFactors = FALSE)
     )
     
     grp2 <- factor(c("D", "D", "A", "C"), levels = c("A", "B", "C", "D"))
     expect_equal(
-        docvars(dfm_group(testdfm, grp2, fill = TRUE)),
-        data.frame(grp = c("A", NA, "C", "D"),
+        dfm_group(testdfm, grp2, fill = TRUE)@docvars,
+        data.frame("docname_" = c("A", "B", "C", "D"),
+                   "docid_" = factor(c("text3", NA, "text4", "text1"), 
+                                       levels = c("text1", "text2", "text3", "text4")),
+                   "segid_" = c(1L, NA, 1L, 1L),
+                   grp = c("A", NA, "C", "D"),
                    var1 = c(2, NA, 2, 1),
                    var3 = c("y", NA, NA, "x"),
                    var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
-                   row.names = c("A", "B", "C", "D"),
                    stringsAsFactors = FALSE)
     )
 })
@@ -246,21 +253,30 @@ test_that("force argument works as expected (#1545)", {
 })
 
 test_that("group_docvar drops list column (#1553)", {
-    data <- data.frame(vec1 = c(1, 3, 3, 6),
-                       vec2 = c("a", "b", "b", "c"))
+    data <- data.frame("docname_" = c("A", "B", "C", "D"),
+                       "docid_" = factor(c("text1", "text2", "text2", "text3")),
+                       "segid_" = c(1L, 1L, 1L, 1L),
+                       vec1 = c(1, 3, 3, 6),
+                       vec2 = c("a", "b", "b", "c"),
+                       stringsAsFactors = FALSE)
     data$lis <- list(1:3, -5, 3:4, 1)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
-                 data.frame(data.frame(vec1 = c(1, 3, 6),
-                                       vec2 = c("a", "b", "c"),
-                                       row.names = c(1, 2, 3))))
+                 data.frame("docname_" = c("1", "2", "3"),
+                            "docid_" = factor(c("text1", "text2", "text3")),
+                            "segid_" = c(1L, 1L, 1L),
+                            vec1 = c(1, 3, 6),
+                            vec2 = c("a", "b", "c"),
+                            stringsAsFactors = FALSE))
     
     corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),
-                   docvars = data)
+                   docvars = data.frame(vec1 = c(1, 3, 3, 6),
+                                        vec2 = c("a", "b", "b", "c"),
+                                        stringsAsFactors = FALSE))
     mt <- dfm(corp)
     expect_equal(docvars(dfm_group(mt, c(1, 2, 2, 3))),
                  data.frame(data.frame(vec1 = c(1, 3, 6),
                                        vec2 = c("a", "b", "c"),
-                                       row.names = c(1, 2, 3))))
+                                       stringsAsFactors = FALSE)))
 })
 
 

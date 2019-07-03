@@ -28,18 +28,17 @@ ndoc.default <- function(x) {
 
 #' @export
 ndoc.corpus <- function(x) {
-    nrow(documents(x))
+    length(as.corpus(x))
 }
 
 #' @export
 ndoc.dfm <- function(x) {
-    x <- as.dfm(x)
-    nrow(x)
+    nrow(as.dfm(x))
 }
 
 #' @export
 ndoc.tokens <- function(x) {
-    length(x)
+    length(as.tokens(x))
 }
 
 
@@ -142,6 +141,7 @@ ntype.default <- function(x, ...) {
 
 #' @export
 ntoken.corpus <- function(x, ...) {
+    x <- as.corpus(x)
     ntoken(texts(x), ...)
 }
 
@@ -152,6 +152,7 @@ ntoken.character <- function(x, ...) {
 
 #' @export
 ntoken.tokens <- function(x, ...) {
+    x <- as.tokens(x)
     lengths(x)
 }
 
@@ -171,6 +172,7 @@ ntype.character <- function(x, ...) {
 
 #' @export
 ntype.corpus <- function(x, ...) {
+    x <- as.corpus(x)
     ntype(texts(x), ...)
 }
 
@@ -185,6 +187,7 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
+    x <- as.tokens(x)
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
 
@@ -228,11 +231,13 @@ nsentence.character <- function(x, ...) {
 
 #' @export
 nsentence.corpus <- function(x, ...) {
+    x <- as.corpus(x)
     nsentence(texts(x), ...)
 }
 
 #' @export
 nsentence.tokens <- function(x, ...) {
+    x <- as.tokens(x)
     if (attr(x, "what") != "sentence")
         stop("nsentence on a tokens object only works if what = \"sentence\"")
     return(lengths(x))

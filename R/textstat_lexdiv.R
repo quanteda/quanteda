@@ -220,6 +220,7 @@ textstat_lexdiv.tokens <-
     x <- tokens(x, remove_hyphens = remove_hyphens,
                 remove_numbers = remove_numbers,
                 remove_symbols = remove_symbols)
+
     if (remove_punct) {
         # this will be replaced with
         # x <- tokens(x, remove_punct = TRUE)
@@ -252,7 +253,8 @@ textstat_lexdiv.tokens <-
                                         MSTTR_segment = MSTTR_segment)[, -1]
     }
 
-    result
+    return(result)
+
 }
 
 # internal functions to handle lexdiv statistics for dfm and tokens -------
@@ -345,7 +347,7 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
     if (length(measure))
         result <- cbind(result, as.data.frame(temp[, measure, with = FALSE]))
     class(result) <- c("lexdiv", "textstat", "data.frame")
-    result
+    return(result)
 }
 
 #' @rdname compute_lexdiv_stats
@@ -369,7 +371,7 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR"),
     # reorder output as originally supplied
     result <- result[, c("document", measure), drop = FALSE]
     class(result) <- c("lexdiv", "textstat", "data.frame")
-    result
+    return(result)
 }
 
 # specific functions for tokens-only moving average measures -----------
@@ -398,9 +400,9 @@ compute_mattr <- function(x, MATTR_window = 100L) {
     x <- tokens_ngrams(x, n = MATTR_window, concatenator = " ")
 
     # get a list of TTRs by document
-    ttr_by_window <- lapply(as.list(x), function(y) textstat_lexdiv(dfm(y), "TTR")[["TTR"]])
-
-    vapply(ttr_by_window, mean, numeric(1))
+    temp <- lapply(as.list(x), function(y) textstat_lexdiv(dfm(y), "TTR")[["TTR"]])
+    result <- unlist(lapply(temp, mean))
+    return(result)
 }
 
 #' Compute the Mean Segmental Type-Token Ratio (MSTTR)
@@ -418,13 +420,14 @@ compute_msttr <- function(x, MSTTR_segment) {
                 MSTTR_segment)
     }
 
-    x_seg <- tokens_chunk(x, MSTTR_segment)
+    x <- tokens_chunk(x, MSTTR_segment)
     # drop remainder documents shorter than MSTTR_segment
-    x_seg <- x_seg[lengths(x_seg) >= MSTTR_segment]
+    x <- x[lengths(x) >= MSTTR_segment]
 
-    split(textstat_lexdiv(x_seg, measure = "TTR")[["TTR"]],
-          factor(metadoc(x_seg, "document"), levels = docnames(x))) %>%
-        vapply(mean, numeric(1))
+    temp <- split(textstat_lexdiv(x, measure = "TTR")[["TTR"]],
+                  attr(x, "docvars")[["docid_"]])
+    result <- unlist(lapply(temp, mean))
+    return(result)
 }
 
 
@@ -459,8 +462,8 @@ dfm_split_hyphenated_features <- function(x) {
 
     # combine dfms and suppress duplicated feature name warning
     result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
+    
     # compress features to combine same-named features
-    result <- dfm_compress(result, margin = "features")
-
-    result
+    dfm_compress(result, margin = "features")
 }
+

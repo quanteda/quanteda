@@ -4,21 +4,15 @@
 \alias{corpus-class}
 \alias{print.corpus}
 \alias{is.corpus}
-\alias{is.corpuszip}
 \alias{print.summary.corpus}
 \alias{+.corpus}
 \alias{c.corpus}
 \alias{[.corpus}
-\alias{[[.corpus}
-\alias{[[<-.corpus}
-\alias{str.corpus}
 \title{Base method extensions for corpus objects}
 \usage{
 \method{print}{corpus}(x, ...)
 
 is.corpus(x)
-
-is.corpuszip(x)
 
 \method{print}{summary.corpus}(x, ...)
 
@@ -26,18 +20,10 @@ is.corpuszip(x)
 
 \method{c}{corpus}(..., recursive = FALSE)
 
-\method{[}{corpus}(x, i, j = NULL, ..., drop = TRUE)
-
-\method{[[}{corpus}(x, i, ...)
-
-\method{[[}{corpus}(x, i) <- value
-
-\method{str}{corpus}(object, ...)
+\method{[}{corpus}(x, i)
 }
 \arguments{
 \item{x}{a corpus object}
-
-\item{...}{not used}
 
 \item{c1}{corpus one to be added}
 
@@ -52,36 +38,30 @@ is.corpuszip(x)
 \item{drop}{if \code{TRUE}, return a vector if extracting a single document
 variable; if \code{FALSE}, return it as a single-column data.frame.  See
 \code{\link{drop}} for further details.}
-
-\item{value}{a vector that will form a new docvar}
-
-\item{object}{the corpus about which you want structural information}
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
-
-\code{is.corpuszip} returns \code{TRUE} if the object is a compressed corpus
 }
 \description{
 Extensions of base R functions for corpus objects.
 }
 \details{
-The \code{+} operator for a corpus object will combine two corpus 
-  objects, resolving any non-matching \code{\link{docvars}} or 
-  \code{\link{metadoc}} fields by making them into \code{NA} values for the 
-  corpus lacking that field.  Corpus-level meta data is concatenated, except 
-  for \code{source} and \code{notes}, which are stamped with information 
-  pertaining to the creation of the new joined corpus.
-  
+The \code{+} operator for a corpus object will combine two corpus
+  objects, resolving any non-matching \code{\link{docvars}} by making them
+  into \code{NA} values for the corpus lacking that field. Corpus-level meta
+  data is concatenated, except for \code{source} and \code{notes}, which are
+  stamped with information pertaining to the creation of the new joined
+  corpus.
+
   The `c()` operator is also defined for corpus class objects, and provides
   an easy way to combine multiple corpus objects.
-  
-  There are some issues that need to be addressed in future revisions of 
-  quanteda concerning the use of factors to store document variables and 
-  meta-data.  Currently most or all of these are not recorded as factors, 
-  because we use \code{stringsAsFactors=FALSE} in the 
-  \code{\link{data.frame}} calls that are used to create and store the 
-  document-level information, because the texts should always be stored as 
+
+  There are some issues that need to be addressed in future revisions of
+  quanteda concerning the use of factors to store document variables and
+  meta-data.  Currently most or all of these are not recorded as factors,
+  because we use \code{stringsAsFactors=FALSE} in the
+  \code{\link{data.frame}} calls that are used to create and store the
+  document-level information, because the texts should always be stored as
   character vectors and never as factors.
 }
 \examples{
@@ -92,19 +72,10 @@ corpus2 <- corpus(data_char_ukimmig2010[3:4])
 corpus3 <- corpus(data_char_ukimmig2010[5:6])
 summary(c(corpus1, corpus2, corpus3))
 
-# ways to index corpus elements
-data_corpus_inaugural["1793-Washington"]    # 2nd Washington inaugural speech
-data_corpus_inaugural[2]                    # same
-# access the docvars from data_corpus_irishbudget2010
-data_corpus_irishbudget2010[, "year"]
-# same
-data_corpus_irishbudget2010[["year"]]            
+# two ways to index corpus elements
+data_corpus_inaugural["1793-Washington"]
+data_corpus_inaugural[2] 
 
-# create a new document variable
-data_corpus_irishbudget2010[["govtopp"]] <- 
-    ifelse(data_corpus_irishbudget2010[["party"]] \%in\% c("FF", "Greens"), 
-           "Government", "Opposition")
-docvars(data_corpus_irishbudget2010)
 }
 \seealso{
 \code{\link{summary.corpus}}

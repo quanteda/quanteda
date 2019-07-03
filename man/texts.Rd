@@ -6,7 +6,7 @@
 \alias{as.character.corpus}
 \title{Get or assign corpus texts}
 \usage{
-texts(x, groups = NULL, spacer = "  ")
+texts(x, groups = NULL, spacer = " ")
 
 texts(x) <- value
 
@@ -63,19 +63,20 @@ nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 
 # grouping a character vector using a factor
-nchar(data_char_ukimmig2010[1:5])
 nchar(texts(data_corpus_inaugural[1:5], 
-            groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+      groups = "President"))
+nchar(texts(data_corpus_inaugural[1:5], 
+      groups = factor(c("W", "W", "A", "J", "J"))))
 
-BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
-                       "Aluminium is a valourous metal."))
-texts(BritCorpus) <- 
-    stringi::stri_replace_all_regex(texts(BritCorpus),
+corp <- corpus(c("We must prioritise honour in our neighbourhood.", 
+                 "Aluminium is a valourous metal."))
+texts(corp) <- 
+    stringi::stri_replace_all_regex(texts(corp),
                                    c("ise", "([nlb])our", "nium"),
                                    c("ize", "$1or", "num"),
                                    vectorize_all = FALSE)
-texts(BritCorpus)
-texts(BritCorpus)[2] <- "New text number 2."
-texts(BritCorpus)
+texts(corp)
+texts(corp)[2] <- "New text number 2."
+texts(corp)
 }
 \keyword{corpus}

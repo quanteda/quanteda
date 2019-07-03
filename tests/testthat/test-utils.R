@@ -61,9 +61,7 @@ test_that("pipes work", {
     )
 })
 
-
 test_that("pattern2list is working with collocations", {
-    
     txt <- c(". . . . a b c . . a b c . . . c d e",
              "a b . . a b . . a b . . a b . a b",
              "b c d . . b c . b c . . . b c")
@@ -74,35 +72,28 @@ test_that("pattern2list is working with collocations", {
     expect_equivalent(col$collocation, 
                       vapply(ids, function(x, y) paste0(y[x], collapse = " "), character(1), type))
     expect_equal(names(ids), col$collocation)
-    
 })
 
 test_that("pattern2list is working with a list", {
-    
     type <- letters
     pat <- c('a', 'a b', 'c d', 'e f g')
     ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', FALSE)
     expect_equal(names(ids), pat)
-    
 })
 
 test_that("pattern2list is working with a dictionary", {
-    
     type <- c("a", "ab", "b", "bb", "a a", "a b")
     dict <- dictionary(list(key1 = c("a*", "b*"), key2 = c("a a*", "a b*")))
     ids <- quanteda:::pattern2list(dict, type, "glob", FALSE)
     expect_true(all(names(dict) %in% names(ids)))
-    
 })
 
 test_that("pattern2list is working with empty patterns", {
-    
     col <- data.frame()
     class(col) <- c("collocations", "data.frame")
     pat <- list()
     expect_silent(quanteda:::pattern2list(col, types(toks), "fixed", TRUE))
     expect_silent(quanteda:::pattern2list(pat, types(toks), "fixed", TRUE))
-    
 })
 
 test_that("check_font is working", {
@@ -114,6 +105,24 @@ test_that("check_font is working", {
     expect_equal(quanteda:::check_font("sans"), "sans")
     expect_equal(quanteda:::check_font("serif"), "serif")
     expect_equal(quanteda:::check_font("mono"), "mono")
+})
+
+
+test_that("get_package_version works", {
+    load("../data/pre_v2_objects/data_corpus_pre2.rda")
+    expect_true(quanteda:::get_object_version(data_corpus_pre2) == "1.4.0")
+    expect_true(quanteda:::is_pre2(data_corpus_pre2))
+    expect_true(quanteda:::get_object_version(corpus("one")) > "1.4.9")
+    
+    load("../data/pre_v2_objects/data_tokens_pre2.rda")
+    expect_true(quanteda:::get_object_version(data_tokens_pre2) == "1.4.0")
+    expect_true(quanteda:::is_pre2(data_tokens_pre2))
+    expect_true(quanteda:::get_object_version(tokens("one")) > "1.4.9")
+    
+    load("../data/pre_v2_objects/data_dfm_pre2.rda")
+    expect_true(quanteda:::get_object_version(data_dfm_pre2) == "1.4.0")
+    expect_true(quanteda:::is_pre2(data_dfm_pre2))
+    expect_true(quanteda:::get_object_version(dfm("one")) > "1.4.9")
 })
 
 test_that("sample_bygroup works with sizes", {

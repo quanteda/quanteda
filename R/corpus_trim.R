@@ -38,7 +38,7 @@ corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
 corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents"),
                                min_ntoken = 1, max_ntoken = NULL, 
                                exclude_pattern = NULL) {
-    
+    x <- as.corpus(x)
     what <- match.arg(what)
     if (is.null(max_ntoken)) max_ntoken <- 1e10 
     

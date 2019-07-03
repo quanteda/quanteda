@@ -271,19 +271,14 @@ dfm.tokens <- function(x,
     result <- compile_dfm(x, verbose = verbose)
 
     # copy, set attributes
-    result@ngrams <- as.integer(attr(x, "ngrams"))
-    result@skip <- as.integer(attr(x, "skip"))
-    result@concatenator <- attr(x, "concatenator")
-    if (attr(x, "what") == "dictionary") {
-        attr(result, "what") <- "dictionary"
-        attr(result, "dictionary") <- attr(x, "dictionary")
-    }
-    if (!is.null(attr(x, "docvars"))) {
-        result@docvars <- attr(x, "docvars")
-    } else {
-        result@docvars <- data.frame(matrix(ncol = 0, nrow = length(x)))
-    }
-
+    slots(result) <- attributes(x)
+    #result@ngrams <- as.integer(attr(x, "ngrams"))
+    #result@skip <- as.integer(attr(x, "skip"))
+    #result@concatenator <- attr(x, "concatenator")
+    # if (attr(x, 'what') == "dictionary") {
+    #     attr(result, 'what') <- "dictionary"
+    #     attr(result, 'dictionary') <- attr(x, 'dictionary')
+    # }
     dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 
@@ -317,7 +312,7 @@ dfm.dfm <- function(x,
         x <- dfm_group(x, groups)
     }
 
-    if (!is.null(dictionary) | !is.null(thesaurus)) {
+    if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm("   ... ")
         x <- dfm_lookup(x, dictionary,
@@ -423,12 +418,13 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
 make_null_dfm <- function(feature = NULL, document = NULL) {
     if (is.null(feature)) feature <- character()
     if (is.null(document)) document <- character()
-    result <- new("dfm",
-        as(sparseMatrix(
+    temp <- as(sparseMatrix(
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature))
-    ), "dgCMatrix"))
+    ), "dgCMatrix")
+    result <- new("dfm", temp, 
+                  docvars = quanteda:::make_docvars(n = 0L))
     set_dfm_dimnames(result) <- list(document, feature)
     return(result)
 }

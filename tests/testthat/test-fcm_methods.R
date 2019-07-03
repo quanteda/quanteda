@@ -138,19 +138,6 @@ test_that("glob works if results in no features", {
     expect_true(is.fcm(fcm_select(testfcm, "notthere")))
 })
 
-test_that("featnames.NULL, docnames.NULL works as expected", {
-    expect_equal(featnames(NULL), NULL)
-    expect_equal(docnames(NULL), NULL)
-})
-
-test_that("selection that is out of bounds", {
-    expect_equal(fcm_select(testfcm), testfcm)
-    
-    # some tests for docnames and featnames
-    expect_equal(docnames(NULL), NULL)
-    expect_equal(featnames(NULL), NULL)
-})
-
 test_that("longer selection than longer than features that exist (related to #447)", {
     testfcm <- fcm(tokens(c(d1 = 'a b', d2 = 'a b c d e')))
     feat <- c('b', 'c', 'd', 'e', 'f', 'g')

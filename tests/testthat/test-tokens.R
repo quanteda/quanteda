@@ -1,12 +1,11 @@
-context("testing tokens")
+context("test tokens")
 
 test_that("as.tokens list version works as expected", {
     txt <- c(doc1 = "The first sentence is longer than the second.",
              doc2 = "Told you so.")
-    tokslist <- as.list(tokens(txt))
+    toks_list <- as.list(tokens(txt))
     toks <- tokens(txt)
-    expect_equal(as.tokens(tokslist), 
-                 toks)
+    expect_equivalent(as.tokens(toks_list), toks)
 })
 
 test_that("tokens indexing works as expected", {
@@ -313,7 +312,7 @@ test_that("unused argument warnings for tokens work as expected", {
 test_that("tokens arguments works with values from parent frame (#721)", {
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = T),
-        tokens("This contains 99 numbers.", remove_numbers = TRUE)
+        tokens("This contains 99 numbers.", remove_numbers = TRUE),
     )
     
     expect_identical(
@@ -526,19 +525,17 @@ test_that("combined tokens objects have all the attributes", {
                      names(attributes(toks1)))
     expect_identical(attr(c(toks1, toks4), "what"), "word")
     expect_identical(attr(c(toks1, toks4), "concatenator"), "_")
-    expect_identical(attr(c(toks1, toks4), "ngram"), c(1L, 2L))
+    expect_identical(attr(c(toks1, toks4), "ngrams"), c(1L, 2L))
     expect_identical(attr(c(toks1, toks4), "skip"), c(0L, 2L))
     expect_identical(docnames(dfm(c(toks1, toks4))), c("text1", "text4"))
-    expect_identical(docvars(c(toks1, toks4)), data.frame(row.names = c("text1", "text4")))
     
     expect_identical(names(attributes(c(toks1, toks5))), 
                      names(attributes(toks1)))
     expect_identical(attr(c(toks1, toks5), "what"), "word")
     expect_identical(attr(c(toks1, toks5), "concatenator"), "_")
-    expect_identical(attr(c(toks1, toks5), "ngram"), 1L)
+    expect_identical(attr(c(toks1, toks5), "ngrams"), 1L)
     expect_identical(attr(c(toks1, toks5), "skip"), 0L)
     expect_identical(docnames(dfm(c(toks1, toks5))), c("text1", "text5"))
-    expect_identical(docvars(c(toks1, toks5)), data.frame(row.names = c("text1", "text5")))
     
 })
 
@@ -623,6 +620,21 @@ test_that("$ is deprecated for tokens (#1590)", {
     toks <- tokens(data_corpus_inaugural[1:10])
     expect_warning(toks$'1825-Adams', "'\\$\\.tokens' is deprecated")
     expect_silent(toks['1825-Adams'])
+})
+
+test_that("tokens verbose = TRUE produces expected messages", {
+    expect_message(
+        tokens(c("one two three", "four five."), verbose = TRUE),
+        "Starting tokenization"
+    )
+})
+
+test_that("types<- with wrong value generates error", {
+    toks <- tokens(c("one two three", "four five."))
+    expect_error(
+        quanteda:::"types<-.tokens"(toks, value = 1:6),
+        "replacement value must be character"
+    )
 })
 
 test_that("tokens.tokens warns about unused arguments", {

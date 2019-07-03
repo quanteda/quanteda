@@ -24,12 +24,6 @@ featnames <- function(x) {
 
 #' @export
 #' @noRd
-featnames.NULL <- function(x) {
-    NULL
-}
-
-#' @export
-#' @noRd
 featnames.dfm <- function(x) {
     x <- as.dfm(x)
     if (is.null(colnames(x))) {
@@ -44,18 +38,7 @@ featnames.dfm <- function(x) {
 #' @noRd
 #' @export
 docnames.dfm <- function(x) {
-    x <- as.dfm(x)
-    if (is.null(rownames(x))) {
-        paste0('text', seq_len(ndoc(x)))
-    } else {
-        rownames(x)
-    }
-}
-
-#' @noRd
-#' @export
-docnames.NULL <- function(x) {
-    NULL
+    rownames(x)
 }
 
 # as.dfm -----------
@@ -87,11 +70,12 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    # make sure the dimension names are character
-    set_dfm_dimnames(x) <- x@Dimnames
-    # for compatibility with older dfm objects
-    if (identical(dim(x@docvars), c(0L, 0L)))
-        x@docvars <- data.frame(matrix(ncol = 0, nrow = nrow(x)))
+    if (is_pre2(x)) {
+        x <- new("dfm", x, 
+                 meta = list(user = list(), 
+                             system = list()),
+                 docvars = upgrade_docvars(x@docvars, rownames(x)))
+    }
     return(x)
 }
 
@@ -157,13 +141,8 @@ matrix2dfm <- function(x, slots = NULL) {
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     
     x <- Matrix(x, sparse = TRUE)
-    # Force dfm to have docvars
-    if (is.character(rownames(x))) {
-        x <- new("dfm", as(x, 'dgCMatrix'), docvars = data.frame(row.names = make.unique(rownames(x))))
-    } else {
-        x <- new("dfm", as(x, 'dgCMatrix'))
-    }
     set_dfm_dimnames(x) <- list(rowname, colname)
+    x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(nrow(x), rowname, FALSE))
     set_dfm_slots(x, slots)
 }
 
@@ -272,20 +251,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
     }
     
     result <- sort(wght, decreasing)
-    return(result[1:n])
-    
-    # Under development by Ken
-    # if (is.resampled(x)) {
-    #     subdfm <- x[, order(colSums(x[,,1]), decreasing = decreasing), ]
-    #     subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-    #     return(data.frame(#features=colnames(subdfm),
-    #         freq=colSums(subdfm[,,1]),
-    #         cilo = apply(colSums(subdfm), 1, stats::quantile, (1 - ci) / 2),
-    #         cihi = apply(colSums(subdfm), 1, stats::quantile, 1 - (1 - ci) / 2)))
-    # } else {
-    #    subdfm <- sort(colSums(x), decreasing)
-    #    return(subdfm[1:n])
-    #}
+    return(head(result, n))
 }
 
 # sparsity -----------

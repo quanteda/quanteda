@@ -1,5 +1,3 @@
-
-
 context('test fcm indexing')
 
 test_that("test fcm indexing", {
@@ -36,14 +34,14 @@ test_that("test dfm indexing with docvar selection", {
     testdfm <- dfm(testcorp)
     expect_equal(
         docvars(testdfm[1:2, ]),
-        data.frame(grp = c(1,1), row.names = c("d1", "d2"))
+        data.frame(grp = c(1,1))
     )
     expect_equal(
         docvars(testdfm[c(2,4), ]),
-        data.frame(grp = c(1,3), row.names = c("d2", "d4"))
+        data.frame(grp = c(1,3))
     )
     expect_equal(
         docvars(testdfm[c(2,4), c(1, 3, 5)]),
-        data.frame(grp = c(1,3), row.names = c("d2", "d4"))
+        data.frame(grp = c(1,3))
     )
 })

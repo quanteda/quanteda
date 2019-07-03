@@ -30,7 +30,7 @@ test_that("docvars error traps work", {
 test_that("test STM package converter with metadata", {
     skip_if_not_installed("stm")
     skip_if_not_installed("tm")
-    dv <- data.frame(myvar = c("A", "B"), row.names = names(mytexts))
+    dv <- data.frame(myvar = c("A", "B"))
     mycorpus <- corpus(mytexts, docvars = dv)
     dm <- dfm(mycorpus, remove_punct = TRUE)
     dSTM <- convert(dm, to = "stm")
@@ -48,7 +48,7 @@ test_that("test STM package converter with metadata w/zero-count document", {
     mytexts2 <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
                   text2 = ";",  # this will become empty
                   text3 = "New York City has raised a taxes: an income tax and a sales tax.")
-    dv <- data.frame(myvar = c("A", "B", "C"), row.names = names(mytexts2))
+    dv <- data.frame(myvar = c("A", "B", "C"))
     mycorpus <- corpus(mytexts2, docvars = dv)
     dm <- dfm(mycorpus, remove_punct = TRUE)
     expect_true(ntoken(dm)[2] == 0)

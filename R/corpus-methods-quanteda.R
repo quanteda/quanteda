@@ -1,67 +1,3 @@
-# metacorpus functions ---------------------
-
-#' Get or set corpus metadata
-#' 
-#' Get or set the corpus-level metadata in a \link{corpus} object.
-#' @param x a \link{corpus} object
-#' @param field metadata field name(s);  if \code{NULL} (default), return all 
-#'   metadata names
-#' @return For \code{metacorpus}, a named list of the metadata fields in the corpus. 
-#'   
-#'   For \code{metacorpus <-}, the corpus with the updated metadata.
-#' @export
-#' @keywords corpus
-#' @examples
-#' metacorpus(data_corpus_inaugural)
-#' metacorpus(data_corpus_inaugural, "source")
-#' metacorpus(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
-#' metacorpus(data_corpus_inaugural, "citation")
-metacorpus <- function(x, field = NULL)
-    UseMethod("metacorpus")
-
-#' @export
-metacorpus.default <- function(x, field = NULL) {
-    stop(friendly_class_undefined_message(class(x), "metacorpus"))
-}
-
-#' @noRd
-#' @export
-metacorpus.corpus <- function(x, field = NULL) {
-    if (!is.null(field)) {
-        stopifnot(TRUE)
-        ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-        return(x$metadata[field])
-    } else {
-        return(x$metadata)
-    }
-}
-
-#' Replacement function for corpus-level data
-#' @param value new value of the corpus metadata field
-#' @export
-#' @rdname metacorpus
-"metacorpus<-" <- function(x, field, value) {
-    UseMethod("metacorpus<-")
-}
-
-#' @export
-"metacorpus<-.default" <- function(x, field, value) {
-    stop(friendly_class_undefined_message(class(x), "metacorpus<-"))
-}
-
-#' @export
-"metacorpus<-.corpus" <- function(x, field, value) {
-    if (!is.null(field)) {
-        stopifnot(TRUE)
-        ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-    }
-    x$metadata[field] <- value
-    x
-}
-
-
-# texts() functions ----------------------------
-
 #' Get or assign corpus texts
 #' 
 #' Get or replace the texts in a \link{corpus}, with grouping options. 
@@ -84,45 +20,37 @@ metacorpus.corpus <- function(x, field = NULL) {
 #' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 #' 
 #' # grouping a character vector using a factor
-#' nchar(data_char_ukimmig2010[1:5])
 #' nchar(texts(data_corpus_inaugural[1:5], 
-#'             groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+#'       groups = "President"))
+#' nchar(texts(data_corpus_inaugural[1:5], 
+#'       groups = factor(c("W", "W", "A", "J", "J"))))
 #' 
-texts <- function(x, groups = NULL, spacer = "  ") {
+texts <- function(x, groups = NULL, spacer = " ") {
     UseMethod("texts")
 }
 
 #' @noRd
 #' @export
-texts.corpus <- function(x, groups = NULL, spacer = "  ") {
-    txts <- documents(x)$texts
-    
-    # without groups
-    if (is.null(groups)) {
-        names(txts) <- docnames(x)
-        return(txts)
-    }
-    
-    if (is.character(groups) & all(groups %in% names(documents(x)))) {
-        group.split <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
-    } else {
-        if (length(groups) != ndoc(x))
-            stop("groups must name docvars or provide data matching the documents in x")
-        group.split <- as.factor(groups)
-    }
-    
-    texts(txts, groups = group.split, spacer = spacer)
+texts.corpus <- function(x, groups = NULL, spacer = " ") {
+    x <- as.corpus(x)
+    temp <- as.character(unclass(x))
+    names(temp) <- docnames(x)
+    if (is.null(groups))
+        return(temp)
+    if (!is.factor(groups))
+        groups <- generate_groups(x, groups)
+    texts(temp, groups = groups, spacer = spacer)
 }
 
 #' @noRd
 #' @export
-texts.character <- function(x, groups = NULL, spacer = "  ") {
+texts.character <- function(x, groups = NULL, spacer = " ") {
     if (is.null(groups)) return(x)
-    # if (!is.factor(groups)) stop("groups must be a factor")
-    x <- split(x, as.factor(groups))
-    vapply(x, paste, character(1), collapse = spacer)
+    if (!is.factor(groups)) groups <- factor(groups, unique(groups)) 
+    result <- stri_c_list(split(x, groups), sep = spacer)
+    names(result) <- levels(groups)
+    return(result)
 }
-
 
 #' @rdname texts
 #' @param value character vector of the new texts
@@ -136,25 +64,28 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #'   \code{\link{tokens_tolower}} after applying \code{\link{tokens}} to a
 #'   corpus, or use the option \code{tolower = TRUE} in \code{\link{dfm}}.
 #' @examples
-#' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
-#'                        "Aluminium is a valourous metal."))
-#' texts(BritCorpus) <- 
-#'     stringi::stri_replace_all_regex(texts(BritCorpus),
+#' corp <- corpus(c("We must prioritise honour in our neighbourhood.", 
+#'                  "Aluminium is a valourous metal."))
+#' texts(corp) <- 
+#'     stringi::stri_replace_all_regex(texts(corp),
 #'                                    c("ise", "([nlb])our", "nium"),
 #'                                    c("ize", "$1or", "num"),
 #'                                    vectorize_all = FALSE)
-#' texts(BritCorpus)
-#' texts(BritCorpus)[2] <- "New text number 2."
-#' texts(BritCorpus)
+#' texts(corp)
+#' texts(corp)[2] <- "New text number 2."
+#' texts(corp)
 "texts<-" <- function(x, value) {
     UseMethod("texts<-")
 }
 
 #' @noRd
 #' @export
-"texts<-.corpus" <- function(x, value) { 
-    documents(x)$texts <- value
-    x
+"texts<-.corpus" <- function(x, value) {
+    x <- as.corpus(x)
+    attrs <- attributes(x)
+    x <- value
+    attributes(x) <- attrs
+    return(x)
 }
 
 #' @rdname texts
@@ -165,36 +96,65 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #' @return \code{as.character(x)} is equivalent to \code{texts(x)}
 #' @export
 as.character.corpus <- function(x, ...) {
+    x <- as.corpus(x)
     texts(x)
 }
 
-# internal: documents() functions ---------------------------------
-
-# internal accessor for documents object
-# @export
-documents <- function(x) {
-    UseMethod("documents")
+#' coerce a compressed corpus to a standard corpus
+#' 
+#' Recast a compressed corpus object into a standard (uncompressed) corpus
+#' object.
+#' @param x a compressed \link{corpus} object
+#' @export
+#' @keywords internal
+as.corpus <- function(x) {
+    UseMethod("as.corpus")
 }
 
-documents.corpus <- function(x) {
-    x$documents
+#' @export
+as.corpus.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "as.corpus"))
 }
 
-documents.tokens <- function(x) {
-    docvars(x)
+#' @export
+#' @method as.corpus corpus
+as.corpus.corpus <- function(x) {
+    if (is_pre2(x))
+        x <- upgrade_corpus(x)
+    return(x)
 }
 
-documents.dfm <- function(x) {
-    docvars(x)
+#' @export
+#' @method as.corpus corpuszip
+as.corpus.corpuszip <- function(x) {
+    
+    txt <- memDecompress(x$texts, 'gzip', asChar = TRUE)
+    txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
+    txt <- unlist(txt, use.names = FALSE)
+    
+    # drop internal variables
+    flag <- is_system(names(x$documents))
+    corpus(txt, x$docnames, docvars = x$documents[!flag])
 }
 
-# internal replacement function for documents
-"documents<-" <- function(x, value) {
-    UseMethod("documents<-")
+# Internal function to convert corpus from data.frame character vector-based
+# stracture
+upgrade_corpus <- function(x) {
+    if (!is_pre2(x)) return(x)
+    x <- unclass(x)
+    result <- corpus(x$documents, text_field = "texts")
+    attr(result, "docvars") <- upgrade_docvars(x$documents)
+    
+    if ("unit" %in% names(x$settings)) {
+        attr(result, "unit") <- x$settings$unit
+    } else {
+        attr(result, "unit") <- "documents"
+    }
+    if ("created" %in% names(x$metadata)) {
+        meta_system(result, "created") <- as.POSIXct(x$metadata$created, 
+                                                     format = "%a %b %d %H:%M:%S %Y")
+    } else {
+        meta_system(result, "created") <- as.POSIXlt(Sys.time())
+    }
+    return(result)
 }
-
-"documents<-.corpus" <- function(x, value) {
-    x$documents <- value
-    x
-}
-

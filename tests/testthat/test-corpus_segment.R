@@ -1,4 +1,4 @@
-context("Testing corpus_segment and char_segment")
+context("test corpus_segment")
 
 test_that("char_segment works with punctuations", {
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
@@ -48,8 +48,8 @@ test_that("char_segment works for glob customized tags, test 2", {
 test_that("corpus_segment works with blank before tag", {
     corp <- corpus(c("\n##INTRO This is the introduction.
                         ##DOC1 This is the first document.  Second sentence in Doc 1.
-                           ##DOC3 Third document starts here.  End of third document.",
-                           "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+                        ##DOC3 Third document starts here.  End of third document.",
+                        "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
     corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                pattern_position = "before", extract_pattern = TRUE)
     summ <- summary(corp_seg)
@@ -61,16 +61,15 @@ test_that("corpus_segment works with blank before tag", {
 test_that("corpus_segment works with use_docvars TRUE or FALSE", {
     corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
                      d2 = "##TEST3 Four"),
-                   docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
+                     docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
     corp_seg1 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
-                           pattern_position = "before", extract_pattern = TRUE, use_docvars = TRUE)
-    summ1 <- summary(corp_seg1)
-    expect_equal(summ1$test, c("A", "A", "B"))
+                                pattern_position = "before", extract_pattern = TRUE, 
+                                use_docvars = TRUE)
+    expect_equal(docvars(corp_seg1, "test"), c("A", "A", "B"))
     
     corp_seg2 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
-    summ2 <- summary(corp_seg2)
-    expect_equal(names(summ2), c("Text", "Types", "Tokens", "Sentences", "pattern"))
+    expect_error(docvars(corp_seg2, "test"))
 })
 
 test_that("char_segment works with Japanese texts", {
@@ -216,7 +215,4 @@ test_that("corpus_segment works with multiple patterns (#1394)", {
                      c(text1.1 = "This is a test\\n", text1.2 = "John Doe", text1.3 = "Library of Congress"))
     
 })
-
-
-
 

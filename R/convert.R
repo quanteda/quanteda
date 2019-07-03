@@ -39,14 +39,9 @@
 #' stmmat <- convert(dfmat1, to = "stm")
 #' str(stmmat)
 #' 
-#' #' # triplet
+#' # triplet
 #' tripletmat <- convert(dfmat1, to = "tripletlist")
 #' str(tripletmat)
-#' 
-#' # illustrate what happens with zero-length documents
-#' dfmat2 <- dfm(c(punctOnly = "!!!", corp[-1]))
-#' rowSums(dfmat2)
-#' str(convert(dfmat2, to = "stm", docvars = docvars(corp)))
 #' 
 #' \dontrun{
 #' # tm's DocumentTermMatrix format

@@ -1,3 +1,5 @@
+# docnames ----------------
+
 #' Get or set document names
 #' 
 #' Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
@@ -31,13 +33,8 @@ docnames.default <- function(x) {
 #' @noRd
 #' @export
 docnames.corpus <- function(x) {
-    # didn't use accessor documents() because didn't want to pass
-    # that large object
-    if (is.null(rownames(x$documents))) {
-        paste0("text", seq_len(ndoc(x)))
-    } else {
-        rownames(x$documents)
-    }
+    x <- as.corpus(x)
+    get_docvars(x, "docname_", FALSE, TRUE, TRUE)
 }
 
 #' @param value a character vector of the same length as \code{x}
@@ -62,31 +59,78 @@ docnames.corpus <- function(x) {
 #' @noRd
 #' @export
 "docnames<-.corpus" <- function(x, value) {
-    docvars(x, "_document") <- rownames(x$documents) <- as.character(value)
+    x <- as.corpus(x)
+    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.tokens" <- function(x, value) {
-    docvars(x, "_document") <- names(x) <- as.character(value)
+    x <- as.tokens(x)
+    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
 #' @noRd
 #' @export
 "docnames<-.dfm" <- function(x, value) {
-    docvars(x, "_document") <- x@Dimnames$docs <- as.character(value)
+    x <- as.dfm(x)
+    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
     return(x)
 }
 
+# names<- ----------------
+
+#' @name names-quanteda
+#' @title Special handling for names of quanteda objects
+#' @description Keeps the element names and rownames in sync with the system docvar
+#' \code{docname_}.
+#' @inheritParams base::names
+#' @method names<- corpus
+#' @keywords internal corpus
+#' @aliases names<-.corpus
+#' @export
+"names<-.corpus" <- function(x, value) {
+    UseMethod("docnames<-")
+}
+
+#' @rdname names-quanteda
+#' @aliases names<-.tokens
+#' @method names<- tokens
+#' @export
+"names<-.tokens" <- function(x, value) {
+    UseMethod("docnames<-")
+}
+
+setGeneric("rownames<-")
+
+#' @include dfm-classes.R
+#' @rdname names-quanteda
+#' @aliases rownames<-.dfm
+#' @export
+setMethod("rownames<-",
+          signature(x = "dfm"),
+          function(x, value) {
+              docnames(x) <- value
+              return(x)
+          })
+
+#' @include fcm-classes.R
+#' @rdname names-quanteda
+#' @aliases rownames<-.fcm
+#' @export
+setMethod("rownames<-",
+          signature(x = "fcm"),
+          function(x, value) {
+              set_fcm_dimnames(x) <- list(value, colnames(x))
+              return(x)
+          })
+
 #' Internal function to extract docid
-#' @noRd
+#' @rdname names-quanteda
+#' @export
 docid <- function(x) {
-    # docid is missing from some object before v2.0 
-    tryCatch({
-        docvars(x, "_docid") # TODO should be exported in v2.0
-    }, error = function(e) {
-        seq_len(ndoc(x))  
-    })
+    get_docvars(x, "docid_", system = TRUE, drop = TRUE)
 } 
+

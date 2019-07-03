@@ -24,7 +24,7 @@
 #' @examples
 #' set.seed(2000)
 #' # sampling from a corpus
-#' summary(corpus_sample(data_corpus_inaugural, 5)) 
+#' summary(corpus_sample(data_corpus_inaugural, 5))
 #' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 #' 
 #' # sampling sentences within document
@@ -33,41 +33,28 @@
 #' corpsent <- corpus_reshape(corp, to = "sentences")
 #' texts(corpsent)
 #' texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
-corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     UseMethod("corpus_sample")
 }
 
 #' @export
-corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     stop(friendly_class_undefined_message(class(x), "corpus_sample"))
 }
 
-#' @import data.table data.table
 #' @export
-corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
-    index <- docID <- temp <- NULL
-
+corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+    x <- as.corpus(x)
     if (!is.null(by)) {
         if (!is.null(prob)) stop("prob not implemented with by")
-        if (by == "document") by <- "_document"
-        # define size as null for passing to sample_bygroup, if not defined
-        if (missing(size)) size <- NULL
-        sample_index <- sample_bygroup(seq_len(ndoc(x)), group = docvars(x, by), 
-                                       size = size, replace = replace)
+        if (by == "document") by <- "docid_"
+        i <- sample_bygroup(seq_len(ndoc(x)), 
+                            group = get_docvars(x, by, system = TRUE, drop = TRUE), 
+                            size = size, replace = replace)
     } else {
-        sample_index <- base::sample(ndoc(x), size, replace, prob) 
+        if (is.null(size)) size <- ndoc(x)
+        i <- base::sample(ndoc(x), size, replace, prob) 
     }
-        
-    documents(x) <- documents(x)[sample_index, , drop = FALSE]
-    if (is.corpuszip(x)) {
-        texts(x) <- texts(x)[sample_index]
-        x$docnames <- x$docnames[sample_index]
-    }
-    return(x)
+    corpus(texts(x)[i], docnames = docnames(x)[i], docvars = get_docvars(x)[i,], 
+           meta = meta(x), unique_docnames = FALSE)
 }
-
-# ---------- internal functions from older resample.R ---------
-
-is.resampled <- function(x) { FALSE }
-
-nresample <- function(x) { 0 }

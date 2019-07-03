@@ -85,14 +85,13 @@ The \code{dfm} class is a virtual class that will contain
 \section{Slots}{
 
 \describe{
-\item{\code{settings}}{settings that govern corpus handling and subsequent downstream
-operations, including the settings used to clean and tokenize the texts,
-and to create the dfm.  See \code{\link{settings}}.}
-
-\item{\code{weighting}}{the feature weighting applied to the dfm.  Default is
+\item{\code{weightTf}}{the type of term frequency weighting applied to the dfm.  Default is
 \code{"frequency"}, indicating that the values in the cells of the dfm are
 simple feature counts. To change this, use the \code{\link{dfm_weight}}
 method.}
+
+\item{\code{weightFf}}{the type of document frequency weighting applied to the dfm. See
+\code{\link{docfreq}}.}
 
 \item{\code{smooth}}{a smoothing parameter, defaults to zero.  Can be changed using
 the \code{\link{dfm_smooth}} method.}
