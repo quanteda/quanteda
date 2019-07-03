@@ -69,7 +69,7 @@ setMethod("show", "textstat_proxy",
           function(object) {
               cat(object@type, " object; method = \"", object@method, "\"\n", sep = "")
               Matrix::printSpMatrix(as(object, "sparseMatrix"),
-                                    zero.print = if (object@type == "textstat_dist") 0 else ".",
+                                    zero.print = if ("min_simil" %in% slotNames(ts)) "." else 0,
                                     digits = min(getOption("digits"), 3),
                                     col.names = TRUE, align = "right")
           })
