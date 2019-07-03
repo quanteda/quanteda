@@ -127,10 +127,7 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' pairwise comparisons, or a \link[stats]{dist} format.
 #' @param x,y a \link{dfm} objects; \code{y} is an optional target matrix matching
 #'   \code{x} in the margin on which the similarity or distance will be computed.
-#' @param selection a valid index for document or feature names (depending on
-#'   \code{margin}) from \code{x}, to be selected for comparison.  The selected
-#'   document(s) or feature(s) will form the second of the pairs returned.  
-#'   (See Value.)
+#' @param selection (deprecated - use \code{y} instead).
 #' @param margin identifies the margin of the dfm on which similarity or
 #'   difference will be computed:  \code{"documents"} for documents or
 #'   \code{"features"} for word/term features.
@@ -147,7 +144,7 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #'   for which different document lengths matter), then wrap the input dfm in
 #'   \code{\link{dfm_weight}(x, "prop")}.
 #' @return A sparse matrix from the \pkg{Matrix} package that will be symmetric 
-#'   if no target is selected (using \code{selection}).
+#'   unless \code{y} is specified.
 #'      
 #'   These can be transformed easily into a list format using \code{as.list()},
 #'   which returns a list for each unique element of the second of the pairs,

@@ -28,7 +28,8 @@ textstat_dist(x, y = NULL, selection = NULL, margin = c("documents",
 \item{selection}{a valid index for document or feature names (depending on
 \code{margin}) from \code{x}, to be selected for comparison.  The selected
 document(s) or feature(s) will form the second of the pairs returned.  
-(See Value.)}
+(See Value.)  This argument has been deprecated in favour of \code{y}, which 
+provides equivalent functionality.}
 
 \item{margin}{identifies the margin of the dfm on which similarity or
 difference will be computed:  \code{"documents"} for documents or
