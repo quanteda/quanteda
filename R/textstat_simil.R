@@ -69,6 +69,7 @@ setMethod("show", "textstat_proxy",
           function(object) {
               cat(object@type, " object; method = \"", object@method, "\"\n", sep = "")
               Matrix::printSpMatrix(as(object, "sparseMatrix"),
+                                    zero.print = if (object@type == "textstat_dist") 0 else ".",
                                     digits = min(getOption("digits"), 3),
                                     col.names = TRUE, align = "right")
           })
@@ -173,10 +174,10 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' textstat_simil(dfmat, dfmat[c("2009-Obama", "2013-Obama"), ], margin = "documents")
 #'
 #' # compute some term similarities
-#' tstat2 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method = "cosine",
+#' tstat3 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method = "cosine",
 #'                          margin = "features")
-#' head(as.matrix(tstat2), 10)
-#' as.list(tstat2, n = 6)
+#' head(as.matrix(tstat3), 10)
+#' as.list(tstat3, n = 6)
 #' 
 textstat_simil <- function(x, y = NULL, selection = NULL,
                            margin = c("documents", "features"),
@@ -279,20 +280,20 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
 #' @examples
 #'                
 #' # distances for documents 
-#' (tstat3 <- textstat_dist(dfmat, margin = "documents"))
-#' as.matrix(tstat3)
-#' as.list(tstat3)
-#' as.dist(tstat3)
-#' 
-#' # distances for specific documents
-#' textstat_dist(dfmat, dfmat["2017-Trump",], margin = "documents")
-#' (tstat4 <- textstat_dist(dfmat, dfmat[c("2009-Obama" , "2013-Obama"),], margin = "documents"))
+#' (tstat4 <- textstat_dist(dfmat, margin = "documents"))
 #' as.matrix(tstat4)
 #' as.list(tstat4)
+#' as.dist(tstat4)
+#' 
+#' # distances for specific documents
+#' textstat_dist(dfmat, dfmat["2017-Trump", ], margin = "documents")
+#' (tstat5 <- textstat_dist(dfmat, dfmat[c("2009-Obama" , "2013-Obama"), ], margin = "documents"))
+#' as.matrix(tstat5)
+#' as.list(tstat5)
 #' 
 #' \dontrun{
 #' # plot a dendrogram after converting the object into distances
-#' plot(hclust(as.dist(tstat3)))
+#' plot(hclust(as.dist(tstat4)))
 #' }
 textstat_dist <- function(x, y = NULL, selection = NULL,
                           margin = c("documents", "features"),
@@ -421,7 +422,7 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
                                             diag = FALSE, upper = FALSE,  ...) {
     method <- x@method
     margin <- x@margin
-    
+
     x <- proxy2triplet(x, upper)
     if (!diag)
         x <- diag2na(x)
