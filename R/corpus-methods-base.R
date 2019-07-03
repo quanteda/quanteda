@@ -64,7 +64,7 @@ is.corpuszip <- function(x) {
 #' summary(data_corpus_inaugural)
 #' summary(data_corpus_inaugural, n = 10)
 #' corp <- corpus(data_char_ukimmig2010, 
-#'                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
+#'                docvars = data.frame(party=names(data_char_ukimmig2010))) 
 #' summary(corp, showmeta = TRUE) # show the meta-data
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
@@ -269,13 +269,13 @@ c.corpus <- function(..., recursive = FALSE) {
 #' # access the docvars from data_corpus_irishbudget2010
 #' data_corpus_irishbudget2010[, "year"]
 #' # same
-#' data_corpus_irishbudget2010[["year"]]            
+#' # data_corpus_irishbudget2010[["year"]]            
 #' 
 #' # create a new document variable
-#' data_corpus_irishbudget2010[["govtopp"]] <- 
-#'     ifelse(data_corpus_irishbudget2010[["party"]] %in% c("FF", "Greens"), 
-#'            "Government", "Opposition")
-#' docvars(data_corpus_irishbudget2010)
+#' # data_corpus_irishbudget2010[["govtopp"]] <- 
+#' #   ifelse(data_corpus_irishbudget2010[["party"]] %in% c("FF", "Greens"), 
+#' #             "Government", "Opposition")
+#' # docvars(data_corpus_irishbudget2010)
 `[.corpus` <- function(x, i, j = NULL, ..., drop = TRUE) {
     if (is.null(j))
         return(texts(x)[i, ...])
@@ -290,6 +290,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [[ corpus
 #' @rdname corpus-class
 `[[.corpus` <- function(x, i, ...) {
+    .Deprecated("docvars")
     if (is.null(docvars(x)))
         stop("cannot index docvars this way because none exist")
     x$documents[i, ...]
@@ -300,6 +301,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [[<- corpus
 #' @rdname corpus-class
 `[[<-.corpus` <- function(x, i, value) {
+    .Deprecated("docvars")
     x$documents[i] <- value
     x
 }

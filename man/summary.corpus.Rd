@@ -27,7 +27,7 @@ as date of number of texts, creation and source.
 summary(data_corpus_inaugural)
 summary(data_corpus_inaugural, n = 10)
 corp <- corpus(data_char_ukimmig2010, 
-                   docvars = data.frame(party=names(data_char_ukimmig2010))) 
+               docvars = data.frame(party=names(data_char_ukimmig2010))) 
 summary(corp, showmeta = TRUE) # show the meta-data
 sumcorp <- summary(corp) # (quietly) assign the results
 sumcorp$Types / sumcorp$Tokens # crude type-token ratio

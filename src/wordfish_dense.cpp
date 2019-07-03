@@ -1,4 +1,6 @@
-#include "armadillo.h"
+//#include "dev.h"
+#include "lib.h"
+#include "math.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
