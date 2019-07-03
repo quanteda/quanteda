@@ -389,7 +389,7 @@ as.list.textstat_proxy <- function(x, sorted = TRUE, n = NULL, diag = FALSE, ...
         warning("ignoring n when sorted = FALSE")
         n <- NULL
     }
-
+    
     x <- proxy2triplet(x, upper = TRUE)
     if (!diag)
         x <- diag2na(x)
@@ -419,7 +419,9 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
                                             diag = FALSE, upper = FALSE,  ...) {
     method <- x@method
     margin <- x@margin
-
+    
+    if (!isSymmetric(x) && upper)
+        warning("upper = TRUE has no effect when columns have been selected")
     x <- proxy2triplet(x, upper)
     if (!diag)
         x <- diag2na(x)
@@ -466,17 +468,13 @@ diag2na <- function(x) {
 }
 
 proxy2triplet <- function(x, upper) {
-    if (class(x) %in% c("textstat_dist_symm", "textstat_simil_symm")) {
-        x <- as(as(x, "dsyMatrix"), "dsTMatrix")
-    } else if (class(x) %in% c("textstat_dist", "textstat_simil")) {
+    if (class(x) %in% c("textstat_dist", "textstat_simil")) {
         x <- as(x, "dgTMatrix")
-    }
-    if (isSymmetric(x)) {
+    } else {
+        if (class(x) %in% c("textstat_dist_symm", "textstat_simil_symm"))
+            x <- as(as(x, "dsyMatrix"), "dsTMatrix")
         if (upper)
             x <- as(x, "dgTMatrix")
-    } else {
-        if (upper)
-            warning("upper = TRUE has no effect when columns have been selected")
     }
     return(x)
 }
