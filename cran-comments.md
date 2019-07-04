@@ -1,21 +1,17 @@
 # Submission notes
 
-## RESUBMISSION
-
-- Fixes a test based on `sample()` that failed in the devel versions of R because of changes made to the random number generator.
-
 ## Purpose
     
-- Fixes some "unable to re-encode" errors from r-devel-linux-x86_64-debian-clang caused by special hyphens in some of our documentation.
-- Fixes some compiler warnings on r-patched-solaris-x86, noted by Brian Ripley in email.
-- Implements a few minor bug fixes and stability enhancements.
+- Fixes a breaking test caused by changes to the **tidytext** package.  
+- Implements a few minor bug fixes and stability enhancements.  
+- Updates `textstat_simil()` and `textstat_dist()`, adding efficiency gains, additional options, and more strictly enforced methods.
 
 ## Test environments
 
-* local macOS 10.14.4, R 3.5.3
-* ubuntu Ubuntu 18.04 LTS and 18.10, R 3.5.3
-* Windows Server 2012 R2 x64 (build 9600), R 3.5.2 (on Appveyor)
-* local Windows 10, R 3.5.3
+* local macOS 10.14.5, R 3.6.0
+* ubuntu Ubuntu 18.04 LTS and 18.10, R 3.6.0
+* Windows Server 2012 R2 x64 (build 9600), R 3.6.0 (on Appveyor)
+* local Windows 10, R 3.6.0
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -40,4 +36,6 @@ In some tests we also see a NOTE that the installed size is approx. 6.6Mb.
 
 ## Downstream dependencies
 
-No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm.
+No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm, EXCEPT:
+
+New format changes in `textstat_simil()` caused an error in **LexisNexisTools**, but we fixed this in that package in https://github.com/JBGruber/LexisNexisTools/pull/9, and the author will soon resubmit this update to CRAN.
