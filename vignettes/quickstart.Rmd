@@ -2,7 +2,7 @@
 title: "Quick Start Guide"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{The Structure of quanteda}
+  %\VignetteIndexEntry{Quick Start Guide to quanteda}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
