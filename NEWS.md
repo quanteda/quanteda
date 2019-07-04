@@ -1,4 +1,4 @@
-# quanteda 1.4.5
+# quanteda 1.5.0
 
 ## New features
 
