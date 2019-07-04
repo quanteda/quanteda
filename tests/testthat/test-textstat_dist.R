@@ -59,23 +59,23 @@ test_that("dist object has all the attributes", {
 })
 
 test_that("selection takes integer or logical vector", {
-    expect_equivalent(textstat_dist(mt, c(2, 5), margin = "features"),
-                      textstat_dist(mt, c("mr", "president"), margin = "features"))
+    expect_equivalent(textstat_dist(mt, selection = c(2, 5), margin = "features"),
+                      textstat_dist(mt, selection = c("mr", "president"), margin = "features"))
     l3 <- featnames(mt) %in% c("mr", "president")
-    expect_equivalent(textstat_dist(mt, l3, margin = "features"),
-                      textstat_dist(mt, c("mr", "president"), margin = "features"))
+    expect_equivalent(textstat_dist(mt, selection = l3, margin = "features"),
+                      textstat_dist(mt, selection = c("mr", "president"), margin = "features"))
     
-    expect_error(textstat_dist(mt, "xxxx", margin = "features"))
-    expect_error(textstat_dist(mt, 1000, margin = "features"))
+    expect_error(textstat_dist(mt, selection = "xxxx", margin = "features"))
+    expect_error(textstat_dist(mt, selection = 1000, margin = "features"))
     
-    expect_equivalent(textstat_dist(mt, c(2,4), margin = "documents"),
-                      textstat_dist(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    expect_equivalent(textstat_dist(mt, selection = c(2,4), margin = "documents"),
+                      textstat_dist(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
     l4 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
-    expect_equivalent(textstat_dist(mt, l4, margin = "documents"),
-                      textstat_dist(mt, c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    expect_equivalent(textstat_dist(mt, selection = l4, margin = "documents"),
+                      textstat_dist(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
     
-    expect_error(textstat_dist(mt, "nothing", margin = "documents"))
-    expect_error(textstat_dist(mt, 100, margin = "documents"))
+    expect_error(textstat_dist(mt, selection = "nothing", margin = "documents"))
+    expect_error(textstat_dist(mt, selection = 100, margin = "documents"))
 })
 
 test_that("textstat_dist() returns NA for empty dfm", {
@@ -191,7 +191,8 @@ test_that("textstat_dist coercion methods work with options", {
     # expect_equal(nrow(tstat), nrow(mt2)^2 - ndoc(mt2))
     mat <- as.matrix(tstat)
     expect_equal(dim(mat), c(ndoc(mt2), ndoc(mt2)))
-    iden <- rep(0, ndoc(mt2)); names(iden) <- docnames(mt2)
+    iden <- rep(0, ndoc(mt2))
+    names(iden) <- docnames(mt2)
     expect_equal(diag(mat), iden)
 
     # upper = FALSE, diag = TRUE
@@ -200,14 +201,16 @@ test_that("textstat_dist coercion methods work with options", {
     mat <- as.matrix(tstat)
     # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 0
-    iden <- rep(0, ndoc(mt2)); names(iden) <- docnames(mt2)
+    iden <- rep(0, ndoc(mt2))
+    names(iden) <- docnames(mt2)
     expect_equal(diag(as.matrix(tstat)), iden)
     
     # upper = FALSE, diag = FALSE
     tstat <- textstat_dist(mt2, margin = "documents")
     # expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2)
     mat <- as.matrix(tstat)
-    loweranddiag <- upper.tri(mat); diag(loweranddiag) <- TRUE
+    loweranddiag <- upper.tri(mat)
+    diag(loweranddiag) <- TRUE
     # expect_true(all(is.na(mat[upper.tri(mat)])))
     # in matrix, diagonal is 0
     iden <- rep(0, ndoc(mt2)); names(iden) <- docnames(mt2)

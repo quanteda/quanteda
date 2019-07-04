@@ -6,7 +6,7 @@ output:
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE, 
+knitr::opts_chunk$set(collapse = FALSE,
                       comment = "##")
 
 ```
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(collapse = FALSE,
 **quanteda**已上传在[CRAN](https://CRAN.R-project.org/package=quanteda)上，所以可以使用GUI的R软件包安装程序进行安装，或执行：
 
 ```{r, eval = FALSE}
-install.packages("quanteda") 
+install.packages("quanteda")
 ```
 请参阅https://github.com/quanteda/quanteda上的说明来安装GitHub版本。 
 
@@ -119,11 +119,11 @@ dat_txtmultiple2 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
                              docvarsfrom = "filenames", sep = "-", docvarnames = c("Year", "President"))
 summary(corpus(dat_txtmultiple2), 5)
 # XML 数据
-dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
                     dat_xml = "COMMON")
 summary(corpus(dat_xml), 5)
 # csv 文件
-write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural), 
+write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural),
                      docvars(data_corpus_inaugural)),
           file = "/tmp/inaug_texts.csv", row.names = FALSE)
 dat_csv <- readtext("/tmp/inaug_texts.csv", textfield = "inaug_speech")
@@ -156,13 +156,13 @@ summary(data_corpus_irishbudget2010)
 ```{r, fig.width = 8}
 tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) + 
-    geom_line() + 
+    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
+    geom_line() +
     geom_point() +
-    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12) ) 
+    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12))
 
 # 最长的就职演说: William Henry Harrison
-tokeninfo[which.max(tokeninfo$Tokens), ] 
+tokeninfo[which.max(tokeninfo$Tokens), ]
 ```
 
 
@@ -230,7 +230,7 @@ metacorpus(data_corpus_inaugural)
 `tokens()`有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。
 
 ```{r}
-txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
+txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!",
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokens(txt)
 tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
@@ -243,16 +243,16 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FA
 也可以按字符分词：
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
-tokens("Great website: http://textasdata.com?page=123.", what = "character", 
+tokens("Great website: http://textasdata.com?page=123.", what = "character",
          remove_separators = FALSE)
 ```
 
 以及按句子分词：
 ```{r}
 # sentence level         
-tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
-         "Today is Thursday in Canberra:  It is yesterday in London.", 
-         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
+tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
+         "Today is Thursday in Canberra:  It is yesterday in London.",
+         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"),
        what = "sentence")
 ```
 
@@ -274,7 +274,7 @@ dfmat_inaug_post1990[, 1:5]
 # 构建dfm, 去除停用词以及提取词干
 
 dfmat_inaug_post1990_stem <- dfm(corp_inaug_post1990,
-                                 remove = stopwords("english"), 
+                                 remove = stopwords("english"),
                                  stem = TRUE, remove_punct = TRUE)
 dfmat_inaug_post1990_stem[, 1:5]
 ```
@@ -307,8 +307,8 @@ topfeatures(dfmat_uk, 20)  # 20 词频最高的词
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
 textplot_wordcloud(dfmat_uk, min.freq = 6, random.order = FALSE,
-                   rotation = .25, 
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+                   rotation = .25,
+                   colors = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
 ### 按文档变量对文档分组 {#grouping-documents-by-document-variable}
@@ -316,7 +316,7 @@ textplot_wordcloud(dfmat_uk, min.freq = 6, random.order = FALSE,
 通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：
 
 ```{r}
-dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party", 
+dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party",
                  remove = stopwords("english"), remove_punct = TRUE)
 ```
 
@@ -363,10 +363,10 @@ dfmat_inaug_subset[, 1:10]
 ## 文本之间的相似度 {#similarities-between-texts}
 
 ```{r fig.width = 6}
-dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-tstat_obama <- textstat_simil(dfmat_inaug_post1980, 
-                              selection = c("2009-Obama" , "2013-Obama"), 
+tstat_obama <- textstat_simil(dfmat_inaug_post1980,
+                              dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ],
                               margin = "documents", method = "cosine")
 tstat_obama
 # dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")
@@ -376,7 +376,7 @@ tstat_obama
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
 data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 
-dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
+dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
@@ -388,13 +388,13 @@ pres_cluster <- hclust(as.dist(tstat_dist))
 # 按文档名标注
 pres_cluster$labels <- docnames(dfmat_sotu)
 # 绘制树状图
-plot(pres_cluster, xlab = "", sub = "", 
+plot(pres_cluster, xlab = "", sub = "",
      main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 我们也可查看特征相似度:
 ```{r}
-tstat_sim <- textstat_simil(dfmat_sotu, selection = c("fair", "health", "terror"),
+tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                       method = "cosine", margin = "features")
 lapply(as.list(tstat_sim), head, 10)
 ```
@@ -417,8 +417,8 @@ textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 **quanteda**可以很轻松训练主题模型：
 
 ```{r}
-dfmat_ire2 <- dfm(data_corpus_irishbudget2010, 
-                  remove_punct = TRUE, remove_numbers = TRUE, 
+dfmat_ire2 <- dfm(data_corpus_irishbudget2010,
+                  remove_punct = TRUE, remove_numbers = TRUE,
                   remove = stopwords("english"))
 dfmat_ire2 <- dfm_trim(dfmat_ire2, min_termfreq = 4, max_docfreq = 10)
 dfmat_ire2
@@ -456,7 +456,7 @@ load("examples/data/data_corpus_chinesegovreport.rda")
 summary(data_corpus_chinesegovreport, 10)
 
 # 分词
-toks_china <- data_corpus_chinesegovreport %>% 
+toks_china <- data_corpus_chinesegovreport %>%
     tokens(remove_punct = TRUE) %>%
     tokens_remove(stopwords("zh", source = "misc"))
 
@@ -470,12 +470,12 @@ topfeatures(dfmat_china)
 set.seed(100)
 dfmat_china_trim <- dfm_trim(dfmat_china, min_termfreq = 500)
 # 设置适用于MacOS的字体
-textplot_wordcloud(dfmat_china_trim, 
+textplot_wordcloud(dfmat_china_trim,
                    min_count = 6, random_order = FALSE,
-                   rot_per = .25, max_words = 100, 
+                   rot_per = .25, max_words = 100,
                    min_size = .5, max_size = 2.8,
                    font = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL,
-                   color = RColorBrewer::brewer.pal(8,"Dark2"))
+                   color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
 
@@ -484,11 +484,11 @@ textplot_wordcloud(dfmat_china_trim,
 ```{r}
 # fcm -共现窗口为5，2017政府工作报告
 corp_china2 <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
-toks_china2 <- corp_china2 %>% 
-    tokens(remove_punct = TRUE) %>% 
+toks_china2 <- corp_china2 %>%
+    tokens(remove_punct = TRUE) %>%
     tokens_remove(stopwords("zh", source = "misc"))
 
-fcmat_china1 <- fcm(corp_china2, context = "window")  
+fcmat_china1 <- fcm(corp_china2, context = "window")
 topfeatures(fcmat_china1["改革", ])
 
 # fcm 共现窗口为："改革" + “xx”
@@ -501,7 +501,7 @@ topfeatures(fcmat_china2["改革", ])
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 wfm <- textmodel_wordfish(dfmat_china)
 y <- 1954:2017
-y <- y[-which(y==1963 | y==1961 | y==1962 | (y>1964 & y<1975) | y==1976 | y==1977)]
+y <- y[-which(y == 1963 | y == 1961 | y == 1962 | (y > 1964 & y < 1975) | y == 1976 | y == 1977)]
 plot(y, wfm$theta, xlab = "Year", ylab = "Position")
 ```
 
