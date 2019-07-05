@@ -214,10 +214,13 @@ test_that("test that kwic works for fixed types", {
 })
 
 test_that("is.kwic works as expected", {
-    mykwic <- kwic(data_corpus_inaugural[1:3], "provident*")
-    expect_true(is.kwic(mykwic))
+    kwic1 <- kwic(data_corpus_inaugural[1:3], "provident*")
+    expect_true(is.kwic(kwic1))
     expect_false(is.kwic("Not a kwic"))
-    expect_false(is.kwic(mykwic[, c("pre", "post")]))
+    expect_false(is.kwic(kwic1[, c("pre", "post")]))
+    
+    kwic2 <- kwic(data_corpus_inaugural[1:3], "abcdefg")
+    expect_true(is.kwic(kwic2))
 })
 
 test_that("textplot_xray works with new kwic, one token phrase", {
