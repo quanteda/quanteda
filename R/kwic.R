@@ -142,8 +142,7 @@ kwic.tokens <- function(x, pattern, window = 5,
 #' is.kwic("Not a kwic")
 #' is.kwic(kw[, c("pre", "post")])
 is.kwic <- function(x) {
-    (inherits(x, "kwic") &&
-         all(c("docname", "from", "to", "pre", "keyword", "post", "pattern") %in% names(x)))
+    inherits(x, "kwic")
 }
 
 #' @method print kwic
@@ -178,8 +177,7 @@ print.kwic <- function(x, ...) {
 #' @noRd
 "[.kwic" <- function(x, i, j, ...) {
     x <- NextMethod()
-    if (!is.kwic(x) && is.data.frame(x)) {
+    if (!missing(j))
         x <- data.frame(x, stringsAsFactors = FALSE)
-    }
     return(x)
 }

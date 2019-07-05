@@ -466,8 +466,7 @@ test_that("kwic with pattern overlaps works as expected", {
 test_that("subsetting and printing a subsetted kwic works (#1665)", {
     kw <- kwic(data_corpus_inaugural, "terror")
     expect_output(print(kw[, c("pre", "keyword", "post")]), "pre keyword")
-    expect_is(kw[, c("pre", "keyword", "post")], "data.frame")
-    expect_is(kw[1:3, ], "data.frame")
-    expect_is(kw[1:3, ], "kwic")
-    expect_is(kw[1:3, names(kw)], "kwic")
+    expect_true("kwic" %in% class(kw[1:3, ]))
+    expect_false("kwic" %in% class(kw[1:3, 1:2]))
+    expect_false("kwic" %in% class(kw[, 1:2]))
 })
