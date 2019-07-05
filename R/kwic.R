@@ -179,9 +179,8 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @noRd
 "[.kwic" <- function(x, i, j, ...) {
-    x <- NextMethod()
     if (!missing(j))
-        x <- data.frame(x, stringsAsFactors = FALSE)
-    return(x)
+        x <- as.data.frame(x)
+    NextMethod("[")
 }
         
