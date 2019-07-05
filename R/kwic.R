@@ -110,14 +110,16 @@ kwic.tokens <- function(x, pattern, window = 5,
 
     ids <- pattern2list(pattern, type,
                         valuetype, case_insensitive, attr(x, "concatenator"))
-    result <- data.frame("docname" = character(), 
-                         "from" = integer(), 
-                         "to" = integer(), 
-                         "pre" = character(), 
-                         "keyword" = character(), 
-                         "post" = character(), 
-                         "pattern" = character(),
-                         stringsAsFactors = FALSE)
+    result <- data.frame(
+        "docname" = character(), 
+        "from" = integer(),
+        "to" = integer(),
+        "pre" = character(),
+        "keyword" = character(),
+        "post" = character(),
+        "pattern" = character(),
+        stringsAsFactors = FALSE
+    )
     for (m in unique(names(ids))) {
         temp <- qatd_cpp_kwic(x, type, ids[names(ids) == m], window, separator)
         temp[["pattern"]] <- rep(m, nrow(temp))
@@ -126,7 +128,8 @@ kwic.tokens <- function(x, pattern, window = 5,
     result[["pattern"]] <- factor(result[["pattern"]], levels = unique(names(ids)))
     if (nrow(result))
         result <- result[order(match(result[["docname"]], docnames(x)),
-                               result[["from"]], result[["to"]]), ]
+                               result[["from"]],
+                               result[["to"]]),]
     rownames(result) <- NULL
     attr(result, "ntoken") <- ntoken(x)
     class(result) <- c("kwic", "data.frame")
@@ -181,3 +184,4 @@ print.kwic <- function(x, ...) {
         x <- data.frame(x, stringsAsFactors = FALSE)
     return(x)
 }
+        
