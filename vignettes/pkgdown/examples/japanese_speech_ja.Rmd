@@ -145,7 +145,7 @@ toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = "")
 ```{r}
 speech_dfm <- dfm(toks, remove = "") %>% 
     dfm_remove("^[ぁ-ん]+$", valuetype = "regex", min_nchar = 2) %>% 
-    dfm_trim(min_termfreq = 0.50, termfreq_type = "quantile", max_count = 0.99)
+    dfm_trim(min_termfreq = 0.50, termfreq_type = "quantile", max_termfreq = 0.99)
 ```
 
 # 分析 {#analysis}
