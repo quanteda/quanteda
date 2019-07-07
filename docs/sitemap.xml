@@ -52,6 +52,9 @@
     <loc>https://quanteda.io/reference/as.matrix.simil.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/as.matrix.textstat_simil_sparse.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/as.network.html</loc>
   </url>
   <url>
@@ -208,6 +211,9 @@
     <loc>https://quanteda.io/reference/dfm_weight.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/diag2na.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/dictionary-class.html</loc>
   </url>
   <url>
@@ -260,6 +266,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/head.dfm.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/head.textstat_proxy.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/influence.predict.textmodel_affinity.html</loc>
@@ -376,16 +385,7 @@
     <loc>https://quanteda.io/reference/quanteda_options.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/read_dict_lexicoder.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_liwc.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_wordstat.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_yoshikoder.html</loc>
+    <loc>https://quanteda.io/reference/read_dict_functions.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/reexports.html</loc>
@@ -511,6 +511,9 @@
     <loc>https://quanteda.io/reference/textstat_lexdiv.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/textstat_proxy-class.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/textstat_proxy.html</loc>
   </url>
   <url>
@@ -587,6 +590,12 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/types.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/unlist_character.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/unlist_integer.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/unused_dots.html</loc>

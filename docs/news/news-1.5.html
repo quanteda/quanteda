@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count the number of sentences — nsentence • quanteda</title>
+<title>Version 1.5 • quanteda</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -40,10 +40,7 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Count the number of sentences — nsentence" />
-
-<meta property="og:description" content="Return the count of sentences in a corpus or character object." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Version 1.5" />
 
 
 
@@ -71,7 +68,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -202,66 +199,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count the number of sentences</h1>
-    
-    <div class="hidden name"><code>nsentence.Rd</code></div>
+      <h1>Changelog <small>1.5</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    
-    <p>Return the count of sentences in a corpus or character object.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>nsentence</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>a character or <a href='corpus.html'>corpus</a> whose sentences will be counted</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens</a></code></p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>count(s) of the total sentences per text</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p><code>nsentence()</code> relies on the boundaries definitions in the
-  <span class="pkg">stringi</span> package (see <a href='https://rdrr.io/pkg/stringi/man/stri_opts_brkiter.html'>stri_opts_brkiter</a>).  It does not
-  count sentences correctly if the text has been transformed to lower case,
-  and for this reason <code>nsentence()</code> will issue a warning if it detects
-  all lower-cased text.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># simple example</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"This is a sentence: second part of first sentence."</span>,
-         <span class='kw'>text2</span> <span class='kw'>=</span> <span class='st'>"A word. Repeated repeated."</span>,
-         <span class='kw'>text3</span> <span class='kw'>=</span> <span class='st'>"Mr. Jones has a PhD from the LSE.  Second sentence."</span>)
-<span class='fu'>nsentence</span>(<span class='no'>txt</span>)</div><div class='output co'>#&gt; text1 text2 text3 
-#&gt;     1     2     2 </div></pre>
+    <div id="quanteda-1-5-0" class="section level1">
+<h1 class="page-header">
+<a href="#quanteda-1-5-0" class="anchor"></a>quanteda 1.5.0<small> 2019-07-04 </small>
+</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>Add <code>flatten</code> and <code>levels</code> arguments to <code>as.list.dictionary2()</code> to enable more flexible conversion of dictionary objects. (#1661)</li>
+<li>In <code><a href="../reference/corpus_sample.html">corpus_sample()</a></code>, the <code>size</code> now works with the <code>by</code> argument, to control the size of units sampled from each group.</li>
+<li>Improvements to <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code>, see below.</li>
+<li>Long tokens are not discarded automatically in the call to <code><a href="../reference/tokens.html">tokens()</a></code>. (#1713)</li>
+</ul>
+</div>
+<div id="behaviour-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h2>
+<ul>
+<li>
+<code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> now return sparse symmetric matrix objects using classes from the <strong>Matrix</strong> package. This replaces the former structure based on the <code>dist</code> class. Computation of these classes is now also based on the fast implementation in the <strong>proxyC</strong> package. When computing similarities, the new <code>min_simil</code> argument allows a user to ignore certain values below a specified similarity threshold. A new coercion method <code>as.data.frame.textstat_simildist()</code> now exists for converting these returns into a data.frame of pairwise comparisons. Existing methods such as <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>, <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, and <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> work as they did before.</li>
+<li>We have removed the “faith”, “chi-squared”, and “kullback” methods from <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> because these were either not symmetric or not invariant to document or feature ordering. Finally, the <code>selection</code> argument has been deprecated in favour of a new <code>y</code> argument.<br>
+</li>
+<li>
+<code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> now defaults to <code>measure = "Flesch"</code> if no measure is supplied. This makes it consistent with <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> that also takes a default measure (“TTR”) if none is supplied. (#1715)</li>
+<li>The default values for <code>max_nchar</code> and <code>min_nchar</code> in <code><a href="../reference/tokens_select.html">tokens_select()</a></code> are now NULL, meaning they are not applied if the user does not supply values. Fixes #1713.</li>
+</ul>
+</div>
+<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<ul>
+<li>
+<code>kwic.corpus()</code> and <code>kwic.tokens()</code> behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (#1684)</li>
+<li>Improved formatting of <code><a href="../reference/tokens.html">tokens()</a></code> verbose output. (#1683)</li>
+<li>Subsetting and printing of subsetted kwic objects is more robust. (#1665)</li>
+<li>The “Bormuth” and “DRP” measures are now fixed for <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>. (#1701)</li>
+</ul>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#quanteda-1-5-0">1.5.0</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
 

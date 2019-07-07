@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -69,6 +71,7 @@ then a dfmDense object.  See Details." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -85,7 +88,7 @@ then a dfmDense object.  See Details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -186,7 +189,7 @@ then a dfmDense object.  See Details." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,6 +200,7 @@ then a dfmDense object.  See Details." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -209,7 +213,7 @@ then a dfmDense object.  See Details." />
 
     <div class="ref-description">
     
-    <p>The dfm class of object is a type of <a href='https://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a> object with
+    <p>The dfm class of object is a type of <a href='https://rdrr.io/pkg/Matrix/man/Matrix-class.html'>Matrix-class</a> object with
 additional slots, described below.  <span class="pkg">quanteda</span> uses two subclasses of the
 <code>dfm</code> class, depending on whether the object can be represented by a
 sparse matrix, in which case it is a <code>dfm</code> class object, or if dense,
@@ -307,22 +311,26 @@ the calculations</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>dfm</code> class is a virtual class that will contain
-  <a href='https://www.rdocumentation.org/packages/Matrix/topics/dgCMatrix-class'>dgCMatrix-class</a>.</p>
+  <a href='https://rdrr.io/pkg/Matrix/man/dgCMatrix-class.html'>dgCMatrix-class</a>.</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
-    <dl class='dl-horizontal'>
+
+<dl class='dl-horizontal'>
 <dt><code>settings</code></dt><dd><p>settings that govern corpus handling and subsequent downstream
 operations, including the settings used to clean and tokenize the texts,
 and to create the dfm.  See <code><a href='settings.html'>settings</a></code>.</p></dd>
-    <dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is
+
+<dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is
 <code>"frequency"</code>, indicating that the values in the cells of the dfm are
 simple feature counts. To change this, use the <code><a href='dfm_weight.html'>dfm_weight</a></code>
 method.</p></dd>
-    <dt><code>smooth</code></dt><dd><p>a smoothing parameter, defaults to zero.  Can be changed using
+
+<dt><code>smooth</code></dt><dd><p>a smoothing parameter, defaults to zero.  Can be changed using
 the <code><a href='dfm_weight.html'>dfm_smooth</a></code> method.</p></dd>
-    <dt><code>Dimnames</code></dt><dd><p>These are inherited from <a href='https://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a> but are
+
+<dt><code>Dimnames</code></dt><dd><p>These are inherited from <a href='https://rdrr.io/pkg/Matrix/man/Matrix-class.html'>Matrix-class</a> but are
 named <code>docs</code> and <code>features</code> respectively.</p></dd>
 </dl>
     
@@ -333,7 +341,7 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># dfm subsetting</span>
-<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
+<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>,
                   <span class='st'>"and a third document is it"</span>),
                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
@@ -370,14 +378,16 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
@@ -400,6 +410,8 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
 </script>
 
 
+
   </body>
 </html>
+
 

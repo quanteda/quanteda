@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -62,6 +64,7 @@
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -78,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -179,7 +182,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -190,6 +193,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -203,9 +207,9 @@
 <h1 class="page-header">
 <a href="#quanteda-1-4-0" class="anchor"></a>quanteda 1.4.0<small> 2019-01-30 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed bug in <code><a href="../reference/dfm_compress.html">dfm_compress()</a></code> and <code><a href="../reference/dfm_group.html">dfm_group()</a></code> that changed or deleted docvars attributes of dfm objects (#1506).</li>
 <li>Fixed a bug in <code><a href="../reference/textplot_xray.html">textplot_xray()</a></code> that caused incorrect facet labels when a pattern contained multiple list elements or values (#1514).</li>
@@ -228,9 +232,9 @@
 <li>A new argument <code>vertex_labelsize</code> added to <code><a href="../reference/textplot_network.html">textplot_network()</a></code> to allow more precise control of label sizes, either globally or individually.</li>
 </ul>
 </div>
-<div id="behaviour-changes-1" class="section level2">
+<div id="behaviour-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h2>
+<a href="#behaviour-changes-2" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>
 <code>tokens.tokens(x, remove_hyphens = TRUE)</code> where <code>x</code> was generated with <code>remove_hyphens = FALSE</code> now behaves similarly to how the same tokens would be handled had this option been called on character input as <code>tokens.character(x, remove_hyphens = TRUE)</code>. (#1498)</li>
@@ -241,30 +245,30 @@
 <h1 class="page-header">
 <a href="#quanteda-1-4-1" class="anchor"></a>quanteda 1.4.1<small> 2019-02-26 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed an issue with special handling of whitespace variants that caused a test to fail when running Ubuntu 18.10 system with libicu-dev version 63.1 (#1604).</li>
 <li>Fixed the operation of <code>docvars&lt;-.corpus()</code> in a way that solves #1603 (reassignment of docvar names).</li>
 </ul>
 </div>
 </div>
-    <div id="quanteda-1-4-3-1" class="section level1">
+    <div id="quanteda-1-4-3" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1-4-3-1" class="anchor"></a>quanteda 1.4.3<small> 2019-04-01 </small>
+<a href="#quanteda-1-4-3" class="anchor"></a>quanteda 1.4.3<small> 2019-04-01 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Changed the default value of the <code>size</code> argument in <code><a href="../reference/dfm_sample.html">dfm_sample()</a></code> to the number of features, not the number of documents. (#1643)</li>
 <li>Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)</li>
 </ul>
 </div>
-<div id="behaviour-changes" class="section level2">
+<div id="behaviour-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h2>
+<a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (#1545) The function <code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (#1646)</li>
 <li>
@@ -280,12 +284,13 @@
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#quanteda-1-4-0">1.4.0</a></li>
         <li><a href="#quanteda-1-4-1">1.4.1</a></li>
-        <li><a href="#quanteda-1-4-3-1">1.4.3</a></li>
+        <li><a href="#quanteda-1-4-3">1.4.3</a></li>
       </ul>
     </div>
   </div>
 
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -293,8 +298,9 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
@@ -317,6 +323,8 @@
 </script>
 
 
+
   </body>
 </html>
+
 

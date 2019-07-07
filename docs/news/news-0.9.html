@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -62,6 +64,7 @@
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -78,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -179,7 +182,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -190,6 +193,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -260,7 +264,7 @@
 <li><p>Improved documentation.</p></li>
 <li><p>Added <code><a href="../reference/corpus-class.html">c.corpus()</a></code> method for concatenating arbitrarily large sets of corpus objects.</p></li>
 <li><p>Default for <code>similarity()</code> is now <code>margin = "documents"</code> – prevents overly massive results if <code>selection = NULL</code>.</p></li>
-<li><p>Defined <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowMeans()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">colMeans()</a></code> methods for dfm objects.</p></li>
+<li><p>Defined <code><a href="https://rdrr.io/r/base/colSums.html">rowMeans()</a></code> and <code><a href="https://rdrr.io/r/base/colSums.html">colMeans()</a></code> methods for dfm objects.</p></li>
 <li><p>Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.</p></li>
 <li><p>Enhancements to corpus object indexing, including [[ and [[&lt;-.</p></li>
 </ul>
@@ -371,11 +375,14 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li>Yoshikoder,</li>
 <li>Lexicoder v2 and v3 (#228)</li>
 <li>Autodetect dictionary file format from file extension, so no longer require <code>format</code> keyword for loading dictionaries (#227)</li>
-<li>Improved compatibility with rOpenSci guidelines (#218):</li>
+<li>Improved compatibility with rOpenSci guidelines (#218):
+<ul>
 <li>Use httr to get remote files</li>
 <li>Use <code>messages()</code> to display messages rather than <code>print</code> or <code>cat</code>
 </li>
 <li>Reorganise sections in README file<br>
+</li>
+</ul>
 </li>
 <li>Added new <code>punctuation</code> argument to <code><a href="../reference/textstat_collocations.html">collocations()</a></code> to provide new options for handling collocations separated by punctuation characters (#220).</li>
 </ul>
@@ -392,7 +399,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li>(0.9.8.3) Fix a bug in <code><a href="../reference/tf.html">tf(x, scheme = "propmax")</a></code> that returned a wrong computation; correct the documentation for this function.</li>
 <li>(0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the “textField” argument (a single file containing multiple documents).<br>
 </li>
-<li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code>+</code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. #239<br>
+<li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. #239<br>
 </li>
 <li>Fixed bug in <code>textfile()</code> where source is a remote .zip set. (#172)<br>
 </li>
@@ -414,7 +421,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <h2 class="hasAnchor">
 <a href="#changes" class="anchor"></a>Changes</h2>
 <ul>
-<li>Added <code>warn = FALSE</code> to the <code><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines()</a></code> calls in <code>textfile()</code>, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.</li>
+<li>Added <code>warn = FALSE</code> to the <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> calls in <code>textfile()</code>, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.</li>
 <li>
 <code>trim()</code> now prints an output message even when no features are removed (#223)</li>
 <li>We now skip some platform-dependent tests on CRAN, travis-ci and Windows.</li>
@@ -438,14 +445,16 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
@@ -468,6 +477,8 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 </script>
 
 
+
   </body>
 </html>
+
 
