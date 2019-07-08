@@ -571,10 +571,25 @@ textstat_proxy <- function(x, y = NULL,
             na1 <- proxyC::colZeros(x) == nrow(x)
             na2 <- proxyC::colZeros(y) == nrow(y)
         }
-        if (any(na1))
-            result[na1, , drop = FALSE] <- NA
-        if (any(na2))
-            result[, na2, drop = FALSE] <- NA
+        if (any(na1) || any(na2))
+            result <- result + make_na_matrix(dim(result), which(na1), which(na2))
     }
     return(result)
 }
+
+make_na_matrix <- function(dims, row = NULL, col = NULL) {
+    i <- j <- integer()
+    if (is.integer(row)) {
+        i <- c(i, rep(row, dims[2]))
+        j <- c(j, rep(seq_len(dims[2]), each = length(row)))
+    }
+    if (is.integer(col)) {
+        i <- c(i, rep(seq_len(dims[1]), each = length(col)))
+        j <- c(j, rep(col, dims[1]))
+    }
+    Matrix::sparseMatrix(
+        i = i, j = j, x = NA,
+        dims = dims
+    )
+}
+
