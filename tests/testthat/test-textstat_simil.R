@@ -112,7 +112,7 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
     mt[3:4, ] <- 1
     mt <- as.dfm(mt)
     mt_na_all <- matrix(NA, nrow = 5, ncol = 5,
-                    dimnames = list(paste0("R", 1:5), paste0("R", 1:5)))
+                        dimnames = list(paste0("R", 1:5), paste0("R", 1:5)))
     mt_na_some <- mt_na_all
     mt_na_some[3:4,3:4] <- 1
     
@@ -516,3 +516,46 @@ test_that("diag2na is working", {
                         dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
 
 })
+
+test_that("make_na_matrix is working", {
+    
+    expect_equal(
+        as.matrix(quanteda:::make_na_matrix(c(5, 4), row = 2L:3L)),
+        matrix(c(c(FALSE, NA, NA, FALSE, FALSE),
+                 c(FALSE, NA, NA, FALSE, FALSE),
+                 c(FALSE, NA, NA, FALSE, FALSE),
+                 c(FALSE, NA, NA, FALSE, FALSE)), nrow = 5)
+    )
+    
+    expect_equal(
+        as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 3L)),
+        matrix(c(c(FALSE, FALSE, FALSE, FALSE, FALSE),
+                 c(FALSE, FALSE, FALSE, FALSE, FALSE),
+                 rep(NA, 5),
+                 c(FALSE, FALSE, FALSE, FALSE, FALSE)), nrow = 5)
+    )
+    
+    expect_equal(
+        as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 1L:2L, row = 2L:3L)),
+        matrix(c(rep(NA, 5), rep(NA, 5),
+                 c(FALSE, NA, NA, FALSE, FALSE),
+                 c(FALSE, NA, NA, FALSE, FALSE)), nrow = 5)
+    )
+    
+    expect_equal(
+        as.matrix(quanteda:::make_na_matrix(c(5, 4), 2L:3L, c(1L:2L))),
+        matrix(c(rep(NA, 5), rep(NA, 5),
+               c(FALSE, NA, NA, FALSE, FALSE),
+               c(FALSE, NA, NA, FALSE, FALSE)), nrow = 5)
+    )
+    
+    expect_equal(
+        as.matrix(quanteda:::make_na_matrix(c(5,4), 1L, 3L)),
+        matrix(c(c(NA, FALSE, FALSE, FALSE, FALSE),
+                 c(NA, FALSE, FALSE, FALSE, FALSE),
+                 rep(NA, 5),
+                 c(NA, FALSE, FALSE, FALSE, FALSE)), nrow = 5)
+    )
+
+})
+
