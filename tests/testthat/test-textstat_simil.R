@@ -521,40 +521,40 @@ test_that("make_na_matrix is working", {
     
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), row = 2L:3L)),
-        matrix(c(c(FALSE, NA, NA, FALSE, FALSE),
-                 c(FALSE, NA, NA, FALSE, FALSE),
-                 c(FALSE, NA, NA, FALSE, FALSE),
-                 c(FALSE, NA, NA, FALSE, FALSE)), nrow = 5)
+        matrix(c(c(0, NA, NA, 0, 0),
+                 c(0, NA, NA, 0, 0),
+                 c(0, NA, NA, 0, 0),
+                 c(0, NA, NA, 0, 0)), nrow = 5)
     )
     
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 3L)),
-        matrix(c(c(FALSE, FALSE, FALSE, FALSE, FALSE),
-                 c(FALSE, FALSE, FALSE, FALSE, FALSE),
+        matrix(c(c(0, 0, 0, 0, 0),
+                 c(0, 0, 0, 0, 0),
                  rep(NA, 5),
-                 c(FALSE, FALSE, FALSE, FALSE, FALSE)), nrow = 5)
+                 c(0, 0, 0, 0, 0)), nrow = 5)
     )
     
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 1L:2L, row = 2L:3L)),
         matrix(c(rep(NA, 5), rep(NA, 5),
-                 c(FALSE, NA, NA, FALSE, FALSE),
-                 c(FALSE, NA, NA, FALSE, FALSE)), nrow = 5)
+                 c(0, NA, NA, 0, 0),
+                 c(0, NA, NA, 0, 0)), nrow = 5)
     )
     
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), 2L:3L, c(1L:2L))),
         matrix(c(rep(NA, 5), rep(NA, 5),
-               c(FALSE, NA, NA, FALSE, FALSE),
-               c(FALSE, NA, NA, FALSE, FALSE)), nrow = 5)
+               c(0, NA, NA, 0, 0),
+               c(0, NA, NA, 0, 0)), nrow = 5)
     )
     
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5,4), 1L, 3L)),
-        matrix(c(c(NA, FALSE, FALSE, FALSE, FALSE),
-                 c(NA, FALSE, FALSE, FALSE, FALSE),
+        matrix(c(c(NA, 0, 0, 0, 0),
+                 c(NA, 0, 0, 0, 0),
                  rep(NA, 5),
-                 c(NA, FALSE, FALSE, FALSE, FALSE)), nrow = 5)
+                 c(NA, 0, 0, 0, 0)), nrow = 5)
     )
 
 })
