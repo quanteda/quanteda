@@ -243,7 +243,7 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
 
     if (is.null(min_simil)) {
         if (isSymmetric(temp)) {
-            temp <- as(temp, "dgeMatrix")
+            temp <- as(temp, "dsyMatrix")
             return(new("textstat_simil_symm", as(temp, "dspMatrix"),
                        method = method, margin = margin,
                        type = "textstat_simil"))
@@ -356,7 +356,7 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
                            p = p, use_na = TRUE)
 
     if (isSymmetric(temp)) {
-        temp <- as(temp, "dgeMatrix")
+        temp <- as(temp, "dsyMatrix")
         return(new("textstat_dist_symm", as(temp, "dspMatrix"),
                    method = method, margin = margin,
                    type = "textstat_dist"))
