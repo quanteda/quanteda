@@ -1,6 +1,7 @@
 # quanteda 1.5.1
 
 * Fix a bug that affects the new `textstat_dist()` and `textstat_simil()` (#1730)
+* fix a bug in how `textstat_dist()` and `textstat_simil()` class symmetric matrices.
 
 # quanteda 1.5.0
 

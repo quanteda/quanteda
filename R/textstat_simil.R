@@ -242,8 +242,8 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                            min_proxy = min_simil, use_na = TRUE)
 
     if (is.null(min_simil)) {
-        if (is.null(y)) {
-            temp <- as(forceSymmetric(temp), "dsyMatrix")
+        if (isSymmetric(temp)) {
+            temp <- as(temp, "dgeMatrix")
             return(new("textstat_simil_symm", as(temp, "dspMatrix"),
                        method = method, margin = margin,
                        type = "textstat_simil"))
@@ -253,7 +253,7 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
                        type = "textstat_simil"))
         }
     } else {
-        if (is.null(y)) {
+        if (isSymmetric(temp)) {
             return(new("textstat_simil_symm_sparse", temp,
                        method = method, margin = margin,
                        type = "textstat_simil",
@@ -355,8 +355,8 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
     temp <- textstat_proxy(x, y, margin, method,
                            p = p, use_na = TRUE)
 
-    if (is.null(y)) {
-        temp <- as(forceSymmetric(temp), "dsyMatrix")
+    if (isSymmetric(temp)) {
+        temp <- as(temp, "dgeMatrix")
         return(new("textstat_dist_symm", as(temp, "dspMatrix"),
                    method = method, margin = margin,
                    type = "textstat_dist"))
@@ -589,7 +589,7 @@ make_na_matrix <- function(dims, row = NULL, col = NULL) {
     }
     Matrix::sparseMatrix(
         i = i, j = j, x = NA,
-        dims = dims
+        dims = dims, giveCsparse = FALSE
     )
 }
 

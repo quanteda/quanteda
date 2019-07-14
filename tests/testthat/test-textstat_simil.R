@@ -559,3 +559,27 @@ test_that("make_na_matrix is working", {
 
 })
 
+test_that("symmetric class is correctly given", {
+    
+    dist1 <- textstat_dist(mt)
+    expect_identical(
+        Matrix::tril(dist1),
+        t(Matrix::triu(dist1))
+    )
+    dist2 <- textstat_dist(mt, mt)
+    expect_identical(
+        Matrix::tril(dist2),
+        t(Matrix::triu(dist2))
+    )
+    siml1 <- textstat_simil(mt)
+    expect_identical(
+        Matrix::tril(siml1),
+        t(Matrix::triu(siml1))
+    )
+    siml2 <- textstat_simil(mt, mt)
+    expect_identical(
+        Matrix::tril(siml2),
+        t(Matrix::triu(siml2))
+    )
+})
+
