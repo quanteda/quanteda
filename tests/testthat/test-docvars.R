@@ -336,13 +336,13 @@ test_that("docvar assignment is fully robust including to renaming (#1603)", {
         data.frame(testdv = 10:11, row.names = docnames(corp))
     )
     
-    # assigning a vector to blank docars
-    corp <- corpus(c("A b c d.", "A a b. B c."))
-    docvars(corp) <- c("x", "y")
-    expect_identical(
-        docvars(corp),
-        data.frame(V1 = c("x", "y"), row.names = docnames(corp), stringsAsFactors = FALSE)
-    )
+    # # assigning a vector to blank docars
+    # corp <- corpus(c("A b c d.", "A a b. B c."))
+    # docvars(corp) <- c("x", "y")
+    # expect_identical(
+    #     docvars(corp),
+    #     data.frame(V1 = c("x", "y"), row.names = docnames(corp), stringsAsFactors = FALSE)
+    # )
     
     # renaming a docvar
     corp <- corpus(c("A b c d.", "A a b. B c."),
