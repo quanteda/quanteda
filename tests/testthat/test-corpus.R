@@ -133,9 +133,6 @@ test_that("test corpus constructors works for data.frame", {
     corp <- corpus(df, docid_field = "row.names", text_field = "some_text")
     expect_equal(docnames(corp), 
                  paste("fromDf", 1:6, sep = "_"))
-    expect_equal(docvars(corp, "letter_factor")[3],
-                 factor("b", levels = c("a", "b", "c")))
-    
     expect_error(corpus(df, text_field = "some_ints"),
                  "text_field must refer to a character mode column")
     expect_error(corpus(df, text_field = c(1,3)),

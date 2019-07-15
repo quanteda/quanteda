@@ -467,7 +467,8 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"),
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- dfm_weight(pres_dfm, scheme = "prop") %>%
-    textstat_dist(method = "euclidean")
+    textstat_dist(method = "euclidean") %>% 
+    as.dist()
 
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)

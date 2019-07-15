@@ -197,7 +197,7 @@ docvars.default <- function(x, field = NULL) {
 
 #' @noRd
 #' @export
-docvars.corpus <- function(x, field = NULL) {
+    docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
     select_docvars(attr(x, 'docvars'), field, user = TRUE, system = FALSE, drop = TRUE)
 }
@@ -255,21 +255,13 @@ docvars.kwic <- function(x) {
 #' document variables to downstream objects, the assignment operator is defined
 #' for \link{tokens} or \link{dfm} objects as well.  Use with caution.
 #' 
-#' @section Index access to docvars in a corpus:
-#' Another way to access and set docvars is through indexing of the corpus 
-#' \code{j} element, such as \code{data_corpus_irishbudget2010[, c("foren", 
-#' "name"]}; or, for a single docvar, 
-#' \code{data_corpus_irishbudget2010[["name"]]}.  The latter also permits 
-#' assignment, including the easy creation of new document variables, e.g. 
-#' \code{data_corpus_irishbudget2010[["newvar"]] <- 
-#' 1:ndoc(data_corpus_irishbudget2010)}. See \code{\link{[.corpus}} for details.
-#' 
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' # assigning document variables to a corpus
 #' corp <- data_corpus_inaugural
 #' docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
 #' head(docvars(corp)) 
+#' 
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
     UseMethod("docvars<-")

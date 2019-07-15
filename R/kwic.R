@@ -106,7 +106,16 @@ kwic.tokens <- function(x, pattern, window = 5,
     type <- types(x)
     ids <- pattern2list(pattern, type,
                         valuetype, case_insensitive, attr(x, "concatenator"))
-    result <- data.frame()
+    result <- data.frame(
+        "docname" = character(), 
+        "from" = integer(),
+        "to" = integer(),
+        "pre" = character(),
+        "keyword" = character(),
+        "post" = character(),
+        "pattern" = character(),
+        stringsAsFactors = FALSE
+    )
     for (m in unique(names(ids))) {
         temp <- qatd_cpp_kwic(x, type, ids[names(ids) == m], window, separator)
         temp[["pattern"]] <- rep(m, nrow(temp))
@@ -115,7 +124,8 @@ kwic.tokens <- function(x, pattern, window = 5,
     result[["pattern"]] <- factor(result[["pattern"]], levels = unique(names(ids)))
     if (nrow(result))
         result <- result[order(match(result[["docname"]], docnames(x)),
-                               result[["from"]], result[["to"]]), ]
+                               result[["from"]],
+                               result[["to"]]),]
     rownames(result) <- NULL
     attr(result, "ntoken") <- ntoken(x)
     class(result) <- c("kwic", "data.frame")
@@ -131,8 +141,7 @@ kwic.tokens <- function(x, pattern, window = 5,
 #' is.kwic("Not a kwic")
 #' is.kwic(kw[, c("pre", "post")])
 is.kwic <- function(x) {
-    (inherits(x, "kwic") &&
-         all(c("docname", "from", "to", "pre", "keyword", "post", "pattern") %in% names(x)))
+    inherits(x, "kwic")
 }
 
 #' @method print kwic
@@ -166,9 +175,8 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @noRd
 "[.kwic" <- function(x, i, j, ...) {
-    x <- NextMethod()
-    if (!is.kwic(x) && is.data.frame(x)) {
-        x <- data.frame(x, stringsAsFactors = FALSE)
-    }
-    return(x)
+    if (!missing(j))
+        x <- as.data.frame(x)
+    NextMethod("[")
 }
+        

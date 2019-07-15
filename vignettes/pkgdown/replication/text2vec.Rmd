@@ -7,8 +7,7 @@ output:
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE, 
-                      comment = "##")
+knitr::opts_chunk$set(collapse = FALSE, comment = "##")
 ```
 
     
@@ -22,7 +21,7 @@ This is intended to show how **quanteda** can be used with the [**text2vec**](ht
 
 Download a corpus comprised of the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
 ```{r eval = TRUE}
-wiki_corp <- quanteda.corpora::download(url = 'https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1')
+wiki_corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1")
 ```
 
 ## Select features
@@ -31,7 +30,7 @@ First, we tokenize the corpus, and then get the names of the features that occur
 Trimming the features before constructing the fcm:
 ```{r}
 wiki_toks <- tokens(wiki_corp)
-feats <- dfm(wiki_toks, verbose = TRUE) %>% 
+feats <- dfm(wiki_toks, verbose = TRUE) %>%
     dfm_trim(min_termfreq = 5) %>%
     featnames()
 
@@ -70,7 +69,7 @@ The two vectors are main and context. According to the Glove paper, averaging th
 wiki_context <- glove$components
 dim(wiki_context)
 
-wiki_vectors <- wiki_main + t(wiki_context)
+wiki_vectors <- as.dfm(wiki_main + t(wiki_context))
 ```
 
 ## Examining term representations
@@ -78,27 +77,25 @@ wiki_vectors <- wiki_main + t(wiki_context)
 Now we can find the closest word vectors for `paris - france + germany`
 
 ```{r}
-new_berlin <-  wiki_vectors["paris", ] - 
-    wiki_vectors["france", ] + 
+new_berlin <- wiki_vectors["paris", ] -
+    wiki_vectors["france", ] +
     wiki_vectors["germany", ]
 
 # calculate the similarity
-wiki_vector_dfm <- as.dfm(rbind(wiki_vectors, new_berlin))
-cos_sim <-  textstat_simil(wiki_vector_dfm, "new_berlin", 
-                           margin = "documents", method = "cosine")
-head(sort(cos_sim[,1], decreasing = TRUE), 5)
+cos_sim <- textstat_simil(wiki_vectors, new_berlin,
+                          margin = "documents", method = "cosine")
+head(sort(cos_sim[, 1], decreasing = TRUE), 5)
 ```
 
 Here is another example for `london = paris - france + uk + england`
 
 ```{r}
-new_london <-  wiki_vectors["paris", ] - 
-    wiki_vectors["france", ] + 
-    wiki_vectors["uk", ] + 
-    wiki_vectors["england", ] 
+new_london <-  wiki_vectors["paris", ] -
+    wiki_vectors["france", ] +
+    wiki_vectors["uk", ] +
+    wiki_vectors["england", ]
 
-wiki_vector_dfm <- as.dfm(rbind(wiki_vectors, new_london))
-cos_sim <-  textstat_simil(wiki_vector_dfm, "new_london", 
-                           margin = "documents", method= "cosine")
-head(sort(cos_sim[,1], decreasing = TRUE), 5)
+cos_sim <- textstat_simil(wiki_vectors, new_london,
+                          margin = "documents", method = "cosine")
+head(sort(cos_sim[, 1], decreasing = TRUE), 5)
 ```

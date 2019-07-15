@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Example: Chinese text analysis • quanteda</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../pkgdown.js"></script><!-- docsearch --><script src="../../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../../extra.css" rel="stylesheet">
@@ -39,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -138,7 +139,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -152,6 +153,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -166,30 +168,30 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(quanteda)</a></code></pre></div>
 <div id="download-corpus" class="section level1">
 <h1 class="hasAnchor">
 <a href="#download-corpus" class="anchor"></a>Download corpus</h1>
 <p>Download corpus constructed from <em>Report on the Work of the Government</em> published by Premier of the State Council between 1954 and 2017. You can download the corpus using the <strong>quanteda.corpora</strong> package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read text files</span>
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda.corpora)
-corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># read text files</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(quanteda.corpora)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</a></code></pre></div>
 </div>
 <div id="tokenization" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tokenization" class="anchor"></a>Tokenization</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Chinese stopwords</span>
-ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)
-
-<span class="co"># tokenize</span>
-ch_toks &lt;-<span class="st"> </span>corp <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="dt">pattern =</span> ch_stop)
-
-<span class="co"># construct a dfm</span>
-ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(ch_toks)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Chinese stopwords</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># tokenize</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">ch_toks &lt;-<span class="st"> </span>corp <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="dt">pattern =</span> ch_stop)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># construct a dfm</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(ch_toks)</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</a></code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
 </div>
@@ -199,46 +201,46 @@ ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../referenc
 <div id="word-cloud" class="section level2">
 <h2 class="hasAnchor">
 <a href="#word-cloud" class="anchor"></a>Word cloud</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot a word cloud</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)
-
-<span class="co"># to set the font correctly for macOS</span>
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(ch_dfm, <span class="dt">min_count =</span> <span class="dv">500</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,
-                   <span class="dt">rotation =</span> .<span class="dv">25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>,
-                   <span class="dt">min_size =</span> <span class="fl">0.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,
-                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.info">Sys.info</a></span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,
-                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>, <span class="st">"Dark2"</span>))</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># plot a word cloud</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># to set the font correctly for macOS</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(ch_dfm, <span class="dt">min_count =</span> <span class="dv">500</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">                   <span class="dt">rotation =</span> <span class="fl">.25</span>, <span class="dt">max_words =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">                   <span class="dt">min_size =</span> <span class="fl">0.5</span>, <span class="dt">max_size =</span> <span class="fl">2.8</span>,</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">                   <span class="dt">font =</span> <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="st">"SimHei"</span> <span class="cf">else</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="dv">8</span>, <span class="st">"Dark2"</span>))</a></code></pre></div>
 <p><img src="chinese_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div id="feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feature-co-occurrence-matrix" class="anchor"></a>Feature co-occurrence matrix</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm within the window size of 5</span>
-ch17_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(corp, Year <span class="op">==</span><span class="st"> "2017"</span>)
-ch17_toks &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17_corp, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)
-ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># fcm within the window size of 5</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">ch17_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(corp, Year <span class="op">==</span><span class="st"> "2017"</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">ch17_toks &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17_corp, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</a></code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
 </div>
 <div id="unsupervised-document-scaling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#unsupervised-document-scaling" class="anchor"></a>Unsupervised document scaling</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)
-y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
-y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]
-y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
 <p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocations" class="anchor"></a>Collocations</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams cross the whole dataset</span>
-ch_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch_toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>)
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(ch_col, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># bigrams cross the whole dataset</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">ch_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch_toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(ch_col, <span class="dv">10</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">collocation</th>
@@ -254,86 +256,86 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">1787</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.661200</td>
-<td align="right">128.61741</td>
+<td align="right">5.681248</td>
+<td align="right">129.07450</td>
 </tr>
 <tr class="even">
+<td align="left">１ ９</td>
+<td align="right">678</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.550501</td>
+<td align="right">95.50843</td>
+</tr>
+<tr class="odd">
 <td align="left">亿 元</td>
 <td align="right">689</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.445259</td>
-<td align="right">93.01487</td>
+<td align="right">7.465125</td>
+<td align="right">93.26342</td>
+</tr>
+<tr class="even">
+<td align="left">０ ０</td>
+<td align="right">491</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.736795</td>
+<td align="right">85.64818</td>
 </tr>
 <tr class="odd">
 <td align="left">现代 化</td>
 <td align="right">632</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.950471</td>
-<td align="right">83.55186</td>
+<td align="right">6.970359</td>
+<td align="right">83.79122</td>
 </tr>
 <tr class="even">
 <td align="left">体制 改革</td>
 <td align="right">504</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.193066</td>
-<td align="right">77.37908</td>
+<td align="right">5.213023</td>
+<td align="right">77.67687</td>
 </tr>
 <tr class="odd">
+<td align="left">９ ５</td>
+<td align="right">350</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.747687</td>
+<td align="right">75.33269</td>
+</tr>
+<tr class="even">
 <td align="left">五年 计划</td>
 <td align="right">341</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.359068</td>
-<td align="right">71.64727</td>
+<td align="right">5.378963</td>
+<td align="right">71.91355</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">各级 政府</td>
 <td align="right">306</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.110596</td>
-<td align="right">66.63454</td>
+<td align="right">6.130473</td>
+<td align="right">66.85150</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">增长 百分</td>
 <td align="right">300</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.520761</td>
-<td align="right">65.88051</td>
-</tr>
-<tr class="even">
-<td align="left">万 吨</td>
-<td align="right">212</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">6.589957</td>
-<td align="right">62.56344</td>
-</tr>
-<tr class="odd">
-<td align="left">国民 经济</td>
-<td align="right">589</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">6.014672</td>
-<td align="right">61.80426</td>
-</tr>
-<tr class="even">
-<td align="left">充分 发挥</td>
-<td align="right">191</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">6.584129</td>
-<td align="right">61.24885</td>
+<td align="right">5.540657</td>
+<td align="right">66.11816</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams in 2017 report</span>
-ch17_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17_toks, <span class="dt">size =</span> <span class="dv">2</span>)
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(ch17_col, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># bigrams in 2017 report</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">ch17_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17_toks, <span class="dt">size =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(ch17_col, <span class="dv">10</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">collocation</th>
@@ -452,13 +454,15 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
 </div>
 

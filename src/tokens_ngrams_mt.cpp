@@ -1,6 +1,6 @@
-//#include "../include/dev.h"
-#include "../include/quanteda.h"
-#include "../include/recompile.h"
+//#include "dev.h"
+#include "lib.h"
+#include "recompile.h"
 using namespace quanteda;
 
 unsigned int ngram_id(const Ngram &ngram,

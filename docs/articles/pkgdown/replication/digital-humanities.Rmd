@@ -154,7 +154,7 @@ textstat_frequency(moby_dfm, n = 50) %>%
 
 For direct comparison with the next chapter, we also create the sorted list of the most frequently found words using this:
 ```{r}
-sorted_moby_freqs_t <- topfeatures(moby_dfm, n = nfeature(moby_dfm))
+sorted_moby_freqs_t <- topfeatures(moby_dfm, n = nfeat(moby_dfm))
 ```
 
 
@@ -457,7 +457,7 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"),
     dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
+pres_dist_mat <- as.dist(textstat_dist(dfm_weight(pres_dfm, "prop")))
 
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
