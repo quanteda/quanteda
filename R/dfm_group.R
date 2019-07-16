@@ -138,9 +138,9 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     set_dfm_dimnames(result) <- list(docname, featname)
 
     if (is.null(documents)) {
-        docvars(result) <- cbind(docvars(x), metadoc(x))
+        result@docvars <- cbind(docvars(x), metadoc(x))
     } else {
-        docvars(result) <- data.frame(row.names = docname)
+        result@docvars <- data.frame(row.names = docname)
     }
     return(result)
 }

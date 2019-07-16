@@ -316,14 +316,14 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     docvars(anddfm) <- anddfm
     expect_identical(
         docvars(anddfm),
-        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+        data.frame(and = as.vector(anddfm), row.names = docnames(mycorp))
     )
 
     toks <- tokens(mycorp)
     docvars(toks) <- anddfm
     expect_identical(
         docvars(toks),
-        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+        data.frame(and = as.vector(anddfm), row.names = docnames(mycorp))
     )
 })
 
