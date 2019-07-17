@@ -43,7 +43,7 @@ docvars.tokens <- function(x, field = NULL) {
     dvars <- attr(x, "docvars")
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)  
+    get_docvars(dvars, field) 
 }
 
 #' @noRd
@@ -53,7 +53,7 @@ docvars.dfm <- function(x, field = NULL) {
     dvars <- x@docvars
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)  
+    get_docvars(dvars, field) 
 }
 
 #' @noRd
@@ -239,19 +239,31 @@ set_docvars <- function(dvars, field = NULL, value)  {
     } else {
         dvars_system <- select_fields(dvars, c("text", "system"))
         dvars_user <- select_fields(dvars, "user")
+        
         if (is.dfm(value))
             value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
+        
         if (is.null(field)) {
-            if (is.data.frame(value)) {
-                if (nrow(value) != nrow(dvars))
-                    stop(message_error("docvar_mismatch"))
-                result <- cbind(dvars_system, value)
-            } else {
+            if (is.null(value)) {
                 result <- dvars_system
+            } else {
+                if (is.matrix(value))
+                    value <- as.data.frame(value, stringsAsFactors = FALSE)
+                if (is.data.frame(value)) {
+                    if (nrow(value) != nrow(dvars))
+                        stop(message_error("docvar_mismatch"), call. = FALSE)
+                    if (any(missingnames <- nzchar(names(value), keepNA = TRUE))) {
+                        names(value)[which(is.na(missingnames))] <- 
+                            paste0("V", seq_len(sum(is.na(missingnames))))
+                    }
+                    result <- cbind(dvars_system, value)
+                } else {
+                    stop(message_error("docvar_nofield"), call. = FALSE)
+                }
             }
         } else {
             if ("texts" %in% field)
-                stop("You should use texts")
+                stop("You should use texts", call. = FALSE)
             dvars_user[field] <- value
             result <- cbind(dvars_system, dvars_user)
         }
