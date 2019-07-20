@@ -252,9 +252,9 @@ set_docvars <- function(dvars, field = NULL, value)  {
                 if (is.data.frame(value)) {
                     if (nrow(value) != nrow(dvars))
                         stop(message_error("docvar_mismatch"), call. = FALSE)
-                    if (any(missingnames <- nzchar(names(value), keepNA = TRUE))) {
-                        names(value)[which(is.na(missingnames))] <- 
-                            paste0("V", seq_len(sum(is.na(missingnames))))
+                    if (!is.character(names(value)) || length(names(value)) != ncol(value) || 
+                        any(is.na(names(value)))) {
+                        stop(message_error("docvar_nocolname"), call. = FALSE)
                     }
                     result <- cbind(dvars_system, value)
                 } else {
@@ -268,6 +268,8 @@ set_docvars <- function(dvars, field = NULL, value)  {
             result <- cbind(dvars_system, dvars_user)
         }
     }
+    if (ncol(result) == 0)
+        names(result) <- character() # cbind() sets NULL to names
     return(result)
 }
 
@@ -318,5 +320,7 @@ select_fields <- function(x, types = c("user", "system")) {
     if ("user" %in% types) {
         result <- cbind(result, x[!is_system & !is_text])
     }
+    if (ncol(result) == 0)
+        names(result) <- character() # cbind() sets NULL to names
     return(result)
 }

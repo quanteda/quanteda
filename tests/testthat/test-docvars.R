@@ -351,16 +351,13 @@ test_that("docvar assignment is fully robust including to renaming (#1603)", {
                    row.names = docnames(corp), stringsAsFactors = FALSE)
     )
     
-    # assigning a data.frame with missing names
+    # block assigning a data.frame with missing names
     df <- data.frame(c("x", "y"), c("a", "b"), 11:12, stringsAsFactors = FALSE)
     names(df) <- NULL
     names(df)[2] <- "name2"
-    docvars(corp) <- df
-    expect_identical(
-        docvars(corp),
-        data.frame(V1 = c("x", "y"), name2 = c("a", "b"), V2 = 11:12, 
-                   row.names = docnames(corp), stringsAsFactors = FALSE)
-    )
+    expect_error(docvars(corp) <- df, 
+                 "data.frame must have column names")
+    
     
     # renaming a docvar
     corp <- corpus(c("A b c d.", "A a b. B c."),
