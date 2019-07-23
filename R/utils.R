@@ -251,7 +251,9 @@ unused_dots <- function(...) {
 message_error <- function(key = NULL) {
     msg <- c("dfm_empty" = "dfm must have at least one non-zero value",
              "fcm_empty" = "fcm must have at least one non-zero value",
-             "docvar_mismatch" = "data.frame must have the same number of rows as documents")
+             "docvar_mismatch" = "data.frame must have the same number of rows as documents",
+             "docvar_nofield" = "you must supply field name(s)",
+             "docvar_nocolname" = "data.frame must have column names")
     if (is.null(key) || !key %in% names(msg)) {
         return("")
     }

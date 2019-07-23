@@ -79,17 +79,15 @@ tokens_segment.tokens <- function(x, pattern,
         vars <- vars[attr(x, "docid"), , drop = FALSE] # repeat rows
         rownames(vars) <- docname
     } else {
-        attrs$docvars <- NULL
-        vars <- NULL
+        vars <- data.frame(row.names = docname)
     }
     result <- create(x, what = "tokens",
-                     attrs = attrs,
                      docvars = vars,
                      names = docname,
                      document = NULL,
                      docid = NULL,
                      segid = NULL)
-
+    
     docvars(result, "_document") <- attr(x, "document")
     docvars(result, "_docid") <- attr(x, "docid")
     docvars(result, "_segid") <- attr(x, "segid")
