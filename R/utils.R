@@ -253,7 +253,9 @@ message_error <- function(key = NULL) {
              "fcm_empty" = "fcm must have at least one non-zero value",
              "docnames_mismatch" = "docnames must the the same length as x",
              "docvars_mismatch" = "data.frame must have the same number of rows as documents",
-             "docvars_invalid" = "document variables cannot begin with the underscore")
+             "docvars_invalid" = "document variables cannot begin with the underscore",
+             "docvar_nofield" = "you must supply field name(s)",
+             "docvar_nocolname" = "data.frame must have column names")
     if (is.null(key) || !key %in% names(msg)) {
         return("")
     }

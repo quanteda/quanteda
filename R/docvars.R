@@ -8,12 +8,20 @@
     if (is.null(field)) {
         if (is.null(value)) {
             x <- x[flag]
-        } else if (is.data.frame(value)) {
-            if (nrow(value) != nrow(x))
-                stop(message_error("docvar_mismatch"))
-            x <- cbind(x[flag], value)
-        } else {
-            stop(message_error("docvar_noname"))
+        } else { 
+            if (is.matrix(value))
+                value <- as.data.frame(value, stringsAsFactors = FALSE)
+            if (is.data.frame(value)) {
+                if (nrow(value) != nrow(x))
+                    stop(message_error("docvar_mismatch"))
+                if (!is.character(names(value)) || length(names(value)) != ncol(value) || 
+                    any(is.na(names(value)))) {
+                    stop(message_error("docvar_nocolname"), call. = FALSE)
+                }
+                x <- cbind(x[flag], value)
+            } else {
+                stop(message_error("docvar_nofield"), call. = FALSE)
+            }
         }
     } else {
         if (any(is_system(field)))
@@ -242,8 +250,6 @@ docvars.kwic <- function(x) {
 #     x <- as.dfm(x)
 #     select_docvars(x@docvars, value, user = TRUE, system = FALSE, drop = TRUE)
 # }
-
-
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable

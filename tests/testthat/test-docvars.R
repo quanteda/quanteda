@@ -404,14 +404,14 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     docvars(anddfm) <- anddfm
     expect_identical(
         docvars(anddfm),
-        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+        data.frame(and = as.vector(anddfm))
     )
 
     toks <- tokens(mycorp)
     docvars(toks) <- anddfm
     expect_identical(
         docvars(toks),
-        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+        data.frame(and = as.vector(anddfm))
     )
 })
 
@@ -432,6 +432,38 @@ test_that("docvar can be renamed (#1603)", {
     expect_identical(names(docvars(dfmt)),
                      c("time", "debate", "order", "foren", "name", "party"))
    
+})
+
+test_that("docvar assignment is fully robust including to renaming (#1603)", {
+    # assigning a data.frame to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    docvars(corp) <- data.frame(testdv = 10:11)
+    expect_identical(
+        docvars(corp),
+        data.frame(testdv = 10:11)
+    )
+    
+    # assigning a vector to blank docars
+    corp <- corpus(c("A b c d.", "A a b. B c."))
+    expect_error(
+        docvars(corp) <- c("x", "y"),
+        "you must supply field name(s)", fixed = TRUE
+    )
+    
+    # assigning an unnamed matrix as docvars
+    docvars(corp) <- matrix(c("x", "y"), ncol = 1)
+    expect_identical(
+        docvars(corp),
+        data.frame(V1 = c("x", "y"), stringsAsFactors = FALSE)
+    )
+    
+    # block assigning a data.frame with missing names
+    df <- data.frame(c("x", "y"), c("a", "b"), 11:12, stringsAsFactors = FALSE)
+    names(df) <- NULL
+    names(df)[2] <- "name2"
+    expect_error(docvars(corp) <- df, 
+                 "data.frame must have column names")
+    
 })
  
 test_that("docvars<-.corpus and name uniqueness", {
@@ -496,18 +528,6 @@ test_that("docvars<- NULL removes docvars", {
     expect_identical(names(docvars(dfmt3)),
                      c("debate", "foren", "name", "party"))
     
-})
-
-test_that("can assign a vector to docvars and get a default name", {
-    skip("Until we decide on the appropriate policy for unnamed docvars")
-    
-    # assigning a vector to blank docars
-    corp <- corpus(c("A b c d.", "A a b. B c."))
-    docvars(corp) <- c("x", "y")
-    expect_identical(
-        docvars(corp),
-        data.frame(V1 = c("x", "y"), stringsAsFactors = FALSE)
-    )
 })
 
 test_that("works correctly in edge cases", {
