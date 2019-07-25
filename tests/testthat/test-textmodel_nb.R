@@ -167,4 +167,3 @@ test_that("raises error when dfm is empty (#1419)",  {
                  quanteda:::message_error("dfm_empty"))
     
 })
-
