@@ -115,7 +115,9 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     distribution <- match.arg(distribution)
     call <- match.call()
     
-    y <- factor(y)
+    y <- as.factor(y)
+    if (length(unique(na.omit(y))) == 1) stop("y cannot be constant")
+    
     temp <- x[!is.na(y),]
     class <- y[!is.na(y)]
     
