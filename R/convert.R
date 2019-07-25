@@ -23,7 +23,12 @@
 #' @param docvars optional data.frame of document variables used as the
 #'   \code{meta} information in conversion to the \pkg{stm} package format.
 #'   This aids in selecting the document variables only corresponding to the
-#'   documents with non-zero counts.
+#'   documents with non-zero counts.  Only affects the "stm" format.
+#' @param omit_empty logical; if \code{TRUE}, omit empty documents and features
+#'   from the converted dfm. This is required for some formats (such as STM)
+#'   that do not accept empty documents.  Only used when \code{to = "lda"} or
+#'   \code{to = "topicmodels"}.  For \code{to = "stm"} format, `omit_empty`` is
+#'   always \code{TRUE}.
 #' @return A converted object determined by the value of \code{to} (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
 #'   of the return formats.
@@ -61,7 +66,8 @@
 #' 
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
-                              "lsa", "matrix", "data.frame", "tripletlist"), docvars = NULL) {
+                              "lsa", "matrix", "data.frame", "tripletlist"), docvars = NULL,
+                    omit_empty = TRUE) {
     UseMethod("convert")
 }
 
@@ -74,7 +80,7 @@ convert.default <- function(x, ...) {
 #' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
                                   "lsa", "matrix", "data.frame", "tripletlist"), 
-                        docvars = NULL) {
+                        docvars = NULL, omit_empty = TRUE) {
     x <- as.dfm(x)
     to <- match.arg(to)
 
@@ -90,16 +96,20 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
         stop("cannot convert a non-count dfm to a topic model format")
     }
     
+    if (!(to %in% c("lda", "topicmodels")) && !missing(omit_empty) && omit_empty) {
+        warning("omit_empty not used for 'to = \"", to, "\"'")
+    }
+    
     if (to == "tm") 
         return(dfm2tm(x))
     else if (to == "lda")
-        return(dfm2lda(x))
+        return(dfm2lda(x, omit_empty = omit_empty))
     else if (to == "stm")
-        return(dfm2stm(x, docvars))
+        return(dfm2stm(x, docvars, omit_empty = TRUE))
     else if (to == "austin")
         return(dfm2austin(x))
     else if (to == "topicmodels")
-        return(dfm2dtm(x))
+        return(dfm2dtm(x, omit_empty = omit_empty))
     else if (to == "lsa")
         return(dfm2lsa(x))
     else if (to == "data.frame")
@@ -121,6 +131,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' similar in syntax to analogous commands in the packages to whose format they
 #' are converting.
 #' @param x the dfm to be converted
+#' @inheritParams convert
 #' @param ... additional arguments used only by \code{as.DocumentTermMatrix}
 #' @return A converted object determined by the value of \code{to} (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
@@ -152,7 +163,7 @@ as.wfm <- function(x) {
     UseMethod("as.wfm")
 }
 
-#' @noRd
+#' @rdname convert-wrappers
 #' @method as.wfm dfm
 #' @export
 as.wfm.dfm <- function(x) {
@@ -180,14 +191,14 @@ as.DocumentTermMatrix <- function(x) {
     UseMethod("as.DocumentTermMatrix")
 }
 
-#' @noRd
+#' @rdname convert-wrappers
 #' @method as.DocumentTermMatrix dfm
 #' @export
 as.DocumentTermMatrix.dfm <- function(x) {
     convert(as.dfm(x), to = "tm")
 }
 
-#' @keywords internal
+#' @rdname convert-wrappers
 dfm2austin <- function(x) {
     result <- as.matrix(as(x, 'dgeMatrix'))
     names(dimnames(result))[2] <- "words"
@@ -195,7 +206,8 @@ dfm2austin <- function(x) {
     result
 }
 
-#' @keywords internal
+#' @rdname convert-wrappers
+#' @param weighting a \pkg{tm} weight, see \code{\link[tm]{weightTf}}
 dfm2tm <- function(x, weighting = tm::weightTf) {
     if (!requireNamespace("tm", quietly = TRUE)) 
         stop("You must install the tm package installed for this conversion.")
@@ -233,14 +245,14 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
 #' }
 #' 
 #' @keywords internal
-dfm2lda <- function(x) {
+dfm2lda <- function(x, omit_empty = TRUE) {
     x <- as.dfm(x)
     if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
-    dtm2lda(dfm2dtm(x))
+    dtm2lda(dfm2dtm(x, omit_empty = omit_empty), omit_empty = omit_empty)
 }
 
-#' @noRd
+#' @rdname convert-wrappers
 #' @details
 #' \code{dfm2ldaformat} provides converts a \link{dfm} into the list
 #' representation of terms in documents used by the \pkg{lda} package (a list
@@ -276,7 +288,7 @@ split.matrix <- function(x, f, drop = FALSE, ...) {
                  f, drop = drop, ...), function(ind) x[, ind, drop = FALSE])
 }
 
-#' @keywords internal
+#' @rdname convert-wrappers
 dfm2dtm <- function(x, omit_empty = TRUE) {
 
     if (!requireNamespace("tm", quietly = TRUE))
@@ -292,19 +304,20 @@ dfm2dtm <- function(x, omit_empty = TRUE) {
 }
 
 
-#' @keywords internal
-dfm2stm <- function(x, docvars, omit_empty = TRUE) {
+#' @rdname convert-wrappers
+dfm2stm <- function(x, docvars = NULL, omit_empty = TRUE) {
     # get docvars (if any)
     if (is.null(docvars))
         docvars <- docvars(x)
     
     # sort features into alphabetical order
     x <- x[, order(featnames(x))]
+    
+    # deal with empty documents
+    empty_docs <- rowSums(x) == 0
     if (omit_empty) {
-        
-        empty_docs <- rowSums(x) == 0
-        if (sum(empty_docs) > 0) 
-            warning("Dropped empty document(s): ", 
+        if (sum(empty_docs) > 0)
+            warning("Dropped empty document(s): ",
                     paste0(docnames(x)[empty_docs], collapse = ", "))
         
         empty_feats <- colSums(x) == 0
@@ -314,6 +327,8 @@ dfm2stm <- function(x, docvars, omit_empty = TRUE) {
         
         x <- x[!empty_docs, !empty_feats]
         docvars <- docvars[!empty_docs,, drop = FALSE]
+    } else {
+        stop("omit_empty = FALSE not implemented for STM format")
     }
     
     # convert counts to STM documents format
