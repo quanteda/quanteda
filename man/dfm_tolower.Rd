@@ -7,13 +7,13 @@
 \alias{fcm_toupper}
 \title{Convert the case of the features of a dfm and combine}
 \usage{
-dfm_tolower(x, keep_acronyms = FALSE, ...)
+dfm_tolower(x, keep_acronyms = FALSE)
 
-dfm_toupper(x, ...)
+dfm_toupper(x)
 
-fcm_tolower(x, keep_acronyms = FALSE, ...)
+fcm_tolower(x, keep_acronyms = FALSE)
 
-fcm_toupper(x, ...)
+fcm_toupper(x)
 }
 \arguments{
 \item{x}{the input object whose character/tokens/feature elements will be 
@@ -21,9 +21,6 @@ case-converted}
 
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any 
 all-uppercase words (applies only to \code{*_tolower} functions)}
-
-\item{...}{additional arguments passed to \pkg{stringi} functions, (e.g. 
-\code{\link{stri_trans_tolower}}), such as \code{locale}}
 }
 \description{
 \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
