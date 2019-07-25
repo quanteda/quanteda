@@ -148,7 +148,7 @@ dfm_tolower <- function(x, keep_acronyms = FALSE) {
 }
 
 #' @export
-dfm_tolower.default <- function(x) {
+dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_tolower"))
 }
 
