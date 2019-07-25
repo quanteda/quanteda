@@ -152,7 +152,10 @@ ntoken.character <- function(x, ...) {
 
 #' @export
 ntoken.tokens <- function(x, ...) {
-    lengths(x)
+    if (length(list(...)))
+        lengths(tokens(x, ...))
+    else
+        lengths(x)
 }
 
 #' @export
@@ -166,7 +169,10 @@ ntoken.dfm <- function(x, ...) {
 
 #' @export
 ntype.character <- function(x, ...) {
-    ntype(tokens(x, ...))
+    if (length(list(...)))
+        ntype(tokens(x, ...))
+    else
+        ntype(tokens(x))
 }
 
 #' @export
@@ -176,6 +182,7 @@ ntype.corpus <- function(x, ...) {
 
 #' @export
 ntype.dfm <- function(x, ...) {
+    check_dots(list(...))
     x <- as.dfm(x)
     ## only returns total non-zero features
     result <- as.integer(rowSums(x > 0))
@@ -185,6 +192,7 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
+    if (length(list(...))) x <- tokens(x, ...)
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
 

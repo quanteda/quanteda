@@ -58,3 +58,17 @@ test_that("deprecated nfeature still works", {
         expect_error(nfeature(data_dfm_lbgexample), "Use 'nfeat' instead")
     )
 })
+
+test_that("dots are applied in ntokens.tokens, ntype.tokens", {
+    toks <- tokens(c(d1 = "3 wonderful tokens of the tokens function."))
+    
+    expect_identical(ntoken(toks), c(d1 = 8L))
+    expect_identical(ntoken(toks, remove_punct = TRUE), c(d1 = 7L))
+    expect_identical(ntoken(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 6L))
+    expect_warning(ntoken(toks, notarg = TRUE), "notarg not used")
+    
+    expect_identical(ntype(toks), c(d1 = 7L))
+    expect_identical(ntype(toks, remove_punct = TRUE), c(d1 = 6L))
+    expect_identical(ntype(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 5L))
+    expect_warning(ntype(toks, notarg = TRUE), "notarg not used")
+})
