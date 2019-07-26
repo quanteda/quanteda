@@ -54,7 +54,7 @@ ndoc.tokens <- function(x) {
 #' # number of features
 #' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
 #' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
-nfeat <- function(x) {  # TODO: nfeature has to deplicate one day
+nfeat <- function(x) {
     UseMethod("nfeat")
 }
 
@@ -68,14 +68,6 @@ nfeat.dfm <- function(x) {
     x <- as.dfm(x)
     ncol(x)
 }
-
-# nfeat.tokens <- function(x) {
-#     if (attr(x, 'padding')) {
-#         length(types(x)) + 1
-#     } else {
-#         length(types(x))
-#     }
-# }
 
 #' Defunct form of nfeat
 #' 
@@ -152,7 +144,10 @@ ntoken.character <- function(x, ...) {
 
 #' @export
 ntoken.tokens <- function(x, ...) {
-    lengths(x)
+    if (length(list(...)))
+        lengths(tokens(x, ...))
+    else
+        lengths(x)
 }
 
 #' @export
@@ -166,7 +161,10 @@ ntoken.dfm <- function(x, ...) {
 
 #' @export
 ntype.character <- function(x, ...) {
-    ntype(tokens(x, ...))
+    if (length(list(...)))
+        ntype(tokens(x, ...))
+    else
+        ntype(tokens(x))
 }
 
 #' @export
@@ -176,8 +174,9 @@ ntype.corpus <- function(x, ...) {
 
 #' @export
 ntype.dfm <- function(x, ...) {
+    check_dots(list(...))
     x <- as.dfm(x)
-    ## only returns total non-zero features
+    # only returns total non-zero features
     result <- as.integer(rowSums(x > 0))
     names(result) <- docnames(x)
     result
@@ -185,6 +184,7 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
+    if (length(list(...))) x <- tokens(x, ...)
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
 
@@ -217,7 +217,7 @@ nsentence.default <- function(x, ...) {
 
 #' @export
 nsentence.character <- function(x, ...) {
-    upcase <- 
+    upcase <-
         try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
