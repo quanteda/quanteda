@@ -10,17 +10,17 @@
 #' toks <- tokens(c(txt1 = "b A A", txt2 = "C C a b B"))
 #' tokens_tolower(toks) 
 #' tokens_toupper(toks)
-tokens_tolower <- function(x, keep_acronyms = FALSE, ...) {
+tokens_tolower <- function(x, keep_acronyms = FALSE) {
     UseMethod("tokens_tolower")
 }
 
 #' @export
-tokens_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
+tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "tokens_tolower"))
 }
 
 #' @export
-tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
+tokens_tolower.tokens <- function(x, keep_acronyms = FALSE) {
     types(x) <- lowercase_types(types(x), keep_acronyms)
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
@@ -38,19 +38,19 @@ lowercase_types <- function(type, keep_acronyms) {
 #' @rdname tokens_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-tokens_toupper <- function(x, ...) {
+tokens_toupper <- function(x) {
     UseMethod("tokens_toupper")
 }
     
 #' @export
-tokens_toupper.default <- function(x, ...) {
+tokens_toupper.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "tokens_toupper"))
 }
 
 #' @noRd
 #' @export
-tokens_toupper.tokens <- function(x, ...) {
-    types(x) <- char_toupper(types(x), ...)
+tokens_toupper.tokens <- function(x) {
+    types(x) <- char_toupper(types(x))
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
 
@@ -67,8 +67,6 @@ tokens_toupper.tokens <- function(x, ...) {
 #'   case-converted
 #' @param keep_acronyms logical; if \code{TRUE}, do not lowercase any 
 #'   all-uppercase words (applies only to \code{*_tolower} functions)
-#' @param ... additional arguments passed to \pkg{stringi} functions, (e.g. 
-#'   \code{\link{stri_trans_tolower}}), such as \code{locale}
 #' @import stringi
 #' @export
 #' @examples
@@ -82,17 +80,17 @@ tokens_toupper.tokens <- function(x, ...) {
 #' char_tolower(txt2)
 #' char_tolower(txt2, keep_acronyms = TRUE)
 #' char_toupper(txt2)
-char_tolower <- function(x, keep_acronyms = FALSE, ...) {
+char_tolower <- function(x, keep_acronyms = FALSE) {
     UseMethod("char_tolower")
 }
 
 #' @export
-char_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
+char_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "char_tolower"))
 }
 
 #' @export
-char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
+char_tolower.character <- function(x, keep_acronyms = FALSE) {
     name <- names(x)
     if (keep_acronyms) {
         match <- stri_extract_all_regex(x, "\\b(\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+)\\b")
@@ -114,19 +112,19 @@ char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
 
 #' @rdname char_tolower
 #' @export 
-char_toupper <- function(x, ...) {
+char_toupper <- function(x) {
     UseMethod("char_toupper")
 }
 
 #' @export
-char_toupper.default <- function(x, ...) {
+char_toupper.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "char_toupper"))
 }
 
 #' @export 
-char_toupper.character <- function(x, ...) {
+char_toupper.character <- function(x) {
     name <- names(x)
-    x <- stri_trans_toupper(x, ...)
+    x <- stri_trans_toupper(x)
     names(x) <- name
     return(x)
 }
@@ -145,17 +143,17 @@ char_toupper.character <- function(x, ...) {
 #' dfm_tolower(dfmat) 
 #' dfm_toupper(dfmat)
 #'    
-dfm_tolower <- function(x, keep_acronyms = FALSE, ...) {
+dfm_tolower <- function(x, keep_acronyms = FALSE) {
     UseMethod("dfm_tolower")
 }
 
 #' @export
-dfm_tolower.default <- function(x, ...) {
+dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_tolower"))
 }
 
 #' @export
-dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
+dfm_tolower.dfm <- function(x, keep_acronyms = FALSE) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
@@ -165,20 +163,20 @@ dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
 #' @rdname dfm_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-dfm_toupper <- function(x, ...) {
+dfm_toupper <- function(x) {
     UseMethod("dfm_toupper")
 }
 
 #' @export
-dfm_toupper.default <- function(x, ...) {
+dfm_toupper.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "dfm_toupper"))
 }
 
 #' @export
-dfm_toupper.dfm <- function(x, ...) {
+dfm_toupper.dfm <- function(x) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    set_dfm_featnames(x) <- char_toupper(featnames(x), ...)
+    set_dfm_featnames(x) <- char_toupper(featnames(x))
     dfm_compress(x, margin = "features")
 }
 
@@ -195,17 +193,17 @@ dfm_toupper.dfm <- function(x, ...) {
 #' fcmat
 #' fcm_tolower(fcmat) 
 #' fcm_toupper(fcmat)   
-fcm_tolower <- function(x, keep_acronyms = FALSE, ...) {
+fcm_tolower <- function(x, keep_acronyms = FALSE) {
     UseMethod("fcm_tolower")   
 }
 
 #' @export
-fcm_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
+fcm_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "fcm_tolower"))
 }
 
 #' @export
-fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
+fcm_tolower.fcm <- function(x, keep_acronyms = FALSE) {
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     fcm_compress(x)
 }
@@ -213,18 +211,17 @@ fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
 #' @rdname dfm_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-fcm_toupper <- function(x, ...) {
+fcm_toupper <- function(x) {
     UseMethod("fcm_toupper")   
 }
 
 #' @export
-fcm_toupper.default <- function(x, ...) {
+fcm_toupper.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "fcm_toupper"))
 }
 
 #' @export
-fcm_toupper.fcm <- function(x, ...) {
-    set_fcm_featnames(x) <- char_toupper(colnames(x), ...)
+fcm_toupper.fcm <- function(x) {
+    set_fcm_featnames(x) <- char_toupper(colnames(x))
     fcm_compress(x)
 }
-
