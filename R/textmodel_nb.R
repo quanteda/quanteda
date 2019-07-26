@@ -114,7 +114,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     call <- match.call()
     
     y <- as.factor(y)
-    if (var(as.numeric(y), na.rm = TRUE) == 0) stop("y cannot be constant")
+    if (stats::var(as.numeric(y), na.rm = TRUE) == 0) stop("y cannot be constant")
     
     temp <- x[!is.na(y),]
     class <- y[!is.na(y)]
