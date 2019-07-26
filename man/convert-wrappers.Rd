@@ -3,18 +3,52 @@
 \name{convert-wrappers}
 \alias{convert-wrappers}
 \alias{as.wfm}
+\alias{as.wfm.dfm}
 \alias{as.DocumentTermMatrix}
+\alias{as.DocumentTermMatrix.dfm}
+\alias{dfm2austin}
+\alias{dfm2tm}
 \alias{dfm2lda}
+\alias{dtm2lda}
+\alias{dfm2dtm}
+\alias{dfm2stm}
 \title{Convenience wrappers for dfm convert}
 \usage{
 as.wfm(x)
 
+\method{as.wfm}{dfm}(x)
+
 as.DocumentTermMatrix(x)
 
-dfm2lda(x)
+\method{as.DocumentTermMatrix}{dfm}(x)
+
+dfm2austin(x)
+
+dfm2tm(x, weighting = tm::weightTf)
+
+dfm2lda(x, omit_empty = TRUE)
+
+dtm2lda(x, omit_empty = TRUE)
+
+dfm2dtm(x, omit_empty = TRUE)
+
+dfm2stm(x, docvars = NULL, omit_empty = TRUE)
 }
 \arguments{
 \item{x}{the dfm to be converted}
+
+\item{weighting}{a \pkg{tm} weight, see \code{\link[tm]{weightTf}}}
+
+\item{omit_empty}{logical; if \code{TRUE}, omit empty documents and features
+from the converted dfm. This is required for some formats (such as STM)
+that do not accept empty documents.  Only used when \code{to = "lda"} or
+\code{to = "topicmodels"}.  For \code{to = "stm"} format, `omit_empty`` is
+always \code{TRUE}.}
+
+\item{docvars}{optional data.frame of document variables used as the
+\code{meta} information in conversion to the \pkg{stm} package format.
+This aids in selecting the document variables only corresponding to the
+documents with non-zero counts.  Only affects the "stm" format.}
 
 \item{...}{additional arguments used only by \code{as.DocumentTermMatrix}}
 }
@@ -47,6 +81,11 @@ are converting.
 of terms in documents used by the \pkg{lda} package (a list with components 
 "documents" and "vocab" as needed by 
   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
+
+\code{dfm2ldaformat} provides converts a \link{dfm} into the list
+representation of terms in documents used by the \pkg{lda} package (a list
+with components "documents" and "vocab" as needed by
+\code{\link[lda]{lda.collapsed.gibbs.sampler}}).
 }
 \note{
 Additional coercion methods to base R objects are also available: 
@@ -73,5 +112,9 @@ identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
 identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda")) 
 }
 
+\dontrun{
+# shortcut conversion to lda package list format
+identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda")) 
+}
 }
 \keyword{internal}
