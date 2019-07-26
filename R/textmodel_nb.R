@@ -1,4 +1,3 @@
-
 #' Naive Bayes classifier for texts
 #' 
 #' Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
@@ -107,7 +106,6 @@ textmodel_nb.default <- function(x, y, smooth = 1,
 textmodel_nb.dfm <- function(x, y, smooth = 1, 
                              prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli")) {
-    
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     
@@ -116,7 +114,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     call <- match.call()
     
     y <- as.factor(y)
-    if (length(unique(na.omit(y))) == 1) stop("y cannot be constant")
+    if (var(as.numeric(y), na.rm = TRUE) == 0) stop("y cannot be constant")
     
     temp <- x[!is.na(y),]
     class <- y[!is.na(y)]
@@ -201,7 +199,6 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 predict.textmodel_nb <- function(object, newdata = NULL, 
                                  type = c("class", "probability", "logposterior"),
                                  force = FALSE, ...) {
-    
     unused_dots(...)
     
     type <- match.arg(type)
