@@ -103,7 +103,11 @@ Text lookup(Text tokens,
             if (nomatch == 1) {
                 keys_flat.push_back(id_max); // pad with no-match
             } else if (nomatch == 2) {
-                keys_flat.push_back(id_max + tokens[i]); // keep original token
+                if (tokens[i] == 0) {
+                    keys_flat.push_back(0);
+                } else {
+                    keys_flat.push_back(id_max + tokens[i]); // keep original token
+                }
             }
         }
     }
