@@ -16,15 +16,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -73,7 +71,6 @@ documents from a fitted textmodel_wordscores object." />
   gtag('config', 'UA-144616-24');
 </script>
 
-
   </head>
 
   <body>
@@ -90,7 +87,7 @@ documents from a fitted textmodel_wordscores object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
       </span>
     </div>
 
@@ -191,7 +188,7 @@ documents from a fitted textmodel_wordscores object." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+      <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -202,7 +199,6 @@ documents from a fitted textmodel_wordscores object." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -220,12 +216,12 @@ documents from a fitted textmodel_wordscores object." />
 anchoring or <em>reference</em> texts whose values are set through reference
 scores. This scale can be fitted in the linear space (as per LBG 2003) or in
 the logit space (as per Beauchamp 2012).  Estimates of <em>virgin</em> or
-unknown texts are obtained using the <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code> method to score
+unknown texts are obtained using the <code><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict()</a></code> method to score
 documents from a fitted <code>textmodel_wordscores</code> object.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>textmodel_wordscores</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>textmodel_wordscores</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -266,9 +262,9 @@ the behaviour of this argument.</p></td>
 
     <p>The <code>textmodel_wordscores()</code> function and the associated
   <code><a href='predict.textmodel_wordscores.html'>predict()</a></code> method are designed
-  to function in the same manner as <code><a href='https://rdrr.io/r/stats/predict.lm.html'>predict.lm</a></code>.
-  <code><a href='https://rdrr.io/r/stats/coef.html'>coef()</a></code> can also be used to extract the word coefficients from the
-  fitted <code>textmodel_wordscores</code> object, and <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> will print
+  to function in the same manner as <code><a href='https://www.rdocumentation.org/packages/stats/topics/predict.lm'>predict.lm</a></code>.
+  <code><a href='https://www.rdocumentation.org/packages/stats/topics/coef'>coef()</a></code> can also be used to extract the word coefficients from the
+  fitted <code>textmodel_wordscores</code> object, and <code><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary()</a></code> will print
   a nice summary of the fitted object.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -291,12 +287,12 @@ the behaviour of this argument.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>tmod</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
+    <pre class="examples"><div class='input'>(<span class='no'>tmod</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; textmodel_wordscores.dfm(x = data_dfm_lbgexample, y = c(seq(-1.5, 
 #&gt;     1.5, 0.75), NA))
 #&gt; 
-#&gt; Scale: linear; 5 reference scores; 37 scored features.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt; 
+#&gt; Scale: linear; 5 reference scores; 37 scored features.</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; textmodel_wordscores.dfm(x = data_dfm_lbgexample, y = c(seq(-1.5, 
 #&gt;     1.5, 0.75), NA))
@@ -317,7 +313,7 @@ the behaviour of this argument.</p></td>
 #&gt;       K       L       M       N       O       P       Q       R       S       T 
 #&gt; -1.1846 -1.0370 -0.8806 -0.7500 -0.6194 -0.4508 -0.2992 -0.1306  0.0000  0.1306 
 #&gt;       U       V       W       X       Y       Z      ZA      ZB      ZC      ZD 
-#&gt;  0.2992  0.4508  0.6194  0.7500  0.8806  1.0370  1.1846  1.3233  1.4083  1.4519 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;          A          B          C          D          E          F          G 
+#&gt;  0.2992  0.4508  0.6194  0.7500  0.8806  1.0370  1.1846  1.3233  1.4083  1.4519 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/coef'>coef</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;          A          B          C          D          E          F          G 
 #&gt; -1.5000000 -1.5000000 -1.5000000 -1.5000000 -1.5000000 -1.4812500 -1.4809322 
 #&gt;          H          I          J          K          L          M          N 
 #&gt; -1.4519231 -1.4083333 -1.3232984 -1.1846154 -1.0369898 -0.8805970 -0.7500000 
@@ -328,11 +324,11 @@ the behaviour of this argument.</p></td>
 #&gt;         ZC         ZD         ZE         ZF         ZG         ZH         ZI 
 #&gt;  1.4083333  1.4519231  1.4809322  1.4812500  1.5000000  1.5000000  1.5000000 
 #&gt;         ZJ         ZK 
-#&gt;  1.5000000  1.5000000 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;            R1            R2            R3            R4            R5 
+#&gt;  1.5000000  1.5000000 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;            R1            R2            R3            R4            R5 
 #&gt; -1.317931e+00 -7.395598e-01 -8.673617e-18  7.395598e-01  1.317931e+00 
 #&gt;            V1 
-#&gt; -4.480591e-01 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
-#&gt; -1.58967683 -0.88488724  0.01632248  0.91753220  1.62232179 -0.52967149 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt; $fit
+#&gt; -4.480591e-01 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
+#&gt; -1.58967683 -0.88488724  0.01632248  0.91753220  1.62232179 -0.52967149 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>tmod</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt; $fit
 #&gt;           fit         lwr         upr
 #&gt; R1 -1.5000000 -1.51494501 -1.48505499
 #&gt; R2 -0.8417280 -0.86723325 -0.81622274
@@ -367,16 +363,14 @@ the behaviour of this argument.</p></td>
   </div>
 </div>
 
-
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
@@ -399,8 +393,6 @@ the behaviour of this argument.</p></td>
 </script>
 
 
-
   </body>
 </html>
-
 

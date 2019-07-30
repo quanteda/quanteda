@@ -58,3 +58,35 @@ test_that("deprecated nfeature still works", {
         expect_error(nfeature(data_dfm_lbgexample), "Use 'nfeat' instead")
     )
 })
+
+test_that("dots are applied in ntokens.tokens, ntype.tokens", {
+    txt <- c(d1 = "3 wonderful tokens of the tokens function.")
+    toks <- tokens(txt)
+    
+    expect_identical(ntoken(toks), c(d1 = 8L))
+    expect_identical(ntoken(toks, remove_punct = TRUE), c(d1 = 7L))
+    expect_identical(ntoken(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 6L))
+    expect_warning(ntoken(toks, notarg = TRUE), "notarg not used")
+    
+    expect_identical(ntype(toks), c(d1 = 7L))
+    expect_identical(ntype(toks, remove_punct = TRUE), c(d1 = 6L))
+    expect_identical(ntype(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 5L))
+    expect_warning(ntype(toks, notarg = TRUE), "notarg not used")
+    
+    expect_identical(ntype(txt, remove_punct = TRUE), c(d1 = 6L))
+    expect_identical(ntype(txt), c(d1 = 7L))
+})
+
+test_that("nsentence warnings work", {
+    txt <- c(d1 = "one two three")
+    expect_warning(
+        nsentence(txt),
+        "nsentence() does not correctly count sentences in all lower-cased text",
+        fixed = TRUE
+    )
+    expect_warning(
+        nsentence(corpus(txt)),
+        "nsentence() does not correctly count sentences in all lower-cased text",
+        fixed = TRUE
+    )
+})

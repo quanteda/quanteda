@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quantitative Analysis of Textual Data • quanteda</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="extra.css" rel="stylesheet">
@@ -46,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
       </span>
     </div>
 
@@ -145,7 +144,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+<form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -159,7 +158,6 @@
 <!--/.navbar -->
 
       
-
       </header><div class="row">
   <div class="col-md-9 contents">
     
@@ -175,10 +173,10 @@
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
 <p>The normal way from CRAN, using your R GUI or</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"quanteda"</span>) </a></code></pre></div>
 <p>Or for the latest development version:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># devtools package required to install quanteda from Github </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># devtools package required to install quanteda from Github </span></a>
+<a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) </a></code></pre></div>
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
 <p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
 <p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build). If you are still getting errors related to gfortran, follow the fixes <a href="https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/">here</a>.</p>
@@ -226,7 +224,7 @@
 <h2 class="hasAnchor">
 <a href="#how-to-cite" class="anchor"></a>How to cite</h2>
 <p>Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, and Akitaka Matsuo. (2018) “<a href="https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf">quanteda: An R package for the quantitative analysis of textual data</a>”. <em>Journal of Open Source Software</em>. 3(30), 774. <a href="https://doi.org/10.21105/joss.00774">https://doi.org/10.21105/joss.00774</a>.</p>
-<p>For a BibTeX entry, use the output from <code><a href="https://rdrr.io/r/utils/citation.html">citation(package = "quanteda")</a></code>.</p>
+<p>For a BibTeX entry, use the output from <code><a href="https://www.rdocumentation.org/packages/utils/topics/citation">citation(package = "quanteda")</a></code>.</p>
 </div>
 <div id="leaving-feedback" class="section level2">
 <h2 class="hasAnchor">
@@ -272,18 +270,18 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Kenneth Benoit <br><small class="roles"> Maintainer, author, copyright holder </small> <a href="https://orcid.org/0000-0002-0797-564X" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Kohei Watanabe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6519-5265" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Haiyan Wang <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4992-4311" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Paul Nulty <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7214-4666" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Adam Obeng <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2906-4775" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Stefan Müller <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6315-4125" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Akitaka Matsuo <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3323-6330" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
+<li>Kenneth Benoit <br><small class="roles"> Maintainer, author, copyright holder </small> <a href="https://orcid.org/0000-0002-0797-564X" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Kohei Watanabe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6519-5265" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Haiyan Wang <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4992-4311" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Paul Nulty <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7214-4666" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Adam Obeng <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2906-4775" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Stefan Müller <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6315-4125" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Akitaka Matsuo <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3323-6330" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 <li>Jiong Wei Lua <br><small class="roles"> Author </small>  </li>
-<li>Patrick O. Perry <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-7460-127X" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Jouni Kuha <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1156-8465" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>Benjamin Lauderdale <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3090-0969" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
-<li>William Lowe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1549-6163" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
+<li>Patrick O. Perry <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-7460-127X" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Jouni Kuha <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1156-8465" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Benjamin Lauderdale <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3090-0969" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>William Lowe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1549-6163" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 <li>European Research Council <br><small class="roles"> Funder </small>  <br><small>(ERC-2011-StG 283794-QUANTESS)</small>
 </li>
 <li><a href="authors.html">All authors...</a></li>
@@ -295,15 +293,13 @@
 </div>
 
 
-
       <footer><div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
 </div>
 

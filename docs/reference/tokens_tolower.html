@@ -16,15 +16,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -68,7 +66,6 @@ tokens object and re-index the types." />
   gtag('config', 'UA-144616-24');
 </script>
 
-
   </head>
 
   <body>
@@ -85,7 +82,7 @@ tokens object and re-index the types." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
       </span>
     </div>
 
@@ -186,7 +183,7 @@ tokens object and re-index the types." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+      <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,7 +194,6 @@ tokens object and re-index the types." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -215,9 +211,9 @@ tokens object and re-index the types." />
     
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>tokens_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>tokens_toupper</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>tokens_toupper</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,17 +228,12 @@ case-converted</p></td>
       <td><p>logical; if <code>TRUE</code>, do not lowercase any 
 all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <span class="pkg">stringi</span> functions, (e.g. 
-<code>stri_trans_tolower</code>), such as <code>locale</code></p></td>
-    </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># for a document-feature matrix</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"b A A"</span>, <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"C C a b B"</span>))
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"b A A"</span>, <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"C C a b B"</span>))
 <span class='fu'>tokens_tolower</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; txt1 :
 #&gt; [1] "b" "a" "a"
@@ -268,16 +259,14 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
   </div>
 </div>
 
-
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
@@ -300,8 +289,6 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
 </script>
 
 
-
   </body>
 </html>
-
 

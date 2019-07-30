@@ -316,14 +316,14 @@ test_that("can assign docvars when value is a dfm (#1417)", {
     docvars(anddfm) <- anddfm
     expect_identical(
         docvars(anddfm),
-        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+        data.frame(and = as.vector(anddfm), row.names = docnames(mycorp))
     )
 
     toks <- tokens(mycorp)
     docvars(toks) <- anddfm
     expect_identical(
         docvars(toks),
-        data.frame(and = as.vector(anddfm), row.names = 1:ndoc(mycorp)) # docnames(mycorp))
+        data.frame(and = as.vector(anddfm), row.names = docnames(mycorp))
     )
 })
 
@@ -338,15 +338,30 @@ test_that("docvar assignment is fully robust including to renaming (#1603)", {
     
     # assigning a vector to blank docars
     corp <- corpus(c("A b c d.", "A a b. B c."))
-    docvars(corp) <- c("x", "y")
+    expect_error(
+        docvars(corp) <- c("x", "y"),
+        "you must supply field name(s)", fixed = TRUE
+    )
+    
+    # assigning an unnamed matrix as docvars
+    docvars(corp) <- matrix(c("x", "y"), ncol = 1)
     expect_identical(
         docvars(corp),
-        data.frame(V1 = c("x", "y"), row.names = docnames(corp), stringsAsFactors = FALSE)
+        data.frame(V1 = c("x", "y"), 
+                   row.names = docnames(corp), stringsAsFactors = FALSE)
     )
+    
+    # block assigning a data.frame with missing names
+    df <- data.frame(c("x", "y"), c("a", "b"), 11:12, stringsAsFactors = FALSE)
+    names(df) <- NULL
+    names(df)[2] <- "name2"
+    expect_error(docvars(corp) <- df, 
+                 "data.frame must have column names")
+    
     
     # renaming a docvar
     corp <- corpus(c("A b c d.", "A a b. B c."),
-               docvars = data.frame(testdv = 10:11))
+                   docvars = data.frame(testdv = 10:11))
     names(docvars(corp))[1] <- "renamed_dv"
     expect_identical(
         docvars(corp),

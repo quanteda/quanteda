@@ -2,16 +2,14 @@
 
 ## Purpose
     
-- Fixes a breaking test caused by changes to the **tidytext** package.  
-- Implements a few minor bug fixes and stability enhancements.  
-- Updates `textstat_simil()` and `textstat_dist()`, adding efficiency gains, additional options, and more strictly enforced methods.
+- Fixes a few bugs from the 1.5.0 release.
 
 ## Test environments
 
-* local macOS 10.14.5, R 3.6.0
-* ubuntu Ubuntu 18.04 LTS and 18.10, R 3.6.0
-* Windows Server 2012 R2 x64 (build 9600), R 3.6.0 (on Appveyor)
-* local Windows 10, R 3.6.0
+* local macOS 10.14.5, R 3.6.1
+* ubuntu Ubuntu 18.04 LTS and 18.10, R 3.6.1
+* Windows Server 2012 R2 x64 (build 9600), R 3.6.1 (on Appveyor)
+* local Windows 10, R 3.6.1
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -36,6 +34,6 @@ In some tests we also see a NOTE that the installed size is approx. 6.6Mb.
 
 ## Downstream dependencies
 
-No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm, EXCEPT:
+No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm, *except*:
 
-New format changes in `textstat_simil()` caused an error in **LexisNexisTools**, but we fixed this in that package in https://github.com/JBGruber/LexisNexisTools/pull/9, and the author will soon resubmit this update to CRAN.
+The **RNewsflow** package had a problem in executing an example but I fixed this in a pull request to that package (https://github.com/kasperwelbers/RNewsflow/pull/4) that has now been merged.  The maintainer Kasper Welbers (kasperwelbers@gmail.com) is planning to refresh the CRAN version today.

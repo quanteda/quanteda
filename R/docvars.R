@@ -43,7 +43,7 @@ docvars.tokens <- function(x, field = NULL) {
     dvars <- attr(x, "docvars")
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)  
+    get_docvars(dvars, field) 
 }
 
 #' @noRd
@@ -53,7 +53,7 @@ docvars.dfm <- function(x, field = NULL) {
     dvars <- x@docvars
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)  
+    get_docvars(dvars, field) 
 }
 
 #' @noRd
@@ -99,71 +99,19 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if ("texts" %in% field)
-        stop("You should use texts() instead to replace the corpus texts.")
-    if (is.null(field)) {
-        if (is.null(value)) {
-            cat("ISNULLVALUE")
-            newdv <- data.frame(row.names = docnames(x))
-        } else {
-            newdv <- data.frame(value, stringsAsFactors = FALSE, check.names = FALSE)
-            # uses the V1, V2 etc scheme
-            names(newdv) <- names(as.data.frame(as.matrix(value)))
-        }
-    } else {
-        newdv <- docvars(x)
-        newdv[field] <- value
-    }
-    meta_names_not_in_newdv <- setdiff(grep("^_.+", names(documents(x)), value = TRUE), names(newdv))
-    documents(x) <- cbind(documents(x)[, c("texts", meta_names_not_in_newdv), drop = FALSE], newdv)
+    x$documents <- set_docvars(x$documents, field, value)
     return(x)
 }
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if (is.null(value)) {
-        attr(x, "docvars") <- attr(x, "docvars")[, seq(ncol(attr(x, "docvars"))) * -1, drop = FALSE]
-    } else if (is.null(field) && (is.data.frame(value))) {
-        if (nrow(value) != ndoc(x))
-            stop(message_error("docvar_mismatch"))
-        attr(x, "docvars") <- value
-    } else {
-        if (!is.data.frame(attr(x, "docvars")) || !nrow(attr(x, "docvars"))) {
-            meta <- data.frame(value, stringsAsFactors = FALSE)
-            colnames(meta) <- field
-            attr(x, "docvars") <- meta
-        } else {
-            attr(x, "docvars")[[field]] <- value
-        }
-    }
-    # row.names(attr(x, "docvars")) <- docnames(x)
+    attr(x, "docvars") <- set_docvars(attr(x, "docvars"), field, value)
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if (is.null(value)) {
-        x@docvars <- x@docvars[, seq(ncol(x@docvars)) * -1, drop = FALSE]
-    } else if (is.null(field) && (is.data.frame(value))) {
-        if (nrow(value) != ndoc(x))
-            stop(message_error("docvar_mismatch"))
-        x@docvars <- value
-    } else {
-        if (!is.data.frame(x@docvars) || !nrow(x@docvars)) {
-            meta <- data.frame(value, stringsAsFactors = FALSE)
-            colnames(meta) <- field
-            x@docvars <- meta
-        } else {
-            x@docvars[[field]] <- value
-        }
-    }
-    # row.names(attr(x, "docvars")) <- docnames(x)
+    x@docvars <- set_docvars(x@docvars, field, value)
     return(x)
 }
 
@@ -275,13 +223,54 @@ metadoc.dfm <- function(x, field = NULL) {
 get_docvars <- function(dvars, field = NULL) {
     if (is.null(field)) {
         if (is.null(dvars)) {
-            return(data.frame())
+            result <- data.frame()
         } else {
-            return(dvars)
+            result <- dvars
         }
     } else {
-        return(dvars[, field, drop = TRUE])
+        result <- dvars[, field, drop = TRUE]
     }
+    return(result)
+}
+
+set_docvars <- function(dvars, field = NULL, value)  {
+    if (is.null(dvars) && is.data.frame(value)) {
+        result <- value
+    } else {
+        dvars_system <- select_fields(dvars, c("text", "system"))
+        dvars_user <- select_fields(dvars, "user")
+        
+        if (is.dfm(value))
+            value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
+        
+        if (is.null(field)) {
+            if (is.null(value)) {
+                result <- dvars_system
+            } else {
+                if (is.matrix(value))
+                    value <- as.data.frame(value, stringsAsFactors = FALSE)
+                if (is.data.frame(value)) {
+                    if (nrow(value) != nrow(dvars))
+                        stop(message_error("docvar_mismatch"), call. = FALSE)
+                    if (!is.character(names(value)) || length(names(value)) != ncol(value) || 
+                        any(is.na(names(value)))) {
+                        stop(message_error("docvar_nocolname"), call. = FALSE)
+                    }
+                    result <- cbind(dvars_system, value)
+                } else {
+                    stop(message_error("docvar_nofield"), call. = FALSE)
+                }
+            }
+        } else {
+            if ("texts" %in% field)
+                stop("You should use texts", call. = FALSE)
+            dvars_user[field] <- value
+            result <- cbind(dvars_system, dvars_user)
+        }
+    }
+    if (ncol(result) == 0)
+        names(result) <- character() # cbind() sets NULL to names
+    return(result)
 }
 
 ## helper function to check fields and report error message if
@@ -303,15 +292,6 @@ docvars_internal <- function(x) {
         return(attr(x, "docvars"))
     } else if (is.dfm(x)) {
         return(x@docvars)
-    }
-}
-
-get_docvars2 <- function(x, fields) {
-    is_field <- check_docvars(x, fields)
-    if (any(is_field)) {
-        return(docvars_internal(x)[, is_field, drop = FALSE])
-    } else {
-        return(NULL)
     }
 }
 
@@ -340,5 +320,7 @@ select_fields <- function(x, types = c("user", "system")) {
     if ("user" %in% types) {
         result <- cbind(result, x[!is_system & !is_text])
     }
+    if (ncol(result) == 0)
+        names(result) <- character() # cbind() sets NULL to names
     return(result)
 }

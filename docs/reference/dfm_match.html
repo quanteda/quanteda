@@ -16,15 +16,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -71,7 +69,6 @@ features but not found in x will be added with all zero counts." />
   gtag('config', 'UA-144616-24');
 </script>
 
-
   </head>
 
   <body>
@@ -88,7 +85,7 @@ features but not found in x will be added with all zero counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
       </span>
     </div>
 
@@ -189,7 +186,7 @@ features but not found in x will be added with all zero counts." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+      <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -200,7 +197,6 @@ features but not found in x will be added with all zero counts." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -266,7 +262,7 @@ whose features must be identical. It is also used in
 #&gt; 1 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d e
-#&gt;   text1 0 0 0 0 0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"Z"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 3 features (72.2% sparse).
+#&gt;   text1 0 0 0 0 0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"Z"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 3 features (72.2% sparse).
 #&gt; 6 x 3 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs A B   Z
@@ -275,7 +271,7 @@ whose features must be identical. It is also used in
 #&gt;   R3 0 0   3
 #&gt;   R4 0 0 115
 #&gt;   R5 0 0  78
-#&gt;   V1 0 0   0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B"</span>, <span class='st'>"newfeat1"</span>, <span class='st'>"A"</span>, <span class='st'>"newfeat2"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 4 features (91.7% sparse).
+#&gt;   V1 0 0   0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"B"</span>, <span class='st'>"newfeat1"</span>, <span class='st'>"A"</span>, <span class='st'>"newfeat2"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 4 features (91.7% sparse).
 #&gt; 6 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs B newfeat1 A newfeat2
@@ -286,7 +282,7 @@ whose features must be identical. It is also used in
 #&gt;   R5 0        0 0        0
 #&gt;   V1 0        0 0        0</div><div class='input'>
 <span class='co'># matching one dfm to another</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span>)
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span>)
 (<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
 #&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;        features
@@ -302,7 +298,7 @@ whose features must be identical. It is also used in
 #&gt;        features
 #&gt; docs    the second text this is three
 #&gt;   text1   0      0    1    1  1     0
-#&gt;   text2   1      1    1    0  0     0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setequal</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat2</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat3</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+#&gt;   text2   1      1    1    0  0     0</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sets'>setequal</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat2</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat3</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -323,16 +319,14 @@ whose features must be identical. It is also used in
   </div>
 </div>
 
-
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
@@ -355,8 +349,6 @@ whose features must be identical. It is also used in
 </script>
 
 
-
   </body>
 </html>
-
 

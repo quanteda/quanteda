@@ -1,7 +1,13 @@
 # quanteda 1.5.1
 
-* Fix a bug that affects the new `textstat_dist()` and `textstat_simil()` (#1730)
-* fix a bug in how `textstat_dist()` and `textstat_simil()` class symmetric matrices.
+## New features
+
+* Added `omit_empty` as an argument to `convert()`, to allow the user to control whether empty documents are excluded from converted dfm objects for certain formats.  (#1660)
+
+## Bug fixes and stability enhancements
+
+* Fixed a bug that affects the new `textstat_dist()` and `textstat_simil()` (#1730)
+* Fixed a bug in how `textstat_dist()` and `textstat_simil()` class symmetric matrices.
 
 # quanteda 1.5.0
 
