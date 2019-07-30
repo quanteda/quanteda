@@ -34,4 +34,6 @@ In some tests we also see a NOTE that the installed size is approx. 6.6Mb.
 
 ## Downstream dependencies
 
-No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm.
+No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm, *except*:
+
+The **RNewsflow** package had a problem in executing an example but I fixed this in a pull request to that package (https://github.com/kasperwelbers/RNewsflow/pull/4) that has now been merged.  The maintainer Kasper Welbers (kasperwelbers@gmail.com) is planning to refresh the CRAN version today.
