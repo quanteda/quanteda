@@ -155,6 +155,12 @@ test_that("non-exclusive lookup is working",{
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
                  list(d1=c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
                       d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP")))
+    
+    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = TRUE)),
+                 list(d1=c("COUNTRY", "signed", "", "new", "FREEDOM", "LAW WORDS", "", "COUNTRY"),
+                      d2=c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP")))
+    
 })
 
 test_that("tokens_lookup preserves case on keys", {
