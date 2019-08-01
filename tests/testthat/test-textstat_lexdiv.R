@@ -54,6 +54,17 @@ test_that("textstat_lexdiv Maas works correct", {
     )
 })
 
+test_that("textstat_lexdiv I works correct", {
+    mydfm <- dfm(c(d1 = "a b c",
+                   d2 = "a a b b c"))
+    expect_equivalent(
+        textstat_lexdiv(mydfm, "I")$I[1], 0, tolerance = 0.01
+    )
+    expect_equivalent(
+        textstat_lexdiv(mydfm, "I")$I[2], (3^2) / ((1 + 2 * 2^2) - 3), tolerance = 0.01
+    )
+})
+
 test_that("textstat_lexdiv works with a single document dfm (#706)", {
     mytxt <- "one one two one one two one"
     mydfm <- dfm(mytxt)
