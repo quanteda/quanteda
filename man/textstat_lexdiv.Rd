@@ -5,9 +5,10 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("TTR", "C", "R", "CTTR", "U", "S", "K",
-  "D", "Vm", "Maas", "MATTR", "MSTTR", "all"), remove_numbers = TRUE,
-  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE,
-  log.base = 10, MATTR_window = 100L, MSTTR_segment = 100L, ...)
+  "I", "D", "Vm", "Maas", "MATTR", "MSTTR", "all"),
+  remove_numbers = TRUE, remove_punct = TRUE, remove_symbols = TRUE,
+  remove_hyphens = FALSE, log.base = 10, MATTR_window = 100L,
+  MSTTR_segment = 100L, ...)
 }
 \arguments{
 \item{x}{an \link{dfm} or \link{tokens} input object for whose documents
@@ -49,70 +50,6 @@ Calculate the lexical diversity of text(s).
 \details{
 \code{textstat_lexdiv} calculates the lexical diversity of documents
   using a variety of indices.
-
-In the following formulas, \eqn{N} refers to the total number of
-  tokens, \eqn{V} to the number of types, and \eqn{f_v(i, N)} to the numbers
-  of types occurring \eqn{i} times in a sample of length \eqn{N}.
-  \describe{
-     
-  \item{\code{"TTR"}:}{The ordinary \emph{Type-Token Ratio}: \deqn{TTR =
-  \frac{V}{N}}{TTR =  V / N}}
-  
-  \item{\code{"C"}:}{Herdan's \emph{C} (Herdan, 1960, as cited in Tweedie & 
-  Baayen, 1998; sometimes referred to as \emph{LogTTR}): \deqn{C = 
-  \frac{\log{V}}{\log{N}}}{C = log(V) / log(N)}}
-  
-  \item{\code{"R"}:}{Guiraud's \emph{Root TTR} (Guiraud, 1954, as cited in 
-  Tweedie & Baayen, 1998): \deqn{R = \frac{V}{\sqrt{N}}}{R = V / sqrt(N)}}
-  
-  \item{\code{"CTTR"}:}{Carroll's \emph{Corrected TTR}: \deqn{CTTR = 
-  \frac{V}{\sqrt{2N}}}{CTTR = V / sqrt(2N)}}
-  
-  \item{\code{"U"}:}{Dugast's \emph{Uber Index}  (Dugast, 1978, as cited in 
-  Tweedie & Baayen, 1998): \deqn{U = \frac{(\log{N})^2}{\log{N} - \log{V}}}{U
-  = log(N)^2 / log(N) - log(V)}}
-  
-  \item{\code{"S"}:}{Summer's index: \deqn{S = 
-  \frac{\log{\log{V}}}{\log{\log{N}}}}{S = log(log(V)) / log(log(N))}}
-  
-  \item{\code{"K"}:}{Yule's \emph{K}  (Yule, 1944, as presented in Tweedie &
-  Baayen, 1998, Eq. 16) is calculated by: \deqn{K = 10^4 \times
-  \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] }}
-  
-  \item{\code{"D"}:}{Simpson's \emph{D}  (Simpson 1949, as presented in
-  Tweedie & Baayen, 1998, Eq. 17) is calculated by:
-  \deqn{D = \sum_{i=1}^{V} f_v(i, N) \frac{i}{N} \frac{i-1}{N-1}}}
-
-  \item{\code{"Vm"}:}{Herdan's \eqn{V_m}  (Herdan 1955, as presented in
-  Tweedie & Baayen, 1998, Eq. 18) is calculated by:
-  \deqn{V_m = \sqrt{ \sum_{i=1}^{V} f_v(i, N) (i/N)^2 - \frac{i}{V} }}}
-
-  \item{\code{"Maas"}:}{Maas' indices (\eqn{a}, \eqn{\log{V_0}} & 
-  \eqn{\log{}_{e}{V_0}}): \deqn{a^2 = \frac{\log{N} -
-  \log{V}}{\log{N}^2}}{a^2 = log(N) - log(V) / log(N)^2} \deqn{\log{V_0} =
-  \frac{\log{V}}{\sqrt{1 - \frac{\log{V}}{\log{N}}^2}}}{log(V0) = log(V) /
-  sqrt(1 - (log(V) / log(N)^2))} The measure was derived from a formula by
-  Mueller (1969, as cited in Maas, 1972). \eqn{\log{}_{e}{V_0}} is equivalent
-  to \eqn{\log{V_0}}, only with \eqn{e} as the base for the logarithms. Also
-  calculated are \eqn{a}, \eqn{\log{V_0}} (both not the same as before) and
-  \eqn{V'} as measures of relative vocabulary growth while the text
-  progresses. To calculate these measures, the first half of the text and the
-  full text will be examined (see Maas, 1972, p. 67 ff. for details).  Note:
-  for the current method (for a dfm) there is no computation on separate
-  halves of the text.}
-  
-  \item{\code{"MATTR"}:}{The Moving-Average Type-Token Ratio (Covington &
-  McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
-  The MATTR is the mean of the TTRs of each window.}
-  
-  \item{\code{"MSTTR"}:}{Mean Segmental Type-Token Ratio (sometimes referred
-  to as \emph{Split TTR}) splits the tokens into segments of the given size,
-  TTR for each segment is calculated and the mean of these values returned.
-  When this value is < 1.0, it splits the tokens into equal, non-overlapping
-  sections of that size.  When this value is > 1, it defines the segments as
-  windows of that size. Tokens at the end which do not make a full segment
-  are ignored.}
-  }
 }
 \examples{
 txt <- c("Anyway, like I was sayin', shrimp is the fruit of the sea. You can
