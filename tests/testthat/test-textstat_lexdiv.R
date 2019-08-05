@@ -10,7 +10,7 @@ test_that("textstat_lexdiv computation is correct", {
         )
 })
 
-test_that("textstat_lexdiv CTTR works correct", {
+test_that("textstat_lexdiv CTTR works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
@@ -21,7 +21,7 @@ test_that("textstat_lexdiv CTTR works correct", {
     )
 })
 
-test_that("textstat_lexdiv R works correct", {
+test_that("textstat_lexdiv R works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
@@ -32,7 +32,7 @@ test_that("textstat_lexdiv R works correct", {
     )
 })
 
-test_that("textstat_lexdiv C works correct", {
+test_that("textstat_lexdiv C works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
@@ -43,7 +43,7 @@ test_that("textstat_lexdiv C works correct", {
     )
 })
 
-test_that("textstat_lexdiv Maas works correct", {
+test_that("textstat_lexdiv Maas works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
@@ -54,7 +54,7 @@ test_that("textstat_lexdiv Maas works correct", {
     )
 })
 
-test_that("textstat_lexdiv I works correct", {
+test_that("textstat_lexdiv Yule's I works correctly", {
     mydfm <- dfm(c(d1 = "a b c",
                    d2 = "a a b b c"))
     expect_equivalent(
@@ -269,7 +269,7 @@ test_that("textstat_lexdiv.tokens raises errors if parameters for moving measure
     # )
 })
 
-test_that("textstat_lexdiv.tokens MATTR works correct on its own", {
+test_that("textstat_lexdiv.tokens MATTR works correctly on its own", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
     wsize2_MATTR <- (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6
@@ -290,7 +290,7 @@ test_that("textstat_lexdiv.tokens MATTR works correct on its own", {
     )
 })
 
-test_that("textstat_lexdiv.tokens MATTR works correct in conjunction with static measures", {
+test_that("textstat_lexdiv.tokens MATTR works correctly in conjunction with static measures", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
     wsize2_MATTR <- (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6
@@ -301,7 +301,7 @@ test_that("textstat_lexdiv.tokens MATTR works correct in conjunction with static
     )
 })
 
-test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
+test_that("textstat_lexdiv.tokens MSTTR works correctly on its own", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4
@@ -329,7 +329,7 @@ test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
                       textstat_lexdiv(mytoken, measure = "TTR")[[2]])
 })
 
-test_that("textstat_lexdiv.tokens MSTTR works correct in conjunction with static measures", {
+test_that("textstat_lexdiv.tokens MSTTR works correctly in conjunction with static measures", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4

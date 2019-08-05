@@ -36,7 +36,7 @@
 #'   \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] }}
 #'
 #'   \item{\code{"I"}:}{Yule's \emph{I}  (Yule, 1944) is calculated by: \deqn{I = \frac{V^2}{M_2 - V}}
-#'   \deqn{M_2 = \sum_{i=1}^{V} i^2 * f_v(i, N)}
+#'   \deqn{M_2 = \sum_{i=1}^{V} i^2 * f_v(i, N)}}
 #'   
 #'   \item{\code{"D"}:}{Simpson's \emph{D}  (Simpson 1949, as presented in
 #'   Tweedie & Baayen, 1998, Eq. 17) is calculated by:
@@ -61,8 +61,9 @@
 #'   halves of the text.}
 #'   
 #'   \item{\code{"MATTR"}:}{The Moving-Average Type-Token Ratio (Covington &
-#'   McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
-#'   The MATTR is the mean of the TTRs of each window.}
+#'   McFall, 2010) calculates TTRs for a moving window of tokens from the first
+#'   to the last token, computing a TTR for each window. The MATTR is the mean
+#'   of the TTRs of each window.}
 #'   
 #'   \item{\code{"MSTTR"}:}{Mean Segmental Type-Token Ratio (sometimes referred
 #'   to as \emph{Split TTR}) splits the tokens into segments of the given size,
@@ -127,6 +128,9 @@
 #'   Variable May a Constant Be? Measures of Lexical Richness in Perspective}. \emph{Computers and the 
 #'   Humanities}, 32(5), 323--352.
 #'   
+#'   Yule, G. U. (1944)  \emph{The Statistical Study of Literary Vocabulary.}
+#'   Cambridge: Cambridge University Press.
+#'   
 #' @return A data.frame of documents and their lexical diversity scores.
 #' @export
 #' @examples
@@ -145,7 +149,7 @@
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 2000))
 #' textstat_lexdiv(toks, c("CTTR", "TTR", "MATTR"), MATTR_window = 100)
 textstat_lexdiv <- function(x,
-                            measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "I","D",
+                            measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "I", "D",
                                         "Vm", "Maas", "MATTR", "MSTTR", "all"),
                             remove_numbers = TRUE, remove_punct = TRUE,
                             remove_symbols = TRUE, remove_hyphens = FALSE,
@@ -324,7 +328,7 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
         M_2 <- vapply(ViN, function(y) sum(y$ViN * y$i^2), numeric(1))
         M_1 <- temp$n_types
         yule_i <- (M_1 ^ 2) / (M_2 - M_1)
-        yule_i[yule_i== Inf] <- 0
+        yule_i[is.infinite(yule_i)] <- 0
         temp[, I := yule_i]
     }
     
