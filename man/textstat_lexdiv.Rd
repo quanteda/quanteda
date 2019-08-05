@@ -5,9 +5,10 @@
 \title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("TTR", "C", "R", "CTTR", "U", "S", "K",
-  "D", "Vm", "Maas", "MATTR", "MSTTR", "all"), remove_numbers = TRUE,
-  remove_punct = TRUE, remove_symbols = TRUE, remove_hyphens = FALSE,
-  log.base = 10, MATTR_window = 100L, MSTTR_segment = 100L, ...)
+  "I", "D", "Vm", "Maas", "MATTR", "MSTTR", "all"),
+  remove_numbers = TRUE, remove_punct = TRUE, remove_symbols = TRUE,
+  remove_hyphens = FALSE, log.base = 10, MATTR_window = 100L,
+  MSTTR_segment = 100L, ...)
 }
 \arguments{
 \item{x}{an \link{dfm} or \link{tokens} input object for whose documents
@@ -78,6 +79,9 @@ In the following formulas, \eqn{N} refers to the total number of
   \item{\code{"K"}:}{Yule's \emph{K}  (Yule, 1944, as presented in Tweedie &
   Baayen, 1998, Eq. 16) is calculated by: \deqn{K = 10^4 \times
   \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] }}
+
+  \item{\code{"I"}:}{Yule's \emph{I}  (Yule, 1944) is calculated by: \deqn{I = \frac{V^2}{M_2 - V}}
+  \deqn{M_2 = \sum_{i=1}^{V} i^2 * f_v(i, N)}}
   
   \item{\code{"D"}:}{Simpson's \emph{D}  (Simpson 1949, as presented in
   Tweedie & Baayen, 1998, Eq. 17) is calculated by:
@@ -102,8 +106,9 @@ In the following formulas, \eqn{N} refers to the total number of
   halves of the text.}
   
   \item{\code{"MATTR"}:}{The Moving-Average Type-Token Ratio (Covington &
-  McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
-  The MATTR is the mean of the TTRs of each window.}
+  McFall, 2010) calculates TTRs for a moving window of tokens from the first
+  to the last token, computing a TTR for each window. The MATTR is the mean
+  of the TTRs of each window.}
   
   \item{\code{"MSTTR"}:}{Mean Segmental Type-Token Ratio (sometimes referred
   to as \emph{Split TTR}) splits the tokens into segments of the given size,
@@ -160,6 +165,9 @@ Covington, M.A. & McFall, J.D. (2010).
   Tweedie. F.J. and Baayen, R.H. (1998). \href{https://doi.org/10.1023/A:1001749303137}{How 
   Variable May a Constant Be? Measures of Lexical Richness in Perspective}. \emph{Computers and the 
   Humanities}, 32(5), 323--352.
+  
+  Yule, G. U. (1944)  \emph{The Statistical Study of Literary Vocabulary.}
+  Cambridge: Cambridge University Press.
 }
 \author{
 Kenneth Benoit and Jiong Wei Lua. Many of the formulas have been

@@ -34,6 +34,9 @@
 #'   \item{\code{"K"}:}{Yule's \emph{K}  (Yule, 1944, as presented in Tweedie &
 #'   Baayen, 1998, Eq. 16) is calculated by: \deqn{K = 10^4 \times
 #'   \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] }}
+#'
+#'   \item{\code{"I"}:}{Yule's \emph{I}  (Yule, 1944) is calculated by: \deqn{I = \frac{V^2}{M_2 - V}}
+#'   \deqn{M_2 = \sum_{i=1}^{V} i^2 * f_v(i, N)}}
 #'   
 #'   \item{\code{"D"}:}{Simpson's \emph{D}  (Simpson 1949, as presented in
 #'   Tweedie & Baayen, 1998, Eq. 17) is calculated by:
@@ -58,8 +61,9 @@
 #'   halves of the text.}
 #'   
 #'   \item{\code{"MATTR"}:}{The Moving-Average Type-Token Ratio (Covington &
-#'   McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
-#'   The MATTR is the mean of the TTRs of each window.}
+#'   McFall, 2010) calculates TTRs for a moving window of tokens from the first
+#'   to the last token, computing a TTR for each window. The MATTR is the mean
+#'   of the TTRs of each window.}
 #'   
 #'   \item{\code{"MSTTR"}:}{Mean Segmental Type-Token Ratio (sometimes referred
 #'   to as \emph{Split TTR}) splits the tokens into segments of the given size,
@@ -124,6 +128,9 @@
 #'   Variable May a Constant Be? Measures of Lexical Richness in Perspective}. \emph{Computers and the 
 #'   Humanities}, 32(5), 323--352.
 #'   
+#'   Yule, G. U. (1944)  \emph{The Statistical Study of Literary Vocabulary.}
+#'   Cambridge: Cambridge University Press.
+#'   
 #' @return A data.frame of documents and their lexical diversity scores.
 #' @export
 #' @examples
@@ -142,7 +149,7 @@
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 2000))
 #' textstat_lexdiv(toks, c("CTTR", "TTR", "MATTR"), MATTR_window = 100)
 textstat_lexdiv <- function(x,
-                            measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "D",
+                            measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "I", "D",
                                         "Vm", "Maas", "MATTR", "MSTTR", "all"),
                             remove_numbers = TRUE, remove_punct = TRUE,
                             remove_symbols = TRUE, remove_hyphens = FALSE,
@@ -160,7 +167,7 @@ textstat_lexdiv.default <- function(x, ...) {
 
 #' @export
 textstat_lexdiv.dfm <- function(x,
-                                measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "D",
+                                measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "I", "D",
                                             "Vm", "Maas", "all"),
                                 remove_numbers = TRUE, remove_punct = TRUE,
                                 remove_symbols = TRUE, remove_hyphens = FALSE,
@@ -204,7 +211,7 @@ textstat_lexdiv.dfm <- function(x,
 #' @export
 textstat_lexdiv.tokens <-
     function(x,
-             measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "D",
+             measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "I", "D",
                          "Vm", "Maas", "MATTR", "MSTTR", "all"),
              remove_numbers = TRUE, remove_punct = TRUE,
              remove_symbols = TRUE, remove_hyphens = FALSE,
@@ -279,7 +286,7 @@ NULL
 compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
 
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <-
-        lgV0 <- lgeV0 <- K <- D <- Vm <- NULL
+        lgV0 <- lgeV0 <- K <- D <- Vm <- I <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
 
     if ("TTR" %in% measure)
@@ -302,9 +309,9 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
         temp[, S := log(log(n_types, base = log.base), base = log.base) /
                     log(log(n_tokens, base = log.base), base = log.base)]
 
-    # computations for K, D, Vm
+    # computations for K, D, Vm, I
     # produces a list of data.frames that will be used for computing the measures
-    if (length(intersect(c("K", "D", "Vm"), measure))) {
+    if (length(intersect(c("K", "D", "Vm", "I"), measure))) {
         ViN <- lapply(docnames(x), function(y) {
             result <- as.data.frame(table(colSums(x[y, ])), stringsAsFactors = FALSE)
             names(result) <- c("i", "ViN")
@@ -317,7 +324,14 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
 
     if ("K" %in% measure)
         temp[, K := 10 ^ 4 * vapply(ViN, function(y) sum(y$ViN * (y$i / y$n_tokens) ^ 2), numeric(1))]
-
+    if ("I" %in% measure) {
+        M_2 <- vapply(ViN, function(y) sum(y$ViN * y$i^2), numeric(1))
+        M_1 <- temp$n_types
+        yule_i <- (M_1 ^ 2) / (M_2 - M_1)
+        yule_i[is.infinite(yule_i)] <- 0
+        temp[, I := yule_i]
+    }
+    
     if ("D" %in% measure)
         temp[, D := vapply(ViN,
                            function(y) sum(y$ViN * (y$i / y$n_tokens) * ( (y$i - 1) / (y$n_tokens - 1)) ),
