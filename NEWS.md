@@ -1,4 +1,8 @@
-# quanteda 1.5.2
+# quanteda > 1.5.1
+
+## New features
+
+* Added Yule's I to `textstat_lexdiv()`.
 
 ## Bug fixes
 
