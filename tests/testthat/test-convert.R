@@ -263,3 +263,32 @@ test_that("triplet converter works", {
 
 })
 
+test_that("omit_empty works as expected (#1600", {
+    dfmat <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    expect_equal(
+        dim(convert(dfmat, to = "topicmodels", omit_empty = TRUE)),
+        c(3, 4)
+    )
+    expect_equal(
+        dim(convert(dfmat, to = "topicmodels", omit_empty = FALSE)),
+        c(4, 4)
+    )
+    
+    expect_equal(length(convert(dfmat, to = "lda", omit_empty = TRUE)$documents), 3)
+    expect_equal(length(convert(dfmat, to = "lda", omit_empty = FALSE)$documents), 4)
+
+    expect_error(
+        quanteda:::dfm2stm(dfmat, omit_empty = FALSE),
+        "omit_empty = FALSE not implemented for STM format"
+    )
+
+    expect_warning(convert(dfmat, to = "stm", omit_empty = TRUE), "omit_empty not used")
+    expect_warning(convert(dfmat, to = "tm", omit_empty = TRUE), "omit_empty not used")
+    expect_warning(convert(dfmat, to = "austin", omit_empty = TRUE), "omit_empty not used")
+    expect_warning(convert(dfmat, to = "lsa", omit_empty = TRUE), "omit_empty not used")
+    expect_warning(convert(dfmat, to = "data.frame", omit_empty = TRUE), "omit_empty not used")
+    expect_warning(convert(dfmat, to = "tripletlist", omit_empty = TRUE), "omit_empty not used")
+})

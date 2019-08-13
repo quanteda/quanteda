@@ -5,7 +5,8 @@
 \title{Convert a dfm to a non-quanteda format}
 \usage{
 convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-  "matrix", "data.frame", "tripletlist"), docvars = NULL)
+  "matrix", "data.frame", "tripletlist"), docvars = NULL,
+  omit_empty = TRUE)
 }
 \arguments{
 \item{x}{a \link{dfm} to be converted}
@@ -29,7 +30,13 @@ used by the \pkg{lsa} package}
 \item{docvars}{optional data.frame of document variables used as the
 \code{meta} information in conversion to the \pkg{stm} package format.
 This aids in selecting the document variables only corresponding to the
-documents with non-zero counts.}
+documents with non-zero counts.  Only affects the "stm" format.}
+
+\item{omit_empty}{logical; if \code{TRUE}, omit empty documents and features
+from the converted dfm. This is required for some formats (such as STM)
+that do not accept empty documents.  Only used when \code{to = "lda"} or
+\code{to = "topicmodels"}.  For \code{to = "stm"} format, `omit_empty`` is
+always \code{TRUE}.}
 }
 \value{
 A converted object determined by the value of \code{to} (see above). 

@@ -16,15 +16,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -68,7 +66,6 @@ dfm.  The method is a fast/sparse version of function ca." />
   gtag('config', 'UA-144616-24');
 </script>
 
-
   </head>
 
   <body>
@@ -85,7 +82,7 @@ dfm.  The method is a fast/sparse version of function ca." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
       </span>
     </div>
 
@@ -186,7 +183,7 @@ dfm.  The method is a fast/sparse version of function ca." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+      <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,7 +194,6 @@ dfm.  The method is a fast/sparse version of function ca." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -211,7 +207,7 @@ dfm.  The method is a fast/sparse version of function ca." />
     <div class="ref-description">
     
     <p><code>textmodel_ca</code> implements correspondence analysis scaling on a 
-<a href='dfm.html'>dfm</a>.  The method is a fast/sparse version of function ca.</p>
+<a href='dfm.html'>dfm</a>.  The method is a fast/sparse version of function <a href='https://www.rdocumentation.org/packages/ca/topics/ca'>ca</a>.</p>
     
     </div>
 
@@ -255,7 +251,7 @@ class of <span class="pkg">ca</span> object.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://rdrr.io/pkg/RSpectra/man/svds.html'>svds</a> in the <span class="pkg">RSpectra</span> package is applied to 
+    <p><a href='https://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a> in the <span class="pkg">RSpectra</span> package is applied to 
   enable the fast computation of the SVD.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
@@ -276,13 +272,13 @@ class of <span class="pkg">ca</span> object.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='textmodel_lsa-postestimation.html'>coef.textmodel_lsa</a></code>, ca</p></div>
+    <div class='dont-index'><p><code><a href='textmodel_lsa-postestimation.html'>coef.textmodel_lsa</a></code>, <a href='https://www.rdocumentation.org/packages/ca/topics/ca'>ca</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
 <span class='no'>tmod</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_ca</span>(<span class='no'>dfmat</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;            Length Class  Mode     
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>tmod</span>)</div><div class='output co'>#&gt;            Length Class  Mode     
 #&gt; sv             7  -none- numeric  
 #&gt; nd             1  -none- numeric  
 #&gt; rownames      14  -none- character
@@ -322,16 +318,14 @@ class of <span class="pkg">ca</span> object.</p>
   </div>
 </div>
 
-
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
@@ -354,8 +348,6 @@ class of <span class="pkg">ca</span> object.</p>
 </script>
 
 
-
   </body>
 </html>
-
 
