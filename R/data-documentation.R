@@ -158,10 +158,19 @@ NULL
 #' @examples 
 #' # simple example
 #' txt <- "This aggressive policy will not win friends."
+#' 
 #' tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, exclusive = FALSE)
 #' ## tokens from 1 document.
 #' ## text1 :
-#' ## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE" "."
+#' ## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE"   "POSITIVE"   "POSITIVE" "."
+#' 
+#' # notice that double-counting of negated and non-negated terms is avoided 
+#' # when using nested_scope = "dictionary"
+#' tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, 
+#'               exclusive = FALSE, nested_scope = "dictionary")
+#' ## tokens from 1 document.
+#' ## text1 :
+#' ## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   
 #' 
 #' # on larger examples - notice that few negations are used
 #' dfm(data_char_ukimmig2010, dictionary = data_dictionary_LSD2015)
@@ -177,7 +186,7 @@ NULL
 #' 
 #' Texts of speeches from a no-confidence motion debated in the Irish Dáil from
 #' 16-18 October 1991 over the future of the Fianna Fail-Progressive Democrat
-#' coalition.  (See Laver and Benoit 2002 for details.)
+#' coalition. (See Laver and Benoit 2002 for details.)
 #' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
 #'   including docvars for \code{name}, \code{party}, and \code{position}.
 #' @references Laver, M. & Benoit, K.R. (2002). 
