@@ -45,10 +45,19 @@ available at \url{http://lexicoder.com}.
 \examples{
 # simple example
 txt <- "This aggressive policy will not win friends."
+
 tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, exclusive = FALSE)
 ## tokens from 1 document.
 ## text1 :
-## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE" "."
+## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE"   "POSITIVE"   "POSITIVE" "."
+
+# notice that double-counting of negated and non-negated terms is avoided 
+# when using nested_scope = "dictionary"
+tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, 
+              exclusive = FALSE, nested_scope = "dictionary")
+## tokens from 1 document.
+## text1 :
+## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   
 
 # on larger examples - notice that few negations are used
 dfm(data_char_ukimmig2010, dictionary = data_dictionary_LSD2015)
