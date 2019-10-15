@@ -15,7 +15,7 @@ data_corpus_dailnoconf1991
 \description{
 Texts of speeches from a no-confidence motion debated in the Irish Dáil from
 16-18 October 1991 over the future of the Fianna Fail-Progressive Democrat
-coalition.  (See Laver and Benoit 2002 for details.)
+coalition. (See Laver and Benoit 2002 for details.)
 }
 \examples{
 \dontrun{
