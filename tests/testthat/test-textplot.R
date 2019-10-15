@@ -317,3 +317,11 @@ test_that("phrasal patterns display correctly in textplot_kwic", {
 })
 
 dev.off()
+
+test_that("plotting empty dfms after trimming is caught (#1755)", {
+    dfmat <- dfm(c("Azymuth", "Compass", "GPS", "Zenith"))
+    expect_error(
+        textplot_wordcloud(dfmat, min_count = 2),
+        "No features left after trimming with min_count = 2"
+    )
+})
