@@ -313,3 +313,11 @@ test_that("dfm_weight invalid scheme produces error", {
         "\'arg\' should be one of",
     )
 })
+
+test_that("featfreq() works", {
+    dfmat <- dfm(c(d1 = "a a a b", d2 = "a b c"))
+    expect_identical(
+        featfreq(dfmat),
+        c(a = 4, b = 2, c = 1)
+    )
+})
