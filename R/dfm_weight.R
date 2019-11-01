@@ -461,8 +461,7 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
 
-    if (nfeat(x) != length(dfreq))
-        stop("missing some values in idf calculation")
+    if (nfeat(x) != length(dfreq)) stop("missing some values in idf calculation")
 
     # get the document indexes
     j <- as(tfreq, "dgTMatrix")@j + 1
