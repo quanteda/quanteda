@@ -71,16 +71,15 @@ fcm_sort.default <- function(x) {
 #' @export
 fcm_sort.fcm <- function(x) {
     attrs <- attributes(x)
-    x <- as(x, "dgTMatrix") # make a triplet
+    x <- as(x, "dgTMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
     if (attrs$tri) {
         swap <- x@i > x@j
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
-        x <- matrix2fcm(x, attrs)
     }
-    return(x)
+    matrix2fcm(x, attrs)
 }
 
 #' @rdname dfm_select
