@@ -225,6 +225,3 @@ test_that("tokens_replace works with same replacement characters (#1765)", {
         exp4
     )
 })
-
-
-    

@@ -8,8 +8,12 @@
 \usage{
 compute_lexdiv_dfm_stats(x, measure = NULL, log.base = 10)
 
-compute_lexdiv_tokens_stats(x, measure = c("MATTR", "MSTTR"),
-  MATTR_window, MSTTR_segment)
+compute_lexdiv_tokens_stats(
+  x,
+  measure = c("MATTR", "MSTTR"),
+  MATTR_window,
+  MSTTR_segment
+)
 }
 \arguments{
 \item{x}{a \link{dfm} object}

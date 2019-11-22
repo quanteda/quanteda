@@ -4,9 +4,13 @@
 \alias{convert}
 \title{Convert a dfm to a non-quanteda format}
 \usage{
-convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-  "matrix", "data.frame", "tripletlist"), docvars = NULL,
-  omit_empty = TRUE)
+convert(
+  x,
+  to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa", "matrix", "data.frame",
+    "tripletlist"),
+  docvars = NULL,
+  omit_empty = TRUE
+)
 }
 \arguments{
 \item{x}{a \link{dfm} to be converted}

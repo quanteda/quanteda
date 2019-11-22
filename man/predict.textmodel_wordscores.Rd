@@ -4,9 +4,16 @@
 \alias{predict.textmodel_wordscores}
 \title{Predict textmodel_wordscores}
 \usage{
-\method{predict}{textmodel_wordscores}(object, newdata = NULL,
-  se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
-  rescaling = c("none", "lbg", "mv"), force = TRUE, ...)
+\method{predict}{textmodel_wordscores}(
+  object,
+  newdata = NULL,
+  se.fit = FALSE,
+  interval = c("none", "confidence"),
+  level = 0.95,
+  rescaling = c("none", "lbg", "mv"),
+  force = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{a fitted Wordscores textmodel}

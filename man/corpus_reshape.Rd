@@ -4,8 +4,12 @@
 \alias{corpus_reshape}
 \title{Recast the document units of a corpus}
 \usage{
-corpus_reshape(x, to = c("sentences", "paragraphs", "documents"),
-  use_docvars = TRUE, ...)
+corpus_reshape(
+  x,
+  to = c("sentences", "paragraphs", "documents"),
+  use_docvars = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{corpus whose document units will be reshaped}

@@ -4,8 +4,13 @@
 \alias{flatten_dictionary}
 \title{Flatten a hierarchical dictionary into a list of character vectors}
 \usage{
-flatten_dictionary(dict, levels = 1:100, level = 1, key_parent = "",
-  dict_flat = list())
+flatten_dictionary(
+  dict,
+  levels = 1:100,
+  level = 1,
+  key_parent = "",
+  dict_flat = list()
+)
 }
 \arguments{
 \item{dict}{internal argument to pass flattened dictionary}

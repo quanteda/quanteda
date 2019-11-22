@@ -5,9 +5,14 @@
 \alias{dfm_smooth}
 \title{Weight the feature frequencies in a dfm}
 \usage{
-dfm_weight(x, scheme = c("count", "prop", "propmax", "logcount",
-  "boolean", "augmented", "logave"), weights = NULL, base = 10,
-  K = 0.5, force = FALSE)
+dfm_weight(
+  x,
+  scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+  weights = NULL,
+  base = 10,
+  K = 0.5,
+  force = FALSE
+)
 
 dfm_smooth(x, smoothing = 1)
 }

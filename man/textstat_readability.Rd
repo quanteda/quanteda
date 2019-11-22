@@ -4,9 +4,15 @@
 \alias{textstat_readability}
 \title{Calculate readability}
 \usage{
-textstat_readability(x, measure = "Flesch", remove_hyphens = TRUE,
-  min_sentence_length = 1, max_sentence_length = 10000,
-  intermediate = FALSE, ...)
+textstat_readability(
+  x,
+  measure = "Flesch",
+  remove_hyphens = TRUE,
+  min_sentence_length = 1,
+  max_sentence_length = 10000,
+  intermediate = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}

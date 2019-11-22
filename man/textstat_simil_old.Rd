@@ -5,12 +5,24 @@
 \alias{textstat_simil_old}
 \title{Similarity and distance computation between documents or features}
 \usage{
-textstat_dist_old(x, selection = NULL, margin = c("documents",
-  "features"), method = "euclidean", upper = FALSE, diag = FALSE,
-  p = 2)
+textstat_dist_old(
+  x,
+  selection = NULL,
+  margin = c("documents", "features"),
+  method = "euclidean",
+  upper = FALSE,
+  diag = FALSE,
+  p = 2
+)
 
-textstat_simil_old(x, selection = NULL, margin = c("documents",
-  "features"), method = "correlation", upper = FALSE, diag = FALSE)
+textstat_simil_old(
+  x,
+  selection = NULL,
+  margin = c("documents", "features"),
+  method = "correlation",
+  upper = FALSE,
+  diag = FALSE
+)
 }
 \arguments{
 \item{x}{a \link{dfm} object}

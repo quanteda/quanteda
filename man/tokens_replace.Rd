@@ -4,8 +4,14 @@
 \alias{tokens_replace}
 \title{Replace tokens in a tokens object}
 \usage{
-tokens_replace(x, pattern, replacement, valuetype = "glob",
-  case_insensitive = TRUE, verbose = quanteda_options("verbose"))
+tokens_replace(
+  x,
+  pattern,
+  replacement,
+  valuetype = "glob",
+  case_insensitive = TRUE,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be replaced}

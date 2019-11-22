@@ -7,19 +7,37 @@
 \alias{as.data.frame.textstat_proxy}
 \title{Similarity and distance computation between documents or features}
 \usage{
-textstat_simil(x, y = NULL, selection = NULL, margin = c("documents",
-  "features"), method = c("correlation", "cosine", "jaccard", "ejaccard",
-  "dice", "edice", "hamman", "simple matching"), min_simil = NULL, ...)
+textstat_simil(
+  x,
+  y = NULL,
+  selection = NULL,
+  margin = c("documents", "features"),
+  method = c("correlation", "cosine", "jaccard", "ejaccard", "dice", "edice", "hamman",
+    "simple matching"),
+  min_simil = NULL,
+  ...
+)
 
-textstat_dist(x, y = NULL, selection = NULL, margin = c("documents",
-  "features"), method = c("euclidean", "manhattan", "maximum",
-  "canberra", "minkowski"), p = 2, ...)
+textstat_dist(
+  x,
+  y = NULL,
+  selection = NULL,
+  margin = c("documents", "features"),
+  method = c("euclidean", "manhattan", "maximum", "canberra", "minkowski"),
+  p = 2,
+  ...
+)
 
-\method{as.list}{textstat_proxy}(x, sorted = TRUE, n = NULL,
-  diag = FALSE, ...)
+\method{as.list}{textstat_proxy}(x, sorted = TRUE, n = NULL, diag = FALSE, ...)
 
-\method{as.data.frame}{textstat_proxy}(x, row.names = NULL,
-  optional = FALSE, diag = FALSE, upper = FALSE, ...)
+\method{as.data.frame}{textstat_proxy}(
+  x,
+  row.names = NULL,
+  optional = FALSE,
+  diag = FALSE,
+  upper = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x, y}{a \link{dfm} objects; \code{y} is an optional target matrix matching
@@ -53,10 +71,10 @@ values will not be returned}
 
 \item{optional}{logical. If \code{TRUE}, setting row names and
     converting column names (to syntactic names: see
-    \code{\link{make.names}}) is optional.  Note that all of \R's
+    \code{\link[base]{make.names}}) is optional.  Note that all of \R's
     \pkg{base} package \code{as.data.frame()} methods use
     \code{optional} only for column names treatment, basically with the
-    meaning of \code{\link{data.frame}(*, check.names = !optional)}.
+    meaning of \code{\link[base]{data.frame}(*, check.names = !optional)}.
     See also the \code{make.names} argument of the \code{matrix} method.}
 
 \item{upper}{logical; if \code{TRUE}, return pairs as both (A, B) and (B, A)}

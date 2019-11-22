@@ -5,13 +5,24 @@
 \alias{char_segment}
 \title{Segment texts on a pattern match}
 \usage{
-corpus_segment(x, pattern = "##*", valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, extract_pattern = TRUE,
-  pattern_position = c("before", "after"), use_docvars = TRUE)
+corpus_segment(
+  x,
+  pattern = "##*",
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  extract_pattern = TRUE,
+  pattern_position = c("before", "after"),
+  use_docvars = TRUE
+)
 
-char_segment(x, pattern = "##*", valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, remove_pattern = TRUE,
-  pattern_position = c("before", "after"))
+char_segment(
+  x,
+  pattern = "##*",
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  remove_pattern = TRUE,
+  pattern_position = c("before", "after")
+)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}

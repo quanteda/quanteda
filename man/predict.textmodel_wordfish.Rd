@@ -6,11 +6,15 @@
 \alias{coefficients.textmodel_wordfish}
 \title{Prediction from a textmodel_wordfish method}
 \usage{
-\method{predict}{textmodel_wordfish}(object, se.fit = FALSE,
-  interval = c("none", "confidence"), level = 0.95, ...)
+\method{predict}{textmodel_wordfish}(
+  object,
+  se.fit = FALSE,
+  interval = c("none", "confidence"),
+  level = 0.95,
+  ...
+)
 
-\method{coef}{textmodel_wordfish}(object, margin = c("both", "documents",
-  "features"), ...)
+\method{coef}{textmodel_wordfish}(object, margin = c("both", "documents", "features"), ...)
 
 coefficients.textmodel_wordfish(object, ...)
 }

@@ -5,8 +5,7 @@
 \title{Print methods for textmodel features estimates
 This is a helper function used in \code{print.summary.textmodel}.}
 \usage{
-\method{print}{coefficients_textmodel}(x, digits = max(3L,
-  getOption("digits") - 3L), ...)
+\method{print}{coefficients_textmodel}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{x}{a coefficients_textmodel object}
