@@ -4,9 +4,15 @@
 \alias{tokens_segment}
 \title{Segment tokens object by patterns}
 \usage{
-tokens_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, extract_pattern = FALSE,
-  pattern_position = c("before", "after"), use_docvars = TRUE)
+tokens_segment(
+  x,
+  pattern,
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  extract_pattern = FALSE,
+  pattern_position = c("before", "after"),
+  use_docvars = TRUE
+)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented}

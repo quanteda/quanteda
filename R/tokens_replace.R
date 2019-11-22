@@ -53,11 +53,6 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
 
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
-    # !!!! replace by nothing means remove !!!!!
-    # l <- lengths(pattern) > 0 & lengths(replacement) > 0
-    # pattern <- pattern[l]
-    # replacement <- replacement[l]
-
     if (!length(pattern)) return(x)
     
     type <- types(x)
@@ -74,8 +69,7 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
         type <- union(type, unlist(replacement, use.names = FALSE))
         ids_repl <- pattern2list(replacement, type, "fixed", FALSE, 
                                  attr(x, "concatenator"), keep_nomatch = TRUE)
-        ids_repl <- ids_repl[match(attr(ids_pat, "pattern"), attr(ids_repl, "pattern"))]
-        x <- qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl)
+        x <- qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl[attr(ids_pat, "pattern")])
         attributes(x, FALSE) <- attrs
     }
     return(x)

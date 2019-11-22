@@ -4,8 +4,13 @@
 \alias{textstat_select}
 \title{Select rows of textstat objects by glob, regex or fixed patterns}
 \usage{
-textstat_select(x, pattern = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE)
+textstat_select(
+  x,
+  pattern = NULL,
+  selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE
+)
 }
 \arguments{
 \item{x}{a \code{textstat} object}

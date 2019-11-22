@@ -4,11 +4,18 @@
 \alias{textstat_proxy}
 \title{[Experimental] Compute document/feature proximity}
 \usage{
-textstat_proxy(x, y = NULL, margin = c("documents", "features"),
-  method = c("cosine", "correlation", "jaccard", "ejaccard", "dice",
-  "edice", "hamman", "simple matching", "euclidean", "chisquared",
-  "hamming", "kullback", "manhattan", "maximum", "canberra", "minkowski"),
-  p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE)
+textstat_proxy(
+  x,
+  y = NULL,
+  margin = c("documents", "features"),
+  method = c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", "hamman",
+    "simple matching", "euclidean", "chisquared", "hamming", "kullback", "manhattan",
+    "maximum", "canberra", "minkowski"),
+  p = 2,
+  min_proxy = NULL,
+  rank = NULL,
+  use_na = FALSE
+)
 }
 \arguments{
 \item{x}{a \link{dfm} objects; \code{y} is an optional target matrix matching

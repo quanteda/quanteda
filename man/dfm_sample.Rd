@@ -4,8 +4,13 @@
 \alias{dfm_sample}
 \title{Randomly sample documents or features from a dfm}
 \usage{
-dfm_sample(x, size = ifelse(margin == "documents", ndoc(x), nfeat(x)),
-  replace = FALSE, prob = NULL, margin = c("documents", "features"))
+dfm_sample(
+  x,
+  size = ifelse(margin == "documents", ndoc(x), nfeat(x)),
+  replace = FALSE,
+  prob = NULL,
+  margin = c("documents", "features")
+)
 }
 \arguments{
 \item{x}{the \link{dfm} object whose documents or features will be sampled}

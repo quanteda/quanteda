@@ -4,11 +4,19 @@
 \alias{textmodel_wordfish}
 \title{Wordfish text model}
 \usage{
-textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
-  tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersion_level = c("feature", "overall"), dispersion_floor = 0,
-  sparse = FALSE, abs_err = FALSE, svd_sparse = TRUE,
-  residual_floor = 0.5)
+textmodel_wordfish(
+  x,
+  dir = c(1, 2),
+  priors = c(Inf, Inf, 3, 1),
+  tol = c(1e-06, 1e-08),
+  dispersion = c("poisson", "quasipoisson"),
+  dispersion_level = c("feature", "overall"),
+  dispersion_floor = 0,
+  sparse = FALSE,
+  abs_err = FALSE,
+  svd_sparse = TRUE,
+  residual_floor = 0.5
+)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}
@@ -100,7 +108,7 @@ plot(tmod3$phi, tmod4$phi, xlab = "Min underdispersion = 0", ylab = "Min underdi
 plot(tmod3$phi, tmod4$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
 underdispersedTerms <- sample(which(tmod3$phi < 1.0), 5)
-which(featnames(dfmat) \%in\% names(topfeatures(dfmat, 20)))
+which(featnames(dfmat) %in% names(topfeatures(dfmat, 20)))
 text(tmod3$phi, tmod4$phi, tmod3$features, 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
 text(tmod3$phi['underdispersedTerms'], tmod4$phi['underdispersedTerms'], 

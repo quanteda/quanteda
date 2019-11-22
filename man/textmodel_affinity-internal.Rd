@@ -11,12 +11,9 @@
 
 \method{summary}{influence.predict.textmodel_affinity}(object, ...)
 
-\method{print}{summary.influence.predict.textmodel_affinity}(x, n = 30,
-  ...)
+\method{print}{summary.influence.predict.textmodel_affinity}(x, n = 30, ...)
 }
 \arguments{
-\item{n}{how many coefficients to print before truncating}
-
 \item{n}{how many coefficients to print before truncating}
 }
 \description{

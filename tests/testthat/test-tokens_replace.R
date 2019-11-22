@@ -153,3 +153,75 @@ test_that("tokens_replace remove tokens when replacement is empty", {
                       doc2 = c("zz","zz", "DD", "ee")))
                  
 })
+
+test_that("tokens_replace works with same replacement characters (#1765)", {
+    
+    exp1 <- list(doc1 = c("bb", "bb", "BB", "bb", "DD", "ee"), 
+                 doc2 = c("bb", "bb", "bb", "DD", "ee"))
+    expect_equal(
+        as.list(tokens_replace(toks_test, c("aa", "cc"), c("bb", "bb"), valuetype = "fixed")),
+        exp1
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, c("aa", "cc"), c("bb", "bb"), valuetype = "glob")),
+        exp1
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, c("a.*", "cc"), c("bb", "bb"), valuetype = "regex")),
+        exp1
+    )
+    
+    exp2 <- list(doc1 = c("bb", "BB", "bb", "ee"), 
+                 doc2 = c("bb", "bb", "ee"))
+    
+    expect_equal(
+        as.list(tokens_replace(toks_test, list(c("aa", "bb"), c("cc", "DD")), 
+                   c("bb", "bb"), valuetype = "fixed")),
+        exp2
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, list(c("aa", "bb"), c("cc", "DD")), 
+                   c("bb", "bb"), valuetype = "glob")),
+        exp2
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, list(c("a.*", "bb"), c("cc", "DD")), 
+                   c("bb", "bb"), valuetype = "regex")),
+        exp2
+    )
+    
+    exp3 <- list(doc1 = c("zz", "bb", "BB", "zz", "DD", "ee"), 
+                 doc2 = c("zz", "bb", "zz", "DD", "ee"))
+    
+    expect_equal(
+        as.list(tokens_replace(toks_test, c("aa", "cc"), c("zz", "zz"), valuetype = "fixed")),
+        exp3
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, c("aa", "cc"), c("zz", "zz"), valuetype = "glob")),
+        exp3
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, c("a.*", "cc"), c("zz", "zz"), valuetype = "regex")),
+        exp3
+    )
+    
+    exp4 <- list(doc1 = c("zz", "BB", "zz", "ee"), 
+                 doc2 = c("zz", "zz", "ee"))
+
+    expect_equal(
+        as.list(tokens_replace(toks_test, list(c("aa", "bb"), c("cc", "DD")), 
+                       c("zz", "zz"), valuetype = "glob")),
+        exp4
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, list(c("aa", "bb"), c("cc", "DD")), 
+                       c("zz", "zz"), valuetype = "glob")),
+        exp4
+    )
+    expect_equal(
+        as.list(tokens_replace(toks_test, list(c("a.*", "bb"), c("cc", "DD")), 
+                       c("zz", "zz"), valuetype = "regex")),
+        exp4
+    )
+})

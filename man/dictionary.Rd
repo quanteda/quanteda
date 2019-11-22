@@ -4,8 +4,14 @@
 \alias{dictionary}
 \title{Create a dictionary}
 \usage{
-dictionary(x, file = NULL, format = NULL, separator = " ",
-  tolower = TRUE, encoding = "auto")
+dictionary(
+  x,
+  file = NULL,
+  format = NULL,
+  separator = " ",
+  tolower = TRUE,
+  encoding = "auto"
+)
 }
 \arguments{
 \item{x}{a named list of character vector dictionary entries, including

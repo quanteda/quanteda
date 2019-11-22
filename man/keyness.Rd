@@ -9,8 +9,7 @@
 \alias{keyness_pmi}
 \title{Compute keyness (internal functions)}
 \usage{
-keyness_chi2_dt(x, correction = c("default", "yates", "williams",
-  "none"))
+keyness_chi2_dt(x, correction = c("default", "yates", "williams", "none"))
 
 keyness_chi2_stats(x)
 

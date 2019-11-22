@@ -7,13 +7,11 @@
 \alias{rstandard.predict.textmodel_affinity}
 \title{Prediction for a fitted affinity textmodel}
 \usage{
-\method{predict}{textmodel_affinity}(object, newdata = NULL,
-  level = 0.95, ...)
+\method{predict}{textmodel_affinity}(object, newdata = NULL, level = 0.95, ...)
 
 \method{coef}{predict.textmodel_affinity}(object, ...)
 
-\method{residuals}{predict.textmodel_affinity}(object,
-  type = c("response", "pearson"), ...)
+\method{residuals}{predict.textmodel_affinity}(object, type = c("response", "pearson"), ...)
 
 \method{rstandard}{predict.textmodel_affinity}(model, ...)
 }

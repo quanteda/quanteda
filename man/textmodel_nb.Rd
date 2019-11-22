@@ -4,8 +4,13 @@
 \alias{textmodel_nb}
 \title{Naive Bayes classifier for texts}
 \usage{
-textmodel_nb(x, y, smooth = 1, prior = c("uniform", "docfreq",
-  "termfreq"), distribution = c("multinomial", "Bernoulli"))
+textmodel_nb(
+  x,
+  y,
+  smooth = 1,
+  prior = c("uniform", "docfreq", "termfreq"),
+  distribution = c("multinomial", "Bernoulli")
+)
 }
 \arguments{
 \item{x}{the \link{dfm} on which the model will be fit.  Does not need to

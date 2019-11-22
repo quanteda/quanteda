@@ -4,8 +4,7 @@
 \alias{summary.corpus}
 \title{Summarize a corpus}
 \usage{
-\method{summary}{corpus}(object, n = 100, showmeta = FALSE,
-  tolower = FALSE, ...)
+\method{summary}{corpus}(object, n = 100, showmeta = FALSE, tolower = FALSE, ...)
 }
 \arguments{
 \item{object}{corpus to be summarized}

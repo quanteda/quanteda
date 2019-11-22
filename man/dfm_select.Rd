@@ -9,18 +9,30 @@
 \alias{fcm_keep}
 \title{Select features from a dfm or fcm}
 \usage{
-dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = NULL, max_nchar = NULL,
-  verbose = quanteda_options("verbose"))
+dfm_select(
+  x,
+  pattern = NULL,
+  selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  min_nchar = NULL,
+  max_nchar = NULL,
+  verbose = quanteda_options("verbose")
+)
 
 dfm_remove(x, ...)
 
 dfm_keep(x, ...)
 
-fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  verbose = quanteda_options("verbose"), ...)
+fcm_select(
+  x,
+  pattern = NULL,
+  selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 
 fcm_remove(x, pattern = NULL, ...)
 

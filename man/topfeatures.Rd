@@ -4,8 +4,13 @@
 \alias{topfeatures}
 \title{Identify the most frequent features in a dfm}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, scheme = c("count",
-  "docfreq"), groups = NULL)
+topfeatures(
+  x,
+  n = 10,
+  decreasing = TRUE,
+  scheme = c("count", "docfreq"),
+  groups = NULL
+)
 }
 \arguments{
 \item{x}{the object whose features will be returned}

@@ -4,9 +4,15 @@
 \alias{docfreq}
 \title{Compute the (weighted) document frequency of a feature}
 \usage{
-docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
-  "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,
-  use.names = TRUE)
+docfreq(
+  x,
+  scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
+  smoothing = 0,
+  k = 0,
+  base = 10,
+  threshold = 0,
+  use.names = TRUE
+)
 }
 \arguments{
 \item{x}{a \link{dfm}}
