@@ -354,6 +354,33 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     result
 }
 
+# docfreq -------------
+
+#' Compute the frequencies of features
+#' 
+#' For a \link{dfm} object, returns a frequency for each feature, computed
+#' across all documents in the dfm. This is equivalent to \code{colSums(x)}.
+#' @param x a \link{dfm}
+#' @return a (named) numeric vector of feature frequencies
+#' @keywords weighting dfm
+#' @export
+#' @examples 
+#' dfmat <- dfm(data_char_sampletext)
+#' featfreq(dfmat)
+featfreq <- function(x) {
+    UseMethod("featfreq")
+}
+
+#' @export
+featfreq.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "featfreq"))
+}
+
+#' @export
+featfreq.dfm <- function(x) {
+    colSums(x)
+}
+
 # dfm_tfidf ---------------
 
 #' Weight a dfm by \emph{tf-idf}
@@ -434,8 +461,7 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
 
-    if (nfeat(x) != length(dfreq))
-        stop("missing some values in idf calculation")
+    if (nfeat(x) != length(dfreq)) stop("missing some values in idf calculation")
 
     # get the document indexes
     j <- as(tfreq, "dgTMatrix")@j + 1
