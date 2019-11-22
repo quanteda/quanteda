@@ -8,11 +8,16 @@
 get_object_version(x)
 
 is_pre2(x)
+
+is_pre2(x)
 }
 \value{
 A three-element integer vector of class "package_version". For
   versions of the package < 1.5 for which no version was recorded in the
   object, \code{c(1, 4, 0)} is returned.
+
+\code{ispr2} returns \code{TRUE} if the object was created before
+\pkg{quanteda} version 2, or \code{FALSE} otherwise
 
 \code{ispr2} returns \code{TRUE} if the object was created before
 \pkg{quanteda} version 2, or \code{FALSE} otherwise
