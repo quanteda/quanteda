@@ -25,9 +25,9 @@ sub-document units such as sentences, for instance by specifying \code{by =
 "document"}}
 }
 \value{
-A corpus object with number of documents equal to \code{size}, drawn 
-  from the corpus \code{x}.  The returned corpus object will contain all of 
-  the meta-data of the original corpus, and the same document variables for 
+A corpus object with number of documents equal to \code{size}, drawn
+  from the corpus \code{x}.  The returned corpus object will contain all of
+  the meta-data of the original corpus, and the same document variables for
   the documents selected.
 }
 \description{
@@ -38,7 +38,7 @@ documents and their associated document-level variables.
 \examples{
 set.seed(2000)
 # sampling from a corpus
-summary(corpus_sample(data_corpus_inaugural, 5)) 
+summary(corpus_sample(data_corpus_inaugural, 5))
 summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 
 # sampling sentences within document

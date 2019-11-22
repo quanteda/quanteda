@@ -50,6 +50,7 @@ settings.default <- function(x=NULL, ...) {
 #' settings(data_corpus_inaugural, "stopwords") <- TRUE
 #' @export 
 settings.corpus <- function(x, field=NULL, ...) {
+    x <- corpus(x)
     if (is.null(field)) {
         x$settings
     } else {

@@ -105,6 +105,7 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
+    x <- corpus(x)
     x$documents <- set_docvars(x$documents, field, value)
     return(x)
 }
@@ -165,6 +166,7 @@ metadoc.default <- function(x, field = NULL) {
 #' @noRd
 #' @export
 metadoc.corpus <- function(x, field = NULL) {
+    x <- corpus(x)
     if (!is.null(field)) {
         field <- paste0("_", field)
         check_fields(x, field)
@@ -210,6 +212,7 @@ metadoc.dfm <- function(x, field = NULL) {
 #' @noRd
 #' @export
 "metadoc<-.corpus" <- function(x, field = NULL, value) {
+    x <- corpus(x)
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
     if (is.null(field)) {

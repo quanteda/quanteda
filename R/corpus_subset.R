@@ -29,7 +29,7 @@ corpus_subset.default <- function(x, subset, select, ...) {
 
 #' @export
 corpus_subset.corpus <- function(x, subset, select, ...) {
-    
+    x <- corpus(x)
     unused_dots(...)
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(documents(x)))

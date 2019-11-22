@@ -1,5 +1,5 @@
 #' Randomly sample documents from a corpus
-#' 
+#'
 #' Take a random sample of documents of the specified size from a corpus, with
 #' or without replacement.  Works just as \code{\link{sample}} works for the
 #' documents and their associated document-level variables.
@@ -15,18 +15,18 @@
 #' @param by a grouping variable for sampling.  Useful for resampling
 #'   sub-document units such as sentences, for instance by specifying \code{by =
 #'   "document"}
-#' @return A corpus object with number of documents equal to \code{size}, drawn 
-#'   from the corpus \code{x}.  The returned corpus object will contain all of 
-#'   the meta-data of the original corpus, and the same document variables for 
+#' @return A corpus object with number of documents equal to \code{size}, drawn
+#'   from the corpus \code{x}.  The returned corpus object will contain all of
+#'   the meta-data of the original corpus, and the same document variables for
 #'   the documents selected.
 #' @export
 #' @keywords corpus
 #' @examples
 #' set.seed(2000)
 #' # sampling from a corpus
-#' summary(corpus_sample(data_corpus_inaugural, 5)) 
+#' summary(corpus_sample(data_corpus_inaugural, 5))
 #' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
-#' 
+#'
 #' # sampling sentences within document
 #' corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
 #'                       two = "First sentence, doc2.  Second sentence, doc2."))
@@ -45,6 +45,7 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 #' @import data.table data.table
 #' @export
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
+    x <- corpus(x)
     index <- docID <- temp <- NULL
 
     if (!is.null(by)) {

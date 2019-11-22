@@ -68,6 +68,7 @@ docnames.corpus <- function(x) {
 #' @noRd
 #' @export
 "docnames<-.corpus" <- function(x, value) {
+    x <- corpus(x)
     docvars(x, "_document") <- rownames(x$documents) <- as.character(value)
     return(x)
 }

@@ -38,7 +38,7 @@ corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
 corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents"),
                                min_ntoken = 1, max_ntoken = NULL, 
                                exclude_pattern = NULL) {
-    
+    x <- corpus(x)
     what <- match.arg(what)
     if (is.null(max_ntoken)) max_ntoken <- 1e10 
     
@@ -135,6 +135,7 @@ corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000, 
                                         exclude_pattern = NULL,
                                         return_tokens = FALSE) {
+    x <- corpus(x)
     ntok <- NULL
     temp_sentences <- corpus_reshape(x, to = "sentences")
     
