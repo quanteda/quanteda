@@ -4,8 +4,11 @@
 \alias{nsyllable}
 \title{Count syllables in a text}
 \usage{
-nsyllable(x, syllable_dictionary = quanteda::data_int_syllables,
-  use.names = FALSE)
+nsyllable(
+  x,
+  syllable_dictionary = quanteda::data_int_syllables,
+  use.names = FALSE
+)
 }
 \arguments{
 \item{x}{character vector or \code{tokens} object  whose 

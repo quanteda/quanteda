@@ -4,12 +4,23 @@
 \alias{tokens}
 \title{Tokenize a set of texts}
 \usage{
-tokens(x, what = c("word", "sentence", "character", "fastestword",
-  "fasterword"), remove_numbers = FALSE, remove_punct = FALSE,
-  remove_symbols = remove_punct, remove_separators = TRUE,
-  remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
-  ngrams = 1L, skip = 0L, concatenator = "_",
-  verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
+tokens(
+  x,
+  what = c("word", "sentence", "character", "fastestword", "fasterword"),
+  remove_numbers = FALSE,
+  remove_punct = FALSE,
+  remove_symbols = remove_punct,
+  remove_separators = TRUE,
+  remove_twitter = FALSE,
+  remove_hyphens = FALSE,
+  remove_url = FALSE,
+  ngrams = 1L,
+  skip = 0L,
+  concatenator = "_",
+  verbose = quanteda_options("verbose"),
+  include_docvars = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object to be tokenized}

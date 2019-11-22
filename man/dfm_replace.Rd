@@ -4,8 +4,13 @@
 \alias{dfm_replace}
 \title{Replace features in dfm}
 \usage{
-dfm_replace(x, pattern, replacement, case_insensitive = TRUE,
-  verbose = quanteda_options("verbose"))
+dfm_replace(
+  x,
+  pattern,
+  replacement,
+  case_insensitive = TRUE,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{\link{dfm} whose features will be replaced}

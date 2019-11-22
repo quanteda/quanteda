@@ -4,8 +4,13 @@
 \alias{textstat_frequency}
 \title{Tabulate feature frequencies}
 \usage{
-textstat_frequency(x, n = NULL, groups = NULL, ties_method = c("min",
-  "average", "first", "random", "max", "dense"), ...)
+textstat_frequency(
+  x,
+  n = NULL,
+  groups = NULL,
+  ties_method = c("min", "average", "first", "random", "max", "dense"),
+  ...
+)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -72,10 +77,10 @@ ggplot(tstat1[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
     labs(x = NULL, y = "Frequency")
 
 # plot relative frequencies by group
-dfmat3 <- data_corpus_inaugural \%>\% 
-    corpus_subset(Year > 2000) \%>\% 
-    dfm(remove = stopwords("english"), remove_punct = TRUE) \%>\% 
-    dfm_group(groups = "President") \%>\%
+dfmat3 <- data_corpus_inaugural %>% 
+    corpus_subset(Year > 2000) %>% 
+    dfm(remove = stopwords("english"), remove_punct = TRUE) %>% 
+    dfm_group(groups = "President") %>%
     dfm_weight(scheme = "prop")
 
 # calculate relative frequency by president

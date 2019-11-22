@@ -4,8 +4,7 @@
 \alias{textmodel_ca}
 \title{Correspondence analysis of a document-feature matrix}
 \usage{
-textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE,
-  residual_floor = 0.1)
+textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}

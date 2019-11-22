@@ -29,21 +29,13 @@
 \item{levels}{integer vector indicating levels in the dictionary. Used only
 when \code{flatten = TRUE}.}
 
-\item{object}{the dictionary to be coerced}
+\item{object}{the dictionary to be extracted}
 
 \item{i}{index for entries}
 
 \item{name}{the dictionary key}
 
 \item{...}{\link{dictionary} objects to be concatenated}
-
-\item{object}{the dictionary to be printed}
-
-\item{object}{the dictionary to be extracted}
-
-\item{object}{the dictionary to be extracted}
-
-\item{i}{index for entries}
 }
 \description{
 Print/show method for dictionary objects.

@@ -5,11 +5,20 @@
 \alias{char_trimsentences}
 \title{Remove sentences based on their token lengths or a pattern match}
 \usage{
-corpus_trimsentences(x, min_length = 1, max_length = 10000,
-  exclude_pattern = NULL, return_tokens = FALSE)
+corpus_trimsentences(
+  x,
+  min_length = 1,
+  max_length = 10000,
+  exclude_pattern = NULL,
+  return_tokens = FALSE
+)
 
-char_trimsentences(x, min_length = 1, max_length = 10000,
-  exclude_pattern = NULL)
+char_trimsentences(
+  x,
+  min_length = 1,
+  max_length = 10000,
+  exclude_pattern = NULL
+)
 }
 \arguments{
 \item{x}{\link{corpus} or character object whose sentences will be selected.}

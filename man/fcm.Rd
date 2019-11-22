@@ -5,9 +5,16 @@
 \alias{is.fcm}
 \title{Create a feature co-occurrence matrix}
 \usage{
-fcm(x, context = c("document", "window"), count = c("frequency",
-  "boolean", "weighted"), window = 5L, weights = NULL,
-  ordered = FALSE, tri = TRUE, ...)
+fcm(
+  x,
+  context = c("document", "window"),
+  count = c("frequency", "boolean", "weighted"),
+  window = 5L,
+  weights = NULL,
+  ordered = FALSE,
+  tri = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object from
