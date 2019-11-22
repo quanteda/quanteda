@@ -4,6 +4,7 @@
 
 * Added Yule's I to `textstat_lexdiv()`.
 * Added forward compatibility for newer (v2) corpus class objects.
+* Added a new function `featfreq()` to compute the overall feature frequencies from a dfm.  
 
 ## Bug fixes
 
