@@ -128,15 +128,19 @@ corpus.default <- function(x, ...) {
 corpus.corpus <- function(x, docnames = quanteda::docnames(x), 
                           docvars = quanteda::docvars(x), 
                           metacorpus = quanteda::metacorpus(x), 
-                          compress = FALSE, ...) {
-    if (!compress) {
-        if (!missing(docnames)) docnames(x) <- docnames
-        if (!missing(docvars)) docnames(x) <- docvars
-        if (!missing(metacorpus)) metacorpus(x) <- metacorpus
-        x
-    } else {
-        corpus(texts(x), docnames, docvars, metacorpus, compress = compress)
+                          ...) {
+    if (!is_pre2(x)) {
+        x <- corpus(as.vector(x),
+                    docnames = docnamesv2.corpus(x),
+                    docvars = docvarsv2.corpus(x),
+                    metacorpus = c(attr(x, "meta")$system, attr(x, "meta")$user))
     }
+    
+    if (!missing(docnames)) docnames(x) <- docnames
+    if (!missing(docvars)) docvars(x) <- docvars
+    if (!missing(metacorpus)) x$metadata[names(metacorpus)] <- metacorpus
+    
+    return(x)
 }
 
 #' @rdname corpus

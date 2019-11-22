@@ -16,7 +16,6 @@ corpus(x, ...)
   docnames = quanteda::docnames(x),
   docvars = quanteda::docvars(x),
   metacorpus = quanteda::metacorpus(x),
-  compress = FALSE,
   ...
 )
 

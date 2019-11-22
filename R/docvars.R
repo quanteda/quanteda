@@ -30,10 +30,16 @@ docvars.default <- function(x, field = NULL) {
 #' @export
 docvars.corpus <- function(x, field = NULL) {
     check_fields(x, field)
-    dvars <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
-    if (is.null(field))
-        dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)
+    if (is_pre2(x)) {
+        dvars <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
+        if (is.null(field))
+            dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
+        return(get_docvars(dvars, field))
+    } else {
+        dvars <- docvarsv2.corpus(x)
+        rownames(dvars) <- docnamesv2.corpus(x)
+        return(dvars)
+    }
 }
 
 #' @noRd

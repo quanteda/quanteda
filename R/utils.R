@@ -292,10 +292,3 @@ sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
               }, x, size, replace, SIMPLIFY = FALSE)
     unlist(result, use.names = FALSE)
 }
-
-#' @rdname get_object_version
-#' @return \code{ispr2} returns \code{TRUE} if the object was created before
-#' \pkg{quanteda} version 2, or \code{FALSE} otherwise
-is_pre2 <- function(x) {
-    (! "meta" %in% names(attributes(x)))
-}
