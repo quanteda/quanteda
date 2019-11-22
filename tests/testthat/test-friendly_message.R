@@ -20,3 +20,10 @@ test_that("friendly_class_undefined_message for char_tortl()", {
         "char_tortl\\(\\) only works on.*character.*objects"
     )
 })
+
+test_that("friendly_class_undefined_message for featfreq()", {
+    expect_error(
+        featfreq(tokens(data_char_sampletext)),
+        "featfreq\\(\\) only works on dfm objects"
+    )
+})
