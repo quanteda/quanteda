@@ -236,7 +236,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         # create a new feature context matrix
         result <- new("fcm", as(result, "dgCMatrix"), count = count,
                       context = context, window = window, margin = colSums(dfm(x)),
-                      weights = weights, tri = tri)
+                      weights = weights, tri = tri, ordered = ordered)
     }
     return(result)
 }     

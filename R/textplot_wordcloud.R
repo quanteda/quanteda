@@ -212,6 +212,8 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
     
     font <- check_font(font)
     x <- dfm_trim(x, min_termfreq = min_count)
+    # check to see that dfm is not empty
+    if (!sum(x)) stop("No features left after trimming with min_count = ", min_count)
     freq <- Matrix::colSums(x)
     word <- names(freq)
     freq <- unname(freq)

@@ -88,8 +88,8 @@ test_that("customized weighting function",{
 
 test_that("ordered setting: window", {
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)     
-    fcm <- fcm_sort(fcm)
+    fcmat <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)
+    fcmat <- fcm_sort(fcmat)
     mat <- matrix(c(2, 0, 3, 3, 3, 1,
                      1, 0, 1, 0, 1, 0,
                      1, 0, 0, 2, 2, 0,
@@ -97,10 +97,11 @@ test_that("ordered setting: window", {
                      2, 1, 1, 2, 0, 1,
                      1, 1, 0, 0, 1, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(mat, 2)))
+    expect_true(all(round(fcmat, 2) == round(mat, 2)))
+    expect_true(fcmat@ordered)
     
-    fcm_nOrd <- fcm(txt, context = "window", window = 3, ordered = FALSE, tri = FALSE) 
-    fcm_nOrd <- fcm_sort(fcm_nOrd)
+    fcmat_nord <- fcm(txt, context = "window", window = 3, ordered = FALSE, tri = FALSE) 
+    fcmat_nord <- fcm_sort(fcmat_nord)
     mat <- matrix(c(4, 1, 4, 4, 5, 2,
                      1, 0, 1, 1, 2, 1,
                      4, 1, 0, 3, 3, 0,
@@ -108,7 +109,8 @@ test_that("ordered setting: window", {
                      5, 2, 3, 4, 0, 2,
                      2, 1, 0, 1, 2, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm_nOrd, 2) == round(mat, 2)))
+    expect_true(all(round(fcmat_nord, 2) == round(mat, 2)))
+    expect_false(fcmat_nord@ordered)
 })
 
 test_that("ordered setting: boolean",{
