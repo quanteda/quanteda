@@ -65,7 +65,7 @@
 #'   
 #' @references 
 #'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
-#'   "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
+#'   "\href{https://www.aclweb.org/anthology/N10-1046/}{A
 #'    comparative study of word co-occurrence for term clustering in language 
 #'   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
 #'   2010 Annual Conference of the North American Chapter of the ACL}, Los 
