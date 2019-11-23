@@ -79,7 +79,11 @@ Text lookup(Text tokens,
             // return shifted tokens in exclusive mode
             Text keys_flat(tokens.size());
             for (std::size_t i = 0; i < tokens.size(); i++) {
-                keys_flat[i] = id_max + tokens[i];
+                if (tokens[i] == 0) {
+                    keys_flat[i] = 0;
+                } else {
+                    keys_flat[i] = id_max + tokens[i];
+                }
             }
             return keys_flat;
         }
