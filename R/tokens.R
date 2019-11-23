@@ -191,6 +191,7 @@ tokens.character <- function(x, ...) {
 #' @export
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
+    x <- corpus(x)
     result <- tokens_internal(texts(x), ...)
     if (include_docvars) {
         docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]

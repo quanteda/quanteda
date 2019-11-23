@@ -144,4 +144,3 @@ test_that("n* methods are the same for corpus and corpuszip", {
     expect_equal(ntoken(data_corpus_test), ntoken(data_corpuszip_test))
     expect_equal(ntype(data_corpus_test), ntype(data_corpuszip_test))
 })
-

@@ -69,7 +69,7 @@ is.corpuszip <- function(x) {
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
-    
+    x <- corpus(x)
     n_all <- ndoc(object)
     object <- head(object, n)
     result <- data.frame(summary_character(texts(object), n = n, tolower = tolower, ...))
@@ -277,6 +277,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' #             "Government", "Opposition")
 #' # docvars(data_corpus_irishbudget2010)
 `[.corpus` <- function(x, i, j = NULL, ..., drop = TRUE) {
+    x <- corpus(x)
     if (is.null(j))
         return(texts(x)[i, ...])
     else {
@@ -293,6 +294,7 @@ c.corpus <- function(..., recursive = FALSE) {
     .Deprecated("docvars")
     if (is.null(docvars(x)))
         stop("cannot index docvars this way because none exist")
+    x <- corpus(x)
     x$documents[i, ...]
 }
 
@@ -302,6 +304,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @rdname corpus-class
 `[[<-.corpus` <- function(x, i, value) {
     .Deprecated("docvars")
+    x <- corpus(x)
     x$documents[i] <- value
     x
 }
@@ -316,4 +319,3 @@ str.corpus <- function(object, ...) {
   # message("Warning: accessing corpus internals directly voids your warranty.")
     str(unclass(object))
 }
-

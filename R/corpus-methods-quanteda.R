@@ -27,6 +27,7 @@ metacorpus.default <- function(x, field = NULL) {
 #' @noRd
 #' @export
 metacorpus.corpus <- function(x, field = NULL) {
+    x <- corpus(x)
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
@@ -51,6 +52,7 @@ metacorpus.corpus <- function(x, field = NULL) {
 
 #' @export
 "metacorpus<-.corpus" <- function(x, field, value) {
+    x <- corpus(x)
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
@@ -95,6 +97,7 @@ texts <- function(x, groups = NULL, spacer = "  ") {
 #' @noRd
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = "  ") {
+    x <- corpus(x)
     txts <- documents(x)$texts
     
     # without groups
@@ -153,6 +156,7 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #' @noRd
 #' @export
 "texts<-.corpus" <- function(x, value) { 
+    x <- corpus(x)
     documents(x)$texts <- value
     x
 }
@@ -177,6 +181,7 @@ documents <- function(x) {
 }
 
 documents.corpus <- function(x) {
+    x <- corpus(x)
     x$documents
 }
 

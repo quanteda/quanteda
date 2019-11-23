@@ -132,6 +132,7 @@ Collate:
     'fcm-methods.R'
     'fcm-subsetting.R'
     'fcm.R'
+    'future.R'
     'kwic.R'
     'nfunctions.R'
     'nscrabble.R'

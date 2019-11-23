@@ -121,6 +121,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
+    x <- corpus(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     vars <- docvars(x)
@@ -143,11 +144,11 @@ corpus_segment.corpus <- function(x, pattern = "##*",
         rownames(vars) <- rownames(temp)
         docvars(result) <- vars
     }
-    docvars(result, '_document') <- temp$docname
-    docvars(result, '_docid') <- temp$docid
-    docvars(result, '_segid') <- temp$segid
+    docvars(result, "_document") <- temp$docname
+    docvars(result, "_docid") <- temp$docid
+    docvars(result, "_segid") <- temp$segid
     if (extract_pattern) docvars(result, "pattern") <- temp$pattern
-    settings(result, "units") <- 'other'
+    settings(result, "units") <- "other"
     
     return(result)
 }
@@ -213,7 +214,7 @@ char_segment.character <- function(x, pattern = "##*",
 segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           case_insensitive = TRUE,
                           extract_pattern = FALSE, pattern_position = "after", 
-                          omit_empty = TRUE, what = "other", ...){
+                          omit_empty = TRUE, what = "other", ...) {
     
     docname <- names(x)
     
@@ -222,7 +223,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     # use preset regex pattern
-    if (what == 'paragraphs') {
+    if (what == "paragraphs") {
         pattern <- "\\n\\n"
         valuetype <- "regex"
     }
@@ -238,8 +239,8 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                 valuetype <- "fixed"
             } else {
                 pattern <- escape_regex(pattern)
-                pattern <- stri_replace_all_fixed(pattern, '*', '(\\S*)')
-                pattern <- stri_replace_all_fixed(pattern, '?', '(\\S)')
+                pattern <- stri_replace_all_fixed(pattern, "*", "(\\S*)")
+                pattern <- stri_replace_all_fixed(pattern, "?", "(\\S)")
                 valuetype <- "regex"
             }
         }
@@ -288,8 +289,8 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                     temp <- stri_locate_first_regex(x, pat, case_insensitive = case_insensitive)
                 }
             }
-            pos[,1] <- pmin(pos[,1], temp[,1], na.rm = TRUE)
-            pos[,2] <- pmax(pos[,2], temp[,2], na.rm = TRUE)
+            pos[, 1] <- pmin(pos[, 1], temp[, 1], na.rm = TRUE)
+            pos[, 2] <- pmax(pos[, 2], temp[, 2], na.rm = TRUE)
         }
         if (pattern_position == "after") {
             txt <- stri_sub(x, 1L, pos[,1] - 1L)
