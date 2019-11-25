@@ -85,7 +85,7 @@
 #' # extracting multi-part proper nouns (capitalized terms)
 #' toks1 <- tokens(data_corpus_inaugural)
 #' toks2 <- tokens_remove(toks1, pattern = stopwords("english"), padding = TRUE)
-#' toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\-]{2,})", valuetype = "regex", 
+#' toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex", 
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' tstat <- textstat_collocations(toks3, size = 3, tolower = FALSE)
 #' head(tstat, 10)
