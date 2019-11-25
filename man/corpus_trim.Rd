@@ -53,11 +53,11 @@ texts(corp)
 # exclude sentences shorter than 3 tokens
 texts(corpus_trim(corp, min_ntoken = 3))
 # exclude sentences that start with "PAGE <digit(s)>"
-texts(corpus_trim(corp, exclude_pattern = "^PAGE \\\\d+"))
+texts(corpus_trim(corp, exclude_pattern = "^PAGE \\d+"))
 
 # trimming character objects
 char_trim(txt, "sentences", min_ntoken = 3)
-char_trim(txt, "sentences", exclude_pattern = "sentence\\\\.")
+char_trim(txt, "sentences", exclude_pattern = "sentence\\.")
 }
 \keyword{character}
 \keyword{corpus}

@@ -44,6 +44,6 @@ ntoken(parsed)
 ndoc(parsed)
 docnames(parsed)
 
-corpus_subset(data_corpus_inaugural, Year <= 1793) %>% spacy_parse()
+corpus_subset(data_corpus_inaugural, Year <= 1793) \%>\% spacy_parse()
 }
 }
