@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot the dispersion of key word(s) — textplot_xray • quanteda</title>
+<title>Compute the frequencies of features — featfreq • quanteda</title>
 
 
 <!-- jquery -->
@@ -43,14 +43,9 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Plot the dispersion of key word(s) — textplot_xray" />
-<meta property="og:description" content="Plots a dispersion or &quot;x-ray&quot; plot of selected word pattern(s) across one or 
-more texts. The format of the plot depends on the number of kwic class
-objects passed: if there is only one document, keywords are plotted one below
-the other. If there are multiple documents the documents are plotted one 
-below the other, with keywords shown side-by-side. Given that this returns a 
-ggplot2 object, you can modify the plot by adding ggplot2 layers
-(see example)." />
+<meta property="og:title" content="Compute the frequencies of features — featfreq" />
+<meta property="og:description" content="For a dfm object, returns a frequency for each feature, computed
+across all documents in the dfm. This is equivalent to colSums(x)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -210,89 +205,135 @@ ggplot2 object, you can modify the plot by adding ggplot2 layers
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot the dispersion of key word(s)</h1>
+    <h1>Compute the frequencies of features</h1>
     
-    <div class="hidden name"><code>textplot_xray.Rd</code></div>
+    <div class="hidden name"><code>featfreq.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or 
-more texts. The format of the plot depends on the number of <a href='kwic.html'>kwic</a> class
-objects passed: if there is only one document, keywords are plotted one below
-the other. If there are multiple documents the documents are plotted one 
-below the other, with keywords shown side-by-side. Given that this returns a 
-<span class="pkg">ggplot2</span> object, you can modify the plot by adding <span class="pkg">ggplot2</span> layers
-(see example).</p>
+    <p>For a <a href='dfm.html'>dfm</a> object, returns a frequency for each feature, computed
+across all documents in the dfm. This is equivalent to <code><a href='https://rdrr.io/r/base/colSums.html'>colSums(x)</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textplot_xray</span>(<span class='no'>...</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>), <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>featfreq</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>any number of <a href='kwic.html'>kwic</a> class objects</p></td>
-    </tr>
-    <tr>
-      <th>scale</th>
-      <td><p>whether to scale the token index axis by absolute position of
-the token in the document or by relative position. Defaults are absolute
-for single document and relative for multiple documents.</p></td>
-    </tr>
-    <tr>
-      <th>sort</th>
-      <td><p>whether to sort the rows of a multiple document plot by document
-name</p></td>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <span class="pkg">ggplot2</span> object</p>
-    <h2 class="hasAnchor" id="known-issues"><a class="anchor" href="#known-issues"></a>Known Issues</h2>
-
-    
-
-<p>These are known issues on which we are working to solve in future versions:</p><ul>
-<li><p><code>textplot_xray()</code> will not display the patterns correctly when
-these are multi-token sequences.</p></li>
-<li><p>For dictionaries with keys that have overlapping value matches to
-tokens in the text, only the first match will be used in the plot.  The way
-around this is to produce one kwic per dictionary key, and send them as a
-list to <code>textplot_xray</code>.</p></li>
-</ul>
-
+    <p>a (named) numeric vector of feature frequencies</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1970</span>)
-<span class='co'># compare multiple documents</span>
-<span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"american"</span>))
-<span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"american"</span>), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='st'>"absolute"</span>)
-
-<span class='co'># compare multiple terms across multiple documents</span>
-<span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"america*"</span>),
-              <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"people"</span>))
-
-<span class='co'># how to modify the ggplot with different options</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='no'>tplot</span> <span class='kw'>&lt;-</span> <span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"american"</span>),
-                   <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"people"</span>))
-<span class='no'>tplot</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>keyword</span>) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>))
-
-<span class='co'># adjust the names of the document names</span>
-<span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>corp</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Year"</span>, <span class='st'>"President"</span>)), <span class='fl'>1</span>, <span class='no'>paste</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>", "</span>)
-<span class='fu'>textplot_xray</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"america*"</span>),
-              <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"people"</span>))
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_sampletext</span>)
+<span class='fu'>featfreq</span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;       instead            we          have             a          fine 
+#&gt;             1             5             1             4             1 
+#&gt;   gael-labour         party    government             ,        coming 
+#&gt;             1             1             4            16             1 
+#&gt;          into         power     promising          real        change 
+#&gt;             3             1             1             1             1 
+#&gt;           but     slavishly     following           the      previous 
+#&gt;             4             2             1            46             1 
+#&gt;  government's        policy             .          that           has 
+#&gt;             1             4            14             8             4 
+#&gt;          been      dictated            by           imf            eu 
+#&gt;             2             1             4             1             1 
+#&gt;           and           ecb           not            to          bail 
+#&gt;            20             1             4            11             1 
+#&gt;           out         irish        people       salvage        german 
+#&gt;             3             5             7             1             1 
+#&gt;        french       british         banks         those            of 
+#&gt;             1             1             3             2            37 
+#&gt;         other     countries          from         their    disastrous 
+#&gt;             3             1             3             3             1 
+#&gt;      frenzied       embrace       bankers   speculators            in 
+#&gt;             1             1             1             2            15 
+#&gt;      property        market        bubble            it            is 
+#&gt;             1             2             1             4             9 
+#&gt;      criminal            an         would          ever         agree 
+#&gt;             1             1             2             1             1 
+#&gt;          make        vassal         state      republic       ireland 
+#&gt;             1             1             1             1             1 
+#&gt;           its       squeeze       tribute           our          save 
+#&gt;             1             1             1             3             1 
+#&gt;    capitalist        europe         doing            so       destroy 
+#&gt;             1             1             1             1             1 
+#&gt;         lives      hundreds     thousands           now       plunged 
+#&gt;             1             2             6             2             1 
+#&gt;  unemployment     financial      hardship        social   dislocation 
+#&gt;             3             2             1             1             1 
+#&gt;          this        budget          past          four         years 
+#&gt;             6             1             1             1             2 
+#&gt;     austerity         means             €            25       billion 
+#&gt;             3             2             3             1             1 
+#&gt;        reefed       economy       pursuit      cringing    acceptance 
+#&gt;             1             5             1             1             1 
+#&gt;       diktats       markets           can           see          only 
+#&gt;             1             1             1             1             1 
+#&gt;       immoral        unjust       extreme    decimating      domestic 
+#&gt;             2             1             1             1             3 
+#&gt;             ?            as           are         tired      pointing 
+#&gt;             1             1             6             1             1 
+#&gt;            if        savage       ability      majority      purchase 
+#&gt;             1             1             1             1             2 
+#&gt;         goods       utilise      services          then          tens 
+#&gt;             2             1             2             1             3 
+#&gt;       workers     depending            on        demand           for 
+#&gt;             2             1             5             2             4 
+#&gt;          jobs          will            be        thrown     scrapheap 
+#&gt;             3             4             4             1             1 
+#&gt;    tragically          what     happening           all           key 
+#&gt;             1             1             1             1             1 
+#&gt;    indicators          show        abject       failure       private 
+#&gt;             1             1             1             1             1 
+#&gt;    investment     collapsed           vat      receipts          more 
+#&gt;             3             1             2             1             1 
+#&gt;          than           400       million        behind         risen 
+#&gt;             1             1             2             1             1 
+#&gt;         since       entered        office          much          made 
+#&gt;             1             1             1             1             1 
+#&gt;        growth       exports         every           job        export 
+#&gt;             1             2             1             1             1 
+#&gt;        sector         vital        defend          type       capital 
+#&gt;             1             1             1             1             1 
+#&gt;     intensive        nature          goes         where          need 
+#&gt;             1             1             1             1             1 
+#&gt;       created          next        period          hand        taking 
+#&gt;             1             1             1             1             2 
+#&gt;           670       pockets      ordinary       through     increases 
+#&gt;             1             1             1             1             1 
+#&gt;         money          cuts         child       benefit     elsewhere 
+#&gt;             1             1             1             1             1 
+#&gt;       further           add      downward        spiral      interest 
+#&gt;             1             1             1             1             1 
+#&gt;        relief  householders           who       trapped     nightmare 
+#&gt;             1             1             3             2             2 
+#&gt;      negative        equity  extortionate       monthly      mortgage 
+#&gt;             1             1             1             1             1 
+#&gt;      payments      welcomed        degree      dismally    inadequate 
+#&gt;             1             1             1             1             1 
+#&gt;    generation       victims     extortion   perpetrated          them 
+#&gt;             1             1             1             1             1 
+#&gt;       housing    legislated        fianna          fáil           pds 
+#&gt;             1             1             1             1             1 
+#&gt;          huge    proportion       incomes     continues            go 
+#&gt;             1             1             1             1             1 
+#&gt;     massively    dislocates     otherwise         funds         going 
+#&gt;             1             1             1             1             1 
+#&gt;   stimulating    sustaining          dole unfortunately 
+#&gt;             1             1             1             1 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#known-issues">Known Issues</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

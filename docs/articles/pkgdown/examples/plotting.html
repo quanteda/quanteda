@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Example: textual data visualization • quanteda</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../pkgdown.js"></script><!-- docsearch --><script src="../../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../../extra.css" rel="stylesheet">
@@ -39,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -138,7 +139,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -152,6 +153,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -166,29 +168,29 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(quanteda)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(quanteda)</a></code></pre></div>
 <p>This vignette walks through various plot options available in <strong>quanteda</strong> through the <code>textplot_*</code> functions.</p>
 <div id="wordcloud" class="section level1">
 <h1 class="hasAnchor">
 <a href="#wordcloud" class="anchor"></a>Wordcloud</h1>
 <p>The frequency of features can be plotted as a wordcloud using <code><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">dfm_inaug &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1826</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">'english'</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="dt">remove =</span> <span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">'english'</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">10</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb2-6" title="6"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_inaug)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-2-1.png" width="768"></p>
 <p>You can also plot a “comparison cloud”, but this can only be done with fewer than eight documents:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, </a>
-<a class="sourceLine" id="cb3-2" title="2">              President <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Washington"</span>, <span class="st">"Jefferson"</span>, <span class="st">"Madison"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="dt">groups =</span> <span class="st">"President"</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-2" title="2">              President <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Washington"</span>, <span class="st">"Jefferson"</span>, <span class="st">"Madison"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="dt">groups =</span> <span class="st">"President"</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-4" title="4"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-5" title="5"><span class="st">    </span><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="dt">comparison =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-3-1.png" width="960"></p>
 <p>Plot will pass through additional arguments to the underlying call to <code>wordcloud</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_inaug, <span class="dt">min_count =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb4-2" title="2">     <span class="dt">color =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'red'</span>, <span class="st">'pink'</span>, <span class="st">'green'</span>, <span class="st">'purple'</span>, <span class="st">'orange'</span>, <span class="st">'blue'</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb4-2" title="2">     <span class="dt">color =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'red'</span>, <span class="st">'pink'</span>, <span class="st">'green'</span>, <span class="st">'purple'</span>, <span class="st">'orange'</span>, <span class="st">'blue'</span>))</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 </div>
 <div id="lexical-dispersion-plot" class="section level1">
@@ -208,11 +210,11 @@
 <a class="sourceLine" id="cb6-5" title="5">)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>If you’re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(readtext)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(readtext)</a></code></pre></div>
 <pre><code>## Loading required package: readtext</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</a>
 <a class="sourceLine" id="cb9-2" title="2"></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(data_char_mobydick) &lt;-<span class="st"> "Moby Dick"</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(data_char_mobydick) &lt;-<span class="st"> "Moby Dick"</span></a>
 <a class="sourceLine" id="cb9-4" title="4"></a>
 <a class="sourceLine" id="cb9-5" title="5"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
 <a class="sourceLine" id="cb9-6" title="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"whale"</span>),</a>
@@ -232,7 +234,7 @@
 <h2 class="hasAnchor">
 <a href="#modifying-lexical-dispersion-plots" class="anchor"></a>Modifying lexical dispersion plots</h2>
 <p>The object returned is a ggplot object, which can be modified using ggplot:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)</a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>())</a>
 <a class="sourceLine" id="cb11-3" title="3">g &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</a>
 <a class="sourceLine" id="cb11-4" title="4">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"american"</span>),</a>
@@ -240,7 +242,7 @@
 <a class="sourceLine" id="cb11-6" title="6">    <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="dt">pattern =</span> <span class="st">"communist"</span>)</a>
 <a class="sourceLine" id="cb11-7" title="7">)</a>
 <a class="sourceLine" id="cb11-8" title="8">g <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color =</span> keyword) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb11-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 </div>
@@ -252,7 +254,7 @@
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">features_dfm_inaug &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(dfm_inaug, <span class="dt">n =</span> <span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb12-2" title="2"></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="co"># Sort by reverse frequency order</span></a>
-<a class="sourceLine" id="cb12-4" title="4">features_dfm_inaug<span class="op">$</span>feature &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/with">with</a></span>(features_dfm_inaug, <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/reorder.factor">reorder</a></span>(feature, <span class="op">-</span>frequency))</a>
+<a class="sourceLine" id="cb12-4" title="4">features_dfm_inaug<span class="op">$</span>feature &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(features_dfm_inaug, <span class="kw"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(feature, <span class="op">-</span>frequency))</a>
 <a class="sourceLine" id="cb12-5" title="5"></a>
 <a class="sourceLine" id="cb12-6" title="6"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(features_dfm_inaug, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> feature, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb12-7" title="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span><span class="st"> </span></a>
@@ -264,27 +266,27 @@
 <a class="sourceLine" id="cb13-3" title="3">                                   <span class="dt">groups =</span> <span class="st">"President"</span>)</a>
 <a class="sourceLine" id="cb13-4" title="4"></a>
 <a class="sourceLine" id="cb13-5" title="5"><span class="co"># Filter the term "american"</span></a>
-<a class="sourceLine" id="cb13-6" title="6">freq_american &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/subset">subset</a></span>(freq_grouped, freq_grouped<span class="op">$</span>feature <span class="op">%in%</span><span class="st"> "american"</span>)  </a>
+<a class="sourceLine" id="cb13-6" title="6">freq_american &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(freq_grouped, freq_grouped<span class="op">$</span>feature <span class="op">%in%</span><span class="st"> "american"</span>)  </a>
 <a class="sourceLine" id="cb13-7" title="7"></a>
 <a class="sourceLine" id="cb13-8" title="8"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(freq_american, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> group, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">14</span>), <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">0</span>, <span class="dv">14</span>, <span class="dv">2</span>))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">14</span>), <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">14</span>, <span class="dv">2</span>))) <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-11" title="11"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-12" title="12"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">"Frequency"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-13" title="13"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">axis.text.x =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">dfm_rel_freq &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural_subset), <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(dfm_rel_freq)</a></code></pre></div>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm_rel_freq)</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 4,215 features (85.1% sparse).</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">rel_freq &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(dfm_rel_freq, <span class="dt">groups =</span> <span class="st">"President"</span>)</a>
 <a class="sourceLine" id="cb16-2" title="2"></a>
 <a class="sourceLine" id="cb16-3" title="3"><span class="co"># Filter the term "american"</span></a>
-<a class="sourceLine" id="cb16-4" title="4">rel_freq_american &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/subset">subset</a></span>(rel_freq, feature <span class="op">%in%</span><span class="st"> "american"</span>)  </a>
+<a class="sourceLine" id="cb16-4" title="4">rel_freq_american &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(rel_freq, feature <span class="op">%in%</span><span class="st"> "american"</span>)  </a>
 <a class="sourceLine" id="cb16-5" title="5"></a>
 <a class="sourceLine" id="cb16-6" title="6"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(rel_freq_american, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> group, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb16-7" title="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-8" title="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">0.7</span>), <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">0</span>, <span class="fl">0.7</span>, <span class="fl">0.1</span>))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="fl">0.7</span>), <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">0.7</span>, <span class="fl">0.1</span>))) <span class="op">+</span></a>
 <a class="sourceLine" id="cb16-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb16-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">"Relative frequency"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb16-11" title="11"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">axis.text.x =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</a></code></pre></div>
@@ -292,17 +294,17 @@
 <p>Finally, <code>texstat_frequency</code> allows to plot the most frequent words in terms of relative frequency by group.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">dfm_weight_pres &lt;-<span class="st"> </span>data_corpus_inaugural <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="st">     </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">2000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="st">     </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="st">     </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="dt">remove =</span> <span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb17-4" title="4"><span class="st">     </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="dt">scheme =</span> <span class="st">"prop"</span>)</a>
 <a class="sourceLine" id="cb17-5" title="5"></a>
 <a class="sourceLine" id="cb17-6" title="6"><span class="co"># Calculate relative frequency by president</span></a>
 <a class="sourceLine" id="cb17-7" title="7">freq_weight &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(dfm_weight_pres, <span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">groups =</span> <span class="st">"President"</span>)</a>
 <a class="sourceLine" id="cb17-8" title="8"></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> freq_weight, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(freq_weight)<span class="op">:</span><span class="dv">1</span>, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> freq_weight, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(freq_weight)<span class="op">:</span><span class="dv">1</span>, <span class="dt">y =</span> frequency)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb17-10" title="10"><span class="st">     </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb17-11" title="11"><span class="st">     </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>group, <span class="dt">scales =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb17-12" title="12"><span class="st">     </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-13" title="13"><span class="st">     </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(freq_weight)<span class="op">:</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="st">     </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(freq_weight)<span class="op">:</span><span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb17-14" title="14">                        <span class="dt">labels =</span> freq_weight<span class="op">$</span>feature) <span class="op">+</span></a>
 <a class="sourceLine" id="cb17-15" title="15"><span class="st">     </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
@@ -313,10 +315,10 @@
 <p>If you want to compare the differential associations of keywords in a target and reference group, you can calculate “keyness” which is based on <code>textstat_keyness</code>. In this example, we compare the inaugural speech by Donald Trump with the speeches by Barack Obama.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># Only select speeches by Obama and Trump</span></a>
 <a class="sourceLine" id="cb18-2" title="2">pres_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, </a>
-<a class="sourceLine" id="cb18-3" title="3">                            President <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Obama"</span>, <span class="st">"Trump"</span>))</a>
+<a class="sourceLine" id="cb18-3" title="3">                            President <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Obama"</span>, <span class="st">"Trump"</span>))</a>
 <a class="sourceLine" id="cb18-4" title="4"></a>
 <a class="sourceLine" id="cb18-5" title="5"><span class="co"># Create a dfm grouped by president</span></a>
-<a class="sourceLine" id="cb18-6" title="6">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(pres_corpus, <span class="dt">groups =</span> <span class="st">"President"</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), </a>
+<a class="sourceLine" id="cb18-6" title="6">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(pres_corpus, <span class="dt">groups =</span> <span class="st">"President"</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), </a>
 <a class="sourceLine" id="cb18-7" title="7">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb18-8" title="8"></a>
 <a class="sourceLine" id="cb18-9" title="9"><span class="co"># Calculate keyness and determine Trump as target group</span></a>
@@ -341,18 +343,18 @@
 <a class="sourceLine" id="cb20-2" title="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
 <a class="sourceLine" id="cb20-3" title="3"></a>
 <a class="sourceLine" id="cb20-4" title="4"><span class="co"># Set reference scores</span></a>
-<a class="sourceLine" id="cb20-5" title="5">refscores &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">NA</span>, <span class="dv">4</span>), <span class="dv">1</span>, <span class="dv">-1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">NA</span>, <span class="dv">8</span>))</a>
+<a class="sourceLine" id="cb20-5" title="5">refscores &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, <span class="dv">4</span>), <span class="dv">1</span>, <span class="dv">-1</span>, <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, <span class="dv">8</span>))</a>
 <a class="sourceLine" id="cb20-6" title="6"></a>
 <a class="sourceLine" id="cb20-7" title="7"><span class="co"># Predict Wordscores model</span></a>
 <a class="sourceLine" id="cb20-8" title="8">ws &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordscores.html">textmodel_wordscores</a></span>(ie_dfm, <span class="dt">y =</span> refscores, <span class="dt">smooth =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb20-9" title="9"></a>
 <a class="sourceLine" id="cb20-10" title="10"><span class="co"># Plot estimated word positions (highlight words and print them in red)</span></a>
 <a class="sourceLine" id="cb20-11" title="11"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(ws,</a>
-<a class="sourceLine" id="cb20-12" title="12">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>), </a>
+<a class="sourceLine" id="cb20-12" title="12">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>), </a>
 <a class="sourceLine" id="cb20-13" title="13">                 <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># Get predictions</span></a>
-<a class="sourceLine" id="cb21-2" title="2">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(ws, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb21-2" title="2">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(ws, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb21-3" title="3"></a>
 <a class="sourceLine" id="cb21-4" title="4"><span class="co"># Plot estimated document positions and group by "party" variable</span></a>
 <a class="sourceLine" id="cb21-5" title="5"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
@@ -360,7 +362,7 @@
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># Plot estimated document positions using the LBG transformation and group by "party" variable</span></a>
 <a class="sourceLine" id="cb22-2" title="2"></a>
-<a class="sourceLine" id="cb22-3" title="3">pred_lbg &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict</a></span>(ws, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>, <span class="dt">rescaling =</span> <span class="st">"lbg"</span>)</a>
+<a class="sourceLine" id="cb22-3" title="3">pred_lbg &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(ws, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>, <span class="dt">rescaling =</span> <span class="st">"lbg"</span>)</a>
 <a class="sourceLine" id="cb22-4" title="4"></a>
 <a class="sourceLine" id="cb22-5" title="5"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred_lbg, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
 <a class="sourceLine" id="cb22-6" title="6">                 <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</a></code></pre></div>
@@ -371,11 +373,11 @@
 <a href="#wordfish" class="anchor"></a>Wordfish</h2>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># Estimate Wordfish model</span></a>
-<a class="sourceLine" id="cb23-2" title="2">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">6</span>,<span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb23-2" title="2">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">5</span>))</a>
 <a class="sourceLine" id="cb23-3" title="3"></a>
 <a class="sourceLine" id="cb23-4" title="4"><span class="co"># Plot estimated word positions</span></a>
 <a class="sourceLine" id="cb23-5" title="5"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">margin =</span> <span class="st">"features"</span>, </a>
-<a class="sourceLine" id="cb23-6" title="6">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"government"</span>, <span class="st">"global"</span>, <span class="st">"children"</span>, </a>
+<a class="sourceLine" id="cb23-6" title="6">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"government"</span>, <span class="st">"global"</span>, <span class="st">"children"</span>, </a>
 <a class="sourceLine" id="cb23-7" title="7">                                 <span class="st">"bank"</span>, <span class="st">"economy"</span>, <span class="st">"the"</span>, <span class="st">"citizenship"</span>,</a>
 <a class="sourceLine" id="cb23-8" title="8">                                 <span class="st">"productivity"</span>, <span class="st">"deficit"</span>), </a>
 <a class="sourceLine" id="cb23-9" title="9">                 <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</a></code></pre></div>
@@ -410,6 +412,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -437,13 +440,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

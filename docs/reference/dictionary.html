@@ -8,21 +8,25 @@
 
 <title>Create a dictionary — dictionary • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,14 +42,15 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Create a dictionary — dictionary" />
 
+<meta property="og:title" content="Create a dictionary — dictionary" />
 <meta property="og:description" content="Create a quanteda dictionary class object, either from a list or by
 importing from a foreign format.  Currently supported input file formats are
 the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
 using the LIWC format works with all currently available dictionary files
 supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,6 +74,7 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -85,7 +91,7 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -176,7 +182,6 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -186,7 +191,7 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,6 +202,7 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -208,18 +214,22 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Create a <span class="pkg">quanteda</span> dictionary class object, either from a list or by
 importing from a foreign format.  Currently supported input file formats are
 the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
 using the LIWC format works with all currently available dictionary files
 supplied as part of the LIWC 2001, 2007, and 2015 software (see References).</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>dictionary</span>(<span class='no'>x</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>dictionary</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+  <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"auto"</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -243,7 +253,8 @@ extension. Available options are:</p><dl class='dl-horizontal'>
 software</p></dd> <dt><code>"LIWC"</code></dt><dd><p>format used by the Linguistic Inquiry and
 Word Count software</p></dd> <dt><code>"yoshikoder"</code></dt><dd><p>format used by Yoshikoder
 software</p></dd> <dt><code>"lexicoder"</code></dt><dd><p>format used by Lexicoder</p></dd>
-<dt><code>"YAML"</code></dt><dd><p>the standard YAML format</p></dd></dl></td>
+<dt><code>"YAML"</code></dt><dd><p>the standard YAML format</p></dd>
+</dl></td>
     </tr>
     <tr>
       <th>separator</th>
@@ -257,16 +268,15 @@ defaults to <code>" "</code>.</p></td>
     <tr>
       <th>encoding</th>
       <td><p>additional optional encoding value for reading in imported
-dictionaries. This uses the <a href='https://www.rdocumentation.org/packages/base/topics/iconv'>iconv</a> labels for encoding.  See the
-"Encoding" section of the help for <a href='https://www.rdocumentation.org/packages/base/topics/connections'>file</a>.</p></td>
+dictionaries. This uses the <a href='https://rdrr.io/r/base/iconv.html'>iconv</a> labels for encoding.  See the
+"Encoding" section of the help for <a href='https://rdrr.io/r/base/connections.html'>file</a>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A dictionary class object, essentially a specially classed named list
   of characters.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Dictionaries can be subsetted using
@@ -277,7 +287,6 @@ dictionaries. This uses the <a href='https://www.rdocumentation.org/packages/bas
   coerced to named lists of characters using
   <code><a href='dictionary-class.html'>as.list</a></code>, and checked using
   <code><a href='as.dictionary.html'>is.dictionary</a></code>.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>WordStat dictionaries page, from Provalis Research
@@ -288,22 +297,20 @@ dictionaries. This uses the <a href='https://www.rdocumentation.org/packages/bas
 <p>Yoshikoder page, from Will Lowe
   <a href='http://conjugateprior.org/software/yoshikoder/'>http://conjugateprior.org/software/yoshikoder/</a>.</p>
 <p>Lexicoder format, <a href='http://www.lexicoder.com'>http://www.lexicoder.com</a></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='dfm.html'>dfm</a>, <code><a href='as.dictionary.html'>as.dictionary</a></code>,
   <code><a href='dictionary-class.html'>as.list</a></code>, <code><a href='as.dictionary.html'>is.dictionary</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1900</span>)
-<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
-                          <span class='kw'>opposition</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>),
+<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
+                          <span class='kw'>opposition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>),
                           <span class='kw'>taxing</span> <span class='kw'>=</span> <span class='st'>"taxing"</span>,
                           <span class='kw'>taxation</span> <span class='kw'>=</span> <span class='st'>"taxation"</span>,
                           <span class='kw'>taxregex</span> <span class='kw'>=</span> <span class='st'>"tax*"</span>,
                           <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"america"</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (63.9% sparse).
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (63.9% sparse).
 #&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                 features
 #&gt; docs             christmas opposition taxing taxation taxregex country
@@ -318,50 +325,46 @@ dictionaries. This uses the <a href='https://www.rdocumentation.org/packages/bas
 #&gt; - [christmas]:
 #&gt;   - christmas, santa, holiday
 #&gt; - [opposition]:
-#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='no'>dict</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"christmas"</span>, <span class='st'>"opposition"</span>)]</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
+#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='no'>dict</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"christmas"</span>, <span class='st'>"opposition"</span>)]</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
 #&gt; - [christmas]:
 #&gt;   - christmas, santa, holiday
 #&gt; - [opposition]:
 #&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='no'>dict</span><span class='kw'>[[</span><span class='st'>"opposition"</span>]]</div><div class='output co'>#&gt; [1] "opposition"  "reject"      "notincorpus"</div><div class='input'>
 <span class='co'># combine dictionaries</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>dict</span>[<span class='st'>"christmas"</span>], <span class='no'>dict</span>[<span class='st'>"country"</span>])</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>dict</span>[<span class='st'>"christmas"</span>], <span class='no'>dict</span>[<span class='st'>"country"</span>])</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
 #&gt; - [christmas]:
 #&gt;   - christmas, santa, holiday
 #&gt; - [country]:
 #&gt;   - america</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># import the Laver-Garry dictionary from Provalis Research</span>
-<span class='no'>dictfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>()
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/download.file'>download.file</a></span>(<span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>,
+<span class='no'>dictfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>,
               <span class='no'>dictfile</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"wb"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/unzip'>unzip</a></span>(<span class='no'>dictfile</span>, <span class='kw'>exdir</span> <span class='kw'>=</span> (<span class='no'>td</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>()))
-<span class='no'>dictlg</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='no'>td</span>, <span class='st'>"LaverGarry.cat"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"/"</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dictlg</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/unzip.html'>unzip</a></span>(<span class='no'>dictfile</span>, <span class='kw'>exdir</span> <span class='kw'>=</span> (<span class='no'>td</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()))
+<span class='no'>dictlg</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>td</span>, <span class='st'>"LaverGarry.cat"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"/"</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dictlg</span>))
 
 <span class='co'># import a LIWC formatted dictionary from http://www.moralfoundations.org</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/download.file'>download.file</a></span>(<span class='st'>"https://goo.gl/5gmwXq"</span>, <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='st'>"https://goo.gl/5gmwXq"</span>, <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())
 <span class='no'>dictliwc</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>tf</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"LIWC"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dictliwc</span>))
-<span class='co'># }</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>dictliwc</span>))
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -369,8 +372,9 @@ dictionaries. This uses the <a href='https://www.rdocumentation.org/packages/bas
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -393,6 +397,8 @@ dictionaries. This uses the <a href='https://www.rdocumentation.org/packages/bas
 </script>
 
 
+
   </body>
 </html>
+
 

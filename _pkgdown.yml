@@ -152,6 +152,7 @@ reference:
     - fcm_toupper
     - fcm_sort
     - is.fcm
+    - featfreq
 - title: Text statistics
   desc: Functions for computing statistics from texts and dfm objects.
   contents:

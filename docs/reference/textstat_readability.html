@@ -8,21 +8,25 @@
 
 <title>Calculate readability — textstat_readability • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,11 +42,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Calculate readability — textstat_readability" />
 
+<meta property="og:title" content="Calculate readability — textstat_readability" />
 <meta property="og:description" content="Calculate the readability of text(s) using one of a variety of computed
 indexes." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,6 +71,7 @@ indexes." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -82,7 +88,7 @@ indexes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -173,7 +179,6 @@ indexes." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -183,7 +188,7 @@ indexes." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -194,6 +199,7 @@ indexes." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -205,16 +211,20 @@ indexes." />
     </div>
 
     <div class="ref-description">
-    
     <p>Calculate the readability of text(s) using one of a variety of computed
 indexes.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_readability</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch"</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
-  <span class='kw'>intermediate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>textstat_readability</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch"</span>,
+  <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>intermediate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -253,12 +263,11 @@ rather than as a single word of 15 characters</p></td>
       <td><p>not used</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>textstat_readability</code> returns a data.frame of documents and
   their readability scores.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The following readability formulas have been implemented, where</p><ul>
@@ -275,197 +284,219 @@ rather than as a single word of 15 characters</p></td>
 <li><p>Nwd = \(n_{wd}\) = number of "difficult" words not matching the
         Dale-Chall list of "familiar" words</p></li>
 </ul>
-    <dl class='dl-horizontal'>
+
+<dl class='dl-horizontal'>
   <dt><code>"ARI"</code>:</dt><dd><p>Automated Readability Index (Senter and Smith 1967)
   $$0.5 ASL  + 4.71 AWL - 21.34$$</p></dd>
-    <dt><code>"ARI.Simple"</code>:</dt><dd><p>A simplified version of Senter and Smith's (1967) Automated Readability Index.
+
+  <dt><code>"ARI.Simple"</code>:</dt><dd><p>A simplified version of Senter and Smith's (1967) Automated Readability Index.
   $$ASL + 9 AWL$$</p></dd>
-    <dt><code>"Bormuth.MC"</code>:</dt><dd><p>Bormuth's (1969) Mean Cloze Formula.
+
+  <dt><code>"Bormuth.MC"</code>:</dt><dd><p>Bormuth's (1969) Mean Cloze Formula.
   $$0.886593 - 0.03640 \times AWL + 0.161911 \times AFW  - 0.21401 \times
   ASL - 0.000577 \times ASL^2 - 0.000005 \times ASL^3$$</p></dd>
-    <dt><code>"Bormuth.GP"</code>:</dt><dd><p>Bormuth's (1969) Grade Placement score.
+
+  <dt><code>"Bormuth.GP"</code>:</dt><dd><p>Bormuth's (1969) Grade Placement score.
   $$4.275 + 12.881M - 34.934M^2 + 20.388 M^3 + 26.194 CCS -
   2.046 CCS^2 - 11.767 CCS^3 - 42.285(M \times CCS) + 97.620(M \times CCS)^2 -
   59.538(M \times CCS)^2$$
   where \(M\) is the Bormuth Mean Cloze Formula as in
   <code>"Bormuth"</code> above, and \(CCS\) is the Cloze Criterion Score (Bormuth,
   1968).</p></dd>
-    <dt><code>"Coleman"</code>:</dt><dd><p>Coleman's (1971) Readability Formula 1.
-  $$1.29 \times \frac{100 \times n_{wsy=1}}{n_{w}} - 38.45$$
-    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.  The
+
+  <dt><code>"Coleman"</code>:</dt><dd><p>Coleman's (1971) Readability Formula 1.
+  $$1.29 \times \frac{100 \times n_{wsy=1}}{n_{w}} - 38.45$$  where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.  The
   scaling by 100 in this and the other Coleman-derived measures arises
   because the Coleman measures are calculated on a per 100 words basis.</p></dd>
-    <dt><code>"Coleman.C2"</code>:</dt><dd><p>Coleman's (1971) Readability Formula 2.
+
+  <dt><code>"Coleman.C2"</code>:</dt><dd><p>Coleman's (1971) Readability Formula 2.
   $$1.16 \times \frac{100 \times n_{wsy=1}}{
   Nw + 1.48 \times \frac{100 \times n_{st}}{n_{w}} - 37.95}$$</p></dd>
-    <dt><code>"Coleman.Liau.ECP"</code>:</dt><dd><p>Coleman-Liau Estimated Cloze Percent
+
+  <dt><code>"Coleman.Liau.ECP"</code>:</dt><dd><p>Coleman-Liau Estimated Cloze Percent
   (ECP) (Coleman and Liau 1975).
   $$141.8401 - 0.214590 \times 100
   \times AWL + 1.079812 \times \frac{n_{st} \times 100}{n_{w}}$$</p></dd>
-    <dt><code>"Coleman.Liau.Grade"</code>:</dt><dd><p>Coleman-Liau Grade Level (Coleman
+
+  <dt><code>"Coleman.Liau.grade"</code>:</dt><dd><p>Coleman-Liau Grade Level (Coleman
   and Liau 1975).
   $$-27.4004 \times \mathtt{Coleman.Liau.ECP} \times 100 +
   23.06395$$</p></dd>
-    <dt><code>"Coleman.Liau.Short"</code>:</dt><dd><p>Coleman-Liau Index (Coleman and Liau 1975).
+
+  <dt><code>"Coleman.Liau.short"</code>:</dt><dd><p>Coleman-Liau Index (Coleman and Liau 1975).
   $$5.88 \times AWL + 29.6 \times \frac{n_{st}}{n_{w}} - 15.8$$</p></dd>
-    <dt><code>"Dale.Chall"</code>:</dt><dd><p>The New Dale-Chall Readability formula (Chall
+
+  <dt><code>"Dale.Chall"</code>:</dt><dd><p>The New Dale-Chall Readability formula (Chall
   and Dale 1995).
   $$64 - (0.95 \times 100 \times \frac{n_{wd}}{n_{w}}) - (0.69 \times ASL)$$</p></dd>
-    <dt><code>"Dale.Chall.Old"</code>:</dt><dd><p>The original Dale-Chall Readability formula
+
+  <dt><code>"Dale.Chall.Old"</code>:</dt><dd><p>The original Dale-Chall Readability formula
   (Dale and Chall (1948).
-  $$0.1579 \times 100 \times \frac{n_{wd}}{n_{w}} + 0.0496 \times ASL [+ 3.6365]$$
-    The additional constant 3.6365 is only added if (Nwd / Nw) &gt; 0.05.</p></dd>
-    <dt><code>"Dale.Chall.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of the
+  $$0.1579 \times 100 \times \frac{n_{wd}}{n_{w}} + 0.0496 \times ASL [+ 3.6365]$$  The additional constant 3.6365 is only added if (Nwd / Nw) &gt; 0.05.</p></dd>
+
+  <dt><code>"Dale.Chall.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of the
   Dale and Chall Readability formula (Powers, Sumner and Kearl, 1958).
   $$0.1155 \times
   100 \frac{n_{wd}}{n_{w}}) + (0.0596 \times ASL) + 3.2672 $$</p></dd>
-    <dt><code>"Danielson.Bryan"</code>:</dt><dd><p>Danielson-Bryan's (1963) Readability Measure 1. $$
+
+  <dt><code>"Danielson.Bryan"</code>:</dt><dd><p>Danielson-Bryan's (1963) Readability Measure 1. $$
   (1.0364 \times \frac{n_{c}}{n_{blank}}) +
   (0.0194 \times \frac{n_{c}}{n_{st}}) -
-  0.6059$$
-    where \(n_{blank}\) = Nblank = the number of blanks.</p></dd>
-    <dt><code>"Danielson.Bryan2"</code>:</dt><dd><p>Danielson-Bryan's (1963) Readability Measure 2. $$
+  0.6059$$  where \(n_{blank}\) = Nblank = the number of blanks.</p></dd>
+
+  <dt><code>"Danielson.Bryan2"</code>:</dt><dd><p>Danielson-Bryan's (1963) Readability Measure 2. $$
   131.059- (10.364 \times \frac{n_{c}}{n_{blank}}) + (0.0194
-   \times \frac{n_{c}}{n_{st}})$$
-    where \(n_{blank}\) = Nblank = the number of blanks.</p></dd>
-    <dt><code>"Dickes.Steiwer"</code>:</dt><dd><p>Dickes-Steiwer Index (Dicks and Steiwer 1977). $$
+   \times \frac{n_{c}}{n_{st}})$$   where \(n_{blank}\) = Nblank = the number of blanks.</p></dd>
+
+  <dt><code>"Dickes.Steiwer"</code>:</dt><dd><p>Dickes-Steiwer Index (Dicks and Steiwer 1977). $$
   235.95993 - (7.3021 \times AWL)  - (12.56438 \times ASL) -
-  (50.03293 \times TTR)$$
-    where TTR is the Type-Token Ratio (see <code><a href='textstat_lexdiv.html'>textstat_lexdiv</a></code>)</p></dd>
-    <dt><code>"DRP"</code>:</dt><dd><p>Degrees of Reading Power. $$(1 - Bormuth.MC) *
-  100$$
-    where Bormuth.MC refers to Bormuth's (1969)  Mean Cloze Formula (documented above)</p></dd>
-    <dt><code>"ELF"</code>:</dt><dd><p>Easy Listening Formula (Fang 1966): $$\frac{n_{wsy&gt;=2}}{n_{st}}$$
-    where \(n_{wsy&gt;=2}\) = Nwmin2sy = the number of words with 2 syllables or more.</p></dd>
-    <dt><code>"Farr.Jenkins.Paterson"</code>:</dt><dd><p>Farr-Jenkins-Paterson's
+  (50.03293 \times TTR)$$  where TTR is the Type-Token Ratio (see <code><a href='textstat_lexdiv.html'>textstat_lexdiv</a></code>)</p></dd>
+
+  <dt><code>"DRP"</code>:</dt><dd><p>Degrees of Reading Power. $$(1 - Bormuth.MC) *
+  100$$  where Bormuth.MC refers to Bormuth's (1969)  Mean Cloze Formula (documented above)</p></dd>
+
+  <dt><code>"ELF"</code>:</dt><dd><p>Easy Listening Formula (Fang 1966): $$\frac{n_{wsy&gt;=2}}{n_{st}}$$   where \(n_{wsy&gt;=2}\) = Nwmin2sy = the number of words with 2 syllables or more.</p></dd>
+
+  <dt><code>"Farr.Jenkins.Paterson"</code>:</dt><dd><p>Farr-Jenkins-Paterson's
   Simplification of Flesch's Reading Ease Score (Farr, Jenkins and Paterson 1951). $$
    -31.517 - (1.015 \times ASL) + (1.599 \times
-  \frac{n_{wsy=1}}{n_{w}}$$
-    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.</p></dd>
-    <dt><code>"Flesch"</code>:</dt><dd><p>Flesch's Reading Ease Score (Flesch 1948).
+  \frac{n_{wsy=1}}{n_{w}}$$  where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.</p></dd>
+
+  <dt><code>"Flesch"</code>:</dt><dd><p>Flesch's Reading Ease Score (Flesch 1948).
   $$206.835 - (1.015 \times ASL) - (84.6 \times \frac{n_{sy}}{n_{w}})$$</p></dd>
-    <dt><code>"Flesch.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl's Variation of Flesch Reading Ease Score
+
+  <dt><code>"Flesch.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl's Variation of Flesch Reading Ease Score
   (Powers, Sumner and Kearl, 1958). $$ (0.0778 \times
   ASL) + (4.55 \times \frac{n_{sy}}{n_{w}}) -
   2.2029$$</p></dd>
-    <dt><code>"Flesch.Kincaid"</code>:</dt><dd><p>Flesch-Kincaid Readability Score (Flesch and Kincaid 1975). $$
+
+  <dt><code>"Flesch.Kincaid"</code>:</dt><dd><p>Flesch-Kincaid Readability Score (Flesch and Kincaid 1975). $$
   0.39 \times ASL + 11.8  \times \frac{n_{sy}}{n_{w}} -
   15.59$$</p></dd>
-    <dt><code>"FOG"</code>:</dt><dd><p>Gunning's Fog Index (Gunning 1952). $$0.4
-  \times (ASL + 100 \times \frac{n_{wsy&gt;=3}}{n_{w}})$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more.
+
+  <dt><code>"FOG"</code>:</dt><dd><p>Gunning's Fog Index (Gunning 1952). $$0.4
+  \times (ASL + 100 \times \frac{n_{wsy&gt;=3}}{n_{w}})$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more.
   The scaling by 100 arises because the original FOG index is based on
   just a sample of 100 words)</p></dd>
-    <dt><code>"FOG.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of Gunning's
+
+  <dt><code>"FOG.PSK"</code>:</dt><dd><p>The Powers-Sumner-Kearl Variation of Gunning's
   Fog Index (Powers, Sumner and Kearl, 1958). $$3.0680 \times
-  (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{n_{wsy&gt;=3}}{n_{w}})$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more.
+  (0.0877 \times ASL) +(0.0984 \times 100 \times \frac{n_{wsy&gt;=3}}{n_{w}})$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more.
   The scaling by 100 arises because the original FOG index is based on
   just a sample of 100 words)</p></dd>
-    <dt><code>"FOG.NRI"</code>:</dt><dd><p>The Navy's Adaptation of Gunning's Fog Index (Kincaid, Fishburne, Rogers and Chissom 1975).
+
+  <dt><code>"FOG.NRI"</code>:</dt><dd><p>The Navy's Adaptation of Gunning's Fog Index (Kincaid, Fishburne, Rogers and Chissom 1975).
   $$(\frac{(n_{wsy&lt;3} + 3 \times n_{wsy=3})}{(100 \times \frac{N_{st}}{N_{w}})}  -
-  3) / 2 $$
-    where \(n_{wsy&lt;3}\) = Nwless3sy = the number of words with <em>less than</em> 3 syllables, and
+  3) / 2 $$  where \(n_{wsy&lt;3}\) = Nwless3sy = the number of words with <em>less than</em> 3 syllables, and
   \(n_{wsy=3}\) = Nw3sy = the number of 3-syllable words. The scaling by 100
   arises because the original FOG index is based on just a sample of 100 words)</p></dd>
-    <dt><code>"FORCAST"</code>:</dt><dd><p>FORCAST (Simplified Version of FORCAST.RGL) (Caylor and
+
+  <dt><code>"FORCAST"</code>:</dt><dd><p>FORCAST (Simplified Version of FORCAST.RGL) (Caylor and
   Sticht 1973). $$ 20 - \frac{n_{wsy=1} \times
-  150)}{(n_{w} \times 10)}$$
-    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150
+  150)}{(n_{w} \times 10)}$$  where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150
   arises because the original FORCAST index is based on just a sample of 150 words.</p></dd>
-    <dt><code>"FORCAST.RGL"</code>:</dt><dd><p>FORCAST.RGL (Caylor and Sticht 1973).
+
+  <dt><code>"FORCAST.RGL"</code>:</dt><dd><p>FORCAST.RGL (Caylor and Sticht 1973).
   $$20.43 - 0.11 \times \frac{n_{wsy=1} \times
-  150)}{(n_{w} \times 10)}$$
-    where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150 arises
+  150)}{(n_{w} \times 10)}$$  where \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words. The scaling by 150 arises
   because the original FORCAST index is based on just a sample of 150 words.</p></dd>
-    <dt><code>"Fucks"</code>:</dt><dd><p>Fucks' (1955) Stilcharakteristik (Style
+
+  <dt><code>"Fucks"</code>:</dt><dd><p>Fucks' (1955) Stilcharakteristik (Style
   Characteristic). $$AWL * ASL$$</p></dd>
-    <dt><code>"Linsear.Write"</code>:</dt><dd><p>Linsear Write (Klare 1975).
+
+  <dt><code>"Linsear.Write"</code>:</dt><dd><p>Linsear Write (Klare 1975).
   $$\frac{[(100 - (\frac{100 \times n_{wsy&lt;3}}{n_{w}})) +
   (3 \times \frac{100 \times n_{wsy&gt;=3}}{n_{w}})]}{(100 \times
-  \frac{n_{st}}{n_{w}})}$$
-    where \(n_{wsy&lt;3}\) = Nwless3sy = the number of words with <em>less than</em> 3 syllables, and
+  \frac{n_{st}}{n_{w}})}$$  where \(n_{wsy&lt;3}\) = Nwless3sy = the number of words with <em>less than</em> 3 syllables, and
   \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3-syllables or more. The scaling
   by 100 arises because the original Linsear.Write measure is based on just a sample of 100 words)</p></dd>
-    <dt><code>"LIW"</code>:</dt><dd><p>Björnsson's (1968) Läsbarhetsindex (For Swedish
-  Texts). $$ASL + \frac{100 \times n_{wsy&gt;=7}}{n_{w}}$$
-    where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more. The scaling
+
+
+  <dt><code>"LIW"</code>:</dt><dd><p>Björnsson's (1968) Läsbarhetsindex (For Swedish
+  Texts). $$ASL + \frac{100 \times n_{wsy&gt;=7}}{n_{w}}$$  where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more. The scaling
   by 100 arises because the Läsbarhetsindex index is based on just a sample of 100 words)</p></dd>
-    <dt><code>"nWS"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 1 (Bamberger and
+
+  <dt><code>"nWS"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 1 (Bamberger and
   Vanecek 1984). $$19.35 \times \frac{n_{wsy&gt;=3}}{n_{w}} +
   0.1672 \times ASL + 12.97 \times \frac{b_{wchar&gt;=6}}{n_{w}} - 3.27 \times
-   \frac{n_{wsy=1}}{n_{w}} - 0.875$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more,
+   \frac{n_{wsy=1}}{n_{w}} - 0.875$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more,
   \(n_{wchar&gt;=6}\) = Nwmin6char = the number of words with 6 characters or more, and
   \(n_{wsy=1}\) = Nwsy1 = the number of one-syllable words.</p></dd>
-    <dt><code>"nWS.2"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 2 (Bamberger and
+
+  <dt><code>"nWS.2"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 2 (Bamberger and
   Vanecek 1984). $$20.07 \times \frac{n_{wsy&gt;=3}}{n_{w}} + 0.1682 \times ASL +
-  13.73 \times \frac{n_{wchar&gt;=6}}{n_{w}} - 2.779$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more, and
+  13.73 \times \frac{n_{wchar&gt;=6}}{n_{w}} - 2.779$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more, and
   \(n_{wchar&gt;=6}\) = Nwmin6char = the number of words with 6 characters or more.</p></dd>
-    <dt><code>"nWS.3"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 3 (Bamberger and
+
+  <dt><code>"nWS.3"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 3 (Bamberger and
   Vanecek 1984). $$29.63 \times \frac{n_{wsy&gt;=3}}{n_{w}} + 0.1905 \times
-  ASL - 1.1144$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.</p></dd>
-    <dt><code>"nWS.4"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 4 (Bamberger and
+  ASL - 1.1144$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.</p></dd>
+
+  <dt><code>"nWS.4"</code>:</dt><dd><p>Neue Wiener Sachtextformeln 4 (Bamberger and
   Vanecek 1984). $$27.44 \times \frac{n_{wsy&gt;=3}}{n_{w}} + 0.2656 \times
-  ASL - 1.693$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.</p></dd>
-    <dt><code>"RIX"</code>:</dt><dd><p>Anderson's (1983) Readability Index. $$
-  \frac{n_{wsy&gt;=7}}{n_{st}}$$
-    where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more.</p></dd>
-    <dt><code>"Scrabble"</code>:</dt><dd><p>Scrabble Measure. $$Mean
+  ASL - 1.693$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.</p></dd>
+
+  <dt><code>"RIX"</code>:</dt><dd><p>Anderson's (1983) Readability Index. $$
+  \frac{n_{wsy&gt;=7}}{n_{st}}$$  where \(n_{wsy&gt;=7}\) = Nwmin7sy = the number of words with 7-syllables or more.</p></dd>
+
+  <dt><code>"Scrabble"</code>:</dt><dd><p>Scrabble Measure. $$Mean
   Scrabble Letter Values of All Words$$.
   Scrabble values are for English.  There is no reference for this, as we
   created it experimentally.  It's not part of any accepted readability
   index!</p></dd>
-    <dt><code>"SMOG"</code>:</dt><dd><p>Simple Measure of Gobbledygook (SMOG) (McLaughlin 1969). $$ 1.043
-   \times \sqrt{n_{wsy&gt;=3}} \times \frac{30}{n_{st}} + 3.1291$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.
+
+  <dt><code>"SMOG"</code>:</dt><dd><p>Simple Measure of Gobbledygook (SMOG) (McLaughlin 1969). $$ 1.043
+   \times \sqrt{n_{wsy&gt;=3}} \times \frac{30}{n_{st}} + 3.1291$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.
   This measure is regression equation D in McLaughlin's original paper.</p></dd>
-    <dt><code>"SMOG.C"</code>:</dt><dd><p>SMOG (Regression Equation C) (McLaughlin's 1969) $$0.9986 \times
+
+  <dt><code>"SMOG.C"</code>:</dt><dd><p>SMOG (Regression Equation C) (McLaughlin's 1969) $$0.9986 \times
   \sqrt{Nwmin3sy \times \frac{30}{n_{st}} +
-  5} +  2.8795$$
-    where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.
+  5} +  2.8795$$  where \(n_{wsy&gt;=3}\) = Nwmin3sy = the number of words with 3 syllables or more.
   This measure is regression equation C in McLaughlin's original paper.</p></dd>
-    <dt><code>"SMOG.Simple"</code>:</dt><dd><p>Simplified Version of McLaughlin's (1969) SMOG Measure. $$
+
+  <dt><code>"SMOG.simple"</code>:</dt><dd><p>Simplified Version of McLaughlin's (1969) SMOG Measure. $$
   \sqrt{Nwmin3sy \times \frac{30}{n_{st}}} +
   3$$</p></dd>
-    <dt><code>"SMOG.de"</code>:</dt><dd><p>Adaptation of McLaughlin's (1969) SMOG Measure for German Texts.
+
+  <dt><code>"SMOG.de"</code>:</dt><dd><p>Adaptation of McLaughlin's (1969) SMOG Measure for German Texts.
   $$ \sqrt{Nwmin3sy \times \frac{30}{n_{st}}-2}$$</p></dd>
-    <dt><code>"Spache"</code>:</dt><dd><p>Spache's (1952) Readability Measure. $$ 0.121 \times
+
+  <dt><code>"Spache"</code>:</dt><dd><p>Spache's (1952) Readability Measure. $$ 0.121 \times
   ASL + 0.082 \times \frac{n_{wnotinspache}}{n_{w}}  +
-  0.659$$
-    where \(n_{wnotinspache}\) = Nwnotinspache = number of unique words not in the Spache word list.</p></dd>
-    <dt><code>"Spache.old"</code>:</dt><dd><p>Spache's (1952) Readability Measure (Old). $$0.141
+  0.659$$  where \(n_{wnotinspache}\) = Nwnotinspache = number of unique words not in the Spache word list.</p></dd>
+
+  <dt><code>"Spache.old"</code>:</dt><dd><p>Spache's (1952) Readability Measure (Old). $$0.141
   \times ASL + 0.086 \times \frac{n_{wnotinspache}}{n_{w}}  +
-  0.839$$
-    where \(n_{wnotinspache}\) = Nwnotinspache = number of unique words not in the Spache word list.</p></dd>
-    <dt><code>"Strain"</code>:</dt><dd><p>Strain Index (Solomon 2006). $$n_{sy} /
-  \frac{n_{st}}{3} /10$$
-    The scaling by 3 arises because the original Strain index is based on just the first 3 sentences.</p></dd>
-    <dt><code>"Traenkle.Bailer"</code>:</dt><dd><p>Tränkle &amp; Bailer's (1984) Readability Measure 1.
+  0.839$$  where \(n_{wnotinspache}\) = Nwnotinspache = number of unique words not in the Spache word list.</p></dd>
+
+  <dt><code>"Strain"</code>:</dt><dd><p>Strain Index (Solomon 2006). $$n_{sy} /
+  \frac{n_{st}}{3} /10$$  The scaling by 3 arises because the original Strain index is based on just the first 3 sentences.</p></dd>
+
+  <dt><code>"Traenkle.Bailer"</code>:</dt><dd><p>Tränkle &amp; Bailer's (1984) Readability Measure 1.
   $$224.6814 - (79.8304 \times AWL) - (12.24032 \times
-  ASL) - (1.292857 \times 100 \times \frac{n_{prep}}{n_{w}}$$
-    where \(n_{prep}\) = Nprep = the number of prepositions. The scaling by 100 arises because the original
+  ASL) - (1.292857 \times 100 \times \frac{n_{prep}}{n_{w}}$$  where \(n_{prep}\) = Nprep = the number of prepositions. The scaling by 100 arises because the original
   Tränkle &amp; Bailer index is based on just a sample of 100 words.</p></dd>
-    <dt><code>"Traenkle.Bailer2"</code>:</dt><dd><p>Tränkle &amp; Bailer's (1984) Readability Measure 2.
+
+  <dt><code>"Traenkle.Bailer2"</code>:</dt><dd><p>Tränkle &amp; Bailer's (1984) Readability Measure 2.
   $$Tränkle.Bailer2 =  234.1063 - (96.11069 \times AWL
   ) - (2.05444 \times 100 \times \frac{n_{prep}}{n_{w}}) -
-  (1.02805 \times 100 \times \frac{n_{conj}}{n_{w}}$$
-    where \(n_{prep}\) = Nprep = the number of prepositions,
+  (1.02805 \times 100 \times \frac{n_{conj}}{n_{w}}$$  where \(n_{prep}\) = Nprep = the number of prepositions,
   \(n_{conj}\) = Nconj = the number of conjunctions,
   The scaling by 100 arises because the original Tränkle &amp; Bailer index is based on
   just a sample of 100 words)</p></dd>
-    <dt><code>"Wheeler.Smith"</code>:</dt><dd><p>Wheeler &amp; Smith's (1954) Readability Measure.
-  $$ ASL \times 10 \times \frac{n_{wsy&gt;=2}}{n_{words}}$$
-    where \(n_{wsy&gt;=2}\) = Nwmin2sy = the number of words with 2 syllables or more.</p></dd>
-    <dt><code>"meanSentenceLength"</code>:</dt><dd><p>Average Sentence Length (ASL).
+
+  <dt><code>"Wheeler.Smith"</code>:</dt><dd><p>Wheeler &amp; Smith's (1954) Readability Measure.
+  $$ ASL \times 10 \times \frac{n_{wsy&gt;=2}}{n_{words}}$$   where \(n_{wsy&gt;=2}\) = Nwmin2sy = the number of words with 2 syllables or more.</p></dd>
+
+  <dt><code>"meanSentenceLength"</code>:</dt><dd><p>Average Sentence Length (ASL).
   $$\frac{n_{w}}{n_{st}}$$</p></dd>
-    <dt><code>"meanWordSyllables"</code>:</dt><dd><p>Average Word Syllables (AWL).
+
+  <dt><code>"meanWordSyllables"</code>:</dt><dd><p>Average Word Syllables (AWL).
   $$\frac{n_{sy}}{n_{w}}$$</p></dd>
-    </dl>
-    
+
+
+</dl>
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Anderson, J. (1983). <a href='https://www.jstor.org/stable/40031755'>Lix and
@@ -553,18 +584,17 @@ rather than as a single word of 15 characters</p></td>
   English</em>, 31, 397--399.</p>
 <p>*Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
   Journalism, School of Media Studies, SRM University, India.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"Readability zero one. Ten, Eleven."</span>,
+    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"Readability zero one. Ten, Eleven."</span>,
          <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"The cat in a dilapidated tophat."</span>)
 <span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch"</span>)</div><div class='output co'>#&gt;   document  Flesch
 #&gt; 1     doc1  1.2575
-#&gt; 2     doc2 45.6450</div><div class='input'><span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"FOG"</span>, <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>))</div><div class='output co'>#&gt;   document       FOG  FOG.PSK FOG.NRI
+#&gt; 2     doc2 45.6450</div><div class='input'><span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"FOG"</span>, <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>))</div><div class='output co'>#&gt;   document       FOG  FOG.PSK FOG.NRI
 #&gt; 1     doc1 17.000000 4.608659 -1.3875
 #&gt; 2     doc2  9.066667 3.254382 -1.2600</div><div class='input'>
 <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>48</span>:<span class='fl'>58</span>],
-                     <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Flesch.Kincaid"</span>, <span class='st'>"Dale.Chall.old"</span>))</div><div class='output co'>#&gt;        document Flesch.Kincaid Dale.Chall.old
+                     <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Flesch.Kincaid"</span>, <span class='st'>"Dale.Chall.old"</span>))</div><div class='output co'>#&gt;        document Flesch.Kincaid Dale.Chall.old
 #&gt; 1   1977-Carter      11.670742       8.218925
 #&gt; 2   1981-Reagan       9.798608       7.588069
 #&gt; 3   1985-Reagan      10.420294       7.430830
@@ -581,13 +611,9 @@ rather than as a single word of 15 characters</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -597,14 +623,16 @@ rather than as a single word of 15 characters</p></td>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -627,6 +655,8 @@ rather than as a single word of 15 characters</p></td>
 </script>
 
 
+
   </body>
 </html>
+
 
