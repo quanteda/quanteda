@@ -25,7 +25,7 @@
 #' # exclude sentences shorter than 3 tokens
 #' texts(corpus_trim(corp, min_ntoken = 3))
 #' # exclude sentences that start with "PAGE <digit(s)>"
-#' texts(corpus_trim(corp, exclude_pattern = "^PAGE \\d+"))
+#' texts(corpus_trim(corp, exclude_pattern = "^PAGE \\\\d+"))
 #' 
 corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
                         min_ntoken = 1, max_ntoken = NULL, 
@@ -75,7 +75,7 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
 #' @examples
 #' # trimming character objects
 #' char_trim(txt, "sentences", min_ntoken = 3)
-#' char_trim(txt, "sentences", exclude_pattern = "sentence\\.")
+#' char_trim(txt, "sentences", exclude_pattern = "sentence\\\\.")
 char_trim <- function(x, what = c("sentences", "paragraphs", "documents"), 
                       min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("char_trim")
@@ -120,7 +120,7 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #' # exclude sentences shorter than 3 tokens
 #' texts(corpus_trimsentences(corp, min_length = 3))
 #' # exclude sentences that start with "PAGE <digit(s)>"
-#' texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\d+"))
+#' texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\\\d+"))
 #' 
 #' # on a character
 #' char_trimsentences(txt, min_length = 3)
@@ -159,7 +159,7 @@ corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
 #' @export
 #' @examples
 #' char_trimsentences(txt, min_length = 3)
-#' char_trimsentences(txt, exclude_pattern = "sentence\\.")
+#' char_trimsentences(txt, exclude_pattern = "sentence\\\\.")
 char_trimsentences <- function(x, min_length = 1, max_length = 10000, 
                                exclude_pattern = NULL) {
     UseMethod("char_trimsentences")
