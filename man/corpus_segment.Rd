@@ -131,8 +131,8 @@ corpseg1 <- corpus_segment(corp1, pattern = "##*")
 cbind(texts(corpseg1), docvars(corpseg1), metadoc(corpseg1))
 
 # segmenting a transcript based on speaker identifiers
-corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
-corpseg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
+corp2 <- corpus("Mr. Smith: Text.\\nMrs. Jones: More text.\\nMr. Smith: I'm speaking, again.")
+corpseg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
                             valuetype = "regex")
 cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))
 
@@ -146,12 +146,12 @@ cbind(texts(corpseg3), docvars(corpseg3), metadoc(corpseg3))
 # segment into paragraphs and removing the "- " bullet points
 cat(data_char_ukimmig2010[4])
 char_segment(data_char_ukimmig2010[4], 
-             pattern = "\\n\\n(\\-\\s){0,1}", valuetype = "regex", 
+             pattern = "\\\\n\\\\n(\\\\-\\\\s){0,1}", valuetype = "regex", 
              remove_pattern = TRUE)
 
 # segment a text into clauses
 txt <- c(d1 = "This, is a sentence?  You: come here.", d2 = "Yes, yes okay.")
-char_segment(txt, pattern = "\\p{P}", valuetype = "regex", 
+char_segment(txt, pattern = "\\\\p{P}", valuetype = "regex", 
              pattern_position = "after", remove_pattern = FALSE)
 }
 \seealso{

@@ -66,7 +66,7 @@ dfm_tfidf(dfmat2, scheme_tf = "prop") \%>\% round(digits = 2)
 \dontrun{
 # comparison with tm
 if (requireNamespace("tm")) {
-    convert(dfmat2, to = "tm") \%>\% tm::weightTfIdf() \%>\% as.matrix()
+    convert(dfmat2, to = "tm") %>% tm::weightTfIdf() %>% as.matrix()
     # same as:
     dfm_tfidf(dfmat2, base = 2, scheme_tf = "prop")
 }
