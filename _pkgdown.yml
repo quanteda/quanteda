@@ -22,8 +22,6 @@ navbar:
           href: articles/pkgdown/quickstart_cn.html
         - text: "クイック・スタートガイド"
           href: articles/pkgdown/quickstart_ja.html
-        - text: "त्वरित आरंभ "
-          href: articles/pkgdown/quickstart_hi.html
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
