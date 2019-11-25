@@ -5,13 +5,24 @@
 \alias{char_segment}
 \title{Segment texts on a pattern match}
 \usage{
-corpus_segment(x, pattern = "##*", valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, extract_pattern = TRUE,
-  pattern_position = c("before", "after"), use_docvars = TRUE)
+corpus_segment(
+  x,
+  pattern = "##*",
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  extract_pattern = TRUE,
+  pattern_position = c("before", "after"),
+  use_docvars = TRUE
+)
 
-char_segment(x, pattern = "##*", valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, remove_pattern = TRUE,
-  pattern_position = c("before", "after"))
+char_segment(
+  x,
+  pattern = "##*",
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  remove_pattern = TRUE,
+  pattern_position = c("before", "after")
+)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
@@ -120,7 +131,7 @@ corpseg1 <- corpus_segment(corp1, pattern = "##*")
 cbind(texts(corpseg1), docvars(corpseg1), metadoc(corpseg1))
 
 # segmenting a transcript based on speaker identifiers
-corp2 <- corpus("Mr. Smith: Text.\\nMrs. Jones: More text.\\nMr. Smith: I'm speaking, again.")
+corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
 corpseg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
                             valuetype = "regex")
 cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))

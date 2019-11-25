@@ -1,13 +1,16 @@
-# quanteda > 1.5.1
+# quanteda 1.5.2
 
 ## New features
 
 * Added Yule's I to `textstat_lexdiv()`.
+* Added forward compatibility for newer (v2) corpus class objects.
 * Added a new function `featfreq()` to compute the overall feature frequencies from a dfm.  
 
 ## Bug fixes
 
 * Fixed a bug in `tokens_lookup()` when `exclusive = FALSE` and the tokens object has paddings. (#1743)
+* Fixed a bug in `tokens_replace()` (#1765).
+
 
 # quanteda 1.5.1
 

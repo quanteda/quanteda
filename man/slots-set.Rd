@@ -4,8 +4,7 @@
 \alias{slots<-}
 \title{Function to assign multiple slots to a S4 object}
 \usage{
-slots(x, exceptions = c("Dim", "Dimnames", "i", "p", "x",
-  "factors")) <- value
+slots(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors")) <- value
 }
 \arguments{
 \item{x}{an S4 object}

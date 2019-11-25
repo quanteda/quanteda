@@ -8,21 +8,25 @@
 
 <title>Convert token sequences into compound tokens — tokens_compound • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,14 +42,15 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Convert token sequences into compound tokens — tokens_compound" />
 
+<meta property="og:title" content="Convert token sequences into compound tokens — tokens_compound" />
 <meta property="og:description" content="Replace multi-token sequences with a multi-word, or &quot;compound&quot; token.  The
 resulting compound tokens will represent a phrase or multi-word expression,
 concatenated with concatenator (by default, the &quot;_&quot; character)
 to form a single &quot;token&quot;.  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a dfm." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,6 +74,7 @@ subsequently as single tokens, for instance in constructing a dfm." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -85,7 +91,7 @@ subsequently as single tokens, for instance in constructing a dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -176,7 +182,6 @@ subsequently as single tokens, for instance in constructing a dfm." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -186,7 +191,7 @@ subsequently as single tokens, for instance in constructing a dfm." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,6 +202,7 @@ subsequently as single tokens, for instance in constructing a dfm." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -208,18 +214,22 @@ subsequently as single tokens, for instance in constructing a dfm." />
     </div>
 
     <div class="ref-description">
-    
     <p>Replace multi-token sequences with a multi-word, or "compound" token.  The
 resulting compound tokens will represent a phrase or multi-word expression,
 concatenated with <code>concatenator</code> (by default, the "<code>_</code>" character)
 to form a single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a <a href='dfm.html'>dfm</a>.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_compound</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"glob"</span>,
-  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>tokens_compound</span>(
+  <span class='no'>x</span>,
+  <span class='no'>pattern</span>,
+  <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -259,13 +269,12 @@ significantly faster than case-insensitive operation.</p></td>
 compound; otherwise, form these separately.  See examples.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='tokens.html'>tokens</a> object in which the token sequences matching
   <code>pattern</code> have been replaced by  compound "tokens" joined by the
   concatenator.</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Patterns to be compounded (naturally) consist of multi-word sequences,
@@ -275,45 +284,44 @@ compound; otherwise, form these separately.  See examples.</p></td>
   to be compounded are separate elements of a character vector, supply it as
   a list where each list element is the sequence of character elements.</p>  
 <p>See the examples below.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"The United Kingdom is leaving the European Union."</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># character vector - not compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>, <span class='st'>"European"</span>, <span class='st'>"Union"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>, <span class='st'>"European"</span>, <span class='st'>"Union"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"      "United"   "Kingdom"  "is"       "leaving"  "the"      "European"
 #&gt; [8] "Union"   
 #&gt; </div><div class='input'>
 <span class='co'># elements separated by spaces - not compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"      "United"   "Kingdom"  "is"       "leaving"  "the"      "European"
 #&gt; [8] "Union"   
 #&gt; </div><div class='input'>
 <span class='co'># list of characters - is compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># elements separated by spaces, wrapped in phrase)() - is compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># supplied as values in a dictionary (same as list) - is compounded</span>
 <span class='co'># (keys do not matter)</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='st'>"United Kingdom"</span>,
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='st'>"United Kingdom"</span>,
                                       <span class='kw'>key2</span> <span class='kw'>=</span> <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European_Union"
 #&gt; </div><div class='input'><span class='co'># pattern as dictionaries with glob matches</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"U* K*"</span>))), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"U* K*"</span>))), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European"       "Union"         
@@ -327,7 +335,7 @@ compound; otherwise, form these separately.  See examples.</p></td>
 #&gt; [5] "leaving"        "the"            "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># note the differences caused by join = FALSE</span>
-<span class='no'>compounds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"the"</span>, <span class='st'>"European"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>))
+<span class='no'>compounds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"the"</span>, <span class='st'>"European"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>))
 <span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>compounds</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "The"                "United"             "Kingdom"           
@@ -342,16 +350,14 @@ compound; otherwise, form these separately.  See examples.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#note">Note</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -359,8 +365,9 @@ compound; otherwise, form these separately.  See examples.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -383,6 +390,8 @@ compound; otherwise, form these separately.  See examples.</p></td>
 </script>
 
 
+
   </body>
 </html>
+
 

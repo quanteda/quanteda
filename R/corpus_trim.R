@@ -25,7 +25,7 @@
 #' # exclude sentences shorter than 3 tokens
 #' texts(corpus_trim(corp, min_ntoken = 3))
 #' # exclude sentences that start with "PAGE <digit(s)>"
-#' texts(corpus_trim(corp, exclude_pattern = "^PAGE \\d+"))
+#' texts(corpus_trim(corp, exclude_pattern = "^PAGE \\\\d+"))
 #' 
 corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
                         min_ntoken = 1, max_ntoken = NULL, 
@@ -38,7 +38,7 @@ corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
 corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents"),
                                min_ntoken = 1, max_ntoken = NULL, 
                                exclude_pattern = NULL) {
-    
+    x <- corpus(x)
     what <- match.arg(what)
     if (is.null(max_ntoken)) max_ntoken <- 1e10 
     
@@ -75,7 +75,7 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
 #' @examples
 #' # trimming character objects
 #' char_trim(txt, "sentences", min_ntoken = 3)
-#' char_trim(txt, "sentences", exclude_pattern = "sentence\\.")
+#' char_trim(txt, "sentences", exclude_pattern = "sentence\\\\.")
 char_trim <- function(x, what = c("sentences", "paragraphs", "documents"), 
                       min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("char_trim")
@@ -120,7 +120,7 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #' # exclude sentences shorter than 3 tokens
 #' texts(corpus_trimsentences(corp, min_length = 3))
 #' # exclude sentences that start with "PAGE <digit(s)>"
-#' texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\d+"))
+#' texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\\\d+"))
 #' 
 #' # on a character
 #' char_trimsentences(txt, min_length = 3)
@@ -135,6 +135,7 @@ corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000, 
                                         exclude_pattern = NULL,
                                         return_tokens = FALSE) {
+    x <- corpus(x)
     ntok <- NULL
     temp_sentences <- corpus_reshape(x, to = "sentences")
     
@@ -158,7 +159,7 @@ corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
 #' @export
 #' @examples
 #' char_trimsentences(txt, min_length = 3)
-#' char_trimsentences(txt, exclude_pattern = "sentence\\.")
+#' char_trimsentences(txt, exclude_pattern = "sentence\\\\.")
 char_trimsentences <- function(x, min_length = 1, max_length = 10000, 
                                exclude_pattern = NULL) {
     UseMethod("char_trimsentences")

@@ -5,9 +5,16 @@
 \alias{is.fcm}
 \title{Create a feature co-occurrence matrix}
 \usage{
-fcm(x, context = c("document", "window"), count = c("frequency",
-  "boolean", "weighted"), window = 5L, weights = NULL,
-  ordered = FALSE, tri = TRUE, ...)
+fcm(
+  x,
+  context = c("document", "window"),
+  count = c("frequency", "boolean", "weighted"),
+  window = 5L,
+  weights = NULL,
+  ordered = FALSE,
+  tri = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object from
@@ -103,7 +110,7 @@ fcm(toks, context = "window", window = 3)
 }
 \references{
 Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
-  "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
+  "\href{https://www.aclweb.org/anthology/N10-1046/}{A
    comparative study of word co-occurrence for term clustering in language 
   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
   2010 Annual Conference of the North American Chapter of the ACL}, Los 

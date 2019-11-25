@@ -191,6 +191,7 @@ tokens.character <- function(x, ...) {
 #' @export
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
+    x <- corpus(x)
     result <- tokens_internal(texts(x), ...)
     if (include_docvars) {
         docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
@@ -242,7 +243,8 @@ tokens.tokens <-  function(x,
         if (!any(stri_detect_charclass(types(x), "[@#]"))) {
             if (verbose) catm("...none found")
         } else {
-            x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""))
+            x <- tokens_replace(x, types(x), stri_replace_first_regex(types(x), "^(@|#)", ""),
+                                valuetype = "fixed")
         }
         if (verbose) catm("\n")
     }

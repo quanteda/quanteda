@@ -84,7 +84,7 @@
 #' 
 #' # segmenting a transcript based on speaker identifiers
 #' corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
-#' corpseg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
+#' corpseg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
 #'                             valuetype = "regex")
 #' cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))
 #' 
@@ -121,6 +121,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
+    x <- corpus(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     vars <- docvars(x)
@@ -143,11 +144,11 @@ corpus_segment.corpus <- function(x, pattern = "##*",
         rownames(vars) <- rownames(temp)
         docvars(result) <- vars
     }
-    docvars(result, '_document') <- temp$docname
-    docvars(result, '_docid') <- temp$docid
-    docvars(result, '_segid') <- temp$segid
+    docvars(result, "_document") <- temp$docname
+    docvars(result, "_docid") <- temp$docid
+    docvars(result, "_segid") <- temp$segid
     if (extract_pattern) docvars(result, "pattern") <- temp$pattern
-    settings(result, "units") <- 'other'
+    settings(result, "units") <- "other"
     
     return(result)
 }
@@ -162,12 +163,12 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 #' # segment into paragraphs and removing the "- " bullet points
 #' cat(data_char_ukimmig2010[4])
 #' char_segment(data_char_ukimmig2010[4], 
-#'              pattern = "\\n\\n(\\-\\s){0,1}", valuetype = "regex", 
+#'              pattern = "\\\\n\\\\n(\\\\-\\\\s){0,1}", valuetype = "regex", 
 #'              remove_pattern = TRUE)
 #' 
 #' # segment a text into clauses
 #' txt <- c(d1 = "This, is a sentence?  You: come here.", d2 = "Yes, yes okay.")
-#' char_segment(txt, pattern = "\\p{P}", valuetype = "regex", 
+#' char_segment(txt, pattern = "\\\\p{P}", valuetype = "regex", 
 #'              pattern_position = "after", remove_pattern = FALSE)
 #' @keywords character
 #' @return \code{char_segment} returns a character vector of segmented texts
@@ -213,7 +214,7 @@ char_segment.character <- function(x, pattern = "##*",
 segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           case_insensitive = TRUE,
                           extract_pattern = FALSE, pattern_position = "after", 
-                          omit_empty = TRUE, what = "other", ...){
+                          omit_empty = TRUE, what = "other", ...) {
     
     docname <- names(x)
     
@@ -222,7 +223,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     # use preset regex pattern
-    if (what == 'paragraphs') {
+    if (what == "paragraphs") {
         pattern <- "\\n\\n"
         valuetype <- "regex"
     }
@@ -238,8 +239,8 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                 valuetype <- "fixed"
             } else {
                 pattern <- escape_regex(pattern)
-                pattern <- stri_replace_all_fixed(pattern, '*', '(\\S*)')
-                pattern <- stri_replace_all_fixed(pattern, '?', '(\\S)')
+                pattern <- stri_replace_all_fixed(pattern, "*", "(\\S*)")
+                pattern <- stri_replace_all_fixed(pattern, "?", "(\\S)")
                 valuetype <- "regex"
             }
         }
@@ -288,8 +289,8 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                     temp <- stri_locate_first_regex(x, pat, case_insensitive = case_insensitive)
                 }
             }
-            pos[,1] <- pmin(pos[,1], temp[,1], na.rm = TRUE)
-            pos[,2] <- pmax(pos[,2], temp[,2], na.rm = TRUE)
+            pos[, 1] <- pmin(pos[, 1], temp[, 1], na.rm = TRUE)
+            pos[, 2] <- pmax(pos[, 2], temp[, 2], na.rm = TRUE)
         }
         if (pattern_position == "after") {
             txt <- stri_sub(x, 1L, pos[,1] - 1L)
@@ -324,4 +325,3 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     
     return(result)
 }
-

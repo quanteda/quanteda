@@ -8,21 +8,25 @@
 
 <title>Calculate lexical diversity — textstat_lexdiv • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,10 +42,11 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Calculate lexical diversity — textstat_lexdiv" />
 
+<meta property="og:title" content="Calculate lexical diversity — textstat_lexdiv" />
 <meta property="og:description" content="Calculate the lexical diversity of text(s)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -65,6 +70,7 @@
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -81,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -172,7 +178,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -182,7 +187,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -193,6 +198,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -204,16 +210,23 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Calculate the lexical diversity of text(s).</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>, <span class='st'>"K"</span>,
-  <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>, <span class='st'>"MATTR"</span>, <span class='st'>"MSTTR"</span>, <span class='st'>"all"</span>), <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100L</span>, <span class='kw'>MSTTR_segment</span> <span class='kw'>=</span> <span class='fl'>100L</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>, <span class='st'>"K"</span>, <span class='st'>"I"</span>, <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>, <span class='st'>"MATTR"</span>,
+    <span class='st'>"MSTTR"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100L</span>,
+  <span class='kw'>MSTTR_segment</span> <span class='kw'>=</span> <span class='fl'>100L</span>,
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -268,11 +281,10 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
       <td><p>for passing arguments to other methods</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data.frame of documents and their lexical diversity scores.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>textstat_lexdiv</code> calculates the lexical diversity of documents
@@ -280,29 +292,42 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
 <p>In the following formulas, \(N\) refers to the total number of
   tokens, \(V\) to the number of types, and \(f_v(i, N)\) to the numbers
   of types occurring \(i\) times in a sample of length \(N\).</p><dl class='dl-horizontal'>
-    <dt><code>"TTR"</code>:</dt><dd><p>The ordinary <em>Type-Token Ratio</em>: $$TTR =
+     
+  <dt><code>"TTR"</code>:</dt><dd><p>The ordinary <em>Type-Token Ratio</em>: $$TTR =
   \frac{V}{N}$$</p></dd>
-    <dt><code>"C"</code>:</dt><dd><p>Herdan's <em>C</em> (Herdan, 1960, as cited in Tweedie &amp; 
+  
+  <dt><code>"C"</code>:</dt><dd><p>Herdan's <em>C</em> (Herdan, 1960, as cited in Tweedie &amp; 
   Baayen, 1998; sometimes referred to as <em>LogTTR</em>): $$C = 
   \frac{\log{V}}{\log{N}}$$</p></dd>
-    <dt><code>"R"</code>:</dt><dd><p>Guiraud's <em>Root TTR</em> (Guiraud, 1954, as cited in 
+  
+  <dt><code>"R"</code>:</dt><dd><p>Guiraud's <em>Root TTR</em> (Guiraud, 1954, as cited in 
   Tweedie &amp; Baayen, 1998): $$R = \frac{V}{\sqrt{N}}$$</p></dd>
-    <dt><code>"CTTR"</code>:</dt><dd><p>Carroll's <em>Corrected TTR</em>: $$CTTR = 
+  
+  <dt><code>"CTTR"</code>:</dt><dd><p>Carroll's <em>Corrected TTR</em>: $$CTTR = 
   \frac{V}{\sqrt{2N}}$$</p></dd>
-    <dt><code>"U"</code>:</dt><dd><p>Dugast's <em>Uber Index</em>  (Dugast, 1978, as cited in 
+  
+  <dt><code>"U"</code>:</dt><dd><p>Dugast's <em>Uber Index</em>  (Dugast, 1978, as cited in 
   Tweedie &amp; Baayen, 1998): $$U = \frac{(\log{N})^2}{\log{N} - \log{V}}$$</p></dd>
-    <dt><code>"S"</code>:</dt><dd><p>Summer's index: $$S = 
+  
+  <dt><code>"S"</code>:</dt><dd><p>Summer's index: $$S = 
   \frac{\log{\log{V}}}{\log{\log{N}}}$$</p></dd>
-    <dt><code>"K"</code>:</dt><dd><p>Yule's <em>K</em>  (Yule, 1944, as presented in Tweedie &amp;
+  
+  <dt><code>"K"</code>:</dt><dd><p>Yule's <em>K</em>  (Yule, 1944, as presented in Tweedie &amp;
   Baayen, 1998, Eq. 16) is calculated by: $$K = 10^4 \times
   \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] $$</p></dd>
-    <dt><code>"D"</code>:</dt><dd><p>Simpson's <em>D</em>  (Simpson 1949, as presented in
+
+  <dt><code>"I"</code>:</dt><dd><p>Yule's <em>I</em>  (Yule, 1944) is calculated by: $$I = \frac{V^2}{M_2 - V}$$
+  $$M_2 = \sum_{i=1}^{V} i^2 * f_v(i, N)$$</p></dd>
+  
+  <dt><code>"D"</code>:</dt><dd><p>Simpson's <em>D</em>  (Simpson 1949, as presented in
   Tweedie &amp; Baayen, 1998, Eq. 17) is calculated by:
   $$D = \sum_{i=1}^{V} f_v(i, N) \frac{i}{N} \frac{i-1}{N-1}$$</p></dd>
-    <dt><code>"Vm"</code>:</dt><dd><p>Herdan's \(V_m\)  (Herdan 1955, as presented in
+
+  <dt><code>"Vm"</code>:</dt><dd><p>Herdan's \(V_m\)  (Herdan 1955, as presented in
   Tweedie &amp; Baayen, 1998, Eq. 18) is calculated by:
   $$V_m = \sqrt{ \sum_{i=1}^{V} f_v(i, N) (i/N)^2 - \frac{i}{V} }$$</p></dd>
-    <dt><code>"Maas"</code>:</dt><dd><p>Maas' indices (\(a\), \(\log{V_0}\) &amp; 
+
+  <dt><code>"Maas"</code>:</dt><dd><p>Maas' indices (\(a\), \(\log{V_0}\) &amp; 
   \(\log{}_{e}{V_0}\)): $$a^2 = \frac{\log{N} -
   \log{V}}{\log{N}^2}$$ $$\log{V_0} =
   \frac{\log{V}}{\sqrt{1 - \frac{\log{V}}{\log{N}}^2}}$$ The measure was derived from a formula by
@@ -314,18 +339,22 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
   full text will be examined (see Maas, 1972, p. 67 ff. for details).  Note:
   for the current method (for a dfm) there is no computation on separate
   halves of the text.</p></dd>
-    <dt><code>"MATTR"</code>:</dt><dd><p>The Moving-Average Type-Token Ratio (Covington &amp;
-  McFall, 2010) calculates TTRs for a moving window of tokens from the first to the last token, computing a TTR for each window. 
-  The MATTR is the mean of the TTRs of each window.</p></dd>
-    <dt><code>"MSTTR"</code>:</dt><dd><p>Mean Segmental Type-Token Ratio (sometimes referred
+  
+  <dt><code>"MATTR"</code>:</dt><dd><p>The Moving-Average Type-Token Ratio (Covington &amp;
+  McFall, 2010) calculates TTRs for a moving window of tokens from the first
+  to the last token, computing a TTR for each window. The MATTR is the mean
+  of the TTRs of each window.</p></dd>
+  
+  <dt><code>"MSTTR"</code>:</dt><dd><p>Mean Segmental Type-Token Ratio (sometimes referred
   to as <em>Split TTR</em>) splits the tokens into segments of the given size,
   TTR for each segment is calculated and the mean of these values returned.
   When this value is &lt; 1.0, it splits the tokens into equal, non-overlapping
   sections of that size.  When this value is &gt; 1, it defines the segments as
   windows of that size. Tokens at the end which do not make a full segment
   are ignored.</p></dd>
-  </dl>
-    
+  
+</dl>
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Covington, M.A. &amp; McFall, J.D. (2010). 
@@ -349,11 +378,12 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
   <em>Nature</em>, 163: 688.</p>  
 <p>Tweedie. F.J. and Baayen, R.H. (1998). <a href='https://doi.org/10.1023/A:1001749303137'>How 
   Variable May a Constant Be? Measures of Lexical Richness in Perspective</a>. <em>Computers and the 
-  Humanities</em>, 32(5), 323--352.</p>
-    
+  Humanities</em>, 32(5), 323--352.</p>  
+<p>Yule, G. U. (1944)  <em>The Statistical Study of Literary Vocabulary.</em>
+  Cambridge: Cambridge University Press.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Anyway, like I was sayin', shrimp is the fruit of the sea. You can
+    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Anyway, like I was sayin', shrimp is the fruit of the sea. You can
           barbecue it, boil it, broil it, bake it, saute it."</span>,
          <span class='st'>"There's shrimp-kabobs,
           shrimp creole, shrimp gumbo. Pan fried, deep fried, stir-fried. There's
@@ -361,14 +391,14 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
           shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
           sandwich."</span>)
 <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>textstat_lexdiv</span>(<span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"K"</span>))</div><div class='output co'>#&gt;   document       TTR     CTTR         K
+    <span class='fu'>textstat_lexdiv</span>(<span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"K"</span>))</div><div class='output co'>#&gt;   document       TTR     CTTR         K
 #&gt; 1    text1 0.7916667 2.742414  798.6111
 #&gt; 2    text2 0.6060606 2.461830 1551.8825</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>textstat_lexdiv</span>(<span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"K"</span>))</div><div class='output co'>#&gt;   document       TTR     CTTR         K
+    <span class='fu'>textstat_lexdiv</span>(<span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"K"</span>))</div><div class='output co'>#&gt;   document       TTR     CTTR         K
 #&gt; 1    text1 0.7916667 2.742414  798.6111
 #&gt; 2    text2 0.6060606 2.461830 1551.8825</div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>))
-<span class='fu'>textstat_lexdiv</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"MATTR"</span>), <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt;     document     CTTR       TTR     MATTR
+<span class='fu'>textstat_lexdiv</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"MATTR"</span>), <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt;     document     CTTR       TTR     MATTR
 #&gt; 1  2001-Bush 10.37904 0.3689198 0.6885984
 #&gt; 2  2005-Bush 11.26505 0.3500724 0.6781998
 #&gt; 3 2009-Obama 12.91628 0.3736402 0.7070275
@@ -379,13 +409,9 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -396,14 +422,16 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -426,6 +454,8 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)</
 </script>
 
 
+
   </body>
 </html>
+
 

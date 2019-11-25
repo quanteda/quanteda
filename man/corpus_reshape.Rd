@@ -4,8 +4,12 @@
 \alias{corpus_reshape}
 \title{Recast the document units of a corpus}
 \usage{
-corpus_reshape(x, to = c("sentences", "paragraphs", "documents"),
-  use_docvars = TRUE, ...)
+corpus_reshape(
+  x,
+  to = c("sentences", "paragraphs", "documents"),
+  use_docvars = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{corpus whose document units will be reshaped}
@@ -25,7 +29,7 @@ A corpus object with the documents defined as the new units,
   including document-level meta-data identifying the original documents.
 }
 \description{
-For a corpus, reshape (or recast) the documents to a different level of aggregation.  
+For a corpus, reshape (or recast) the documents to a different level of aggregation.
 Units of aggregation can be defined as documents, paragraphs, or sentences.
 Because the corpus object records its current "units" status, it is possible
 to move from recast units back to original units, for example from documents,
@@ -33,8 +37,8 @@ to sentences, and then back to documents (possibly after modifying the sentences
 }
 \examples{
 # simple example
-corp1 <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-                 textwo = "Premiere phrase.  Deuxieme phrase."), 
+corp1 <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
+                 textwo = "Premiere phrase.  Deuxieme phrase."),
                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
                  metacorpus = list(notes = "Example showing how corpus_reshape() works."))
 summary(corp1)
@@ -45,7 +49,7 @@ summary(corpus_reshape(corp1, to = "sentences"), showmeta = TRUE)
 corp2para <- corpus_reshape(corp2, to = "paragraphs")
 corp2para
 summary(corp2para, 50, showmeta = TRUE)
-## Note that Bush 2005 is recorded as a single paragraph because that text 
-## used a single \\n to mark the end of a paragraph.
+## Note that Bush 2005 is recorded as a single paragraph because that text
+## used a single \n to mark the end of a paragraph.
 }
 \keyword{corpus}

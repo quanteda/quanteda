@@ -8,21 +8,25 @@
 
 <title>Extract a subset of a dfm — dfm_subset • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,14 +42,15 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Extract a subset of a dfm — dfm_subset" />
 
+<meta property="og:title" content="Extract a subset of a dfm — dfm_subset" />
 <meta property="og:description" content="Returns document subsets of a dfm that meet certain conditions,
 including direct logical operations on docvars (document-level variables). 
 dfm_subset functions identically to subset.data.frame,
 using non-standard evaluation to evaluate conditions based on the
 docvars in the dfm." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,6 +74,7 @@ docvars in the dfm." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -85,7 +91,7 @@ docvars in the dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -176,7 +182,6 @@ docvars in the dfm." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -186,7 +191,7 @@ docvars in the dfm." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,6 +202,7 @@ docvars in the dfm." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -208,17 +214,15 @@ docvars in the dfm." />
     </div>
 
     <div class="ref-description">
-    
     <p>Returns document subsets of a dfm that meet certain conditions,
 including direct logical operations on docvars (document-level variables). 
-<code>dfm_subset</code> functions identically to <code><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset.data.frame</a></code>,
+<code>dfm_subset</code> functions identically to <code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame</a></code>,
 using non-standard evaluation to evaluate conditions based on the
 <a href='docvars.html'>docvars</a> in the dfm.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>dfm_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -242,12 +246,11 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
       <td><p>not used</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><a href='dfm.html'>dfm</a> object, with a subset of documents (and docvars) selected
   according to arguments</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>To select or subset <em>features</em>, see <code><a href='dfm_select.html'>dfm_select</a></code> instead.</p>
@@ -256,16 +259,14 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
   document-level version of using <code><a href='dfm_select.html'>dfm_select</a></code> where
   <code>pattern</code> is a dfm: that function matches features, while
   <code>dfm_subset</code> will match documents.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset.data.frame</a></code></p></div>
-    
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b c d"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b e"</span>,
+    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b c d"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b e"</span>,
                      <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"b b c e"</span>, <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"e e f a b"</span>),
-                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
+                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>)
 <span class='co'># selecting on a docvars condition</span>
 <span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
@@ -274,22 +275,22 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
 #&gt; docs a b c d e f
 #&gt;   d3 0 2 1 0 1 0
 #&gt;   d4 1 1 0 0 2 1</div><div class='input'><span class='co'># selecting on a supplied vector</span>
-<span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+<span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
 #&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d1 1 1 1 1 0 0
 #&gt;   d3 0 2 1 0 1 0</div><div class='input'>
 <span class='co'># selecting on a dfm</span>
-<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
-<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
+<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
+<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
 <span class='fu'>dfm_subset</span>(<span class='no'>dfmat1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfmat2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50.0% sparse).
 #&gt; 3 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d
 #&gt;   d1 1 2 1 0
 #&gt;   d2 0 2 1 1
-#&gt;   d3 0 0 0 0</div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfmat1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfmat2</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50.0% sparse).
+#&gt;   d3 0 0 0 0</div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfmat1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfmat2</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50.0% sparse).
 #&gt; 3 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d
@@ -301,18 +302,15 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -320,8 +318,9 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -344,6 +343,8 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
 </script>
 
 
+
   </body>
 </html>
+
 

@@ -4,11 +4,19 @@
 \alias{textstat_lexdiv}
 \title{Calculate lexical diversity}
 \usage{
-textstat_lexdiv(x, measure = c("TTR", "C", "R", "CTTR", "U", "S", "K",
-  "I", "D", "Vm", "Maas", "MATTR", "MSTTR", "all"),
-  remove_numbers = TRUE, remove_punct = TRUE, remove_symbols = TRUE,
-  remove_hyphens = FALSE, log.base = 10, MATTR_window = 100L,
-  MSTTR_segment = 100L, ...)
+textstat_lexdiv(
+  x,
+  measure = c("TTR", "C", "R", "CTTR", "U", "S", "K", "I", "D", "Vm", "Maas", "MATTR",
+    "MSTTR", "all"),
+  remove_numbers = TRUE,
+  remove_punct = TRUE,
+  remove_symbols = TRUE,
+  remove_hyphens = FALSE,
+  log.base = 10,
+  MATTR_window = 100L,
+  MSTTR_segment = 100L,
+  ...
+)
 }
 \arguments{
 \item{x}{an \link{dfm} or \link{tokens} input object for whose documents

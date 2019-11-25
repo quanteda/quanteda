@@ -4,12 +4,23 @@
 \alias{tokens}
 \title{Tokenize a set of texts}
 \usage{
-tokens(x, what = c("word", "sentence", "character", "fastestword",
-  "fasterword"), remove_numbers = FALSE, remove_punct = FALSE,
-  remove_symbols = remove_punct, remove_separators = TRUE,
-  remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
-  ngrams = 1L, skip = 0L, concatenator = "_",
-  verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
+tokens(
+  x,
+  what = c("word", "sentence", "character", "fastestword", "fasterword"),
+  remove_numbers = FALSE,
+  remove_punct = FALSE,
+  remove_symbols = remove_punct,
+  remove_separators = TRUE,
+  remove_twitter = FALSE,
+  remove_hyphens = FALSE,
+  remove_url = FALSE,
+  ngrams = 1L,
+  skip = 0L,
+  concatenator = "_",
+  verbose = quanteda_options("verbose"),
+  include_docvars = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object to be tokenized}
@@ -147,8 +158,8 @@ tokens(txt3, remove_punct = TRUE, remove_twitter = TRUE)
 tokens("great website http://textasdata.com", remove_url = FALSE)
 tokens("great website http://textasdata.com", remove_url = TRUE)
 
-txt4 <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!",
-         text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
+txt4 <- c(text1="This is $10 in 999 different ways,\n up and down; left and right!",
+         text2="@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokens(txt4, verbose = TRUE)
 tokens(txt4, remove_numbers = TRUE, remove_punct = TRUE)
 tokens(txt4, remove_numbers = FALSE, remove_punct = TRUE)
@@ -165,8 +176,8 @@ tokens("Great website: http://textasdata.com?page=123.", what = "character",
 # sentence level
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
            "Today is Thursday in Canberra:  It is yesterday in London.",
-           "Today is Thursday in Canberra:  \\nIt is yesterday in London.",
-           "To be?  Or\\nnot to be?"),
+           "Today is Thursday in Canberra:  \nIt is yesterday in London.",
+           "To be?  Or\nnot to be?"),
           what = "sentence")
 tokens(data_corpus_inaugural[c(2,40)], what = "sentence")
 

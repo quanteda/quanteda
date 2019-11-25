@@ -87,21 +87,21 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Kenneth Benoit \email{kbenoit@lse.ac.uk} (0000-0002-0797-564X) [copyright holder]
+\strong{Maintainer}: Kenneth Benoit \email{kbenoit@lse.ac.uk} (\href{https://orcid.org/0000-0002-0797-564X}{ORCID}) [copyright holder]
 
 Authors:
 \itemize{
-  \item Kohei Watanabe \email{watanabe.kohei@gmail.com} (0000-0001-6519-5265)
-  \item Haiyan Wang \email{whyinsa@yahoo.com} (0000-0003-4992-4311)
-  \item Paul Nulty \email{paul.nulty@gmail.com} (0000-0002-7214-4666)
-  \item Adam Obeng \email{quanteda@binaryeagle.com} (0000-0002-2906-4775)
-  \item Stefan Müller \email{mullers@tcd.ie} (0000-0002-6315-4125)
-  \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (0000-0002-3323-6330)
+  \item Kohei Watanabe \email{watanabe.kohei@gmail.com} (\href{https://orcid.org/0000-0001-6519-5265}{ORCID})
+  \item Haiyan Wang \email{whyinsa@yahoo.com} (\href{https://orcid.org/0000-0003-4992-4311}{ORCID})
+  \item Paul Nulty \email{paul.nulty@gmail.com} (\href{https://orcid.org/0000-0002-7214-4666}{ORCID})
+  \item Adam Obeng \email{quanteda@binaryeagle.com} (\href{https://orcid.org/0000-0002-2906-4775}{ORCID})
+  \item Stefan Müller \email{mullers@tcd.ie} (\href{https://orcid.org/0000-0002-6315-4125}{ORCID})
+  \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (\href{https://orcid.org/0000-0002-3323-6330}{ORCID})
   \item Jiong Wei Lua \email{J.W.Lua@lse.ac.uk}
-  \item Patrick O. Perry \email{patperry@gmail.com} (0000-0001-7460-127X)
-  \item Jouni Kuha \email{j.kuha@lse.ac.uk} (0000-0002-1156-8465)
-  \item Benjamin Lauderdale \email{b.e.lauderdale@lse.ac.uk} (0000-0003-3090-0969)
-  \item William Lowe \email{wlowe@princeton.edu} (0000-0002-1549-6163)
+  \item Patrick O. Perry \email{patperry@gmail.com} (\href{https://orcid.org/0000-0001-7460-127X}{ORCID})
+  \item Jouni Kuha \email{j.kuha@lse.ac.uk} (\href{https://orcid.org/0000-0002-1156-8465}{ORCID})
+  \item Benjamin Lauderdale \email{b.e.lauderdale@lse.ac.uk} (\href{https://orcid.org/0000-0003-3090-0969}{ORCID})
+  \item William Lowe \email{wlowe@princeton.edu} (\href{https://orcid.org/0000-0002-1549-6163}{ORCID})
 }
 
 Other contributors:

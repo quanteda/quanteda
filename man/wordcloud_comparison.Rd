@@ -4,11 +4,33 @@
 \alias{wordcloud_comparison}
 \title{Internal function for textplot_wordcloud}
 \usage{
-wordcloud_comparison(x, min_size, max_size, min_count, max_words, color,
-  font, adjust, rotation, random_order, random_color, ordered_color,
-  labelcolor, labelsize, labeloffset, fixed_aspect, colors, scale,
-  min.freq, max.words, random.order, rot.per, use.r.layout, title.size,
-  ...)
+wordcloud_comparison(
+  x,
+  min_size,
+  max_size,
+  min_count,
+  max_words,
+  color,
+  font,
+  adjust,
+  rotation,
+  random_order,
+  random_color,
+  ordered_color,
+  labelcolor,
+  labelsize,
+  labeloffset,
+  fixed_aspect,
+  colors,
+  scale,
+  min.freq,
+  max.words,
+  random.order,
+  rot.per,
+  use.r.layout,
+  title.size,
+  ...
+)
 }
 \arguments{
 \item{x}{a dfm object}

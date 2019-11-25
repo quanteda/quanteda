@@ -8,10 +8,12 @@
 
 <title>Version 1.4 • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -40,7 +42,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+
 <meta property="og:title" content="Version 1.4" />
+
 
 
 
@@ -81,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -172,7 +176,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -203,13 +206,13 @@
       
     </div>
 
-    <div id="quanteda-1-4-0" class="section level1">
+    <div id="quanteda-140" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1-4-0" class="anchor"></a>quanteda 1.4.0<small> 2019-01-30 </small>
+<a href="#quanteda-140" class="anchor"></a>quanteda 1.4.0<small> 2019-01-30 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-4" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed bug in <code><a href="../reference/dfm_compress.html">dfm_compress()</a></code> and <code><a href="../reference/dfm_group.html">dfm_group()</a></code> that changed or deleted docvars attributes of dfm objects (#1506).</li>
 <li>Fixed a bug in <code><a href="../reference/textplot_xray.html">textplot_xray()</a></code> that caused incorrect facet labels when a pattern contained multiple list elements or values (#1514).</li>
@@ -218,9 +221,9 @@
 <li>Implemented some improvements in efficiency and computation of unusual edge cases for <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code>.</li>
 </ul>
 </div>
-<div id="new-features-1" class="section level2">
+<div id="new-features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h2>
+<a href="#new-features-3" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> now works on tokens objects, not just dfm objects. New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington &amp; McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).</li>
@@ -241,26 +244,26 @@
 </ul>
 </div>
 </div>
-    <div id="quanteda-1-4-1" class="section level1">
+    <div id="quanteda-141" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1-4-1" class="anchor"></a>quanteda 1.4.1<small> 2019-02-26 </small>
+<a href="#quanteda-141" class="anchor"></a>quanteda 1.4.1<small> 2019-02-26 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed an issue with special handling of whitespace variants that caused a test to fail when running Ubuntu 18.10 system with libicu-dev version 63.1 (#1604).</li>
 <li>Fixed the operation of <code>docvars&lt;-.corpus()</code> in a way that solves #1603 (reassignment of docvar names).</li>
 </ul>
 </div>
 </div>
-    <div id="quanteda-1-4-3" class="section level1">
+    <div id="quanteda-143" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1-4-3" class="anchor"></a>quanteda 1.4.3<small> 2019-04-01 </small>
+<a href="#quanteda-143" class="anchor"></a>quanteda 1.4.3<small> 2019-04-01 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Changed the default value of the <code>size</code> argument in <code><a href="../reference/dfm_sample.html">dfm_sample()</a></code> to the number of features, not the number of documents. (#1643)</li>
 <li>Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)</li>
@@ -282,9 +285,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-1-4-0">1.4.0</a></li>
-        <li><a href="#quanteda-1-4-1">1.4.1</a></li>
-        <li><a href="#quanteda-1-4-3">1.4.3</a></li>
+        <li><a href="#quanteda-140">1.4.0</a></li>
+        <li><a href="#quanteda-141">1.4.1</a></li>
+        <li><a href="#quanteda-143">1.4.3</a></li>
       </ul>
     </div>
   </div>
@@ -298,7 +301,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

@@ -4,9 +4,15 @@
 \alias{textstat_readability}
 \title{Calculate readability}
 \usage{
-textstat_readability(x, measure = "Flesch", remove_hyphens = TRUE,
-  min_sentence_length = 1, max_sentence_length = 10000,
-  intermediate = FALSE, ...)
+textstat_readability(
+  x,
+  measure = "Flesch",
+  remove_hyphens = TRUE,
+  min_sentence_length = 1,
+  max_sentence_length = 10000,
+  intermediate = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}
@@ -399,7 +405,7 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
   Psychology}, 60(2), 283.
 
   Dale, E. and Chall, J.S. (1948).
-  \href{https://www.jstor.org/stable/pdf/1473669}{A Formula for Predicting
+  \href{https://www.jstor.org/stable/1473169}{A Formula for Predicting
   Readability: Instructions}. \emph{Educational Research Bulletin}, 37-54.
 
   Chall, J.S. and Dale, E. (1995). \emph{Readability Revisited: The New
@@ -438,7 +444,7 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
   Gunning, R. (1952). \emph{The Technique of Clear Writing}.  New York: McGraw-Hill.
   
   Klare, G.R. (1975).
-  \href{https://www.jstor.org/stable/pdf/747086}{Assessing Readability}.
+  \href{https://www.jstor.org/stable/747086}{Assessing Readability}.
   \emph{Reading Research Quarterly}, 10(1), 62-102.
   
   Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S. (1975).
@@ -471,7 +477,7 @@ Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and
   Entwicklungspsychologie und Pädagogische Psychologie}, 16(3), 231--244.
 
   Wheeler, L.R. & Smith, E.H. (1954).
-  \href{https://www.jstor.org/stable/pdf/41384251}{A Practical Readability
+  \href{https://www.jstor.org/stable/41384251}{A Practical Readability
   Formula for the Classroom Teacher in the Primary Grades}. \emph{Elementary
   English}, 31, 397--399.
 

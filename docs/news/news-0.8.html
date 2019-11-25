@@ -8,10 +8,12 @@
 
 <title>Version 0.8 • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -40,7 +42,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+
 <meta property="og:title" content="Version 0.8" />
+
 
 
 
@@ -81,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -172,7 +176,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -203,9 +206,9 @@
       
     </div>
 
-    <div id="quanteda-0-8-0" class="section level1">
+    <div id="quanteda-080" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-8-0" class="anchor"></a>quanteda 0.8.0<small> Unreleased </small>
+<a href="#quanteda-080" class="anchor"></a>quanteda 0.8.0<small> Unreleased </small>
 </h1>
 <div id="syntax-changes-and-workflow-streamlining" class="section level2">
 <h2 class="hasAnchor">
@@ -245,18 +248,18 @@
 <li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector> and <code>concatenator = "_"</code>. The new arguments to <code>tokenize()</code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
 </ul>
 </div>
-<div id="bug-fixes-12" class="section level2">
+<div id="bug-fixes-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-12" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-13" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>fixed a problem in <code>textfile()</code> causing it to fail on Windows machines when loading <code>*.txt</code></p></li>
 <li><p>nsentence() was not counting sentences correctly if the text was lower-cased - now issues an error if no upper-case characters are detected. This was also causing readability() to fail.</p></li>
 </ul>
 </div>
 </div>
-    <div id="quanteda-0-8-2" class="section level1">
+    <div id="quanteda-082" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-8-2" class="anchor"></a>quanteda 0.8.2<small> Unreleased </small>
+<a href="#quanteda-082" class="anchor"></a>quanteda 0.8.2<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>0.8.2-1: Changed R version dependency to 3.2.0 so that Mac binary would build on CRAN.</p></li>
@@ -277,9 +280,9 @@ Code is also much simpler, based on using three new functions that are also avai
 </ul>
 </li>
 </ul>
-<div id="bug-fixes-11" class="section level2">
+<div id="bug-fixes-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-11" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-12" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li>fixed the problem that document names were getting erased in corpus() because stringi functions were removing them</li>
 <li>fixed problem in tokenize(x, “character”, removePunct = TRUE) that deleted texts that had no punctuation to begin with</li>
@@ -315,9 +318,9 @@ Code is also much simpler, based on using three new functions that are also avai
 </ul>
 </div>
 </div>
-    <div id="quanteda-0-8-4" class="section level1">
+    <div id="quanteda-084" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-8-4" class="anchor"></a>quanteda 0.8.4<small> Unreleased </small>
+<a href="#quanteda-084" class="anchor"></a>quanteda 0.8.4<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>ngrams() rewritten to accept fully vectorized arguments for <code>n</code> and for <code>window</code>, thus implementing “skip-grams”. Separate function skipgrams() behaves in the standard “skipgram” fashion. bigrams(), deprecated since 0.7, has been removed from the namespace.</p></li>
@@ -326,9 +329,9 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)</p></li>
 <li><p>textfile() now works on zip archives of *.txt files, although this may not be entirely portable.</p></li>
 </ul>
-<div id="bug-fixes-10" class="section level2">
+<div id="bug-fixes-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-10" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-11" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern</p></li>
 <li><p>corpus() previously removed document names, now fixed</p></li>
@@ -336,9 +339,9 @@ Code is also much simpler, based on using three new functions that are also avai
 </ul>
 </div>
 </div>
-    <div id="quanteda-0-8-6" class="section level1">
+    <div id="quanteda-086" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-8-6" class="anchor"></a>quanteda 0.8.6<small> Unreleased </small>
+<a href="#quanteda-086" class="anchor"></a>quanteda 0.8.6<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>removeFeatures.dfm(x, stopwords), selectFeatures.dfm(x, features), and dfm(x, ignoredFeatures) now work on objects created with ngrams. (Any ngram containing a stopword is removed.) Performance on these functions is already good but will be improved further soon.</p></li>
@@ -350,9 +353,9 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>Updated <code>corpus.VCorpus()</code> to work with recent updates to the <strong>tm</strong> package.</p></li>
 <li><p>added print method for tokenizedTexts</p></li>
 </ul>
-<div id="bug-fixes-9" class="section level2">
+<div id="bug-fixes-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-9" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-10" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>fixed signature error message caused by <code>weight(x, "relFreq")</code> and <code>weight(x, "tfidf")</code>. Both now correctly produce objects of class dfmSparse.</p></li>
 <li><p>fixed bug in dfm(, keptFeatures = “whatever”) that passed it through as a glob rather than a regex to selectFeatures(). Now takes a regex, as per the manual description.</p></li>
@@ -367,10 +370,10 @@ Code is also much simpler, based on using three new functions that are also avai
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-0-8-0">0.8.0</a></li>
-        <li><a href="#quanteda-0-8-2">0.8.2</a></li>
-        <li><a href="#quanteda-0-8-4">0.8.4</a></li>
-        <li><a href="#quanteda-0-8-6">0.8.6</a></li>
+        <li><a href="#quanteda-080">0.8.0</a></li>
+        <li><a href="#quanteda-082">0.8.2</a></li>
+        <li><a href="#quanteda-084">0.8.4</a></li>
+        <li><a href="#quanteda-086">0.8.6</a></li>
       </ul>
     </div>
   </div>
@@ -384,7 +387,7 @@ Code is also much simpler, based on using three new functions that are also avai
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

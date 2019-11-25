@@ -4,11 +4,26 @@
 \alias{textplot_wordcloud}
 \title{Plot features as a wordcloud}
 \usage{
-textplot_wordcloud(x, min_size = 0.5, max_size = 4, min_count = 3,
-  max_words = 500, color = "darkblue", font = NULL, adjust = 0,
-  rotation = 0.1, random_order = FALSE, random_color = FALSE,
-  ordered_color = FALSE, labelcolor = "gray20", labelsize = 1.5,
-  labeloffset = 0, fixed_aspect = TRUE, ..., comparison = FALSE)
+textplot_wordcloud(
+  x,
+  min_size = 0.5,
+  max_size = 4,
+  min_count = 3,
+  max_words = 500,
+  color = "darkblue",
+  font = NULL,
+  adjust = 0,
+  rotation = 0.1,
+  random_order = FALSE,
+  random_color = FALSE,
+  ordered_color = FALSE,
+  labelcolor = "gray20",
+  labelsize = 1.5,
+  labeloffset = 0,
+  fixed_aspect = TRUE,
+  ...,
+  comparison = FALSE
+)
 }
 \arguments{
 \item{x}{a dfm object}

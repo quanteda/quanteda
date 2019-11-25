@@ -5,11 +5,21 @@
 \alias{char_trim}
 \title{Remove sentences based on their token lengths or a pattern match}
 \usage{
-corpus_trim(x, what = c("sentences", "paragraphs", "documents"),
-  min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL)
+corpus_trim(
+  x,
+  what = c("sentences", "paragraphs", "documents"),
+  min_ntoken = 1,
+  max_ntoken = NULL,
+  exclude_pattern = NULL
+)
 
-char_trim(x, what = c("sentences", "paragraphs", "documents"),
-  min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL)
+char_trim(
+  x,
+  what = c("sentences", "paragraphs", "documents"),
+  min_ntoken = 1,
+  max_ntoken = NULL,
+  exclude_pattern = NULL
+)
 }
 \arguments{
 \item{x}{\link{corpus} or character object whose sentences will be selected.}

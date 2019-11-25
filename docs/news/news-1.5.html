@@ -8,10 +8,12 @@
 
 <title>Version 1.5 • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -40,7 +42,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+
 <meta property="og:title" content="Version 1.5" />
+
 
 
 
@@ -81,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -172,7 +176,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -203,13 +206,13 @@
       
     </div>
 
-    <div id="quanteda-1-5-0" class="section level1">
+    <div id="quanteda-150" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-1-5-0" class="anchor"></a>quanteda 1.5.0<small> 2019-07-04 </small>
+<a href="#quanteda-150" class="anchor"></a>quanteda 1.5.0<small> 2019-07-04 </small>
 </h1>
-<div id="new-features" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-2" class="anchor"></a>New features</h2>
 <ul>
 <li>Add <code>flatten</code> and <code>levels</code> arguments to <code>as.list.dictionary2()</code> to enable more flexible conversion of dictionary objects. (#1661)</li>
 <li>In <code><a href="../reference/corpus_sample.html">corpus_sample()</a></code>, the <code>size</code> now works with the <code>by</code> argument, to control the size of units sampled from each group.</li>
@@ -230,9 +233,9 @@
 <li>The default values for <code>max_nchar</code> and <code>min_nchar</code> in <code><a href="../reference/tokens_select.html">tokens_select()</a></code> are now NULL, meaning they are not applied if the user does not supply values. Fixes #1713.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>
 <code>kwic.corpus()</code> and <code>kwic.tokens()</code> behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (#1684)</li>
@@ -242,13 +245,57 @@
 </ul>
 </div>
 </div>
+    <div id="quanteda-151" class="section level1">
+<h1 class="page-header">
+<a href="#quanteda-151" class="anchor"></a>quanteda 1.5.1<small> 2019-07-30 </small>
+</h1>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"></a>New features</h2>
+<ul>
+<li>Added <code>omit_empty</code> as an argument to <code><a href="../reference/convert.html">convert()</a></code>, to allow the user to control whether empty documents are excluded from converted dfm objects for certain formats. (#1660)</li>
+</ul>
+</div>
+<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<ul>
+<li>Fixed a bug that affects the new <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code>. (#1730)</li>
+<li>Fixed a bug in how <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> class symmetric matrices.</li>
+</ul>
+</div>
+</div>
+    <div id="quanteda-152" class="section level1">
+<h1 class="page-header">
+<a href="#quanteda-152" class="anchor"></a>quanteda 1.5.2<small> Unreleased </small>
+</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>Added Yule’s I to <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>.</li>
+<li>Added forward compatibility for newer (v2) corpus class objects.</li>
+<li>Added a new function <code><a href="../reference/featfreq.html">featfreq()</a></code> to compute the overall feature frequencies from a dfm.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed a bug in <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> when <code>exclusive = FALSE</code> and the tokens object has paddings. (#1743)</li>
+<li>Fixed a bug in <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code> (#1765).</li>
+</ul>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-1-5-0">1.5.0</a></li>
+        <li><a href="#quanteda-150">1.5.0</a></li>
+        <li><a href="#quanteda-151">1.5.1</a></li>
+        <li><a href="#quanteda-152">1.5.2</a></li>
       </ul>
     </div>
   </div>
@@ -262,7 +309,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

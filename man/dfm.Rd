@@ -4,9 +4,19 @@
 \alias{dfm}
 \title{Create a document-feature matrix}
 \usage{
-dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
-  dictionary = NULL, thesaurus = NULL, valuetype = c("glob", "regex",
-  "fixed"), groups = NULL, verbose = quanteda_options("verbose"), ...)
+dfm(
+  x,
+  tolower = TRUE,
+  stem = FALSE,
+  select = NULL,
+  remove = NULL,
+  dictionary = NULL,
+  thesaurus = NULL,
+  valuetype = c("glob", "regex", "fixed"),
+  groups = NULL,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object}

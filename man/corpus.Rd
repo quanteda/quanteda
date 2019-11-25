@@ -11,18 +11,34 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
-  docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x),
-  compress = FALSE, ...)
+\method{corpus}{corpus}(
+  x,
+  docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x),
+  metacorpus = quanteda::metacorpus(x),
+  compress = FALSE,
+  ...
+)
 
-\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
-  metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{character}(
+  x,
+  docnames = NULL,
+  docvars = NULL,
+  metacorpus = NULL,
+  compress = FALSE,
+  ...
+)
 
-\method{corpus}{data.frame}(x, docid_field = "doc_id",
-  text_field = "text", metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{data.frame}(
+  x,
+  docid_field = "doc_id",
+  text_field = "text",
+  metacorpus = NULL,
+  compress = FALSE,
+  ...
+)
 
-\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE,
-  ...)
+\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE, ...)
 
 \method{corpus}{Corpus}(x, metacorpus = NULL, compress = FALSE, ...)
 }

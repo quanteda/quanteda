@@ -145,7 +145,8 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
 test_that("non-exclusive lookup is working",{
     
     toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
-                     d2 = "Let freedom ring in the United States!"),
+                     d2 = "Let freedom ring in the United States!",
+                     d3 = "Aliens are invading Mars"),
                    remove_punct = TRUE)
     dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
                             "law words" = c('law*', 'constitution'), 
@@ -153,13 +154,15 @@ test_that("non-exclusive lookup is working",{
                             overlap = "United"))
     
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
-                 list(d1=c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
-                      d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP")))
+                 list(d1 = c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
+                      d2 = c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
     
     toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
     expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = TRUE)),
-                 list(d1=c("COUNTRY", "signed", "", "new", "FREEDOM", "LAW WORDS", "", "COUNTRY"),
-                      d2=c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP")))
+                 list(d1 = c("COUNTRY", "signed", "", "new", "FREEDOM", "LAW WORDS", "", "COUNTRY"),
+                      d2 = c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP"),
+                      d3 = c("Aliens", "", "invading", "Mars")))
     
 })
 

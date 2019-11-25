@@ -5,8 +5,7 @@
 \alias{is.dictionary}
 \title{Coercion and checking functions for dictionary objects}
 \usage{
-as.dictionary(x, format = c("tidytext"), separator = " ",
-  tolower = FALSE)
+as.dictionary(x, format = c("tidytext"), separator = " ", tolower = FALSE)
 
 is.dictionary(x)
 }

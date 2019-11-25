@@ -6,10 +6,18 @@
 \alias{tokens_keep}
 \title{Select or remove tokens from a tokens object}
 \usage{
-tokens_select(x, pattern, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, window = 0, min_nchar = NULL, max_nchar = NULL,
-  verbose = quanteda_options("verbose"))
+tokens_select(
+  x,
+  pattern,
+  selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  padding = FALSE,
+  window = 0,
+  min_nchar = NULL,
+  max_nchar = NULL,
+  verbose = quanteda_options("verbose")
+)
 
 tokens_remove(x, ...)
 

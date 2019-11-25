@@ -4,11 +4,19 @@
 \alias{textmodel_wordfish}
 \title{Wordfish text model}
 \usage{
-textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
-  tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersion_level = c("feature", "overall"), dispersion_floor = 0,
-  sparse = FALSE, abs_err = FALSE, svd_sparse = TRUE,
-  residual_floor = 0.5)
+textmodel_wordfish(
+  x,
+  dir = c(1, 2),
+  priors = c(Inf, Inf, 3, 1),
+  tol = c(1e-06, 1e-08),
+  dispersion = c("poisson", "quasipoisson"),
+  dispersion_level = c("feature", "overall"),
+  dispersion_floor = 0,
+  sparse = FALSE,
+  abs_err = FALSE,
+  svd_sparse = TRUE,
+  residual_floor = 0.5
+)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}

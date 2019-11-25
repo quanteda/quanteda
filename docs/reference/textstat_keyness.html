@@ -8,21 +8,25 @@
 
 <title>Calculate keyness statistics — textstat_keyness • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,13 +42,14 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Calculate keyness statistics — textstat_keyness" />
 
+<meta property="og:title" content="Calculate keyness statistics — textstat_keyness" />
 <meta property="og:description" content="Calculate &quot;keyness&quot;, a score for features that occur differentially across 
 different categories.  Here, the categories are defined by reference to a
 &quot;target&quot; document index in the dfm, with the reference group
 consisting of all other documents." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -68,6 +73,7 @@ consisting of all other documents." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -84,7 +90,7 @@ consisting of all other documents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -175,7 +181,6 @@ consisting of all other documents." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -185,7 +190,7 @@ consisting of all other documents." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -196,6 +201,7 @@ consisting of all other documents." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -207,18 +213,20 @@ consisting of all other documents." />
     </div>
 
     <div class="ref-description">
-    
     <p>Calculate "keyness", a score for features that occur differentially across 
 different categories.  Here, the categories are defined by reference to a
 "target" document index in the <a href='dfm.html'>dfm</a>, with the reference group
 consisting of all other documents.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_keyness</span>(<span class='no'>x</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>,
-  <span class='st'>"pmi"</span>), <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>,
-  <span class='st'>"none"</span>))</pre>
-    
+    <pre class="usage"><span class='fu'>textstat_keyness</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>, <span class='st'>"pmi"</span>),
+  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>)
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -255,7 +263,7 @@ measure.  Specifying a correction for the <code>"exact"</code> and <code>"pmi"</
 measures has no effect and produces a warning.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a data.frame of computed statistics and associated p-values, where 
@@ -268,7 +276,6 @@ measures has no effect and produces a warning.</p></td>
   mutual information statistics.</p>
 <p><code>textstat_keyness</code> returns a data.frame of features and
   their keyness scores and frequency counts.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Bondi, M. &amp; Scott, M. (eds) (2010). <em>Keyness in 
@@ -280,13 +287,12 @@ measures has no effect and produces a warning.</p></td>
   Analysis in Language Education</em>. Amsterdam: Benjamins: 55.</p>  
 <p>Dunning, T. (1993). <a href='https://dl.acm.org/citation.cfm?id=972454'>Accurate Methods 
   for the Statistics of Surprise and Coincidence</a>. <em>Computational Linguistics</em>, 19(1): 61--74.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># compare pre- v. post-war terms using grouping</span>
-<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
+<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>dfmat1</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>dfmat1</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat1</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>dfmat1</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
 #&gt; 1         we 702.0019 0      960         779
 #&gt; 2          - 395.1361 0      450         312
 #&gt; 3          . 226.6654 0     1804        3141
@@ -296,7 +302,7 @@ measures has no effect and produces a warning.</p></td>
 #&gt; 7    america 176.6114 0      130          54
 #&gt; 8      world 175.1354 0      188         123
 #&gt; 9  americans 150.6480 0       67           7
-#&gt; 10       new 141.3690 0      150          97</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='no'>tstat1</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
+#&gt; 10       new 141.3690 0      150          97</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>tstat1</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
 #&gt; 9348         upon  -51.91189 5.804246e-13       39         332
 #&gt; 9349           it  -52.69911 3.888001e-13      257        1132
 #&gt; 9350       public  -55.99225 7.271961e-14       11         213
@@ -309,7 +315,7 @@ measures has no effect and produces a warning.</p></td>
 #&gt; 9357          the -299.85716 0.000000e+00     1988        8094</div><div class='input'>
 <span class='co'># compare pre- v. post-war terms using logical vector</span>
 <span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
 #&gt; 1         we 702.0019 0      960         779
 #&gt; 2          - 395.1361 0      450         312
 #&gt; 3          . 226.6654 0     1804        3141
@@ -322,7 +328,7 @@ measures has no effect and produces a warning.</p></td>
 #&gt; 10       new 141.3690 0      150          97</div><div class='input'>
 <span class='co'># compare Trump 2017 to other post-war preseidents</span>
 <span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>period</span> <span class='kw'>==</span> <span class='st'>"post-war"</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat3</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;         feature     chi2            p n_target n_reference
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat3</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;         feature     chi2            p n_target n_reference
 #&gt; 1     protected 76.64466 0.000000e+00        5           1
 #&gt; 2          will 51.44795 7.351897e-13       40         299
 #&gt; 3         while 48.23022 3.790079e-12        6           7
@@ -334,7 +340,7 @@ measures has no effect and produces a warning.</p></td>
 #&gt; 9          your 26.67898 2.402201e-07       11          50
 #&gt; 10 transferring 25.54569 4.320292e-07        2           0</div><div class='input'>
 <span class='co'># using the likelihood ratio method</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='no'>dfmat3</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature        G2            p n_target n_reference
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='no'>dfmat3</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature        G2            p n_target n_reference
 #&gt; 1       will 24.604106 7.040156e-07       41         317
 #&gt; 2    america 14.040255 1.789387e-04       19         130
 #&gt; 3       your 10.435140 1.236402e-03       12          68
@@ -350,16 +356,14 @@ measures has no effect and produces a warning.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -367,8 +371,9 @@ measures has no effect and produces a warning.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -391,6 +396,8 @@ measures has no effect and produces a warning.</p></td>
 </script>
 
 
+
   </body>
 </html>
+
 
