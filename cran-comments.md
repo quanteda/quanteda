@@ -2,11 +2,13 @@
 
 ## Purpose
     
-- Fixes a few bugs from the 1.5.0 release.
+- Some bug fixes.
+- Added a few minor features.
+- Added future compatibility in anticipation of the migration to v2 corpus object classes.
 
 ## Test environments
 
-* local macOS 10.14.5, R 3.6.1
+* local macOS 10.14.6, R 3.6.1
 * ubuntu Ubuntu 18.04 LTS and 18.10, R 3.6.1
 * Windows Server 2012 R2 x64 (build 9600), R 3.6.1 (on Appveyor)
 * local Windows 10, R 3.6.1
@@ -23,7 +25,15 @@ None.
 Some of the URLs linking to JSTOR articles in `textstat_readability.Rd` generate these:
 ```
 Found the following (possibly) invalid URLs:
-  URL: https://www.jstor.org/stable/1433978
+  URL: https://www.jstor.org/stable/pdf/1473669
+    From: man/textstat_readability.Rd
+    Status: 403
+    Message: Forbidden
+  URL: https://www.jstor.org/stable/pdf/41384251
+    From: man/textstat_readability.Rd
+    Status: 403
+    Message: Forbidden
+  URL: https://www.jstor.org/stable/pdf/747086
     From: man/textstat_readability.Rd
     Status: 403
     Message: Forbidden
@@ -34,6 +44,4 @@ In some tests we also see a NOTE that the installed size is approx. 6.6Mb.
 
 ## Downstream dependencies
 
-No errors, warnings, or notes were caused in other packages, using `revdepcheck::revdep_check()` to confirm, *except*:
-
-The **RNewsflow** package had a problem in executing an example but I fixed this in a pull request to that package (https://github.com/kasperwelbers/RNewsflow/pull/4) that has now been merged.  The maintainer Kasper Welbers (kasperwelbers@gmail.com) is planning to refresh the CRAN version today.
+No errors, warnings, or notes were caused in other packages.
