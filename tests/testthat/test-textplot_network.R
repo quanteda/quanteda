@@ -1,6 +1,7 @@
 context("test textplot_network.R")
 
 test_that("test textplot_network", {
+    skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
@@ -16,8 +17,8 @@ test_that("test textplot_network", {
 
 
 test_that("test textplot_network works with vectorlized argument", {
+    skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
-    
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     expect_silent(textplot_network(testfcm, vertex_color = rep(c(1, 2), nrow(testfcm) / 2)))
     expect_silent(textplot_network(testfcm, vertex_size = rowSums(testfcm) / 5))
@@ -32,6 +33,7 @@ test_that("textplot_network error when fcm is too large", {
 })
 
 test_that("test textplot_network font-selection", {
+    skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
