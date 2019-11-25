@@ -131,7 +131,7 @@ corpseg1 <- corpus_segment(corp1, pattern = "##*")
 cbind(texts(corpseg1), docvars(corpseg1), metadoc(corpseg1))
 
 # segmenting a transcript based on speaker identifiers
-corp2 <- corpus("Mr. Smith: Text.\\nMrs. Jones: More text.\\nMr. Smith: I'm speaking, again.")
+corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
 corpseg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
                             valuetype = "regex")
 cbind(texts(corpseg2), docvars(corpseg2), metadoc(corpseg2))
