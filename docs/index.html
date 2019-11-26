@@ -165,31 +165,61 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-
-<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://travis-ci.org/quanteda/quanteda"><img src="https://travis-ci.org/quanteda/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Appveyor Build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a></p>
-<div id="about" class="section level2">
-<h2 class="hasAnchor">
-<a href="#about" class="anchor"></a>About</h2>
-<p>An R package for managing and analyzing text, created by <a href="http://kenbenoit.net">Kenneth Benoit</a>. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
-<p>For more details, see <a href="https://quanteda.io" class="uri">https://quanteda.io</a>.</p>
-</div>
+<div id="quanteda-quantitative-analysis-of-textual-data" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#quanteda-quantitative-analysis-of-textual-data" class="anchor"></a>quanteda: Quantitative Analysis of Textual Data</h1></div>
+<p><strong>quanteda</strong> is an R package for managing and analyzing textual data developed by <a href="http://kenbenoit.net">Kenneth Benoit</a> and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
+<p>The package is designed for R users needing to apply natural language processing to texts, from documents to final analysis. Its capabilities match or exceed those provided in many end-user software applications, many of which are expensive and not open source. The package is therefore of great benefit to researchers, students, and other analysts with fewer financial resources. While using <strong>quanteda</strong> requires R programming knowledge, its API is designed to enable powerful, efficient analysis with a minimum of steps. By emphasizing consistent design, furthermore, <strong>quanteda</strong> lowers the barriers to learning and using NLP and quantitative text analysis even for proficient R programmers.</p>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
 <p>The normal way from CRAN, using your R GUI or</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>) </a></code></pre></div>
 <p>Or for the latest development version:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># devtools package required to install quanteda from Github </span></a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># devtools package required to install quanteda from Github </span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) </a></code></pre></div>
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
 <p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
 <p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build). If you are still getting errors related to gfortran, follow the fixes <a href="https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/">here</a>.</p>
 </div>
+<div id="system-requirements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#system-requirements" class="anchor"></a>System Requirements</h2>
+<p><strong>quanteda</strong> is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyse. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same).</p>
+<table class="table">
+<thead><tr class="header">
+<th></th>
+<th style="text-align: center;">Minimum</th>
+<th style="text-align: center;">Recommended</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>OS</td>
+<td style="text-align: center;">Windows/MacOS/Linux</td>
+<td style="text-align: center;">MacOS/Linux</td>
+</tr>
+<tr class="even">
+<td>CPU</td>
+<td style="text-align: center;">1 core</td>
+<td style="text-align: center;">4 cores or more</td>
+</tr>
+<tr class="odd">
+<td>RAM</td>
+<td style="text-align: center;">2GB</td>
+<td style="text-align: center;">8GB more more</td>
+</tr>
+<tr class="even">
+<td>IDE</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">R Studio</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="how-to-use" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-use" class="anchor"></a>How to Use</h2>
-<p>See the <a href="https://quanteda.io/articles/pkgdown/quickstart.html">quick start guide</a> to learn how to use <strong>quanteda</strong>.</p>
+<p>See the <a href="https://quanteda.io/articles/quickstart.html">quick start guide</a> to learn how to use <strong>quanteda</strong>.</p>
 </div>
 <div id="how-to-cite" class="section level2">
 <h2 class="hasAnchor">
@@ -213,7 +243,7 @@
 <li>Contact <a href="mailto:kbenoit@lse.ac.uk">the maintainer</a> by email.</li>
 </ul>
 </div>
-
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -259,13 +289,7 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="http://quanteda.io"><img src="https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg" alt="quanteda: quantitative analysis of textual data"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
 

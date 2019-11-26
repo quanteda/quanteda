@@ -114,9 +114,6 @@ grouping variable." />
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
-    <li>
-      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -324,15 +321,10 @@ column is omitted from the returned data.frame.</p></dd>
     <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() +
     <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Frequency"</span>)</div><div class='img'><img src='textstat_frequency-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot relative frequencies by group</span>
-<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm_group.html'>dfm_group</a></span>(<span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
-
+<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>
+    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>)</div><div class='output co'>#&gt; <span class='error'>Error in corpus_subset(Year &gt; 2000): object 'Year' not found</span></div><div class='input'>    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.dfm(x): argument "x" is missing, with no default</span></div><div class='input'>    <span class='fu'><a href='dfm_group.html'>dfm_group</a></span>(<span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in dfm_group.default(groups = "President"): dfm_group() only works on dfm objects.</span></div><div class='input'>    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in dfm_weight.default(scheme = "prop"): dfm_weight() only works on dfm objects.</span></div><div class='input'>
 <span class='co'># calculate relative frequency by president</span>
-<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>dfmat3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)
-
+<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>dfmat3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in textstat_frequency.default(dfmat3, n = 10, groups = "President"): textstat_frequency() only works on dfm objects.</span></div><div class='input'>
 <span class='co'># plot frequencies</span>
 <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>tstat2</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>tstat2</span>):<span class='fl'>1</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>frequency</span>)) +
     <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
@@ -340,7 +332,7 @@ column is omitted from the returned data.frame.</p></dd>
     <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() +
     <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_discrete.html'>scale_x_discrete</a></span>(<span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>tstat2</span>):<span class='fl'>1</span>,
                        <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>tstat2</span>$<span class='no'>feature</span>) +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Relative frequency"</span>)</div><div class='img'><img src='textstat_frequency-2.png' alt='' width='700' height='433' /></div><div class='input'># }
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Relative frequency"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ggplot(data = tstat2, aes(x = factor(nrow(tstat2):1), y = frequency)): object 'tstat2' not found</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
