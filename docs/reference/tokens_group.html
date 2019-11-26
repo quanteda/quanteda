@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -111,6 +111,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -237,19 +240,19 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 <span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span>),
                    <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; grp1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; grp2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; 1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; 2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; 1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 

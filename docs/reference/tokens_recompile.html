@@ -93,7 +93,7 @@ addition of new tokens through compounding." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -117,6 +117,9 @@ addition of new tokens through compounding." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -273,34 +276,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1      one    one      1
-#&gt; 2      two    two      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/tokens_recompile.html'>tokens_recompile</a></span>(<span class='no'>toks1</span>))</div><div class='output co'>#&gt; $one
+#&gt; data frame with 0 columns and 2 rows</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_recompile.html'>tokens_recompile</a></span>(<span class='no'>toks1</span>))</div><div class='output co'>#&gt; $one
 #&gt; [1] 1 2 3 4 1 2 3 4
 #&gt; 
 #&gt; $two
@@ -318,34 +295,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1      one    one      1
-#&gt; 2      two    two      1</div><div class='input'>
+#&gt; data frame with 0 columns and 2 rows</div><div class='input'>
 <span class='co'># stemming</span>
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"Stemming stemmed many word stems."</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='no'>toks2</span>)</div><div class='output co'>#&gt; $text1
@@ -363,33 +314,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/tokens_recompile.html'>tokens_recompile</a></span>(<span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span>(<span class='no'>toks2</span>)))</div><div class='output co'>#&gt; $text1
+#&gt; data frame with 0 columns and 1 row</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_recompile.html'>tokens_recompile</a></span>(<span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span>(<span class='no'>toks2</span>)))</div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 2 5
 #&gt; 
 #&gt; attr(,"types")
@@ -404,33 +330,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'>
+#&gt; data frame with 0 columns and 1 row</div><div class='input'>
 <span class='co'># compounding</span>
 <span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"One two three four."</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='no'>toks3</span>)</div><div class='output co'>#&gt; $text1
@@ -448,33 +349,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks3</span>, <span class='st'>"two three"</span>))</div><div class='output co'>#&gt; $text1
+#&gt; data frame with 0 columns and 1 row</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks3</span>, <span class='st'>"two three"</span>))</div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 5
 #&gt; 
 #&gt; attr(,"types")
@@ -489,33 +365,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'>
+#&gt; data frame with 0 columns and 1 row</div><div class='input'>
 <span class='co'># lookup</span>
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>test</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"three"</span>)))
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>))</div><div class='output co'>#&gt; $text1
@@ -537,33 +388,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'>
+#&gt; data frame with 0 columns and 1 row</div><div class='input'>
 <span class='co'># empty pads</span>
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>))</div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2
@@ -580,33 +406,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; $text1
+#&gt; data frame with 0 columns and 1 row</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 0 2 0 0
 #&gt; 
 #&gt; attr(,"types")
@@ -621,33 +422,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'>
+#&gt; data frame with 0 columns and 1 row</div><div class='input'>
 <span class='co'># ngrams</span>
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span>(<span class='no'>toks3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 5 6 7
@@ -665,33 +441,8 @@ R-based method</p></td>
 #&gt; [1] 0
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
-#&gt; attr(,"unit")
-#&gt; [1] "documents"
-#&gt; attr(,"meta")
-#&gt; attr(,"meta")$system
-#&gt; attr(,"meta")$system$source
-#&gt; [1] "character"
-#&gt; 
-#&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘1.9.9000’
-#&gt; 
-#&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘3.6.1’
-#&gt; 
-#&gt; attr(,"meta")$system$system
-#&gt;  sysname  machine     user 
-#&gt;  "Linux" "x86_64"  "kohei" 
-#&gt; 
-#&gt; attr(,"meta")$system$directory
-#&gt; [1] "/home/kohei/repo/quanteda/docs/reference"
-#&gt; 
-#&gt; attr(,"meta")$system$created
-#&gt; [1] "2019-11-26"
-#&gt; 
-#&gt; 
 #&gt; attr(,"docvars")
-#&gt;   docname_ docid_ segid_
-#&gt; 1    text1  text1      1</div><div class='input'>
+#&gt; data frame with 0 columns and 1 row</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -701,6 +452,8 @@ R-based method</p></td>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Kenneth Benoit and Kohei Watanabe</p>
   </div>
 </div>
 

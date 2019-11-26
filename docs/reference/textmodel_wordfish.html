@@ -88,7 +88,7 @@ one-dimensional document positions using conditional maximum likelihood." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -112,6 +112,9 @@ one-dimensional document positions using conditional maximum likelihood." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -215,11 +218,19 @@ one-dimensional document positions using conditional maximum likelihood." />
 one-dimensional document positions using conditional maximum likelihood.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textmodel_wordfish</span>(<span class='no'>x</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
-  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
-  <span class='kw'>dispersion_level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+    <pre class="usage"><span class='fu'>textmodel_wordfish</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>),
+  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
+  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>),
+  <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
+  <span class='kw'>dispersion_level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>),
+  <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -435,7 +446,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
      <span class='no'>tmod3</span>$<span class='no'>features</span>[<span class='st'>'underdispersedTerms'</span>],
      <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"austin"</span>)) {
-    <span class='no'>tmod5</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'>wordfish</span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/convert-wrappers.html'>as.wfm</a></span>(<span class='no'>dfmat</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+    <span class='no'>tmod5</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'>wordfish</span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='https://quanteda.io/reference/convert-wrappers.html'>as.wfm</a></span>(<span class='no'>dfmat</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
     <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>tmod1</span>$<span class='no'>theta</span>, <span class='no'>tmod5</span>$<span class='no'>theta</span>)
 }}</div></pre>
   </div>

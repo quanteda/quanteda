@@ -81,6 +81,19 @@ docvars(my_corpus, "Year") <- 2010
 summary(my_corpus)
 ```
 
+If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also 
+add those to our corpus.
+```{r}
+metadoc(my_corpus, "language") <- "english"
+metadoc(my_corpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(my_corpus), sep = "_")
+summary(my_corpus, showmeta = TRUE)
+```
+
+The last command, `metadoc`, allows you to define your own document meta-data fields.  Note that in assiging just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
+a simple tag for our custom metadoc field `docsource`, we used the quanteda function `ndoc()` to retrieve
+the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
+functions you may already use in R, such as `nrow()` and `ncol()`.
+
 ### Loading in files using the readtext package
 
 ```{r, eval=FALSE}
@@ -136,11 +149,11 @@ To summarize the texts from a corpus, we can call a `summary()` method defined f
 ```{r}
 summary(data_corpus_irishbudget2010)
 ```
+
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
-tokenInfo$Year <- docvars(data_corpus_inaugural, "Year")
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
         scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
@@ -197,6 +210,9 @@ In the above summary, `Year` and `President` are variables associated with each 
 ```{r}
 # inspect the document-level variables
 head(docvars(data_corpus_inaugural))
+
+# inspect the corpus-level metadata
+metacorpus(data_corpus_inaugural)
 ```
 
 More corpora are available from the [quanteda.corpora](https://github.com/quanteda/quanteda.corpora) package.

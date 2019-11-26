@@ -13,6 +13,7 @@ articles:
   twitter: pkgdown/examples/twitter.html
   quickstart_cn: pkgdown/quickstart_cn.html
   quickstart_es: pkgdown/quickstart_es.html
+  quickstart_hi: pkgdown/quickstart_hi.html
   quickstart_ja: pkgdown/quickstart_ja.html
   digital-humanities: pkgdown/replication/digital-humanities.html
   qss: pkgdown/replication/qss.html

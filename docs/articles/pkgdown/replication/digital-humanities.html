@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -414,7 +417,7 @@
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_mobydick) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb79-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../../../reference/corpus_segment.html">corpus_segment</a></span>(<span class="dt">pattern =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d+.*</span><span class="ch">\\</span><span class="st">n"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)</a>
 <a class="sourceLine" id="cb79-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(chapters_corp, <span class="dv">10</span>)</a></code></pre></div>
-<pre><code>## Corpus consisting of 10 documents, showing 10 documents:
+<pre><code>## Corpus consisting of 136 documents, showing 10 documents:
 ## 
 ##          Text Types Tokens Sentences                       pattern
 ##   Moby Dick.1   917   2575       101        CHAPTER 1. Loomings.\n
@@ -426,16 +429,24 @@
 ##   Moby Dick.7   519   1082        40      CHAPTER 7. The Chapel.\n
 ##   Moby Dick.8   478   1080        29      CHAPTER 8. The Pulpit.\n
 ##   Moby Dick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
-##  Moby Dick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n</code></pre>
+##  Moby Dick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
+## 
+## Source: /home/kohei/repo/quanteda/vignettes/pkgdown/replication/* on x86_64 by kohei
+## Created: Tue Nov 26 15:24:46 2019
+## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="https://rdrr.io/pkg/stringi/man/stri_trim.html">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/stringi/man/stri_trim.html">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))</a>
 <a class="sourceLine" id="cb81-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(chapters_corp, <span class="dt">n =</span> <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## Corpus consisting of 3 documents, showing 3 documents:
+<pre><code>## Corpus consisting of 136 documents, showing 3 documents:
 ## 
 ##         Text Types Tokens Sentences                     pattern
 ##  Moby Dick.1   917   2575       101        CHAPTER 1. Loomings.
 ##  Moby Dick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
-##  Moby Dick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.</code></pre>
+##  Moby Dick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
+## 
+## Source: /home/kohei/repo/quanteda/vignettes/pkgdown/replication/* on x86_64 by kohei
+## Created: Tue Nov 26 15:24:46 2019
+## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</a></code></pre></div>
 <div id="barplots-of-whale-and-ahab" class="section level3">
@@ -738,30 +749,30 @@
 <a class="sourceLine" id="cb120-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb120-10" data-line-number="10"><span class="co"># get top five terms per topic</span></a>
 <a class="sourceLine" id="cb120-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##      Topic 1        Topic 2     Topic 3    Topic 4       Topic 5    
-## [1,] "society"      "taoiseach" "welfare"  "kind"        "taoiseach"
-## [2,] "enterprising" "gael"      "system"   "imagination" "employees"
-## [3,] "sense"        "fine"      "taxation" "policies"    "rate"     
-## [4,] "equal"        "bank"      "fianna"   "wit"         "referred" 
-## [5,] "nation"       "stimulus"  "fáil"     "create"      "debate"   
-##      Topic 6         Topic 7       Topic 8      Topic 9    Topic 10  Topic 11 
-## [1,] "national"      "alternative" "welfare"    "fianna"   "child"   "much"   
-## [2,] "international" "citizenship" "million"    "fáil"     "benefit" "welfare"
-## [3,] "adjustment"    "wealth"      "back"       "irish"    "day"     "million"
-## [4,] "servants"      "adjustment"  "energy"     "national" "today"   "anglo"  
-## [5,] "said"          "breaks"      "employment" "support"  "society" "credit" 
-##      Topic 12 Topic 13  Topic 14    Topic 15    Topic 16    Topic 17   
-## [1,] "may"    "million" "creating"  "failed"    "spending"  "care"     
-## [2,] "irish"  "scheme"  "speak"     "strategy"  "welfare"   "welfare"  
-## [3,] "back"   "level"   "thinking"  "needed"    "review"    "per"      
-## [4,] "fine"   "pension" "taoiseach" "ministers" "measures"  "allowance"
-## [5,] "gael"   "decided" "say"       "system"    "reduction" "hit"      
-##      Topic 18 Topic 19  Topic 20    
-## [1,] "fianna" "levy"    "confidence"
-## [2,] "fáil"   "million" "support"   
-## [3,] "side"   "carbon"  "million"   
-## [4,] "level"  "change"  "scheme"    
-## [5,] "third"  "welfare" "investment"</code></pre>
+<pre><code>##      Topic 1   Topic 2     Topic 3   Topic 4     Topic 5       Topic 6       
+## [1,] "levy"    "taoiseach" "child"   "radical"   "welfare"     "society"     
+## [2,] "million" "gael"      "fianna"  "recession" "continue"    "enterprising"
+## [3,] "carbon"  "may"       "care"    "instead"   "energy"      "sense"       
+## [4,] "change"  "irish"     "benefit" "failed"    "development" "equal"       
+## [5,] "welfare" "back"      "hit"     "problem"   "measures"    "nation"      
+##      Topic 7   Topic 8    Topic 9     Topic 10   Topic 11 Topic 12   
+## [1,] "fáil"    "system"   "per"       "review"   "fianna" "taoiseach"
+## [2,] "fianna"  "welfare"  "allowance" "spending" "fáil"   "employees"
+## [3,] "welfare" "taxation" "million"   "measures" "side"   "rate"     
+## [4,] "home"    "stimulus" "workers"   "scheme"   "level"  "referred" 
+## [5,] "local"   "worst"    "welfare"   "pension"  "third"  "debate"   
+##      Topic 13      Topic 14     Topic 15   Topic 16    Topic 17     Topic 18  
+## [1,] "kind"        "support"    "fianna"   "strategy"  "million"    "fine"    
+## [2,] "imagination" "confidence" "fáil"     "failed"    "investment" "stimulus"
+## [3,] "moral"       "welfare"    "national" "needed"    "scheme"     "bank"    
+## [4,] "citizenship" "enterprise" "irish"    "vision"    "forward"    "day"     
+## [5,] "alternative" "back"       "support"  "ministers" "innovation" "case"    
+##      Topic 19  Topic 20       
+## [1,] "child"   "million"      
+## [2,] "benefit" "measures"     
+## [3,] "day"     "welfare"      
+## [4,] "today"   "investment"   
+## [5,] "bank"    "international"</code></pre>
 </div>
   </div>
 

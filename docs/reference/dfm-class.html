@@ -91,7 +91,7 @@ then a dfmDense object.  See Details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -115,6 +115,9 @@ then a dfmDense object.  See Details." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -317,13 +320,14 @@ the calculations</p></td>
     
 
 <dl class='dl-horizontal'>
-<dt><code>weightTf</code></dt><dd><p>the type of term frequency weighting applied to the dfm.  Default is
+<dt><code>settings</code></dt><dd><p>settings that govern corpus handling and subsequent downstream
+operations, including the settings used to clean and tokenize the texts,
+and to create the dfm.  See <code>settings</code>.</p></dd>
+
+<dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is
 <code>"frequency"</code>, indicating that the values in the cells of the dfm are
 simple feature counts. To change this, use the <code><a href='dfm_weight.html'>dfm_weight</a></code>
 method.</p></dd>
-
-<dt><code>weightFf</code></dt><dd><p>the type of document frequency weighting applied to the dfm. See
-<code><a href='docfreq.html'>docfreq</a></code>.</p></dd>
 
 <dt><code>smooth</code></dt><dd><p>a smoothing parameter, defaults to zero.  Can be changed using
 the <code><a href='dfm_weight.html'>dfm_smooth</a></code> method.</p></dd>

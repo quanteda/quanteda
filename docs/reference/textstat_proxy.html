@@ -88,7 +88,7 @@ textstat_simil but returns TsparseMatrix." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -112,6 +112,9 @@ textstat_simil but returns TsparseMatrix." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -215,11 +218,18 @@ textstat_simil but returns TsparseMatrix." />
 <code>textstat_simil</code> but returns <code>TsparseMatrix</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_proxy</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cosine"</span>, <span class='st'>"correlation"</span>, <span class='st'>"jaccard"</span>, <span class='st'>"ejaccard"</span>, <span class='st'>"dice"</span>,
-  <span class='st'>"edice"</span>, <span class='st'>"hamman"</span>, <span class='st'>"simple matching"</span>, <span class='st'>"euclidean"</span>, <span class='st'>"chisquared"</span>,
-  <span class='st'>"hamming"</span>, <span class='st'>"kullback"</span>, <span class='st'>"manhattan"</span>, <span class='st'>"maximum"</span>, <span class='st'>"canberra"</span>, <span class='st'>"minkowski"</span>),
-  <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_proxy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_na</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>textstat_proxy</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cosine"</span>, <span class='st'>"correlation"</span>, <span class='st'>"jaccard"</span>, <span class='st'>"ejaccard"</span>, <span class='st'>"dice"</span>, <span class='st'>"edice"</span>, <span class='st'>"hamman"</span>,
+    <span class='st'>"simple matching"</span>, <span class='st'>"euclidean"</span>, <span class='st'>"chisquared"</span>, <span class='st'>"hamming"</span>, <span class='st'>"kullback"</span>, <span class='st'>"manhattan"</span>,
+    <span class='st'>"maximum"</span>, <span class='st'>"canberra"</span>, <span class='st'>"minkowski"</span>),
+  <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>min_proxy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use_na</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

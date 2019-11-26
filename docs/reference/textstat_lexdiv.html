@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -111,6 +111,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -213,11 +216,19 @@
     <p>Calculate the lexical diversity of text(s).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>, <span class='st'>"K"</span>,
-  <span class='st'>"I"</span>, <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>, <span class='st'>"MATTR"</span>, <span class='st'>"MSTTR"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100L</span>,
-  <span class='kw'>MSTTR_segment</span> <span class='kw'>=</span> <span class='fl'>100L</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>, <span class='st'>"K"</span>, <span class='st'>"I"</span>, <span class='st'>"D"</span>, <span class='st'>"Vm"</span>, <span class='st'>"Maas"</span>, <span class='st'>"MATTR"</span>,
+    <span class='st'>"MSTTR"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>MATTR_window</span> <span class='kw'>=</span> <span class='fl'>100L</span>,
+  <span class='kw'>MSTTR_segment</span> <span class='kw'>=</span> <span class='fl'>100L</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

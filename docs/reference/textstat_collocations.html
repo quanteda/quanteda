@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -111,6 +111,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -213,8 +216,15 @@
     <p>Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>textstat_collocations</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)
 
 <span class='fu'>is.collocations</span>(<span class='no'>x</span>)</pre>
 

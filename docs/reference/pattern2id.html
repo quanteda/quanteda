@@ -96,7 +96,7 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -120,6 +120,9 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
     </li>
   </ul>
 </li>
@@ -231,11 +234,21 @@ sequential search. For example, a type "cars" is index by keys "cars",
 "car?", "c*", "ca*", "car*" and "cars*" when <code>valuetype="glob"</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pattern2id</span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>keep_nomatch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>pattern2id</span>(
+  <span class='no'>pattern</span>,
+  <span class='no'>types</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>keep_nomatch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
-<span class='fu'>pattern2fixed</span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>keep_nomatch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>pattern2fixed</span>(
+  <span class='no'>pattern</span>,
+  <span class='no'>types</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>keep_nomatch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='fu'>index_types</span>(<span class='no'>types</span>, <span class='no'>valuetype</span>, <span class='no'>case_insensitive</span>, <span class='kw'>max_len</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
@@ -339,7 +352,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 #&gt; [[5]]
 #&gt; [1] "CC"
 #&gt; </div><div class='input'><span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='fu'>index_types</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"xxx"</span>, <span class='st'>"yyyy"</span>, <span class='st'>"ZZZ"</span>), <span class='st'>"glob"</span>, <span class='fl'>FALSE</span>, <span class='fl'>3</span>)
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/search_glob.html'>search_glob</a></span>(<span class='st'>"yy*"</span>, <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>index</span>, <span class='st'>"type_search"</span>), <span class='no'>index</span>)</div><div class='output co'>#&gt; [1] 2</div></pre>
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/search_glob.html'>search_glob</a></span>(<span class='st'>"yy*"</span>, <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>index</span>, <span class='st'>"type_search"</span>), <span class='no'>index</span>)</div><div class='output co'>#&gt; [1] 2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
