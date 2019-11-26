@@ -90,7 +90,7 @@ transcript) or a user-supplied annotation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -219,13 +219,24 @@ documents based on a regular pattern (such as a speaker identifier in a
 transcript) or a user-supplied annotation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>corpus_segment</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
-  <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>), <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>corpus_segment</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>),
+  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
-<span class='fu'>char_segment</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
-  <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>))</pre>
+<span class='fu'>char_segment</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -340,31 +351,45 @@ semi-colons (phrase delimiters within a sentence),
                   ##DOC3 Third document starts here.  End of third document."</span>,
                  <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
 <span class='no'>corpseg1</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg1</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg1</span>))</div><div class='output co'>#&gt;                                                texts(corpseg1)  pattern
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg1</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg1</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corpseg1</span>))</div><div class='output co'>#&gt;                                                texts(corpseg1)  pattern
 #&gt; text1.1                              This is the introduction.  ##INTRO
 #&gt; text1.2 This is the first document.  Second sentence in Doc 1.   ##DOC1
 #&gt; text1.3    Third document starts here.  End of third document.   ##DOC3
 #&gt; text2.1                                               Document  ##INTRO
 #&gt; text2.2                                      Two starts before ##NUMBER
-#&gt; text2.3                                                 Three. ##NUMBER</div><div class='input'>
+#&gt; text2.3                                                 Three. ##NUMBER
+#&gt;         _document _docid _segid
+#&gt; text1.1     text1      1      1
+#&gt; text1.2     text1      1      2
+#&gt; text1.3     text1      1      3
+#&gt; text2.1     text2      2      1
+#&gt; text2.2     text2      2      2
+#&gt; text2.3     text2      2      3</div><div class='input'>
 <span class='co'># segmenting a transcript based on speaker identifiers</span>
 <span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='st'>"Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again."</span>)
 <span class='no'>corpseg2</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp2</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\b[A-Z].+\\s[A-Z][a-z]+:"</span>,
                             <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg2</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg2</span>))</div><div class='output co'>#&gt;              texts(corpseg2)     pattern
-#&gt; text1.1                Text.  Mr. Smith:
-#&gt; text1.2           More text. Mrs. Jones:
-#&gt; text1.3 I'm speaking, again.  Mr. Smith:</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg2</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg2</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corpseg2</span>))</div><div class='output co'>#&gt;              texts(corpseg2)     pattern _document _docid _segid
+#&gt; text1.1                Text.  Mr. Smith:     text1      1      1
+#&gt; text1.2           More text. Mrs. Jones:     text1      1      2
+#&gt; text1.3 I'm speaking, again.  Mr. Smith:     text1      1      3</div><div class='input'>
 <span class='co'># segmenting a corpus using crude end-of-sentence segmentation</span>
 <span class='no'>corpseg3</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
                             <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>, <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg3</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg3</span>))</div><div class='output co'>#&gt;                                                     texts(corpseg3)
-#&gt; text1.1                           ##INTRO This is the introduction.
-#&gt; text1.2                          ##DOC1 This is the first document.
-#&gt; text1.3                                   Second sentence in Doc 1.
-#&gt; text1.4                          ##DOC3 Third document starts here.
-#&gt; text1.5                                      End of third document.
-#&gt; text2.1 ##INTRO Document ##NUMBER Two starts before ##NUMBER Three.</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg3</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg3</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corpseg3</span>))</div><div class='output co'>#&gt;                                                     texts(corpseg3) _document
+#&gt; text1.1                           ##INTRO This is the introduction.     text1
+#&gt; text1.2                          ##DOC1 This is the first document.     text1
+#&gt; text1.3                                   Second sentence in Doc 1.     text1
+#&gt; text1.4                          ##DOC3 Third document starts here.     text1
+#&gt; text1.5                                      End of third document.     text1
+#&gt; text2.1 ##INTRO Document ##NUMBER Two starts before ##NUMBER Three.     text2
+#&gt;         _docid _segid
+#&gt; text1.1      1      1
+#&gt; text1.2      1      2
+#&gt; text1.3      1      3
+#&gt; text1.4      1      4
+#&gt; text1.5      1      5
+#&gt; text2.1      2      1</div><div class='input'>
 <span class='co'>## segmenting a character vector</span>
 
 <span class='co'># segment into paragraphs and removing the "- " bullet points</span>

@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -213,9 +213,14 @@
     <p>Weight the feature frequencies in a dfm</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_weight</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"logcount"</span>,
-  <span class='st'>"boolean"</span>, <span class='st'>"augmented"</span>, <span class='st'>"logave"</span>), <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>dfm_weight</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"logcount"</span>, <span class='st'>"boolean"</span>, <span class='st'>"augmented"</span>, <span class='st'>"logave"</span>),
+  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='fu'>dfm_smooth</span>(<span class='no'>x</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
 

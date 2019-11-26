@@ -91,7 +91,7 @@ delimiters.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -221,8 +221,15 @@ line number, since the text may or may not be segmented using end-of-line
 delimiters.)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>kwic</span>(
+  <span class='no'>x</span>,
+  <span class='no'>pattern</span>,
+  <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)
 
 <span class='fu'>is.kwic</span>(<span class='no'>x</span>)</pre>
 

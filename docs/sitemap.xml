@@ -16,6 +16,9 @@
     <loc>https://quanteda.io/reference/as.corpus.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/as.corpus.corpuszip.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/as.data.frame.dfm.html</loc>
   </url>
   <url>
@@ -259,12 +262,6 @@
     <loc>https://quanteda.io/reference/generate_groups.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/get_docvars.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/get_object_version.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/groups.html</loc>
   </url>
   <url>
@@ -313,16 +310,10 @@
     <loc>https://quanteda.io/reference/message_error.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/meta.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/meta_system.html</loc>
+    <loc>https://quanteda.io/reference/metacorpus.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/metadoc.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/names-quanteda.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/ndoc.html</loc>
@@ -421,9 +412,6 @@
     <loc>https://quanteda.io/reference/search_index.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/serialize_tokens.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/set_dfm_dimnames.html</loc>
   </url>
   <url>
@@ -431,6 +419,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/set_fcm_slots.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/settings.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/slots-set.html</loc>
@@ -445,9 +436,6 @@
     <loc>https://quanteda.io/reference/split_values.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/summarize_texts.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/summary.character.html</loc>
   </url>
   <url>
@@ -458,6 +446,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/summary.textmodel_wordfish.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/summary_character.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/textmodel_affinity-internal.html</loc>
@@ -578,6 +569,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens_select.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/tokens_serialize.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens_split.html</loc>

@@ -90,7 +90,7 @@ vector of weights applied to the co-occurrence counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -219,9 +219,16 @@ document or a window within a collection of documents, with an optional
 vector of weights applied to the co-occurrence counts.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fcm</span>(<span class='no'>x</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"document"</span>, <span class='st'>"window"</span>), <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"frequency"</span>,
-  <span class='st'>"boolean"</span>, <span class='st'>"weighted"</span>), <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5L</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>fcm</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>context</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"document"</span>, <span class='st'>"window"</span>),
+  <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"frequency"</span>, <span class='st'>"boolean"</span>, <span class='st'>"weighted"</span>),
+  <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5L</span>,
+  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -306,7 +313,7 @@ Ignored if <code>ordered = TRUE</code></p></td>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Momtazi, S., Khudanpur, S., &amp; Klakow, D. (2010). 
-  "<a href='https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf'>A
+  "<a href='https://www.aclweb.org/anthology/N10-1046/'>A
    comparative study of word co-occurrence for term clustering in language 
   model-based sentence retrieval.</a>" <em>Human Language Technologies: The 
   2010 Annual Conference of the North American Chapter of the ACL</em>, Los 

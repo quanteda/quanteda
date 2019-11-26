@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -206,9 +206,9 @@
       
     </div>
 
-    <div id="quanteda-0-5-0" class="section level1">
+    <div id="quanteda-050" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-0" class="anchor"></a>quanteda 0.5.0<small> Unreleased </small>
+<a href="#quanteda-050" class="anchor"></a>quanteda 0.5.0<small> Unreleased </small>
 </h1>
 <div id="lots-of-new-functions" class="section level2">
 <h2 class="hasAnchor">
@@ -236,7 +236,7 @@
 <ul>
 <li><p>the corpus object has been redesigned with more flexible components, including a settings list, better corpus-level metadata, and smarter implementation of document-level attributes including user-defined variables (docvars) and document- level meta-data (metadoc)</p></li>
 <li><p>the dfm now has a proper class definition, including additional attributes that hold the settings used to produce the dfm.</p></li>
-<li><p>all important functions are now defined as methods for classes of built-in ( e.g. character) objects, or quanteda objects such as a corpus or dfm. Lots of functions operate on both, for instance dfm.corpus(x) and dfm.character(x).</p></li>
+<li><p>all important functions are now defined as methods for classes of built-in (e.g. character) objects, or quanteda objects such as a corpus or dfm. Lots of functions operate on both, for instance dfm.corpus(x) and dfm.character(x).</p></li>
 </ul>
 </div>
 <div id="more-complete-documentation" class="section level2">
@@ -248,9 +248,9 @@
 </ul>
 </div>
 </div>
-    <div id="quanteda-0-5-1" class="section level1">
+    <div id="quanteda-051" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-1" class="anchor"></a>quanteda 0.5.1<small> Unreleased </small>
+<a href="#quanteda-051" class="anchor"></a>quanteda 0.5.1<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>Fixed all the remaining issues causing warnings in R CMD CHECK, now all are fixed.<br>
@@ -259,18 +259,18 @@ Mostly these related to documentation.</p></li>
 <li><p>Moved twitter.R to the R_NEEDFIXING until it can be made to pass tests. Apparently setup_twitter_oauth() is deprecated in the latest version of the twitteR package.</p></li>
 </ul>
 </div>
-    <div id="quanteda-0-5-2" class="section level1">
+    <div id="quanteda-052" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-2" class="anchor"></a>quanteda 0.5.2<small> Unreleased </small>
+<a href="#quanteda-052" class="anchor"></a>quanteda 0.5.2<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>Added a corpus constructor method for the VCorpus class object from the tm package.</p></li>
 <li><p>added zipfiles() to unzip a directory of text files from disk or a URL, for easy import into a corpus using corpus.directory(zipfiles())</p></li>
 </ul>
 </div>
-    <div id="quanteda-0-5-3" class="section level1">
+    <div id="quanteda-053" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-3" class="anchor"></a>quanteda 0.5.3<small> Unreleased </small>
+<a href="#quanteda-053" class="anchor"></a>quanteda 0.5.3<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>added statLexdiv() to compute the lexical diversity of texts from a dfm.</p></li>
@@ -278,9 +278,9 @@ Mostly these related to documentation.</p></li>
 <li><p>added a wrapper function for SnowballC::wordStem, called wordstem(), so that this can be imported without loading the whole package.</p></li>
 </ul>
 </div>
-    <div id="quanteda-0-5-4" class="section level1">
+    <div id="quanteda-054" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-4" class="anchor"></a>quanteda 0.5.4<small> Unreleased </small>
+<a href="#quanteda-054" class="anchor"></a>quanteda 0.5.4<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>updated corpus.directory to allow specification of the file extension mask</p></li>
@@ -293,9 +293,9 @@ Mostly these related to documentation.</p></li>
 <li><p>Added: resample() for corpus texts.</p></li>
 </ul>
 </div>
-    <div id="quanteda-0-5-5" class="section level1">
+    <div id="quanteda-055" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-5" class="anchor"></a>quanteda 0.5.5<small> Unreleased </small>
+<a href="#quanteda-055" class="anchor"></a>quanteda 0.5.5<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>fixed broken dictionary option in dfm()</p></li>
@@ -310,9 +310,9 @@ Mostly these related to documentation.</p></li>
 <li><p>modified the print.dfm() method.</p></li>
 </ul>
 </div>
-    <div id="quanteda-0-5-6" class="section level1">
+    <div id="quanteda-056" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-6" class="anchor"></a>quanteda 0.5.6<small> Unreleased </small>
+<a href="#quanteda-056" class="anchor"></a>quanteda 0.5.6<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>added readLIWCdict() to read LIWC-formatted dictionaries</p></li>
@@ -320,9 +320,9 @@ Mostly these related to documentation.</p></li>
 <li><p>improved clean() functions to better handle Twitter, punctuation, and removing extra whitespace</p></li>
 </ul>
 </div>
-    <div id="quanteda-0-5-7" class="section level1">
+    <div id="quanteda-057" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-7" class="anchor"></a>quanteda 0.5.7<small> Unreleased </small>
+<a href="#quanteda-057" class="anchor"></a>quanteda 0.5.7<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>added compoundWords() to turn space-delimited phrases into single “tokens”. Works with dfm(, dictionary=) if the text has been pre-processed with compoundWords() and the dictionary joins phrases with the connector ("_"). May add this functionality to be more automatic in future versions.</p></li>
@@ -338,9 +338,9 @@ Mostly these related to documentation.</p></li>
 </ul>
 </div>
 </div>
-    <div id="quanteda-0-5-8" class="section level1">
+    <div id="quanteda-058" class="section level1">
 <h1 class="page-header">
-<a href="#quanteda-0-5-8" class="anchor"></a>quanteda 0.5.8<small> Unreleased </small>
+<a href="#quanteda-058" class="anchor"></a>quanteda 0.5.8<small> Unreleased </small>
 </h1>
 <div id="classification-and-scaling-methods" class="section level2">
 <h2 class="hasAnchor">
@@ -356,15 +356,15 @@ Mostly these related to documentation.</p></li>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-0-5-0">0.5.0</a></li>
-        <li><a href="#quanteda-0-5-1">0.5.1</a></li>
-        <li><a href="#quanteda-0-5-2">0.5.2</a></li>
-        <li><a href="#quanteda-0-5-3">0.5.3</a></li>
-        <li><a href="#quanteda-0-5-4">0.5.4</a></li>
-        <li><a href="#quanteda-0-5-5">0.5.5</a></li>
-        <li><a href="#quanteda-0-5-6">0.5.6</a></li>
-        <li><a href="#quanteda-0-5-7">0.5.7</a></li>
-        <li><a href="#quanteda-0-5-8">0.5.8</a></li>
+        <li><a href="#quanteda-050">0.5.0</a></li>
+        <li><a href="#quanteda-051">0.5.1</a></li>
+        <li><a href="#quanteda-052">0.5.2</a></li>
+        <li><a href="#quanteda-053">0.5.3</a></li>
+        <li><a href="#quanteda-054">0.5.4</a></li>
+        <li><a href="#quanteda-055">0.5.5</a></li>
+        <li><a href="#quanteda-056">0.5.6</a></li>
+        <li><a href="#quanteda-057">0.5.7</a></li>
+        <li><a href="#quanteda-058">0.5.8</a></li>
       </ul>
     </div>
   </div>

@@ -88,7 +88,7 @@ with full control over options.  Uses fully sparse methods for efficiency." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -215,8 +215,14 @@ with full control over options.  Uses fully sparse methods for efficiency." />
 with full control over options.  Uses fully sparse methods for efficiency.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_tfidf</span>(<span class='no'>x</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"count"</span>, <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_tfidf</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"count"</span>,
+  <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>,
+  <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -324,7 +330,7 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># comparison with tm</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>)) {
-    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
     <span class='co'># same as:</span>
     <span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat2</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
 }

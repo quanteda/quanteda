@@ -88,7 +88,7 @@ specified length." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -215,11 +215,21 @@ specified length." />
 specified length.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>corpus_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
-  <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>corpus_trim</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+  <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
-<span class='fu'>char_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
-  <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>char_trim</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+  <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

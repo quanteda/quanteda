@@ -90,7 +90,7 @@ are converting." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -294,11 +294,11 @@ documents with non-zero counts.  Only affects the "stm" format.</p></td>
 <p><code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
 of terms in documents used by the <span class="pkg">lda</span> package (a list with components 
 "documents" and "vocab" as needed by 
-  <code>lda.collapsed.gibbs.sampler</code>).</p>
+  <code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a></code>).</p>
 <p><code>dfm2ldaformat</code> provides converts a <a href='dfm.html'>dfm</a> into the list
 representation of terms in documents used by the <span class="pkg">lda</span> package (a list
 with components "documents" and "vocab" as needed by
-<code>lda.collapsed.gibbs.sampler</code>).</p>
+<code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a></code>).</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Additional coercion methods to base R objects are also available:</p><dl class='dl-horizontal'>
@@ -323,7 +323,7 @@ with components "documents" and "vocab" as needed by
 
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># shortcut conversion to lda package list format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/convert-wrappers.html'>dfm2lda</a></span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/convert-wrappers.html'>dfm2lda</a></span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
 }
 
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {

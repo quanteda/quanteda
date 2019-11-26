@@ -89,7 +89,7 @@ comparison = TRUE, it plots comparison word clouds by document." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -217,11 +217,26 @@ with their sizes proportional to their numerical values in the dfm.  When
 <code>comparison = TRUE</code>, it plots comparison word clouds by document.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textplot_wordcloud</span>(<span class='no'>x</span>, <span class='kw'>min_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>max_words</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"darkblue"</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>rotation</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>random_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>random_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ordered_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>labelcolor</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>, <span class='kw'>labelsize</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
-  <span class='kw'>labeloffset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>fixed_aspect</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>, <span class='kw'>comparison</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>textplot_wordcloud</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>min_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>max_words</span> <span class='kw'>=</span> <span class='fl'>500</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"darkblue"</span>,
+  <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>rotation</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
+  <span class='kw'>random_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>random_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ordered_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>labelcolor</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
+  <span class='kw'>labelsize</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
+  <span class='kw'>labeloffset</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>fixed_aspect</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>comparison</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

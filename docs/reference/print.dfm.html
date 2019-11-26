@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -214,17 +214,29 @@
     </div>
 
     <pre class="usage"><span class='co'># S4 method for dfm</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_ndoc"</span>),
-  <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeat"</span>), <span class='no'>...</span>)
+  <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeat"</span>),
+  <span class='no'>...</span>
+)
 
 <span class='co'># S4 method for dfm</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
 
 <span class='co'># S4 method for fcm</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_ndoc"</span>),
-  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeat"</span>), <span class='no'>...</span>)
+  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeat"</span>),
+  <span class='no'>...</span>
+)
 
 <span class='co'># S4 method for fcm</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
@@ -246,6 +258,11 @@
       <th>show.values</th>
       <td><p>print the dfm values; if called explicitly this will print
 all values.</p></td>
+    </tr>
+    <tr>
+      <th>show.settings</th>
+      <td><p>print the settings used to create the dfm. See 
+<a href='settings.html'>settings</a>.</p></td>
     </tr>
     <tr>
       <th>show.summary</th>

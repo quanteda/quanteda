@@ -88,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -237,7 +237,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># some operations on the inaugural corpus</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 100 documents:
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents:
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
 #&gt;  1789-Washington   625   1538        23 1789 Washington          George
@@ -298,17 +298,20 @@
 #&gt;       2009-Obama   938   2711       110 2009      Obama          Barack
 #&gt;       2013-Obama   814   2317        88 2013      Obama          Barack
 #&gt;       2017-Trump   582   1660        88 2017      Trump       Donald J.
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    Year  President   FirstName
-#&gt; 1  1789 Washington      George
-#&gt; 2  1793 Washington      George
-#&gt; 3  1797      Adams        John
-#&gt; 4  1801  Jefferson      Thomas
-#&gt; 5  1805  Jefferson      Thomas
-#&gt; 6  1809    Madison       James
-#&gt; 7  1813    Madison       James
-#&gt; 8  1817     Monroe       James
-#&gt; 9  1821     Monroe       James
-#&gt; 10 1825      Adams John Quincy</div></pre>
+#&gt; 
+#&gt; Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes: http://www.presidency.ucsb.edu/inaugurals.php</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                 Year  President   FirstName
+#&gt; 1789-Washington 1789 Washington      George
+#&gt; 1793-Washington 1793 Washington      George
+#&gt; 1797-Adams      1797      Adams        John
+#&gt; 1801-Jefferson  1801  Jefferson      Thomas
+#&gt; 1805-Jefferson  1805  Jefferson      Thomas
+#&gt; 1809-Madison    1809    Madison       James
+#&gt; 1813-Madison    1813    Madison       James
+#&gt; 1817-Monroe     1817     Monroe       James
+#&gt; 1821-Monroe     1821     Monroe       James
+#&gt; 1825-Adams      1825      Adams John Quincy</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

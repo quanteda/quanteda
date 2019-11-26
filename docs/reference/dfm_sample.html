@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -213,8 +213,13 @@
     <p>Sample randomly from a dfm object, from documents or features.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_sample</span>(<span class='no'>x</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>margin</span> <span class='kw'>==</span> <span class='st'>"documents"</span>, <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>x</span>), <span class='fu'><a href='ndoc.html'>nfeat</a></span>(<span class='no'>x</span>)),
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>))</pre>
+    <pre class="usage"><span class='fu'>dfm_sample</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>margin</span> <span class='kw'>==</span> <span class='st'>"documents"</span>, <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>x</span>), <span class='fu'><a href='ndoc.html'>nfeat</a></span>(<span class='no'>x</span>)),
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
