@@ -113,6 +113,9 @@ with full control over options.  Uses fully sparse methods for efficiency." />
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
+    </li>
   </ul>
 </li>
 <li>
@@ -330,7 +333,7 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># comparison with tm</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>)) {
-    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()
     <span class='co'># same as:</span>
     <span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat2</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
 }

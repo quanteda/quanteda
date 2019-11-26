@@ -65,6 +65,9 @@
     <li>
       <a href="../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
+    <li>
+      <a href="../../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
+    </li>
   </ul>
 </li>
 <li>
@@ -239,7 +242,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Mon Nov 25 08:45:57 2019
+## Created: Tue Nov 26 06:22:46 2019
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code><a href="https://rdrr.io/r/base/names.html">names()</a></code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -260,7 +263,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Mon Nov 25 08:45:57 2019
+## Created: Tue Nov 26 06:22:46 2019
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(corp_uk, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -290,7 +293,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Mon Nov 25 08:45:57 2019
+## Created: Tue Nov 26 06:22:46 2019
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code>和<code><a href="https://rdrr.io/r/base/nrow.html">ncol()</a></code>。</p>
 </div>
@@ -422,7 +425,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses corp1 and corp2
-## Created: Mon Nov 25 08:45:58 2019
+## Created: Tue Nov 26 06:22:47 2019
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -866,30 +869,30 @@
 <a class="sourceLine" id="cb86-4" title="4">    <span class="kw"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb86-5" title="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1      Topic 2    Topic 3      Topic 4   Topic 5  Topic 6        
-## [1,] "fianna"     "fianna"   "support"    "levy"    "much"   "million"      
-## [2,] "fáil"       "welfare"  "investment" "million" "sinn"   "welfare"      
-## [3,] "national"   "taxation" "back"       "carbon"  "fáil"   "spending"     
-## [4,] "support"    "system"   "employment" "change"  "per"    "international"
-## [5,] "adjustment" "fáil"     "million"    "welfare" "better" "measures"     
-##      Topic 7    Topic 8        Topic 9   Topic 10      Topic 11    Topic 12   
-## [1,] "welfare"  "society"      "welfare" "kind"        "failed"    "taoiseach"
-## [2,] "system"   "enterprising" "earners" "imagination" "strategy"  "employees"
-## [3,] "high"     "sense"        "back"    "policies"    "needed"    "rate"     
-## [4,] "taken"    "equal"        "rate"    "wit"         "ministers" "referred" 
-## [5,] "measures" "nation"       "already" "create"      "system"    "debate"   
-##      Topic 13    Topic 14   Topic 15   Topic 16    Topic 17 Topic 18     
-## [1,] "care"      "measures" "fáil"     "taoiseach" "fianna" "alternative"
-## [2,] "welfare"   "review"   "fianna"   "fine"      "fáil"   "citizenship"
-## [3,] "per"       "spending" "irish"    "gael"      "side"   "wealth"     
-## [4,] "allowance" "million"  "families" "may"       "level"  "adjustment" 
-## [5,] "hit"       "scheme"   "child"    "irish"     "third"  "breaks"     
-##      Topic 19  Topic 20     
-## [1,] "child"   "welfare"    
-## [2,] "benefit" "million"    
-## [3,] "day"     "measures"   
-## [4,] "today"   "development"
-## [5,] "bank"    "adjustment"</code></pre>
+<pre><code>##      Topic 1   Topic 2    Topic 3   Topic 4       Topic 5      Topic 6     
+## [1,] "child"   "welfare"  "fianna"  "alternative" "million"    "million"   
+## [2,] "benefit" "system"   "support" "citizenship" "investment" "welfare"   
+## [3,] "day"     "taxation" "fáil"    "wealth"      "spending"   "change"    
+## [4,] "today"   "fianna"   "child"   "adjustment"  "scheme"     "reductions"
+## [5,] "burden"  "fáil"     "poor"    "breaks"      "welfare"    "carbon"    
+##      Topic 7       Topic 8        Topic 9   Topic 10   Topic 11    Topic 12   
+## [1,] "kind"        "equal"        "levy"    "irish"    "irish"     "care"     
+## [2,] "imagination" "society"      "carbon"  "bank"     "bank"      "welfare"  
+## [3,] "policies"    "enterprising" "paid"    "child"    "day"       "per"      
+## [4,] "wit"         "nation"       "created" "fairness" "taoiseach" "allowance"
+## [5,] "create"      "sense"        "placing" "benefit"  "want"      "hit"      
+##      Topic 13    Topic 14     Topic 15   Topic 16    Topic 17   Topic 18  
+## [1,] "taoiseach" "million"    "measures" "million"   "continue" "fáil"    
+## [2,] "may"       "support"    "level"    "levy"      "welfare"  "fianna"  
+## [3,] "gael"      "investment" "system"   "increases" "irish"    "irish"   
+## [4,] "fine"      "welfare"    "review"   "programme" "million"  "national"
+## [5,] "stimulus"  "back"       "spending" "measures"  "support"  "strategy"
+##      Topic 19    Topic 20   
+## [1,] "taoiseach" "failed"   
+## [2,] "employees" "strategy" 
+## [3,] "rate"      "needed"   
+## [4,] "referred"  "ministers"
+## [5,] "debate"    "system"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
