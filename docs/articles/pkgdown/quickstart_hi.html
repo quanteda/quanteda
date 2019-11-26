@@ -65,6 +65,9 @@
     <li>
       <a href="../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
+    <li>
+      <a href="../../articles/pkgdown/quickstart_hi.html">क्विक आरंभ गाइ</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -239,7 +242,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Fri Nov 22 10:37:48 2019
+## Created: Tue Nov 26 16:16:23 2019
 ## Notes:</code></pre>
 <p>हम कुछ डॉक्युमेंट लेवल वेरीअबल्ज़ - जिसे क्वांटेडा में <em>docvars</em> कहा गया है - इस कार्पस के साथ जोड़ सकते हैं</p>
 <p>हम इसे ऐसे कर सकते हैं: R के <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> फ़ंक्शन का उपयोग करके, हम <code>data_char_ukimmig2010</code> के कैरक्टर वेक्टर के नामों को पा सकते हैं और उन नामों को डॉक्युमेंट वेरीअबल (<em>docvar</em>) में रख सकते हैं।</p>
@@ -260,7 +263,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Fri Nov 22 10:37:48 2019
+## Created: Tue Nov 26 16:16:23 2019
 ## Notes:</code></pre>
 <p>यदि हम प्रत्येक डॉक्युमेंट को अतिरिक्त मेटा-डेटा के साथ टैग करना चाहते हैं जो विश्लेषण के लिए ज़रूरी नहीं है, बल्कि कुछ ऐसा है जिसे हमें डॉक्युमेंट की विशेषता के रूप में जानने की आवश्यकता है, हम उन्हें भी अपने कार्पस में जोड़ सकते हैं।</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(corp_uk, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span></a>
@@ -290,7 +293,7 @@
 ##          UKIP 2010
 ## 
 ## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/* on x86_64 by kbenoit
-## Created: Fri Nov 22 10:37:48 2019
+## Created: Tue Nov 26 16:16:23 2019
 ## Notes:</code></pre>
 <p>अंतिम कमांड <code>metadoc</code>, आपको अपने डॉक्युमेंट के मेटा-डेटा फ़ील्ड को परिभाषित करने की सुविधा देता है। ध्यान दें कि <code>"english"</code> की सिंगल वैल्यू को असाइन करने के लिए, आर ने वैल्यू को तब तक रीसायकल किया है जब तक कि यह कॉर्पस में डॉक्युमेंट की संख्या से मेल नहीं खाता। हमारे कस्टम मेटाडॉक फ़ील्ड<code>docsource</code> के लिए एक सरल टैग बनाने में, हमने अपने कॉर्पस में डॉक्युमेंट की संख्या को प्राप्त करने के लिए क्वांटेडा फ़ंक्शन <code><a href="../../reference/ndoc.html">ndoc()</a></code> का उपयोग किया है। इस फ़ंक्शन को उन कार्यों के समान काम करने के लिए डिज़ाइन किया गया है जो आप पहले से ही आर में उपयोग कर सकते हैं, जैसे कि <code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code> और <code><a href="https://rdrr.io/r/base/nrow.html">ncol()</a></code>।</p>
 </div>
@@ -389,7 +392,7 @@
 <a class="sourceLine" id="cb16-6" title="6"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb16-7" title="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># Longest inaugural address: William Henry Harrison</span></a>
 <a class="sourceLine" id="cb18-2" title="2">tokeninfo[<span class="kw"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(tokeninfo<span class="op">$</span>Tokens), ]</a></code></pre></div>
 <pre><code>##             Text Types Tokens Sentences Year President     FirstName
@@ -423,7 +426,7 @@
 ##       2017-Trump   582   1660        88
 ## 
 ## Source: Combination of corpuses corp1 and corp2
-## Created: Fri Nov 22 10:37:49 2019
+## Created: Tue Nov 26 16:16:24 2019
 ## Notes:</code></pre>
 </div>
 <div id="कॉर्पस-ऑब्जेक्ट-का-सबसेट-करना" class="section level3">
@@ -746,7 +749,7 @@
 <a class="sourceLine" id="cb74-2" title="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfmat_uk, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb74-3" title="3">                   <span class="dt">rotation =</span> <span class="fl">.25</span>,</a>
 <a class="sourceLine" id="cb74-4" title="4">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="dv">8</span>, <span class="st">"Dark2"</span>))</a></code></pre></div>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
 </div>
 <div id="डॉक्युमेंट्स-को-ग्रूप-करना-डॉक्युमेंट-वेरीअबल-द्वारा" class="section level3">
 <h3 class="hasAnchor">
@@ -839,7 +842,7 @@
 <a class="sourceLine" id="cb86-13" title="13"><span class="co"># plot as a dendrogram</span></a>
 <a class="sourceLine" id="cb86-14" title="14"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>,</a>
 <a class="sourceLine" id="cb86-15" title="15">     <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-37-1.png" width="960"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-37-1.png" width="960"></p>
 <p>हम टर्म समानताओं को भी देख सकते हैं:</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1">tstat_sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(dfmat_sotu, dfmat_sotu[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>)],</a>
 <a class="sourceLine" id="cb87-2" title="2">                          <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
@@ -868,7 +871,7 @@
 <a class="sourceLine" id="cb89-3" title="3"></a>
 <a class="sourceLine" id="cb89-4" title="4"><span class="co"># plot the Wordfish estimates by party</span></a>
 <a class="sourceLine" id="cb89-5" title="5"><span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(tmod_wf, <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(dfmat_ire, <span class="st">"party"</span>))</a></code></pre></div>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
 </div>
 <div id="टॉपिक-मॉडल्स" class="section level2">
 <h2 class="hasAnchor">
@@ -885,30 +888,30 @@
 <a class="sourceLine" id="cb92-4" title="4">    <span class="kw"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(my_lda_fit20, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb92-5" title="5">}</a></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2     Topic 3   Topic 4       Topic 5    Topic 6 
-## [1,] "fáil"    "care"      "benefit" "alternative" "fianna"   "fianna"
-## [2,] "nothing" "welfare"   "know"    "citizenship" "fáil"     "fáil"  
-## [3,] "welfare" "per"       "just"    "wealth"      "national" "side"  
-## [4,] "local"   "allowance" "day"     "adjustment"  "irish"    "level" 
-## [5,] "fianna"  "hit"       "society" "breaks"      "strategy" "third" 
-##      Topic 7      Topic 8   Topic 9    Topic 10     Topic 11      Topic 12 
-## [1,] "system"     "levy"    "system"   "society"    "kind"        "welfare"
-## [2,] "deficit"    "million" "welfare"  "fáil"       "imagination" "real"   
-## [3,] "reduced"    "carbon"  "taxation" "fianna"     "policies"    "care"   
-## [4,] "efficiency" "change"  "stimulus" "blind"      "wit"         "million"
-## [5,] "welfare"    "welfare" "child"    "confidence" "create"      "irish"  
-##      Topic 13    Topic 14     Topic 15  Topic 16    Topic 17     Topic 18      
-## [1,] "failed"    "million"    "child"   "taoiseach" "employment" "society"     
-## [2,] "strategy"  "support"    "today"   "fine"      "programme"  "enterprising"
-## [3,] "needed"    "welfare"    "benefit" "gael"      "scheme"     "sense"       
-## [4,] "ministers" "continue"   "per"     "may"       "investment" "equal"       
-## [5,] "system"    "investment" "banks"   "irish"     "create"     "nation"      
-##      Topic 19    Topic 20  
-## [1,] "taoiseach" "measures"
-## [2,] "employees" "million" 
-## [3,] "rate"      "spending"
-## [4,] "referred"  "review"  
-## [5,] "debate"    "scheme"</code></pre>
+<pre><code>##      Topic 1      Topic 2    Topic 3   Topic 4       Topic 5     Topic 6    
+## [1,] "system"     "system"   "welfare" "kind"        "care"      "failed"   
+## [2,] "want"       "welfare"  "fáil"    "imagination" "welfare"   "strategy" 
+## [3,] "confidence" "fianna"   "taken"   "policies"    "per"       "needed"   
+## [4,] "investment" "taxation" "high"    "wit"         "allowance" "ministers"
+## [5,] "review"     "stimulus" "better"  "create"      "hit"       "system"   
+##      Topic 7       Topic 8    Topic 9   Topic 10    Topic 11     Topic 12 
+## [1,] "alternative" "measures" "levy"    "taoiseach" "million"    "today"  
+## [2,] "citizenship" "million"  "million" "fine"      "support"    "child"  
+## [3,] "wealth"      "spending" "carbon"  "gael"      "investment" "fianna" 
+## [4,] "adjustment"  "scheme"   "change"  "may"       "continue"   "benefit"
+## [5,] "breaks"      "welfare"  "welfare" "irish"     "confidence" "let"    
+##      Topic 13        Topic 14  Topic 15    Topic 16  Topic 17       Topic 18  
+## [1,] "per"           "benefit" "taoiseach" "welfare" "society"      "banks"   
+## [2,] "supplementary" "child"   "employees" "back"    "enterprising" "private" 
+## [3,] "prices"        "per"     "rate"      "million" "sense"        "back"    
+## [4,] "today"         "day"     "referred"  "deficit" "equal"        "much"    
+## [5,] "review"        "bank"    "debate"    "support" "nation"       "stimulus"
+##      Topic 19 Topic 20  
+## [1,] "fianna" "fianna"  
+## [2,] "fáil"   "fáil"    
+## [3,] "side"   "national"
+## [4,] "level"  "irish"   
+## [5,] "third"  "support"</code></pre>
 </div>
 </div>
   </div>
