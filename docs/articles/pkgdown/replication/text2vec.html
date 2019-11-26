@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
       </span>
     </div>
 
@@ -189,7 +189,7 @@
 <pre><code>##    ... found 1 document, 253,854 features</code></pre>
 <pre><code>##    ... created a 1 x 253,854 sparse dfm
 ##    ... complete. 
-## Elapsed time: 2.3 seconds.</code></pre>
+## Elapsed time: 0.946 seconds.</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
@@ -207,26 +207,26 @@
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">glove &lt;-<span class="st"> </span>GlobalVectors<span class="op">$</span><span class="kw">new</span>(<span class="dt">word_vectors_size =</span> <span class="dv">50</span>, <span class="dt">vocabulary =</span> <span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(wiki_fcm), <span class="dt">x_max =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">wiki_main &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/text2vec/man/reexports.html">fit_transform</a></span>(wiki_fcm, glove, <span class="dt">n_iter =</span> <span class="dv">20</span>)</a></code></pre></div>
-<pre><code>## INFO [2019-07-07 19:41:09] 2019-07-07 19:41:09 - epoch 1, expected cost 0.0829
-## INFO [2019-07-07 19:41:16] 2019-07-07 19:41:16 - epoch 2, expected cost 0.0613
-## INFO [2019-07-07 19:41:21] 2019-07-07 19:41:21 - epoch 3, expected cost 0.0539
-## INFO [2019-07-07 19:41:27] 2019-07-07 19:41:27 - epoch 4, expected cost 0.0499
-## INFO [2019-07-07 19:41:33] 2019-07-07 19:41:33 - epoch 5, expected cost 0.0474
-## INFO [2019-07-07 19:41:39] 2019-07-07 19:41:39 - epoch 6, expected cost 0.0456
-## INFO [2019-07-07 19:41:48] 2019-07-07 19:41:48 - epoch 7, expected cost 0.0443
-## INFO [2019-07-07 19:41:57] 2019-07-07 19:41:57 - epoch 8, expected cost 0.0433
-## INFO [2019-07-07 19:42:03] 2019-07-07 19:42:03 - epoch 9, expected cost 0.0424
-## INFO [2019-07-07 19:42:09] 2019-07-07 19:42:09 - epoch 10, expected cost 0.0417
-## INFO [2019-07-07 19:42:15] 2019-07-07 19:42:15 - epoch 11, expected cost 0.0411
-## INFO [2019-07-07 19:42:21] 2019-07-07 19:42:21 - epoch 12, expected cost 0.0406
-## INFO [2019-07-07 19:42:26] 2019-07-07 19:42:26 - epoch 13, expected cost 0.0401
-## INFO [2019-07-07 19:42:32] 2019-07-07 19:42:32 - epoch 14, expected cost 0.0397
-## INFO [2019-07-07 19:42:38] 2019-07-07 19:42:38 - epoch 15, expected cost 0.0393
-## INFO [2019-07-07 19:42:43] 2019-07-07 19:42:43 - epoch 16, expected cost 0.0390
-## INFO [2019-07-07 19:42:50] 2019-07-07 19:42:50 - epoch 17, expected cost 0.0387
-## INFO [2019-07-07 19:42:56] 2019-07-07 19:42:56 - epoch 18, expected cost 0.0385
-## INFO [2019-07-07 19:43:02] 2019-07-07 19:43:02 - epoch 19, expected cost 0.0382
-## INFO [2019-07-07 19:43:08] 2019-07-07 19:43:08 - epoch 20, expected cost 0.0380</code></pre>
+<pre><code>## INFO [2019-11-26 15:12:26] 2019-11-26 15:12:26 - epoch 1, expected cost 0.0834
+## INFO [2019-11-26 15:12:31] 2019-11-26 15:12:31 - epoch 2, expected cost 0.0616
+## INFO [2019-11-26 15:12:36] 2019-11-26 15:12:36 - epoch 3, expected cost 0.0541
+## INFO [2019-11-26 15:12:40] 2019-11-26 15:12:40 - epoch 4, expected cost 0.0500
+## INFO [2019-11-26 15:12:45] 2019-11-26 15:12:45 - epoch 5, expected cost 0.0475
+## INFO [2019-11-26 15:12:49] 2019-11-26 15:12:49 - epoch 6, expected cost 0.0457
+## INFO [2019-11-26 15:12:54] 2019-11-26 15:12:54 - epoch 7, expected cost 0.0444
+## INFO [2019-11-26 15:12:59] 2019-11-26 15:12:59 - epoch 8, expected cost 0.0434
+## INFO [2019-11-26 15:13:03] 2019-11-26 15:13:03 - epoch 9, expected cost 0.0425
+## INFO [2019-11-26 15:13:08] 2019-11-26 15:13:08 - epoch 10, expected cost 0.0418
+## INFO [2019-11-26 15:13:12] 2019-11-26 15:13:12 - epoch 11, expected cost 0.0412
+## INFO [2019-11-26 15:13:17] 2019-11-26 15:13:17 - epoch 12, expected cost 0.0406
+## INFO [2019-11-26 15:13:22] 2019-11-26 15:13:22 - epoch 13, expected cost 0.0402
+## INFO [2019-11-26 15:13:26] 2019-11-26 15:13:26 - epoch 14, expected cost 0.0398
+## INFO [2019-11-26 15:13:31] 2019-11-26 15:13:31 - epoch 15, expected cost 0.0394
+## INFO [2019-11-26 15:13:35] 2019-11-26 15:13:35 - epoch 16, expected cost 0.0391
+## INFO [2019-11-26 15:13:40] 2019-11-26 15:13:40 - epoch 17, expected cost 0.0388
+## INFO [2019-11-26 15:13:45] 2019-11-26 15:13:45 - epoch 18, expected cost 0.0385
+## INFO [2019-11-26 15:13:49] 2019-11-26 15:13:49 - epoch 19, expected cost 0.0383
+## INFO [2019-11-26 15:13:54] 2019-11-26 15:13:54 - epoch 20, expected cost 0.0381</code></pre>
 </div>
 <div id="averaging-learned-word-vectors" class="section level2">
 <h2 class="hasAnchor">
@@ -249,8 +249,8 @@
 <a class="sourceLine" id="cb16-6" data-line-number="6">cos_sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vectors, new_berlin,</a>
 <a class="sourceLine" id="cb16-7" data-line-number="7">                          <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
 <a class="sourceLine" id="cb16-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(cos_sim[, <span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##     paris      bonn   germany    berlin    vienna 
-## 0.7682481 0.7002557 0.6795966 0.6790626 0.6522549</code></pre>
+<pre><code>##    berlin     paris      near    vienna    munich 
+## 0.7285630 0.7221875 0.7071515 0.6803638 0.6560180</code></pre>
 <p>Here is another example for <code>london = paris - france + uk + england</code></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">new_london &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, ] <span class="op">-</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, ] <span class="op">+</span></a>
@@ -260,12 +260,13 @@
 <a class="sourceLine" id="cb18-6" data-line-number="6">cos_sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vectors, new_london,</a>
 <a class="sourceLine" id="cb18-7" data-line-number="7">                          <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
 <a class="sourceLine" id="cb18-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(cos_sim[, <span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##        uk    london   england        at      york 
-## 0.7784685 0.7483682 0.7380975 0.7348357 0.7289596</code></pre>
+<pre><code>##    london   england        uk      york     press 
+## 0.7753841 0.7670093 0.7387049 0.7385549 0.6802162</code></pre>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -289,7 +290,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

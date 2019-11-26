@@ -8,21 +8,25 @@
 
 <title>Compute keyness (internal functions) — keyness • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,11 +42,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Compute keyness (internal functions) — keyness" />
 
+<meta property="og:title" content="Compute keyness (internal functions) — keyness" />
 <meta property="og:description" content="Internal function used in textstat_keyness.  Computes \(chi^2\) with Yates'
 continuity correction for 2x2 tables." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,6 +71,7 @@ continuity correction for 2x2 tables." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -82,7 +88,7 @@ continuity correction for 2x2 tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
       </span>
     </div>
 
@@ -173,7 +179,6 @@ continuity correction for 2x2 tables." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -183,7 +188,7 @@ continuity correction for 2x2 tables." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -194,6 +199,7 @@ continuity correction for 2x2 tables." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -205,13 +211,11 @@ continuity correction for 2x2 tables." />
     </div>
 
     <div class="ref-description">
-    
     <p>Internal function used in textstat_keyness.  Computes \(chi^2\) with Yates'
 continuity correction for 2x2 tables.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>,
+    <pre class="usage"><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>,
   <span class='st'>"none"</span>))
 
 <span class='fu'>keyness_chi2_stats</span>(<span class='no'>x</span>)
@@ -220,10 +224,10 @@ continuity correction for 2x2 tables.</p>
 
 <span class='fu'>keyness_exact</span>(<span class='no'>x</span>)
 
-<span class='fu'>keyness_lr</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>))
+<span class='fu'>keyness_lr</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>))
 
 <span class='fu'>keyness_pmi</span>(<span class='no'>x</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -252,34 +256,31 @@ continuity correction for 2x2 tables.</p>
       <td><p>total of all reference words</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a data.frame of chi2 and p-values with rows named for each feature</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>keyness_chi2_dt</code> uses vectorized computation from data.table
 objects.</p>
 <p><code>keyness_chi2_stats</code> uses element-by-element application of
-<a href='https://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a>.</p>
+<a href='https://rdrr.io/r/stats/chisq.test.html'>chisq.test</a>.</p>
 <p><code>keyness_exact</code> computes Fisher's exact using element-by-element 
-application of <a href='https://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>, returning the odds ratio.</p>
+application of <a href='https://rdrr.io/r/stats/fisher.test.html'>fisher.test</a>, returning the odds ratio.</p>
 <p><code>keyness_lr</code> computes the \(G^2\) likelihood ratio statistic
   using vectorized computation</p>
 <p><code>keyness_pmi</code> computes the Pointwise Mutual Information stat
   using vectorized computation</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p><a href='https://en.wikipedia.org/wiki/Yates's_correction_for_continuity'>https://en.wikipedia.org/wiki/Yates's_correction_for_continuity</a></p>
 <p><a href='http://influentialpoints.com/Training/g-likelihood_ratio_test.htm'>http://influentialpoints.com/Training/g-likelihood_ratio_test.htm</a></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a a a b b c c c c c c d e f g h h"</span>,
+    <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a a a b b c c c c c c d e f g h h"</span>,
                <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b c c d d d d e f h"</span>))
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/keyness.html'>keyness_chi2_dt</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature         chi2         p n_target n_reference
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/keyness.html'>keyness_chi2_dt</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature         chi2         p n_target n_reference
 #&gt; 1       a  0.004738562 0.9451192        3           2
 #&gt; 2       b  0.089303670 0.7650643        2           1
 #&gt; 3       c  0.467298378 0.4942327        6           2
@@ -287,7 +288,7 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
 #&gt; 5       e -0.065813362 0.7975330        1           1
 #&gt; 6       f -0.065813362 0.7975330        1           1
 #&gt; 7       g  0.731092437 0.3925293        1           0
-#&gt; 8       h  0.089303670 0.7650643        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/keyness.html'>keyness_chi2_stats</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature       chi2.a       chi2.b    chi2.c    chi2.d        chi2.e
+#&gt; 8       h  0.089303670 0.7650643        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/keyness.html'>keyness_chi2_stats</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature       chi2.a       chi2.b    chi2.c    chi2.d        chi2.e
 #&gt; 1       a 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
 #&gt; 2       b 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
 #&gt; 3       c 1.626059e-31 6.775245e-32 0.4672984 -2.040247 -2.242191e-32
@@ -313,7 +314,7 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
 #&gt; 5   1   1        1           1
 #&gt; 6   1   1        1           1
 #&gt; 7   1   1        1           0
-#&gt; 8   1   1        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/keyness.html'>keyness_exact</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature        or         p n_target n_reference
+#&gt; 8   1   1        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/keyness.html'>keyness_exact</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature        or         p n_target n_reference
 #&gt; 1       a 1.0689130 1.0000000        3           2
 #&gt; 2       b 1.4480473 1.0000000        2           1
 #&gt; 3       c 2.6375984 0.4083471        6           2
@@ -321,7 +322,7 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
 #&gt; 5       e 0.6966446 1.0000000        1           1
 #&gt; 6       f 0.6966446 1.0000000        1           1
 #&gt; 7       g       Inf 1.0000000        1           0
-#&gt; 8       h 1.4480473 1.0000000        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/keyness.html'>keyness_lr</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature           G2         p n_target n_reference
+#&gt; 8       h 1.4480473 1.0000000        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/keyness.html'>keyness_lr</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature           G2         p n_target n_reference
 #&gt; 1       a  0.004751467 0.9450446        3           2
 #&gt; 2       b  0.091241952 0.7626042        2           1
 #&gt; 3       c  0.477346514 0.4896267        6           2
@@ -329,7 +330,7 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
 #&gt; 5       e -0.064900531 0.7989117        1           1
 #&gt; 6       f -0.064900531 0.7989117        1           1
 #&gt; 7       g  1.093291040 0.2957432        1           0
-#&gt; 8       h  0.091241952 0.7626042        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/keyness.html'>keyness_pmi</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature         pmi         p n_target n_reference
+#&gt; 8       h  0.091241952 0.7626042        2           1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/quanteda/man/keyness.html'>keyness_pmi</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   feature         pmi         p n_target n_reference
 #&gt; 1       a  0.02325686 0.8787910        3           2
 #&gt; 2       b  0.12861738 0.7198699        2           1
 #&gt; 3       c  0.24640041 0.6196211        6           2
@@ -343,18 +344,15 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -362,8 +360,9 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -386,6 +385,8 @@ application of <a href='https://www.rdocumentation.org/packages/stats/topics/fis
 </script>
 
 
+
   </body>
 </html>
+
 

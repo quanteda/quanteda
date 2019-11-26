@@ -8,21 +8,25 @@
 
 <title>Similarity and distance computation between documents or features — textstat_simil • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,8 +42,8 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Similarity and distance computation between documents or features — textstat_simil" />
 
+<meta property="og:title" content="Similarity and distance computation between documents or features — textstat_simil" />
 <meta property="og:description" content="These functions compute matrixes of distances and similarities between
 documents or features from a dfm and return a matrix of
 similarities or distances in a sparse format.  These methods are fast
@@ -47,6 +51,7 @@ and robust because they operate directly on the sparse dfm objects.
 The output can easily be coerced to an ordinary matrix, a data.frame of 
 pairwise comparisons, or a dist format." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -70,6 +75,7 @@ pairwise comparisons, or a dist format." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
   <body>
@@ -86,7 +92,7 @@ pairwise comparisons, or a dist format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
       </span>
     </div>
 
@@ -177,7 +183,6 @@ pairwise comparisons, or a dist format." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -187,7 +192,7 @@ pairwise comparisons, or a dist format." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -198,6 +203,7 @@ pairwise comparisons, or a dist format." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -209,32 +215,30 @@ pairwise comparisons, or a dist format." />
     </div>
 
     <div class="ref-description">
-    
     <p>These functions compute matrixes of distances and similarities between
 documents or features from a <code><a href='dfm.html'>dfm</a></code> and return a matrix of
 similarities or distances in a sparse format.  These methods are fast
 and robust because they operate directly on the sparse <a href='dfm.html'>dfm</a> objects.
 The output can easily be coerced to an ordinary matrix, a data.frame of 
-pairwise comparisons, or a <a href='https://www.rdocumentation.org/packages/stats/topics/dist'>dist</a> format.</p>
-    
+pairwise comparisons, or a <a href='https://rdrr.io/r/stats/dist.html'>dist</a> format.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_simil</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"documents"</span>,
-  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"correlation"</span>, <span class='st'>"cosine"</span>, <span class='st'>"jaccard"</span>, <span class='st'>"ejaccard"</span>,
+    <pre class="usage"><span class='fu'>textstat_simil</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"documents"</span>,
+  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"correlation"</span>, <span class='st'>"cosine"</span>, <span class='st'>"jaccard"</span>, <span class='st'>"ejaccard"</span>,
   <span class='st'>"dice"</span>, <span class='st'>"edice"</span>, <span class='st'>"hamman"</span>, <span class='st'>"simple matching"</span>), <span class='kw'>min_simil</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
-<span class='fu'>textstat_dist</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"documents"</span>,
-  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"euclidean"</span>, <span class='st'>"manhattan"</span>, <span class='st'>"maximum"</span>,
+<span class='fu'>textstat_dist</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"documents"</span>,
+  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"euclidean"</span>, <span class='st'>"manhattan"</span>, <span class='st'>"maximum"</span>,
   <span class='st'>"canberra"</span>, <span class='st'>"minkowski"</span>), <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for textstat_proxy</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>x</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>x</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for textstat_proxy</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>x</span>, <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>optional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -293,10 +297,10 @@ values will not be returned</p></td>
       <th>optional</th>
       <td><p>logical. If <code>TRUE</code>, setting row names and
     converting column names (to syntactic names: see
-    <code><a href='https://www.rdocumentation.org/packages/base/topics/make.names'>make.names</a></code>) is optional.  Note that all of <span style="R">R</span>'s
-    <span class="pkg">base</span> package <code><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame()</a></code> methods use
+    <code><a href='https://rdrr.io/r/base/make.names.html'>make.names</a></code>) is optional.  Note that all of <span style="R">R</span>'s
+    <span class="pkg">base</span> package <code><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame()</a></code> methods use
     <code>optional</code> only for column names treatment, basically with the
-    meaning of <code><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a>(*, check.names = !optional)</code>.
+    meaning of <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>(*, check.names = !optional)</code>.
     See also the <code>make.names</code> argument of the <code>matrix</code> method.</p></td>
     </tr>
     <tr>
@@ -304,14 +308,14 @@ values will not be returned</p></td>
       <td><p>logical; if <code>TRUE</code>, return pairs as both (A, B) and (B, A)</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A sparse matrix from the <span class="pkg">Matrix</span> package that will be symmetric 
   unless <code>y</code> is specified.</p>     
-<p>These can be transformed easily into a list format using <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list()</a></code>,
+<p>These can be transformed easily into a list format using <code><a href='https://rdrr.io/r/base/list.html'>as.list()</a></code>,
   which returns a list for each unique element of the second of the pairs,
-  <code>as.dist</code> to be transformed into a <a href='https://www.rdocumentation.org/packages/stats/topics/dist'>dist</a> object, or
+  <code>as.dist</code> to be transformed into a <a href='https://rdrr.io/r/stats/dist.html'>dist</a> object, or
   <code>as.matrix</code> to convert it into an ordinary matrix.</p>
 <p><code>as.data.list</code> for a <code>textstat_simil</code> or
   <code>textstat_dist</code> object returns a list equal in length to the columns of the 
@@ -321,7 +325,6 @@ values will not be returned</p></td>
 <p><code>as.data.frame</code> for a <code>textstat_simil</code> or
   <code>textstat_dist</code> object returns a data.frame of pairwise combinations
   and the and their similarity or distance value.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>textstat_simil</code> options are: <code>"correlation"</code> (default),
@@ -330,35 +333,32 @@ values will not be returned</p></td>
 <p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default), 
   <code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
   and <code>"minkowski"</code>.</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>If you want to compute similarity on a "normalized" dfm object
   (controlling for variable document lengths, for methods such as correlation
   for which different document lengths matter), then wrap the input dfm in
   <code><a href='dfm_weight.html'>dfm_weight</a>(x, "prop")</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/stats/topics/dist'>as.dist</a></code></p></div>
-    
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># similarities for documents</span>
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>),
-             <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))
+             <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
 (<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; textstat_simil object; method = "cosine"
 #&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
 #&gt; 2001-Bush      1.000     0.520      0.541      0.556      0.452
 #&gt; 2005-Bush      0.520     1.000      0.458      0.516      0.435
 #&gt; 2009-Obama     0.541     0.458      1.000      0.637      0.448
 #&gt; 2013-Obama     0.556     0.516      0.637      1.000      0.455
-#&gt; 2017-Trump     0.452     0.435      0.448      0.455      1.000</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 2017-Trump     0.452     0.435      0.448      0.455      1.000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
 #&gt; 2001-Bush  1.0000000 0.5204355  0.5411649  0.5561972  0.4518935
 #&gt; 2005-Bush  0.5204355 1.0000000  0.4575297  0.5163644  0.4349030
 #&gt; 2009-Obama 0.5411649 0.4575297  1.0000000  0.6373318  0.4481950
 #&gt; 2013-Obama 0.5561972 0.5163644  0.6373318  1.0000000  0.4546945
-#&gt; 2017-Trump 0.4518935 0.4349030  0.4481950  0.4546945  1.0000000</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt; $`2001-Bush`
+#&gt; 2017-Trump 0.4518935 0.4349030  0.4481950  0.4546945  1.0000000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt; $`2001-Bush`
 #&gt; 2013-Obama 2009-Obama  2005-Bush 2017-Trump 
 #&gt;  0.5561972  0.5411649  0.5204355  0.4518935 
 #&gt; 
@@ -377,7 +377,7 @@ values will not be returned</p></td>
 #&gt; $`2017-Trump`
 #&gt; 2013-Obama  2001-Bush 2009-Obama  2005-Bush 
 #&gt;  0.4546945  0.4518935  0.4481950  0.4349030 
-#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat1</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $`2001-Bush`
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat1</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $`2001-Bush`
 #&gt;  2001-Bush 2013-Obama 2009-Obama  2005-Bush 2017-Trump 
 #&gt;  1.0000000  0.5561972  0.5411649  0.5204355  0.4518935 
 #&gt; 
@@ -404,7 +404,7 @@ values will not be returned</p></td>
 #&gt; 2005-Bush          .         1          .          .          .
 #&gt; 2009-Obama         .         .      1.000      0.637          .
 #&gt; 2013-Obama         .         .      0.637      1.000          .
-#&gt; 2017-Trump         .         .          .          .          1</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat2</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 2017-Trump         .         .          .          .          1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat2</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
 #&gt; 2001-Bush          1        NA         NA         NA         NA
 #&gt; 2005-Bush         NA         1         NA         NA         NA
 #&gt; 2009-Obama        NA        NA  1.0000000  0.6373318         NA
@@ -423,7 +423,7 @@ values will not be returned</p></td>
 #&gt; 2005-Bush       0.435
 #&gt; 2009-Obama      0.448
 #&gt; 2013-Obama      0.455
-#&gt; 2017-Trump      1.000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2009-Obama"</span>, <span class='st'>"2013-Obama"</span>), ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; textstat_simil object; method = "correlation"
+#&gt; 2017-Trump      1.000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"2009-Obama"</span>, <span class='st'>"2013-Obama"</span>), ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; textstat_simil object; method = "correlation"
 #&gt;            2009-Obama 2013-Obama
 #&gt; 2001-Bush       0.439      0.468
 #&gt; 2005-Bush       0.337      0.420
@@ -431,9 +431,9 @@ values will not be returned</p></td>
 #&gt; 2013-Obama      0.550      1.000
 #&gt; 2017-Trump      0.343      0.361</div><div class='input'>
 <span class='co'># compute some term similarities</span>
-<span class='no'>tstat3</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>)], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
+<span class='no'>tstat3</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>)], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
                          <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat3</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                    fair    health    terror
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat3</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                    fair    health    terror
 #&gt; president     0.4670994 0.5606119 0.1348400
 #&gt; clinton       0.4714045 0.4629100 0.0000000
 #&gt; distinguished 0.6666667 0.6546537 0.0000000
@@ -443,7 +443,7 @@ values will not be returned</p></td>
 #&gt; peaceful      0.5773503 0.5669467 0.0000000
 #&gt; transfer      0.4082483 0.2672612 0.0000000
 #&gt; authority     0.8164966 0.5345225 0.0000000
-#&gt; rare          0.5773503 0.3779645 0.0000000</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6</span>)</div><div class='output co'>#&gt; $fair
+#&gt; rare          0.5773503 0.3779645 0.0000000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6</span>)</div><div class='output co'>#&gt; $fair
 #&gt;    continue      chance      raging differences        turn     dangers 
 #&gt;           1           1           1           1           1           1 
 #&gt; 
@@ -463,12 +463,12 @@ values will not be returned</p></td>
 #&gt; 2005-Bush       52.8         0       60.8       56.9       57.4
 #&gt; 2009-Obama      49.9      60.8          0       48.0       54.9
 #&gt; 2013-Obama      48.3      56.9       48.0          0       53.7
-#&gt; 2017-Trump      47.6      57.4       54.9       53.7          0</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 2017-Trump      47.6      57.4       54.9       53.7          0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
 #&gt; 2001-Bush    0.00000  52.84884   49.94997   48.31149   47.61302
 #&gt; 2005-Bush   52.84884   0.00000   60.84406   56.85948   57.41080
 #&gt; 2009-Obama  49.94997  60.84406    0.00000   47.98958   54.91812
 #&gt; 2013-Obama  48.31149  56.85948   47.98958    0.00000   53.73081
-#&gt; 2017-Trump  47.61302  57.41080   54.91812   53.73081    0.00000</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt; $`2001-Bush`
+#&gt; 2017-Trump  47.61302  57.41080   54.91812   53.73081    0.00000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt; $`2001-Bush`
 #&gt;  2005-Bush 2009-Obama 2013-Obama 2017-Trump 
 #&gt;   52.84884   49.94997   48.31149   47.61302 
 #&gt; 
@@ -487,7 +487,7 @@ values will not be returned</p></td>
 #&gt; $`2017-Trump`
 #&gt;  2005-Bush 2009-Obama 2013-Obama  2001-Bush 
 #&gt;   57.41080   54.91812   53.73081   47.61302 
-#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/dist'>as.dist</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama
 #&gt; 2005-Bush   52.84884                                
 #&gt; 2009-Obama  49.94997  60.84406                      
 #&gt; 2013-Obama  48.31149  56.85948   47.98958           
@@ -499,18 +499,18 @@ values will not be returned</p></td>
 #&gt; 2005-Bush        57.4
 #&gt; 2009-Obama       54.9
 #&gt; 2013-Obama       53.7
-#&gt; 2017-Trump          0</div><div class='input'>(<span class='no'>tstat5</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; textstat_dist object; method = "euclidean"
+#&gt; 2017-Trump          0</div><div class='input'>(<span class='no'>tstat5</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; textstat_dist object; method = "euclidean"
 #&gt;            2009-Obama 2013-Obama
 #&gt; 2001-Bush        49.9       48.3
 #&gt; 2005-Bush        60.8       56.9
 #&gt; 2009-Obama          0       48.0
 #&gt; 2013-Obama       48.0          0
-#&gt; 2017-Trump       54.9       53.7</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>as.matrix</a></span>(<span class='no'>tstat5</span>)</div><div class='output co'>#&gt;            2009-Obama 2013-Obama
+#&gt; 2017-Trump       54.9       53.7</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat5</span>)</div><div class='output co'>#&gt;            2009-Obama 2013-Obama
 #&gt; 2001-Bush    49.94997   48.31149
 #&gt; 2005-Bush    60.84406   56.85948
 #&gt; 2009-Obama    0.00000   47.98958
 #&gt; 2013-Obama   47.98958    0.00000
-#&gt; 2017-Trump   54.91812   53.73081</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list</a></span>(<span class='no'>tstat5</span>)</div><div class='output co'>#&gt; $`2009-Obama`
+#&gt; 2017-Trump   54.91812   53.73081</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat5</span>)</div><div class='output co'>#&gt; $`2009-Obama`
 #&gt;  2005-Bush 2017-Trump  2001-Bush 2013-Obama 
 #&gt;   60.84406   54.91812   49.94997   47.98958 
 #&gt; 
@@ -518,29 +518,25 @@ values will not be returned</p></td>
 #&gt;  2005-Bush 2017-Trump  2001-Bush 2009-Obama 
 #&gt;   56.85948   53.73081   48.31149   47.98958 
 #&gt; </div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># plot a dendrogram after converting the object into distances</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/hclust'>hclust</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/dist'>as.dist</a></span>(<span class='no'>tstat4</span>)))
-<span class='co'># }</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></span>(<span class='no'>tstat4</span>)))
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#note">Note</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -548,8 +544,9 @@ values will not be returned</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -572,6 +569,8 @@ values will not be returned</p></td>
 </script>
 
 
+
   </body>
 </html>
+
 

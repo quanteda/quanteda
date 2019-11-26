@@ -8,10 +8,12 @@
 
 <title>Version 0.99 • quanteda</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -40,7 +42,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+
 <meta property="og:title" content="Version 0.99" />
+
 
 
 
@@ -81,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.9000</span>
       </span>
     </div>
 
@@ -172,7 +176,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -207,9 +210,9 @@
 <h1 class="page-header">
 <a href="#quanteda-0-99" class="anchor"></a>quanteda 0.99<small> 2017-08-15 </small>
 </h1>
-<div id="new-features-11" class="section level2">
+<div id="new-features-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-11" class="anchor"></a>New Features</h2>
+<a href="#new-features-14" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code>, which works on tokens objects in the same way as <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> does on corpus objects (#902).</li>
 <li>Added <strong>magrittr</strong> pipe support (#927). <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code> can now be used with <strong>quanteda</strong> without needing to attach <strong>magrittr</strong> (or, as many users apparently believe, the entire tidyverse.)<br>
@@ -221,9 +224,9 @@
 <li>New functions <code><a href="../reference/head.corpus.html">head.corpus()</a></code>, <code><a href="../reference/head.corpus.html">tail.corpus()</a></code> provide fast subsetting of the first or last documents in a corpus. (#952)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-12" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-12" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-13" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed a problem when applying <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code> to <code><a href="../reference/dfm.html">dfm()</a></code> (#928).</li>
 <li>Added documentation for <code>regex2fixed()</code> and associated functions.</li>
@@ -251,17 +254,17 @@
 <h1 class="page-header">
 <a href="#quanteda-0-99-9" class="anchor"></a>quanteda 0.99.9<small> 2017-09-22 </small>
 </h1>
-<div id="new-features-10" class="section level2">
+<div id="new-features-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-10" class="anchor"></a>New Features</h2>
+<a href="#new-features-13" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added methods for changing the docnames of tokens and dfm objects (#987).</li>
 <li>Added new function <code><a href="../reference/textmodel_lsa.html">textmodel_lsa()</a></code> for Latent Semantic Analysis.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-11" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-11" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-12" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>The computation of tfidf has been more thoroughly described in the documentation for this function (#997).</li>
 <li>Fixed a bug discovered in #1011 for unused keys in <code><a href="../reference/tokens_lookup.html">tokens_lookup(..., exclusive = FALSE)</a></code>.</li>
@@ -272,9 +275,9 @@
 <h1 class="page-header">
 <a href="#quanteda-0-99-12" class="anchor"></a>quanteda 0.99.12<small> 2017-10-06 </small>
 </h1>
-<div id="new-features-9" class="section level2">
+<div id="new-features-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-9" class="anchor"></a>New Features</h2>
+<a href="#new-features-12" class="anchor"></a>New Features</h2>
 <ul>
 <li>
 <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code> has a new <code>window</code> argument, permitting selection within an asymmetric window around the <code>pattern</code> of selection. (#521)</li>
@@ -285,9 +288,9 @@
 <li>Added a <code>spacy_parse</code> method for corpus objects. Also restored quanteda methods for <strong>spacyr</strong> <code>spacy_parsed</code> objects.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-10" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-10" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-11" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Improved documentation for <code><a href="../reference/textmodel_nb.html">textmodel_nb()</a></code> (#1010), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
 </ul>
@@ -328,7 +331,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
