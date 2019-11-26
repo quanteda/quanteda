@@ -389,7 +389,7 @@
 <a class="sourceLine" id="cb16-6" title="6"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1789</span>, <span class="dv">2017</span>, <span class="dv">12</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb16-7" title="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># Longest inaugural address: William Henry Harrison</span></a>
 <a class="sourceLine" id="cb18-2" title="2">tokeninfo[<span class="kw"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(tokeninfo<span class="op">$</span>Tokens), ]</a></code></pre></div>
 <pre><code>##             Text Types Tokens Sentences Year President     FirstName
@@ -746,7 +746,7 @@
 <a class="sourceLine" id="cb74-2" title="2"><span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfmat_uk, <span class="dt">min_count =</span> <span class="dv">6</span>, <span class="dt">random_order =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb74-3" title="3">                   <span class="dt">rotation =</span> <span class="fl">.25</span>,</a>
 <a class="sourceLine" id="cb74-4" title="4">                   <span class="dt">color =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="dv">8</span>, <span class="st">"Dark2"</span>))</a></code></pre></div>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
 </div>
 <div id="डॉक्युमेंट्स-को-ग्रूप-करना-डॉक्युमेंट-वेरीअबल-द्वारा" class="section level3">
 <h3 class="hasAnchor">
@@ -839,7 +839,7 @@
 <a class="sourceLine" id="cb86-13" title="13"><span class="co"># plot as a dendrogram</span></a>
 <a class="sourceLine" id="cb86-14" title="14"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>,</a>
 <a class="sourceLine" id="cb86-15" title="15">     <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</a></code></pre></div>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-37-1.png" width="960"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-37-1.png" width="960"></p>
 <p>हम टर्म समानताओं को भी देख सकते हैं:</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1">tstat_sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(dfmat_sotu, dfmat_sotu[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>)],</a>
 <a class="sourceLine" id="cb87-2" title="2">                          <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)</a>
@@ -868,7 +868,7 @@
 <a class="sourceLine" id="cb89-3" title="3"></a>
 <a class="sourceLine" id="cb89-4" title="4"><span class="co"># plot the Wordfish estimates by party</span></a>
 <a class="sourceLine" id="cb89-5" title="5"><span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(tmod_wf, <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(dfmat_ire, <span class="st">"party"</span>))</a></code></pre></div>
-<p><img src="../../docs/articles/pkgdown/quickstart_hi_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
+<p><img src="quickstart_hi_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
 </div>
 <div id="टॉपिक-मॉडल्स" class="section level2">
 <h2 class="hasAnchor">
