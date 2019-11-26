@@ -60,9 +60,11 @@ is.corpus <- function(x) {
 #' summary(corp, showmeta = TRUE) # show the meta-data
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
-summary.corpus <- function(object, n = 100, tolower = FALSE, ...) {
+summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ...) {
     object <- as.corpus(object)
     result <- summarize_texts(texts(object), n = n, tolower = tolower, ...)
+    if (showmeta)
+        result <- cbind(result, docvars(object))
     attr(result, "ndoc_show") <- n
     attr(result, "ndoc_all") <- ndoc(object)
     class(result) <- c("summary.corpus", "data.frame")
