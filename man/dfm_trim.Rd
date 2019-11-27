@@ -4,11 +4,18 @@
 \alias{dfm_trim}
 \title{Trim a dfm using frequency threshold-based feature selection}
 \usage{
-dfm_trim(x, min_termfreq = NULL, max_termfreq = NULL,
+dfm_trim(
+  x,
+  min_termfreq = NULL,
+  max_termfreq = NULL,
   termfreq_type = c("count", "prop", "rank", "quantile"),
-  min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count",
-  "prop", "rank", "quantile"), sparsity = NULL,
-  verbose = quanteda_options("verbose"), ...)
+  min_docfreq = NULL,
+  max_docfreq = NULL,
+  docfreq_type = c("count", "prop", "rank", "quantile"),
+  sparsity = NULL,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 }
 \arguments{
 \item{x}{a \link{dfm} object}

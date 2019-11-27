@@ -6,8 +6,15 @@
 \alias{is.collocations}
 \title{Identify and score multi-word expressions}
 \usage{
-textstat_collocations(x, method = "lambda", size = 2, min_count = 2,
-  smoothing = 0.5, tolower = TRUE, ...)
+textstat_collocations(
+  x,
+  method = "lambda",
+  size = 2,
+  min_count = 2,
+  smoothing = 0.5,
+  tolower = TRUE,
+  ...
+)
 
 is.collocations(x)
 }
@@ -105,7 +112,7 @@ head(cols <- textstat_collocations(corp, size = 3, min_count = 2), 10)
 # extracting multi-part proper nouns (capitalized terms)
 toks1 <- tokens(data_corpus_inaugural)
 toks2 <- tokens_remove(toks1, pattern = stopwords("english"), padding = TRUE)
-toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex", 
+toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex",
                        case_insensitive = FALSE, padding = TRUE)
 tstat <- textstat_collocations(toks3, size = 3, tolower = FALSE)
 head(tstat, 10)

@@ -4,8 +4,12 @@
 \alias{corpus_reshape}
 \title{Recast the document units of a corpus}
 \usage{
-corpus_reshape(x, to = c("sentences", "paragraphs", "documents"),
-  use_docvars = TRUE, ...)
+corpus_reshape(
+  x,
+  to = c("sentences", "paragraphs", "documents"),
+  use_docvars = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{corpus whose document units will be reshaped}
@@ -45,6 +49,6 @@ corp2para <- corpus_reshape(corp2, to = "paragraphs")
 corp2para
 summary(corp2para, 50, showmeta = TRUE)
 ## Note that Bush 2005 is recorded as a single paragraph because that text 
-## used a single \\n to mark the end of a paragraph.
+## used a single \n to mark the end of a paragraph.
 }
 \keyword{corpus}

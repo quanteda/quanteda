@@ -6,11 +6,21 @@
 \alias{index_types}
 \title{Convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
-pattern2id(pattern, types, valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE, keep_nomatch = FALSE)
+pattern2id(
+  pattern,
+  types,
+  valuetype = c("glob", "fixed", "regex"),
+  case_insensitive = TRUE,
+  keep_nomatch = FALSE
+)
 
-pattern2fixed(pattern, types, valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE, keep_nomatch = FALSE)
+pattern2fixed(
+  pattern,
+  types,
+  valuetype = c("glob", "fixed", "regex"),
+  case_insensitive = TRUE,
+  keep_nomatch = FALSE
+)
 
 index_types(types, valuetype, case_insensitive, max_len = NULL)
 }

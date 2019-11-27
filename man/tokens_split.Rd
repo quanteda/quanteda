@@ -4,8 +4,12 @@
 \alias{tokens_split}
 \title{Split tokens by a separator pattern}
 \usage{
-tokens_split(x, separator = " ", valuetype = c("fixed", "regex"),
-  remove_separator = TRUE)
+tokens_split(
+  x,
+  separator = " ",
+  valuetype = c("fixed", "regex"),
+  remove_separator = TRUE
+)
 }
 \arguments{
 \item{x}{a \link{tokens} object}

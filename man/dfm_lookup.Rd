@@ -4,10 +4,17 @@
 \alias{dfm_lookup}
 \title{Apply a dictionary to a dfm}
 \usage{
-dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, nomatch = NULL,
-  verbose = quanteda_options("verbose"))
+dfm_lookup(
+  x,
+  dictionary,
+  levels = 1:5,
+  exclusive = TRUE,
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  capkeys = !exclusive,
+  nomatch = NULL,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}

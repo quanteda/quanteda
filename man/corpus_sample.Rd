@@ -4,8 +4,7 @@
 \alias{corpus_sample}
 \title{Randomly sample documents from a corpus}
 \usage{
-corpus_sample(x, size = NULL, replace = FALSE, prob = NULL,
-  by = NULL)
+corpus_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
 }
 \arguments{
 \item{x}{a corpus object whose documents will be sampled}

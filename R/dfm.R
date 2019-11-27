@@ -424,7 +424,7 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
     result <- new("dfm", temp, 
-                  docvars = quanteda:::make_docvars(n = 0L))
+                  docvars = make_docvars(n = 0L))
     set_dfm_dimnames(result) <- list(document, feature)
     return(result)
 }

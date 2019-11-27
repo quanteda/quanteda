@@ -4,8 +4,13 @@
 \alias{textstat_frequency}
 \title{Tabulate feature frequencies}
 \usage{
-textstat_frequency(x, n = NULL, groups = NULL, ties_method = c("min",
-  "average", "first", "random", "max", "dense"), ...)
+textstat_frequency(
+  x,
+  n = NULL,
+  groups = NULL,
+  ties_method = c("min", "average", "first", "random", "max", "dense"),
+  ...
+)
 }
 \arguments{
 \item{x}{a \link{dfm} object}

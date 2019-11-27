@@ -4,7 +4,7 @@
 \alias{summary.corpus}
 \title{Summarize a corpus}
 \usage{
-\method{summary}{corpus}(object, n = 100, tolower = FALSE, ...)
+\method{summary}{corpus}(object, n = 100, tolower = FALSE, showmeta = TRUE, ...)
 }
 \arguments{
 \item{object}{corpus to be summarized}
@@ -13,10 +13,10 @@
 
 \item{tolower}{convert texts to lower case before counting types}
 
-\item{...}{additional arguments passed through to \code{\link{tokens}}}
-
 \item{showmeta}{set to \code{TRUE} to include document-level
 meta-data}
+
+\item{...}{additional arguments passed through to \code{\link{tokens}}}
 }
 \description{
 Displays information about a corpus, including attributes and metadata such

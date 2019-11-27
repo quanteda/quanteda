@@ -4,8 +4,7 @@
 \alias{get_docvars}
 \title{Internal function to extract docvars}
 \usage{
-get_docvars(x, field = NULL, user = TRUE, system = FALSE,
-  drop = FALSE)
+get_docvars(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE)
 }
 \arguments{
 \item{x}{an object from which docvars are extracted}

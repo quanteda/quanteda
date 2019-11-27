@@ -4,8 +4,14 @@
 \alias{tokens_compound}
 \title{Convert token sequences into compound tokens}
 \usage{
-tokens_compound(x, pattern, concatenator = "_", valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, join = TRUE)
+tokens_compound(
+  x,
+  pattern,
+  concatenator = "_",
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  join = TRUE
+)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}

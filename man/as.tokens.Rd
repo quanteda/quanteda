@@ -31,8 +31,13 @@ as.tokens(x, concatenator = "_", ...)
 
 \method{as.tokens}{tokens}(x, ...)
 
-\method{as.tokens}{spacyr_parsed}(x, concatenator = "/",
-  include_pos = c("none", "pos", "tag"), use_lemma = FALSE, ...)
+\method{as.tokens}{spacyr_parsed}(
+  x,
+  concatenator = "/",
+  include_pos = c("none", "pos", "tag"),
+  use_lemma = FALSE,
+  ...
+)
 
 is.tokens(x)
 }

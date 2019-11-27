@@ -4,8 +4,7 @@
 \alias{print.summary.textmodel}
 \title{print method for summary.textmodel}
 \usage{
-\method{print}{summary.textmodel}(x, digits = max(3L, getOption("digits")
-  - 3L), ...)
+\method{print}{summary.textmodel}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{x}{a \code{summary.textmodel} object}

@@ -4,12 +4,10 @@
 \alias{summarize_texts}
 \title{Summary statistics on a character vector}
 \usage{
-summarize_texts(object, n = 100, tolower = FALSE, ...)
+summarize_texts(object, tolower = FALSE, ...)
 }
 \arguments{
 \item{object}{corpus to be summarized}
-
-\item{n}{maximum number of texts to describe, default=100}
 
 \item{tolower}{convert texts to lower case before counting types}
 

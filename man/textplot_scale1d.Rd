@@ -4,9 +4,16 @@
 \alias{textplot_scale1d}
 \title{Plot a fitted scaling model}
 \usage{
-textplot_scale1d(x, margin = c("documents", "features"),
-  doclabels = NULL, sort = TRUE, groups = NULL, highlighted = NULL,
-  alpha = 0.7, highlighted_color = "black")
+textplot_scale1d(
+  x,
+  margin = c("documents", "features"),
+  doclabels = NULL,
+  sort = TRUE,
+  groups = NULL,
+  highlighted = NULL,
+  alpha = 0.7,
+  highlighted_color = "black"
+)
 }
 \arguments{
 \item{x}{the fitted or predicted scaling model object to be plotted}

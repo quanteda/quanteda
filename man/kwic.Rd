@@ -5,8 +5,15 @@
 \alias{is.kwic}
 \title{Locate keywords-in-context}
 \usage{
-kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
-  separator = " ", case_insensitive = TRUE, ...)
+kwic(
+  x,
+  pattern,
+  window = 5,
+  valuetype = c("glob", "regex", "fixed"),
+  separator = " ",
+  case_insensitive = TRUE,
+  ...
+)
 
 is.kwic(x)
 }
