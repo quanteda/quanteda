@@ -62,12 +62,13 @@ is.corpus <- function(x) {
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ...) {
     object <- as.corpus(object)
+    ndoc_all <- ndoc(object)
     object <- head(object, n)
     result <- summarize_texts(texts(object), tolower = tolower, ...)
     if (showmeta)
         result <- cbind(result, docvars(object))
     attr(result, "ndoc_show") <- n
-    attr(result, "ndoc_all") <- ndoc(object)
+    attr(result, "ndoc_all") <- ndoc_all
     class(result) <- c("summary.corpus", "data.frame")
     return(result)
 }
