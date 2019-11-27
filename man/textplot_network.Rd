@@ -59,8 +59,8 @@ both integer values and vector values.}
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}
 
-\item{...}{additional arguments passed to \link[network]{network} or
-\link[igraph]{graph_from_adjacency_matrix}.  Not used for \code{as.igraph}.}
+\item{...}{additional arguments passed to \link[network:network]{network} or
+\link[igraph:graph_from_adjacency_matrix]{graph_from_adjacency_matrix}.  Not used for \code{as.igraph}.}
 }
 \description{
 Plot an \link{fcm} object as a network, where edges show co-occurrences of
@@ -68,10 +68,10 @@ features.
 }
 \details{
 Currently the size of the network is limited to 1000, because of the
-  computationally intensive nature of network formation for larger matrices.
-  When the \link{fcm} is large, users should select features using
-  \link{fcm_select}, set the threshold using \code{min_freq}, or implement
-  own plotting function using \code{\link[=as.network.fcm]{as.network}}.
+computationally intensive nature of network formation for larger matrices.
+When the \link{fcm} is large, users should select features using
+\link{fcm_select}, set the threshold using \code{min_freq}, or implement
+own plotting function using \code{\link[=as.network.fcm]{as.network()}}.
 }
 \examples{
 set.seed(100)
@@ -102,11 +102,11 @@ if (requireNamespace("igraph", quietly = TRUE)) {
 }
 }
 \seealso{
-\code{\link{fcm}}
+\code{\link[=fcm]{fcm()}}
 
-\code{\link[network]{network}}
+\code{\link[network:network]{network::network()}}
 
-\code{\link[igraph]{graph_from_adjacency_matrix}}
+\code{\link[igraph:graph_from_adjacency_matrix]{igraph::graph_from_adjacency_matrix()}}
 }
 \author{
 Kohei Watanabe and Stefan Müller

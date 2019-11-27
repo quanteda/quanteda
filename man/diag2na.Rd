@@ -7,13 +7,13 @@
 diag2na(x)
 }
 \arguments{
-\item{x}{the return from \code{\link{textstat_simil}} or \code{\link{textstat_dist}}}
+\item{x}{the return from \code{\link[=textstat_simil]{textstat_simil()}} or \code{\link[=textstat_dist]{textstat_dist()}}}
 }
 \value{
 sparse Matrix format with same-pair values replaced with \code{NA}
 }
 \description{
-Converts the diagonal, or the same-pair equivalent in an object 
+Converts the diagonal, or the same-pair equivalent in an object
 where the columns have been selected, to NA.
 }
 \keyword{internal}

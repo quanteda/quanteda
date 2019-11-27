@@ -1,14 +1,14 @@
 #' Plot features as a wordcloud
 #'
-#' Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted
+#' Plot a [dfm] object as a wordcloud, where the feature labels are plotted
 #' with their sizes proportional to their numerical values in the dfm.  When
-#' \code{comparison = TRUE}, it plots comparison word clouds by document.
+#' `comparison = TRUE`, it plots comparison word clouds by document.
 #' @details The default is to plot the word cloud of all features, summed across
 #'   documents.  To produce word cloud plots for specific document or set of
 #'   documents, you need to slice out the document(s) from the dfm object.
 #'   
-#'   Comparison wordcloud plots may be plotted by setting \code{comparison =
-#'   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+#'   Comparison wordcloud plots may be plotted by setting `comparison =
+#'   TRUE`, which plots a separate grouping for *each document* in the dfm.
 #'   This means that you will need to slice out just a few documents from the
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
@@ -20,24 +20,24 @@
 #' @param max_words maximum number of words to be plotted. least frequent terms
 #'   dropped.
 #' @param color color of words from least to most frequent
-#' @param font font-family of words and labels. Use default font if \code{NULL}.
+#' @param font font-family of words and labels. Use default font if `NULL`.
 #' @param adjust adjust sizes of words by a constant. Useful for non-English
 #'   words for which R fails to obtain correct sizes.
 #' @param rotation proportion of words with 90 degree rotation
-#' @param random_order plot words in random order. If \code{FALSE}, they will be
+#' @param random_order plot words in random order. If `FALSE`, they will be
 #'   plotted in decreasing frequency.
-#' @param random_color choose colors randomly from the colors. If \code{FALSE},
+#' @param random_color choose colors randomly from the colors. If `FALSE`,
 #'   the color is chosen based on the frequency
-#' @param ordered_color if \code{TRUE}, then colors are assigned to words in
+#' @param ordered_color if `TRUE`, then colors are assigned to words in
 #'   order.
-#' @param labelcolor color of group labels. Only used when \code{compariosn=TRUE}.
-#' @param labelsize size of group labels. Only used when \code{compariosn=TRUE}.
+#' @param labelcolor color of group labels. Only used when `compariosn=TRUE`.
+#' @param labelsize size of group labels. Only used when `compariosn=TRUE`.
 #' @param labeloffset  position of group labels. Only used when
-#'   \code{comparison=TRUE}.
-#' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable
+#'   `comparison=TRUE`.
+#' @param fixed_aspect if `TRUE`, the aspect ratio is fixed. Variable
 #'   aspect ratio only supported if rotation = 0.
-#' @param comparison if \code{TRUE}, plot a wordcloud that compares documents in
-#'   the same way as \code{\link[wordcloud]{comparison.cloud}}
+#' @param comparison if `TRUE`, plot a wordcloud that compares documents in
+#'   the same way as [wordcloud::comparison.cloud()]
 #' @param ... additional parameters. Only used to make it compatible with
 #'   \pkg{wordcloud}
 #' @examples
@@ -139,7 +139,7 @@ textplot_wordcloud.dfm <- function(x,
 #' Internal function for textplot_wordcloud
 #'
 #' This function implements wordcloud without dependencies. Code is adopted from 
-#' \code{\link[wordcloud]{wordcloud}}.
+#' [wordcloud::wordcloud()].
 #' @inheritParams textplot_wordcloud
 #' @param scale deprecated argument
 #' @param min.freq deprecated argument
@@ -310,7 +310,7 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
 #' Internal function for textplot_wordcloud
 #'
 #' This function implements wordcloud that compares documents. Code is adopted
-#' from \code{\link[wordcloud]{comparison.cloud}}.
+#' from [wordcloud::comparison.cloud()].
 #' @inheritParams textplot_wordcloud
 #' @param scale deprecated argument
 #' @param min.freq deprecated argument

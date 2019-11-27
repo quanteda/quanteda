@@ -17,26 +17,26 @@
 #'   conditional maximum likelihood (from conditionally estimating 
 #'   document-level, then feature-level parameters).
 #' @param dispersion sets whether a quasi-Poisson quasi-likelihood should be 
-#'   used based on a single dispersion parameter (\code{"poisson"}), or 
-#'   quasi-Poisson (\code{"quasipoisson"})
+#'   used based on a single dispersion parameter (`"poisson"`), or 
+#'   quasi-Poisson (`"quasipoisson"`)
 #' @param dispersion_level sets the unit level for the dispersion parameter, 
-#'   options are \code{"feature"} for term-level variances, or \code{"overall"} 
+#'   options are `"feature"` for term-level variances, or `"overall"` 
 #'   for a single dispersion parameter
 #' @param dispersion_floor constraint for the minimal underdispersion multiplier 
 #'   in the quasi-Poisson model.  Used to minimize the distorting effect of 
 #'   terms with rare term or document frequencies that appear to be severely 
-#'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
-#'   "quasipoisson"}.
-#' @param sparse specifies whether the \code{"dfm"} is coerced to dense.  While
-#'   setting this to \code{TRUE} will make it possible to handle larger dfm
+#'   underdispersed.  Default is 0, but this only applies if `dispersion = 
+#'   "quasipoisson"`.
+#' @param sparse specifies whether the `"dfm"` is coerced to dense.  While
+#'   setting this to `TRUE` will make it possible to handle larger dfm
 #'   objects (and make execution faster), it will generate slightly different
 #'   results each time, because the sparse SVD routine has a stochastic element.
 #' @param abs_err specifies how the convergence is considered
 #' @param svd_sparse uses svd to initialize the starting values of theta, 
-#'   only applies when \code{sparse = TRUE} 
+#'   only applies when `sparse = TRUE` 
 #' @param residual_floor specifies the threshold for residual matrix when 
-#'   calculating the svds, only applies when \code{sparse = TRUE}
-#' @return An object of class \code{textmodel_fitted_wordfish}.  This is a list 
+#'   calculating the svds, only applies when `sparse = TRUE`
+#' @return An object of class `textmodel_fitted_wordfish`.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
 #'   fixed effects} \item{beta}{estimated feature marginal effects} 
@@ -46,23 +46,23 @@
 #'   \item{se.theta}{standard errors for theta-hats} \item{x}{dfm to which 
 #'   the model was fit}
 #' @details The returns match those of Will Lowe's R implementation of 
-#'   \code{wordfish} (see the austin package), except that here we have renamed 
-#'   \code{words} to be \code{features}.  (This return list may change.)  We 
+#'   `wordfish` (see the austin package), except that here we have renamed 
+#'   `words` to be `features`.  (This return list may change.)  We 
 #'   have also followed the practice begun with Slapin and Proksch's early 
 #'   implementation of the model that used a regularization parameter of 
-#'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
+#'   se\eqn{(\sigma) = 3}, through the third element in `priors`.
 #'   
 #' @note In the rare situation where a warning message of "The algorithm did not
 #'   converge." shows up, removing some documents may work.
-#' @seealso \code{\link{predict.textmodel_wordfish}}  
+#' @seealso [predict.textmodel_wordfish()]  
 #' @references Slapin, J. & Proksch, S.O. (2008). 
-#'   \href{https://doi.org/10.1111/j.1540-5907.2008.00338.x}{A Scaling Model 
-#'   for Estimating Time-Series Party Positions from Texts}. \emph{American 
-#'   Journal of Political Science}, 52(3), 705--772.
+#'   [A Scaling Model 
+#'   for Estimating Time-Series Party Positions from Texts](https://doi.org/10.1111/j.1540-5907.2008.00338.x). *American 
+#'   Journal of Political Science*, 52(3), 705--772.
 #'   
-#'   Lowe, W. & Benoit, K.R. (2013). \href{http://doi.org/10.1093/pan/mpt002}{Validating 
-#'   Estimates of Latent Traits from Textual Data Using Human Judgment as a Benchmark}.  
-#'   \emph{Political Analysis}, 21(3), 298--313.
+#'   Lowe, W. & Benoit, K.R. (2013). [Validating 
+#'   Estimates of Latent Traits from Textual Data Using Human Judgment as a Benchmark](http://doi.org/10.1093/pan/mpt002).  
+#'   *Political Analysis*, 21(3), 298--313.
 #' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
 #' (tmod1 <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
@@ -222,9 +222,9 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
 
 #' Prediction from a textmodel_wordfish method
 #'
-#' \code{predict.textmodel_wordfish()} returns estimated document scores and
+#' `predict.textmodel_wordfish()` returns estimated document scores and
 #' confidence intervals.  The method is provided for consistency with other
-#' \code{textmodel_*()} methods, but does not currently allow prediction on
+#' `textmodel_*()` methods, but does not currently allow prediction on
 #' out-of-sample data.
 #' @param object a fitted wordfish model
 #' @inheritParams predict.textmodel_wordscores
@@ -277,7 +277,7 @@ print.textmodel_wordfish <- function(x, ...) {
 }
 
 #' summary method for textmodel_wordfish
-#' @param object a \link{textmodel_wordfish} object
+#' @param object a [textmodel_wordfish] object
 #' @param n maximum number of features to print in summary
 #' @param ... unused
 #' @export
@@ -305,7 +305,7 @@ summary.textmodel_wordfish <- function(object, n = 30, ...) {
 #' @param margin which margin of parameter estimates to return: both (in a
 #'   list), or just document or feature parameters
 #' @method coef textmodel_wordfish
-#' @return \code{coef.textmodel_wordfish()} returns a matrix of estimated
+#' @return `coef.textmodel_wordfish()` returns a matrix of estimated
 #'   parameters coefficients for the specified margin.
 #' @export
 coef.textmodel_wordfish <- function(object, margin = c("both", "documents", "features"), ...) {

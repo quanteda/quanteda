@@ -2,29 +2,29 @@
 #'
 #' Replace multi-token sequences with a multi-word, or "compound" token.  The
 #' resulting compound tokens will represent a phrase or multi-word expression,
-#' concatenated with \code{concatenator} (by default, the "\code{_}" character)
+#' concatenated with `concatenator` (by default, the "`_`" character)
 #' to form a single "token".  This ensures that the sequences will be processed
-#' subsequently as single tokens, for instance in constructing a \link{dfm}.
-#' @param x an input \link{tokens} object
+#' subsequently as single tokens, for instance in constructing a [dfm].
+#' @param x an input [tokens] object
 #' @inheritParams pattern
 #' @param concatenator the concatenation character that will connect the words
-#'   making up the multi-word sequences.  The default \code{_} is recommended
+#'   making up the multi-word sequences.  The default `_` is recommended
 #'   since it will not be removed during normal cleaning and tokenization (while
 #'   nearly all other punctuation characters, at least those in the Unicode
 #'   punctuation class [P] will be removed).
 #' @inheritParams valuetype
-#' @param case_insensitive logical; if \code{TRUE}, ignore case when matching.
-#'   When \code{pattern} is a \code{collocations}, case-sensitive operation is
+#' @param case_insensitive logical; if `TRUE`, ignore case when matching.
+#'   When `pattern` is a `collocations`, case-sensitive operation is
 #'   significantly faster than case-insensitive operation.
-#' @param join logical; if \code{TRUE}, join overlapping compounds into a single
+#' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
-#' @return A \link{tokens} object in which the token sequences matching
-#'   \code{pattern} have been replaced by  compound "tokens" joined by the
+#' @return A [tokens] object in which the token sequences matching
+#'   `pattern` have been replaced by  compound "tokens" joined by the
 #'   concatenator.
 #' @note Patterns to be compounded (naturally) consist of multi-word sequences,
-#'   and how these are expected in \code{pattern} is very specific.  If the
+#'   and how these are expected in `pattern` is very specific.  If the
 #'   elements to be compounded are supplied as space-delimited elements of a
-#'   character vector, wrap the vector in \code{\link{phrase}}.  If the elements
+#'   character vector, wrap the vector in [phrase()].  If the elements
 #'   to be compounded are separate elements of a character vector, supply it as
 #'   a list where each list element is the sequence of character elements.
 #'   

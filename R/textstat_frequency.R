@@ -1,31 +1,31 @@
 #' Tabulate feature frequencies
 #' 
 #' Produces counts and document frequencies summaries of the features in a
-#' \link{dfm}, optionally grouped by a \link{docvars} variable or other supplied
+#' [dfm], optionally grouped by a [docvars] variable or other supplied
 #' grouping variable.
-#' @param x a \link{dfm} object
-#' @param n (optional) integer specifying the top \code{n} features to be returned,
-#' within group if \code{groups} is specified
+#' @param x a [dfm] object
+#' @param n (optional) integer specifying the top `n` features to be returned,
+#' within group if `groups` is specified
 #' @param ties_method character string specifying how ties are treated.  See
-#'   \code{\link[data.table]{frank}} for details.  Unlike that function,
-#'   however, the default is \code{"min"}, so that frequencies of 10, 10, 11
+#'   [data.table::frank()] for details.  Unlike that function,
+#'   however, the default is `"min"`, so that frequencies of 10, 10, 11
 #'   would be ranked 1, 1, 3.
-#' @param ... additional arguments passed to \code{\link{dfm_group}}.  This can
+#' @param ... additional arguments passed to [dfm_group()].  This can
 #'   be useful in passing `force = TRUE`, for instance, if you are grouping a
 #'   dfm that has been weighted.
 #' @inheritParams groups
 #' @return a data.frame containing the following variables:
 #' \describe{
-#' \item{\code{feature}}{(character) the feature}
-#' \item{\code{frequency}}{count of the feature}
-#' \item{\code{rank}}{rank of the feature, where 1 indicates the greatest
+#' \item{`feature`}{(character) the feature}
+#' \item{`frequency`}{count of the feature}
+#' \item{`rank`}{rank of the feature, where 1 indicates the greatest
 #' frequency}
-#' \item{\code{docfreq}}{document frequency of the feature, as a count (the
+#' \item{`docfreq`}{document frequency of the feature, as a count (the
 #' number of documents in which this feature occurred at least once)}
-#' \item{\code{docfreq}}{document frequency of the feature, as a count}
-#' \item{\code{group}}{(only if \code{groups} is specified) the label of the group.
+#' \item{`docfreq`}{document frequency of the feature, as a count}
+#' \item{`group`}{(only if `groups` is specified) the label of the group.
 #' If the features have been grouped, then all counts, ranks, and document
-#' frequencies are within group.  If groups is not specified, the \code{group}
+#' frequencies are within group.  If groups is not specified, the `group`
 #' column is omitted from the returned data.frame.}
 #' }
 #' @examples 
@@ -67,7 +67,7 @@
 #'                        labels = tstat2$feature) +
 #'     labs(x = NULL, y = "Relative frequency")
 #' }
-#' @return \code{textstat_frequency} returns a data.frame of features and
+#' @return `textstat_frequency` returns a data.frame of features and
 #'   their term and document frequencies within groups.
 #' @export
 #' @keywords plot

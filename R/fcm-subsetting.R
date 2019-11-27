@@ -27,7 +27,7 @@ subset_fcm <- function(x, i, j, ..., drop) {
 
 #' @param i index for features
 #' @param j index for features
-#' @param drop always set to \code{FALSE}
+#' @param drop always set to `FALSE`
 #' @param ... additional arguments not used here
 #' @rdname fcm-class
 #' @export

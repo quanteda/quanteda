@@ -1,23 +1,23 @@
 #' Class affinity maximum likelihood text scaling model
 #'
-#' \code{textmodel_affinity} implements the maximum likelihood supervised text
+#' `textmodel_affinity` implements the maximum likelihood supervised text
 #' scaling method described in Perry and Benoit (2017).
-#' @param x the \link{dfm} or \link{bootstrap_dfm} object on which the model
+#' @param x the [dfm] or [bootstrap_dfm] object on which the model
 #'   will be fit.  Does not need to contain only the training documents, since
 #'   the index of these will be matched automatically.
 #' @param y vector of training classes/scores associated with each document
-#'   identified in \code{data}
+#'   identified in `data`
 #' @param exclude a set of words to exclude from the model
 #' @param smooth a smoothing parameter for class affinities; defaults to 0.5
 #'   (Jeffreys prior). A plausible alternative would be 1.0 (Laplace prior).
 #' @param ref_smooth a smoothing parameter for token distributions;
 #'   defaults to 0.5
-#' @param verbose logical; if \code{TRUE} print diagnostic information during
+#' @param verbose logical; if `TRUE` print diagnostic information during
 #'   fitting.
 #' @author Patrick Perry and Kenneth Benoit
 #' @references Perry, P.O. & Benoit, K.R. (2017). Scaling Text with
 #'   the Class Affinity Model.
-#'   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
+#'   [arXiv:1710.08963 [stat.ML]](http://arxiv.org/abs/1710.08963).
 #' @examples
 #' (af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA)))
 #' predict(af)
@@ -32,8 +32,8 @@
 #' @keywords textmodel experimental
 #' @importFrom methods as
 #' @importFrom stats sd predict
-#' @seealso \code{\link{predict.textmodel_affinity}} for methods of applying a
-#'   fitted \link{textmodel_affinity} model object to predict quantities from
+#' @seealso [predict.textmodel_affinity()] for methods of applying a
+#'   fitted [textmodel_affinity] model object to predict quantities from
 #'   (other) documents.
 textmodel_affinity <- function(x, y, exclude = NULL,
                                smooth = 0.5, ref_smooth = 0.5,
@@ -132,7 +132,7 @@ textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
 
 #' Internal function to fit the likelihood scaling mixture model.
 #'
-#' Ken recommends you use \code{\link{textmodel_affinity}} instead.
+#' Ken recommends you use [textmodel_affinity()] instead.
 #' @param p word likelihoods within classes, estimated from training data
 #' @param x term-document matrix for document(s) to be scaled
 #' @param smooth a misnamed smoothing parameter, either a scalar or a vector
@@ -440,21 +440,21 @@ print.textmodel_affinity <- function(x, ...) {
 #'
 #' @description
 #' Estimate \eqn{\theta_i} for each document, from a fitted
-#' \link{textmodel_affinity} object.
+#' [textmodel_affinity] object.
 #' 
 #' Other methods below provide standard ways to extract or compute quantities 
-#' from predicted \link{textmodel_affinity} objects.
+#' from predicted [textmodel_affinity] objects.
 #' @param object a fitted affinity textmodel
 #' @param level probability level for confidence interval width
 #' @param newdata dfm on which prediction should be made
 #' @param ... unused
-#' @return \code{predict()} returns a list of predicted affinity textmodel
+#' @return `predict()` returns a list of predicted affinity textmodel
 #'   quantities.
 #' @importFrom methods new
 #' @keywords textmodel internal
-#' @seealso \code{\link{influence.predict.textmodel_affinity}} for methods of
+#' @seealso [influence.predict.textmodel_affinity()] for methods of
 #'   computing the influence of particular features from a predicted
-#'   \link{textmodel_affinity} model.
+#'   [textmodel_affinity] model.
 #' @export
 predict.textmodel_affinity <- function(object, newdata = NULL,
                                        level = 0.95, ...) {
@@ -494,7 +494,7 @@ print.predict.textmodel_affinity <- function(x, ...) {
 
 #' @rdname predict.textmodel_affinity
 #' @method coef predict.textmodel_affinity
-#' @return \code{coef()} returns a document \eqn{\times} class matrix of class
+#' @return `coef()` returns a document \eqn{\times} class matrix of class
 #'   affinities for each document.
 #' @export
 coef.predict.textmodel_affinity <- function(object, ...) {
@@ -509,10 +509,10 @@ coefficients.predict.textmodel_affinity <- function(object, ...) {
 
 #' @rdname predict.textmodel_affinity
 #' @return 
-#' \code{residuals()} returns a document-by-feature matrix of residuals.
-#' \code{resid()} is an alias.
+#' `residuals()` returns a document-by-feature matrix of residuals.
+#' `resid()` is an alias.
 #' @method residuals predict.textmodel_affinity
-#' @param type see \link{residuals.lm}
+#' @param type see [residuals.lm]
 #' @importFrom stats residuals resid
 #' @export
 residuals.predict.textmodel_affinity <- function(object, type = c("response", "pearson"), ...) {
@@ -537,7 +537,7 @@ resid.predict.textmodel_affinity <- function(object, ...) {
 
 #' @rdname predict.textmodel_affinity
 #' @method rstandard predict.textmodel_affinity
-#' @return \code{rstandard()} is a shortcut to return the pearson residuals.
+#' @return `rstandard()` is a shortcut to return the pearson residuals.
 #' @importFrom stats rstandard sd
 #' @export
 rstandard.predict.textmodel_affinity <- function(model, ...) {
@@ -549,14 +549,14 @@ rstandard.predict.textmodel_affinity <- function(model, ...) {
 
 #' Compute feature influence from a predicted textmodel_affinity object
 #'
-#' Computes the influence of features on scaled \link{textmodel_affinity}
+#' Computes the influence of features on scaled [textmodel_affinity]
 #' applications.
 #' @param model a predicted
-#'   \link[=predict.textmodel_affinity]{textmodel_affinity} object
+#'   [textmodel_affinity][predict.textmodel_affinity] object
 #' @param subset whether to use all data or a subset (for instance, exclude the
 #'   training set)
 #' @param ... unused
-#' @seealso \code{\link{influence.lm}}
+#' @seealso [influence.lm()]
 #' @keywords textmodel internal
 #' @importFrom stats influence
 #' @method influence predict.textmodel_affinity
@@ -650,7 +650,7 @@ influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
 
 #' @title Internal methods for textmodel_affinity
 #' @description Internal print and summary methods for derivative
-#'   \link{textmodel_affinity} objects.
+#'   [textmodel_affinity] objects.
 #' @name textmodel_affinity-internal
 #' @keywords textmodel internal
 #' @method print influence.predict.textmodel_affinity

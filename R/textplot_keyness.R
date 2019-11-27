@@ -2,26 +2,26 @@
 #'
 #' Plot the results of a "keyword" of features comparing their differential
 #' associations with a target and a reference group, after calculating keyness
-#' using \code{\link{textstat_keyness}}.
-#' @param x a return object from \code{\link{textstat_keyness}}
-#' @param show_reference logical; if \code{TRUE}, show key reference features in
+#' using [textstat_keyness()].
+#' @param x a return object from [textstat_keyness()]
+#' @param show_reference logical; if `TRUE`, show key reference features in
 #'   addition to key target features
-#' @param show_legend logical; if \code{TRUE}, show legend
+#' @param show_legend logical; if `TRUE`, show legend
 #' @param n integer; number of features to plot
 #' @param min_count numeric; minimum total count of feature across the target
 #'   and reference categories, for a feature to be included in the plot
 #' @param margin numeric; size of margin where feature labels are shown
 #' @param color character or integer; colors of bars for target and reference documents.
-#'   \code{color} must have two elements when \code{show_reference = TRUE}.  See
-#'   \link[ggplot2]{color}.
+#'   `color` must have two elements when `show_reference = TRUE`.  See
+#'   [color][ggplot2::color].
 #' @param labelcolor character; color of feature labels.
 #' @param labelsize numeric; size of feature labels and bars.  See
-#'   \link[ggplot2]{size}.
-#' @param font character; font-family of texts. Use default font if \code{NULL}.
+#'   [size][ggplot2::size].
+#' @param font character; font-family of texts. Use default font if `NULL`.
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Haiyan Wang and Kohei Watanabe
-#' @seealso \code{\link{textstat_keyness}}
+#' @seealso [textstat_keyness()]
 #' @keywords textplot
 #' @examples
 #' # compare Trump speeches to other Presidents by chi^2

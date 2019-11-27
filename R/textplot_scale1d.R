@@ -1,8 +1,8 @@
 #' Plot a fitted scaling model
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
-#' \link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 
-#' or \link{textmodel_ca}
+#' [textmodel_wordscores] model or a fitted [textmodel_wordfish] 
+#' or [textmodel_ca]
 #' model. Either document or feature parameters may be plotted: an ideal
 #' point-style plot (estimated document position plus confidence interval on the
 #' x-axis, document labels on the y-axis) with optional renaming and sorting, or
@@ -11,27 +11,27 @@
 #' y-axis, with feature names replacing plotting points with some being chosen
 #' by the user to be highlighted).
 #' @param x the fitted or predicted scaling model object to be plotted
-#' @param margin \code{"documents"} to plot estimated document scores (the
-#'   default) or \code{"features"} to plot estimated feature scores by a measure
+#' @param margin `"documents"` to plot estimated document scores (the
+#'   default) or `"features"` to plot estimated feature scores by a measure
 #'   of relative frequency
-#' @param sort if \code{TRUE} (the default), order points from low to high 
+#' @param sort if `TRUE` (the default), order points from low to high 
 #'   score. If a vector, order according to these values from low to high. Only 
-#'   applies when \code{margin = "documents"}.
+#'   applies when `margin = "documents"`.
 #' @inheritParams groups 
 #' @param doclabels a vector of names for document; if left NULL (the default), 
 #'   docnames will be used
 #' @param highlighted a vector of feature names to draw attention to in a 
-#'   feature plot; only applies if \code{margin = "features"}
-#' @param highlighted_color color for highlighted terms in \code{highlighted}
+#'   feature plot; only applies if `margin = "features"`
+#' @param highlighted_color color for highlighted terms in `highlighted`
 #' @param alpha A number between 0 and 1 (default 0.5) representing the level of
 #'   alpha transparency used to overplot feature names in a feature plot; only 
-#'   applies if \code{margin = "features"}
+#'   applies if `margin = "features"`
 #' @return a \pkg{ggplot2} object
-#' @note The \code{groups} argument only applies when \code{margin = "documents"}.
+#' @note The `groups` argument only applies when `margin = "documents"`.
 #' @export
 #' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
-#' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-#'   \code{\link{textmodel_ca}}
+#' @seealso [textmodel_wordfish()], [textmodel_wordscores()], 
+#'   [textmodel_ca()]
 #' @keywords textplot
 #' @examples
 #' \dontrun{

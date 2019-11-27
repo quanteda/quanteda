@@ -1,32 +1,32 @@
 #' Apply a dictionary to a dfm
 #' 
 #' Apply a dictionary to a dfm by looking up all dfm features for matches in a a
-#' set of \link{dictionary} values, and replace those features with a count of
-#' the dictionary's keys.  If \code{exclusive = FALSE} then the behaviour is to
+#' set of [dictionary] values, and replace those features with a count of
+#' the dictionary's keys.  If `exclusive = FALSE` then the behaviour is to
 #' apply a "thesaurus", where each value match is replaced by the dictionary
-#' key, converted to capitals if \code{capkeys = TRUE} (so that the replacements
+#' key, converted to capitals if `capkeys = TRUE` (so that the replacements
 #' are easily distinguished from features that were terms found originally in
 #' the document).
 #' @param x the dfm to which the dictionary will be applied
-#' @param dictionary a \link{dictionary} class object
+#' @param dictionary a [dictionary] class object
 #' @param levels levels of entries in a hierarchical dictionary that will be 
 #'   applied
-#' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
+#' @param exclusive if `TRUE`, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
 #' @inheritParams valuetype
-#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
-#' @param capkeys if \code{TRUE}, convert dictionary keys to uppercase to
+#' @param case_insensitive ignore the case of dictionary values if `TRUE`
+#' @param capkeys if `TRUE`, convert dictionary keys to uppercase to
 #'   distinguish them from other features
 #' @param nomatch an optional character naming a new feature that will contain 
-#'   the counts of features of \code{x} not matched to a dictionary key.  If 
-#'   \code{NULL} (default), do not tabulate unmatched features.
-#' @param verbose print status messages if \code{TRUE}
+#'   the counts of features of `x` not matched to a dictionary key.  If 
+#'   `NULL` (default), do not tabulate unmatched features.
+#' @param verbose print status messages if `TRUE`
 #' @export
-#' @note If using \code{dfm_lookup} with dictionaries containing multi-word
+#' @note If using `dfm_lookup` with dictionaries containing multi-word
 #'   values, matches will only occur if the features themselves are multi-word
 #'   or formed from ngrams. A better way to match dictionary values that include
-#'   multi-word patterns is to apply \code{\link{tokens_lookup}} to the tokens,
+#'   multi-word patterns is to apply [tokens_lookup()] to the tokens,
 #'   and then construct the dfm.
 #' @keywords dfm
 #' @seealso dfm_replace

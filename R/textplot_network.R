@@ -1,12 +1,12 @@
 #' Plot a network of feature co-occurrences
 #'
-#' Plot an \link{fcm} object as a network, where edges show co-occurrences of
+#' Plot an [fcm] object as a network, where edges show co-occurrences of
 #' features.
-#' @param x a \link{fcm} or \link{dfm}  object
+#' @param x a [fcm] or [dfm]  object
 #' @param min_freq a frequency count threshold or proportion for co-occurrence
 #'   frequencies of features to be included.
-#' @param omit_isolated if \code{TRUE}, features do not occur more frequent than
-#'   \code{min_freq} will be omitted.
+#' @param omit_isolated if `TRUE`, features do not occur more frequent than
+#'   `min_freq` will be omitted.
 #' @param edge_color color of edges that connect vertices.
 #' @param edge_alpha opacity of edges ranging from 0 to 1.0.
 #' @param edge_size size of edges for most frequent co-occurrence The size of
@@ -15,20 +15,20 @@
 #' @param vertex_size size of vertices
 #' @param vertex_color color of vertices.
 #' @param vertex_labelcolor color of texts. Defaults to the same as
-#'   \code{vertex_color}. If \code{NA} is given, texts are not rendered.
+#'   `vertex_color`. If `NA` is given, texts are not rendered.
 #' @param vertex_labelfont font-family of texts. Use default font if
-#'   \code{NULL}.
+#'   `NULL`.
 #' @param vertex_labelsize size of vertex labels in mm. Defaults to size 5. Supports
 #'   both integer values and vector values.
-#' @param offset if \code{NULL}, the distance between vertices and texts are
+#' @param offset if `NULL`, the distance between vertices and texts are
 #'   determined automatically.
-#' @param ... additional arguments passed to \link[network]{network} or
-#'   \link[igraph]{graph_from_adjacency_matrix}.  Not used for \code{as.igraph}.
+#' @param ... additional arguments passed to [network][network::network] or
+#'   [graph_from_adjacency_matrix][igraph::graph_from_adjacency_matrix].  Not used for `as.igraph`.
 #' @details Currently the size of the network is limited to 1000, because of the
 #'   computationally intensive nature of network formation for larger matrices.
-#'   When the \link{fcm} is large, users should select features using
-#'   \link{fcm_select}, set the threshold using \code{min_freq}, or implement
-#'   own plotting function using \code{\link[=as.network.fcm]{as.network}}.
+#'   When the [fcm] is large, users should select features using
+#'   [fcm_select], set the threshold using `min_freq`, or implement
+#'   own plotting function using [`as.network()`][as.network.fcm].
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' set.seed(100)
@@ -51,7 +51,7 @@
 #' # Vector inputs to vertex_labelsize can be scaled if too small / large
 #' textplot_network(fcm_30, vertex_labelsize = 1.5 * rowSums(fcm_30)/min(rowSums(fcm_30)))
 #' @export
-#' @seealso \code{\link{fcm}}
+#' @seealso [fcm()]
 #' @import ggplot2
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
@@ -159,7 +159,7 @@ as.network.default <- function(x, ...) {
 #' @rdname textplot_network
 #' @method as.network fcm
 #' @export
-#' @seealso \code{\link[network]{network}}
+#' @seealso [network::network()]
 as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
 
     if (nfeat(x) > 1000) stop("fcm is too large for a network plot")
@@ -172,7 +172,7 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
 
 #' summary.character method to override the network::summary.character()
 #'
-#' Necessary to prevent the \pkg{network} package's \code{summary.character} method
+#' Necessary to prevent the \pkg{network} package's `summary.character` method
 #' from causing inconsistent behaviour with other summary methods.
 #' @param object the character input
 #' @param ... for additional passing of arguments to default method
@@ -187,7 +187,7 @@ summary.character <- function(object, ...) {
 
 #' Convert an fcm to an igraph object
 #'
-#' Convert an \link{fcm} object to an \pkg{igraph} graph object.
+#' Convert an [fcm] object to an \pkg{igraph} graph object.
 #' @keywords internal
 #' @export
 as.igraph <- function(x, ...) UseMethod("as.igraph")
@@ -195,7 +195,7 @@ as.igraph <- function(x, ...) UseMethod("as.igraph")
 #' @rdname textplot_network
 #' @method as.igraph fcm
 #' @export
-#' @seealso \code{\link[igraph]{graph_from_adjacency_matrix}}
+#' @seealso [igraph::graph_from_adjacency_matrix()]
 #' @examples
 #'
 #' # as.igraph

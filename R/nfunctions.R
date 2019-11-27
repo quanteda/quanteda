@@ -1,13 +1,13 @@
 #' Count the number of documents or features
 #' 
 #' Get the number of documents or features in an object.
-#' @details \code{ndoc} returns the number of documents in an object
-#'   whose texts are organized as "documents" (a \link{corpus},
-#'   \link{dfm}, or \link{tokens} object, a readtext object from the
+#' @details `ndoc` returns the number of documents in an object
+#'   whose texts are organized as "documents" (a [corpus],
+#'   [dfm], or [tokens] object, a readtext object from the
 #'   \pkg{readtext} package).
 #'   
-#' @param x a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
-#'   \link{tokens} object, or a readtext object from the \pkg{readtext} package.
+#' @param x a \pkg{quanteda} object: a [corpus], [dfm], or
+#'   [tokens] object, or a readtext object from the \pkg{readtext} package.
 #' @return an integer (count) of the number of documents or features
 #' @export
 #' @examples 
@@ -43,12 +43,12 @@ ndoc.tokens <- function(x) {
 
 
 #' @rdname ndoc
-#' @details \code{nfeat} returns the number of features from a dfm; it is an
-#'   alias for \code{ntype} when applied to dfm objects.  This function is only 
-#'   defined for \link{dfm} objects because only these have "features".  (To count
-#'   tokens, see \code{\link{ntoken}}.)
+#' @details `nfeat` returns the number of features from a dfm; it is an
+#'   alias for `ntype` when applied to dfm objects.  This function is only 
+#'   defined for [dfm] objects because only these have "features".  (To count
+#'   tokens, see [ntoken()].)
 #' @export
-#' @seealso \code{\link{ntoken}}
+#' @seealso [ntoken()]
 #' @examples
 #' # number of features
 #' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
@@ -70,7 +70,7 @@ nfeat.dfm <- function(x) {
 
 #' Defunct form of nfeat
 #' 
-#' @details \code{nfeature} is the defunct form of \code{\link{nfeat}}.
+#' @details `nfeature` is the defunct form of [nfeat()].
 #' @keywords internal defunct
 #' @export
 nfeature <- function(x) .Defunct("nfeat")
@@ -79,19 +79,19 @@ nfeature <- function(x) .Defunct("nfeat")
 #' Count the number of tokens or types
 #' 
 #' Get the count of tokens (total features) or types (unique tokens).
-#' @param x a \pkg{quanteda} object: a character, \link{corpus}, 
-#'   \link{tokens}, or \link{dfm} object
-#' @param ... additional arguments passed to \code{\link{tokens}}
+#' @param x a \pkg{quanteda} object: a character, [corpus], 
+#'   [tokens], or [dfm] object
+#' @param ... additional arguments passed to [tokens()]
 #' @note Due to differences between raw text tokens and features that have been 
-#'   defined for a \link{dfm}, the counts may be different for dfm objects and the 
+#'   defined for a [dfm], the counts may be different for dfm objects and the 
 #'   texts from which the dfm was generated.  Because the method tokenizes the 
 #'   text in order to count the tokens, your results will depend on the options 
-#'   passed through to \code{\link{tokens}}.
+#'   passed through to [tokens()].
 #' @return named integer vector of the counts of the total tokens or types
 #' @details
 #' The precise definition of "tokens" for objects not yet tokenized (e.g.
-#' \link{character} or \link{corpus} objects) can be controlled through optional
-#' arguments passed to \code{\link{tokens}} through \code{...}.
+#' [character] or [corpus] objects) can be controlled through optional
+#' arguments passed to [tokens()] through `...`.
 #' @examples
 #' # simple example
 #' txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
@@ -119,7 +119,7 @@ ntoken.default <- function(x, ...) {
 
 #' @rdname ntoken
 #' @details 
-#' For \link{dfm} objects, \code{ntype} will only return the count of features
+#' For [dfm] objects, `ntype` will only return the count of features
 #' that occur more than zero times in the dfm.
 #' @export
 ntype <- function(x, ...) {
@@ -194,12 +194,12 @@ ntype.tokens <- function(x, ...) {
 #' Count the number of sentences
 #' 
 #' Return the count of sentences in a corpus or character object.
-#' @param x a character or \link{corpus} whose sentences will be counted
-#' @param ... additional arguments passed to \code{\link{tokens}}
-#' @note \code{nsentence()} relies on the boundaries definitions in the
-#'   \pkg{stringi} package (see \link[stringi]{stri_opts_brkiter}).  It does not
+#' @param x a character or [corpus] whose sentences will be counted
+#' @param ... additional arguments passed to [tokens()]
+#' @note `nsentence()` relies on the boundaries definitions in the
+#'   \pkg{stringi} package (see [stri_opts_brkiter][stringi::stri_opts_brkiter]).  It does not
 #'   count sentences correctly if the text has been transformed to lower case,
-#'   and for this reason \code{nsentence()} will issue a warning if it detects
+#'   and for this reason `nsentence()` will issue a warning if it detects
 #'   all lower-cased text.
 #' @return count(s) of the total sentences per text
 #' @examples

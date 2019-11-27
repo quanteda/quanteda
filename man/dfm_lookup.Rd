@@ -21,14 +21,14 @@ dfm_lookup(
 
 \item{dictionary}{a \link{dictionary} class object}
 
-\item{levels}{levels of entries in a hierarchical dictionary that will be 
+\item{levels}{levels of entries in a hierarchical dictionary that will be
 applied}
 
-\item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
-otherwise, replace values in dictionary with keys while leaving other 
+\item{exclusive}{if \code{TRUE}, remove all features not in dictionary,
+otherwise, replace values in dictionary with keys while leaving other
 features unaffected}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -37,8 +37,8 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
 distinguish them from other features}
 
-\item{nomatch}{an optional character naming a new feature that will contain 
-the counts of features of \code{x} not matched to a dictionary key.  If 
+\item{nomatch}{an optional character naming a new feature that will contain
+the counts of features of \code{x} not matched to a dictionary key.  If
 \code{NULL} (default), do not tabulate unmatched features.}
 
 \item{verbose}{print status messages if \code{TRUE}}
@@ -54,10 +54,10 @@ the document).
 }
 \note{
 If using \code{dfm_lookup} with dictionaries containing multi-word
-  values, matches will only occur if the features themselves are multi-word
-  or formed from ngrams. A better way to match dictionary values that include
-  multi-word patterns is to apply \code{\link{tokens_lookup}} to the tokens,
-  and then construct the dfm.
+values, matches will only occur if the features themselves are multi-word
+or formed from ngrams. A better way to match dictionary values that include
+multi-word patterns is to apply \code{\link[=tokens_lookup]{tokens_lookup()}} to the tokens,
+and then construct the dfm.
 }
 \examples{
 dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),

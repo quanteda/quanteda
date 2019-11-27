@@ -11,24 +11,24 @@ bootstrap_dfm(x, n = 10, ..., verbose = quanteda_options("verbose"))
 
 \item{n}{number of resamples}
 
-\item{...}{additional arguments passed to \code{\link{dfm}}}
+\item{...}{additional arguments passed to \code{\link[=dfm]{dfm()}}}
 
 \item{verbose}{if \code{TRUE} print status messages}
 }
 \value{
 A named list of \link{dfm} objects, where the first, \code{dfm_0}, is
-  the dfm from the original texts, and subsequent elements are the 
-  sentence-resampled dfms.
+the dfm from the original texts, and subsequent elements are the
+sentence-resampled dfms.
 }
 \description{
 Create an array of resampled dfms.
 }
 \details{
-Function produces multiple, resampled \link{dfm} objects, based on 
-  resampling sentences (with replacement) from each document, recombining
-  these into new "documents" and computing a dfm for each. Resampling of
-  sentences is done strictly within document, so that every resampled
-  document will contain at least some of its original tokens.
+Function produces multiple, resampled \link{dfm} objects, based on
+resampling sentences (with replacement) from each document, recombining
+these into new "documents" and computing a dfm for each. Resampling of
+sentences is done strictly within document, so that every resampled
+document will contain at least some of its original tokens.
 }
 \examples{
 # bootstrapping from the original text

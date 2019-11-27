@@ -23,15 +23,15 @@ defaults to \code{" "}.}
 }
 \value{
 \code{as.dictionary} returns a \pkg{quanteda} \link{dictionary}
-  object.  This conversion function differs from the \code{\link{dictionary}}
-  constructor function in that it converts an existing object rather than
-  creates one from components or from a file.
+object.  This conversion function differs from the \code{\link[=dictionary]{dictionary()}}
+constructor function in that it converts an existing object rather than
+creates one from components or from a file.
 
 \code{is.dictionary} returns \code{TRUE} if an object is a
-  \pkg{quanteda} \link{dictionary}.
+\pkg{quanteda} \link{dictionary}.
 }
 \description{
-Convert a dictionary from a different format into a \pkg{quanteda} 
+Convert a dictionary from a different format into a \pkg{quanteda}
 dictionary, or check to see if an object is a dictionary.
 }
 \examples{

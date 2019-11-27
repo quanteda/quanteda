@@ -30,7 +30,7 @@ A dictionary flattened to variable levels
 Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
 vectors. Works like \code{unlist(dictionary, recursive=TRUE)} except that
-the recursion does not go to the bottom level.  Called by \code{\link{dfm}}.
+the recursion does not go to the bottom level.  Called by \code{\link[=dfm]{dfm()}}.
 }
 \examples{
 dict1 <-

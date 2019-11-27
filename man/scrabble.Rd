@@ -7,7 +7,7 @@
 scrabble(x, ...)
 }
 \description{
-Use \code{\link{nscrabble}} instead.
+Use \code{\link[=nscrabble]{nscrabble()}} instead.
 }
 \keyword{deprecated}
 \keyword{internal}

@@ -2,92 +2,92 @@
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokens
-#' @param x a character, \link{corpus}, or \link{tokens} object to be tokenized
+#' @param x a character, [corpus], or [tokens] object to be tokenized
 #' @keywords tokens
 #' @export
 #' @param what the unit for splitting the text, available alternatives are:
-#'   \describe{ \item{\code{"word"}}{(recommended default) smartest, but
+#'   \describe{ \item{`"word"`}{(recommended default) smartest, but
 #'   slowest, word tokenization method; see
-#'   \link[stringi]{stringi-search-boundaries} for details.}
-#'   \item{\code{"fasterword"}}{dumber, but faster, word tokenization method,
-#'   uses \code{\link[stringi]{stri_split_charclass}(x,
-#'   "[\\\\p{Z}\\\\p{C}]+")}} \item{\code{"fastestword"}}{dumbest, but fastest,
-#'   word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, "
-#'   ")}} \item{\code{"character"}}{tokenization into individual characters}
-#'   \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some
+#'   [stringi-search-boundaries][stringi::stringi-search-boundaries] for details.}
+#'   \item{`"fasterword"`}{dumber, but faster, word tokenization method,
+#'   uses \code{[stri_split_charclass][stringi::stri_split_charclass](x,
+#'   "[\\\\p{Z}\\\\p{C}]+")}} \item{`"fastestword"`}{dumbest, but fastest,
+#'   word tokenization method, calls `[stri_split_fixed][stringi::stri_split_fixed](x, "
+#'   ")`} \item{`"character"`}{tokenization into individual characters}
+#'   \item{`"sentence"`}{sentence segmenter, smart enough to handle some
 #'   exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far
 #'   from perfect).} }
-#' @param remove_numbers logical; if \code{TRUE} remove tokens that consist only
-#'   of numbers, but not words that start with digits, e.g. \code{2day}
-#' @param remove_punct logical; if \code{TRUE} remove all characters in the
+#' @param remove_numbers logical; if `TRUE` remove tokens that consist only
+#'   of numbers, but not words that start with digits, e.g. `2day`
+#' @param remove_punct logical; if `TRUE` remove all characters in the
 #'   Unicode "Punctuation" [P] class
-#' @param remove_symbols logical; if \code{TRUE} remove all characters in the
+#' @param remove_symbols logical; if `TRUE` remove all characters in the
 #'   Unicode "Symbol" [S] class
-#' @param remove_twitter logical; if \code{TRUE} remove Twitter characters
-#'   \code{@@} and \code{#}; set to \code{TRUE} if you wish to eliminate these.
-#'   Note that this will always be set to \code{FALSE} if \code{remove_punct =
-#'   FALSE}.
-#' @param remove_url logical; if \code{TRUE} find and eliminate URLs beginning
+#' @param remove_twitter logical; if `TRUE` remove Twitter characters
+#'   `@@` and `#`; set to `TRUE` if you wish to eliminate these.
+#'   Note that this will always be set to `FALSE` if `remove_punct =
+#'   FALSE`.
+#' @param remove_url logical; if `TRUE` find and eliminate URLs beginning
 #'   with http(s) -- see section "Dealing with URLs".
-#' @param remove_hyphens logical; if \code{TRUE} split words that are connected
+#' @param remove_hyphens logical; if `TRUE` split words that are connected
 #'   by hyphenation and hyphenation-like characters in between words, e.g.
-#'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
-#'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies
-#'   if \code{what = "word"} or \code{what = "fasterword"}.
-#' @param remove_separators logical; if \code{TRUE} remove separators and
+#'   `"self-storage"` becomes `c("self", "storage")`.  Default is
+#'   `FALSE` to preserve such words as is, with the hyphens.  Only applies
+#'   if `what = "word"` or `what = "fasterword"`.
+#' @param remove_separators logical; if `TRUE` remove separators and
 #'   separator characters (Unicode "Separator" [Z] and "Control [C]"
-#'   categories). Only applicable for \code{what = "character"} (when you
-#'   probably want it to be \code{FALSE}) and for \code{what = "word"} (when you
-#'   probably want it to be \code{TRUE}).
-#' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting
-#'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
-#'   bigrams and unigrams, use \code{1:2}.  You can even include irregular
-#'   sequences such as \code{2:3} for bigrams and trigrams only.  See
-#'   \code{\link{tokens_ngrams}}.
+#'   categories). Only applicable for `what = "character"` (when you
+#'   probably want it to be `FALSE`) and for `what = "word"` (when you
+#'   probably want it to be `TRUE`).
+#' @param ngrams integer vector of the *n* for *n*-grams, defaulting
+#'   to `1` (unigrams). For bigrams, for instance, use `2`; for
+#'   bigrams and unigrams, use `1:2`.  You can even include irregular
+#'   sequences such as `2:3` for bigrams and trigrams only.  See
+#'   [tokens_ngrams()].
 #' @param skip integer vector specifying the skips for skip-grams, default is 0
-#'   for only immediately neighbouring words. Only applies if \code{ngrams} is
-#'   different from the default of 1.  See \code{\link{tokens_skipgrams}}.
-#' @param concatenator character to use in concatenating \emph{n}-grams, default
-#'   is "\code{_}", which is recommended since this is included in the regular
+#'   for only immediately neighbouring words. Only applies if `ngrams` is
+#'   different from the default of 1.  See [tokens_skipgrams()].
+#' @param concatenator character to use in concatenating *n*-grams, default
+#'   is "`_`", which is recommended since this is included in the regular
 #'   expression and Unicode definitions of "word" characters
-#' @param verbose if \code{TRUE}, print timing messages to the console; off by
+#' @param verbose if `TRUE`, print timing messages to the console; off by
 #'   default
-#' @param include_docvars if \code{TRUE}, pass docvars 
-#'   through to the tokens object.  Only applies when tokenizing \link{corpus}
+#' @param include_docvars if `TRUE`, pass docvars 
+#'   through to the tokens object.  Only applies when tokenizing [corpus]
 #'   objects.
 #' @param ... additional arguments not used
 #' @import stringi
 #' @details The tokenizer is designed to be fast and flexible as well as to
-#'   handle Unicode correctly. Most of the time, users will construct \link{dfm}
-#'   objects from texts or a corpus, without calling \code{tokens()} as an
-#'   intermediate step.  Since \code{tokens()} is most likely to be used by more
+#'   handle Unicode correctly. Most of the time, users will construct [dfm]
+#'   objects from texts or a corpus, without calling `tokens()` as an
+#'   intermediate step.  Since `tokens()` is most likely to be used by more
 #'   technical users, we have set its options to default to minimal
 #'   intervention. This means that punctuation is tokenized as well, and that
 #'   nothing is removed by default from the text being tokenized except
 #'   inter-word spacing and equivalent characters.
 #'
-#'   Note that a \code{tokens} constructor also works on \link{tokens} objects,
+#'   Note that a `tokens` constructor also works on [tokens] objects,
 #'   which allows setting additional options that will modify the original
 #'   object. It is not possible, however, to change a setting to "un-remove"
-#'   something that was removed from the input \link{tokens} object, however.
-#'   For instance, \code{tokens(tokens("Ha!", remove_punct = TRUE), remove_punct
-#'   = FALSE)} will not restore the \code{"!"} token.  No warning is currently
-#'   issued about this, so the user should use \code{tokens.tokens()} with
+#'   something that was removed from the input [tokens] object, however.
+#'   For instance, `tokens(tokens("Ha!", remove_punct = TRUE), remove_punct
+#'   = FALSE)` will not restore the `"!"` token.  No warning is currently
+#'   issued about this, so the user should use `tokens.tokens()` with
 #'   caution.
 #'
 #' @section Dealing with URLs: URLs are tricky to tokenize, because they contain
 #'   a number of symbols and punctuation characters.  If you wish to remove
 #'   these, as most people do, and your text contains URLs, then you should set
-#'   \code{what = "fasterword"} and \code{remove_url = TRUE}.  If you wish to
+#'   `what = "fasterword"` and `remove_url = TRUE`.  If you wish to
 #'   keep the URLs, but do not want them mangled, then your options are more
 #'   limited, since removing punctuation and symbols will also remove them from
 #'   URLs.  We are working on improving this behaviour.
 #'
 #'   See the examples below.
-#' @return \pkg{quanteda} \code{tokens} class object, by default a serialized
+#' @return \pkg{quanteda} `tokens` class object, by default a serialized
 #'   list of integers corresponding to a vector of types.
-#' @seealso \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}},
-#'   \code{\link{as.list.tokens}}
+#' @seealso [tokens_ngrams()], [tokens_skipgrams()],
+#'   [as.list.tokens()]
 #' @keywords tokens
 #' @examples
 #' txt1 <- c(doc1 = "This is a sample: of tokens.",
@@ -328,18 +328,18 @@ tokens.tokens <-  function(x,
 
 #' Coercion, checking, and combining functions for tokens objects
 #'
-#' Coercion functions to and from \link{tokens} objects, checks for whether an
-#' object is a \link{tokens} object, and functions to combine \link{tokens}
+#' Coercion functions to and from [tokens] objects, checks for whether an
+#' object is a [tokens] object, and functions to combine [tokens]
 #' objects.
 #' @param x object to be coerced or checked
 #' @param concatenator character between multi-word expressions, default is the
 #'   underscore character.  See Details.
 #' @param ... additional arguments used by specific methods.  For
-#'   \link{c.tokens}, these are the \link{tokens} objects to be concatenated.
-#' @return \code{as.tokens} returns a quanteda \link{tokens} object.
-#' @details The \code{concatenator} is used to automatically generate dictionary
-#'   values for multi-word expressions in \code{\link{tokens_lookup}} and
-#'   \code{\link{dfm_lookup}}. The underscore character is commonly used to join
+#'   [c.tokens], these are the [tokens] objects to be concatenated.
+#' @return `as.tokens` returns a quanteda [tokens] object.
+#' @details The `concatenator` is used to automatically generate dictionary
+#'   values for multi-word expressions in [tokens_lookup()] and
+#'   [dfm_lookup()]. The underscore character is commonly used to join
 #'   elements of multi-word expressions (e.g. "piece_of_cake", "New_York"), but
 #'   other characters (e.g. whitespace " " or a hyphen "-") can also be used.
 #'   In those cases, users have to tell the system what is the concatenator in
@@ -387,12 +387,12 @@ as.tokens.tokens <- function(x, ...) {
 }
 
 #' @rdname as.tokens
-#' @param use_lemma logical; if \code{TRUE}, use the lemma rather than the raw
+#' @param use_lemma logical; if `TRUE`, use the lemma rather than the raw
 #'   token
 #' @param include_pos character; whether and which part-of-speech tag to use:
-#'   \code{"none"} do not use any part of speech indicator, \code{"pos"} use the
-#'   \code{pos} variable, \code{"tag"} use the \code{tag} variable.  The POS
-#'   will be added to the token after \code{"concatenator"}.
+#'   `"none"` do not use any part of speech indicator, `"pos"` use the
+#'   `pos` variable, `"tag"` use the `tag` variable.  The POS
+#'   will be added to the token after `"concatenator"`.
 #' @export
 as.tokens.spacyr_parsed <- function(x, concatenator = "/",
                                     include_pos = c("none", "pos", "tag"),
@@ -407,8 +407,8 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 
 #' @rdname as.tokens
 #' @export
-#' @return \code{is.tokens} returns \code{TRUE} if the object is of class
-#'   tokens, \code{FALSE} otherwise.
+#' @return `is.tokens` returns `TRUE` if the object is of class
+#'   tokens, `FALSE` otherwise.
 is.tokens <- function(x) "tokens" %in% class(x)
 
 #' @noRd
@@ -665,7 +665,7 @@ tokens_character <- function(txt,
 
 #' Function to serialized list-of-character tokens
 #'
-#' Creates a serialized object of tokens, called by \code{\link{tokens}}.
+#' Creates a serialized object of tokens, called by [tokens()].
 #' @param x a list of character vectors
 #' @param types_reserved optional pre-existing types for mapping of tokens
 #' @param ... additional arguments
@@ -704,10 +704,10 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 #' re-indexes the types attribute to account for types that may have become
 #' duplicates, through a procedure such as stemming or lowercasing; or the
 #' addition of new tokens through compounding.
-#' @param x the \link{tokens} object to be recompiled
-#' @param gap if \code{TRUE}, remove gaps between token IDs
-#' @param dup if \code{TRUE}, merge duplicated token types into the same ID
-#' @param method \code{"C++"} for C++ implementation or \code{"R"} for an older
+#' @param x the [tokens] object to be recompiled
+#' @param gap if `TRUE`, remove gaps between token IDs
+#' @param dup if `TRUE`, merge duplicated token types into the same ID
+#' @param method `"C++"` for C++ implementation or `"R"` for an older
 #'   R-based method
 #' @examples
 #' # lowercasing
@@ -791,10 +791,10 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 
 #' Get word types from a tokens object
 #'
-#' Get unique types of tokens from a \link{tokens} object.
+#' Get unique types of tokens from a [tokens] object.
 #' @param x a tokens object
 #' @export
-#' @seealso \link{featnames}
+#' @seealso [featnames]
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
 #' types(toks)

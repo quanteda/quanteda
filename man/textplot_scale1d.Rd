@@ -22,23 +22,23 @@ textplot_scale1d(
 default) or \code{"features"} to plot estimated feature scores by a measure
 of relative frequency}
 
-\item{doclabels}{a vector of names for document; if left NULL (the default), 
+\item{doclabels}{a vector of names for document; if left NULL (the default),
 docnames will be used}
 
-\item{sort}{if \code{TRUE} (the default), order points from low to high 
-score. If a vector, order according to these values from low to high. Only 
+\item{sort}{if \code{TRUE} (the default), order points from low to high
+score. If a vector, order according to these values from low to high. Only
 applies when \code{margin = "documents"}.}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
 See \link{groups} for details.}
 
-\item{highlighted}{a vector of feature names to draw attention to in a 
+\item{highlighted}{a vector of feature names to draw attention to in a
 feature plot; only applies if \code{margin = "features"}}
 
 \item{alpha}{A number between 0 and 1 (default 0.5) representing the level of
-alpha transparency used to overplot feature names in a feature plot; only 
+alpha transparency used to overplot feature names in a feature plot; only
 applies if \code{margin = "features"}}
 
 \item{highlighted_color}{color for highlighted terms in \code{highlighted}}
@@ -47,8 +47,8 @@ applies if \code{margin = "features"}}
 a \pkg{ggplot2} object
 }
 \description{
-Plot the results of a fitted scaling model, from (e.g.) a predicted 
-\link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 
+Plot the results of a fitted scaling model, from (e.g.) a predicted
+\link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish}
 or \link{textmodel_ca}
 model. Either document or feature parameters may be plotted: an ideal
 point-style plot (estimated document position plus confidence interval on the
@@ -93,8 +93,8 @@ textplot_scale1d(tmod3, margin = "documents",
 }
 }
 \seealso{
-\code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-  \code{\link{textmodel_ca}}
+\code{\link[=textmodel_wordfish]{textmodel_wordfish()}}, \code{\link[=textmodel_wordscores]{textmodel_wordscores()}},
+\code{\link[=textmodel_ca]{textmodel_ca()}}
 }
 \author{
 Kenneth Benoit, Stefan Müller, and Adam Obeng

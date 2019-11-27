@@ -15,16 +15,16 @@ textmodel_lsa(x, nd = 10, margin = c("both", "documents", "features"))
 }
 \description{
 Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
-weighted (for instance using \code{\link{dfm_tfidf}}).
+weighted (for instance using \code{\link[=dfm_tfidf]{dfm_tfidf()}}).
 }
 \details{
-\link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
-  enable the fast computation of the SVD.
+\link[RSpectra:svds]{svds} in the \pkg{RSpectra} package is applied to
+enable the fast computation of the SVD.
 }
 \note{
 The number of dimensions \code{nd} retained in LSA is an empirical
-  issue. While a reduction in \eqn{k} can remove much of the noise, keeping
-  too few dimensions or factors may lose important information.
+issue. While a reduction in \eqn{k} can remove much of the noise, keeping
+too few dimensions or factors may lose important information.
 }
 \examples{
 dfmat <- dfm(data_corpus_irishbudget2010)
@@ -43,17 +43,15 @@ pred$docs_newspace
 }
 \references{
 Rosario, B. (2000).
-  \href{http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf}{Latent 
-  Semantic Indexing: An Overview}. \emph{Technical report INFOSYS 240 Spring
-  Paper, University of California, Berkeley.}
-  
-  Deerwester, S., Dumais, S.T., Furnas, G.W., Landauer, T.K., &  
-  Harshman, R. (1990). \href{https://search.proquest.com/docview/1301252034}{Indexing 
-  by Latent Semantic Analysis}. \emph{Journal of the American Society for 
-  Information Science}, 41(6): 391.
+\href{http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf}{Latent Semantic Indexing: An Overview}. \emph{Technical report INFOSYS 240 Spring
+Paper, University of California, Berkeley.}
+
+Deerwester, S., Dumais, S.T., Furnas, G.W., Landauer, T.K., &
+Harshman, R. (1990). \href{https://search.proquest.com/docview/1301252034}{Indexing by Latent Semantic Analysis}. \emph{Journal of the American Society for
+Information Science}, 41(6): 391.
 }
 \seealso{
-\code{\link{predict.textmodel_lsa}}, \code{\link{coef.textmodel_lsa}}
+\code{\link[=predict.textmodel_lsa]{predict.textmodel_lsa()}}, \code{\link[=coef.textmodel_lsa]{coef.textmodel_lsa()}}
 }
 \author{
 Haiyan Wang and Kohei Watanabe

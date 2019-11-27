@@ -21,14 +21,14 @@ Get the number of documents or features in an object.
 }
 \details{
 \code{ndoc} returns the number of documents in an object
-  whose texts are organized as "documents" (a \link{corpus},
-  \link{dfm}, or \link{tokens} object, a readtext object from the
-  \pkg{readtext} package).
+whose texts are organized as "documents" (a \link{corpus},
+\link{dfm}, or \link{tokens} object, a readtext object from the
+\pkg{readtext} package).
 
 \code{nfeat} returns the number of features from a dfm; it is an
-  alias for \code{ntype} when applied to dfm objects.  This function is only 
-  defined for \link{dfm} objects because only these have "features".  (To count
-  tokens, see \code{\link{ntoken}}.)
+alias for \code{ntype} when applied to dfm objects.  This function is only
+defined for \link{dfm} objects because only these have "features".  (To count
+tokens, see \code{\link[=ntoken]{ntoken()}}.)
 }
 \examples{
 # number of documents
@@ -42,5 +42,5 @@ nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALS
 nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
 }
 \seealso{
-\code{\link{ntoken}}
+\code{\link[=ntoken]{ntoken()}}
 }

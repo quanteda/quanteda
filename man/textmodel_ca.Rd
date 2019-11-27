@@ -11,14 +11,14 @@ textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1)
 
 \item{smooth}{a smoothing parameter for word counts; defaults to zero.}
 
-\item{nd}{Number of dimensions to be included in output; if \code{NA} (the 
+\item{nd}{Number of dimensions to be included in output; if \code{NA} (the
 default) then the maximum possible dimensions are included.}
 
-\item{sparse}{retains the sparsity if set to \code{TRUE}; set it to 
+\item{sparse}{retains the sparsity if set to \code{TRUE}; set it to
 \code{TRUE} if \code{x} (the \link{dfm}) is too big to be allocated after
 converting to dense}
 
-\item{residual_floor}{specifies the threshold for the residual matrix for 
+\item{residual_floor}{specifies the threshold for the residual matrix for
 calculating the truncated svd.Larger value will reduce memory and time cost
 but might reduce accuracy; only applicable when \code{sparse = TRUE}}
 }
@@ -27,22 +27,22 @@ but might reduce accuracy; only applicable when \code{sparse = TRUE}}
 class of \pkg{ca} object.
 }
 \description{
-\code{textmodel_ca} implements correspondence analysis scaling on a 
-\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}.
+\code{textmodel_ca} implements correspondence analysis scaling on a
+\link{dfm}.  The method is a fast/sparse version of function \link[ca:ca]{ca}.
 }
 \details{
-\link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
-  enable the fast computation of the SVD.
+\link[RSpectra:svds]{svds} in the \pkg{RSpectra} package is applied to
+enable the fast computation of the SVD.
 }
 \note{
 You may need to set \code{sparse = TRUE}) and
-  increase the value of \code{residual_floor} to ignore less important
-  information and hence to reduce the memory cost when you have a very big
-  \link{dfm}.
-  If your attempt to fit the model fails due to the matrix being too large, 
-  this is probably because of the memory demands of computing the \eqn{V
+increase the value of \code{residual_floor} to ignore less important
+information and hence to reduce the memory cost when you have a very big
+\link{dfm}.
+If your attempt to fit the model fails due to the matrix being too large,
+this is probably because of the memory demands of computing the \eqn{V
   \times V} residual matrix.  To avoid this, consider increasing the value of
-  \code{residual_floor} by 0.1, until the model can be fit.
+\code{residual_floor} by 0.1, until the model can be fit.
 }
 \examples{
 dfmat <- dfm(data_corpus_irishbudget2010)
@@ -50,11 +50,10 @@ tmod <- textmodel_ca(dfmat)
 summary(tmod)
 }
 \references{
-Nenadic, O. & Greenacre, M. (2007). \href{http://www.jstatsoft.org/v20/i03/}{Correspondence Analysis in R, with Two- and Three-dimensional Graphics: 
-  The ca package}. \emph{Journal of Statistical Software}, 20(3).
+Nenadic, O. & Greenacre, M. (2007). \href{http://www.jstatsoft.org/v20/i03/}{Correspondence Analysis in R, with Two- and Three-dimensional Graphics: The ca package}. \emph{Journal of Statistical Software}, 20(3).
 }
 \seealso{
-\code{\link{coef.textmodel_lsa}}, \link[ca]{ca}
+\code{\link[=coef.textmodel_lsa]{coef.textmodel_lsa()}}, \link[ca:ca]{ca}
 }
 \author{
 Kenneth Benoit and Haiyan Wang

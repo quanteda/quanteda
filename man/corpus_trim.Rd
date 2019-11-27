@@ -27,7 +27,7 @@ char_trim(
 \item{what}{units of trimming, \code{"sentences"} or \code{"paragraphs"}, or
 \code{"documents"}}
 
-\item{min_ntoken, max_ntoken}{minimum and maximum lengths in word tokens 
+\item{min_ntoken, max_ntoken}{minimum and maximum lengths in word tokens
 (excluding punctuation)}
 
 \item{exclude_pattern}{a \pkg{stringi} regular expression whose match (at the
@@ -35,12 +35,12 @@ sentence level) will be used to exclude sentences}
 }
 \value{
 a \link{corpus} or character vector equal in length to the input.  If
-  the input was a corpus, then the all docvars and metadata are preserved. 
-  For documents whose sentences have been removed entirely, a null string
-  (\code{""}) will be returned.
+the input was a corpus, then the all docvars and metadata are preserved.
+For documents whose sentences have been removed entirely, a null string
+(\code{""}) will be returned.
 }
 \description{
-Removes sentences from a corpus or a character vector shorter than a 
+Removes sentences from a corpus or a character vector shorter than a
 specified length.
 }
 \examples{

@@ -6,28 +6,28 @@
 #' transcript) or a user-supplied annotation.
 #' 
 #' For segmentation into syntactic units defined by the locale (such as 
-#' sentences), use \code{\link{corpus_reshape}} instead.  In cases where more 
+#' sentences), use [corpus_reshape()] instead.  In cases where more 
 #' fine-grained segmentation is needed, such as that based on commas or 
 #' semi-colons (phrase delimiters within a sentence), 
-#' \code{\link{corpus_segment}} offers greater user control than 
-#' \code{\link{corpus_reshape}}.
-#' @param x character or \link{corpus} object whose texts will be segmented
+#' [corpus_segment()] offers greater user control than 
+#' [corpus_reshape()].
+#' @param x character or [corpus] object whose texts will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
+#' @param case_insensitive ignore case when matching, if `TRUE`
 #' @param extract_pattern extracts matched patterns from the texts and save in docvars if
-#'   \code{TRUE}
-#' @param pattern_position either \code{"before"} or \code{"after"}, depending
+#'   `TRUE`
+#' @param pattern_position either `"before"` or `"after"`, depending
 #'   on whether the pattern precedes the text (as with a user-supplied tag, such
-#'   as \code{##INTRO} in the examples below) or follows the text (as with
+#'   as `##INTRO` in the examples below) or follows the text (as with
 #'   punctuation delimiters)
-#' @param use_docvars if \code{TRUE}, repeat the docvar values for each 
-#'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+#' @param use_docvars if `TRUE`, repeat the docvar values for each 
+#'   segmented text; if `FALSE`, drop the docvars in the segmented corpus. 
 #'   Dropping the docvars might be useful in order to conserve space or if these
 #'   are not desired for the segmented corpus.
-#' @return \code{corpus_segment} returns a corpus of segmented texts
+#' @return `corpus_segment` returns a corpus of segmented texts
 #' @keywords corpus
-#' @section Boundaries and segmentation explained: The \code{pattern} acts as a
+#' @section Boundaries and segmentation explained: The `pattern` acts as a
 #'   boundary delimiter that defines the segmentation points for splitting a
 #'   text into new "document" units.  Boundaries are always defined as the
 #'   pattern matches, plus the end and beginnings of each document.  The new
@@ -35,21 +35,21 @@
 #'   texts found between boundaries.
 #'   
 #'   The pattern itself will be saved as a new document variable named 
-#'   \code{pattern}.  This is most useful when segmenting a text according to 
+#'   `pattern`.  This is most useful when segmenting a text according to 
 #'   tags such as names in a transcript, section titles, or user-supplied 
 #'   annotations.  If the beginning of the file precedes a pattern match, then 
-#'   the extracted text will have a \code{NA} for the extracted \code{pattern} 
-#'   document variable (or when \code{pattern_position = "after"}, this will be 
+#'   the extracted text will have a `NA` for the extracted `pattern` 
+#'   document variable (or when `pattern_position = "after"`, this will be 
 #'   true for the text split between the last pattern match and the end of the 
 #'   document).
 #'   
 #'   To extract syntactically defined sub-document units such as sentences and 
-#'   paragraphs, use \code{\link{corpus_reshape}} instead.
+#'   paragraphs, use [corpus_reshape()] instead.
 #' @section Using patterns: One of the most common uses for
-#'   \code{corpus_segment} is to partition a corpus into sub-documents using
+#'   `corpus_segment` is to partition a corpus into sub-documents using
 #'   tags.  The default pattern value is designed for a user-annotated tag that
 #'   is a term beginning with double "hash" signs, followed by a whitespace, for
-#'   instance as \code{##INTRODUCTION The text}.
+#'   instance as `##INTRODUCTION The text`.
 #'   
 #'   Glob and fixed pattern types use a whitespace character to signal the end 
 #'   of the pattern.
@@ -57,19 +57,19 @@
 #'   For more advanced pattern matches that could include whitespace or 
 #'   newlines, a regex pattern type can be used, for instance a text such as
 #'   
-#'   \code{Mr. Smith: Text} \cr \code{Mrs. Jones: More text}
+#'   `Mr. Smith: Text` \cr `Mrs. Jones: More text`
 #'   
-#'   could have as \code{pattern = "\\\\b[A-Z].+\\\\.\\\\s[A-Z][a-z]+:"}, which
+#'   could have as `pattern = "\\\\b[A-Z].+\\\\.\\\\s[A-Z][a-z]+:"`, which
 #'   would catch the title, the name, and the colon.
 #'   
 #'   For custom boundary delimitation using punctuation characters that come 
-#'   come at the end of a clause or sentence (such as \code{,} and\code{.}, 
-#'   these can be specified manually and \code{pattern_position} set to 
-#'   \code{"after"}. To keep the punctuation characters in the text (as with 
-#'   sentence segmentation), set \code{extract_pattern = FALSE}.  (With most tag
+#'   come at the end of a clause or sentence (such as `,` and`.`, 
+#'   these can be specified manually and `pattern_position` set to 
+#'   `"after"`. To keep the punctuation characters in the text (as with 
+#'   sentence segmentation), set `extract_pattern = FALSE`.  (With most tag
 #'   applications, users will want to remove the patterns from the text, as they
 #'   are annotations rather than parts of the text itself.)
-#' @seealso \code{\link{corpus_reshape}}, for segmenting texts into pre-defined 
+#' @seealso [corpus_reshape()], for segmenting texts into pre-defined 
 #'   syntactic units such as sentences, paragraphs, or fixed-length chunks
 #' @examples
 #' ## segmenting a corpus
@@ -141,7 +141,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 
 
 #' @rdname corpus_segment
-#' @param remove_pattern removes matched patterns from the texts if \code{TRUE}
+#' @param remove_pattern removes matched patterns from the texts if `TRUE`
 #' @export
 #' @examples
 #' ## segmenting a character vector
@@ -157,7 +157,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 #' char_segment(txt, pattern = "\\\\p{P}", valuetype = "regex", 
 #'              pattern_position = "after", remove_pattern = FALSE)
 #' @keywords character
-#' @return \code{char_segment} returns a character vector of segmented texts
+#' @return `char_segment` returns a character vector of segmented texts
 char_segment <- function(x, pattern = "##*",
                          valuetype = c("glob", "regex", "fixed"),
                          case_insensitive = TRUE,

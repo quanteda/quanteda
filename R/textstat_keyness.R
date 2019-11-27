@@ -2,47 +2,47 @@
 #' 
 #' Calculate "keyness", a score for features that occur differentially across 
 #' different categories.  Here, the categories are defined by reference to a
-#' "target" document index in the \link{dfm}, with the reference group
+#' "target" document index in the [dfm], with the reference group
 #' consisting of all other documents.
-#' @param x a \link{dfm} containing the features to be examined for keyness
+#' @param x a [dfm] containing the features to be examined for keyness
 #' @param target the document index (numeric, character or logical) identifying 
 #'   the document forming the "target" for computing keyness; all other 
 #'   documents' feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
-#'   Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
-#'   \code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual 
+#'   Currently available: `"chi2"`; `"exact"` (Fisher's exact test); 
+#'   `"lr"` for the likelihood ratio; `"pmi"` for pointwise mutual 
 #'   information.
-#' @param sort logical; if \code{TRUE} sort features scored in descending order 
+#' @param sort logical; if `TRUE` sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
-#' @param correction if \code{"default"}, Yates correction is applied to 
-#'   \code{"chi2"}; William's correction is applied to \code{"lr"}; and no 
-#'   correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
+#' @param correction if `"default"`, Yates correction is applied to 
+#'   `"chi2"`; William's correction is applied to `"lr"`; and no 
+#'   correction is applied for the `"exact"` and `"pmi"` measures. 
 #'   Specifying a value other than the default can be used to override the 
 #'   defaults, for instance to apply the Williams correction to the chi2 
-#'   measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
+#'   measure.  Specifying a correction for the `"exact"` and `"pmi"` 
 #'   measures has no effect and produces a warning.
-#' @references Bondi, M. & Scott, M. (eds) (2010). \emph{Keyness in 
-#'   Texts}. Amsterdam, Philadelphia: John Benjamins.
+#' @references Bondi, M. & Scott, M. (eds) (2010). *Keyness in 
+#'   Texts*. Amsterdam, Philadelphia: John Benjamins.
 #'   
-#'   Stubbs, M. (2010). Three Concepts of Keywords. In \emph{Keyness in 
-#'   Texts}, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
+#'   Stubbs, M. (2010). Three Concepts of Keywords. In *Keyness in 
+#'   Texts*, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
 #'   John Benjamins.
 #'   
-#'   Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus 
-#'   Analysis in Language Education}. Amsterdam: Benjamins: 55.
+#'   Scott, M. & Tribble, C. (2006). *Textual Patterns: Keyword and Corpus 
+#'   Analysis in Language Education*. Amsterdam: Benjamins: 55.
 #'   
-#'   Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
-#'   for the Statistics of Surprise and Coincidence}. \emph{Computational Linguistics}, 19(1): 61--74.
+#'   Dunning, T. (1993). [Accurate Methods 
+#'   for the Statistics of Surprise and Coincidence](https://dl.acm.org/citation.cfm?id=972454). *Computational Linguistics*, 19(1): 61--74.
 #' @return a data.frame of computed statistics and associated p-values, where 
 #'   the features scored name each row, and the number of occurrences for both 
-#'   the target and reference groups. For \code{measure = "chi2"} this is the 
+#'   the target and reference groups. For `measure = "chi2"` this is the 
 #'   chi-squared value, signed positively if the observed value in the target 
-#'   exceeds its expected value; for \code{measure = "exact"} this is the 
-#'   estimate of the odds ratio; for \code{measure = "lr"} this is the 
-#'   likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
+#'   exceeds its expected value; for `measure = "exact"` this is the 
+#'   estimate of the odds ratio; for `measure = "lr"` this is the 
+#'   likelihood ratio \eqn{G2} statistic; for `"pmi"` this is the pointwise
 #'   mutual information statistics.
 #' @export
-#' @return \code{textstat_keyness} returns a data.frame of features and
+#' @return `textstat_keyness` returns a data.frame of features and
 #'   their keyness scores and frequency counts.
 #' @keywords textstat
 #' @importFrom stats chisq.test
@@ -161,8 +161,8 @@ textstat_keyness.dfm <- function(x, target = 1L,
 #' Internal function used in textstat_keyness.  Computes \eqn{chi^2} with Yates'
 #' continuity correction for 2x2 tables.
 #' @name keyness
-#' @param x a \link{dfm} object
-#' @details \code{keyness_chi2_dt} uses vectorized computation from data.table
+#' @param x a [dfm] object
+#' @details `keyness_chi2_dt` uses vectorized computation from data.table
 #' objects.
 #' @return a data.frame of chi2 and p-values with rows named for each feature
 #' @examples
@@ -173,7 +173,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
 #' @import data.table
 #' @importFrom stats dchisq
 #' @references
-#'   \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}
+#'   <https://en.wikipedia.org/wiki/Yates's_correction_for_continuity>
 #'   
 #'   
 keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "none")) {
@@ -221,8 +221,8 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
 #' @rdname keyness
 #' @importFrom stats chisq.test
 #' @details 
-#' \code{keyness_chi2_stats} uses element-by-element application of
-#' \link[stats]{chisq.test}.
+#' `keyness_chi2_stats` uses element-by-element application of
+#' [chisq.test][stats::chisq.test].
 #' @examples 
 #' quanteda:::keyness_chi2_stats(dfmat)
 keyness_chi2_stats <- function(x) {
@@ -259,8 +259,8 @@ keyness <- function(t, f, sum_t, sum_f) {
 
 #' @rdname keyness
 #' @details 
-#' \code{keyness_exact} computes Fisher's exact using element-by-element 
-#' application of \link[stats]{fisher.test}, returning the odds ratio.
+#' `keyness_exact` computes Fisher's exact using element-by-element 
+#' application of [fisher.test][stats::fisher.test], returning the odds ratio.
 #' @importFrom stats fisher.test
 #' @examples
 #' quanteda:::keyness_exact(dfmat)
@@ -287,12 +287,12 @@ keyness_exact <- function(x) {
 
 #' @rdname keyness
 #' @param correction implement the Yates correction for 2x2 tables
-#' @details \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
+#' @details `keyness_lr` computes the \eqn{G^2} likelihood ratio statistic
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_lr(dfmat)
 #' @references
-#' \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
+#' <http://influentialpoints.com/Training/g-likelihood_ratio_test.htm>
 keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")) {
 
     correction <- match.arg(correction)
@@ -351,7 +351,7 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
 }
 
 #' @rdname keyness
-#' @details \code{keyness_pmi} computes the Pointwise Mutual Information stat
+#' @details `keyness_pmi` computes the Pointwise Mutual Information stat
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_pmi(dfmat)

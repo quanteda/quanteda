@@ -25,7 +25,7 @@ pred <- predict(tmot)
 influence(pred)
 }
 \seealso{
-\code{\link{influence.lm}}
+\code{\link[=influence.lm]{influence.lm()}}
 }
 \keyword{internal}
 \keyword{textmodel}

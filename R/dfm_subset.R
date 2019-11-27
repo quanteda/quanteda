@@ -2,25 +2,25 @@
 #' 
 #' Returns document subsets of a dfm that meet certain conditions,
 #' including direct logical operations on docvars (document-level variables). 
-#' \code{dfm_subset} functions identically to \code{\link{subset.data.frame}},
+#' `dfm_subset` functions identically to [subset.data.frame()],
 #' using non-standard evaluation to evaluate conditions based on the
-#' \link{docvars} in the dfm.
+#' [docvars] in the dfm.
 #' 
-#' To select or subset \emph{features}, see \code{\link{dfm_select}} instead.
-#' @param x \link{dfm} object to be subsetted
+#' To select or subset *features*, see [dfm_select()] instead.
+#' @param x [dfm] object to be subsetted
 #' @inheritParams corpus_subset
 # @param select expression, indicating the docvars to select from the dfm; or a
 #   \link{dfm} object, in which case the returned dfm will contain the same
 #   documents as the original dfm, even if these are empty.  See Details.
-#' @return \link{dfm} object, with a subset of documents (and docvars) selected
+#' @return [dfm] object, with a subset of documents (and docvars) selected
 #'   according to arguments
-#' @details When \code{select} is a dfm, then the returned dfm will be equal in
+#' @details When `select` is a dfm, then the returned dfm will be equal in
 #'   document dimension and order to the dfm used for selection.  This is the
-#'   document-level version of using \code{\link{dfm_select}} where
-#'   \code{pattern} is a dfm: that function matches features, while
-#'   \code{dfm_subset} will match documents.
+#'   document-level version of using [dfm_select()] where
+#'   `pattern` is a dfm: that function matches features, while
+#'   `dfm_subset` will match documents.
 #' @export
-#' @seealso \code{\link{subset.data.frame}}
+#' @seealso [subset.data.frame()]
 #' @keywords dfm
 #' @examples
 #' corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",

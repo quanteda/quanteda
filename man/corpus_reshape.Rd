@@ -16,20 +16,20 @@ corpus_reshape(
 
 \item{to}{new document units in which the corpus will be recast}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
 
-\item{...}{additional arguments passed to \code{\link{tokens}}, since the
+\item{...}{additional arguments passed to \code{\link[=tokens]{tokens()}}, since the
 syntactic segmenter uses this function)}
 }
 \value{
 A corpus object with the documents defined as the new units,
-  including document-level meta-data identifying the original documents.
+including document-level meta-data identifying the original documents.
 }
 \description{
-For a corpus, reshape (or recast) the documents to a different level of aggregation.  
+For a corpus, reshape (or recast) the documents to a different level of aggregation.
 Units of aggregation can be defined as documents, paragraphs, or sentences.
 Because the corpus object records its current "units" status, it is possible
 to move from recast units back to original units, for example from documents,

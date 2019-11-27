@@ -61,7 +61,7 @@ values will not be returned}
 
 \item{sorted}{sort results in descending order if \code{TRUE}}
 
-\item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
+\item{n}{the top \code{n} highest-ranking items will be returned.  If n is
 \code{NULL}, return all items.}
 
 \item{diag}{logical; if \code{FALSE}, exclude the item's comparison with itself}
@@ -80,46 +80,46 @@ values will not be returned}
 \item{upper}{logical; if \code{TRUE}, return pairs as both (A, B) and (B, A)}
 }
 \value{
-A sparse matrix from the \pkg{Matrix} package that will be symmetric 
-  unless \code{y} is specified.
-     
-  These can be transformed easily into a list format using \code{as.list()},
-  which returns a list for each unique element of the second of the pairs,
-  \code{as.dist} to be transformed into a \link[stats]{dist} object, or
-  \code{as.matrix} to convert it into an ordinary matrix.
+A sparse matrix from the \pkg{Matrix} package that will be symmetric
+unless \code{y} is specified.
+
+These can be transformed easily into a list format using \code{as.list()},
+which returns a list for each unique element of the second of the pairs,
+\code{as.dist} to be transformed into a \link[stats:dist]{dist} object, or
+\code{as.matrix} to convert it into an ordinary matrix.
 
 \code{as.data.list} for a \code{textstat_simil} or
-  \code{textstat_dist} object returns a list equal in length to the columns of the 
-  simil or dist object, with the rows and their values as named  elements.  By default,
-  this list excludes same-time pairs (when \code{diag = FALSE}) and sorts the values
-  in descending order (when \code{sorted = TRUE}).
+\code{textstat_dist} object returns a list equal in length to the columns of the
+simil or dist object, with the rows and their values as named  elements.  By default,
+this list excludes same-time pairs (when \code{diag = FALSE}) and sorts the values
+in descending order (when \code{sorted = TRUE}).
 
 \code{as.data.frame} for a \code{textstat_simil} or
-  \code{textstat_dist} object returns a data.frame of pairwise combinations
-  and the and their similarity or distance value.
+\code{textstat_dist} object returns a data.frame of pairwise combinations
+and the and their similarity or distance value.
 }
 \description{
 These functions compute matrixes of distances and similarities between
-documents or features from a \code{\link{dfm}} and return a matrix of
+documents or features from a \code{\link[=dfm]{dfm()}} and return a matrix of
 similarities or distances in a sparse format.  These methods are fast
 and robust because they operate directly on the sparse \link{dfm} objects.
-The output can easily be coerced to an ordinary matrix, a data.frame of 
-pairwise comparisons, or a \link[stats]{dist} format.
+The output can easily be coerced to an ordinary matrix, a data.frame of
+pairwise comparisons, or a \link[stats:dist]{dist} format.
 }
 \details{
 \code{textstat_simil} options are: \code{"correlation"} (default),
-  \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-  \code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
+\code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
+\code{"edice"}, \code{"simple matching"}, and \code{"hamman"}.
 
-\code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
-  and \code{"minkowski"}.
+\code{textstat_dist} options are: \code{"euclidean"} (default),
+\code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+and \code{"minkowski"}.
 }
 \note{
 If you want to compute similarity on a "normalized" dfm object
-  (controlling for variable document lengths, for methods such as correlation
-  for which different document lengths matter), then wrap the input dfm in
-  \code{\link{dfm_weight}(x, "prop")}.
+(controlling for variable document lengths, for methods such as correlation
+for which different document lengths matter), then wrap the input dfm in
+\verb{[dfm_weight](x, "prop")}.
 }
 \examples{
 # similarities for documents
@@ -164,6 +164,6 @@ plot(hclust(as.dist(tstat4)))
 }
 }
 \seealso{
-\code{\link[stats]{as.dist}}
+\code{\link[stats:as.dist]{stats::as.dist()}}
 }
 \keyword{textstat}

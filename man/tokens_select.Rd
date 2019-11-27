@@ -30,10 +30,10 @@ tokens_keep(x, ...)
 \link{dictionary}, or \link{collocations} object.  See \link{pattern} for
 details.}
 
-\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens 
+\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens
 matching \code{pattern}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -41,27 +41,27 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
 previously existed.  This is useful if a positional match is needed between
-the pre- and post-selected tokens, for instance if a window of adjacency 
+the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.}
 
 \item{window}{integer of length 1 or 2; the size of the window of tokens
-  adjacent to \code{pattern} that will be selected. The window is symmetric
-  unless a vector of two elements is supplied, in which case the first
-  element will be the token length of the window before \code{pattern}, and
-  the second will be the token length of the window after \code{pattern}.
-  The default is \code{0}, meaning that only the pattern matched token(s) are
-  selected, with no adjacent terms.
+adjacent to \code{pattern} that will be selected. The window is symmetric
+unless a vector of two elements is supplied, in which case the first
+element will be the token length of the window before \code{pattern}, and
+the second will be the token length of the window after \code{pattern}.
+The default is \code{0}, meaning that only the pattern matched token(s) are
+selected, with no adjacent terms.
 
-  Terms from overlapping windows are never double-counted, but simply
-  returned in the pattern match. This is because \code{tokens_select} never
-  redefines the document units; for this, see \code{\link{kwic}}.}
+Terms from overlapping windows are never double-counted, but simply
+returned in the pattern match. This is because \code{tokens_select} never
+redefines the document units; for this, see \code{\link[=kwic]{kwic()}}.}
 
 \item{min_nchar, max_nchar}{optional numerics specifying the minimum and
 maximum length in characters for tokens to be removed or kept; defaults are
 \code{NULL} for no limits.  These are applied after (and hence, in addition
 to) any selection based on pattern matches.}
 
-\item{verbose}{if \code{TRUE} print messages about how many tokens were 
+\item{verbose}{if \code{TRUE} print messages about how many tokens were
 selected or removed}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
@@ -70,17 +70,17 @@ selected or removed}
 }
 \value{
 a \link{tokens} object with tokens selected or removed based on their
-  match to \code{pattern}
+match to \code{pattern}
 }
 \description{
-These function select or discard tokens from a \link{tokens} objects.  For 
-convenience, the functions \code{tokens_remove} and \code{tokens_keep} 
-are defined as shortcuts for 
-\code{tokens_select(x, pattern, selection = "remove")} and \code{tokens_select(x, pattern, selection = "keep")}, 
-respectively.  The most common 
+These function select or discard tokens from a \link{tokens} objects.  For
+convenience, the functions \code{tokens_remove} and \code{tokens_keep}
+are defined as shortcuts for
+\code{tokens_select(x, pattern, selection = "remove")} and \code{tokens_select(x, pattern, selection = "keep")},
+respectively.  The most common
 usage for \code{tokens_remove} will be to eliminate stop words from a text or
-text-based object, while the most common use of \code{tokens_select} will be 
-to select tokens with only positive pattern matches from a list of regular 
+text-based object, while the most common use of \code{tokens_select} will be
+to select tokens with only positive pattern matches from a list of regular
 expressions, including a dictionary.
 }
 \examples{

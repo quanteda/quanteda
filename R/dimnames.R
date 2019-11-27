@@ -1,9 +1,9 @@
 #' Internal functions to set dimnames
 #'
-#' Default \code{dimnames()} converts a zero-length character vector to NULL,
+#' Default `dimnames()` converts a zero-length character vector to NULL,
 #' leading to the improper functioning of subsetting functions. These are safer
 #' methods to set the dimnames of a dfm or fcm object.
-#' @param x \link{dfm} or \link{fcm}
+#' @param x [dfm] or [fcm]
 #' @param value character a vector for docnames or featnames or a list of them
 #'   for dimnames
 #' @keywords internal

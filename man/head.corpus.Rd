@@ -19,8 +19,8 @@ all but the n last/first number of documents of x.}
 \item{...}{additional arguments passed to other functions}
 }
 \value{
-A \link{corpus} class object corresponding to the subset defined 
-  by \code{n}.
+A \link{corpus} class object corresponding to the subset defined
+by \code{n}.
 }
 \description{
 For a \link{corpus} object, returns the first or last \code{n} documents.

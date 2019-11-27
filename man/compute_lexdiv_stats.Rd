@@ -23,7 +23,7 @@ compute_lexdiv_tokens_stats(
 \item{log.base}{a numeric value defining the base of the logarithm (for
 measures using logs)}
 
-\item{MATTR_window}{a numeric value defining the size of the moving window 
+\item{MATTR_window}{a numeric value defining the size of the moving window
 for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)}
 
 \item{MSTTR_segment}{a numeric value defining the size of the each segment
@@ -31,20 +31,20 @@ for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)}
 }
 \value{
 a \code{data.frame} with a \code{document} column containing the
-  input document name, followed by columns with the lexical diversity
-  statistic, in the order in which they were supplied as the \code{measure}
-  argument.
+input document name, followed by columns with the lexical diversity
+statistic, in the order in which they were supplied as the \code{measure}
+argument.
 }
 \description{
-Internal functions used in \code{\link{textstat_lexdiv}}, for computing 
+Internal functions used in \code{\link[=textstat_lexdiv]{textstat_lexdiv()}}, for computing
 lexical diversity measures on dfms or tokens objects
 }
 \details{
 \code{compute_lexdiv_dfm_stats} in an internal function that
-  computes the lexical diversity measures from a \link{dfm} input.
+computes the lexical diversity measures from a \link{dfm} input.
 
 \code{compute_lexdiv_tokens_stats} in an internal function that
-  computes the lexical diversity measures from a \link{dfm} input.
+computes the lexical diversity measures from a \link{dfm} input.
 }
 \keyword{internal}
 \keyword{textstat}

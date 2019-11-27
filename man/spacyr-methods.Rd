@@ -16,7 +16,7 @@ through extra arguments to that function}
 }
 \description{
 These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
-also extend \link[spacyr]{spacy_parse} to work with \link{corpus} objects.
+also extend \link[spacyr:spacy_parse]{spacy_parse} to work with \link{corpus} objects.
 }
 \section{Usage}{
 

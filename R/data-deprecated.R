@@ -12,50 +12,50 @@ NULL
 
 #' @rdname data-deprecated
 #' @name ukimmigTexts
-#' @details \code{ukimmigTexts} is defunct; please use 
-#'   \code{data_char_ukimmigration} instead.
+#' @details `ukimmigTexts` is defunct; please use 
+#'   `data_char_ukimmigration` instead.
 NULL
 
 #' @rdname data-deprecated
 #' @name ie2010Corpus
-#' @details \code{ie2010Corpus} is defunct; please use 
-#'   \code{data_corpus_irishbudget2010} 
+#' @details `ie2010Corpus` is defunct; please use 
+#'   `data_corpus_irishbudget2010` 
 NULL
 
 #' @rdname data-deprecated
 #' @name data_char_inaugural
-#' @details \code{data_char_inaugural} is defunct; please use
-#'   \code{data_corpus_inaugural} instead.
+#' @details `data_char_inaugural` is defunct; please use
+#'   `data_corpus_inaugural` instead.
 NULL
 
 #' @rdname data-deprecated
 #' @name inaugCorpus
-#' @details \code{inaugCorpus} is defunct; please use 
-#'   \code{data_corpus_inaugural} instead.
+#' @details `inaugCorpus` is defunct; please use 
+#'   `data_corpus_inaugural` instead.
 NULL
 
 #' @name LBGexample
 #' @rdname data-deprecated
-#' @details \code{LBGexample} is defunct; please use 
-#'   \code{data_dfm_LBGexample} instead.
+#' @details `LBGexample` is defunct; please use 
+#'   `data_dfm_LBGexample` instead.
 NULL
 
 #' @name exampleString
 #' @rdname data-deprecated
-#' @details \code{exampleString} is defunct; please use 
-#'   \code{data_char_sampletext} instead.
+#' @details `exampleString` is defunct; please use 
+#'   `data_char_sampletext` instead.
 NULL
 
 #' @name data_char_inaugural
 #' @rdname data-deprecated
-#' @details \code{data_char_inaugural} is defunct; please use
-#'   \code{data_corpus_inaugural} instead.
+#' @details `data_char_inaugural` is defunct; please use
+#'   `data_corpus_inaugural` instead.
 NULL
 
 #' @name data_char_mobydick
 #' @rdname data-deprecated
-#' @details \code{data_char_mobydick} is defunct; please use
-#'   \code{data(mobydick, package = "tokenizers")} instead.
+#' @details `data_char_mobydick` is defunct; please use
+#'   `data(mobydick, package = "tokenizers")` instead.
 NULL
 
 

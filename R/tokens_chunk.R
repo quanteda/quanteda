@@ -2,16 +2,16 @@
 #'
 #' Segment tokens into new documents of equally sized token lengths, with the
 #' possibility of overlapping the chunks.
-#' @param x \link{tokens} object whose token elements will be segmented into
+#' @param x [tokens] object whose token elements will be segmented into
 #'   chunks
 #' @param size integer; the token length of the chunks
 #' @param overlap integer; the number of tokens in a chunk to be taken from the
-#'   last \code{overlap} tokens from the preceding chunk
-#' @param use_docvars if \code{TRUE}, repeat the docvar values for each chunk;
-#'   if \code{FALSE}, drop the docvars in the chunked tokens
-#' @return A \link{tokens} object whose documents have been split into chunks of
-#'   length \code{size}.
-#' @seealso \code{\link{tokens_segment}}
+#'   last `overlap` tokens from the preceding chunk
+#' @param use_docvars if `TRUE`, repeat the docvar values for each chunk;
+#'   if `FALSE`, drop the docvars in the chunked tokens
+#' @return A [tokens] object whose documents have been split into chunks of
+#'   length `size`.
+#' @seealso [tokens_segment()]
 #' @keywords tokens
 #' @export
 #' @examples

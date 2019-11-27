@@ -1,7 +1,7 @@
 
 #' Get or set document-level meta-data
 #' 
-#' @param x a \link{corpus} object
+#' @param x a [corpus] object
 #' @param field character, the name of the metadata field(s) to be queried or 
 #' @export
 #' @keywords corpus

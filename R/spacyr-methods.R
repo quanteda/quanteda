@@ -6,23 +6,23 @@
 #' Extensions for and from spacy_parse objects
 #' 
 #' These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
-#' also extend \link[spacyr]{spacy_parse} to work with \link{corpus} objects.
+#' also extend [spacy_parse][spacyr::spacy_parse] to work with [corpus] objects.
 #' @name spacyr-methods
 #' @importFrom spacyr spacy_parse
 #' @section Usage:
-#' \code{docnames(x)} returns the document names
+#' `docnames(x)` returns the document names
 #' 
-#' \code{ndoc(x)} returns the number of documents
+#' `ndoc(x)` returns the number of documents
 #' 
-#' \code{ntoken(x, ...)} returns the number of tokens by document
+#' `ntoken(x, ...)` returns the number of tokens by document
 #' 
-#' \code{ntype(x, ...)} returns the number of types (unique tokens) by document
+#' `ntype(x, ...)` returns the number of types (unique tokens) by document
 #' 
-#' \code{spacy_parse(x, ...)} is also defined for a \pkg{quanteda} \link{corpus}
+#' `spacy_parse(x, ...)` is also defined for a \pkg{quanteda} [corpus]
 #' 
-#' @param x an object returned by \code{spacy_parse}, or (for
-#'   \code{spacy_parse}) a \link{corpus} object
-#' @param ... unused except for \code{spacy_parse}, in which case it passes
+#' @param x an object returned by `spacy_parse`, or (for
+#'   `spacy_parse`) a [corpus] object
+#' @param ... unused except for `spacy_parse`, in which case it passes
 #'   through extra arguments to that function
 #' @examples 
 #' \dontrun{
@@ -43,7 +43,7 @@ NULL
 
 #' @rdname spacyr-methods
 #' @details
-#' \code{docnames} returns the document names
+#' `docnames` returns the document names
 #' 
 #' @noRd
 #' @export
@@ -54,7 +54,7 @@ docnames.spacyr_parsed <- function(x) {
 
 #' @rdname spacyr-methods
 #' @details
-#' \code{ndoc} returns the number of documents
+#' `ndoc` returns the number of documents
 #' 
 #' @noRd
 #' @export
@@ -64,7 +64,7 @@ ndoc.spacyr_parsed <- function(x) {
 
 #' @rdname spacyr-methods
 #' @details
-#' \code{ntoken} returns the number of tokens by document
+#' `ntoken` returns the number of tokens by document
 #' 
 #' @noRd
 #' @export
@@ -74,7 +74,7 @@ ntoken.spacyr_parsed <- function(x, ...) {
 
 #' @rdname spacyr-methods
 #' @details
-#' \code{ntype} returns the number of types (unique tokens) by document
+#' `ntype` returns the number of types (unique tokens) by document
 #' 
 #' @noRd
 #' @export
@@ -84,7 +84,7 @@ ntype.spacyr_parsed <- function(x, ...) {
 
 #' @rdname spacyr-methods
 #' @details
-#' \code{nsentence} returns the number of sentences by document
+#' `nsentence` returns the number of sentences by document
 #' 
 #' @noRd
 #' @export

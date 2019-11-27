@@ -15,12 +15,12 @@ texts(x) <- value
 \arguments{
 \item{x}{a \link{corpus} or character object}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
 See \link{groups} for details.}
 
-\item{spacer}{when concatenating texts by using \code{groups}, this will be the 
+\item{spacer}{when concatenating texts by using \code{groups}, this will be the
 spacing added between texts.  (Default is two spaces.)}
 
 \item{value}{character vector of the new texts}
@@ -29,15 +29,15 @@ spacing added between texts.  (Default is two spaces.)}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.
-  
-  For \code{texts <-}, the corpus with the updated texts.
 
-for \code{texts <-}, a corpus with the texts replaced by \code{value}
+For \verb{texts <-}, the corpus with the updated texts.
+
+for \verb{texts <-}, a corpus with the texts replaced by \code{value}
 
 \code{as.character(x)} is equivalent to \code{texts(x)}
 }
 \description{
-Get or replace the texts in a \link{corpus}, with grouping options. 
+Get or replace the texts in a \link{corpus}, with grouping options.
 Works for plain character vectors too, if \code{groups} is a factor.
 }
 \details{
@@ -48,13 +48,13 @@ calling \code{texts(x)}
 The \code{groups} will be used for concatenating the texts based on shared
 values of \code{groups}, without any specified order of aggregation.
 
-You are strongly encouraged as a good practice of text analysis 
-  workflow \emph{not} to modify the substance of the texts in a corpus. 
-  Rather, this sort of processing is better performed through downstream 
-  operations.  For instance, do not lowercase the texts in a corpus, or you 
-  will never be able to recover the original case.  Rather, apply 
-  \code{\link{tokens_tolower}} after applying \code{\link{tokens}} to a
-  corpus, or use the option \code{tolower = TRUE} in \code{\link{dfm}}.
+You are strongly encouraged as a good practice of text analysis
+workflow \emph{not} to modify the substance of the texts in a corpus.
+Rather, this sort of processing is better performed through downstream
+operations.  For instance, do not lowercase the texts in a corpus, or you
+will never be able to recover the original case.  Rather, apply
+\code{\link[=tokens_tolower]{tokens_tolower()}} after applying \code{\link[=tokens]{tokens()}} to a
+corpus, or use the option \code{tolower = TRUE} in \code{\link[=dfm]{dfm()}}.
 }
 \examples{
 nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))

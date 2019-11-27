@@ -3,7 +3,7 @@
 \name{tokens_tortl}
 \alias{tokens_tortl}
 \alias{char_tortl}
-\title{[Experimental] Change direction of words in tokens}
+\title{\link{Experimental} Change direction of words in tokens}
 \usage{
 tokens_tortl(x)
 

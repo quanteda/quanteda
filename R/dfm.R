@@ -1,56 +1,56 @@
 #' Create a document-feature matrix
 #'
-#' Construct a sparse document-feature matrix, from a character, \link{corpus},
-#' \link{tokens}, or even other \link{dfm} object.
-#' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object
+#' Construct a sparse document-feature matrix, from a character, [corpus],
+#' [tokens], or even other [dfm] object.
+#' @param x character, [corpus], [tokens], or [dfm] object
 #' @param tolower convert all features to lowercase
-#' @param stem if \code{TRUE}, stem words
-#' @param remove a \link{pattern} of user-supplied features to ignore, such as
+#' @param stem if `TRUE`, stem words
+#' @param remove a [pattern] of user-supplied features to ignore, such as
 #'   "stop words".  To access one possible list (from any list you wish), use
-#'   \code{\link{stopwords}()}.  The pattern matching type will be set by
-#'   \code{valuetype}.  See also \code{\link{tokens_select}}.  For behaviour of
-#'   \code{remove} with \code{ngrams > 1}, see Details.
-#' @param select a  \link{pattern}  of user-supplied features to keep, while
+#'   [stopwords()].  The pattern matching type will be set by
+#'   `valuetype`.  See also [tokens_select()].  For behaviour of
+#'   `remove` with `ngrams > 1`, see Details.
+#' @param select a  [pattern]  of user-supplied features to keep, while
 #'   excluding all others.  This can be used in lieu of a dictionary if there
 #'   are only specific features that a user wishes to keep. To extract only
-#'   Twitter usernames, for example, set \code{select = "@@*"} and make sure
-#'   that \code{remove_twitter = FALSE} as an additional argument passed to
-#'   \link{tokens}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
+#'   Twitter usernames, for example, set `select = "@@*"` and make sure
+#'   that `remove_twitter = FALSE` as an additional argument passed to
+#'   [tokens].  Note: `select = "^@@\\\w+\\\b"` would be the regular
 #'   expression version of this matching pattern.  The pattern matching type
-#'   will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.
-#' @param dictionary a \link{dictionary} object to apply to the tokens when
+#'   will be set by `valuetype`.  See also [tokens_remove()].
+#' @param dictionary a [dictionary] object to apply to the tokens when
 #'   creating the dfm
-#' @param thesaurus a \link{dictionary} object that will be applied as if
-#'   \code{exclusive = FALSE}. See also \code{\link{tokens_lookup}}.  For more
+#' @param thesaurus a [dictionary] object that will be applied as if
+#'   `exclusive = FALSE`. See also [tokens_lookup()].  For more
 #'   fine-grained control over this and other aspects of converting features
 #'   into dictionary/thesaurus keys from pattern matches to values, consider
-#'   creating the dfm first, and then applying \code{\link{dfm_lookup}}
-#'   separately, or using \code{\link{tokens_lookup}} on the tokenized text
-#'   before calling \code{dfm}.
+#'   creating the dfm first, and then applying [dfm_lookup()]
+#'   separately, or using [tokens_lookup()] on the tokenized text
+#'   before calling `dfm`.
 #' @inheritParams valuetype
 #' @inheritParams groups
-#' @note When \code{x} is a \link{dfm}, \code{groups} provides a convenient and
+#' @note When `x` is a [dfm], `groups` provides a convenient and
 #'   fast method of combining and refactoring the documents of the dfm according
 #'   to the groups.
-#' @param verbose display messages if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokens}; not used when \code{x}
-#'   is a \link{dfm}
-#' @details The default behaviour for \code{remove}/\code{select} when
-#'   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to
+#' @param verbose display messages if `TRUE`
+#' @param ... additional arguments passed to [tokens]; not used when `x`
+#'   is a [dfm]
+#' @details The default behaviour for `remove`/`select` when
+#'   constructing ngrams using `dfm(x, ` *ngrams > 1*`)` is to
 #'   remove/select any ngram constructed from a matching feature.  If you wish
 #'   to remove these before constructing ngrams, you will need to first tokenize
 #'   the texts with ngrams, then remove the features to be ignored, and then
 #'   construct the dfm using this modified tokenization object.  See the code
 #'   examples for an illustration.
 #'
-#'   To select on and match the features of a another \link{dfm}, \code{x} must
-#'   also be a \link{dfm}.
-#' @return a \link{dfm-class} object
+#'   To select on and match the features of a another [dfm], `x` must
+#'   also be a [dfm].
+#' @return a [dfm-class] object
 #' @import Matrix
 #' @export
 #' @rdname dfm
 #' @keywords dfm
-#' @seealso  \code{\link{dfm_select}}, \link{dfm-class}
+#' @seealso  [dfm_select()], [dfm-class]
 #' @examples
 #' ## for a corpus
 #' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980)

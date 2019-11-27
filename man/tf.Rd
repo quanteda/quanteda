@@ -7,10 +7,10 @@
 tf(...)
 }
 \arguments{
-\item{...}{arguments passed to \code{\link{dfm_weight}}}
+\item{...}{arguments passed to \code{\link[=dfm_weight]{dfm_weight()}}}
 }
 \description{
-Deprecated function name for \code{\link{dfm_weight}}.
+Deprecated function name for \code{\link[=dfm_weight]{dfm_weight()}}.
 }
 \keyword{deprecated}
 \keyword{internal}

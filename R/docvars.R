@@ -35,9 +35,9 @@
 #' Internal function to extract docvars
 #' @param x an object from which docvars are extracted
 #' @param field name of docvar fields
-#' @param user if \code{TRUE}, return user variables
-#' @param system if \code{TRUE}, return system variables
-#' @param drop if \code{TRUE}, convert data.frame with one variable to a vector
+#' @param user if `TRUE`, return user variables
+#' @param system if `TRUE`, return system variables
+#' @param drop if `TRUE`, convert data.frame with one variable to a vector
 #' @keywords internal
 get_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
     UseMethod("get_docvars")
@@ -179,12 +179,12 @@ is_system_old <- function(x) {
 
 #' Get or set document-level variables
 #' 
-#' Get or set variables associated with a document in a \link{corpus},
-#' \link{tokens} or \link{dfm} object.
-#' @param x \link{corpus}, \link{tokens}, or \link{dfm} object whose 
+#' Get or set variables associated with a document in a [corpus],
+#' [tokens] or [dfm] object.
+#' @param x [corpus], [tokens], or [dfm] object whose 
 #'   document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @return \code{docvars} returns a data.frame of the document-level variables, 
+#' @return `docvars` returns a data.frame of the document-level variables, 
 #'   dropping the second dimension to form a vector if a single docvar is 
 #'   returned.
 #' @examples 
@@ -253,15 +253,15 @@ docvars.kwic <- function(x) {
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable
-#' @note Reassigning document variables for a \link{tokens} or \link{dfm} object
+#' @note Reassigning document variables for a [tokens] or [dfm] object
 #' is allowed, but discouraged.  A better, more reproducible workflow is to
-#' create your docvars as desired in the \link{corpus}, and let these continue
+#' create your docvars as desired in the [corpus], and let these continue
 #' to be attached "downstream" after tokenization and forming a document-feature
 #' matrix.  Recognizing that in some cases, you may need to modify or add
 #' document variables to downstream objects, the assignment operator is defined
-#' for \link{tokens} or \link{dfm} objects as well.  Use with caution.
+#' for [tokens] or [dfm] objects as well.  Use with caution.
 #' 
-#' @return \code{docvars<-} assigns \code{value} to the named \code{field}
+#' @return `docvars<-` assigns `value` to the named `field`
 #' @examples 
 #' # assigning document variables to a corpus
 #' corp <- data_corpus_inaugural

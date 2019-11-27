@@ -70,24 +70,24 @@ token}
 }
 \value{
 \code{as.list} returns a simple list of characters from a
-  \link{tokens} object.
+\link{tokens} object.
 
 \code{as.character} returns a character vector from a
-  \link{tokens} object.
+\link{tokens} object.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
-  tokens, \code{FALSE} otherwise.
+tokens, \code{FALSE} otherwise.
 
 \code{unlist} returns a simple vector of characters from a
-  \link{tokens} object.
+\link{tokens} object.
 
 \code{c(...)} and \code{+} return a tokens object whose documents
-  have been added as a single sequence of documents.
+have been added as a single sequence of documents.
 
 \code{as.tokens} returns a quanteda \link{tokens} object.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
-  tokens, \code{FALSE} otherwise.
+tokens, \code{FALSE} otherwise.
 }
 \description{
 Coercion functions to and from \link{tokens} objects, checks for whether an
@@ -96,14 +96,14 @@ objects.
 }
 \details{
 The \code{concatenator} is used to automatically generate dictionary
-  values for multi-word expressions in \code{\link{tokens_lookup}} and
-  \code{\link{dfm_lookup}}. The underscore character is commonly used to join
-  elements of multi-word expressions (e.g. "piece_of_cake", "New_York"), but
-  other characters (e.g. whitespace " " or a hyphen "-") can also be used.
-  In those cases, users have to tell the system what is the concatenator in
-  your tokens so that the conversion knows to treat this character as the
-  inter-word delimiter, when reading in the elements that will become the
-  tokens.
+values for multi-word expressions in \code{\link[=tokens_lookup]{tokens_lookup()}} and
+\code{\link[=dfm_lookup]{dfm_lookup()}}. The underscore character is commonly used to join
+elements of multi-word expressions (e.g. "piece_of_cake", "New_York"), but
+other characters (e.g. whitespace " " or a hyphen "-") can also be used.
+In those cases, users have to tell the system what is the concatenator in
+your tokens so that the conversion knows to treat this character as the
+inter-word delimiter, when reading in the elements that will become the
+tokens.
 }
 \examples{
 # combining tokens

@@ -1,19 +1,19 @@
 #' Randomly sample documents or features from a dfm
 #' 
 #' Sample randomly from a dfm object, from documents or features.
-#' @param x the \link{dfm} object whose documents or features will be sampled
+#' @param x the [dfm] object whose documents or features will be sampled
 #' @param size a positive number, the number of documents or features to select.
 #'   The default is the number of documents or the number of features, for
-#'   \code{margin = "documents"} and \code{margin = "features"} respectively.
+#'   `margin = "documents"` and `margin = "features"` respectively.
 #' @param replace logical; should sampling be with replacement?
 #' @param prob a vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
-#' @param margin dimension (of a \link{dfm}) to sample: can be \code{documents} or
-#'   \code{features}
+#' @param margin dimension (of a [dfm]) to sample: can be `documents` or
+#'   `features`
 #' @export
-#' @return A dfm object with number of documents or features equal to \code{size}, drawn 
-#'   from the dfm \code{x}.  
-#' @seealso \link{sample}
+#' @return A dfm object with number of documents or features equal to `size`, drawn 
+#'   from the dfm `x`.  
+#' @seealso [sample]
 #' @keywords dfm
 #' @examples
 #' set.seed(10)

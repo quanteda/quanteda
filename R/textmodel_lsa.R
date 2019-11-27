@@ -1,26 +1,26 @@
 #' Latent Semantic Analysis
 #' 
-#' Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
-#' weighted (for instance using \code{\link{dfm_tfidf}}).
-#' @param x the \link{dfm} on which the model will be fit
+#' Fit the Latent Semantic Analysis scaling model to a [dfm], which may be
+#' weighted (for instance using [dfm_tfidf()]).
+#' @param x the [dfm] on which the model will be fit
 #' @param nd  the number of dimensions to be included in output
 #' @param margin margin to be smoothed by the SVD
 #' @author Haiyan Wang and Kohei Watanabe
-#' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
+#' @details [svds][RSpectra::svds] in the \pkg{RSpectra} package is applied to 
 #'   enable the fast computation of the SVD.
-#' @note  The number of dimensions \code{nd} retained in LSA is an empirical
+#' @note  The number of dimensions `nd` retained in LSA is an empirical
 #'   issue. While a reduction in \eqn{k} can remove much of the noise, keeping
 #'   too few dimensions or factors may lose important information.
 #' @references 
 #'   Rosario, B. (2000).
-#'   \href{http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf}{Latent 
-#'   Semantic Indexing: An Overview}. \emph{Technical report INFOSYS 240 Spring
-#'   Paper, University of California, Berkeley.}
+#'   [Latent 
+#'   Semantic Indexing: An Overview](http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf). *Technical report INFOSYS 240 Spring
+#'   Paper, University of California, Berkeley.*
 #'   
 #'   Deerwester, S., Dumais, S.T., Furnas, G.W., Landauer, T.K., &  
-#'   Harshman, R. (1990). \href{https://search.proquest.com/docview/1301252034}{Indexing 
-#'   by Latent Semantic Analysis}. \emph{Journal of the American Society for 
-#'   Information Science}, 41(6): 391.
+#'   Harshman, R. (1990). [Indexing 
+#'   by Latent Semantic Analysis](https://search.proquest.com/docview/1301252034). *Journal of the American Society for 
+#'   Information Science*, 41(6): 391.
 #' @examples 
 #' dfmat <- dfm(data_corpus_irishbudget2010)
 #' # create an LSA space and return its truncated representation in the low-rank space
@@ -36,7 +36,7 @@
 #' pred$docs_newspace
 #' 
 #' @keywords textmodel experimental
-#' @seealso \code{\link{predict.textmodel_lsa}}, \code{\link{coef.textmodel_lsa}}
+#' @seealso [predict.textmodel_lsa()], [coef.textmodel_lsa()]
 #' @export
 textmodel_lsa <- function(x, nd = 10, margin = c("both", "documents", "features")) {
     UseMethod("textmodel_lsa")
@@ -102,12 +102,12 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
 
 #' Post-estimations methods for textmodel_lsa
 #' 
-#' Post-estimation methods for fitted \link{textmodel_lsa} objects.
+#' Post-estimation methods for fitted [textmodel_lsa] objects.
 #' @name textmodel_lsa-postestimation
-#' @param object,x previously fitted \link{textmodel_lsa} object
+#' @param object,x previously fitted [textmodel_lsa] object
 #' @param newdata new matrix to be transformed into the lsa space
 #' @param ... unused
-#' @return \code{predict()} returns a predicted \link{textmodel_lsa} object, projecting the patterns onto
+#' @return `predict()` returns a predicted [textmodel_lsa] object, projecting the patterns onto
 #' new data.
 #' @keywords textmodel internal
 #' @export
@@ -137,8 +137,8 @@ as.dfm.textmodel_lsa <- function(x) {
 }
 
 #' @rdname textmodel_lsa-postestimation
-#' @return \code{coef.textmodel_lsa} extracts model coefficients from a fitted
-#'   \link{textmodel_ca} object.
+#' @return `coef.textmodel_lsa` extracts model coefficients from a fitted
+#'   [textmodel_ca] object.
 #' @param doc_dim,feat_dim the document and feature dimension scores to be
 #'   extracted
 #' @export

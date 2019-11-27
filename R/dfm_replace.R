@@ -2,14 +2,14 @@
 #'
 #' Substitute features based on vectorized one-to-one matching for lemmatization
 #' or user-defined stemming.
-#' @param x \link{dfm} whose features will be replaced
-#' @param pattern a character vector.  See \link{pattern}
+#' @param x [dfm] whose features will be replaced
+#' @param pattern a character vector.  See [pattern]
 #'   for more details.
-#' @param replacement if \code{pattern} is a character vector, then
-#'   \code{replacement} must be character vector of equal length, for a 1:1
+#' @param replacement if `pattern` is a character vector, then
+#'   `replacement` must be character vector of equal length, for a 1:1
 #'   match.
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param verbose print status messages if \code{TRUE}
+#' @param case_insensitive ignore case when matching, if `TRUE`
+#' @param verbose print status messages if `TRUE`
 #' @export
 #' @examples
 #' dfmat1 <- dfm(data_corpus_irishbudget2010)

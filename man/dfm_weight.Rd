@@ -21,19 +21,18 @@ dfm_smooth(x, smoothing = 1)
 
 \item{scheme}{a label of the weight type:
 \describe{
-  \item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
-  \item{\code{prop}}{the proportion of the feature counts of total feature
-  counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
-  \item{\code{propmax}}{the proportion of the feature counts of the highest
-  feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
-  \item{\code{logcount}}{take the 1 + the logarithm of each count, for the
-  given base, or 0 if the count was zero: \eqn{1 +
+\item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
+\item{\code{prop}}{the proportion of the feature counts of total feature
+counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+\item{\code{propmax}}{the proportion of the feature counts of the highest
+feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
+\item{\code{logcount}}{take the 1 + the logarithm of each count, for the
+given base, or 0 if the count was zero: \eqn{1 +
   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
-  \item{\code{boolean}}{recode all non-zero counts as 1}
-  \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
-  "propmax")}}
-  \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-  \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+\item{\code{boolean}}{recode all non-zero counts as 1}
+\item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x, "propmax")}}
+\item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
+\deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 }}
 
 \item{weights}{if \code{scheme} is unused, then \code{weights} can be a named
@@ -43,7 +42,7 @@ applied as multipliers to the existing feature counts for the corresponding
 named features.  Any features not named will be assigned a weight of 1.0
 (meaning they will be unchanged).}
 
-\item{base}{base for the logarithm when \code{scheme} is \code{"logcount"} or 
+\item{base}{base for the logarithm when \code{scheme} is \code{"logcount"} or
 \code{logave}}
 
 \item{K}{the K for the augmentation when \code{scheme = "augmented"}}
@@ -51,21 +50,21 @@ named features.  Any features not named will be assigned a weight of 1.0
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
 weighting by \code{"prop"} after applying \code{"logcount"}, or after
-having grouped a dfm using \code{\link{dfm_group}}.}
+having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
 
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
 \code{dfm_weight} returns the dfm with weighted values.  Note the
-  because the default weighting scheme is \code{"count"}, simply calling this
-  function on an unweighted dfm will return the same object.  Many users will
-  want the normalized dfm consisting of the proportions of the feature counts
-  within each document, which requires setting \code{scheme = "prop"}.
+because the default weighting scheme is \code{"count"}, simply calling this
+function on an unweighted dfm will return the same object.  Many users will
+want the normalized dfm consisting of the proportions of the feature counts
+within each document, which requires setting \code{scheme = "prop"}.
 
 \code{dfm_smooth} returns a dfm whose values have been smoothed by
-  adding the \code{smoothing} amount. Note that this effectively converts a
-  matrix from sparse to dense format, so may exceed memory requirements
-  depending on the size of your input matrix.
+adding the \code{smoothing} amount. Note that this effectively converts a
+matrix from sparse to dense format, so may exceed memory requirements
+depending on the size of your input matrix.
 }
 \description{
 Weight the feature frequencies in a dfm
@@ -97,10 +96,10 @@ dfm_smooth(dfmat, 0.5)
 }
 \references{
 Manning, C.D., Raghavan, P., & Schütze, H. (2008).
-  \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press. 
-  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+\emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+\url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
-\code{\link{dfm_tfidf}}, \code{\link{docfreq}}
+\code{\link[=dfm_tfidf]{dfm_tfidf()}}, \code{\link[=docfreq]{docfreq()}}
 }
 \keyword{dfm}

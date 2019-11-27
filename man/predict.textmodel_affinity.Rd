@@ -28,10 +28,10 @@
 }
 \value{
 \code{predict()} returns a list of predicted affinity textmodel
-  quantities.
+quantities.
 
 \code{coef()} returns a document \eqn{\times} class matrix of class
-  affinities for each document.
+affinities for each document.
 
 \code{residuals()} returns a document-by-feature matrix of residuals.
 \code{resid()} is an alias.
@@ -42,13 +42,13 @@
 Estimate \eqn{\theta_i} for each document, from a fitted
 \link{textmodel_affinity} object.
 
-Other methods below provide standard ways to extract or compute quantities 
+Other methods below provide standard ways to extract or compute quantities
 from predicted \link{textmodel_affinity} objects.
 }
 \seealso{
-\code{\link{influence.predict.textmodel_affinity}} for methods of
-  computing the influence of particular features from a predicted
-  \link{textmodel_affinity} model.
+\code{\link[=influence.predict.textmodel_affinity]{influence.predict.textmodel_affinity()}} for methods of
+computing the influence of particular features from a predicted
+\link{textmodel_affinity} model.
 }
 \keyword{internal}
 \keyword{textmodel}

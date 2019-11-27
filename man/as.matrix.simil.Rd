@@ -13,13 +13,13 @@
 }
 \description{
 \code{as.matrix.simil} coerces an object returned from
-  `textstat_simil()` into a matrix
+\code{textstat_simil()} into a matrix
 }
 \note{
 Because for the similarity methods implemented in  \pkg{quanteda}, the
-  similarity of an object with itself will be 1.0, \code{diag} defaults to
-  this value. This differs the default \code{diag = NA} in
-  \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
+similarity of an object with itself will be 1.0, \code{diag} defaults to
+this value. This differs the default \code{diag = NA} in
+\link[proxy:as.matrix.simil]{as.matrix.simil} in the \pkg{proxy} package.
 }
 \keyword{internal}
 \keyword{textstat}

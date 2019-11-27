@@ -2,17 +2,17 @@
 #'
 #' Returns document subsets of a tokens that meet certain conditions, including
 #' direct logical operations on docvars (document-level variables).
-#' \code{tokens_subset} functions identically to
-#' \code{\link{subset.data.frame}}, using non-standard evaluation to evaluate
-#' conditions based on the \link{docvars} in the tokens.
+#' `tokens_subset` functions identically to
+#' [subset.data.frame()], using non-standard evaluation to evaluate
+#' conditions based on the [docvars] in the tokens.
 #'
-#' @param x \link{tokens} object to be subsetted
+#' @param x [tokens] object to be subsetted
 #' @inheritParams corpus_subset
 # @param select expression, indicating the \link{docvars} to keep
-#' @return \link{tokens} object, with a subset of documents (and docvars)
+#' @return [tokens] object, with a subset of documents (and docvars)
 #'   selected according to arguments
 #' @export
-#' @seealso \code{\link{subset.data.frame}}
+#' @seealso [subset.data.frame()]
 #' @keywords tokens
 #' @examples
 #' corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",

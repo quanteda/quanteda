@@ -1,6 +1,6 @@
 #' Recombine documents tokens by groups
 #' 
-#' @param x \link{tokens} object
+#' @param x [tokens] object
 #' @inheritParams groups
 #' @keywords tokens internal
 #' @examples

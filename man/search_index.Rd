@@ -17,6 +17,6 @@ Internal function for \code{select_types} to search the index using
 fastmatch.
 }
 \seealso{
-\code{\link{index_types}}
+\code{\link[=index_types]{index_types()}}
 }
 \keyword{internal}

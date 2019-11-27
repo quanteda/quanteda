@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_simil.R
 \name{textstat_proxy}
 \alias{textstat_proxy}
-\title{[Experimental] Compute document/feature proximity}
+\title{\link{Experimental} Compute document/feature proximity}
 \usage{
 textstat_proxy(
   x,
@@ -46,6 +46,6 @@ This is an underlying function for \code{textstat_dist} and
 \code{textstat_simil} but returns \code{TsparseMatrix}.
 }
 \seealso{
-\code{\link{textstat_dist}}, \code{\link{textstat_simil}}
+\code{\link[=textstat_dist]{textstat_dist()}}, \code{\link[=textstat_simil]{textstat_simil()}}
 }
 \keyword{internal}

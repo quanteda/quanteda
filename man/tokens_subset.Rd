@@ -16,13 +16,13 @@ values are taken as false}
 }
 \value{
 \link{tokens} object, with a subset of documents (and docvars)
-  selected according to arguments
+selected according to arguments
 }
 \description{
 Returns document subsets of a tokens that meet certain conditions, including
 direct logical operations on docvars (document-level variables).
 \code{tokens_subset} functions identically to
-\code{\link{subset.data.frame}}, using non-standard evaluation to evaluate
+\code{\link[=subset.data.frame]{subset.data.frame()}}, using non-standard evaluation to evaluate
 conditions based on the \link{docvars} in the tokens.
 }
 \examples{
@@ -36,6 +36,6 @@ tokens_subset(toks, grp > 1)
 tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
 }
 \seealso{
-\code{\link{subset.data.frame}}
+\code{\link[=subset.data.frame]{subset.data.frame()}}
 }
 \keyword{tokens}

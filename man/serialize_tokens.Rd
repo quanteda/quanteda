@@ -17,7 +17,7 @@ serialize_tokens(x, types_reserved = NULL, ...)
 a list the serialized tokens found in each text
 }
 \description{
-Creates a serialized object of tokens, called by \code{\link{tokens}}.
+Creates a serialized object of tokens, called by \code{\link[=tokens]{tokens()}}.
 }
 \keyword{internal}
 \keyword{tokens}

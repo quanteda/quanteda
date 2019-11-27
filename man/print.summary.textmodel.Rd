@@ -10,7 +10,7 @@
 \item{x}{a \code{summary.textmodel} object}
 
 \item{digits}{minimal number of \emph{significant digits}, see
-\code{\link{print.default}}}
+\code{\link[=print.default]{print.default()}}}
 
 \item{...}{additional arguments not used}
 }

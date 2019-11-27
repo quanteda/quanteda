@@ -11,7 +11,7 @@ summarize_texts(object, tolower = FALSE, ...)
 
 \item{tolower}{convert texts to lower case before counting types}
 
-\item{...}{additional arguments passed through to \code{\link{tokens}}}
+\item{...}{additional arguments passed through to \code{\link[=tokens]{tokens()}}}
 }
 \description{
 Internal-only function to compute summary statistics on a character object.

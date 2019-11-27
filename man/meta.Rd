@@ -19,7 +19,7 @@ metacorpus(x, field = NULL) <- value
 \arguments{
 \item{x}{an object for which the metadata will be read or set}
 
-\item{field}{metadata field name(s); if \code{NULL} (default), return all 
+\item{field}{metadata field name(s); if \code{NULL} (default), return all
 metadata names}
 
 \item{type}{\code{"user"} for user-provided corpus-level metadata;
@@ -31,14 +31,14 @@ or \code{"all"} for all metadata.}
 \value{
 For \code{meta}, a named list of the metadata fields in the corpus.
 
-  For \code{meta <-}, the corpus with the updated user-level metadata.  Only
-  user-level metadata may be assigned.
+For \verb{meta <-}, the corpus with the updated user-level metadata.  Only
+user-level metadata may be assigned.
 }
 \description{
 Get or set the corpus-level metadata in a \link{corpus} object.
 }
 \details{
-\code{metacorpus} and \code{metacorpus<-} are synonyms but are deprecated.
+\code{metacorpus} and \verb{metacorpus<-} are synonyms but are deprecated.
 }
 \examples{
 meta(data_corpus_inaugural)

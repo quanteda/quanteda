@@ -2,18 +2,18 @@
 
 #' Get or set corpus metadata
 #' 
-#' Get or set the corpus-level metadata in a \link{corpus} object.
+#' Get or set the corpus-level metadata in a [corpus] object.
 #' 
-#' \code{metacorpus} and \code{metacorpus<-} are synonyms but are deprecated.
+#' `metacorpus` and `metacorpus<-` are synonyms but are deprecated.
 #' @param x an object for which the metadata will be read or set
-#' @param field metadata field name(s); if \code{NULL} (default), return all 
+#' @param field metadata field name(s); if `NULL` (default), return all 
 #'   metadata names
-#' @param type \code{"user"} for user-provided corpus-level metadata;
-#'   \code{"system"} for metadata set automatically when the corpus is created;
-#'   or \code{"all"} for all metadata.
-#' @return For \code{meta}, a named list of the metadata fields in the corpus.
+#' @param type `"user"` for user-provided corpus-level metadata;
+#'   `"system"` for metadata set automatically when the corpus is created;
+#'   or `"all"` for all metadata.
+#' @return For `meta`, a named list of the metadata fields in the corpus.
 #'
-#'   For \code{meta <-}, the corpus with the updated user-level metadata.  Only
+#'   For `meta <-`, the corpus with the updated user-level metadata.  Only
 #'   user-level metadata may be assigned.
 #' @export
 #' @keywords corpus
@@ -134,9 +134,9 @@ metacorpus <- meta
 #' 
 #' Sets or initializes system metadata for new objects.
 #' @inheritParams meta
-#' @return \code{meta_system} returns a list with the object's system metadata.
-#'   It is literally a wrapper to \code{\link[=meta]{meta(x, field, type =
-#'   "system")}}.
+#' @return `meta_system` returns a list with the object's system metadata.
+#'   It is literally a wrapper to [`meta(x, field, type =
+#'   "system")()`][meta].
 #' @keywords internal
 #' @examples 
 #' corp <- corpus(c(d1 = "one two three", d2 = "two three four"))
@@ -146,7 +146,7 @@ meta_system <- function(x, field = NULL)
     meta(x, field = field, type = "system")
 
 #' @rdname meta_system
-#' @return \code{meta_system<-} returns the object with the system metadata
+#' @return `meta_system<-` returns the object with the system metadata
 #'   modified. This is an internal function and not designed for users!
 `meta_system<-` <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
@@ -189,7 +189,7 @@ meta_system <- function(x, field = NULL)
 
 #' @rdname meta_system
 #' @param source character; the input object class
-#' @return \code{meta_system_defaults} returns a list of default system
+#' @return `meta_system_defaults` returns a list of default system
 #'   values, with the user setting the "source" value.  This should be used
 #'   to set initial system meta information.
 meta_system_defaults <- function(source) {

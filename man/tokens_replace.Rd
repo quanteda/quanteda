@@ -22,7 +22,7 @@ tokens_replace(
 \item{replacement}{a character vector or (if \code{pattern} is a list) list
 of character vectors of the same length as \code{pattern}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -36,7 +36,7 @@ function is created for lemmatization or user-defined stemming. It support
 substitution of multi-word features by multi-word features, but substitution
 is fastest when \code{pattern} and \code{replacement} are character vectors
 and \code{valuetype = "fixed"} as the function only substitute types of
-tokens. Please use \code{\link{tokens_lookup}} with \code{exclusive = FALSE}
+tokens. Please use \code{\link[=tokens_lookup]{tokens_lookup()}} with \code{exclusive = FALSE}
 to replace \link{dictionary} values.
 }
 \examples{

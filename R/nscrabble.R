@@ -4,16 +4,16 @@
 #' as the sum (default) or mean of the character values.
 #' @param x a character vector
 #' @param FUN function to be applied to the character values in the text; 
-#'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
+#'   default is `sum`, but could also be `mean` or a user-supplied 
 #'   function
 #' @author Kenneth Benoit
 #' @return a (named) integer vector of Scrabble letter values, computed using 
-#'   \code{FUN}, corresponding to the input text(s)
+#'   `FUN`, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.
 #'   
-#'   We would be happy to add more languages to this \emph{extremely useful
-#'   function} if you send us the values for your language!
+#'   We would be happy to add more languages to this *extremely useful
+#'   function* if you send us the values for your language!
 #' @examples
 #' nscrabble(c("muzjiks", "excellency"))
 #' nscrabble(texts(data_corpus_inaugural)[1:5], mean)
@@ -52,7 +52,7 @@ nscrabble.character <- function(x, FUN = sum) {
 
 #' Deprecated name for nscrabble
 #' 
-#' Use \code{\link{nscrabble}} instead.
+#' Use [nscrabble()] instead.
 #' @export
 #' @keywords internal deprecated
 scrabble <- function(x, ...) {

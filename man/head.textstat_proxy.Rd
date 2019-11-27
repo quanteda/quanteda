@@ -19,8 +19,8 @@ the n last/first number of documents of x.}
 \item{...}{unused}
 }
 \value{
-A \link{matrix} corresponding to the subset defined 
-  by \code{n}.
+A \link{matrix} corresponding to the subset defined
+by \code{n}.
 }
 \description{
 For a similarity or distance object computed via \link{textstat_simil} or

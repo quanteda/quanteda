@@ -1,16 +1,16 @@
 #' Get or assign corpus texts
 #' 
-#' Get or replace the texts in a \link{corpus}, with grouping options. 
-#' Works for plain character vectors too, if \code{groups} is a factor.
-#' @note The \code{groups} will be used for concatenating the texts based on shared
-#' values of \code{groups}, without any specified order of aggregation.
-#' @param x a \link{corpus} or character object
+#' Get or replace the texts in a [corpus], with grouping options. 
+#' Works for plain character vectors too, if `groups` is a factor.
+#' @note The `groups` will be used for concatenating the texts based on shared
+#' values of `groups`, without any specified order of aggregation.
+#' @param x a [corpus] or character object
 #' @inheritParams groups
-#' @param spacer when concatenating texts by using \code{groups}, this will be the 
+#' @param spacer when concatenating texts by using `groups`, this will be the 
 #'   spacing added between texts.  (Default is two spaces.)
-#' @return For \code{texts}, a character vector of the texts in the corpus.
+#' @return For `texts`, a character vector of the texts in the corpus.
 #'   
-#'   For \code{texts <-}, the corpus with the updated texts.
+#'   For `texts <-`, the corpus with the updated texts.
 #' @export
 #' @keywords corpus
 #' @examples
@@ -54,15 +54,15 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
 
 #' @rdname texts
 #' @param value character vector of the new texts
-#' @return for \code{texts <-}, a corpus with the texts replaced by \code{value}
+#' @return for `texts <-`, a corpus with the texts replaced by `value`
 #' @export
 #' @note You are strongly encouraged as a good practice of text analysis 
-#'   workflow \emph{not} to modify the substance of the texts in a corpus. 
+#'   workflow *not* to modify the substance of the texts in a corpus. 
 #'   Rather, this sort of processing is better performed through downstream 
 #'   operations.  For instance, do not lowercase the texts in a corpus, or you 
 #'   will never be able to recover the original case.  Rather, apply 
-#'   \code{\link{tokens_tolower}} after applying \code{\link{tokens}} to a
-#'   corpus, or use the option \code{tolower = TRUE} in \code{\link{dfm}}.
+#'   [tokens_tolower()] after applying [tokens()] to a
+#'   corpus, or use the option `tolower = TRUE` in [dfm()].
 #' @examples
 #' corp <- corpus(c("We must prioritise honour in our neighbourhood.", 
 #'                  "Aluminium is a valourous metal."))
@@ -89,11 +89,11 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
 }
 
 #' @rdname texts
-#' @details \code{as.character(x)} where \code{x} is a corpus is equivalent to
-#' calling \code{texts(x)}
+#' @details `as.character(x)` where `x` is a corpus is equivalent to
+#' calling `texts(x)`
 #' @param ... unused
 #' @method as.character corpus
-#' @return \code{as.character(x)} is equivalent to \code{texts(x)}
+#' @return `as.character(x)` is equivalent to `texts(x)`
 #' @export
 as.character.corpus <- function(x, ...) {
     x <- as.corpus(x)
@@ -104,7 +104,7 @@ as.character.corpus <- function(x, ...) {
 #' 
 #' Recast a compressed corpus object into a standard (uncompressed) corpus
 #' object.
-#' @param x a compressed \link{corpus} object
+#' @param x a compressed [corpus] object
 #' @export
 #' @keywords internal
 as.corpus <- function(x) {

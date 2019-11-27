@@ -3,8 +3,8 @@
 #' Convert tokens into equivalence classes defined by values of a dictionary
 #' object.
 #' @param x tokens object to which dictionary or thesaurus will be supplied
-#' @param dictionary the \link{dictionary}-class object that will be applied to
-#'   \code{x}
+#' @param dictionary the [dictionary]-class object that will be applied to
+#'   `x`
 #' @param levels integers specifying the levels of entries in a hierarchical
 #'   dictionary that will be applied.  The top level is 1, and subsequent levels
 #'   describe lower nesting levels.  Values may be combined, even if these
@@ -12,40 +12,40 @@
 #'   level into the first, but record the third level (if present) collapsed
 #'   below the first (see examples).
 #' @inheritParams valuetype
-#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#' @param case_insensitive ignore the case of dictionary values if `TRUE`
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish
 #'   them from other features
 #' @param nomatch an optional character naming a new key for tokens that do not
-#'   matched to a dictionary values  If \code{NULL} (default), do not record
+#'   matched to a dictionary values  If `NULL` (default), do not record
 #'   unmatched tokens.
-#' @param exclusive if \code{TRUE}, remove all features not in dictionary,
+#' @param exclusive if `TRUE`, remove all features not in dictionary,
 #'   otherwise, replace values in dictionary with keys while leaving other
 #'   features unaffected
 #' @param nested_scope how to treat matches from different dictionary keys that
 #'   are nested.  When one value is nested within another, such as "a b" being 
 #'   nested within "a b c", `the `tokens_lookup()` will match the longer.  When
-#'   \code{nested_scope = "key"}, this longer-match priority is applied only 
-#'   within the key, while \code{"dictionary"} applies it across keys, matching only 
+#'   `nested_scope = "key"`, this longer-match priority is applied only 
+#'   within the key, while `"dictionary"` applies it across keys, matching only 
 #'   the key with the longer pattern, not the matches nested within that longer 
 #'   pattern from other keys.  See Details.
-#' @param verbose print status messages if \code{TRUE}
+#' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
 #'   overlap.
 #'
 #'   When two different keys in a dictionary are nested matches of one another,
-#'   the \code{nested_scope} options provide the choice of matching each key's
-#'   values independently (the \code{"key"}) option, or just counting the
-#'   longest match (the \code{"dictionary"} option).  Values that are nested
-#'   \emph{within} the same key are always counted as a single match.  See the
-#'   last example below comparing the \emph{New York} and \emph{New York Times}
+#'   the `nested_scope` options provide the choice of matching each key's
+#'   values independently (the `"key"`) option, or just counting the
+#'   longest match (the `"dictionary"` option).  Values that are nested
+#'   *within* the same key are always counted as a single match.  See the
+#'   last example below comparing the *New York* and *New York Times*
 #'   for these two different behaviours.
 #'
-#'   \emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
+#'   *Overlapping values*, such as `"a b"` and `"b a"` are
 #'   currently always considered as separate matches if they are in different
 #'   keys, or as one match if the overlap is within the same key.
-#' \emph{Overlapped}
+#' *Overlapped*
 #' @keywords tokens
 #' @seealso tokens_replace
 #' @examples

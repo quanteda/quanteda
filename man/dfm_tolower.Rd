@@ -16,11 +16,11 @@ fcm_tolower(x, keep_acronyms = FALSE)
 fcm_toupper(x)
 }
 \arguments{
-\item{x}{the input object whose character/tokens/feature elements will be 
+\item{x}{the input object whose character/tokens/feature elements will be
 case-converted}
 
-\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any 
-all-uppercase words (applies only to \code{*_tolower} functions)}
+\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
+all-uppercase words (applies only to \verb{*_tolower} functions)}
 }
 \description{
 \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
@@ -28,9 +28,8 @@ fcm to lower and upper case, respectively, and then recombine the counts.
 }
 \details{
 \code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of
-  the \link{fcm} to lower and upper case, respectively, and then recombine
-  the counts. This works only on fcm objects created with \code{context = 
-  "document"}.
+the \link{fcm} to lower and upper case, respectively, and then recombine
+the counts. This works only on fcm objects created with \code{context =  "document"}.
 }
 \examples{
 # for a document-feature matrix

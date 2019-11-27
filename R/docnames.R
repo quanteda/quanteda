@@ -2,11 +2,11 @@
 
 #' Get or set document names
 #' 
-#' Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
+#' Get or set the document names of a [corpus], [tokens], or [dfm] object.
 #' @param x the object with docnames
 #' @export
-#' @return \code{docnames} returns a character vector of the document names
-#' @seealso \code{\link{featnames}}
+#' @return `docnames` returns a character vector of the document names
+#' @seealso [featnames()]
 #' @examples
 #' # get and set doument names to a corpus
 #' corp <- data_corpus_inaugural
@@ -37,8 +37,8 @@ docnames.corpus <- function(x) {
     get_docvars(x, "docname_", FALSE, TRUE, TRUE)
 }
 
-#' @param value a character vector of the same length as \code{x}
-#' @return \code{docnames <-} assigns new values to the document names of an object.  
+#' @param value a character vector of the same length as `x`
+#' @return `docnames <-` assigns new values to the document names of an object.  
 #' docnames can only be character, so any non-character value assigned to be a
 #' docname will be coerced to mode `character`.
 #' @export
@@ -85,7 +85,7 @@ docnames.corpus <- function(x) {
 #' @name names-quanteda
 #' @title Special handling for names of quanteda objects
 #' @description Keeps the element names and rownames in sync with the system docvar
-#' \code{docname_}.
+#' `docname_`.
 #' @inheritParams base::names
 #' @method names<- corpus
 #' @keywords internal corpus

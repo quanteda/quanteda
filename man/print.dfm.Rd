@@ -42,14 +42,14 @@
 \item{show.values}{print the dfm values; if called explicitly this will print
 all values.}
 
-\item{show.summary}{print a brief summary indicating the number of documents 
+\item{show.summary}{print a brief summary indicating the number of documents
 and features}
 
 \item{ndoc}{max number of documents to print; default is from the
-\code{print_dfm_max_ndoc} setting of \code{\link{quanteda_options}}}
+\code{print_dfm_max_ndoc} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
 
 \item{nfeat}{max number of features to print; default is from the
-\code{print_dfm_max_nfeat} setting of \code{\link{quanteda_options}}}
+\code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
 
 \item{...}{further arguments passed to \code{Matrix::printSpMatrix2}}
 
@@ -59,7 +59,7 @@ and features}
 Print methods for document-feature matrices
 }
 \seealso{
-\code{\link{quanteda_options}}
+\code{\link[=quanteda_options]{quanteda_options()}}
 }
 \keyword{dfm}
 \keyword{internal}

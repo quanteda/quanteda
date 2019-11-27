@@ -58,7 +58,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 
 #' Function extending base::attributes()
 #' @param x an object
-#' @param overwrite if \code{TRUE}, overwrite old attributes
+#' @param overwrite if `TRUE`, overwrite old attributes
 #' @param value new attributes
 #' @keywords internal
 "attributes<-" <- function(x, overwrite = TRUE, value) {
@@ -89,7 +89,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' Utility function to create a object with new set of attributes
 #' @param x an underlying R object of a new object
 #' @param attrs attributes of a new object
-#' @param overwrite_attributes overwrite attributes of the input object, if \code{TRUE}
+#' @param overwrite_attributes overwrite attributes of the input object, if `TRUE`
 #' @keywords internal
 create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
     if (what == "tokens") {
@@ -107,11 +107,11 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' tokens_compound and kwic.
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#' @param case_insensitive ignore the case of dictionary values if `TRUE`
 #' @param concatenator concatenator that join multi-word expression in tokens object
 #' @param levels only used when pattern is a dictionary
-#' @param remove_unigram ignore single-word patterns if \code{TRUE}
-#' @seealso \code{\link{pattern2id}}
+#' @param remove_unigram ignore single-word patterns if `TRUE`
+#' @seealso [pattern2id()]
 #' @keywords internal
 pattern2list <- function(pattern, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
@@ -155,16 +155,16 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
 }
 
 
-#' Internal function for \code{select_types()} to check if a string is a regular expression
+#' Internal function for `select_types()` to check if a string is a regular expression
 #' @param x a character string to be tested
 #' @keywords internal
 is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
-#' Internal function for \code{select_types()} to escape regular expressions 
+#' Internal function for `select_types()` to escape regular expressions 
 #' 
-#' This function escapes glob patterns before \code{utils:glob2rx()}, therefore * and ?
+#' This function escapes glob patterns before `utils:glob2rx()`, therefore * and ?
 #' are unescaped.
 #' @param x character vector to be escaped
 #' @keywords internal
@@ -268,11 +268,11 @@ message_error <- function(key = NULL) {
 #' @param x any vector
 #' @param size the number of items to sample within each group, as a positive
 #'   number or a vector of numbers equal in length to the number of groups. If
-#'   \code{NULL}, the sampling is stratified by group in the original group
+#'   `NULL`, the sampling is stratified by group in the original group
 #'   sizes.
-#' @param group a grouping vector equal in length to \code{length(x)}
+#' @param group a grouping vector equal in length to `length(x)`
 #' @param replace logical; should sampling be with replacement?
-#' @return \code{x} resampled within groups
+#' @return `x` resampled within groups
 #' @keywords internal
 #' @examples 
 #' set.seed(100)
@@ -298,11 +298,11 @@ sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
 
 #' Get the package version that created an object
 #' 
-#' Return the the \pkg{quanteda} package version in which a \link{dfm},
-#' \link{tokens}, or \link{corpus} object was created.
+#' Return the the \pkg{quanteda} package version in which a [dfm],
+#' [tokens], or [corpus] object was created.
 #' @return A three-element integer vector of class "package_version". For
 #'   versions of the package < 1.5 for which no version was recorded in the
-#'   object, \code{c(1, 4, 0)} is returned.
+#'   object, `c(1, 4, 0)` is returned.
 #' @keywords internal utils
 get_object_version <- function(x) {
     if (is_pre2(x)) {
@@ -313,15 +313,15 @@ get_object_version <- function(x) {
 }
 
 #' @rdname get_object_version
-#' @return \code{ispr2} returns \code{TRUE} if the object was created before
-#' \pkg{quanteda} version 2, or \code{FALSE} otherwise
+#' @return `ispr2` returns `TRUE` if the object was created before
+#' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
     (! "meta" %in% names(attributes(x)))
 }
 
 #' @rdname get_object_version
-#' @return \code{ispr2} returns \code{TRUE} if the object was created before
-#' \pkg{quanteda} version 2, or \code{FALSE} otherwise
+#' @return `ispr2` returns `TRUE` if the object was created before
+#' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
     (! "meta" %in% names(attributes(x)))
 }

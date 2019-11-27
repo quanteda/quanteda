@@ -2,37 +2,37 @@
 
 #' Wordscores text model
 #' 
-#' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
+#' `textmodel_wordscores` implements Laver, Benoit and Garry's (2003)
 #' "Wordscores" method for scaling texts on a single dimension, given a set of
-#' anchoring or \emph{reference} texts whose values are set through reference
+#' anchoring or *reference* texts whose values are set through reference
 #' scores. This scale can be fitted in the linear space (as per LBG 2003) or in
-#' the logit space (as per Beauchamp 2012).  Estimates of \emph{virgin} or
-#' unknown texts are obtained using the \code{predict()} method to score
-#' documents from a fitted \code{textmodel_wordscores} object.
+#' the logit space (as per Beauchamp 2012).  Estimates of *virgin* or
+#' unknown texts are obtained using the `predict()` method to score
+#' documents from a fitted `textmodel_wordscores` object.
 #' 
-#' @param x the \link{dfm} on which the model will be trained
+#' @param x the [dfm] on which the model will be trained
 #' @param y vector of training scores associated with each document 
-#'   in \code{x}
+#'   in `x`
 #' @param smooth a smoothing parameter for word counts; defaults to zero to
 #'   match the LBG (2003) method. See Value below for additional information on
 #'   the behaviour of this argument.
-#' @param scale scale on which to score the words; \code{"linear"} for classic 
-#'   LBG linear posterior weighted word class differences, or \code{"logit"}
+#' @param scale scale on which to score the words; `"linear"` for classic 
+#'   LBG linear posterior weighted word class differences, or `"logit"`
 #'   for log posterior differences
-#' @details The \code{textmodel_wordscores()} function and the associated
-#'   \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
-#'   to function in the same manner as \code{\link[stats]{predict.lm}}.
-#'   \code{coef()} can also be used to extract the word coefficients from the
-#'   fitted \code{textmodel_wordscores} object, and \code{summary()} will print
+#' @details The `textmodel_wordscores()` function and the associated
+#'   [`predict()`][predict.textmodel_wordscores] method are designed
+#'   to function in the same manner as [stats::predict.lm()].
+#'   `coef()` can also be used to extract the word coefficients from the
+#'   fitted `textmodel_wordscores` object, and `summary()` will print
 #'   a nice summary of the fitted object.
-#' @return  A fitted \code{textmodel_wordscores} object.  This object will
+#' @return  A fitted `textmodel_wordscores` object.  This object will
 #'   contain a copy of the input data, but in its original form without any
-#'   smoothing applied. Calling \code{\link{predict.textmodel_wordscores}} on
-#'   this object without specifying a value for \code{newdata}, for instance,
+#'   smoothing applied. Calling [predict.textmodel_wordscores()] on
+#'   this object without specifying a value for `newdata`, for instance,
 #'   will predict on the unsmoothed object.  This behaviour differs from
 #'   versions of \pkg{quanteda} <= 1.2.
-#' @seealso \code{\link{predict.textmodel_wordscores}} for methods of applying a
-#'   fitted \link{textmodel_wordscores} model object to predict quantities from
+#' @seealso [predict.textmodel_wordscores()] for methods of applying a
+#'   fitted [textmodel_wordscores] model object to predict quantities from
 #'   (other) documents.
 #' @author Kenneth Benoit
 #' @examples 
@@ -43,15 +43,15 @@
 #' predict(tmod, rescaling = "lbg")
 #' predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 #' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
-#'   \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating
-#'   Policy Positions from Political Text using Words as Data}. \emph{American
-#'   Political Science Review}, 97(2), 311--331.
+#'   [Estimating
+#'   Policy Positions from Political Text using Words as Data](https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf). *American
+#'   Political Science Review*, 97(2), 311--331.
 #'   
-#'   Beauchamp, N. (2012). \href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
-#'   Text to Scale Legislatures with Uninformative Voting}. New York University Mimeo.
+#'   Beauchamp, N. (2012). [Using 
+#'   Text to Scale Legislatures with Uninformative Voting](http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf). New York University Mimeo.
 #'   
-#'   Martin, L.W. & Vanberg, G. (2007). \href{https://doi.org/10.1093/pan/mpm010}{A Robust 
-#'   Transformation Procedure for Interpreting Political Text}. \emph{Political Analysis} 
+#'   Martin, L.W. & Vanberg, G. (2007). [A Robust 
+#'   Transformation Procedure for Interpreting Political Text](https://doi.org/10.1093/pan/mpm010). *Political Analysis* 
 #'   16(1), 93--100.
 #' @export
 textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
@@ -118,24 +118,24 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' Predict textmodel_wordscores
 #' @param object a fitted Wordscores textmodel
 #' @param newdata dfm on which prediction should be made
-#' @param se.fit if \code{TRUE}, return standard errors as well
-#' @param rescaling \code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
-#'   rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
+#' @param se.fit if `TRUE`, return standard errors as well
+#' @param rescaling `"none"` for "raw" scores; `"lbg"` for LBG (2003) 
+#'   rescaling; or `"mv"` for the rescaling proposed by Martin and Vanberg 
 #'   (2007).  See References.
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
-#' @param force make the feature set of \code{newdata} conform to the model
-#'   terms.  The default of \code{TRUE} means that a fitted model can be applied
+#' @param force make the feature set of `newdata` conform to the model
+#'   terms.  The default of `TRUE` means that a fitted model can be applied
 #'   to scale a dfm that does not contain a 1:1 match of features in the
 #'   training and prediction data.
 #' @param ... not used
 #' @return 
-#' \code{predict.textmodel_wordscores()} returns a named vector of predicted
+#' `predict.textmodel_wordscores()` returns a named vector of predicted
 #' document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
-#' \code{se.fit = TRUE} consisting of the predicted scores (\code{$fit}) and the
-#' associated standard errors (\code{$se.fit}). When \code{interval =
-#' "confidence"}, the predicted values will be a matrix.  This behaviour matches
-#' that of \code{\link[stats]{predict.lm}}.
+#' `se.fit = TRUE` consisting of the predicted scores (`$fit`) and the
+#' associated standard errors (`$se.fit`). When `interval =
+#' "confidence"`, the predicted values will be a matrix.  This behaviour matches
+#' that of [stats::predict.lm()].
 #' @examples 
 #' tmod <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
 #' predict(tmod)

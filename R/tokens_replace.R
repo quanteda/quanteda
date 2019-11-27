@@ -3,18 +3,18 @@
 #' Substitute token types based on vectorized one-to-one matching. Since this
 #' function is created for lemmatization or user-defined stemming. It support
 #' substitution of multi-word features by multi-word features, but substitution
-#' is fastest when \code{pattern} and \code{replacement} are character vectors
-#' and \code{valuetype = "fixed"} as the function only substitute types of
-#' tokens. Please use \code{\link{tokens_lookup}} with \code{exclusive = FALSE}
-#' to replace \link{dictionary} values.
-#' @param x \link{tokens} object whose token elements will be replaced
+#' is fastest when `pattern` and `replacement` are character vectors
+#' and `valuetype = "fixed"` as the function only substitute types of
+#' tokens. Please use [tokens_lookup()] with `exclusive = FALSE`
+#' to replace [dictionary] values.
+#' @param x [tokens] object whose token elements will be replaced
 #' @param pattern a character vector or list of character vectors.  See
-#'   \link{pattern} for more details.
-#' @param replacement a character vector or (if \code{pattern} is a list) list
-#'   of character vectors of the same length as \code{pattern}
+#'   [pattern] for more details.
+#' @param replacement a character vector or (if `pattern` is a list) list
+#'   of character vectors of the same length as `pattern`
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param verbose print status messages if \code{TRUE}
+#' @param case_insensitive ignore case when matching, if `TRUE`
+#' @param verbose print status messages if `TRUE`
 #' @export
 #' @seealso tokens_lookup
 #' @examples

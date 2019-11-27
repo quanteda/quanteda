@@ -10,8 +10,7 @@
 \S4method{as.matrix}{textstat_simil_symm_sparse}(x, omitted = NA, ...)
 }
 \arguments{
-\item{x}{an object returned by \link{textstat_simil} when \code{min_simil >
-0}}
+\item{x}{an object returned by \link{textstat_simil} when \code{min_simil > 0}}
 
 \item{omitted}{value that will replace the omitted cells}
 

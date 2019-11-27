@@ -5,80 +5,80 @@
 #' features within a user-defined context. The context can be defined as a
 #' document or a window within a collection of documents, with an optional
 #' vector of weights applied to the co-occurrence counts.
-#' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object from
+#' @param x character, [corpus], [tokens], or [dfm] object from
 #'   which to generate the feature co-occurrence matrix
 #' @param context the context in which to consider term co-occurrence:
-#'   \code{"document"} for co-occurrence counts within document; \code{"window"}
+#'   `"document"` for co-occurrence counts within document; `"window"`
 #'   for co-occurrence within a defined window of words, which requires a
-#'   positive integer value for \code{window}.  Note: if \code{x} is a dfm
-#'   object, then \code{context} can only be \code{"document"}.
+#'   positive integer value for `window`.  Note: if `x` is a dfm
+#'   object, then `context` can only be `"document"`.
 #' @param window positive integer value for the size of a window on either side
 #'   of the target feature, default is 5, meaning 5 words before and after the
 #'   target feature
 #' @param count how to count co-occurrences:
 #'   \describe{
-#'   \item{\code{"frequency"}}{count the number of co-occurrences within the
+#'   \item{`"frequency"`}{count the number of co-occurrences within the
 #'   context}
-#'   \item{\code{"boolean"}}{count only the co-occurrence or not within the
+#'   \item{`"boolean"`}{count only the co-occurrence or not within the
 #'   context, irrespective of how many times it occurs.}
-#'   \item{\code{"weighted"}}{count a weighted function of counts, typically as
+#'   \item{`"weighted"`}{count a weighted function of counts, typically as
 #'   a function of distance from the target feature.  Only makes sense for
-#'   \code{context = "window"}.}
+#'   `context = "window"`.}
 #'   }
 #' @param weights a vector of weights applied to each distance from
-#'   \code{1:window}, strictly decreasing by default; can be a custom-defined
-#'   vector of the same length as \code{window}
-#' @param ordered if \code{TRUE} the number of times that a term appears before
+#'   `1:window`, strictly decreasing by default; can be a custom-defined
+#'   vector of the same length as `window`
+#' @param ordered if `TRUE` the number of times that a term appears before
 #'   or after the target feature are counted separately. Only makes sense for
 #'   context = "window".
-#' @param tri if \code{TRUE} return only upper triangle (including diagonal).
-#'   Ignored if \code{ordered = TRUE}
+#' @param tri if `TRUE` return only upper triangle (including diagonal).
+#'   Ignored if `ordered = TRUE`
 #' @param ... not used here
 #' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 #' @import Matrix
 #' @export
 #' @aliases is.fcm
-#' @details The function \code{\link{fcm}} provides a very general
+#' @details The function [fcm()] provides a very general
 #'   implementation of a "context-feature" matrix, consisting of a count of
 #'   feature co-occurrence within a defined context.  This context, following
-#'   Momtazi et. al. (2010), can be defined as the \emph{document},
-#'   \emph{sentences} within documents, \emph{syntactic relationships} between
+#'   Momtazi et. al. (2010), can be defined as the *document*,
+#'   *sentences* within documents, *syntactic relationships* between
 #'   features (nouns within a sentence, for instance), or according to a
-#'   \emph{window}.  When the context is a window, a weighting function is
+#'   *window*.  When the context is a window, a weighting function is
 #'   typically applied that is a function of distance from the target word (see
 #'   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
 #'   features is considered (see Church & Hanks 1990).
 #'   
-#'   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
+#'   [fcm] provides all of this functionality, returning a \eqn{V * V}
 #'   matrix (where \eqn{V} is the vocabulary size, returned by
-#'   \code{\link{nfeat}}). The \code{tri = TRUE} option will only return the
+#'   [nfeat()]). The `tri = TRUE` option will only return the
 #'   upper part of the matrix.
 #'   
-#'   Unlike some implementations of co-occurrences, \link{fcm} counts feature
+#'   Unlike some implementations of co-occurrences, [fcm] counts feature
 #'   co-occurrences with themselves, meaning that the diagonal will not be zero.
 #'   
-#'   \link{fcm} also provides "boolean" counting within the context of "window",
+#'   [fcm] also provides "boolean" counting within the context of "window",
 #'   which differs from the counting within "document".
 #'   
-#'   \code{is.fcm(x)} returns \code{TRUE} if and only if its x is an object of 
-#'   type \link{fcm}.
+#'   `is.fcm(x)` returns `TRUE` if and only if its x is an object of 
+#'   type [fcm].
 #'   
 #' @references 
 #'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
-#'   "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
+#'   "[A
 #'    comparative study of word co-occurrence for term clustering in language 
-#'   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
-#'   2010 Annual Conference of the North American Chapter of the ACL}, Los 
+#'   model-based sentence retrieval.](https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf)" *Human Language Technologies: The 
+#'   2010 Annual Conference of the North American Chapter of the ACL*, Los 
 #'   Angeles, California, June 2010, 325-328.
 #'   
 #'   Jurafsky, D. & Martin, J.H. (2018).
-#'   From \emph{Speech and Language Processing: An Introduction to Natural Language Processing, 
-#'   Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018 
-#'   (Chapter 6, Vector Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
+#'   From *Speech and Language Processing: An Introduction to Natural Language Processing, 
+#'   Computational Linguistics, and Speech Recognition*. Draft of September 23, 2018 
+#'   (Chapter 6, Vector Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
 #'   
 #'   Church, K. W. & P. Hanks (1990) .
-#'  \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
-#'   mutual information, and lexicography}. \emph{Computational Linguistics},
+#'  [Word association norms,
+#'   mutual information, and lexicography](http://dl.acm.org/citation.cfm?id=89095). *Computational Linguistics*,
 #'   16(1), 22-29.
 #' @examples
 #' # see http://bit.ly/29b2zOA

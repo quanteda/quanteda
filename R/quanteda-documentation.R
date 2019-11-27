@@ -42,99 +42,99 @@
 #'   "thesaurus", and trimming and weighting features based on document
 #'   frequency, feature frequency, and related measures such as tf-idf.
 #'   
-#'   Once constructed, a \pkg{quanteda} document-feature matrix ("\link{dfm}") 
+#'   Once constructed, a \pkg{quanteda} document-feature matrix ("[dfm]") 
 #'   can be easily analyzed using
 #'   either \pkg{quanteda}'s built-in tools for scaling document positions,
 #'   or used with a number of other text analytic tools, such as: topic models
 #'   (including converters for direct use with the topicmodels, LDA, and stm
 #'   packages) document scaling (using \pkg{quanteda}'s own functions for the
-#'   "wordfish" and "Wordscores" models, direct use with the \strong{ca} 
+#'   "wordfish" and "Wordscores" models, direct use with the **ca** 
 #'   package for
 #'   correspondence analysis, or scaling with the austin package) machine
 #'   learning through a variety of other packages that take matrix or
 #'   matrix-like inputs.
 #'   
 #'   Additional features of \pkg{quanteda} include: \itemize{ 
-#'   \item{powerful, flexible tools for working with \link[=dictionary]{dictionaries};}
-#'   \item{the ability to identify \link[=textstat_keyness]{keywords} associated with documents or groups of documents;}
-#'   \item{the ability to explore texts using \link[=kwic]{key-words-in-context};}
-#'   \item{fast computation of a variety of \link[=textstat_readability]{readability indexes};}
-#'   \item{fast computation of a variety of \link[=textstat_lexdiv]{lexical diversity measures};}
-#'   \item{quick computation of word or document \link[=textstat_simil]{similarities}, for clustering or to compute distances for other purposes;}
-#'   \item{a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text} such as the number of sentences, words, characters, or
+#'   \item{powerful, flexible tools for working with [dictionaries][dictionary];}
+#'   \item{the ability to identify [keywords][textstat_keyness] associated with documents or groups of documents;}
+#'   \item{the ability to explore texts using [key-words-in-context][kwic];}
+#'   \item{fast computation of a variety of [readability indexes][textstat_readability];}
+#'   \item{fast computation of a variety of [lexical diversity measures][textstat_lexdiv];}
+#'   \item{quick computation of word or document [similarities][textstat_simil], for clustering or to compute distances for other purposes;}
+#'   \item{a comprehensive suite of [descriptive statistics on text][summary.corpus] such as the number of sentences, words, characters, or
 #'   syllables per document; and}
 #'   \item{flexible, easy to use graphical tools to portray many of the analyses available in the package.}
 #'   }
 #'   
 #' @section Source code and additional information:
 #' 
-#' \url{http://github.com/quanteda/quanteda}
+#' <http://github.com/quanteda/quanteda>
 #' @import stringi data.table methods Matrix ggplot2
 #' @useDynLib quanteda, .registration = TRUE
 "_PACKAGE"
 
 #' Pattern matching using valuetype
 #' 
-#' Pattern matching in \pkg{quanteda} using the \code{valuetype} argument.
-#' @param valuetype the type of pattern matching: \code{"glob"} for 
-#'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-#'   or \code{"fixed"} for exact matching. See \link{valuetype} for details.
+#' Pattern matching in \pkg{quanteda} using the `valuetype` argument.
+#' @param valuetype the type of pattern matching: `"glob"` for 
+#'   "glob"-style wildcard expressions; `"regex"` for regular expressions;
+#'   or `"fixed"` for exact matching. See [valuetype] for details.
 #' @details Pattern matching in in \pkg{quanteda} uses "glob"-style pattern
 #'   matching as the default, because this is simpler than regular expression
 #'   matching while addressing most users' needs.  It is also has the advantage
 #'   of being identical to fixed pattern matching when the wildcard characters
-#'   (`*` and `?`) are not used. Finally, most \link{dictionary} formats use
+#'   (`*` and `?`) are not used. Finally, most [dictionary] formats use
 #'   glob matching.
 #'   
 #'   \describe{
-#'   \item{\code{"glob"}}{"glob"-style wildcard expressions, the quanteda default.  
+#'   \item{`"glob"`}{"glob"-style wildcard expressions, the quanteda default.  
 #'     The implementation used in \pkg{quanteda} uses `*` to match any number of any 
 #'     characters including none, and `?` to match any single character.  See also 
-#'   \code{\link[utils]{glob2rx}} and References below.}
-#'   \item{\code{"regex"}}{Regular expression matching.}
-#'   \item{\code{"fixed"}}{Fixed (literal) pattern matching.}
+#'   [utils::glob2rx()] and References below.}
+#'   \item{`"regex"`}{Regular expression matching.}
+#'   \item{`"fixed"`}{Fixed (literal) pattern matching.}
 #'   } 
-#' @note If "fixed" is used with \code{case_insensitive = TRUE}, features will 
+#' @note If "fixed" is used with `case_insensitive = TRUE`, features will 
 #'   typically be lowercased internally prior to matching.  Also, glob matches
-#'   are converted to regular expressions (using \link[utils]{glob2rx}) when
+#'   are converted to regular expressions (using [glob2rx][utils::glob2rx]) when
 #'   they contain wild card characters, and to fixed pattern matches when they
 #'   do not.
 #' @name valuetype
-#' @seealso \code{\link[utils]{glob2rx}}, 
-#' \href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern matching (Wikipedia)}, 
-#' \code{\link[stringi]{stringi-search-regex}}, \code{\link[stringi]{stringi-search-fixed}}
+#' @seealso [utils::glob2rx()], 
+#' [glob pattern matching (Wikipedia)](https://en.wikipedia.org/wiki/Glob_(programming)), 
+#' [stringi::stringi-search-regex()], [stringi::stringi-search-fixed()]
 #' @keywords internal
 NULL
 
 #' Pattern for feature, token and keyword matching
 #' 
 #' Pattern(s) for use in matching features, tokens, and keywords through a
-#' \link{valuetype} pattern.
+#' [valuetype] pattern.
 #' @param pattern a character vector, list of character vectors,
-#'   \link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+#'   [dictionary], or [collocations] object.  See [pattern] for
 #'   details.
-#' @details The \code{pattern} argument is a vector of patterns, including
+#' @details The `pattern` argument is a vector of patterns, including
 #'   sequences, to match in a target object, whose match type is specified by
-#'   \code{\link{valuetype}}. Note that an empty pattern (\code{""}) will match
-#'   "padding" in a \link{tokens} object.
+#'   [valuetype()]. Note that an empty pattern (`""`) will match
+#'   "padding" in a [tokens] object.
 #'   \describe{
-#'   \item{\code{character}}{A character vector of token patterns to be selected
+#'   \item{`character`}{A character vector of token patterns to be selected
 #'   or removed. Whitespace is not privileged, so that in a character vector,
 #'   white space is interpreted literally. If you wish to consider
 #'   whitespace-separated elements as sequences of tokens, wrap the argument in
-#'   \code{\link{phrase}}. }
-#'   \item{\code{list of character objects}}{If the list elements are character
+#'   [phrase()]. }
+#'   \item{`list of character objects`}{If the list elements are character
 #'   vectors of length 1, then this is equivalent to a vector of characters.  If
 #'   a list element contains a vector of characters longer than length 1, then
 #'   for matching will consider these as sequences of matches, equivalent to
-#'   wrapping the argument in \code{\link{phrase}}, except for matching to
-#'   \link{dfm} features where this does not apply. }
-#'   \item{\code{dictionary}}{Values in \link{dictionary} are used as patterns,
+#'   wrapping the argument in [phrase()], except for matching to
+#'   [dfm] features where this does not apply. }
+#'   \item{`dictionary`}{Values in [dictionary] are used as patterns,
 #'   for literal matches. Multi-word values are automatically converted into
 #'   phrases, so performing selection or compounding using a dictionary is the
-#'   same as wrapping the dictionary in \code{\link{phrase}}. }
-#'   \item{\code{collocations}}{Collocations objects created from
-#'   \code{\link{textstat_collocations}}, which are treated as phrases
+#'   same as wrapping the dictionary in [phrase()]. }
+#'   \item{`collocations`}{Collocations objects created from
+#'   [textstat_collocations()], which are treated as phrases
 #'   automatically.
 #'     }
 #'   }
@@ -174,7 +174,7 @@ NULL
 #' @param groups either: a character vector containing the names of document 
 #'   variables to be used for grouping; or a factor or object that can be 
 #'   coerced into a factor equal in length or rows to the number of documents. 
-#'   See \link{groups} for details.
+#'   See [groups] for details.
 #' @name groups
 #' @keywords internal
 NULL

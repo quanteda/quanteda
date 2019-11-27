@@ -57,7 +57,7 @@ text}
 
 \item{meta}{a named list that will be added to the corpus as corpus-level,
 user meta-data.  This can later be accessed or updated using
-\code{\link{meta}}.}
+\code{\link[=meta]{meta()}}.}
 
 \item{unique_docnames}{if \code{TRUE}, check duplication in \code{docnames}.
 Units with duplicated \code{docnames} are treated as segments of the
@@ -66,7 +66,7 @@ same document.}
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the
 data.frame; if the rownames are not set, it will use the default sequence
-based on \code{(\link{quanteda_options}("base_docname")}.}
+based on \verb{([quanteda_options]("base_docname")}.}
 
 \item{text_field}{the character name or numeric index of the source
 \code{data.frame} indicating the variable to be read in as text, which must
@@ -83,52 +83,52 @@ therefore being twice the number of rows in the kwic.}
 \code{pattern} as a new docvar \code{keyword}}
 }
 \value{
-A \link{corpus-class} class object containing the original texts,
-  document-level variables, document-level metadata, corpus-level metadata,
-  and default settings for subsequent processing of the corpus.
+A \linkS4class{corpus} class object containing the original texts,
+document-level variables, document-level metadata, corpus-level metadata,
+and default settings for subsequent processing of the corpus.
 
-  For \pkg{quanteda} >= 1.5, this is a specially classed character vector. It
-  has many additional attributes but \strong{you should not access these
-  attributes directly}, especially if you are another package author. Use the
-  extractor and replacement functions instead, or else your code is not only
-  going to be uglier, but also likely to break should the internal structure
-  of a corpus object change.  Using the accessor and replacement functions 
-  ensures that future code to manipulate corpus objects will continue to work.
+For \pkg{quanteda} >= 1.5, this is a specially classed character vector. It
+has many additional attributes but \strong{you should not access these
+attributes directly}, especially if you are another package author. Use the
+extractor and replacement functions instead, or else your code is not only
+going to be uglier, but also likely to break should the internal structure
+of a corpus object change.  Using the accessor and replacement functions
+ensures that future code to manipulate corpus objects will continue to work.
 }
 \description{
 Creates a corpus object from available sources.  The currently available
 sources are:
 \itemize{
-\item a \link{character} vector, consisting of one document per 
-element; if the elements are named, these names will be used as document 
+\item a \link{character} vector, consisting of one document per
+element; if the elements are named, these names will be used as document
 names.
 \item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}), whose default
 document id is a variable identified by \code{docid_field}; the text of the
 document is a variable identified by \code{text_field}; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the \pkg{readtext} package.
-\item a \link{kwic} object constructed by \code{\link{kwic}}.
-\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
-  with the fixed metadata
-  fields imported as \link{docvars} and corpus-level metadata imported
-  as \link{metacorpus} information.
+\item a \link{kwic} object constructed by \code{\link[=kwic]{kwic()}}.
+\item a \pkg{tm} \link[tm:VCorpus]{VCorpus} or \link[tm:SimpleCorpus]{SimpleCorpus} class  object,
+with the fixed metadata
+fields imported as \link{docvars} and corpus-level metadata imported
+as \link{metacorpus} information.
 \item a \link{corpus} object.
 }
 }
 \details{
 The texts and document variables of corpus objects can also be
-  accessed using index notation. Indexing a corpus object as a vector will
-  return its text, equivalent to \code{texts(x)}.  Note that this is not the
-  same as subsetting the entire corpus -- this should be done using the
-  \code{\link{subset}} method for a corpus.
+accessed using index notation. Indexing a corpus object as a vector will
+return its text, equivalent to \code{texts(x)}.  Note that this is not the
+same as subsetting the entire corpus -- this should be done using the
+\code{\link[=subset]{subset()}} method for a corpus.
 
-  Indexing a corpus using two indexes (integers or column names) will return
-  the document variables, equivalent to \code{docvars(x)}.  It is also
-  possible to access, create, or replace docvars using list notation, e.g.
+Indexing a corpus using two indexes (integers or column names) will return
+the document variables, equivalent to \code{docvars(x)}.  It is also
+possible to access, create, or replace docvars using list notation, e.g.
 
-  \code{myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))}.
+\code{myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))}.
 
-  For details, see \link{corpus-class}.
+For details, see \linkS4class{corpus}.
 }
 \examples{
 # create a corpus from texts
@@ -176,8 +176,8 @@ texts(corpus(kw, split_context = FALSE))
 
 }
 \seealso{
-\link{corpus-class}, \code{\link{docvars}}, 
-  \code{\link{meta}}, \code{\link{texts}}, \code{\link{ndoc}},
-  \code{\link{docnames}}
+\linkS4class{corpus}, \code{\link[=docvars]{docvars()}},
+\code{\link[=meta]{meta()}}, \code{\link[=texts]{texts()}}, \code{\link[=ndoc]{ndoc()}},
+\code{\link[=docnames]{docnames()}}
 }
 \keyword{corpus}

@@ -14,34 +14,34 @@ dfm_tfidf(
 )
 }
 \arguments{
-\item{x}{object for which idf or tf-idf will be computed (a document-feature 
+\item{x}{object for which idf or tf-idf will be computed (a document-feature
 matrix)}
 
-\item{scheme_tf}{scheme for \code{\link{dfm_weight}}; defaults to \code{"count"}}
+\item{scheme_tf}{scheme for \code{\link[=dfm_weight]{dfm_weight()}}; defaults to \code{"count"}}
 
-\item{scheme_df}{scheme for \code{\link{docfreq}}; defaults to
-\code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed
+\item{scheme_df}{scheme for \code{\link[=docfreq]{docfreq()}}; defaults to
+\code{"inverse"}.  Other options to \code{\link[=docfreq]{docfreq()}} can be passed
 through the ellipsis (\code{...}).}
 
-\item{base}{the base for the logarithms in the \code{\link{tf}} and
-\code{\link{docfreq}} calls; default is 10}
+\item{base}{the base for the logarithms in the \code{\link[=tf]{tf()}} and
+\code{\link[=docfreq]{docfreq()}} calls; default is 10}
 
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
 weighting by \code{"prop"} after applying \code{"logcount"}, or after
-having grouped a dfm using \code{\link{dfm_group}}.}
+having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
 
-\item{...}{additional arguments passed to \code{\link{docfreq}}.}
+\item{...}{additional arguments passed to \code{\link[=docfreq]{docfreq()}}.}
 }
 \description{
-Weight a dfm by term frequency-inverse document frequency (\emph{tf-idf}), 
+Weight a dfm by term frequency-inverse document frequency (\emph{tf-idf}),
 with full control over options.  Uses fully sparse methods for efficiency.
 }
 \details{
 \code{dfm_tfidf} computes term frequency-inverse document frequency
-  weighting.  The default is to use counts instead of normalized term
-  frequency (the relative term frequency within document), but this
-  can be overridden using \code{scheme_tf = "prop"}.
+weighting.  The default is to use counts instead of normalized term
+frequency (the relative term frequency within document), but this
+can be overridden using \code{scheme_tf = "prop"}.
 }
 \examples{
 dfmat1 <- as.dfm(data_dfm_lbgexample)
@@ -73,12 +73,12 @@ if (requireNamespace("tm")) {
 }
 }
 \references{
-Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-  \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
-  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+Manning, C. D., Raghavan, P., & Schütze, H. (2008).
+\emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+\url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
-\code{\link{dfm_weight}}, \code{\link{docfreq}}
+\code{\link[=dfm_weight]{dfm_weight()}}, \code{\link[=docfreq]{docfreq()}}
 }
 \keyword{dfm}
 \keyword{weighting}
