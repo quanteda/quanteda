@@ -11,7 +11,7 @@
 #'   making up the multi-word sequences.  The default `_` is recommended
 #'   since it will not be removed during normal cleaning and tokenization (while
 #'   nearly all other punctuation characters, at least those in the Unicode
-#'   punctuation class [P] will be removed).
+#'   punctuation class `[P]` will be removed).
 #' @inheritParams valuetype
 #' @param case_insensitive logical; if `TRUE`, ignore case when matching.
 #'   When `pattern` is a `collocations`, case-sensitive operation is

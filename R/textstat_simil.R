@@ -506,7 +506,7 @@ setMethod("as.matrix", "textstat_simil_symm_sparse",
 
 # textstat_proxy ---------
 
-#' [Experimental] Compute document/feature proximity
+#' \[Experimental\] Compute document/feature proximity
 #'
 #' This is an underlying function for `textstat_dist` and
 #' `textstat_simil` but returns `TsparseMatrix`.

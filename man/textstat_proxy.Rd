@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_simil.R
 \name{textstat_proxy}
 \alias{textstat_proxy}
-\title{\link{Experimental} Compute document/feature proximity}
+\title{[Experimental] Compute document/feature proximity}
 \usage{
 textstat_proxy(
   x,

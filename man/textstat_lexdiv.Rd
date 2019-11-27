@@ -25,13 +25,13 @@ lexical diversity will be computed}
 \item{measure}{a character vector defining the measure to compute}
 
 \item{remove_numbers}{logical; if \code{TRUE} remove features or tokens that
-consist only of numerals (the Unicode "Number" \link{N} class)}
+consist only of numerals (the Unicode "Number" \verb{[N]} class)}
 
 \item{remove_punct}{logical; if \code{TRUE} remove all features or tokens
-that consist only of the Unicode "Punctuation" \link{P} class)}
+that consist only of the Unicode "Punctuation" \verb{[P]} class)}
 
 \item{remove_symbols}{logical; if \code{TRUE} remove all features or tokens
-that consist only of the Unicode "Punctuation" \link{S} class)}
+that consist only of the Unicode "Punctuation" \verb{[S]} class)}
 
 \item{remove_hyphens}{logical; if \code{TRUE} split words that are connected
 by hyphenation and hyphenation-like characters in between words, e.g.

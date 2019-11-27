@@ -6,55 +6,51 @@
 #' @keywords tokens
 #' @export
 #' @param what the unit for splitting the text, available alternatives are:
-#'   \describe{ \item{`"word"`}{(recommended default) smartest, but
-#'   slowest, word tokenization method; see
-#'   [stringi-search-boundaries][stringi::stringi-search-boundaries] for details.}
-#'   \item{`"fasterword"`}{dumber, but faster, word tokenization method,
-#'   uses \code{[stri_split_charclass][stringi::stri_split_charclass](x,
-#'   "[\\\\p{Z}\\\\p{C}]+")}} \item{`"fastestword"`}{dumbest, but fastest,
-#'   word tokenization method, calls `[stri_split_fixed][stringi::stri_split_fixed](x, "
-#'   ")`} \item{`"character"`}{tokenization into individual characters}
+#'   \describe{ \item{`"word"`}{(recommended default) smartest, but slowest,
+#'   word tokenization method; see [`stringi::stringi-search-boundaries()`] for
+#'   details.} 
+#'   \item{`"fasterword"`}{dumber, but faster, word tokenization
+#'   method, uses `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
+#'   \item{`"fastestword"`}{dumbest, but fastest, word tokenization method,
+#'   calls `stringi::stri_split_fixed(x, " ")`}
+#'   \item{`"character"`}{tokenization into individual characters}
 #'   \item{`"sentence"`}{sentence segmenter, smart enough to handle some
 #'   exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far
-#'   from perfect).} }
-#' @param remove_numbers logical; if `TRUE` remove tokens that consist only
-#'   of numbers, but not words that start with digits, e.g. `2day`
-#' @param remove_punct logical; if `TRUE` remove all characters in the
-#'   Unicode "Punctuation" [P] class
-#' @param remove_symbols logical; if `TRUE` remove all characters in the
-#'   Unicode "Symbol" [S] class
-#' @param remove_twitter logical; if `TRUE` remove Twitter characters
-#'   `@@` and `#`; set to `TRUE` if you wish to eliminate these.
-#'   Note that this will always be set to `FALSE` if `remove_punct =
-#'   FALSE`.
-#' @param remove_url logical; if `TRUE` find and eliminate URLs beginning
-#'   with http(s) -- see section "Dealing with URLs".
-#' @param remove_hyphens logical; if `TRUE` split words that are connected
-#'   by hyphenation and hyphenation-like characters in between words, e.g.
-#'   `"self-storage"` becomes `c("self", "storage")`.  Default is
-#'   `FALSE` to preserve such words as is, with the hyphens.  Only applies
-#'   if `what = "word"` or `what = "fasterword"`.
-#' @param remove_separators logical; if `TRUE` remove separators and
-#'   separator characters (Unicode "Separator" [Z] and "Control [C]"
-#'   categories). Only applicable for `what = "character"` (when you
-#'   probably want it to be `FALSE`) and for `what = "word"` (when you
-#'   probably want it to be `TRUE`).
-#' @param ngrams integer vector of the *n* for *n*-grams, defaulting
-#'   to `1` (unigrams). For bigrams, for instance, use `2`; for
-#'   bigrams and unigrams, use `1:2`.  You can even include irregular
-#'   sequences such as `2:3` for bigrams and trigrams only.  See
-#'   [tokens_ngrams()].
+#'   from perfect).}}
+#' @param remove_numbers logical; if `TRUE` remove tokens that consist only of
+#'   numbers, but not words that start with digits, e.g. `2day`
+#' @param remove_punct logical; if `TRUE` remove all characters in the Unicode
+#'   "Punctuation" `[P]` class
+#' @param remove_symbols logical; if `TRUE` remove all characters in the Unicode
+#'   "Symbol" `[S]` class
+#' @param remove_twitter logical; if `TRUE` remove Twitter characters `@@` and
+#'   `#`; set to `TRUE` if you wish to eliminate these. Note that this will
+#'   always be set to `FALSE` if `remove_punct = FALSE`.
+#' @param remove_url logical; if `TRUE` find and eliminate URLs beginning with
+#'   http(s) -- see section "Dealing with URLs".
+#' @param remove_hyphens logical; if `TRUE` split words that are connected by
+#'   hyphenation and hyphenation-like characters in between words, e.g.
+#'   `"self-storage"` becomes `c("self", "storage")`.  Default is `FALSE` to
+#'   preserve such words as is, with the hyphens.  Only applies if `what =
+#'   "word"` or `what = "fasterword"`.
+#' @param remove_separators logical; if `TRUE` remove separators and separator
+#'   characters (Unicode "Separator" `[Z]` and "Control" `[C]` categories). Only
+#'   applicable for `what = "character"` (when you probably want it to be
+#'   `FALSE`) and for `what = "word"` (when you probably want it to be `TRUE`).
+#' @param ngrams integer vector of the *n* for *n*-grams, defaulting to `1`
+#'   (unigrams). For bigrams, for instance, use `2`; for bigrams and unigrams,
+#'   use `1:2`.  You can even include irregular sequences such as `2:3` for
+#'   bigrams and trigrams only.  See [tokens_ngrams()].
 #' @param skip integer vector specifying the skips for skip-grams, default is 0
 #'   for only immediately neighbouring words. Only applies if `ngrams` is
 #'   different from the default of 1.  See [tokens_skipgrams()].
-#' @param concatenator character to use in concatenating *n*-grams, default
-#'   is "`_`", which is recommended since this is included in the regular
-#'   expression and Unicode definitions of "word" characters
+#' @param concatenator character to use in concatenating *n*-grams, default is
+#'   `_`, which is recommended since this is included in the regular expression
+#'   and Unicode definitions of "word" characters
 #' @param verbose if `TRUE`, print timing messages to the console; off by
 #'   default
-#' @param include_docvars if `TRUE`, pass docvars 
-#'   through to the tokens object.  Only applies when tokenizing [corpus]
-#'   objects.
+#' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
+#'   Only applies when tokenizing [corpus] objects.
 #' @param ... additional arguments not used
 #' @import stringi
 #' @details The tokenizer is designed to be fast and flexible as well as to
@@ -66,28 +62,26 @@
 #'   nothing is removed by default from the text being tokenized except
 #'   inter-word spacing and equivalent characters.
 #'
-#'   Note that a `tokens` constructor also works on [tokens] objects,
-#'   which allows setting additional options that will modify the original
-#'   object. It is not possible, however, to change a setting to "un-remove"
-#'   something that was removed from the input [tokens] object, however.
-#'   For instance, `tokens(tokens("Ha!", remove_punct = TRUE), remove_punct
-#'   = FALSE)` will not restore the `"!"` token.  No warning is currently
-#'   issued about this, so the user should use `tokens.tokens()` with
-#'   caution.
+#'   Note that a `tokens` constructor also works on [tokens] objects, which
+#'   allows setting additional options that will modify the original object. It
+#'   is not possible, however, to change a setting to "un-remove" something that
+#'   was removed from the input [tokens] object, however. For instance,
+#'   `tokens(tokens("Ha!", remove_punct = TRUE), remove_punct = FALSE)` will not
+#'   restore the `"!"` token.  No warning is currently issued about this, so the
+#'   user should use `tokens.tokens()` with caution.
 #'
 #' @section Dealing with URLs: URLs are tricky to tokenize, because they contain
 #'   a number of symbols and punctuation characters.  If you wish to remove
 #'   these, as most people do, and your text contains URLs, then you should set
-#'   `what = "fasterword"` and `remove_url = TRUE`.  If you wish to
-#'   keep the URLs, but do not want them mangled, then your options are more
-#'   limited, since removing punctuation and symbols will also remove them from
-#'   URLs.  We are working on improving this behaviour.
+#'   `what = "fasterword"` and `remove_url = TRUE`.  If you wish to keep the
+#'   URLs, but do not want them mangled, then your options are more limited,
+#'   since removing punctuation and symbols will also remove them from URLs.  We
+#'   are working on improving this behaviour.
 #'
 #'   See the examples below.
-#' @return \pkg{quanteda} `tokens` class object, by default a serialized
-#'   list of integers corresponding to a vector of types.
-#' @seealso [tokens_ngrams()], [tokens_skipgrams()],
-#'   [as.list.tokens()]
+#' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
+#'   integers corresponding to a vector of types.
+#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [as.list.tokens()]
 #' @keywords tokens
 #' @examples
 #' txt1 <- c(doc1 = "This is a sample: of tokens.",

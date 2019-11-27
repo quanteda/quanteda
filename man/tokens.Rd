@@ -26,71 +26,68 @@ tokens(
 \item{x}{a character, \link{corpus}, or \link{tokens} object to be tokenized}
 
 \item{what}{the unit for splitting the text, available alternatives are:
-\describe{ \item{\code{"word"}}{(recommended default) smartest, but
-slowest, word tokenization method; see
-\link[stringi:stringi-search-boundaries]{stringi-search-boundaries} for details.}
-\item{\code{"fasterword"}}{dumber, but faster, word tokenization method,
-uses \code{[stri_split_charclass][stringi::stri_split_charclass](x,
-  "[\\\\p{Z}\\\\p{C}]+")}} \item{\code{"fastestword"}}{dumbest, but fastest,
-word tokenization method, calls \verb{[stri_split_fixed][stringi::stri_split_fixed](x, " ")}} \item{\code{"character"}}{tokenization into individual characters}
+\describe{ \item{\code{"word"}}{(recommended default) smartest, but slowest,
+word tokenization method; see \code{\link[stringi:stringi-search-boundaries]{stringi::stringi-search-boundaries()}} for
+details.}
+\item{\code{"fasterword"}}{dumber, but faster, word tokenization
+method, uses \code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
+\item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method,
+calls \code{stringi::stri_split_fixed(x, " ")}}
+\item{\code{"character"}}{tokenization into individual characters}
 \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some
 exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far
-from perfect).} }}
+from perfect).}}}
 
-\item{remove_numbers}{logical; if \code{TRUE} remove tokens that consist only
-of numbers, but not words that start with digits, e.g. \verb{2day}}
+\item{remove_numbers}{logical; if \code{TRUE} remove tokens that consist only of
+numbers, but not words that start with digits, e.g. \verb{2day}}
 
-\item{remove_punct}{logical; if \code{TRUE} remove all characters in the
-Unicode "Punctuation" \link{P} class}
+\item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
+"Punctuation" \verb{[P]} class}
 
-\item{remove_symbols}{logical; if \code{TRUE} remove all characters in the
-Unicode "Symbol" \link{S} class}
+\item{remove_symbols}{logical; if \code{TRUE} remove all characters in the Unicode
+"Symbol" \verb{[S]} class}
 
-\item{remove_separators}{logical; if \code{TRUE} remove separators and
-separator characters (Unicode "Separator" \link{Z} and "Control \link{C}"
-categories). Only applicable for \code{what = "character"} (when you
-probably want it to be \code{FALSE}) and for \code{what = "word"} (when you
-probably want it to be \code{TRUE}).}
+\item{remove_separators}{logical; if \code{TRUE} remove separators and separator
+characters (Unicode "Separator" \verb{[Z]} and "Control" \verb{[C]} categories). Only
+applicable for \code{what = "character"} (when you probably want it to be
+\code{FALSE}) and for \code{what = "word"} (when you probably want it to be \code{TRUE}).}
 
-\item{remove_twitter}{logical; if \code{TRUE} remove Twitter characters
-\code{@} and \verb{#}; set to \code{TRUE} if you wish to eliminate these.
-Note that this will always be set to \code{FALSE} if \code{remove_punct = FALSE}.}
+\item{remove_twitter}{logical; if \code{TRUE} remove Twitter characters \code{@} and
+\verb{#}; set to \code{TRUE} if you wish to eliminate these. Note that this will
+always be set to \code{FALSE} if \code{remove_punct = FALSE}.}
 
-\item{remove_hyphens}{logical; if \code{TRUE} split words that are connected
-by hyphenation and hyphenation-like characters in between words, e.g.
-\code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
-\code{FALSE} to preserve such words as is, with the hyphens.  Only applies
-if \code{what = "word"} or \code{what = "fasterword"}.}
+\item{remove_hyphens}{logical; if \code{TRUE} split words that are connected by
+hyphenation and hyphenation-like characters in between words, e.g.
+\code{"self-storage"} becomes \code{c("self", "storage")}.  Default is \code{FALSE} to
+preserve such words as is, with the hyphens.  Only applies if \code{what = "word"} or \code{what = "fasterword"}.}
 
-\item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning
-with http(s) -- see section "Dealing with URLs".}
+\item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning with
+http(s) -- see section "Dealing with URLs".}
 
-\item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
-to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
-bigrams and unigrams, use \code{1:2}.  You can even include irregular
-sequences such as \code{2:3} for bigrams and trigrams only.  See
-\code{\link[=tokens_ngrams]{tokens_ngrams()}}.}
+\item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting to \code{1}
+(unigrams). For bigrams, for instance, use \code{2}; for bigrams and unigrams,
+use \code{1:2}.  You can even include irregular sequences such as \code{2:3} for
+bigrams and trigrams only.  See \code{\link[=tokens_ngrams]{tokens_ngrams()}}.}
 
 \item{skip}{integer vector specifying the skips for skip-grams, default is 0
 for only immediately neighbouring words. Only applies if \code{ngrams} is
 different from the default of 1.  See \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}.}
 
-\item{concatenator}{character to use in concatenating \emph{n}-grams, default
-is "\verb{_}", which is recommended since this is included in the regular
-expression and Unicode definitions of "word" characters}
+\item{concatenator}{character to use in concatenating \emph{n}-grams, default is
+\verb{_}, which is recommended since this is included in the regular expression
+and Unicode definitions of "word" characters}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by
 default}
 
-\item{include_docvars}{if \code{TRUE}, pass docvars
-through to the tokens object.  Only applies when tokenizing \link{corpus}
-objects.}
+\item{include_docvars}{if \code{TRUE}, pass docvars through to the tokens object.
+Only applies when tokenizing \link{corpus} objects.}
 
 \item{...}{additional arguments not used}
 }
 \value{
-\pkg{quanteda} \code{tokens} class object, by default a serialized
-list of integers corresponding to a vector of types.
+\pkg{quanteda} \code{tokens} class object, by default a serialized list of
+integers corresponding to a vector of types.
 }
 \description{
 Tokenize the texts from a character vector or from a corpus.
@@ -105,22 +102,22 @@ intervention. This means that punctuation is tokenized as well, and that
 nothing is removed by default from the text being tokenized except
 inter-word spacing and equivalent characters.
 
-Note that a \code{tokens} constructor also works on \link{tokens} objects,
-which allows setting additional options that will modify the original
-object. It is not possible, however, to change a setting to "un-remove"
-something that was removed from the input \link{tokens} object, however.
-For instance, \code{tokens(tokens("Ha!", remove_punct = TRUE), remove_punct = FALSE)} will not restore the \code{"!"} token.  No warning is currently
-issued about this, so the user should use \code{tokens.tokens()} with
-caution.
+Note that a \code{tokens} constructor also works on \link{tokens} objects, which
+allows setting additional options that will modify the original object. It
+is not possible, however, to change a setting to "un-remove" something that
+was removed from the input \link{tokens} object, however. For instance,
+\code{tokens(tokens("Ha!", remove_punct = TRUE), remove_punct = FALSE)} will not
+restore the \code{"!"} token.  No warning is currently issued about this, so the
+user should use \code{tokens.tokens()} with caution.
 }
 \section{Dealing with URLs}{
  URLs are tricky to tokenize, because they contain
 a number of symbols and punctuation characters.  If you wish to remove
 these, as most people do, and your text contains URLs, then you should set
-\code{what = "fasterword"} and \code{remove_url = TRUE}.  If you wish to
-keep the URLs, but do not want them mangled, then your options are more
-limited, since removing punctuation and symbols will also remove them from
-URLs.  We are working on improving this behaviour.
+\code{what = "fasterword"} and \code{remove_url = TRUE}.  If you wish to keep the
+URLs, but do not want them mangled, then your options are more limited,
+since removing punctuation and symbols will also remove them from URLs.  We
+are working on improving this behaviour.
 
 See the examples below.
 }
@@ -193,7 +190,6 @@ tokens(txt5, remove_punct = TRUE, ngrams = 1:2)
 tokens_remove(tokens(txt5, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \seealso{
-\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}},
-\code{\link[=as.list.tokens]{as.list.tokens()}}
+\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=as.list.tokens]{as.list.tokens()}}
 }
 \keyword{tokens}

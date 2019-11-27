@@ -50,7 +50,7 @@ textmodel_affinity(dfmat, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 \references{
 Perry, P.O. & Benoit, K.R. (2017). Scaling Text with
 the Class Affinity Model.
-[arXiv:1710.08963 \link{stat.ML}](http://arxiv.org/abs/1710.08963).
+\href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 }
 \seealso{
 \code{\link[=predict.textmodel_affinity]{predict.textmodel_affinity()}} for methods of applying a

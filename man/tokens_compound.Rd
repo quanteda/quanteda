@@ -24,7 +24,7 @@ details.}
 making up the multi-word sequences.  The default \verb{_} is recommended
 since it will not be removed during normal cleaning and tokenization (while
 nearly all other punctuation characters, at least those in the Unicode
-punctuation class \link{P} will be removed).}
+punctuation class \verb{[P]} will be removed).}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;

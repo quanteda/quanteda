@@ -78,11 +78,11 @@
 #'   lexical diversity will be computed
 #' @param measure a character vector defining the measure to compute
 #' @param remove_numbers logical; if `TRUE` remove features or tokens that
-#'   consist only of numerals (the Unicode "Number" [N] class)
+#'   consist only of numerals (the Unicode "Number" `[N]` class)
 #' @param remove_punct logical; if `TRUE` remove all features or tokens
-#'   that consist only of the Unicode "Punctuation" [P] class)
+#'   that consist only of the Unicode "Punctuation" `[P]` class)
 #' @param remove_symbols logical; if `TRUE` remove all features or tokens
-#'   that consist only of the Unicode "Punctuation" [S] class)
+#'   that consist only of the Unicode "Punctuation" `[S]` class)
 #' @param remove_hyphens logical; if `TRUE` split words that are connected
 #'   by hyphenation and hyphenation-like characters in between words, e.g.
 #'   "self-storage" becomes two features or tokens "self" and "storage". Default
