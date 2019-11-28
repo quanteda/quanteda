@@ -93,11 +93,9 @@ NULL
 #'   object of US presidents' inaugural addresses since 1789. Document variables
 #'   contain the year of the address and the last name of the president.
 #' @format a [corpus] object with the following docvars:
-#' \itemize{
-#' \item `Year` a four-digit integer year
-#' \item `President` character; President's last name
-#' \item `FirstName` character; President's first name (and possibly middle initial)
-#' }
+#' * `Year` a four-digit integer year
+#' * `President` character; President's last name
+#' * `FirstName` character; President's first name (and possibly middle initial)
 #' @examples
 #' # some operations on the inaugural corpus
 #' summary(data_corpus_inaugural)
