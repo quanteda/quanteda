@@ -23,16 +23,16 @@ not \code{features} will be discarded, and any feature names specified in
 \code{features} but not found in \code{x} will be added with all zero counts.
 }
 \details{
-Selecting on another \link{dfm}'s \code{\link{featnames}} is useful when you
+Selecting on another \link{dfm}'s \code{\link[=featnames]{featnames()}} is useful when you
 have trained a model on one dfm, and need to project this onto a test set
 whose features must be identical. It is also used in
-\code{\link{bootstrap_dfm}}.
+\code{\link[=bootstrap_dfm]{bootstrap_dfm()}}.
 }
 \note{
-Unlike \code{\link{dfm_select}}, this function will add feature names
-  not already present in \code{x}. It also provides only fixed,
-  case-sensitive matches.  For more flexible feature selection, see
-  \code{\link{dfm_select}}.
+Unlike \code{\link[=dfm_select]{dfm_select()}}, this function will add feature names
+not already present in \code{x}. It also provides only fixed,
+case-sensitive matches.  For more flexible feature selection, see
+\code{\link[=dfm_select]{dfm_select()}}.
 }
 \examples{
 # matching a dfm to a feature vector
@@ -48,6 +48,6 @@ txt <- c("This is text one", "The second text", "This is text three")
 setequal(featnames(dfmat2), featnames(dfmat3))
 }
 \seealso{
-\code{\link{dfm_select}}
+\code{\link[=dfm_select]{dfm_select()}}
 }
 \keyword{dfm}

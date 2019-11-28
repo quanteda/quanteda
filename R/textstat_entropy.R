@@ -1,6 +1,6 @@
 #' Compute entropy of documents or features
 #' 
-#' @param x a \code{dfm}
+#' @param x a `dfm`
 #' @param margin character indicating for which margin to compute entropy
 #' @param base base for logarithm function
 #' @export

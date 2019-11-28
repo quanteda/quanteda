@@ -18,18 +18,18 @@ textstat_frequency(
 \item{n}{(optional) integer specifying the top \code{n} features to be returned,
 within group if \code{groups} is specified}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
 See \link{groups} for details.}
 
 \item{ties_method}{character string specifying how ties are treated.  See
-\code{\link[data.table]{frank}} for details.  Unlike that function,
+\code{\link[data.table:frank]{data.table::frank()}} for details.  Unlike that function,
 however, the default is \code{"min"}, so that frequencies of 10, 10, 11
 would be ranked 1, 1, 3.}
 
-\item{...}{additional arguments passed to \code{\link{dfm_group}}.  This can
-be useful in passing `force = TRUE`, for instance, if you are grouping a
+\item{...}{additional arguments passed to \code{\link[=dfm_group]{dfm_group()}}.  This can
+be useful in passing \code{force = TRUE}, for instance, if you are grouping a
 dfm that has been weighted.}
 }
 \value{
@@ -49,7 +49,7 @@ column is omitted from the returned data.frame.}
 }
 
 \code{textstat_frequency} returns a data.frame of features and
-  their term and document frequencies within groups.
+their term and document frequencies within groups.
 }
 \description{
 Produces counts and document frequencies summaries of the features in a

@@ -96,8 +96,8 @@ aspect ratio only supported if rotation = 0.}
 \pkg{wordcloud}}
 }
 \description{
-This function implements wordcloud without dependencies. Code is adopted from 
-\code{\link[wordcloud]{wordcloud}}.
+This function implements wordcloud without dependencies. Code is adopted from
+\code{\link[wordcloud:wordcloud]{wordcloud::wordcloud()}}.
 }
 \author{
 Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud} package.

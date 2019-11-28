@@ -20,11 +20,11 @@ name}
 a \pkg{ggplot2} object
 }
 \description{
-Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or 
+Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or
 more texts. The format of the plot depends on the number of \link{kwic} class
 objects passed: if there is only one document, keywords are plotted one below
-the other. If there are multiple documents the documents are plotted one 
-below the other, with keywords shown side-by-side. Given that this returns a 
+the other. If there are multiple documents the documents are plotted one
+below the other, with keywords shown side-by-side. Given that this returns a
 \pkg{ggplot2} object, you can modify the plot by adding \pkg{ggplot2} layers
 (see example).
 }
@@ -34,11 +34,10 @@ These are known issues on which we are working to solve in future versions:
 \itemize{
 \item \code{textplot_xray()} will not display the patterns correctly when
 these are multi-token sequences.
-
-\item For dictionaries with keys that have overlapping value matches to
-tokens in the text, only the first match will be used in the plot.  The way
-around this is to produce one kwic per dictionary key, and send them as a
-list to \code{textplot_xray}.
+\item For dictionaries with keys that have overlapping value matches to tokens in
+the text, only the first match will be used in the plot.  The way around this
+is to produce one kwic per dictionary key, and send them as a list to
+\code{textplot_xray}.
 }
 }
 

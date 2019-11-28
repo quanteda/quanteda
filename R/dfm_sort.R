@@ -1,14 +1,14 @@
 #' Sort a dfm by frequency of one or more margins
 #' 
-#' Sorts a \link{dfm} by descending frequency of total features, total features
+#' Sorts a [dfm] by descending frequency of total features, total features
 #' in documents, or both.
-#' @param x Document-feature matrix created by \code{\link{dfm}}
-#' @param margin which margin to sort on \code{features} to sort by frequency of
-#'   features, \code{documents} to sort by total feature counts in documents,
-#'   and \code{both} to sort by both
-#' @param decreasing logical; if \code{TRUE}, the sort will be in descending
+#' @param x Document-feature matrix created by [dfm()]
+#' @param margin which margin to sort on `features` to sort by frequency of
+#'   features, `documents` to sort by total feature counts in documents,
+#'   and `both` to sort by both
+#' @param decreasing logical; if `TRUE`, the sort will be in descending
 #'   order, otherwise sort in increasing order
-#' @return A sorted \link{dfm} matrix object
+#' @return A sorted [dfm] matrix object
 #' @export
 #' @author Ken Benoit
 #' @examples

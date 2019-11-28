@@ -22,7 +22,7 @@ dfm_trim(
 
 \item{min_termfreq, max_termfreq}{minimum/maximum values of feature frequencies
 across all documents, below/above which features will
-  be removed}
+be removed}
 
 \item{termfreq_type}{how \code{min_termfreq} and \code{max_termfreq} are
 interpreted.  \code{"count"} sums the frequencies; \code{"prop"} divides the
@@ -30,18 +30,17 @@ term frequencies by the total sum; \code{"rank"} is matched against the
 inverted ranking of features in terms of overall frequency, so that 1, 2,
 ... are the highest and second highest frequency features, and so on;
 \code{"quantile"} sets the cutoffs according to the quantiles (see
-\code{\link{quantile}}) of term frequencies.}
+\code{\link[=quantile]{quantile()}}) of term frequencies.}
 
 \item{min_docfreq, max_docfreq}{minimum/maximum values of a feature's document
 frequency, below/above which features will be removed}
 
 \item{docfreq_type}{specify how \code{min_docfreq} and \code{max_docfreq} are
-interpreted.   \code{"count"} is the same as \code{\link{docfreq}(x, scheme
-= "count")}; \code{"prop"} divides the document frequencies by the total
+interpreted.   \code{"count"} is the same as \verb{[docfreq](x, scheme = "count")}; \code{"prop"} divides the document frequencies by the total
 sum; \code{"rank"} is matched against the inverted ranking of document
 frequency, so that 1, 2, ... are the features with the highest and second
 highest document frequencies, and so on; \code{"quantile"} sets the cutoffs
-according to the quantiles (see \code{\link{quantile}}) of document
+according to the quantiles (see \code{\link[=quantile]{quantile()}}) of document
 frequencies.}
 
 \item{sparsity}{equivalent to \code{1 - min_docfreq}, included for comparison
@@ -56,23 +55,23 @@ A \link{dfm} reduced in features (with the same number of documents)
 }
 \description{
 Returns a document by feature matrix reduced in size based on
-  document and term frequency, usually in terms of a minimum frequency, but
-  may also be in terms of maximum frequencies.  Setting a combination of
-  minimum and maximum frequencies will select features based on a range.
+document and term frequency, usually in terms of a minimum frequency, but
+may also be in terms of maximum frequencies.  Setting a combination of
+minimum and maximum frequencies will select features based on a range.
 
 Feature selection is implemented by considering features across
-  all documents, by summing them for term frequency, or counting the
-  documents in which they occur for document frequency. Rank and quantile
-  versions of these are also implemented, for taking the first \eqn{n}
-  features in terms of descending order of overall global counts or document
-  frequencies, or as a quantile of all frequencies.
+all documents, by summing them for term frequency, or counting the
+documents in which they occur for document frequency. Rank and quantile
+versions of these are also implemented, for taking the first \eqn{n}
+features in terms of descending order of overall global counts or document
+frequencies, or as a quantile of all frequencies.
 }
 \note{
 Trimming a \link{dfm} object is an operation based on the \emph{values}
-  in the document-feature matrix.  To select subsets of a dfm based on the
-  features themselves (meaning the feature labels from
-  \code{\link{featnames}}) -- such as those matching a regular expression, or
-  removing features matching a stopword list, use \code{\link{dfm_select}}.
+in the document-feature matrix.  To select subsets of a dfm based on the
+features themselves (meaning the feature labels from
+\code{\link[=featnames]{featnames()}}) -- such as those matching a regular expression, or
+removing features matching a stopword list, use \code{\link[=dfm_select]{dfm_select()}}.
 }
 \examples{
 (dfmat <- dfm(data_corpus_inaugural[1:5]))
@@ -105,5 +104,5 @@ dfm_trim(dfmat, sparsity = 0.7)
 
 }
 \seealso{
-\code{\link{dfm_select}}, \code{\link{dfm_sample}}
+\code{\link[=dfm_select]{dfm_select()}}, \code{\link[=dfm_sample]{dfm_sample()}}
 }

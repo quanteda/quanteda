@@ -1,37 +1,37 @@
 #' Similarity and distance computation between documents or features
 #' 
 #' These functions compute matrixes of distances and similarities between 
-#' documents or features from a \code{\link{dfm}} and return a 
-#' \code{\link[stats]{dist}} object (or a matrix if specific targets are
+#' documents or features from a [dfm()] and return a 
+#' [stats::dist()] object (or a matrix if specific targets are
 #' selected).  They are fast and robust because they operate directly on the sparse
-#' \link{dfm} objects.
-#' @param x a \link{dfm} object
-#' @param selection a valid index for document or feature names from \code{x},
+#' [dfm] objects.
+#' @param x a [dfm] object
+#' @param selection a valid index for document or feature names from `x`,
 #'   to be selected for comparison
 #' @param margin identifies the margin of the dfm on which similarity or
-#'   difference will be computed:  \code{"documents"} for documents or 
-#'   \code{"features"} for word/term features
+#'   difference will be computed:  `"documents"` for documents or 
+#'   `"features"` for word/term features
 #' @param method method the similarity or distance measure to be used; see
 #'   Details
 #' @param upper  whether the upper triangle of the symmetric \eqn{V \times V} 
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
-#' @details \code{textstat_simil} options are: \code{"correlation"} (default), 
-#'   \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
-#'   \code{"edice"}, \code{"simple matching"}, \code{"hamman"}, and 
-#'   \code{"faith"}.
+#' @details `textstat_simil` options are: `"correlation"` (default), 
+#'   `"cosine"`, `"jaccard"`, `"ejaccard"`, `"dice"`,
+#'   `"edice"`, `"simple matching"`, `"hamman"`, and 
+#'   `"faith"`.
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in 
-#'   \code{\link{dfm_weight}(x, "prop")}.
-#' @return \code{textstat_simil} and \code{textstat_dist} return
-#'   \code{\link{dist}} class objects if selection is \code{NULL}, otherwise, a
+#'   `[dfm_weight](x, "prop")`.
+#' @return `textstat_simil` and `textstat_dist` return
+#'   [dist()] class objects if selection is `NULL`, otherwise, a
 #'   matrix is returned matching distances to the documents or features
 #'   identified in the selection.
 #' @export
 #' @keywords internal textstat
-#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-#'   \code{\link{dist}}
+#' @seealso [textstat_dist()], [as.list.dist()],
+#'   [dist()]
 textstat_simil_old <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = "correlation", 
@@ -385,14 +385,14 @@ faith_simil <- function(x, y = NULL, margin = 1) {
 
 #' Coerce a simil object into a matrix
 #' 
-#' \code{as.matrix.simil} coerces an object returned from
+#' `as.matrix.simil` coerces an object returned from
 #'   `textstat_simil()` into a matrix
 #' @param diag  the value to use on the diagonal representing self-similarities
 #' @note 
 #'   Because for the similarity methods implemented in  \pkg{quanteda}, the
-#'   similarity of an object with itself will be 1.0, \code{diag} defaults to
-#'   this value. This differs the default \code{diag = NA} in
-#'   \link[proxy]{as.matrix.simil} in the \pkg{proxy} package.
+#'   similarity of an object with itself will be 1.0, `diag` defaults to
+#'   this value. This differs the default `diag = NA` in
+#'   [as.matrix.simil][proxy::as.matrix.simil] in the \pkg{proxy} package.
 #' @param ... unused
 #' @export
 #' @method as.matrix simil

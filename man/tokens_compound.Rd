@@ -21,12 +21,12 @@ tokens_compound(
 details.}
 
 \item{concatenator}{the concatenation character that will connect the words
-making up the multi-word sequences.  The default \code{_} is recommended
+making up the multi-word sequences.  The default \verb{_} is recommended
 since it will not be removed during normal cleaning and tokenization (while
 nearly all other punctuation characters, at least those in the Unicode
-punctuation class [P] will be removed).}
+punctuation class \verb{[P]} will be removed).}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -39,25 +39,25 @@ compound; otherwise, form these separately.  See examples.}
 }
 \value{
 A \link{tokens} object in which the token sequences matching
-  \code{pattern} have been replaced by  compound "tokens" joined by the
-  concatenator.
+\code{pattern} have been replaced by  compound "tokens" joined by the
+concatenator.
 }
 \description{
 Replace multi-token sequences with a multi-word, or "compound" token.  The
 resulting compound tokens will represent a phrase or multi-word expression,
-concatenated with \code{concatenator} (by default, the "\code{_}" character)
+concatenated with \code{concatenator} (by default, the "\verb{_}" character)
 to form a single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a \link{dfm}.
 }
 \note{
 Patterns to be compounded (naturally) consist of multi-word sequences,
-  and how these are expected in \code{pattern} is very specific.  If the
-  elements to be compounded are supplied as space-delimited elements of a
-  character vector, wrap the vector in \code{\link{phrase}}.  If the elements
-  to be compounded are separate elements of a character vector, supply it as
-  a list where each list element is the sequence of character elements.
-  
-  See the examples below.
+and how these are expected in \code{pattern} is very specific.  If the
+elements to be compounded are supplied as space-delimited elements of a
+character vector, wrap the vector in \code{\link[=phrase]{phrase()}}.  If the elements
+to be compounded are separate elements of a character vector, supply it as
+a list where each list element is the sequence of character elements.
+
+See the examples below.
 }
 \examples{
 txt <- "The United Kingdom is leaving the European Union."

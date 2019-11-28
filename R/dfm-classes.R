@@ -1,23 +1,23 @@
 #' Virtual class "dfm" for a document-feature matrix
 #' 
-#' The dfm class of object is a type of \link[Matrix]{Matrix-class} object with
+#' The dfm class of object is a type of [Matrix-class][Matrix::Matrix-class] object with
 #' additional slots, described below.  \pkg{quanteda} uses two subclasses of the
-#' \code{dfm} class, depending on whether the object can be represented by a
-#' sparse matrix, in which case it is a \code{dfm} class object, or if dense,
-#' then a \code{dfmDense} object.  See Details.
+#' `dfm` class, depending on whether the object can be represented by a
+#' sparse matrix, in which case it is a `dfm` class object, or if dense,
+#' then a `dfmDense` object.  See Details.
 #' @slot weightTf the type of term frequency weighting applied to the dfm.  Default is
-#'   \code{"frequency"}, indicating that the values in the cells of the dfm are
-#'   simple feature counts. To change this, use the \code{\link{dfm_weight}}
+#'   `"frequency"`, indicating that the values in the cells of the dfm are
+#'   simple feature counts. To change this, use the [dfm_weight()]
 #'   method.
 #' @slot weightFf the type of document frequency weighting applied to the dfm. See
-#'   \code{\link{docfreq}}.
+#'   [docfreq()].
 #' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using
-#'   the \code{\link{dfm_smooth}} method.
-#' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are
-#'   named \code{docs} and \code{features} respectively.
-#' @details The \code{dfm} class is a virtual class that will contain
-#'   \link[Matrix]{dgCMatrix-class}.
-#' @seealso \link{dfm}
+#'   the [dfm_smooth()] method.
+#' @slot Dimnames  These are inherited from [Matrix-class][Matrix::Matrix-class] but are
+#'   named `docs` and `features` respectively.
+#' @details The `dfm` class is a virtual class that will contain
+#'   [dgCMatrix-class][Matrix::dgCMatrix-class].
+#' @seealso [dfm]
 #' @name dfm-class
 #' @rdname dfm-class
 #' @keywords internal dfm
@@ -58,7 +58,7 @@ setMethod("t",
 
 #' @method colSums dfm
 #' @rdname dfm-class
-#' @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
+#' @param na.rm if `TRUE`, omit missing values (including `NaN`) from
 #'   the calculations
 #' @param dims ignored
 #' @export
@@ -115,7 +115,7 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
 
 #' Coerce a dfm to a matrix or data.frame
 #' 
-#' Methods for coercing a \link{dfm} object to a matrix or data.frame object.
+#' Methods for coercing a [dfm] object to a matrix or data.frame object.
 #' @rdname as.matrix.dfm
 #' @param x dfm to be coerced
 #' @param ... unused
@@ -134,15 +134,15 @@ as.matrix.dfm <- function(x, ...) {
 #' Convert a dfm to a data.frame
 #' 
 #' Deprecated function to convert a dfm into a data.frame.
-#' Recommended that you use \code{convert(x, to = "data.frame")} instead.
-#' @param document optional first column of mode \code{character} in the
-#'   data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.
+#' Recommended that you use `convert(x, to = "data.frame")` instead.
+#' @param document optional first column of mode `character` in the
+#'   data.frame, defaults `docnames(x)`.  Set to `NULL` to exclude.
 #' @inheritParams base::as.data.frame
 #' @inheritParams base::data.frame
 #' @param ... unused
 #' @method as.data.frame dfm
 #' @keywords internal dfm
-#' @seealso \code{\link{convert}}
+#' @seealso [convert()]
 #' @export
 as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
                               check.names = FALSE) {
@@ -158,13 +158,13 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
 
 #' Combine dfm objects by Rows or Columns
 #' 
-#' Combine a \link{dfm} with another dfm, or numeric, or matrix object, 
+#' Combine a [dfm] with another dfm, or numeric, or matrix object, 
 #' returning a dfm with the combined documents or features, respectively.
 #' 
-#' @param ... \link{dfm}, numeric, or matrix  objects to be joined column-wise
-#'   (\code{cbind}) or row-wise (\code{rbind}) to the first.  Numeric objects
+#' @param ... [dfm], numeric, or matrix  objects to be joined column-wise
+#'   (`cbind`) or row-wise (`rbind`) to the first.  Numeric objects
 #'   not confirming to the row or column dimension will be recycled as normal.
-#' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
+#' @details `cbind(x, y, ...)` combines dfm objects by columns, returning a
 #'   dfm object with combined features from input dfm objects.  Note that this
 #'   should be used with extreme caution, as joining dfms with different
 #'   documents will result in a new row with the docname(s) of the first dfm,
@@ -244,7 +244,7 @@ cbind.dfm <- function(...) {
 }
 
 #' @rdname cbind.dfm
-#' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a
+#' @details  `rbind(x, y, ...)` combines dfm objects by rows, returning a
 #'   dfm object with combined features from input dfm objects.  Features are
 #'   matched between the two dfm objects, so that the order and names of the
 #'   features do not need to match.  The order of the features in the resulting

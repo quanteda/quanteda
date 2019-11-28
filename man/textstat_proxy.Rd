@@ -46,6 +46,6 @@ This is an underlying function for \code{textstat_dist} and
 \code{textstat_simil} but returns \code{TsparseMatrix}.
 }
 \seealso{
-\code{\link{textstat_dist}}, \code{\link{textstat_simil}}
+\code{\link[=textstat_dist]{textstat_dist()}}, \code{\link[=textstat_simil]{textstat_simil()}}
 }
 \keyword{internal}

@@ -3,7 +3,7 @@
 \name{as.coefficients_textmodel}
 \alias{as.coefficients_textmodel}
 \title{Coerce various objects to coefficients_textmodel
-This is a helper function used in \code{summary.textmodel_*}.}
+This is a helper function used in \verb{summary.textmodel_*}.}
 \usage{
 as.coefficients_textmodel(x)
 }
@@ -12,6 +12,6 @@ as.coefficients_textmodel(x)
 }
 \description{
 Coerce various objects to coefficients_textmodel
-This is a helper function used in \code{summary.textmodel_*}.
+This is a helper function used in \verb{summary.textmodel_*}.
 }
 \keyword{internal}

@@ -16,7 +16,7 @@ tokens_split(
 
 \item{separator}{a single-character pattern match by which tokens are separated}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -25,7 +25,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \description{
 Replaces tokens by multiple replacements consisting of elements split by a
 separator pattern, with the option of retaining the separator.  This function
-effectively reverses the operation of \code{\link{tokens_compound}}.
+effectively reverses the operation of \code{\link[=tokens_compound]{tokens_compound()}}.
 }
 \examples{
 # undo tokens_compound()

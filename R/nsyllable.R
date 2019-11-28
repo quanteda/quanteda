@@ -1,6 +1,6 @@
 #' @rdname data-internal
 #' @details
-#' \code{data_int_syllables} provides an English-language syllables dictionary;
+#' `data_int_syllables` provides an English-language syllables dictionary;
 #' it is an integer vector whose element names correspond to English words.
 "data_int_syllables"
 
@@ -8,38 +8,38 @@
 #' 
 #' @description Returns a count of the number of syllables in texts. For English
 #'   words, the syllable count is exact and looked up from the CMU pronunciation
-#'   dictionary, from the default syllable dictionary \code{data_int_syllables}. 
+#'   dictionary, from the default syllable dictionary `data_int_syllables`. 
 #'   For any word not in the dictionary, the syllable count is estimated by 
 #'   counting vowel clusters.
 #'   
-#'   \code{data_int_syllables} is a quanteda-supplied data object consisting of a 
+#'   `data_int_syllables` is a quanteda-supplied data object consisting of a 
 #'   named numeric vector of syllable counts for the words used as names.  This 
 #'   is the default object used to count English syllables.  This object that 
 #'   can be accessed directly, but we strongly encourage you to access it only 
-#'   through the \code{nsyllable()} wrapper function.
+#'   through the `nsyllable()` wrapper function.
 #'   
-#' @param x character vector or \code{tokens} object  whose 
+#' @param x character vector or `tokens` object  whose 
 #'   syllables will be counted.  This will count all syllables in a character 
 #'   vector without regard to separating tokens, so it is recommended that x be 
 #'   individual terms.
 #' @param syllable_dictionary optional named integer vector of syllable counts where 
-#'   the names are lower case tokens.  When set to \code{NULL} (default), then 
-#'   the function will use the quanteda data object \code{data_int_syllables}, an 
+#'   the names are lower case tokens.  When set to `NULL` (default), then 
+#'   the function will use the quanteda data object `data_int_syllables`, an 
 #'   English pronunciation dictionary from CMU.
-#' @param use.names logical; if \code{TRUE}, assign the tokens as the names of 
+#' @param use.names logical; if `TRUE`, assign the tokens as the names of 
 #' the syllable count vector
 #'   
-#' @return If \code{x} is a character vector, a named numeric vector of the 
-#'   counts of the syllables in each element.  If \code{x} is a \link{tokens}
+#' @return If `x` is a character vector, a named numeric vector of the 
+#'   counts of the syllables in each element.  If `x` is a [tokens]
 #'   object, return a list of syllable counts where each list element corresponds
 #'   to the tokens in a document.
 #' @note All tokens are automatically converted to lowercase to perform the
 #'   matching with the syllable dictionary, so there is no need to perform this
-#'   step prior to calling \code{nsyllable()}.
+#'   step prior to calling `nsyllable()`.
 #'
 #'   `nsyllable()` only works reliably for English, as the only syllable count
 #'   dictionary we could find is the freely available CMU pronunciation
-#'   dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.  If you
+#'   dictionary at `http://www.speech.cs.cmu.edu/cgi-bin/cmudict`.  If you
 #'   have a dictionary for another language, please email the package
 #'   maintainer as we would love to include it.
 #' @name nsyllable

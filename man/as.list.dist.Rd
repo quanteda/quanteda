@@ -11,7 +11,7 @@
 
 \item{sorted}{sort results in descending order if \code{TRUE}}
 
-\item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
+\item{n}{the top \code{n} highest-ranking items will be returned.  If n is
 \code{NULL}, return all items.}
 
 \item{...}{unused}
@@ -19,5 +19,5 @@
 \description{
 Coerce a dist matrix into a list of selected target terms and similar terms,
 in descending order of similarity.  Can be used after calling
-\code{\link{textstat_simil}} or \code{\link{textstat_dist}}.
+\code{\link[=textstat_simil]{textstat_simil()}} or \code{\link[=textstat_dist]{textstat_dist()}}.
 }

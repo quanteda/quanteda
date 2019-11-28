@@ -28,8 +28,8 @@ vector being sampled.}
 \code{features}}
 }
 \value{
-A dfm object with number of documents or features equal to \code{size}, drawn 
-  from the dfm \code{x}.
+A dfm object with number of documents or features equal to \code{size}, drawn
+from the dfm \code{x}.
 }
 \description{
 Sample randomly from a dfm object, from documents or features.

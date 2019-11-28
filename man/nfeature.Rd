@@ -10,7 +10,7 @@ nfeature(x)
 Defunct form of nfeat
 }
 \details{
-\code{nfeature} is the defunct form of \code{\link{nfeat}}.
+\code{nfeature} is the defunct form of \code{\link[=nfeat]{nfeat()}}.
 }
 \keyword{defunct}
 \keyword{internal}

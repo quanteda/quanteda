@@ -37,7 +37,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
 
 #' @param i index for documents
 #' @param j index for features
-#' @param drop always set to \code{FALSE}
+#' @param drop always set to `FALSE`
 #' @param ... additional arguments not used here
 #' @rdname dfm-class
 #' @export

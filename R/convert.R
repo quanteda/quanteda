@@ -1,35 +1,35 @@
 #' Convert a dfm to a non-quanteda format
 #' 
-#' Convert a quanteda \link{dfm} object to a format useable by other text
-#' analysis packages.  The general function \code{convert} provides easy
+#' Convert a quanteda [dfm] object to a format useable by other text
+#' analysis packages.  The general function `convert` provides easy
 #' conversion from a dfm to the document-term representations used in all other
 #' text analysis packages for which conversions are defined.
-#' @param x a \link{dfm} to be converted
+#' @param x a [dfm] to be converted
 #' @param to target conversion format, consisting of the name of the package 
 #'   into whose document-term matrix representation the dfm will be converted: 
-#'   \describe{ \item{\code{"lda"}}{a list with components "documents" and 
-#'   "vocab" as needed by the function \link[lda]{lda.collapsed.gibbs.sampler} from the 
-#'   \pkg{lda} package} \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from 
-#'   the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm} 
-#'   package} \item{\code{"austin"}}{the \code{wfm} format from the 
-#'   \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
+#'   \describe{ \item{`"lda"`}{a list with components "documents" and 
+#'   "vocab" as needed by the function [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the 
+#'   \pkg{lda} package} \item{`"tm"`}{a [DocumentTermMatrix][tm::DocumentTermMatrix] from 
+#'   the \pkg{tm} package} \item{`"stm"`}{the  format for the \pkg{stm} 
+#'   package} \item{`"austin"`}{the `wfm` format from the 
+#'   **austin** package} \item{`"topicmodels"`}{the "dtm" format as 
 #'   used by the \pkg{topicmodels} package} 
-#'   \item{\code{"lsa"}}{the "textmatrix" format as 
+#'   \item{`"lsa"`}{the "textmatrix" format as 
 #'   used by the \pkg{lsa} package}
-#'   \item{\code{"data.frame"}}{a data.frame where each feature is a variable} 
-#'   \item{\code{"tripletlist"}}{a named "triplet" format list consisting of 
-#'   \code{document}, \code{feature}, and \code{frequency}} 
+#'   \item{`"data.frame"`}{a data.frame where each feature is a variable} 
+#'   \item{`"tripletlist"`}{a named "triplet" format list consisting of 
+#'   `document`, `feature`, and `frequency`} 
 #'   }
 #' @param docvars optional data.frame of document variables used as the
-#'   \code{meta} information in conversion to the \pkg{stm} package format.
+#'   `meta` information in conversion to the \pkg{stm} package format.
 #'   This aids in selecting the document variables only corresponding to the
 #'   documents with non-zero counts.  Only affects the "stm" format.
-#' @param omit_empty logical; if \code{TRUE}, omit empty documents and features
+#' @param omit_empty logical; if `TRUE`, omit empty documents and features
 #'   from the converted dfm. This is required for some formats (such as STM)
-#'   that do not accept empty documents.  Only used when \code{to = "lda"} or
-#'   \code{to = "topicmodels"}.  For \code{to = "stm"} format, `omit_empty`` is
-#'   always \code{TRUE}.
-#' @return A converted object determined by the value of \code{to} (see above). 
+#'   that do not accept empty documents.  Only used when `to = "lda"` or
+#'   `to = "topicmodels"`.  For `to = "stm"` format, `omit_empty`` is
+#'   always `TRUE`.
+#' @return A converted object determined by the value of `to` (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
 #'   of the return formats.
 #' @export
@@ -122,21 +122,21 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' Convenience wrappers for dfm convert
 #' 
 #' To make the usage as consistent as possible with other packages, quanteda
-#' also provides shortcut wrappers to \code{\link{convert}}, designed to be
+#' also provides shortcut wrappers to [convert()], designed to be
 #' similar in syntax to analogous commands in the packages to whose format they
 #' are converting.
 #' @param x the dfm to be converted
 #' @inheritParams convert
-#' @param ... additional arguments used only by \code{as.DocumentTermMatrix}
-#' @return A converted object determined by the value of \code{to} (see above). 
+#' @param ... additional arguments used only by `as.DocumentTermMatrix`
+#' @return A converted object determined by the value of `to` (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
 #'   of the return formats.
 #' @note  Additional coercion methods to base R objects are also available: 
-#'   \describe{ \item{\code{\link{as.data.frame}(x)}}{converts a \link{dfm} into
-#'   a \link{data.frame}}
+#'   \describe{ \item{`[as.data.frame](x)`}{converts a [dfm] into
+#'   a [data.frame]}
 #'   
-#'   \item{\code{\link{as.matrix}(x)}}{converts a \link{dfm} into a
-#'   \link{matrix}} }
+#'   \item{`[as.matrix](x)`}{converts a [dfm] into a
+#'   [matrix]} }
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples 
@@ -147,8 +147,8 @@ NULL
 
 
 #' @rdname convert-wrappers
-#' @details \code{as.wfm} converts a quanteda \link{dfm} into the
-#' \code{wfm} format used by the \code{austin} package.
+#' @details `as.wfm` converts a quanteda [dfm] into the
+#' `wfm` format used by the `austin` package.
 #' @export
 #' @examples 
 #' # shortcut conversion to austin package's wfm format
@@ -167,15 +167,15 @@ as.wfm.dfm <- function(x) {
 
 #' @export
 #' @rdname convert-wrappers
-#' @details \code{as.DocumentTermMatrix} will convert a quanteda \link{dfm} into
-#'   the \pkg{tm} package's \link[tm]{DocumentTermMatrix} format. Note: The
-#'   \pkg{tm} package version of \code{as.TermDocumentMatrix} allows a
-#'   \code{weighting} argument, which supplies a weighting function for 
-#'   \link[tm]{TermDocumentMatrix}.  Here the default is for term frequency
+#' @details `as.DocumentTermMatrix` will convert a quanteda [dfm] into
+#'   the \pkg{tm} package's [DocumentTermMatrix][tm::DocumentTermMatrix] format. Note: The
+#'   \pkg{tm} package version of `as.TermDocumentMatrix` allows a
+#'   `weighting` argument, which supplies a weighting function for 
+#'   [TermDocumentMatrix][tm::TermDocumentMatrix].  Here the default is for term frequency
 #'   weighting. If you want a different weighting, apply the weights after
 #'   converting using one of the \pkg{tm} functions. For other available
 #'   weighting functions from the \pkg{tm} package, see 
-#'   \code{\link[tm]{TermDocumentMatrix}}.
+#'   [tm::TermDocumentMatrix()].
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to tm package's DocumentTermMatrix format
@@ -202,7 +202,7 @@ dfm2austin <- function(x) {
 }
 
 #' @rdname convert-wrappers
-#' @param weighting a \pkg{tm} weight, see \code{\link[tm]{weightTf}}
+#' @param weighting a \pkg{tm} weight, see [tm::weightTf()]
 dfm2tm <- function(x, weighting = tm::weightTf) {
     if (!requireNamespace("tm", quietly = TRUE)) 
         stop("You must install the tm package installed for this conversion.")
@@ -229,10 +229,10 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
 
 #' @rdname convert-wrappers
 #' @details
-#' \code{dfm2lda} provides converts a \link{dfm} into the list representation
+#' `dfm2lda` provides converts a [dfm] into the list representation
 #' of terms in documents used by the \pkg{lda} package (a list with components 
 #' "documents" and "vocab" as needed by 
-#'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
+#'   [lda::lda.collapsed.gibbs.sampler()]).
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
@@ -249,10 +249,10 @@ dfm2lda <- function(x, omit_empty = TRUE) {
 
 #' @rdname convert-wrappers
 #' @details
-#' \code{dfm2ldaformat} provides converts a \link{dfm} into the list
+#' `dfm2ldaformat` provides converts a [dfm] into the list
 #' representation of terms in documents used by the \pkg{lda} package (a list
 #' with components "documents" and "vocab" as needed by
-#' \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
+#' [lda::lda.collapsed.gibbs.sampler()]).
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format

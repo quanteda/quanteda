@@ -1,19 +1,19 @@
 #' Virtual class "fcm" for a feature co-occurrence matrix
 #'
-#' The fcm class of object is a special type of \link{fcm} object with
+#' The fcm class of object is a special type of [fcm] object with
 #' additional slots, described below.
 #' @slot context the context definition
-#' @slot window the size of the window, if \code{context = "window"}
+#' @slot window the size of the window, if `context = "window"`
 #' @slot count how co-occurrences are counted
-#' @slot weights context weighting for distance from target feature, equal in length to \code{window}
-#' @slot margin frequencies of features in the original \link{dfm} or \link{tokens}
+#' @slot weights context weighting for distance from target feature, equal in length to `window`
+#' @slot margin frequencies of features in the original [dfm] or [tokens]
 #' @slot tri whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded
 #' @slot ordered whether a term appears before or after the target feature 
 #'      are counted separately
 #' @name fcm-class
 #' @rdname fcm-class
 #' @keywords internal fcm
-#' @seealso \link{fcm}
+#' @seealso [fcm]
 setClass("fcm",
          slots = c(context = "character", window = "integer", 
                    count = "character", weights = "numeric", 

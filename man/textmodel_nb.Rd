@@ -16,8 +16,8 @@ textmodel_nb(
 \item{x}{the \link{dfm} on which the model will be fit.  Does not need to
 contain only the training documents.}
 
-\item{y}{vector of training labels associated with each document identified 
-in \code{train}.  (These will be converted to factors if not already 
+\item{y}{vector of training labels associated with each document identified
+in \code{train}.  (These will be converted to factors if not already
 factors.)}
 
 \item{smooth}{smoothing parameter for feature counts by class}
@@ -27,7 +27,7 @@ factors.)}
 
 \item{distribution}{count model for text features, can be \code{multinomial}
 or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert
-the dfm to a binary matrix using \code{\link{dfm_weight}(x, scheme = "boolean")}.}
+the dfm to a binary matrix using \verb{[dfm_weight](x, scheme = "boolean")}.}
 }
 \value{
 \code{textmodel_nb()} returns a list consisting of the following (where
@@ -37,13 +37,13 @@ features, and \eqn{k} is the total number of training classes):
 \item{call}{original function call}
 
 \item{PwGc}{\eqn{k \times J}; probability of the word given the class
-  (empirical likelihood)}
+(empirical likelihood)}
 
 \item{Pc}{\eqn{k}-length named numeric vector of class prior
-  probabilities}
+probabilities}
 
 \item{PcGw}{\eqn{k \times J}; posterior class probability given the
-  word}
+word}
 
 \item{Pw}{\eqn{J \times 1}; baseline probability of the word}
 
@@ -114,16 +114,16 @@ predict(tmod2, newdata = trainingset[5, ])
 }
 \references{
 Manning, C.D., Raghavan, P., & Schütze, H. (2008).
-  \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press 
-  (Chapter 13). Available at \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}.
-  
-  Jurafsky, D. & Martin, J.H. (2018).
-  From \emph{Speech and Language Processing: An Introduction to Natural Language 
-  Processing, Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018 
-  (Chapter 6, Naive Bayes). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
+\emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press
+(Chapter 13). Available at \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}.
+
+Jurafsky, D. & Martin, J.H. (2018).
+From \emph{Speech and Language Processing: An Introduction to Natural Language
+Processing, Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018
+(Chapter 6, Naive Bayes). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 }
 \seealso{
-\code{\link{predict.textmodel_nb}}
+\code{\link[=predict.textmodel_nb]{predict.textmodel_nb()}}
 }
 \author{
 Kenneth Benoit

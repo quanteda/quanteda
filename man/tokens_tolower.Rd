@@ -10,11 +10,11 @@ tokens_tolower(x, keep_acronyms = FALSE)
 tokens_toupper(x)
 }
 \arguments{
-\item{x}{the input object whose character/tokens/feature elements will be 
+\item{x}{the input object whose character/tokens/feature elements will be
 case-converted}
 
-\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any 
-all-uppercase words (applies only to \code{*_tolower} functions)}
+\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
+all-uppercase words (applies only to \verb{*_tolower} functions)}
 }
 \description{
 \code{tokens_tolower} and \code{tokens_toupper} convert the features of a

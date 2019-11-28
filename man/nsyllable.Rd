@@ -11,48 +11,48 @@ nsyllable(
 )
 }
 \arguments{
-\item{x}{character vector or \code{tokens} object  whose 
-syllables will be counted.  This will count all syllables in a character 
-vector without regard to separating tokens, so it is recommended that x be 
+\item{x}{character vector or \code{tokens} object  whose
+syllables will be counted.  This will count all syllables in a character
+vector without regard to separating tokens, so it is recommended that x be
 individual terms.}
 
-\item{syllable_dictionary}{optional named integer vector of syllable counts where 
-the names are lower case tokens.  When set to \code{NULL} (default), then 
-the function will use the quanteda data object \code{data_int_syllables}, an 
+\item{syllable_dictionary}{optional named integer vector of syllable counts where
+the names are lower case tokens.  When set to \code{NULL} (default), then
+the function will use the quanteda data object \code{data_int_syllables}, an
 English pronunciation dictionary from CMU.}
 
-\item{use.names}{logical; if \code{TRUE}, assign the tokens as the names of 
+\item{use.names}{logical; if \code{TRUE}, assign the tokens as the names of
 the syllable count vector}
 }
 \value{
-If \code{x} is a character vector, a named numeric vector of the 
-  counts of the syllables in each element.  If \code{x} is a \link{tokens}
-  object, return a list of syllable counts where each list element corresponds
-  to the tokens in a document.
+If \code{x} is a character vector, a named numeric vector of the
+counts of the syllables in each element.  If \code{x} is a \link{tokens}
+object, return a list of syllable counts where each list element corresponds
+to the tokens in a document.
 }
 \description{
 Returns a count of the number of syllables in texts. For English
-  words, the syllable count is exact and looked up from the CMU pronunciation
-  dictionary, from the default syllable dictionary \code{data_int_syllables}. 
-  For any word not in the dictionary, the syllable count is estimated by 
-  counting vowel clusters.
-  
-  \code{data_int_syllables} is a quanteda-supplied data object consisting of a 
-  named numeric vector of syllable counts for the words used as names.  This 
-  is the default object used to count English syllables.  This object that 
-  can be accessed directly, but we strongly encourage you to access it only 
-  through the \code{nsyllable()} wrapper function.
+words, the syllable count is exact and looked up from the CMU pronunciation
+dictionary, from the default syllable dictionary \code{data_int_syllables}.
+For any word not in the dictionary, the syllable count is estimated by
+counting vowel clusters.
+
+\code{data_int_syllables} is a quanteda-supplied data object consisting of a
+named numeric vector of syllable counts for the words used as names.  This
+is the default object used to count English syllables.  This object that
+can be accessed directly, but we strongly encourage you to access it only
+through the \code{nsyllable()} wrapper function.
 }
 \note{
 All tokens are automatically converted to lowercase to perform the
-  matching with the syllable dictionary, so there is no need to perform this
-  step prior to calling \code{nsyllable()}.
+matching with the syllable dictionary, so there is no need to perform this
+step prior to calling \code{nsyllable()}.
 
-  `nsyllable()` only works reliably for English, as the only syllable count
-  dictionary we could find is the freely available CMU pronunciation
-  dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.  If you
-  have a dictionary for another language, please email the package
-  maintainer as we would love to include it.
+\code{nsyllable()} only works reliably for English, as the only syllable count
+dictionary we could find is the freely available CMU pronunciation
+dictionary at \verb{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.  If you
+have a dictionary for another language, please email the package
+maintainer as we would love to include it.
 }
 \examples{
 # character

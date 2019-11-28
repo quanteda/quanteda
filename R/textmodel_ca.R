@@ -1,39 +1,39 @@
 #' Correspondence analysis of a document-feature matrix
 #' 
-#' \code{textmodel_ca} implements correspondence analysis scaling on a 
-#' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}. 
+#' `textmodel_ca` implements correspondence analysis scaling on a 
+#' [dfm].  The method is a fast/sparse version of function [ca][ca::ca]. 
 #' @param x the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
-#' @param nd  Number of dimensions to be included in output; if \code{NA} (the 
+#' @param nd  Number of dimensions to be included in output; if `NA` (the 
 #'   default) then the maximum possible dimensions are included.
-#' @param sparse retains the sparsity if set to \code{TRUE}; set it to 
-#'   \code{TRUE} if \code{x} (the \link{dfm}) is too big to be allocated after
+#' @param sparse retains the sparsity if set to `TRUE`; set it to 
+#'   `TRUE` if `x` (the [dfm]) is too big to be allocated after
 #'   converting to dense
 #' @param residual_floor specifies the threshold for the residual matrix for 
 #'   calculating the truncated svd.Larger value will reduce memory and time cost
-#'   but might reduce accuracy; only applicable when \code{sparse = TRUE}
+#'   but might reduce accuracy; only applicable when `sparse = TRUE`
 
 #' @author Kenneth Benoit and Haiyan Wang
-#' @references Nenadic, O. & Greenacre, M. (2007). \href{http://www.jstatsoft.org/v20/i03/}{Correspondence Analysis in R, with Two- and Three-dimensional Graphics: 
-#'   The ca package}. \emph{Journal of Statistical Software}, 20(3).
+#' @references Nenadic, O. & Greenacre, M. (2007). [Correspondence Analysis in R, with Two- and Three-dimensional Graphics: 
+#'   The ca package](http://www.jstatsoft.org/v20/i03/). *Journal of Statistical Software*, 20(3).
 #'   
-#' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
+#' @details [svds][RSpectra::svds] in the \pkg{RSpectra} package is applied to 
 #'   enable the fast computation of the SVD.
-#' @note You may need to set \code{sparse = TRUE}) and
-#'   increase the value of \code{residual_floor} to ignore less important
+#' @note You may need to set `sparse = TRUE`) and
+#'   increase the value of `residual_floor` to ignore less important
 #'   information and hence to reduce the memory cost when you have a very big
-#'   \link{dfm}.
+#'   [dfm].
 #'   If your attempt to fit the model fails due to the matrix being too large, 
 #'   this is probably because of the memory demands of computing the \eqn{V
 #'   \times V} residual matrix.  To avoid this, consider increasing the value of
-#'   \code{residual_floor} by 0.1, until the model can be fit.
-#' @return \code{textmodel_ca()} returns a fitted CA textmodel that is a special
+#'   `residual_floor` by 0.1, until the model can be fit.
+#' @return `textmodel_ca()` returns a fitted CA textmodel that is a special
 #' class of \pkg{ca} object.
 #' @examples 
 #' dfmat <- dfm(data_corpus_irishbudget2010)
 #' tmod <- textmodel_ca(dfmat)
 #' summary(tmod)
-#' @seealso \code{\link{coef.textmodel_lsa}}, \link[ca]{ca}
+#' @seealso [coef.textmodel_lsa()], [ca][ca::ca]
 #' @export
 textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, 
                          residual_floor = 0.1) {
@@ -143,9 +143,9 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE,
 
 #' Extract model coefficients from a fitted textmodel_ca object
 #' 
-#' \code{coef()} extract model coefficients from a fitted \code{textmodel_ca}
-#' object.  \code{coefficients()} is an alias.
-#' @param object a fitted \link{textmodel_ca} object
+#' `coef()` extract model coefficients from a fitted `textmodel_ca`
+#' object.  `coefficients()` is an alias.
+#' @param object a fitted [textmodel_ca] object
 #' @param doc_dim,feat_dim the document and feature dimension scores to be
 #'   extracted
 #' @param ... unused

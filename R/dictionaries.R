@@ -62,49 +62,49 @@ check_entries <- function (dict) {
 #' using the LIWC format works with all currently available dictionary files
 #' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
 #' @param x a named list of character vector dictionary entries, including
-#'   \link{valuetype} pattern matches, and including multi-word expressions
-#'   separated by \code{concatenator}.  See examples. This argument may be
-#'   omitted if the dictionary is read from \code{file}.
+#'   [valuetype] pattern matches, and including multi-word expressions
+#'   separated by `concatenator`.  See examples. This argument may be
+#'   omitted if the dictionary is read from `file`.
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
 #'   extension. Available options are: \describe{
-#'   \item{\code{"wordstat"}}{format used by Provalis Research's WordStat
-#'   software} \item{\code{"LIWC"}}{format used by the Linguistic Inquiry and
-#'   Word Count software} \item{\code{"yoshikoder"}}{ format used by Yoshikoder
-#'   software} \item{\code{"lexicoder"}}{format used by Lexicoder}
-#'   \item{\code{"YAML"}}{the standard YAML format}}
+#'   \item{`"wordstat"`}{format used by Provalis Research's WordStat
+#'   software} \item{`"LIWC"`}{format used by the Linguistic Inquiry and
+#'   Word Count software} \item{`"yoshikoder"`}{ format used by Yoshikoder
+#'   software} \item{`"lexicoder"`}{format used by Lexicoder}
+#'   \item{`"YAML"`}{the standard YAML format}}
 #' @param separator the character in between multi-word dictionary values. This
-#'   defaults to \code{" "}.
+#'   defaults to `" "`.
 #' @param encoding additional optional encoding value for reading in imported
-#'   dictionaries. This uses the \link{iconv} labels for encoding.  See the
-#'   "Encoding" section of the help for \link{file}.
-#' @param tolower if \code{TRUE}, convert all dictionary values to lowercase
+#'   dictionaries. This uses the [iconv] labels for encoding.  See the
+#'   "Encoding" section of the help for [file].
+#' @param tolower if `TRUE`, convert all dictionary values to lowercase
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
 #' @details Dictionaries can be subsetted using
 #'   \code{\link[=dictionary2-class]{[}} and
 #'   \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-#'   \link[=dictionary2-class]{list} operators.
+#'   [list][dictionary2-class] operators.
 #'
-#'   Dictionaries can be coerced from lists using \code{\link{as.dictionary}},
+#'   Dictionaries can be coerced from lists using [as.dictionary()],
 #'   coerced to named lists of characters using
-#'   \code{\link[=dictionary2-class]{as.list}}, and checked using
-#'   \code{\link{is.dictionary}}.
+#'   [`as.list()`][dictionary2-class], and checked using
+#'   [is.dictionary()].
 #' @references WordStat dictionaries page, from Provalis Research
-#'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
+#'   <http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
 #'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
-#'   (2007). The development and psychometric properties of LIWC2007. [Software
-#'   manual]. Austin, TX (\url{http://www.liwc.net}).
+#'   (2007). The development and psychometric properties of LIWC2007. \[Software
+#'   manual\]. Austin, TX (<http://www.liwc.net>).
 #'
 #'   Yoshikoder page, from Will Lowe
-#'   \url{http://conjugateprior.org/software/yoshikoder/}.
+#'   <http://conjugateprior.org/software/yoshikoder/>.
 #'
-#'   Lexicoder format, \url{http://www.lexicoder.com}
+#'   Lexicoder format, <http://www.lexicoder.com>
 #'
-#' @seealso \link{dfm}, \code{\link{as.dictionary}},
-#'   \code{\link[=dictionary2-class]{as.list}}, \code{\link{is.dictionary}}
+#' @seealso [dfm], [as.dictionary()],
+#'   [`as.list()`][dictionary2-class], [is.dictionary()]
 #' @import stringi
 #' @examples
 #' corp <- corpus_subset(data_corpus_inaugural, Year>1900)
@@ -220,9 +220,9 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 
 #' Coerce a dictionary object into a list
 #' @param object the dictionary to be coerced
-#' @param flatten flatten the nested structure if \code{TRUE}
+#' @param flatten flatten the nested structure if `TRUE`
 #' @param levels integer vector indicating levels in the dictionary. Used only
-#'   when \code{flatten = TRUE}.
+#'   when `flatten = TRUE`.
 #' @rdname dictionary-class
 #' @export
 setMethod("as.list",
@@ -243,11 +243,11 @@ setMethod("as.list",
 #' dictionary, or check to see if an object is a dictionary.  
 #' @param x a dictionary-like object to be coerced or checked
 #' @param format input format for the object to be coerced to a
-#'   \link{dictionary}; current legal values are a data.frame with the fields
-#'   \code{word} and \code{sentiment} (as per the \strong{tidytext} package)
+#'   [dictionary]; current legal values are a data.frame with the fields
+#'   `word` and `sentiment` (as per the **tidytext** package)
 #' @inheritParams dictionary
-#' @return \code{as.dictionary} returns a \pkg{quanteda} \link{dictionary}
-#'   object.  This conversion function differs from the \code{\link{dictionary}}
+#' @return `as.dictionary` returns a \pkg{quanteda} [dictionary]
+#'   object.  This conversion function differs from the [dictionary()]
 #'   constructor function in that it converts an existing object rather than
 #'   creates one from components or from a file.
 #' @export
@@ -305,8 +305,8 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
 }
 
 #' @rdname as.dictionary
-#' @return \code{is.dictionary} returns \code{TRUE} if an object is a
-#'   \pkg{quanteda} \link{dictionary}.
+#' @return `is.dictionary` returns `TRUE` if an object is a
+#'   \pkg{quanteda} [dictionary].
 #' @export
 #' @examples
 #' is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))
@@ -392,7 +392,7 @@ setMethod("[[",
 }
 
 #' @rdname dictionary-class
-#' @param ... \link{dictionary} objects to be concatenated
+#' @param ... [dictionary] objects to be concatenated
 #' @export
 setMethod("c",
           signature = c("dictionary2"),
@@ -443,8 +443,8 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' Converts a hierarchical dictionary (a named list of named lists, ending in
 #' character vectors at the lowest level) into a flat list of character
-#' vectors. Works like \code{unlist(dictionary, recursive=TRUE)} except that
-#' the recursion does not go to the bottom level.  Called by \code{\link{dfm}}.
+#' vectors. Works like `unlist(dictionary, recursive=TRUE)` except that
+#' the recursion does not go to the bottom level.  Called by [dfm()].
 #'
 #' @param tree list to be flattened
 #' @param levels integer vector indicating levels in the dictionary
@@ -527,7 +527,7 @@ lowercase_dictionary_values <- function(dict) {
 }
 
 #' Internal function to replace dictionary values
-#' @param dict a \link{dictionary} object
+#' @param dict a [dictionary] object
 #' @keywords internal
 #' @examples
 #' dict <- list(KEY1 = list(SUBKEY1 = list("A_B"),
@@ -611,12 +611,12 @@ list2dictionary <- function(dict) {
 #' 
 #' @description Internal functions to import dictionary files in a variety of formats
 #' @name read_dict_functions
-#' @return a \pkg{quanteda} \link{dictionary} object
+#' @return a \pkg{quanteda} [dictionary] object
 #' @keywords internal
 NULL
 
 #' @rdname read_dict_functions
-#' @description \code{read_dict_lexicoder} imports Lexicoder files in the \code{.lc3} format.
+#' @description `read_dict_lexicoder` imports Lexicoder files in the `.lc3` format.
 #' @param path the full path and filename of the dictionary file to be read
 #' @keywords dictionary internal
 #' @examples
@@ -638,8 +638,8 @@ read_dict_lexicoder <- function(path) {
 }
 
 #' @rdname read_dict_functions
-#' @description \code{read_dict_wordstat} imports WordStat files in the
-#'   \code{.cat} format.
+#' @description `read_dict_wordstat` imports WordStat files in the
+#'   `.cat` format.
 #' @param encoding the encoding of the file to be imported
 #' @examples
 #'
@@ -736,8 +736,8 @@ nest_dictionary <- function (dict, depth) {
 }
 
 #' @rdname read_dict_functions
-#' @description \code{read_dict_liwc} imports LIWC dictionary files in the
-#'   \code{.dic} format.
+#' @description `read_dict_liwc` imports LIWC dictionary files in the
+#'   `.dic` format.
 #' @examples
 #' 
 #' dict <- quanteda:::read_dict_liwc(
@@ -817,8 +817,8 @@ read_dict_liwc <- function(path, encoding = "auto") {
 }
 
 #' @rdname read_dict_functions
-#' @description \code{read_dict_yoshikoder} imports Yoshikoder files in the
-#'   \code{.ykd} format.
+#' @description `read_dict_yoshikoder` imports Yoshikoder files in the
+#'   `.ykd` format.
 #' @examples
 #' 
 #' dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd", 
@@ -848,11 +848,11 @@ nodes2list <- function(node, dict = list()){
 #' Convert quanteda dictionary objects to the YAML format
 #' 
 #' Converts a \pkg{quanteda} dictionary object constructed by the 
-#' \link{dictionary} function into the YAML format. The YAML 
+#' [dictionary] function into the YAML format. The YAML 
 #' files can be edited in text editors and imported into 
 #' \pkg{quanteda} again.
-#' @param x a \link{dictionary} object
-#' @return \code{as.yaml} a dictionary in the YAML format, as a character object
+#' @param x a [dictionary] object
+#' @return `as.yaml` a dictionary in the YAML format, as a character object
 #' @export
 #' @examples
 #' \dontrun{

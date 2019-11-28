@@ -2,43 +2,43 @@
 
 #' Weight the feature frequencies in a dfm
 
-#' @param x document-feature matrix created by \link{dfm}
+#' @param x document-feature matrix created by [dfm]
 #' @param scheme a label of the weight type:
 #' \describe{
-#'   \item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
-#'   \item{\code{prop}}{the proportion of the feature counts of total feature
+#'   \item{`count`}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
+#'   \item{`prop`}{the proportion of the feature counts of total feature
 #'   counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
-#'   \item{\code{propmax}}{the proportion of the feature counts of the highest
+#'   \item{`propmax`}{the proportion of the feature counts of the highest
 #'   feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
-#'   \item{\code{logcount}}{take the 1 + the logarithm of each count, for the
+#'   \item{`logcount`}{take the 1 + the logarithm of each count, for the
 #'   given base, or 0 if the count was zero: \eqn{1 +
 #'   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
-#'   \item{\code{boolean}}{recode all non-zero counts as 1}
-#'   \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
-#'   "propmax")}}
-#'   \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
+#'   \item{`boolean`}{recode all non-zero counts as 1}
+#'   \item{`augmented`}{equivalent to \eqn{K + (1 - K) *} `dfm_weight(x,
+#'   "propmax")`}
+#'   \item{`logave`}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
 #'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 #' }
-#' @param weights if \code{scheme} is unused, then \code{weights} can be a named
+#' @param weights if `scheme` is unused, then `weights` can be a named
 #'   numeric vector of weights to be applied to the dfm, where the names of the
 #'   vector correspond to feature labels of the dfm, and the weights will be
 #'   applied as multipliers to the existing feature counts for the corresponding
 #'   named features.  Any features not named will be assigned a weight of 1.0
 #'   (meaning they will be unchanged).
-#' @param base base for the logarithm when \code{scheme} is \code{"logcount"} or 
-#'   \code{logave}
-#' @param K the K for the augmentation when \code{scheme = "augmented"}
-#' @param force logical; if \code{TRUE}, apply weighting scheme even if the dfm
+#' @param base base for the logarithm when `scheme` is `"logcount"` or 
+#'   `logave`
+#' @param K the K for the augmentation when `scheme = "augmented"`
+#' @param force logical; if `TRUE`, apply weighting scheme even if the dfm
 #'   has been weighted before.  This can result in invalid weights, such as as
-#'   weighting by \code{"prop"} after applying \code{"logcount"}, or after
-#'   having grouped a dfm using \code{\link{dfm_group}}.
-#' @return \code{dfm_weight} returns the dfm with weighted values.  Note the
-#'   because the default weighting scheme is \code{"count"}, simply calling this
+#'   weighting by `"prop"` after applying `"logcount"`, or after
+#'   having grouped a dfm using [dfm_group()].
+#' @return `dfm_weight` returns the dfm with weighted values.  Note the
+#'   because the default weighting scheme is `"count"`, simply calling this
 #'   function on an unweighted dfm will return the same object.  Many users will
 #'   want the normalized dfm consisting of the proportions of the feature counts
-#'   within each document, which requires setting \code{scheme = "prop"}.
+#'   within each document, which requires setting `scheme = "prop"`.
 #' @export
-#' @seealso \code{\link{dfm_tfidf}}, \code{\link{docfreq}}
+#' @seealso [dfm_tfidf()], [docfreq()]
 #' @keywords dfm
 #' @examples
 #' dfmat1 <- dfm(data_corpus_inaugural)
@@ -62,8 +62,8 @@
 #' dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 #' 
 #' @references  Manning, C.D., Raghavan, P., & Schütze, H. (2008).
-#'   \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press. 
-#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+#'   *An Introduction to Information Retrieval*. Cambridge: Cambridge University Press. 
+#'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 dfm_weight <- function(
     x,
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
@@ -196,8 +196,8 @@ dfm_weight.dfm <- function(
 
 #' deprecated name for dfm_weight
 #' 
-#' Deprecated function name for \code{\link{dfm_weight}}. 
-#' @param ... arguments passed to \code{\link{dfm_weight}}
+#' Deprecated function name for [dfm_weight()]. 
+#' @param ... arguments passed to [dfm_weight()]
 #' @export
 #' @keywords internal deprecated
 tf <- function(...) {
@@ -211,8 +211,8 @@ tf <- function(...) {
 
 #' @rdname dfm_weight
 #' @param smoothing constant added to the dfm cells for smoothing, default is 1
-#' @return \code{dfm_smooth} returns a dfm whose values have been smoothed by
-#'   adding the \code{smoothing} amount. Note that this effectively converts a
+#' @return `dfm_smooth` returns a dfm whose values have been smoothed by
+#'   adding the `smoothing` amount. Note that this effectively converts a
 #'   matrix from sparse to dense format, so may exceed memory requirements
 #'   depending on the size of your input matrix.
 #' @export
@@ -241,21 +241,21 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 
 #' Compute the (weighted) document frequency of a feature
 #' 
-#' For a \link{dfm} object, returns a (weighted) document frequency for each
+#' For a [dfm] object, returns a (weighted) document frequency for each
 #' term.  The default is a simple count of the number of documents in which a
 #' feature occurs more than a given frequency threshold.  (The default threshold
 #' is  zero, meaning that any feature occurring at least once in a document will
 #' be counted.)
-#' @param x a \link{dfm}
+#' @param x a [dfm]
 #' @param scheme type of document frequency weighting, computed as
 #' follows, where \eqn{N} is defined as the number of documents in the dfm and
 #' \eqn{s} is the smoothing constant:
 #' \describe{
-#' \item{\code{count}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
-#' \item{\code{inverse}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
-#' \item{\code{inversemax}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
-#' \item{\code{inverseprob}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
-#' \item{\code{unary}}{1 for each feature}
+#' \item{`count`}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
+#' \item{`inverse`}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
+#' \item{`inversemax`}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
+#' \item{`inverseprob`}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
+#' \item{`unary`}{1 for each feature}
 #' }
 #' @param smoothing added to the quotient before taking the logarithm
 #' @param k added to the denominator in the "inverse" weighting types, to 
@@ -263,11 +263,11 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' @param base the base with respect to which logarithms in the inverse document
 #' frequency weightings are computed; default is 10 (see Manning, 
 #'   Raghavan, and Schütze 2008, p123).
-#' @param threshold numeric value of the threshold \emph{above which} a feature 
+#' @param threshold numeric value of the threshold *above which* a feature 
 #'   will considered in the computation of document frequency.  The default is 
 #'   0, meaning that a feature's document frequency will be the number of 
 #'   documents in which it occurs greater than zero times.
-#' @param use.names	logical; if \code{TRUE} attach feature labels as names of 
+#' @param use.names	logical; if `TRUE` attach feature labels as names of 
 #'   the resulting numeric vector
 #' @param ... not used
 #' @return a numeric vector of document frequencies for each feature
@@ -294,8 +294,8 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' docfreq(dfmat2, scheme = "inversemax")
 #' docfreq(dfmat2, scheme = "inverseprob")
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
-#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+#'   *Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
+#'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax",
                                   "inverseprob", "unary"),
                     smoothing = 0, k = 0, base = 10, threshold = 0,
@@ -358,9 +358,9 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 
 #' Compute the frequencies of features
 #' 
-#' For a \link{dfm} object, returns a frequency for each feature, computed
-#' across all documents in the dfm. This is equivalent to \code{colSums(x)}.
-#' @param x a \link{dfm}
+#' For a [dfm] object, returns a frequency for each feature, computed
+#' across all documents in the dfm. This is equivalent to `colSums(x)`.
+#' @param x a [dfm]
 #' @return a (named) numeric vector of feature frequencies
 #' @keywords weighting dfm
 #' @export
@@ -383,28 +383,28 @@ featfreq.dfm <- function(x) {
 
 # dfm_tfidf ---------------
 
-#' Weight a dfm by \emph{tf-idf}
+#' Weight a dfm by *tf-idf*
 #' 
-#' Weight a dfm by term frequency-inverse document frequency (\emph{tf-idf}), 
+#' Weight a dfm by term frequency-inverse document frequency (*tf-idf*), 
 #' with full control over options.  Uses fully sparse methods for efficiency.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
-#' @param scheme_tf scheme for \code{\link{dfm_weight}}; defaults to \code{"count"}
-#' @param scheme_df scheme for \code{\link{docfreq}}; defaults to
-#'   \code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed
-#'   through the ellipsis (\code{...}).
-#' @param base the base for the logarithms in the \code{\link{tf}} and
-#'   \code{\link{docfreq}} calls; default is 10
+#' @param scheme_tf scheme for [dfm_weight()]; defaults to `"count"`
+#' @param scheme_df scheme for [docfreq()]; defaults to
+#'   `"inverse"`.  Other options to [docfreq()] can be passed
+#'   through the ellipsis (`...`).
+#' @param base the base for the logarithms in the [tf()] and
+#'   [docfreq()] calls; default is 10
 #' @inheritParams dfm_weight
-#' @param ... additional arguments passed to \code{\link{docfreq}}.
-#' @details \code{dfm_tfidf} computes term frequency-inverse document frequency
+#' @param ... additional arguments passed to [docfreq()].
+#' @details `dfm_tfidf` computes term frequency-inverse document frequency
 #'   weighting.  The default is to use counts instead of normalized term
 #'   frequency (the relative term frequency within document), but this
-#'   can be overridden using \code{scheme_tf = "prop"}.
+#'   can be overridden using `scheme_tf = "prop"`.
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
-#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
-#' @seealso \code{\link{dfm_weight}}, \code{\link{docfreq}}
+#'   *Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
+#'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
+#' @seealso [dfm_weight()], [docfreq()]
 #' @keywords dfm weighting
 #' @examples 
 #' dfmat1 <- as.dfm(data_dfm_lbgexample)
@@ -476,11 +476,11 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     return(x)
 }
 
-#' Deprecated form of \code{\link{dfm_tfidf}}
+#' Deprecated form of [dfm_tfidf()]
 #' 
-#' Deprecated function name for \emph{tf-idf} weighting of a
+#' Deprecated function name for *tf-idf* weighting of a
 #' document-feature matrix.
-#' @param ... arguments passed to \code{\link{dfm_tfidf}}
+#' @param ... arguments passed to [dfm_tfidf()]
 #' @keywords dfm internal deprecated
 #' @export
 tfidf <- function(...) {

@@ -2,12 +2,12 @@
 % Please edit documentation in R/dfm_weight.R
 \name{tfidf}
 \alias{tfidf}
-\title{Deprecated form of \code{\link{dfm_tfidf}}}
+\title{Deprecated form of \code{\link[=dfm_tfidf]{dfm_tfidf()}}}
 \usage{
 tfidf(...)
 }
 \arguments{
-\item{...}{arguments passed to \code{\link{dfm_tfidf}}}
+\item{...}{arguments passed to \code{\link[=dfm_tfidf]{dfm_tfidf()}}}
 }
 \description{
 Deprecated function name for \emph{tf-idf} weighting of a

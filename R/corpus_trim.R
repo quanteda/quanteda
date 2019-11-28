@@ -2,17 +2,17 @@
 #' 
 #' Removes sentences from a corpus or a character vector shorter than a 
 #' specified length.
-#' @param x \link{corpus} or character object whose sentences will be selected.
-#' @param what units of trimming, \code{"sentences"} or \code{"paragraphs"}, or
-#'   \code{"documents"}
+#' @param x [corpus] or character object whose sentences will be selected.
+#' @param what units of trimming, `"sentences"` or `"paragraphs"`, or
+#'   `"documents"`
 #' @param min_ntoken,max_ntoken minimum and maximum lengths in word tokens 
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
-#' @return a \link{corpus} or character vector equal in length to the input.  If
+#' @return a [corpus] or character vector equal in length to the input.  If
 #'   the input was a corpus, then the all docvars and metadata are preserved. 
 #'   For documents whose sentences have been removed entirely, a null string
-#'   (\code{""}) will be returned.
+#'   (`""`) will be returned.
 #' @export
 #' @keywords corpus 
 #' @examples
@@ -94,19 +94,19 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #' 
 #' Removes sentences from a corpus or a character vector shorter than a 
 #' specified length.
-#' @param x \link{corpus} or character object whose sentences will be selected.
+#' @param x [corpus] or character object whose sentences will be selected.
 #' @param min_length,max_length minimum and maximum lengths in word tokens 
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
-#' @param return_tokens if \code{TRUE}, return tokens object of sentences after
+#' @param return_tokens if `TRUE`, return tokens object of sentences after
 #'   trimming, otherwise return the input object type with the trimmed sentences
 #'   removed.
-#' @return a \link{corpus} or character vector equal in length to the input, or
+#' @return a [corpus] or character vector equal in length to the input, or
 #'   a tokenized set of sentences if .  If the input was a corpus, then the all
 #'   docvars and metadata are preserved.  For documents whose sentences have
-#'   been removed entirely, a null string (\code{""}) will be returned.
-#' @note This function has been superseded by \code{\link{corpus_trim}}; use
+#'   been removed entirely, a null string (`""`) will be returned.
+#' @note This function has been superseded by [corpus_trim()]; use
 #'   that function instead.
 #' @export
 #' @keywords internal deprecated

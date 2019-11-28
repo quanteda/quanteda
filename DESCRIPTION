@@ -184,3 +184,4 @@ Collate:
     'zzz.R'
 RoxygenNote: 7.0.1
 SystemRequirements: C++11
+Roxygen: list(markdown = TRUE)

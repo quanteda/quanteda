@@ -3,8 +3,8 @@
 #' Redefines utils::View() as a generic, so that we can define methods for 
 #' kwic to produce a nice viewer.
 #' @param x	an R object which can be coerced to a data frame with non-zero numbers of rows and columns
-#' @param title for viewer window. Defaults to name of x prefixed by \code{Data:}
-#' @seealso \link[utils]{View}
+#' @param title for viewer window. Defaults to name of x prefixed by `Data:`
+#' @seealso [View][utils::View]
 #' @keywords internal View
 #' @export
 View <- function(x, title) {

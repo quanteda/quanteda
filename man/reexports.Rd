@@ -8,10 +8,10 @@
 \alias{\%>\%}
 \title{Objects exported from other packages}
 \section{Stopwords}{
- 
 
-Stopword lists were formerly built into \pkg{quanteda}, but have been moved to the 
-\pkg{stopwords} package. See \code{\link[stopwords]{stopwords}}.
+
+Stopword lists were formerly built into \pkg{quanteda}, but have been moved to the
+\pkg{stopwords} package. See \code{\link[stopwords:stopwords]{stopwords::stopwords()}}.
 }
 
 \keyword{internal}

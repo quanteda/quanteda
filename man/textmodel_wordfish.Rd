@@ -21,32 +21,31 @@ textmodel_wordfish(
 \arguments{
 \item{x}{the dfm on which the model will be fit}
 
-\item{dir}{set global identification by specifying the indexes for a pair of 
+\item{dir}{set global identification by specifying the indexes for a pair of
 documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.}
 
-\item{priors}{prior precisions for the estimated parameters \eqn{\alpha_i}, 
-\eqn{\psi_j}, \eqn{\beta_j}, and \eqn{\theta_i}, where \eqn{i} indexes 
+\item{priors}{prior precisions for the estimated parameters \eqn{\alpha_i},
+\eqn{\psi_j}, \eqn{\beta_j}, and \eqn{\theta_i}, where \eqn{i} indexes
 documents and \eqn{j} indexes features}
 
-\item{tol}{tolerances for convergence.  The first value is a convergence 
-threshold for the log-posterior of the model, the second value is the 
-tolerance in the difference in parameter values from the iterative 
-conditional maximum likelihood (from conditionally estimating 
+\item{tol}{tolerances for convergence.  The first value is a convergence
+threshold for the log-posterior of the model, the second value is the
+tolerance in the difference in parameter values from the iterative
+conditional maximum likelihood (from conditionally estimating
 document-level, then feature-level parameters).}
 
-\item{dispersion}{sets whether a quasi-Poisson quasi-likelihood should be 
-used based on a single dispersion parameter (\code{"poisson"}), or 
+\item{dispersion}{sets whether a quasi-Poisson quasi-likelihood should be
+used based on a single dispersion parameter (\code{"poisson"}), or
 quasi-Poisson (\code{"quasipoisson"})}
 
-\item{dispersion_level}{sets the unit level for the dispersion parameter, 
-options are \code{"feature"} for term-level variances, or \code{"overall"} 
+\item{dispersion_level}{sets the unit level for the dispersion parameter,
+options are \code{"feature"} for term-level variances, or \code{"overall"}
 for a single dispersion parameter}
 
-\item{dispersion_floor}{constraint for the minimal underdispersion multiplier 
-in the quasi-Poisson model.  Used to minimize the distorting effect of 
-terms with rare term or document frequencies that appear to be severely 
-underdispersed.  Default is 0, but this only applies if \code{dispersion = 
-"quasipoisson"}.}
+\item{dispersion_floor}{constraint for the minimal underdispersion multiplier
+in the quasi-Poisson model.  Used to minimize the distorting effect of
+terms with rare term or document frequencies that appear to be severely
+underdispersed.  Default is 0, but this only applies if \code{dispersion =  "quasipoisson"}.}
 
 \item{sparse}{specifies whether the \code{"dfm"} is coerced to dense.  While
 setting this to \code{TRUE} will make it possible to handle larger dfm
@@ -55,38 +54,38 @@ results each time, because the sparse SVD routine has a stochastic element.}
 
 \item{abs_err}{specifies how the convergence is considered}
 
-\item{svd_sparse}{uses svd to initialize the starting values of theta, 
+\item{svd_sparse}{uses svd to initialize the starting values of theta,
 only applies when \code{sparse = TRUE}}
 
-\item{residual_floor}{specifies the threshold for residual matrix when 
+\item{residual_floor}{specifies the threshold for residual matrix when
 calculating the svds, only applies when \code{sparse = TRUE}}
 }
 \value{
-An object of class \code{textmodel_fitted_wordfish}.  This is a list 
-  containing: \item{dir}{global identification of the dimension} 
-  \item{theta}{estimated document positions} \item{alpha}{estimated document 
-  fixed effects} \item{beta}{estimated feature marginal effects} 
-  \item{psi}{estimated word fixed effects} \item{docs}{document labels} 
-  \item{features}{feature labels} \item{sigma}{regularization parameter for 
-  betas in Poisson form} \item{ll}{log likelihood at convergence} 
-  \item{se.theta}{standard errors for theta-hats} \item{x}{dfm to which 
-  the model was fit}
+An object of class \code{textmodel_fitted_wordfish}.  This is a list
+containing: \item{dir}{global identification of the dimension}
+\item{theta}{estimated document positions} \item{alpha}{estimated document
+fixed effects} \item{beta}{estimated feature marginal effects}
+\item{psi}{estimated word fixed effects} \item{docs}{document labels}
+\item{features}{feature labels} \item{sigma}{regularization parameter for
+betas in Poisson form} \item{ll}{log likelihood at convergence}
+\item{se.theta}{standard errors for theta-hats} \item{x}{dfm to which
+the model was fit}
 }
 \description{
-Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of 
+Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of
 one-dimensional document positions using conditional maximum likelihood.
 }
 \details{
-The returns match those of Will Lowe's R implementation of 
-  \code{wordfish} (see the austin package), except that here we have renamed 
-  \code{words} to be \code{features}.  (This return list may change.)  We 
-  have also followed the practice begun with Slapin and Proksch's early 
-  implementation of the model that used a regularization parameter of 
-  se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
+The returns match those of Will Lowe's R implementation of
+\code{wordfish} (see the austin package), except that here we have renamed
+\code{words} to be \code{features}.  (This return list may change.)  We
+have also followed the practice begun with Slapin and Proksch's early
+implementation of the model that used a regularization parameter of
+se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 }
 \note{
 In the rare situation where a warning message of "The algorithm did not
-  converge." shows up, removing some documents may work.
+converge." shows up, removing some documents may work.
 }
 \examples{
 (tmod1 <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
@@ -120,17 +119,15 @@ if (requireNamespace("austin")) {
 }}
 }
 \references{
-Slapin, J. & Proksch, S.O. (2008). 
-  \href{https://doi.org/10.1111/j.1540-5907.2008.00338.x}{A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts}. \emph{American 
-  Journal of Political Science}, 52(3), 705--772.
-  
-  Lowe, W. & Benoit, K.R. (2013). \href{http://doi.org/10.1093/pan/mpt002}{Validating 
-  Estimates of Latent Traits from Textual Data Using Human Judgment as a Benchmark}.  
-  \emph{Political Analysis}, 21(3), 298--313.
+Slapin, J. & Proksch, S.O. (2008).
+\href{https://doi.org/10.1111/j.1540-5907.2008.00338.x}{A Scaling Model for Estimating Time-Series Party Positions from Texts}. \emph{American
+Journal of Political Science}, 52(3), 705--772.
+
+Lowe, W. & Benoit, K.R. (2013). \href{http://doi.org/10.1093/pan/mpt002}{Validating Estimates of Latent Traits from Textual Data Using Human Judgment as a Benchmark}.
+\emph{Political Analysis}, 21(3), 298--313.
 }
 \seealso{
-\code{\link{predict.textmodel_wordfish}}
+\code{\link[=predict.textmodel_wordfish]{predict.textmodel_wordfish()}}
 }
 \author{
 Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit

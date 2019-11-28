@@ -11,15 +11,15 @@
 
 \item{sorted}{sort results in descending order if \code{TRUE}}
 
-\item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
+\item{n}{the top \code{n} highest-ranking items will be returned.  If n is
 \code{NULL}, return all items.}
 
 \item{...}{unused}
 }
 \description{
 Coerce a dist_selection matrix into a list of selected terms and target terms in
-descending order.  Can be used after calling \code{\link{textstat_simil}} or
-\code{\link{textstat_dist}} when selection is not NULL
+descending order.  Can be used after calling \code{\link[=textstat_simil]{textstat_simil()}} or
+\code{\link[=textstat_dist]{textstat_dist()}} when selection is not NULL
 }
 \keyword{internal}
 \keyword{textstat}

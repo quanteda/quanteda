@@ -1,6 +1,6 @@
 #' @rdname as.tokens
-#' @return \code{as.list} returns a simple list of characters from a
-#'   \link{tokens} object.
+#' @return `as.list` returns a simple list of characters from a
+#'   [tokens] object.
 #' @method as.list tokens
 #' @export
 as.list.tokens <- function(x, ...) {
@@ -12,10 +12,10 @@ as.list.tokens <- function(x, ...) {
 }
 
 #' @rdname as.tokens
-#' @param use.names logical; preserve names if \code{TRUE}.  For
-#'   \code{as.character} and \code{unlist} only.
-#' @return \code{as.character} returns a character vector from a
-#'   \link{tokens} object.
+#' @param use.names logical; preserve names if `TRUE`.  For
+#'   `as.character` and `unlist` only.
+#' @return `as.character` returns a character vector from a
+#'   [tokens] object.
 #' @export
 as.character.tokens <- function(x, use.names = FALSE, ...) {
     unlist(as.list(x), use.names = use.names)
@@ -23,17 +23,17 @@ as.character.tokens <- function(x, use.names = FALSE, ...) {
 
 #' @rdname as.tokens
 #' @export
-#' @return \code{is.tokens} returns \code{TRUE} if the object is of class
-#'   tokens, \code{FALSE} otherwise.
+#' @return `is.tokens` returns `TRUE` if the object is of class
+#'   tokens, `FALSE` otherwise.
 is.tokens <- function(x) "tokens" %in% class(x)
 
 # extension of generics for tokens -----------
 
 #' @rdname as.tokens
-#' @return \code{unlist} returns a simple vector of characters from a
-#'   \link{tokens} object.
-#' @param recursive a required argument for \link{unlist} but inapplicable to
-#'   \link{tokens} objects
+#' @return `unlist` returns a simple vector of characters from a
+#'   [tokens] object.
+#' @param recursive a required argument for [unlist] but inapplicable to
+#'   [tokens] objects
 #' @method unlist tokens
 #' @export
 unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
@@ -42,7 +42,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 
 #' print a tokens objects
 #' print method for a tokens object
-#' @param x a tokens object created by \code{\link{tokens}}
+#' @param x a tokens object created by [tokens()]
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method print tokens
@@ -133,7 +133,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
 #' @rdname as.tokens
 #' @param t1 tokens one to be added
 #' @param t2 tokens two to be added
-#' @return \code{c(...)} and \code{+} return a tokens object whose documents
+#' @return `c(...)` and `+` return a tokens object whose documents
 #'   have been added as a single sequence of documents.
 #' @examples
 #' # combining tokens

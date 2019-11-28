@@ -69,7 +69,7 @@ aspect ratio only supported if rotation = 0.}
 \pkg{wordcloud}}
 
 \item{comparison}{if \code{TRUE}, plot a wordcloud that compares documents in
-the same way as \code{\link[wordcloud]{comparison.cloud}}}
+the same way as \code{\link[wordcloud:comparison.cloud]{wordcloud::comparison.cloud()}}}
 }
 \description{
 Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted
@@ -78,14 +78,13 @@ with their sizes proportional to their numerical values in the dfm.  When
 }
 \details{
 The default is to plot the word cloud of all features, summed across
-  documents.  To produce word cloud plots for specific document or set of
-  documents, you need to slice out the document(s) from the dfm object.
-  
-  Comparison wordcloud plots may be plotted by setting \code{comparison =
-  TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
-  This means that you will need to slice out just a few documents from the
-  dfm, or to create a dfm where the "documents" represent a subset or a
-  grouping of documents by some document variable.
+documents.  To produce word cloud plots for specific document or set of
+documents, you need to slice out the document(s) from the dfm object.
+
+Comparison wordcloud plots may be plotted by setting \code{comparison = TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+This means that you will need to slice out just a few documents from the
+dfm, or to create a dfm where the "documents" represent a subset or a
+grouping of documents by some document variable.
 }
 \examples{
 # plot the features (without stopwords) from Obama's inaugural addresses
@@ -116,6 +115,6 @@ textplot_wordcloud(dfmat2, comparison = TRUE, max_words = 300,
 }
 \author{
 Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud}
-  package.
+package.
 }
 \keyword{textplot}

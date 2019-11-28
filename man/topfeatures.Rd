@@ -24,14 +24,14 @@ otherwise return the \code{n} least frequent features}
 \code{group} if applicable), or \code{docfreq} for the document frequencies
 of features}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
 See \link{groups} for details.}
 }
 \value{
-A named numeric vector of feature counts, where the names are the 
-  feature labels, or a list of these if \code{groups} is given.
+A named numeric vector of feature counts, where the names are the
+feature labels, or a list of these if \code{groups} is given.
 }
 \description{
 List the most (or least) frequently occurring features in a \link{dfm}, either

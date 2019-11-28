@@ -21,18 +21,17 @@ is possible to \emph{over}sample groups.}
 vector being sampled.  May not be applied when \code{by} is used.}
 
 \item{by}{a grouping variable for sampling.  Useful for resampling
-sub-document units such as sentences, for instance by specifying \code{by =
-"document"}}
+sub-document units such as sentences, for instance by specifying \code{by = "document"}}
 }
 \value{
-A corpus object with number of documents equal to \code{size}, drawn 
-  from the corpus \code{x}.  The returned corpus object will contain all of 
-  the meta-data of the original corpus, and the same document variables for 
-  the documents selected.
+A corpus object with number of documents equal to \code{size}, drawn
+from the corpus \code{x}.  The returned corpus object will contain all of
+the meta-data of the original corpus, and the same document variables for
+the documents selected.
 }
 \description{
 Take a random sample of documents of the specified size from a corpus, with
-or without replacement.  Works just as \code{\link{sample}} works for the
+or without replacement.  Works just as \code{\link[=sample]{sample()}} works for the
 documents and their associated document-level variables.
 }
 \examples{

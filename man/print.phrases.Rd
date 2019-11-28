@@ -7,7 +7,7 @@
 \method{print}{phrases}(x, ...)
 }
 \arguments{
-\item{x}{a phrases (constructed by \code{\link{phrase}} object to be printed}
+\item{x}{a phrases (constructed by \code{\link[=phrase]{phrase()}} object to be printed}
 
 \item{...}{further arguments passed to or from other methods}
 }

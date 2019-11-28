@@ -2,9 +2,9 @@
 
 #' print method for summary.textmodel
 #'
-#' @param x a \code{summary.textmodel} object
-#' @param digits minimal number of \emph{significant digits}, see
-#'   \code{\link{print.default}}
+#' @param x a `summary.textmodel` object
+#' @param digits minimal number of *significant digits*, see
+#'   [print.default()]
 #' @param ... additional arguments not used
 #' @method print summary.textmodel
 #' @keywords textmodel internal
@@ -60,10 +60,10 @@ as.summary.textmodel <- function(x) {
 
 #' Print methods for textmodel features estimates
 
-#' This is a helper function used in \code{print.summary.textmodel}.
+#' This is a helper function used in `print.summary.textmodel`.
 #' @param x a coefficients_textmodel object
-#' @param digits minimal number of \emph{significant digits}, see
-#'   \code{\link{print.default}}
+#' @param digits minimal number of *significant digits*, see
+#'   [print.default()]
 #' @param ... additional arguments not used
 #' @method print coefficients_textmodel
 #' @keywords internal textmodel
@@ -82,7 +82,7 @@ print.coefficients_textmodel <- function(x, digits = max(3L, getOption("digits")
 
 #' Coerce various objects to coefficients_textmodel
 
-#' This is a helper function used in \code{summary.textmodel_*}.
+#' This is a helper function used in `summary.textmodel_*`.
 #' @param x an object to be coerced
 #' @importFrom stats coefficients
 #' @importFrom stats coef
@@ -121,8 +121,8 @@ as.coefficients_textmodel.matrix <- function(x) {
 #' Implements print methods for textmodel_statistics 
 #'
 #' @param x a textmodel_wordscore_statistics object
-#' @param digits minimal number of \emph{significant digits}, see
-#'   \code{\link{print.default}}
+#' @param digits minimal number of *significant digits*, see
+#'   [print.default()]
 #' @param ... further arguments passed to or from other methods
 #' @method print statistics_textmodel
 #' @keywords internal textmodel
@@ -133,7 +133,7 @@ print.statistics_textmodel <- function(x, digits = max(3L, getOption("digits") -
 
 #' Coerce various objects to statistics_textmodel
 #'
-#' This is a helper function used in \code{summary.textmodel_*}.
+#' This is a helper function used in `summary.textmodel_*`.
 #' @param x an object to be coerced
 #' @keywords internal textmodel
 #' @export

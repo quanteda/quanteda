@@ -15,20 +15,20 @@ convert(
 \arguments{
 \item{x}{a \link{dfm} to be converted}
 
-\item{to}{target conversion format, consisting of the name of the package 
-into whose document-term matrix representation the dfm will be converted: 
-\describe{ \item{\code{"lda"}}{a list with components "documents" and 
-"vocab" as needed by the function \link[lda]{lda.collapsed.gibbs.sampler} from the 
-\pkg{lda} package} \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from 
-the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm} 
-package} \item{\code{"austin"}}{the \code{wfm} format from the 
-\strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
-used by the \pkg{topicmodels} package} 
-\item{\code{"lsa"}}{the "textmatrix" format as 
+\item{to}{target conversion format, consisting of the name of the package
+into whose document-term matrix representation the dfm will be converted:
+\describe{ \item{\code{"lda"}}{a list with components "documents" and
+"vocab" as needed by the function \link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
+\pkg{lda} package} \item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from
+the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm}
+package} \item{\code{"austin"}}{the \code{wfm} format from the
+\strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as
+used by the \pkg{topicmodels} package}
+\item{\code{"lsa"}}{the "textmatrix" format as
 used by the \pkg{lsa} package}
-\item{\code{"data.frame"}}{a data.frame where each feature is a variable} 
-\item{\code{"tripletlist"}}{a named "triplet" format list consisting of 
-\code{document}, \code{feature}, and \code{frequency}} 
+\item{\code{"data.frame"}}{a data.frame where each feature is a variable}
+\item{\code{"tripletlist"}}{a named "triplet" format list consisting of
+\code{document}, \code{feature}, and \code{frequency}}
 }}
 
 \item{docvars}{optional data.frame of document variables used as the
@@ -39,13 +39,12 @@ documents with non-zero counts.  Only affects the "stm" format.}
 \item{omit_empty}{logical; if \code{TRUE}, omit empty documents and features
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when \code{to = "lda"} or
-\code{to = "topicmodels"}.  For \code{to = "stm"} format, `omit_empty`` is
-always \code{TRUE}.}
+\code{to = "topicmodels"}.  For \code{to = "stm"} format, \verb{omit_empty`` is always }TRUE`.}
 }
 \value{
-A converted object determined by the value of \code{to} (see above). 
-  See conversion target package documentation for more detailed descriptions 
-  of the return formats.
+A converted object determined by the value of \code{to} (see above).
+See conversion target package documentation for more detailed descriptions
+of the return formats.
 }
 \description{
 Convert a quanteda \link{dfm} object to a format useable by other text

@@ -18,7 +18,7 @@
 }
 \description{
 Internal print and summary methods for derivative
-  \link{textmodel_affinity} objects.
+\link{textmodel_affinity} objects.
 }
 \keyword{internal}
 \keyword{textmodel}

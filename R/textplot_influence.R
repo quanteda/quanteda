@@ -1,16 +1,16 @@
 #' Influence plot for text scaling models
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
-#' \link{textmodel_affinity} model.
+#' [textmodel_affinity] model.
 #' @param x the object output from `influence()` run on the 
 #'   fitted or predicted scaling model object to be plotted
 #' @param n the number of features whose influence will be plotted
-#' @param ... additional arguments passed to \code{\link{plot}}
-#' @seealso \code{\link{textmodel_affinity}}
+#' @param ... additional arguments passed to [plot()]
+#' @seealso [textmodel_affinity()]
 #' @importFrom graphics plot
 #' @export
 #' @author Patrick Perry and Kenneth Benoit
-#' @seealso \code{\link{influence.predict.textmodel_affinity}}
+#' @seealso [influence.predict.textmodel_affinity()]
 #' @keywords textplot
 #' @examples
 #' tmod <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))

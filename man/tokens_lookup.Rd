@@ -26,11 +26,11 @@ tokens_lookup(
 \item{levels}{integers specifying the levels of entries in a hierarchical
 dictionary that will be applied.  The top level is 1, and subsequent levels
 describe lower nesting levels.  Values may be combined, even if these
-levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
+levels are not contiguous, e.g. \code{levels = c(1:3)} will collapse the second
 level into the first, but record the third level (if present) collapsed
 below the first (see examples).}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -49,11 +49,9 @@ matched to a dictionary values  If \code{NULL} (default), do not record
 unmatched tokens.}
 
 \item{nested_scope}{how to treat matches from different dictionary keys that
-are nested.  When one value is nested within another, such as "a b" being 
-nested within "a b c", `the `tokens_lookup()` will match the longer.  When
-\code{nested_scope = "key"}, this longer-match priority is applied only 
-within the key, while \code{"dictionary"} applies it across keys, matching only 
-the key with the longer pattern, not the matches nested within that longer 
+are nested.  When one value is nested within another, such as "a b" being
+nested within "a b c", \code{the }tokens_lookup()\verb{will match the longer.  When}nested_scope = "key"\verb{, this longer-match priority is applied only  within the key, while }"dictionary"` applies it across keys, matching only
+the key with the longer pattern, not the matches nested within that longer
 pattern from other keys.  See Details.}
 
 \item{verbose}{print status messages if \code{TRUE}}
@@ -64,20 +62,20 @@ object.
 }
 \details{
 Dictionary values may consist of sequences, and there are different
-  methods of counting key matches based on values that are nested or that
-  overlap.
+methods of counting key matches based on values that are nested or that
+overlap.
 
-  When two different keys in a dictionary are nested matches of one another,
-  the \code{nested_scope} options provide the choice of matching each key's
-  values independently (the \code{"key"}) option, or just counting the
-  longest match (the \code{"dictionary"} option).  Values that are nested
-  \emph{within} the same key are always counted as a single match.  See the
-  last example below comparing the \emph{New York} and \emph{New York Times}
-  for these two different behaviours.
+When two different keys in a dictionary are nested matches of one another,
+the \code{nested_scope} options provide the choice of matching each key's
+values independently (the \code{"key"}) option, or just counting the
+longest match (the \code{"dictionary"} option).  Values that are nested
+\emph{within} the same key are always counted as a single match.  See the
+last example below comparing the \emph{New York} and \emph{New York Times}
+for these two different behaviours.
 
-  \emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
-  currently always considered as separate matches if they are in different
-  keys, or as one match if the overlap is within the same key.
+\emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
+currently always considered as separate matches if they are in different
+keys, or as one match if the overlap is within the same key.
 \emph{Overlapped}
 }
 \examples{

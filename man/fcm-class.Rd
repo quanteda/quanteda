@@ -72,7 +72,7 @@ additional slots, described below.
 
 \item{\code{tri}}{whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded}
 
-\item{\code{ordered}}{whether a term appears before or after the target feature 
+\item{\code{ordered}}{whether a term appears before or after the target feature
 are counted separately}
 }}
 

@@ -19,7 +19,7 @@
 }
 \description{
 Sparse classes for similarity and distance matrices created by
-  \code{\link{textstat_simil}} and \code{\link{textstat_dist}}.
+\code{\link[=textstat_simil]{textstat_simil()}} and \code{\link[=textstat_dist]{textstat_dist()}}.
 
 Print/show method for objects created by \code{textstat_simil} and
 \code{textstat_dist}.
@@ -45,7 +45,7 @@ difference was computed:  \code{"documents"} for documents or
 }}
 
 \seealso{
-\code{\link{textstat_simil}}
+\code{\link[=textstat_simil]{textstat_simil()}}
 }
 \keyword{internal}
 \keyword{textstat}

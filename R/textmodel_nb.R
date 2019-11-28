@@ -2,19 +2,19 @@
 #' 
 #' Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
 #' training labels.
-#' @param x the \link{dfm} on which the model will be fit.  Does not need to
+#' @param x the [dfm] on which the model will be fit.  Does not need to
 #'   contain only the training documents.
 #' @param y vector of training labels associated with each document identified 
-#'   in \code{train}.  (These will be converted to factors if not already 
+#'   in `train`.  (These will be converted to factors if not already 
 #'   factors.)
 #' @param smooth smoothing parameter for feature counts by class
-#' @param prior prior distribution on texts; one of \code{"uniform"},
-#'   \code{"docfreq"}, or \code{"termfreq"}.  See Prior Distributions below.
-#' @param distribution count model for text features, can be \code{multinomial}
-#'   or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert
-#'   the dfm to a binary matrix using \code{\link{dfm_weight}(x, scheme = "boolean")}.
+#' @param prior prior distribution on texts; one of `"uniform"`,
+#'   `"docfreq"`, or `"termfreq"`.  See Prior Distributions below.
+#' @param distribution count model for text features, can be `multinomial`
+#'   or `Bernoulli`.  To fit a "binary multinomial" model, first convert
+#'   the dfm to a binary matrix using `[dfm_weight](x, scheme = "boolean")`.
 #' @return 
-#' \code{textmodel_nb()} returns a list consisting of the following (where
+#' `textmodel_nb()` returns a list consisting of the following (where
 #' \eqn{I} is the total number of documents, \eqn{J} is the total number of
 #' features, and \eqn{k} is the total number of training classes):
 #' @return \item{call}{original function call}
@@ -25,8 +25,8 @@
 #' @return \item{PcGw}{\eqn{k \times J}; posterior class probability given the
 #'   word}
 #' @return \item{Pw}{\eqn{J \times 1}; baseline probability of the word}
-#' @return \item{x}{the \eqn{I \times J} training dfm \code{x}}
-#' @return \item{y}{the \eqn{I}-length \code{y} training class vector}
+#' @return \item{x}{the \eqn{I \times J} training dfm `x`}
+#' @return \item{y}{the \eqn{I}-length `y` training class vector}
 #' @return \item{distribution}{the distribution argument}
 #' @return \item{prior}{the prior argument}
 #' @return \item{smooth}{the value of the smoothing parameter}
@@ -48,21 +48,21 @@
 #' in their number of documents (usually advisable), however, then the
 #' empirically computed "docfreq" would be equivalent to "uniform" priors.
 #'
-#' Setting \code{prior} to "termfreq" makes the priors equal to the proportions
+#' Setting `prior` to "termfreq" makes the priors equal to the proportions
 #' of total feature counts found in the grouped documents in each training
 #' class, so that the classes with the largest number of features are assigned
 #' the largest priors. If the total count of features in each training class was
 #' the same, then "uniform" and "termfreq" would be the same.
 #' @references Manning, C.D., Raghavan, P., & Schütze, H. (2008).
-#'   \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press 
-#'   (Chapter 13). Available at \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}.
+#'   *An Introduction to Information Retrieval*. Cambridge: Cambridge University Press 
+#'   (Chapter 13). Available at <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>.
 #'   
 #'   Jurafsky, D. & Martin, J.H. (2018).
-#'   From \emph{Speech and Language Processing: An Introduction to Natural Language 
-#'   Processing, Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018 
-#'   (Chapter 6, Naive Bayes). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
+#'   From *Speech and Language Processing: An Introduction to Natural Language 
+#'   Processing, Computational Linguistics, and Speech Recognition*. Draft of September 23, 2018 
+#'   (Chapter 6, Naive Bayes). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
 #'   
-#' @seealso \code{\link{predict.textmodel_nb}}
+#' @seealso [predict.textmodel_nb()]
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -176,19 +176,19 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 
 #' Prediction from a fitted textmodel_nb object
 #' 
-#' \code{predict.textmodel_nb()} implements class predictions from a fitted
+#' `predict.textmodel_nb()` implements class predictions from a fitted
 #' Naive Bayes model. using trained Naive Bayes examples
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
 #' @param type the type of predicted values to be returned; see Value
 #' @param force make newdata's feature set conformant to the model terms
 #' @param ... not used
-#' @return \code{predict.textmodel_nb} returns either a vector of class
-#'   predictions for each row of \code{newdata} (when \code{type = "class"}), or
-#'   a document-by-class matrix of class probabilities (when \code{type =
-#'   "probability"}) or log posterior likelihoods (when \code{type =
-#'   "logposterior"}).
-#' @seealso \code{\link{textmodel_nb}}
+#' @return `predict.textmodel_nb` returns either a vector of class
+#'   predictions for each row of `newdata` (when `type = "class"`), or
+#'   a document-by-class matrix of class probabilities (when `type =
+#'   "probability"`) or log posterior likelihoods (when `type =
+#'   "logposterior"`).
+#' @seealso [textmodel_nb()]
 #' @examples 
 #' # application to LBG (2003) example data
 #' (tmod <- textmodel_nb(data_dfm_lbgexample, y = c("A", "A", "B", "C", "C", NA)))
@@ -291,7 +291,7 @@ print.textmodel_nb <- function(x, ...) {
 }
 
 #' summary method for textmodel_nb objects
-#' @param object output from \code{\link{textmodel_nb}}
+#' @param object output from [textmodel_nb()]
 #' @param n how many coefficients to print before truncating
 #' @param ... additional arguments not used
 #' @keywords textmodel internal

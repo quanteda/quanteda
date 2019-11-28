@@ -29,7 +29,7 @@ is.corpus(x)
 
 \item{c2}{corpus two to be added}
 
-\item{recursive}{logical used by `c()` method, always set to `FALSE`}
+\item{recursive}{logical used by \code{c()} method, always set to \code{FALSE}}
 
 \item{i}{index for documents or rows of document variables}
 
@@ -37,7 +37,7 @@ is.corpus(x)
 
 \item{drop}{if \code{TRUE}, return a vector if extracting a single document
 variable; if \code{FALSE}, return it as a single-column data.frame.  See
-\code{\link{drop}} for further details.}
+\code{\link[=drop]{drop()}} for further details.}
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
@@ -47,22 +47,22 @@ Extensions of base R functions for corpus objects.
 }
 \details{
 The \code{+} operator for a corpus object will combine two corpus
-  objects, resolving any non-matching \code{\link{docvars}} by making them
-  into \code{NA} values for the corpus lacking that field. Corpus-level meta
-  data is concatenated, except for \code{source} and \code{notes}, which are
-  stamped with information pertaining to the creation of the new joined
-  corpus.
+objects, resolving any non-matching \code{\link[=docvars]{docvars()}} by making them
+into \code{NA} values for the corpus lacking that field. Corpus-level meta
+data is concatenated, except for \code{source} and \code{notes}, which are
+stamped with information pertaining to the creation of the new joined
+corpus.
 
-  The `c()` operator is also defined for corpus class objects, and provides
-  an easy way to combine multiple corpus objects.
+The \code{c()} operator is also defined for corpus class objects, and provides
+an easy way to combine multiple corpus objects.
 
-  There are some issues that need to be addressed in future revisions of
-  quanteda concerning the use of factors to store document variables and
-  meta-data.  Currently most or all of these are not recorded as factors,
-  because we use \code{stringsAsFactors=FALSE} in the
-  \code{\link{data.frame}} calls that are used to create and store the
-  document-level information, because the texts should always be stored as
-  character vectors and never as factors.
+There are some issues that need to be addressed in future revisions of
+quanteda concerning the use of factors to store document variables and
+meta-data.  Currently most or all of these are not recorded as factors,
+because we use \code{stringsAsFactors=FALSE} in the
+\code{\link[=data.frame]{data.frame()}} calls that are used to create and store the
+document-level information, because the texts should always be stored as
+character vectors and never as factors.
 }
 \examples{
 
@@ -78,7 +78,7 @@ data_corpus_inaugural[2]
 
 }
 \seealso{
-\code{\link{summary.corpus}}
+\code{\link[=summary.corpus]{summary.corpus()}}
 }
 \keyword{corpus}
 \keyword{internal}

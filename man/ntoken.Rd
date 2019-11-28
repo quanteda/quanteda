@@ -10,10 +10,10 @@ ntoken(x, ...)
 ntype(x, ...)
 }
 \arguments{
-\item{x}{a \pkg{quanteda} object: a character, \link{corpus}, 
+\item{x}{a \pkg{quanteda} object: a character, \link{corpus},
 \link{tokens}, or \link{dfm} object}
 
-\item{...}{additional arguments passed to \code{\link{tokens}}}
+\item{...}{additional arguments passed to \code{\link[=tokens]{tokens()}}}
 }
 \value{
 named integer vector of the counts of the total tokens or types
@@ -24,17 +24,17 @@ Get the count of tokens (total features) or types (unique tokens).
 \details{
 The precise definition of "tokens" for objects not yet tokenized (e.g.
 \link{character} or \link{corpus} objects) can be controlled through optional
-arguments passed to \code{\link{tokens}} through \code{...}.
+arguments passed to \code{\link[=tokens]{tokens()}} through \code{...}.
 
 For \link{dfm} objects, \code{ntype} will only return the count of features
 that occur more than zero times in the dfm.
 }
 \note{
-Due to differences between raw text tokens and features that have been 
-  defined for a \link{dfm}, the counts may be different for dfm objects and the 
-  texts from which the dfm was generated.  Because the method tokenizes the 
-  text in order to count the tokens, your results will depend on the options 
-  passed through to \code{\link{tokens}}.
+Due to differences between raw text tokens and features that have been
+defined for a \link{dfm}, the counts may be different for dfm objects and the
+texts from which the dfm was generated.  Because the method tokenizes the
+text in order to count the tokens, your results will depend on the options
+passed through to \code{\link[=tokens]{tokens()}}.
 }
 \examples{
 # simple example

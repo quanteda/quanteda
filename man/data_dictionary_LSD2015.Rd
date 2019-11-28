@@ -27,7 +27,7 @@ analysis, Young and Soroka (2012) did find a small, but non-negligible
 increase in performance when accounting for negations. Users wishing to test
 this or include the negations are encouraged to subtract negated positive
 words from the count of positive words, and subtract the negated negative
-words from the negative count.  
+words from the negative count.
 
 Young and Soroka (2012) also suggest the use of a pre-processing script to
 remove specific cases of some words (i.e., "good bye", or "nobody better",
@@ -35,11 +35,11 @@ which should not be counted as positive). Pre-processing scripts are
 available at \url{http://lexicoder.com}.
 }
 \section{License and Conditions}{
- 
-  The LSD is available for non-commercial academic purposes only. By using
-  \code{data_dictionary_LSD2015}, you accept these terms.
-  
-  Please cite the references below when using the dictionary.
+
+The LSD is available for non-commercial academic purposes only. By using
+\code{data_dictionary_LSD2015}, you accept these terms.
+
+Please cite the references below when using the dictionary.
 }
 
 \examples{
@@ -70,14 +70,13 @@ dfm_lookup(dfm(toks), data_dictionary_LSD2015)
 }
 \references{
 The objectives, development and reliability of the dictionary are discussed
-  in detail in Young and Soroka (2012). Please cite this article when using the
-  Lexicoder Sentiment Dictionary and related resources.
-  Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
-  Dictionary}. Available at \url{http://lexicoder.com}.
-  
-  Young, L. & Soroka, S. (2012). 
-  \href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: 
-  The Automated Coding of Sentiment in Political Texts}. 
-  \emph{Political Communication}, 29(2), 205--231.
+in detail in Young and Soroka (2012). Please cite this article when using the
+Lexicoder Sentiment Dictionary and related resources.
+Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
+Dictionary}. Available at \url{http://lexicoder.com}.
+
+Young, L. & Soroka, S. (2012).
+\href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: The Automated Coding of Sentiment in Political Texts}.
+\emph{Political Communication}, 29(2), 205--231.
 }
 \keyword{data}

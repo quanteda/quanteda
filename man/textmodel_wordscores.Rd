@@ -9,10 +9,10 @@ textmodel_wordscores(x, y, scale = c("linear", "logit"), smooth = 0)
 \arguments{
 \item{x}{the \link{dfm} on which the model will be trained}
 
-\item{y}{vector of training scores associated with each document 
+\item{y}{vector of training scores associated with each document
 in \code{x}}
 
-\item{scale}{scale on which to score the words; \code{"linear"} for classic 
+\item{scale}{scale on which to score the words; \code{"linear"} for classic
 LBG linear posterior weighted word class differences, or \code{"logit"}
 for log posterior differences}
 
@@ -22,11 +22,11 @@ the behaviour of this argument.}
 }
 \value{
 A fitted \code{textmodel_wordscores} object.  This object will
-  contain a copy of the input data, but in its original form without any
-  smoothing applied. Calling \code{\link{predict.textmodel_wordscores}} on
-  this object without specifying a value for \code{newdata}, for instance,
-  will predict on the unsmoothed object.  This behaviour differs from
-  versions of \pkg{quanteda} <= 1.2.
+contain a copy of the input data, but in its original form without any
+smoothing applied. Calling \code{\link[=predict.textmodel_wordscores]{predict.textmodel_wordscores()}} on
+this object without specifying a value for \code{newdata}, for instance,
+will predict on the unsmoothed object.  This behaviour differs from
+versions of \pkg{quanteda} <= 1.2.
 }
 \description{
 \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
@@ -39,11 +39,11 @@ documents from a fitted \code{textmodel_wordscores} object.
 }
 \details{
 The \code{textmodel_wordscores()} function and the associated
-  \code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
-  to function in the same manner as \code{\link[stats]{predict.lm}}.
-  \code{coef()} can also be used to extract the word coefficients from the
-  fitted \code{textmodel_wordscores} object, and \code{summary()} will print
-  a nice summary of the fitted object.
+\code{\link[=predict.textmodel_wordscores]{predict()}} method are designed
+to function in the same manner as \code{\link[stats:predict.lm]{stats::predict.lm()}}.
+\code{coef()} can also be used to extract the word coefficients from the
+fitted \code{textmodel_wordscores} object, and \code{summary()} will print
+a nice summary of the fitted object.
 }
 \examples{
 (tmod <- textmodel_wordscores(data_dfm_lbgexample, y = c(seq(-1.5, 1.5, .75), NA)))
@@ -54,22 +54,19 @@ predict(tmod, rescaling = "lbg")
 predict(tmod, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 }
 \references{
-Laver, M., Benoit, K.R., & Garry, J. (2003). 
-  \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating
-  Policy Positions from Political Text using Words as Data}. \emph{American
-  Political Science Review}, 97(2), 311--331.
-  
-  Beauchamp, N. (2012). \href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using 
-  Text to Scale Legislatures with Uninformative Voting}. New York University Mimeo.
-  
-  Martin, L.W. & Vanberg, G. (2007). \href{https://doi.org/10.1093/pan/mpm010}{A Robust 
-  Transformation Procedure for Interpreting Political Text}. \emph{Political Analysis} 
-  16(1), 93--100.
+Laver, M., Benoit, K.R., & Garry, J. (2003).
+\href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy Positions from Political Text using Words as Data}. \emph{American
+Political Science Review}, 97(2), 311--331.
+
+Beauchamp, N. (2012). \href{http://nickbeauchamp.com/work/Beauchamp_scaling_current.pdf}{Using Text to Scale Legislatures with Uninformative Voting}. New York University Mimeo.
+
+Martin, L.W. & Vanberg, G. (2007). \href{https://doi.org/10.1093/pan/mpm010}{A Robust Transformation Procedure for Interpreting Political Text}. \emph{Political Analysis}
+16(1), 93--100.
 }
 \seealso{
-\code{\link{predict.textmodel_wordscores}} for methods of applying a
-  fitted \link{textmodel_wordscores} model object to predict quantities from
-  (other) documents.
+\code{\link[=predict.textmodel_wordscores]{predict.textmodel_wordscores()}} for methods of applying a
+fitted \link{textmodel_wordscores} model object to predict quantities from
+(other) documents.
 }
 \author{
 Kenneth Benoit

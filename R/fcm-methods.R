@@ -1,7 +1,7 @@
 #' @rdname dfm_compress
-#' @note \code{fcm_compress} works only when the \link{fcm} was created with a
+#' @note `fcm_compress` works only when the [fcm] was created with a
 #' document context.
-#' @return \code{fcm_compress} returns an \link{fcm} whose features have been
+#' @return `fcm_compress` returns an [fcm] whose features have been
 #' recombined by combining counts of identical features, summing their counts.
 #' @export
 #' @examples
@@ -39,11 +39,11 @@ fcm_compress.fcm <- function(x) {
 
 #' Sort an fcm in alphabetical order of the features
 #' 
-#' Sorts an \link{fcm} in alphabetical order of the features.
+#' Sorts an [fcm] in alphabetical order of the features.
 #' 
-#' @param x \link{fcm} object
-#' @return A \link{fcm} object whose features have been alphabetically sorted. 
-#'   Differs from \code{\link{fcm_sort}} in that this function sorts the fcm by
+#' @param x [fcm] object
+#' @return A [fcm] object whose features have been alphabetically sorted. 
+#'   Differs from [fcm_sort()] in that this function sorts the fcm by
 #'   the feature labels, not the counts of the features.
 #' @export
 #' @author Kenneth Benoit
@@ -158,8 +158,8 @@ fcm_keep.fcm <- function(x, pattern = NULL, ...) {
 
 
 #' Coercion functions for fcm objects
-#' @param x an object coerced to \link{fcm}. Currently only support
-#'   \link{Matrix} objects.
+#' @param x an object coerced to [fcm]. Currently only support
+#'   [Matrix] objects.
 #' @keywords internal
 as.fcm <- function(x) {
     matrix2fcm(x)
@@ -187,7 +187,7 @@ matrix2fcm <- function(x, slots = NULL) {
 
 #' Set values to a fcm's S4 slots
 #' @param x a fcm 
-#' @param slots a list of values extracted using \code{attributes} and to be assigned to slots 
+#' @param slots a list of values extracted using `attributes` and to be assigned to slots 
 #' @param exceptions names of slots to be ignored
 #' @keywords internal
 set_fcm_slots <- function(x, slots = NULL, exceptions = NULL) {

@@ -7,7 +7,7 @@
 \method{summary}{textmodel_nb}(object, n = 30, ...)
 }
 \arguments{
-\item{object}{output from \code{\link{textmodel_nb}}}
+\item{object}{output from \code{\link[=textmodel_nb]{textmodel_nb()}}}
 
 \item{n}{how many coefficients to print before truncating}
 

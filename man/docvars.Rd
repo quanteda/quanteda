@@ -10,7 +10,7 @@ docvars(x, field = NULL)
 docvars(x, field = NULL) <- value
 }
 \arguments{
-\item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose 
+\item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
 document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
@@ -18,11 +18,11 @@ document-level variables will be read or set}
 \item{value}{the new values of the document-level variable}
 }
 \value{
-\code{docvars} returns a data.frame of the document-level variables, 
-  dropping the second dimension to form a vector if a single docvar is 
-  returned.
+\code{docvars} returns a data.frame of the document-level variables,
+dropping the second dimension to form a vector if a single docvar is
+returned.
 
-\code{docvars<-} assigns \code{value} to the named \code{field}
+\verb{docvars<-} assigns \code{value} to the named \code{field}
 }
 \description{
 Get or set variables associated with a document in a \link{corpus},

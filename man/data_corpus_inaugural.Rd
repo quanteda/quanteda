@@ -11,7 +11,7 @@
 \item \code{FirstName} character; President's first name (and possibly middle initial)
 }}
 \source{
-\url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
+\url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and
 \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 }
 \usage{
@@ -22,9 +22,9 @@ US presidential inaugural address texts, and metadata (for the corpus), from
 1789 to present.
 }
 \details{
-\code{data_corpus_inaugural} is the \link{quanteda-package} corpus 
-  object of US presidents' inaugural addresses since 1789. Document variables
-  contain the year of the address and the last name of the president.
+\code{data_corpus_inaugural} is the \link{quanteda-package} corpus
+object of US presidents' inaugural addresses since 1789. Document variables
+contain the year of the address and the last name of the president.
 }
 \examples{
 # some operations on the inaugural corpus

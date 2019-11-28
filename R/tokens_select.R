@@ -1,43 +1,43 @@
 #' Select or remove tokens from a tokens object
 #' 
-#' These function select or discard tokens from a \link{tokens} objects.  For 
-#' convenience, the functions \code{tokens_remove} and \code{tokens_keep} 
+#' These function select or discard tokens from a [tokens] objects.  For 
+#' convenience, the functions `tokens_remove` and `tokens_keep` 
 #' are defined as shortcuts for 
-#' \code{tokens_select(x, pattern, selection = "remove")} and \code{tokens_select(x, pattern, selection = "keep")}, 
+#' `tokens_select(x, pattern, selection = "remove")` and `tokens_select(x, pattern, selection = "keep")`, 
 #' respectively.  The most common 
-#' usage for \code{tokens_remove} will be to eliminate stop words from a text or
-#' text-based object, while the most common use of \code{tokens_select} will be 
+#' usage for `tokens_remove` will be to eliminate stop words from a text or
+#' text-based object, while the most common use of `tokens_select` will be 
 #' to select tokens with only positive pattern matches from a list of regular 
 #' expressions, including a dictionary.
-#' @param x \link{tokens} object whose token elements will be removed or kept
+#' @param x [tokens] object whose token elements will be removed or kept
 #' @inheritParams pattern
-#' @param selection whether to \code{"keep"} or \code{"remove"} the tokens 
-#'   matching \code{pattern}
+#' @param selection whether to `"keep"` or `"remove"` the tokens 
+#'   matching `pattern`
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param verbose if \code{TRUE} print messages about how many tokens were 
+#' @param case_insensitive ignore case when matching, if `TRUE`
+#' @param verbose if `TRUE` print messages about how many tokens were 
 #'   selected or removed
-#' @param padding if \code{TRUE}, leave an empty string where the removed tokens
+#' @param padding if `TRUE`, leave an empty string where the removed tokens
 #'   previously existed.  This is useful if a positional match is needed between
 #'   the pre- and post-selected tokens, for instance if a window of adjacency 
 #'   needs to be computed.
 #' @param window integer of length 1 or 2; the size of the window of tokens
-#'   adjacent to \code{pattern} that will be selected. The window is symmetric
+#'   adjacent to `pattern` that will be selected. The window is symmetric
 #'   unless a vector of two elements is supplied, in which case the first
-#'   element will be the token length of the window before \code{pattern}, and
-#'   the second will be the token length of the window after \code{pattern}.
-#'   The default is \code{0}, meaning that only the pattern matched token(s) are
+#'   element will be the token length of the window before `pattern`, and
+#'   the second will be the token length of the window after `pattern`.
+#'   The default is `0`, meaning that only the pattern matched token(s) are
 #'   selected, with no adjacent terms.
 #'
 #'   Terms from overlapping windows are never double-counted, but simply
-#'   returned in the pattern match. This is because \code{tokens_select} never
-#'   redefines the document units; for this, see \code{\link{kwic}}.
+#'   returned in the pattern match. This is because `tokens_select` never
+#'   redefines the document units; for this, see [kwic()].
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
-#'   \code{NULL} for no limits.  These are applied after (and hence, in addition
+#'   `NULL` for no limits.  These are applied after (and hence, in addition
 #'   to) any selection based on pattern matches.
-#' @return a \link{tokens} object with tokens selected or removed based on their
-#'   match to \code{pattern}
+#' @return a [tokens] object with tokens selected or removed based on their
+#'   match to `pattern`
 #' @export
 #' @examples 
 #' ## tokens_select with simple examples
@@ -168,9 +168,9 @@ tokens_select.tokens <- function(x, pattern = NULL,
 }
 
 #' @rdname tokens_select
-#' @param ... additional arguments passed by \code{tokens_remove} and
-#'   \code{tokens_keep} to \code{tokens_select}. Cannot include
-#'   \code{selection}.
+#' @param ... additional arguments passed by `tokens_remove` and
+#'   `tokens_keep` to `tokens_select`. Cannot include
+#'   `selection`.
 #' @export
 #' @examples
 #' # tokens_remove example: remove stopwords

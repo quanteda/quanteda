@@ -9,9 +9,9 @@ tokens_group(x, groups = NULL)
 \arguments{
 \item{x}{\link{tokens} object}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
 See \link{groups} for details.}
 }
 \description{

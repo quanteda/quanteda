@@ -16,7 +16,7 @@
 \item{showmeta}{set to \code{TRUE} to include document-level
 meta-data}
 
-\item{...}{additional arguments passed through to \code{\link{tokens}}}
+\item{...}{additional arguments passed through to \code{\link[=tokens]{tokens()}}}
 }
 \description{
 Displays information about a corpus, including attributes and metadata such

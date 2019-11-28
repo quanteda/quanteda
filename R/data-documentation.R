@@ -5,7 +5,7 @@
 #' @format character vector with one element
 #' @keywords data
 #' @source Dáil Éireann Debate, 
-#' \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2011120700006?opendocument}{Financial Resolution No. 13: General (Resumed).}
+#' [Financial Resolution No. 13: General (Resumed).](http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2011120700006?opendocument)
 #' 7 December 2011.  vol. 749, no. 1.
 #' @examples
 #' tokens(data_char_sampletext, remove_punct = TRUE)
@@ -34,11 +34,11 @@
 #'   raw text score of approximately -0.45 when computed as per LBG (2003).
 #' @keywords data
 #' @aliases data_dfm_LBGexample
-#' @format A \link{dfm} object with 6 documents and 37 features.
+#' @format A [dfm] object with 6 documents and 37 features.
 #' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
-#'   \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
-#'   Positions from Political Text using Words as Data}. \emph{American
-#'   Political Science Review}, 97(2), 311--331.
+#'   [Estimating Policy 
+#'   Positions from Political Text using Words as Data](https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf). *American
+#'   Political Science Review*, 97(2), 311--331.
 "data_dfm_lbgexample"  
 
 #' Irish budget speeches from 2010
@@ -51,13 +51,13 @@
 #'   variables for year, debate, serial number, first and last name of the 
 #'   speaker, and the speaker's party.
 #' @references Lowe, W. & Benoit, K.R. (2013). 
-#'   \href{https://doi.org/10.1093/pan/mpt002}{Validating Estimates of Latent Traits 
-#'   From Textual Data Using Human Judgment as a Benchmark}.
-#'   \emph{Political Analysis}, 21(3), 298--313.
+#'   [Validating Estimates of Latent Traits 
+#'   From Textual Data Using Human Judgment as a Benchmark](https://doi.org/10.1093/pan/mpt002).
+#'   *Political Analysis*, 21(3), 298--313.
 #' @keywords data
 #' @source 
 #' Dáil Éireann Debate, 
-#' \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2009120900022?opendocument}{Budget Statement 2010.}
+#' [Budget Statement 2010.](http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2009120900022?opendocument)
 #' 9 December 2009. vol. 697, no. 3.
 #' 
 #' @examples
@@ -89,28 +89,26 @@ NULL
 #' 
 #' US presidential inaugural address texts, and metadata (for the corpus), from
 #' 1789 to present.
-#' @details \code{data_corpus_inaugural} is the \link{quanteda-package} corpus 
+#' @details `data_corpus_inaugural` is the [quanteda-package] corpus 
 #'   object of US presidents' inaugural addresses since 1789. Document variables
 #'   contain the year of the address and the last name of the president.
-#' @format a \link{corpus} object with the following docvars:
-#' \itemize{
-#' \item \code{Year} a four-digit integer year
-#' \item \code{President} character; President's last name
-#' \item \code{FirstName} character; President's first name (and possibly middle initial)
-#' }
+#' @format a [corpus] object with the following docvars:
+#' * `Year` a four-digit integer year
+#' * `President` character; President's last name
+#' * `FirstName` character; President's first name (and possibly middle initial)
 #' @examples
 #' # some operations on the inaugural corpus
 #' summary(data_corpus_inaugural)
 #' head(docvars(data_corpus_inaugural), 10)
 #' @source 
-#' \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
-#' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
+#' <https://archive.org/details/Inaugural-Address-Corpus-1789-2009> and 
+#' <http://www.presidency.ucsb.edu/inaugurals.php>.
 #' @keywords data
 "data_corpus_inaugural"
 
 #' Lexicoder Sentiment Dictionary (2015)
 #' 
-#' The 2015 Lexicoder Sentiment Dictionary in \pkg{quanteda} \link{dictionary}
+#' The 2015 Lexicoder Sentiment Dictionary in \pkg{quanteda} [dictionary]
 #' format.  
 #' 
 #' @details
@@ -127,32 +125,32 @@ NULL
 #' Young and Soroka (2012) also suggest the use of a pre-processing script to
 #' remove specific cases of some words (i.e., "good bye", or "nobody better",
 #' which should not be counted as positive). Pre-processing scripts are
-#' available at \url{http://lexicoder.com}.
+#' available at <http://lexicoder.com>.
 #' @section License and Conditions: 
 #'   The LSD is available for non-commercial academic purposes only. By using
-#'   \code{data_dictionary_LSD2015}, you accept these terms.
+#'   `data_dictionary_LSD2015`, you accept these terms.
 #'   
 #'   Please cite the references below when using the dictionary.
 #' @format 
-#' A \link{dictionary} of four keys containing glob-style \link[=valuetype]{pattern matches}.
+#' A [dictionary] of four keys containing glob-style [pattern matches][valuetype].
 #' \describe{
-#' \item{\code{negative}}{2,858 word patterns indicating negative sentiment}
-#' \item{\code{positive}}{1,709 word patterns indicating positive sentiment}
-#' \item{\code{neg_positive}}{1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)}
-#' \item{\code{neg_negative}}{2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)}
+#' \item{`negative`}{2,858 word patterns indicating negative sentiment}
+#' \item{`positive`}{1,709 word patterns indicating positive sentiment}
+#' \item{`neg_positive`}{1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)}
+#' \item{`neg_negative`}{2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)}
 #' }
 #' @references 
 #'   The objectives, development and reliability of the dictionary are discussed
 #'   in detail in Young and Soroka (2012). Please cite this article when using the
 #'   Lexicoder Sentiment Dictionary and related resources.
 #
-#'   Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
-#'   Dictionary}. Available at \url{http://lexicoder.com}.
+#'   Young, L. & Soroka, S. (2012). *Lexicoder Sentiment
+#'   Dictionary*. Available at <http://lexicoder.com>.
 #'   
 #'   Young, L. & Soroka, S. (2012). 
-#'   \href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: 
-#'   The Automated Coding of Sentiment in Political Texts}. 
-#'   \emph{Political Communication}, 29(2), 205--231.
+#'   [Affective News: 
+#'   The Automated Coding of Sentiment in Political Texts](https://doi.org/10.1080/10584609.2012.671234). 
+#'   *Political Communication*, 29(2), 205--231.
 #' @keywords data
 #' @examples 
 #' # simple example
@@ -186,18 +184,18 @@ NULL
 #' Texts of speeches from a no-confidence motion debated in the Irish Dáil from
 #' 16-18 October 1991 over the future of the Fianna Fail-Progressive Democrat
 #' coalition. (See Laver and Benoit 2002 for details.)
-#' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
-#'   including docvars for \code{name}, \code{party}, and \code{position}.
+#' @format `data_corpus_dailnoconf1991` is a corpus with 58 texts, 
+#'   including docvars for `name`, `party`, and `position`.
 #' @references Laver, M. & Benoit, K.R. (2002). 
-#'   \href{https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
-#'   TDs in Policy Spaces: Wordscoring Dáil Speeches}. \emph{Irish Political 
-#'   Studies}, 17(1), 59--73.
+#'   [Locating 
+#'   TDs in Policy Spaces: Wordscoring Dáil Speeches](https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf). *Irish Political 
+#'   Studies*, 17(1), 59--73.
 #'   
 #' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
-#'   \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
-#'   Positions from Political Text using Words as Data}. \emph{American
-#'   Political Science Review}, 97(2), 311--331.
-#' @source \url{https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/}
+#'   [Estimating Policy 
+#'   Positions from Political Text using Words as Data](https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf). *American
+#'   Political Science Review*, 97(2), 311--331.
+#' @source <https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/>
 #' @keywords data
 #' @examples
 #' \dontrun{

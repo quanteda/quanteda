@@ -48,11 +48,11 @@ details.}
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
-  wildcard expressions; \code{"regex"} for regular expressions; or
-  \code{"fixed"} for exact matching. See \link{valuetype} for details.
+wildcard expressions; \code{"regex"} for regular expressions; or
+\code{"fixed"} for exact matching. See \link{valuetype} for details.
 
-  For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
-  below.}
+For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+below.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
@@ -70,14 +70,14 @@ removed}
 }
 \value{
 A \link{dfm} or \link{fcm} object, after the feature selection has
-  been applied.
+been applied.
 
-  For compatibility with earlier versions, when \code{pattern} is a
-  \link{dfm} object and \code{selection = "keep"}, then this will be
-  equivalent to calling \code{\link{dfm_match}}.  In this case, the following
-  settings are always used: \code{case_insensitive = FALSE}, and
-  \code{valuetype = "fixed"}.  This functionality is deprecated, however, and
-  you should use \code{\link{dfm_match}} instead.
+For compatibility with earlier versions, when \code{pattern} is a
+\link{dfm} object and \code{selection = "keep"}, then this will be
+equivalent to calling \code{\link[=dfm_match]{dfm_match()}}.  In this case, the following
+settings are always used: \code{case_insensitive = FALSE}, and
+\code{valuetype = "fixed"}.  This functionality is deprecated, however, and
+you should use \code{\link[=dfm_match]{dfm_match()}} instead.
 }
 \description{
 This function selects or removes features from a \link{dfm} or \link{fcm},
@@ -87,17 +87,16 @@ or to select only terms of interest from a dictionary.
 }
 \details{
 \code{dfm_remove} and \code{fcm_remove} are simply a convenience
-  wrappers to calling \code{dfm_select} and \code{fcm_select} with
-  \code{selection = "remove"}.
+wrappers to calling \code{dfm_select} and \code{fcm_select} with
+\code{selection = "remove"}.
 
-  \code{dfm_keep} and \code{fcm_keep} are simply a convenience wrappers to
-  calling \code{dfm_select} and \code{fcm_select} with \code{selection =
-  "keep"}.
+\code{dfm_keep} and \code{fcm_keep} are simply a convenience wrappers to
+calling \code{dfm_select} and \code{fcm_select} with \code{selection = "keep"}.
 }
 \note{
 This function selects features based on their labels.  To select
-  features based on the values of the document-feature matrix, use
-  \code{\link{dfm_trim}}.
+features based on the values of the document-feature matrix, use
+\code{\link[=dfm_trim]{dfm_trim()}}.
 }
 \examples{
 dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
@@ -128,6 +127,6 @@ fcmat
 fcm_remove(fcmat, stopwords("english"))
 }
 \seealso{
-\code{\link{dfm_match}}
+\code{\link[=dfm_match]{dfm_match()}}
 }
 \keyword{dfm}

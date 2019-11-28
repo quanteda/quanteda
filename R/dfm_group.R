@@ -1,30 +1,30 @@
 #' Combine documents in a dfm by a grouping variable
 #'
-#' Combine documents in a \link{dfm} by a grouping variable, which can also be
-#' one of the \link{docvars} attached to the dfm. This is identical in
-#' functionality to using the \code{"groups"} argument in \code{\link{dfm}}.
-#' @param x a \link{dfm}
+#' Combine documents in a [dfm] by a grouping variable, which can also be
+#' one of the [docvars] attached to the dfm. This is identical in
+#' functionality to using the `"groups"` argument in [dfm()].
+#' @param x a [dfm]
 #' @inheritParams groups
-#' @param force logical; if \code{TRUE}, group by summing existing counts, even
+#' @param force logical; if `TRUE`, group by summing existing counts, even
 #'   if the dfm has been weighted.  This can result in invalid sums, such as
-#'   adding log counts (when a dfm has been weighted by \code{"logcount"} for
-#'   instance using \code{\link{dfm_weight}}).  Does not apply to the term
+#'   adding log counts (when a dfm has been weighted by `"logcount"` for
+#'   instance using [dfm_weight()]).  Does not apply to the term
 #'   weight schemes "count" and "prop".
-#' @param fill logical; if \code{TRUE} and \code{groups} is a factor, then use
+#' @param fill logical; if `TRUE` and `groups` is a factor, then use
 #'   all levels of the factor when forming the new "documents" of the grouped
 #'   dfm.  This will result in documents with zero feature counts for levels not
-#'   observed.  Has no effect if the \code{groups} variable(s) are not factors.
-#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to
+#'   observed.  Has no effect if the `groups` variable(s) are not factors.
+#' @return `dfm_group` returns a [dfm] whose documents are equal to
 #'   the unique group combinations, and whose cell values are the sums of the
 #'   previous values summed by group. Document-level variables that have no
-#'   variation within groups are saved in \link{docvars}.  Document-level
+#'   variation within groups are saved in [docvars].  Document-level
 #'   variables that are lists are dropped from grouping, even when these exhibit
 #'   no variation within groups.
 #'
-#'   Setting the \code{fill = TRUE} offers a way to "pad" a dfm with document
+#'   Setting the `fill = TRUE` offers a way to "pad" a dfm with document
 #'   groups that may not have been observed, but for which an empty document is
-#'   needed, for various reasons.  If \code{groups} is a factor of dates, for
-#'   instance, then using \code{fill = TRUE} ensures that the new documents will
+#'   needed, for various reasons.  If `groups` is a factor of dates, for
+#'   instance, then using `fill = TRUE` ensures that the new documents will
 #'   consist of one row of the dfm per date, regardless of whether any documents
 #'   previously existed with that date.
 #' @export

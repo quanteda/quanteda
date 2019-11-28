@@ -3,68 +3,68 @@
 #' Creates a corpus object from available sources.  The currently available
 #' sources are:
 #' \itemize{
-#' \item a \link{character} vector, consisting of one document per 
+#' \item a [character] vector, consisting of one document per 
 #' element; if the elements are named, these names will be used as document 
 #' names.
-#' \item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}), whose default
-#' document id is a variable identified by \code{docid_field}; the text of the
-#' document is a variable identified by \code{text_field}; and other variables
+#' \item a [data.frame] (or a \pkg{tibble} `tbl_df`), whose default
+#' document id is a variable identified by `docid_field`; the text of the
+#' document is a variable identified by `text_field`; and other variables
 #' are imported as document-level meta-data.  This matches the format of
 #' data.frames constructed by the the \pkg{readtext} package.
-#' \item a \link{kwic} object constructed by \code{\link{kwic}}.
-#' \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
+#' \item a [kwic] object constructed by [kwic()].
+#' \item a \pkg{tm} [VCorpus][tm::VCorpus] or [SimpleCorpus][tm::SimpleCorpus] class  object,
 #'   with the fixed metadata
-#'   fields imported as \link{docvars} and corpus-level metadata imported
-#'   as \link{metacorpus} information.
-#' \item a \link{corpus} object.
+#'   fields imported as [docvars] and corpus-level metadata imported
+#'   as [metacorpus] information.
+#' \item a [corpus] object.
 #' }
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts.  Defaults to the names of
-#'   the character vector (if any); \code{doc_id} for a data.frame; the document
+#'   the character vector (if any); `doc_id` for a data.frame; the document
 #'   names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in
 #'   length to the number of documents.  If none of these are round, then
 #'   "text1", "text2", etc. are assigned automatically.
 #' @param docvars a data.frame of document-level variables associated with each
 #'   text
-#' @param unique_docnames if \code{TRUE}, check duplication in \code{docnames}.
-#'   Units with duplicated \code{docnames} are treated as segments of the
+#' @param unique_docnames if `TRUE`, check duplication in `docnames`.
+#'   Units with duplicated `docnames` are treated as segments of the
 #'   same document.
 #' @param text_field the character name or numeric index of the source
-#'   \code{data.frame} indicating the variable to be read in as text, which must
+#'   `data.frame` indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be
-#'   imported as docvars.  This argument is only used for \code{data.frame}
+#'   imported as docvars.  This argument is only used for `data.frame`
 #'   objects (including those created by \pkg{readtext}).
 #' @param meta a named list that will be added to the corpus as corpus-level,
 #'   user meta-data.  This can later be accessed or updated using
-#'   \code{\link{meta}}.
+#'   [meta()].
 #' @param ... not used directly
-#' @return A \link{corpus-class} class object containing the original texts,
+#' @return A [corpus-class] class object containing the original texts,
 #'   document-level variables, document-level metadata, corpus-level metadata,
 #'   and default settings for subsequent processing of the corpus.
 #' 
 #'   For \pkg{quanteda} >= 1.5, this is a specially classed character vector. It
-#'   has many additional attributes but \strong{you should not access these
-#'   attributes directly}, especially if you are another package author. Use the
+#'   has many additional attributes but **you should not access these
+#'   attributes directly**, especially if you are another package author. Use the
 #'   extractor and replacement functions instead, or else your code is not only
 #'   going to be uglier, but also likely to break should the internal structure
 #'   of a corpus object change.  Using the accessor and replacement functions 
 #'   ensures that future code to manipulate corpus objects will continue to work.
-#' @seealso \link{corpus-class}, \code{\link{docvars}}, 
-#'   \code{\link{meta}}, \code{\link{texts}}, \code{\link{ndoc}},
-#'   \code{\link{docnames}}
+#' @seealso [corpus-class], [docvars()], 
+#'   [meta()], [texts()], [ndoc()],
+#'   [docnames()]
 #' @details The texts and document variables of corpus objects can also be
 #'   accessed using index notation. Indexing a corpus object as a vector will
-#'   return its text, equivalent to \code{texts(x)}.  Note that this is not the
+#'   return its text, equivalent to `texts(x)`.  Note that this is not the
 #'   same as subsetting the entire corpus -- this should be done using the
-#'   \code{\link{subset}} method for a corpus.
+#'   [subset()] method for a corpus.
 #'
 #'   Indexing a corpus using two indexes (integers or column names) will return
-#'   the document variables, equivalent to \code{docvars(x)}.  It is also
+#'   the document variables, equivalent to `docvars(x)`.  It is also
 #'   possible to access, create, or replace docvars using list notation, e.g.
 #'
-#'   \code{myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))}.
+#'   `myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))`.
 #'
-#'   For details, see \link{corpus-class}.
+#'   For details, see [corpus-class].
 #' @export
 #' @keywords corpus
 #' @examples
@@ -191,7 +191,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
 #' @param docid_field optional column index of a document identifier; defaults
 #'   to "doc_id", but if this is not found, then will use the rownames of the
 #'   data.frame; if the rownames are not set, it will use the default sequence
-#'   based on \code{(\link{quanteda_options}("base_docname")}.
+#'   based on `([quanteda_options]("base_docname")`.
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
@@ -256,12 +256,12 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", me
 
 
 #' @rdname corpus
-#' @param split_context logical; if \code{TRUE}, split each kwic row into two
+#' @param split_context logical; if `TRUE`, split each kwic row into two
 #'   "documents", one for "pre" and one for "post", with this designation saved
-#'   in a new docvar \code{context} and with the new number of documents
+#'   in a new docvar `context` and with the new number of documents
 #'   therefore being twice the number of rows in the kwic.
-#' @param extract_keyword logical; if  \code{TRUE}, save the keyword matching
-#'   \code{pattern} as a new docvar \code{keyword}
+#' @param extract_keyword logical; if  `TRUE`, save the keyword matching
+#'   `pattern` as a new docvar `keyword`
 #' @examples 
 #' # from a kwic
 #' kw <- kwic(data_char_sampletext, "econom*", separator = "",

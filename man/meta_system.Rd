@@ -24,7 +24,7 @@ meta_system_defaults(source)
 \arguments{
 \item{x}{an object for which the metadata will be read or set}
 
-\item{field}{metadata field name(s); if \code{NULL} (default), return all 
+\item{field}{metadata field name(s); if \code{NULL} (default), return all
 metadata names}
 
 \item{value}{new value of the metadata field}
@@ -33,15 +33,14 @@ metadata names}
 }
 \value{
 \code{meta_system} returns a list with the object's system metadata.
-  It is literally a wrapper to \code{\link[=meta]{meta(x, field, type =
-  "system")}}.
+It is literally a wrapper to \code{\link[=meta]{meta(x, field, type = "system")()}}.
 
-\code{meta_system<-} returns the object with the system metadata
-  modified. This is an internal function and not designed for users!
+\verb{meta_system<-} returns the object with the system metadata
+modified. This is an internal function and not designed for users!
 
 \code{meta_system_defaults} returns a list of default system
-  values, with the user setting the "source" value.  This should be used
-  to set initial system meta information.
+values, with the user setting the "source" value.  This should be used
+to set initial system meta information.
 }
 \description{
 Sets or initializes system metadata for new objects.

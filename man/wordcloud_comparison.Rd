@@ -95,7 +95,7 @@ aspect ratio only supported if rotation = 0.}
 }
 \description{
 This function implements wordcloud that compares documents. Code is adopted
-from \code{\link[wordcloud]{comparison.cloud}}.
+from \code{\link[wordcloud:comparison.cloud]{wordcloud::comparison.cloud()}}.
 }
 \author{
 Kohei Watanabe, build on code from Ian Fellows's \pkg{wordcloud} package.

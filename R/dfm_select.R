@@ -1,49 +1,49 @@
 #' Select features from a dfm or fcm
 #'
-#' This function selects or removes features from a \link{dfm} or \link{fcm},
-#' based on feature name matches with \code{pattern}.  The most common usages
+#' This function selects or removes features from a [dfm] or [fcm],
+#' based on feature name matches with `pattern`.  The most common usages
 #' are to eliminate features from a dfm already constructed, such as stopwords,
 #' or to select only terms of interest from a dictionary.
 #'
-#' @param x the \link{dfm} or \link{fcm} object whose features will be selected
+#' @param x the [dfm] or [fcm] object whose features will be selected
 #' @inheritParams pattern
-#' @param selection whether to \code{keep} or \code{remove} the features
-#' @param valuetype the type of pattern matching: \code{"glob"} for "glob"-style
-#'   wildcard expressions; \code{"regex"} for regular expressions; or
-#'   \code{"fixed"} for exact matching. See \link{valuetype} for details.
+#' @param selection whether to `keep` or `remove` the features
+#' @param valuetype the type of pattern matching: `"glob"` for "glob"-style
+#'   wildcard expressions; `"regex"` for regular expressions; or
+#'   `"fixed"` for exact matching. See [valuetype] for details.
 #'
-#'   For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+#'   For `dfm_select`, `pattern` may also be a [dfm]; see Value
 #'   below.
-#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#' @param case_insensitive ignore the case of dictionary values if `TRUE`
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
-#'   \code{NULL} for no limits.  These are applied after (and hence, in addition
+#'   `NULL` for no limits.  These are applied after (and hence, in addition
 #'   to) any selection based on pattern matches.
-#' @param verbose if \code{TRUE} print message about how many pattern were
+#' @param verbose if `TRUE` print message about how many pattern were
 #'   removed
-#' @details \code{dfm_remove} and \code{fcm_remove} are simply a convenience
-#'   wrappers to calling \code{dfm_select} and \code{fcm_select} with
-#'   \code{selection = "remove"}.
+#' @details `dfm_remove` and `fcm_remove` are simply a convenience
+#'   wrappers to calling `dfm_select` and `fcm_select` with
+#'   `selection = "remove"`.
 #'
-#'   \code{dfm_keep} and \code{fcm_keep} are simply a convenience wrappers to
-#'   calling \code{dfm_select} and \code{fcm_select} with \code{selection =
-#'   "keep"}.
+#'   `dfm_keep` and `fcm_keep` are simply a convenience wrappers to
+#'   calling `dfm_select` and `fcm_select` with `selection =
+#'   "keep"`.
 #' @note This function selects features based on their labels.  To select
 #'   features based on the values of the document-feature matrix, use
-#'   \code{\link{dfm_trim}}.
-#' @return A \link{dfm} or \link{fcm} object, after the feature selection has
+#'   [dfm_trim()].
+#' @return A [dfm] or [fcm] object, after the feature selection has
 #'   been applied.
 #'
-#'   For compatibility with earlier versions, when \code{pattern} is a
-#'   \link{dfm} object and \code{selection = "keep"}, then this will be
-#'   equivalent to calling \code{\link{dfm_match}}.  In this case, the following
-#'   settings are always used: \code{case_insensitive = FALSE}, and
-#'   \code{valuetype = "fixed"}.  This functionality is deprecated, however, and
-#'   you should use \code{\link{dfm_match}} instead.
+#'   For compatibility with earlier versions, when `pattern` is a
+#'   [dfm] object and `selection = "keep"`, then this will be
+#'   equivalent to calling [dfm_match()].  In this case, the following
+#'   settings are always used: `case_insensitive = FALSE`, and
+#'   `valuetype = "fixed"`.  This functionality is deprecated, however, and
+#'   you should use [dfm_match()] instead.
 #'   
 #' @export
 #' @keywords dfm
-#' @seealso \code{\link{dfm_match}}
+#' @seealso [dfm_match()]
 #' @examples
 #' dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
 #'                "Does the United_States or Sweden have more progressive taxation?"),
@@ -155,9 +155,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 }
 
 #' @rdname dfm_select
-#' @param ... used only for passing arguments from \code{dfm_remove} or
-#'   \code{dfm_keep} to \code{dfm_select}. Cannot include
-#'   \code{selection}.
+#' @param ... used only for passing arguments from `dfm_remove` or
+#'   `dfm_keep` to `dfm_select`. Cannot include
+#'   `selection`.
 #' @export
 #' @examples 
 #' dfmat <- dfm(c("This is a document with lots of stopwords.",

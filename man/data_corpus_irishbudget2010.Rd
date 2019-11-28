@@ -4,11 +4,11 @@
 \name{data_corpus_irishbudget2010}
 \alias{data_corpus_irishbudget2010}
 \title{Irish budget speeches from 2010}
-\format{The corpus object for the 2010 budget speeches, with document-level 
-  variables for year, debate, serial number, first and last name of the 
-  speaker, and the speaker's party.}
+\format{The corpus object for the 2010 budget speeches, with document-level
+variables for year, debate, serial number, first and last name of the
+speaker, and the speaker's party.}
 \source{
-Dáil Éireann Debate, 
+Dáil Éireann Debate,
 \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2009120900022?opendocument}{Budget Statement 2010.}
 9 December 2009. vol. 697, no. 3.
 }
@@ -21,15 +21,14 @@ of 2010.
 }
 \details{
 At the time of the debate, Fianna Fáil (FF) and the Greens formed the government
-  coalition, while Fine Gael (FG), Labour (LAB), and Sinn Féin (SF) were in opposition.
+coalition, while Fine Gael (FG), Labour (LAB), and Sinn Féin (SF) were in opposition.
 }
 \examples{
 summary(data_corpus_irishbudget2010)
 }
 \references{
-Lowe, W. & Benoit, K.R. (2013). 
-  \href{https://doi.org/10.1093/pan/mpt002}{Validating Estimates of Latent Traits 
-  From Textual Data Using Human Judgment as a Benchmark}.
-  \emph{Political Analysis}, 21(3), 298--313.
+Lowe, W. & Benoit, K.R. (2013).
+\href{https://doi.org/10.1093/pan/mpt002}{Validating Estimates of Latent Traits From Textual Data Using Human Judgment as a Benchmark}.
+\emph{Political Analysis}, 21(3), 298--313.
 }
 \keyword{data}

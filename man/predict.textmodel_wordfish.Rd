@@ -34,12 +34,12 @@ list), or just document or feature parameters}
 }
 \value{
 \code{coef.textmodel_wordfish()} returns a matrix of estimated
-  parameters coefficients for the specified margin.
+parameters coefficients for the specified margin.
 }
 \description{
 \code{predict.textmodel_wordfish()} returns estimated document scores and
 confidence intervals.  The method is provided for consistency with other
-\code{textmodel_*()} methods, but does not currently allow prediction on
+\verb{textmodel_*()} methods, but does not currently allow prediction on
 out-of-sample data.
 }
 \keyword{internal}

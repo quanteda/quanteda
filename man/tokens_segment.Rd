@@ -21,7 +21,7 @@ tokens_segment(
 \link{dictionary}, or \link{collocations} object.  See \link{pattern} for
 details.}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -30,24 +30,24 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{extract_pattern}{remove matched patterns from the texts and save in
 \link{docvars}, if \code{TRUE}}
 
-\item{pattern_position}{either \code{"before"} or \code{"after"}, depending 
-on whether the pattern precedes the text (as with a tag) or follows the 
+\item{pattern_position}{either \code{"before"} or \code{"after"}, depending
+on whether the pattern precedes the text (as with a tag) or follows the
 text (as with punctuation delimiters)}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
 }
 \value{
-\code{tokens_segment} returns a \link{tokens} object whose documents 
-  have been split by patterns
+\code{tokens_segment} returns a \link{tokens} object whose documents
+have been split by patterns
 }
 \description{
 Segment tokens by splitting on a pattern match. This is useful for breaking
 the tokenized texts into smaller document units, based on a regular pattern
 or a user-supplied annotation. While it normally makes more sense to do this
-at the corpus level (see \code{\link{corpus_segment}}), \code{tokens_segment}
+at the corpus level (see \code{\link[=corpus_segment]{corpus_segment()}}), \code{tokens_segment}
 provides the option to perform this operation on tokens.
 }
 \examples{

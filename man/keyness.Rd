@@ -46,16 +46,16 @@ continuity correction for 2x2 tables.
 objects.
 
 \code{keyness_chi2_stats} uses element-by-element application of
-\link[stats]{chisq.test}.
+\link[stats:chisq.test]{chisq.test}.
 
-\code{keyness_exact} computes Fisher's exact using element-by-element 
-application of \link[stats]{fisher.test}, returning the odds ratio.
+\code{keyness_exact} computes Fisher's exact using element-by-element
+application of \link[stats:fisher.test]{fisher.test}, returning the odds ratio.
 
 \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
-  using vectorized computation
+using vectorized computation
 
 \code{keyness_pmi} computes the Pointwise Mutual Information stat
-  using vectorized computation
+using vectorized computation
 }
 \examples{
 dfmat <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",

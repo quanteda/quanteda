@@ -4,7 +4,7 @@
 #' @name corpus-class
 #' @param x a corpus object
 #' @keywords internal corpus
-#' @seealso \code{\link{summary.corpus}}
+#' @seealso [summary.corpus()]
 NULL
 
 #' @export
@@ -31,7 +31,7 @@ print.corpus <- function(x, ...) {
     
 }
 
-#' @return \code{is.corpus} returns \code{TRUE} if the object is a corpus
+#' @return `is.corpus` returns `TRUE` if the object is a corpus
 #' @rdname corpus-class
 #' @export
 is.corpus <- function(x) {
@@ -45,10 +45,10 @@ is.corpus <- function(x) {
 #' 
 #' @param object corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
-#' @param showmeta set to \code{TRUE} to include document-level
+#' @param showmeta set to `TRUE` to include document-level
 #'   meta-data
 #' @param tolower convert texts to lower case before counting types
-#' @param ... additional arguments passed through to \code{\link{tokens}}
+#' @param ... additional arguments passed through to [tokens()]
 #' @export
 #' @method summary corpus
 #' @keywords internal corpus
@@ -64,11 +64,12 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
     object <- as.corpus(object)
     ndoc_all <- ndoc(object)
     object <- head(object, n)
+    ndoc_show <- ndoc(object)
     result <- summarize_texts(texts(object), tolower = tolower, ...)
     if (showmeta)
         result <- cbind(result, docvars(object))
-    attr(result, "ndoc_show") <- n
     attr(result, "ndoc_all") <- ndoc_all
+    attr(result, "ndoc_show") <- ndoc_show
     class(result) <- c("summary.corpus", "data.frame")
     return(result)
 }
@@ -100,14 +101,14 @@ print.summary.corpus <- function(x, ...) {
 
 #' Return the first or last part of a corpus
 #' 
-#' For a \link{corpus} object, returns the first or last \code{n} documents.
+#' For a [corpus] object, returns the first or last `n` documents.
 #' @param x a dfm object
 #' @param n a single integer.  If positive, the number of documents for the
 #'   resulting object: number of first/last documents for the dfm.  If negative,
 #'   all but the n last/first number of documents of x.
 #' @param ... additional arguments passed to other functions
-#' @return A \link{corpus} class object corresponding to the subset defined 
-#'   by \code{n}.
+#' @return A [corpus] class object corresponding to the subset defined 
+#'   by `n`.
 #' @export
 #' @name head.corpus
 #' @method head corpus
@@ -140,10 +141,10 @@ tail.corpus <- function(x, n = 6L, ...) {
 #' @rdname corpus-class
 #' @param c1 corpus one to be added
 #' @param c2 corpus two to be added
-#' @details The \code{+} operator for a corpus object will combine two corpus
-#'   objects, resolving any non-matching \code{\link{docvars}} by making them
-#'   into \code{NA} values for the corpus lacking that field. Corpus-level meta
-#'   data is concatenated, except for \code{source} and \code{notes}, which are
+#' @details The `+` operator for a corpus object will combine two corpus
+#'   objects, resolving any non-matching [docvars()] by making them
+#'   into `NA` values for the corpus lacking that field. Corpus-level meta
+#'   data is concatenated, except for `source` and `notes`, which are
 #'   stamped with information pertaining to the creation of the new joined
 #'   corpus.
 #'
@@ -153,8 +154,8 @@ tail.corpus <- function(x, n = 6L, ...) {
 #'   There are some issues that need to be addressed in future revisions of
 #'   quanteda concerning the use of factors to store document variables and
 #'   meta-data.  Currently most or all of these are not recorded as factors,
-#'   because we use \code{stringsAsFactors=FALSE} in the
-#'   \code{\link{data.frame}} calls that are used to create and store the
+#'   because we use `stringsAsFactors=FALSE` in the
+#'   [data.frame()] calls that are used to create and store the
 #'   document-level information, because the texts should always be stored as
 #'   character vectors and never as factors.
 #' @export
@@ -193,9 +194,9 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @export
 #' @param i index for documents or rows of document variables
 #' @param j index for column of document variables
-#' @param drop if \code{TRUE}, return a vector if extracting a single document
-#'   variable; if \code{FALSE}, return it as a single-column data.frame.  See
-#'   \code{\link{drop}} for further details.
+#' @param drop if `TRUE`, return a vector if extracting a single document
+#'   variable; if `FALSE`, return it as a single-column data.frame.  See
+#'   [drop()] for further details.
 #' @examples 
 #' 
 #' # two ways to index corpus elements

@@ -1,16 +1,16 @@
 #' Bootstrap a dfm
 #' 
 #' Create an array of resampled dfms.
-#' @param x a character or \link{corpus} object
+#' @param x a character or [corpus] object
 #' @param n number of resamples
-#' @param ... additional arguments passed to \code{\link{dfm}}
-#' @param verbose if \code{TRUE} print status messages
-#' @details Function produces multiple, resampled \link{dfm} objects, based on 
+#' @param ... additional arguments passed to [dfm()]
+#' @param verbose if `TRUE` print status messages
+#' @details Function produces multiple, resampled [dfm] objects, based on 
 #'   resampling sentences (with replacement) from each document, recombining
 #'   these into new "documents" and computing a dfm for each. Resampling of
 #'   sentences is done strictly within document, so that every resampled
 #'   document will contain at least some of its original tokens.
-#' @return A named list of \link{dfm} objects, where the first, \code{dfm_0}, is
+#' @return A named list of [dfm] objects, where the first, `dfm_0`, is
 #'   the dfm from the original texts, and subsequent elements are the 
 #'   sentence-resampled dfms.
 #' @author Kenneth Benoit

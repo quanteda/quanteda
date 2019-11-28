@@ -4,8 +4,8 @@
 \name{data_corpus_dailnoconf1991}
 \alias{data_corpus_dailnoconf1991}
 \title{Confidence debate from 1991 Irish Parliament}
-\format{\code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
-  including docvars for \code{name}, \code{party}, and \code{position}.}
+\format{\code{data_corpus_dailnoconf1991} is a corpus with 58 texts,
+including docvars for \code{name}, \code{party}, and \code{position}.}
 \source{
 \url{https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/}
 }
@@ -38,14 +38,12 @@ text(c(0.9, 0.9), c(8.5, 6.5), c("Goverment", "Opposition"))
 }
 }
 \references{
-Laver, M. & Benoit, K.R. (2002). 
-  \href{https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
-  TDs in Policy Spaces: Wordscoring Dáil Speeches}. \emph{Irish Political 
-  Studies}, 17(1), 59--73.
+Laver, M. & Benoit, K.R. (2002).
+\href{https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating TDs in Policy Spaces: Wordscoring Dáil Speeches}. \emph{Irish Political
+Studies}, 17(1), 59--73.
 
-Laver, M., Benoit, K.R., & Garry, J. (2003). 
-  \href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy 
-  Positions from Political Text using Words as Data}. \emph{American
-  Political Science Review}, 97(2), 311--331.
+Laver, M., Benoit, K.R., & Garry, J. (2003).
+\href{https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating Policy Positions from Political Text using Words as Data}. \emph{American
+Political Science Review}, 97(2), 311--331.
 }
 \keyword{data}

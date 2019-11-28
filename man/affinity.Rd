@@ -18,7 +18,7 @@ equal in length to the number of documents}
 a list with stuff
 }
 \description{
-Ken recommends you use \code{\link{textmodel_affinity}} instead.
+Ken recommends you use \code{\link[=textmodel_affinity]{textmodel_affinity()}} instead.
 }
 \examples{
 p <- matrix(c(c(5/6, 0, 1/6), c(0, 4/5, 1/5)), nrow = 3,

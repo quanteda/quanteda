@@ -20,7 +20,7 @@ if \code{FALSE}, drop the docvars in the chunked tokens}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of
-  length \code{size}.
+length \code{size}.
 }
 \description{
 Segment tokens into new documents of equally sized token lengths, with the
@@ -37,6 +37,6 @@ tokens_chunk(toks, size = 5)
 tokens_chunk(toks, size = 5, overlap = 4)
 }
 \seealso{
-\code{\link{tokens_segment}}
+\code{\link[=tokens_segment]{tokens_segment()}}
 }
 \keyword{tokens}

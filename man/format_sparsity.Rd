@@ -12,16 +12,16 @@ format_sparsity(x, threshold = 0.01, digits = 3, nsmall = 1)
 \item{threshold}{value below which the decimal places will be rounded and
 printed with an inequality}
 
-\item{digits}{\code{digits} input to \code{\link{format}}}
+\item{digits}{\code{digits} input to \code{\link[=format]{format()}}}
 
-\item{nsmall}{\code{nsmall} input to \code{\link{format}}}
+\item{nsmall}{\code{nsmall} input to \code{\link[=format]{format()}}}
 }
 \value{
 \code{character} value for inserting into the dfm print output
 }
 \description{
-Inputs a dfm sparsity value from \code{\link{sparsity}} and formats it for
-printing in \code{\link{print.dfm}}.
+Inputs a dfm sparsity value from \code{\link[=sparsity]{sparsity()}} and formats it for
+printing in \code{\link[=print.dfm]{print.dfm()}}.
 }
 \examples{
 s <- c(.9, .99, .999, .9999, .99999, 

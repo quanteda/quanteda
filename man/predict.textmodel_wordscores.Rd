@@ -26,8 +26,8 @@
 
 \item{level}{tolerance/confidence level for intervals}
 
-\item{rescaling}{\code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
-rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
+\item{rescaling}{\code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003)
+rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg
 (2007).  See References.}
 
 \item{force}{make the feature set of \code{newdata} conform to the model
@@ -40,10 +40,9 @@ training and prediction data.}
 \value{
 \code{predict.textmodel_wordscores()} returns a named vector of predicted
 document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
-\code{se.fit = TRUE} consisting of the predicted scores (\code{$fit}) and the
-associated standard errors (\code{$se.fit}). When \code{interval =
-"confidence"}, the predicted values will be a matrix.  This behaviour matches
-that of \code{\link[stats]{predict.lm}}.
+\code{se.fit = TRUE} consisting of the predicted scores (\verb{$fit}) and the
+associated standard errors (\verb{$se.fit}). When \code{interval = "confidence"}, the predicted values will be a matrix.  This behaviour matches
+that of \code{\link[stats:predict.lm]{stats::predict.lm()}}.
 }
 \description{
 Predict textmodel_wordscores

@@ -10,18 +10,18 @@ char_tolower(x, keep_acronyms = FALSE)
 char_toupper(x)
 }
 \arguments{
-\item{x}{the input object whose character/tokens/feature elements will be 
+\item{x}{the input object whose character/tokens/feature elements will be
 case-converted}
 
-\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any 
-all-uppercase words (applies only to \code{*_tolower} functions)}
+\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
+all-uppercase words (applies only to \verb{*_tolower} functions)}
 }
 \description{
-\code{char_tolower} and \code{char_toupper} are replacements for 
-\link[base]{tolower} and \link[base]{toupper} based on the \pkg{stringi} 
+\code{char_tolower} and \code{char_toupper} are replacements for
+\link[base:tolower]{tolower} and \link[base:toupper]{toupper} based on the \pkg{stringi}
 package.  The \pkg{stringi} functions for case conversion are superior to the
 \pkg{base} functions because they correctly handle case conversion for
-Unicode.  In addition, the \code{*_tolower} functions provide an option for
+Unicode.  In addition, the \verb{*_tolower} functions provide an option for
 preserving acronyms.
 }
 \examples{

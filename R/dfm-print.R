@@ -11,11 +11,11 @@ NULL
 #' @param show.summary print a brief summary indicating the number of documents 
 #'   and features
 #' @param ndoc max number of documents to print; default is from the
-#'   \code{print_dfm_max_ndoc} setting of \code{\link{quanteda_options}}
+#'   `print_dfm_max_ndoc` setting of [quanteda_options()]
 #' @param nfeat max number of features to print; default is from the
-#'   \code{print_dfm_max_nfeat} setting of \code{\link{quanteda_options}}
-#' @param ... further arguments passed to \code{Matrix::printSpMatrix2}
-#' @seealso \code{\link{quanteda_options}}
+#'   `print_dfm_max_nfeat` setting of [quanteda_options()]
+#' @param ... further arguments passed to `Matrix::printSpMatrix2`
+#' @seealso [quanteda_options()]
 #' @export
 #' @rdname print.dfm
 #' @keywords dfm
@@ -44,14 +44,14 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 
 #' format a sparsity value for printing
 #'
-#' Inputs a dfm sparsity value from \code{\link{sparsity}} and formats it for
-#' printing in \code{\link{print.dfm}}.
+#' Inputs a dfm sparsity value from [sparsity()] and formats it for
+#' printing in [print.dfm()].
 #' @param x input sparsity value, ranging from 0 to 1.0
 #' @param threshold value below which the decimal places will be rounded and
 #'   printed with an inequality
-#' @param digits \code{digits} input to \code{\link{format}}
-#' @param nsmall \code{nsmall} input to \code{\link{format}}
-#' @return \code{character} value for inserting into the dfm print output
+#' @param digits `digits` input to [format()]
+#' @param nsmall `nsmall` input to [format()]
+#' @return `character` value for inserting into the dfm print output
 #' @examples 
 #' s <- c(.9, .99, .999, .9999, .99999, 
 #'        .1, .01, .001, .0001, .000001, .0000001, .00000001, .000000000001, 
@@ -112,17 +112,17 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 
 #' Return the first or last part of a dfm
 #' 
-#' For a \link{dfm} object, returns the first or last \code{n} documents 
-#' and first \code{nfeat} features.
+#' For a [dfm] object, returns the first or last `n` documents 
+#' and first `nfeat` features.
 #' @param x a dfm object
 #' @param n a single, positive integer.  If positive, size for the resulting
 #'   object: number of first/last documents for the dfm. If negative, all but
 #'   the n last/first number of documents of x.
 #' @param nf the number of features to return, where the resulting object 
-#'   will contain the first \code{ncol} features; default is all features
+#'   will contain the first `ncol` features; default is all features
 #' @param ... additional arguments passed to other functions
-#' @return A \link{dfm} class object corresponding to the subset defined 
-#'   by \code{n} and \code{nfeat}.
+#' @return A [dfm] class object corresponding to the subset defined 
+#'   by `n` and `nfeat`.
 #' @export
 #' @name head.dfm
 #' @method head dfm

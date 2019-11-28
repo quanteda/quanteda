@@ -34,7 +34,7 @@ Deprecated function to convert a dfm into a data.frame.
 Recommended that you use \code{convert(x, to = "data.frame")} instead.
 }
 \seealso{
-\code{\link{convert}}
+\code{\link[=convert]{convert()}}
 }
 \keyword{dfm}
 \keyword{internal}

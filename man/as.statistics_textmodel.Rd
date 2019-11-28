@@ -10,7 +10,7 @@ as.statistics_textmodel(x)
 \item{x}{an object to be coerced}
 }
 \description{
-This is a helper function used in \code{summary.textmodel_*}.
+This is a helper function used in \verb{summary.textmodel_*}.
 }
 \keyword{internal}
 \keyword{textmodel}

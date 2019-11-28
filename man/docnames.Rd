@@ -17,9 +17,9 @@ docnames(x) <- value
 \value{
 \code{docnames} returns a character vector of the document names
 
-\code{docnames <-} assigns new values to the document names of an object.  
+\verb{docnames <-} assigns new values to the document names of an object.
 docnames can only be character, so any non-character value assigned to be a
-docname will be coerced to mode `character`.
+docname will be coerced to mode \code{character}.
 }
 \description{
 Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
@@ -42,7 +42,7 @@ docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural)
 
 }
 \seealso{
-\code{\link{featnames}}
+\code{\link[=featnames]{featnames()}}
 }
 \keyword{corpus}
 \keyword{dfm}

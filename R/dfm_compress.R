@@ -1,20 +1,20 @@
 #' Recombine a dfm or fcm by combining identical dimension elements
 #' 
-#' "Compresses" or groups a \link{dfm} or \link{fcm} whose dimension names are
+#' "Compresses" or groups a [dfm] or [fcm] whose dimension names are
 #' the same, for either documents or features.  This may happen, for instance,
 #' if features are made equivalent through application of a thesaurus.  It could also be needed after a 
-#' \code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.  In most cases, you will not
+#' [cbind.dfm()] or [rbind.dfm()] operation.  In most cases, you will not
 #' need to call `dfm_compress`, since it is called automatically by functions that change the 
-#' dimensions of the dfm, e.g. \code{\link{dfm_tolower}}.
+#' dimensions of the dfm, e.g. [dfm_tolower()].
 #' 
-#' @param x input object, a \link{dfm} or \link{fcm}
+#' @param x input object, a [dfm] or [fcm]
 #' @param margin character indicating on which margin to compress a dfm, either 
-#'   \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
-#'   objects, \code{"documents"} has no effect.
+#'   `"documents"`, `"features"`, or `"both"` (default).  For fcm
+#'   objects, `"documents"` has no effect.
 #' @param ... additional arguments passed from generic to specific methods
-#' @return \code{dfm_compress} returns a \link{dfm} whose dimensions have been
+#' @return `dfm_compress` returns a [dfm] whose dimensions have been
 #'   recombined by summing the cells across identical dimension names
-#'   (\link{docnames} or \link{featnames}).  The \link{docvars} will be
+#'   ([docnames] or [featnames]).  The [docvars] will be
 #'   preserved for combining by features but not when documents are combined.
 #' @export
 #' @examples 

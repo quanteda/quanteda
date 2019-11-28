@@ -3,7 +3,7 @@
 #' Get the feature labels from a dfm
 #' 
 #' Get the features from a document-feature matrix, which are stored as the
-#' column names of the \link{dfm} object.
+#' column names of the [dfm] object.
 #' @param x the dfm whose features will be extracted
 #' @return character vector of the feature labels
 #' @examples
@@ -46,16 +46,16 @@ docnames.dfm <- function(x) {
 #' Coercion and checking functions for dfm objects
 #' 
 #' Convert an eligible input object into a dfm, or check whether an object is a
-#' dfm.  Current eligible inputs for coercion to a dfm are: \link{matrix},
-#' (sparse) \link[Matrix]{Matrix}, \link[tm]{TermDocumentMatrix},
-#' \link[tm]{DocumentTermMatrix}, \link{data.frame}, and other \link{dfm}
+#' dfm.  Current eligible inputs for coercion to a dfm are: [matrix],
+#' (sparse) [Matrix][Matrix::Matrix], [TermDocumentMatrix][tm::TermDocumentMatrix],
+#' [DocumentTermMatrix][tm::DocumentTermMatrix], [data.frame], and other [dfm]
 #' objects.
-#' @param x a candidate object for checking or coercion to \link{dfm}
-#' @return \code{as.dfm} converts an input object into a \link{dfm}.  Row names
+#' @param x a candidate object for checking or coercion to [dfm]
+#' @return `as.dfm` converts an input object into a [dfm].  Row names
 #'   are used for docnames, and column names for featnames, of the resulting
 #'   dfm.
-#' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}},
-#'   \code{\link{convert}}
+#' @seealso [as.data.frame.dfm()], [as.matrix.dfm()],
+#'   [convert()]
 #' @export
 as.dfm <- function(x) {
     UseMethod("as.dfm")
@@ -148,7 +148,7 @@ matrix2dfm <- function(x, slots = NULL) {
 
 #' Set values to a dfm's S4 slots
 #' @param x a dfm 
-#' @param slots a list of values extracted using \code{attributes} and to be assigned to slots 
+#' @param slots a list of values extracted using `attributes` and to be assigned to slots 
 #' @param exceptions names of slots to be ignored
 #' @keywords internal
 set_dfm_slots <- function(x, slots = NULL, exceptions = NULL) {
@@ -165,7 +165,7 @@ set_dfm_slots <- function(x, slots = NULL, exceptions = NULL) {
 
 #' @rdname as.dfm
 #' @return 
-#' \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
+#' `is.dfm` returns `TRUE` if and only if its argument is a [dfm].
 #' @export
 is.dfm <- function(x) {
     is(x, "dfm")
@@ -176,19 +176,19 @@ is.dfm <- function(x) {
 
 #' Identify the most frequent features in a dfm
 #' 
-#' List the most (or least) frequently occurring features in a \link{dfm}, either
+#' List the most (or least) frequently occurring features in a [dfm], either
 #' as a whole or separated by document.
 #' @name topfeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If \code{TRUE}, return the \code{n} most frequent features;
-#'   otherwise return the \code{n} least frequent features
-#' @param scheme one of \code{count} for total feature frequency (within
-#'   \code{group} if applicable), or \code{docfreq} for the document frequencies
+#' @param decreasing If `TRUE`, return the `n` most frequent features;
+#'   otherwise return the `n` least frequent features
+#' @param scheme one of `count` for total feature frequency (within
+#'   `group` if applicable), or `docfreq` for the document frequencies
 #'   of features
 #' @inheritParams groups
 #' @return A named numeric vector of feature counts, where the names are the 
-#'   feature labels, or a list of these if \code{groups} is given.
+#'   feature labels, or a list of these if `groups` is given.
 #' @examples
 #' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
 #'     dfm(remove_punct = TRUE)
@@ -285,19 +285,19 @@ sparsity.dfm <- function(x) {
 
 #' Internal functions for dfm objects
 #' 
-#' Internal function documentation for \link{dfm} objects.
+#' Internal function documentation for [dfm] objects.
 #' @name dfm-internal
 #' @keywords dfm internal
 NULL
 
-#' The \code{Compare} methods enable relational operators to be use with dfm. 
+#' The `Compare` methods enable relational operators to be use with dfm. 
 #' Relational operations on a dfm with a numeric will return a
-#' \link[Matrix]{dgCMatrix-class} object.
+#' [dgCMatrix-class][Matrix::dgCMatrix-class] object.
 #' @rdname dfm-internal
-#' @param e1 a \link{dfm}
+#' @param e1 a [dfm]
 #' @param e2 a numeric value to compare with values in a dfm
 #' @export
-#' @seealso \link{Comparison} operators
+#' @seealso [Comparison] operators
 setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
     as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
 })

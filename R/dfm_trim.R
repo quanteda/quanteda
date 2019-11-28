@@ -11,39 +11,39 @@
 #'   versions of these are also implemented, for taking the first \eqn{n}
 #'   features in terms of descending order of overall global counts or document
 #'   frequencies, or as a quantile of all frequencies.
-#' @param x a \link{dfm} object
+#' @param x a [dfm] object
 #' @param min_termfreq,max_termfreq minimum/maximum values of feature frequencies
 #' across all documents, below/above which features will
 #'   be removed
-#' @param termfreq_type how \code{min_termfreq} and \code{max_termfreq} are
-#'   interpreted.  \code{"count"} sums the frequencies; \code{"prop"} divides the
-#'   term frequencies by the total sum; \code{"rank"} is matched against the
+#' @param termfreq_type how `min_termfreq` and `max_termfreq` are
+#'   interpreted.  `"count"` sums the frequencies; `"prop"` divides the
+#'   term frequencies by the total sum; `"rank"` is matched against the
 #'   inverted ranking of features in terms of overall frequency, so that 1, 2,
 #'   ... are the highest and second highest frequency features, and so on;
-#'   \code{"quantile"} sets the cutoffs according to the quantiles (see
-#'   \code{\link{quantile}}) of term frequencies.
+#'   `"quantile"` sets the cutoffs according to the quantiles (see
+#'   [quantile()]) of term frequencies.
 #' @param min_docfreq,max_docfreq minimum/maximum values of a feature's document
 #'   frequency, below/above which features will be removed
-#' @param docfreq_type specify how \code{min_docfreq} and \code{max_docfreq} are
-#'   interpreted.   \code{"count"} is the same as \code{\link{docfreq}(x, scheme
-#'   = "count")}; \code{"prop"} divides the document frequencies by the total
-#'   sum; \code{"rank"} is matched against the inverted ranking of document
+#' @param docfreq_type specify how `min_docfreq` and `max_docfreq` are
+#'   interpreted.   `"count"` is the same as `[docfreq](x, scheme
+#'   = "count")`; `"prop"` divides the document frequencies by the total
+#'   sum; `"rank"` is matched against the inverted ranking of document
 #'   frequency, so that 1, 2, ... are the features with the highest and second
-#'   highest document frequencies, and so on; \code{"quantile"} sets the cutoffs
-#'   according to the quantiles (see \code{\link{quantile}}) of document
+#'   highest document frequencies, and so on; `"quantile"` sets the cutoffs
+#'   according to the quantiles (see [quantile()]) of document
 #'   frequencies.
-#' @param sparsity equivalent to \code{1 - min_docfreq}, included for comparison
+#' @param sparsity equivalent to `1 - min_docfreq`, included for comparison
 #'   with \pkg{tm}
 #' @param verbose print messages
 #' @param ... not used
-#' @return A \link{dfm} reduced in features (with the same number of documents)
+#' @return A [dfm] reduced in features (with the same number of documents)
 #' @export
-#' @note Trimming a \link{dfm} object is an operation based on the \emph{values}
+#' @note Trimming a [dfm] object is an operation based on the *values*
 #'   in the document-feature matrix.  To select subsets of a dfm based on the
 #'   features themselves (meaning the feature labels from
-#'   \code{\link{featnames}}) -- such as those matching a regular expression, or
-#'   removing features matching a stopword list, use \code{\link{dfm_select}}.
-#' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
+#'   [featnames()]) -- such as those matching a regular expression, or
+#'   removing features matching a stopword list, use [dfm_select()].
+#' @seealso [dfm_select()], [dfm_sample()]
 #' @examples
 #' (dfmat <- dfm(data_corpus_inaugural[1:5]))
 #'

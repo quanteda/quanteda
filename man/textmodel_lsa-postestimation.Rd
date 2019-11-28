@@ -31,7 +31,7 @@ extracted}
 new data.
 
 \code{coef.textmodel_lsa} extracts model coefficients from a fitted
-  \link{textmodel_ca} object.
+\link{textmodel_ca} object.
 }
 \description{
 Post-estimation methods for fitted \link{textmodel_lsa} objects.

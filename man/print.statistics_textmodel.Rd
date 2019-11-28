@@ -10,7 +10,7 @@
 \item{x}{a textmodel_wordscore_statistics object}
 
 \item{digits}{minimal number of \emph{significant digits}, see
-\code{\link{print.default}}}
+\code{\link[=print.default]{print.default()}}}
 
 \item{...}{further arguments passed to or from other methods}
 }
