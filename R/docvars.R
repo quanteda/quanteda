@@ -1,3 +1,4 @@
+# internal methods -------
 
 # internal function to modify docvars while protecting system-level variables
 "set_docvars<-" <- function(x, field = NULL, value) {
@@ -176,6 +177,7 @@ is_system_old <- function(x) {
     x %in% c("texts", "_document", "_docid", "_segid")
 }
 
+# core docvars methods -------
 
 #' Get or set document-level variables
 #' 
@@ -296,4 +298,59 @@ docvars.kwic <- function(x) {
     x <- as.dfm(x)
     set_docvars(x@docvars, field) <- value
     return(x)
+}
+
+# $ methods -----------
+
+#' @name docvars-internal
+#' @title `$` methods for docvars
+#' @method "$" corpus
+#' @inheritParams docvars
+#' @param name a literal character string specifying a single [docvar()] name
+#' @keywords corpus operators
+#' @export
+#' @examples 
+#' # accessing or assigning docvars for a corpus using "$"
+#' data_corpus_inaugural$Year
+"$.corpus" <- function(x, name) {
+    docvars(x, name)
+}
+
+#' @rdname docvars-internal
+#' @method "$<-" corpus
+#' @param value a vector of document variable values to be assigned to `name`
+#' @export
+#' @examples 
+#' data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
+#' data_corpus_inaugural$Year
+"$<-.corpus" <- function(x, name, value) {
+    docvars(x, name) <- value
+    x
+}
+
+#' @rdname docvars-internal
+#' @method "$" tokens
+#' @keywords tokens operators
+#' @export
+#' @examples
+#' 
+#' # accessing or assigning docvars for tokens using "$" 
+#' toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
+#' toks$Year
+"$.tokens" <- function(x, name) {
+    docvars(x, name)
+}
+
+
+#' @rdname docvars-internal
+#' @method "$<-" tokens
+#' @export
+#' @examples 
+#' toks$Year <- 1991:1995
+#' toks$Year
+#' toks$nonexistent <- TRUE
+#' docvars(toks)
+"$<-.tokens" <- function(x, name, value) {
+    docvars(x, name) <- value
+    x
 }

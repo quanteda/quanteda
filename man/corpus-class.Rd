@@ -8,8 +8,6 @@
 \alias{+.corpus}
 \alias{c.corpus}
 \alias{[.corpus}
-\alias{$.corpus}
-\alias{$<-.corpus}
 \title{Base method extensions for corpus objects}
 \usage{
 \method{print}{corpus}(x, ...)
@@ -23,10 +21,6 @@ is.corpus(x)
 \method{c}{corpus}(..., recursive = FALSE)
 
 \method{[}{corpus}(x, i)
-
-\method{"$"}{corpus}(x, name)
-
-\method{"$"}{corpus}(x, name) <- value
 }
 \arguments{
 \item{x}{a corpus object}
@@ -38,10 +32,6 @@ is.corpus(x)
 \item{recursive}{logical used by \code{c()} method, always set to \code{FALSE}}
 
 \item{i}{index for documents or rows of document variables}
-
-\item{name}{a literal character string specifying a single \code{\link[=docvar]{docvar()}} name}
-
-\item{value}{a vector of document variable values to be assigned to \code{name}}
 
 \item{j}{index for column of document variables}
 
@@ -96,16 +86,9 @@ data_corpus_inaugural[2]
 
 # return the text itself
 data_corpus_inaugural[["1793-Washington"]]
-
-# accessing or assigning docvars for a corpus using "$"
-data_corpus_inaugural$Year
-data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
-data_corpus_inaugural$Year
 }
 \seealso{
 \code{\link[=summary.corpus]{summary.corpus()}}
-
-\code{\link[=docvars]{docvars()}}
 }
 \keyword{corpus}
 \keyword{internal}

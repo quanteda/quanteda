@@ -231,29 +231,3 @@ c.corpus <- function(..., recursive = FALSE) {
     attributes(x, FALSE) <- attrs
     return(x)
 }
-
-#' @rdname corpus-class
-#' @method "$" corpus
-#' @export
-#' @param name a literal character string specifying a single [docvar()] name
-#' @param value a vector of document variable values to be assigned to `name`
-#' @seealso [docvars()]
-#' @examples 
-#' 
-#' # accessing or assigning docvars for a corpus using "$"
-#' data_corpus_inaugural$Year
-"$.corpus" <- function(x, name) {
-    docvars(x)[[name]]
-}
-
-#' @rdname corpus-class
-#' @method "$<-" corpus
-#' @export
-#' @param value a vector of document variable values to be assigned to `name`
-#' @examples 
-#' data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
-#' data_corpus_inaugural$Year
-"$<-.corpus" <- function(x, name, value) {
-    docvars(x)[[name]] <- value
-    x
-}
