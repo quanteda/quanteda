@@ -79,3 +79,10 @@ setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "missing"
 #' @export
 setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "logical"), subset_dfm)
 
+#' @noRd
+#' @method "[[" dfm
+#' @inheritParams dfm-class
+#' @export
+"[[.dfm" <- function(x, i) {
+    stop("[[ not defined for a dfm/fcm object", call. = FALSE)
+}

@@ -386,3 +386,17 @@ docvars.kwic <- function(x) {
     docvars(x, name) <- value
     x
 }
+
+#' @noRd
+#' @method "$" fcm
+#' @export
+"$.fcm" <- function(x, name) {
+    stop("$ not defined for an fcm object", call. = FALSE)
+}
+
+#' @noRd
+#' @method "$<-" fcm
+#' @export
+"$<-.fcm" <- function(x, name, value) {
+    stop("$<- not defined for an fcm object", call. = FALSE)
+}

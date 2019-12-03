@@ -29,6 +29,7 @@ test_that("corpus core operators work for v2", {
 })
 
 test_that("tokens core operators work for v2", {
+    corp <- corpus_subset(data_corpus_inaugural, Year <= 1805)
     toks <- tokens(corp)[1:5]
     
     expect_is(toks["1793-Washington"], "tokens")
@@ -49,7 +50,7 @@ test_that("tokens core operators work for v2", {
 })
 
 test_that("dfm core operators work for v2", {
-    dfmat <- dfm(toks)
+    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year <= 1805))
     
     expect_is(dfmat["1793-Washington"], NA)
     expect_identical(
@@ -59,9 +60,10 @@ test_that("dfm core operators work for v2", {
    
      expect_error(
         dfmat[["1793-Washington"]], 
-        "[[ undefined for dfm objects"
+        "[[ not defined for a dfm/fcm object",
+        fixed = TRUE
     )
-    
+
     expect_is(dfmat$Year, "numeric")
     expect_identical(
         dfmat$Year,
@@ -70,6 +72,7 @@ test_that("dfm core operators work for v2", {
 })
 
 test_that("fcm core operators work for v2", {
+    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year <= 1805))
     fcmat <- fcm(dfm_trim(dfmat, min_termfreq = 20))
     
     expect_is(fcmat[c("the", "and")], c(NA, NA))
@@ -80,12 +83,19 @@ test_that("fcm core operators work for v2", {
     
     expect_error(
         fcmat[["the"]], 
-        "[[ undefined for fcm objects"
+        "[[ not defined for a dfm/fcm object",
+        fixed = TRUE
     )
     
     expect_error(
         fcmat$Year,
-        "$ undefined for fcm objects"
+        "$ not defined for an fcm object",
+        fixed = TRUE
+    )
+    expect_error(
+        fcmat$Year <- 999,
+        "$<- not defined for an fcm object",
+        fixed = TRUE
     )
 })
 
