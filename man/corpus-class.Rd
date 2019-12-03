@@ -48,7 +48,7 @@ Indexing a corpus works in three ways, as of v2.x.x:
 \itemize{
 \item \code{[} returns a subsetted corpus
 \item \code{[[} returns the textual contents of a subsetted corpus (similar to \code{\link[=texts]{texts()}})
-\item \code{$} returns a vector containing the single named \code{\link[=docvar]{docvar()}}
+\item \code{$} returns a vector containing the single named \link{docvars}
 }
 }
 \description{

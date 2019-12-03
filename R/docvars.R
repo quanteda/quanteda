@@ -309,34 +309,41 @@ docvars.kwic <- function(x) {
 
 # $ methods -----------
 
+access_dvs <- function(x, name) {
+    if (!name %in% names(docvars(x)))
+        return(NULL) 
+    else
+        return(docvars(x, name))
+}
+
+assign_dvs <- function(x, name, value) {
+    docvars(x, name) <- value
+    return(x)
+}
+
 #' @name docvars-internal
-#' @title `$` methods for docvars
-#' @method "$" corpus
+#' @title Extract methods for docvars
+#' @method $ corpus
 #' @inheritParams docvars
-#' @param name a literal character string specifying a single [docvar()] name
+#' @param name a literal character string specifying a single [docvars] name
 #' @keywords corpus operators
 #' @export
 #' @examples 
 #' # accessing or assigning docvars for a corpus using "$"
 #' data_corpus_inaugural$Year
-"$.corpus" <- function(x, name) {
-    docvars(x, name)
-}
+"$.corpus" <- access_dvs
 
 #' @rdname docvars-internal
-#' @method "$<-" corpus
+#' @method $<- corpus
 #' @param value a vector of document variable values to be assigned to `name`
 #' @export
 #' @examples 
-#' data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
-#' data_corpus_inaugural$Year
-"$<-.corpus" <- function(x, name, value) {
-    docvars(x, name) <- value
-    x
-}
+#' data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
+#' data_corpus_inaugural$century
+"$<-.corpus" <- assign_dvs
 
 #' @rdname docvars-internal
-#' @method "$" tokens
+#' @method $ tokens
 #' @keywords tokens operators
 #' @export
 #' @examples
@@ -344,25 +351,20 @@ docvars.kwic <- function(x) {
 #' # accessing or assigning docvars for tokens using "$" 
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
 #' toks$Year
-"$.tokens" <- function(x, name) {
-    docvars(x, name)
-}
+"$.tokens" <- access_dvs
 
 #' @rdname docvars-internal
-#' @method "$<-" tokens
+#' @method $<- tokens
 #' @export
 #' @examples 
 #' toks$Year <- 1991:1995
 #' toks$Year
 #' toks$nonexistent <- TRUE
 #' docvars(toks)
-"$<-.tokens" <- function(x, name, value) {
-    docvars(x, name) <- value
-    x
-}
+"$<-.tokens" <- assign_dvs
 
 #' @rdname docvars-internal
-#' @method "$" dfm
+#' @method $ dfm
 #' @keywords dfm operators
 #' @export
 #' @examples
@@ -370,32 +372,27 @@ docvars.kwic <- function(x) {
 #' # accessing or assigning docvars for a dfm using "$" 
 #' dfmat <- dfm(toks)
 #' dfmat$Year
-"$.dfm" <- function(x, name) {
-    docvars(x, name)
-}
+"$.dfm" <- access_dvs
 
 #' @rdname docvars-internal
-#' @method "$<-" dfm
+#' @method $<- dfm
 #' @export
 #' @examples 
 #' dfmat$Year <- 1991:1995
 #' dfmat$Year
 #' dfmat$nonexistent <- TRUE
 #' docvars(dfmat)
-"$<-.dfm" <- function(x, name, value) {
-    docvars(x, name) <- value
-    x
-}
+"$<-.dfm" <- assign_dvs
 
 #' @noRd
-#' @method "$" fcm
+#' @method $ fcm
 #' @export
 "$.fcm" <- function(x, name) {
     stop("$ not defined for an fcm object", call. = FALSE)
 }
 
 #' @noRd
-#' @method "$<-" fcm
+#' @method $<- fcm
 #' @export
 "$<-.fcm" <- function(x, name, value) {
     stop("$<- not defined for an fcm object", call. = FALSE)

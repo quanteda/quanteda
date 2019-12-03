@@ -202,7 +202,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' Indexing a corpus works in three ways, as of v2.x.x:
 #' * `[` returns a subsetted corpus
 #' * `[[` returns the textual contents of a subsetted corpus (similar to [texts()])
-#' * `$` returns a vector containing the single named [docvar()]
+#' * `$` returns a vector containing the single named [docvars]
 #' @examples 
 #' 
 #' # two ways to index corpus elements

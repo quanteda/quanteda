@@ -8,36 +8,36 @@
 \alias{$<-.tokens}
 \alias{$.dfm}
 \alias{$<-.dfm}
-\title{\code{$} methods for docvars}
+\title{Extract methods for docvars}
 \usage{
-\method{"$"}{corpus}(x, name)
+\method{$}{corpus}(x, name)
 
-\method{"$"}{corpus}(x, name) <- value
+\method{$}{corpus}(x, name) <- value
 
-\method{"$"}{tokens}(x, name)
+\method{$}{tokens}(x, name)
 
-\method{"$"}{tokens}(x, name) <- value
+\method{$}{tokens}(x, name) <- value
 
-\method{"$"}{dfm}(x, name)
+\method{$}{dfm}(x, name)
 
-\method{"$"}{dfm}(x, name) <- value
+\method{$}{dfm}(x, name) <- value
 }
 \arguments{
 \item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
 document-level variables will be read or set}
 
-\item{name}{a literal character string specifying a single \code{\link[=docvar]{docvar()}} name}
+\item{name}{a literal character string specifying a single \link{docvars} name}
 
 \item{value}{a vector of document variable values to be assigned to \code{name}}
 }
 \description{
-\code{$} methods for docvars
+Extract methods for docvars
 }
 \examples{
 # accessing or assigning docvars for a corpus using "$"
 data_corpus_inaugural$Year
-data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
-data_corpus_inaugural$Year
+data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
+data_corpus_inaugural$century
 
 # accessing or assigning docvars for tokens using "$" 
 toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
