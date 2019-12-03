@@ -19,6 +19,13 @@ test_that("corpus core operators work for v2", {
         corp$Year,
         docvars(corp, "Year")
     )
+    corp2 <- corp
+    corp2$Year <- floor(corp2$Year / 100)
+    expect_identical(corp2$Year, c(17, 17, 17, 18, 18))
+    
+    # when docvar does not yet exist
+    corp2$ones <- 1L
+    expect_identical(docvars(corp2, "ones"), rep(1L, 5))
 })
 
 test_that("tokens core operators work for v2", {

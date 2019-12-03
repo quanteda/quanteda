@@ -8,6 +8,8 @@
 \alias{+.corpus}
 \alias{c.corpus}
 \alias{[.corpus}
+\alias{$.corpus}
+\alias{$<-.corpus}
 \title{Base method extensions for corpus objects}
 \usage{
 \method{print}{corpus}(x, ...)
@@ -21,6 +23,10 @@ is.corpus(x)
 \method{c}{corpus}(..., recursive = FALSE)
 
 \method{[}{corpus}(x, i)
+
+\method{"$"}{corpus}(x, name)
+
+\method{"$"}{corpus}(x, name) <- value
 }
 \arguments{
 \item{x}{a corpus object}
@@ -33,6 +39,10 @@ is.corpus(x)
 
 \item{i}{index for documents or rows of document variables}
 
+\item{name}{a literal character string specifying a single \code{\link[=docvar]{docvar()}} name}
+
+\item{value}{a vector of document variable values to be assigned to \code{name}}
+
 \item{j}{index for column of document variables}
 
 \item{drop}{if \code{TRUE}, return a vector if extracting a single document
@@ -41,6 +51,15 @@ variable; if \code{FALSE}, return it as a single-column data.frame.  See
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
+
+The \code{+} and \code{c()} operators return a \code{\link[=corpus]{corpus()}} object.
+
+Indexing a corpus works in three ways, as of v2.x.x:
+\itemize{
+\item \code{[} returns a subsetted corpus
+\item \code{[[} returns the textual contents of a subsetted corpus (similar to \code{\link[=texts]{texts()}})
+\item \code{$} returns a vector containing the single named \code{\link[=docvar]{docvar()}}
+}
 }
 \description{
 Extensions of base R functions for corpus objects.
@@ -65,7 +84,6 @@ document-level information, because the texts should always be stored as
 character vectors and never as factors.
 }
 \examples{
-
 # concatenate corpus objects
 corpus1 <- corpus(data_char_ukimmig2010[1:2])
 corpus2 <- corpus(data_char_ukimmig2010[3:4])
@@ -76,9 +94,18 @@ summary(c(corpus1, corpus2, corpus3))
 data_corpus_inaugural["1793-Washington"]
 data_corpus_inaugural[2] 
 
+# return the text itself
+data_corpus_inaugural[["1793-Washington"]]
+
+# accessing or assigning docvars for a corpus using "$"
+data_corpus_inaugural$Year
+data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
+data_corpus_inaugural$Year
 }
 \seealso{
 \code{\link[=summary.corpus]{summary.corpus()}}
+
+\code{\link[=docvars]{docvars()}}
 }
 \keyword{corpus}
 \keyword{internal}

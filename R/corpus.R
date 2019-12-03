@@ -42,7 +42,7 @@
 #'   document-level variables, document-level metadata, corpus-level metadata,
 #'   and default settings for subsequent processing of the corpus.
 #' 
-#'   For \pkg{quanteda} >= 1.5, this is a specially classed character vector. It
+#'   For \pkg{quanteda} >= 2.0, this is a specially classed character vector. It
 #'   has many additional attributes but **you should not access these
 #'   attributes directly**, especially if you are another package author. Use the
 #'   extractor and replacement functions instead, or else your code is not only
@@ -53,18 +53,8 @@
 #'   [meta()], [texts()], [ndoc()],
 #'   [docnames()]
 #' @details The texts and document variables of corpus objects can also be
-#'   accessed using index notation. Indexing a corpus object as a vector will
-#'   return its text, equivalent to `texts(x)`.  Note that this is not the
-#'   same as subsetting the entire corpus -- this should be done using the
-#'   [subset()] method for a corpus.
-#'
-#'   Indexing a corpus using two indexes (integers or column names) will return
-#'   the document variables, equivalent to `docvars(x)`.  It is also
-#'   possible to access, create, or replace docvars using list notation, e.g.
-#'
-#'   `myCorpus[["newSerialDocvar"]] <- paste0("tag", 1:ndoc(myCorpus))`.
-#'
-#'   For details, see [corpus-class].
+#'   accessed using index notation and the `$` operator for accessing or assigning
+#'   docvars.  For details, see [`[.corpus()`][corpus-class].
 #' @export
 #' @keywords corpus
 #' @examples

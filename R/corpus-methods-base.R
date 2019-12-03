@@ -158,6 +158,8 @@ tail.corpus <- function(x, n = 6L, ...) {
 #'   [data.frame()] calls that are used to create and store the
 #'   document-level information, because the texts should always be stored as
 #'   character vectors and never as factors.
+#' @return
+#' The `+` and `c()` operators return a [corpus()] object.
 #' @export
 `+.corpus` <- function(c1, c2) {
     c1 <- as.corpus(c1)
@@ -172,7 +174,6 @@ tail.corpus <- function(x, n = 6L, ...) {
 #' @rdname corpus-class
 #' @param recursive logical used by `c()` method, always set to `FALSE`
 #' @examples 
-#' 
 #' # concatenate corpus objects
 #' corpus1 <- corpus(data_char_ukimmig2010[1:2])
 #' corpus2 <- corpus(data_char_ukimmig2010[3:4])
@@ -197,12 +198,19 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @param drop if `TRUE`, return a vector if extracting a single document
 #'   variable; if `FALSE`, return it as a single-column data.frame.  See
 #'   [drop()] for further details.
+#' @return 
+#' Indexing a corpus works in three ways, as of v2.x.x:
+#' * `[` returns a subsetted corpus
+#' * `[[` returns the textual contents of a subsetted corpus (similar to [texts()])
+#' * `$` returns a vector containing the single named [docvar()]
 #' @examples 
 #' 
 #' # two ways to index corpus elements
 #' data_corpus_inaugural["1793-Washington"]
 #' data_corpus_inaugural[2] 
 #' 
+#' # return the text itself
+#' data_corpus_inaugural[["1793-Washington"]]
 `[.corpus` <- function(x, i) {
     x <- as.corpus(x)
     attrs <- attributes(x)
@@ -222,4 +230,30 @@ c.corpus <- function(..., recursive = FALSE) {
     attrs$docvars <- subset_docvars(attrs$docvars, index)
     attributes(x, FALSE) <- attrs
     return(x)
+}
+
+#' @rdname corpus-class
+#' @method "$" corpus
+#' @export
+#' @param name a literal character string specifying a single [docvar()] name
+#' @param value a vector of document variable values to be assigned to `name`
+#' @seealso [docvars()]
+#' @examples 
+#' 
+#' # accessing or assigning docvars for a corpus using "$"
+#' data_corpus_inaugural$Year
+"$.corpus" <- function(x, name) {
+    docvars(x)[[name]]
+}
+
+#' @rdname corpus-class
+#' @method "$<-" corpus
+#' @export
+#' @param value a vector of document variable values to be assigned to `name`
+#' @examples 
+#' data_corpus_inaugural$Year <- floor(data_corpus_inaugural$Year / 100)
+#' data_corpus_inaugural$Year
+"$<-.corpus" <- function(x, name, value) {
+    docvars(x)[[name]] <- value
+    x
 }
