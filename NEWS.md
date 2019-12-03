@@ -43,6 +43,7 @@
 
 * Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)  The function `textstat_frequency()` now allows passing this argument to `dfm_group()` via `...`.  (#1646)
 * `textstat_frequency()` now has a new argument for resolving ties when ranking term frequencies, defaulting to the "min" method.  (#1634)
+* New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via `$`.  (See Index Operators for Core Objects above.)
 
 
 # quanteda 1.5.2

@@ -107,7 +107,7 @@ newlines, a regex pattern type can be used, for instance a text such as
 
 \verb{Mr. Smith: Text} \cr \verb{Mrs. Jones: More text}
 
-could have as \code{pattern = "\\\\\\\\b[A-Z].+\\\\\\\\.\\\\\\\\s[A-Z][a-z]+:"}, which
+could have as \code{pattern = "\\\\b[A-Z].+\\\\.\\\\s[A-Z][a-z]+:"}, which
 would catch the title, the name, and the colon.
 
 For custom boundary delimitation using punctuation characters that come

@@ -1,3 +1,4 @@
+# internal methods -------
 
 # internal function to modify docvars while protecting system-level variables
 "set_docvars<-" <- function(x, field = NULL, value) {
@@ -176,6 +177,7 @@ is_system_old <- function(x) {
     x %in% c("texts", "_document", "_docid", "_segid")
 }
 
+# core docvars methods -------
 
 #' Get or set document-level variables
 #' 
@@ -187,10 +189,14 @@ is_system_old <- function(x) {
 #' @return `docvars` returns a data.frame of the document-level variables, 
 #'   dropping the second dimension to form a vector if a single docvar is 
 #'   returned.
+#' @section Accessing or assigning docvars using the `$` operator:
+#' As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
+#' the `$` operator.  See [docvars-internal] for details.
 #' @examples 
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
 #' tail(docvars(data_corpus_inaugural, "President"), 10)
+#' head(data_corpus_inaugural$President)
 #' 
 #' @export
 #' @keywords corpus
@@ -267,6 +273,9 @@ docvars.kwic <- function(x) {
 #' corp <- data_corpus_inaugural
 #' docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
 #' head(docvars(corp)) 
+#' corp$fullname <- paste(data_corpus_inaugural$FirstName, 
+#'                        data_corpus_inaugural$President)
+#' tail(corp$fullname)
 #' 
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
@@ -296,4 +305,95 @@ docvars.kwic <- function(x) {
     x <- as.dfm(x)
     set_docvars(x@docvars, field) <- value
     return(x)
+}
+
+# $ methods -----------
+
+access_dvs <- function(x, name) {
+    if (!name %in% names(docvars(x)))
+        return(NULL) 
+    else
+        return(docvars(x, name))
+}
+
+assign_dvs <- function(x, name, value) {
+    docvars(x, name) <- value
+    return(x)
+}
+
+#' @name docvars-internal
+#' @title Extract methods for docvars
+#' @method $ corpus
+#' @inheritParams docvars
+#' @param name a literal character string specifying a single [docvars] name
+#' @keywords corpus operators
+#' @export
+#' @examples 
+#' # accessing or assigning docvars for a corpus using "$"
+#' data_corpus_inaugural$Year
+"$.corpus" <- access_dvs
+
+#' @rdname docvars-internal
+#' @method $<- corpus
+#' @param value a vector of document variable values to be assigned to `name`
+#' @export
+#' @examples 
+#' data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
+#' data_corpus_inaugural$century
+"$<-.corpus" <- assign_dvs
+
+#' @rdname docvars-internal
+#' @method $ tokens
+#' @keywords tokens operators
+#' @export
+#' @examples
+#' 
+#' # accessing or assigning docvars for tokens using "$" 
+#' toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
+#' toks$Year
+"$.tokens" <- access_dvs
+
+#' @rdname docvars-internal
+#' @method $<- tokens
+#' @export
+#' @examples 
+#' toks$Year <- 1991:1995
+#' toks$Year
+#' toks$nonexistent <- TRUE
+#' docvars(toks)
+"$<-.tokens" <- assign_dvs
+
+#' @rdname docvars-internal
+#' @method $ dfm
+#' @keywords dfm operators
+#' @export
+#' @examples
+#' 
+#' # accessing or assigning docvars for a dfm using "$" 
+#' dfmat <- dfm(toks)
+#' dfmat$Year
+"$.dfm" <- access_dvs
+
+#' @rdname docvars-internal
+#' @method $<- dfm
+#' @export
+#' @examples 
+#' dfmat$Year <- 1991:1995
+#' dfmat$Year
+#' dfmat$nonexistent <- TRUE
+#' docvars(dfmat)
+"$<-.dfm" <- assign_dvs
+
+#' @noRd
+#' @method $ fcm
+#' @export
+"$.fcm" <- function(x, name) {
+    stop("$ not defined for an fcm object", call. = FALSE)
+}
+
+#' @noRd
+#' @method $<- fcm
+#' @export
+"$<-.fcm" <- function(x, name, value) {
+    stop("$<- not defined for an fcm object", call. = FALSE)
 }

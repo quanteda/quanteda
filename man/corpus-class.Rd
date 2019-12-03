@@ -41,6 +41,15 @@ variable; if \code{FALSE}, return it as a single-column data.frame.  See
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
+
+The \code{+} and \code{c()} operators return a \code{\link[=corpus]{corpus()}} object.
+
+Indexing a corpus works in three ways, as of v2.x.x:
+\itemize{
+\item \code{[} returns a subsetted corpus
+\item \code{[[} returns the textual contents of a subsetted corpus (similar to \code{\link[=texts]{texts()}})
+\item \code{$} returns a vector containing the single named \link{docvars}
+}
 }
 \description{
 Extensions of base R functions for corpus objects.
@@ -65,7 +74,6 @@ document-level information, because the texts should always be stored as
 character vectors and never as factors.
 }
 \examples{
-
 # concatenate corpus objects
 corpus1 <- corpus(data_char_ukimmig2010[1:2])
 corpus2 <- corpus(data_char_ukimmig2010[3:4])
@@ -76,6 +84,8 @@ summary(c(corpus1, corpus2, corpus3))
 data_corpus_inaugural["1793-Washington"]
 data_corpus_inaugural[2] 
 
+# return the text itself
+data_corpus_inaugural[["1793-Washington"]]
 }
 \seealso{
 \code{\link[=summary.corpus]{summary.corpus()}}
