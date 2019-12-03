@@ -11,7 +11,6 @@ test_that("as.tokens list version works as expected", {
 test_that("tokens indexing works as expected", {
     toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
     
-    suppressWarnings(expect_equal(toks$d1, c("one", "two", "three")))
     expect_equal(toks[[1]], c("one", "two", "three"))
     
     expect_equal(as.list(toks["d2"]), list(d2 = c("four", "five", "six")))
@@ -618,7 +617,7 @@ test_that("types are encoded when necessarly", {
 
 test_that("$ is deprecated for tokens (#1590)", {
     toks <- tokens(data_corpus_inaugural[1:10])
-    expect_warning(toks$'1825-Adams', "'\\$\\.tokens' is deprecated")
+    # expect_warning(toks$'1825-Adams', "'\\$\\.tokens' is deprecated")
     expect_silent(toks['1825-Adams'])
 })
 

@@ -19,6 +19,9 @@ test_that("corpus core operators work for v2", {
         corp$Year,
         docvars(corp, "Year")
     )
+    # when docvar does not yet exist
+    expect_identical(corp$nonexistent, NULL)
+    
     corp2 <- corp
     corp2$Year <- floor(corp2$Year / 100)
     expect_identical(corp2$Year, c(17, 17, 17, 18, 18))
@@ -26,6 +29,10 @@ test_that("corpus core operators work for v2", {
     # when docvar does not yet exist
     corp2$ones <- 1L
     expect_identical(docvars(corp2, "ones"), rep(1L, 5))
+    
+    # removing docvars through NULL assignment
+    corp2$ones <- NULL
+    expect_false("ones" %in% names(docvars(corp2)))
 })
 
 test_that("tokens core operators work for v2", {
@@ -42,6 +49,9 @@ test_that("tokens core operators work for v2", {
     expect_identical(toks[c(FALSE, TRUE, FALSE, FALSE, FALSE)][[1]], 
                      toks[["1793-Washington"]])
     
+    # when docvar does not yet exist
+    expect_identical(toks$nonexistent, NULL)
+
     expect_is(toks$Year, "numeric")
     expect_identical(
         toks$Year,
@@ -52,11 +62,11 @@ test_that("tokens core operators work for v2", {
 test_that("dfm core operators work for v2", {
     dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year <= 1805))
     
-    expect_is(dfmat["1793-Washington"], NA)
-    expect_identical(
-        dfmat["1793-Washington"],
-        as.matrix(dfmat)["1793-Washington"]
-    )
+    # expect_is(dfmat["1793-Washington"], NA)
+    # expect_identical(
+    #     dfmat["1793-Washington"],
+    #     as.matrix(dfmat)["1793-Washington"]
+    # )
    
      expect_error(
         dfmat[["1793-Washington"]], 
@@ -69,17 +79,19 @@ test_that("dfm core operators work for v2", {
         dfmat$Year,
         docvars(dfmat, "Year")
     )
+    # when docvar does not yet exist
+    expect_identical(dfmat$nonexistent, NULL)
 })
 
 test_that("fcm core operators work for v2", {
     dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year <= 1805))
     fcmat <- fcm(dfm_trim(dfmat, min_termfreq = 20))
     
-    expect_is(fcmat[c("the", "and")], c(NA, NA))
-    expect_identical(
-        fcmat[c("the", "and")],
-        as.matrix(fcmat)[c("the", "and")]
-    )
+    # expect_is(fcmat[c("the", "and")], c(NA, NA))
+    # expect_identical(
+    #     fcmat[c("the", "and")],
+    #     as.matrix(fcmat)[c("the", "and")]
+    # )
     
     expect_error(
         fcmat[["the"]], 
