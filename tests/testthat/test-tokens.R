@@ -615,12 +615,6 @@ test_that("types are encoded when necessarly", {
     
 })
 
-test_that("$ is deprecated for tokens (#1590)", {
-    toks <- tokens(data_corpus_inaugural[1:10])
-    # expect_warning(toks$'1825-Adams', "'\\$\\.tokens' is deprecated")
-    expect_silent(toks['1825-Adams'])
-})
-
 test_that("tokens verbose = TRUE produces expected messages", {
     expect_message(
         tokens(c("one two three", "four five."), verbose = TRUE),

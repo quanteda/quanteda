@@ -194,18 +194,6 @@ dfm_weight.dfm <- function(
     }
 }
 
-#' deprecated name for dfm_weight
-#' 
-#' Deprecated function name for [dfm_weight()]. 
-#' @param ... arguments passed to [dfm_weight()]
-#' @export
-#' @keywords internal deprecated
-tf <- function(...) {
-    .Deprecated("dfm_weight")
-    UseMethod("dfm_weight")
-}
-
-
 
 # dfm_smooth --------------
 
@@ -393,7 +381,7 @@ featfreq.dfm <- function(x) {
 #' @param scheme_df scheme for [docfreq()]; defaults to
 #'   `"inverse"`.  Other options to [docfreq()] can be passed
 #'   through the ellipsis (`...`).
-#' @param base the base for the logarithms in the [tf()] and
+#' @param base the base for the logarithms in the [dfm_weight()] and
 #'   [docfreq()] calls; default is 10
 #' @inheritParams dfm_weight
 #' @param ... additional arguments passed to [docfreq()].
@@ -476,17 +464,6 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     return(x)
 }
 
-#' Deprecated form of [dfm_tfidf()]
-#' 
-#' Deprecated function name for *tf-idf* weighting of a
-#' document-feature matrix.
-#' @param ... arguments passed to [dfm_tfidf()]
-#' @keywords dfm internal deprecated
-#' @export
-tfidf <- function(...) {
-    .Deprecated("dfm_tfidf")
-    UseMethod("dfm_tfidf")
-}
 
 # internal --------------
 
