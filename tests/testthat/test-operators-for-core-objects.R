@@ -50,15 +50,18 @@ test_that("tokens core operators work for v2", {
 
 test_that("dfm core operators work for v2", {
     dfmat <- dfm(toks)
+    
     expect_is(dfmat["1793-Washington"], NA)
     expect_identical(
         dfmat["1793-Washington"],
         as.matrix(dfmat)["1793-Washington"]
     )
-    expect_error(
+   
+     expect_error(
         dfmat[["1793-Washington"]], 
         "[[ undefined for dfm objects"
     )
+    
     expect_is(dfmat$Year, "numeric")
     expect_identical(
         dfmat$Year,
@@ -68,15 +71,18 @@ test_that("dfm core operators work for v2", {
 
 test_that("fcm core operators work for v2", {
     fcmat <- fcm(dfm_trim(dfmat, min_termfreq = 20))
+    
     expect_is(fcmat[c("the", "and")], c(NA, NA))
     expect_identical(
         fcmat[c("the", "and")],
         as.matrix(fcmat)[c("the", "and")]
     )
+    
     expect_error(
         fcmat[["the"]], 
         "[[ undefined for fcm objects"
     )
+    
     expect_error(
         fcmat$Year,
         "$ undefined for fcm objects"

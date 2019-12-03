@@ -37,15 +37,25 @@ matrix.  Recognizing that in some cases, you may need to modify or add
 document variables to downstream objects, the assignment operator is defined
 for \link{tokens} or \link{dfm} objects as well.  Use with caution.
 }
+\section{Accessing or assigning docvars using the \code{$} operator}{
+
+As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
+the \code{$} operator.  See \link{docvars-internal} for details.
+}
+
 \examples{
 # retrieving docvars from a corpus
 head(docvars(data_corpus_inaugural))
 tail(docvars(data_corpus_inaugural, "President"), 10)
+head(data_corpus_inaugural$President)
 
 # assigning document variables to a corpus
 corp <- data_corpus_inaugural
 docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
 head(docvars(corp)) 
+corp$fullname <- paste(data_corpus_inaugural$FirstName, 
+                       data_corpus_inaugural$President)
+tail(corp$fullname)
 
 }
 \keyword{corpus}

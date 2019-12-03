@@ -189,10 +189,14 @@ is_system_old <- function(x) {
 #' @return `docvars` returns a data.frame of the document-level variables, 
 #'   dropping the second dimension to form a vector if a single docvar is 
 #'   returned.
+#' @section Accessing or assigning docvars using the `$` operator:
+#' As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
+#' the `$` operator.  See [docvars-internal] for details.
 #' @examples 
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
 #' tail(docvars(data_corpus_inaugural, "President"), 10)
+#' head(data_corpus_inaugural$President)
 #' 
 #' @export
 #' @keywords corpus
@@ -269,6 +273,9 @@ docvars.kwic <- function(x) {
 #' corp <- data_corpus_inaugural
 #' docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
 #' head(docvars(corp)) 
+#' corp$fullname <- paste(data_corpus_inaugural$FirstName, 
+#'                        data_corpus_inaugural$President)
+#' tail(corp$fullname)
 #' 
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
@@ -341,7 +348,6 @@ docvars.kwic <- function(x) {
     docvars(x, name)
 }
 
-
 #' @rdname docvars-internal
 #' @method "$<-" tokens
 #' @export
@@ -351,6 +357,32 @@ docvars.kwic <- function(x) {
 #' toks$nonexistent <- TRUE
 #' docvars(toks)
 "$<-.tokens" <- function(x, name, value) {
+    docvars(x, name) <- value
+    x
+}
+
+#' @rdname docvars-internal
+#' @method "$" dfm
+#' @keywords dfm operators
+#' @export
+#' @examples
+#' 
+#' # accessing or assigning docvars for a dfm using "$" 
+#' dfmat <- dfm(toks)
+#' dfmat$Year
+"$.dfm" <- function(x, name) {
+    docvars(x, name)
+}
+
+#' @rdname docvars-internal
+#' @method "$<-" dfm
+#' @export
+#' @examples 
+#' dfmat$Year <- 1991:1995
+#' dfmat$Year
+#' dfmat$nonexistent <- TRUE
+#' docvars(dfmat)
+"$<-.dfm" <- function(x, name, value) {
     docvars(x, name) <- value
     x
 }

@@ -6,6 +6,8 @@
 \alias{$<-.corpus}
 \alias{$.tokens}
 \alias{$<-.tokens}
+\alias{$.dfm}
+\alias{$<-.dfm}
 \title{\code{$} methods for docvars}
 \usage{
 \method{"$"}{corpus}(x, name)
@@ -15,6 +17,10 @@
 \method{"$"}{tokens}(x, name)
 
 \method{"$"}{tokens}(x, name) <- value
+
+\method{"$"}{dfm}(x, name)
+
+\method{"$"}{dfm}(x, name) <- value
 }
 \arguments{
 \item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
@@ -40,7 +46,16 @@ toks$Year <- 1991:1995
 toks$Year
 toks$nonexistent <- TRUE
 docvars(toks)
+
+# accessing or assigning docvars for a dfm using "$" 
+dfmat <- dfm(toks)
+dfmat$Year
+dfmat$Year <- 1991:1995
+dfmat$Year
+dfmat$nonexistent <- TRUE
+docvars(dfmat)
 }
 \keyword{corpus}
+\keyword{dfm}
 \keyword{operators}
 \keyword{tokens}
