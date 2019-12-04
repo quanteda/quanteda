@@ -313,14 +313,7 @@ get_object_version <- function(x) {
 }
 
 #' @rdname get_object_version
-#' @return `ispr2` returns `TRUE` if the object was created before
-#' \pkg{quanteda} version 2, or `FALSE` otherwise
-is_pre2 <- function(x) {
-    (! "meta" %in% names(attributes(x)))
-}
-
-#' @rdname get_object_version
-#' @return `ispr2` returns `TRUE` if the object was created before
+#' @return `ispre2()` returns `TRUE` if the object was created before
 #' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
     (! "meta" %in% names(attributes(x)))
