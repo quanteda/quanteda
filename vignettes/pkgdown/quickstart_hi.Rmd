@@ -12,6 +12,8 @@ knitr::opts_chunk$set(collapse = FALSE,
                       comment = "##", cache = TRUE)
 ```
 
+**Translation:** [Shreya Agarwal](https://github.com/shreya2105) and [Siddhanth Reddy](https://github.com/siddhanthreddy).
+
 # पैकेज इंस्टॉल करने के निर्देश
 
 क्यूँकि  **quanteda** [CRAN](https://CRAN.R-project.org/package=quanteda)
