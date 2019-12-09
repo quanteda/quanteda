@@ -21,7 +21,7 @@ Text keep_token(Text tokens,
     if (pos.second > 0) {
         to = std::min((int)tokens.size(), pos.second);
     } else {
-        to = std::min((int)tokens.size(), (int)tokens.size() - pos.second + 1);
+        to = std::max(0, std::min((int)tokens.size(), (int)tokens.size() + pos.second + 1));
     }
     Text tokens_copy(tokens.size());
     if (padding) {
@@ -75,7 +75,7 @@ Text remove_token(Text tokens,
     if (pos.second > 0) {
         to = std::min((int)tokens.size(), pos.second);
     } else {
-        to = std::min((int)tokens.size(), (int)tokens.size() - pos.second + 1);
+        to = std::max(0, std::min((int)tokens.size(), (int)tokens.size() + pos.second + 1));
     }
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
