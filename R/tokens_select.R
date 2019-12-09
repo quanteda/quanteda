@@ -60,6 +60,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
+                          startpos = 0, endpos = -1,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -70,6 +71,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
+                                  startpos = 0, endpos = -1,
                                   verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_select"))
 }
@@ -112,6 +114,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
                                  min_nchar = NULL, max_nchar = NULL,
+                                 startpos = 0, endpos = -1,
                                  verbose = quanteda_options("verbose")) {
 
     x <- as.tokens(x)
@@ -159,9 +162,9 @@ tokens_select.tokens <- function(x, pattern = NULL,
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
     if (selection == "keep") {
-        x <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2])
+        x <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
     } else {
-        x <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2])
+        x <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
     }
     attributes(x, FALSE) <- attrs
     return(x)
