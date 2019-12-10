@@ -42,12 +42,6 @@ setClass("dfm",
                           meta = list(user = list(), system = list())),
          contains = "dgCMatrix")
 
-# deprecated dfmSparse class for backward compatibility
-#' @rdname dfm-class
-#' @keywords internal dfm
-setClass("dfmSparse", contains = "dfm")
-
-
 ## S4 method dfm objects
 #' @export
 #' @param x the dfm object

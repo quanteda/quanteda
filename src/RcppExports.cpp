@@ -271,8 +271,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_select
-List qatd_cpp_tokens_select(const List& texts_, const CharacterVector types_, const List& words_, int mode, bool padding, int window_left, int window_right);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP) {
+List qatd_cpp_tokens_select(const List& texts_, const CharacterVector types_, const List& words_, int mode, bool padding, int window_left, int window_right, int pos_from, int pos_to);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP pos_fromSEXP, SEXP pos_toSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -283,7 +283,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
     Rcpp::traits::input_parameter< int >::type window_left(window_leftSEXP);
     Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, types_, words_, mode, padding, window_left, window_right));
+    Rcpp::traits::input_parameter< int >::type pos_from(pos_fromSEXP);
+    Rcpp::traits::input_parameter< int >::type pos_to(pos_toSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, types_, words_, mode, padding, window_left, window_right, pos_from, pos_to));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -393,7 +395,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
     {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
-    {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 7},
+    {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 9},
     {"_quanteda_qatd_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_numeric, 2},
     {"_quanteda_qatd_cpp_is_grouped_character", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_character, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},

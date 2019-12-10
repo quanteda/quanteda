@@ -53,12 +53,6 @@ test_that("test ntype tokens", {
     expect_identical(ntype(toks2), c(d1 = 2L, d2 = 4L))
 })
 
-test_that("deprecated nfeature still works", {
-    suppressWarnings(
-        expect_error(nfeature(data_dfm_lbgexample), "Use 'nfeat' instead")
-    )
-})
-
 test_that("dots are applied in ntokens.tokens, ntype.tokens", {
     txt <- c(d1 = "3 wonderful tokens of the tokens function.")
     toks <- tokens(txt)

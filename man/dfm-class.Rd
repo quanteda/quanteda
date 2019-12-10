@@ -3,7 +3,6 @@
 \docType{class}
 \name{dfm-class}
 \alias{dfm-class}
-\alias{dfmSparse-class}
 \alias{t,dfm-method}
 \alias{colSums,dfm-method}
 \alias{rowSums,dfm-method}

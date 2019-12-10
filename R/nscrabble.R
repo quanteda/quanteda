@@ -50,16 +50,6 @@ nscrabble.character <- function(x, FUN = sum) {
     result
 }
 
-#' Deprecated name for nscrabble
-#' 
-#' Use [nscrabble()] instead.
-#' @export
-#' @keywords internal deprecated
-scrabble <- function(x, ...) {
-    .Deprecated("nscrabble")
-    nscrabble(x, ...)
-}
-
 #### English scrabble values ----- 
 # (1 point)-A, E, I, O, U, L, N, S, T, R.
 # (2 points)-D, G.
