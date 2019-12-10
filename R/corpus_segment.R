@@ -149,7 +149,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 #' # segment into paragraphs and removing the "- " bullet points
 #' cat(data_char_ukimmig2010[4])
 #' char_segment(data_char_ukimmig2010[4], 
-#'              pattern = "\\n(-\\s){0,1}", valuetype = "regex",
+#'              pattern = "\\n\\n(-\\s){0,1}", valuetype = "regex",
 #'              remove_pattern = TRUE)
 #' 
 #' # segment a text into clauses

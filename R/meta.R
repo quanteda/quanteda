@@ -33,7 +33,7 @@ meta.default <- function(x, field = NULL, type = c("user", "system", "all")) {
 
 #' @export
 meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
-    if (is_pre2(x)) return(if (is.corpus(x)) x$metadata else NULL)
+    if (is_pre2(x)) return(if (is.corpus(x)) x[["metadata"]] else NULL)
     type <- match.arg(type)
     result <- list()
     if (type %in% c("user", "all"))
