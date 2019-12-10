@@ -32,8 +32,10 @@
 #'   Terms from overlapping windows are never double-counted, but simply
 #'   returned in the pattern match. This is because `tokens_select` never
 #'   redefines the document units; for this, see [kwic()].
-#' @param startpos position of tokens in documents where pattern matching starts
-#' @param endpos position of tokens in documents where pattern matching ends
+#' @param startpos,endpos integer; position of tokens in documents where pattern
+#'   matching starts and ends, where 1 is the first token in a document.  For
+#'   negative indexes, counting starts at the ending token of the document, so
+#'   that -1 denotes the last token in the document, -2 the second to last, etc.
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition
@@ -62,7 +64,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
-                          startpos = 0, endpos = -1,
+                          startpos = 0L, endpos = -1L,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -73,7 +75,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
-                                  startpos = 0, endpos = -1,
+                                  startpos = 0L, endpos = -1L,
                                   verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_select"))
 }
@@ -96,27 +98,35 @@ tokens_select.default <- function(x, pattern = NULL,
 #' tokens_select(toks, feats, selection = "remove", case_insensitive = FALSE)
 #' tokens_select(toks, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
 #' 
-#' # With longer texts
+#' # with longer texts
 #' toks2 <- tokens(data_corpus_inaugural)
 #' tokens_select(toks2, stopwords("english"), "remove")
 #' tokens_select(toks2, stopwords("english"), "keep")
 #' tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 #' tokens_select(toks2, stopwords("english"), "keep", padding = TRUE)
 #' 
-#' # With multiple words
+#' # with multiple words
 #' tokens_select(toks2, list(c("President", "*")), "keep")
 #' tokens_select(toks2, "President *", "keep") # simplified form
 #' tokens_select(toks2, list(c("*", "crisis")), "keep")
 #' tokens_select(toks2, "* crisis", "keep") # simplified form
 #' 
-#' # With minimun length
+#' # with minimum length
 #' tokens_select(toks2, min_nchar = 2, "keep") # simplified form
+#' 
+#' # with starting adn ending positions
+#' tokens_select(toks, "*", startpos = 3)  # exclude first two tokens
+#' tokens_select(toks, "*", endpos = 3)    # include only first 3 tokens
+#' tokens_select(toks, "*", startpos = -3) # include only last 2 tokens
+#'
+#' # combining positional selection with pattern matching
+#' tokens_select(toks, "t*", endpos = 3)
 tokens_select.tokens <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
                                  min_nchar = NULL, max_nchar = NULL,
-                                 startpos = 0, endpos = -1,
+                                 startpos = 0L, endpos = -1L,
                                  verbose = quanteda_options("verbose")) {
 
     x <- as.tokens(x)

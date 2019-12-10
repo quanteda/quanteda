@@ -16,8 +16,8 @@ tokens_select(
   window = 0,
   min_nchar = NULL,
   max_nchar = NULL,
-  startpos = 0,
-  endpos = -1,
+  startpos = 0L,
+  endpos = -1L,
   verbose = quanteda_options("verbose")
 )
 
@@ -63,9 +63,10 @@ maximum length in characters for tokens to be removed or kept; defaults are
 \code{NULL} for no limits.  These are applied after (and hence, in addition
 to) any selection based on pattern matches.}
 
-\item{startpos}{position of tokens in documents where pattern matching starts}
-
-\item{endpos}{position of tokens in documents where pattern matching ends}
+\item{startpos, endpos}{integer; position of tokens in documents where pattern
+matching starts and ends, where 1 is the first token in a document.  For
+negative indexes, counting starts at the ending token of the document, so
+that -1 denotes the last token in the document, -2 the second to last, etc.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were
 selected or removed}
