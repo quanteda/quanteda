@@ -1,25 +1,24 @@
 #' Select or remove tokens from a tokens object
-#' 
-#' These function select or discard tokens from a [tokens] objects.  For 
-#' convenience, the functions `tokens_remove` and `tokens_keep` 
-#' are defined as shortcuts for 
-#' `tokens_select(x, pattern, selection = "remove")` and `tokens_select(x, pattern, selection = "keep")`, 
-#' respectively.  The most common 
-#' usage for `tokens_remove` will be to eliminate stop words from a text or
-#' text-based object, while the most common use of `tokens_select` will be 
-#' to select tokens with only positive pattern matches from a list of regular 
+#'
+#' These function select or discard tokens from a [tokens] objects.  For
+#' convenience, the functions `tokens_remove` and `tokens_keep` are defined as
+#' shortcuts for `tokens_select(x, pattern, selection = "remove")` and
+#' `tokens_select(x, pattern, selection = "keep")`, respectively.  The most
+#' common usage for `tokens_remove` will be to eliminate stop words from a text
+#' or text-based object, while the most common use of `tokens_select` will be to
+#' select tokens with only positive pattern matches from a list of regular
 #' expressions, including a dictionary.
 #' @param x [tokens] object whose token elements will be removed or kept
 #' @inheritParams pattern
-#' @param selection whether to `"keep"` or `"remove"` the tokens 
-#'   matching `pattern`
+#' @param selection whether to `"keep"` or `"remove"` the tokens matching
+#'   `pattern`
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if `TRUE`
-#' @param verbose if `TRUE` print messages about how many tokens were 
-#'   selected or removed
+#' @param verbose if `TRUE` print messages about how many tokens were selected
+#'   or removed
 #' @param padding if `TRUE`, leave an empty string where the removed tokens
 #'   previously existed.  This is useful if a positional match is needed between
-#'   the pre- and post-selected tokens, for instance if a window of adjacency 
+#'   the pre- and post-selected tokens, for instance if a window of adjacency
 #'   needs to be computed.
 #' @param window integer of length 1 or 2; the size of the window of tokens
 #'   adjacent to `pattern` that will be selected. The window is symmetric
@@ -43,19 +42,19 @@
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
-#' @examples 
+#' @examples
 #' ## tokens_select with simple examples
-#' toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
+#' toks <- tokens(c("This is a sentence.", "This is a second sentence."),
 #'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = TRUE)
-#' 
+#'
 #' # how case_insensitive works
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
-#' 
+#'
 #' # use window
 #' tokens_select(toks, "second", selection = "keep", window = 1)
 #' tokens_select(toks, "second", selection = "remove", window = 1)
@@ -97,23 +96,23 @@ tokens_select.default <- function(x, pattern = NULL,
 #' tokens_select(toks, feats, selection = "remove", padding = TRUE)
 #' tokens_select(toks, feats, selection = "remove", case_insensitive = FALSE)
 #' tokens_select(toks, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
-#' 
+#'
 #' # with longer texts
 #' toks2 <- tokens(data_corpus_inaugural)
 #' tokens_select(toks2, stopwords("english"), "remove")
 #' tokens_select(toks2, stopwords("english"), "keep")
 #' tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 #' tokens_select(toks2, stopwords("english"), "keep", padding = TRUE)
-#' 
+#'
 #' # with multiple words
 #' tokens_select(toks2, list(c("President", "*")), "keep")
 #' tokens_select(toks2, "President *", "keep") # simplified form
 #' tokens_select(toks2, list(c("*", "crisis")), "keep")
 #' tokens_select(toks2, "* crisis", "keep") # simplified form
-#' 
+#'
 #' # with minimum length
 #' tokens_select(toks2, min_nchar = 2, "keep") # simplified form
-#' 
+#'
 #' # with starting adn ending positions
 #' tokens_select(toks, "*", startpos = 3)  # exclude first two tokens
 #' tokens_select(toks, "*", endpos = 3)    # include only first 3 tokens
@@ -194,7 +193,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
-#' 
+#'
 tokens_remove <- function(x, ...) {
     if ("selection" %in% names(list(...))) {
         stop("tokens_remove cannot include selection argument")
@@ -204,7 +203,7 @@ tokens_remove <- function(x, ...) {
 
 #' @rdname tokens_select
 #' @export
-#' @examples 
+#' @examples
 #' # token_keep example: keep two-letter words
 #' tokens_keep(tokens(txt, remove_punct = TRUE), "??")
 tokens_keep <- function(x, ...) {

@@ -32,8 +32,8 @@ tokens_keep(x, ...)
 \link{dictionary}, or \link{collocations} object.  See \link{pattern} for
 details.}
 
-\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens
-matching \code{pattern}}
+\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens matching
+\code{pattern}}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -68,8 +68,8 @@ matching starts and ends, where 1 is the first token in a document.  For
 negative indexes, counting starts at the ending token of the document, so
 that -1 denotes the last token in the document, -2 the second to last, etc.}
 
-\item{verbose}{if \code{TRUE} print messages about how many tokens were
-selected or removed}
+\item{verbose}{if \code{TRUE} print messages about how many tokens were selected
+or removed}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
 \code{tokens_keep} to \code{tokens_select}. Cannot include
@@ -81,18 +81,17 @@ match to \code{pattern}
 }
 \description{
 These function select or discard tokens from a \link{tokens} objects.  For
-convenience, the functions \code{tokens_remove} and \code{tokens_keep}
-are defined as shortcuts for
-\code{tokens_select(x, pattern, selection = "remove")} and \code{tokens_select(x, pattern, selection = "keep")},
-respectively.  The most common
-usage for \code{tokens_remove} will be to eliminate stop words from a text or
-text-based object, while the most common use of \code{tokens_select} will be
-to select tokens with only positive pattern matches from a list of regular
+convenience, the functions \code{tokens_remove} and \code{tokens_keep} are defined as
+shortcuts for \code{tokens_select(x, pattern, selection = "remove")} and
+\code{tokens_select(x, pattern, selection = "keep")}, respectively.  The most
+common usage for \code{tokens_remove} will be to eliminate stop words from a text
+or text-based object, while the most common use of \code{tokens_select} will be to
+select tokens with only positive pattern matches from a list of regular
 expressions, including a dictionary.
 }
 \examples{
 ## tokens_select with simple examples
-toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
+toks <- tokens(c("This is a sentence.", "This is a second sentence."),
                  remove_punct = TRUE)
 tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
 tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
