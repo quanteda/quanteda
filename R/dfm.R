@@ -272,13 +272,6 @@ dfm.tokens <- function(x,
 
     # copy, set attributes
     slots(result) <- attributes(x)
-    #result@ngrams <- as.integer(attr(x, "ngrams"))
-    #result@skip <- as.integer(attr(x, "skip"))
-    #result@concatenator <- attr(x, "concatenator")
-    # if (attr(x, 'what') == "dictionary") {
-    #     attr(result, 'what') <- "dictionary"
-    #     attr(result, 'dictionary') <- attr(x, 'dictionary')
-    # }
     dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 
