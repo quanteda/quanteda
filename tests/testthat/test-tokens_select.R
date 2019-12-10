@@ -553,78 +553,78 @@ test_that("position arguments are working", {
              doc3 = "a")
     toks <- tokens(txt)
     
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_select(toks, "*", startpos = 1, endpos = 3)),
         list(doc1 = c("a", "b", "c"),
              doc2 = c("a", "b", "c"),
              doc3 = c("a"))
     )
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_remove(toks, "*", startpos = 1, endpos = 3)),
         list(doc1 = c("d", "e"),
              doc2 = character(),
              doc3 = character())
     )
     
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_select(toks, "*", startpos = 3)),
         list(doc1 = c("c", "d", "e"),
              doc2 = c("c"),
              doc3 = character())
     )
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_remove(toks, "*", startpos = 3)),
         list(doc1 = c("a", "b"),
              doc2 = c("a", "b"),
              doc3 = c("a"))
     )
     
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_select(toks, "c", startpos = 1, endpos = -2)),
         list(doc1 = "c",
              doc2 = character(),
              doc3 = character())
     )
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_remove(toks, "c", startpos = 1, endpos = -2)),
         list(doc1 = c("a", "b", "d", "e"),
              doc2 = c("a", "b", "c"),
              doc3 = c("a"))
     )
     
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_select(toks, "*", startpos = 1, endpos = -2)),
         list(doc1 = c("a", "b", "c", "d"),
              doc2 = c("a", "b"),
              doc3 = character())
     )
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_remove(toks, "*", startpos = 1, endpos = -2)),
         list(doc1 = "e",
              doc2 = "c",
              doc3 = "a")
     )
     
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_select(toks, "*", padding = TRUE, startpos = 1, endpos = 3)),
         list(doc1 = c("a", "b", "c", "", ""),
              doc2 = c("a", "b", "c"),
              doc3 = c("a"))
     )
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_remove(toks, "*", padding = TRUE, startpos = 1, endpos = 3)),
         list(doc1 = c("", "", "", "d", "e"),
              doc2 = c("", "", ""),
              doc3 = c(""))
     )
     
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_select(toks, "*", startpos = -100, endpos = 100)),
         list(doc1 = c("a", "b", "c", "d", "e"),
              doc2 = c("a", "b", "c"),
              doc3 = c("a"))
     )
-    expect_equivalent(
+    expect_identical(
         as.list(tokens_remove(toks, "*", startpos = -100, endpos = 100)),
         list(doc1 = character(),
              doc2 = character(),
@@ -632,5 +632,3 @@ test_that("position arguments are working", {
     )
     
 })
-
-
