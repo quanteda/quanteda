@@ -17,7 +17,11 @@ Text keep_token(Text tokens,
     
     bool match = false;
     std::size_t start, end;
-    start = std::max(0, pos.first - 1);
+    if (pos.first > 0) {
+        start = std::min((int)tokens.size(), pos.first - 1);
+    } else {
+        start = std::max(0, (int)tokens.size() + pos.first);
+    }
     if (pos.second > 0) {
         end = std::min((int)tokens.size(), pos.second);
     } else {
@@ -71,7 +75,11 @@ Text remove_token(Text tokens,
     Text tokens_copy = tokens;
     bool match = false;
     std::size_t start, end;
-    start = std::max(0, pos.first - 1);
+    if (pos.first > 0) {
+        start = std::min((int)tokens.size(), pos.first - 1);
+    } else {
+        start = std::max(0, (int)tokens.size() + pos.first);
+    }
     if (pos.second > 0) {
         end = std::min((int)tokens.size(), pos.second);
     } else {

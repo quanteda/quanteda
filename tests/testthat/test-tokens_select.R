@@ -598,6 +598,19 @@ test_that("position arguments are working", {
              doc2 = "c",
              doc3 = "a")
     )
+    
+    expect_identical(
+        as.list(tokens_select(toks, "*", startpos = -2, endpos = -1)),
+        list(doc1 = c("d", "e"),
+             doc2 = c("b", "c"),
+             doc3 = c("a"))
+    )
+    expect_identical(
+        as.list(tokens_remove(toks, "*", startpos = -2, endpos = -1)),
+        list(doc1 = c("a", "b", "c"),
+             doc2 = c("a"),
+             doc3 = character())
+    )
 
     expect_identical(
         as.list(tokens_select(toks, "*", padding = TRUE, startpos = 1, endpos = 3)),
