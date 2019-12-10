@@ -16,6 +16,8 @@ tokens_select(
   window = 0,
   min_nchar = NULL,
   max_nchar = NULL,
+  startpos = 0,
+  endpos = -1,
   verbose = quanteda_options("verbose")
 )
 
@@ -60,6 +62,10 @@ redefines the document units; for this, see \code{\link[=kwic]{kwic()}}.}
 maximum length in characters for tokens to be removed or kept; defaults are
 \code{NULL} for no limits.  These are applied after (and hence, in addition
 to) any selection based on pattern matches.}
+
+\item{startpos}{position of tokens in documents where pattern matching starts}
+
+\item{endpos}{position of tokens in documents where pattern matching ends}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were
 selected or removed}

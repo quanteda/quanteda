@@ -182,6 +182,6 @@ Collate:
     'utils.R'
     'wordstem.R'
     'zzz.R'
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)

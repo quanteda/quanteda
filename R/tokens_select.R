@@ -32,6 +32,8 @@
 #'   Terms from overlapping windows are never double-counted, but simply
 #'   returned in the pattern match. This is because `tokens_select` never
 #'   redefines the document units; for this, see [kwic()].
+#' @param startpos position of tokens in documents where pattern matching starts
+#' @param endpos position of tokens in documents where pattern matching ends
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition
