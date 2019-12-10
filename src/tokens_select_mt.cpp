@@ -16,12 +16,12 @@ Text keep_token(Text tokens,
     unsigned int filler = UINT_MAX; // use upper limit as a filler
     
     bool match = false;
-    size_t from, to;
-    from = std::max(0, pos.first - 1);
+    std::size_t start, end;
+    start = std::max(0, pos.first - 1);
     if (pos.second > 0) {
-        to = std::min((int)tokens.size(), pos.second);
+        end = std::min((int)tokens.size(), pos.second);
     } else {
-        to = std::max(0, std::min((int)tokens.size(), (int)tokens.size() + pos.second + 1));
+        end = std::max(0, (int)tokens.size() + pos.second + 1);
     }
     Text tokens_copy(tokens.size());
     if (padding) {
@@ -31,7 +31,7 @@ Text keep_token(Text tokens,
     }
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
-        for (std::size_t i = from; i < to - (span - 1); i++) {
+        for (std::size_t i = start; i < end - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
@@ -70,16 +70,16 @@ Text remove_token(Text tokens,
     unsigned int filler = UINT_MAX; // use upper limit as a filler
     Text tokens_copy = tokens;
     bool match = false;
-    size_t from, to;
-    from = std::max(0, pos.first - 1);
+    std::size_t start, end;
+    start = std::max(0, pos.first - 1);
     if (pos.second > 0) {
-        to = std::min((int)tokens.size(), pos.second);
+        end = std::min((int)tokens.size(), pos.second);
     } else {
-        to = std::max(0, std::min((int)tokens.size(), (int)tokens.size() + pos.second + 1));
+        end = std::max(0, (int)tokens.size() + pos.second + 1);
     }
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
-        for (std::size_t i = from; i < to - (span - 1); i++) {
+        for (std::size_t i = start; i < end - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
