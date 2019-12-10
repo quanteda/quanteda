@@ -16,7 +16,7 @@ tokens_select(
   window = 0,
   min_nchar = NULL,
   max_nchar = NULL,
-  startpos = 0L,
+  startpos = 1L,
   endpos = -1L,
   verbose = quanteda_options("verbose")
 )
