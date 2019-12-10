@@ -216,22 +216,6 @@ test_that("weights argument works, issue 1150", {
     )
 })
 
-
-test_that("deprecated tfidf still works", {
-    mydfm <- dfm(c("He went out to buy a car", 
-                   "He went out and bought pickles and onions"))
-    expect_equal(suppressWarnings(tfidf(mydfm)), dfm_tfidf(mydfm))
-    expect_warning(tfidf(mydfm))
-})
-
-test_that("deprecated tf still works", {
-    mydfm <- dfm(c("He went out to buy a car", 
-                   "He went out and bought pickles and onions"))
-    expect_equal(suppressWarnings(tf(mydfm, "propmax")), dfm_weight(mydfm, "propmax"))
-    expect_warning(tf(mydfm))
-})
-
-
 test_that("deprecated dfm_weight argument values still work", {
     mydfm <- dfm(c("He went out to buy a car", 
                    "He went out and bought pickles and onions"))
@@ -275,9 +259,6 @@ test_that("deprecated dfm_weight argument values still work", {
         dfm_weight(mydfm, "logfreq"),
         'scheme = \"logfreq\" is deprecated; use dfm_weight\\(x, scheme = "logcount"\\) instead'
     )
-    
-    # log
-    
     
 })
 

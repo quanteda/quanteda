@@ -746,11 +746,6 @@ test_that("dfm pass arguments to tokens, issue #1121", {
     
 })
 
-test_that("as.dfm works for dfmSparse objects", {
-    load("../data/old_dfmSparse.RData")
-    expect_true(is.dfm(as.dfm(old_dfmSparse)))
-})
-
 test_that("dfm error when a dfm is given to for feature selection when x is not a dfm, #1067", {
     txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
     corp <- corpus(txt)

@@ -23,7 +23,7 @@ matrix)}
 \code{"inverse"}.  Other options to \code{\link[=docfreq]{docfreq()}} can be passed
 through the ellipsis (\code{...}).}
 
-\item{base}{the base for the logarithms in the \code{\link[=tf]{tf()}} and
+\item{base}{the base for the logarithms in the \code{\link[=dfm_weight]{dfm_weight()}} and
 \code{\link[=docfreq]{docfreq()}} calls; default is 10}
 
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm

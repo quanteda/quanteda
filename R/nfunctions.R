@@ -68,14 +68,6 @@ nfeat.dfm <- function(x) {
     ncol(x)
 }
 
-#' Defunct form of nfeat
-#' 
-#' @details `nfeature` is the defunct form of [nfeat()].
-#' @keywords internal defunct
-#' @export
-nfeature <- function(x) .Defunct("nfeat")
-
-
 #' Count the number of tokens or types
 #' 
 #' Get the count of tokens (total features) or types (unique tokens).
