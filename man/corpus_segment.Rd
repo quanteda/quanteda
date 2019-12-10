@@ -107,7 +107,7 @@ newlines, a regex pattern type can be used, for instance a text such as
 
 \verb{Mr. Smith: Text} \cr \verb{Mrs. Jones: More text}
 
-could have as \code{pattern = "\\\\\\\\b[A-Z].+\\\\\\\\.\\\\\\\\s[A-Z][a-z]+:"}, which
+could have as \code{pattern = "\\\\b[A-Z].+\\\\.\\\\s[A-Z][a-z]+:"}, which
 would catch the title, the name, and the colon.
 
 For custom boundary delimitation using punctuation characters that come
@@ -133,12 +133,12 @@ cbind(texts(corpseg1), docvars(corpseg1))
 # segmenting a transcript based on speaker identifiers
 corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
 corpseg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
-                            valuetype = "regex")
+                           valuetype = "regex")
 cbind(texts(corpseg2), docvars(corpseg2))
 
 # segmenting a corpus using crude end-of-sentence segmentation
 corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed", 
-                            pattern_position = "after", extract_pattern = FALSE)
+                           pattern_position = "after", extract_pattern = FALSE)
 cbind(texts(corpseg3), docvars(corpseg3))
 
 ## segmenting a character vector
@@ -146,7 +146,7 @@ cbind(texts(corpseg3), docvars(corpseg3))
 # segment into paragraphs and removing the "- " bullet points
 cat(data_char_ukimmig2010[4])
 char_segment(data_char_ukimmig2010[4], 
-             pattern = "\\\\n\\\\n(\\\\-\\\\s){0,1}", valuetype = "regex",
+             pattern = "\\\\n(-\\\\s){0,1}", valuetype = "regex",
              remove_pattern = TRUE)
 
 # segment a text into clauses
