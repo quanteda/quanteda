@@ -26,14 +26,14 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
     expect_equal(attr(mx, "docvars")[["docname_"]], name_new)
 })
 
-test_that("dfm docnames cannot be made integer before textstat_simil", {
-    dfmat <- as.dfm(data_dfm_lbgexample)
-    dfmat@Dimnames$docs <- seq_len(ndoc(dfmat))
-    expect_identical(
-        dimnames(as.matrix(textstat_simil(dfmat)))[[1]],
-        as.character(1:6)
-    )
-})
+# test_that("dfm docnames cannot be made integer before textstat_simil", {
+#     dfmat <- as.dfm(data_dfm_lbgexample)
+#     dfmat@Dimnames$docs <- seq_len(ndoc(dfmat))
+#     expect_identical(
+#         dimnames(as.matrix(textstat_simil(dfmat)))[[1]],
+#         as.character(1:6)
+#     )
+# })
 
 test_that("special names<- operator works as planned", {
     

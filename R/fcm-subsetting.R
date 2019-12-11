@@ -1,7 +1,7 @@
 
 subset_fcm <- function(x, i, j, ..., drop) {
     
-    attrs <- attributes(x)
+    slots <- get_fcm_slots(x)
     error <- FALSE
     if (!missing(i)) {
         if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
@@ -22,7 +22,7 @@ subset_fcm <- function(x, i, j, ..., drop) {
     } else {
         x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
     }
-    matrix2fcm(x, attrs)
+    matrix2fcm(x, slots)
 }
 
 #' @param i index for features

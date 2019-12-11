@@ -271,7 +271,7 @@ dfm.tokens <- function(x,
     result <- compile_dfm(x, verbose = verbose)
 
     # copy, set attributes
-    slots(result) <- attributes(x)
+    set_dfm_slots(result) <- attributes(x)
     dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 

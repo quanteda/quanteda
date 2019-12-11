@@ -88,22 +88,22 @@ setMethod("rowMeans",
 setMethod("Arith", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, attributes(e1)),
-                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, attributes(e1)),
-                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, attributes(e1)),
-                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, attributes(e1)),
-                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
+                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, get_dfm_slots(e1)),
+                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, get_dfm_slots(e1)),
+                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, get_dfm_slots(e1)),
+                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, get_dfm_slots(e1)),
+                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, get_dfm_slots(e1))
               )
           })
 #' @rdname dfm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
-                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
-                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
-                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
-                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
+                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), get_dfm_slots(e2))
               )
           })
 
@@ -259,7 +259,7 @@ rbind.dfm <- function(...) {
 
     x <- args[[1]]
     y <- args[[2]]
-    attrs <- attributes(x)
+    slots <- get_dfm_slots(x)
 
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
     if (!ndoc(y)) return(x)
@@ -275,7 +275,7 @@ rbind.dfm <- function(...) {
             result <- rbind(result, args[[i]])
         }
     }
-    set_dfm_slots(result) <- attributes(x)
+    set_dfm_slots(result) <- slots
     set_dfm_dimnames(result) <- dimnames(result)
     result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)

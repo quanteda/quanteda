@@ -30,20 +30,20 @@ context('testing fcm')
 
 test_that("fcm works with character and tokens in the same way", {
     txt <- "A D A C E A D F E B A C E D"
-    fcm_char <- fcm(txt, context = "window", count = "weighted", 
+    fcmt_char <- fcm(txt, context = "window", count = "weighted", 
                     weights = c(3, 2, 1), window = 3)           
     toks <- tokens(txt)
-    fcm_toks <- fcm(toks, context = "window", count = "weighted",  
+    fcmt_toks <- fcm(toks, context = "window", count = "weighted",  
                     weights = c(3, 2, 1), window = 3) 
-    expect_equivalent(round(as.matrix(fcm_char), 2), 
-                      round(as.matrix(fcm_toks), 2))
+    expect_equivalent(round(as.matrix(fcmt_char), 2), 
+                      round(as.matrix(fcmt_toks), 2))
 })
 
 # Testing weighting function
 
 test_that("not weighted",{
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", window = 3) 
+    fcmt <- fcm(txt, context = "window", window = 3) 
 
     mat <- matrix(c(4, 1, 4, 4, 5, 2,
                      0, 0, 1, 1, 2, 1,
@@ -52,13 +52,13 @@ test_that("not weighted",{
                      0, 0, 0, 0, 0, 2,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    fcm <- fcm_sort(fcm)
-    expect_equivalent(as.matrix(fcm), mat)
+    fcmt <- fcm_sort(fcmt)
+    expect_equivalent(as.matrix(fcmt), mat)
 })
 
 test_that("weighted by default",{
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", count = "weighted", window = 3)
+    fcmt <- fcm(txt, context = "window", count = "weighted", window = 3)
     
     mat <- matrix(c(1.67, 1, 2.83, 3.33, 2.83, 0.83,
                      0, 0, 0.5, 0.33, 1.33, 0.50,
@@ -67,13 +67,13 @@ test_that("weighted by default",{
                      0, 0, 0, 0, 0, 1.33,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    fcm <- fcm_sort(fcm)
-    expect_equivalent(mat, round(as.matrix(fcm), 2))
+    fcmt <- fcm_sort(fcmt)
+    expect_equivalent(mat, round(as.matrix(fcmt), 2))
 })
 
 test_that("customized weighting function",{
     txt <- "A D A C E A D F E B A C E D"
-    fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
+    fcmt <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
 
     mat <- matrix(c(6, 3, 9, 10, 10, 3,
                      0, 0, 2, 1, 4, 2,
@@ -82,8 +82,8 @@ test_that("customized weighting function",{
                      0, 0, 0, 0, 0, 4,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    fcm <- fcm_sort(fcm)
-    expect_equivalent(mat, round(as.matrix(fcm), 2))
+    fcmt <- fcm_sort(fcmt)
+    expect_equivalent(mat, round(as.matrix(fcmt), 2))
 })
 
 test_that("ordered setting: window", {

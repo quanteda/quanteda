@@ -115,7 +115,7 @@ is_grouped <- function(x, group) {
 
 # internal code to perform dfm compression and grouping
 # on features and/or documents
-group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
+group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_docvars = TRUE) {
 
     if (!length(features) && !length(documents))
         return(x)
@@ -125,7 +125,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
         j_new <- temp@j + 1
     } else {
         if (!is.factor(features))
-            features <- factor(features)
+            features <- factor(features, levels = unique(features))
         if (!fill)
             features <- droplevels(features)
         featname <- levels(features)
@@ -137,7 +137,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
         i_new <- temp@i + 1
     } else {
         if (!is.factor(documents))
-            documents <- factor(documents)
+            documents <- factor(documents, levels = unique(features))
         if (!fill)
             documents <- droplevels(documents)
         docname <- levels(documents)
@@ -158,11 +158,15 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
                   meta = x@meta,
                   concatenator = x@concatenator)
     set_dfm_dimnames(result) <- list(docname, featname)
-
-    if (is.null(documents)) {
-        result@docvars <- x@docvars
+    
+    if (use_docvars) {
+        if (is.null(documents)) {
+            result@docvars <- x@docvars
+        } else {
+            result@docvars <- group_docvars(x@docvars, documents)
+        }
     } else {
-        result@docvars <- group_docvars(x@docvars, documents)
+        result@docvars <- data.frame()
     }
     return(result)
 }
