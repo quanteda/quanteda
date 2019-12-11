@@ -141,9 +141,9 @@ matrix2dfm <- function(x, slots = NULL) {
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     
     x <- Matrix(x, sparse = TRUE)
-    set_dfm_dimnames(x) <- list(rowname, colname)
     x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(nrow(x), rowname, FALSE))
-    set_dfm_slots(x, slots)
+    set_dfm_dimnames(x) <- list(rowname, colname)
+    set_dfm_slots(x) <- slots
 }
 
 #' Set values to a dfm's S4 slots
@@ -151,10 +151,10 @@ matrix2dfm <- function(x, slots = NULL) {
 #' @param slots a list of values extracted using `attributes` and to be assigned to slots 
 #' @param exceptions names of slots to be ignored
 #' @keywords internal
-set_dfm_slots <- function(x, slots = NULL, exceptions = NULL) {
+"set_dfm_slots<-" <- function(x, slots = NULL, exceptions = NULL) {
     if (is.null(slots)) return(x)
     sname <- slotNames("dfm")
-    sname <- setdiff(sname, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+    sname <- setdiff(sname, c(slotNames("dgCMatrix"), exceptions))
     for (s in sname) {
         try({
             slot(x, s) <- slots[[s]]

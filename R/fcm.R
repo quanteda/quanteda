@@ -184,7 +184,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, margin = margin, weights = 1,
                   tri = tri)
-    slots(result) <- attributes(x)
+    set_fcm_slots(result) <- attributes(x)
     set_fcm_dimnames(result) <- list(rownames(result), colnames(result))
     return(result)
 }
@@ -239,7 +239,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
                       context = context, window = window, margin = colSums(dfm(x)),
                       weights = weights, tri = tri, ordered = ordered)
     }
-    slots(result) <- attributes(x)
+    set_fcm_slots(result) <- attributes(x)
     return(result)
 }     
 
