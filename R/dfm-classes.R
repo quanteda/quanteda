@@ -191,15 +191,14 @@ cbind.dfm <- function(...) {
     
     x <- args[[1]]
     y <- args[[2]]
-    attrs <- attributes(x)
-    
+
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
         x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), 
                            dimnames = list(docs = docnames(y), features = names[1])))
     }
-    
+
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
@@ -220,19 +219,17 @@ cbind.dfm <- function(...) {
     }
     
     # make any added feature names unique
-    i_added <- stri_startswith_fixed(colnames(result), 
-                                     quanteda_options("base_featname"))
-    colnames(result)[i_added] <- 
-        make.unique(colnames(result)[i_added], sep = "")
+    # i_added <- stri_startswith_fixed(colnames(result), 
+    #                                  quanteda_options("base_featname"))
+    # colnames(result)[i_added] <- 
+    #     make.unique(colnames(result)[i_added], sep = "")
     
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", 
                 noBreaks. = TRUE, call. = FALSE)
-    
-    # TODO could be removed after upgrading as.dfm()
+    set_dfm_slots(result) <- attributes(x)
     set_dfm_dimnames(result) <- dimnames(result)
-    slots(result) <- attrs
     result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 
@@ -278,10 +275,8 @@ rbind.dfm <- function(...) {
             result <- rbind(result, args[[i]])
         }
     }
-    
-    # TODO could be removed after upgrading as.dfm()
+    set_dfm_slots(result) <- attributes(x)
     set_dfm_dimnames(result) <- dimnames(result)
-    slots(result) <- attrs
     result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 }
