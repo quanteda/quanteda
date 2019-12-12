@@ -18,6 +18,8 @@
 #'   significantly faster than case-insensitive operation.
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
+#' @param window integer of length 1 or 2; the size of the window of tokens
+#'   adjacent to `pattern` that will be compounded.
 #' @return A [tokens] object in which the token sequences matching
 #'   `pattern` have been replaced by  compound "tokens" joined by the
 #'   concatenator.

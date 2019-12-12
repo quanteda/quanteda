@@ -9,6 +9,7 @@ tokens_compound(
   pattern,
   concatenator = "_",
   valuetype = c("glob", "regex", "fixed"),
+  window = 0,
   case_insensitive = TRUE,
   join = TRUE
 )
@@ -29,6 +30,9 @@ punctuation class \verb{[P]} will be removed).}
 \item{valuetype}{the type of pattern matching: \code{"glob"} for
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{window}{integer of length 1 or 2; the size of the window of tokens
+adjacent to \code{pattern} that will be compounded.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching.
 When \code{pattern} is a \code{collocations}, case-sensitive operation is
