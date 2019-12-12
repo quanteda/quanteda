@@ -1,7 +1,8 @@
 subset_dfm <- function(x, i, j, ..., drop) {
     
-    attrs <- attributes(x)
+    attrs <- attributes(x) # TODO change to get_dfm_slots()
     error <- FALSE
+    if (nargs() < 3) error <- TRUE
     if (!missing(i)) {
         if (is.character(i))
             i <- match(i, rownames(x))

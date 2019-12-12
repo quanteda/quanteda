@@ -1,8 +1,9 @@
 
 subset_fcm <- function(x, i, j, ..., drop) {
     
-    attrs <- attributes(x)
+    attrs <- attributes(x) # TODO change to get_fcm_slots()
     error <- FALSE
+    if (nargs() < 3) error <- TRUE
     if (!missing(i)) {
         if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
         if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
