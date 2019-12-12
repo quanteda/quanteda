@@ -245,4 +245,31 @@ test_that("tokens_compound window is working", {
     "window sizes cannot be negative"
   )
   
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, "a", padding = TRUE), pat, join = TRUE, window = 1)),
+    list(text1 = c("", "b_c_d_e", "f_g"))
+  )
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, "a", padding = TRUE), pat, join = FALSE, window = 1)),
+    list(text1 = c("", "b_c_d_e", "f_g"))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, "e", padding = TRUE), pat, join = TRUE, window = 1)),
+    as.list(tokens(c("a_b_c_d f_g")))
+  )
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, "e", padding = TRUE), pat, join = FALSE, window = 1)),
+    as.list(tokens(c("a_b_c b_c_d f_g")))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, c("a", "e"), padding = TRUE), pat, join = TRUE, window = 1)),
+    list(text1 = c("", "b_c_d", "f_g"))
+  )
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, c("a", "e"), padding = TRUE), pat, join = FALSE, window = 1)),
+    list(text1 = c("", "b_c_d", "f_g"))
+  )
+  
 })
