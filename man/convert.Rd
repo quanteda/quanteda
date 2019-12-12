@@ -2,21 +2,27 @@
 % Please edit documentation in R/convert.R
 \name{convert}
 \alias{convert}
-\title{Convert a dfm to a non-quanteda format}
+\alias{convert.dfm}
+\alias{convert.corpus}
+\title{Convert quanteda objects to non-quanteda formats}
 \usage{
-convert(
+convert(x, to, ...)
+
+\method{convert}{dfm}(
   x,
   to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa", "matrix", "data.frame",
     "tripletlist"),
   docvars = NULL,
-  omit_empty = TRUE
+  omit_empty = TRUE,
+  ...
 )
+
+\method{convert}{corpus}(x, to = c("data.frame"), ...)
 }
 \arguments{
-\item{x}{a \link{dfm} to be converted}
+\item{x}{a \link{dfm} or \link{corpus} to be converted}
 
-\item{to}{target conversion format, consisting of the name of the package
-into whose document-term matrix representation the dfm will be converted:
+\item{to}{target conversion format, one of:
 \describe{ \item{\code{"lda"}}{a list with components "documents" and
 "vocab" as needed by the function \link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
 \pkg{lda} package} \item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from
@@ -26,10 +32,14 @@ package} \item{\code{"austin"}}{the \code{wfm} format from the
 used by the \pkg{topicmodels} package}
 \item{\code{"lsa"}}{the "textmatrix" format as
 used by the \pkg{lsa} package}
-\item{\code{"data.frame"}}{a data.frame where each feature is a variable}
+\item{\code{"data.frame"}}{a data.frame of without row.names, in which documents are rows, and
+each feature is a variable (for a dfm),
+or each text and its document variables form a row (for a corpus)}
 \item{\code{"tripletlist"}}{a named "triplet" format list consisting of
 \code{document}, \code{feature}, and \code{frequency}}
 }}
+
+\item{...}{unused directly}
 
 \item{docvars}{optional data.frame of document variables used as the
 \code{meta} information in conversion to the \pkg{stm} package format.
@@ -47,12 +57,15 @@ See conversion target package documentation for more detailed descriptions
 of the return formats.
 }
 \description{
-Convert a quanteda \link{dfm} object to a format useable by other text
-analysis packages.  The general function \code{convert} provides easy
-conversion from a dfm to the document-term representations used in all other
-text analysis packages for which conversions are defined.
+Convert a quanteda \link{dfm} or \link{corpus} object to a format useable by other
+packages. The general function \code{convert} provides easy conversion from a dfm
+to the document-term representations used in all other text analysis packages
+for which conversions are defined.  For \link{corpus} objects, \code{convert} provides
+an easy way to make a corpus and its document variables into a data.frame.
 }
 \examples{
+## convert a dfm
+
 corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
 dfmat1 <- dfm(corp)
 
@@ -77,6 +90,12 @@ str(convert(dfmat1, to = "topicmodels"))
 
 # lda package format
 str(convert(dfmat1, to = "lda"))
-
 }
+
+## convert a corpus into a data.frame
+
+corp <- corpus(c(d1 = "Text one.", d2 = "Text two."),
+               docvars = data.frame(dvar1 = 1:2, dvar2 = c("one", "two"),
+                                    stringsAsFactors = FALSE))
+convert(corp, to = "data.frame")
 }
