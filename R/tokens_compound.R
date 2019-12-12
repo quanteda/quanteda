@@ -64,6 +64,7 @@
 #' tokens_compound(toks, pattern = compounds, join = FALSE)
 tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                    window = 0,
                     case_insensitive = TRUE, join = TRUE) {
     UseMethod("tokens_compound")
 }
@@ -71,6 +72,7 @@ tokens_compound <- function(x, pattern,
 #' @export
 tokens_compound.default <- function(x, pattern,
                                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                                   window = 0,
                                    case_insensitive = TRUE, join = TRUE) {
     stop(friendly_class_undefined_message(class(x), "tokens_compound"))
 }
@@ -79,6 +81,7 @@ tokens_compound.default <- function(x, pattern,
 #' @export
 tokens_compound.tokens <- function(x, pattern,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                   window = 0,
                    case_insensitive = TRUE, join = TRUE) {
     
     x <- as.tokens(x)
@@ -86,9 +89,13 @@ tokens_compound.tokens <- function(x, pattern,
     attrs <- attributes(x)
     types <- types(x)
     
-    seqs_id <- pattern2list(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
+    seqs_id <- pattern2list(pattern, types, valuetype, case_insensitive, remove_unigram = FALSE)
     if (length(seqs_id) == 0) return(x) # do nothing
-    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
+    
+    if (any(window < 0)) stop("window sizes cannot be negative")
+    if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
+    if (length(window) == 1) window <- rep(window, 2)
+    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join, window[1], window[2])
     attributes(x, FALSE) <- attrs
     attr(x, "concatenator") <- concatenator
     return(x)
