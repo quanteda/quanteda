@@ -1,4 +1,35 @@
-context('test fcm indexing')
+context('test indexing')
+
+test_that("test dfm indexing", {
+    
+    x <- dfm(tokens(c("this contains lots of stopwords",
+                      "no if, and, or but about it: lots"),
+                    remove_punct = TRUE))
+    expect_equivalent(
+        as.matrix(x[1:2, 1:3]),
+        matrix(c(1, 0, 1, 0, 1, 1), nrow = 2)
+    )
+    expect_equivalent(
+        as.matrix(x[1:2, 1:3, drop = FALSE]),
+        matrix(c(1, 0, 1, 0, 1, 1), nrow = 2)
+    )
+    expect_equal(
+        x[], x
+    )
+    expect_equal(
+        x[, drop = FALSE], x
+    )
+    expect_error(x[1])
+    expect_error(x[1:2])
+    expect_error(x[i = 1])
+    expect_error(x[j = 1])
+    
+    expect_equivalent(dim(x[, 1:3]), c(2, 3))
+    expect_equivalent(dim(x[1:2, ]), c(2, 12))
+    expect_equivalent(dim(x[, 1:3, drop = FALSE]), c(2, 3))
+    expect_equivalent(dim(x[1:2, drop = FALSE]), c(2, 12))
+    
+})
 
 test_that("test fcm indexing", {
     
@@ -19,6 +50,11 @@ test_that("test fcm indexing", {
     expect_equal(
         x[, drop = FALSE], x
     )
+    expect_error(x[1])
+    expect_error(x[1:2])
+    expect_error(x[i = 1])
+    expect_error(x[j = 1])
+
     expect_equivalent(dim(x[, 1:3]), c(12, 3))
     expect_equivalent(dim(x[1:3, ]), c(3, 12))
     expect_equivalent(dim(x[, 1:3, drop = FALSE]), c(12, 3))

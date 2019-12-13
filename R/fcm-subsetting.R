@@ -3,6 +3,7 @@ subset_fcm <- function(x, i, j, ..., drop) {
     
     slots <- get_fcm_slots(x)
     error <- FALSE
+    if (nargs() == 2) error <- TRUE
     if (!missing(i)) {
         if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
         if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
@@ -13,9 +14,7 @@ subset_fcm <- function(x, i, j, ..., drop) {
     }
     if (error) stop("Subscript out of bounds")
     
-    if (missing(i) && missing(j)) {
-        return(x)
-    } else if (!missing(i) && missing(j)) {
+    if (!missing(i) && missing(j)) {
         x <- "["(as(x, "Matrix"), i, , ..., drop = FALSE)
     } else if (missing(i) && !missing(j)) {
         x <- "["(as(x, "Matrix"), , j, ..., drop = FALSE)

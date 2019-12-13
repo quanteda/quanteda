@@ -9,18 +9,23 @@
 #' an easy way to make a corpus and its document variables into a data.frame.
 #' @param x a [dfm] or [corpus] to be converted
 #' @param to target conversion format, one of: 
-#'   \describe{ \item{`"lda"`}{a list with components "documents" and 
-#'   "vocab" as needed by the function [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the 
-#'   \pkg{lda} package} \item{`"tm"`}{a [DocumentTermMatrix][tm::DocumentTermMatrix] from 
-#'   the \pkg{tm} package} \item{`"stm"`}{the  format for the \pkg{stm} 
-#'   package} \item{`"austin"`}{the `wfm` format from the 
-#'   **austin** package} \item{`"topicmodels"`}{the "dtm" format as 
-#'   used by the \pkg{topicmodels} package} 
+#'   \describe{ \item{`"lda"`}{a list with components "documents" and "vocab" as
+#'   needed by the function
+#'   [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the
+#'   \pkg{lda} package}
+#'   \item{`"tm"`}{a [DocumentTermMatrix][tm::DocumentTermMatrix] from the
+#'   \pkg{tm} package}
+#'   \item{`"stm"`}{the  format for the \pkg{stm} package} \item{`"austin"`}{the
+#'   `wfm` format from the **austin** package}
+#'   \item{`"topicmodels"`}{the "dtm" format as used by the \pkg{topicmodels}
+#'   package}
 #'   \item{`"lsa"`}{the "textmatrix" format as 
 #'   used by the \pkg{lsa} package}
-#'   \item{`"data.frame"`}{a data.frame of without row.names, in which documents are rows, and 
-#'     each feature is a variable (for a dfm),
-#'    or each text and its document variables form a row (for a corpus)} 
+#'   \item{`"data.frame"`}{a data.frame of without row.names, in which documents
+#'   are rows, and each feature is a variable (for a dfm),
+#'    or each text and its document variables form a row (for a corpus)}
+#'   \item{`"json"`}{(corpus only) convert a corpus and its document variables
+#'   into JSON format, using the format described in [`jsonlite::toJSON`]}
 #'   \item{`"tripletlist"`}{a named "triplet" format list consisting of 
 #'   `document`, `feature`, and `frequency`} 
 #'   }
@@ -125,6 +130,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 }
 
 #' @rdname convert
+#' @inheritParams jsonlite::toJSON
 #' @export
 #' @examples 
 #' 
@@ -134,7 +140,8 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #'                docvars = data.frame(dvar1 = 1:2, dvar2 = c("one", "two"),
 #'                                     stringsAsFactors = FALSE))
 #' convert(corp, to = "data.frame")
-convert.corpus <- function(x, to = c("data.frame"), ...) {
+#' convert(corp, to = "json")
+convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...) {
     check_dots(list(...))
     to <- match.arg(to)
     
@@ -145,6 +152,8 @@ convert.corpus <- function(x, to = c("data.frame"), ...) {
                          row.names = NULL)
         df <- cbind(df, docvars(x))
         return(df)
+    } else if (to == "json") {
+        return(jsonlite::toJSON(convert(x, to = "data.frame"), pretty = pretty))
     } else {
         stop("invalid \"to\" format")
     }
