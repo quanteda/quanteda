@@ -378,3 +378,25 @@ test_that("fcm feature names have encoding", {
     expect_true(all(Encoding(rownames(mt2)) == "UTF-8"))
 })
 
+test_that("fcm raise nicer error message, #1267", {
+    
+    txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
+    mx <- fcm(dfm(txt))
+    expect_error(mx["five"], "Subscript out of bounds")
+    expect_error(mx[,"five"], "Subscript out of bounds")
+    expect_error(mx[5], "Subscript out of bounds")
+    expect_error(mx[,5], "Subscript out of bounds")
+    expect_error(mx[,1:5], "Subscript out of bounds")
+    expect_error(mx["d4","five"], "Subscript out of bounds")
+    expect_error(mx[,"five",TRUE], "Subscript out of bounds")
+    expect_error(mx[,5,TRUE], "Subscript out of bounds")
+    expect_error(mx[,1:5,TRUE], "Subscript out of bounds")
+    expect_error(mx["d4","five",TRUE], "Subscript out of bounds")
+    
+    expect_error(mx[4,5], "Subscript out of bounds")
+    expect_error(mx[4:5], "Subscript out of bounds")
+    expect_error(mx[1:4,1:5], "Subscript out of bounds")
+    expect_error(mx[4,5,TRUE], "Subscript out of bounds")
+    expect_error(mx[1:4,1:5,TRUE], "Subscript out of bounds")
+    
+})
