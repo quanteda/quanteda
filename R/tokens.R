@@ -435,6 +435,7 @@ tokens_internal <- function(x,
 
     what <- match.arg(what)
     attrs <- attributes(x)
+    x <- stri_trans_nfc(x) # unicode normalization
 
     # disable remove_twitter if remove_punct = FALSE
     if (!remove_punct & remove_twitter) {
@@ -670,7 +671,8 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
-    types <- types[nzchar(types)]  # remove empty types
+    # remove empty types and control chracters
+    types <- types[nzchar(types) & !stri_detect_regex(types, "^[\\p{C}--\\p{Cc}]+$")]
     types <- union(types_reserved, types) # prepend new types
     
     x <- lapply(x, function(x) {
@@ -684,7 +686,7 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
     })
 
     attributes(x) <- attrs
-    attr(x, "types") <- stri_trans_nfc(types) # unicode normalization
+    attr(x, "types") <- types
     class(x) <- "tokens"
     return(x)
 }

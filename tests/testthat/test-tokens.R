@@ -810,3 +810,13 @@ test_that("test that what = \"word\" works the same as \"fast(er|est)\" word", {
     expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
                  tokens(chars, what = "fastestword", remove_hyphens = TRUE) %>% as.list())
 })
+
+test_that("tokens works with texts with many control characters", {
+    txt <- readRDS("../data/data_char_unicode-control.RDS")
+    toks <- tokens(txt)
+    type <- types(toks)
+    expect_true(all(nzchar(type)))
+    expect_true(all(!stri_detect_regex(type, "^[\\p{C}]+$")))
+})
+
+
