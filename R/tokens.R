@@ -475,7 +475,7 @@ tokenize <- function(x,
                 x[[i]] <- stri_replace_all_regex(x[[i]], "[#@]", "")
             }
 
-            temp <- tokenize_word(temp, what, remove_numbers, remove_punct, remove_symbols,
+            temp <- tokenize_word(x[[i]], what, remove_numbers, remove_punct, remove_symbols,
                                   remove_separators, verbose)
             
         } else if (what == "character") {
