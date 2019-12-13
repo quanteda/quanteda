@@ -32,7 +32,7 @@
     
 ## Bug fixes and stability enhancements
 
-*  None so far.
+*  docnames now enforced to be character (formerly, could be numeric for some objects).
 
 ## New features
 
