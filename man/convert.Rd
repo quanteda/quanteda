@@ -17,24 +17,29 @@ convert(x, to, ...)
   ...
 )
 
-\method{convert}{corpus}(x, to = c("data.frame"), ...)
+\method{convert}{corpus}(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} or \link{corpus} to be converted}
 
 \item{to}{target conversion format, one of:
-\describe{ \item{\code{"lda"}}{a list with components "documents" and
-"vocab" as needed by the function \link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
-\pkg{lda} package} \item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from
-the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm}
-package} \item{\code{"austin"}}{the \code{wfm} format from the
-\strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as
-used by the \pkg{topicmodels} package}
+\describe{ \item{\code{"lda"}}{a list with components "documents" and "vocab" as
+needed by the function
+\link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
+\pkg{lda} package}
+\item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from the
+\pkg{tm} package}
+\item{\code{"stm"}}{the  format for the \pkg{stm} package} \item{\code{"austin"}}{the
+\code{wfm} format from the \strong{austin} package}
+\item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels}
+package}
 \item{\code{"lsa"}}{the "textmatrix" format as
 used by the \pkg{lsa} package}
-\item{\code{"data.frame"}}{a data.frame of without row.names, in which documents are rows, and
-each feature is a variable (for a dfm),
+\item{\code{"data.frame"}}{a data.frame of without row.names, in which documents
+are rows, and each feature is a variable (for a dfm),
 or each text and its document variables form a row (for a corpus)}
+\item{\code{"json"}}{(corpus only) convert a corpus and its document variables
+into JSON format}
 \item{\code{"tripletlist"}}{a named "triplet" format list consisting of
 \code{document}, \code{feature}, and \code{frequency}}
 }}
@@ -50,6 +55,8 @@ documents with non-zero counts.  Only affects the "stm" format.}
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when \code{to = "lda"} or
 \code{to = "topicmodels"}.  For \code{to = "stm"} format, \verb{omit_empty`` is always }TRUE`.}
+
+\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[jsonlite]{prettify}}}
 }
 \value{
 A converted object determined by the value of \code{to} (see above).
