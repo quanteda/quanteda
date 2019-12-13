@@ -25,7 +25,7 @@
 #'   are rows, and each feature is a variable (for a dfm),
 #'    or each text and its document variables form a row (for a corpus)}
 #'   \item{`"json"`}{(corpus only) convert a corpus and its document variables
-#'   into JSON format}
+#'   into JSON format, using the format described in [`jsonlite::toJSON`]}
 #'   \item{`"tripletlist"`}{a named "triplet" format list consisting of 
 #'   `document`, `feature`, and `frequency`} 
 #'   }

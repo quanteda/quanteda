@@ -39,7 +39,7 @@ used by the \pkg{lsa} package}
 are rows, and each feature is a variable (for a dfm),
 or each text and its document variables form a row (for a corpus)}
 \item{\code{"json"}}{(corpus only) convert a corpus and its document variables
-into JSON format}
+into JSON format, using the format described in \code{\link[jsonlite:toJSON]{jsonlite::toJSON}}}
 \item{\code{"tripletlist"}}{a named "triplet" format list consisting of
 \code{document}, \code{feature}, and \code{frequency}}
 }}
@@ -105,4 +105,5 @@ corp <- corpus(c(d1 = "Text one.", d2 = "Text two."),
                docvars = data.frame(dvar1 = 1:2, dvar2 = c("one", "two"),
                                     stringsAsFactors = FALSE))
 convert(corp, to = "data.frame")
+convert(corp, to = "json")
 }
