@@ -26,7 +26,6 @@ test_that("test show.corpus", {
 
 })
 
-
 test_that("test c.corpus", {
     corp <- c(data_corpus_inaugural[1:2], 
               data_corpus_inaugural[3:5], 
