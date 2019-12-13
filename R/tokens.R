@@ -364,6 +364,7 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 #' @rdname as.tokens
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
+    x <- lapply(x, stri_trans_nfc)
     x <- serialize_tokens(x)
     docvar <- make_docvars(length(x), names(x))
     compile_tokens(x, docvar[["docname_"]], 
@@ -435,7 +436,6 @@ tokens_internal <- function(x,
 
     what <- match.arg(what)
     attrs <- attributes(x)
-    x <- stri_trans_nfc(x) # unicode normalization
 
     # disable remove_twitter if remove_punct = FALSE
     if (!remove_punct & remove_twitter) {
@@ -672,7 +672,7 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
     # remove empty types and control chracters
-    types <- types[nzchar(types) & !stri_detect_regex(types, "^[\\p{C}--\\p{Cc}]+$")]
+    types <- types[nzchar(types) & !stri_detect_regex(types, "^[\\p{Cf}]+$")]
     types <- union(types_reserved, types) # prepend new types
     
     x <- lapply(x, function(x) {
