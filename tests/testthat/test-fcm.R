@@ -382,6 +382,7 @@ test_that("fcm raise nicer error message, #1267", {
     
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
     mx <- fcm(dfm(txt))
+    expect_silent(mx[])
     expect_error(mx["five"], "Subscript out of bounds")
     expect_error(mx[,"five"], "Subscript out of bounds")
     expect_error(mx[5], "Subscript out of bounds")

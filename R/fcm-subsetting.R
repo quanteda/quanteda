@@ -1,6 +1,8 @@
 
 subset_fcm <- function(x, i, j, ..., drop) {
     
+    if (missing(i) && missing(j)) return(x)
+    
     slots <- get_fcm_slots(x)
     error <- FALSE
     if (nargs() == 2) error <- TRUE
