@@ -35,7 +35,7 @@ Text join_comp(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
-                // adjust window size to exclude padding
+                // Adjust window size to exclude padding
                 int from = adjust_window(tokens, i, i - window.first);
                 int to = adjust_window(tokens, i, i + span + window.second);
                 std::fill(flags_link.begin() + from, flags_link.begin() + to, true); // mark tokens linked
@@ -104,7 +104,7 @@ Text match_comp(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
-                // adjust window size to exclude padding
+                // Adjust window size to exclude padding
                 int from = adjust_window(tokens, i, i - window.first);
                 int to = adjust_window(tokens, i, i + span + window.second);
                 std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
@@ -184,10 +184,12 @@ struct compound_mt : public Worker{
  * @used tokens_compound()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
- * @param compounds_ list of features to substitute
- * @param ids_ IDs to be placed after substitution
+ * @param compounds_ list of patterns to substitute
+ * @param types_ types in the tokens object
+ * @param delim_ character to concatenate types
  * @param join join overlapped features if true
- * 
+ * @param window_left numbers tokens on the left-hand side of pattern
+ * @param window_right numbers tokens on the right-hand side of pattern
  */
 
 // [[Rcpp::export]]
