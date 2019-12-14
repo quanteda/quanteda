@@ -256,9 +256,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
         } else {
             std::string type_ngram = types[key[0] - 1];
             for (std::size_t j = 1; j < key.size(); j++) {
-                if (key[j] > 0) {
-                    type_ngram += delim + types[key[j] - 1];
-                }
+                type_ngram += delim + types[key[j] - 1];
             }
             types_comp[i] = type_ngram;
         }
