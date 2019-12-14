@@ -22,8 +22,8 @@ tokens_compound(
 details.}
 
 \item{concatenator}{the concatenation character that will connect the words
-making up the multi-word sequences.  The default \verb{_} is recommended
-since it will not be removed during normal cleaning and tokenization (while
+making up the multi-word sequences.  The default \verb{_} is recommended since
+it will not be removed during normal cleaning and tokenization (while
 nearly all other punctuation characters, at least those in the Unicode
 punctuation class \verb{[P]} will be removed).}
 
@@ -32,34 +32,34 @@ punctuation class \verb{[P]} will be removed).}
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{window}{integer of length 1 or 2; the size of the window of tokens
-adjacent to \code{pattern} that will be compounded.}
+adjacent to \code{pattern} that will be compounded. If paddings are found,
+window is shrank to exclude them.}
 
-\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching.
-When \code{pattern} is a \code{collocations}, case-sensitive operation is
-significantly faster than case-insensitive operation.}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching. When
+\code{pattern} is a \code{collocations}, case-sensitive operation is significantly
+faster than case-insensitive operation.}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
 }
 \value{
-A \link{tokens} object in which the token sequences matching
-\code{pattern} have been replaced by  compound "tokens" joined by the
-concatenator.
+A \link{tokens} object in which the token sequences matching \code{pattern}
+have been replaced by  compound "tokens" joined by the concatenator.
 }
 \description{
 Replace multi-token sequences with a multi-word, or "compound" token.  The
 resulting compound tokens will represent a phrase or multi-word expression,
-concatenated with \code{concatenator} (by default, the "\verb{_}" character)
-to form a single "token".  This ensures that the sequences will be processed
+concatenated with \code{concatenator} (by default, the "\verb{_}" character) to form a
+single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a \link{dfm}.
 }
 \note{
 Patterns to be compounded (naturally) consist of multi-word sequences,
-and how these are expected in \code{pattern} is very specific.  If the
-elements to be compounded are supplied as space-delimited elements of a
-character vector, wrap the vector in \code{\link[=phrase]{phrase()}}.  If the elements
-to be compounded are separate elements of a character vector, supply it as
-a list where each list element is the sequence of character elements.
+and how these are expected in \code{pattern} is very specific.  If the elements
+to be compounded are supplied as space-delimited elements of a character
+vector, wrap the vector in \code{\link[=phrase]{phrase()}}.  If the elements to be compounded
+are separate elements of a character vector, supply it as a list where each
+list element is the sequence of character elements.
 
 See the examples below.
 }
@@ -81,7 +81,7 @@ tokens_compound(toks, phrase(c("United Kingdom", "European Union")))
 
 # supplied as values in a dictionary (same as list) - is compounded
 # (keys do not matter)
-tokens_compound(toks, dictionary(list(key1 = "United Kingdom", 
+tokens_compound(toks, dictionary(list(key1 = "United Kingdom",
                                       key2 = "European Union")))
 # pattern as dictionaries with glob matches
 tokens_compound(toks, dictionary(list(key1 = c("U* K*"))), valuetype = "glob")
@@ -95,4 +95,9 @@ tokens_compound(toks, colls, case_insensitive = FALSE)
 compounds <- list(c("the", "European"), c("European", "Union"))
 tokens_compound(toks, pattern = compounds, join = TRUE)
 tokens_compound(toks, pattern = compounds, join = FALSE)
+
+# use window to form ngrams
+tokens_remove(toks, pattern = stopwords("en")) \%>\% 
+tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
+  
 }

@@ -7,6 +7,16 @@ using namespace quanteda;
 Mutex id_mutex;
 #endif
 
+int adjust_window(Text &tokens, int current, int end) {
+    int i = current; 
+    if (end < current) {
+        while (i - 1 >= 0 && i - 1 >= end && tokens[i - 1] != 0) i--;
+    } else {
+        while (i + 1 < (int)tokens.size() && i + 1 < end && tokens[i + 1] != 0) i++;
+    }
+    return(i);
+}
+
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
                const SetNgrams &set_comps,
@@ -25,11 +35,13 @@ Text join_comp(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
-                int from = std::max((int)i - window.first, 0);
-                int to = std::min((int)i + (int)span + window.second - 1, (int)flags_link.size() - 1);
-                std::fill(flags_link.begin() + from, flags_link.begin() + to, true); // mark tokens linked (last should be false)
+                // adjust window size to exclude padding
+                int from = adjust_window(tokens, i, i - window.first);
+                int to = adjust_window(tokens, i, i + span + window.second);
+                std::fill(flags_link.begin() + from, flags_link.begin() + to, true); // mark tokens linked
                 match++;
             }
+            flags_link.back() = false; // last value should be false
         }
     }
     
@@ -92,10 +104,11 @@ Text match_comp(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
-                int from = std::max((int)i - window.first, 0);
-                int to = std::min((int)i + (int)span + window.second, (int)tokens.size());
-                std::fill(flags_match.begin() + from, flags_match.begin() + to, true); // mark tokens matched
-                Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to); // extract tokens matched
+                // adjust window size to exclude padding
+                int from = adjust_window(tokens, i, i - window.first);
+                int to = adjust_window(tokens, i, i + span + window.second);
+                std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
+                Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to + 1); // extract tokens matched
                 
 #if QUANTEDA_USE_TBB
                 id_mutex.lock();
