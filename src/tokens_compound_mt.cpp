@@ -220,7 +220,6 @@ List qatd_cpp_tokens_compound(const List &texts_,
     std::vector<std::size_t> spans(comps.size());
     for (size_t g = 0; g < comps.size(); g++) {
         set_comps.insert(comps[g]);
-        map_comps.insert(std::pair<Ngram, IdNgram>(comps[g], ++id_comp));
         spans[g] = comps[g].size();
     }
     sort(spans.begin(), spans.end());
