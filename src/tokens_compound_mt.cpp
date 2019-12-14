@@ -216,7 +216,6 @@ List qatd_cpp_tokens_compound(const List &texts_,
     MapNgrams map_comps; // for ID generation
     map_comps.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
 
-    
     Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
     for (size_t g = 0; g < comps.size(); g++) {
@@ -238,7 +237,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
         if (join) {
             texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
         } else {
-            texts[h] = match_comp(texts[h], spans, false, set_comps, map_comps, window);
+            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
         }
     }
 #endif
