@@ -135,6 +135,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     if (extract_pattern) 
         attrs$docvars[["pattern"]] <- temp$pattern
     attrs$unit <- "segments"
+    #attrs$names <- attrs$docvars[["docname_"]] # enable for 1611
     attributes(result, FALSE) <- attrs
     return(result)
 }

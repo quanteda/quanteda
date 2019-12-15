@@ -35,21 +35,21 @@ setMethod("t",
 setMethod("Arith", signature(e1 = "fcm", e2 = "numeric"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                 `+` = matrix2fcm(as(e1, "dgCMatrix") + e2, attributes(e1)),
-                 `-` = matrix2fcm(as(e1, "dgCMatrix") - e2, attributes(e1)),
-                 `*` = matrix2fcm(as(e1, "dgCMatrix") * e2, attributes(e1)),
-                 `/` = matrix2fcm(as(e1, "dgCMatrix") / e2, attributes(e1)),
-                 `^` = matrix2fcm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
+                 `+` = matrix2fcm(as(e1, "dgCMatrix") + e2, get_fcm_slots(e1)),
+                 `-` = matrix2fcm(as(e1, "dgCMatrix") - e2, get_fcm_slots(e1)),
+                 `*` = matrix2fcm(as(e1, "dgCMatrix") * e2, get_fcm_slots(e1)),
+                 `/` = matrix2fcm(as(e1, "dgCMatrix") / e2, get_fcm_slots(e1)),
+                 `^` = matrix2fcm(as(e1, "dgCMatrix") ^ e2, get_fcm_slots(e1))
               )
           })
 #' @rdname fcm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "fcm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                 `+` = matrix2fcm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
-                 `-` = matrix2fcm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
-                 `*` = matrix2fcm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
-                 `/` = matrix2fcm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
-                 `^` = matrix2fcm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
+                 `+` = matrix2fcm(e1 + as(e2, "dgCMatrix"), get_fcm_slots(e2)),
+                 `-` = matrix2fcm(e1 - as(e2, "dgCMatrix"), get_fcm_slots(e2)),
+                 `*` = matrix2fcm(e1 * as(e2, "dgCMatrix"), get_fcm_slots(e2)),
+                 `/` = matrix2fcm(e1 / as(e2, "dgCMatrix"), get_fcm_slots(e2)),
+                 `^` = matrix2fcm(e1 ^ as(e2, "dgCMatrix"), get_fcm_slots(e2))
               )
           })

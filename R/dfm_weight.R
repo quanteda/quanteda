@@ -439,7 +439,7 @@ dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse",
 dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", 
                           base = 10, force = FALSE, ...) {
 
-    attrs <- attributes(x)
+    slots <- get_dfm_slots(x)
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
 
@@ -458,9 +458,9 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     x@x <- tfreq@x * dfreq[j]
 
     # record attributes
-    attributes(x, FALSE) <- attrs
-    x@weightTf <- tfreq@weightTf
-    x@weightDf <- c(list(scheme = scheme_df, base = base), args)
+    slots$weightTf <- tfreq@weightTf
+    slots$weightDf <- c(list(scheme = scheme_df, base = base), args)
+    set_dfm_slots(x) <- slots
     return(x)
 }
 

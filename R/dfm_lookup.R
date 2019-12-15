@@ -92,7 +92,6 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         stop("dictionary must be a dictionary object")
 
     valuetype <- match.arg(valuetype)
-    attrs <- attributes(x)
     type <- colnames(x)
 
     if (verbose)
@@ -147,6 +146,5 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
 
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
-    attributes(result, FALSE) <- attrs
     return(result)
 }

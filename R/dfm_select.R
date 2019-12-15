@@ -91,7 +91,6 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     x <- as.dfm(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    attrs <- attributes(x)
     is_dfm <- FALSE
     feat <- featnames(x)
     
