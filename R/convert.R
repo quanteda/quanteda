@@ -1,22 +1,31 @@
-#' Convert a dfm to a non-quanteda format
+# convert generics ---------
+
+#' Convert quanteda objects to non-quanteda formats
 #' 
-#' Convert a quanteda [dfm] object to a format useable by other text
-#' analysis packages.  The general function `convert` provides easy
-#' conversion from a dfm to the document-term representations used in all other
-#' text analysis packages for which conversions are defined.
-#' @param x a [dfm] to be converted
-#' @param to target conversion format, consisting of the name of the package 
-#'   into whose document-term matrix representation the dfm will be converted: 
-#'   \describe{ \item{`"lda"`}{a list with components "documents" and 
-#'   "vocab" as needed by the function [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the 
-#'   \pkg{lda} package} \item{`"tm"`}{a [DocumentTermMatrix][tm::DocumentTermMatrix] from 
-#'   the \pkg{tm} package} \item{`"stm"`}{the  format for the \pkg{stm} 
-#'   package} \item{`"austin"`}{the `wfm` format from the 
-#'   **austin** package} \item{`"topicmodels"`}{the "dtm" format as 
-#'   used by the \pkg{topicmodels} package} 
+#' Convert a quanteda [dfm] or [corpus] object to a format useable by other
+#' packages. The general function `convert` provides easy conversion from a dfm
+#' to the document-term representations used in all other text analysis packages
+#' for which conversions are defined.  For [corpus] objects, `convert` provides
+#' an easy way to make a corpus and its document variables into a data.frame.
+#' @param x a [dfm] or [corpus] to be converted
+#' @param to target conversion format, one of: 
+#'   \describe{ \item{`"lda"`}{a list with components "documents" and "vocab" as
+#'   needed by the function
+#'   [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the
+#'   \pkg{lda} package}
+#'   \item{`"tm"`}{a [DocumentTermMatrix][tm::DocumentTermMatrix] from the
+#'   \pkg{tm} package}
+#'   \item{`"stm"`}{the  format for the \pkg{stm} package} \item{`"austin"`}{the
+#'   `wfm` format from the **austin** package}
+#'   \item{`"topicmodels"`}{the "dtm" format as used by the \pkg{topicmodels}
+#'   package}
 #'   \item{`"lsa"`}{the "textmatrix" format as 
 #'   used by the \pkg{lsa} package}
-#'   \item{`"data.frame"`}{a data.frame where each feature is a variable} 
+#'   \item{`"data.frame"`}{a data.frame of without row.names, in which documents
+#'   are rows, and each feature is a variable (for a dfm),
+#'    or each text and its document variables form a row (for a corpus)}
+#'   \item{`"json"`}{(corpus only) convert a corpus and its document variables
+#'   into JSON format, using the format described in [`jsonlite::toJSON`]}
 #'   \item{`"tripletlist"`}{a named "triplet" format list consisting of 
 #'   `document`, `feature`, and `frequency`} 
 #'   }
@@ -29,11 +38,14 @@
 #'   that do not accept empty documents.  Only used when `to = "lda"` or
 #'   `to = "topicmodels"`.  For `to = "stm"` format, `omit_empty`` is
 #'   always `TRUE`.
+#' @param ... unused directly
 #' @return A converted object determined by the value of `to` (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
 #'   of the return formats.
 #' @export
 #' @examples
+#' ## convert a dfm
+#' 
 #' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
 #' dfmat1 <- dfm(corp)
 #' 
@@ -58,24 +70,23 @@
 #' 
 #' # lda package format
 #' str(convert(dfmat1, to = "lda"))
-#' 
 #' }
-convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
-                              "lsa", "matrix", "data.frame", "tripletlist"), docvars = NULL,
-                    omit_empty = TRUE) {
+convert <- function(x, to, ...) {
     UseMethod("convert")
-}
-
-#' @export
-convert.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "convert"))
 }
 
 #' @noRd
 #' @export
+convert.default <- function(x, to, ...) {
+    stop(friendly_class_undefined_message(class(x), "convert"))
+}
+
+#' @rdname convert
+#' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
                                   "lsa", "matrix", "data.frame", "tripletlist"), 
-                        docvars = NULL, omit_empty = TRUE) {
+                        docvars = NULL, omit_empty = TRUE, ...) {
+    check_dots(list(...))
     x <- as.dfm(x)
     to <- match.arg(to)
 
@@ -118,6 +129,38 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
         
 }
 
+#' @rdname convert
+#' @inheritParams jsonlite::toJSON
+#' @export
+#' @examples 
+#' 
+#' ## convert a corpus into a data.frame
+#' 
+#' corp <- corpus(c(d1 = "Text one.", d2 = "Text two."),
+#'                docvars = data.frame(dvar1 = 1:2, dvar2 = c("one", "two"),
+#'                                     stringsAsFactors = FALSE))
+#' convert(corp, to = "data.frame")
+#' convert(corp, to = "json")
+convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...) {
+    check_dots(list(...))
+    to <- match.arg(to)
+    
+    if (to == "data.frame") {
+        df <- data.frame(doc_id = docnames(x),
+                         text = texts(x),
+                         stringsAsFactors = FALSE,
+                         row.names = NULL)
+        df <- cbind(df, docvars(x))
+        return(df)
+    } else if (to == "json") {
+        return(jsonlite::toJSON(convert(x, to = "data.frame"), pretty = pretty))
+    } else {
+        stop("invalid \"to\" format")
+    }
+}
+
+
+# convert.dfm internal --------
 
 #' Convenience wrappers for dfm convert
 #' 

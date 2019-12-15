@@ -23,7 +23,7 @@
 #' @keywords internal dfm
 setClass("dfm",
          slots = c(weightTf = "list", weightDf = "list", 
-                   smooth = "numeric", 
+                   smooth = "numeric", unit = "character",
                    ngrams = "integer", skip = "integer", 
                    concatenator = "character", version = "integer",
                    docvars = "data.frame",
@@ -34,6 +34,7 @@ setClass("dfm",
                           weightDf = list(scheme = "unary", base = NULL, c = NULL,
                                           smoothing = NULL, threshold = NULL),
                           smooth = 0,
+                          unit = "documents",
                           ngrams = 1L,
                           skip = 0L,
                           concatenator = "_",
@@ -87,22 +88,22 @@ setMethod("rowMeans",
 setMethod("Arith", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, attributes(e1)),
-                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, attributes(e1)),
-                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, attributes(e1)),
-                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, attributes(e1)),
-                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, attributes(e1))
+                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, get_dfm_slots(e1)),
+                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, get_dfm_slots(e1)),
+                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, get_dfm_slots(e1)),
+                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, get_dfm_slots(e1)),
+                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, get_dfm_slots(e1))
               )
           })
 #' @rdname dfm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), attributes(e2)),
-                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), attributes(e2)),
-                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), attributes(e2)),
-                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), attributes(e2)),
-                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), attributes(e2))
+                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), get_dfm_slots(e2)),
+                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), get_dfm_slots(e2))
               )
           })
 
@@ -190,15 +191,14 @@ cbind.dfm <- function(...) {
     
     x <- args[[1]]
     y <- args[[2]]
-    attrs <- attributes(x)
-    
+
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
         x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), 
                            dimnames = list(docs = docnames(y), features = names[1])))
     }
-    
+
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
@@ -219,19 +219,17 @@ cbind.dfm <- function(...) {
     }
     
     # make any added feature names unique
-    i_added <- stri_startswith_fixed(colnames(result), 
-                                     quanteda_options("base_featname"))
-    colnames(result)[i_added] <- 
-        make.unique(colnames(result)[i_added], sep = "")
+    # i_added <- stri_startswith_fixed(colnames(result), 
+    #                                  quanteda_options("base_featname"))
+    # colnames(result)[i_added] <- 
+    #     make.unique(colnames(result)[i_added], sep = "")
     
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", 
                 noBreaks. = TRUE, call. = FALSE)
-    
-    # TODO could be removed after upgrading as.dfm()
+    set_dfm_slots(result) <- attributes(x)
     set_dfm_dimnames(result) <- dimnames(result)
-    slots(result) <- attrs
     result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 
@@ -261,7 +259,7 @@ rbind.dfm <- function(...) {
 
     x <- args[[1]]
     y <- args[[2]]
-    attrs <- attributes(x)
+    slots <- get_dfm_slots(x)
 
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
     if (!ndoc(y)) return(x)
@@ -277,10 +275,8 @@ rbind.dfm <- function(...) {
             result <- rbind(result, args[[i]])
         }
     }
-    
-    # TODO could be removed after upgrading as.dfm()
+    set_dfm_slots(result) <- slots
     set_dfm_dimnames(result) <- dimnames(result)
-    slots(result) <- attrs
     result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 }
