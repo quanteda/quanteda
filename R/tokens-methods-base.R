@@ -48,11 +48,13 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @method print tokens
 #' @noRd
 print.tokens <- function(x, ...) {
+    attrs <- attributes(x)
     cat(class(x)[1], " from ", ndoc(x), " document",
         if (ndoc(x) > 1L) "s" else "", ".\n", sep = "")
     types <- c("", types(x))
     x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
     class(x) <- "listof"
+    names(x) <- attrs$docvars[["docname_"]]
     print(x, ...)
 }
 

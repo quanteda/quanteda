@@ -407,12 +407,6 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #'   tokens, `FALSE` otherwise.
 is.tokens <- function(x) "tokens" %in% class(x)
 
-#' @noRd
-#' @export
-docnames.tokens <- function(x) {
-    names(x)
-}
-
 # ============== INTERNAL FUNCTIONS =======================================
 
 # TODO we can be rename this "tokenize" once quanteda::tokenize has gone
@@ -539,7 +533,6 @@ compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
                            what = "word", concatenator = "_", padding = FALSE,
                            unit = "documents", source = "corpus", docvars = data.frame()) {
     structure(x,
-              names = names,
               class = "tokens",
               what = what,
               ngrams = ngrams,

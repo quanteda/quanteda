@@ -12,10 +12,10 @@ NULL
 #' @method print corpus
 print.corpus <- function(x, ...) {
     x <- as.corpus(x)
-    cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
+    cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
         if (ndoc(x) > 1L) "s" else "", sep = "")
     if (ncol(docvars(x)))
-        cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar",
+        cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
             if (ncol(docvars(x)) == 1L) "" else "s", sep="")
     cat(".\n")
     
@@ -228,7 +228,6 @@ c.corpus <- function(..., recursive = FALSE) {
     
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
-    names(x) <- attrs$docvars[["docname_"]]
     attributes(x, FALSE) <- attrs
     return(x)
 }

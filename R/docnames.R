@@ -1,5 +1,3 @@
-# docnames ----------------
-
 #' Get or set document names
 #' 
 #' Get or set the document names of a [corpus], [tokens], or [dfm] object.
@@ -37,6 +35,12 @@ docnames.corpus <- function(x) {
     get_docvars(x, "docname_", FALSE, TRUE, TRUE)
 }
 
+#' @noRd
+#' @export
+docnames.tokens <- function(x) {
+    get_docvars(x, "docname_", FALSE, TRUE, TRUE)
+}
+
 #' @param value a character vector of the same length as `x`
 #' @return `docnames <-` assigns new values to the document names of an object.  
 #' docnames can only be character, so any non-character value assigned to be a
@@ -60,7 +64,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
+    attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
@@ -68,7 +72,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- value
+    attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
