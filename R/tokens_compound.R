@@ -18,11 +18,14 @@
 #'   faster than case-insensitive operation.
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
-#' @param window integer of length 1 or 2; the size of the window of tokens
-#'   adjacent to `pattern` that will be compounded. If paddings are found,
-#'   window is shrank to exclude them.
+#' @param window integer; a vector of length 1 or 2 that specifies size of the
+#'   window of tokens adjacent to `pattern` that will be compounded with matches
+#'   to `pattern`.  The window can be assymetric if two elements are specified,
+#'   with the first giving the window size before `pattern` and the second the
+#'   window size after.  If paddings (empty `""` tokens) are found, window will
+#'   be shrunk to exclude them.
 #' @return A [tokens] object in which the token sequences matching `pattern`
-#'   have been replaced by  compound "tokens" joined by the concatenator.
+#'   have been replaced by new compounded "tokens" joined by the concatenator.
 #' @note Patterns to be compounded (naturally) consist of multi-word sequences,
 #'   and how these are expected in `pattern` is very specific.  If the elements
 #'   to be compounded are supplied as space-delimited elements of a character

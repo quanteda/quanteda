@@ -31,9 +31,12 @@ punctuation class \verb{[P]} will be removed).}
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{window}{integer of length 1 or 2; the size of the window of tokens
-adjacent to \code{pattern} that will be compounded. If paddings are found,
-window is shrank to exclude them.}
+\item{window}{integer; a vector of length 1 or 2 that specifies size of the
+window of tokens adjacent to \code{pattern} that will be compounded with matches
+to \code{pattern}.  The window can be assymetric if two elements are specified,
+with the first giving the window size before \code{pattern} and the second the
+window size after.  If paddings (empty \code{""} tokens) are found, window will
+be shrunk to exclude them.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching. When
 \code{pattern} is a \code{collocations}, case-sensitive operation is significantly
@@ -44,7 +47,7 @@ compound; otherwise, form these separately.  See examples.}
 }
 \value{
 A \link{tokens} object in which the token sequences matching \code{pattern}
-have been replaced by  compound "tokens" joined by the concatenator.
+have been replaced by new compounded "tokens" joined by the concatenator.
 }
 \description{
 Replace multi-token sequences with a multi-word, or "compound" token.  The
