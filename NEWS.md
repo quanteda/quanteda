@@ -29,6 +29,8 @@
 6.  settings functions (and related slots and object attributes) are gone.
 
 7.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
+
+8.  (Pre-)processing of tokens is now actually post-processing, after a simple tokenization on word boundaries.  This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines.  (#1503, #1446, #1801)
     
 ## Bug fixes and stability enhancements
 
@@ -40,6 +42,7 @@
 * Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)
 * Added `startpos` and `endpos` arguments to `tokens_select()`, for selecting on token positions relative to the start or end of the tokens in each document. (#1475)
 * Added a `convert()` method for corpus objects, to convert them into data.frame or json formats.
+* Added a directionally controllable `window` argument to `tokens_compound()` that compounds the tokens before and after a `pattern` with its token matches.
 
 ## Behaviour changes
 

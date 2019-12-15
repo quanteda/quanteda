@@ -723,7 +723,7 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 #' # stemming
 #' toks2 <- tokens("Stemming stemmed many word stems.")
 #' unclass(toks2)
-#' unclass(quanteda:::tokens_recompile(stem(toks2)))
+#' unclass(quanteda:::tokens_recompile(tokens_wordstem(toks2)))
 #'
 #' # compounding
 #' toks3 <- tokens("One two three four.")
