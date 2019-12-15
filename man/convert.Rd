@@ -2,34 +2,49 @@
 % Please edit documentation in R/convert.R
 \name{convert}
 \alias{convert}
-\title{Convert a dfm to a non-quanteda format}
+\alias{convert.dfm}
+\alias{convert.corpus}
+\title{Convert quanteda objects to non-quanteda formats}
 \usage{
-convert(
+convert(x, to, ...)
+
+\method{convert}{dfm}(
   x,
   to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa", "matrix", "data.frame",
     "tripletlist"),
   docvars = NULL,
-  omit_empty = TRUE
+  omit_empty = TRUE,
+  ...
 )
+
+\method{convert}{corpus}(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 }
 \arguments{
-\item{x}{a \link{dfm} to be converted}
+\item{x}{a \link{dfm} or \link{corpus} to be converted}
 
-\item{to}{target conversion format, consisting of the name of the package
-into whose document-term matrix representation the dfm will be converted:
-\describe{ \item{\code{"lda"}}{a list with components "documents" and
-"vocab" as needed by the function \link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
-\pkg{lda} package} \item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from
-the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm}
-package} \item{\code{"austin"}}{the \code{wfm} format from the
-\strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as
-used by the \pkg{topicmodels} package}
+\item{to}{target conversion format, one of:
+\describe{ \item{\code{"lda"}}{a list with components "documents" and "vocab" as
+needed by the function
+\link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
+\pkg{lda} package}
+\item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from the
+\pkg{tm} package}
+\item{\code{"stm"}}{the  format for the \pkg{stm} package} \item{\code{"austin"}}{the
+\code{wfm} format from the \strong{austin} package}
+\item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels}
+package}
 \item{\code{"lsa"}}{the "textmatrix" format as
 used by the \pkg{lsa} package}
-\item{\code{"data.frame"}}{a data.frame where each feature is a variable}
+\item{\code{"data.frame"}}{a data.frame of without row.names, in which documents
+are rows, and each feature is a variable (for a dfm),
+or each text and its document variables form a row (for a corpus)}
+\item{\code{"json"}}{(corpus only) convert a corpus and its document variables
+into JSON format, using the format described in \code{\link[jsonlite:toJSON]{jsonlite::toJSON}}}
 \item{\code{"tripletlist"}}{a named "triplet" format list consisting of
 \code{document}, \code{feature}, and \code{frequency}}
 }}
+
+\item{...}{unused directly}
 
 \item{docvars}{optional data.frame of document variables used as the
 \code{meta} information in conversion to the \pkg{stm} package format.
@@ -40,6 +55,8 @@ documents with non-zero counts.  Only affects the "stm" format.}
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when \code{to = "lda"} or
 \code{to = "topicmodels"}.  For \code{to = "stm"} format, \verb{omit_empty`` is always }TRUE`.}
+
+\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[jsonlite]{prettify}}}
 }
 \value{
 A converted object determined by the value of \code{to} (see above).
@@ -47,12 +64,15 @@ See conversion target package documentation for more detailed descriptions
 of the return formats.
 }
 \description{
-Convert a quanteda \link{dfm} object to a format useable by other text
-analysis packages.  The general function \code{convert} provides easy
-conversion from a dfm to the document-term representations used in all other
-text analysis packages for which conversions are defined.
+Convert a quanteda \link{dfm} or \link{corpus} object to a format useable by other
+packages. The general function \code{convert} provides easy conversion from a dfm
+to the document-term representations used in all other text analysis packages
+for which conversions are defined.  For \link{corpus} objects, \code{convert} provides
+an easy way to make a corpus and its document variables into a data.frame.
 }
 \examples{
+## convert a dfm
+
 corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
 dfmat1 <- dfm(corp)
 
@@ -77,6 +97,13 @@ str(convert(dfmat1, to = "topicmodels"))
 
 # lda package format
 str(convert(dfmat1, to = "lda"))
-
 }
+
+## convert a corpus into a data.frame
+
+corp <- corpus(c(d1 = "Text one.", d2 = "Text two."),
+               docvars = data.frame(dvar1 = 1:2, dvar2 = c("one", "two"),
+                                    stringsAsFactors = FALSE))
+convert(corp, to = "data.frame")
+convert(corp, to = "json")
 }

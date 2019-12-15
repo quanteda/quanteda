@@ -1,7 +1,10 @@
 subset_dfm <- function(x, i, j, ..., drop) {
     
-    attrs <- attributes(x)
+    if (missing(i) && missing(j)) return(x)
+        
+    attrs <- attributes(x) # TODO change to get_dfm_slots()
     error <- FALSE
+    if (nargs() == 2) error <- TRUE
     if (!missing(i)) {
         if (is.character(i))
             i <- match(i, rownames(x))
@@ -20,9 +23,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
     }
     if (error) stop("Subscript out of bounds")
     
-    if (missing(i) && missing(j)) {
-        return(x)
-    } else if (!missing(i) && missing(j)) {
+    if (!missing(i) && missing(j)) {
         x <- "["(as(x, "Matrix"), i, , ..., drop = FALSE)
     } else if (missing(i) && !missing(j)) {
         x <- "["(as(x, "Matrix"), , j, ..., drop = FALSE)

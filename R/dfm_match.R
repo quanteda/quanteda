@@ -38,8 +38,8 @@ dfm_match <- function(x, features) {
     x <- as.dfm(x)
     if (!is.character(features))
         stop("features must be a character vector")
-    attrs <- attributes(x)
+    slots <- get_dfm_slots(x)
     x <- pad_dfm(x, features)
-    x <- set_dfm_slots(x, attrs)
+    set_dfm_slots(x) <- slots
     return(x)
 }

@@ -60,7 +60,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
+    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- as.character(value)
     return(x)
 }
 
@@ -68,7 +68,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- value
+    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- as.character(value)
     return(x)
 }
 
@@ -76,7 +76,7 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
+    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- as.character(value)
     return(x)
 }
 
