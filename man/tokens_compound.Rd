@@ -33,7 +33,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{window}{integer; a vector of length 1 or 2 that specifies size of the
 window of tokens adjacent to \code{pattern} that will be compounded with matches
-to \code{pattern}.  The window can be assymetric if two elements are specified,
+to \code{pattern}.  The window can be asymmetric if two elements are specified,
 with the first giving the window size before \code{pattern} and the second the
 window size after.  If paddings (empty \code{""} tokens) are found, window will
 be shrunk to exclude them.}
@@ -101,6 +101,6 @@ tokens_compound(toks, pattern = compounds, join = FALSE)
 
 # use window to form ngrams
 tokens_remove(toks, pattern = stopwords("en")) \%>\% 
-tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
+    tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
   
 }

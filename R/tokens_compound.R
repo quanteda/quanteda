@@ -20,7 +20,7 @@
 #'   compound; otherwise, form these separately.  See examples.
 #' @param window integer; a vector of length 1 or 2 that specifies size of the
 #'   window of tokens adjacent to `pattern` that will be compounded with matches
-#'   to `pattern`.  The window can be assymetric if two elements are specified,
+#'   to `pattern`.  The window can be asymmetric if two elements are specified,
 #'   with the first giving the window size before `pattern` and the second the
 #'   window size after.  If paddings (empty `""` tokens) are found, window will
 #'   be shrunk to exclude them.
@@ -70,7 +70,7 @@
 #' 
 #' # use window to form ngrams
 #' tokens_remove(toks, pattern = stopwords("en")) %>% 
-#' tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
+#'     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
 #'   
 tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
