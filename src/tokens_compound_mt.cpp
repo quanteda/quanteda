@@ -7,10 +7,22 @@ using namespace quanteda;
 Mutex id_mutex;
 #endif
 
+int adjust_window(Text &tokens, int current, int end) {
+    int i = current; 
+    if (end < current) {
+        while (i - 1 >= 0 && i - 1 >= end && tokens[i - 1] != 0) i--;
+    } else {
+        while (i + 1 < (int)tokens.size() && i + 1 < end && tokens[i + 1] != 0) i++;
+    }
+    return(i);
+}
+
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
+               const SetNgrams &set_comps,
                MapNgrams &map_comps,
-               IdNgram &id_comp){
+               IdNgram &id_comp,
+               const std::pair<int, int> &window){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -21,12 +33,15 @@ Text join_comp(Text tokens,
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            auto it = map_comps.find(ngram);
-            if (it != map_comps.end()) {
-                //Rcout << it->second << "\n";
-                std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
+            auto it = set_comps.find(ngram);
+            if (it != set_comps.end()) {
+                // Adjust window size to exclude padding
+                int from = adjust_window(tokens, i, i - window.first);
+                int to = adjust_window(tokens, i, i + span + window.second);
+                std::fill(flags_link.begin() + from, flags_link.begin() + to, true); // mark tokens linked
                 match++;
             }
+            flags_link.back() = false; // last value should be false
         }
     }
     
@@ -51,7 +66,7 @@ Text join_comp(Text tokens,
                 id_mutex.lock();
 #endif
                 UintParam &id = map_comps[tokens_seq];
-                if (!id) id = ++id_comp; // assign new ID if not exisits
+                if (!id) id = ++id_comp; // assign new ID if not exisis
                 //Rcout << "Compund "<< id << ": ";
                 //dev::print_ngram(tokens_seq);
                 tokens_flat.push_back(id);
@@ -70,8 +85,10 @@ Text join_comp(Text tokens,
 
 Text match_comp(Text tokens, 
                 const std::vector<std::size_t> &spans,
-                const bool &nested,
-                const MapNgrams &map_comps){
+                const SetNgrams &set_comps,
+                MapNgrams &map_comps,
+                IdNgram &id_comp,
+                const std::pair<int, int> &window){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -79,48 +96,52 @@ Text match_comp(Text tokens,
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t match = 0;
-    bool none = true;
-    
+
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            if (!nested && flags_link[i]) continue; // ignore matched tokens 
+            //if (!nested && flags_link[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            auto it = map_comps.find(ngram);
-            if (it != map_comps.end()) {
-                //Rcout << it->second << "\n";
-                std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
-                if (!nested) {
-                    std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
-                }
-                tokens_multi[i].push_back(it->second); // keep multiple keys in the same position
+            auto it = set_comps.find(ngram);
+            if (it != set_comps.end()) {
+                // Adjust window size to exclude padding
+                int from = adjust_window(tokens, i, i - window.first);
+                int to = adjust_window(tokens, i, i + span + window.second);
+                std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
+                Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to + 1); // extract tokens matched
+                
+#if QUANTEDA_USE_TBB
+                id_mutex.lock();
+#endif
+                UintParam &id = map_comps[tokens_seq];
+                if (!id) id = ++id_comp; // assign new ID if not exists
+                //Rcout << "Compund "<< id << ": ";
+                //dev::print_ngram(tokens_seq);
+                tokens_multi[i].push_back(id); // keep multiple IDs in the same position
+#if QUANTEDA_USE_TBB
+                id_mutex.unlock();
+#endif
                 match++;
-                none = false;
             }
         }
     }
     
-    // return original tokens if no match
-    if (none) return tokens;
+    if (match == 0) return tokens; // return original tokens if no match
     
     // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {
         if (!flags_match[i]) {
-            tokens_multi[i].push_back(tokens[i]); 
+            tokens_multi[i].push_back(tokens[i]);
             match++;
         }
     }
-    
+
     // Flatten the vector of vector
     Text tokens_flat;
     tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
-        if (nested) {
-            tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());
-        } else {
-            if (tokens_sub.size() > 0) {
-                tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
-            }
+        if (tokens_sub.size() > 0) {
+            tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
         }
     }
     return tokens_flat;
@@ -131,22 +152,27 @@ struct compound_mt : public Worker{
     Texts &texts;
     const std::vector<std::size_t> &spans;
     const bool &join;
+    SetNgrams &set_comps;
     MapNgrams &map_comps;
     IdNgram &id_comp;
+    const std::pair<int, int> &window;
     
     // Constructor
     compound_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
-                const bool &join_, MapNgrams &map_comps_, IdNgram &id_comp_):
-                texts(texts_), spans(spans_), join(join_), map_comps(map_comps_), id_comp(id_comp_) {}
+                const bool &join_, SetNgrams &set_comps_, MapNgrams &map_comps_, IdNgram &id_comp_,
+                const std::pair<int, int> &window_):
+                texts(texts_), spans(spans_), 
+                join(join_), set_comps(set_comps_), map_comps(map_comps_), id_comp(id_comp_),
+                window(window_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
             if (join) {
-                texts[h] = join_comp(texts[h], spans, map_comps, id_comp);
+                texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
             } else {
-                texts[h] = match_comp(texts[h], spans, false, map_comps);
+                texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
             }
         }
     }
@@ -158,10 +184,12 @@ struct compound_mt : public Worker{
  * @used tokens_compound()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
- * @param compounds_ list of features to substitute
- * @param ids_ IDs to be placed after substitution
+ * @param compounds_ list of patterns to substitute
+ * @param types_ types in the tokens object
+ * @param delim_ character to concatenate types
  * @param join join overlapped features if true
- * 
+ * @param window_left numbers tokens on the left-hand side of pattern
+ * @param window_right numbers tokens on the right-hand side of pattern
  */
 
 // [[Rcpp::export]]
@@ -169,11 +197,14 @@ List qatd_cpp_tokens_compound(const List &texts_,
                               const List &compounds_,
                               const CharacterVector &types_,
                               const String &delim_,
-                              const bool &join){
+                              const bool &join,
+                              int window_left,
+                              int window_right){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     std::string delim = delim_;
+    std::pair<int, int> window(window_left, window_right);
 
     unsigned int id_last = types.size();
     #if QUANTEDA_USE_TBB
@@ -182,27 +213,15 @@ List qatd_cpp_tokens_compound(const List &texts_,
     IdNgram id_comp = id_last;
     #endif
     
-/*
-    MapNgrams map_comps;
-    std::vector<std::size_t> spans(comps_.size());
-    for (unsigned int g = 0; g < (unsigned int)comps_.size(); g++) {
-        if (has_na(comps_[g])) continue;
-        Ngram comp = comps_[g];
-        map_comps[comp] = ++id_comp;
-        spans[g] = comp.size();
-    }
-    sort(spans.begin(), spans.end());
-    spans.erase(unique(spans.begin(), spans.end()), spans.end());
-    std::reverse(std::begin(spans), std::end(spans));
-*/    
-    
-    MapNgrams map_comps;
+    SetNgrams set_comps; // for matching
+    set_comps.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    MapNgrams map_comps; // for ID generation
     map_comps.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
-    
+
     Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
     for (size_t g = 0; g < comps.size(); g++) {
-        map_comps.insert(std::pair<Ngram, IdNgram>(comps[g], ++id_comp));
+        set_comps.insert(comps[g]);
         spans[g] = comps[g].size();
     }
     sort(spans.begin(), spans.end());
@@ -212,14 +231,14 @@ List qatd_cpp_tokens_compound(const List &texts_,
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
 #if QUANTEDA_USE_TBB
-    compound_mt compound_mt(texts, spans, join, map_comps, id_comp);
+    compound_mt compound_mt(texts, spans, join, set_comps, map_comps, id_comp, window);
     parallelFor(0, texts.size(), compound_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         if (join) {
-            texts[h] = join_comp(texts[h], spans, map_comps, id_comp);
+            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
         } else {
-            texts[h] = match_comp(texts[h], spans, false, map_comps);
+            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
         }
     }
 #endif
@@ -254,11 +273,14 @@ List qatd_cpp_tokens_compound(const List &texts_,
 
 toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(3, 4))
-dict <- list(c(1, 2), c(1, 2, 3))
+#dict <- list(c(1, 2), c(2, 3, 4))
 #dict <- list(c(1, 2), c(2, 3), c(4, 5))
+dict <- list(6, 4)
 types <- letters[seq_along(unique(unlist(toks)))]
 #qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
-qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE)
+qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE, 0, 0)
+qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE, 1, 1)
+qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE, 1, 1)
 
 
 

@@ -53,6 +53,6 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
         docname <- factor(docnames(x), levels = unique(docnames(x)))
     if (margin %in% c("both", "features"))
         featname <- factor(featnames(x), levels = unique(featnames(x)))
-    result <- group_dfm(x, featname, docname)
+    result <- group_dfm(x, docname, featname)
     return(result)
 }

@@ -76,15 +76,15 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' @param exceptions slots to ignore
 #' @param value a list of attributes extracted by attributes()
 #' @keywords internal
-"slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
-    slot <- methods::getSlots(head(class(x)))
-    for (name in names(value)) {
-        if (!name %in% names(slot) || name %in% exceptions) next
-        if (!identical(class(value[[name]]), unname(slot[name]))) next
-        methods::slot(x, name) <- value[[name]]
-    }
-    return(x)
-}
+# "slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
+#     slot <- methods::getSlots(head(class(x)))
+#     for (name in names(value)) {
+#         if (!name %in% names(slot) || name %in% exceptions) next
+#         if (!identical(class(value[[name]]), unname(slot[name]))) next
+#         methods::slot(x, name) <- value[[name]]
+#     }
+#     return(x)
+# }
 
 #' Utility function to create a object with new set of attributes
 #' @param x an underlying R object of a new object
