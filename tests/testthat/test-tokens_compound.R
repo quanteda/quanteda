@@ -1,4 +1,4 @@
-context('test tokens_compound.R')
+context('test tokens_compound')
 
 test_that("tokens_compound join tokens correctly", {
       
@@ -192,4 +192,94 @@ test_that("tokens_compound works as expected with dictionaries", {
 test_that("tokens_compound error when dfm is given, #1006", {
     toks <- tokens('a b c')
     expect_error(tokens_compound(toks, dfm('b c d')))
+})
+
+test_that("tokens_compound window is working", {
+  
+  txt <- c("a b c d e f g")
+  toks <- tokens(txt)
+  pat <- phrase(c("a b", "c d", "g"))
+  
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = TRUE)),
+    as.list(tokens(c("a_b c_d e f g")))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = FALSE)),
+    as.list(tokens(c("a_b c_d e f g")))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = TRUE, window = 1)),
+    as.list(tokens(c("a_b_c_d_e f_g")))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = FALSE, window = 1)),
+    as.list(tokens(c("a_b_c b_c_d_e f_g")))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = TRUE, window = c(1, 0))),
+    as.list(tokens(c("a_b_c_d e f_g")))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = FALSE, window = c(1, 0))),
+    as.list(tokens(c("a_b b_c_d e f_g")))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = TRUE, window = c(0, 1))),
+    as.list(tokens(c("a_b_c_d_e f g")))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = FALSE, window = c(0, 1))),
+    as.list(tokens(c("a_b_c c_d_e f g")))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(toks, pat, join = TRUE, window = c(100, 100))),
+    as.list(tokens(c("a_b_c_d_e_f_g")))
+  )
+  expect_error(
+    tokens_compound(toks, pat, join = FALSE, window = -1),
+    "window sizes cannot be negative"
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, "a", padding = TRUE), pat, join = TRUE, window = 1)),
+    list(text1 = c("", "b_c_d_e", "f_g"))
+  )
+  expect_equal(
+    as.list(tokens_compound(tokens_remove(toks, "a", padding = TRUE), pat, join = FALSE, window = 1)),
+    list(text1 = c("", "b_c_d_e", "f_g"))
+  )
+  toks_pad1 <- tokens_remove(toks, "e", padding = TRUE)
+  expect_equal(
+    as.list(tokens_compound(toks_pad1, pat, join = TRUE, window = 1)),
+    list(text1 = c("a_b_c_d", "", "f_g"))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks_pad1, pat, join = FALSE, window = 1)),
+    list(text1 = c("a_b_c", "b_c_d", "", "f_g"))
+  )
+  
+  expect_equal(
+    as.list(tokens_compound(toks_pad1, pat, join = TRUE, window = 2)),
+    list(text1 = c("a_b_c_d", "", "f_g"))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks_pad1, pat, join = FALSE, window = 2)),
+    list(text1 = c("a_b_c_d", "a_b_c_d", "", "f_g"))
+  )
+  
+  toks_pad2 <- tokens_remove(toks, c("a", "e"), padding = TRUE)
+  expect_equal(
+    as.list(tokens_compound(toks_pad2, pat, join = TRUE, window = 1)),
+    list(text1 = c("", "b_c_d", "", "f_g"))
+  )
+  expect_equal(
+    as.list(tokens_compound(toks_pad2, pat, join = FALSE, window = 1)),
+    list(text1 = c("", "b_c_d", "", "f_g"))
+  )
+  
 })
