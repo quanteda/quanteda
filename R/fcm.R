@@ -184,6 +184,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, margin = margin, weights = 1,
                   tri = tri)
+    set_fcm_slots(result) <- attributes(x)
     set_fcm_dimnames(result) <- list(rownames(result), colnames(result))
     return(result)
 }
@@ -225,7 +226,6 @@ fcm.tokens <- function(x, context = c("document", "window"),
         boolean <- count == "boolean"
         result <- as(qatd_cpp_fcm(x, length(type), weights, boolean, ordered), 
                      "dgCMatrix")
-        set_fcm_dimnames(result) <- list(type, type)
         if (!ordered) {
             if (tri) {
                 result <- triu(result)
@@ -237,6 +237,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
         result <- new("fcm", as(result, "dgCMatrix"), count = count,
                       context = context, window = window, margin = colSums(dfm(x)),
                       weights = weights, tri = tri, ordered = ordered)
+        set_fcm_slots(result) <- attributes(x)
+        set_fcm_dimnames(result) <- list(type, type)
     }
     return(result)
 }     

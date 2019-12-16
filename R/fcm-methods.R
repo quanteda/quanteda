@@ -34,8 +34,9 @@ fcm_compress.fcm <- function(x) {
         stop("compress_fcm only works on a fcm object")
     if (x@context != "document")
         stop("compress_fcm invalid if fcm was created with a window context")
-    matrix2fcm(dfm_compress(x, margin = "both"), attributes(x))
-} 
+    matrix2fcm(group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE), 
+               attributes(x))
+}
 
 #' Sort an fcm in alphabetical order of the features
 #' 
@@ -70,16 +71,16 @@ fcm_sort.default <- function(x) {
 
 #' @export
 fcm_sort.fcm <- function(x) {
-    attrs <- attributes(x)
+    slots <- get_fcm_slots(x)
     x <- as(x, "dgTMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
-    if (attrs$tri) {
+    if (slots$tri) {
         swap <- x@i > x@j
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
     }
-    matrix2fcm(x, attrs)
+    matrix2fcm(x, slots)
 }
 
 #' @rdname dfm_select
@@ -113,13 +114,12 @@ fcm_select.fcm <- function(x, pattern = NULL,
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            verbose = quanteda_options("verbose"), ...) {
-    
-    attrs <- attributes(x)
+    slots <- get_fcm_slots(x)
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = verbose, ...))
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = FALSE, ...))
-    matrix2fcm(x, attrs)
+    matrix2fcm(x, slots)
 }
 
 
@@ -181,23 +181,29 @@ matrix2fcm <- function(x, slots = NULL) {
     
     x <- Matrix(x, sparse = TRUE)
     x <- new("fcm", as(x, 'dgCMatrix'))
+    set_fcm_slots(x) <- slots
     set_fcm_dimnames(x) <- list(rowname, colname)
-    set_fcm_slots(x, slots)
+    return(x)
 }
 
 #' Set values to a fcm's S4 slots
 #' @param x a fcm 
-#' @param slots a list of values extracted using `attributes` and to be assigned to slots 
 #' @param exceptions names of slots to be ignored
+#' @param value a list of values extracted using `attributes` and to be assigned to slots 
 #' @keywords internal
-set_fcm_slots <- function(x, slots = NULL, exceptions = NULL) {
-    if (is.null(slots)) return(x)
-    sname <- slotNames("fcm")
-    sname <- setdiff(sname, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+"set_fcm_slots<-" <- function(x, exceptions = NULL, value) {
+    if (is.null(value)) return(x)
+    sname <- setdiff(slotNames("fcm"), c(slotNames("dgCMatrix"), exceptions))
     for (s in sname) {
         try({
-            slot(x, s) <- slots[[s]]
+            slot(x, s) <- value[[s]]
         }, silent = TRUE)
     }
     return(x)
+}
+
+#' @rdname set_fcm_slots-set
+get_fcm_slots <- function(x) {
+    sname <- setdiff(slotNames("fcm"), c(slotNames("dgCMatrix")))
+    attributes(x)[sname]
 }

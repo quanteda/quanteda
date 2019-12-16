@@ -76,15 +76,15 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' @param exceptions slots to ignore
 #' @param value a list of attributes extracted by attributes()
 #' @keywords internal
-"slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
-    slot <- methods::getSlots(head(class(x)))
-    for (name in names(value)) {
-        if (!name %in% names(slot) || name %in% exceptions) next
-        if (!identical(class(value[[name]]), unname(slot[name]))) next
-        methods::slot(x, name) <- value[[name]]
-    }
-    return(x)
-}
+# "slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
+#     slot <- methods::getSlots(head(class(x)))
+#     for (name in names(value)) {
+#         if (!name %in% names(slot) || name %in% exceptions) next
+#         if (!identical(class(value[[name]]), unname(slot[name]))) next
+#         methods::slot(x, name) <- value[[name]]
+#     }
+#     return(x)
+# }
 
 #' Utility function to create a object with new set of attributes
 #' @param x an underlying R object of a new object
@@ -313,14 +313,7 @@ get_object_version <- function(x) {
 }
 
 #' @rdname get_object_version
-#' @return `ispr2` returns `TRUE` if the object was created before
-#' \pkg{quanteda} version 2, or `FALSE` otherwise
-is_pre2 <- function(x) {
-    (! "meta" %in% names(attributes(x)))
-}
-
-#' @rdname get_object_version
-#' @return `ispr2` returns `TRUE` if the object was created before
+#' @return `ispre2()` returns `TRUE` if the object was created before
 #' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
     (! "meta" %in% names(attributes(x)))

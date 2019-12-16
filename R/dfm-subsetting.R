@@ -1,8 +1,8 @@
 subset_dfm <- function(x, i, j, ..., drop) {
     
     if (missing(i) && missing(j)) return(x)
-        
-    attrs <- attributes(x) # TODO change to get_dfm_slots()
+    x <- as.dfm(x)
+    attrs <- get_dfm_slots(x)
     error <- FALSE
     if (nargs() == 2) error <- TRUE
     if (!missing(i)) {

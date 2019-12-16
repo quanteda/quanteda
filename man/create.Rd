@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{create}
 \alias{create}
-\title{Utility function to create a object with new set of attributes}
+\title{Function to assign multiple slots to a S4 object}
 \usage{
 create(x, what, attrs = NULL, overwrite_attributes = FALSE, ...)
 }
@@ -12,8 +12,23 @@ create(x, what, attrs = NULL, overwrite_attributes = FALSE, ...)
 \item{attrs}{attributes of a new object}
 
 \item{overwrite_attributes}{overwrite attributes of the input object, if \code{TRUE}}
+
+\item{exceptions}{slots to ignore}
+
+\item{value}{a list of attributes extracted by attributes()}
 }
 \description{
-Utility function to create a object with new set of attributes
+Function to assign multiple slots to a S4 object
 }
+\keyword{Utility}
+\keyword{a}
+\keyword{attributes}
+\keyword{create}
+\keyword{function}
 \keyword{internal}
+\keyword{new}
+\keyword{object}
+\keyword{of}
+\keyword{set}
+\keyword{to}
+\keyword{with}

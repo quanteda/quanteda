@@ -75,6 +75,7 @@ tokens_segment.tokens <- function(x, pattern,
     }
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
     attrs$names <- attrs$docvars[["docname_"]]
+    attrs$unit <- "segments"  
     if (extract_pattern)
         attrs$docvars[["pattern"]] <- attr(result, "pattern")
     attributes(result, FALSE) <- attrs

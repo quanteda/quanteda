@@ -26,13 +26,22 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
     expect_equal(attr(mx, "docvars")[["docname_"]], name_new)
 })
 
-test_that("dfm docnames cannot be made integer before textstat_simil", {
-    dfmat <- as.dfm(data_dfm_lbgexample)
-    dfmat@Dimnames$docs <- seq_len(ndoc(dfmat))
-    expect_identical(
-        dimnames(as.matrix(textstat_simil(dfmat)))[[1]],
-        as.character(1:6)
-    )
+test_that("docnames are character", {
+    
+    txt <- c("a b c", "d e f", "h i j")
+    corp <- corpus(txt)
+    docnames(corp) <- c(1, 5, 9)
+    expect_identical(attr(corp, "names"), c("1", "5", "9"))
+    expect_identical(attr(corp, "docvars")[["docname_"]], c("1", "5", "9"))
+    toks <- tokens(corp)
+    docnames(toks) <- c(2, 3, 7)
+    expect_identical(attr(toks, "names"), c("2", "3", "7"))
+    expect_identical(attr(toks, "docvars")[["docname_"]], c("2", "3", "7"))
+    dfmat <- dfm(toks)
+    docnames(dfmat) <- c(4, 8, 0)
+    expect_identical(dfmat@Dimnames$docs, c("4", "8", "0"))
+    expect_identical(attr(dfmat, "docvars")[["docname_"]], c("4", "8", "0"))
+
 })
 
 test_that("special names<- operator works as planned", {
@@ -41,21 +50,21 @@ test_that("special names<- operator works as planned", {
     names(corp)[1] <- "X"
     expect_identical(
         names(corp),
-        quanteda:::get_docvars.corpus(corp, "docname_", system = TRUE)$docname_
+        attr(corp, "docvars")[["docname_"]]
     )
 
     toks <- tokens(corpus(LETTERS[1:3], docnames = letters[1:3]))
     names(toks)[1] <- "X"
     expect_identical(
         names(toks),
-        quanteda:::get_docvars.tokens(toks, "docname_", system = TRUE)$docname_
+        attr(toks, "docvars")[["docname_"]]
     )
     
     dfmat <- dfm(corpus(LETTERS[1:3], docnames = letters[1:3]))
     rownames(dfmat)[1] <- "X"
     expect_identical(
         rownames(dfmat),
-        quanteda:::get_docvars.dfm(dfmat, "docname_", system = TRUE)$docname_
+        attr(toks, "docvars")[["docname_"]]
     )
 })
 
