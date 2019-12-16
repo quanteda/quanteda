@@ -32,18 +32,18 @@ test_that("dfm_sample for features works as expected", {
 test_that("dfm_sample default size arguments work as expected", {
     suppressWarnings(RNGversion("3.5.3"))
     dfmat <- dfm(c("a b c c d", "a a c c d d d"))
+    
+    mat1 <- matrix(rep(c(1, 1, 2, 1), 2), byrow = TRUE, nrow = 2,
+                   dimnames = list(docs = c("text1.1", "text1.2"), features = letters[1:4]))
+    mat2 <- matrix(c(1, 1, 2, 1,  0, 0, 2, 2), byrow = TRUE, nrow = 2,
+                   dimnames = list(docs = c("text1", "text2"), features = c("b", "b", "c", "a")))
+
     expect_identical({
         set.seed(100)
         as.matrix(dfm_sample(dfmat, margin = "documents", replace = TRUE))
-    },
-    matrix(rep(c(1, 1, 2, 1), 2), byrow = TRUE, nrow = 2,
-           dimnames = list(docs = c("text1", "text1"), features = letters[1:4]))
-    )
+    }, mat1)
     expect_identical({
         set.seed(100)
         as.matrix(dfm_sample(dfmat, margin = "features", replace = TRUE))
-    },
-    matrix(c(1, 1, 2, 1,  0, 0, 2, 2), byrow = TRUE, nrow = 2,
-           dimnames = list(docs = c("text1", "text2"), features = c("b", "b", "c", "a")))
-    )
-})
+    }, mat2
+)
