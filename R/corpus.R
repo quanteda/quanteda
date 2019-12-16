@@ -164,7 +164,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    #names(x) <- docvar[["docname_"]]
+    names(x) <- docvar[["docname_"]]
     class(x) <- "corpus"
     if (any(duplicated(docvar[["docid_"]]))) {
         attr(x, "unit") <- "segments"    

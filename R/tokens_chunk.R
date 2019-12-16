@@ -49,6 +49,7 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
     type <- types(x)
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
+    attrs$names <- attrs$docvars[["docname_"]]
     if (any(duplicated(attrs$docvars[["docid_"]]))) {
         attrs$unit <- "segments"    
     } else {

@@ -134,9 +134,7 @@ subset_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
     if (is.numeric(i) && any(duplicated(i))) {
-        x[["docname_"]] <- paste0(x[["docid_"]], ".", stats::ave(i == i, i, FUN = cumsum))
-    } else {
-        x[["docname_"]] <- as.character(x[["docid_"]])
+        x[["docname_"]] <- paste0(x[["docname_"]], ".", stats::ave(i == i, i, FUN = cumsum))
     }
     rownames(x) <- NULL
     return(x)

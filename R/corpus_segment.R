@@ -128,10 +128,11 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     attrs <- attributes(x)
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
-    result <- temp$text
+    result <- temp[["text"]]
     if (!use_docvars)
         attrs$docvars <- select_docvars(attrs$docvars, user = FALSE, system = TRUE)
-    attrs$docvars <-reshape_docvars(attrs$docvars, temp$docnum)
+    attrs$docvars <- reshape_docvars(attrs$docvars, temp$docnum)
+    attrs$names <- attrs$docvars[["docname_"]]
     if (extract_pattern) 
         attrs$docvars[["pattern"]] <- temp$pattern
     attrs$unit <- "segments"
@@ -184,14 +185,12 @@ char_segment.character <- function(x, pattern = "##*",
     
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    temp <- corpus_segment(corpus(x, docnames = names(x)), 
-                           pattern, valuetype, 
-                           case_insensitive, remove_pattern, 
-                           pattern_position)
-    meta_system(temp, "source") <- "corpus_segment"
+    temp <- corpus_segment(corpus(x, names(x)), 
+                           pattern, valuetype, case_insensitive,
+                           remove_pattern, pattern_position)
     result <- texts(temp)
     if (is.null(names(x)))
-        result <- unname(result)
+        names(result) <- NULL
     return(result)
 }
 

@@ -33,13 +33,17 @@ texts <- function(x, groups = NULL, spacer = " ") {
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
-    temp <- as.character(unclass(x))
-    names(temp) <- docnames(x)
-    if (is.null(groups))
-        return(temp)
-    if (!is.factor(groups))
-        groups <- generate_groups(x, groups)
-    texts(temp, groups = groups, spacer = spacer)
+    attrs <- attributes(x)
+    if (!is.null(groups)) {
+        if (!is.factor(groups))
+            groups <- generate_groups(x, groups)
+        result <- texts(as.character(unclass(x)), groups = groups, spacer = spacer)
+        attrs$docvars <- group_docvars(attrs$docvars, groups)
+    } else {
+        result <- as.character(unclass(x))
+    }
+    names(result) <- attrs$docvars[["docname_"]]
+    return(result)
 }
 
 #' @noRd
