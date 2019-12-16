@@ -64,6 +64,7 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
+    value <- make_unique(value)
     attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
@@ -72,6 +73,7 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
+    value <- make_unique(value)
     attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
@@ -80,7 +82,15 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
+    value <- make_unique(value)
     x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
+    return(x)
+}
+
+make_unique <- function(x) {
+    x <- as.character(x)
+    if (any(duplicated(x)))
+        x <- paste0(x, ".", stats::ave(x == x, x, FUN = cumsum))
     return(x)
 }
 
