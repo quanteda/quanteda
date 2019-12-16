@@ -43,11 +43,6 @@ setClass("dfm",
                           meta = list(user = list(), system = list())),
          contains = "dgCMatrix")
 
-setValidity("dfm", function(object) {
-    if (is_pre2(object))
-        warning("Upgrade the object for v2.0 using as.dfm()")
-})
-
 
 ## S4 method dfm objects
 #' @export
