@@ -88,7 +88,7 @@ format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
 
 # internal function for print.dfm and print.fcm
 print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
-    
+    x <- as.dfm(x)
     if (!is.null(show_values)) {
         # if show.values is set to TRUE, show full matrix
         ndoc <- nrow(x)
