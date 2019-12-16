@@ -228,6 +228,7 @@ c.corpus <- function(..., recursive = FALSE) {
     
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
-    attributes(x, FALSE) <- attrs
+    attrs$names <- attrs$docvars[["docname_"]]
+    attributes(x) <- attrs
     return(x)
 }
