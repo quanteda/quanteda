@@ -278,7 +278,7 @@ tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
 }
 
 #' @noRd
-#' @rdname fcm-class
+#' @rdname as.fcm
 #' @export
 is.fcm <- function(x) {
     is(x, "fcm")

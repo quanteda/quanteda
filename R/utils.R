@@ -251,6 +251,8 @@ unused_dots <- function(...) {
 message_error <- function(key = NULL) {
     msg <- c("dfm_empty" = "dfm must have at least one non-zero value",
              "fcm_empty" = "fcm must have at least one non-zero value",
+             "fcm_context" = "fcm must be created with a document context",
+             "matrix_mismatch" = "matrix must have the same rownames and colnames",
              "docnames_mismatch" = "docnames must the the same length as x",
              "docvars_mismatch" = "data.frame must have the same number of rows as documents",
              "docvars_invalid" = "document variables cannot begin with the underscore",
