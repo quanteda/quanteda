@@ -33,6 +33,7 @@
 ## Bug fixes and stability enhancements
 
 *  docnames now enforced to be character (formerly, could be numeric for some objects).
+*  docnames are now enforced to be strictly unique for all object classes.
 
 ## New features
 
