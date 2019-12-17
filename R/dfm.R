@@ -440,7 +440,7 @@ force_conformance <- function(x, feature, force) {
             warning(n, " feature", if (n == 1) "" else "s",
                     " in newdata not used in prediction.",
                     call. = FALSE, noBreaks. = TRUE)
-        return(dfm_select(x, make_null_dfm(feature)))
+        return(dfm_match(x, feature))
     } else {
         if (!identical(featnames(x), feature))
             stop("newdata's feature set is not conformant to model terms.")
