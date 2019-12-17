@@ -34,6 +34,7 @@
 
 *  docnames now enforced to be character (formerly, could be numeric for some objects).
 *  docnames are now enforced to be strictly unique for all object classes.
+*  Grouping operations in `tokens_group()` and `dfm_group()` are more robust to using multiple grouping variables, and preserve these correctly as docvars in the new dfm.  (#1809)
 
 ## New features
 

@@ -242,7 +242,7 @@ dfm.tokens <- function(x,
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")
-        x <- tokens_group(x, groups)
+        x <- tokens_group(x, groups, fill = FALSE)
     }
 
     # use tokens_lookup for tokens objects
@@ -302,7 +302,7 @@ dfm.dfm <- function(x,
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")
-        x <- dfm_group(x, groups)
+        x <- dfm_group(x, groups, fill = FALSE)
     }
 
     if (!is.null(dictionary) || !is.null(thesaurus)) {
