@@ -1,4 +1,4 @@
-context("dfm_sample")
+context("test dfm_sample")
 
 test_that("dfm_sample works as expected", {
     mt <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
