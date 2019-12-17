@@ -149,18 +149,18 @@ test_that("longer selection than longer than features that exist (related to #44
     )
 })
 
-test_that("test fcm_select with features from a dfm,  fixed", {
-    txt <- c("a", "b", "c")
-    mx <- dfm(txt)
-    expect_equal(
-        featnames(fcm_select(fcmt_test2, mx, selection = "keep", valuetype = "fixed", verbose = FALSE)),
-        featnames(mx)
-    )
-    expect_equal(
-        featnames(fcm_select(fcmt_test2, mx, selection = "remove", valuetype = "fixed", verbose = FALSE)),
-        setdiff(featnames(fcmt_test2), featnames(mx))
-    )
-})
+# test_that("test fcm_select with features from a dfm,  fixed", {
+#     txt <- c("a", "b", "c")
+#     mx <- dfm(txt)
+#     expect_equal(
+#         featnames(fcm_select(fcmt_test2, mx, selection = "keep", valuetype = "fixed", verbose = FALSE)),
+#         featnames(mx)
+#     )
+#     expect_equal(
+#         featnames(fcm_select(fcmt_test2, mx, selection = "remove", valuetype = "fixed", verbose = FALSE)),
+#         setdiff(featnames(fcmt_test2), featnames(mx))
+#     )
+# })
 
 # test_that("test fcm_compress stops if features are changed only in on dimension", {
 #     myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
