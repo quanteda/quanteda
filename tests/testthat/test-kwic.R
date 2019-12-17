@@ -1,23 +1,24 @@
 context("test kwic")
 
 test_that("test attr(kwic, 'ntoken') with un-named texts", {
-    testkwic <- kwic(c(
+    txt <- c(
         "The quick brown fox jumped over the lazy dog",
         "The quick brown fox",
         "The quick brown dog jumped over the lazy dog",
         NA
-    ), "fox")
+    )
+    kw <- kwic(txt, "fox")
 
     expect_equal(
-        attr(testkwic, "ntoken"),
+        attr(kw, "ntoken"),
         c("text1" = 9, "text2" = 4, "text3" = 9, "text4" = 0)
     )
 })
 
 test_that("test attr(kwic, 'ntoken') text names", {
-    testkwic <- kwic(data_corpus_inaugural, "american")
+    kw <- kwic(data_corpus_inaugural, "american")
     expect_equal(
-        names(attr(testkwic, "ntoken")),
+        names(attr(kw, "ntoken")),
         names(texts(data_corpus_inaugural))
     )
 })

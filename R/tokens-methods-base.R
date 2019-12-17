@@ -79,9 +79,11 @@ print.tokens <- function(x, ...) {
     if (any(is_na))
         stop("Subscript out of bounds")
     index <- index[!is_na]
+    
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
-    attributes(x, FALSE) <- attrs
+    attrs$names <- attrs$docvars[["docname_"]]
+    attributes(x) <- attrs
     tokens_recompile(x)
 }
 

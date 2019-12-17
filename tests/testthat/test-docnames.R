@@ -67,3 +67,55 @@ test_that("special names<- operator works as planned", {
         attr(toks, "docvars")[["docname_"]]
     )
 })
+
+
+test_that("docnames are alwyas unique", {
+    
+    corp <- data_corpus_irishbudget2010
+    toks <- tokens(corp)
+    dfmt <- dfm(toks)
+    
+    corp1 <- corp
+    docnames(corp1) <- docvars(corp1, "party")
+    expect_false(any(duplicated((docnames(corp1)))))
+    expect_false(any(duplicated((attr(corp1, "names")))))
+    
+    corp2 <- corp[c(5, 5)]
+    expect_false(any(duplicated((docnames(corp2)))))
+    expect_identical(docnames(corp2), attr(corp2, "names"))
+    
+    corp3 <- corp[c("Cowen, Brian (FF)", "Cowen, Brian (FF)")]
+    expect_false(any(duplicated((docnames(corp3)))))
+    expect_identical(docnames(corp3), attr(corp3, "names"))
+    
+    toks1 <- toks
+    docnames(toks1) <- docvars(toks1, "party")
+    expect_false(any(duplicated((docnames(toks1)))))
+    expect_identical(docnames(toks1), attr(toks1, "names"))
+    
+    toks2 <- toks[c(5, 5)]
+    expect_false(any(duplicated((docnames(toks2)))))
+    expect_identical(docnames(toks2), attr(toks2, "names"))
+    
+    toks3 <- toks[c("Cowen, Brian (FF)", "Cowen, Brian (FF)")]
+    expect_false(any(duplicated((docnames(toks3)))))
+    expect_identical(docnames(toks3), attr(toks3, "names"))
+    
+    dfmt1 <- dfmt
+    docnames(dfmt1) <- docvars(dfmt1, "party")
+    expect_false(any(duplicated((docnames(dfmt1)))))
+    expect_identical(docnames(dfmt1), dfmt1@Dimnames[["docs"]])
+    
+    dfmt2 <- dfmt[c(5, 5),]
+    expect_false(any(duplicated((docnames(dfmt2)))))
+    expect_identical(docnames(dfmt2), dfmt2@Dimnames[["docs"]])
+    
+    dfmt3 <- dfmt[c("Cowen, Brian (FF)", "Cowen, Brian (FF)"),]
+    expect_false(any(duplicated((docnames(dfmt3)))))
+    expect_identical(docnames(dfmt3), dfmt3@Dimnames[["docs"]])
+})
+
+
+
+
+

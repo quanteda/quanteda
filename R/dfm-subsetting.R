@@ -31,8 +31,10 @@ subset_dfm <- function(x, i, j, ..., drop) {
         x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
     }
     
-    if (!missing(i))
+    if (!missing(i)) {
         attrs$docvars <- subset_docvars(attrs$docvars, i)
+        x@Dimnames[["docs"]] <- attrs$docvars[["docname_"]]
+    }
     matrix2dfm(x, attrs)
 }
 

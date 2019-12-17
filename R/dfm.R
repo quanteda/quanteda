@@ -372,6 +372,7 @@ compile_dfm <- function(x, verbose = TRUE) {
 compile_dfm.tokens <- function(x, verbose = TRUE) {
 
     types <- types(x)
+    attrs <- attributes(x)
     x <- unclass(x)
 
     # shift index for padding, if any
@@ -385,9 +386,9 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                   sparseMatrix(j = index,
                                p = cumsum(c(1, lengths(x))) - 1,
                                x = 1L,
-                               dims = c(length(names(x)), 
+                               dims = c(length(x), 
                                         length(types))))
-    set_dfm_dimnames(result) <- list(names(x), types)
+    set_dfm_dimnames(result) <- list(attrs$docvars[["docname_"]], types)
     return(result)
 }
 
