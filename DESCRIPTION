@@ -129,6 +129,7 @@ Collate:
     'fcm-methods.R'
     'fcm-subsetting.R'
     'fcm.R'
+    'fcm_select.R'
     'kwic.R'
     'meta.R'
     'metadoc.R'
