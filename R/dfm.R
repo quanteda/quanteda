@@ -372,6 +372,7 @@ compile_dfm <- function(x, verbose = TRUE) {
 compile_dfm.tokens <- function(x, verbose = TRUE) {
 
     types <- types(x)
+    attrs <- attributes(x)
     x <- unclass(x)
 
     # shift index for padding, if any
@@ -385,9 +386,9 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                   sparseMatrix(j = index,
                                p = cumsum(c(1, lengths(x))) - 1,
                                x = 1L,
-                               dims = c(length(names(x)), 
+                               dims = c(length(x), 
                                         length(types))))
-    set_dfm_dimnames(result) <- list(names(x), types)
+    set_dfm_dimnames(result) <- list(attrs$docvars[["docname_"]], types)
     return(result)
 }
 
@@ -440,7 +441,7 @@ force_conformance <- function(x, feature, force) {
             warning(n, " feature", if (n == 1) "" else "s",
                     " in newdata not used in prediction.",
                     call. = FALSE, noBreaks. = TRUE)
-        return(dfm_select(x, make_null_dfm(feature)))
+        return(dfm_match(x, feature))
     } else {
         if (!identical(featnames(x), feature))
             stop("newdata's feature set is not conformant to model terms.")

@@ -26,17 +26,18 @@ test_that("corpus_subset works", {
              doc2 = "one\ntwo\tpart two\nthree\nfour.",
              doc3 = "A single sentence.",
              doc4 = "A sentence with \"escaped quotes\".")
-    df <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), 
-                     varchar = letters[1:4])
+    dat <- data.frame(var_numeric = 10:13, var_factor = factor(c("A", "B", "A", "B")), 
+                      var_char = letters[1:4])
     
-    data_corpus_test <- corpus(txt, docvars = df)
-    expect_equal(ndoc(corpus_subset(data_corpus_test, varfactor == "B")), 2)
-    expect_equal(docnames(corpus_subset(data_corpus_test, varfactor == "B")), 
+    corp <- corpus(txt, docvars = dat)
+    expect_equal(ndoc(corpus_subset(corp, var_factor == "B")), 2)
+    expect_equal(docnames(corpus_subset(corp, var_factor == "B")), 
                  c("doc2", "doc4"))
     
-    data_corpus_test_nodv <- corpus(txt)
-    expect_equal(ndoc(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 1)
-    expect_equal(docnames(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 
+    corp_nodvar <- corpus(txt)
+    expect_equal(ndoc(corpus_subset(corp_nodvar, LETTERS[1:4] == "B")), 1)
+    expect_equal(docnames(corpus_subset(corp_nodvar, LETTERS[1:4] == "B")), 
                  c("doc2"))
     
 })
+

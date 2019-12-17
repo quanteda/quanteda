@@ -1,5 +1,3 @@
-library(quanteda)
-
 context("test case change functions")
 
 txt <- c("According to NATO", "There is G7 meeting")

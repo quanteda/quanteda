@@ -59,9 +59,9 @@ text}
 user meta-data.  This can later be accessed or updated using
 \code{\link[=meta]{meta()}}.}
 
-\item{unique_docnames}{if \code{TRUE}, check duplication in \code{docnames}.
-Units with duplicated \code{docnames} are treated as segments of the
-same document.}
+\item{unique_docnames}{logical; if \code{TRUE}, enforce strict uniqueness in
+\code{docnames}; otherwise, rename duplicated docnames using an added serial
+number, and treat them as segments of the same document.}
 
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the

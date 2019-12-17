@@ -2,15 +2,18 @@
 % Please edit documentation in R/fcm-methods.R
 \name{as.fcm}
 \alias{as.fcm}
-\title{Coercion functions for fcm objects}
+\title{Coercion and checking functions for fcm objects}
 \usage{
 as.fcm(x)
 }
 \arguments{
-\item{x}{an object coerced to \link{fcm}. Currently only support
-\link{Matrix} objects.}
+\item{x}{a candidate object for checking or coercion to \link{dfm}}
+}
+\value{
+\code{as.fcm} converts an input object into a \link{fcm}.
 }
 \description{
-Coercion functions for fcm objects
+Convert an eligible input object into a fcm, or check whether an object is a
+fcm.  Current eligible inputs for coercion to a dfm are: \link{matrix},
+(sparse) \link[Matrix:Matrix]{Matrix} and other \link{fcm} objects.
 }
-\keyword{internal}

@@ -378,7 +378,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #' @export
 as.tokens.tokens <- function(x, ...) {
     if (is_pre2(x)) {
-        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
+        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), names(x))
         attr(x, "meta") <- meta_system_defaults("tokens")
     }
     return(x)
@@ -408,12 +408,6 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #' @return `is.tokens` returns `TRUE` if the object is of class
 #'   tokens, `FALSE` otherwise.
 is.tokens <- function(x) "tokens" %in% class(x)
-
-#' @noRd
-#' @export
-docnames.tokens <- function(x) {
-    names(x)
-}
 
 # ============== INTERNAL FUNCTIONS =======================================
 
@@ -540,7 +534,7 @@ tokens_internal <- function(x,
 compile_tokens <- function(x, names, types, ngrams = 1, skip = 0, 
                            what = "word", concatenator = "_", padding = FALSE,
                            unit = "documents", source = "corpus", docvars = data.frame()) {
-    structure(x,
+    structure(x, 
               names = names,
               class = "tokens",
               what = what,

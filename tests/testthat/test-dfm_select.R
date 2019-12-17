@@ -148,64 +148,14 @@ test_that("test dfm_select with ngrams concatenated with whitespace", {
     )
 })
 
-
-# test_that("test dfm_select with documents", {
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = 'doc*', selection = "keep", valuetype = "glob", 
-#                                      padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc1', 'doc2', 'doc3'))
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "keep", valuetype = "fixed", 
-#                                     padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc1', 'doc2'))
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "remove", valuetype = "fixed", 
-#                                      padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc3'))
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc3', 'doc4'), selection = "keep", valuetype = "fixed", 
-#                                      padding = TRUE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc3', 'doc4'))
-# })
-# 
-# test_that("test dfm_select with dates in document names", {
-#     
-#     dates <- as.character(seq.Date(as.Date('2017-01-01'), as.Date('2017-12-31'), 1))
-#     txts <- paste('text', seq_along(dates))
-#     names(txts) <- dates
-#     paddeddfm <- dfm_select(dfm(txts)[1:10,], documents = dates, valuetype = 'fixed', padding = TRUE)
-#     expect_equal(ndoc(paddeddfm), 365)
-#     
-# })
-
-
-test_that("test dfm_select with features from a dfm,  fixed", {
-    txt <- c(doc1 = "a B c D e",
-             doc2 = "a BBB c D e",
-             doc3 = "Aaaa BBB cc")
-    testdfm <- dfm(txt, tolower = FALSE)  
-    expect_equal(
-        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = TRUE, min_nchar = 1)),
-        c(a = 2, b = 0, c = 2)
-    )
-    expect_equal(
-        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = FALSE, min_nchar = 1)),
-        c(a = 2, b = 0, c = 2)
-    )
-    
-    expect_equal(
-        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), min_nchar = 1)),
-        c(a=2, b = 0, c=2)
-    )
-})
-
-
 test_that("dfm_select on a dfm returns equal feature sets", {
     txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
-    dfm1 <- dfm(txts[1:2])
-    dfm2 <- dfm(txts[2:3])
-    dfm3 <- dfm_select(dfm1, dfm2)
-    expect_true(setequal(featnames(dfm2), featnames(dfm3)))
+    dfmt1 <- dfm(txts[1:2])
+    dfmt2 <- dfm(txts[2:3])
+    expect_warning({
+        dfmt3 <- dfm_select(dfmt1, dfmt2)
+    }, "pattern = dfm is deprecated")
+    expect_true(setequal(featnames(dfmt2), featnames(dfmt3)))
 })
 
 test_that("dfm_select removes padding", {
@@ -303,13 +253,13 @@ test_that("shortcut functions works", {
 })
 
 test_that("dfm_remove/keep fail if selection argument is used", {
-    thedfm <- tokens(c("a b c d d", "a a b c d"))
+    dfmt <- tokens(c("a b c d d", "a a b c d"))
     expect_error(
-        dfm_remove(thedfm, c("b", "c"), selection = "remove"),
+        dfm_remove(dfmt, c("b", "c"), selection = "remove"),
         "dfm_remove cannot include selection argument"
     )
     expect_error(
-        dfm_keep(thedfm, c("b", "c"), selection = "keep"),
+        dfm_keep(dfmt, c("b", "c"), selection = "keep"),
         "dfm_keep cannot include selection argument"
     )
 })
@@ -317,12 +267,20 @@ test_that("dfm_remove/keep fail if selection argument is used", {
 test_that("dfm_remove works when selection is a dfm (#1320)", {
     d1 <- dfm("a b b c c c d d d d")
     d2 <- dfm("d d d a a")
+    
+    expect_warning({
+        d3 <- dfm_remove(d1, pattern = d2)
+    }, "pattern = dfm is deprecated")
     expect_identical(
-        featnames(dfm_remove(d1, d2)),
+        featnames(d3),
         c("b", "c")
     )
+    
+    expect_warning({
+        d4 <- dfm_select(d1, pattern = d2, selection = "remove")
+    }, "pattern = dfm is deprecated")
     expect_identical(
-        featnames(dfm_select(d1, pattern = d2, selection = "remove")),
+        featnames(d4),
         c("b", "c")
     )
 })

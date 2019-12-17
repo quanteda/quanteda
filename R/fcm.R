@@ -101,7 +101,7 @@
 #' toks <- tokens(char_tolower(txt3), remove_punct = TRUE)
 #' fcm(toks, context = "document")
 #' fcm(toks, context = "window", window = 3)
-fcm <- function(x, context = c("document", "window"), 
+    fcm <- function(x, context = c("document", "window"), 
                 count = c("frequency", "boolean", "weighted"),
                 window = 5L,
                 weights = NULL,
@@ -278,7 +278,7 @@ tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
 }
 
 #' @noRd
-#' @rdname fcm-class
+#' @rdname as.fcm
 #' @export
 is.fcm <- function(x) {
     is(x, "fcm")

@@ -133,6 +133,9 @@ reshape_docvars <- function(x, i = NULL) {
 subset_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i,, drop = FALSE]
+    if (is.numeric(i) && any(duplicated(i))) {
+        x[["docname_"]] <- paste0(x[["docname_"]], ".", stats::ave(i == i, i, FUN = cumsum))
+    }
     rownames(x) <- NULL
     return(x)
 }
@@ -148,15 +151,15 @@ group_docvars <- function(x, group) {
 
 
 # internal function to upgrade docvars to modern format
-upgrade_docvars <- function(x, docnames = NULL) {
+upgrade_docvars <- function(x, docname = NULL) {
     if (sum(is_system(colnames(x))) == 3) 
         return(x)
-    if (is.null(docnames))
-        docnames <- rownames(x)
+    if (is.null(docname))
+        docname <- rownames(x)
     if (is.null(x) || length(x) == 0) {
-        result <- make_docvars(length(docnames), docnames, FALSE)
+        result <- make_docvars(length(docname), docname, FALSE)
     } else {
-        result <- cbind(make_docvars(nrow(x), docnames, FALSE), 
+        result <- cbind(make_docvars(nrow(x), docname, FALSE), 
                         x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
             result[["docid_"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))

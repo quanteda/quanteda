@@ -53,7 +53,7 @@ test_that("corpus_segment works with blank before tag", {
     corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                pattern_position = "before", extract_pattern = TRUE)
     summ <- summary(corp_seg)
-    expect_equal(summ[1, "Tokens"], 5)
+                expect_equal(summ[1, "Tokens"], 5)
     expect_equal(as.character(summ[1, "Text"]), "text1.1")
 })
 
@@ -128,22 +128,22 @@ test_that("corpus_segment works for delimiter with remove_pattern", {
                    Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
 
-    mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
-    mycorp_seg1 <- corpus_segment(mycorp, '[.!?]', valuetype = 'regex',
+    corp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
+    corp_seg1 <- corpus_segment(corp, '[.!?]', valuetype = 'regex',
                                   pattern_position = "after",
                                   extract_pattern = FALSE)
 
-    expect_equal(texts(mycorp_seg1),
+    expect_equal(texts(corp_seg1),
                  c(d1.1 = "Sentence one.",
                    d1.2 = "Second sentence is this one!",
                    d1.3 = "Here is the third sentence.",
                    d2.1 = "Only sentence of doc2?",
                    d2.2 = "No there is another."))
 
-    mycorp_seg2 <- corpus_segment(mycorp, pattern = '[.!?]', valuetype = 'regex',
+    corp_seg2 <- corpus_segment(corp, pattern = '[.!?]', valuetype = 'regex',
                                   pattern_position = "after",
                                   extract_pattern = TRUE)
-    expect_equal(texts(mycorp_seg2),
+    expect_equal(texts(corp_seg2),
                  c(d1.1 = "Sentence one",
                    d1.2 = "Second sentence is this one",
                    d1.3 = "Here is the third sentence",

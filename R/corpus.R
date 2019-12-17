@@ -26,9 +26,9 @@
 #'   "text1", "text2", etc. are assigned automatically.
 #' @param docvars a data.frame of document-level variables associated with each
 #'   text
-#' @param unique_docnames if `TRUE`, check duplication in `docnames`.
-#'   Units with duplicated `docnames` are treated as segments of the
-#'   same document.
+#' @param unique_docnames logical; if `TRUE`, enforce strict uniqueness in
+#'   `docnames`; otherwise, rename duplicated docnames using an added serial
+#'   number, and treat them as segments of the same document.
 #' @param text_field the character name or numeric index of the source
 #'   `data.frame` indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be

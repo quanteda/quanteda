@@ -762,7 +762,8 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
                 "selection on a dfm is only available when x is a dfm")
     expect_error(dfm(toks, select = mx2), 
                 "selection on a dfm is only available when x is a dfm")
-    expect_silent(dfm(mx, select = mx2))
+    expect_warning(dfm(mx, select = mx2),
+                "pattern = dfm is deprecated")
     expect_equal(
         as.matrix(dfm(mx, select = mx2)),
         matrix(c(1,2,1,1,1,3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = letters[1:3]))
