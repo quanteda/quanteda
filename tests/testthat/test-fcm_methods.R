@@ -1,4 +1,4 @@
-context("test fcm_methods")
+context("test fcm methods")
 
 toks_test <- tokens(c("b A A d", "C C a b B e"))
 fcmt_test <- fcm(toks_test, context = "document")
@@ -7,7 +7,7 @@ test_that("fcm_compress works as expected, not working for 'window' context", {
     fcmt <- fcm(toks_test, 
                 context = "window", window = 3)
     expect_error(fcm_compress(fcmt), 
-                 "compress_fcm invalid if fcm was created with a window context")
+                 "fcm must be created with a document context")
 })
 
 test_that("fcm_tolower and fcm_compress work as expected", {
@@ -78,59 +78,51 @@ test_that("test fcm_select, fixed", {
 })
 
 test_that("test fcm_select, glob", {
-    feats <- c("a*", "B*", "c")
+    pat <- c("a*", "B*", "c")
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "keep", valuetype = "glob", verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "keep", valuetype = "glob", verbose = FALSE)),
         c("a", "B", "c", "BBB", "Aaaa")
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "remove", valuetype = "glob", verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "remove", valuetype = "glob", verbose = FALSE)),
         setdiff(featnames(fcmt_test2), c("a", "B", "c", "BBB", "Aaaa"))
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "keep", valuetype = "glob", case_insensitive = FALSE, verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "keep", valuetype = "glob", case_insensitive = FALSE, verbose = FALSE)),
         c("a", "B", "c", "BBB")
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "remove", valuetype = "glob", case_insensitive = FALSE, verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "remove", valuetype = "glob", case_insensitive = FALSE, verbose = FALSE)),
         setdiff(featnames(fcmt_test2), c("a", "B", "c", "BBB"))
     )
-#     expect_equal(
-#         featnames(fcm_select(fcmt_test2, feats, selection = "keep", valuetype = "glob", min_nchar = 3, verbose = FALSE)),
-#         c("BBB", "Aaaa")
-#     )
-#     expect_equal(
-#         featnames(fcm_select(fcmt_test2, feats, selection = "remove", valuetype = "glob", min_nchar = 3, verbose = FALSE)),
-#         setdiff(featnames(fcmt_test2), c("BBB", "Aaaa"))
-#     )
+    expect_equal(
+        featnames(fcm_select(fcmt_test2, selection = "keep", valuetype = "glob", min_nchar = 3, verbose = FALSE)),
+        c("BBB", "Aaaa")
+    )
+    expect_equal(
+        featnames(fcm_select(fcmt_test2, selection = "remove", valuetype = "glob", max_nchar = 2, verbose = FALSE)),
+        setdiff(featnames(fcmt_test2), c("BBB", "Aaaa"))
+    )
 })
 
 test_that("test fcm_select, regex", {
-    feats <- c("[A-Z].*", "c.+")
+    pat <- c("[A-Z].*", "c.+")
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "keep", valuetype = "regex", verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "keep", valuetype = "regex", verbose = FALSE)),
         c("a", "B", "c", "D", "e", "BBB", "Aaaa", "cc")
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "remove", valuetype = "regex", verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "remove", valuetype = "regex", verbose = FALSE)),
         character(0)
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "keep", valuetype = "regex", case_insensitive = FALSE, verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "keep", valuetype = "regex", case_insensitive = FALSE, verbose = FALSE)),
         c("B", "D", "BBB", "Aaaa", "cc")
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, feats, selection = "remove", valuetype = "regex", case_insensitive = FALSE, verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, pat, selection = "remove", valuetype = "regex", case_insensitive = FALSE, verbose = FALSE)),
         setdiff(featnames(fcmt_test2), c("B", "D", "BBB", "Aaaa", "cc"))
     )
-#     expect_equal(
-#         featnames(fcm_select(fcmt_test2, feats, selection = "keep", valuetype = "regex", min_nchar = 3, verbose = FALSE)),
-#         c("BBB", "Aaaa")
-#     )
-#     expect_equal(
-#         featnames(fcm_select(fcmt_test2, feats, selection = "remove", valuetype = "regex", min_nchar = 3, verbose = FALSE)),
-#         setdiff(featnames(fcmt_test2), c("BBB", "Aaaa"))
-#     )
 })
 
 test_that("glob works if results in no features", {
@@ -162,17 +154,11 @@ test_that("test fcm_select with features from a dfm,  fixed", {
     )
 })
 
-# test_that("test fcm_compress stops if features are changed only in on dimension", {
-#     myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
-#     myfcm@Dimnames[[1]] <- tolower(myfcm@Dimnames[[1]])
-#     expect_error(fcm_compress(myfcm))
-# })
-
 test_that("test fcm_compress retains class", {
-    myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
-    colnames(myfcm) <- rownames(myfcm) <- tolower(colnames(myfcm))
-    newfcm <- fcm_compress(myfcm)
-    expect_equivalent(class(newfcm), "fcm")
+    fcmt <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
+    colnames(fcmt) <- rownames(fcmt) <- tolower(colnames(fcmt))
+    fcmt2 <- fcm_compress(fcmt)
+    expect_equivalent(class(fcmt2), "fcm")
 })
 
 test_that("shortcut functions works", {
@@ -181,4 +167,38 @@ test_that("shortcut functions works", {
                  fcm_keep(fcmt_test2, stopwords('english')))
     expect_equal(fcm_select(fcmt_test2, stopwords('english'), selection = 'remove'),
                  fcm_remove(fcmt_test2, stopwords('english')))
+})
+
+test_that("as.fcm is working", {
+    
+    feat1 <- c("B", "A", "D", "C", "E")
+    feat2 <- c("Z", "X", "N", "M", "K")
+    
+    mt1 <- matrix(c(1, 3, 1, 2, 2, 
+                   0, 1, 2, 0, 1, 
+                   0, 0, 0, 0, 0, 
+                   0, 0, 0, 1, 2, 
+                   0, 0, 0, 0, 0),
+                 dimnames = list(feat1, feat1),
+                 nrow = 5, ncol = 5, byrow = TRUE)
+    
+    expect_true(is.fcm(as.fcm(mt1)))
+    expect_true(is.fcm(as.fcm(as(mt1, "dtCMatrix"))))
+    expect_true(is.fcm(as.fcm(as(mt1, "dgCMatrix"))))
+    expect_true(is.fcm(as.fcm(as(mt1, "dgTMatrix"))))
+    expect_true(is.fcm(as.fcm(as(mt1, "dgeMatrix"))))
+    
+    mt2 <- matrix(c(1, 3, 1, 2, 2, 
+                    0, 1, 2, 0, 1, 
+                    0, 0, 0, 0, 0, 
+                    0, 0, 0, 1, 2, 
+                    0, 0, 0, 0, 0),
+                  dimnames = list(feat1, feat2),
+                  nrow = 5, ncol = 5, byrow = TRUE)
+    
+    expect_error(as.fcm(mt2), 
+                "matrix must have the same rownames and colnames")
+    expect_error(as.fcm(as(mt2, "dgeMatrix")),
+                "matrix must have the same rownames and colnames")
+
 })
