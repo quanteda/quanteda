@@ -149,36 +149,6 @@ test_that("test dfm_select with ngrams concatenated with whitespace", {
 })
 
 
-# test_that("test dfm_select with documents", {
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = 'doc*', selection = "keep", valuetype = "glob", 
-#                                      padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc1', 'doc2', 'doc3'))
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "keep", valuetype = "fixed", 
-#                                     padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc1', 'doc2'))
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "remove", valuetype = "fixed", 
-#                                      padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc3'))
-#     
-#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc3', 'doc4'), selection = "keep", valuetype = "fixed", 
-#                                      padding = TRUE, verbose = FALSE, case_insensitive = FALSE)),
-#                  c('doc3', 'doc4'))
-# })
-# 
-# test_that("test dfm_select with dates in document names", {
-#     
-#     dates <- as.character(seq.Date(as.Date('2017-01-01'), as.Date('2017-12-31'), 1))
-#     txts <- paste('text', seq_along(dates))
-#     names(txts) <- dates
-#     paddeddfm <- dfm_select(dfm(txts)[1:10,], documents = dates, valuetype = 'fixed', padding = TRUE)
-#     expect_equal(ndoc(paddeddfm), 365)
-#     
-# })
-
-
 test_that("test dfm_select with features from a dfm,  fixed", {
     txt <- c(doc1 = "a B c D e",
              doc2 = "a BBB c D e",
