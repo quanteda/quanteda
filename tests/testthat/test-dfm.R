@@ -225,15 +225,20 @@ test_that("dfm.dfm works as expected", {
     expect_identical(dfmt, dfm(dfmt, tolower = FALSE))
     expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
     
-    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
-                     dfm_remove(dfmt, c("the", "a", "an"), case_insensitive = FALSE))
-    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = TRUE, tolower = FALSE),
-                     dfm_remove(dfmt, c("the", "a", "an"), case_insensitive = TRUE))
+    expect_true({
+        sum(dfm(corp, select = c("The", "a", "an"))) >
+        sum(dfm(corp, select = c("The", "a", "an"), case_insensitive = FALSE))
+    })
     
-    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = FALSE),
-                     dfm(tokens_remove(toks, c("the", "a", "an"), case_insensitive = FALSE)))
-    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = TRUE),
-                     dfm(tokens_remove(toks, c("the", "a", "an"), case_insensitive = TRUE)))
+    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
+                     dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = FALSE))
+    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE, tolower = FALSE),
+                     dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = TRUE))
+    
+    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE),
+                     dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = FALSE)))
+    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE),
+                     dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = TRUE)))
     
     dfmt_group <- dfm(dfmt,
                       groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in%
@@ -242,12 +247,34 @@ test_that("dfm.dfm works as expected", {
     expect_identical(colSums(dfmt_group), colSums(dfmt_group))
     expect_identical(docnames(dfmt_group), c("Govt", "Opposition"))
 
-    dict <- dictionary(list(articles = c("the", "a", "an"),
-                            preps = c("of", "for", "in")))
+    dict <- dictionary(list(articles = c("The", "a", "an"),
+                            preps = c("of", "for", "In")), tolower = FALSE)
+    
+    expect_true({
+        sum(dfm(corp, dictionary = dict)) >
+        sum(dfm(corp, dictionary = dict, case_insensitive = FALSE))
+    })
+    
     expect_equivalent(
         dfm(corp, dictionary = dict),
         dfm(dfmt, dictionary = dict)
     )
+    
+    expect_equivalent(
+        dfm(dfmt, dictionary = dict),
+        dfm(tokens_lookup(toks, dict))
+    )
+    
+    expect_equivalent(
+        dfm(corp, dictionary = dict, case_insensitive = FALSE),
+        dfm(dfmt, dictionary = dict, case_insensitive = FALSE)
+    )
+    
+    expect_equivalent(
+        dfm(dfmt, dictionary = dict, case_insensitive = FALSE),
+        dfm(tokens_lookup(toks, dict, case_insensitive = FALSE))
+    )
+    
     expect_identical(
         dfm(corp, stem = TRUE),
         dfm(dfmt, stem = TRUE)

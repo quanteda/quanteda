@@ -5,47 +5,45 @@
 #' @param x character, [corpus], [tokens], or [dfm] object
 #' @param tolower convert all features to lowercase
 #' @param stem if `TRUE`, stem words
-#' @param remove a [pattern] of user-supplied features to ignore, such as
-#'   "stop words".  To access one possible list (from any list you wish), use
-#'   [stopwords()].  The pattern matching type will be set by
-#'   `valuetype`.  See also [tokens_select()].  For behaviour of
-#'   `remove` with `ngrams > 1`, see Details.
+#' @param remove a [pattern] of user-supplied features to ignore, such as "stop
+#'   words".  To access one possible list (from any list you wish), use
+#'   [stopwords()].  The pattern matching type will be set by `valuetype`.  See
+#'   also [tokens_select()].  For behaviour of `remove` with `ngrams > 1`, see
+#'   Details.
 #' @param select a  [pattern]  of user-supplied features to keep, while
 #'   excluding all others.  This can be used in lieu of a dictionary if there
 #'   are only specific features that a user wishes to keep. To extract only
-#'   Twitter usernames, for example, set `select = "@@*"` and make sure
-#'   that `remove_twitter = FALSE` as an additional argument passed to
-#'   [tokens].  Note: `select = "^@@\\\w+\\\b"` would be the regular
-#'   expression version of this matching pattern.  The pattern matching type
-#'   will be set by `valuetype`.  See also [tokens_remove()].
-#' @param dictionary a [dictionary] object to apply to the tokens when
-#'   creating the dfm
-#' @param thesaurus a [dictionary] object that will be applied as if
-#'   `exclusive = FALSE`. See also [tokens_lookup()].  For more
-#'   fine-grained control over this and other aspects of converting features
-#'   into dictionary/thesaurus keys from pattern matches to values, consider
-#'   creating the dfm first, and then applying [dfm_lookup()]
-#'   separately, or using [tokens_lookup()] on the tokenized text
-#'   before calling `dfm`.
+#'   Twitter usernames, for example, set `select = "@@*"` and make sure that
+#'   `remove_twitter = FALSE` as an additional argument passed to [tokens].
+#'   Note: `select = "^@@\\\w+\\\b"` would be the regular expression version of
+#'   this matching pattern.  The pattern matching type will be set by
+#'   `valuetype`.  See also [tokens_remove()].
+#' @param dictionary a [dictionary] object to apply to the tokens when creating
+#'   the dfm
+#' @param thesaurus a [dictionary] object that will be applied as if `exclusive
+#'   = FALSE`. See also [tokens_lookup()].  For more fine-grained control over
+#'   this and other aspects of converting features into dictionary/thesaurus
+#'   keys from pattern matches to values, consider creating the dfm first, and
+#'   then applying [dfm_lookup()] separately, or using [tokens_lookup()] on the
+#'   tokenized text before calling `dfm`.
 #' @inheritParams valuetype
-#' @param case_insensitive ignore the case of dictionary values if `TRUE`
+#' @param case_insensitive ignore the case of [pattern] for `remove`/`select`
+#'   or [dictionary] values if `TRUE`
 #' @inheritParams groups
-#' @note When `x` is a [dfm], `groups` provides a convenient and
-#'   fast method of combining and refactoring the documents of the dfm according
-#'   to the groups.
+#' @note When `x` is a [dfm], `groups` provides a convenient and fast method of
+#'   combining and refactoring the documents of the dfm according to the groups.
 #' @param verbose display messages if `TRUE`
-#' @param ... additional arguments passed to [tokens]; not used when `x`
-#'   is a [dfm]
-#' @details The default behaviour for `remove`/`select` when
-#'   constructing ngrams using `dfm(x, ` *ngrams > 1*`)` is to
-#'   remove/select any ngram constructed from a matching feature.  If you wish
-#'   to remove these before constructing ngrams, you will need to first tokenize
-#'   the texts with ngrams, then remove the features to be ignored, and then
-#'   construct the dfm using this modified tokenization object.  See the code
-#'   examples for an illustration.
+#' @param ... additional arguments passed to [tokens]; not used when `x` is a
+#'   [dfm]
+#' @details The default behaviour for `remove`/`select` when constructing ngrams
+#'   using `dfm(x, ` *ngrams > 1*`)` is to remove/select any ngram constructed
+#'   from a matching feature.  If you wish to remove these before constructing
+#'   ngrams, you will need to first tokenize the texts with ngrams, then remove
+#'   the features to be ignored, and then construct the dfm using this modified
+#'   tokenization object.  See the code examples for an illustration.
 #'
-#'   To select on and match the features of a another [dfm], `x` must
-#'   also be a [dfm].
+#'   To select on and match the features of a another [dfm], `x` must also be a
+#'   [dfm].
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -110,7 +108,7 @@
 #'             groups = ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"),
 #'                             "Govt", "Opposition"),
 #'             tolower = FALSE, verbose = TRUE)
-#'
+#' 
 dfm <- function(x,
                 tolower = TRUE,
                 stem = FALSE,
@@ -261,6 +259,7 @@ dfm.tokens <- function(x,
         x <- tokens_lookup(x, dictionary,
                            exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                            valuetype = valuetype,
+                           case_insensitive = case_insensitive,
                            verbose = verbose)
     }
 
@@ -317,6 +316,7 @@ dfm.dfm <- function(x,
         x <- dfm_lookup(x, dictionary,
                         exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                         valuetype = valuetype,
+                        case_insensitive = case_insensitive,
                         verbose = verbose)
     }
 
