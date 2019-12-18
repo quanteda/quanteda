@@ -12,7 +12,6 @@
 #'   level into the first, but record the third level (if present) collapsed
 #'   below the first (see examples).
 #' @inheritParams valuetype
-#' @inheritParams case_insensitive
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish
 #'   them from other features
 #' @param nomatch an optional character naming a new key for tokens that do not

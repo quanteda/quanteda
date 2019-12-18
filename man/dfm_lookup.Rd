@@ -33,7 +33,7 @@ wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} 
 exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values.}
+\code{pattern} or \link{dictionary} values}
 
 \item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
 distinguish them from other features}

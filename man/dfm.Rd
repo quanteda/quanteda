@@ -55,7 +55,7 @@ wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} 
 exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values.}
+\code{pattern} or \link{dictionary} values}
 
 \item{groups}{either: a character vector containing the names of document
 variables to be used for grouping; or a factor or object that can be

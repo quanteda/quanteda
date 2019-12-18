@@ -81,6 +81,8 @@
 #' @param valuetype the type of pattern matching: `"glob"` for "glob"-style
 #'   wildcard expressions; `"regex"` for regular expressions; or `"fixed"` for
 #'   exact matching. See [valuetype] for details.
+#' @param case_insensitive logical; if `TRUE`, ignore case when matching a
+#'   `pattern` or [dictionary] values
 #' @details Pattern matching in in \pkg{quanteda} uses "glob"-style pattern
 #'   matching as the default, because this is simpler than regular expression
 #'   matching while addressing most users' needs.  It is also has the advantage
@@ -100,6 +102,7 @@
 #'   they contain wild card characters, and to fixed pattern matches when they
 #'   do not.
 #' @name valuetype
+#' @aliases case_insensitive
 #' @seealso [utils::glob2rx()], [glob pattern matching
 #'   (Wikipedia)](https://en.wikipedia.org/wiki/Glob_(programming)),
 #'   [stringi::stringi-search-regex()], [stringi::stringi-search-fixed()]
@@ -162,13 +165,6 @@ NULL
 #' # dictionary with multi-word matches
 #' (dict1 <- dictionary(list(us = c("president", "white house", "house of representatives"))))
 #' phrase(dict1)
-#' @keywords internal
-NULL
-
-#' Case-insensitive pattern matching
-#' @param case_insensitive logical; if `TRUE`, ignore case when matching a
-#'   `pattern` or [dictionary] values.
-#' @name case_insensitive
 #' @keywords internal
 NULL
 

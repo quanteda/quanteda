@@ -23,7 +23,7 @@ for more details.}
 match.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values.}
+\code{pattern} or \link{dictionary} values}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }

@@ -14,7 +14,6 @@
 #' @param x character or [corpus] object whose texts will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @inheritParams case_insensitive
 #' @param extract_pattern extracts matched patterns from the texts and save in docvars if
 #'   `TRUE`
 #' @param pattern_position either `"before"` or `"after"`, depending

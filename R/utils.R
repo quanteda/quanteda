@@ -107,7 +107,6 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' tokens_compound and kwic.
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @inheritParams case_insensitive
 #' @param concatenator concatenator that join multi-word expression in tokens object
 #' @param levels only used when pattern is a dictionary
 #' @param remove_unigram ignore single-word patterns if `TRUE`

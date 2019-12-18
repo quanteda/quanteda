@@ -33,7 +33,7 @@ exact matching. See \link{valuetype} for details.}
 \item{separator}{character to separate words in the output}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values.}
+\code{pattern} or \link{dictionary} values}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable
 object types}

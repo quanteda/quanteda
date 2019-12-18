@@ -27,7 +27,6 @@
 #'   then applying [dfm_lookup()] separately, or using [tokens_lookup()] on the
 #'   tokenized text before calling `dfm`.
 #' @inheritParams valuetype
-#' @inheritParams case_insensitive
 #' @inheritParams groups
 #' @note When `x` is a [dfm], `groups` provides a convenient and fast method of
 #'   combining and refactoring the documents of the dfm according to the groups.

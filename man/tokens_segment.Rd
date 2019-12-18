@@ -26,7 +26,7 @@ wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} 
 exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values.}
+\code{pattern} or \link{dictionary} values}
 
 \item{extract_pattern}{remove matched patterns from the texts and save in
 \link{docvars}, if \code{TRUE}}

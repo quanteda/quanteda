@@ -9,7 +9,6 @@
 #' @param types unique types of tokens obtained by [types()]
 #' @param keep_nomatch keep patterns not found
 #' @inheritParams valuetype
-#' @param case_insensitive if `TRUE`, ignores case when matching
 #' @return  `pattern2id` returns a list of integer vectors containing type
 #'   IDs
 #' @keywords internal
@@ -106,8 +105,7 @@ pattern2fixed <- function(pattern, types, valuetype = c("glob", "fixed", "regex"
 #' @param pattern a "glob", "fixed" or "regex" pattern
 #' @param types_search lowercased types when `case_insensitive=TRUE`, but
 #'   not used in glob and fixed matching as types are in the index.
-#' @param case_insensitive ignore case when matching, if `TRUE`, but not
-#'   used in glob and fixed matching as types are lowercased in the index.
+#' @inheritParams valuetype
 #' @param index index object created by `index_types`
 #' @keywords internal
 search_glob <- function(pattern, types_search, index) {

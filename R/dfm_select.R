@@ -9,7 +9,6 @@
 #' @inheritParams pattern
 #' @param selection whether to `keep` or `remove` the features
 #' @inheritParams valuetype
-#' @inheritParams case_insensitive
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition

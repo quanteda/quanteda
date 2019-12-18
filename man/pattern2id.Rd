@@ -35,7 +35,8 @@ details.}
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{if \code{TRUE}, ignores case when matching}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{keep_nomatch}{keep patterns not found}
 

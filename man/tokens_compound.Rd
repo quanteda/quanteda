@@ -39,7 +39,7 @@ window size after.  If paddings (empty \code{""} tokens) are found, window will
 be shrunk to exclude them.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values.}
+\code{pattern} or \link{dictionary} values}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
