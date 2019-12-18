@@ -22,7 +22,8 @@ for more details.}
 \code{replacement} must be character vector of equal length, for a 1:1
 match.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }

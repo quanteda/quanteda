@@ -8,13 +8,7 @@
 #' @param x the [dfm] or [fcm] object whose features will be selected
 #' @inheritParams pattern
 #' @param selection whether to `keep` or `remove` the features
-#' @param valuetype the type of pattern matching: `"glob"` for "glob"-style
-#'   wildcard expressions; `"regex"` for regular expressions; or
-#'   `"fixed"` for exact matching. See [valuetype] for details.
-#'
-#'   For `dfm_select`, `pattern` may also be a [dfm]; see Value
-#'   below.
-#' @param case_insensitive ignore the case of dictionary values if `TRUE`
+#' @inheritParams valuetype
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition

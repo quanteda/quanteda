@@ -13,9 +13,6 @@
 #'   nearly all other punctuation characters, at least those in the Unicode
 #'   punctuation class `[P]` will be removed).
 #' @inheritParams valuetype
-#' @param case_insensitive logical; if `TRUE`, ignore case when matching. When
-#'   `pattern` is a `collocations`, case-sensitive operation is significantly
-#'   faster than case-insensitive operation.
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
 #' @param window integer; a vector of length 1 or 2 that specifies size of the

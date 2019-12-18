@@ -8,7 +8,6 @@
 #' @param x [tokens] object whose token elements will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if `TRUE`
 #' @param extract_pattern remove matched patterns from the texts and save in
 #'   [docvars], if `TRUE`
 #' @param pattern_position either `"before"` or `"after"`, depending 

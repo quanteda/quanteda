@@ -15,7 +15,6 @@
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
 #' @inheritParams valuetype
-#' @param case_insensitive ignore the case of dictionary values if `TRUE`
 #' @param capkeys if `TRUE`, convert dictionary keys to uppercase to
 #'   distinguish them from other features
 #' @param nomatch an optional character naming a new feature that will contain 
