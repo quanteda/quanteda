@@ -215,26 +215,46 @@ test_that("dfm print works as expected", {
 
 
 test_that("dfm.dfm works as expected", {
-    testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
-    expect_identical(testdfm, dfm(testdfm, tolower = FALSE))
-    expect_identical(testdfm, dfm(testdfm, tolower = TRUE))
-    groupeddfm <- dfm(testdfm,
+    corp <- data_corpus_irishbudget2010
+    toks <- tokens(corp)
+    dfmt <- dfm(toks, tolower = FALSE)
+    
+    expect_identical(dfm(toks, tolower = FALSE), dfm(dfmt, tolower = FALSE))
+    expect_identical(dfm(toks, tolower = TRUE), dfm(dfmt, tolower = TRUE))
+    
+    expect_identical(dfmt, dfm(dfmt, tolower = FALSE))
+    expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
+    
+    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
+                     dfm_remove(dfmt, c("the", "a", "an"), case_insensitive = FALSE))
+    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = TRUE, tolower = FALSE),
+                     dfm_remove(dfmt, c("the", "a", "an"), case_insensitive = TRUE))
+    
+    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = FALSE),
+                     dfm(tokens_remove(toks, c("the", "a", "an"), case_insensitive = FALSE)))
+    expect_identical(dfm(dfmt, remove = c("the", "a", "an"), case_insensitive = TRUE),
+                     dfm(tokens_remove(toks, c("the", "a", "an"), case_insensitive = TRUE)))
+    
+    dfmt_group <- dfm(dfmt,
                       groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in%
                                            c("FF", "Green"), "Govt", "Opposition"),
                       tolower = FALSE)
-    expect_identical(colSums(groupeddfm), colSums(groupeddfm))
-    expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
-    expect_identical(testdfm, dfm(testdfm))
+    expect_identical(colSums(dfmt_group), colSums(dfmt_group))
+    expect_identical(docnames(dfmt_group), c("Govt", "Opposition"))
 
     dict <- dictionary(list(articles = c("the", "a", "an"),
                             preps = c("of", "for", "in")))
     expect_equivalent(
-        dfm(data_corpus_irishbudget2010, dictionary = dict),
-        dfm(testdfm, dictionary = dict)
+        dfm(corp, dictionary = dict),
+        dfm(dfmt, dictionary = dict)
     )
     expect_identical(
-        dfm(data_corpus_irishbudget2010, stem = TRUE),
-        dfm(testdfm, stem = TRUE)
+        dfm(corp, stem = TRUE),
+        dfm(dfmt, stem = TRUE)
+    )
+    expect_identical(
+        dfm(corp, stem = TRUE),
+        dfm(dfmt, stem = TRUE)
     )
 })
 

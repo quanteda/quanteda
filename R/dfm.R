@@ -28,6 +28,7 @@
 #'   separately, or using [tokens_lookup()] on the tokenized text
 #'   before calling `dfm`.
 #' @inheritParams valuetype
+#' @param case_insensitive ignore the case of dictionary values if `TRUE`
 #' @inheritParams groups
 #' @note When `x` is a [dfm], `groups` provides a convenient and
 #'   fast method of combining and refactoring the documents of the dfm according
@@ -118,6 +119,7 @@ dfm <- function(x,
                 dictionary = NULL,
                 thesaurus = NULL,
                 valuetype = c("glob", "regex", "fixed"),
+                case_insensitive = TRUE,
                 groups = NULL,
                 verbose = quanteda_options("verbose"),
                 ...) {
@@ -156,6 +158,7 @@ dfm.character <- function(x,
                           dictionary = NULL,
                           thesaurus = NULL,
                           valuetype = c("glob", "regex", "fixed"),
+                          case_insensitive = TRUE,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
@@ -163,7 +166,10 @@ dfm.character <- function(x,
         tolower = tolower,
         stem = stem,
         select = select, remove = remove,
-        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype,
+        dictionary = dictionary, 
+        thesaurus = thesaurus, 
+        valuetype = valuetype,
+        case_insensitive = case_insensitive,
         groups = groups,
         verbose = verbose)
 }
@@ -180,6 +186,7 @@ dfm.corpus <- function(x,
                        dictionary = NULL,
                        thesaurus = NULL,
                        valuetype = c("glob", "regex", "fixed"),
+                       case_insensitive = TRUE,
                        groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
@@ -189,6 +196,7 @@ dfm.corpus <- function(x,
                select = select, remove = remove,
                dictionary = dictionary, thesaurus = thesaurus,
                valuetype = valuetype,
+               case_insensitive = case_insensitive,
                groups = groups,
                verbose = verbose)
 }
@@ -204,6 +212,7 @@ dfm.tokens <- function(x,
                        dictionary = NULL,
                        thesaurus = NULL,
                        valuetype = c("glob", "regex", "fixed"),
+                       case_insensitive = TRUE,
                        groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
@@ -264,6 +273,7 @@ dfm.tokens <- function(x,
                            pattern = if (!is.null(remove)) remove else select,
                            selection = if (!is.null(remove)) "remove" else "keep",
                            valuetype = valuetype,
+                           case_insensitive = case_insensitive,
                            verbose = verbose)
     }
 
@@ -287,6 +297,7 @@ dfm.dfm <- function(x,
                     dictionary = NULL,
                     thesaurus = NULL,
                     valuetype = c("glob", "regex", "fixed"),
+                    case_insensitive = TRUE,
                     groups = NULL,
                     verbose = quanteda_options("verbose"),
                     ...) {
@@ -294,11 +305,6 @@ dfm.dfm <- function(x,
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
     check_dots(list(...))
-
-    if (tolower) {
-        if (verbose) catm("   ... lowercasing\n", sep = "")
-        x <- dfm_tolower(x)
-    }
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")
@@ -328,9 +334,15 @@ dfm.dfm <- function(x,
                         pattern = if (!is.null(remove)) remove else select,
                         selection = if (!is.null(remove)) "remove" else "keep",
                         valuetype = valuetype,
+                        case_insensitive = case_insensitive,
                         verbose = verbose)
     }
-
+    
+    if (tolower) {
+        if (verbose) catm("   ... lowercasing\n", sep = "")
+        x <- dfm_tolower(x)
+    }
+    
     language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose)
