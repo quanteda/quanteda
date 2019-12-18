@@ -26,13 +26,14 @@ details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
 \item{separator}{character to separate words in the output}
 
-\item{case_insensitive}{match without respect to case if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values.}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable
 object types}

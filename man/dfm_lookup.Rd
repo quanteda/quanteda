@@ -28,11 +28,12 @@ applied}
 otherwise, replace values in dictionary with keys while leaving other
 features unaffected}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values.}
 
 \item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
 distinguish them from other features}

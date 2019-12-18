@@ -35,11 +35,12 @@ details.}
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens matching
 \code{pattern}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values.}
 
 \item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
 previously existed.  This is useful if a positional match is needed between

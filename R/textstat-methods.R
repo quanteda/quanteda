@@ -24,7 +24,7 @@
 #' @param selection whether to `"keep"` or `"remove"` the rows that
 #'   match the pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if `TRUE`
+#' @inheritParams case_insensitive
 #' @keywords textstat internal
 #' @export
 #' @examples

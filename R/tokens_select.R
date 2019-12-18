@@ -13,7 +13,7 @@
 #' @param selection whether to `"keep"` or `"remove"` the tokens matching
 #'   `pattern`
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if `TRUE`
+#' @inheritParams case_insensitive
 #' @param verbose if `TRUE` print messages about how many tokens were selected
 #'   or removed
 #' @param padding if `TRUE`, leave an empty string where the removed tokens

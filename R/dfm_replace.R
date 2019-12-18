@@ -8,7 +8,7 @@
 #' @param replacement if `pattern` is a character vector, then
 #'   `replacement` must be character vector of equal length, for a 1:1
 #'   match.
-#' @param case_insensitive ignore case when matching, if `TRUE`
+#' @inheritParams case_insensitive
 #' @param verbose print status messages if `TRUE`
 #' @export
 #' @examples
