@@ -47,3 +47,14 @@ test_that("corpus_sample by group works", {
         rep(LETTERS[1:2], each = 5)
     )
 })
+
+test_that("corpus_sample works with one docvar (#1813)", {
+    corp <- corpus(LETTERS[1:5], 
+                   docvars = data.frame(int = 1:5))
+    expect_true(
+        setequal(docvars(corpus_sample(corp), "int"), 1:5)
+    )
+    expect_true(
+        all(docvars(corpus_sample(corp, 4, replace = TRUE), "int") %in% 1:5),
+    )
+})
