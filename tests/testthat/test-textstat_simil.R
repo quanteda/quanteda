@@ -504,7 +504,7 @@ test_that("diag2na is working", {
                  matrix(c(1, 2, NA, 4, NA, 6), nrow = 3, 
                         dimnames = list(c("a", "b", "c"), c("c", "b"))))
     
-    mat4 <- forceSymmetric(mat1)
+    mat4 <- Matrix::forceSymmetric(mat1)
     expect_equal(as.matrix(quanteda:::diag2na(as(mat4, "dsTMatrix"))),
                  matrix(c(NA, 4, 7, 4, NA, 8, 7, 8, NA), nrow = 3, 
                         dimnames = list(c("b", "c", "d"), c("b", "c", "d"))))
