@@ -1,20 +1,20 @@
 # featnames -----------
 
 #' Get the feature labels from a dfm
-#' 
+#'
 #' Get the features from a document-feature matrix, which are stored as the
 #' column names of the [dfm] object.
 #' @param x the dfm whose features will be extracted
 #' @return character vector of the feature labels
 #' @examples
 #' dfmat <- dfm(data_corpus_inaugural)
-#' 
+#'
 #' # first 50 features (in original text order)
 #' head(featnames(dfmat), 50)
-#' 
+#'
 #' # first 50 features alphabetically
 #' head(sort(featnames(dfmat)), 50)
-#' 
+#'
 #' # contrast with descending total frequency order from topfeatures()
 #' names(topfeatures(dfmat, 50))
 #' @export
@@ -44,10 +44,10 @@ docnames.dfm <- function(x) {
 # as.dfm -----------
 
 #' Coercion and checking functions for dfm objects
-#' 
+#'
 #' Convert an eligible input object into a dfm, or check whether an object is a
 #' dfm.  Current eligible inputs for coercion to a dfm are: [matrix],
-#' (sparse) [Matrix][Matrix::Matrix], 
+#' (sparse) [Matrix][Matrix::Matrix],
 #' \link[tm:matrix]{TermDocumentMatrix} and \link[tm:matrix]{DocumentTermMatrix}
 #' (from the \pkg{tm} package), [data.frame], and other [dfm] objects.
 #' @param x a candidate object for checking or coercion to [dfm]
@@ -72,8 +72,8 @@ as.dfm.default <- function(x) {
 as.dfm.dfm <- function(x) {
     if (is_pre2(x)) {
         slots <- get_dfm_slots(x)
-        x <- new("dfm", as(x, "dgCMatrix"), 
-                 meta = list(user = list(), 
+        x <- new("dfm", as(x, "dgCMatrix"),
+                 meta = list(user = list(),
                              system = list()),
                  docvars = upgrade_docvars(x@docvars, rownames(x)))
         set_dfm_slots(x) <- slots
@@ -106,25 +106,25 @@ as.dfm.data.frame <- function(x) {
 #' @method as.dfm dfmSparse
 #' @export
 as.dfm.dfmSparse <- function(x) {
-    as.dfm(as(x, 'dgCMatrix'))
+    as.dfm(as(x, "dgCMatrix"))
 }
 
 #' @noRd
 #' @method as.dfm DocumentTermMatrix
 #' @export
-as.dfm.DocumentTermMatrix <- function(x){
+as.dfm.DocumentTermMatrix <- function(x) {
     as.dfm(
-        sparseMatrix(i = x$i, j = x$j, x = x$v, 
-                     dimnames = list(docs = rownames(x), 
+        sparseMatrix(i = x$i, j = x$j, x = x$v,
+                     dimnames = list(docs = rownames(x),
                                      features = colnames(x))))
 }
 
 #' @noRd
 #' @method as.dfm TermDocumentMatrix
 #' @export
-as.dfm.TermDocumentMatrix <- function(x){
+as.dfm.TermDocumentMatrix <- function(x) {
     as.dfm(
-        sparseMatrix(i = x$j, j = x$i, x = x$v, 
+        sparseMatrix(i = x$j, j = x$i, x = x$v,
                      dimnames = list(colnames(x), rownames(x))))
 }
 
@@ -133,26 +133,26 @@ as.dfm.TermDocumentMatrix <- function(x){
 #' @param slots slots a list of values to be assigned to slots
 #' @keywords internal
 matrix2dfm <- function(x, slots = NULL) {
-   
+
     rowname <- rownames(x)
     if (nrow(x) > length(rowname))
         rowname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
-    
+
     colname <- colnames(x)
     if (ncol(x) > length(colname))
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
-    
+
     x <- Matrix(x, sparse = TRUE)
-    x <- new("dfm", as(x, 'dgCMatrix'), docvars = make_docvars(nrow(x), rowname, FALSE))
+    x <- new("dfm", as(x, "dgCMatrix"), docvars = make_docvars(nrow(x), rowname, FALSE))
     set_dfm_dimnames(x) <- list(rowname, colname)
     set_dfm_slots(x) <- slots
     return(x)
 }
 
 #' Set values to a dfm's S4 slots
-#' @param x a dfm 
+#' @param x a dfm
 #' @param exceptions names of slots to be ignored
-#' @param value a list of values extracted using `attributes` and to be assigned to slots 
+#' @param value a list of values extracted using `attributes` and to be assigned to slots
 #' @keywords internal
 "set_dfm_slots<-" <- function(x, exceptions = NULL, value) {
     if (is.null(value)) return(x)
@@ -172,18 +172,17 @@ get_dfm_slots <- function(x) {
 }
 
 #' @rdname as.dfm
-#' @return 
+#' @return
 #' `is.dfm` returns `TRUE` if and only if its argument is a [dfm].
 #' @export
 is.dfm <- function(x) {
     is(x, "dfm")
-    # "dfm" %in% class(x)
 }
 
 # topfeatures -----------
 
 #' Identify the most frequent features in a dfm
-#' 
+#'
 #' List the most (or least) frequently occurring features in a [dfm], either
 #' as a whole or separated by document.
 #' @name topfeatures
@@ -195,36 +194,36 @@ is.dfm <- function(x) {
 #'   `group` if applicable), or `docfreq` for the document frequencies
 #'   of features
 #' @inheritParams groups
-#' @return A named numeric vector of feature counts, where the names are the 
+#' @return A named numeric vector of feature counts, where the names are the
 #'   feature labels, or a list of these if `groups` is given.
 #' @examples
 #' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
 #'     dfm(remove_punct = TRUE)
 #' dfmat2 <- dfm_remove(dfmat1, stopwords("english"))
-#' 
+#'
 #' # most frequent features
 #' topfeatures(dfmat1)
 #' topfeatures(dfmat2)
-#' 
+#'
 #' # least frequent features
 #' topfeatures(dfmat2, decreasing = FALSE)
-#' 
-#' # top features of individual documents  
+#'
+#' # top features of individual documents
 #' topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
-#' 
+#'
 #' # grouping by president last name
 #' topfeatures(dfmat2, n = 5, groups = "President")
 #'
 #' # features by document frequencies
 #' tail(topfeatures(dfmat1, scheme = "docfreq", n = 200))
 #' @export
-topfeatures <- function(x, n = 10, decreasing = TRUE, 
+topfeatures <- function(x, n = 10, decreasing = TRUE,
                         scheme = c("count", "docfreq"), groups = NULL) {
     UseMethod("topfeatures")
 }
 
 #' @export
-topfeatures.default <- function(x, n = 10, decreasing = TRUE, 
+topfeatures.default <- function(x, n = 10, decreasing = TRUE,
                                 scheme = c("count", "docfreq"), groups = NULL) {
     stop(friendly_class_undefined_message(class(x), "topfeatures"))
 }
@@ -232,26 +231,26 @@ topfeatures.default <- function(x, n = 10, decreasing = TRUE,
 #' @export
 #' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
                             scheme = c("count", "docfreq"), groups = NULL) {
-    
+
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
     scheme <- match.arg(scheme)
-    
+
     if (!is.null(groups)) {
         result <- list()
         x <- dfm_group(x, groups)
         for (i in seq_len(ndoc(x))) {
-            result[[i]] <- topfeatures(x[i,], n = n, scheme = scheme, 
+            result[[i]] <- topfeatures(x[i, ], n = n, scheme = scheme,
                                        decreasing = decreasing, groups = NULL)
         }
         names(result) <- docnames(x)
         return(result)
     }
-    
+
     if (n > nfeat(x)) n <- nfeat(x)
-    
+
     if (scheme == "count") {
         wght <- colSums(x)
     } else if (scheme == "docfreq") {
@@ -268,7 +267,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 #' Return the proportion of sparseness of a document-feature matrix, equal
 #' to the proportion of cells that have zero counts.
 #' @param x the document-feature matrix
-#' @examples 
+#' @examples
 #' dfmat <- dfm(data_corpus_inaugural)
 #' sparsity(dfmat)
 #' sparsity(dfm_trim(dfmat, min_termfreq = 5))
@@ -287,17 +286,16 @@ sparsity.dfm <- function(x) {
     (1 - length(x@x) / prod(dim(x)))
 }
 
-
 #  Internal --------
 
 #' Internal functions for dfm objects
-#' 
+#'
 #' Internal function documentation for [dfm] objects.
 #' @name dfm-internal
 #' @keywords dfm internal
 NULL
 
-#' The `Compare` methods enable relational operators to be use with dfm. 
+#' The `Compare` methods enable relational operators to be use with dfm.
 #' Relational operations on a dfm with a numeric will return a
 #' [dgCMatrix-class][Matrix::dgCMatrix-class] object.
 #' @rdname dfm-internal

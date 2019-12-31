@@ -1,7 +1,7 @@
 #' Similarity and distance computation between documents or features
-#' 
-#' These functions compute matrixes of distances and similarities between 
-#' documents or features from a [dfm()] and return a 
+#'
+#' These functions compute matrixes of distances and similarities between
+#' documents or features from a [dfm()] and return a
 #' [stats::dist()] object (or a matrix if specific targets are
 #' selected).  They are fast and robust because they operate directly on the sparse
 #' [dfm] objects.
@@ -9,20 +9,20 @@
 #' @param selection a valid index for document or feature names from `x`,
 #'   to be selected for comparison
 #' @param margin identifies the margin of the dfm on which similarity or
-#'   difference will be computed:  `"documents"` for documents or 
+#'   difference will be computed:  `"documents"` for documents or
 #'   `"features"` for word/term features
 #' @param method method the similarity or distance measure to be used; see
 #'   Details
-#' @param upper  whether the upper triangle of the symmetric \eqn{V \times V} 
+#' @param upper  whether the upper triangle of the symmetric \eqn{V \times V}
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
-#' @details `textstat_simil` options are: `"correlation"` (default), 
+#' @details `textstat_simil` options are: `"correlation"` (default),
 #'   `"cosine"`, `"jaccard"`, `"ejaccard"`, `"dice"`,
-#'   `"edice"`, `"simple matching"`, `"hamman"`, and 
+#'   `"edice"`, `"simple matching"`, `"hamman"`, and
 #'   `"faith"`.
-#' @note If you want to compute similarity on a "normalized" dfm object 
+#' @note If you want to compute similarity on a "normalized" dfm object
 #'   (controlling for variable document lengths, for methods such as correlation
-#'   for which different document lengths matter), then wrap the input dfm in 
+#'   for which different document lengths matter), then wrap the input dfm in
 #'   `[dfm_weight](x, "prop")`.
 #' @return `textstat_simil` and `textstat_dist` return
 #'   [dist()] class objects if selection is `NULL`, otherwise, a
@@ -34,36 +34,35 @@
 #'   [dist()]
 textstat_simil_old <- function(x, selection = NULL,
                            margin = c("documents", "features"),
-                           method = "correlation", 
+                           method = "correlation",
                            upper  = FALSE, diag = FALSE) {
     UseMethod("textstat_simil_old")
 }
-    
 
-#' @export    
+#' @export
 textstat_simil_old.default <- function(x, selection = NULL,
                                margin = c("documents", "features"),
-                               method = "correlation", 
+                               method = "correlation",
                                upper  = FALSE, diag = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textstat_simil_old"))
 }
-    
-#' @export    
+
+#' @export
 textstat_simil_old.dfm <- function(x, selection = NULL,
                           margin = c("documents", "features"),
-                          method = "correlation", 
+                          method = "correlation",
                           upper  = FALSE, diag = FALSE) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
     margin <- match.arg(margin)
-    
+
     if (!is.null(selection)) {
         y <- if (margin == "documents") x[selection, ] else x[, selection]
     } else {
         y <- NULL
     }
-    
-    methods <- c("cosine", "correlation", "jaccard", "ejaccard", "dice", 
+
+    methods <- c("cosine", "correlation", "jaccard", "ejaccard", "dice",
                  "edice", "simple matching", "hamman", "faith")
     if (method %in% methods) {
         if (method == "simple matching") method <- "smc"
@@ -81,10 +80,10 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
         return(result)
     } else {
         result <- as.matrix(temp)
-        if(!is.null(rownames(result)))
-            attr(result,"Labels") <- rownames(result)
-        else if(!is.null(colnames(result)))
-            attr(result,"Labels") <- colnames(result)
+        if (!is.null(rownames(result)))
+            attr(result, "Labels") <- rownames(result)
+        else if (!is.null(colnames(result)))
+            attr(result, "Labels") <- colnames(result)
         attr(result, "Size") <- if (margin == "documents") nrow(result) else ncol(result)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
@@ -92,7 +91,6 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
         return(result)
     }
 }
-
 
 ## code below based on assoc.R from the qlcMatrix package
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
@@ -104,9 +102,9 @@ textstat_simil_old.dfm <- function(x, selection = NULL,
 
 # cosine similarity: xy / sqrt(xx * yy)
 cosine_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))
     N <- Matrix::Diagonal(x = sqrt(colSums(x ^ 2)) ^ -1)
@@ -122,20 +120,20 @@ cosine_simil <- function(x, y = NULL, margin = 1) {
 
 # Pearson correlation
 correlation_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_tcp <- if (margin == 2) Matrix::tcrossprod else Matrix::crossprod
     func_sum <- if (margin == 2) colSums else rowSums
-    
+
     n <- if (margin == 2) nrow(x) else ncol(x)
     mux <- if (margin == 2) colMeans(x) else rowMeans(x)
-    
+
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
         muy <- if (margin == 2) colMeans(y) else rowMeans(y)
-        covmat <- (as.matrix(func_cp(x,y)) - n * tcrossprod(mux, muy)) / (n - 1)
+        covmat <- (as.matrix(func_cp(x, y)) - n * tcrossprod(mux, muy)) / (n - 1)
         sdvecX <- sqrt((func_sum(x ^ 2) - n * mux ^ 2) / (n - 1))
         sdvecY <- sqrt((func_sum(y ^ 2) - n * muy ^ 2) / (n - 1))
         cormat <- covmat / tcrossprod(sdvecX, sdvecY)
@@ -147,20 +145,21 @@ correlation_simil <- function(x, y = NULL, margin = 1) {
     cormat
 }
 
-# Jaccard similarity (binary), See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
+# Jaccard similarity (binary),
+# See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
 # formula: J = |AB|/(|A| + |B| - |AB|)
 jaccard_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     # convert to binary matrix
-    x <- dfm_weight(x, "boolean") 
-    
+    x <- dfm_weight(x, "boolean")
+
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) colSums else rowSums
     func_name <- if (margin == 2) colnames else rownames
     n <- if (margin == 2) ncol(x) else nrow(x)
-    # union 
+    # union
     an <- func_sum(x)
     if (!is.null(y)) {
         y <- dfm_weight(y, "boolean")
@@ -186,14 +185,14 @@ jaccard_simil <- function(x, y = NULL, margin = 1) {
 # eJaccard similarity (real-valued data)
 # formula: eJ = |AB|/(|A| ^ 2 + |B| ^ 2 - |AB|)
 ejaccard_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) colSums else rowSums
     func_name <- if (margin == 2) colnames else rownames
     n <- if (margin == 2) ncol(x) else nrow(x)
-    # union 
+    # union
     an <- func_sum(x ^ 2)
     if (!is.null(y)) {
         a <- func_cp(x, y)
@@ -210,7 +209,7 @@ ejaccard_simil <- function(x, y = NULL, margin = 1) {
     rowname <- func_name(x)
     # common values
     tmp <- matrix(rep(an, kk), nrow = n)
-    tmp <-  tmp + matrix(rep(bn, n), nrow = n, byrow=TRUE)
+    tmp <-  tmp + matrix(rep(bn, n), nrow = n, byrow = TRUE)
     ejacmat <- a / (tmp - a)
     dimnames(ejacmat) <- list(rowname, colname)
     ejacmat
@@ -219,17 +218,17 @@ ejaccard_simil <- function(x, y = NULL, margin = 1) {
 # Dice similarity coefficient, binary
 # formula: dice = 2|AB|/(|A| + |B|)
 dice_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     # convert to binary matrix
-    x <- dfm_weight(x, "boolean") 
-    
+    x <- dfm_weight(x, "boolean")
+
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) colSums else rowSums
     func_name <- if (margin == 2) colnames else rownames
     n <- if (margin == 2) ncol(x) else nrow(x)
-    # union 
+    # union
     an <- func_sum(x)
     if (!is.null(y)) {
         y <- dfm_weight(y, "boolean")
@@ -251,17 +250,17 @@ dice_simil <- function(x, y = NULL, margin = 1) {
     dicemat
 }
 
-# eDice similarity coefficient, extend from binary Dice to real-valued data 
+# eDice similarity coefficient, extend from binary Dice to real-valued data
 # formula: eDice = 2|AB|/(|A| ^ 2 + |B| ^ 2)
 edice_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) colSums else rowSums
     func_name <- if (margin == 2) colnames else rownames
     n <- if (margin == 2) ncol(x) else nrow(x)
-    # union 
+    # union
     an <- func_sum(x ^ 2)
     if (!is.null(y)) {
         a <- func_cp(x, y)
@@ -276,25 +275,25 @@ edice_simil <- function(x, y = NULL, margin = 1) {
     }
     rowname <- func_name(x)
     tmp <- matrix(rep(an, kk), nrow = n)
-    tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+    tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow = TRUE)
     eDicemat <- (2 * a) / tmp
     dimnames(eDicemat) <- list(rowname, colname)
     eDicemat
 }
 
-# simple matching coefficient(SMC) 
+# simple matching coefficient(SMC)
 # formula: SMC = (M00+M11)/(M00+M11+M01+M10)
 smc_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     # convert to binary matrix
-    x <- dfm_weight(x, "boolean") 
+    x <- dfm_weight(x, "boolean")
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
     func_name <- if (margin == 2) colnames else rownames
-    # union 
+    # union
     an <- func_sum(x)
     if (!is.null(y)) {
         y <- dfm_weight(y, "boolean")
@@ -315,22 +314,22 @@ smc_simil <- function(x, y = NULL, margin = 1) {
     smcmat
 }
 
-# hamman similarity: This measure gives the probability that a characteristic has the same state in both items 
-# (present in both or absent from both) minus the probability that a characteristic has different states 
+# hamman similarity: This measure gives the probability that a characteristic has the same state in both items
+# (present in both or absent from both) minus the probability that a characteristic has different states
 # in the two items (present in one and absent from the other).
 # formula: Hamman = ((a+d)-(b+c))/n
 # "Hamman" in proxy::dist
 hamman_simil <- function(x, y = NULL, margin = 1) {
-    
+
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     # convert to binary matrix
-    x <- dfm_weight(x, "boolean") 
+    x <- dfm_weight(x, "boolean")
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
     func_name <- if (margin == 2) colnames else rownames
-    # union 
+    # union
     an <- func_sum(x)
     if (!is.null(y)) {
         y <- dfm_weight(y, "boolean")
@@ -356,14 +355,14 @@ hamman_simil <- function(x, y = NULL, margin = 1) {
 # formula: Hamman = a+0.5d/n
 faith_simil <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    
+
     # convert to binary matrix
-    x <- dfm_weight(x, "boolean") 
+    x <- dfm_weight(x, "boolean")
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
     func_name <- if (margin == 2) colnames else rownames
-    # union 
+    # union
     an <- func_sum(x)
     if (!is.null(y)) {
         y <- dfm_weight(y, "boolean")
@@ -384,11 +383,11 @@ faith_simil <- function(x, y = NULL, margin = 1) {
 }
 
 #' Coerce a simil object into a matrix
-#' 
+#'
 #' `as.matrix.simil` coerces an object returned from
 #'   `textstat_simil()` into a matrix
 #' @param diag  the value to use on the diagonal representing self-similarities
-#' @note 
+#' @note
 #'   Because for the similarity methods implemented in  \pkg{quanteda}, the
 #'   similarity of an object with itself will be 1.0, `diag` defaults to
 #'   this value. This differs the default `diag = NA` in
@@ -411,4 +410,3 @@ as.matrix.simil <- function(x, diag = 1.0, ...) {
     diag(df) <- diag
     df
 }
-

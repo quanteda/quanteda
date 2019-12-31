@@ -17,7 +17,6 @@ catm <- function(..., sep = " ", appendLF = FALSE) {
     message(paste(..., sep = sep), appendLF = appendLF)
 }
 
-
 # used in displaying verbose messages for tokens_select and dfm_select
 message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0) {
     catm(if (selection == "keep") "kept" else "removed", " ",
@@ -29,7 +28,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
              " document", if (ndocs != 1L) "s" else "",
              sep = "")
     }
-    if ( (nfeatspad + ndocspad) > 0) {
+    if ((nfeatspad + ndocspad) > 0) {
         catm(", padded ", sep = "")
     }
     if (nfeatspad > 0) {
@@ -46,7 +45,6 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
-
 ##
 ## reassign the slots to an S4 dfm-like object
 ## necessary when some operation from the Matrix class obliterates them
@@ -61,7 +59,6 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #     }
 #     x_new
 # }
-
 
 #' Function extending base::attributes()
 #' @param x an object
@@ -109,8 +106,7 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
     return(x)
 }
 
-
-#' Convert various input as pattern to a vector used in tokens_select, 
+#' Convert various input as pattern to a vector used in tokens_select,
 #' tokens_compound and kwic.
 #' @inheritParams pattern
 #' @inheritParams valuetype
@@ -160,21 +156,20 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
     return(result)
 }
 
-
 #' Internal function for `select_types()` to check if a string is a regular expression
 #' @param x a character string to be tested
 #' @keywords internal
-is_regex <- function(x){
+is_regex <- function(x) {
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
-#' Internal function for `select_types()` to escape regular expressions 
-#' 
+#' Internal function for `select_types()` to escape regular expressions
+#'
 #' This function escapes glob patterns before `utils:glob2rx()`, therefore * and ?
 #' are unescaped.
 #' @param x character vector to be escaped
 #' @keywords internal
-escape_regex <- function(x){
+escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
@@ -190,13 +185,13 @@ check_dots <-  function(dots, permissible_args = NULL) {
 }
 
 #' Print friendly object class not defined message
-#' 
-#' Checks valid methods and issues a friendlier error message in case the method is 
+#'
+#' Checks valid methods and issues a friendlier error message in case the method is
 #' undefined for the supplied object type.
 #' @param object_class character describing the object class
 #' @param function_name character which is the function name
 #' @keywords internal
-#' @examples 
+#' @examples
 #' # as.tokens.default <- function(x, concatenator = "", ...) {
 #' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
@@ -212,7 +207,7 @@ friendly_class_undefined_message <- function(object_class, function_name) {
 }
 
 #' Check if font is available on the system
-#' 
+#'
 #' This function checks if custom font is available to \pkg{ggplot} and
 #' \pkg{graphics} APIs.
 #' @param font name of a font to be checked if available on the system.
@@ -250,7 +245,6 @@ unused_dots <- function(...) {
     }
 }
 
-
 #' Return an error message
 #' @param key type of error message
 #' @keywords internal
@@ -268,10 +262,10 @@ message_error <- function(key = NULL) {
         return("")
     }
     return(unname(msg[key]))
-} 
+}
 
 #' Sample a vector by a group
-#' 
+#'
 #' Return a sample from a vector within a grouping variable.
 #' @param x any vector
 #' @param size the number of items to sample within each group, as a positive
@@ -282,7 +276,7 @@ message_error <- function(key = NULL) {
 #' @param replace logical; should sampling be with replacement?
 #' @return `x` resampled within groups
 #' @keywords internal
-#' @examples 
+#' @examples
 #' set.seed(100)
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
 #' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
@@ -293,7 +287,7 @@ sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
     if (length(x) != length(group))
         stop("group not equal in length of x")
     x <- split(x, group)
-    if (is.null(size)) 
+    if (is.null(size))
         size <- lengths(x)
     if (length(size) > 1 && length(size) != length(x))
         stop("size not equal in length to the number of groups")
@@ -302,10 +296,10 @@ sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
               }, x, size, replace, SIMPLIFY = FALSE)
     unlist(result, use.names = FALSE)
 
-} 
+}
 
 #' Get the package version that created an object
-#' 
+#'
 #' Return the the \pkg{quanteda} package version in which a [dfm],
 #' [tokens], or [corpus] object was created.
 #' @return A three-element integer vector of class "package_version". For

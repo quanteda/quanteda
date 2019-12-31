@@ -41,8 +41,8 @@
 #'                 remove_punct = TRUE)
 #' tstat2 <- textstat_keyness(dfmat2, target = "Democrat", measure = "lr")
 #' textplot_keyness(tstat2, color = c("blue", "red"), n = 10)
-#' 
-textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE, 
+#'
+textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE,
                               n = 20L, min_count = 2L, margin = 0.05,
                               color = c("darkblue", "gray"), labelcolor = "gray30",
                               labelsize = 4, font = NULL) {
@@ -50,7 +50,7 @@ textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE,
 }
 
 #' @export
-textplot_keyness.default <- function(x, show_reference = TRUE, show_legend = TRUE, 
+textplot_keyness.default <- function(x, show_reference = TRUE, show_legend = TRUE,
                                      n = 20L, min_count = 2L, margin = 0.05,
                                      color = c("darkblue", "gray"), labelcolor = "gray30",
                                      labelsize = 4, font = NULL) {
@@ -63,12 +63,12 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
                                      n = 20L, min_count = 2L, margin = 0.05,
                                      color = c("darkblue", "gray"), labelcolor = "gray30",
                                      labelsize = 4, font = NULL) {
-    
+
     font <- check_font(font)
     color <- as.factor(color)
     if (show_reference) {
-        if (length(color) > 2) { 
-            color <- color[1:2] 
+        if (length(color) > 2) {
+            color <- color[1:2]
         } else if (length(color) == 1) {
             color <- rep(color, 2)
         }
@@ -76,13 +76,13 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
 
     # extract attribute befor subsetting
     measure <- colnames(x)[2]
-    
+
     # drop infrequent words
-    data <- x[(x$n_target + x$n_reference) >= min_count,,drop = FALSE]
-    
+    data <- x[(x$n_target + x$n_reference) >= min_count, , drop = FALSE]
+
     if (nrow(data) < 1)
-        stop ("Too few words in the documents.")
-    
+        stop("Too few words in the documents.")
+
     data$keyness <- data[[2]]
     data$right <- data$keyness >= 0
     if (show_reference) {
@@ -92,8 +92,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
     } else {
         i <- intersect(which(data$right), head(seq(nrow(data)), n))
     }
-    data <- data[i,,drop = FALSE]
-    #data$width <- stri_width(data$feature)
+    data <- data[i, , drop = FALSE]
     if (show_reference) {
         group <- attr(x, "groups")
         data$color <- color[2 - data$right]
@@ -101,23 +100,23 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
         data$color <- color[1]
         color <- group <- NULL
     }
-    
+
     data$x1 <- ifelse(data$right, abs(data$keyness), abs(data$keyness) * -1)
     data$y1 <- rank(data$keyness, ties.method = "first")
     data$x2 <- 0
     data$y2 <- data$y
     margin <- margin * max(abs(data$x1)) * 2
-    
+
     x1 <- y1 <- x2 <- y2 <- feature <- NULL
-    ggplot(data) +  
-         xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) + 
-         geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color), 
+    ggplot(data) +
+         xlim(if (show_reference) min(data$x1) - margin else 0, max(data$x1) + margin) +
+         geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = color),
                       size = labelsize) +
          scale_colour_identity(NULL, labels = group, breaks = color,
-                               guide = if (show_legend) 'legend' else FALSE) + 
+                               guide = if (show_legend) "legend" else FALSE) +
          xlab(measure) +
          geom_label(aes(x = x1, y = y1, label = feature), label.size = NA, fill = NA,
-                    vjust = 'center', hjust = ifelse(data$right, 'left', 'right'),
+                    vjust = "center", hjust = ifelse(data$right, "left", "right"),
                     color = labelcolor, size = labelsize, family = font) +
          theme_bw(base_family = font) +
          theme(axis.line = element_blank(),
@@ -126,4 +125,4 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, show_legend = TRU
                axis.ticks.y = element_blank(),
                plot.background = element_blank(),
                panel.grid.major.y = element_line(linetype = "dotted"))
-} 
+}

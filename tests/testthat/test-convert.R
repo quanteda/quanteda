@@ -95,9 +95,9 @@ test_that("test lsa converter", {
     # create some files
     td <- tempfile()
     dir.create(td)
-    write( c("cat", "dog", "mouse"), file = paste(td, "D1", sep = "/") )
-    write( c("hamster", "mouse", "sushi"), file = paste(td, "D2", sep = "/") )
-    write( c("dog", "monster", "monster"), file = paste(td, "D3", sep = "/") )
+    write(c("cat", "dog", "mouse"), file = paste(td, "D1", sep = "/"))
+    write(c("hamster", "mouse", "sushi"), file = paste(td, "D2", sep = "/"))
+    write(c("dog", "monster", "monster"), file = paste(td, "D3", sep = "/"))
     # read them, create a document-term matrix
     lsamat <- lsa::textmatrix(td)
 
@@ -317,7 +317,7 @@ test_that("convert.corpus works", {
         "Argument nothing not used.",
         fixed = TRUE
     )
-    
+
     expect_identical(
         convert(corp, to = "json", pretty = TRUE) %>% as.character(),
         '[
