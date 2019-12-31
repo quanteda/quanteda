@@ -12,7 +12,10 @@ test_that("test old and new textstat_dist are the same", {
                       textstat_dist_old(mt, margin = "features"),
                       tolerance = 0.01)
     
-    expect_equivalent(textstat_dist(mt, selection = "1985-Reagan") %>% as.matrix(), 
+    suppressWarnings(expect_equivalent(textstat_dist(mt, selection = "1985-Reagan") %>% as.matrix(), 
+                      textstat_dist_old(mt, selection = "1985-Reagan") %>% as.matrix(),
+                      tolerance = 0.01))
+    expect_equivalent(textstat_dist(mt, y = mt["1985-Reagan", ]) %>% as.matrix(), 
                       textstat_dist_old(mt, selection = "1985-Reagan") %>% as.matrix(),
                       tolerance = 0.01)
     
@@ -58,24 +61,33 @@ test_that("dist object has all the attributes", {
     expect_equal(class(attr(d1, "Upper")), "logical")
 })
 
+test_that("y errors if not a dfm", {
+    expect_error(
+        textstat_dist(mt, y = c("mr", "president"), margin = "features"),
+        "y must be a dfm matching x in the margin specified"
+    )
+})
+
 test_that("selection takes integer or logical vector", {
+    suppressWarnings({
     expect_equivalent(textstat_dist(mt, selection = c(2, 5), margin = "features"),
                       textstat_dist(mt, selection = c("mr", "president"), margin = "features"))
     l3 <- featnames(mt) %in% c("mr", "president")
     expect_equivalent(textstat_dist(mt, selection = l3, margin = "features"),
                       textstat_dist(mt, selection = c("mr", "president"), margin = "features"))
+    })
     
-    expect_error(textstat_dist(mt, selection = "xxxx", margin = "features"))
-    expect_error(textstat_dist(mt, selection = 1000, margin = "features"))
+    expect_error(textstat_dist(mt, y = "xxxx", margin = "features"))
+    expect_error(textstat_dist(mt, y = 1000, margin = "features"))
     
-    expect_equivalent(textstat_dist(mt, selection = c(2,4), margin = "documents"),
-                      textstat_dist(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    expect_equivalent(textstat_dist(mt, y = mt[c(2, 4), ], margin = "documents"),
+                      textstat_dist(mt, y = mt[c("1985-Reagan", "1993-Clinton"), ], margin = "documents"))
     l4 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
-    expect_equivalent(textstat_dist(mt, selection = l4, margin = "documents"),
-                      textstat_dist(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
+    expect_equivalent(textstat_dist(mt, y = mt[l4, ], margin = "documents"),
+                      textstat_dist(mt, y = mt[c("1985-Reagan", "1993-Clinton"), ], margin = "documents"))
     
-    expect_error(textstat_dist(mt, selection = "nothing", margin = "documents"))
-    expect_error(textstat_dist(mt, selection = 100, margin = "documents"))
+    expect_error(textstat_dist(mt, y = "nothing", margin = "documents"))
+    expect_error(textstat_dist(mt, y = 100, margin = "documents"))
 })
 
 test_that("textstat_dist() returns NA for empty dfm", {
@@ -148,7 +160,8 @@ test_that("textstat_dist() returns NA for zero-variance documents", {
 
 test_that("selection is always on columns (#1549)", {
     mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
-    expect_equal(
+    suppressWarnings({
+        expect_equal(
         colnames(textstat_dist(mt, margin = "documents", 
                                selection = c("1985-Reagan", "1989-Bush")) %>% as.matrix()), 
         c("1985-Reagan", "1989-Bush")
@@ -165,6 +178,7 @@ test_that("selection is always on columns (#1549)", {
         colnames(textstat_dist(mt, margin = "features", selection = c(4, 6)) %>% as.matrix()), 
         c("mr", "chief")
     )
+    })
 })
 
 test_that("all distances are bounded at 0", {
