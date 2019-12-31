@@ -131,7 +131,7 @@ as.corpus.corpus <- function(x) {
 #' @export
 #' @method as.corpus corpuszip
 as.corpus.corpuszip <- function(x) {
-
+    x <- unclass(x)
     txt <- memDecompress(x$texts, "gzip", asChar = TRUE)
     txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
     txt <- unlist(txt, use.names = FALSE)
