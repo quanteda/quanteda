@@ -13,8 +13,8 @@
 #'   needed by the function
 #'   [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the
 #'   \pkg{lda} package}
-#'   \item{`"tm"`}{a [DocumentTermMatrix][tm::DocumentTermMatrix] from the
-#'   \pkg{tm} package}
+#'   \item{`"tm"`}{a \link[tm:matrix]{DocumentTermMatrix} from the \pkg{tm}
+#'   package}
 #'   \item{`"stm"`}{the  format for the \pkg{stm} package} \item{`"austin"`}{the
 #'   `wfm` format from the **austin** package}
 #'   \item{`"topicmodels"`}{the "dtm" format as used by the \pkg{topicmodels}
@@ -25,7 +25,8 @@
 #'   are rows, and each feature is a variable (for a dfm),
 #'    or each text and its document variables form a row (for a corpus)}
 #'   \item{`"json"`}{(corpus only) convert a corpus and its document variables
-#'   into JSON format, using the format described in [`jsonlite::toJSON`]}
+#'   into JSON format, using the format described in
+#'   \link[jsonlite:fromJSON]{jsonlite::toJSON()}}
 #'   \item{`"tripletlist"`}{a named "triplet" format list consisting of 
 #'   `document`, `feature`, and `frequency`} 
 #'   }
@@ -210,15 +211,15 @@ as.wfm.dfm <- function(x) {
 
 #' @export
 #' @rdname convert-wrappers
-#' @details `as.DocumentTermMatrix` will convert a quanteda [dfm] into
-#'   the \pkg{tm} package's [DocumentTermMatrix][tm::DocumentTermMatrix] format. Note: The
-#'   \pkg{tm} package version of `as.TermDocumentMatrix` allows a
-#'   `weighting` argument, which supplies a weighting function for 
-#'   [TermDocumentMatrix][tm::TermDocumentMatrix].  Here the default is for term frequency
-#'   weighting. If you want a different weighting, apply the weights after
-#'   converting using one of the \pkg{tm} functions. For other available
-#'   weighting functions from the \pkg{tm} package, see 
-#'   [tm::TermDocumentMatrix()].
+#' @details `as.DocumentTermMatrix` will convert a quanteda [dfm] into the
+#'   \pkg{tm} package's \link[tm:matrix]{DocumentTermMatrix} format. Note: The
+#'   \pkg{tm} package version of `as.TermDocumentMatrix()` allows a `weighting`
+#'   argument, which supplies a weighting function for
+#'   \code{\link[tm:matrix]{TermDocumentMatrix()}}.  Here the default is for
+#'   term frequency weighting. If you want a different weighting, apply the
+#'   weights after converting using one of the \pkg{tm} functions. For other
+#'   available weighting functions from the \pkg{tm} package, see
+#'   \link[tm:matrix]{TermDocumentMatrix}.
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to tm package's DocumentTermMatrix format

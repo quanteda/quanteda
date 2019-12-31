@@ -13,10 +13,10 @@
 #' @param margin numeric; size of margin where feature labels are shown
 #' @param color character or integer; colors of bars for target and reference documents.
 #'   `color` must have two elements when `show_reference = TRUE`.  See
-#'   [color][ggplot2::color].
+#'   \link[ggplot2:aes-colour-fill-alpha]{ggplot2::color}.
 #' @param labelcolor character; color of feature labels.
 #' @param labelsize numeric; size of feature labels and bars.  See
-#'   [size][ggplot2::size].
+#'   \link[ggplot2:aes-linetype-size-shape]{ggplot2::size}.
 #' @param font character; font-family of texts. Use default font if `NULL`.
 #' @return a \pkg{ggplot2} object
 #' @export

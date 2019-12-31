@@ -83,10 +83,10 @@ values will not be returned}
 A sparse matrix from the \pkg{Matrix} package that will be symmetric
 unless \code{y} is specified.
 
-These can be transformed easily into a list format using \code{as.list()},
-which returns a list for each unique element of the second of the pairs,
-\code{as.dist} to be transformed into a \link[stats:dist]{dist} object, or
-\code{as.matrix} to convert it into an ordinary matrix.
+These can be transformed easily into a list format using \code{as.list()}, which
+returns a list for each unique element of the second of the pairs,
+\code{as.dist()} to be transformed into a \link[stats:dist]{dist} object, or
+\code{as.matrix()} to convert it into an ordinary matrix.
 
 \code{as.data.list} for a \code{textstat_simil} or
 \code{textstat_dist} object returns a list equal in length to the columns of the
@@ -164,6 +164,6 @@ plot(hclust(as.dist(tstat4)))
 }
 }
 \seealso{
-\code{\link[stats:as.dist]{stats::as.dist()}}
+\code{\link[stats:dist]{stats::as.dist()}}
 }
 \keyword{textstat}

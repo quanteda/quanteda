@@ -146,12 +146,12 @@ setMethod("tail", signature(x = "textstat_proxy"), function(x, n = 6L, ...) {
 #' @return A sparse matrix from the \pkg{Matrix} package that will be symmetric 
 #'   unless `y` is specified.
 #'      
-#'   These can be transformed easily into a list format using `as.list()`,
-#'   which returns a list for each unique element of the second of the pairs,
-#'   `as.dist` to be transformed into a [dist][stats::dist] object, or
-#'   `as.matrix` to convert it into an ordinary matrix.
+#'   These can be transformed easily into a list format using `as.list()`, which
+#'   returns a list for each unique element of the second of the pairs,
+#'   `as.dist()` to be transformed into a \link[stats:dist]{dist} object, or
+#'   `as.matrix()` to convert it into an ordinary matrix.
 #' @export
-#' @seealso [stats::as.dist()]
+#' @seealso \code{\link[stats:dist]{stats::as.dist()}}
 #' @examples
 #' # similarities for documents
 #' dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 

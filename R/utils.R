@@ -1,7 +1,14 @@
-#' @importFrom magrittr %>%
+#' Pipe operator
+#'
+#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
+#'
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
 #' @export
-magrittr::`%>%`
-
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+NULL
 
 # rdname catm
 # messages() with some of the same syntax as cat(): takes a sep argument and
