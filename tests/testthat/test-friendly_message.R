@@ -27,3 +27,10 @@ test_that("friendly_class_undefined_message for featfreq()", {
         "featfreq\\(\\) only works on dfm objects"
     )
 })
+
+test_that("friendly_class_undefined_message for textstat_simil_old()", {
+    expect_error(
+        textstat_simil_old(tokens(data_char_sampletext)),
+        "textstat_simil_old\\(\\) only works on dfm objects"
+    )
+})

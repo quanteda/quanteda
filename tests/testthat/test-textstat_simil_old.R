@@ -349,7 +349,7 @@ test_that("textstat_simil_old stops as expected for methods not supported",{
 test_that("textstat_simil_old works on zero-frequency features", {
     d1 <- dfm(c("a b c", "a b c d"))
     d2 <- dfm(letters[1:6])
-    dtest <- dfm_select(d1, d2)
+    suppressWarnings(dtest <- dfm_select(d1, d2))
     
     expect_equal(
         as.numeric(textstat_simil_old(dtest, method = "cosine")),
@@ -415,4 +415,38 @@ test_that("as.matrix.simil with no Labels attr", {
     attr(similold, "Labels") <- NULL
     expect_equal(colnames(quanteda:::as.matrix.simil(similold)),
                  rownames(quanteda:::as.matrix.simil(similold)))
+})
+
+test_that("textstat_simil_old error traps work", {
+    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
+                 stem = TRUE)
+    expect_error(quanteda:::cosine_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::correlation_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::jaccard_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::ejaccard_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::dice_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::edice_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::smc_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::hamman_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_error(quanteda:::faith_simil(data_dfm_lbgexample, margin = 3),
+                 "margin can only be 1 (rows) or 2 (columns)",
+                 fixed = TRUE)
+    expect_identical(dim(quanteda:::cosine_simil(data_dfm_lbgexample, y = data_dfm_lbgexample, margin = 1)),
+                 c(6L, 6L))
 })
