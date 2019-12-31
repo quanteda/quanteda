@@ -392,7 +392,7 @@ faith_simil <- function(x, y = NULL, margin = 1) {
 #'   Because for the similarity methods implemented in  \pkg{quanteda}, the
 #'   similarity of an object with itself will be 1.0, `diag` defaults to
 #'   this value. This differs the default `diag = NA` in
-#'   [as.matrix.simil][proxy::as.matrix.simil] in the \pkg{proxy} package.
+#'   \link[proxy:dist]{as.matrix.simil} in the \pkg{proxy} package.
 #' @param ... unused
 #' @export
 #' @method as.matrix simil

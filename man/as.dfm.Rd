@@ -22,9 +22,9 @@ dfm.
 \description{
 Convert an eligible input object into a dfm, or check whether an object is a
 dfm.  Current eligible inputs for coercion to a dfm are: \link{matrix},
-(sparse) \link[Matrix:Matrix]{Matrix}, \link[tm:TermDocumentMatrix]{TermDocumentMatrix},
-\link[tm:DocumentTermMatrix]{DocumentTermMatrix}, \link{data.frame}, and other \link{dfm}
-objects.
+(sparse) \link[Matrix:Matrix]{Matrix},
+\link[tm:matrix]{TermDocumentMatrix} and \link[tm:matrix]{DocumentTermMatrix}
+(from the \pkg{tm} package), \link{data.frame}, and other \link{dfm} objects.
 }
 \seealso{
 \code{\link[=as.data.frame.dfm]{as.data.frame.dfm()}}, \code{\link[=as.matrix.dfm]{as.matrix.dfm()}},

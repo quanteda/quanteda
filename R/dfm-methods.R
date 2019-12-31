@@ -47,9 +47,9 @@ docnames.dfm <- function(x) {
 #' 
 #' Convert an eligible input object into a dfm, or check whether an object is a
 #' dfm.  Current eligible inputs for coercion to a dfm are: [matrix],
-#' (sparse) [Matrix][Matrix::Matrix], [TermDocumentMatrix][tm::TermDocumentMatrix],
-#' [DocumentTermMatrix][tm::DocumentTermMatrix], [data.frame], and other [dfm]
-#' objects.
+#' (sparse) [Matrix][Matrix::Matrix], 
+#' \link[tm:matrix]{TermDocumentMatrix} and \link[tm:matrix]{DocumentTermMatrix}
+#' (from the \pkg{tm} package), [data.frame], and other [dfm] objects.
 #' @param x a candidate object for checking or coercion to [dfm]
 #' @return `as.dfm` converts an input object into a [dfm].  Row names
 #'   are used for docnames, and column names for featnames, of the resulting
