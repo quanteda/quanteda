@@ -108,12 +108,12 @@ identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda")) 
+identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda"))
 }
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda")) 
+identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda"))
 }
 }
 \keyword{internal}

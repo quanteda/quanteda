@@ -123,7 +123,7 @@ for which different document lengths matter), then wrap the input dfm in
 }
 \examples{
 # similarities for documents
-dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 
+dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000),
              remove_punct = TRUE, remove = stopwords("english"))
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 as.matrix(tstat1)
@@ -145,8 +145,8 @@ tstat3 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method =
 head(as.matrix(tstat3), 10)
 as.list(tstat3, n = 6)
 
-               
-# distances for documents 
+
+# distances for documents
 (tstat4 <- textstat_dist(dfmat, margin = "documents"))
 as.matrix(tstat4)
 as.list(tstat4)

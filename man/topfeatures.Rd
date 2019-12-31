@@ -49,7 +49,7 @@ topfeatures(dfmat2)
 # least frequent features
 topfeatures(dfmat2, decreasing = FALSE)
 
-# top features of individual documents  
+# top features of individual documents
 topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 
 # grouping by president last name

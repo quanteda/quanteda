@@ -82,7 +82,7 @@ summary(c(corpus1, corpus2, corpus3))
 
 # two ways to index corpus elements
 data_corpus_inaugural["1793-Washington"]
-data_corpus_inaugural[2] 
+data_corpus_inaugural[2]
 
 # return the text itself
 data_corpus_inaugural[["1793-Washington"]]
