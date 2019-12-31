@@ -4,44 +4,44 @@ mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
 mt <- dfm_trim(mt, min_termfreq = 10)
 
 test_that("test old and new textstat_simil are the same", {
-    expect_equivalent(as.matrix(textstat_simil(mt)), 
-                      as.matrix(textstat_simil_old(mt, diag = TRUE, upper = TRUE)), 
+    expect_equivalent(as.matrix(textstat_simil(mt)),
+                      as.matrix(textstat_simil_old(mt, diag = TRUE, upper = TRUE)),
                       tolerance = 0.01)
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, margin = "features")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, margin = "features")),
                       as.matrix(textstat_simil_old(mt, margin = "features")),
                       tolerance = 0.01)
 
-    expect_equivalent(as.matrix(textstat_simil(mt, selection = "1985-Reagan")), 
+    expect_equivalent(as.matrix(textstat_simil(mt, selection = "1985-Reagan")),
                       as.matrix(textstat_simil_old(mt, selection = "1985-Reagan")),
                       tolerance = 0.01)
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "cosine")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "cosine")),
                       as.matrix(textstat_simil_old(mt, method = "cosine")),
                       tolerance = 0.01)
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "correlation")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "correlation")),
                       as.matrix(textstat_simil_old(mt, method = "correlation")))
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "jaccard")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "jaccard")),
                       as.matrix(textstat_simil_old(mt, method = "jaccard")))
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "ejaccard")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "ejaccard")),
                       as.matrix(textstat_simil_old(mt, method = "ejaccard")))
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "dice")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "dice")),
                       as.matrix(textstat_simil_old(mt, method = "dice")))
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "edice")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "edice")),
                       as.matrix(textstat_simil_old(mt, method = "edice")))
-    
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "simple matching")), 
+
+    expect_equivalent(as.matrix(textstat_simil(mt, method = "simple matching")),
                       as.matrix(textstat_simil_old(mt, method = "simple matching")))
-    
+
     # old function is wrong (KW)
-    #expect_equivalent(as.matrix(textstat_simil(mt, method = "faith")), 
+    #expect_equivalent(as.matrix(textstat_simil(mt, method = "faith")),
     #                  as.matrix(textstat_simil_old(mt, method = "faith")))
-    
+
 })
 
 test_that("selection takes integer or logical vector", {
@@ -50,16 +50,16 @@ test_that("selection takes integer or logical vector", {
     l1 <- featnames(mt) %in% c("mr", "president")
     expect_equivalent(textstat_simil(mt, selection = l1, margin = "features"),
                       textstat_simil(mt, selection = c("mr", "president"), margin = "features"))
-    
+
     expect_error(textstat_simil(mt, "xxxx", margin = "features"))
     expect_error(textstat_simil(mt, 1000, margin = "features"))
-    
-    expect_equivalent(textstat_simil(mt, selection = c(2,4), margin = "documents"),
+
+    expect_equivalent(textstat_simil(mt, selection = c(2, 4), margin = "documents"),
                       textstat_simil(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
     l2 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
     expect_equivalent(textstat_simil(mt, selection = l2, margin = "documents"),
                       textstat_simil(mt, selection = c("1985-Reagan", "1993-Clinton"), margin = "documents"))
-    
+
     expect_error(textstat_simil(mt, selection = "nothing", margin = "documents"))
     expect_error(textstat_simil(mt, 100, margin = "documents"))
 })
@@ -106,7 +106,6 @@ test_that("textstat_simil() returns NA for empty dfm", {
 })
 
 test_that("textstat_simil() returns NA for zero-variance documents", {
-    #skip("skip until textstat_simil() works correctly for zero-variance documents")
     mt <- data_dfm_lbgexample[1:5, 1:20]
     mt[1:2, ] <- 0
     mt[3:4, ] <- 1
@@ -114,8 +113,8 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
     mt_na_all <- matrix(NA, nrow = 5, ncol = 5,
                         dimnames = list(paste0("R", 1:5), paste0("R", 1:5)))
     mt_na_some <- mt_na_all
-    mt_na_some[3:4,3:4] <- 1
-    
+    mt_na_some[3:4, 3:4] <- 1
+
     expect_equivalent(
         as.matrix(textstat_simil(mt, method = "correlation")),
         mt_na_all
@@ -124,32 +123,32 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
         as.matrix(textstat_simil(mt, method = "cosine")),
         mt_na_some
     )
-    
+
     expect_equivalent(
          as.matrix(textstat_simil(mt, method = "jaccard")),
          mt_na_some
     )
-    
+
     expect_equivalent(
         as.matrix(textstat_simil(mt, method = "ejaccard")),
         mt_na_some
     )
-    
+
     expect_equivalent(
         as.matrix(textstat_simil(mt, method = "dice")),
         mt_na_some
     )
-    
+
     expect_equal(
         as.matrix(textstat_simil(mt, method = "edice")),
         mt_na_some
     )
-    
+
     expect_equal(
         as.matrix(textstat_simil(mt, method = "hamman")),
         mt_na_some
     )
-    
+
     expect_equal(
         as.matrix(textstat_simil(mt, method = "simple matching")),
         mt_na_some
@@ -159,27 +158,27 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
 test_that("selection is always on columns (#1549)", {
     mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
     expect_equal(
-        textstat_simil(mt, margin = "documents", selection = c("1985-Reagan", "1989-Bush")) %>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "documents", selection = c("1985-Reagan", "1989-Bush")) %>%
+            as.matrix() %>%
+            colnames(),
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(
-        textstat_simil(mt, margin = "documents", selection = c(2, 3)) %>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "documents", selection = c(2, 3)) %>%
+            as.matrix() %>%
+            colnames(),
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(
-        textstat_simil(mt, margin = "features", selection = c("justice", "and"))%>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "features", selection = c("justice", "and")) %>%
+            as.matrix() %>%
+            colnames(),
         c("justice", "and")
     )
     expect_equal(
-        textstat_simil(mt, margin = "features", selection = c(4, 6))%>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "features", selection = c(4, 6)) %>%
+            as.matrix() %>%
+            colnames(),
         c("mr", "chief")
     )
 })
@@ -196,12 +195,12 @@ test_that("all similarities are between 0 and 1", {
 })
 
 test_that("textstat_simil is stable across repetitions", {
-    res <- textstat_simil(mt, selection = c(2, 4), 
+    res <- textstat_simil(mt, selection = c(2, 4),
                           margin = "documents")
     set.seed(10)
     resv <- list()
     for (i in 1:100) {
-        resv[[i]] <- as.matrix(textstat_simil(mt, selection = 2, 
+        resv[[i]] <- as.matrix(textstat_simil(mt, selection = 2,
                                               margin = "documents"))
     }
     rescols <- do.call(cbind, resv)
@@ -214,7 +213,7 @@ test_that("textstat_simil coercion methods work with options", {
     # upper = TRUE, diag = TRUE
     tstat <- textstat_simil(mt2, margin = "documents")
     expect_equal(
-        nrow(as.data.frame(tstat, diag = TRUE, upper = TRUE)), 
+        nrow(as.data.frame(tstat, diag = TRUE, upper = TRUE)),
         nrow(mt2) ^ 2
     )
     mat <- as.matrix(tstat)
@@ -272,7 +271,7 @@ test_that("textstat_simil coercion methods work with options", {
     # upper = FALSE, diag = FALSE
     tstat <- textstat_simil(mt2, margin = "documents")
     expect_equal(
-        nrow(as.data.frame(tstat, upper = FALSE, diag = FALSE)), 
+        nrow(as.data.frame(tstat, upper = FALSE, diag = FALSE)),
         (nrow(mt2) ^ 2 - ndoc(mt2)) / 2
     )
     mat <- as.matrix(tstat)
@@ -313,7 +312,7 @@ test_that("as.list.textstat_simil works with features margin", {
                             method = "cosine", margin = "features")
     lis <- as.list(tstat, n = 5, diag = FALSE)
     expect_equal(
-        sapply(lis, head, 1), 
+        sapply(lis, head, 1),
         c("world.today" = 0.952, "freedom.independence" = 0.937),
         tol = .01
     )
@@ -323,7 +322,7 @@ test_that("as.list.textstat_simil works with features margin", {
                             method = "cosine", margin = "features")
     lis <- as.list(tstat, n = 5, diag = TRUE)
     expect_equal(
-        sapply(lis, head, 1), 
+        sapply(lis, head, 1),
         c("freedom.freedom" = 1)
     )
 })
@@ -331,7 +330,7 @@ test_that("as.list.textstat_simil works with features margin", {
 test_that("as.data.frame.textstat_simildist works with selection", {
     mt2 <- mt[6:10, ]
     tstat <- textstat_simil(mt2, selection = c("2017-Trump", "2001-Bush"), method = "cosine")
-    
+
     expect_equal(
         as.character(as.data.frame(tstat, diag = FALSE, upper = FALSE)$document2),
         c(rep("2017-Trump", 4), rep("2001-Bush", 4))
@@ -348,12 +347,12 @@ test_that("as.data.frame.textstat_simildist works with selection", {
         as.character(as.data.frame(tstat, diag = TRUE, upper = TRUE)$document2),
         c(rep("2017-Trump", 5), rep("2001-Bush", 5))
     ))
-    
+
     expect_warning(
         as.data.frame(tstat, upper = TRUE),
         "upper = TRUE has no effect when columns have been selected"
     )
-    
+
     expect_identical(
         names(as.data.frame(textstat_simil(mt2, method = "cosine")))[3],
         "cosine"
@@ -397,7 +396,7 @@ test_that("min_simil argument works", {
         "1.000       0.982         .            .         ",
         fixed = TRUE
     )
-    
+
     expect_equal(
         as.data.frame(tstat, diag = FALSE, upper = FALSE),
         data.frame(document1 = factor(c("1981-Reagan"),
@@ -407,7 +406,7 @@ test_that("min_simil argument works", {
                    cosine = c(0.9817)),
         tol = .0001
     )
-    
+
     expect_equal(
         as.data.frame(tstat, diag = FALSE, upper = TRUE),
         data.frame(document1 = factor(c("1985-Reagan", "1981-Reagan"),
@@ -417,7 +416,7 @@ test_that("min_simil argument works", {
                    cosine = c(0.9817, 0.9817)),
         tol = .0001
     )
-    
+
     expect_equal(
         as.list(tstat, diag = FALSE),
         list("1981-Reagan" = c("1985-Reagan" = 0.981771),
@@ -425,13 +424,13 @@ test_that("min_simil argument works", {
     )
     expect_equal(
         sapply(as.list(tstat, diag = TRUE), "[", 1),
-        structure(rep(1, ndoc(mt)), 
+        structure(rep(1, ndoc(mt)),
                       names = paste(docnames(mt), docnames(mt), sep = "."))
     )
 })
 
 test_that("test that min_simil coercion to matrix works as expected", {
-    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 
+    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000),
                  remove_punct = TRUE, remove = stopwords("english"))
 
     tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents", min_simil = 0.6)
@@ -445,7 +444,7 @@ test_that("test that min_simil coercion to matrix works as expected", {
         c("2013-Obama" = 0.6373, "2017-Trump" = 0),
         tol = .0001
     )
-    
+
     tstat2 <- textstat_simil(dfmat, selection = c("2009-Obama", "2013-Obama"),
                              method = "cosine", margin = "documents", min_simil = 0.6)
     expect_equal(
@@ -460,65 +459,64 @@ test_that("test that min_simil coercion to matrix works as expected", {
     )
 })
 
-
 test_that("y is working in the same way as selection (#1714)", {
-    
+
     expect_identical(textstat_simil(mt, selection = c("2009-Obama", "2013-Obama"),
                                     margin = "documents"),
                      textstat_simil(mt, mt[c("2009-Obama", "2013-Obama"), ],
                                     margin = "documents"))
-    
+
     expect_identical(textstat_simil(mt, selection = c("world", "freedom"),
                                     margin = "features"),
                      textstat_simil(mt, mt[, c("world", "freedom")],
                                     margin = "features"))
-    
+
     expect_identical(textstat_dist(mt, selection = c("2009-Obama", "2013-Obama"),
                                     margin = "documents"),
-                     textstat_dist(mt, mt[c("2009-Obama", "2013-Obama"),],
+                     textstat_dist(mt, mt[c("2009-Obama", "2013-Obama"), ],
                                     margin = "documents"))
-    
+
     expect_identical(textstat_dist(mt, selection = c("world", "freedom"),
                                     margin = "features"),
-                     textstat_dist(mt, mt[,c("world", "freedom")],
+                     textstat_dist(mt, mt[, c("world", "freedom")],
                                     margin = "features"))
 })
 
 test_that("diag2na is working", {
-    
-    mat1 <- Matrix::Matrix(1:9, nrow = 3, 
+
+    mat1 <- Matrix::Matrix(1:9, nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("b", "c", "d")))
     expect_equal(as.matrix(quanteda:::diag2na(as(mat1, "dgTMatrix"))),
-                 matrix(c(1, NA, 3, 4, 5, NA, 7, 8, 9), nrow = 3, 
+                 matrix(c(1, NA, 3, 4, 5, NA, 7, 8, 9), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
-                 
-    mat2 <- Matrix::Matrix(1:9, nrow = 3, 
+
+    mat2 <- Matrix::Matrix(1:9, nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("d", "c", "b")))
     expect_equal(as.matrix(quanteda:::diag2na(as(mat2, "dgTMatrix"))),
-                 matrix(c(1, 2, 3, 4, 5, NA, 7, NA, 9), nrow = 3, 
+                 matrix(c(1, 2, 3, 4, 5, NA, 7, NA, 9), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("d", "c", "b"))))
-    
-    mat3 <- Matrix::Matrix(1:6, nrow = 3, 
+
+    mat3 <- Matrix::Matrix(1:6, nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("c", "b")))
     expect_equal(as.matrix(quanteda:::diag2na(as(mat3, "dgTMatrix"))),
-                 matrix(c(1, 2, NA, 4, NA, 6), nrow = 3, 
+                 matrix(c(1, 2, NA, 4, NA, 6), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("c", "b"))))
-    
-    mat4 <- forceSymmetric(mat1)
+
+    mat4 <- Matrix::forceSymmetric(mat1)
     expect_equal(as.matrix(quanteda:::diag2na(as(mat4, "dsTMatrix"))),
-                 matrix(c(NA, 4, 7, 4, NA, 8, 7, 8, NA), nrow = 3, 
+                 matrix(c(NA, 4, 7, 4, NA, 8, 7, 8, NA), nrow = 3,
                         dimnames = list(c("b", "c", "d"), c("b", "c", "d"))))
-    
-    mat5 <- Matrix::Matrix(rep(0, 9), nrow = 3, 
+
+    mat5 <- Matrix::Matrix(rep(0, 9), nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("b", "c", "d")))
     expect_equal(as.matrix(quanteda:::diag2na(as(mat5, "dgTMatrix"))),
-                 matrix(c(0, NA, 0, 0, 0, NA, 0, 0, 0), nrow = 3, 
+                 matrix(c(0, NA, 0, 0, 0, NA, 0, 0, 0), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
 
 })
 
 test_that("make_na_matrix is working", {
-    
+
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), row = 2L:3L)),
         matrix(c(c(0, NA, NA, 0, 0),
@@ -526,7 +524,7 @@ test_that("make_na_matrix is working", {
                  c(0, NA, NA, 0, 0),
                  c(0, NA, NA, 0, 0)), nrow = 5)
     )
-    
+
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 3L)),
         matrix(c(c(0, 0, 0, 0, 0),
@@ -534,23 +532,23 @@ test_that("make_na_matrix is working", {
                  rep(NA, 5),
                  c(0, 0, 0, 0, 0)), nrow = 5)
     )
-    
+
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 1L:2L, row = 2L:3L)),
         matrix(c(rep(NA, 5), rep(NA, 5),
                  c(0, NA, NA, 0, 0),
                  c(0, NA, NA, 0, 0)), nrow = 5)
     )
-    
+
     expect_equal(
         as.matrix(quanteda:::make_na_matrix(c(5, 4), 2L:3L, c(1L:2L))),
         matrix(c(rep(NA, 5), rep(NA, 5),
                c(0, NA, NA, 0, 0),
                c(0, NA, NA, 0, 0)), nrow = 5)
     )
-    
+
     expect_equal(
-        as.matrix(quanteda:::make_na_matrix(c(5,4), 1L, 3L)),
+        as.matrix(quanteda:::make_na_matrix(c(5, 4), 1L, 3L)),
         matrix(c(c(NA, 0, 0, 0, 0),
                  c(NA, 0, 0, 0, 0),
                  rep(NA, 5),
@@ -560,7 +558,7 @@ test_that("make_na_matrix is working", {
 })
 
 test_that("symmetric class is correctly given", {
-    
+
     dist1 <- textstat_dist(mt)
     expect_identical(
         Matrix::tril(dist1),
@@ -582,4 +580,3 @@ test_that("symmetric class is correctly given", {
         t(Matrix::triu(siml2))
     )
 })
-
