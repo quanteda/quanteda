@@ -31,10 +31,10 @@ is.corpus(x)
 \arguments{
 \item{x}{a corpus object}
 
-\item{ndoc}{number of documents to show text from}
+\item{ndoc}{integer; number of documents to show text from; 0 shows none, and -1 shows all}
 
-\item{nchar}{number of characters to use when showing the first part of the
-of text}
+\item{nchar}{integer; number of characters to use when showing the first part of the
+of text; 0 shows none, and -1 shows all}
 
 \item{show.summary}{print a brief summary indicating the number of documents
 and docvars}

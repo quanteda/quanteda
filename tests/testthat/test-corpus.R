@@ -514,5 +514,14 @@ and 12 more documents.", fixed = TRUE
   [Lenihan, Brian (FF)] When I pre ...
  [Bruton, Richard (FG)] This draco ...", fixed = TRUE
     )
-    
+    expect_output(
+        print(corpus("a b c d"), ndoc = -1, nchar = 2),
+        "Corpus consisting of 1 document.
+ [text1] a  ...", fixed = TRUE
+    )
+    expect_output(
+        print(corpus("a b c d"), ndoc = -1, nchar = -1),
+        "Corpus consisting of 1 document.
+ [text1] a b c d ...", fixed = TRUE
+    )
 })

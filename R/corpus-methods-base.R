@@ -9,9 +9,9 @@ NULL
 
 #' @export
 #' @rdname corpus-class
-#' @param ndoc number of documents to show text from
-#' @param nchar number of characters to use when showing the first part of the
-#'   of text
+#' @param ndoc integer; number of documents to show text from; 0 shows none, and -1 shows all
+#' @param nchar integer; number of characters to use when showing the first part of the
+#'   of text; 0 shows none, and -1 shows all
 #' @param show.summary print a brief summary indicating the number of documents
 #'   and docvars
 #' @method print corpus
@@ -21,8 +21,9 @@ print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"),
                          ...) {
     x <- as.corpus(x)
 
-    if (ndoc < 0) stop("ndoc must be >= 0")
-    if (nchar < 0) stop("nchar must be >= 0")
+    if (ndoc < 0) ndoc <- ndoc(x)
+    if (nchar < 0) nchar = -1L
+
     ndoc <- as.integer(min(ndoc, ndoc(x)))
     nchar <- as.integer(nchar)
 
