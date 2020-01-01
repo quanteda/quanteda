@@ -138,7 +138,6 @@ Collate:
     'nsyllable.R'
     'pattern2fixed.R'
     'phrases.R'
-    'printcorp.R'
     'quanteda-documentation.R'
     'quanteda_options.R'
     'readtext-methods.R'
