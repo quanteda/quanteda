@@ -10,9 +10,10 @@ test_that("keyness_textstat chi2 computation is correct", {
         result$statistic,
         textstat_keyness(mydfm, sort = FALSE, correction = "default")[[1, 2]]
     )
-    expect_equivalent(
+    expect_equal(
         as.numeric(textstat_keyness(mydfm, sort = FALSE, measure = "chi2", correction = "williams")[1, "chi2"]),
-        4.017626
+        4.017626,
+        tolerance = .00001
     )
     
     # without Yates correction
