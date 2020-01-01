@@ -29,6 +29,8 @@
 6.  settings functions (and related slots and object attributes) are gone.
 
 7.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
+
+8.  New print methods with new global options.  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
     
 ## Bug fixes and stability enhancements
 

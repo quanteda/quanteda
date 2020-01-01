@@ -9,26 +9,50 @@ NULL
 
 #' @export
 #' @rdname corpus-class
+#' @param ndoc number of documents to show text from
+#' @param nchar number of characters to use when showing the first part of the
+#'   of text
+#' @param show.summary print a brief summary indicating the number of documents
+#'   and docvars
 #' @method print corpus
-print.corpus <- function(x, ...) {
+print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"), 
+                         nchar = quanteda_options("print_corpus_max_nchar"), 
+                         show.summary = quanteda_options("print_corpus_summary"), 
+                         ...) {
     x <- as.corpus(x)
-    cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
-        if (ndoc(x) > 1L) "s" else "", sep = "")
-    if (ncol(docvars(x)))
-        cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
-            if (ncol(docvars(x)) == 1L) "" else "s", sep="")
-    cat(".\n")
+
+    if (ndoc < 0) stop("ndoc must be >= 0")
+    if (nchar < 0) stop("nchar must be >= 0")
+    ndoc <- as.integer(min(ndoc, ndoc(x)))
+    nchar <- as.integer(nchar)
+
+    if (show.summary) {
+        cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
+            if (ndoc(x) > 1L) "s" else "", sep = "")
+        if (ncol(docvars(x)))
+            cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
+                if (ncol(docvars(x)) == 1L) "" else "s", sep="")
+        cat(".\n")
+    }
+
+    if (ndoc > 0) {
+        docnames_to_print <- docnames(x)[seq_len(ndoc)]
+        max_docname_width <- max(nchar(docnames_to_print))
+        for (docname in docnames_to_print) {
+            cat(paste0(stringi::stri_pad_left(paste0("[", docname, "] "), 
+                                               width = max_docname_width + 4),
+                       stringi::stri_replace_all_regex(stringi::stri_sub(texts(x[docname]), from = 1, to = nchar),
+                                                       "\\n", " "),
+                       " ...\n"))
+        }
+    }
     
-    # development mode
-    # cat("\n\n")
-    # print(stri_sub(x, 0, 100))
-    # cat("\n")
-    # cat("docvars:\n")
-    # print(attr(x, "docvar"))
-    # cat("\n")
-    # cat("meta:\n")
-    # print(attr(x, "meta"))
-    
+    if (TRUE) {
+        remainder_docs <- ndoc(x) - ndoc
+        if (ndoc > 0 && ndoc < ndoc(x))
+            cat("and ", remainder_docs, " more document", 
+                if (remainder_docs != 1) "s", ".", sep = "")
+    }
 }
 
 #' @return `is.corpus` returns `TRUE` if the object is a corpus

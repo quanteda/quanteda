@@ -10,7 +10,13 @@
 \alias{[.corpus}
 \title{Base method extensions for corpus objects}
 \usage{
-\method{print}{corpus}(x, ...)
+\method{print}{corpus}(
+  x,
+  ndoc = quanteda_options("print_corpus_max_ndoc"),
+  nchar = quanteda_options("print_corpus_max_nchar"),
+  show.summary = quanteda_options("print_corpus_summary"),
+  ...
+)
 
 is.corpus(x)
 
@@ -24,6 +30,14 @@ is.corpus(x)
 }
 \arguments{
 \item{x}{a corpus object}
+
+\item{ndoc}{number of documents to show text from}
+
+\item{nchar}{number of characters to use when showing the first part of the
+of text}
+
+\item{show.summary}{print a brief summary indicating the number of documents
+and docvars}
 
 \item{c1}{corpus one to be added}
 
