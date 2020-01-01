@@ -179,8 +179,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
 
     correction <- match.arg(correction)
     a <- b <- c <- d <- N <- E <- chi2 <- p <- cor_app <- q <- NULL
-    if (ndoc(x) > 2)
-        stop("x can only have 2 rows")
+    if (ndoc(x) > 2) stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
                      a = as.numeric(x[1, ]),
                      b = as.numeric(x[2, ]))
