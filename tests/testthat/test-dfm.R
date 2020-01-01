@@ -812,9 +812,24 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
 })
 
 test_that("test topfeatures", {
-    expect_equal(
-        topfeatures(dfm("a a a a b b b c c d"), "count"),
+    expect_identical(
+        topfeatures(dfm("a a a a b b b c c d"), scheme = "count"),
         c(a = 4, b = 3, c = 2, d = 1)
+    )
+    expect_error(
+        topfeatures(dfm("a a a a b b b c c d"), "count"),
+        "n must be a number"
+    )
+    dfmat <- corpus(c("a b b c", "b d", "b c"), docvars = data.frame(numdv = c(1, 2, 1))) %>%
+        dfm()
+    expect_identical(
+        topfeatures(dfmat, groups = "numdv"),
+        list("1" = c(b = 3, c = 2, a = 1, d = 0),
+             "2" = c(b = 1, d = 1, a = 0, c = 0))
+    )
+    expect_identical(
+        topfeatures(dfmat, scheme = "docfreq"),
+        c(b = 3L, c = 2L, a = 1L, d = 1L)
     )
 })
 

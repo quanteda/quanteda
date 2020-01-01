@@ -236,6 +236,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
+    if (!is.numeric(n)) stop("n must be a number")
     scheme <- match.arg(scheme)
 
     if (!is.null(groups)) {
