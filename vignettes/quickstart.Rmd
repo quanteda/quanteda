@@ -417,14 +417,15 @@ textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 **quanteda** makes it very easy to fit topic models as well, e.g.:
 
 ```{r}
-dfmat_ire2 <- dfm(data_corpus_irishbudget2010,
-                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-dfmat_ire2 <- dfm_trim(dfmat_ire2, min_termfreq = 4, max_docfreq = 10)
-dfmat_ire2
+quant_dfm <- dfm(data_corpus_irishbudget2010, 
+                 remove_punct = TRUE, remove_numbers = TRUE, 
+                 remove = stopwords("english"))
+quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
+quant_dfm
 
 set.seed(100)
-if (require(topicmodels)) {
-    my_lda_fit20 <- LDA(convert(dfmat_ire2, to = "topicmodels"), k = 20)
-    get_terms(my_lda_fit20, 5)
+if (require("stm")) {
+    my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)
+    plot(my_lda_fit20)    
 }
 ```
