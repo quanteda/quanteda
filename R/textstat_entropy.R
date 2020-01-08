@@ -25,12 +25,11 @@ textstat_entropy.dfm <- function(x, margin = c("documents", "features"), base = 
         x <- t(x)
     x <- dfm_weight(x, "prop")
     x <- as(x, "dgTMatrix")
-    result <- data.frame(temp = rownames(x),
-                         entropy = unlist(lapply(split(x@x, factor(x@i + 1L, levels = seq_len(nrow(x)))),
-                            function(y) sum(y * log(y, base)) * -1), use.names = FALSE),
-                         stringsAsFactors = FALSE,
-                         row.names = NULL)
-    names(result)[1] <- stringi::stri_trim_right(margin, "[^s]")
+    e <- unlist(lapply(split(x@x, factor(x@i + 1L, levels = seq_len(nrow(x)))),
+                       function(y) sum(y * log(y, base)) * -1), use.names = FALSE)
+    result <- data.frame(rownames(x), e, stringsAsFactors = FALSE)
+    names(result) <- c(stri_sub(margin, 1, -2), "entropy")
     class(result) <- c("entropy", "textstat", "data.frame")
+    rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
