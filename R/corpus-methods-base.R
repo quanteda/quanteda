@@ -195,10 +195,10 @@ tail.corpus <- function(x, n = 6L, ...) {
 #' @param recursive logical used by `c()` method, always set to `FALSE`
 #' @examples 
 #' # concatenate corpus objects
-#' corpus1 <- corpus(data_char_ukimmig2010[1:2])
-#' corpus2 <- corpus(data_char_ukimmig2010[3:4])
-#' corpus3 <- corpus(data_char_ukimmig2010[5:6])
-#' summary(c(corpus1, corpus2, corpus3))
+#' corp1 <- corpus(data_char_ukimmig2010[1:2])
+#' corp2 <- corpus(data_char_ukimmig2010[3:4])
+#' corp3 <- corpus(data_char_ukimmig2010[5:6])
+#' summary(c(corp1, corp2, corp3))
 #' @export
 c.corpus <- function(..., recursive = FALSE) {
     x <- list(...)
