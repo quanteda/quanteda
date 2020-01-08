@@ -47,13 +47,46 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @export
 #' @method print tokens
 #' @noRd
-print.tokens <- function(x, ...) {
-    cat(class(x)[1], " from ", ndoc(x), " document",
-        if (ndoc(x) > 1L) "s" else "", ".\n", sep = "")
-    types <- c("", types(x))
-    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
-    class(x) <- "listof"
-    print(x, ...)
+print.tokens <- function(x, ndoc = quanteda_options("print_tokens_max_ndoc"), 
+                         ntoken = quanteda_options("print_tokens_max_ntoken"), 
+                         show.summary = quanteda_options("print_tokens_summary"),
+                         ...) {
+    
+    if (ndoc < 0) ndoc <- ndoc(x)
+    if (ntoken < 0) ntoken <- -1L
+     
+    docvars <- docvars(x)
+    ndoc_all <- ndoc(x)
+    ndoc <- as.integer(min(ndoc, ndoc_all))
+    ntoken <- as.integer(ntoken)
+    
+    if (show.summary) {
+        cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
+            if (ndoc > 1L) "s" else "", sep = "")
+        if (ncol(docvars))
+            cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
+                if (ncol(docvars) == 1L) "" else "s", sep = "")
+        cat(".\n")
+    }
+    # 
+    # if (ndoc > 0) {
+    #     temp <- head(texts(x), ndoc)
+    #     label <- paste0("[", names(temp), "]")
+    #     temp <- stri_replace_all_regex(temp, "[\\p{C}]+", " ")
+    #     temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) " ..." else "")
+    #     cat(paste0(format(label, justify = "right"), " ", temp, "\n"), sep = "")
+    # }
+    if (ndoc > 0) {
+        types <- c("", types(x))
+        x <- lapply(head(unclass(x), ndoc), function(y) types[head(y, ntoken) + 1]) # shift index to show padding
+        class(x) <- "listof"
+        print(x, ...)
+    }
+    
+    ndoc_rem <- ndoc_all - ndoc
+    if (show.summary && ndoc_rem > 0)
+        cat("and ", ndoc_rem, " more document", 
+            if (ndoc_rem > 1) "s", ".\n", sep = "")
 }
 
 
