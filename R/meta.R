@@ -1,12 +1,12 @@
 # metacorpus ---------------------
 
 #' Get or set corpus metadata
-#' 
+#'
 #' Get or set the corpus-level metadata in a [corpus] object.
-#' 
+#'
 #' `metacorpus` and `metacorpus<-` are synonyms but are deprecated.
 #' @param x an object for which the metadata will be read or set
-#' @param field metadata field name(s); if `NULL` (default), return all 
+#' @param field metadata field name(s); if `NULL` (default), return all
 #'   metadata names
 #' @param type `"user"` for user-provided corpus-level metadata;
 #'   `"system"` for metadata set automatically when the corpus is created;
@@ -131,18 +131,18 @@ metacorpus <- meta
 # internal: meta_system ----------------
 
 #' Internal function to get, set or initialize system metadata
-#' 
+#'
 #' Sets or initializes system metadata for new objects.
 #' @inheritParams meta
 #' @return `meta_system` returns a list with the object's system metadata.
 #'   It is literally a wrapper to [`meta(x, field, type =
 #'   "system")()`][meta].
 #' @keywords internal
-#' @examples 
+#' @examples
 #' corp <- corpus(c(d1 = "one two three", d2 = "two three four"))
 #' # quanteda:::`meta_system<-`(corp, value = quanteda:::meta_system_defaults("example"))
 #' quanteda:::meta_system(corp)
-meta_system <- function(x, field = NULL) 
+meta_system <- function(x, field = NULL)
     meta(x, field = field, type = "system")
 
 #' @rdname meta_system

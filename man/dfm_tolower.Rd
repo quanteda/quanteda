@@ -20,28 +20,28 @@ fcm_toupper(x)
 case-converted}
 
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
-all-uppercase words (applies only to \verb{*_tolower} functions)}
+all-uppercase words (applies only to \verb{*_tolower()} functions)}
 }
 \description{
-\code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
+\code{dfm_tolower()} and \code{dfm_toupper()} convert the features of the dfm or
 fcm to lower and upper case, respectively, and then recombine the counts.
 }
 \details{
-\code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of
+\code{fcm_tolower()} and \code{fcm_toupper()} convert both dimensions of
 the \link{fcm} to lower and upper case, respectively, and then recombine
-the counts. This works only on fcm objects created with \code{context =  "document"}.
+the counts. This works only on fcm objects created with \code{context = "document"}.
 }
 \examples{
 # for a document-feature matrix
 dfmat <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
 dfmat
-dfm_tolower(dfmat) 
+dfm_tolower(dfmat)
 dfm_toupper(dfmat)
-   
+
 # for a feature co-occurrence matrix
-fcmat <- fcm(tokens(c("b A A d", "C C a b B e")), 
+fcmat <- fcm(tokens(c("b A A d", "C C a b B e")),
              context = "document")
 fcmat
-fcm_tolower(fcmat) 
-fcm_toupper(fcmat)   
+fcm_tolower(fcmat)
+fcm_toupper(fcmat)
 }

@@ -83,10 +83,10 @@ values will not be returned}
 A sparse matrix from the \pkg{Matrix} package that will be symmetric
 unless \code{y} is specified.
 
-These can be transformed easily into a list format using \code{as.list()},
-which returns a list for each unique element of the second of the pairs,
-\code{as.dist} to be transformed into a \link[stats:dist]{dist} object, or
-\code{as.matrix} to convert it into an ordinary matrix.
+These can be transformed easily into a list format using \code{as.list()}, which
+returns a list for each unique element of the second of the pairs,
+\code{as.dist()} to be transformed into a \link[stats:dist]{dist} object, or
+\code{as.matrix()} to convert it into an ordinary matrix.
 
 \code{as.data.list} for a \code{textstat_simil} or
 \code{textstat_dist} object returns a list equal in length to the columns of the
@@ -123,7 +123,7 @@ for which different document lengths matter), then wrap the input dfm in
 }
 \examples{
 # similarities for documents
-dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000), 
+dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 2000),
              remove_punct = TRUE, remove = stopwords("english"))
 (tstat1 <- textstat_simil(dfmat, method = "cosine", margin = "documents"))
 as.matrix(tstat1)
@@ -145,8 +145,8 @@ tstat3 <- textstat_simil(dfmat, dfmat[, c("fair", "health", "terror")], method =
 head(as.matrix(tstat3), 10)
 as.list(tstat3, n = 6)
 
-               
-# distances for documents 
+
+# distances for documents
 (tstat4 <- textstat_dist(dfmat, margin = "documents"))
 as.matrix(tstat4)
 as.list(tstat4)
@@ -164,6 +164,6 @@ plot(hclust(as.dist(tstat4)))
 }
 }
 \seealso{
-\code{\link[stats:as.dist]{stats::as.dist()}}
+\code{\link[stats:dist]{stats::as.dist()}}
 }
 \keyword{textstat}

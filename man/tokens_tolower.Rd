@@ -14,15 +14,15 @@ tokens_toupper(x)
 case-converted}
 
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
-all-uppercase words (applies only to \verb{*_tolower} functions)}
+all-uppercase words (applies only to \verb{*_tolower()} functions)}
 }
 \description{
-\code{tokens_tolower} and \code{tokens_toupper} convert the features of a
+\code{tokens_tolower()} and \code{tokens_toupper()} convert the features of a
 \link{tokens} object and re-index the types.
 }
 \examples{
 # for a document-feature matrix
 toks <- tokens(c(txt1 = "b A A", txt2 = "C C a b B"))
-tokens_tolower(toks) 
+tokens_tolower(toks)
 tokens_toupper(toks)
 }

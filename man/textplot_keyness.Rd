@@ -34,12 +34,12 @@ and reference categories, for a feature to be included in the plot}
 
 \item{color}{character or integer; colors of bars for target and reference documents.
 \code{color} must have two elements when \code{show_reference = TRUE}.  See
-\link[ggplot2:color]{color}.}
+\link[ggplot2:aes_colour_fill_alpha]{ggplot2::color}.}
 
 \item{labelcolor}{character; color of feature labels.}
 
 \item{labelsize}{numeric; size of feature labels and bars.  See
-\link[ggplot2:size]{size}.}
+\link[ggplot2:aes_linetype_size_shape]{ggplot2::size}.}
 
 \item{font}{character; font-family of texts. Use default font if \code{NULL}.}
 }

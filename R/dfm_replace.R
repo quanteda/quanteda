@@ -25,25 +25,25 @@
 #' featstem <- char_wordstem(feat, "porter")
 #' dfmat3 <- dfm_replace(dfmat1, pattern = feat, replacement = featstem, case_insensitive = FALSE)
 #' identical(dfmat3, dfm_wordstem(dfmat1, "porter"))
-dfm_replace <- function(x, pattern, replacement, case_insensitive = TRUE, 
+dfm_replace <- function(x, pattern, replacement, case_insensitive = TRUE,
                            verbose = quanteda_options("verbose")) {
     UseMethod("dfm_replace")
 }
 
 #' @export
-dfm_replace.default <- function(x, pattern, replacement, case_insensitive = TRUE, 
+dfm_replace.default <- function(x, pattern, replacement, case_insensitive = TRUE,
                                 verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "dfm_replace"))
 }
     
 #' @export
-dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE, 
+dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
                             verbose = quanteda_options("verbose")) {
-    
+
     if (length(pattern) != length(replacement))
         stop("Lengths of 'pattern' and 'replacement' must be the same")
-    
+
     if (!length(pattern)) return(x)
     set_dfm_featnames(x) <- replace_type(featnames(x), pattern, replacement, case_insensitive)
-    dfm_compress(x, 'features')
+    dfm_compress(x, "features")
 }
