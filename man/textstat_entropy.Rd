@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_entropy.R
 \name{textstat_entropy}
 \alias{textstat_entropy}
-\title{Compute entropy of documents or features}
+\title{Compute entropies of documents or features}
 \usage{
 textstat_entropy(x, margin = c("documents", "features"), base = 2)
 }
@@ -13,8 +13,11 @@ textstat_entropy(x, margin = c("documents", "features"), base = 2)
 
 \item{base}{base for logarithm function}
 }
+\value{
+a data.frame of entropies for the given document or feature
+}
 \description{
-Compute entropy of documents or features
+Compute entropies of documents or features
 }
 \examples{
 textstat_entropy(data_dfm_lbgexample)

@@ -1,6 +1,6 @@
 context("test default methods for nice error messages")
 
-test_that("test detault corpus* methods", {
+test_that("test default corpus* methods", {
     expect_error(
         corpus(TRUE),
         "corpus\\(\\) only works on.*character.*corpus.*objects"
@@ -405,6 +405,10 @@ test_that("test default textstat methods", {
         textstat_collocations(TRUE),
         "textstat_collocations\\(\\) only works on.*tokens objects"
     )
+    expect_error(
+        textstat_entropy(tokens(data_char_sampletext)),
+        "textstat_entropy() only works on dfm objects.", fixed = TRUE
+    )
 })
 
 test_that("test default textplot methods", {
@@ -428,4 +432,25 @@ test_that("test default textplot methods", {
         textplot_xray(TRUE),
         "textplot_xray\\(\\) only works on kwic objects"
     )   
+})
+
+test_that("friendly_class_undefined_message for tokens_tortl()", {
+    expect_error(
+        tokens_tortl(data_dfm_lbgexample),
+        "tokens_tortl\\(\\) only works on.*tokens.*objects"
+    )
+})
+
+test_that("friendly_class_undefined_message for char_tortl()", {
+    expect_error(
+        char_tortl(data_dfm_lbgexample),
+        "char_tortl\\(\\) only works on.*character.*objects"
+    )
+})
+
+test_that("friendly_class_undefined_message for featfreq()", {
+    expect_error(
+        featfreq(tokens(data_char_sampletext)),
+        "featfreq\\(\\) only works on dfm objects"
+    )
 })
