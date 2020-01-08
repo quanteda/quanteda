@@ -139,7 +139,7 @@ get_options_default <- function(){
                  print_dfm_max_ndoc = 20L,
                  print_dfm_max_nfeat = 20L,
                  print_corpus_max_ndoc = 0L,
-                 print_corpus_max_nchar = 0L,
+                 print_corpus_max_nchar = 60L,
                  print_corpus_summary = TRUE,
                  base_docname = "text",
                  base_featname = "feat",
