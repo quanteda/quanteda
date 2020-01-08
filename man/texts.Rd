@@ -63,14 +63,14 @@ nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 
 # grouping a character vector using a factor
-nchar(texts(data_corpus_inaugural[1:5], 
+nchar(texts(data_corpus_inaugural[1:5],
       groups = "President"))
-nchar(texts(data_corpus_inaugural[1:5], 
+nchar(texts(data_corpus_inaugural[1:5],
       groups = factor(c("W", "W", "A", "J", "J"))))
 
-corp <- corpus(c("We must prioritise honour in our neighbourhood.", 
+corp <- corpus(c("We must prioritise honour in our neighbourhood.",
                  "Aluminium is a valourous metal."))
-texts(corp) <- 
+texts(corp) <-
     stringi::stri_replace_all_regex(texts(corp),
                                    c("ise", "([nlb])our", "nium"),
                                    c("ize", "$1or", "num"),

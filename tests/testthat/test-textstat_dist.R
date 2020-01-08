@@ -4,50 +4,49 @@ mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
 mt <- dfm_trim(mt, min_termfreq = 10)
 
 test_that("test old and new textstat_dist are the same", {
-    expect_equivalent(textstat_dist(mt) %>% as.matrix() %>% as.dist(), 
+    expect_equivalent(textstat_dist(mt) %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt),
                       tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, margin = "features") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, margin = "features") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, margin = "features"),
                       tolerance = 0.01)
-    
     suppressWarnings(expect_equivalent(textstat_dist(mt, selection = "1985-Reagan") %>% as.matrix(), 
                       textstat_dist_old(mt, selection = "1985-Reagan") %>% as.matrix(),
                       tolerance = 0.01))
     expect_equivalent(textstat_dist(mt, y = mt["1985-Reagan", ]) %>% as.matrix(), 
                       textstat_dist_old(mt, selection = "1985-Reagan") %>% as.matrix(),
                       tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, method = "euclidean") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "euclidean") %>% as.matrix() %>% as.dist(),
                      textstat_dist_old(mt, method = "euclidean"))
-    
-    expect_equivalent(textstat_dist(mt, method = "euclidean") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "euclidean") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, method = "euclidean"),
                       tolerance = 0.01)
-    
+
     # equivalent only when the dfm is dense
-    # expect_equivalent(textstat_dist(mt + 1, method = "kullback") %>% as.matrix() %>% as.dist(), 
+    # expect_equivalent(textstat_dist(mt + 1, method = "kullback") %>% as.matrix() %>% as.dist(),
     #                   textstat_dist_old(mt + 1, method = "kullback"),
     #                   tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, method = "manhattan") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "manhattan") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, method = "manhattan"),
                       tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, method = "maximum") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "maximum") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, method = "maximum"),
                       tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, method = "canberra") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "canberra") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, method = "canberra"),
                       tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, method = "minkowski") %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "minkowski") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, method = "minkowski"),
                       tolerance = 0.01)
-    
-    expect_equivalent(textstat_dist(mt, method = "minkowski", p = 3) %>% as.matrix() %>% as.dist(), 
+
+    expect_equivalent(textstat_dist(mt, method = "minkowski", p = 3) %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, method = "minkowski", p = 3),
                       tolerance = 0.01)
 })
@@ -167,15 +166,15 @@ test_that("selection is always on columns (#1549)", {
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(
-        colnames(textstat_dist(mt, margin = "documents", selection = c(2, 3)) %>% as.matrix()), 
+        colnames(textstat_dist(mt, margin = "documents", selection = c(2, 3)) %>% as.matrix()),
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(
-        colnames(textstat_dist(mt, margin = "features", selection = c("justice", "and")) %>% as.matrix()), 
+        colnames(textstat_dist(mt, margin = "features", selection = c("justice", "and")) %>% as.matrix()),
         c("justice", "and")
     )
     expect_equal(
-        colnames(textstat_dist(mt, margin = "features", selection = c(4, 6)) %>% as.matrix()), 
+        colnames(textstat_dist(mt, margin = "features", selection = c(4, 6)) %>% as.matrix()),
         c("mr", "chief")
     )
     })
@@ -218,7 +217,7 @@ test_that("textstat_dist coercion methods work with options", {
     iden <- rep(0, ndoc(mt2))
     names(iden) <- docnames(mt2)
     expect_equal(diag(as.matrix(tstat)), iden)
-    
+
     # upper = FALSE, diag = FALSE
     tstat <- textstat_dist(mt2, margin = "documents")
     # expect_equal(nrow(tstat), (nrow(mt2)^2 - ndoc(mt2)) / 2)

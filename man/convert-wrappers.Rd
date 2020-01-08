@@ -66,15 +66,15 @@ are converting.
 \code{as.wfm} converts a quanteda \link{dfm} into the
 \code{wfm} format used by the \code{austin} package.
 
-\code{as.DocumentTermMatrix} will convert a quanteda \link{dfm} into
-the \pkg{tm} package's \link[tm:DocumentTermMatrix]{DocumentTermMatrix} format. Note: The
-\pkg{tm} package version of \code{as.TermDocumentMatrix} allows a
-\code{weighting} argument, which supplies a weighting function for
-\link[tm:TermDocumentMatrix]{TermDocumentMatrix}.  Here the default is for term frequency
-weighting. If you want a different weighting, apply the weights after
-converting using one of the \pkg{tm} functions. For other available
-weighting functions from the \pkg{tm} package, see
-\code{\link[tm:TermDocumentMatrix]{tm::TermDocumentMatrix()}}.
+\code{as.DocumentTermMatrix} will convert a quanteda \link{dfm} into the
+\pkg{tm} package's \link[tm:matrix]{DocumentTermMatrix} format. Note: The
+\pkg{tm} package version of \code{as.TermDocumentMatrix()} allows a \code{weighting}
+argument, which supplies a weighting function for
+\code{\link[tm:matrix]{TermDocumentMatrix()}}.  Here the default is for
+term frequency weighting. If you want a different weighting, apply the
+weights after converting using one of the \pkg{tm} functions. For other
+available weighting functions from the \pkg{tm} package, see
+\link[tm:matrix]{TermDocumentMatrix}.
 
 \code{dfm2lda} provides converts a \link{dfm} into the list representation
 of terms in documents used by the \pkg{lda} package (a list with components
@@ -108,12 +108,12 @@ identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda")) 
+identical(quanteda:::dfm2lda(dfmat), convert(dfmat, to = "lda"))
 }
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda")) 
+identical(dfm2ldaformat(dfmat), convert(dfmat, to = "lda"))
 }
 }
 \keyword{internal}

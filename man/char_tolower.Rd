@@ -14,23 +14,23 @@ char_toupper(x)
 case-converted}
 
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
-all-uppercase words (applies only to \verb{*_tolower} functions)}
+all-uppercase words (applies only to \verb{*_tolower()} functions)}
 }
 \description{
 \code{char_tolower} and \code{char_toupper} are replacements for
-\link[base:tolower]{tolower} and \link[base:toupper]{toupper} based on the \pkg{stringi}
-package.  The \pkg{stringi} functions for case conversion are superior to the
-\pkg{base} functions because they correctly handle case conversion for
-Unicode.  In addition, the \verb{*_tolower} functions provide an option for
-preserving acronyms.
+\link[base:chartr]{base::tolower()} and \link[base:chartr]{base::tolower()}
+based on the \pkg{stringi} package.  The \pkg{stringi} functions for case
+conversion are superior to the \pkg{base} functions because they correctly
+handle case conversion for Unicode.  In addition, the \verb{*_tolower()} functions
+provide an option for preserving acronyms.
 }
 \examples{
 txt1 <- c(txt1 = "b A A", txt2 = "C C a b B")
-char_tolower(txt1) 
+char_tolower(txt1)
 char_toupper(txt1)
 
 # with acronym preservation
-txt2 <- c(text1 = "England and France are members of NATO and UNESCO", 
+txt2 <- c(text1 = "England and France are members of NATO and UNESCO",
           text2 = "NASA sent a rocket into space.")
 char_tolower(txt2)
 char_tolower(txt2, keep_acronyms = TRUE)

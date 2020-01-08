@@ -1,4 +1,4 @@
-context('test dfm')
+context("test dfm")
 
 test_that("oldest dfm test", {
     mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
@@ -20,7 +20,6 @@ test_that("oldest dfm test", {
                                  "The United_States has progressive taxation.")),
                   remove_punct = TRUE)
 
-
     dictDfm <- dfm(txt, dictionary = mydict, verbose = FALSE)
     dictDfm <- dfm(txt, thesaurus = mydict, verbose = FALSE)
     dictDfm <- dfm(txt, thesaurus = mydict, verbose = FALSE)
@@ -28,7 +27,6 @@ test_that("oldest dfm test", {
     txtDfm <- dfm(txt, verbose = FALSE)
     dictDfm <- dfm_lookup(txtDfm, mydict, valuetype = "glob")
     dictDfm <- dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE)
-
 
     inaugTextsTokenized <- tokens(data_corpus_inaugural, remove_punct = TRUE)
     inaugTextsTokenized <- tokens_tolower(inaugTextsTokenized)
@@ -39,7 +37,6 @@ test_that("oldest dfm test", {
     txtDfm <- dfm(txt, stem = TRUE)
     txtDfm <- dfm(txt, remove = stopwords("english"))
     txtDfm <- dfm(txt, stem = TRUE, remove = stopwords("english"))
-
 
     myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                               opposition = c("Opposition", "reject", "notincorpus"),
@@ -180,7 +177,6 @@ test_that("test rbind.dfm with the same features, but in a different order", {
     )
 })
 
-
 test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
     generate_testdfm <- function(n) {
         dfm(paste("X", 1:n, sep = ""))
@@ -213,33 +209,32 @@ test_that("dfm print works as expected", {
     expect_is(tail(testdfm[, 1:100], 2), "dfm")
 })
 
-
 test_that("dfm.dfm works as expected", {
     corp <- data_corpus_irishbudget2010
     toks <- tokens(corp)
     dfmt <- dfm(toks, tolower = FALSE)
-    
+
     expect_identical(dfm(toks, tolower = FALSE), dfm(dfmt, tolower = FALSE))
     expect_identical(dfm(toks, tolower = TRUE), dfm(dfmt, tolower = TRUE))
-    
+
     expect_identical(dfmt, dfm(dfmt, tolower = FALSE))
     expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
-    
+
     expect_true({
         sum(dfm(corp, select = c("The", "a", "an"))) >
         sum(dfm(corp, select = c("The", "a", "an"), case_insensitive = FALSE))
     })
-    
+
     expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
                      dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = FALSE))
     expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE, tolower = FALSE),
                      dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = TRUE))
-    
+
     expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE),
                      dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = FALSE)))
     expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE),
                      dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = TRUE)))
-    
+
     dfmt_group <- dfm(dfmt,
                       groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in%
                                            c("FF", "Green"), "Govt", "Opposition"),
@@ -249,32 +244,32 @@ test_that("dfm.dfm works as expected", {
 
     dict <- dictionary(list(articles = c("The", "a", "an"),
                             preps = c("of", "for", "In")), tolower = FALSE)
-    
+
     expect_true({
         sum(dfm(corp, dictionary = dict)) >
         sum(dfm(corp, dictionary = dict, case_insensitive = FALSE))
     })
-    
+
     expect_equivalent(
         dfm(corp, dictionary = dict),
         dfm(dfmt, dictionary = dict)
     )
-    
+
     expect_equivalent(
         dfm(dfmt, dictionary = dict),
         dfm(tokens_lookup(toks, dict))
     )
-    
+
     expect_equivalent(
         dfm(corp, dictionary = dict, case_insensitive = FALSE),
         dfm(dfmt, dictionary = dict, case_insensitive = FALSE)
     )
-    
+
     expect_equivalent(
         dfm(dfmt, dictionary = dict, case_insensitive = FALSE),
         dfm(tokens_lookup(toks, dict, case_insensitive = FALSE))
     )
-    
+
     expect_identical(
         dfm(corp, stem = TRUE),
         dfm(dfmt, stem = TRUE)
@@ -306,10 +301,10 @@ test_that("cbind.dfm works with non-dfm objects", {
     )
     expect_equal(
         as.matrix(cbind(vec, dfm1)),
-        matrix(c(10,1,1,1,0,0, 20, 0,0,1,1,1), byrow = TRUE, nrow = 2,
+        matrix(c(10, 1, 1, 1, 0, 0, 20, 0, 0, 1, 1, 1), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c("text1", "text2"), features = c("feat1", letters[1:5])))
     )
-    
+
     mat <- matrix(1:4, nrow = 2, dimnames = list(NULL, c("f1", "f2")))
     expect_equal(
         as.matrix(cbind(dfm1, mat)),
@@ -321,21 +316,21 @@ test_that("cbind.dfm works with non-dfm objects", {
         matrix(c(1,3,1,1,1,0,0, 2,4,0,0,1,1,1), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c("text1", "text2"), features = c("f1", "f2", letters[1:5])))
     )
-    
+
     expect_equal(
         as.matrix(cbind(dfm1, vec, mat)),
         matrix(c(1,1,1,0,0,10,1,3, 0,0,1,1,1,20,2,4), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), 
+               dimnames = list(docs = c("text1", "text2"),
                                features = c(letters[1:5], "feat1", "f1", "f2")))
     )
-    
+
     expect_equal(
-        as.matrix(cbind(vec, dfm1, vec)),
+        suppressWarnings(as.matrix(cbind(vec, dfm1, vec))),
         matrix(c(10,1,1,1,0,0,10, 20,0,0,1,1,1,20), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), 
+               dimnames = list(docs = c("text1", "text2"),
                                features = c("feat1", letters[1:5], "feat1")))
     )
-    
+
     expect_warning(
         cbind(vec, dfm1, vec),
         "cbinding dfms with overlapping features will result in duplicated features"
@@ -344,7 +339,7 @@ test_that("cbind.dfm works with non-dfm objects", {
         cbind(dfm1, dfm1),
         "cbinding dfms with overlapping features will result in duplicated features"
     )
-    
+
     expect_equal(
         as.matrix(cbind(dfm1, 100)),
         matrix(c(1, 1, 1, 0, 0, 100, 0, 0, 1, 1, 1, 100), byrow = TRUE, nrow = 2,
@@ -381,7 +376,7 @@ test_that("more cbind tests for dfms", {
     )
 })
 
-test_that("cbind.dfm keeps attributes of the dfm",{
+test_that("cbind.dfm keeps attributes of the dfm", {
     mx1 <- as.dfm(matrix(c(0, 0, 0, 0, 1, 2), nrow = 2,
                          dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
     mx2 <- as.dfm(matrix(c(2, 3, 0, 0, 0, 0), nrow = 2,
@@ -431,7 +426,6 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
                                             "a", "c", "f", "g", "x", "z")))
     )
 })
-
 
 test_that("dfm works with relational operators", {
     testdfm <- dfm(c("This is an example.", "This is a second example."))
@@ -566,20 +560,20 @@ test_that("dfm head, tail work as expected", {
     tmp <- head(data_dfm_lbgexample, 4, nf = 3)
     expect_equal(featnames(tmp), LETTERS[1:3])
     expect_equal(docnames(tmp), paste0("R", 1:4))
-    
+
     tmp <- head(data_dfm_lbgexample, -4, nf = -30)
     expect_equal(featnames(tmp), LETTERS[1:7])
     expect_equal(docnames(tmp), paste0("R", 1:2))
-    
+
     tmp <- tail(data_dfm_lbgexample, 4, nf = 3)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R3", "R4", "R5", "V1"))
-    
+
     tmp <- tail(data_dfm_lbgexample, -4, nf = -34)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R5", "V1"))
 })
-    
+
 test_that("dfm print works with options as expected", {
     tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     expect_output(
@@ -635,13 +629,13 @@ test_that("cannot supply remove and select in one call (#793)", {
 })
 
 test_that("printing an empty dfm produces informative result (#811)", {
-    my_dictionary <- dictionary(list( a = c( "asd", "dsa" ),
-                                      b = c( "foo", "jup" )))
-    raw_text <- c( "Wow I can't believe it's not raining!", 
-                   "Today is a beautiful day. The sky is blue and there are burritos" )
-    my_corpus <- corpus( raw_text )
-    my_dfm <- dfm( my_corpus, dictionary = my_dictionary )
-    
+    my_dictionary <- dictionary(list(a = c("asd", "dsa"),
+                                     b = c("foo", "jup")))
+    raw_text <- c("Wow I can't believe it's not raining!",
+                  "Today is a beautiful day. The sky is blue and there are burritos")
+    my_corpus <- corpus(raw_text)
+    my_dfm <- dfm(my_corpus, dictionary = my_dictionary)
+
     expect_output(
         print(my_dfm),
         "^Document-feature matrix of: 2 documents, 2 features \\(100.0% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfm\""
@@ -663,22 +657,22 @@ test_that("dfm with selection options produces correct output", {
     feat <- c("b", "c", "d", "e", "f", "g")
     expect_message(
         dfm(txt, remove = feat, verbose = TRUE),
-        "removed 4 features" 
+        "removed 4 features"
     )
     expect_message(
         dfm(toks, remove = feat, verbose = TRUE),
-        "removed 4 features" 
+        "removed 4 features"
     )
     expect_message(
         dfm(dfmt, remove = feat, verbose = TRUE),
-        "removed 4 features" 
+        "removed 4 features"
     )
 })
 
 test_that("dfm works with stem options", {
     txt_english <- "running ran runs"
     txt_french <- "courant courir cours"
-    
+
     quanteda_options(language_stemmer = "english")
     expect_equal(
         as.character(tokens_wordstem(tokens(txt_english))),
@@ -743,57 +737,57 @@ test_that("dfm works with purrr::map (#928)", {
 })
 
 test_that("dfm works when features are created (#946", {
-    dfm1 <- as.dfm(matrix(1:6, nrow = 2, 
+    dfm1 <- as.dfm(matrix(1:6, nrow = 2,
                           dimnames = list(c("doc1", "doc2"), c("a", "b", "c"))))
-    dfm2 <- as.dfm(matrix(1:6, nrow = 2, 
+    dfm2 <- as.dfm(matrix(1:6, nrow = 2,
                           dimnames = list(c("doc1", "doc2"), c("b", "c", "feat_2"))))
-    
+
     expect_equal(
-        as.matrix(dfm_select(dfm1, dfm2)),
+        as.matrix(dfm_match(dfm1, featnames(dfm2))),
         matrix(c(3, 4, 5, 6, 0, 0), nrow = 2, dimnames = list(docs = c("doc1", "doc2"), features = c("b", "c", "feat_2")))
     )
-    
+
     expect_equal(
         as.matrix(cbind(dfm("a b"), dfm("feat_1"))),
-        matrix(c(1,1,1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
+        matrix(c(1, 1, 1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
     )
 })
 
 test_that("dfm warns of argument not used", {
-    
+
     txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
     corp <- corpus(txt)
     toks <- tokens(txt)
     mx <- dfm(toks)
-    
-    expect_warning(dfm(txt, xxxxx = "something", yyyyy = "else"), 
+
+    expect_warning(dfm(txt, xxxxx = "something", yyyyy = "else"),
                    "Arguments xxxxx, yyyyy not used")
-    expect_warning(dfm(corp, xxxxx = "something", yyyyy = "else"), 
+    expect_warning(dfm(corp, xxxxx = "something", yyyyy = "else"),
                    "Arguments xxxxx, yyyyy not used")
-    expect_warning(dfm(toks, xxxxx = "something", yyyyy = "else"), 
+    expect_warning(dfm(toks, xxxxx = "something", yyyyy = "else"),
                    "Arguments xxxxx, yyyyy not used")
-    expect_warning(dfm(mx, xxxxx = "something", yyyyy = "else"), 
+    expect_warning(dfm(mx, xxxxx = "something", yyyyy = "else"),
                    "Arguments xxxxx, yyyyy not used")
-    
+
 })
 
 test_that("dfm pass arguments to tokens, issue #1121", {
-    
+
     txt <- data_char_sampletext
     corp <- corpus(txt)
-    
+
     expect_equal(dfm(txt, what = "character"),
                  dfm(tokens(corp, what = "character")))
-    
+
     expect_equal(dfm(txt, what = "character"),
                  dfm(tokens(txt, what = "character")))
 
     expect_equal(dfm(txt, remove_punct = TRUE),
                  dfm(tokens(corp, remove_punct = TRUE)))
-        
+
     expect_equal(dfm(txt, remove_punct = TRUE),
                  dfm(tokens(txt, remove_punct = TRUE)))
-    
+
 })
 
 test_that("dfm error when a dfm is given to for feature selection when x is not a dfm, #1067", {
@@ -802,25 +796,40 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
     toks <- tokens(txt)
     mx <- dfm(toks)
     mx2 <- dfm(c("a b", "c"))
-    
-    expect_error(dfm(txt, select = mx2), 
+
+    expect_error(dfm(txt, select = mx2),
                 "selection on a dfm is only available when x is a dfm")
-    expect_error(dfm(corp, select = mx2), 
+    expect_error(dfm(corp, select = mx2),
                 "selection on a dfm is only available when x is a dfm")
-    expect_error(dfm(toks, select = mx2), 
+    expect_error(dfm(toks, select = mx2),
                 "selection on a dfm is only available when x is a dfm")
     expect_warning(dfm(mx, select = mx2),
                 "pattern = dfm is deprecated")
     expect_equal(
-        as.matrix(dfm(mx, select = mx2)),
-        matrix(c(1,2,1,1,1,3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = letters[1:3]))
+        suppressWarnings(as.matrix(dfm(mx, select = mx2))),
+        matrix(c(1, 2, 1, 1, 1, 3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = letters[1:3]))
     )
 })
 
 test_that("test topfeatures", {
-    expect_equal(
-        topfeatures(dfm("a a a a b b b c c d"), "count"),
+    expect_identical(
+        topfeatures(dfm("a a a a b b b c c d"), scheme = "count"),
         c(a = 4, b = 3, c = 2, d = 1)
+    )
+    expect_error(
+        topfeatures(dfm("a a a a b b b c c d"), "count"),
+        "n must be a number"
+    )
+    dfmat <- corpus(c("a b b c", "b d", "b c"), docvars = data.frame(numdv = c(1, 2, 1))) %>%
+        dfm()
+    expect_identical(
+        topfeatures(dfmat, groups = "numdv"),
+        list("1" = c(b = 3, c = 2, a = 1, d = 0),
+             "2" = c(b = 1, d = 1, a = 0, c = 0))
+    )
+    expect_identical(
+        topfeatures(dfmat, scheme = "docfreq"),
+        c(b = 3L, c = 2L, a = 1L, d = 1L)
     )
 })
 
@@ -831,14 +840,13 @@ test_that("test sparsity", {
     )
 })
 
-
 test_that("test null dfm is handled properly", {
-    
+
     mx <- as.dfm(quanteda:::make_null_dfm())
-    
+
     # constructor
     expect_equal(dfm(mx), mx)
-    
+
     # selection/grouping
     expect_equal(dfm_select(mx), mx)
     expect_equal(dfm_select(mx, "a"), mx)
@@ -851,12 +859,12 @@ test_that("test null dfm is handled properly", {
     expect_equal(dfm_sort(mx, "both"), mx)
     expect_equal(dfm_sort(mx, "features"), mx)
     expect_equal(dfm_sort(mx, "documents"), mx)
-    expect_equal(dfm_lookup(mx, dictionary(list(A ="a"))), mx)
+    expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
     expect_equal(dfm_group(mx), mx)
     expect_equal(dfm_replace(mx, "A", "a"), mx)
     expect_equal(head(mx), mx)
     expect_equal(tail(mx), mx)
-    
+
     # weighting
     expect_equal(topfeatures(mx), numeric())
     expect_equal(dfm_weight(mx, "count"), mx)
@@ -870,46 +878,45 @@ test_that("test null dfm is handled properly", {
     expect_equal(dfm_tfidf(mx), mx)
     expect_equal(docfreq(mx), numeric())
     expect_equal(dfm_smooth(mx), mx)
-    
+
     # transformation
     expect_equal(dfm_tolower(mx), mx)
     expect_equal(dfm_toupper(mx), mx)
     expect_equal(dfm_wordstem(mx), mx)
-    
+
     # binding
     expect_equal(rbind(mx, mx), mx)
     expect_equal(cbind(mx, mx), mx)
-    
+
     expect_output(print(mx), "Document-feature matrix of: 0 documents, 0 features.")
 })
 
-
 test_that("test empty dfm is handled properly (#1419)", {
-    
+
     mx <- dfm_trim(data_dfm_lbgexample, 1000)
     docvars(mx) <- data.frame(var = c(1, 5, 3, 6, 6, 4))
-    
+
     # constructor
     expect_equal(dfm(mx), mx)
-    
+
     # selection/grouping
     expect_equal(dfm_select(mx), mx)
     expect_equal(dfm_select(mx, "a"), mx)
     expect_equal(dfm_trim(mx), mx)
     expect_equal(ndoc(dfm_sample(mx)), ndoc(mx))
-    expect_equal(dfm_subset(mx, var > 5), mx[4:5,])
+    expect_equal(dfm_subset(mx, var > 5), mx[4:5, ])
     expect_equal(dfm_compress(mx, "both"), mx)
     expect_equal(dfm_compress(mx, "features"), mx)
     expect_equal(dfm_compress(mx, "documents"), mx)
     expect_equal(dfm_sort(mx, "both"), mx)
     expect_equal(dfm_sort(mx, "features"), mx)
     expect_equal(dfm_sort(mx, "documents"), mx)
-    expect_equal(dfm_lookup(mx, dictionary(list(A ="a"))), mx)
+    expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
     expect_equal(dfm_group(mx), mx)
     expect_equal(dfm_replace(mx, "A", "a"), mx)
     expect_equal(head(mx), mx)
     expect_equal(tail(mx), mx)
-    
+
     # weighting
     expect_equal(topfeatures(mx), numeric())
     expect_equal(dfm_weight(mx, "count"), mx)
@@ -923,16 +930,16 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(dfm_tfidf(mx), mx)
     expect_equal(docfreq(mx), numeric())
     expect_equal(dfm_smooth(mx), mx)
-    
+
     # transformation
     expect_equal(dfm_tolower(mx), mx)
     expect_equal(dfm_toupper(mx), mx)
     expect_equal(dfm_wordstem(mx), mx)
-    
+
     # binding
     expect_equal(ndoc(rbind(mx, mx)), ndoc(mx) * 2)
     expect_equal(ndoc(cbind(mx, mx)), ndoc(mx))
-    
+
     expect_output(print(mx), "Document-feature matrix of: 6 documents, 0 features.")
 })
 
@@ -941,51 +948,51 @@ test_that("dfm raise nicer error message, #1267", {
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
     mx <- dfm(txt)
     expect_error(mx["d4"], "Subscript out of bounds")
-    expect_error(mx["d4",], "Subscript out of bounds")
+    expect_error(mx["d4", ], "Subscript out of bounds")
     expect_error(mx[4], "Subscript out of bounds")
-    expect_error(mx[4,], "Subscript out of bounds")
-    expect_error(mx["d4",,TRUE], "Subscript out of bounds")
-    expect_error(mx[4,,TRUE], "Subscript out of bounds")
-    expect_error(mx[1:4,,TRUE], "Subscript out of bounds")
-    expect_error(mx[1:4,,TRUE], "Subscript out of bounds")
-    
+    expect_error(mx[4, ], "Subscript out of bounds")
+    expect_error(mx["d4", , TRUE], "Subscript out of bounds")
+    expect_error(mx[4, , TRUE], "Subscript out of bounds")
+    expect_error(mx[1:4, , TRUE], "Subscript out of bounds")
+    expect_error(mx[1:4, , TRUE], "Subscript out of bounds")
+
     expect_error(mx["five"], "Subscript out of bounds")
-    expect_error(mx[,"five"], "Subscript out of bounds")
+    expect_error(mx[, "five"], "Subscript out of bounds")
     expect_error(mx[5], "Subscript out of bounds")
-    expect_error(mx[,5], "Subscript out of bounds")
-    expect_error(mx[,1:5], "Subscript out of bounds")
-    expect_error(mx["d4","five"], "Subscript out of bounds")
-    expect_error(mx[,"five",TRUE], "Subscript out of bounds")
-    expect_error(mx[,5,TRUE], "Subscript out of bounds")
-    expect_error(mx[,1:5,TRUE], "Subscript out of bounds")
-    expect_error(mx["d4","five",TRUE], "Subscript out of bounds")
-    
-    expect_error(mx[4,5], "Subscript out of bounds")
+    expect_error(mx[, 5], "Subscript out of bounds")
+    expect_error(mx[, 1:5], "Subscript out of bounds")
+    expect_error(mx["d4", "five"], "Subscript out of bounds")
+    expect_error(mx[, "five", TRUE], "Subscript out of bounds")
+    expect_error(mx[, 5, TRUE], "Subscript out of bounds")
+    expect_error(mx[, 1:5, TRUE], "Subscript out of bounds")
+    expect_error(mx["d4", "five", TRUE], "Subscript out of bounds")
+
+    expect_error(mx[4, 5], "Subscript out of bounds")
     expect_error(mx[4:5], "Subscript out of bounds")
-    expect_error(mx[1:4,1:5], "Subscript out of bounds")
-    expect_error(mx[4,5,TRUE], "Subscript out of bounds")
-    expect_error(mx[1:4,1:5,TRUE], "Subscript out of bounds")
-    
+    expect_error(mx[1:4, 1:5], "Subscript out of bounds")
+    expect_error(mx[4, 5, TRUE], "Subscript out of bounds")
+    expect_error(mx[1:4, 1:5, TRUE], "Subscript out of bounds")
+
 })
 
 test_that("dfm keeps non-existent types, #1278", {
-    
+
     toks <- tokens("a b c")
     dict <- dictionary(list(A = "a", B = "b", Z = "z"))
-    
+
     toks_key <- tokens_lookup(toks, dict)
     expect_equal(types(toks_key), c("A", "B", "Z"))
-     
+
     expect_equal(featnames(dfm(toks_key, tolower = TRUE)),
                  c("a", "b", "z"))
-    
+
     expect_equal(featnames(dfm(toks_key, tolower = FALSE)),
                  c("A", "B", "Z"))
-    
+
 })
 
 test_that("arithmetic/linear operation works with dfm", {
-    
+
     mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
     expect_true(is.dfm(mt + 2))
     expect_true(is.dfm(mt - 2))
@@ -1002,9 +1009,9 @@ test_that("arithmetic/linear operation works with dfm", {
 })
 
 test_that("rbind and cbind wokrs with empty dfm", {
-    
+
     mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
-    
+
     expect_identical(docnames(rbind(mt, quanteda:::make_null_dfm())),
                      docnames(mt))
     expect_identical(docnames(mt),
@@ -1062,7 +1069,7 @@ test_that("unused argument warning only happens only once (#1509)", {
 
 test_that("dfm.tokens() with groups works as expected", {
     x <- tokens(data_corpus_irishbudget2010)
-    groupeddfm <- dfm(tokens(x), 
+    groupeddfm <- dfm(tokens(x),
                       groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2)))
     expect_equal(ndoc(groupeddfm), 2)
     expect_equal(docnames(groupeddfm), c("FF", "non-FF"))
@@ -1089,7 +1096,7 @@ test_that("set_dfm_dimnames etc functions work", {
 
     quanteda:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
     expect_identical(docnames(x), c("DOC1", "DOC2"))
-    
+
     quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
     expect_identical(docnames(x), c("docA", "docB"))
     expect_identical(featnames(x), c("A", "B", "C"))
@@ -1099,19 +1106,19 @@ test_that("dfm feature and document names have encoding", {
     mt <- dfm(c("文書１" = "あ い い う", "文書２" = "え え え お"))
     expect_true(all(Encoding(colnames(mt)) == "UTF-8"))
     #expect_true(all(Encoding(rownames(mt)) == "UTF-8")) fix in new corpus
-    
+
     mt1 <- dfm_sort(mt)
     expect_true(all(Encoding(colnames(mt1)) == "UTF-8"))
     #expect_true(all(Encoding(rownames(mt1)) == "UTF-8")) fix in new corpus
-    
+
     mt2 <- dfm_group(mt, c("文書３", "文書３"))
     expect_true(all(Encoding(colnames(mt2)) == "UTF-8"))
     #expect_true(all(Encoding(rownames(mt2)) == "UTF-8")) fix in new corpus
-    
+
     mt3 <- dfm_remove(mt, c("あ"))
     expect_true(all(Encoding(colnames(mt3)) == "UTF-8"))
     #expect_true(all(Encoding(rownames(mt3)) == "UTF-8")) fix in new corpus
-    
+
     mt4 <- dfm_trim(mt, min_termfreq = 2)
     expect_true(all(Encoding(colnames(mt4)) == "UTF-8"))
     #expect_true(all(Encoding(rownames(mt4)) == "UTF-8")) fix in new corpus

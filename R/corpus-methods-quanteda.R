@@ -1,30 +1,30 @@
 #' Get or assign corpus texts
-#' 
-#' Get or replace the texts in a [corpus], with grouping options. 
+#'
+#' Get or replace the texts in a [corpus], with grouping options.
 #' Works for plain character vectors too, if `groups` is a factor.
 #' @note The `groups` will be used for concatenating the texts based on shared
 #' values of `groups`, without any specified order of aggregation.
 #' @param x a [corpus] or character object
 #' @inheritParams groups
-#' @param spacer when concatenating texts by using `groups`, this will be the 
+#' @param spacer when concatenating texts by using `groups`, this will be the
 #'   spacing added between texts.  (Default is two spaces.)
 #' @return For `texts`, a character vector of the texts in the corpus.
-#'   
+#'
 #'   For `texts <-`, the corpus with the updated texts.
 #' @export
 #' @keywords corpus
 #' @examples
 #' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
-#' 
+#'
 #' # grouping on a document variable
 #' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
-#' 
+#'
 #' # grouping a character vector using a factor
-#' nchar(texts(data_corpus_inaugural[1:5], 
+#' nchar(texts(data_corpus_inaugural[1:5],
 #'       groups = "President"))
-#' nchar(texts(data_corpus_inaugural[1:5], 
+#' nchar(texts(data_corpus_inaugural[1:5],
 #'       groups = factor(c("W", "W", "A", "J", "J"))))
-#' 
+#'
 texts <- function(x, groups = NULL, spacer = " ") {
     UseMethod("texts")
 }
@@ -50,7 +50,7 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
 #' @export
 texts.character <- function(x, groups = NULL, spacer = " ") {
     if (is.null(groups)) return(x)
-    if (!is.factor(groups)) groups <- factor(groups, unique(groups)) 
+    if (!is.factor(groups)) groups <- factor(groups, unique(groups))
     result <- stri_c_list(split(x, groups), sep = spacer)
     names(result) <- levels(groups)
     return(result)
@@ -60,17 +60,17 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
 #' @param value character vector of the new texts
 #' @return for `texts <-`, a corpus with the texts replaced by `value`
 #' @export
-#' @note You are strongly encouraged as a good practice of text analysis 
-#'   workflow *not* to modify the substance of the texts in a corpus. 
-#'   Rather, this sort of processing is better performed through downstream 
-#'   operations.  For instance, do not lowercase the texts in a corpus, or you 
-#'   will never be able to recover the original case.  Rather, apply 
+#' @note You are strongly encouraged as a good practice of text analysis
+#'   workflow *not* to modify the substance of the texts in a corpus.
+#'   Rather, this sort of processing is better performed through downstream
+#'   operations.  For instance, do not lowercase the texts in a corpus, or you
+#'   will never be able to recover the original case.  Rather, apply
 #'   [tokens_tolower()] after applying [tokens()] to a
 #'   corpus, or use the option `tolower = TRUE` in [dfm()].
 #' @examples
-#' corp <- corpus(c("We must prioritise honour in our neighbourhood.", 
+#' corp <- corpus(c("We must prioritise honour in our neighbourhood.",
 #'                  "Aluminium is a valourous metal."))
-#' texts(corp) <- 
+#' texts(corp) <-
 #'     stringi::stri_replace_all_regex(texts(corp),
 #'                                    c("ise", "([nlb])our", "nium"),
 #'                                    c("ize", "$1or", "num"),
@@ -105,7 +105,7 @@ as.character.corpus <- function(x, ...) {
 }
 
 #' coerce a compressed corpus to a standard corpus
-#' 
+#'
 #' Recast a compressed corpus object into a standard (uncompressed) corpus
 #' object.
 #' @param x a compressed [corpus] object
@@ -131,11 +131,11 @@ as.corpus.corpus <- function(x) {
 #' @export
 #' @method as.corpus corpuszip
 as.corpus.corpuszip <- function(x) {
-    
-    txt <- memDecompress(x$texts, 'gzip', asChar = TRUE)
+    x <- unclass(x)
+    txt <- memDecompress(x$texts, "gzip", asChar = TRUE)
     txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
     txt <- unlist(txt, use.names = FALSE)
-    
+
     # drop internal variables
     flag <- is_system(names(x$documents))
     corpus(txt, x$docnames, docvars = x$documents[!flag])
@@ -150,13 +150,13 @@ upgrade_corpus <- function(x) {
     
     result <- corpus(x$documents, text_field = "texts")
     attr(result, "docvars") <- upgrade_docvars(x$documents)
-    
+
     if ("unit" %in% names(x$settings)) {
         attr(result, "unit") <- x$settings$unit
     } else {
         attr(result, "unit") <- "documents"
     }
-    
+
     if ("created" %in% names(metadata)) {
         meta_system(result, "created") <- as.POSIXct(metadata$created, 
                                                      format = "%a %b %d %H:%M:%S %Y")
