@@ -485,6 +485,44 @@ test_that("[.corpus out of bounds generates expected error", {
     expect_error(corp1[2], "Subscript out of bounds")
 })
 
+test_that("corpus printing works with new textual summary", {
+    expect_silent(
+        print(data_corpus_irishbudget2010, ndoc = 0, nchar = 0, show.summary = FALSE)
+    )
+    expect_output(
+        print(data_corpus_irishbudget2010, ndoc = 0, nchar = 0, show.summary = TRUE),
+        "Corpus consisting of 14 documents and 6 docvars.", 
+        fixed = TRUE
+    )
+    expect_output(
+        print(data_corpus_irishbudget2010, ndoc = 2, nchar = 10, show.summary = TRUE),
+        "Corpus consisting of 14 documents and 6 docvars.\n [Lenihan, Brian (FF)] When I pre ...\n[Bruton, Richard (FG)] This draco ...\nand 12 more documents.", 
+        fixed = TRUE
+    )
+    expect_output(
+        print(data_corpus_irishbudget2010, ndoc = 2, nchar = 10, show.summary = FALSE),
+        " [Lenihan, Brian (FF)] When I pre ...\n[Bruton, Richard (FG)] This draco ...", 
+        fixed = TRUE
+    )
+    expect_output(
+        print(data_corpus_irishbudget2010[1:2], ndoc = 3, nchar = 10, show.summary = TRUE),
+        "Corpus consisting of 2 documents and 6 docvars.\n [Lenihan, Brian (FF)] When I pre ...\n[Bruton, Richard (FG)] This draco ...", 
+        fixed = TRUE
+    )
+    expect_output(
+        print(corpus("a b c d"), ndoc = -1, nchar = 2),
+        "Corpus consisting of 1 document.\n[text1] a  ...", fixed = TRUE
+    )
+    expect_output(
+      print(corpus("a b c d"), ndoc = -1, nchar = 10),
+      "Corpus consisting of 1 document.\n[text1] a b c d", fixed = TRUE
+    )
+    expect_output(
+        print(corpus("a b c d"), ndoc = -1, nchar = -1),
+        "Corpus consisting of 1 document.\n[text1] a b c d", fixed = TRUE
+    )
+})
+
 test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")
     expect_identical(

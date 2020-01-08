@@ -9,17 +9,47 @@ NULL
 
 #' @export
 #' @rdname corpus-class
+#' @param ndoc integer; number of documents to show text from; 0 shows none, and -1 shows all
+#' @param nchar integer; number of characters to use when showing the first part of the
+#'   of text; 0 shows none, and -1 shows all
+#' @param show.summary print a brief summary indicating the number of documents
+#'   and docvars
 #' @method print corpus
-print.corpus <- function(x, ...) {
+print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"), 
+                         nchar = quanteda_options("print_corpus_max_nchar"), 
+                         show.summary = quanteda_options("print_corpus_summary"), 
+                         ...) {
     x <- as.corpus(x)
-    cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
-        if (ndoc(x) > 1L) "s" else "", sep = "")
-    if (ncol(docvars(x)))
-        cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
-            if (ncol(docvars(x)) == 1L) "" else "s", sep = "")
-    cat(".\n")
-}
 
+    if (ndoc < 0) ndoc <- ndoc(x)
+    if (nchar < 0) nchar <- -1L
+
+    ndoc <- as.integer(min(ndoc, ndoc(x)))
+    nchar <- as.integer(nchar)
+
+    if (show.summary) {
+        cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
+            if (ndoc(x) > 1L) "s" else "", sep = "")
+        if (ncol(docvars(x)))
+            cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
+                if (ncol(docvars(x)) == 1L) "" else "s", sep = "")
+        cat(".\n")
+    }
+
+    if (ndoc > 0) {
+        temp <- head(texts(x), ndoc)
+        label <- paste0("[", names(temp), "]")
+        temp <- stri_replace_all_regex(temp, "[\\p{C}]+", " ")
+        temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) " ..." else "")
+        cat(paste0(format(label, justify = "right"), " ", temp, "\n"), sep = "")
+    }
+    
+    ndoc_rem <- ndoc(x) - ndoc
+    if (show.summary && ndoc_rem > 0)
+        cat("and ", ndoc_rem, " more document", 
+            if (ndoc_rem > 1) "s", ".\n", sep = "")
+}
+    
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
 #' @rdname corpus-class
 #' @export
@@ -163,10 +193,10 @@ tail.corpus <- function(x, n = 6L, ...) {
 #' @param recursive logical used by `c()` method, always set to `FALSE`
 #' @examples
 #' # concatenate corpus objects
-#' corpus1 <- corpus(data_char_ukimmig2010[1:2])
-#' corpus2 <- corpus(data_char_ukimmig2010[3:4])
-#' corpus3 <- corpus(data_char_ukimmig2010[5:6])
-#' summary(c(corpus1, corpus2, corpus3))
+#' corp1 <- corpus(data_char_ukimmig2010[1:2])
+#' corp2 <- corpus(data_char_ukimmig2010[3:4])
+#' corp3 <- corpus(data_char_ukimmig2010[5:6])
+#' summary(c(corp1, corp2, corp3))
 #' @export
 c.corpus <- function(..., recursive = FALSE) {
     x <- list(...)
