@@ -160,7 +160,7 @@ meta_system <- function(x, field = NULL)
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
     } else {
-        attr(x, "meta")$system[field] <- value
+        attr(x, "meta")$system[[field]] <- value
     }
     return(x)
 }
@@ -170,7 +170,7 @@ meta_system <- function(x, field = NULL)
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
     } else {
-        attr(x, "meta")$system[field] <- value
+        attr(x, "meta")$system[[field]] <- value
     }
     return(x)
 }

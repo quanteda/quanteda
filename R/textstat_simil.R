@@ -235,6 +235,7 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
             }
         }
     } else {
+        if (!is.dfm(y)) stop("y must be a dfm matching x in the margin specified")
         y <- as.dfm(y)
     }
     temp <- textstat_proxy(x, y, margin, method,
@@ -349,6 +350,7 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
             }
         }
     } else {
+        if (!is.dfm(y)) stop("y must be a dfm matching x in the margin specified")
         y <- as.dfm(y)
     }
     temp <- textstat_proxy(x, y, margin, method,

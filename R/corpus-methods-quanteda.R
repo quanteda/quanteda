@@ -145,7 +145,9 @@ as.corpus.corpuszip <- function(x) {
 # stracture
 upgrade_corpus <- function(x) {
     if (!is_pre2(x)) return(x)
+    metadata <- meta(x)
     x <- unclass(x)
+    
     result <- corpus(x$documents, text_field = "texts")
     attr(result, "docvars") <- upgrade_docvars(x$documents)
 
@@ -154,11 +156,18 @@ upgrade_corpus <- function(x) {
     } else {
         attr(result, "unit") <- "documents"
     }
-    if ("created" %in% names(x$metadata)) {
-        meta_system(result, "created") <- as.POSIXct(x$metadata$created,
+
+    if ("created" %in% names(metadata)) {
+        meta_system(result, "created") <- as.POSIXct(metadata$created, 
                                                      format = "%a %b %d %H:%M:%S %Y")
+        metadata$created <- NULL
     } else {
-        meta_system(result, "created") <- as.POSIXlt(Sys.time())
+        meta_system(result, "created") <- Sys.time()
     }
+    
+    # remove any null metadata fields
+    metadata <- metadata[sapply(metadata, function(y) !is.null(y))]
+    meta(result) <- metadata
+    
     return(result)
 }
