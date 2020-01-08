@@ -520,6 +520,8 @@ test_that("corpus printing works with new textual summary", {
     expect_output(
         print(corpus("a b c d"), ndoc = -1, nchar = -1),
         "Corpus consisting of 1 document.\n[text1] a b c d", fixed = TRUE
+    )
+})
 
 test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")

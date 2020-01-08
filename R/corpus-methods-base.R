@@ -48,6 +48,7 @@ print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"),
     if (show.summary && ndoc_rem > 0)
         cat("and ", ndoc_rem, " more document", 
             if (ndoc_rem > 1) "s", ".\n", sep = "")
+}
     
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
 #' @rdname corpus-class
