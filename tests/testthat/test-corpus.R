@@ -446,6 +446,7 @@ test_that("metacorpus argument works", {
 
 test_that("metadoc works but raise deprecation warning", {
     corp <- corpus(c("aa bb cc", "ccc dd"))
+    expect_warning(metadoc(corp), "metadoc is deprecated")
     expect_equal(colnames(metadoc(corp)), character())
     metadoc(corp, "var1") <- c(1, 5)
     metadoc(corp, "var2") <- c("T", "F")
@@ -522,5 +523,29 @@ test_that("corpus printing works with new textual summary", {
     expect_output(
         print(corpus("a b c d"), ndoc = -1, nchar = -1),
         "Corpus consisting of 1 document.\n[text1] a b c d", fixed = TRUE
+
+test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
+    load("../data/pre_v2_objects/data_corpus_pre2.rda")
+    expect_identical(
+        meta(as.corpus(data_corpus_pre2), type = "user"),
+        list(source = "Gerhard Peters and John T. Woolley. The American Presidency Project.",
+             notes = "http://www.presidency.ucsb.edu/inaugurals.php")
+    )
+    expect_true(
+        all(c("source", "package-version", "r-version", "system", "directory", "created") %in% 
+                names(meta(as.corpus(data_corpus_pre2), type = "system")))
+    )
+    expect_is(meta(as.corpus(data_corpus_pre2), "created", type = "system"),
+              "POSIXct"
+    )
+    
+    # test when there is no created date
+    data_corpus_pre2 <- unclass(data_corpus_pre2)
+    data_corpus_pre2$metadata$created <- NULL
+    class(data_corpus_pre2) <- c("corpus", class(data_corpus_pre2))
+    meta(as.corpus(data_corpus_pre2), "created", type = "system")
+    expect_identical(
+        substring(as.character(meta(as.corpus(data_corpus_pre2), "created", type = "system")), 1, 10),
+        substring(as.character(Sys.Date()), 1, 10)
     )
 })
