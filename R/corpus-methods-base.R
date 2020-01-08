@@ -45,7 +45,7 @@ print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"),
     }
     
     ndoc_rem <- ndoc(x) - ndoc
-    if (show.summary && ndoc_rem > 0)
+    if (show.summary && ndoc_rem > 0 && ndoc != 0)
         cat("and ", ndoc_rem, " more document", 
             if (ndoc_rem > 1) "s", ".\n", sep = "")
 }
