@@ -68,19 +68,16 @@ print.tokens <- function(x, ndoc = quanteda_options("print_tokens_max_ndoc"),
                 if (ncol(docvars) == 1L) "" else "s", sep = "")
         cat(".\n")
     }
-    # 
-    # if (ndoc > 0) {
-    #     temp <- head(texts(x), ndoc)
-    #     label <- paste0("[", names(temp), "]")
-    #     temp <- stri_replace_all_regex(temp, "[\\p{C}]+", " ")
-    #     temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) " ..." else "")
-    #     cat(paste0(format(label, justify = "right"), " ", temp, "\n"), sep = "")
-    # }
+
     if (ndoc > 0) {
+        x <- head(x, ndoc)
+        label <- paste0("[", names(x), "]")
         types <- c("", types(x))
-        x <- lapply(head(unclass(x), ndoc), function(y) types[head(y, ntoken) + 1]) # shift index to show padding
-        class(x) <- "listof"
-        print(x, ...)
+        x <- lapply(unclass(x), function(y) types[head(y, ntoken) + 1]) # shift index to show padding
+        for (i in seq_along(label)) {
+            cat(label[i], "\n", sep = "")
+            print(x[[i]], ...)
+        }
     }
     
     ndoc_rem <- ndoc_all - ndoc
