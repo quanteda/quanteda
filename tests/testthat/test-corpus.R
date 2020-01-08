@@ -495,8 +495,7 @@ test_that("corpus printing works with new textual summary", {
     )
     expect_output(
         print(data_corpus_irishbudget2010, ndoc = 2, nchar = 10, show.summary = TRUE),
-        "Corpus consisting of 14 documents and 6 docvars\\.\n [Lenihan, Brian (FF)] When I pre ...\n[Bruton, Richard (FG)] This draco ...\nand 12 more documents.", 
-        fixed = TRUE
+        "^Corpus consisting of 14 documents and 6 docvars\\.\\n \\[Lenihan, Brian \\(FF\\)\\] When I pre ...\\n\\[Bruton, Richard \\(FG\\)\\] This draco \\.\\.\\.\\nand 12 more documents\\.$"
     )
     expect_output(
         print(data_corpus_irishbudget2010, ndoc = 2, nchar = 10, show.summary = FALSE),
