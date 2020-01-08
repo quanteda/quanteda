@@ -22,7 +22,7 @@ print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"),
     x <- as.corpus(x)
 
     if (ndoc < 0) ndoc <- ndoc(x)
-    if (nchar < 0) nchar = -1L
+    if (nchar < 0) nchar <- -1L
 
     ndoc <- as.integer(min(ndoc, ndoc(x)))
     nchar <- as.integer(nchar)
@@ -32,28 +32,23 @@ print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"),
             if (ndoc(x) > 1L) "s" else "", sep = "")
         if (ncol(docvars(x)))
             cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
-                if (ncol(docvars(x)) == 1L) "" else "s", sep="")
+                if (ncol(docvars(x)) == 1L) "" else "s", sep = "")
         cat(".\n")
     }
 
     if (ndoc > 0) {
-        docnames_to_print <- docnames(x)[seq_len(ndoc)]
-        max_docname_width <- max(nchar(docnames_to_print))
-        for (docname in docnames_to_print) {
-            cat(paste0(stringi::stri_pad_left(paste0("[", docname, "] "), 
-                                               width = max_docname_width + 4),
-                       stringi::stri_replace_all_regex(stringi::stri_sub(texts(x[docname]), from = 1, to = nchar),
-                                                       "\\n", " "),
-                       " ...\n"))
-        }
+        temp <- head(texts(x), ndoc)
+        label <- paste0("[", names(temp), "]")
+        temp <- stri_replace_all_regex(temp, "[\\p{C}]+", " ")
+        temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) "..." else "")
+        cat(paste0(format(label, justify = "right"), " ", temp, "\n"), sep = "")
     }
     
-    if (TRUE) {
-        remainder_docs <- ndoc(x) - ndoc
-        if (ndoc > 0 && ndoc < ndoc(x))
-            cat("and ", remainder_docs, " more document", 
-                if (remainder_docs != 1) "s", ".", sep = "")
-    }
+    ndoc_rem <- ndoc(x) - ndoc
+    if (ndoc_rem > 0)
+        cat("and ", ndoc_rem, " more document", 
+            if (ndoc_rem > 1) "s", ".\n", sep = "")
+    
 }
 
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
