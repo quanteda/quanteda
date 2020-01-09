@@ -9,44 +9,43 @@ NULL
 
 #' @export
 #' @rdname corpus-class
-#' @param ndoc integer; number of documents to show text from; 0 shows none, and -1 shows all
-#' @param nchar integer; number of characters to use when showing the first part of the
+#' @param max_ndoc integer; number of documents to show text from; 0 shows none, and -1 shows all
+#' @param max_nchar integer; number of characters to use when showing the first part of the
 #'   of text; 0 shows none, and -1 shows all
 #' @param show.summary print a brief summary indicating the number of documents
 #'   and docvars
 #' @method print corpus
-print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"), 
-                         nchar = quanteda_options("print_corpus_max_nchar"), 
+print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 
+                         max_nchar = quanteda_options("print_corpus_max_nchar"), 
                          show.summary = quanteda_options("print_corpus_summary"), 
                          ...) {
     x <- as.corpus(x)
-
-    if (ndoc < 0) ndoc <- ndoc(x)
-    if (nchar < 0) nchar <- -1L
-
-    ndoc <- as.integer(min(ndoc, ndoc(x)))
-    nchar <- as.integer(nchar)
+    
+    docvars <- docvars(x)
+    ndoc <- ndoc(x)
+    if (max_ndoc < 0) max_ndoc <- ndoc(x)
+    if (max_nchar < 0) max_nchar <- -1L
 
     if (show.summary) {
-        cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
+        cat("Corpus consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc(x) > 1L) "s" else "", sep = "")
-        if (ncol(docvars(x)))
-            cat(" and ", format(ncol(docvars(x)), big.mark = ","), " docvar",
-                if (ncol(docvars(x)) == 1L) "" else "s", sep = "")
+        if (ncol(docvars))
+            cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
+                if (ncol(docvars) == 1L) "" else "s", sep = "")
         cat(".\n")
     }
 
-    if (ndoc > 0) {
-        temp <- head(texts(x), ndoc)
-        label <- paste0(names(temp), " :")
-        temp <- stri_replace_all_regex(temp, "[\\p{C}]+", " ")
-        temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) "..." else "")
-        cat(paste0(label, "\n\"", temp, "\"\n\n"), sep = "")
+    if (max_ndoc > 0) {
+        x <- head(texts(x), max_ndoc)
+        label <- paste0(names(x), " :")
+        x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
+        x <- paste0(stri_sub(x, 1, max_nchar), ifelse(max_nchar < stri_length(x), "...", ""))
+        cat(paste0(label, "\n\"", x, "\"\n\n"), sep = "")
         
-        ndoc_rem <- ndoc(x) - ndoc
+        ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("and ", ndoc_rem, " more document", 
-                if (ndoc_rem > 1) "s", ".\n", sep = "")
+            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
 }
     

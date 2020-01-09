@@ -47,21 +47,19 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @export
 #' @method print tokens
 #' @noRd
-print.tokens <- function(x, ndoc = quanteda_options("print_tokens_max_ndoc"), 
-                         ntoken = quanteda_options("print_tokens_max_ntoken"), 
+print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
+                         max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
                          show.summary = quanteda_options("print_tokens_summary"),
                          ...) {
     
-    if (ndoc < 0) ndoc <- ndoc(x)
-    if (ntoken < 0) ntoken <- -1L
+    if (max_ntoken < 0) max_ndoc <- ndoc(x)
+    if (max_ntoken < 0) max_ntoken <- -1L
      
     docvars <- docvars(x)
-    ndoc_all <- ndoc(x)
-    ndoc <- as.integer(min(ndoc, ndoc_all))
-    ntoken <- as.integer(ntoken)
-    
+    ndoc <- ndoc(x)
+
     if (show.summary) {
-        cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
+        cat("Tokens consisting of ", format(max_ntoken, big.mark = ","), " document",
             if (ndoc > 1L) "s" else "", sep = "")
         if (ncol(docvars))
             cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
@@ -70,19 +68,23 @@ print.tokens <- function(x, ndoc = quanteda_options("print_tokens_max_ndoc"),
     }
 
     if (ndoc > 0) {
-        x <- head(x, ndoc)
+        x <- head(x, max_ntoken)
+        len <- lengths(x)
+        #label <- paste0(names(x), " (", len, ") :")
         label <- paste0(names(x), " :")
         types <- c("", types(x))
-        x <- lapply(unclass(x), function(y) types[head(y, ntoken) + 1]) # shift index to show padding
+        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
         for (i in seq_along(label)) {
             cat(label[i], "\n", sep = "")
             print(x[[i]], ...)
-            cat("\n", sep = "")
+            if (len[i] > max_ntoken)
+                cat("[... and ",  len[i] - max_ntoken, " more]\n\n", sep = "")
         }
-        ndoc_rem <- ndoc_all - ndoc
+        
+        ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("and ", ndoc_rem, " more document", 
-                if (ndoc_rem > 1) "s", ".\n", sep = "")
+            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
 }
 
