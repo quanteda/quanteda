@@ -38,16 +38,16 @@ print.corpus <- function(x, ndoc = quanteda_options("print_corpus_max_ndoc"),
 
     if (ndoc > 0) {
         temp <- head(texts(x), ndoc)
-        label <- paste0("[", names(temp), "]")
+        label <- paste0(names(temp), " :")
         temp <- stri_replace_all_regex(temp, "[\\p{C}]+", " ")
-        temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) " ..." else "")
-        cat(paste0(format(label, justify = "right"), " ", temp, "\n"), sep = "")
+        temp <- paste0(stri_sub(temp, 1, nchar), if (nchar > stri_length(nchar)) "..." else "")
+        cat(paste0(label, "\n\"", temp, "\"\n\n"), sep = "")
+        
+        ndoc_rem <- ndoc(x) - ndoc
+        if (ndoc_rem > 0)
+            cat("and ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", ".\n", sep = "")
     }
-    
-    ndoc_rem <- ndoc(x) - ndoc
-    if (show.summary && ndoc_rem > 0)
-        cat("and ", ndoc_rem, " more document", 
-            if (ndoc_rem > 1) "s", ".\n", sep = "")
 }
     
 #' @return `is.corpus` returns `TRUE` if the object is a corpus

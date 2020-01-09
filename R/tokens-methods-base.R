@@ -71,19 +71,19 @@ print.tokens <- function(x, ndoc = quanteda_options("print_tokens_max_ndoc"),
 
     if (ndoc > 0) {
         x <- head(x, ndoc)
-        label <- paste0("[", names(x), "]")
+        label <- paste0(names(x), " :")
         types <- c("", types(x))
         x <- lapply(unclass(x), function(y) types[head(y, ntoken) + 1]) # shift index to show padding
         for (i in seq_along(label)) {
             cat(label[i], "\n", sep = "")
             print(x[[i]], ...)
+            cat("\n", sep = "")
         }
+        ndoc_rem <- ndoc_all - ndoc
+        if (ndoc_rem > 0)
+            cat("and ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", ".\n", sep = "")
     }
-    
-    ndoc_rem <- ndoc_all - ndoc
-    if (show.summary && ndoc_rem > 0)
-        cat("and ", ndoc_rem, " more document", 
-            if (ndoc_rem > 1) "s", ".\n", sep = "")
 }
 
 
