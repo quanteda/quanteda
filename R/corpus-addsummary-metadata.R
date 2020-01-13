@@ -32,7 +32,8 @@ add_summary_metadata <- function(x, ...) {
 get_summary_metadata <- function(x) {
     result <- meta(x, "summary", type = "system")
     if (!identical(docnames(x), result$Text)) {
-        warning("documents have changed; computing summary")
+        # warning("documents have changed; computing summary")
+        meta_system(x, "summary") <- NULL
         result <- summary(x, n = ndoc(x), showmeta = FALSE)
     }
     result
