@@ -95,6 +95,7 @@ Collate:
     'casechange-functions.R'
     'character-methods.R'
     'convert.R'
+    'corpus-addsummary-metadata.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'corpus.R'
