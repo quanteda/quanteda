@@ -139,13 +139,13 @@ lengths.tokens <- function(x, use.names = TRUE) {
     if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
         stop("Cannot combine tokens with different concatenators")
     
+    docvar <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
+                         get_docvars(t2, user = TRUE, system = TRUE))
     attrs2 <- attributes(t2)
     attrs1 <- attributes(t1)
     t2 <- unclass(t2)
     t1 <- unclass(t1)
     t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), length(attrs1$types)) # shift non-zero IDs
-    
-    docvar <- make_docvars(length(t1) + length(t2), c(attrs1$names, attrs2$names))
     result <- compile_tokens(c(t1, t2), docvar[["docname_"]],
                              what = attr(t1, "what"),
                              ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
