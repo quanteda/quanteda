@@ -185,8 +185,8 @@ tail.corpus <- function(x, n = 6L, ...) {
     
     if (length(intersect(docnames(c1), docnames(c2))))
         stop("Cannot combine corpora with duplicated document names")
-    if (!identical(attr(c1, "unit"), attr(c2, "unit")))
-        stop("Cannot combine corpora in different units")
+    #if (!identical(attr(c1, "unit"), attr(c2, "unit")))
+    #    stop("Cannot combine corpora in different units")
     
     docvar <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
                          get_docvars(c2, user = TRUE, system = TRUE))

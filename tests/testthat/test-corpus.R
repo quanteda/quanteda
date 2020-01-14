@@ -289,10 +289,10 @@ test_that("c.corpus errors work as expected", {
     c(corp1, corp4),
     "Cannot combine corpora with duplicated document names"
   )
-  expect_error(
-    c(corp1, corp5),
-    "Cannot combine corpora in different units"
-  )
+  #expect_error(
+  #  c(corp1, corp5),
+  #  "Cannot combine corpora in different units"
+  #)
   
   corp <- c(data_corpus_inaugural[1:2],
             data_corpus_inaugural[3:5],
