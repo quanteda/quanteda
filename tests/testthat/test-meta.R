@@ -129,4 +129,24 @@ test_that("adding summary info works", {
         suppressWarnings(get_summary_metadata(corp[1:10])),
         summary(corp[1:10])
     )
+    
+    # test when tokens options are passed
+    corp1 <- corpus(c(d1 = "One. Two!", d2 = "One 2"))
+    corp2 <- add_summary_metadata(corp1, remove_punct = TRUE, remove_numbers = TRUE)
+    expect_identical(
+        summary(corp1, remove_punct = TRUE, remove_numbers = TRUE),
+        get_summary_metadata(corp2)
+    )
+    expect_identical(
+        summary(corp2[1], remove_punct = TRUE, remove_numbers = TRUE),
+        get_summary_metadata(corp2[1], remove_punct = TRUE, remove_numbers = TRUE)
+    )
+    
+    # test errors when non-tokens ... are passed
+    expect_warning(
+        add_summary_metadata(corp1, not_arg = TRUE),
+        "^Argument not_arg not used\\.$"
+    )
+    
+    
 })

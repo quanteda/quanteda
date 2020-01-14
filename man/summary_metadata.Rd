@@ -8,7 +8,7 @@
 \usage{
 add_summary_metadata(x, ...)
 
-get_summary_metadata(x)
+get_summary_metadata(x, ...)
 }
 \arguments{
 \item{x}{\link{corpus} object}
