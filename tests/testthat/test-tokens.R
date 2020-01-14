@@ -543,7 +543,7 @@ test_that("combined tokens objects have all the attributes", {
     expect_error(c(toks1, toks2),
                  "Cannot combine tokens with different concatenators")
     expect_error(c(toks1, toks3),
-                 "Cannot combine tokens in different units")
+                 "Cannot combine tokens in different tokenization units")
 
     expect_identical(names(attributes(c(toks1, toks4))),
                      names(attributes(toks1)))

@@ -134,8 +134,8 @@ lengths.tokens <- function(x, use.names = TRUE) {
     
     if (length(intersect(docnames(t1), docnames(t2))))
         stop("Cannot combine tokens with duplicated document names")
-    if (!identical(attr(t1, "unit"), attr(t2, "unit")))
-        stop("Cannot combine tokens in different units")
+    if (!identical(attr(t1, "what"), attr(t2, "what")))
+        stop("Cannot combine tokens in different tokenization units")
     if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
         stop("Cannot combine tokens with different concatenators")
     
@@ -145,15 +145,17 @@ lengths.tokens <- function(x, use.names = TRUE) {
     attrs1 <- attributes(t1)
     t2 <- unclass(t2)
     t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), length(attrs1$types)) # shift non-zero IDs
-    result <- compile_tokens(c(t1, t2), docvar[["docname_"]],
-                             what = attr(t1, "what"),
-                             ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
-                             skip = sort(unique(c(attrs1$skip, attrs2$skip))),
-                             concatenator = attrs1$concatenator,
-                             types = c(attrs1$types, attrs2$types),
-                             docvars = docvar)
-
+    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), 
+                 length(attrs1$types)) # shift non-zero IDs
+    result <- compile_tokens(
+        c(t1, t2), docvar[["docname_"]],
+        what = attr(t1, "what"),
+        ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
+        skip = sort(unique(c(attrs1$skip, attrs2$skip))),
+        concatenator = attrs1$concatenator,
+        types = c(attrs1$types, attrs2$types),
+        docvars = docvar
+    )
     result <- tokens_recompile(result)
     return(result)
 }
