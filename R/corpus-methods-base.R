@@ -84,7 +84,11 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
     ndoc_all <- ndoc(object)
     object <- head(object, n)
     ndoc_show <- ndoc(object)
-    result <- summarize_texts(texts(object), tolower = tolower, ...)
+    result <- if (!is.null(meta(object, "summary", type = "system"))) {
+        get_summary_metadata(object, ...)
+    } else {
+        summarize_texts(texts(object), tolower = tolower, ...)
+    }
     if (showmeta)
         result <- cbind(result, docvars(object))
     attr(result, "ndoc_all") <- ndoc_all
