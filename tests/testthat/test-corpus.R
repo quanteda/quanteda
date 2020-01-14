@@ -266,7 +266,8 @@ test_that("c.corpus errors work as expected", {
                     d2 = "Here is the second sample document."))
   corp2 <- corpus(c(d3 = "And the third document."))
   corp3 <- corpus(c(d4 = "This is sample document 4."))
-  corp4 <- corpus(c(d1 = "This is sample document five!"))
+  corp4 <- corpus(c(d1 = "This is sample document five!. This is a long document."))
+  corp5 <- corpus_reshape(corp4)
   
   expect_equal(
     c(corp1),
@@ -287,6 +288,10 @@ test_that("c.corpus errors work as expected", {
   expect_error(
     c(corp1, corp4),
     "Cannot combine corpora with duplicated document names"
+  )
+  expect_error(
+    c(corp1, corp5),
+    "Cannot combine corpora in different units"
   )
   
   corp <- c(data_corpus_inaugural[1:2],
@@ -544,7 +549,7 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
     )
     expect_true(
         all(c("source", "package-version", "r-version", "system", "directory", "created") %in% 
-                names(meta(as.corpus(data_corpus_pre2), type = "system")))
+            names(meta(as.corpus(data_corpus_pre2), type = "system")))
     )
     expect_is(meta(as.corpus(data_corpus_pre2), "created", type = "system"),
               "POSIXct"
