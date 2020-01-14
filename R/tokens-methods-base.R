@@ -133,11 +133,11 @@ lengths.tokens <- function(x, use.names = TRUE) {
     t1 <- as.tokens(t1)
     
     if (length(intersect(docnames(t1), docnames(t2))))
-        stop("Cannot combine tokens with duplicated document names")
+        stop("Cannot combine tokens with duplicated document names", call. = FALSE)
     if (!identical(attr(t1, "what"), attr(t2, "what")))
-        stop("Cannot combine tokens in different tokenization units")
+        stop("Cannot combine tokens in different tokenization units", call. = FALSE)
     if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
-        stop("Cannot combine tokens with different concatenators")
+        stop("Cannot combine tokens with different concatenators", call. = FALSE)
     
     docvar <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
                          get_docvars(t2, user = TRUE, system = TRUE))
