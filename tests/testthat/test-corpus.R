@@ -37,19 +37,21 @@ test_that("test corpus constructors works for kwic", {
                  c("from", "to", "keyword", "context"))
 
     # split_context = FALSE, extract_keyword = TRUE
-    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
-                                    split_context = FALSE, extract_keyword = TRUE)),
-                     paste0("text1.L", as.character(kw[["from"]]))
+    expect_identical(
+        docnames(corpus(kw, split_context = FALSE, extract_keyword = TRUE)),
+        paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = FALSE, extract_keyword = FALSE
-    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
-                                    split_context = FALSE, extract_keyword = FALSE)),
-                     paste0("text1.L", as.character(kw[["from"]]))
+    expect_identical(
+        docnames(corpus(kw, split_context = FALSE, extract_keyword = FALSE)),
+        paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = TRUE, extract_keyword = FALSE
-    corptemp <- corpus(kwic(data_char_sampletext, "econom*"),
-                       split_context = TRUE, extract_keyword = FALSE)
-    expect_identical(docnames(corptemp), paste0("text", seq_len(ndoc(corptemp))))
+    expect_identical(
+        docnames(corpus(kw, split_context = TRUE, extract_keyword = FALSE)),
+        c(paste0("text1.", seq_len(nrow(kw)), ".pre"),
+          paste0("text1.", seq_len(nrow(kw)), ".post"))
+    )
 
     # test text handling for punctuation - there should be no space before the ?
     corp <- corpus(kwic(data_char_sampletext, "econom*", window = 10,
@@ -282,10 +284,10 @@ test_that("c.corpus errors work as expected", {
   )
   
   # issue #1836
-  #expect_error(
-  #  c(corp1, corp4),
-  #  "Cannot combine corpus with duplicated document names"
-  #)
+  expect_error(
+    c(corp1, corp4),
+    "Cannot combine corpora with duplicated document names"
+  )
   
   corp <- c(data_corpus_inaugural[1:2],
             data_corpus_inaugural[3:5],

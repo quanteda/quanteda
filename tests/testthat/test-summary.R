@@ -19,10 +19,10 @@ test_that("summary.corpus works with longer corpora n > default (#1242)", {
 })
 
 test_that("print.summary.corpus work", {
-    summ1 <- summary(data_corpus_inaugural + data_corpus_inaugural)
+    summ1 <- summary(data_corpus_inaugural)
     expect_output(
         print(summ1),
-        "Corpus consisting of 116 documents, showing 100 documents:"
+        "Corpus consisting of 58 documents, showing 58 documents:"
     )
     expect_output(
         print(summ1[1:5, ]),

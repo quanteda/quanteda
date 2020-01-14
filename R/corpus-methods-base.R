@@ -182,7 +182,11 @@ tail.corpus <- function(x, n = 6L, ...) {
 `+.corpus` <- function(c1, c2) {
     c1 <- as.corpus(c1)
     c2 <- as.corpus(c2)
-    result <- corpus(c(as.character(unclass(c1)), as.character(unclass(c2))),
+    
+    if (length(intersect(docnames(c1), docnames(c2))))
+        stop("Cannot combine corpora with duplicated document names")
+    
+    result <- corpus(c(texts(c1), texts(c2)),
                      docvars = rbind_fill(get_docvars(c1), get_docvars(c2)),
                      meta = meta(c1, type = "user"))
     meta_system(result) <- meta_system_defaults("corpus+")
