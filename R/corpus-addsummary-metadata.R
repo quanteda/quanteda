@@ -16,7 +16,6 @@
 #'   `get_system_meta()` rather than compute the summary statistics on the fly,
 #'   which requires tokenizing the text.
 #' @keywords corpus internal
-#' @export
 #' @examples
 #' corp <- corpus(data_char_ukimmig2010)
 #' corp <- add_summary_metadata(corp)
@@ -28,7 +27,6 @@ add_summary_metadata <- function(x, ...) {
 
 #' @rdname summary_metadata
 #' @return `get_summary_metadata()` returns the summary metadata as a data.frame.
-#' @export
 get_summary_metadata <- function(x, ...) {
     result <- meta(x, "summary", type = "system")
     if (!identical(docnames(x), result$Text)) {
