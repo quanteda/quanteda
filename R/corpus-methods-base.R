@@ -184,7 +184,8 @@ tail.corpus <- function(x, n = 6L, ...) {
     c2 <- as.corpus(c2)
     
     if (length(intersect(docnames(c1), docnames(c2))))
-        stop("Cannot combine corpora with duplicated document names")
+        stop("Cannot combine corpora with duplicated document names", 
+             call. = FALSE)
     #if (!identical(attr(c1, "unit"), attr(c2, "unit")))
     #    stop("Cannot combine corpora in different units")
     
