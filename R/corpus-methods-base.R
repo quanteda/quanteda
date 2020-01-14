@@ -232,18 +232,12 @@ c.corpus <- function(..., recursive = FALSE) {
 `[.corpus` <- function(x, i) {
     x <- as.corpus(x)
     attrs <- attributes(x)
-    if (is.character(i)) {
-        index <- match(i, docnames(x))
-    } else if (is.numeric(i)) {
-        index <- match(i, seq_len(length(x)))
-    } else {
-        index <- which(i)
-    }
-    is_na <- is.na(index)
-    if (any(is_na))
+    
+    index <- seq_along(docnames(x))
+    names(index) <- docnames(x)
+    index <- index[i]
+    if (any(is.na(index)))
         stop("Subscript out of bounds")
-    index <- index[!is_na]
-
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
     attrs$names <- attrs$docvars[["docname_"]]
