@@ -134,7 +134,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
     
     if (length(intersect(docnames(t1), docnames(t2))))
         stop("Cannot combine tokens with duplicated document names")
-    if (!identical(attr(t1, "what"), attr(t2, "what")))
+    if (!identical(attr(t1, "unit"), attr(t2, "unit")))
         stop("Cannot combine tokens in different units")
     if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
         stop("Cannot combine tokens with different concatenators")
