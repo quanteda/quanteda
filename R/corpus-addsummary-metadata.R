@@ -18,8 +18,8 @@
 #' @keywords corpus internal
 #' @examples
 #' corp <- corpus(data_char_ukimmig2010)
-#' corp <- add_summary_metadata(corp)
-#' get_summary_metadata(corp)
+#' corp <- quanteda:::add_summary_metadata(corp)
+#' quanteda:::get_summary_metadata(corp)
 add_summary_metadata <- function(x, ...) {
     meta_system(x, "summary") <- summary(x, n = ndoc(x), showmeta = FALSE, ...)
     x

@@ -36,8 +36,8 @@ which requires tokenizing the text.
 }
 \examples{
 corp <- corpus(data_char_ukimmig2010)
-corp <- add_summary_metadata(corp)
-get_summary_metadata(corp)
+corp <- quanteda:::add_summary_metadata(corp)
+quanteda:::get_summary_metadata(corp)
 }
 \keyword{corpus}
 \keyword{internal}
