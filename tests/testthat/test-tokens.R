@@ -12,10 +12,11 @@ test_that("tokens indexing works as expected", {
     toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
 
     expect_equal(toks[[1]], c("one", "two", "three"))
-
+    expect_equal(as.list(toks[c(FALSE, TRUE, FALSE)]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks["d2"]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
-
+    expect_equal(as.list(toks[c(-1, -3)]), list(d2 = c("four", "five", "six"))) # issue #1830
+    
     # issue #370
     expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
     expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
@@ -231,27 +232,47 @@ test_that("+ works with empty padded tokens (#1695)", {
 })
 
 test_that("c() works with tokens", {
-
-    txt1 <- c(d1 = "This is sample document one.",
-              d2 = "Here is the second sample document.")
-    txt2 <- c(d3 = "And the third document.")
-    txt3 <- c(d4 = "This is sample document 4.")
-    txt4 <- c(d1 = "This is sample document five!")
-
+    
+    toks1 <- tokens(c(d1 = "This is sample document one.",
+                      d2 = "Here is the second sample document."))
+    toks2 <- tokens(c(d3 = "And the third document."))
+    toks3 <- tokens(c(d4 = "This is sample document 4."))
+    toks4 <- tokens(c(d1 = "This is sample document five!"))
+    
     expect_equal(
-        c(tokens(txt1), tokens(txt2)),
-        tokens(txt1) + tokens(txt2)
+        c(toks1),
+        toks1
     )
-
+    
     expect_equal(
-        c(tokens(txt1), tokens(txt2), tokens(txt3)),
-        tokens(txt1) + tokens(txt2) + tokens(txt3)
+        c(toks1, toks2),
+        toks1 + toks2
     )
-
+    
+    expect_equal(
+        c(toks1, toks2, toks3),
+        toks1 + toks2 + toks3
+    )
+    
     expect_error(
-        c(tokens(txt1), tokens(txt4)),
+        c(toks1, toks4),
         "Cannot combine tokens with duplicated document names"
     )
+    
+    # issue #1835
+    # toks <- c(tokens(data_corpus_inaugural[1:2]),
+    #           tokens(data_corpus_inaugural[3:5]),
+    #           tokens(data_corpus_inaugural[6:10]))
+    # 
+    # expect_equivalent(
+    #     toks,
+    #     tokens(data_corpus_inaugural[1:10])
+    # )
+    # 
+    # expect_equal(
+    #     docvars(toks),
+    #     docvars(tokens(data_corpus_inaugural[1:10]))
+    # )
 })
 
 test_that("docvars are erased for tokens added", {
