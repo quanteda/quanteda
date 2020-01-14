@@ -544,3 +544,27 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
         substring(as.character(Sys.Date()), 1, 10)
     )
 })
+
+test_that("corpus indexing works as expected", {
+  corp <- corpus(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+  
+  expect_equal(corp[[1]], "one two three")
+  expect_equal(as.character(corp[c(FALSE, TRUE, TRUE)]), 
+               c(d2 = "four five six", d3 = "seven eight")
+  )
+  expect_equal(as.character(corp[c(2, 3)]), 
+               c(d2 = "four five six", d3 = "seven eight")
+  )
+  expect_equal(as.character(corp[c("d2", "d3")]), 
+               c(d2 = "four five six", d3 = "seven eight")
+  )
+  expect_equal(as.character(corp[c(-2, -3)]), 
+               c(d1 = "one two three")
+  ) 
+  expect_error(corp[4], "Subscript out of bounds")
+  expect_error(corp[1:4], "Subscript out of bounds")
+  expect_error(corp["d4"], "Subscript out of bounds")
+  expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
+})
+
+
