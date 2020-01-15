@@ -320,3 +320,26 @@ get_object_version <- function(x) {
 is_pre2 <- function(x) {
     (! "meta" %in% names(attributes(x)))
 }
+
+# internal function to rbind data.frames that have different columns
+rbind_fill <- function(x, y) {
+    name1 <- names(x)
+    name2 <- names(y)
+    if (!identical(name1, name2)) {
+        name <- union(name1, name2)
+        name1_missing <- setdiff(name, name1)
+        if (length(name1_missing)) {
+            fill1 <- rep(list(rep(NA, nrow(x))), length(name1_missing))
+            names(fill1) <- name1_missing
+            x <- cbind(x, fill1)
+        }
+        
+        name2_missing <- setdiff(name, name2)
+        if (length(name2_missing)) {
+            fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))
+            names(fill2) <- name2_missing
+            y <- cbind(y, fill2)
+        }
+    }
+    return(rbind(x, y))
+}
