@@ -26,22 +26,6 @@ test_that("test show.corpus", {
 
 })
 
-test_that("test c.corpus", {
-    corp <- c(data_corpus_inaugural[1:2],
-              data_corpus_inaugural[3:5],
-              data_corpus_inaugural[6:10])
-
-    expect_equivalent(
-        corp,
-        data_corpus_inaugural[1:10]
-    )
-
-    expect_equal(
-        docvars(corp),
-        docvars(data_corpus_inaugural[1:10])
-    )
-
-})
 
 test_that("test corpus constructors works for kwic", {
     kw <- kwic(data_char_sampletext, "econom*")
@@ -53,19 +37,21 @@ test_that("test corpus constructors works for kwic", {
                  c("from", "to", "keyword", "context"))
 
     # split_context = FALSE, extract_keyword = TRUE
-    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
-                                    split_context = FALSE, extract_keyword = TRUE)),
-                     paste0("text1.L", as.character(kw[["from"]]))
+    expect_identical(
+        docnames(corpus(kw, split_context = FALSE, extract_keyword = TRUE)),
+        paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = FALSE, extract_keyword = FALSE
-    expect_identical(docnames(corpus(kwic(data_char_sampletext, "econom*"),
-                                    split_context = FALSE, extract_keyword = FALSE)),
-                     paste0("text1.L", as.character(kw[["from"]]))
+    expect_identical(
+        docnames(corpus(kw, split_context = FALSE, extract_keyword = FALSE)),
+        paste0("text1.L", as.character(kw[["from"]]))
     )
     # split_context = TRUE, extract_keyword = FALSE
-    corptemp <- corpus(kwic(data_char_sampletext, "econom*"),
-                       split_context = TRUE, extract_keyword = FALSE)
-    expect_identical(docnames(corptemp), paste0("text", seq_len(ndoc(corptemp))))
+    expect_identical(
+        docnames(corpus(kw, split_context = TRUE, extract_keyword = FALSE)),
+        c(paste0("text1.", seq_len(nrow(kw)), ".pre"),
+          paste0("text1.", seq_len(nrow(kw)), ".post"))
+    )
 
     # test text handling for punctuation - there should be no space before the ?
     corp <- corpus(kwic(data_char_sampletext, "econom*", window = 10,
@@ -274,12 +260,54 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
     )
 })
 
-test_that("corpus + operator works", {
-    corp1 <- corpus(LETTERS[1:3], docvars = data.frame(one = 1:3, two = 4:6))
-    corp2 <- corpus(LETTERS[1:3], docvars = data.frame(one = 7:9, three = 10:12))
-    corp <- corp1 + corp2
-    expect_false(any(duplicated(docnames(corp))))
-    expect_identical(unname(texts(corp)), LETTERS[c(1:3, 1:3)])
+test_that("c.corpus errors work as expected", {
+  
+  corp1 <- corpus(c(d1 = "This is sample document one.",
+                    d2 = "Here is the second sample document."))
+  corp2 <- corpus(c(d3 = "And the third document."))
+  corp3 <- corpus(c(d4 = "This is sample document 4."))
+  corp4 <- corpus(c(d1 = "This is sample document five!. This is a long document."))
+  corp5 <- corpus_reshape(corp4)
+  
+  expect_equal(
+    c(corp1),
+    corp1
+  )
+  
+  expect_equal(
+    c(corp1, corp2),
+    corp1 + corp2
+  )
+  
+  expect_equal(
+    c(corp1, corp2, corp3),
+    corp1 + corp2 + corp3
+  )
+  
+  # issue #1836
+  expect_error(
+    c(corp1, corp4),
+    "Cannot combine corpora with duplicated document names"
+  )
+  #expect_error(
+  #  c(corp1, corp5),
+  #  "Cannot combine corpora in different units"
+  #)
+  
+  corp <- c(data_corpus_inaugural[1:2],
+            data_corpus_inaugural[3:5],
+            data_corpus_inaugural[6:10])
+  
+  expect_equivalent(
+    corp,
+    data_corpus_inaugural[1:10]
+  )
+  
+  expect_equal(
+    docvars(corp),
+    docvars(data_corpus_inaugural[1:10])
+  )
+
 })
 
 test_that("corpus.data.frame sets docnames correctly", {
@@ -473,13 +501,6 @@ test_that("raise error when docnames or docvars are invalid", {
 
 })
 
-test_that("c.corpus errors work as expected", {
-    corp1 <- corpus("one two three", docvars = data.frame(dvc1 = "A"))
-    corp2 <- corpus("four five", docvars = data.frame(dvc1 = "B"))
-    expect_identical(c(corp1), corp1)
-    expect_identical(c(corp1, corp2), corp1 + corp2)
-})
-
 test_that("[.corpus out of bounds generates expected error", {
     corp1 <- corpus("one two three", docvars = data.frame(dvc1 = "A"))
     expect_error(corp1[2], "Subscript out of bounds")
@@ -528,7 +549,7 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
     )
     expect_true(
         all(c("source", "package-version", "r-version", "system", "directory", "created") %in% 
-                names(meta(as.corpus(data_corpus_pre2), type = "system")))
+            names(meta(as.corpus(data_corpus_pre2), type = "system")))
     )
     expect_is(meta(as.corpus(data_corpus_pre2), "created", type = "system"),
               "POSIXct"
@@ -544,3 +565,27 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
         substring(as.character(Sys.Date()), 1, 10)
     )
 })
+
+test_that("corpus indexing works as expected", {
+  corp <- corpus(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+  
+  expect_equal(corp[[1]], "one two three")
+  expect_equal(as.character(corp[c(FALSE, TRUE, TRUE)]), 
+               c(d2 = "four five six", d3 = "seven eight")
+  )
+  expect_equal(as.character(corp[c(2, 3)]), 
+               c(d2 = "four five six", d3 = "seven eight")
+  )
+  expect_equal(as.character(corp[c("d2", "d3")]), 
+               c(d2 = "four five six", d3 = "seven eight")
+  )
+  expect_equal(as.character(corp[c(-2, -3)]), 
+               c(d1 = "one two three")
+  ) 
+  expect_error(corp[4], "Subscript out of bounds")
+  expect_error(corp[1:4], "Subscript out of bounds")
+  expect_error(corp["d4"], "Subscript out of bounds")
+  expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
+})
+
+
