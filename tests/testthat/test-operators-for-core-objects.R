@@ -14,7 +14,7 @@ test_that("corpus core operators work for v2", {
     expect_identical(corp[c(FALSE, TRUE, FALSE, FALSE, FALSE)][[1]], 
                      corp[["1793-Washington"]])
     
-    expect_is(corp$Year, "numeric")
+    expect_is(corp$Year, "integer")
     expect_identical(
         corp$Year,
         docvars(corp, "Year")
@@ -52,7 +52,7 @@ test_that("tokens core operators work for v2", {
     # when docvar does not yet exist
     expect_identical(toks$nonexistent, NULL)
 
-    expect_is(toks$Year, "numeric")
+    expect_is(toks$Year, "integer")
     expect_identical(
         toks$Year,
         docvars(toks, "Year")
@@ -74,7 +74,7 @@ test_that("dfm core operators work for v2", {
         fixed = TRUE
     )
 
-    expect_is(dfmat$Year, "numeric")
+    expect_is(dfmat$Year, "integer")
     expect_identical(
         dfmat$Year,
         docvars(dfmat, "Year")
