@@ -46,6 +46,7 @@
 * Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)
 * Added `startpos` and `endpos` arguments to `tokens_select()`, for selecting on token positions relative to the start or end of the tokens in each document. (#1475)
 * Added a `convert()` method for corpus objects, to convert them into data.frame or json formats.
+* Added a `spacy_tokenize()` method for corpus objects, to provide direct access via the **spacyr** package.
 
 ## Other improvements
 
