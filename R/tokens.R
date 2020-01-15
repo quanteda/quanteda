@@ -531,7 +531,8 @@ tokens_internal <- function(x,
 
 compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
                            what = "word", concatenator = "_", padding = FALSE,
-                           unit = "documents", source = "corpus", docvars = data.frame()) {
+                           unit = "documents", source = "corpus", 
+                           docvars = data.frame(), meta = list()) {
     structure(x,
               names = names,
               class = "tokens",
@@ -542,7 +543,8 @@ compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
               padding = padding,
               types = types,
               unit = unit,
-              meta = meta_system_defaults(source),
+              meta = list("system" = meta_system_defaults(source),
+                          "user" = meta),
               docvars = docvars)
 }
 

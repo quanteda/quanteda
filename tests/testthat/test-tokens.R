@@ -260,32 +260,33 @@ test_that("c() works with tokens", {
     )
     
     # issue #1835
-    # toks <- c(tokens(data_corpus_inaugural[1:2]),
-    #           tokens(data_corpus_inaugural[3:5]),
-    #           tokens(data_corpus_inaugural[6:10]))
-    # 
-    # expect_equivalent(
-    #     toks,
-    #     tokens(data_corpus_inaugural[1:10])
-    # )
-    # 
-    # expect_equal(
-    #     docvars(toks),
-    #     docvars(tokens(data_corpus_inaugural[1:10]))
-    # )
+    toks <- c(tokens(data_corpus_inaugural[1:2]),
+              tokens(data_corpus_inaugural[3:5]),
+              tokens(data_corpus_inaugural[6:10]))
+     
+    expect_equivalent(
+         toks,
+         tokens(data_corpus_inaugural[1:10])
+    )
+     
+    expect_equal(
+        docvars(toks),
+        docvars(tokens(data_corpus_inaugural[1:10]))
+    )
 })
 
 test_that("docvars are erased for tokens added", {
-    mycorpus <- corpus(c(d1 = "This is sample document one.",
-                         d2 = "Here is the second sample document."),
-                       docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
+    corp <- corpus(c(d1 = "This is sample document one.",
+                     d2 = "Here is the second sample document."),
+                   docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
+    toks <- tokens(corp, include_docvars = TRUE)
     expect_equivalent(
-        docvars(tokens(mycorpus, include_docvars = TRUE)),
+        docvars(toks),
         data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
     )
     expect_equivalent(
-        docvars(tokens(mycorpus) + tokens("And the third sample document.")),
-        data.frame()
+        docvars(toks + tokens("And the third sample document.")),
+        data.frame(dvar1 = c("A", "B", NA), dvar2 = c(1, 2, NA))
     )
 })
 
@@ -542,7 +543,7 @@ test_that("combined tokens objects have all the attributes", {
     expect_error(c(toks1, toks2),
                  "Cannot combine tokens with different concatenators")
     expect_error(c(toks1, toks3),
-                 "Cannot combine tokens in different units")
+                 "Cannot combine tokens in different tokenization units")
 
     expect_identical(names(attributes(c(toks1, toks4))),
                      names(attributes(toks1)))
