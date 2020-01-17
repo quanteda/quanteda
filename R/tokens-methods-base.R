@@ -52,12 +52,11 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          show.summary = quanteda_options("print_tokens_summary"),
                          ...) {
     
-    if (max_ndoc < 0) max_ndoc <- ndoc(x)
-    if (max_ntoken < 0) max_ntoken <- -1L
-     
     docvars <- docvars(x)
     ndoc <- ndoc(x)
-
+    if (max_ndoc < 0) 
+        max_ndoc <- ndoc(x)
+    
     if (show.summary) {
         cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc > 1L) "s" else "", sep = "")
@@ -70,14 +69,15 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     if (max_ndoc > 0) {
         x <- head(x, max_ndoc)
         len <- lengths(x)
-        #label <- paste0(names(x), " (", len, ") :")
+        if (max_ntoken < 0) 
+            max_ntoken <- max(len)
         label <- paste0(names(x), " :")
         types <- c("", types(x))
         x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
         for (i in seq_along(label)) {
             cat(label[i], "\n", sep = "")
             print(x[[i]], ...)
-            if (len[i] > max_ntoken)
+            if (max_ntoken > 0 && len[i] > max_ntoken)
                 cat("[ ... and ",  len[i] - max_ntoken, " more ]\n\n", sep = "")
         }
         

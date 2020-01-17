@@ -212,12 +212,14 @@ test_that("corpus works for texts with duplicate filenames", {
 })
 
 test_that("create a corpus on a corpus", {
+  
+    corp <- data_corpus_irishbudget2010
     expect_equivalent(
-        as.corpus(data_corpus_irishbudget2010),
-        corpus(data_corpus_irishbudget2010)
+        as.corpus(corp),
+        corpus(corp)
     )
 
-    corp <- as.corpus(data_corpus_irishbudget2010)
+    corp <- as.corpus(corp)
     name <- paste0("d", seq_len(ndoc(corp)))
     corp2 <- corpus(corp, docnames = name, docvars = docvars(corp))
     docnames(corp) <- name
@@ -506,17 +508,18 @@ test_that("[.corpus out of bounds generates expected error", {
     expect_error(corp1[2], "Subscript out of bounds")
 })
 
-test_that("corpus printing works with new textual summary", {
+test_that("corpus printing works", {
+    corp <- data_corpus_irishbudget2010
     expect_silent(
-        print(data_corpus_irishbudget2010, max_ndoc = 0, max_nchar = 0, show.summary = FALSE)
+        print(corp, max_ndoc = 0, max_nchar = 0, show.summary = FALSE)
     )
     expect_output(
-        print(data_corpus_irishbudget2010, max_ndoc = 0, max_nchar = 0, show.summary = TRUE),
+        print(corp, max_ndoc = 0, max_nchar = 0, show.summary = TRUE),
         "Corpus consisting of 14 documents and 6 docvars.", 
         fixed = TRUE
     )
     expect_output(
-        print(data_corpus_irishbudget2010, max_ndoc = 2, max_nchar = 10, show.summary = TRUE),
+        print(corp, max_ndoc = 2, max_nchar = 10, show.summary = TRUE),
         paste0('Corpus consisting of 14 documents and 6 docvars.\n',
                'Lenihan, Brian (FF) :\n',
                '"When I pre..."\n\n', 
@@ -526,7 +529,7 @@ test_that("corpus printing works with new textual summary", {
         fixed = TRUE
     )
     expect_output(
-        print(data_corpus_irishbudget2010, max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
+        print(corp, max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '"When I pre..."\n\n', 
                'Bruton, Richard (FG) :\n',
@@ -535,11 +538,11 @@ test_that("corpus printing works with new textual summary", {
         fixed = TRUE 
     )
     expect_output(
-        print(data_corpus_irishbudget2010[1:2], max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
-        paste0(c('Lenihan, Brian (FF) :\n',
-                 '"When I pre..."\n\n', 
-                 'Bruton, Richard (FG) :\n',
-                 '"This draco..."\n'), collapse = ""), 
+        print(corp[1:2], max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
+        paste0('Lenihan, Brian (FF) :\n',
+               '"When I pre..."\n\n', 
+               'Bruton, Richard (FG) :\n',
+               '"This draco..."\n'), 
         fixed = TRUE 
     )
     

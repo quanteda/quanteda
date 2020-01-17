@@ -24,8 +24,8 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     
     docvars <- docvars(x)
     ndoc <- ndoc(x)
-    if (max_ndoc < 0) max_ndoc <- ndoc(x)
-    if (max_nchar < 0) max_nchar <- -1L
+    if (max_ndoc < 0) 
+        max_ndoc <- ndoc(x)
 
     if (show.summary) {
         cat("Corpus consisting of ", format(ndoc, big.mark = ","), " document",
@@ -39,9 +39,11 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     if (max_ndoc > 0) {
         x <- head(texts(x), max_ndoc)
         label <- paste0(names(x), " :")
+        len <- stri_length(x)
+        if (max_nchar < 0) 
+            max_nchar <- max(len)
         x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
-        x <- paste0(stri_sub(x, 1, max_nchar), 
-                    ifelse(max_nchar > 0 & max_nchar < stri_length(x), "...", ""))
+        x <- paste0(stri_sub(x, 1, max_nchar), ifelse(max_nchar < len, "...", ""))
         cat(paste0(label, '\n"', x, '"\n\n'), sep = "")
         
         ndoc_rem <- ndoc - max_ndoc
