@@ -9,9 +9,10 @@ NULL
 
 #' @export
 #' @rdname corpus-class
-#' @param max_ndoc integer; number of documents to show text from; 0 shows none, and -1 shows all
-#' @param max_nchar integer; number of characters to use when showing the first part of the
-#'   of text; 0 shows none, and -1 shows all
+#' @param max_ndoc integer; number of documents to show text from; 0 shows none,
+#'   and -1 shows all
+#' @param max_nchar integer; number of characters to use when showing the first
+#'   part of the of text; 0 shows none, and -1 shows all
 #' @param show.summary print a brief summary indicating the number of documents
 #'   and docvars
 #' @method print corpus
@@ -47,6 +48,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
             cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
                 if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
+
 }
     
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
@@ -83,7 +85,11 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
     ndoc_all <- ndoc(object)
     object <- head(object, n)
     ndoc_show <- ndoc(object)
-    result <- summarize_texts(texts(object), tolower = tolower, ...)
+    result <- if (!is.null(meta(object, "summary", type = "system"))) {
+        get_summary_metadata(object, ...)
+    } else {
+        summarize_texts(texts(object), tolower = tolower, ...)
+    }
     if (showmeta)
         result <- cbind(result, docvars(object))
     attr(result, "ndoc_all") <- ndoc_all
@@ -181,10 +187,23 @@ tail.corpus <- function(x, n = 6L, ...) {
 `+.corpus` <- function(c1, c2) {
     c1 <- as.corpus(c1)
     c2 <- as.corpus(c2)
-    result <- corpus(c(as.character(unclass(c1)), as.character(unclass(c2))),
-                     docvars = rbind_fill(get_docvars(c1), get_docvars(c2)),
-                     meta = meta(c1, type = "user"))
-    meta_system(result) <- meta_system_defaults("corpus+")
+    
+    if (length(intersect(docnames(c1), docnames(c2))))
+        stop("Cannot combine corpora with duplicated document names", 
+             call. = FALSE)
+    #if (!identical(attr(c1, "unit"), attr(c2, "unit")))
+    #    stop("Cannot combine corpora in different units")
+    
+    docvar <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
+                         get_docvars(c2, user = TRUE, system = TRUE))
+    result <- compile_corpus(
+        c(as.character(c1), as.character(c2)), 
+        names = c(docnames(c1), docnames(c2)),
+        unit = attr(c1, "unit"),
+        source = "corpus+",
+        docvars = docvar,
+        meta = meta(c1, type = "user")
+    )
     return(result)
 }
 
@@ -231,18 +250,12 @@ c.corpus <- function(..., recursive = FALSE) {
 `[.corpus` <- function(x, i) {
     x <- as.corpus(x)
     attrs <- attributes(x)
-    if (is.character(i)) {
-        index <- match(i, docnames(x))
-    } else if (is.numeric(i)) {
-        index <- match(i, seq_len(length(x)))
-    } else {
-        index <- which(i)
-    }
-    is_na <- is.na(index)
-    if (any(is_na))
+    
+    index <- seq_along(docnames(x))
+    names(index) <- docnames(x)
+    index <- index[i]
+    if (any(is.na(index)))
         stop("Subscript out of bounds")
-    index <- index[!is_na]
-
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
     attrs$names <- attrs$docvars[["docname_"]]

@@ -14,23 +14,25 @@
     
     Document-level metadata is deprecated, and now all document-level information is simply a "docvar".  For backward compatibility, `metadoc()` is kept and will insert document variables (docvars) with the name prefixed by an underscore.
     
-3.  Redesigned index operators for core objects.
+3.  Corpus objects now store default summary statistics for efficiency.  When these are present, `summary.corpus()` retrieves them rather than computing them on the fly.
+
+4.  Redesigned index operators for core objects.
 
     TABLE HERE
     
-4.  `*_subset()` functions.  
+5.  `*_subset()` functions.  
 
      The `subset` argument now must be logical, and the `select` argument has been removed.  (This is part of `base::subset()` but has never made sense, either in **quanteda** or **base**!)
 
-5.  Return format from `textstat_simil()` and `textstat_dist()`.
+6.  Return format from `textstat_simil()` and `textstat_dist()`.
 
     Now defaults to a data.frame of pairwise similarities or distances, making these functions return a data.frame just like the other textstat functions.  Coercion methods are provided for `as.dist()`, `as.simil()`, `as.matrix()`, and `as.Matrix()` (producing a ?? sparse symmetric matrix).
     
-6.  settings functions (and related slots and object attributes) are gone.
+7.  settings functions (and related slots and object attributes) are gone.
 
-7.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
+8.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
 
-8.  New print methods with new global options.  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
+9.  New print methods with new global options.  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
     
 ## Bug fixes and stability enhancements
 
@@ -44,6 +46,11 @@
 * Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)
 * Added `startpos` and `endpos` arguments to `tokens_select()`, for selecting on token positions relative to the start or end of the tokens in each document. (#1475)
 * Added a `convert()` method for corpus objects, to convert them into data.frame or json formats.
+* Added a `spacy_tokenize()` method for corpus objects, to provide direct access via the **spacyr** package.
+
+## Other improvements
+
+* All of the (three) included corpus objects have been cleaned up and augmented with improved meta-data and docvars.  The inaugural speech corpus, for instance, now includes the President's political party affiliation.
 
 ## Behaviour changes
 

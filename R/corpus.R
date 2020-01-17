@@ -125,7 +125,8 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), unique_docnames = TRUE, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, 
+                             meta = list(), unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     x[is.na(x)] <- ""
@@ -164,17 +165,20 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    names(x) <- docvar[["docname_"]]
-    class(x) <- "corpus"
     if (any(duplicated(docvar[["docid_"]]))) {
-        attr(x, "unit") <- "segments"    
+        unit <- "segments"    
     } else {
-        attr(x, "unit") <- "documents"
+        unit <- "documents"
     }
-    attr(x, "docvars") <- docvar
-    meta_system(x) <- meta_system_defaults("character") # system metadata
-    if (length(meta)) meta(x) <- meta                     # user metadata
-    return(x)
+    result <- compile_corpus(
+        x, 
+        names = docvar[["docname_"]],
+        unit = unit,
+        source = "character",
+        docvars = docvar,
+        meta =  meta
+    )
+    return(result)
 }
 
 #' @rdname corpus
@@ -185,7 +189,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, meta = list(), 
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", meta = list(), unique_docnames = TRUE, ...) {
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", 
+                              meta = list(), unique_docnames = TRUE, ...) {
     
     unused_dots(...)
     # coerce data.frame variants to data.frame - for #1232
@@ -239,7 +244,8 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", me
     is_empty <- is_empty[c(docid_index, text_index) * -1]
     if (any(is_empty))
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
-    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, meta = meta, unique_docnames = unique_docnames)
+    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, 
+                     meta = meta, unique_docnames = unique_docnames)
     meta_system(result, "source") <- "data.frame"
     return(result)
 }
@@ -279,7 +285,6 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         docnames(post) <- paste0(docnames(post), ".post")
         result <- pre + post
         if (!extract_keyword) docvars(result, "keyword") <- NULL
-        
     } else {
         result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
                          docnames = x[["docname"]], meta = meta, unique_docnames = FALSE)
@@ -327,25 +332,14 @@ corpus.Corpus <- function(x, ...) {
     return(result)
 }
 
-# internal function to rbind data.frames that have different columns
-rbind_fill <- function(x, y) {
-    name1 <- names(x)
-    name2 <- names(y)
-    if (!identical(name1, name2)) {
-        name <- union(name1, name2)
-        name1_missing <- setdiff(name, name1)
-        if (length(name1_missing)) {
-            fill1 <- rep(list(rep(NA, nrow(x))), length(name1_missing))
-            names(fill1) <- name1_missing
-            x <- cbind(x, fill1)
-        }
-        
-        name2_missing <- setdiff(name, name2)
-        if (length(name2_missing)) {
-            fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))
-            names(fill2) <- name2_missing
-            y <- cbind(y, fill2)
-        }
-    }
-    return(rbind(x, y))
+compile_corpus <- function(x, names, unit = "documents", source = "character", 
+                           docvars = data.frame(), meta = list()) {
+    structure(x,
+              names = names,
+              class = "corpus",
+              unit = unit,
+              meta = list("system" = meta_system_defaults(source),
+                          "user" = meta),
+              docvars = docvars)
 }
+

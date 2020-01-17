@@ -37,3 +37,26 @@ test_that("test as.tokens works for spacy_parsed objects", {
         list(text1 = c("and", "now", "for", "something", "completely", "different", "."))
     )
 })
+
+test_that("spacy_parse/tokenize work", {
+    skip_on_cran()
+    skip_on_travis()
+    skip_on_appveyor()
+    skip_if_not_installed("spacyr")
+    
+    library("spacyr")
+    spacy_initialize()
+    corp <- corpus(c(doc1 = "This is Sparta!", 
+                     doc2 = "This is the 2nd document."))
+    expect_identical(
+        spacy_tokenize(corp),
+        list(doc1 = c("This", "is", "Sparta", "!"),
+             doc2 = c("This", "is", "the", "2nd", "document", "."))
+    )
+    sp <- spacy_parse(corp, pos = TRUE, tag = FALSE, lemma = TRUE,
+                      entity = TRUE, dependency = FALSE, nounphrase = FALSE)
+    expect_is(sp, "data.frame")
+    expect_equal(nrow(sp), 10)
+    expect_identical(names(sp), c("doc_id", "sentence_id", "token_id", "token", "lemma", "pos", "entity"))
+    spacy_finalize()
+})

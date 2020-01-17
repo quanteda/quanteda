@@ -3,9 +3,27 @@
 \name{spacyr-methods}
 \alias{spacyr-methods}
 \alias{spacy_parse.corpus}
+\alias{spacy_tokenize.corpus}
+\alias{docnames.spacyr_parsed}
+\alias{ndoc.spacyr_parsed}
+\alias{ntoken.spacyr_parsed}
+\alias{ntype.spacyr_parsed}
+\alias{nsentence.spacyr_parsed}
 \title{Extensions for and from spacy_parse objects}
 \usage{
 \method{spacy_parse}{corpus}(x, ...)
+
+\method{spacy_tokenize}{corpus}(x, ...)
+
+\method{docnames}{spacyr_parsed}(x)
+
+\method{ndoc}{spacyr_parsed}(x)
+
+\method{ntoken}{spacyr_parsed}(x, ...)
+
+\method{ntype}{spacyr_parsed}(x, ...)
+
+\method{nsentence}{spacyr_parsed}(x, ...)
 }
 \arguments{
 \item{x}{an object returned by \code{spacy_parse}, or (for
@@ -16,34 +34,37 @@ through extra arguments to that function}
 }
 \description{
 These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
-also extend \link[spacyr:spacy_parse]{spacy_parse} to work with \link{corpus} objects.
+also extend \link[spacyr:spacy_parse]{spacy_parse} and
+\link[spacyr:spacy_tokenize]{spacy_tokenize} to work directly with \link{corpus}
+objects.
 }
-\section{Usage}{
+\details{
+\code{spacy_parse(x, ...)} and \code{spacy_tokenize(x, ...)} work directly on
+\pkg{quanteda} \link{corpus} objects.
 
-\code{docnames(x)} returns the document names
+\code{docnames()} returns the document names
 
-\code{ndoc(x)} returns the number of documents
+\code{ndoc()} returns the number of documents
 
-\code{ntoken(x, ...)} returns the number of tokens by document
+\code{ntoken()} returns the number of tokens by document
 
-\code{ntype(x, ...)} returns the number of types (unique tokens) by document
+\code{ntype()} returns the number of types (unique tokens) by document
 
-\code{spacy_parse(x, ...)} is also defined for a \pkg{quanteda} \link{corpus}
+\code{nsentence()} returns the number of sentences by document
 }
-
 \examples{
 \dontrun{
 library("spacyr")
 spacy_initialize()
 
-txt <- c(doc1 = "And now, now, now for something completely different.",
-         doc2 = "Jack and Jill are children.")
-parsed <- spacy_parse(txt)
+corp <- corpus(c(doc1 = "And now, now, now for something completely different.",
+                 doc2 = "Jack and Jill are children."))
+spacy_tokenize(corp)
+(parsed <- spacy_parse(corp))
+
 ntype(parsed)
 ntoken(parsed)
 ndoc(parsed)
 docnames(parsed)
-
-corpus_subset(data_corpus_inaugural, Year <= 1793) \%>\% spacy_parse()
 }
 }
