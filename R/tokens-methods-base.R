@@ -52,7 +52,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          show.summary = quanteda_options("print_tokens_summary"),
                          ...) {
     
-    if (max_ntoken < 0) max_ndoc <- ndoc(x)
+    if (max_ndoc < 0) max_ndoc <- ndoc(x)
     if (max_ntoken < 0) max_ntoken <- -1L
      
     docvars <- docvars(x)
@@ -67,7 +67,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         cat(".\n")
     }
 
-    if (ndoc > 0) {
+    if (max_ndoc > 0) {
         x <- head(x, max_ndoc)
         len <- lengths(x)
         #label <- paste0(names(x), " (", len, ") :")
