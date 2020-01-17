@@ -57,12 +57,12 @@ texts(corp)
 # exclude sentences shorter than 3 tokens
 texts(corpus_trimsentences(corp, min_length = 3))
 # exclude sentences that start with "PAGE <digit(s)>"
-texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\\\\\\\d+"))
+texts(corpus_trimsentences(corp, exclude_pattern = "^PAGE \\\\d+"))
 
 # on a character
 char_trimsentences(txt, min_length = 3)
 char_trimsentences(txt, min_length = 3)
-char_trimsentences(txt, exclude_pattern = "sentence\\\\\\\\.")
+char_trimsentences(txt, exclude_pattern = "sentence\\\\.")
 }
 \keyword{deprecated}
 \keyword{internal}
