@@ -7,6 +7,14 @@ test_that("warning functions", {
         corpus(corpv2),
         "^Found a v2 corpus, converting to v1\\.$"
     )
+    expect_warning(
+        ndoc(corpv2),
+        "^Found a v2 corpus, converting to v1\\.$"
+    )
+    expect_warning(
+        summary(corpv2),
+        "^Found a v2 corpus, converting to v1\\.$"
+    )
 })
 
 test_that("docnames for v2 corpus works", {
@@ -24,6 +32,8 @@ test_that("docvars for v2 corpus works", {
         dv
     )
 })
+
+summary(data_corpus_sotu, n = 3)
 
 test_that("corpus constructor works on v2 corpus", {
     expect_true(is.corpus(suppressWarnings(corpus(corpv2))))
