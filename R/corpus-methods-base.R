@@ -40,8 +40,9 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
         x <- head(texts(x), max_ndoc)
         label <- paste0(names(x), " :")
         x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
-        x <- paste0(stri_sub(x, 1, max_nchar), ifelse(max_nchar < stri_length(x), "...", ""))
-        cat(paste0(label, "\n\"", x, "\"\n\n"), sep = "")
+        x <- paste0(stri_sub(x, 1, max_nchar), 
+                    ifelse(max_nchar > 0 & max_nchar < stri_length(x), "...", ""))
+        cat(paste0(label, '\n"', x, '"\n\n'), sep = "")
         
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)

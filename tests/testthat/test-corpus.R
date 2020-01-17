@@ -508,35 +508,61 @@ test_that("[.corpus out of bounds generates expected error", {
 
 test_that("corpus printing works with new textual summary", {
     expect_silent(
-        print(data_corpus_irishbudget2010, ndoc = 0, nchar = 0, show.summary = FALSE)
+        print(data_corpus_irishbudget2010, max_ndoc = 0, max_nchar = 0, show.summary = FALSE)
     )
     expect_output(
-        print(data_corpus_irishbudget2010, ndoc = 0, nchar = 0, show.summary = TRUE),
-        "^Corpus consisting of 14 documents and 6 docvars\\.$", 
+        print(data_corpus_irishbudget2010, max_ndoc = 0, max_nchar = 0, show.summary = TRUE),
+        "Corpus consisting of 14 documents and 6 docvars.", 
+        fixed = TRUE
     )
     expect_output(
-        print(data_corpus_irishbudget2010, ndoc = 2, nchar = 10, show.summary = TRUE),
-        "^Corpus consisting of 14 documents and 6 docvars\\.\\n \\[Lenihan, Brian \\(FF\\)\\] When I pre ...\\n\\[Bruton, Richard \\(FG\\)\\] This draco \\.\\.\\.\\nand 12 more documents\\.$"
+        print(data_corpus_irishbudget2010, max_ndoc = 2, max_nchar = 10, show.summary = TRUE),
+        paste0('Corpus consisting of 14 documents and 6 docvars.\n',
+               'Lenihan, Brian (FF) :\n',
+               '"When I pre..."\n\n', 
+               'Bruton, Richard (FG) :\n',
+               '"This draco..."\n\n',
+               '[ reached max_ndoc ... 12 more documents ]'),
+        fixed = TRUE
     )
     expect_output(
-        print(data_corpus_irishbudget2010, ndoc = 2, nchar = 10, show.summary = FALSE),
-        "^ \\[Lenihan, Brian \\(FF\\)\\] When I pre \\.\\.\\.\\n\\[Bruton, Richard \\(FG\\)\\] This draco \\.\\.\\.$"
+        print(data_corpus_irishbudget2010, max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
+        paste0('Lenihan, Brian (FF) :\n',
+               '"When I pre..."\n\n', 
+               'Bruton, Richard (FG) :\n',
+               '"This draco..."\n\n',
+               '[ reached max_ndoc ... 12 more documents ]'),
+        fixed = TRUE 
     )
     expect_output(
-        print(data_corpus_irishbudget2010[1:2], ndoc = 3, nchar = 10, show.summary = TRUE),
-        "^Corpus consisting of 2 documents and 6 docvars\\.\\n \\[Lenihan, Brian \\(FF\\)\\] When I pre \\.\\.\\.\\n\\[Bruton, Richard \\(FG\\)\\] This draco \\.\\.\\.$"
+        print(data_corpus_irishbudget2010[1:2], max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
+        paste0(c('Lenihan, Brian (FF) :\n',
+                 '"When I pre..."\n\n', 
+                 'Bruton, Richard (FG) :\n',
+                 '"This draco..."\n'), collapse = ""), 
+        fixed = TRUE 
+    )
+    
+    expect_output(
+        print(corpus("a b c d"), max_ndoc = -1, max_nchar = 2),
+        paste0('Corpus consisting of 1 document.\n',
+               'text1 :\n',
+               '"a ..."\n'),
+        fixed = TRUE 
     )
     expect_output(
-        print(corpus("a b c d"), ndoc = -1, nchar = 2),
-        "^Corpus consisting of 1 document\\.\\\n\\[text1\\] a  \\.\\.\\.$"
+      print(corpus("a b c d"), max_ndoc = -1, max_nchar = 10),
+      paste0('Corpus consisting of 1 document.\n',
+             'text1 :\n',
+             '"a b c d"\n'),
+      fixed = TRUE 
     )
     expect_output(
-      print(corpus("a b c d"), ndoc = -1, nchar = 10),
-      "^Corpus consisting of 1 document\\.\\\n\\[text1\\] a b c d \\.\\.\\.$"
-    )
-    expect_output(
-        print(corpus("a b c d"), ndoc = -1, nchar = -1),
-        "^Corpus consisting of 1 document.\\n\\[text1\\] a b c d$"
+        print(corpus("a b c d"), max_ndoc = -1, max_nchar = -1),
+        paste0('Corpus consisting of 1 document.\n',
+               'text1 :\n',
+               '"a b c d"\n'),
+        fixed = TRUE 
     )
 })
 
