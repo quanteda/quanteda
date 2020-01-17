@@ -1,6 +1,6 @@
 context("test v2 corpus functions")
 
-load("../data/corpora/corpv2.rda")
+load("../data/v2_objects/corpv2.rda")
 
 test_that("warning functions", {
     expect_warning(
@@ -32,8 +32,6 @@ test_that("docvars for v2 corpus works", {
         dv
     )
 })
-
-summary(data_corpus_sotu, n = 3)
 
 test_that("corpus constructor works on v2 corpus", {
     expect_true(is.corpus(suppressWarnings(corpus(corpv2))))
