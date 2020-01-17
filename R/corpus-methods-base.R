@@ -11,7 +11,8 @@ NULL
 #' @rdname corpus-class
 #' @method print corpus
 print.corpus <- function(x, ...) {
-    cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
+    x <- corpus(x)
+    cat("Corpus consisting of ", format(ndoc(x), big.mark = ","), " document",
         if (ndoc(x) > 1L) "s" else "", sep = "")
     if (!is.null(docvars(x))) 
         cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
@@ -69,7 +70,7 @@ is.corpuszip <- function(x) {
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
-    x <- corpus(x)
+    object <- corpus(object)
     n_all <- ndoc(object)
     object <- head(object, n)
     result <- data.frame(summary_character(texts(object), n = n, tolower = tolower, ...))

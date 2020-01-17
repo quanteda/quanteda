@@ -5,7 +5,7 @@ load("../data/corpora/corpv2.rda")
 test_that("warning functions", {
     expect_warning(
         corpus(corpv2),
-        "Found a pre-v2 corpus, converting"
+        "^Found a v2 corpus, converting to v1\\.$"
     )
 })
 

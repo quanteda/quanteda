@@ -1,3 +1,12 @@
+# quanteda 1.5.3
+
+(Maintenance update)
+
+## Bug fixes
+
+* Fixed a bug in the warning message when loading future (>= v2) corpus objects. (#1743)
+
+
 # quanteda 1.5.2
 
 ## New features
