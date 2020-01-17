@@ -48,6 +48,10 @@
 * Added a `convert()` method for corpus objects, to convert them into data.frame or json formats.
 * Added a `spacy_tokenize()` method for corpus objects, to provide direct access via the **spacyr** package.
 
+## Other improvements
+
+* All of the (three) included corpus objects have been cleaned up and augmented with improved meta-data and docvars.  The inaugural speech corpus, for instance, now includes the President's political party affiliation.
+
 ## Behaviour changes
 
 * Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)  The function `textstat_frequency()` now allows passing this argument to `dfm_group()` via `...`.  (#1646)
