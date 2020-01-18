@@ -39,13 +39,19 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     if (max_ndoc > 0) {
         x <- head(texts(x), max_ndoc)
         label <- paste0(names(x), " :")
+        x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
         len <- stri_length(x)
         if (max_nchar < 0) 
             max_nchar <- max(len)
-        x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
-        x <- paste0(stri_sub(x, 1, max_nchar), ifelse(max_nchar < len, "...", ""))
-        cat(paste0(label, '\n"', x, '"\n\n'), sep = "")
-        
+        for (i in seq_along(label)) {
+            cat(label[i], "\n", sep = "")
+            cat('"', stri_sub(x[i], 1, max_nchar), sep = "")
+            if (len[i] > max_nchar) {
+                cat('..."\n\n')
+            } else {
+                cat('"\n\n')
+            }
+        }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
             cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 

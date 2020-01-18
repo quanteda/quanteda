@@ -545,7 +545,6 @@ test_that("corpus printing works", {
                '"This draco..."\n'), 
         fixed = TRUE 
     )
-    
     expect_output(
         print(corpus("a b c d"), max_ndoc = -1, max_nchar = 2),
         paste0('Corpus consisting of 1 document.\n',
