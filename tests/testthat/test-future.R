@@ -1,11 +1,19 @@
 context("test v2 corpus functions")
 
-load("../data/corpora/corpv2.rda")
+load("../data/v2_objects/corpv2.rda")
 
 test_that("warning functions", {
     expect_warning(
         corpus(corpv2),
-        "Found a pre-v2 corpus, converting"
+        "^Found a v2 corpus, converting to v1\\.$"
+    )
+    expect_warning(
+        ndoc(corpv2),
+        "^Found a v2 corpus, converting to v1\\.$"
+    )
+    expect_warning(
+        summary(corpv2),
+        "^Found a v2 corpus, converting to v1\\.$"
     )
 })
 

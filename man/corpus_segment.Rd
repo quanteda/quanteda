@@ -107,7 +107,7 @@ semi-colons (phrase delimiters within a sentence),
   
   \code{Mr. Smith: Text} \cr \code{Mrs. Jones: More text}
   
-  could have as \code{pattern = "\\\\b[A-Z].+\\\\.\\\\s[A-Z][a-z]+:"}, which
+  could have as \code{pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"}, which
   would catch the title, the name, and the colon.
   
   For custom boundary delimitation using punctuation characters that come 

@@ -31,7 +31,7 @@ slowest, word tokenization method; see
 \link[stringi]{stringi-search-boundaries} for details.}
 \item{\code{"fasterword"}}{dumber, but faster, word tokenization method,
 uses \code{\link[stringi]{stri_split_charclass}(x,
-"[\\\\p{Z}\\\\p{C}]+")}} \item{\code{"fastestword"}}{dumbest, but fastest,
+"[\\p{Z}\\p{C}]+")}} \item{\code{"fastestword"}}{dumbest, but fastest,
 word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, "
 ")}} \item{\code{"character"}}{tokenization into individual characters}
 \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some

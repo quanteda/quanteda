@@ -130,7 +130,7 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           metacorpus = quanteda::metacorpus(x),
                           compress = FALSE, ...) {
     if (!is_pre2(x)) {
-        warning("Found a pre-v2 corpus, converting.")
+        warning("Found a v2 corpus, converting to v1.")
         x <- corpus(as.vector(x),
                     docnames = docnamesv2.corpus(x),
                     docvars = docvarsv2.corpus(x),
