@@ -884,7 +884,7 @@ test_that("tokens printing works", {
         fixed = TRUE 
     )
     
-  ect_output(
+    expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 2),
         paste0('Tokens consisting of 1 document.\n',
                'text1 :\n',
