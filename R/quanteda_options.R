@@ -142,7 +142,7 @@ get_options_default <- function(){
                  print_corpus_max_nchar = 60L,
                  print_corpus_summary = TRUE,
                  print_tokens_max_ndoc = 0L,
-                 print_tokens_max_ntoken = 60L,
+                 print_tokens_max_ntoken = 20L,
                  print_tokens_summary = TRUE,
                  base_docname = "text",
                  base_featname = "feat",
