@@ -11,12 +11,14 @@
 #' quanteda:::tokens_group(toks, groups = "grp")
 #' quanteda:::tokens_group(toks, groups = c(1, 1, 2, 2))
 #' quanteda:::tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
-tokens_group <- function(x, groups = NULL) {
+tokens_group <- function(x, groups = NULL, fill = FALSE) {
     
     x <- as.tokens(x)
     attrs <- attributes(x)
     if (!is.factor(groups))
-        groups <- generate_groups(x, groups)
+        groups <- generate_groups(x, groups, fill)
+    if (!fill)
+        groups <- droplevels(groups)
     if (length(levels(groups)) > 1) {
         x <- base::split(unlist(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
     } else {

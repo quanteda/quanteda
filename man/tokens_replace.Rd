@@ -22,11 +22,12 @@ tokens_replace(
 \item{replacement}{a character vector or (if \code{pattern} is a list) list
 of character vectors of the same length as \code{pattern}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }

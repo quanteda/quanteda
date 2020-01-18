@@ -8,7 +8,6 @@
 #' @param x [tokens] object whose token elements will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if `TRUE`
 #' @param extract_pattern remove matched patterns from the texts and save in
 #'   [docvars], if `TRUE`
 #' @param pattern_position either `"before"` or `"after"`, depending 
@@ -57,7 +56,6 @@ tokens_segment.tokens <- function(x, pattern,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
 
-    
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
@@ -75,10 +73,10 @@ tokens_segment.tokens <- function(x, pattern,
         result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 2)
     }
     attrs$docvars <- reshape_docvars(attrs$docvars, attr(result, "docnum"))
+    attrs$names <- attrs$docvars[["docname_"]]
+    attrs$unit <- "segments"  
     if (extract_pattern)
         attrs$docvars[["pattern"]] <- attr(result, "pattern")
-    attrs$unit <- "segments"
-    attrs$names <- attrs$docvars[["docname_"]]
     attributes(result, FALSE) <- attrs
     return(result)
 }

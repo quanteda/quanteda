@@ -8,7 +8,7 @@
 #' @param what the unit for splitting the text, available alternatives are:
 #'   \describe{ \item{`"word"`}{(recommended default) smartest, but slowest,
 #'   word tokenization method; see [`stringi::stringi-search-boundaries()`] for
-#'   details.} 
+#'   details.}
 #'   \item{`"fasterword"`}{dumber, but faster, word tokenization
 #'   method, uses `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
 #'   \item{`"fastestword"`}{dumbest, but fastest, word tokenization method,
@@ -214,19 +214,19 @@ tokens.tokens <-  function(x,
                            verbose = quanteda_options("verbose"),
                            include_docvars = TRUE,
                            ...) {
-    
+
     check_dots(list(...), names(formals("tokens")))
-    
+
     x <- as.tokens(x)
     check_dots(list(...), names(formals("tokens")))
-    
+
     if (verbose) catm("Starting tokenization...\n")
     time_start <- proc.time()
-    
+
     what <- match.arg(what)
     if (stri_detect_regex(what, "word$") && !stri_detect_regex(attr(x, "what"), "word$"))
         stop("Cannot change the tokenization unit of existing tokens.")
-    
+
     if (remove_hyphens) {
         if (verbose) catm("...separating hyphenated words")
         if (!any(stri_detect_regex(types(x), "\\p{Pd}"))) {
@@ -236,7 +236,7 @@ tokens.tokens <-  function(x,
         }
         if (verbose) catm("\n")
     }
-    
+
     if (remove_twitter) {
         if (verbose) catm("...removing Twitter characters")
         if (!any(stri_detect_charclass(types(x), "[@#]"))) {
@@ -250,7 +250,7 @@ tokens.tokens <-  function(x,
 
     regex <- character()
     if (remove_numbers) {
-        if (verbose) catm("...removing numbers") 
+        if (verbose) catm("...removing numbers")
         if (!any(stri_detect_charclass(types(x), "[\\p{N}]"))) {
             if (verbose) catm("...none found")
         } else {
@@ -258,9 +258,9 @@ tokens.tokens <-  function(x,
         }
         if (verbose) catm("\n")
     }
-    
+
     if (remove_punct) {
-        if (verbose) catm("...removing punctuation") 
+        if (verbose) catm("...removing punctuation")
         if (!any(stri_detect_charclass(types(x), "[\\p{P}]"))) {
             if (verbose) catm("...none found")
         } else {
@@ -268,9 +268,9 @@ tokens.tokens <-  function(x,
         }
         if (verbose) catm("\n")
     }
-    
+
     if (remove_symbols) {
-        if (verbose) catm("...removing symbols") 
+        if (verbose) catm("...removing symbols")
         if (!any(stri_detect_charclass(types(x), "[\\p{S}]"))) {
             if (verbose) catm("...none found")
         } else {
@@ -278,7 +278,7 @@ tokens.tokens <-  function(x,
         }
         if (verbose) catm("\n")
     }
-    
+
     if (remove_separators) {
         if (verbose) catm("...removing separators")
         if (!any(stri_detect_charclass(types(x), "[\uFE00-\uFE0F\\p{Z}\\p{C}]"))) {
@@ -288,7 +288,7 @@ tokens.tokens <-  function(x,
         }
         if (verbose) catm("\n")
     }
-    
+
     if (remove_url) {
         if (verbose) catm("...removing URLs")
         if (!any(stri_detect_regex(types(x), "^https?"))) {
@@ -300,7 +300,7 @@ tokens.tokens <-  function(x,
     }
 
     if (length(regex))
-        x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", padding = FALSE, 
+        x <- tokens_remove(x, paste(regex, collapse = "|"), valuetype = "regex", padding = FALSE,
                            startpos = 1, endpos = -1)
     if (!identical(ngrams, 1L) || !identical(skip, 0L)) {
         if (verbose) catm("...creating ngrams\n")
@@ -308,16 +308,15 @@ tokens.tokens <-  function(x,
     }
     if (!include_docvars)
         docvars(x) <- NULL
-    
-    if (verbose){
-        catm("...total elapsed: ", 
+
+    if (verbose) {
+        catm("...total elapsed: ",
              format((proc.time() - time_start)[3], digits = 3), "seconds.\n")
         catm("Finished re-tokenizing tokens from ", format(length(x), big.mark = ","), " text",
              if (length(x) > 1) "s", ".\n", sep = "")
     }
     return(x)
 }
-
 
 # coercion and checking functions -----------
 
@@ -368,7 +367,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- lapply(x, stri_trans_nfc)
     x <- serialize_tokens(x)
     docvar <- make_docvars(length(x), names(x))
-    compile_tokens(x, docvar[["docname_"]], 
+    compile_tokens(x, docvar[["docname_"]],
                    concatenator = concatenator,
                    types = attr(x, "types"), source = "list",
                    docvars = docvar)
@@ -377,8 +376,10 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
-    if (is_pre2(x))
-        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), docnames(x))
+    if (is_pre2(x)) {
+        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), names(x))
+        attr(x, "meta") <- meta_system_defaults("tokens")
+    }
     return(x)
 }
 
@@ -393,7 +394,7 @@ as.tokens.tokens <- function(x, ...) {
 as.tokens.spacyr_parsed <- function(x, concatenator = "/",
                                     include_pos = c("none", "pos", "tag"),
                                     use_lemma = FALSE, ...) {
-    
+
     include_pos <- match.arg(include_pos)
     temp <- x[[if (use_lemma) "lemma" else "token"]]
     if (include_pos != "none")
@@ -407,30 +408,23 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #'   tokens, `FALSE` otherwise.
 is.tokens <- function(x) "tokens" %in% class(x)
 
-#' @noRd
-#' @export
-docnames.tokens <- function(x) {
-    names(x)
-}
-
 # ============== INTERNAL FUNCTIONS =======================================
 
 tokenize <- function(x,
-                    what = c("word", "sentence", "character", "fastestword", "fasterword"),
-                    remove_numbers = FALSE,
-                    remove_punct = FALSE,
-                    remove_symbols = remove_punct,
-                    remove_separators = TRUE,
-                    remove_twitter = FALSE,
-                    remove_hyphens = FALSE,
-                    remove_url = FALSE,
-                    ngrams = 1L,
-                    skip = 0L,
-                    concatenator = "_",
-                    verbose = getOption("verbose"),
-                    include_docvars = TRUE,
-                    ...) {
-
+                     what = c("word", "sentence", "character", "fastestword", "fasterword"),
+                     remove_numbers = FALSE,
+                     remove_punct = FALSE,
+                     remove_symbols = remove_punct,
+                     remove_separators = TRUE,
+                     remove_twitter = FALSE,
+                     remove_hyphens = FALSE,
+                     remove_url = FALSE,
+                     ngrams = 1L,
+                     skip = 0L,
+                     concatenator = "_",
+                     verbose = getOption("verbose"),
+                     include_docvars = TRUE,
+                     ...) {
 
     check_dots(list(...), names(formals("tokens")))
 
@@ -498,13 +492,13 @@ tokenize <- function(x,
 
     }
 
-    x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names, 
-                        what = what, ngrams = ngrams, skip = skip, 
+    x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names,
+                        what = what, ngrams = ngrams, skip = skip,
                         concatenator = concatenator,
-                        types = attr(x[[length(x)]], "types"), 
-                        unit = "documents", 
+                        types = attr(x[[length(x)]], "types"),
+                        unit = "documents",
                         source = "corpus")
-    
+
     if (what %in% c("word", "fasterword", "fastestword")) {
 
         if (what %in% "word") {
@@ -549,8 +543,8 @@ tokenize <- function(x,
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     }
 
-    if (verbose){
-        catm("...total elapsed: ", 
+    if (verbose) {
+        catm("...total elapsed: ",
              format((proc.time() - time_start)[3], digits = 3), "seconds.\n")
         catm("Finished tokenizing and cleaning ", format(length(x), big.mark = ","), " text",
              if (length(x) > 1) "s", ".\n", sep = "")
@@ -559,9 +553,10 @@ tokenize <- function(x,
     return(x)
 }
 
-compile_tokens <- function(x, names, types, ngrams = 1, skip = 0, 
+compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
                            what = "word", concatenator = "_", padding = FALSE,
-                           unit = "documents", source = "corpus", docvars = data.frame()) {
+                           unit = "documents", source = "corpus", 
+                           docvars = data.frame(), meta = list()) {
     structure(x,
               names = names,
               class = "tokens",
@@ -572,7 +567,8 @@ compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
               padding = padding,
               types = types,
               unit = unit,
-              meta = meta_system_defaults(source),
+              meta = list("system" = meta_system_defaults(source),
+                          "user" = meta),
               docvars = docvars)
 }
 
@@ -582,7 +578,7 @@ tokenize_word <- function(txt,
                         remove_punct = FALSE,
                         remove_symbols = FALSE,
                         remove_separators = TRUE,
-                        verbose = FALSE){
+                        verbose = FALSE) {
 
     if (what == "fastestword") {
         tok <- stri_split_fixed(txt, " ")
@@ -604,7 +600,7 @@ tokenize_word <- function(txt,
 }
 
 
-tokenize_sentence <- function(txt, verbose = FALSE){
+tokenize_sentence <- function(txt, verbose = FALSE) {
 
     if (verbose) catm("...separating into sentences.\n")
 
@@ -620,7 +616,7 @@ tokenize_sentence <- function(txt, verbose = FALSE){
     tok <- stri_split_boundaries(txt, type = "sentence")
 
     ## Cleaning
-    tok <- lapply(tok, function(x){
+    tok <- lapply(tok, function(x) {
         x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
         x <- stri_trim_right(x) # trim trailing spaces
         x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
@@ -634,13 +630,13 @@ tokenize_character <- function(txt,
                              remove_punct = FALSE,
                              remove_symbols = FALSE,
                              remove_separators = FALSE,
-                             verbose = FALSE){
+                             verbose = FALSE) {
 
     # note: does not implement remove_numbers
     tok <- stri_split_boundaries(txt, type = "character")
     if (remove_punct) {
         if (verbose) catm("...removing punctuation.\n")
-        tok <- lapply(tok, function(x){
+        tok <- lapply(tok, function(x) {
             x <- stri_replace_all_charclass(x, "[\\p{P}]", "")
             x <- x[which(x != "")]
             return(x)
@@ -648,7 +644,7 @@ tokenize_character <- function(txt,
     }
     if (remove_symbols) {
         if (verbose) catm("...removing symbols.\n")
-        tok <- lapply(tok, function(x){
+        tok <- lapply(tok, function(x) {
             x <- stri_replace_all_charclass(x, "[\\p{S}]", "")
             x <- x[which(x != "")]
             return(x)
@@ -656,7 +652,7 @@ tokenize_character <- function(txt,
     }
     if (remove_separators) {
         if (verbose) catm("...removing separators.\n")
-        tok <- lapply(tok, function(x){
+        tok <- lapply(tok, function(x) {
             x <- stri_subset_regex(x, "^\\p{Z}$", negate = TRUE)
             x <- x[which(x != "")]
             return(x)
@@ -681,7 +677,7 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
     # remove empty types and control chracters
     types <- types[nzchar(types) & !stri_detect_regex(types, "^[\\p{Cf}]+$")]
     types <- union(types_reserved, types) # prepend new types
-    
+
     x <- lapply(x, function(x) {
         id <- fastmatch::fmatch(x, types)
         is_na <- is.na(id)
@@ -743,7 +739,7 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 #'
 #' @keywords internal tokens
 tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) {
-    
+
     method <- match.arg(method)
     attrs <- attributes(x)
 

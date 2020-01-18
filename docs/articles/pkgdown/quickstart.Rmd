@@ -408,13 +408,14 @@ textmodel_wordfish(ie_dfm, dir = c(2, 1))
 
 ```{r}
 quant_dfm <- dfm(data_corpus_irishbudget2010, 
-                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+                 remove_punct = TRUE, remove_numbers = TRUE, 
+                 remove = stopwords("english"))
 quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
 
 set.seed(100)
-if (require(topicmodels)) {
-    my_lda_fit20 <- LDA(convert(quant_dfm, to = "topicmodels"), k = 20)
-    get_terms(my_lda_fit20, 5)
+if (require("stm")) {
+    my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)
+    plot(my_lda_fit20)    
 }
 ```

@@ -15,7 +15,6 @@
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
 #' @inheritParams valuetype
-#' @param case_insensitive ignore the case of dictionary values if `TRUE`
 #' @param capkeys if `TRUE`, convert dictionary keys to uppercase to
 #'   distinguish them from other features
 #' @param nomatch an optional character naming a new feature that will contain 
@@ -119,9 +118,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             col_new <- key[id_key]
             set_dfm_featnames(x) <- col_new
             # merge identical keys and add non-existent keys
-            result <- dfm_select(dfm_compress(x, margin = "features"),
-                                 as.dfm(rbind(structure(rep(0, length(key)),
-                                                        names = key))))
+            result <- dfm_match(dfm_compress(x, margin = "features"), key)
         } else {
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")

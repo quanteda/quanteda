@@ -47,13 +47,45 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @export
 #' @method print tokens
 #' @noRd
-print.tokens <- function(x, ...) {
-    cat(class(x)[1], " from ", ndoc(x), " document",
-        if (ndoc(x) > 1L) "s" else "", ".\n", sep = "")
-    types <- c("", types(x))
-    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
-    class(x) <- "listof"
-    print(x, ...)
+print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
+                         max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
+                         show.summary = quanteda_options("print_tokens_summary"),
+                         ...) {
+    
+    docvars <- docvars(x)
+    ndoc <- ndoc(x)
+    if (max_ndoc < 0) 
+        max_ndoc <- ndoc(x)
+    
+    if (show.summary) {
+        cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
+            if (ndoc > 1L) "s" else "", sep = "")
+        if (ncol(docvars))
+            cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
+                if (ncol(docvars) == 1L) "" else "s", sep = "")
+        cat(".\n")
+    }
+
+    if (max_ndoc > 0) {
+        x <- head(x, max_ndoc)
+        label <- paste0(names(x), " :")
+        types <- c("", types(x))
+        len <- lengths(x)
+        if (max_ntoken < 0) 
+            max_ntoken <- max(len)
+        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
+        for (i in seq_along(label)) {
+            cat(label[i], "\n", sep = "")
+            print(x[[i]])
+            if (len[i] > max_ntoken)
+                cat("[ ... and ",  len[i] - max_ntoken, " more ]\n", sep = "")
+            cat("\n", sep = "")
+        }
+        ndoc_rem <- ndoc - max_ndoc
+        if (ndoc_rem > 0)
+            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", " ]\n", sep = "")
+    }
 }
 
 
@@ -68,20 +100,16 @@ print.tokens <- function(x, ...) {
     
     x <- as.tokens(x)
     attrs <- attributes(x)
-    if (is.character(i)) {
-        index <- match(i, docnames(x))
-    } else if (is.numeric(i)) {
-        index <- match(i, seq_len(length(x)))
-    } else {
-        index <- which(i)
-    }
-    is_na <- is.na(index)
-    if (any(is_na))
+    
+    index <- seq_along(docnames(x))
+    names(index) <- docnames(x)
+    index <- index[i]
+    if (any(is.na(index)))
         stop("Subscript out of bounds")
-    index <- index[!is_na]
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
-    attributes(x, FALSE) <- attrs
+    attrs$names <- attrs$docvars[["docname_"]]
+    attributes(x) <- attrs
     tokens_recompile(x)
 }
 
@@ -137,27 +165,29 @@ lengths.tokens <- function(x, use.names = TRUE) {
     t1 <- as.tokens(t1)
     
     if (length(intersect(docnames(t1), docnames(t2))))
-        stop("Cannot combine tokens with duplicated document names")
+        stop("Cannot combine tokens with duplicated document names", call. = FALSE)
     if (!identical(attr(t1, "what"), attr(t2, "what")))
-        stop("Cannot combine tokens in different units")
+        stop("Cannot combine tokens in different tokenization units", call. = FALSE)
     if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
-        stop("Cannot combine tokens with different concatenators")
+        stop("Cannot combine tokens with different concatenators", call. = FALSE)
     
+    docvar <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
+                         get_docvars(t2, user = TRUE, system = TRUE))
     attrs2 <- attributes(t2)
     attrs1 <- attributes(t1)
     t2 <- unclass(t2)
     t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), length(attrs1$types)) # shift non-zero IDs
-    
-    docvar <- make_docvars(length(t1) + length(t2), c(attrs1$names, attrs2$names))
-    result <- compile_tokens(c(t1, t2), docvar[["docname_"]],
-                             what = attr(t1, "what"),
-                             ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
-                             skip = sort(unique(c(attrs1$skip, attrs2$skip))),
-                             concatenator = attrs1$concatenator,
-                             types = c(attrs1$types, attrs2$types),
-                             docvars = docvar)
-
+    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), 
+                 length(attrs1$types)) # shift non-zero IDs
+    result <- compile_tokens(
+        c(t1, t2), docvar[["docname_"]],
+        what = attr(t1, "what"),
+        ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
+        skip = sort(unique(c(attrs1$skip, attrs2$skip))),
+        concatenator = attrs1$concatenator,
+        types = c(attrs1$types, attrs2$types),
+        docvars = docvar
+    )
     result <- tokens_recompile(result)
     return(result)
 }

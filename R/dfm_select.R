@@ -8,13 +8,7 @@
 #' @param x the [dfm] or [fcm] object whose features will be selected
 #' @inheritParams pattern
 #' @param selection whether to `keep` or `remove` the features
-#' @param valuetype the type of pattern matching: `"glob"` for "glob"-style
-#'   wildcard expressions; `"regex"` for regular expressions; or
-#'   `"fixed"` for exact matching. See [valuetype] for details.
-#'
-#'   For `dfm_select`, `pattern` may also be a [dfm]; see Value
-#'   below.
-#' @param case_insensitive ignore the case of dictionary values if `TRUE`
+#' @inheritParams valuetype
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition
@@ -40,7 +34,7 @@
 #'   settings are always used: `case_insensitive = FALSE`, and
 #'   `valuetype = "fixed"`.  This functionality is deprecated, however, and
 #'   you should use [dfm_match()] instead.
-#'   
+#'
 #' @export
 #' @keywords dfm
 #' @seealso [dfm_match()]
@@ -60,9 +54,9 @@
 #'
 #' # select based on character length
 #' dfm_select(dfmat, min_nchar = 5)
-#' 
-dfm_select <- function(x, pattern = NULL, 
-                       selection = c("keep", "remove"), 
+#'
+dfm_select <- function(x, pattern = NULL,
+                       selection = c("keep", "remove"),
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = NULL, max_nchar = NULL,
@@ -71,8 +65,8 @@ dfm_select <- function(x, pattern = NULL,
 }
 
 #' @export
-dfm_select.default <-  function(x, pattern = NULL, 
-                            selection = c("keep", "remove"), 
+dfm_select.default <-  function(x, pattern = NULL,
+                            selection = c("keep", "remove"),
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
@@ -81,19 +75,19 @@ dfm_select.default <-  function(x, pattern = NULL,
 }
 
 #' @export
-dfm_select.dfm <-  function(x, pattern = NULL, 
-                            selection = c("keep", "remove"), 
+dfm_select.dfm <-  function(x, pattern = NULL,
+                            selection = c("keep", "remove"),
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
                             verbose = quanteda_options("verbose")) {
-    
+
     x <- as.dfm(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     is_dfm <- FALSE
     feat <- featnames(x)
-    
+
     id <- seq_len(nfeat(x))
     if (is.null(pattern)) {
         if (selection == "keep") {
@@ -104,7 +98,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     } else {
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
-            #.Deprecated(msg = "pattern = dfm is deprecated; use dfm_match() instead")
+            .Deprecated(msg = "pattern = dfm is deprecated; use dfm_match() instead")
             pattern <- featnames(pattern)
             valuetype <- "fixed"
             case_insensitive <- FALSE
@@ -113,8 +107,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             }
         } else if (is.dictionary(pattern)) {
             pattern <- stri_replace_all_fixed(
-                unlist(pattern, use.names = FALSE), 
-                ' ', 
+                unlist(pattern, use.names = FALSE),
+                " ",
                 attr(x, "concatenator")
             )
         }
@@ -127,7 +121,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     } else {
         id <- setdiff(id, id_pat)
     }
-    
+
     if (is_dfm) {
         x <- dfm_match(x, pattern)
     } else {
@@ -141,8 +135,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             id_out <- which(is_short | is_long)
             id <- setdiff(id, id_out)
         }
-        x <- x[, id] 
-    } 
+        x <- x[, id]
+    }
     if (verbose) {
         if ("keep" == selection) {
             message_select("keep", nfeat(x), 0)
@@ -158,7 +152,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #'   `dfm_keep` to `dfm_select`. Cannot include
 #'   `selection`.
 #' @export
-#' @examples 
+#' @examples
 #' dfmat <- dfm(c("This is a document with lots of stopwords.",
 #'                "No if, and, or but about it: lots of stopwords."))
 #' dfmat

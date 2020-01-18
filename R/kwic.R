@@ -9,7 +9,6 @@
 #' @inheritParams pattern
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
-#' @param case_insensitive match without respect to case if `TRUE`
 #' @param separator character to separate words in the output
 #' @param ... additional arguments passed to [tokens], for applicable
 #'   object types

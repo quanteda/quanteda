@@ -1,5 +1,5 @@
 #' Base method extensions for corpus objects
-#' 
+#'
 #' Extensions of base R functions for corpus objects.
 #' @name corpus-class
 #' @param x a corpus object
@@ -9,28 +9,57 @@ NULL
 
 #' @export
 #' @rdname corpus-class
+#' @param max_ndoc integer; number of documents to show text from; 0 shows none,
+#'   and -1 shows all
+#' @param max_nchar integer; number of characters to use when showing the first
+#'   part of the of text; 0 shows none, and -1 shows all
+#' @param show.summary print a brief summary indicating the number of documents
+#'   and docvars
 #' @method print corpus
-print.corpus <- function(x, ...) {
+print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 
+                         max_nchar = quanteda_options("print_corpus_max_nchar"), 
+                         show.summary = quanteda_options("print_corpus_summary"), 
+                         ...) {
     x <- as.corpus(x)
-    cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
-        if (ndoc(x) > 1L) "s" else "", sep = "")
-    if (ncol(docvars(x)))
-        cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar",
-            if (ncol(docvars(x)) == 1L) "" else "s", sep="")
-    cat(".\n")
     
-    # development mode
-    # cat("\n\n")
-    # print(stri_sub(x, 0, 100))
-    # cat("\n")
-    # cat("docvars:\n")
-    # print(attr(x, "docvar"))
-    # cat("\n")
-    # cat("meta:\n")
-    # print(attr(x, "meta"))
-    
-}
+    docvars <- docvars(x)
+    ndoc <- ndoc(x)
+    if (max_ndoc < 0) 
+        max_ndoc <- ndoc(x)
 
+    if (show.summary) {
+        cat("Corpus consisting of ", format(ndoc, big.mark = ","), " document",
+            if (ndoc(x) > 1L) "s" else "", sep = "")
+        if (ncol(docvars))
+            cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
+                if (ncol(docvars) == 1L) "" else "s", sep = "")
+        cat(".\n")
+    }
+
+    if (max_ndoc > 0) {
+        x <- head(texts(x), max_ndoc)
+        label <- paste0(names(x), " :")
+        x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
+        len <- stri_length(x)
+        if (max_nchar < 0) 
+            max_nchar <- max(len)
+        for (i in seq_along(label)) {
+            cat(label[i], "\n", sep = "")
+            cat('"', stri_sub(x[i], 1, max_nchar), sep = "")
+            if (len[i] > max_nchar) {
+                cat('..."\n\n')
+            } else {
+                cat('"\n\n')
+            }
+        }
+        ndoc_rem <- ndoc - max_ndoc
+        if (ndoc_rem > 0)
+            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", " ]\n", sep = "")
+    }
+
+}
+    
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
 #' @rdname corpus-class
 #' @export
@@ -39,10 +68,10 @@ is.corpus <- function(x) {
 }
 
 #' Summarize a corpus
-#' 
+#'
 #' Displays information about a corpus, including attributes and metadata such
 #' as date of number of texts, creation and source.
-#' 
+#'
 #' @param object corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
 #' @param showmeta set to `TRUE` to include document-level
@@ -55,8 +84,8 @@ is.corpus <- function(x) {
 #' @examples
 #' summary(data_corpus_inaugural)
 #' summary(data_corpus_inaugural, n = 10)
-#' corp <- corpus(data_char_ukimmig2010, 
-#'                docvars = data.frame(party=names(data_char_ukimmig2010))) 
+#' corp <- corpus(data_char_ukimmig2010,
+#'                docvars = data.frame(party=names(data_char_ukimmig2010)))
 #' summary(corp, showmeta = TRUE) # show the meta-data
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
@@ -65,7 +94,11 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
     ndoc_all <- ndoc(object)
     object <- head(object, n)
     ndoc_show <- ndoc(object)
-    result <- summarize_texts(texts(object), tolower = tolower, ...)
+    result <- if (!is.null(meta(object, "summary", type = "system"))) {
+        get_summary_metadata(object, ...)
+    } else {
+        summarize_texts(texts(object), tolower = tolower, ...)
+    }
     if (showmeta)
         result <- cbind(result, docvars(object))
     attr(result, "ndoc_all") <- ndoc_all
@@ -78,12 +111,12 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
 #' @rdname corpus-class
 #' @method print summary.corpus
 print.summary.corpus <- function(x, ...) {
-    
+
     ndoc_all <- attr(x, "ndoc_all")
     ndoc_show <- attr(x, "ndoc_show")
 
     cat("Corpus consisting of ", ndoc_all, " document", if (ndoc_all > 1) "s" else "", sep = "")
-    if (!is.null(ndoc_show)) 
+    if (!is.null(ndoc_show))
         cat(", showing ", ndoc_show, " document", if (ndoc_show > 1) "s" else "", sep = "")
     cat(":\n\n")
     print.data.frame(x, row.names = FALSE)
@@ -100,14 +133,14 @@ print.summary.corpus <- function(x, ...) {
 }
 
 #' Return the first or last part of a corpus
-#' 
+#'
 #' For a [corpus] object, returns the first or last `n` documents.
 #' @param x a dfm object
 #' @param n a single integer.  If positive, the number of documents for the
 #'   resulting object: number of first/last documents for the dfm.  If negative,
 #'   all but the n last/first number of documents of x.
 #' @param ... additional arguments passed to other functions
-#' @return A [corpus] class object corresponding to the subset defined 
+#' @return A [corpus] class object corresponding to the subset defined
 #'   by `n`.
 #' @export
 #' @name head.corpus
@@ -115,7 +148,7 @@ print.summary.corpus <- function(x, ...) {
 #' @keywords corpus
 #' @examples
 #' head(data_corpus_irishbudget2010, 3) %>% summary()
-#' 
+#'
 head.corpus <- function(x, n = 6L, ...) {
     x <- as.corpus(x)
     stopifnot(length(n) == 1L)
@@ -136,7 +169,6 @@ tail.corpus <- function(x, n = 6L, ...) {
     sel <- as.integer(seq.int(to = nrx, length.out = n))
     corpus_subset(x, seq_len(ndoc(x)) %in% sel)
 }
-    
 
 #' @rdname corpus-class
 #' @param c1 corpus one to be added
@@ -164,21 +196,34 @@ tail.corpus <- function(x, n = 6L, ...) {
 `+.corpus` <- function(c1, c2) {
     c1 <- as.corpus(c1)
     c2 <- as.corpus(c2)
-    result <- corpus(c(as.character(unclass(c1)), as.character(unclass(c2))),
-                     docvars = rbind_fill(get_docvars(c1), get_docvars(c2)),
-                     meta = meta(c1, type = "user"))
-    meta_system(result) <- meta_system_defaults("corpus+")
+    
+    if (length(intersect(docnames(c1), docnames(c2))))
+        stop("Cannot combine corpora with duplicated document names", 
+             call. = FALSE)
+    #if (!identical(attr(c1, "unit"), attr(c2, "unit")))
+    #    stop("Cannot combine corpora in different units")
+    
+    docvar <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
+                         get_docvars(c2, user = TRUE, system = TRUE))
+    result <- compile_corpus(
+        c(as.character(c1), as.character(c2)), 
+        names = c(docnames(c1), docnames(c2)),
+        unit = attr(c1, "unit"),
+        source = "corpus+",
+        docvars = docvar,
+        meta = meta(c1, type = "user")
+    )
     return(result)
 }
 
 #' @rdname corpus-class
 #' @param recursive logical used by `c()` method, always set to `FALSE`
-#' @examples 
+#' @examples
 #' # concatenate corpus objects
-#' corpus1 <- corpus(data_char_ukimmig2010[1:2])
-#' corpus2 <- corpus(data_char_ukimmig2010[3:4])
-#' corpus3 <- corpus(data_char_ukimmig2010[5:6])
-#' summary(c(corpus1, corpus2, corpus3))
+#' corp1 <- corpus(data_char_ukimmig2010[1:2])
+#' corp2 <- corpus(data_char_ukimmig2010[3:4])
+#' corp3 <- corpus(data_char_ukimmig2010[5:6])
+#' summary(c(corp1, corp2, corp3))
 #' @export
 c.corpus <- function(..., recursive = FALSE) {
     x <- list(...)
@@ -198,36 +243,31 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @param drop if `TRUE`, return a vector if extracting a single document
 #'   variable; if `FALSE`, return it as a single-column data.frame.  See
 #'   [drop()] for further details.
-#' @return 
+#' @return
 #' Indexing a corpus works in three ways, as of v2.x.x:
 #' * `[` returns a subsetted corpus
 #' * `[[` returns the textual contents of a subsetted corpus (similar to [texts()])
 #' * `$` returns a vector containing the single named [docvars]
-#' @examples 
-#' 
+#' @examples
+#'
 #' # two ways to index corpus elements
 #' data_corpus_inaugural["1793-Washington"]
-#' data_corpus_inaugural[2] 
-#' 
+#' data_corpus_inaugural[2]
+#'
 #' # return the text itself
 #' data_corpus_inaugural[["1793-Washington"]]
 `[.corpus` <- function(x, i) {
     x <- as.corpus(x)
     attrs <- attributes(x)
-    if (is.character(i)) {
-        index <- match(i, docnames(x))
-    } else if (is.numeric(i)) {
-        index <- match(i, seq_len(length(x)))
-    } else {
-        index <- which(i)
-    }
-    is_na <- is.na(index)
-    if (any(is_na))
-        stop("Subscript out of bounds")
-    index <- index[!is_na]
     
+    index <- seq_along(docnames(x))
+    names(index) <- docnames(x)
+    index <- index[i]
+    if (any(is.na(index)))
+        stop("Subscript out of bounds")
     x <- unclass(x)[index]
     attrs$docvars <- subset_docvars(attrs$docvars, index)
-    attributes(x, FALSE) <- attrs
+    attrs$names <- attrs$docvars[["docname_"]]
+    attributes(x) <- attrs
     return(x)
 }

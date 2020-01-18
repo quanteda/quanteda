@@ -27,9 +27,9 @@ it will not be removed during normal cleaning and tokenization (while
 nearly all other punctuation characters, at least those in the Unicode
 punctuation class \verb{[P]} will be removed).}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
 \item{window}{integer; a vector of length 1 or 2 that specifies size of the
 window of tokens adjacent to \code{pattern} that will be compounded with matches
@@ -38,9 +38,8 @@ with the first giving the window size before \code{pattern} and the second the
 window size after.  If paddings (empty \code{""} tokens) are found, window will
 be shrunk to exclude them.}
 
-\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching. When
-\code{pattern} is a \code{collocations}, case-sensitive operation is significantly
-faster than case-insensitive operation.}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
@@ -100,7 +99,7 @@ tokens_compound(toks, pattern = compounds, join = TRUE)
 tokens_compound(toks, pattern = compounds, join = FALSE)
 
 # use window to form ngrams
-tokens_remove(toks, pattern = stopwords("en")) \%>\% 
+tokens_remove(toks, pattern = stopwords("en")) \%>\%
     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
-  
+
 }

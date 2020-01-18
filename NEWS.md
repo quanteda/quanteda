@@ -14,27 +14,34 @@
     
     Document-level metadata is deprecated, and now all document-level information is simply a "docvar".  For backward compatibility, `metadoc()` is kept and will insert document variables (docvars) with the name prefixed by an underscore.
     
-3.  Redesigned index operators for core objects.
+3.  Corpus objects now store default summary statistics for efficiency.  When these are present, `summary.corpus()` retrieves them rather than computing them on the fly.
+
+4.  Redesigned index operators for core objects.
 
     TABLE HERE
     
-4.  `*_subset()` functions.  
+5.  `*_subset()` functions.  
 
      The `subset` argument now must be logical, and the `select` argument has been removed.  (This is part of `base::subset()` but has never made sense, either in **quanteda** or **base**!)
 
-5.  Return format from `textstat_simil()` and `textstat_dist()`.
+6.  Return format from `textstat_simil()` and `textstat_dist()`.
 
     Now defaults to a data.frame of pairwise similarities or distances, making these functions return a data.frame just like the other textstat functions.  Coercion methods are provided for `as.dist()`, `as.simil()`, `as.matrix()`, and `as.Matrix()` (producing a ?? sparse symmetric matrix).
     
-6.  settings functions (and related slots and object attributes) are gone.
+7.  settings functions (and related slots and object attributes) are gone.
 
-7.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
+8.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
 
-8.  (Pre-)processing of tokens is now actually post-processing, after a simple tokenization on word boundaries.  This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines.  (#1503, #1446, #1801)
-    
+9.  New print methods for core objects (corpus, tokens, dfm, dictionary) now exist, each with new global options to control the number of documents shown, as well as the length of a text snippet (corpus), the tokens (tokens), dfm cells (dfm), or keys and values (dictionary).
+
+10.  (Pre-)processing of tokens is now actually post-processing, after a simple tokenization on word boundaries.  This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines.  (#1503, #1446, #1801)
+
+
 ## Bug fixes and stability enhancements
 
 *  docnames now enforced to be character (formerly, could be numeric for some objects).
+*  docnames are now enforced to be strictly unique for all object classes.
+*  Grouping operations in `tokens_group()` and `dfm_group()` are more robust to using multiple grouping variables, and preserve these correctly as docvars in the new dfm.  (#1809)
 
 ## New features
 
@@ -42,13 +49,20 @@
 * Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)
 * Added `startpos` and `endpos` arguments to `tokens_select()`, for selecting on token positions relative to the start or end of the tokens in each document. (#1475)
 * Added a `convert()` method for corpus objects, to convert them into data.frame or json formats.
+* Added a `spacy_tokenize()` method for corpus objects, to provide direct access via the **spacyr** package.
 * Added a directionally controllable `window` argument to `tokens_compound()` that compounds the tokens before and after a `pattern` with its token matches.
+
+## Other improvements
+
+* All of the (three) included corpus objects have been cleaned up and augmented with improved meta-data and docvars.  The inaugural speech corpus, for instance, now includes the President's political party affiliation.
+>>>>>>> master
 
 ## Behaviour changes
 
 * Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)  The function `textstat_frequency()` now allows passing this argument to `dfm_group()` via `...`.  (#1646)
 * `textstat_frequency()` now has a new argument for resolving ties when ranking term frequencies, defaulting to the "min" method.  (#1634)
 * New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via `$`.  (See Index Operators for Core Objects above.)
+* `textstat_entropy()` now produces a data.frame that is more consistent with other `textstat` methods.  (#1690)
 
 
 # quanteda 1.5.2

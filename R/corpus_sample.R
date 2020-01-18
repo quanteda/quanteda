@@ -55,6 +55,6 @@ corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, b
         if (is.null(size)) size <- ndoc(x)
         i <- base::sample(ndoc(x), size, replace, prob) 
     }
-    corpus(texts(x)[i], docnames = docnames(x)[i], docvars = get_docvars(x)[i,], 
-           meta = meta(x), unique_docnames = FALSE)
+    
+    return(x[i])
 }

@@ -4,7 +4,7 @@
 \alias{tokens_group}
 \title{Recombine documents tokens by groups}
 \usage{
-tokens_group(x, groups = NULL)
+tokens_group(x, groups = NULL, fill = FALSE)
 }
 \arguments{
 \item{x}{\link{tokens} object}

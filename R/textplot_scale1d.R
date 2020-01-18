@@ -259,7 +259,7 @@ textplot_scale1d_features <- function(x, weight, featlabels,
                           psi = weight,
                           beta = x)
     p <- ggplot(data = results, aes(x = beta, y = psi, label = feature)) + 
-        geom_text(colour = "grey70") +
+        geom_text(colour = "grey70", alpha = alpha) +
         geom_text(aes(beta, psi, label = feature), 
                   data = results[results$feature %in% highlighted,],
                   color = highlighted_color) +

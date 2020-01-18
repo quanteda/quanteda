@@ -42,17 +42,6 @@ corpus_subset.corpus <- function(x, subset, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    # vars <- if (missing(select)) 
-    #     rep_len(TRUE, ncol(usr))
-    # else {
-    #     nl <- as.list(seq_along(usr))
-    #     names(nl) <- names(usr)
-    #     eval(substitute(select), nl, parent.frame())
-    # }
-    x <- x[r]
-    #attr(x, "docvars") <- cbind(reshape_docvars(sys, r),
-    #                            reshape_docvars(usr, r, vars))
-    #attributes(x, FALSE) <- attrs
-    return(x)
-}
 
+    return(x[r])
+}

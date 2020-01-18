@@ -43,6 +43,7 @@ setClass("dfm",
                           meta = list(user = list(), system = list())),
          contains = "dgCMatrix")
 
+
 ## S4 method dfm objects
 #' @export
 #' @param x the dfm object

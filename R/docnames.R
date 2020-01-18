@@ -1,5 +1,3 @@
-# docnames ----------------
-
 #' Get or set document names
 #' 
 #' Get or set the document names of a [corpus], [tokens], or [dfm] object.
@@ -37,6 +35,12 @@ docnames.corpus <- function(x) {
     get_docvars(x, "docname_", FALSE, TRUE, TRUE)
 }
 
+#' @noRd
+#' @export
+docnames.tokens <- function(x) {
+    get_docvars(x, "docname_", FALSE, TRUE, TRUE)
+}
+
 #' @param value a character vector of the same length as `x`
 #' @return `docnames <-` assigns new values to the document names of an object.  
 #' docnames can only be character, so any non-character value assigned to be a
@@ -60,7 +64,8 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- as.character(value)
+    value <- make_docnames(value)
+    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
@@ -68,7 +73,8 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    attributes(x)[["names"]] <- attr(x, "docvars")[["docname_"]] <- as.character(value)
+    value <- make_docnames(value)
+    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
     return(x)
 }
 
@@ -76,7 +82,15 @@ docnames.corpus <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- as.character(value)
+    value <- make_docnames(value)
+    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
+    return(x)
+}
+
+make_docnames <- function(x) {
+    x <- stri_trans_nfc(as.character(x))
+    if (any(duplicated(x)))
+        x <- paste0(x, ".", stats::ave(x == x, x, FUN = cumsum))
     return(x)
 }
 

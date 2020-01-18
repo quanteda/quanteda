@@ -13,9 +13,6 @@
 #'   nearly all other punctuation characters, at least those in the Unicode
 #'   punctuation class `[P]` will be removed).
 #' @inheritParams valuetype
-#' @param case_insensitive logical; if `TRUE`, ignore case when matching. When
-#'   `pattern` is a `collocations`, case-sensitive operation is significantly
-#'   faster than case-insensitive operation.
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
 #' @param window integer; a vector of length 1 or 2 that specifies size of the
@@ -67,11 +64,11 @@
 #' compounds <- list(c("the", "European"), c("European", "Union"))
 #' tokens_compound(toks, pattern = compounds, join = TRUE)
 #' tokens_compound(toks, pattern = compounds, join = FALSE)
-#' 
+#'
 #' # use window to form ngrams
-#' tokens_remove(toks, pattern = stopwords("en")) %>% 
+#' tokens_remove(toks, pattern = stopwords("en")) %>%
 #'     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
-#'   
+#'
 tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     window = 0,
@@ -93,15 +90,15 @@ tokens_compound.tokens <- function(x, pattern,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    window = 0,
                    case_insensitive = TRUE, join = TRUE) {
-    
+
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     types <- types(x)
-    
+
     seqs_id <- pattern2list(pattern, types, valuetype, case_insensitive, remove_unigram = FALSE)
     if (length(seqs_id) == 0) return(x) # do nothing
-    
+
     if (any(window < 0)) stop("window sizes cannot be negative")
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)

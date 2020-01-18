@@ -27,8 +27,8 @@ convert(x, to, ...)
 needed by the function
 \link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
 \pkg{lda} package}
-\item{\code{"tm"}}{a \link[tm:DocumentTermMatrix]{DocumentTermMatrix} from the
-\pkg{tm} package}
+\item{\code{"tm"}}{a \link[tm:matrix]{DocumentTermMatrix} from the \pkg{tm}
+package}
 \item{\code{"stm"}}{the  format for the \pkg{stm} package} \item{\code{"austin"}}{the
 \code{wfm} format from the \strong{austin} package}
 \item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels}
@@ -39,7 +39,8 @@ used by the \pkg{lsa} package}
 are rows, and each feature is a variable (for a dfm),
 or each text and its document variables form a row (for a corpus)}
 \item{\code{"json"}}{(corpus only) convert a corpus and its document variables
-into JSON format, using the format described in \code{\link[jsonlite:toJSON]{jsonlite::toJSON}}}
+into JSON format, using the format described in
+\link[jsonlite:fromJSON]{jsonlite::toJSON()}}
 \item{\code{"tripletlist"}}{a named "triplet" format list consisting of
 \code{document}, \code{feature}, and \code{frequency}}
 }}

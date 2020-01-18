@@ -10,7 +10,13 @@
 \alias{[.corpus}
 \title{Base method extensions for corpus objects}
 \usage{
-\method{print}{corpus}(x, ...)
+\method{print}{corpus}(
+  x,
+  max_ndoc = quanteda_options("print_corpus_max_ndoc"),
+  max_nchar = quanteda_options("print_corpus_max_nchar"),
+  show.summary = quanteda_options("print_corpus_summary"),
+  ...
+)
 
 is.corpus(x)
 
@@ -24,6 +30,15 @@ is.corpus(x)
 }
 \arguments{
 \item{x}{a corpus object}
+
+\item{max_ndoc}{integer; number of documents to show text from; 0 shows none,
+and -1 shows all}
+
+\item{max_nchar}{integer; number of characters to use when showing the first
+part of the of text; 0 shows none, and -1 shows all}
+
+\item{show.summary}{print a brief summary indicating the number of documents
+and docvars}
 
 \item{c1}{corpus one to be added}
 
@@ -75,14 +90,14 @@ character vectors and never as factors.
 }
 \examples{
 # concatenate corpus objects
-corpus1 <- corpus(data_char_ukimmig2010[1:2])
-corpus2 <- corpus(data_char_ukimmig2010[3:4])
-corpus3 <- corpus(data_char_ukimmig2010[5:6])
-summary(c(corpus1, corpus2, corpus3))
+corp1 <- corpus(data_char_ukimmig2010[1:2])
+corp2 <- corpus(data_char_ukimmig2010[3:4])
+corp3 <- corpus(data_char_ukimmig2010[5:6])
+summary(c(corp1, corp2, corp3))
 
 # two ways to index corpus elements
 data_corpus_inaugural["1793-Washington"]
-data_corpus_inaugural[2] 
+data_corpus_inaugural[2]
 
 # return the text itself
 data_corpus_inaugural[["1793-Washington"]]

@@ -13,7 +13,6 @@
 #' @param replacement a character vector or (if `pattern` is a list) list
 #'   of character vectors of the same length as `pattern`
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if `TRUE`
 #' @param verbose print status messages if `TRUE`
 #' @export
 #' @seealso tokens_lookup

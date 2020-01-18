@@ -5,46 +5,43 @@
 #' @param x character, [corpus], [tokens], or [dfm] object
 #' @param tolower convert all features to lowercase
 #' @param stem if `TRUE`, stem words
-#' @param remove a [pattern] of user-supplied features to ignore, such as
-#'   "stop words".  To access one possible list (from any list you wish), use
-#'   [stopwords()].  The pattern matching type will be set by
-#'   `valuetype`.  See also [tokens_select()].  For behaviour of
-#'   `remove` with `ngrams > 1`, see Details.
+#' @param remove a [pattern] of user-supplied features to ignore, such as "stop
+#'   words".  To access one possible list (from any list you wish), use
+#'   [stopwords()].  The pattern matching type will be set by `valuetype`.  See
+#'   also [tokens_select()].  For behaviour of `remove` with `ngrams > 1`, see
+#'   Details.
 #' @param select a  [pattern]  of user-supplied features to keep, while
 #'   excluding all others.  This can be used in lieu of a dictionary if there
 #'   are only specific features that a user wishes to keep. To extract only
-#'   Twitter usernames, for example, set `select = "@@*"` and make sure
-#'   that `remove_twitter = FALSE` as an additional argument passed to
-#'   [tokens].  Note: `select = "^@@\\\w+\\\b"` would be the regular
-#'   expression version of this matching pattern.  The pattern matching type
-#'   will be set by `valuetype`.  See also [tokens_remove()].
-#' @param dictionary a [dictionary] object to apply to the tokens when
-#'   creating the dfm
-#' @param thesaurus a [dictionary] object that will be applied as if
-#'   `exclusive = FALSE`. See also [tokens_lookup()].  For more
-#'   fine-grained control over this and other aspects of converting features
-#'   into dictionary/thesaurus keys from pattern matches to values, consider
-#'   creating the dfm first, and then applying [dfm_lookup()]
-#'   separately, or using [tokens_lookup()] on the tokenized text
-#'   before calling `dfm`.
+#'   Twitter usernames, for example, set `select = "@@*"` and make sure that
+#'   `remove_twitter = FALSE` as an additional argument passed to [tokens].
+#'   Note: `select = "^@@\\\w+\\\b"` would be the regular expression version of
+#'   this matching pattern.  The pattern matching type will be set by
+#'   `valuetype`.  See also [tokens_remove()].
+#' @param dictionary a [dictionary] object to apply to the tokens when creating
+#'   the dfm
+#' @param thesaurus a [dictionary] object that will be applied as if `exclusive
+#'   = FALSE`. See also [tokens_lookup()].  For more fine-grained control over
+#'   this and other aspects of converting features into dictionary/thesaurus
+#'   keys from pattern matches to values, consider creating the dfm first, and
+#'   then applying [dfm_lookup()] separately, or using [tokens_lookup()] on the
+#'   tokenized text before calling `dfm`.
 #' @inheritParams valuetype
 #' @inheritParams groups
-#' @note When `x` is a [dfm], `groups` provides a convenient and
-#'   fast method of combining and refactoring the documents of the dfm according
-#'   to the groups.
+#' @note When `x` is a [dfm], `groups` provides a convenient and fast method of
+#'   combining and refactoring the documents of the dfm according to the groups.
 #' @param verbose display messages if `TRUE`
-#' @param ... additional arguments passed to [tokens]; not used when `x`
-#'   is a [dfm]
-#' @details The default behaviour for `remove`/`select` when
-#'   constructing ngrams using `dfm(x, ` *ngrams > 1*`)` is to
-#'   remove/select any ngram constructed from a matching feature.  If you wish
-#'   to remove these before constructing ngrams, you will need to first tokenize
-#'   the texts with ngrams, then remove the features to be ignored, and then
-#'   construct the dfm using this modified tokenization object.  See the code
-#'   examples for an illustration.
+#' @param ... additional arguments passed to [tokens]; not used when `x` is a
+#'   [dfm]
+#' @details The default behaviour for `remove`/`select` when constructing ngrams
+#'   using `dfm(x, ` *ngrams > 1*`)` is to remove/select any ngram constructed
+#'   from a matching feature.  If you wish to remove these before constructing
+#'   ngrams, you will need to first tokenize the texts with ngrams, then remove
+#'   the features to be ignored, and then construct the dfm using this modified
+#'   tokenization object.  See the code examples for an illustration.
 #'
-#'   To select on and match the features of a another [dfm], `x` must
-#'   also be a [dfm].
+#'   To select on and match the features of a another [dfm], `x` must also be a
+#'   [dfm].
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -109,7 +106,7 @@
 #'             groups = ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"),
 #'                             "Govt", "Opposition"),
 #'             tolower = FALSE, verbose = TRUE)
-#'
+#' 
 dfm <- function(x,
                 tolower = TRUE,
                 stem = FALSE,
@@ -118,6 +115,7 @@ dfm <- function(x,
                 dictionary = NULL,
                 thesaurus = NULL,
                 valuetype = c("glob", "regex", "fixed"),
+                case_insensitive = TRUE,
                 groups = NULL,
                 verbose = quanteda_options("verbose"),
                 ...) {
@@ -156,6 +154,7 @@ dfm.character <- function(x,
                           dictionary = NULL,
                           thesaurus = NULL,
                           valuetype = c("glob", "regex", "fixed"),
+                          case_insensitive = TRUE,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
@@ -163,7 +162,10 @@ dfm.character <- function(x,
         tolower = tolower,
         stem = stem,
         select = select, remove = remove,
-        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype,
+        dictionary = dictionary, 
+        thesaurus = thesaurus, 
+        valuetype = valuetype,
+        case_insensitive = case_insensitive,
         groups = groups,
         verbose = verbose)
 }
@@ -180,6 +182,7 @@ dfm.corpus <- function(x,
                        dictionary = NULL,
                        thesaurus = NULL,
                        valuetype = c("glob", "regex", "fixed"),
+                       case_insensitive = TRUE,
                        groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
@@ -189,6 +192,7 @@ dfm.corpus <- function(x,
                select = select, remove = remove,
                dictionary = dictionary, thesaurus = thesaurus,
                valuetype = valuetype,
+               case_insensitive = case_insensitive,
                groups = groups,
                verbose = verbose)
 }
@@ -204,6 +208,7 @@ dfm.tokens <- function(x,
                        dictionary = NULL,
                        thesaurus = NULL,
                        valuetype = c("glob", "regex", "fixed"),
+                       case_insensitive = TRUE,
                        groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
@@ -242,7 +247,7 @@ dfm.tokens <- function(x,
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")
-        x <- tokens_group(x, groups)
+        x <- tokens_group(x, groups, fill = FALSE)
     }
 
     # use tokens_lookup for tokens objects
@@ -252,6 +257,7 @@ dfm.tokens <- function(x,
         x <- tokens_lookup(x, dictionary,
                            exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                            valuetype = valuetype,
+                           case_insensitive = case_insensitive,
                            verbose = verbose)
     }
 
@@ -264,6 +270,7 @@ dfm.tokens <- function(x,
                            pattern = if (!is.null(remove)) remove else select,
                            selection = if (!is.null(remove)) "remove" else "keep",
                            valuetype = valuetype,
+                           case_insensitive = case_insensitive,
                            verbose = verbose)
     }
 
@@ -287,6 +294,7 @@ dfm.dfm <- function(x,
                     dictionary = NULL,
                     thesaurus = NULL,
                     valuetype = c("glob", "regex", "fixed"),
+                    case_insensitive = TRUE,
                     groups = NULL,
                     verbose = quanteda_options("verbose"),
                     ...) {
@@ -295,14 +303,9 @@ dfm.dfm <- function(x,
     valuetype <- match.arg(valuetype)
     check_dots(list(...))
 
-    if (tolower) {
-        if (verbose) catm("   ... lowercasing\n", sep = "")
-        x <- dfm_tolower(x)
-    }
-
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")
-        x <- dfm_group(x, groups)
+        x <- dfm_group(x, groups, fill = FALSE)
     }
 
     if (!is.null(dictionary) || !is.null(thesaurus)) {
@@ -311,6 +314,7 @@ dfm.dfm <- function(x,
         x <- dfm_lookup(x, dictionary,
                         exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                         valuetype = valuetype,
+                        case_insensitive = case_insensitive,
                         verbose = verbose)
     }
 
@@ -328,9 +332,15 @@ dfm.dfm <- function(x,
                         pattern = if (!is.null(remove)) remove else select,
                         selection = if (!is.null(remove)) "remove" else "keep",
                         valuetype = valuetype,
+                        case_insensitive = case_insensitive,
                         verbose = verbose)
     }
-
+    
+    if (tolower) {
+        if (verbose) catm("   ... lowercasing\n", sep = "")
+        x <- dfm_tolower(x)
+    }
+    
     language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose)
@@ -372,6 +382,7 @@ compile_dfm <- function(x, verbose = TRUE) {
 compile_dfm.tokens <- function(x, verbose = TRUE) {
 
     types <- types(x)
+    attrs <- attributes(x)
     x <- unclass(x)
 
     # shift index for padding, if any
@@ -385,9 +396,9 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                   sparseMatrix(j = index,
                                p = cumsum(c(1, lengths(x))) - 1,
                                x = 1L,
-                               dims = c(length(names(x)), 
+                               dims = c(length(x), 
                                         length(types))))
-    set_dfm_dimnames(result) <- list(names(x), types)
+    set_dfm_dimnames(result) <- list(attrs$docvars[["docname_"]], types)
     return(result)
 }
 
@@ -440,7 +451,7 @@ force_conformance <- function(x, feature, force) {
             warning(n, " feature", if (n == 1) "" else "s",
                     " in newdata not used in prediction.",
                     call. = FALSE, noBreaks. = TRUE)
-        return(dfm_select(x, make_null_dfm(feature)))
+        return(dfm_match(x, feature))
     } else {
         if (!identical(featnames(x), feature))
             stop("newdata's feature set is not conformant to model terms.")
