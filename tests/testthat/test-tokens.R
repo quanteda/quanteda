@@ -836,3 +836,75 @@ test_that("test that what = \"word\" works the same as \"fast(er|est)\" word", {
     expect_equal(tokens(chars, what = "word", remove_hyphens = TRUE) %>% as.list(),
                  tokens(chars, what = "fastestword", remove_hyphens = TRUE) %>% as.list())
 })
+
+
+test_that("tokens printing works", {
+    
+    toks <- tokens(data_corpus_irishbudget2010)
+    expect_silent(
+        print(toks, max_ndoc = 0, max_ntoken = 0, show.summary = FALSE)
+    )
+    expect_output(
+        print(toks, max_ndoc = 0, max_ntoken = 0, show.summary = TRUE),
+        "Tokens consisting of 14 documents and 6 docvars.", 
+        fixed = TRUE
+    )
+    expect_output(
+        print(toks, max_ndoc = 2, max_ntoken = 3, show.summary = TRUE),
+            paste0('Tokens consisting of 14 documents and 6 docvars.\n',
+                   'Lenihan, Brian (FF) :\n',
+                   '[1] "When"      "I"         "presented"\n',
+                   '[ ... and 8638 more ]\n\n',
+                   'Bruton, Richard (FG) :\n',
+                   '[1] "This"      "draconian" "budget"   \n',
+                   '[ ... and 4443 more ]\n\n',
+                   '[ reached max_ndoc ... 12 more documents ]'),
+        fixed = TRUE
+    )
+    
+    expect_output(
+        print(toks, max_ndoc = 2, max_ntoken = 3, show.summary = FALSE),
+        paste0('Lenihan, Brian (FF) :\n',
+               '[1] "When"      "I"         "presented"\n',
+               '[ ... and 8638 more ]\n\n',
+               'Bruton, Richard (FG) :\n',
+               '[1] "This"      "draconian" "budget"   \n',
+               '[ ... and 4443 more ]\n\n',
+               '[ reached max_ndoc ... 12 more documents ]'),
+        fixed = TRUE 
+    )
+    expect_output(
+        print(toks[1:2], max_ndoc = 2, max_ntoken = 3, show.summary = FALSE),
+        paste0('Lenihan, Brian (FF) :\n',
+               '[1] "When"      "I"         "presented"\n',
+               '[ ... and 8638 more ]\n\n',
+               'Bruton, Richard (FG) :\n',
+               '[1] "This"      "draconian" "budget"   \n',
+               '[ ... and 4443 more ]\n'),
+        fixed = TRUE 
+    )
+    
+    expect_output(
+        print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 2),
+        paste0('Tokens consisting of 1 document.\n',
+               'text1 :\n',
+               '[1] "a" "b"\n',
+               '[ ... and 2 more ]\n'),
+        fixed = TRUE 
+    )
+    expect_output(
+        print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 4),
+        paste0('Tokens consisting of 1 document.\n',
+               'text1 :\n',
+               '[1] "a" "b" "c" "d"'),
+        fixed = TRUE 
+    )
+    expect_output(
+        print(tokens("a b c d"), max_ndoc = -1, max_ntoken = -1),
+        paste0('Tokens consisting of 1 document.\n',
+               'text1 :\n',
+               '[1] "a" "b" "c" "d"'),
+        fixed = TRUE 
+    )
+})
+

@@ -47,13 +47,45 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @export
 #' @method print tokens
 #' @noRd
-print.tokens <- function(x, ...) {
-    cat(class(x)[1], " from ", ndoc(x), " document",
-        if (ndoc(x) > 1L) "s" else "", ".\n", sep = "")
-    types <- c("", types(x))
-    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
-    class(x) <- "listof"
-    print(x, ...)
+print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
+                         max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
+                         show.summary = quanteda_options("print_tokens_summary"),
+                         ...) {
+    
+    docvars <- docvars(x)
+    ndoc <- ndoc(x)
+    if (max_ndoc < 0) 
+        max_ndoc <- ndoc(x)
+    
+    if (show.summary) {
+        cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
+            if (ndoc > 1L) "s" else "", sep = "")
+        if (ncol(docvars))
+            cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
+                if (ncol(docvars) == 1L) "" else "s", sep = "")
+        cat(".\n")
+    }
+
+    if (max_ndoc > 0) {
+        x <- head(x, max_ndoc)
+        label <- paste0(names(x), " :")
+        types <- c("", types(x))
+        len <- lengths(x)
+        if (max_ntoken < 0) 
+            max_ntoken <- max(len)
+        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
+        for (i in seq_along(label)) {
+            cat(label[i], "\n", sep = "")
+            print(x[[i]])
+            if (len[i] > max_ntoken)
+                cat("[ ... and ",  len[i] - max_ntoken, " more ]\n", sep = "")
+            cat("\n", sep = "")
+        }
+        ndoc_rem <- ndoc - max_ndoc
+        if (ndoc_rem > 0)
+            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+                if (ndoc_rem > 1) "s", " ]\n", sep = "")
+    }
 }
 
 

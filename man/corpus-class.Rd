@@ -12,8 +12,8 @@
 \usage{
 \method{print}{corpus}(
   x,
-  ndoc = quanteda_options("print_corpus_max_ndoc"),
-  nchar = quanteda_options("print_corpus_max_nchar"),
+  max_ndoc = quanteda_options("print_corpus_max_ndoc"),
+  max_nchar = quanteda_options("print_corpus_max_nchar"),
   show.summary = quanteda_options("print_corpus_summary"),
   ...
 )
@@ -31,10 +31,11 @@ is.corpus(x)
 \arguments{
 \item{x}{a corpus object}
 
-\item{ndoc}{integer; number of documents to show text from; 0 shows none, and -1 shows all}
+\item{max_ndoc}{integer; number of documents to show text from; 0 shows none,
+and -1 shows all}
 
-\item{nchar}{integer; number of characters to use when showing the first part of the
-of text; 0 shows none, and -1 shows all}
+\item{max_nchar}{integer; number of characters to use when showing the first
+part of the of text; 0 shows none, and -1 shows all}
 
 \item{show.summary}{print a brief summary indicating the number of documents
 and docvars}
