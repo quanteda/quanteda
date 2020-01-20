@@ -187,12 +187,11 @@ ntype.tokens <- function(x, ...) {
 #' 
 #' Return the count of sentences in a corpus or character object.
 #' @param x a character or [corpus] whose sentences will be counted
-#' @param ... additional arguments passed to [tokens()]
-#' @note `nsentence()` relies on the boundaries definitions in the
-#'   \pkg{stringi} package (see [stri_opts_brkiter][stringi::stri_opts_brkiter]).  It does not
+#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+#'   package (see [stri_opts_brkiter][stringi::stri_opts_brkiter]).  It does not
 #'   count sentences correctly if the text has been transformed to lower case,
-#'   and for this reason `nsentence()` will issue a warning if it detects
-#'   all lower-cased text.
+#'   and for this reason `nsentence()` will issue a warning if it detects all
+#'   lower-cased text.
 #' @return count(s) of the total sentences per text
 #' @examples
 #' # simple example
@@ -201,34 +200,35 @@ ntype.tokens <- function(x, ...) {
 #'          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
 #' nsentence(txt)
 #' @export
-nsentence <- function(x, ...) {
+nsentence <- function(x) {
     UseMethod("nsentence")
 }
 
 #' @export
-nsentence.default <- function(x, ...) {
+nsentence.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "nsentence"))
 }
 
 #' @export
-nsentence.character <- function(x, ...) {
+#' @importFrom tokenizers tokenize_sentences
+nsentence.character <- function(x) {
     upcase <-
         try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
     } else if (!upcase)
         warning("nsentence() does not correctly count sentences in all lower-cased text")
-    lengths(tokens(x, what = "sentence", ...))
+    lengths(tokenizers::tokenize_sentences(x))
 }
 
 #' @export
-nsentence.corpus <- function(x, ...) {
+nsentence.corpus <- function(x) {
     x <- as.corpus(x)
-    nsentence(texts(x), ...)
+    nsentence(texts(x))
 }
 
 #' @export
-nsentence.tokens <- function(x, ...) {
+nsentence.tokens <- function(x) {
     x <- as.tokens(x)
     if (attr(x, "what") != "sentence")
         stop("nsentence on a tokens object only works if what = \"sentence\"")

@@ -349,6 +349,7 @@ tokenization
 tokenizedTexts
 tokenizeOnly
 tokenizer
+tokenizers
 toLower
 topicmodels
 TR

@@ -224,7 +224,7 @@ textstat_lexdiv.tokens <-
     tokens_only_measures <-  c("MATTR", "MSTTR")
 
     # additional token handling
-    x <- tokens(x, remove_hyphens = remove_hyphens,
+    x <- tokens(x, split_infix_hyphens = remove_hyphens,
                 remove_numbers = remove_numbers,
                 remove_symbols = remove_symbols)
 

@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.9.9009
+Version: 1.9.9010
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -51,6 +51,7 @@ Imports:
     spacyr,
     stopwords,
     stringi,
+    tokenizers,
     xml2,
     yaml,
     proxyC (>= 0.1.4)
@@ -167,6 +168,7 @@ Collate:
     'textstat_readability.R'
     'textstat_simil.R'
     'textstat_simil_old.R'
+    'tokenize.R'
     'tokens-methods-base.R'
     'tokens.R'
     'tokens_chunk.R'
