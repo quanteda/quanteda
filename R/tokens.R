@@ -88,14 +88,6 @@
 #'     "The quick brown fox.  It jumped over the lazy dog.") %>%
 #'     tokens()
 #'
-#' # ngram tokenization
-#' tokens(txt[1:2], remove_punct = TRUE, ngrams = 2)
-#' tokens(txt[1:2], remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-#' tokens(txt[1:2], remove_punct = TRUE, ngrams = 1:2)
-#' 
-#' # removing features from ngram tokens
-#' tokens(txt, remove_punct = TRUE, ngrams = 1:2) %>%
-#'     tokens_remove(stopwords("english"))
 tokens <-  function(x,
                     remove_punct = FALSE,
                     remove_symbols = FALSE,
@@ -152,7 +144,7 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     }
     if ("remove_hyphens" %in% names(dots)) {
         dots$split_infix_hyphens <- dots$remove_hyphens
-        .Deprecated(msg = "'remove_hyphens' argument is defunct, use 'split_infix_hyphens' instead.")
+        .Deprecated(msg = "'remove_hyphens' argument is deprecated, use 'split_infix_hyphens' instead.")
         dots$remove_hyphens <- NULL
     }
     
@@ -174,7 +166,7 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- as.tokens(do.call(tokenizer_fn, c(list(x = x), dots)))
     
     # post process if legacy fasterword or fastestword
-    if (stri_startswith_fixed(what, "fast")) {
+    if (stri_startswith_fixed(what, "fast") && stri_startswith_fixed(what, "sentence")) {
         result <- do.call(tokens, c(list(x = result), dots))
     }
 

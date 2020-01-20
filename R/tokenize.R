@@ -13,7 +13,7 @@
 #' @examples
 #' txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
 #'          doc2 = "The £1,000,000 question.",
-#'          doc3 = "毎日#quantedaを使用してください！")
+#'          doc3 = "毎日 #quanteda を使用してください！")
 #' tokenize(txt)
 #' tokenize(txt, remove_symbols = TRUE, remove_punct = TRUE)
 #' tokenize(txt, remove_symbols = TRUE, remove_punct = TRUE, remove_url = TRUE)

@@ -38,7 +38,7 @@
 
     -  A new method `tokens.list(x, ...)` constructs a `tokens` object from named list of characters, allowing users to tokenize texts using some other function (or package) such as `tokenize_words()`, `tokenize_sentences()`, or `tokenize_tweets()` from the **tokenizers** package, or the list returned by `spacyr::spacy_tokenize()`.  
     
-    -  All `remove_*` options to `tokens()` now remove them from tokens objects by calling `tokens.tokens()`, after consructing the object.  "Pre-processing" is now  actually post-processing using `tokens_*()` methods internally.  after a simple tokenization on word boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (#1503, #1446, #1801)    
+    -  All `remove_*` options to `tokens()` now remove them from tokens objects by calling `tokens.tokens()`, after consTructing the object.  "Pre-processing" is now  actually post-processing using `tokens_*()` methods internally.  after a simple tokenization on word boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (#1503, #1446, #1801)    
     
     -  To maintain consistency with current behaviour, a new quanteda function named `tokenize()` now provides functionality similar to the pre-v2 `what = "word"` options.  The option `what` is removed from the function signature but still works, although its use is deprecated. 
     

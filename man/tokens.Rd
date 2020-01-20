@@ -114,14 +114,6 @@ tokenizers::tokenize_sentences(
     "The quick brown fox.  It jumped over the lazy dog.") \%>\%
     tokens()
 
-# ngram tokenization
-tokens(txt[1:2], remove_punct = TRUE, ngrams = 2)
-tokens(txt[1:2], remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-tokens(txt[1:2], remove_punct = TRUE, ngrams = 1:2)
-
-# removing features from ngram tokens
-tokens(txt, remove_punct = TRUE, ngrams = 1:2) \%>\%
-    tokens_remove(stopwords("english"))
 }
 \seealso{
 \code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=as.list.tokens]{as.list.tokens()}}, \code{\link[=as.tokens]{as.tokens()}}
