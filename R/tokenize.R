@@ -86,7 +86,7 @@ tokenize.character <- function(x,
 
     if (!remove_symbols) {
         # anything with a symbol not also a tag
-        index_symbols <- stri_detect_charclass(out, "\\p{S}") && !index_tag
+        index_symbols <- stri_detect_charclass(out, "\\p{S}") & !index_tag
     }
 
     # handle URLs and email addresses
