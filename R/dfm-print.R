@@ -15,7 +15,7 @@ NULL
 #' @param ... further arguments passed to `Matrix::printSpMatrix2`
 #' @seealso [quanteda_options()]
 #' @export
-#' @rdname print.dfm
+#' @rdname print
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, 
@@ -23,6 +23,7 @@ setMethod("print", signature(x = "dfm"),
                    max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show.summary = TRUE, 
                    ...) {
+              unused_dots(...)
               if (show.summary) {
                   docvars <- docvars(x)
                   cat("Document-feature matrix of: ",

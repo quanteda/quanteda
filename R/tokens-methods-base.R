@@ -42,16 +42,16 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 
 #' print a tokens objects
 #' print method for a tokens object
+#' @rdname print
 #' @param x a tokens object created by [tokens()]
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method print tokens
-#' @noRd
 print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
                          show.summary = quanteda_options("print_tokens_summary"),
                          ...) {
-    
+    unused_dots(...)
     docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0) 

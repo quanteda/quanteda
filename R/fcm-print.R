@@ -1,8 +1,9 @@
-#' @rdname print.dfm
+#' @rdname print
 #' @export
 setMethod("print", signature(x = "fcm"), 
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show.summary = TRUE, ...) {
+              unused_dots(...)
               if (show.summary) {
                 cat("Feature co-occurrence matrix of: ",
                     format(ndoc(x), big.mark = ","), " by ",

@@ -2,30 +2,13 @@
 % Please edit documentation in R/dfm-print.R, R/fcm-print.R, R/fcm.R
 \name{print.dfm}
 \alias{print.dfm}
-\alias{print,dfm-method}
 \alias{show,dfm-method}
-\alias{print,fcm-method}
 \alias{show,fcm-method}
 \alias{head.fcm}
 \alias{tail.fcm}
 \title{Print a dfm object}
 \usage{
-\S4method{print}{dfm}(
-  x,
-  max_ndoc = quanteda_options("print_dfm_max_ndoc"),
-  max_nfeat = quanteda_options("print_dfm_max_nfeat"),
-  show.summary = TRUE,
-  ...
-)
-
 \S4method{show}{dfm}(object)
-
-\S4method{print}{fcm}(
-  x,
-  max_nfeat = quanteda_options("print_dfm_max_nfeat"),
-  show.summary = TRUE,
-  ...
-)
 
 \S4method{show}{fcm}(object)
 
@@ -34,26 +17,10 @@
 \method{tail}{fcm}(x, n = 6L, nfeature = 6L, ...)
 }
 \arguments{
-\item{x}{the dfm to be printed}
-
-\item{max_ndoc}{max number of documents to print; default is from the
-\code{print_dfm_max_ndoc} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
-
-\item{max_nfeat}{max number of features to print; default is from the
-\code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
-
-\item{show.summary}{print a brief summary indicating the number of documents
-and features}
-
-\item{...}{further arguments passed to \code{Matrix::printSpMatrix2}}
-
 \item{object}{the item to be printed}
 }
 \description{
 Print methods for document-feature matrices
-}
-\seealso{
-\code{\link[=quanteda_options]{quanteda_options()}}
 }
 \keyword{dfm}
 \keyword{internal}
