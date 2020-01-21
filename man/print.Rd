@@ -6,8 +6,7 @@
 \alias{print,dfm-method}
 \alias{print,fcm-method}
 \alias{print.tokens}
-\title{print a tokens objects
-print method for a tokens object}
+\title{print a tokens objects print method for a tokens object}
 \usage{
 \method{print}{corpus}(
   x,
@@ -56,10 +55,12 @@ and features}
 
 \item{max_nfeat}{max number of features to print; default is from the
 \code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
+
+\item{max_ntoken}{integer; number of tokens to use when showing the first
+part of the of text; 0 shows none, and -1 shows all}
 }
 \description{
-print a tokens objects
-print method for a tokens object
+print a tokens objects print method for a tokens object
 }
 \seealso{
 \code{\link[=quanteda_options]{quanteda_options()}}
