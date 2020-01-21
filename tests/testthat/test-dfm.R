@@ -194,21 +194,6 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
     expect_equal(nfeat(generate_testdfm(10001)), 10027)
 })
 
-test_that("dfm print works as expected", {
-    testdfm <- dfm(tokens(data_corpus_irishbudget2010))
-    expect_output(print(testdfm),
-                  "^Document-feature matrix of: 14 documents, 5,140 features \\(81.2% sparse\\)")
-    expect_output(print(testdfm[1:5, 1:5]),
-                  "^Document-feature matrix of: 5 documents, 5 features \\(28.0% sparse\\).*")
-
-    expect_equal(dim(head(testdfm[, 1:100], 2)), c(2, 100))
-    expect_is(head(testdfm, 2), "dfm")
-
-    expect_equal(dim(tail(testdfm, 2, 8)), c(2, 8))
-    expect_equal(dim(tail(testdfm[, 1:100], 2)), c(2, 100))
-    expect_is(tail(testdfm[, 1:100], 2), "dfm")
-})
-
 test_that("dfm.dfm works as expected", {
     corp <- data_corpus_irishbudget2010
     toks <- tokens(corp)
@@ -575,39 +560,33 @@ test_that("dfm head, tail work as expected", {
 })
 
 test_that("dfm print works with options as expected", {
-    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
+    dfmt <- dfm(data_corpus_irishbudget2010, 
+               remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     expect_output(
-        print(tmp[1:5, 1:5]),
-        "Document-feature matrix of: 5 documents, 5 features.*5 x 5 sparse Matrix"
+        print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
+        paste0("^Document-feature matrix of: 14 documents, 5,055 features \\(80\\.9% sparse\\) and 6 docvars\\.",
+               ".*",
+               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 5,045 more features \\]$")
     )
     expect_output(
-        print(tmp[1:5, 1:5], show.values = FALSE),
-        "^Document-feature matrix of: 5 documents, 5 features \\(28.0% sparse\\)\\.$"
+        print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
+               ".*",
+               "Cowen, Brian \\(FF\\)\\s+4\\s+17\\s+0\\s+394\\s+0$")
     )
     expect_output(
-        print(tmp[1:3, 1:3], ndoc = 2, nfeat = 2, show.values = TRUE),
-        "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix.*features"
+        print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
+               ".*",
+               "Cowen, Brian \\(FF\\)\\s+4\\s+17\\s+0\\s+394\\s+0$")
     )
     expect_output(
-        print(tmp[1:3, 1:3], ndoc = 2, nfeat = 2),
-        "^Document-feature matrix of: 3 documents, 3 features \\(22.2% sparse\\)\\.$"
-    )
-    expect_output(
-        print(tmp[1:5, 1:5], show.summary = FALSE),
-        "^5 x 5 sparse Matrix"
+        print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = FALSE),
+        paste0("^\\s+features",
+               ".*",
+               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 5,045 more features \\]$")
     )
 
-    # with options (#756)
-    quanteda_options(print_dfm_max_ndoc = 22L)
-    quanteda_options(print_dfm_max_nfeat = 22L)
-    expect_output(
-        print(tmp),
-        "Document-feature matrix of: 14 documents, 5,\\d{3} features \\(8\\d\\.\\d% sparse\\)\\.$"
-    )
-    expect_output(
-        print(tmp[, 1:21]),
-        "Document-feature matrix of: 14 documents, 21 features \\(20.4% sparse\\)\\..*14 x 21 sparse Matrix"
-    )
 })
 
 test_that("cannot supply remove and select in one call (#793)", {
@@ -625,28 +604,6 @@ test_that("cannot supply remove and select in one call (#793)", {
     expect_error(
         dfm(toks, select = "one", remove = "two"),
         "only one of select and remove may be supplied at once"
-    )
-})
-
-test_that("printing an empty dfm produces informative result (#811)", {
-    my_dictionary <- dictionary(list(a = c("asd", "dsa"),
-                                     b = c("foo", "jup")))
-    raw_text <- c("Wow I can't believe it's not raining!",
-                  "Today is a beautiful day. The sky is blue and there are burritos")
-    my_corpus <- corpus(raw_text)
-    my_dfm <- dfm(my_corpus, dictionary = my_dictionary)
-
-    expect_output(
-        print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 2 features \\(100.0% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfm\""
-    )
-    expect_output(
-        print(my_dfm[-c(1, 2), ]),
-        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfm\""
-    )
-    expect_output(
-        print(my_dfm[, -c(1, 2)]),
-        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfm\""
     )
 })
 

@@ -21,7 +21,7 @@ printed with an inequality}
 }
 \description{
 Inputs a dfm sparsity value from \code{\link[=sparsity]{sparsity()}} and formats it for
-printing in \code{\link[=print.dfm]{print.dfm()}}.
+printing in \code{print.dfm()}.
 }
 \examples{
 s <- c(.9, .99, .999, .9999, .99999, 

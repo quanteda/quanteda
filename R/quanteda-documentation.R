@@ -181,3 +181,28 @@ NULL
 #' @name groups
 #' @keywords internal
 NULL
+
+#' Print methods for quanteda core objects
+#' 
+#' Print method for \pkg{quanteda} objects.  In each `max_n` option, 0 shows none, and
+#' -1 shows all.
+#' @name print-quanteda
+#' @rdname print-quanteda
+#' @param x,object the object to be printed
+#' @param max_ndoc max number of documents to print; default is from the
+#'   `print_dfm_max_ndoc` setting of [quanteda_options()]
+#' @param show_summary print a brief summary indicating the number of documents
+#'   and other characteristics of the object, such as docvars or sparsity.
+#' @param max_nfeat max number of features to print; default is from the
+#'   `print_dfm_max_nfeat` setting of [quanteda_options()]
+#' @seealso [quanteda_options()]
+#' @examples 
+#' corp <- corpus(data_char_ukimmig2010)
+#' print(corp, max_ndoc = 3, max_nchar = 40)
+#' 
+#' toks <- tokens(corp)
+#' print(toks, max_ndoc = 3, max_ntoken = 6)
+#' 
+#' dfmat <- dfm(toks)
+#' print(dfmat, max_ndoc = 3, max_nfeat = 10)
+NULL  

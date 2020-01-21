@@ -40,24 +40,23 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
-#' print a tokens objects
-#' print method for a tokens object
-#' @param x a tokens object created by [tokens()]
-#' @param ... further arguments passed to base print method
-#' @export
+#' @rdname print-quanteda
 #' @method print tokens
-#' @noRd
+#' @param max_ntoken max number of tokens to print; default is from the
+#'   `print_tokens_max_ntoken` setting of [quanteda_options()]
+#' @param ... not used
+#' @export
 print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
-                         show.summary = quanteda_options("print_tokens_summary"),
+                         show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
-    
+    unused_dots(...)
     docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0) 
         max_ndoc <- ndoc(x)
     
-    if (show.summary) {
+    if (show_summary) {
         cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc > 1L) "s" else "", sep = "")
         if (ncol(docvars))

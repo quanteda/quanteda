@@ -7,19 +7,16 @@
 #' @seealso [summary.corpus()]
 NULL
 
-#' @export
-#' @rdname corpus-class
-#' @param max_ndoc integer; number of documents to show text from; 0 shows none,
-#'   and -1 shows all
-#' @param max_nchar integer; number of characters to use when showing the first
-#'   part of the of text; 0 shows none, and -1 shows all
-#' @param show.summary print a brief summary indicating the number of documents
-#'   and docvars
+#' @rdname print-quanteda
+#' @param max_nchar max number of tokens to print; default is from the
+#'   `print_corpus_max_nchar` setting of [quanteda_options()]
 #' @method print corpus
+#' @export
 print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 
                          max_nchar = quanteda_options("print_corpus_max_nchar"), 
-                         show.summary = quanteda_options("print_corpus_summary"), 
+                         show_summary = quanteda_options("print_corpus_summary"), 
                          ...) {
+    unused_dots(...)
     x <- as.corpus(x)
     
     docvars <- docvars(x)
@@ -27,7 +24,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     if (max_ndoc < 0) 
         max_ndoc <- ndoc(x)
 
-    if (show.summary) {
+    if (show_summary) {
         cat("Corpus consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc(x) > 1L) "s" else "", sep = "")
         if (ncol(docvars))
@@ -59,7 +56,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     }
 
 }
-    
+
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
 #' @rdname corpus-class
 #' @export
