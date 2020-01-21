@@ -842,15 +842,15 @@ test_that("tokens printing works", {
     
     toks <- tokens(data_corpus_irishbudget2010)
     expect_silent(
-        print(toks, max_ndoc = 0, max_ntoken = 0, show.summary = FALSE)
+        print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = FALSE)
     )
     expect_output(
-        print(toks, max_ndoc = 0, max_ntoken = 0, show.summary = TRUE),
+        print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
         "Tokens consisting of 14 documents and 6 docvars.", 
         fixed = TRUE
     )
     expect_output(
-        print(toks, max_ndoc = 2, max_ntoken = 3, show.summary = TRUE),
+        print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
             paste0('Tokens consisting of 14 documents and 6 docvars.\n',
                    'Lenihan, Brian (FF) :\n',
                    '[1] "When"      "I"         "presented"\n',
@@ -863,7 +863,7 @@ test_that("tokens printing works", {
     )
     
     expect_output(
-        print(toks, max_ndoc = 2, max_ntoken = 3, show.summary = FALSE),
+        print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '[1] "When"      "I"         "presented"\n',
                '[ ... and 8638 more ]\n\n',
@@ -874,7 +874,7 @@ test_that("tokens printing works", {
         fixed = TRUE 
     )
     expect_output(
-        print(toks[1:2], max_ndoc = 2, max_ntoken = 3, show.summary = FALSE),
+        print(toks[1:2], max_ndoc = 2, max_ntoken = 3, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '[1] "When"      "I"         "presented"\n',
                '[ ... and 8638 more ]\n\n',

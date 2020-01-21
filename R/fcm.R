@@ -243,34 +243,15 @@ fcm.tokens <- function(x, context = c("document", "window"),
     return(result)
 }     
 
-#' @rdname print.dfm
-#' @export
-setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = NULL, show.summary = TRUE, 
-                   ndoc = quanteda_options("print_dfm_max_ndoc"), 
-                   nfeature = quanteda_options("print_dfm_max_nfeat"), ...) {
-              if (show.summary) {
-                  cat("Feature co-occurrence matrix of: ",
-                      format(ndoc(x), big.mark = ","), " by ",
-                      format(nfeat(x), big.mark = ","), " feature",
-                      if (nfeat(x) != 1L) "s" else "",
-                      ".\n", sep = "")
-              }
-              print_dfm(x, ndoc, nfeature, show.values, ...)
-          })
 
-#' @rdname print.dfm
-#' @export
-setMethod("show", signature(object = "fcm"), function(object) print(object))
-
-#' @rdname print.dfm
+#' @noRd
 #' @method head fcm
 #' @export
 head.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
     head.dfm(x, n, nfeature, ...)
 }
 
-#' @rdname print.dfm
+#' @noRd
 #' @method tail fcm
 #' @export
 tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {

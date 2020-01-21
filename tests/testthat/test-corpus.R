@@ -511,15 +511,15 @@ test_that("[.corpus out of bounds generates expected error", {
 test_that("corpus printing works", {
     corp <- data_corpus_irishbudget2010
     expect_silent(
-        print(corp, max_ndoc = 0, max_nchar = 0, show.summary = FALSE)
+        print(corp, max_ndoc = 0, max_nchar = 0, show_summary = FALSE)
     )
     expect_output(
-        print(corp, max_ndoc = 0, max_nchar = 0, show.summary = TRUE),
+        print(corp, max_ndoc = 0, max_nchar = 0, show_summary = TRUE),
         "Corpus consisting of 14 documents and 6 docvars.", 
         fixed = TRUE
     )
     expect_output(
-        print(corp, max_ndoc = 2, max_nchar = 10, show.summary = TRUE),
+        print(corp, max_ndoc = 2, max_nchar = 10, show_summary = TRUE),
         paste0('Corpus consisting of 14 documents and 6 docvars.\n',
                'Lenihan, Brian (FF) :\n',
                '"When I pre..."\n\n', 
@@ -529,7 +529,7 @@ test_that("corpus printing works", {
         fixed = TRUE
     )
     expect_output(
-        print(corp, max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
+        print(corp, max_ndoc = 2, max_nchar = 10, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '"When I pre..."\n\n', 
                'Bruton, Richard (FG) :\n',
@@ -538,7 +538,7 @@ test_that("corpus printing works", {
         fixed = TRUE 
     )
     expect_output(
-        print(corp[1:2], max_ndoc = 2, max_nchar = 10, show.summary = FALSE),
+        print(corp[1:2], max_ndoc = 2, max_nchar = 10, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '"When I pre..."\n\n', 
                'Bruton, Richard (FG) :\n',

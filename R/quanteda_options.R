@@ -136,9 +136,9 @@ set_option_value <- function(key, value) {
 get_options_default <- function(){
     opts <- list(threads = min(RcppParallel::defaultNumThreads(), 2),
                  verbose = FALSE,
-                 print_dfm_max_ndoc = 20L,
-                 print_dfm_max_nfeat = 20L,
-                 print_corpus_max_ndoc = 3L,
+                 print_dfm_max_ndoc = 6L,
+                 print_dfm_max_nfeat = 10L,
+                 print_corpus_max_ndoc = 0L,
                  print_corpus_max_nchar = 60L,
                  print_corpus_summary = TRUE,
                  print_tokens_max_ndoc = 6L,
