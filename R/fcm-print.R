@@ -14,7 +14,6 @@ setMethod("print", signature(x = "fcm"),
           })
 
 #' @rdname print-quanteda
-#' @export
 setMethod("show", signature(object = "fcm"), function(object) print(object))
 
 # internal function for print.fcm

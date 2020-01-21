@@ -91,6 +91,8 @@ Language: en-GB
 Collate:
     'RcppExports.R'
     'View.R'
+    'quanteda-documentation.R'
+    'aaa.R'
     'bootstrap_dfm.R'
     'casechange-functions.R'
     'character-methods.R'
@@ -140,7 +142,6 @@ Collate:
     'nsyllable.R'
     'pattern2fixed.R'
     'phrases.R'
-    'quanteda-documentation.R'
     'quanteda_options.R'
     'readtext-methods.R'
     'spacyr-methods.R'

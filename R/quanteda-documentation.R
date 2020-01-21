@@ -182,30 +182,27 @@ NULL
 #' @keywords internal
 NULL
 
-#' Print method for quanteda's special objects
+#' Print methods for quanteda core objects
 #' 
-#' Print method for quanteda objects: 0 shows none, and -1 shows all.
+#' Print method for \pkg{quanteda} objects.  In each `max_n` option, 0 shows none, and
+#' -1 shows all.
 #' @name print-quanteda
 #' @rdname print-quanteda
-#' @param x the object to be printed
+#' @param x,object the object to be printed
 #' @param max_ndoc max number of documents to print; default is from the
 #'   `print_dfm_max_ndoc` setting of [quanteda_options()]
+#' @param show_summary print a brief summary indicating the number of documents
+#'   and other characteristics of the object, such as docvars or sparsity.
 #' @param max_nfeat max number of features to print; default is from the
 #'   `print_dfm_max_nfeat` setting of [quanteda_options()]
-#' @param max_ntoken max number of tokens to print; default is from the
-#'   `print_tokens_max_ntoken` setting of [quanteda_options()]
-#' @param max_nchar max number of tokens to print; default is from the
-#'   `print_corpus_max_nchar` setting of [quanteda_options()]
-#' @param show_summary print a brief summary indicating the number of documents
-#'   and docvars
-#' @param object the object to be printed
-#' @param ... not used
+#' @seealso [quanteda_options()]
 #' @examples 
-#' corp <- data_corpus_inaugural
-#' print(corp, max_ndoc = 3, max_nchar = 20)
+#' corp <- corpus(data_char_ukimmig2010)
+#' print(corp, max_ndoc = 3, max_nchar = 40)
+#' 
 #' toks <- tokens(corp)
-#' print(toks, max_ndoc = 3, max_ntoken = 10)
+#' print(toks, max_ndoc = 3, max_ntoken = 6)
+#' 
 #' dfmat <- dfm(toks)
-#' print(dfmat, max_ndoc = 3, max_nfeat = 5)
+#' print(dfmat, max_ndoc = 3, max_nfeat = 10)
 NULL  
-

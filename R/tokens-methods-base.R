@@ -40,10 +40,12 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
-#' print a tokens objects print method for a tokens object
 #' @rdname print-quanteda
-#' @export
 #' @method print tokens
+#' @param max_ntoken max number of tokens to print; default is from the
+#'   `print_tokens_max_ntoken` setting of [quanteda_options()]
+#' @param ... not used
+#' @export
 print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
                          show_summary = quanteda_options("print_tokens_summary"),

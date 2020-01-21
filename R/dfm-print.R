@@ -1,8 +1,7 @@
 #' Print a dfm object
 #'
-#' @seealso [quanteda_options()]
-#' @export
 #' @rdname print-quanteda
+#' @export
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, 
@@ -29,7 +28,6 @@ setMethod("print", signature(x = "dfm"),
 
 #' @rdname print-quanteda
 setMethod("show", signature(object = "dfm"), function(object) print(object))
-
 
 # internal function for print.dfm
 print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {

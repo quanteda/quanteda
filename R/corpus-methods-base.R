@@ -8,6 +8,8 @@
 NULL
 
 #' @rdname print-quanteda
+#' @param max_nchar max number of tokens to print; default is from the
+#'   `print_corpus_max_nchar` setting of [quanteda_options()]
 #' @method print corpus
 #' @export
 print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 
@@ -54,7 +56,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     }
 
 }
-    
+
 #' @return `is.corpus` returns `TRUE` if the object is a corpus
 #' @rdname corpus-class
 #' @export
