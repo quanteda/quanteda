@@ -2,7 +2,7 @@
 #'
 #' @seealso [quanteda_options()]
 #' @export
-#' @rdname print
+#' @rdname print-quanteda
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, 

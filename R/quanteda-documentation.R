@@ -185,7 +185,8 @@ NULL
 #' Print method for quanteda's special objects
 #' 
 #' Print method for quanteda objects: 0 shows none, and -1 shows all.
-#' @name print
+#' @name print-quanteda
+#' @rdname print-quanteda
 #' @param x a object to be printed
 #' @param max_ndoc max number of documents to print; default is from the
 #'   `print_dfm_max_ndoc` setting of [quanteda_options()]

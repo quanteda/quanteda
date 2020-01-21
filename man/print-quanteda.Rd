@@ -4,10 +4,8 @@
 \name{print.corpus}
 \alias{print.corpus}
 \alias{print,dfm-method}
-\alias{show,dfm-method}
 \alias{print,fcm-method}
-\alias{show,fcm-method}
-\alias{print}
+\alias{print-quanteda}
 \alias{print.tokens}
 \title{Print a dfm object}
 \usage{
@@ -27,16 +25,12 @@
   ...
 )
 
-\S4method{show}{dfm}(object)
-
 \S4method{print}{fcm}(
   x,
   max_nfeat = quanteda_options("print_dfm_max_nfeat"),
   show.summary = TRUE,
   ...
 )
-
-\S4method{show}{fcm}(object)
 
 \method{print}{tokens}(
   x,
@@ -60,8 +54,6 @@ and docvars}
 
 \item{max_nfeat}{max number of features to print; default is from the
 \code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
-
-\item{object}{the item to be printed}
 
 \item{max_ntoken}{max number of tokens to print; default is from the
 \code{print_tokens_max_ntoken} setting of \code{\link[=quanteda_options]{quanteda_options()}}}

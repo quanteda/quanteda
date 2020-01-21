@@ -7,7 +7,7 @@
 #' @seealso [summary.corpus()]
 NULL
 
-#' @rdname print
+#' @rdname print-quanteda
 #' @method print corpus
 #' @export
 print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 

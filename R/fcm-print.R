@@ -1,4 +1,4 @@
-#' @rdname print
+#' @rdname print-quanteda
 #' @export
 setMethod("print", signature(x = "fcm"), 
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
