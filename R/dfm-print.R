@@ -1,18 +1,5 @@
 #' Print a dfm object
 #'
-#' Print methods for document-feature matrices
-#' @name print.dfm
-#' @keywords internal dfm
-NULL
-
-#' @param x the dfm to be printed
-#' @param max_ndoc max number of documents to print; default is from the
-#'   `print_dfm_max_ndoc` setting of [quanteda_options()]
-#' @param max_nfeat max number of features to print; default is from the
-#'   `print_dfm_max_nfeat` setting of [quanteda_options()]
-#' @param show.summary print a brief summary indicating the number of documents 
-#'   and features
-#' @param ... further arguments passed to `Matrix::printSpMatrix2`
 #' @seealso [quanteda_options()]
 #' @export
 #' @rdname print
@@ -40,7 +27,7 @@ setMethod("print", signature(x = "dfm"),
               print_dfm(x, max_ndoc, max_nfeat, ...)
           })
 
-#' @rdname print.dfm
+#' @rdname print
 #' @param object the item to be printed
 setMethod("show", signature(object = "dfm"), function(object) print(object))
 

@@ -8,12 +8,6 @@
 NULL
 
 #' @rdname print
-#' @param max_ndoc integer; number of documents to show text from; 0 shows none,
-#'   and -1 shows all
-#' @param max_nchar integer; number of characters to use when showing the first
-#'   part of the of text; 0 shows none, and -1 shows all
-#' @param show.summary print a brief summary indicating the number of documents
-#'   and docvars
 #' @method print corpus
 #' @export
 print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 

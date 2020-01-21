@@ -14,10 +14,9 @@ setMethod("print", signature(x = "fcm"),
               print_fcm(x, max_nfeat, show_summary, ...)
           })
 
-#' @rdname print.dfm
+#' @rdname print
 #' @export
 setMethod("show", signature(object = "fcm"), function(object) print(object))
-
 
 # internal function for print.fcm
 print_fcm <- function(x, max_nfeat, show_summary, ...) {

@@ -244,14 +244,14 @@ fcm.tokens <- function(x, context = c("document", "window"),
 }     
 
 
-#' @rdname print.dfm
+#' @noRd
 #' @method head fcm
 #' @export
 head.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
     head.dfm(x, n, nfeature, ...)
 }
 
-#' @rdname print.dfm
+#' @noRd
 #' @method tail fcm
 #' @export
 tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
