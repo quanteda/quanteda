@@ -203,14 +203,39 @@ test_that("fcm works as expected for tokens_hashed", {
 })
 
 test_that("fcm print works as expected", {
-    txt <- c("a a a b b c", "a a c e", "a c e f g")
-    testfcm <- fcm(txt, context = "document", count = "frequency", tri = TRUE) 
-    expect_output(print(testfcm),
-                  "^Feature co-occurrence matrix of: 6 by 6 features.")
-    expect_output(print(testfcm[1:5, 1:5]),
-                  "^Feature co-occurrence matrix of: 5 by 5 features.")
-    expect_output(show(testfcm),
-                  "^Feature co-occurrence matrix of: 6 by 6 features.")
+    dfmt <- dfm(data_corpus_irishbudget2010[1:2], 
+                remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
+    fcmt <- fcm(dfmt)
+    expect_output(print(fcmt, max_nfeat = 6, show.summary = TRUE),
+                  paste0("^Feature co-occurrence matrix of: 2,251 by 2,251 features\\.",
+                         ".*",
+                         "\\[ reached max_feat \\.\\.\\. 2,245 more features, reached max_nfeat \\.\\.\\. 2,245 more features \\]$")
+    )
+    expect_output(print(fcmt[1:5, 1:5], max_nfeat = 6, show.summary = TRUE),
+                  paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
+                         ".*",
+                         "supplementary\\s+0\\s+0\\s+0\\s+0\\s+21$")
+    )
+    expect_output(print(fcmt[1:10, 1:2], max_nfeat = 6, show.summary = TRUE),
+                  paste0("^Feature co-occurrence matrix of: 10 by 2 features\\.",
+                         ".*",
+                         "\\[ reached max_feat \\.\\.\\. 4 more features \\]$")
+    )
+    expect_output(print(fcmt[1:5, 1:5], max_nfeat = -1, show.summary = TRUE),
+                  paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
+                         ".*",
+                         "supplementary\\s+0\\s+0\\s+0\\s+0\\s+21$")
+    )
+    expect_output(print(fcmt[1:10, 1:2], max_nfeat = -1, show.summary = TRUE),
+                  paste0("^Feature co-occurrence matrix of: 10 by 2 features\\.",
+                         ".*",
+                         "last\\s+0\\s+0$")
+    )
+    expect_output(print(fcmt, max_nfeat = 6, show.summary = FALSE),
+                  paste0("^\\s+features",
+                         ".*",
+                         "\\[ reached max_feat \\.\\.\\. 2,245 more features, reached max_nfeat \\.\\.\\. 2,245 more features \\]$")
+    )
 })
 
 test_that("fcm works the same for different object types", {
