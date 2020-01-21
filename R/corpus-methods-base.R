@@ -12,7 +12,7 @@ NULL
 #' @export
 print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 
                          max_nchar = quanteda_options("print_corpus_max_nchar"), 
-                         show.summary = quanteda_options("print_corpus_summary"), 
+                         show_summary = quanteda_options("print_corpus_summary"), 
                          ...) {
     unused_dots(...)
     x <- as.corpus(x)
@@ -22,7 +22,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     if (max_ndoc < 0) 
         max_ndoc <- ndoc(x)
 
-    if (show.summary) {
+    if (show_summary) {
         cat("Corpus consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc(x) > 1L) "s" else "", sep = "")
         if (ncol(docvars))

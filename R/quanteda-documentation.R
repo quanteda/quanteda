@@ -187,7 +187,7 @@ NULL
 #' Print method for quanteda objects: 0 shows none, and -1 shows all.
 #' @name print-quanteda
 #' @rdname print-quanteda
-#' @param x a object to be printed
+#' @param x the object to be printed
 #' @param max_ndoc max number of documents to print; default is from the
 #'   `print_dfm_max_ndoc` setting of [quanteda_options()]
 #' @param max_nfeat max number of features to print; default is from the
@@ -196,8 +196,10 @@ NULL
 #'   `print_tokens_max_ntoken` setting of [quanteda_options()]
 #' @param max_nchar max number of tokens to print; default is from the
 #'   `print_corpus_max_nchar` setting of [quanteda_options()]
-#' @param show.summary print a brief summary indicating the number of documents
+#' @param show_summary print a brief summary indicating the number of documents
 #'   and docvars
+#' @param object the object to be printed
+#' @param ... not used
 #' @examples 
 #' corp <- data_corpus_inaugural
 #' print(corp, max_ndoc = 3, max_nchar = 20)

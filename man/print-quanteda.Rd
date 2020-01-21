@@ -4,7 +4,9 @@
 \name{print.corpus}
 \alias{print.corpus}
 \alias{print,dfm-method}
+\alias{show,dfm-method}
 \alias{print,fcm-method}
+\alias{show,fcm-method}
 \alias{print-quanteda}
 \alias{print.tokens}
 \title{Print a dfm object}
@@ -13,7 +15,7 @@
   x,
   max_ndoc = quanteda_options("print_corpus_max_ndoc"),
   max_nchar = quanteda_options("print_corpus_max_nchar"),
-  show.summary = quanteda_options("print_corpus_summary"),
+  show_summary = quanteda_options("print_corpus_summary"),
   ...
 )
 
@@ -21,27 +23,31 @@
   x,
   max_ndoc = quanteda_options("print_dfm_max_ndoc"),
   max_nfeat = quanteda_options("print_dfm_max_nfeat"),
-  show.summary = TRUE,
+  show_summary = TRUE,
   ...
 )
+
+\S4method{show}{dfm}(object)
 
 \S4method{print}{fcm}(
   x,
   max_nfeat = quanteda_options("print_dfm_max_nfeat"),
-  show.summary = TRUE,
+  show_summary = TRUE,
   ...
 )
+
+\S4method{show}{fcm}(object)
 
 \method{print}{tokens}(
   x,
   max_ndoc = quanteda_options("print_tokens_max_ndoc"),
   max_ntoken = quanteda_options("print_tokens_max_ntoken"),
-  show.summary = quanteda_options("print_tokens_summary"),
+  show_summary = quanteda_options("print_tokens_summary"),
   ...
 )
 }
 \arguments{
-\item{x}{a object to be printed}
+\item{x}{the object to be printed}
 
 \item{max_ndoc}{max number of documents to print; default is from the
 \code{print_dfm_max_ndoc} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
@@ -49,11 +55,15 @@
 \item{max_nchar}{max number of tokens to print; default is from the
 \code{print_corpus_max_nchar} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
 
-\item{show.summary}{print a brief summary indicating the number of documents
+\item{show_summary}{print a brief summary indicating the number of documents
 and docvars}
+
+\item{...}{not used}
 
 \item{max_nfeat}{max number of features to print; default is from the
 \code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
+
+\item{object}{the object to be printed}
 
 \item{max_ntoken}{max number of tokens to print; default is from the
 \code{print_tokens_max_ntoken} setting of \code{\link[=quanteda_options]{quanteda_options()}}}

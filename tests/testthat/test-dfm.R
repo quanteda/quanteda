@@ -563,25 +563,25 @@ test_that("dfm print works with options as expected", {
     dfmt <- dfm(data_corpus_irishbudget2010, 
                remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     expect_output(
-        print(dfmt, max_ndoc = 6, max_nfeat = 10, show.summary = TRUE),
+        print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
         paste0("^Document-feature matrix of: 14 documents, 5,055 features \\(80\\.9% sparse\\) and 6 docvars\\.",
                ".*",
                "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 5,045 more features \\]$")
     )
     expect_output(
-        print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show.summary = TRUE),
+        print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
         paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
                ".*",
                "Cowen, Brian \\(FF\\)\\s+4\\s+17\\s+0\\s+394\\s+0$")
     )
     expect_output(
-        print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show.summary = TRUE),
+        print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
         paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
                ".*",
                "Cowen, Brian \\(FF\\)\\s+4\\s+17\\s+0\\s+394\\s+0$")
     )
     expect_output(
-        print(dfmt, max_ndoc = 6, max_nfeat = 10, show.summary = FALSE),
+        print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = FALSE),
         paste0("^\\s+features",
                ".*",
                "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 5,045 more features \\]$")

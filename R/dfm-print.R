@@ -8,10 +8,10 @@ setMethod("print", signature(x = "dfm"),
           function(x, 
                    max_ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
-                   show.summary = TRUE, 
+                   show_summary = TRUE, 
                    ...) {
-              unused_dots(...)
-              if (show.summary) {
+              
+              if (show_summary) {
                   docvars <- docvars(x)
                   cat("Document-feature matrix of: ",
                       format(ndoc(x), big.mark = ","), " document",
@@ -27,15 +27,47 @@ setMethod("print", signature(x = "dfm"),
               print_dfm(x, max_ndoc, max_nfeat, ...)
           })
 
-#' @rdname print
-#' @param object the item to be printed
+#' @rdname print-quanteda
 setMethod("show", signature(object = "dfm"), function(object) print(object))
+
+
+# internal function for print.dfm
+print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
+    
+    unused_dots(...)
+    x <- as.dfm(x)
+    ndoc <- ndoc(x)
+    nfeat <- nfeat(x)
+    if (max_ndoc < 0 || max_ndoc > ndoc) 
+        max_ndoc <- ndoc
+    if (max_nfeat < 0 || max_nfeat > nfeat)
+        max_nfeat <- nfeat
+    
+    Matrix::printSpMatrix(x[seq_len(max_ndoc), seq_len(max_nfeat)], 
+                          col.names = TRUE, zero.print = 0)
+    ndoc_rem <- ndoc - max_ndoc
+    nfeat_rem <- nfeat - max_nfeat
+    if (ndoc_rem > 0 || nfeat_rem > 0) {
+        cat("[", sep = "") 
+        if (ndoc_rem > 0) {
+            cat(" reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", sep = "") 
+            if (ndoc_rem > 1) cat("s", sep = "")
+        }
+        if (ndoc_rem > 0 && nfeat_rem > 0) 
+            cat(",", sep = "")
+        if (nfeat_rem > 0) {
+            cat(" reached max_nfeat ... ", format(nfeat_rem, big.mark = ","), " more feature", sep = "") 
+            if (nfeat_rem > 1) cat("s", sep = "")
+        }
+        cat(" ]\n", sep = "") 
+    }
+}
 
 
 #' format a sparsity value for printing
 #'
 #' Inputs a dfm sparsity value from [sparsity()] and formats it for
-#' printing in [print.dfm()].
+#' printing in `print.dfm()`.
 #' @param x input sparsity value, ranging from 0 to 1.0
 #' @param threshold value below which the decimal places will be rounded and
 #'   printed with an inequality
@@ -75,36 +107,6 @@ format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
     paste(" (", sparsity_output, "% sparse)", sep = "")
 }
 
-
-# internal function for print.dfm
-print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
-    x <- as.dfm(x)
-    ndoc <- ndoc(x)
-    nfeat <- nfeat(x)
-    if (max_ndoc < 0 || max_ndoc > ndoc) 
-        max_ndoc <- ndoc
-    if (max_nfeat < 0 || max_nfeat > nfeat)
-        max_nfeat <- nfeat
-    
-    Matrix::printSpMatrix(x[seq_len(max_ndoc), seq_len(max_nfeat)], 
-                            col.names = TRUE, zero.print = 0)
-    ndoc_rem <- ndoc - max_ndoc
-    nfeat_rem <- nfeat - max_nfeat
-    if (ndoc_rem > 0 || nfeat_rem > 0) {
-        cat("[", sep = "") 
-        if (ndoc_rem > 0) {
-            cat(" reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", sep = "") 
-            if (ndoc_rem > 1) cat("s", sep = "")
-        }
-        if (ndoc_rem > 0 && nfeat_rem > 0) 
-            cat(",", sep = "")
-        if (nfeat_rem > 0) {
-            cat(" reached max_nfeat ... ", format(nfeat_rem, big.mark = ","), " more feature", sep = "") 
-            if (nfeat_rem > 1) cat("s", sep = "")
-        }
-        cat(" ]\n", sep = "") 
-    }
-}
 
 #' Return the first or last part of a dfm
 #' 

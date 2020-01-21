@@ -206,32 +206,32 @@ test_that("fcm print works as expected", {
     dfmt <- dfm(data_corpus_irishbudget2010[1:2], 
                 remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     fcmt <- fcm(dfmt)
-    expect_output(print(fcmt, max_nfeat = 6, show.summary = TRUE),
+    expect_output(print(fcmt, max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 2,251 by 2,251 features\\.",
                          ".*",
                          "\\[ reached max_feat \\.\\.\\. 2,245 more features, reached max_nfeat \\.\\.\\. 2,245 more features \\]$")
     )
-    expect_output(print(fcmt[1:5, 1:5], max_nfeat = 6, show.summary = TRUE),
+    expect_output(print(fcmt[1:5, 1:5], max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
                          ".*",
                          "supplementary\\s+0\\s+0\\s+0\\s+0\\s+21$")
     )
-    expect_output(print(fcmt[1:10, 1:2], max_nfeat = 6, show.summary = TRUE),
+    expect_output(print(fcmt[1:10, 1:2], max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 10 by 2 features\\.",
                          ".*",
                          "\\[ reached max_feat \\.\\.\\. 4 more features \\]$")
     )
-    expect_output(print(fcmt[1:5, 1:5], max_nfeat = -1, show.summary = TRUE),
+    expect_output(print(fcmt[1:5, 1:5], max_nfeat = -1, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
                          ".*",
                          "supplementary\\s+0\\s+0\\s+0\\s+0\\s+21$")
     )
-    expect_output(print(fcmt[1:10, 1:2], max_nfeat = -1, show.summary = TRUE),
+    expect_output(print(fcmt[1:10, 1:2], max_nfeat = -1, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 10 by 2 features\\.",
                          ".*",
                          "last\\s+0\\s+0$")
     )
-    expect_output(print(fcmt, max_nfeat = 6, show.summary = FALSE),
+    expect_output(print(fcmt, max_nfeat = 6, show_summary = FALSE),
                   paste0("^\\s+features",
                          ".*",
                          "\\[ reached max_feat \\.\\.\\. 2,245 more features, reached max_nfeat \\.\\.\\. 2,245 more features \\]$")

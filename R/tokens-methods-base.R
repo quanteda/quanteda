@@ -46,7 +46,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @method print tokens
 print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
-                         show.summary = quanteda_options("print_tokens_summary"),
+                         show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
     unused_dots(...)
     docvars <- docvars(x)
@@ -54,7 +54,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     if (max_ndoc < 0) 
         max_ndoc <- ndoc(x)
     
-    if (show.summary) {
+    if (show_summary) {
         cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc > 1L) "s" else "", sep = "")
         if (ncol(docvars))
