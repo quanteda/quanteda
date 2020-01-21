@@ -83,6 +83,7 @@ Internal methods for tokenization providing default and legacy methods for
 text segmentation.
 }
 \examples{
+\dontrun{
 txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc2 = "The £1,000,000 question.",
          doc3 = "毎日 #quanteda を使用してください！",
@@ -95,6 +96,7 @@ tokenize_fasterword(txt)
 tokenize_fastestword(txt)
 tokenize_sentence(txt)
 tokenize_character(txt[2])
+}
 }
 \keyword{internal}
 \keyword{tokens}
