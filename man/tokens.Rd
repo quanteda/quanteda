@@ -116,7 +116,7 @@ character or \link{corpus} input, based on
 \link[stringi:stri_split_boundaries]{stri_split_boundaries}, but that improves
 on this by: not splitting words with infix hyphens (e.g. "self-aware"),
 not splitting currency symbols from their numbers, not splitting social
-media tag characters (#hastags and @usernames), and preserving URLs and
+media tag characters (#hashtags and @usernames), and preserving URLs and
 email addressed
 
 For backward compatibility, the following older tokenizers are also supported
