@@ -25,10 +25,8 @@ tokens(
 \link{corpus}, or a character object that will be tokenized}
 
 \item{what}{character; which tokenizer to use.  The "default" is the version
-2 \pkg{quanteda} tokenizer based on the ICU boundaries definitions in
-\link[stringi:stri_split_boundaries]{stri_split_boundaries}, but legacy
-tokenizers (version < 2) are also supported.  See the Details and quanteda
-Tokenizer below.}
+2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2) are also supported.
+See the Details and quanteda Tokenizer below.}
 
 \item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
 "Punctuation" \verb{[P]} class, with exceptions for those used as prefixes for
@@ -115,7 +113,11 @@ splits infix hyphens, or \pkg{spacyr}.
 
 There is also a default tokenizer, if the input to \code{tokens()} is a
 character or \link{corpus} input, based on
-\link[stringi:stri_split_boundaries]{stri_split_boundaries}.
+\link[stringi:stri_split_boundaries]{stri_split_boundaries}, but that improves
+on this by: not splitting words with infix hyphens (e.g. "self-aware"),
+not splitting currency symbols from their numbers, not splitting social
+media tag characters (#hastags and @usernames), and preserving URLs and
+email addressed
 
 For backward compatibility, the following older tokenizers are also supported
 through \code{what}:

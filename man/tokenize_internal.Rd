@@ -11,7 +11,19 @@
 \alias{tokenize_fastestword}
 \title{quanteda tokenizers}
 \usage{
-tokenize_default(x)
+tokenize_default(
+  x,
+  remove_punct = FALSE,
+  remove_symbols = FALSE,
+  remove_numbers = FALSE,
+  remove_url = FALSE,
+  remove_separators = FALSE,
+  split_tags = FALSE,
+  split_hyphens = FALSE,
+  split_currency = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 
 tokenize_word(x)
 
@@ -25,6 +37,42 @@ tokenize_fastestword(x)
 }
 \arguments{
 \item{x}{(named) character; input texts}
+
+\item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
+"Punctuation" \verb{[P]} class, with exceptions for those used as prefixes for
+valid social media tags if \code{preserve_tags = TRUE}}
+
+\item{remove_symbols}{logical; if \code{TRUE} remove all characters in the Unicode
+"Symbol" \verb{[S]} class}
+
+\item{remove_numbers}{logical; if \code{TRUE} remove tokens that consist only of
+numbers, but not words that start with digits, e.g. \verb{2day}}
+
+\item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning with
+http(s) -- see section "Dealing with URLs".}
+
+\item{remove_separators}{logical; if \code{TRUE} remove separators and separator
+characters (Unicode "Separator" \verb{[Z]} and "Control" \verb{[C]} categories)}
+
+\item{split_tags}{logical; keep (social media) tags intact, such as "#hashtags" and
+"#usernames", even when punctuation will be removed.  The rules defining a
+valid "tag" can be found
+\href{https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/}{here}
+for hashtags and
+\href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
+for usernames.}
+
+\item{split_hyphens}{logical; if \code{TRUE}, split words that are connected by
+hyphenation and hyphenation-like characters in between words, e.g.
+\code{"self-aware"} becomes \code{c("self", "-", "aware")}}
+
+\item{split_currency}{logical; if \code{TRUE}, split currency symbols from the numbers
+with which they are associated, e.g. "£15,000" becomes \code{c("£", "15,000")}}
+
+\item{verbose}{if \code{TRUE}, print timing messages to the console; off by
+default}
+
+\item{...}{additional arguments not used}
 }
 \value{
 a list of characters corresponding to the (most conservative) tokens,
@@ -38,10 +86,13 @@ text segmentation.
 txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc2 = "The £1,000,000 question.",
          doc3 = "毎日 #quanteda を使用してください！",
-         doc4 = "Line 1.\nLine2\n\nLine3.")
+         doc4 = "Line 1.\nLine2\n\nLine3.",
+         doc5 = "?",
+         doc6 = "Self-aware machines! \U0001f600")
 tokenize_default(txt)
+tokenize_default(txt, remove_punct = TRUE, split_currency = TRUE)
 tokenize_fasterword(txt)
-tokenize_fastest_word(txt)
+tokenize_fastestword(txt)
 tokenize_sentence(txt)
 tokenize_character(txt[2])
 }

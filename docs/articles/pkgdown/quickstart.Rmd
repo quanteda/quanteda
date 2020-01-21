@@ -241,8 +241,8 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
 We also have the option to tokenize characters:
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
-tokens("Great website: http://textasdata.com?page=123.", what = "character", 
-         remove_separators = FALSE)
+tokens("Great website: http://textasdata.com?page=123.", what = "character",
+        remove_separators = FALSE)
 ```
 
 and sentences:

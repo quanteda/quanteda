@@ -14,10 +14,8 @@
 #' @param x a (uniquely) named list of characters or a [tokens] object; or a
 #'   [corpus], or a character object that will be tokenized
 #' @param what character; which tokenizer to use.  The "default" is the version
-#'   2 \pkg{quanteda} tokenizer based on the ICU boundaries definitions in
-#'   [stri_split_boundaries][stringi::stri_split_boundaries], but legacy
-#'   tokenizers (version < 2) are also supported.  See the Details and quanteda
-#'   Tokenizer below.
+#'   2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2) are also supported.  
+#'   See the Details and quanteda Tokenizer below.
 #' @param remove_punct logical; if `TRUE` remove all characters in the Unicode
 #'   "Punctuation" `[P]` class, with exceptions for those used as prefixes for
 #'   valid social media tags if `preserve_tags = TRUE`
@@ -74,7 +72,11 @@
 #' @section quanteda tokenizer:  
 #'   There is also a default tokenizer, if the input to `tokens()` is a
 #'   character or [corpus] input, based on
-#'   [stri_split_boundaries][stringi::stri_split_boundaries].
+#'   [stri_split_boundaries][stringi::stri_split_boundaries], but that improves
+#'   on this by: not splitting words with infix hyphens (e.g. "self-aware"), 
+#'   not splitting currency symbols from their numbers, not splitting social 
+#'   media tag characters (#hastags and @usernames), and preserving URLs and
+#'   email addressed
 #'
 #'   For backward compatibility, the following older tokenizers are also supported
 #'   through `what`:
@@ -178,12 +180,13 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
                            fastestword = tokenize_fastestword)
-    result <- as.tokens(do.call(tokenizer_fn, list(x)))
-    
-    # now post-process with options in tokens.tokens()
-    # make default remove_separators = TRUE for character, corpus objects
-    if (!"remove_separators" %in% names(dots)) { dots$remove_separators <- TRUE }
-    result <- do.call(tokens, c(list(x = result, include_docvars = include_docvars), dots))
+    if (what == "default") {
+        result <- as.tokens(do.call(tokenizer_fn, c(list(x = texts(x)), dots)))
+    } else {
+        result <- as.tokens(do.call(tokenizer_fn, list(x = texts(x))))
+        # now post-process with options in tokens.tokens()
+        result <- do.call(tokens, c(list(x = result, include_docvars = include_docvars), dots))
+    }
 
     attributes(result, FALSE) <- attrs
     if (include_docvars) {
@@ -201,6 +204,7 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 #' @importFrom stringi stri_startswith_fixed
 #' @export
 tokens.tokens <-  function(x,
+                           what = "default",
                            remove_punct = FALSE,
                            remove_symbols = FALSE,
                            remove_numbers = FALSE,
@@ -214,6 +218,7 @@ tokens.tokens <-  function(x,
                           ...) {
     x <- as.tokens(x)
     dots <- list(...)
+    check_dots(dots, c(setdiff("what", names(formals(tokens))), "remove_hyphens", "remove_twitter"))
     if (verbose) catm("Starting tokenization...\n")
     time_start <- proc.time()
 
@@ -227,15 +232,7 @@ tokens.tokens <-  function(x,
         split_hyphens <- dots$remove_hyphens
         .Deprecated(msg = "'remove_hyphens' argument is deprecated, use 'split_infix_hyphens' instead.")
     }
-    if (!split_hyphens) {
-        # Need to improve this:
-        # where these occur with whitespace, non-Pd punctuation on either end
-        # we also need to account for words with two or more interior hyphens,
-        # such as "vis-a-vis"
-        if (verbose) catm("...rejoining hyphens\n")
-        x <- tokens_compound(x, list(c("^\\w+$", "^\\p{Pd}$", "^\\w+$")),
-                             valuetype = "regex", concatenator = "")
-    } else {
+    if (split_hyphens) {
         if (verbose) catm("...splitting hyphens\n")
         x <- tokens_split(x, separator = "\\p{Pd}", valuetype = "regex", 
                           remove_separator = FALSE)
@@ -248,39 +245,17 @@ tokens.tokens <-  function(x,
                                  "' is deprecated, use 'preserve_tags = ",
                                  dots$preserve_tags, "' instead."))
     }
-    if (!split_tags) {
-        if (verbose) catm("...rejoining tags\n")
-        x <- tokens_compound(x, list(c("^[#@]$", "\\w+"), valuetype = "regex", 
-                                     concatenator = ""))
-    } else {
+    if (split_tags) {
         if (verbose) catm("...splitting tags\n")
         x <- tokens_split(x, separator = "[#@]", valuetype = "regex", 
                           remove_separator = FALSE)
     }
     
     # currency
-    if (!split_currency) {
-        # need to be able to compound BOTH of these:
-        # "£" "100"  *and* "50" "¢"
-        if (verbose) catm("...rejoining currency symbols\n")
-        x <- tokens_compound(x, list(c("^\\p{Sc}$", "^\\d+"), valuetype = "regex", 
-                                     concatenator = ""))
-    } else {
+    if (split_currency) {
         if (verbose) catm("...splitting currency symbols\n")
         x <- tokens_split(x, separator = "\\p{Sc}", valuetype = "regex", 
                           remove_separator = FALSE)
-    }
-
-    # special handling: URLs
-    if (!remove_url) {
-        if (verbose) catm("...rejoining URLs\n")
-        # FIND "^(https{0,1}|s{0,1}ftp)" ":" "/" "/" ... (up until) "[\s\p{P}]" 
-        #                              where the ending \p{P} is a closing punct
-        # REPLACE with the compounded sequences
-    } else {
-        if (verbose) catm("...removing URLs\n")
-        # FIND the URL token sequence
-        # REMOVE it
     }
 
     # removals
@@ -301,8 +276,12 @@ tokens.tokens <-  function(x,
     }
     if (remove_numbers) {
         # includes currency amounts and those containing , or . digit separators
-        regex_to_remove <- c(regex_to_remove, "^\\p{Sc}{0,1}(\\p{N}+[,.]{0,1}\\p{N}+)+\\p{Sc}{0,1}$")
+        regex_to_remove <- c(regex_to_remove, "(^\\p{Sc}{0,1}(\\p{N}+[,.]{0,1}\\p{N}+)+\\p{Sc}{0,1}$)")
         removing_msg <- c(removing_msg, "numbers")
+    }
+    if (remove_url) {
+        regex_to_remove <- c(regex_to_remove, "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))")
+        removing_msg <- c(removing_msg, "URLs")
     }
     if (length(regex_to_remove)) {
         if (verbose) catm("...removing", paste(removing_msg, collapse = ", "), "\n")
