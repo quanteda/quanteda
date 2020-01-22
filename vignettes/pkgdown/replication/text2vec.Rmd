@@ -12,14 +12,14 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "##")
 
     
 ```{r, message = FALSE}
-library(quanteda)
+library("quanteda")
 ```
 
 This is intended to show how **quanteda** can be used with the [**text2vec**](http://text2vec.org) package in order to replicate its [gloVe example](http://text2vec.org/glove.html).
 
 ## Download the corpus
 
-Download a corpus comprised of the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
+Download a corpus comprising the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
 ```{r eval = TRUE}
 wiki_corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1")
 ```
@@ -46,10 +46,10 @@ wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1 /
 
 ## Fit word embedding model
 
-Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using [**text2vec**](http://text2vec.org).
+Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using [**rsparse**](http://text2vec.org).
 
 ```{r, message = FALSE}
-library(text2vec)
+library("text2vec")
 ```
 
 GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.
@@ -57,8 +57,10 @@ GloVe is an unsupervised learning algorithm for obtaining vector representations
 GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words' probability of co-occurrence.  
 
 ```{r, cache=TRUE}
-glove <- GlobalVectors$new(word_vectors_size = 50, vocabulary = featnames(wiki_fcm), x_max = 10)
-wiki_main <- fit_transform(wiki_fcm, glove, n_iter = 20)
+glove <- GlobalVectors$new(rank = 50, x_max = 10)
+wv_main <- glove$fit_transform(wiki_fcm, n_iter = 10,
+                               convergence_tol = 0.01, n_threads = 8)
+dim(wv_main)
 ```
 
 ## Averaging learned word vectors
@@ -66,10 +68,10 @@ wiki_main <- fit_transform(wiki_fcm, glove, n_iter = 20)
 The two vectors are main and context. According to the Glove paper, averaging the two word vectors results in more accurate representation.
 
 ```{r}
-wiki_context <- glove$components
-dim(wiki_context)
+wv_context <- glove$components
+dim(wv_context)
 
-wiki_vectors <- as.dfm(wiki_main + t(wiki_context))
+word_vectors <- wv_main + t(wv_context)
 ```
 
 ## Examining term representations
@@ -77,25 +79,23 @@ wiki_vectors <- as.dfm(wiki_main + t(wiki_context))
 Now we can find the closest word vectors for `paris - france + germany`
 
 ```{r}
-new_berlin <- wiki_vectors["paris", ] -
-    wiki_vectors["france", ] +
-    wiki_vectors["germany", ]
-
-# calculate the similarity
-cos_sim <- textstat_simil(wiki_vectors, new_berlin,
-                          margin = "documents", method = "cosine")
+berlin <- word_vectors["paris", , drop = FALSE] -
+  word_vectors["france", , drop = FALSE] +
+  word_vectors["germany", , drop = FALSE]
+cos_sim <- textstat_simil(x = as.dfm(word_vectors), y = as.dfm(berlin),
+                          method = "cosine")
 head(sort(cos_sim[, 1], decreasing = TRUE), 5)
 ```
 
 Here is another example for `london = paris - france + uk + england`
 
 ```{r}
-new_london <-  wiki_vectors["paris", ] -
-    wiki_vectors["france", ] +
-    wiki_vectors["uk", ] +
-    wiki_vectors["england", ]
+london <-  word_vectors["paris", , drop = FALSE] -
+    word_vectors["france", , drop = FALSE] +
+    word_vectors["uk", , drop = FALSE] +
+    word_vectors["england", , drop = FALSE]
 
-cos_sim <- textstat_simil(wiki_vectors, new_london,
+cos_sim <- textstat_simil(as.dfm(word_vectors), y = as.dfm(london),
                           margin = "documents", method = "cosine")
 head(sort(cos_sim[, 1], decreasing = TRUE), 5)
 ```
