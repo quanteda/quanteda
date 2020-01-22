@@ -1,32 +1,32 @@
 context('testing fcm')
 
-# test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
-#     skip_if_not_installed("text2vec")
-#     library("text2vec")
-#     
-#     txt <- "A D A C E A D F E B A C E D"
-#     tokens <- txt %>% tolower %>% word_tokenizer
-#     it <- itoken(tokens)
-#     v <- create_vocabulary(it)
-#     vectorizer <- vocab_vectorizer(v)
-#     tcm <- create_tcm(itoken(tokens), vectorizer, skip_grams_window = 3L)
-#     
-#     # convert to a symmetric matrix to facilitate the sorting
-#     tcm <- as.matrix(tcm)
-#     ttcm <- tcm
-#     diag(ttcm) <- 0
-#     tcm <- tcm + t(ttcm)
-#     
-#     # sort the matrix according to rowname-colname and convert back to a upper triangle matrix
-#     tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
-#     tcm[lower.tri(tcm, diag = FALSE)] <- 0
-#     
-#     toks <- tokens(char_tolower(txt), remove_punct = TRUE)
-#     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
-#     fcm <- fcm_sort(fcm)
-#     expect_true(all(round(fcm, 2) == round(tcm, 2)))
-#     
-# })
+test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
+    skip_if_not_installed("text2vec")
+    library("text2vec")
+
+    txt <- "A D A C E A D F E B A C E D"
+    tokens <- txt %>% tolower %>% word_tokenizer
+    it <- itoken(tokens)
+    v <- create_vocabulary(it)
+    vectorizer <- vocab_vectorizer(v)
+    tcm <- create_tcm(itoken(tokens), vectorizer, skip_grams_window = 3L)
+
+    # convert to a symmetric matrix to facilitate the sorting
+    tcm <- as.matrix(tcm)
+    ttcm <- tcm
+    # diag(ttcm) <- 0
+    tcm <- tcm + t(ttcm)
+
+    # sort the matrix according to rowname-colname and convert back to a upper triangle matrix
+    tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
+    tcm[lower.tri(tcm, diag = FALSE)] <- 0
+
+    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
+    fcm <- fcm(toks, context = "window", count = "weighted", weights = 1/seq_len(3), window = 3)
+    fcm <- fcm_sort(fcm)
+    
+    expect_equivalent(as.matrix(fcm), tcm, tol = .00001)
+})
 
 test_that("fcm works with character and tokens in the same way", {
     txt <- "A D A C E A D F E B A C E D"
