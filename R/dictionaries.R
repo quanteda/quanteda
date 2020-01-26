@@ -319,38 +319,64 @@ is.dictionary <- function(x) {
 
 # base method extensions ------------
 
+setMethod("print", signature(x = "dictionary2"), 
+          function(x, 
+                   max_nkey = quanteda_options("print_dictionary_max_nkey"), 
+                   max_nval = quanteda_options("print_dictionary_max_nval"),
+                   show_summary = quanteda_options("print_dictionary_summary"),
+                   ...) {
+              if (show_summary) {
+                  depth <- dictionary_depth(x)
+                  lev <- if (depth > 1L) " primary" else ""
+                  nkey <- length(names(x))
+                  cat("Dictionary object with ", nkey, lev, " key entr",
+                      if (nkey == 1L) "y" else "ies", sep = "")
+                  if (lev != "") cat(" and ", depth, " nested levels", sep = "")
+                  cat(".\n")
+              }
+              print_dictionary(x, 1, max_nkey, max_nval, ...)
+          })
+
 #' Print a dictionary object
 #' 
 #' Print/show method for dictionary objects.
+#' @method print dictionary2
 #' @param object the dictionary to be printed
-#' @rdname dictionary-class
+#' @rdname print-quanteda
 #' @export
-setMethod("show", "dictionary2",
-          function(object) {
-              depth <- dictionary_depth(object)
-              lev <- if (depth > 1L) " primary" else ""
-              nkey <- length(names(object))
-              cat("Dictionary object with ", nkey, lev, " key entr",
-                  if (nkey == 1L) "y" else "ies", sep = "")
-              if (lev != "") cat(" and ", depth, " nested levels", sep = "")
-              cat(".\n")
-              print_dictionary(object)
-          })
+setMethod("show", signature(object = "dictionary2"), function(object) print(object))
 
 # Internal function to print dictionary
-print_dictionary <- function(entry, level = 1) {
-    entry <- unclass(entry)
+print_dictionary <- function(entry, level = 1, 
+                             max_nkey, max_nval, show_summary, ...) {
+    unused_dots(...)
+    nkey <- length(entry)
+    if (max_nkey < 0) 
+        max_nkey <- length(entry)
+    
+    entry <- head(unclass(entry), max_nkey)
     if (!length(entry)) return()
     is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
     if (length(word)) {
+        if (max_nval < 0) 
+            max_nval <- length(word)
         cat(rep("  ", level - 1), "- ",
-            paste(word, collapse = ", "), "\n", sep = "")
+            paste(head(word, max_nval), collapse = ", "), sep = "")
+        rem_nval <- length(word) - max_nval
+        if (rem_nval > 0)
+            cat(" [ ... and ",  rem_nval, " more ]\n", sep = "")
+        cat("\n", sep = "")
     }
     for (i in seq_along(category)) {
         cat(rep("  ", level - 1), "- [", names(category[i]), "]:\n", sep = "")
-        print_dictionary(category[[i]], level + 1)
+        print_dictionary(category[[i]], level + 1, max_nkey, max_nval, show_summary)
+    }
+    rem_nkey <- nkey - max_nkey
+    if (rem_nkey > 0) {
+        cat("[ reached max_nkey ... ", rem_nkey, " more key", 
+            if (rem_nkey > 1) "s", " ]\n", sep = "")
     }
 }
 

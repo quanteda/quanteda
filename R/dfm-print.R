@@ -7,9 +7,8 @@ setMethod("print", signature(x = "dfm"),
           function(x, 
                    max_ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
-                   show_summary = TRUE, 
+                   show_summary = quanteda_options("print_dfm_summary"), 
                    ...) {
-              
               if (show_summary) {
                   docvars <- docvars(x)
                   cat("Document-feature matrix of: ",

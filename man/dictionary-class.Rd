@@ -4,7 +4,6 @@
 \name{dictionary2-class}
 \alias{dictionary2-class}
 \alias{as.list,dictionary2-method}
-\alias{show,dictionary2-method}
 \alias{[,dictionary2,index,ANY,ANY-method}
 \alias{[[,dictionary2,index-method}
 \alias{$.dictionary2}
@@ -12,8 +11,6 @@
 \title{Coerce a dictionary object into a list}
 \usage{
 \S4method{as.list}{dictionary2}(x, flatten = FALSE, levels = 1:100)
-
-\S4method{show}{dictionary2}(object)
 
 \S4method{[}{dictionary2,index,ANY,ANY}(x, i)
 
@@ -29,16 +26,20 @@
 \item{levels}{integer vector indicating levels in the dictionary. Used only
 when \code{flatten = TRUE}.}
 
-\item{object}{the dictionary to be extracted}
-
 \item{i}{index for entries}
 
 \item{name}{the dictionary key}
 
 \item{...}{\link{dictionary} objects to be concatenated}
+
+\item{object}{the dictionary to be extracted}
 }
 \description{
-Print/show method for dictionary objects.
+Coerce a dictionary object into a list
+
+Extractor for dictionary objects
+
+Extractor for dictionary objects
 }
 \section{Slots}{
 

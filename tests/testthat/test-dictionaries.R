@@ -125,30 +125,64 @@ test_that("indexing for dictionary objects works", {
     )
 })
 
-test_that("indexing for dictionary keys works", {
+test_that("show.dictionary2", {
     dict <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
     expect_true(is.dictionary(dict[1]))
-    expect_equal(
-        dict[1],
-        dictionary(list(one = c("a", "b")))
-    )
 
     expect_output(
         print(dict),
-        "Dictionary object with 2 key entries\\."
+        paste0(
+            "Dictionary object with 2 key entries.\n",
+            "- [one]:\n",
+            "  - a, b\n",
+            "- [two]:\n",
+            "  - c, d"
+        ),
+        fixed = TRUE
     )
     expect_output(
-        print(dict[1]),
-        "Dictionary object with 1 key entry\\."
+        print(dict, max_nkey = 1),
+        paste0(
+            "Dictionary object with 2 key entries.\n",
+            "- [one]:\n",
+            "  - a, b\n",
+            "[ reached max_nkey ... 1 more key ]"
+        ),
+        fixed = TRUE
+    )
+    expect_output(
+        print(dict, max_nkey = -1, max_nval = -1),
+        paste0(
+            "Dictionary object with 2 key entries.\n",
+            "- [one]:\n",
+            "  - a, b\n",
+            "- [two]:\n",
+            "  - c, d"
+        ),
+        fixed = TRUE
+    )
+    expect_output(
+        print(dict, max_nkey = 1, max_nval = 1),
+        paste0(
+            "Dictionary object with 2 key entries.\n",
+            "- [one]:\n",
+            "  - a [ ... and 1 more ]\n",
+            "\n",
+            "[ reached max_nkey ... 1 more key ]"
+        ),
+        fixed = TRUE
     )
     
-    testdict <- dictionary(file = "../data/dictionaries/issue-459.cat")
-    expect_identical(
-        testdict[["SOUTH"]],
-        testdict$SOUTH
+    expect_output(
+        print(dict, max_nkey = 1, max_nval = 1, show_summary = FALSE),
+        paste0(
+            "- [one]:\n",
+            "  - a [ ... and 1 more ]\n",
+            "\n",
+            "[ reached max_nkey ... 1 more key ]"
+        ),
+        fixed = TRUE
     )
-    
-    
 })
 
 
