@@ -48,7 +48,7 @@ test_that("test dfm_select, glob", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "remove", valuetype = "glob", verbose = FALSE)),
-        c( "D", "e", "cc")
+        c("D", "e", "cc")
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "keep", valuetype = "glob", case_insensitive = FALSE, verbose = FALSE)),
@@ -102,7 +102,7 @@ test_that("glob works if results in no features", {
 
 test_that("selection that is out of bounds", {
     expect_equal(dfm_select(testdfm), testdfm)
-    
+
     expect_equal(
         featnames(dfm_select(testdfm, selection = "keep", min_nchar = 5)),
         character()
@@ -115,8 +115,8 @@ test_that("selection that is out of bounds", {
 })
 
 test_that("longer selection than longer than features that exist (related to #447)", {
-    dfmtest <- dfm(tokens(c(d1 = 'a b', d2 = 'a b c d e')))
-    feat <- c('b', 'c', 'd', 'e', 'f', 'g')
+    dfmtest <- dfm(tokens(c(d1 = "a b", d2 = "a b c d e")))
+    feat <- c("b", "c", "d", "e", "f", "g")
     expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
                    "kept 4 features")
     expect_message(dfm_remove(dfmtest, feat, verbose = TRUE),
@@ -128,23 +128,23 @@ test_that("longer selection than longer than features that exist (related to #44
 })
 
 test_that("test dfm_select with ngrams #589", {
-    ngramdfm <- dfm(c('of_the', 'in_the', 'to_the', 'of_our', 'and_the', ' it_is', 'by_the', 'for_the'))
-    expect_equal(featnames(dfm_select(ngramdfm, pattern = c('of_the', 'in_the'), valuetype = 'fixed')),
-                 c('of_the', 'in_the'))
-    expect_equal(featnames(dfm_select(ngramdfm, pattern = '*_the', valuetype = 'glob')),
-                 c('of_the', 'in_the', 'to_the', 'and_the', 'by_the', 'for_the'))
+    ngramdfm <- dfm(c("of_the", "in_the", "to_the", "of_our", "and_the", " it_is", "by_the", "for_the"))
+    expect_equal(featnames(dfm_select(ngramdfm, pattern = c("of_the", "in_the"), valuetype = "fixed")),
+                 c("of_the", "in_the"))
+    expect_equal(featnames(dfm_select(ngramdfm, pattern = "*_the", valuetype = "glob")),
+                 c("of_the", "in_the", "to_the", "and_the", "by_the", "for_the"))
 })
 
 test_that("test dfm_select with ngrams concatenated with whitespace", {
-    ngramdfm <- dfm(c('of_the', 'in_the', 'to_the', 'of_our', 'and_the', ' it_is', 'by_the', 'for_the'))
+    ngramdfm <- dfm(c("of_the", "in_the", "to_the", "of_our", "and_the", " it_is", "by_the", "for_the"))
     colnames(ngramdfm) <- stringi::stri_replace_all_fixed(colnames(ngramdfm), "_", " ")
     expect_equal(
-        featnames(dfm_select(ngramdfm, pattern = c('of the', 'in the'), valuetype = 'fixed')),
-        c('of the', 'in the')
+        featnames(dfm_select(ngramdfm, pattern = c("of the", "in the"), valuetype = "fixed")),
+        c("of the", "in the")
     )
     expect_equal(
-        featnames(dfm_select(ngramdfm, pattern = '* the', valuetype = 'glob')),
-        c('of the', 'in the', 'to the', 'and the', 'by the', 'for the')
+        featnames(dfm_select(ngramdfm, pattern = "* the", valuetype = "glob")),
+        c("of the", "in the", "to the", "and the", "by the", "for the")
     )
 })
 
@@ -159,35 +159,35 @@ test_that("dfm_select on a dfm returns equal feature sets", {
 })
 
 test_that("dfm_select removes padding", {
-    
+
     txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
     toks <- tokens(txts)
     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
     testdfm <- dfm(toks)
-    expect_true('' %in% featnames(testdfm))
-    testdfm <- dfm_remove(dfm(toks), '')
-    expect_false('' %in% featnames(testdfm))
-    
+    expect_true("" %in% featnames(testdfm))
+    testdfm <- dfm_remove(dfm(toks), "")
+    expect_false("" %in% featnames(testdfm))
+
 })
 
 # test_that("dfm_select raises warning when padding = TRUE but not valuetype = fixed", {
-#     
-#   expect_warning(dfm_select(testdfm, c('z', 'd', 'e'), padding = TRUE),
+#
+#   expect_warning(dfm_select(testdfm, c("z", "d", "e"), padding = TRUE),
 #                  "padding is used only when valuetype is 'fixed'")
-#     
+#
 # })
 
 test_that("dfm_select returns empty dfm when not maching features", {
-    expect_equal(dim(dfm_select(testdfm, pattern = c('x', 'y', 'z'))),
+    expect_equal(dim(dfm_select(testdfm, pattern = c("x", "y", "z"))),
                  c(3, 0))
 })
 
 test_that("dfm_remove works even when it does not remove anything, issue 711", {
     txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
     testdfm <- dfm(txts)
-    
-    expect_silent(dfm_remove(testdfm, c('xxx', 'yyy', 'x y')))
-    expect_equal(featnames(dfm_remove(testdfm, c('xxx', 'yyy', 'x y'))),
+
+    expect_silent(dfm_remove(testdfm, c("xxx", "yyy", "x y")))
+    expect_equal(featnames(dfm_remove(testdfm, c("xxx", "yyy", "x y"))),
                  featnames(testdfm))
 })
 
@@ -197,7 +197,7 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
                                  pol = c("political part*", "election*")),
                             separator = " ")
     testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"),
-                                 pol = c("political_part*", "election*")), 
+                                 pol = c("political_part*", "election*")),
                             separator = "_")
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = testdict1, valuetype = "glob")),
@@ -205,7 +205,7 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
     )
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = phrase(testdict1), valuetype = "glob")),
-        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")    
+        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")
     )
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = testdict2, valuetype = "glob")),
@@ -213,7 +213,7 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
     )
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = phrase(testdict2), valuetype = "glob")),
-        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")    
+        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")
     )
 })
 
@@ -222,11 +222,11 @@ test_that("dfm_select works when selecting on collocations", {
     txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
     toks_uni <- tokens(txt)
     dfm_uni <- dfm(toks_uni)
-    toks_bi <- tokens(txt, n = 2, concatenator = " ")
+    toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
     dfm_bi <- dfm(toks_bi)
     coll_bi <- textstat_collocations(toks_uni, size = 2, min_count = 2)
     coll_tri <- textstat_collocations(toks_uni, size = 3, min_count = 2)
-    
+
     expect_equal(
         dim(dfm_select(dfm_uni, coll_bi)),
         c(2, 0)
@@ -235,21 +235,21 @@ test_that("dfm_select works when selecting on collocations", {
         dim(dfm_select(dfm_uni, coll_tri)),
         c(2, 0)
     )
-    
+
     expect_equal(sum(dfm_select(dfm_bi, coll_bi)), 6)
     expect_equal(featnames(dfm_select(dfm_bi, coll_bi)), c("a b", "e g", "g h"))
-    
+
     # wrong
-    expect_equal(dim(dfm_select(dfm_bi, coll_tri)), c(2,0))
+    expect_equal(dim(dfm_select(dfm_bi, coll_tri)), c(2, 0))
     expect_equal(featnames(dfm_select(dfm_bi, coll_tri)), character())
 })
 
 test_that("shortcut functions works", {
     testdfm <- dfm(data_corpus_inaugural[1:5])
-    expect_equal(dfm_select(testdfm, stopwords('english'), selection = 'keep'),
-                 dfm_keep(testdfm, stopwords('english')))
-    expect_equal(dfm_select(testdfm, stopwords('english'), selection = 'remove'),
-                 dfm_remove(testdfm, stopwords('english')))
+    expect_equal(dfm_select(testdfm, stopwords("english"), selection = "keep"),
+                 dfm_keep(testdfm, stopwords("english")))
+    expect_equal(dfm_select(testdfm, stopwords("english"), selection = "remove"),
+                 dfm_remove(testdfm, stopwords("english")))
 })
 
 test_that("dfm_remove/keep fail if selection argument is used", {
@@ -267,7 +267,7 @@ test_that("dfm_remove/keep fail if selection argument is used", {
 test_that("dfm_remove works when selection is a dfm (#1320)", {
     d1 <- dfm("a b b c c c d d d d")
     d2 <- dfm("d d d a a")
-    
+
     expect_warning({
         d3 <- dfm_remove(d1, pattern = d2)
     }, "pattern = dfm is deprecated")
@@ -275,7 +275,7 @@ test_that("dfm_remove works when selection is a dfm (#1320)", {
         featnames(d3),
         c("b", "c")
     )
-    
+
     expect_warning({
         d4 <- dfm_select(d1, pattern = d2, selection = "remove")
     }, "pattern = dfm is deprecated")
@@ -289,4 +289,3 @@ test_that("really long words are not removed in tokens() (#1713)", {
     dfmat <- dfm("one two DonaudampfschiffahrtselektrizittenhauptbetriebswerkbauunterbeamtengesellschaftXXX")
     expect_equivalent(nfeat(dfmat), 3)
 })
-
