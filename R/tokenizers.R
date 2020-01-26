@@ -47,8 +47,6 @@ tokenize_word <- function(x,
                           version = 2,
                           verbose = quanteda_options("verbose")) {
 
-    if (verbose) catm("...starting tokenization\n")
-
     named <- names(x)
 
     # -------- special processing

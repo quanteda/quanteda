@@ -253,7 +253,7 @@ tokens.corpus <- function(x,
     }
 
     # call the appropriate tokenizer function
-    if (verbose) catm("Starting tokenization...\n")
+    if (verbose) catm("...starting tokenization\n")
     tokenizer_fn <- switch(what,
                            word = tokenize_word,
                            word1 = tokenize_word1,
@@ -272,7 +272,7 @@ tokens.corpus <- function(x,
     if (remove_separators && what %in% c("word", "fastestword", "fasterword"))
         remove_separators <- FALSE
 
-    result <- tokens(result,
+    result <- tokens.tokens(result,
                      remove_punct = remove_punct,
                      remove_symbols = remove_symbols,
                      remove_numbers = remove_numbers,

@@ -681,7 +681,7 @@ test_that("types are encoded when necessarly", {
 test_that("tokens verbose = TRUE produces expected messages", {
     expect_message(
         tokens(c("one two three", "four five."), verbose = TRUE),
-        "Starting tokenization"
+        "starting tokenization"
     )
 })
 
