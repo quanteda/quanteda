@@ -6,15 +6,14 @@
 \usage{
 tokens(
   x,
-  what = "default",
+  what = "word",
   remove_punct = FALSE,
   remove_symbols = FALSE,
   remove_numbers = FALSE,
   remove_url = FALSE,
-  remove_separators = FALSE,
+  remove_separators = TRUE,
   split_tags = FALSE,
   split_hyphens = FALSE,
-  split_currency = FALSE,
   include_docvars = TRUE,
   verbose = quanteda_options("verbose"),
   ...
@@ -24,8 +23,7 @@ tokens(
 \item{x}{a (uniquely) named list of characters or a \link{tokens} object; or a
 \link{corpus}, or a character object that will be tokenized}
 
-\item{what}{character; which tokenizer to use.  The "default" is the version
-2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2) are also supported.
+\item{what}{character; which tokenizer to use.  The default  \verb{what = "word"`` is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2) are also supported, including the default }what = "word1"`.
 See the Details and quanteda Tokenizer below.}
 
 \item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
@@ -56,16 +54,12 @@ for usernames.}
 hyphenation and hyphenation-like characters in between words, e.g.
 \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
 
-\item{split_currency}{logical; if \code{TRUE}, split currency symbols from the numbers
-with which they are associated, e.g. "£15,000" becomes \code{c("£", "15,000")}}
-
 \item{include_docvars}{if \code{TRUE}, pass docvars through to the tokens object.
-Only applies when tokenizing \link{corpus} objects.}
+Does not apply when the input is a character data or a list of characters.}
 
-\item{verbose}{if \code{TRUE}, print timing messages to the console; off by
-default}
+\item{verbose}{if \code{TRUE}, print timing messages to the console}
 
-\item{...}{additional arguments not used}
+\item{...}{used to pass arguments among the functions}
 }
 \value{
 \pkg{quanteda} \code{tokens} class object, by default a serialized list of
@@ -111,35 +105,43 @@ splits infix hyphens, or \pkg{spacyr}.
 
 \section{quanteda tokenizer}{
 
-There is also a default tokenizer, if the input to \code{tokens()} is a
-character or \link{corpus} input, based on
-\link[stringi:stri_split_boundaries]{stri_split_boundaries}, but that improves
-on this by: not splitting words with infix hyphens (e.g. "self-aware"),
-not splitting currency symbols from their numbers, not splitting social
-media tag characters (#hashtags and @usernames), and preserving URLs and
-email addressed
+A new (v2) "smarter" word tokenizer \code{what = "word"} now preserves URLs and email addresses, as
+well as maintains the (pre-v2) behaviours of preserving infix hyphens and
+not splitting social media "tag" prefixes.  This uses
+\link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")},
+but that improves on this by: not splitting words with infix hyphens (e.g.
+"self-aware"), not splitting social media tag characters (#hashtags and
+@usernames), and preserving URLs and email addresses
 
 For backward compatibility, the following older tokenizers are also supported
 through \code{what}:
-\describe{ \item{\code{"word"}}{(recommended default) version < 2 word tokenizer.}
-\item{\code{"fasterword"}}{splits on whitespace and control characters, using
+\describe{
+\item{\code{"word1"}}{Classic internal tokenizer that splits similar to
+\link[stringi:stri_split_boundaries]{stri_split_boundaries}, but splits up the
+components of URLs and email addresses.  This was the method used prior to
+version 2.}
+\item{\code{"fasterword"}}{(legacy) splits on whitespace and control characters, using
 \code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
-\item{\code{"fastestword"}}{splits on the space character, using
+\item{\code{"fastestword"}}{(legacy) splits on the space character, using
 \code{stringi::stri_split_fixed(x, " ")}}
 \item{\code{"character"}}{tokenization into individual characters}
-\item{\code{"sentence"}}{sentence segmenter based on \pkg{stringi}} }
+\item{\code{"sentence"}}{sentence segmenter based on \link[stringi:stri_split_boundaries]{stri_split_boundaries},
+but with additional rules to avoid splits on words like "Mr." that would otherwise
+incorrectly be detected as sentence boundaries.  For better sentence tokenization,
+consider using \pkg{spacyr}.} }
 }
 
 \examples{
 txt <- c(doc1 = "A sentence, showing how tokens() works.",
-         doc2 = "@quantedainit and #textanalysis on Twitter.",
+         doc2 = "@quantedainit and #textanalysis https://example.com?p=123.",
          doc3 = "Self-documenting code??",
          doc4 = "£1,000,000 for 50¢ is gr8 4ever \U0001f600")
 tokens(txt)
+tokens(txt, what = "word1")
 
 # removing punctuation marks and tags
 tokens(txt[1:2], remove_punct = TRUE)
-tokens(txt[1:2], remove_punct = TRUE, split_tags = FALSE)
+tokens(txt[1:2], remove_punct = TRUE, split_tags = TRUE)
 
 # splitting hyphenated words
 tokens(txt[3])
@@ -148,9 +150,9 @@ tokens(txt[3], split_hyphens = TRUE)
 # symbols and numbers
 tokens(txt[4])
 tokens(txt[4], remove_numbers = TRUE)
-tokens(txt[4], remove_symbols = TRUE)
+tokens(txt[4], remove_numbers = TRUE, remove_symbols = TRUE)
 
-# using other tokenizers
+\dontrun{# using other tokenizers
 tokens(tokenizers::tokenize_words(txt[4]), remove_symbols = TRUE)
 tokenizers::tokenize_words(txt, lowercase = FALSE, strip_punct = FALSE) \%>\%
     tokens(remove_symbols = TRUE)
@@ -159,6 +161,7 @@ tokenizers::tokenize_characters(txt[3], strip_non_alphanum = FALSE) \%>\%
 tokenizers::tokenize_sentences(
     "The quick brown fox.  It jumped over the lazy dog.") \%>\%
     tokens()
+}
 
 }
 \seealso{

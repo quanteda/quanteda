@@ -30,7 +30,7 @@ dfm(
 excluding all others.  This can be used in lieu of a dictionary if there
 are only specific features that a user wishes to keep. To extract only
 Twitter usernames, for example, set \code{select = "@*"} and make sure that
-\code{remove_twitter = FALSE} as an additional argument passed to \link{tokens}.
+\code{split_tags = FALSE} as an additional argument passed to \link{tokens}.
 Note: \code{select = "^@\\\\\\w+\\\\\\b"} would be the regular expression version of
 this matching pattern.  The pattern matching type will be set by
 \code{valuetype}.  See also \code{\link[=tokens_remove]{tokens_remove()}}.}
@@ -138,8 +138,8 @@ dfm(corp, select = "s$", valuetype = "regex")
 txttweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(txttweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
-dfm(txttweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
+dfm(txttweets, select = "#*", split_tags = FALSE)  # keep only hashtags
+dfm(txttweets, select = "^#.*$", valuetype = "regex", split_tags = FALSE)
 
 # for a dfm
 dfmat3 <- dfm(data_corpus_irishbudget2010)

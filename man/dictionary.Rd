@@ -82,7 +82,7 @@ c(dict["christmas"], dict["country"])
 \dontrun{
 # import the Laver-Garry dictionary from Provalis Research
 dictfile <- tempfile()
-download.file("https://provalisresearch.com/Download/LaverGarry.zip", 
+download.file("https://provalisresearch.com/Download/LaverGarry.zip",
               dictfile, mode = "wb")
 unzip(dictfile, exdir = (td <- tempdir()))
 dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))

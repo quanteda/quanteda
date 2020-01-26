@@ -20,7 +20,7 @@ summarize_texts <- function(object, tolower = FALSE, ...) {
     data.frame(Text = names(object),
                Types = ntype(temp),
                Tokens = ntoken(temp),
-               Sentences = suppressWarnings(nsentence(object, ...)),
+               Sentences = suppressWarnings(nsentence(object)),
                row.names = seq_along(object),
                stringsAsFactors = FALSE)
 }

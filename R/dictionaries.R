@@ -18,7 +18,7 @@ setValidity("dictionary2", function(object) {
 })
 
 # Internal function to chekc if dictionary eintries are all chracters
-validate_dictionary <- function(dict){
+validate_dictionary <- function(dict) {
     dict <- unclass(dict)
     if (is.null(names(dict))) {
         stop("Dictionary elements must be named: ",
@@ -35,7 +35,7 @@ validate_dictionary <- function(dict){
     check_entries(dict)
 }
 
-check_entries <- function (dict) {
+check_entries <- function(dict) {
     for (i in seq_along(dict)) {
         entry <- dict[[i]]
         is_category <- vapply(entry, is.list, logical(1))
@@ -93,7 +93,7 @@ check_entries <- function (dict) {
 #'   [is.dictionary()].
 #' @references WordStat dictionaries page, from Provalis Research
 #'   <http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
-#'   
+#'
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 #'   (2007). The development and psychometric properties of LIWC2007. \[Software
 #'   manual\]. Austin, TX (<http://www.liwc.net>).
@@ -120,14 +120,14 @@ check_entries <- function (dict) {
 #' dict[1:2]
 #' dict[c("christmas", "opposition")]
 #' dict[["opposition"]]
-#' 
+#'
 #' # combine dictionaries
 #' c(dict["christmas"], dict["country"])
 #'
 #' \dontrun{
 #' # import the Laver-Garry dictionary from Provalis Research
 #' dictfile <- tempfile()
-#' download.file("https://provalisresearch.com/Download/LaverGarry.zip", 
+#' download.file("https://provalisresearch.com/Download/LaverGarry.zip",
 #'               dictfile, mode = "wb")
 #' unzip(dictfile, exdir = (td <- tempdir()))
 #' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
@@ -146,6 +146,7 @@ dictionary <- function(x, file = NULL, format = NULL,
 }
 
 # method for when x is not supplied, but file is
+#' @importFrom stringi stri_trans_tolower
 #' @export
 dictionary.default <- function(x, file = NULL, format = NULL,
                                separator = " ",
@@ -192,6 +193,7 @@ dictionary.default <- function(x, file = NULL, format = NULL,
                                               # for compatibility
 }
 
+#' @importFrom stringi stri_length
 #' @export
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
@@ -232,15 +234,15 @@ setMethod("as.list",
                 result <- flatten_dictionary(x, levels)
                 attr(result, "concatenator") <- NULL
                 return(result)
-              } else {                                
+              } else {
                 simplify_dictionary(x)
               }
           })
 
 #' Coercion and checking functions for dictionary objects
-#' 
-#' Convert a dictionary from a different format into a \pkg{quanteda} 
-#' dictionary, or check to see if an object is a dictionary.  
+#'
+#' Convert a dictionary from a different format into a \pkg{quanteda}
+#' dictionary, or check to see if an object is a dictionary.
 #' @param x a dictionary-like object to be coerced or checked
 #' @param format input format for the object to be coerced to a
 #'   [dictionary]; current legal values are a data.frame with the fields
@@ -251,7 +253,7 @@ setMethod("as.list",
 #'   constructor function in that it converts an existing object rather than
 #'   creates one from components or from a file.
 #' @export
-#' @examples 
+#' @examples
 #' \dontrun{
 #' data(sentiments, package = "tidytext")
 #' as.dictionary(subset(sentiments, lexicon == "nrc"))
@@ -265,7 +267,7 @@ setMethod("as.list",
 #'     )
 #' with(datafinn, table(score, sentiment))
 #' as.dictionary(datafinn)
-#' 
+#'
 #' dat <- data.frame(
 #'     word = c("Great", "Horrible"),
 #'     sentiment = c("positive", "negative")
@@ -273,7 +275,7 @@ setMethod("as.list",
 #' as.dictionary(dat)
 #' as.dictionary(dat, tolower = FALSE)
 #' }
-#' 
+#'
 as.dictionary <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
     UseMethod("as.dictionary")
 }
@@ -289,7 +291,7 @@ as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", to
 #' @export
 as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
     format <- match.arg(format)
-    
+
     if (format == "tidytext") {
         if (!all(c("word", "sentiment") %in% names(x)))
             stop("data.frame must contain word and sentiment columns")
@@ -299,7 +301,7 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
         if (all(is.na(x[["sentiment"]])))
             stop("sentiment values are missing")
     }
-    
+
     dictionary(with(x, split(as.character(word), as.character(sentiment))),
                separator = separator, tolower = tolower)
 }
@@ -320,7 +322,7 @@ is.dictionary <- function(x) {
 # base method extensions ------------
 
 #' Print a dictionary object
-#' 
+#'
 #' Print/show method for dictionary objects.
 #' @param object the dictionary to be printed
 #' @rdname dictionary-class
@@ -417,6 +419,7 @@ setMethod("c",
 #' @param concatenator_dictionary concatenator from a dictionary object
 #' @param concatenator_tokens concatenator from a tokens object
 #' @keywords internal
+#' @importFrom stringi stri_detect_fixed stri_split_fixed stri_replace_all_fixed
 split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 
     key <- rep(names(dict), lengths(dict))
@@ -504,6 +507,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
 #'
 #' @param dict the dictionary whose values will be lowercased
 #' @keywords dictionary internal
+#' @importFrom stringi stri_trans_tolower
 #' @examples
 #' dict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #'                           SUBKEY2 = c("C", "D")),
@@ -555,7 +559,7 @@ replace_dictionary_values <- function(dict, from, to) {
 #' @param dict a dictionary object
 #' @keywords internal
 #' @examples
-#' dict <- list("A" = list(AA = list("aaaaa"), "a"), 
+#' dict <- list("A" = list(AA = list("aaaaa"), "a"),
 #'              "B" = list("b"),
 #'              "C" = list("c"),
 #'              "A" = list("aa"))
@@ -585,7 +589,7 @@ merge_dictionary_values <- function(dict) {
 }
 
 #' Internal function to convert a list to a dictionary
-#' 
+#'
 #' A dictionary is internally a list of list to keys and values to coexist in
 #' the same level.
 #' @param dict list of object
@@ -608,7 +612,7 @@ list2dictionary <- function(dict) {
 # import/export functions --------------
 
 #' @title Internal functions to import dictionary files
-#' 
+#'
 #' @description Internal functions to import dictionary files in a variety of formats
 #' @name read_dict_functions
 #' @return a \pkg{quanteda} [dictionary] object
@@ -623,7 +627,7 @@ NULL
 #' dict <- quanteda:::read_dict_lexicoder(
 #'     system.file("extdata", "LSD2015.lc3", package = "quanteda")
 #' )
-#' 
+#'
 read_dict_lexicoder <- function(path) {
     lines <- stri_read_lines(path, encoding = "utf-8") # Lexicoder 3.0 is always UTF-8
     lines <- stri_trim_both(lines)
@@ -647,7 +651,7 @@ read_dict_lexicoder <- function(path) {
 #' dict <- quanteda:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
-#' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat", 
+#' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
 #' #                            encoding = "iso-8859-1")
 #' }
 read_dict_wordstat <- function(path, encoding = "auto") {
@@ -713,14 +717,14 @@ remove_empty_keys <- function(dict) {
 #' dict <- quanteda:::list2dictionary(lis)
 #' quanteda:::nest_dictionary(dict, c(1, 1, 2, 2))
 #' quanteda:::nest_dictionary(dict, c(1, 2, 1, 2))
-#' 
-nest_dictionary <- function (dict, depth) {
+#'
+nest_dictionary <- function(dict, depth) {
     if (length(dict) != length(depth))
         stop("Depth vectot must have the same length as dictionary")
     depth_max <- max(depth)
     while (depth_max > 1) {
         i_max <- which(depth == depth_max)
-        for (i in i_max){
+        for (i in i_max) {
             i_parent <- tail(which(head(depth, i - 1) < depth_max), 1)
 
             # remove empty character vector
@@ -739,7 +743,7 @@ nest_dictionary <- function (dict, depth) {
 #' @description `read_dict_liwc` imports LIWC dictionary files in the
 #'   `.dic` format.
 #' @examples
-#' 
+#'
 #' dict <- quanteda:::read_dict_liwc(
 #'     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
 #' )
@@ -820,8 +824,8 @@ read_dict_liwc <- function(path, encoding = "auto") {
 #' @description `read_dict_yoshikoder` imports Yoshikoder files in the
 #'   `.ykd` format.
 #' @examples
-#' 
-#' dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd", 
+#'
+#' dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
 #'                                                     package = "quanteda"))
 read_dict_yoshikoder <- function(path) {
     xml <- xml2::read_xml(path)
@@ -832,7 +836,7 @@ read_dict_yoshikoder <- function(path) {
 }
 
 # Internal function for read_dict_yoshikoder
-nodes2list <- function(node, dict = list()){
+nodes2list <- function(node, dict = list()) {
     nodes <- xml2::xml_find_all(node, "cnode")
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
@@ -846,10 +850,10 @@ nodes2list <- function(node, dict = list()){
 }
 
 #' Convert quanteda dictionary objects to the YAML format
-#' 
-#' Converts a \pkg{quanteda} dictionary object constructed by the 
-#' [dictionary] function into the YAML format. The YAML 
-#' files can be edited in text editors and imported into 
+#'
+#' Converts a \pkg{quanteda} dictionary object constructed by the
+#' [dictionary] function into the YAML format. The YAML
+#' files can be edited in text editors and imported into
 #' \pkg{quanteda} again.
 #' @param x a [dictionary] object
 #' @return `as.yaml` a dictionary in the YAML format, as a character object

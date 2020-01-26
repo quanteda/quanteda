@@ -14,7 +14,7 @@
 #'   excluding all others.  This can be used in lieu of a dictionary if there
 #'   are only specific features that a user wishes to keep. To extract only
 #'   Twitter usernames, for example, set `select = "@@*"` and make sure that
-#'   `remove_twitter = FALSE` as an additional argument passed to [tokens].
+#'   `split_tags = FALSE` as an additional argument passed to [tokens].
 #'   Note: `select = "^@@\\\w+\\\b"` would be the regular expression version of
 #'   this matching pattern.  The pattern matching type will be set by
 #'   `valuetype`.  See also [tokens_remove()].
@@ -97,8 +97,8 @@
 #' txttweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(txttweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
-#' dfm(txttweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
+#' dfm(txttweets, select = "#*", split_tags = FALSE)  # keep only hashtags
+#' dfm(txttweets, select = "^#.*$", valuetype = "regex", split_tags = FALSE)
 #'
 #' # for a dfm
 #' dfmat3 <- dfm(data_corpus_irishbudget2010)
@@ -106,7 +106,7 @@
 #'             groups = ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"),
 #'                             "Govt", "Opposition"),
 #'             tolower = FALSE, verbose = TRUE)
-#' 
+#'
 dfm <- function(x,
                 tolower = TRUE,
                 stem = FALSE,
@@ -162,8 +162,8 @@ dfm.character <- function(x,
         tolower = tolower,
         stem = stem,
         select = select, remove = remove,
-        dictionary = dictionary, 
-        thesaurus = thesaurus, 
+        dictionary = dictionary,
+        thesaurus = thesaurus,
         valuetype = valuetype,
         case_insensitive = case_insensitive,
         groups = groups,
@@ -335,12 +335,12 @@ dfm.dfm <- function(x,
                         case_insensitive = case_insensitive,
                         verbose = verbose)
     }
-    
+
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-    
+
     language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose)
@@ -364,7 +364,7 @@ dfm.dfm <- function(x,
         catm("   ... created a",
              paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
              "sparse dfm\n   ... complete. \nElapsed time:",
-             format( (proc.time() - dfm_env$START_TIME)[3], digits = 3),
+             format((proc.time() - dfm_env$START_TIME)[3], digits = 3),
              "seconds.\n")
     return(x)
 }
@@ -392,11 +392,11 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
         index <- index + 1
     }
 
-    result <- new("dfm", 
+    result <- new("dfm",
                   sparseMatrix(j = index,
                                p = cumsum(c(1, lengths(x))) - 1,
                                x = 1L,
-                               dims = c(length(x), 
+                               dims = c(length(x),
                                         length(types))))
     set_dfm_dimnames(result) <- list(attrs$docvars[["docname_"]], types)
     return(result)
@@ -427,7 +427,7 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-    result <- new("dfm", temp, 
+    result <- new("dfm", temp,
                   docvars = make_docvars(n = 0L))
     set_dfm_dimnames(result) <- list(document, feature)
     return(result)

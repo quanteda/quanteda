@@ -50,10 +50,10 @@ phrase(patt1)
 phrase(patt2)
 
 # this is equivalent to phrase(patt1)
-(patt3 <- list(c("president"), c("white", "house"), 
+(patt3 <- list(c("president"), c("white", "house"),
                c("house", "of", "representatives")))
 
-# glob expression can be used 
+# glob expression can be used
 phrase(patt4 <- c("president?", "white house", "house * representatives"))
 
 # this is equivalent to phrase(patt4)

@@ -68,20 +68,20 @@ of types occurring \eqn{i} times in a sample of length \eqn{N}.
   \frac{V}{N}}{TTR =  V / N}}
 
 \item{\code{"C"}:}{Herdan's \emph{C} (Herdan, 1960, as cited in Tweedie &
-Baayen, 1998; sometimes referred to as \emph{LogTTR}): \deqn{C = 
+Baayen, 1998; sometimes referred to as \emph{LogTTR}): \deqn{C =
   \frac{\log{V}}{\log{N}}}{C = log(V) / log(N)}}
 
 \item{\code{"R"}:}{Guiraud's \emph{Root TTR} (Guiraud, 1954, as cited in
 Tweedie & Baayen, 1998): \deqn{R = \frac{V}{\sqrt{N}}}{R = V / sqrt(N)}}
 
-\item{\code{"CTTR"}:}{Carroll's \emph{Corrected TTR}: \deqn{CTTR = 
+\item{\code{"CTTR"}:}{Carroll's \emph{Corrected TTR}: \deqn{CTTR =
   \frac{V}{\sqrt{2N}}}{CTTR = V / sqrt(2N)}}
 
 \item{\code{"U"}:}{Dugast's \emph{Uber Index}  (Dugast, 1978, as cited in
 Tweedie & Baayen, 1998): \deqn{U = \frac{(\log{N})^2}{\log{N} - \log{V}}}{U
   = log(N)^2 / log(N) - log(V)}}
 
-\item{\code{"S"}:}{Summer's index: \deqn{S = 
+\item{\code{"S"}:}{Summer's index: \deqn{S =
   \frac{\log{\log{V}}}{\log{\log{N}}}}{S = log(log(V)) / log(log(N))}}
 
 \item{\code{"K"}:}{Yule's \emph{K}  (Yule, 1944, as presented in Tweedie &
@@ -135,35 +135,35 @@ txt <- c("Anyway, like I was sayin', shrimp is the fruit of the sea. You can
           pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
           shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
           sandwich.")
-tokens(txt) \%>\% 
+tokens(txt) \%>\%
     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
-dfm(txt) \%>\% 
+dfm(txt) \%>\%
     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
-    
+
 toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 2000))
 textstat_lexdiv(toks, c("CTTR", "TTR", "MATTR"), MATTR_window = 100)
 }
 \references{
-Covington, M.A. & McFall, J.D. (2010).
-\href{https://doi.org/10.1080/09296171003643098}{Cutting the Gordian Knot: The Moving-Average Type-Token Ratio (MATTR)}. \emph{Journal of Quantitative
-Linguistics}, 17(2), 94--100.
+Covington, M.A. & McFall, J.D. (2010). \href{https://doi.org/10.1080/09296171003643098}{Cutting the Gordian Knot: The Moving-Average Type-Token Ratio (MATTR)}. \emph{Journal of
+Quantitative Linguistics}, 17(2), 94--100.
 
 Herdan, G. (1955). \href{https://doi.org/10.1007/BF01587632}{A New Derivation and Interpretation of Yule's 'Characteristic' \emph{K}}. \emph{Zeitschrift für
 angewandte Mathematik und Physik}, 6(4): 332--334.
 
 Maas, H.D. (1972). Über den Zusammenhang zwischen Wortschatzumfang und
-Länge eines Textes. \emph{Zeitschrift für Literaturwissenschaft und
-Linguistik}, 2(8), 73--96.
+Länge eines Textes. \emph{Zeitschrift für Literaturwissenschaft und Linguistik},
+2(8), 73--96.
 
-McCarthy, P.M. &  Jarvis, S. (2007). \href{https://doi.org/10.1177/0265532207080767}{vocd: A Theoretical and Empirical Evaluation}. \emph{Language Testing}, 24(4), 459--488.
+McCarthy, P.M. &  Jarvis, S. (2007). \href{https://doi.org/10.1177/0265532207080767}{vocd: A Theoretical and Empirical Evaluation}. \emph{Language Testing},
+24(4), 459--488.
 
-McCarthy, P.M. & Jarvis, S. (2010). \href{https://doi.org/10.3758/BRM.42.2.381}{MTLD, vocd-D, and HD-D: A Validation Study of Sophisticated Approaches to Lexical Diversity Assessment}. \emph{Behaviour Research Methods}, 42(2), 381--392.
+McCarthy, P.M. & Jarvis, S. (2010). \href{https://doi.org/10.3758/BRM.42.2.381}{MTLD, vocd-D, and HD-D: A Validation Study of Sophisticated Approaches to Lexical Diversity Assessment}. \emph{Behaviour Research
+Methods}, 42(2), 381--392.
 
-Michalke, M. (2014) \emph{koRpus: An R Package for Text Analysis}.
-R package version 0.05-5. \url{http://reaktanz.de/?c=hacking&s=koRpus}
+Michalke, M. (2014) \emph{koRpus: An R Package for Text Analysis}. R package
+version 0.05-5. \url{http://reaktanz.de/?c=hacking&s=koRpus}
 
-Simpson, E.H. (1949). \href{https://doi.org/10.1038/163688a0}{Measurement of Diversity}.
-\emph{Nature}, 163: 688.
+Simpson, E.H. (1949). \href{https://doi.org/10.1038/163688a0}{Measurement of Diversity}. \emph{Nature}, 163: 688.
 
 Tweedie. F.J. and Baayen, R.H. (1998). \href{https://doi.org/10.1023/A:1001749303137}{How Variable May a Constant Be? Measures of Lexical Richness in Perspective}. \emph{Computers and the
 Humanities}, 32(5), 323--352.

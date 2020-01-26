@@ -346,117 +346,112 @@
 #'
 #' textstat_readability(data_corpus_inaugural[48:58],
 #'                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
-#' @references 
-#'   Anderson, J. (1983). [Lix and
-#'   rix: Variations on a little-known readability index](https://www.jstor.org/stable/40031755). *Journal of
-#'   Reading*, 26(6), 490--496.
+#' @references
+#'   Anderson, J. (1983). [Lix and rix: Variations on a little-known readability
+#'   index](https://www.jstor.org/stable/40031755). *Journal of Reading*, 26(6),
+#'   490--496.
 #'
-#'   Bamberger, R. & Vanecek, E. (1984).
-#'   *Lesen-Verstehen-Lernen-Schreiben*. Wien: Jugend und Volk.
+#'   Bamberger, R. & Vanecek, E. (1984). *Lesen-Verstehen-Lernen-Schreiben*.
+#'   Wien: Jugend und Volk.
 #'
 #'   Björnsson, C. H. (1968). *Läsbarhet*. Stockholm: Liber.
 #'
-#'   Bormuth, J.R. (1969).
-#'   [Development of
-#'   Readability Analysis](https://files.eric.ed.gov/fulltext/ED029166.pdf).
+#'   Bormuth, J.R. (1969). [Development of Readability
+#'   Analysis](https://files.eric.ed.gov/fulltext/ED029166.pdf).
 #'
-#'   Bormuth, J.R. (1968). [Cloze
-#'   test readability: Criterion reference scores](https://www.jstor.org/stable/1433978). *Journal of educational
+#'   Bormuth, J.R. (1968). [Cloze test readability: Criterion reference
+#'   scores](https://www.jstor.org/stable/1433978). *Journal of educational
 #'   measurement*, 5(3), 189--196.
 #'
-#'   Caylor, J.S. (1973). [Methodologies
-#'   for Determining Reading Requirements of Military Occupational
-#'   Specialities](https://eric.ed.gov/?id=ED074343).
+#'   Caylor, J.S. (1973). [Methodologies for Determining Reading Requirements of
+#'   Military Occupational Specialities](https://eric.ed.gov/?id=ED074343).
 #'
-#'   Caylor, J.S. & Sticht, T.G. (1973).
-#'   [*Development of a
-#'   Simple Readability Index for Job Reading Material*](https://archive.org/details/ERIC_ED076707).
+#'   Caylor, J.S. & Sticht, T.G. (1973). [*Development of a Simple Readability
+#'   Index for Job Reading
+#'   Material*](https://archive.org/details/ERIC_ED076707).
 #'
 #'   Coleman, E.B. (1971). Developing a technology of written instruction: Some
-#'   determiners of the complexity of prose. *Verbal learning research and
-#'   the technology of written instruction*, 155--204.
+#'   determiners of the complexity of prose. *Verbal learning research and the
+#'   technology of written instruction*, 155--204.
 #'
-#'   Coleman, M. & Liau, T.L. (1975).
-#'   [A Computer Readability
-#'   Formula Designed for Machine Scoring](https://psycnet.apa.org/record/1975-22007-001). *Journal of Applied
-#'   Psychology*, 60(2), 283.
+#'   Coleman, M. & Liau, T.L. (1975). [A Computer Readability Formula Designed
+#'   for Machine Scoring](https://psycnet.apa.org/record/1975-22007-001).
+#'   *Journal of Applied Psychology*, 60(2), 283.
 #'
-#'   Dale, E. and Chall, J.S. (1948).
-#'   [A Formula for Predicting
-#'   Readability: Instructions](https://www.jstor.org/stable/1473169). *Educational Research Bulletin*, 37-54.
+#'   Dale, E. and Chall, J.S. (1948). [A Formula for Predicting Readability:
+#'   Instructions](https://www.jstor.org/stable/1473169). *Educational Research
+#'   Bulletin*, 37-54.
 #'
-#'   Chall, J.S. and Dale, E. (1995). *Readability Revisited: The New
-#'   Dale-Chall Readability Formula*. Brookline Books.
+#'   Chall, J.S. and Dale, E. (1995). *Readability Revisited: The New Dale-Chall
+#'   Readability Formula*. Brookline Books.
 #'
 #'   Dickes, P. & Steiwer, L. (1977). Ausarbeitung von Lesbarkeitsformeln für
 #'   die Deutsche Sprache. *Zeitschrift für Entwicklungspsychologie und
 #'   Pädagogische Psychologie* 9(1), 20--28.
 #'
-#'   Danielson, W.A., & Bryan, S.D. (1963).
-#'   [Computer
-#'   Automation of Two Readability Formulas](https://journals.sagepub.com/doi/abs/10.1177/107769906304000207). *Journalism Quarterly*,
-#'   40(2), 201--206.
-#'   
-#'   DuBay, W.H. (2004).
-#'   [*The
-#'   Principles of Readability*](http://www.impact-information.com/impactinfo/readability02.pdf).
+#'   Danielson, W.A., & Bryan, S.D. (1963). [Computer Automation of Two
+#'   Readability
+#'   Formulas](https://journals.sagepub.com/doi/abs/10.1177/107769906304000207).
+#'   *Journalism Quarterly*, 40(2), 201--206.
 #'
-#'   Fang, I. E. (1966).
-#'   [The
-#'   "Easy listening formula"](https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19). *Journal of Broadcasting & Electronic
-#'   Media*, 11(1), 63--68.
+#'   DuBay, W.H. (2004). [*The Principles of
+#'   Readability*](http://www.impact-information.com/impactinfo/readability02.pdf).
 #'
-#'   Farr, J. N., Jenkins, J.J., & Paterson, D.G. (1951).
-#'   [Simplification of
-#'   Flesch Reading Ease Formula](https://psycnet.apa.org/record/1952-03973-001). *Journal of Applied Psychology*, 35(5):
-#'   333.
-#'   
-#'   Flesch, R. (1948). [A
-#'   New Readability Yardstick](https://psycnet.apa.org/record/1949-01274-001). *Journal of Applied Psychology*, 32(3),
-#'   221.
-#'   
-#'   Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen Schriftstellern. 
-#'   *Sprachforum*, 1, 233-244.
-#'   
-#'   Gunning, R. (1952). *The Technique of Clear Writing*.  New York: McGraw-Hill.
-#'   
-#'   Klare, G.R. (1975).
-#'   [Assessing Readability](https://www.jstor.org/stable/747086).
-#'   *Reading Research Quarterly*, 10(1), 62-102.
-#'   
+#'   Fang, I. E. (1966). [The "Easy listening
+#'   formula"](https://www.tandfonline.com/doi/abs/10.1080/08838156609363529?journalCode=hbem19).
+#'   *Journal of Broadcasting & Electronic Media*, 11(1), 63--68.
+#'
+#'   Farr, J. N., Jenkins, J.J., & Paterson, D.G. (1951). [Simplification of
+#'   Flesch Reading Ease
+#'   Formula](https://psycnet.apa.org/record/1952-03973-001). *Journal of
+#'   Applied Psychology*, 35(5): 333.
+#'
+#'   Flesch, R. (1948). [A New Readability
+#'   Yardstick](https://psycnet.apa.org/record/1949-01274-001). *Journal of
+#'   Applied Psychology*, 32(3), 221.
+#'
+#'   Fucks, W. (1955). Der Unterschied des Prosastils von Dichtern und anderen
+#'   Schriftstellern. *Sprachforum*, 1, 233-244.
+#'
+#'   Gunning, R. (1952). *The Technique of Clear Writing*.  New York:
+#'   McGraw-Hill.
+#'
+#'   Klare, G.R. (1975). [Assessing
+#'   Readability](https://www.jstor.org/stable/747086). *Reading Research
+#'   Quarterly*, 10(1), 62-102.
+#'
 #'   Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S. (1975).
-#'   [Derivation of New
-#'   Readability Formulas (Automated Readability Index, FOG count and Flesch
-#'   Reading Ease Formula) for Navy Enlisted Personnel](https://stars.library.ucf.edu/istlibrary/56/).
-#'   
-#'   McLaughlin, G.H. (1969).
-#'   [SMOG
-#'   Grading: A New Readability Formula.](https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf) *Journal of Reading*, 12(8),
-#'   639-646.
+#'   [Derivation of New Readability Formulas (Automated Readability Index, FOG
+#'   count and Flesch Reading Ease Formula) for Navy Enlisted
+#'   Personnel](https://stars.library.ucf.edu/istlibrary/56/).
 #'
-#'   Powers, R.D., Sumner, W.A., and Kearl, B.E. (1958).
-#'   [A Recalculation of
-#'   Four Adult Readability Formulas.](https://psycnet.apa.org/record/1962-03617-001). *Journal of Educational
-#'   Psychology*, 49(2), 99.
+#'   McLaughlin, G.H. (1969). [SMOG Grading: A New Readability
+#'   Formula.](https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf)
+#'   *Journal of Reading*, 12(8), 639-646.
 #'
-#'   Senter, R. J., & Smith, E. A. (1967).
-#'   [Automated
-#'   readability index.](https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf)  Wright-Patterson Air Force Base. Report No. AMRL-TR-6620.
+#'   Powers, R.D., Sumner, W.A., and Kearl, B.E. (1958). [A Recalculation of
+#'   Four Adult Readability
+#'   Formulas.](https://psycnet.apa.org/record/1962-03617-001). *Journal of
+#'   Educational Psychology*, 49(2), 99.
+#'
+#'   Senter, R. J., & Smith, E. A. (1967). [Automated readability
+#'   index.](https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf)
+#'   Wright-Patterson Air Force Base. Report No. AMRL-TR-6620.
 #'
 #'   *Solomon, N. W. (2006). *Qualitative Analysis of Media Language*. India.
 #'
-#'   Spache, G. (1953). ["A new
-#'   readability formula for primary-grade reading materials."](https://www.jstor.org/stable/998915) *The
-#'   Elementary School Journal*, 53, 410--413.
+#'   Spache, G. (1953). ["A new readability formula for primary-grade reading
+#'   materials."](https://www.jstor.org/stable/998915) *The Elementary School
+#'   Journal*, 53, 410--413.
 #'
 #'   Tränkle, U. & Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
 #'   Lesbarkeitsformeln für die deutsche Sprache. *Zeitschrift für
 #'   Entwicklungspsychologie und Pädagogische Psychologie*, 16(3), 231--244.
 #'
-#'   Wheeler, L.R. & Smith, E.H. (1954).
-#'   [A Practical Readability
-#'   Formula for the Classroom Teacher in the Primary Grades](https://www.jstor.org/stable/41384251). *Elementary
-#'   English*, 31, 397--399.
+#'   Wheeler, L.R. & Smith, E.H. (1954). [A Practical Readability Formula for
+#'   the Classroom Teacher in the Primary
+#'   Grades](https://www.jstor.org/stable/41384251). *Elementary English*, 31,
+#'   397--399.
 #'
 #'   *Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
 #'   Journalism, School of Media Studies, SRM University, India.
@@ -541,7 +536,7 @@ textstat_readability.corpus <- function(x,
 
     # get the word length and syllable info for use in computing quantities
     x <- char_tolower(x)
-    toks <- tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens)
+    toks <- tokens(x, remove_punct = TRUE, split_hyphens = remove_hyphens)
 
     # number of syllables
     n_syll <- nsyllable(toks)
@@ -600,10 +595,16 @@ textstat_readability.corpus <- function(x,
     if ("Bormuth.GP" %in% measure) {
         CCS <- 35 # Cloze criterion score, percent as integer
         temp[, Bormuth.MC.Temp := 0.886593 - (0.08364 * C / W) + 0.161911 *
-                         (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W / St) + 0.000577 * (W / St) ^ 2 - 0.000005 * (W / St) ^ 3]
-        temp[, Bormuth.GP := 4.275 + 12.881 * Bormuth.MC.Temp - (34.934 * Bormuth.MC.Temp^2) + (20.388 * Bormuth.MC.Temp^3) +
-                         (26.194 * C - 2.046 * CCS ^ 2) - (11.767 * CCS ^ 3) - (44.285 * Bormuth.MC.Temp * CCS) +
-                         (97.620 * (Bormuth.MC.Temp * CCS)^2) - (59.538 * (Bormuth.MC.Temp * CCS)^3)]
+                 (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W / St) + 0.000577 *
+                 (W / St) ^ 2 - 0.000005 * (W / St) ^ 3]
+        temp[, Bormuth.GP := 4.275 +
+                 12.881 * Bormuth.MC.Temp -
+                 (34.934 * Bormuth.MC.Temp^2) +
+                 (20.388 * Bormuth.MC.Temp^3) +
+                 (26.194 * C - 2.046 * CCS ^ 2) - (11.767 * CCS ^ 3) -
+                 (44.285 * Bormuth.MC.Temp * CCS) +
+                 (97.620 * (Bormuth.MC.Temp * CCS)^2) -
+                 (59.538 * (Bormuth.MC.Temp * CCS)^3)]
         temp[, Bormuth.MC.Temp := NULL]
     }
 
@@ -633,7 +634,7 @@ textstat_readability.corpus <- function(x,
 
     if ("Dale.Chall.old" %in% measure) {
         DC_constant <- NULL
-        temp[, DC_constant := ( (W_wl.Dale.Chall / W) > .05 ) * 3.6365]
+        temp[, DC_constant := ((W_wl.Dale.Chall / W) > .05) * 3.6365]
         temp[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + DC_constant]
         temp[, DC_constant := NULL]
     }
@@ -660,8 +661,10 @@ textstat_readability.corpus <- function(x,
     }
 
     if ("DRP" %in% measure) {
-        temp[, Bormuth.MC.Temp := 0.886593 - (0.08364 * C / W) + 0.161911 *
-                         (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W / St) + 0.000577 * (W / St) ^ 2 - 0.000005 * (W / St) ^ 3]
+        temp[, Bormuth.MC.Temp := 0.886593 - (0.08364 * C / W) + 
+                 0.161911 * (W_wl.Dale.Chall / W) ^ 3 -
+                 0.21401 * (W / St) +
+                 0.000577 * (W / St) ^ 2 - 0.000005 * (W / St) ^ 3]
         temp[, DRP := (1 - Bormuth.MC.Temp) * 100]
         temp[, Bormuth.MC.Temp := NULL]
     }
@@ -673,7 +676,7 @@ textstat_readability.corpus <- function(x,
         temp[, Farr.Jenkins.Paterson := -31.517 - 1.015 * W / St + 1.599 * W_1Sy / W]
 
     if ("Flesch" %in% measure)
-        temp[, Flesch := 206.835 - 1.015 * W / St - 84.6 * Sy / W ]
+        temp[, Flesch := 206.835 - 1.015 * W / St - 84.6 * Sy / W]
 
     if ("Flesch.PSK" %in% measure)
         temp[, Flesch.PSK := 0.0778 * W / St + 4.55 * Sy / W - 2.2029]
@@ -688,7 +691,7 @@ textstat_readability.corpus <- function(x,
         temp[, meanWordSyllables := Sy / W]
 
     if ("FOG" %in% measure)
-        temp[, FOG := 0.4 * ( W / St + 100 * W3Sy / W )]
+        temp[, FOG := 0.4 * (W / St + 100 * W3Sy / W)]
     # If the text was POS-tagged accordingly, proper nouns and combinations of only easy words
     # will not be counted as hard words, and the syllables of verbs ending in "-ed", "-es" or
     # "-ing" will be counted without these suffixes.
