@@ -1,5 +1,18 @@
+library("quanteda")
 data(data_corpus_sotu, package = "quanteda.corpora")
 data_corpus_sotu <- as.corpus(data_corpus_sotu)
+
+microbenchmark(
+    word = tokens(data_corpus_sotu, what = "word"),
+    word1 = tokens(data_corpus_sotu, what = "word1"),
+    tokenizers = as.tokens(tokenizers::tokenize_words(texts(data_corpus_sotu),
+                                                      lowercase = FALSE,
+                                                      strip_punct = FALSE)),
+    times = 10
+)
+
+
+
 x <- data_corpus_sotu
 
 txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
@@ -34,3 +47,8 @@ microbenchmark(
   times = 2, unit = "relative"
 )
 
+microbenchmark(
+    word = tokens(x, what = "word"),
+    word1 = tokens(x, what = "word1"),
+    times = 10
+)
