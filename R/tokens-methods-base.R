@@ -77,12 +77,12 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
             cat(label[i], "\n", sep = "")
             print(x[[i]])
             if (len[i] > max_ntoken)
-                cat("[ ... and ",  len[i] - max_ntoken, " more ]\n", sep = "")
+                cat("[ ... and ",  format(len[i] - max_ntoken, big.mark = ","), " more ]\n", sep = "")
             cat("\n", sep = "")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", 
                 if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
 }

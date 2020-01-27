@@ -1,15 +1,16 @@
 #' Print a dfm object
 #'
 #' @rdname print-quanteda
+#' @param max_nfeat max number of features to print; default is from the
+#'   `print_dfm_max_nfeat` setting of [quanteda_options()]
 #' @export
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, 
                    max_ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
-                   show_summary = TRUE, 
+                   show_summary = quanteda_options("print_dfm_summary"), 
                    ...) {
-              
               if (show_summary) {
                   docvars <- docvars(x)
                   cat("Document-feature matrix of: ",

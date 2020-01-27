@@ -51,7 +51,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("[ reached max_ndoc ... ", ndoc_rem, " more document", 
+            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", 
                 if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
 
