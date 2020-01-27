@@ -887,10 +887,10 @@ test_that("tokens printing works", {
             paste0('Tokens consisting of 14 documents and 6 docvars.\n',
                    'Lenihan, Brian (FF) :\n',
                    '[1] "When"      "I"         "presented"\n',
-                   '[ ... and 8638 more ]\n\n',
+                   '[ ... and 8,638 more ]\n\n',
                    'Bruton, Richard (FG) :\n',
                    '[1] "This"      "draconian" "budget"   \n',
-                   '[ ... and 4443 more ]\n\n',
+                   '[ ... and 4,443 more ]\n\n',
                    '[ reached max_ndoc ... 12 more documents ]'),
         fixed = TRUE
     )
@@ -899,10 +899,10 @@ test_that("tokens printing works", {
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '[1] "When"      "I"         "presented"\n',
-               '[ ... and 8638 more ]\n\n',
+               '[ ... and 8,638 more ]\n\n',
                'Bruton, Richard (FG) :\n',
                '[1] "This"      "draconian" "budget"   \n',
-               '[ ... and 4443 more ]\n\n',
+               '[ ... and 4,443 more ]\n\n',
                '[ reached max_ndoc ... 12 more documents ]'),
         fixed = TRUE
     )
@@ -910,11 +910,11 @@ test_that("tokens printing works", {
         print(toks[1:2], max_ndoc = 2, max_ntoken = 3, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
                '[1] "When"      "I"         "presented"\n',
-               '[ ... and 8638 more ]\n\n',
+               '[ ... and 8,638 more ]\n\n',
                'Bruton, Richard (FG) :\n',
                '[1] "This"      "draconian" "budget"   \n',
-               '[ ... and 4443 more ]\n'),
-        fixed = TRUE
+               '[ ... and 4,443 more ]\n'),
+        fixed = TRUE 
     )
 
     expect_output(
