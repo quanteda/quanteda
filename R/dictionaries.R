@@ -317,8 +317,12 @@ is.dictionary <- function(x) {
     is(x, "dictionary2")
 }
 
-# base method extensions ------------
-
+#' @rdname print-quanteda
+#' @param max_nkey max number of keys to print; default is from the
+#'   `print_dictionary_max_max_nkey` setting of [quanteda_options()]
+#' @param max_nval max number of values to print; default is from the
+#'   `print_dictionary_max_nval` setting of [quanteda_options()]
+#' @export
 setMethod("print", signature(x = "dictionary2"), 
           function(x, 
                    max_nkey = quanteda_options("print_dictionary_max_nkey"), 
@@ -337,13 +341,7 @@ setMethod("print", signature(x = "dictionary2"),
               print_dictionary(x, 1, max_nkey, max_nval, ...)
           })
 
-#' Print a dictionary object
-#' 
-#' Print/show method for dictionary objects.
-#' @method print dictionary2
-#' @param object the dictionary to be printed
 #' @rdname print-quanteda
-#' @export
 setMethod("show", signature(object = "dictionary2"), function(object) print(object))
 
 # Internal function to print dictionary
@@ -358,25 +356,25 @@ print_dictionary <- function(entry, level = 1,
     if (!length(entry)) return()
     is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
+    pad <- rep("  ", level - 1)
     word <- unlist(entry[!is_category], use.names = FALSE)
     if (length(word)) {
         if (max_nval < 0) 
             max_nval <- length(word)
-        cat(rep("  ", level - 1), "- ",
-            paste(head(word, max_nval), collapse = ", "), sep = "")
-        rem_nval <- length(word) - max_nval
-        if (rem_nval > 0)
-            cat(" [ ... and ",  rem_nval, " more ]\n", sep = "")
+        cat(pad, "- ", paste(head(word, max_nval), collapse = ", "), sep = "")
+        nval_rem <- length(word) - max_nval
+        if (nval_rem > 0)
+            cat(" [ ... and ",  format(nval_rem, big.mark = ","), " more ]", sep = "")
         cat("\n", sep = "")
     }
     for (i in seq_along(category)) {
-        cat(rep("  ", level - 1), "- [", names(category[i]), "]:\n", sep = "")
+            cat(pad, "- [", names(category[i]), "]:\n", sep = "")
         print_dictionary(category[[i]], level + 1, max_nkey, max_nval, show_summary)
     }
-    rem_nkey <- nkey - max_nkey
-    if (rem_nkey > 0) {
-        cat("[ reached max_nkey ... ", rem_nkey, " more key", 
-            if (rem_nkey > 1) "s", " ]\n", sep = "")
+    nkey_rem <- nkey - max_nkey
+    if (nkey_rem > 0) {
+        cat(pad, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key", 
+            if (nkey_rem > 1) "s", " ]\n", sep = "")
     }
 }
 

@@ -125,7 +125,7 @@ test_that("indexing for dictionary objects works", {
     )
 })
 
-test_that("show.dictionary2", {
+test_that("dictionary printing works", {
     dict <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
     expect_true(is.dictionary(dict[1]))
 
@@ -167,7 +167,6 @@ test_that("show.dictionary2", {
             "Dictionary object with 2 key entries.\n",
             "- [one]:\n",
             "  - a [ ... and 1 more ]\n",
-            "\n",
             "[ reached max_nkey ... 1 more key ]"
         ),
         fixed = TRUE
@@ -178,7 +177,6 @@ test_that("show.dictionary2", {
         paste0(
             "- [one]:\n",
             "  - a [ ... and 1 more ]\n",
-            "\n",
             "[ reached max_nkey ... 1 more key ]"
         ),
         fixed = TRUE
