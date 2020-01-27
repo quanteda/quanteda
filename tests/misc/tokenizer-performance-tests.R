@@ -3,12 +3,12 @@ data(data_corpus_sotu, package = "quanteda.corpora")
 data_corpus_sotu <- as.corpus(data_corpus_sotu)
 
 microbenchmark(
-    word = tokens(data_corpus_sotu, what = "word"),
-    word1 = tokens(data_corpus_sotu, what = "word1"),
+    word = tokens(data_corpus_sotu, what = "word", split_hyphens = TRUE, split_tags = TRUE),
+    word1 = tokens(data_corpus_sotu, what = "word1", split_hyphens = TRUE, split_tags = TRUE),
     tokenizers = as.tokens(tokenizers::tokenize_words(texts(data_corpus_sotu),
                                                       lowercase = FALSE,
                                                       strip_punct = FALSE)),
-    times = 10
+    times = 5
 )
 
 
