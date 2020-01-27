@@ -318,6 +318,7 @@ is.dictionary <- function(x) {
 }
 
 #' @rdname print-quanteda
+#' @aliases print.dictionary
 #' @param max_nkey max number of keys to print; default is from the
 #'   `print_dictionary_max_max_nkey` setting of [quanteda_options()]
 #' @param max_nval max number of values to print; default is from the

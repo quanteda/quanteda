@@ -8,6 +8,7 @@
 \alias{print,dfm-method}
 \alias{show,dfm-method}
 \alias{print,dictionary2-method}
+\alias{print.dictionary}
 \alias{show,dictionary2-method}
 \alias{print,fcm-method}
 \alias{show,fcm-method}
