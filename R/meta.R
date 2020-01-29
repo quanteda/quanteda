@@ -201,3 +201,80 @@ meta_system_defaults <- function(source) {
          "created" = Sys.Date()
     )
 }
+
+make_meta <- function(class, source, inherit = NULL, ...) {
+    
+    result <- list(
+        "system" = make_meta_system_defaults(source),
+        "object" = list(),
+        "user" = meta_user
+    )
+    if (class == "corpus") {
+        result$object <- make_meta_corpus(inherit, ...)
+    } else if (class == "tokens") {
+        result$object <- make_meta_tokens(inherit, ...)
+    } else if (class == "dfm") {
+        result$object <- make_meta_dfm(inherit, ...)
+    }
+    # comming soon...
+    # else if (class == "dictionary2") {
+    #   make_meta_dictionary2(inherit, ...)
+    #}
+    return(result)
+}
+
+make_meta_corpus <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    update <- list(...)
+    default <- list("unit" = unit)
+    update_meta(default, inherit, update)
+}
+
+
+make_meta_tokens <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    update <- list(...)
+    default <- list(
+        "ngrams" = 1, 
+        "skip" = 0,
+        "what" = "word", 
+        "concatenator" = "_", 
+        "padding" = FALSE,
+        "unit" = "documents", 
+        "source" = "corpus", 
+    )
+    update_meta(default, inherit, update)
+}
+
+make_meta_dfm <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    update <- list(...)
+    default <- list(
+        "weight_tf" = list(scheme = "count", base = NULL, K = NULL),
+        "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
+                           smoothing = NULL, threshold = NULL),
+        "smooth" = 0,
+        "unit" = "documents",
+        "ngrams" = 1L,
+        "skip" = 0L,
+        "concatenator" = "_"
+    )
+    update_meta(default, inherit, update)
+}
+
+update_meta <- function(default, inherit, update) {
+    for (m in names(default)) {
+        if (length(update) && m %in% names(update)) {
+            stopifnot(identical(class(default[[m]]), class(update[[m]])))
+            default[[m]] <- update[[m]]
+        } else if (length(inherit) && m %in% names(inherit)) {
+            stopifnot(identical(class(default[[m]]), class(inherit[[m]])))
+            default[[m]] <- inherit[[m]]
+        }
+    }
+    return(default)
+}
+
