@@ -202,19 +202,24 @@ meta_system_defaults <- function(source) {
     )
 }
 
+make_meta_system <- meta_system_defaults # for development
+
 make_meta <- function(class, source, inherit = NULL, ...) {
     
     result <- list(
-        "system" = make_meta_system_defaults(source),
+        "system" = make_meta_system(source),
         "object" = list(),
-        "user" = meta_user
+        "user" = list()
     )
     if (class == "corpus") {
-        result$object <- make_meta_corpus(inherit, ...)
+        result$object <- make_meta_corpus(inherit$object, ...)
     } else if (class == "tokens") {
-        result$object <- make_meta_tokens(inherit, ...)
+        result$object <- make_meta_tokens(inherit$object, ...)
     } else if (class == "dfm") {
-        result$object <- make_meta_dfm(inherit, ...)
+        result$object <- make_meta_dfm(inherit$object, ...)
+    }
+    if ("user" %in% names(inherit)) {
+        result$user <- inherit$user
     }
     # comming soon...
     # else if (class == "dictionary2") {
@@ -226,32 +231,29 @@ make_meta <- function(class, source, inherit = NULL, ...) {
 make_meta_corpus <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
-    update <- list(...)
-    default <- list("unit" = unit)
-    update_meta(default, inherit, update)
+    default <- list("unit" = "documents")
+    update_meta(default, inherit, ...)
 }
-
 
 make_meta_tokens <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
-    update <- list(...)
     default <- list(
-        "ngrams" = 1, 
-        "skip" = 0,
+        "ngrams" = 1L, 
+        "skip" = 0L,
         "what" = "word", 
         "concatenator" = "_", 
         "padding" = FALSE,
         "unit" = "documents", 
-        "source" = "corpus", 
+        "source" = "corpus"
     )
-    update_meta(default, inherit, update)
+    update_meta(default, inherit, ...)
 }
 
 make_meta_dfm <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
-    update <- list(...)
+    
     default <- list(
         "weight_tf" = list(scheme = "count", base = NULL, K = NULL),
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
@@ -262,10 +264,14 @@ make_meta_dfm <- function(inherit = NULL, ...) {
         "skip" = 0L,
         "concatenator" = "_"
     )
-    update_meta(default, inherit, update)
+    update_meta(default, inherit, ...)
 }
 
-update_meta <- function(default, inherit, update) {
+update_meta <- function(default, inherit, ...) {
+    update <- list(...)
+    for (m in setdiff(union(names(inherit), names(update)), names(default))) {
+        warning(m, " is ignored.")
+    }
     for (m in names(default)) {
         if (length(update) && m %in% names(update)) {
             stopifnot(identical(class(default[[m]]), class(update[[m]])))

@@ -165,3 +165,64 @@ test_that("adding extended summary information works", {
         extsumm
     )
 })
+
+
+test_that("object meta information is handled properly", {
+    
+    # make object meta for corpus
+    meta_corp1 <- quanteda:::make_meta("corpus", "character")
+    expect_identical(
+        names(meta_corp1),
+        c("system", "object", "user")
+    )
+    
+    # add fields for tokens
+    meta_inherit <- meta_corp1
+    meta_inherit$object$concatenator <- "+"
+    meta_inherit$object$ngrams <- 10L
+    
+    # make object meta for tokens
+    meta_toks1 <- quanteda:::make_meta("tokens", "corpus", 
+                                       inherit = meta_inherit,
+                                       unit = "sentences")
+    expect_identical(
+        names(meta_toks1),
+        c("system", "object", "user")
+    )
+    expect_identical(meta_toks1$object$concatenator, "+")
+    expect_identical(meta_toks1$object$ngrams, 10L)
+    expect_identical(meta_toks1$object$unit, "sentences")
+    
+    # add unused field
+    meta_inherit$object$xxx <- 999
+    expect_warning(
+        quanteda:::make_meta("tokens", "corpus", inherit = meta_inherit),
+        "xxx is ignored.", fixed = TRUE
+    )
+    meta_inherit$object$xxx <- NULL # correct
+    expect_warning(
+        quanteda:::make_meta("tokens", "corpus", xxx = 999),
+        "xxx is ignored.", fixed = TRUE
+    )
+
+    # assign invalid values to used field
+    meta_inherit$object$skip <- FALSE
+    expect_error(
+        quanteda:::make_meta("tokens", "corpus", inherit = meta_inherit)
+    )
+    meta_inherit$object$skip <- 0L # correct
+    expect_error(
+        quanteda:::make_meta("tokens", "corpus", skip = FALSE)
+    )
+    # make object meta for dfm
+    meta_dfm1 <- quanteda:::make_meta("dfm", "tokens", 
+                                      inherit = meta_inherit,
+                                      unit = "paragraphs")
+    expect_identical(
+        names(meta_dfm1),
+        c("system", "object", "user")
+    )
+    expect_identical(meta_dfm1$object$concatenator, "+")
+    expect_identical(meta_dfm1$object$ngrams, 10L)
+    expect_identical(meta_dfm1$object$unit, "paragraphs")
+})
