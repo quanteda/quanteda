@@ -8,11 +8,11 @@
 \alias{metacorpus<-}
 \title{Get or set corpus metadata}
 \usage{
-meta(x, field = NULL, type = c("user", "system", "all"))
+meta(x, field = NULL, type = c("user", "object", "system", "all"))
 
 meta(x, field = NULL) <- value
 
-metacorpus(x, field = NULL, type = c("user", "system", "all"))
+metacorpus(x, field = NULL, type = c("user", "object", "system", "all"))
 
 metacorpus(x, field = NULL) <- value
 }

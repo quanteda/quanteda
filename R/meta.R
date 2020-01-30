@@ -23,21 +23,24 @@
 #' meta(data_corpus_inaugural, "source")
 #' meta(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
 #' meta(data_corpus_inaugural, "citation")
-meta <- function(x, field = NULL, type = c("user", "system", "all"))
+meta <- function(x, field = NULL, type = c("user", "object", "system", "all"))
     UseMethod("meta")
 
 #' @export
-meta.default <- function(x, field = NULL, type = c("user", "system", "all")) {
+meta.default <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
     stop(friendly_class_undefined_message(class(x), "meta"))
 }
 
 #' @export
-meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
-    if (is_pre2(x)) return(if (is.corpus(x)) x[["metadata"]] else NULL)
+meta.corpus <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
+    if (is_pre2(x)) 
+        return(x[["metadata"]])
     type <- match.arg(type)
     result <- list()
     if (type %in% c("user", "all"))
         result <- c(result, attr(x, "meta")$user)
+    if (type %in% c("object", "all"))
+        result <- c(result, attr(x, "meta")$object)
     if (type %in% c("system", "all"))
         result <- c(result, attr(x, "meta")$system)
     if (is.null(field)) {
@@ -48,15 +51,34 @@ meta.corpus <- function(x, field = NULL, type = c("user", "system", "all")) {
 }
 
 #' @export
-meta.tokens <- meta.corpus
+meta.tokens <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
+    if (is_pre2(x)) 
+        return(NULL)
+    type <- match.arg(type)
+    result <- list()
+    if (type %in% c("user", "all"))
+        result <- c(result, attr(x, "meta")$user)
+    if (type %in% c("object", "all"))
+        result <- c(result, attr(x, "meta")$object)
+    if (type %in% c("system", "all"))
+        result <- c(result, attr(x, "meta")$system)
+    if (is.null(field)) {
+        return(result)
+    } else {
+        return(result[[field]])
+    }
+}
 
 #' @export
-meta.dfm <- function(x, field = NULL, type = c("user", "system", "all")) {
-    if (is_pre2(x)) return(NULL)
+meta.dfm <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
+    if (is_pre2(x)) 
+        return(NULL)
     type <- match.arg(type)
     result <- list()
     if (type %in% c("user", "all"))
         result <- c(result, x@meta$user)
+    if (type %in% c("object", "all"))
+        result <- c(result, x@meta$object)
     if (type %in% c("system", "all"))
         result <- c(result, x@meta$system)
     if (is.null(field)) {
@@ -186,7 +208,6 @@ meta_system <- function(x, field = NULL)
     return(x)
 }
 
-
 #' @rdname meta_system
 #' @param source character; the input object class
 #' @return `meta_system_defaults` returns a list of default system
@@ -253,7 +274,6 @@ make_meta_tokens <- function(inherit = NULL, ...) {
 make_meta_dfm <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
-    
     default <- list(
         "weight_tf" = list(scheme = "count", base = NULL, K = NULL),
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
@@ -284,3 +304,59 @@ update_meta <- function(default, inherit, ...) {
     return(default)
 }
 
+#' Internal functions to access meta filed in a list of attributes
+#' @rdname field_system
+#' @inheritParams meta_system
+#' @keywords internal
+field_system <- function(x, field = NULL) {
+    if (is.null(field)) {
+        return(x$meta$system)
+    }
+    return(x$meta$system[[field]])
+}
+
+#' @rdname field_system
+`field_system<-` <- function(x, field = NULL, value) {
+    if (is.null(field)) {
+        x$meta$system <- value
+    } else {
+        x$meta$system[[field]] <- value
+    }
+    return(x)
+}
+
+#' @rdname field_system
+field_object <- function(x, field = NULL) {
+    if (is.null(field)) {
+        return(x$meta$object)
+    }
+    return(x$meta$object[[field]])
+}
+
+#' @rdname field_system
+`field_object<-` <- function(x, field = NULL, value) {
+    if (is.null(field)) {
+        x$meta$object <- value
+    } else {
+        x$meta$object[[field]] <- value
+    }
+    return(x)
+}
+
+#' @rdname field_system
+field_user <- function(x, field = NULL) {
+    if (is.null(field)) {
+        return(x$meta$user)
+    }
+    return(x$meta$user[[field]])
+}
+
+#' @rdname field_system
+`field_user<-` <- function(x, field = NULL, value) {
+    if (is.null(field)) {
+        x$meta$user <- value
+    } else {
+        x$meta$user[[field]] <- value
+    }
+    return(x)
+}
