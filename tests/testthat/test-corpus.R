@@ -96,7 +96,6 @@ test_that("test corpus constructors works for kwic", {
                      split_context = FALSE)),
         txt
     )
-
     corp <- corpus(kw, split_context = TRUE, extract_keyword = FALSE)
 })
 
@@ -459,12 +458,8 @@ test_that("upgrade_corpus is working", {
     expect_true(is.factor(attr(corp3, "docvars")[["docid_"]]))
 })
 
-test_that("metacorpus argument works", {
-    expect_identical(
-        meta(corpus("aa bb cc", metacorpus = list(citation = "My book"))),
-        meta(corpus("aa bb cc", meta = list(citation = "My book")))
-    )
-    corp <- corpus("aa bb cc", metacorpus = list(citation = "My book"))
+test_that("meta argument works", {
+    corp <- corpus("aa bb cc", meta = list(citation = "My book"))
     expect_equal(meta(corp)$citation, "My book")
     expect_equal(meta(corp, type = "system")$source, "character")
     expect_equal(meta(corpus(corp), type = "system")$source, "corpus")
