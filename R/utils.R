@@ -75,6 +75,17 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     return(x)
 }
 
+"set_attrs<-" <- function(x, value) {
+    if (isS4(x)) {
+        x@meta <- value$meta
+        x@docvars <- value$docvars
+    } else {
+        attr(x, "meta") <- value$meta
+        attr(x, "docvars") <- value$docvars
+    }
+}
+
+
 #' Function to assign multiple slots to a S4 object
 #' @param x an S4 object
 #' @param exceptions slots to ignore
@@ -318,7 +329,7 @@ get_object_version <- function(x) {
 #' @return `ispre2()` returns `TRUE` if the object was created before
 #' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
-    (! "meta" %in% names(attributes(x)))
+    is.null(attributes(x)[["meta"]][["object"]])
 }
 
 # internal function to rbind data.frames that have different columns

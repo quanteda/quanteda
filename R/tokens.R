@@ -183,16 +183,14 @@ tokens.character <- function(x, ...) {
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     x <- as.corpus(x)
-    attrs <- attributes(x)
-    result <- tokens_internal(texts(x), ...)
-    attributes(result, FALSE) <- attrs
+    #attrs <- attributes(x)
+    result <- tokens_internal(texts(x), source = "corpus", meta = meta(x, "all"), ...)
+    #attributes(result, FALSE) <- attrs
     if (include_docvars) {
         attr(result, "docvars") <- get_docvars(x, user = TRUE, system = TRUE)
     } else {
         attr(result, "docvars") <- get_docvars(x, user = FALSE, system = TRUE)
     }
-    attr(result, "unit") <- attr(x, "unit")
-    attr(result, "meta") <- attr(x, "meta")
     return(result)
 }
 
@@ -218,13 +216,15 @@ tokens.tokens <-  function(x,
     check_dots(list(...), names(formals("tokens")))
 
     x <- as.tokens(x)
-    check_dots(list(...), names(formals("tokens")))
+    ngrams <- as.integer(ngrams)
+    skip <- as.integer(skip)
+    attrs <- attributes(x)
 
     if (verbose) catm("Starting tokenization...\n")
     time_start <- proc.time()
 
     what <- match.arg(what)
-    if (stri_detect_regex(what, "word$") && !stri_detect_regex(attr(x, "what"), "word$"))
+    if (stri_detect_regex(what, "word$") && !stri_detect_regex(field_object(attrs, "what"), "word$"))
         stop("Cannot change the tokenization unit of existing tokens.")
 
     if (remove_hyphens) {
@@ -367,18 +367,33 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- lapply(x, stri_trans_nfc)
     x <- serialize_tokens(x)
     docvar <- make_docvars(length(x), names(x))
-    compile_tokens(x, docvar[["docname_"]],
-                   concatenator = concatenator,
-                   types = attr(x, "types"), source = "list",
-                   docvars = docvar)
+    compile_tokens(
+        x, docvar[["docname_"]],
+        types = attr(x, "types"), 
+        concatenator = concatenator,
+        source = "list",
+        docvars = docvar
+    )
 }
 
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
     if (is_pre2(x)) {
-        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), names(x))
-        attr(x, "meta") <- meta_system_defaults("tokens")
+        docvar <- upgrade_docvars(attr(x, "docvars"), names(x))
+        x <- compile_tokens(
+            x, docvar[["docname_"]], 
+            types = attr(x, "types"),
+            ngrams = as.integer(attr(x, "ngrams")), 
+            skip = as.integer(attr(x, "skip")),
+            what = attr(x, "what"),
+            concatenator = attr(x, "concatenator"),
+            padding = attr(x, "padding"),
+            unit = attr(x, "unit"),
+            source = "tokens",
+            docvars = docvar,
+            meta = list()
+        )
     }
     return(x)
 }
@@ -425,11 +440,15 @@ tokens_internal <- function(x,
                             concatenator = "_",
                             verbose = getOption("verbose"),
                             include_docvars = TRUE,
+                            source = "corpus",
+                            meta = list(),
                             ...) {
 
     check_dots(list(...), names(formals("tokens")))
 
     what <- match.arg(what)
+    ngrams <- as.integer(ngrams)
+    skip <- as.integer(skip)
     attrs <- attributes(x)
 
     # disable remove_twitter if remove_punct = FALSE
@@ -479,11 +498,12 @@ tokens_internal <- function(x,
     }
 
     x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names,
+                        source = "corpus",
                         what = what, ngrams = ngrams, skip = skip,
                         concatenator = concatenator,
                         types = attr(x[[length(x)]], "types"),
                         unit = "documents",
-                        source = "corpus")
+                        meta = meta)
 
     if (what %in% c("word", "fasterword", "fastestword")) {
 
@@ -529,22 +549,14 @@ tokens_internal <- function(x,
     return(x)
 }
 
-compile_tokens <- function(x, names, types, ngrams = 1, skip = 0,
-                           what = "word", concatenator = "_", padding = FALSE,
-                           unit = "documents", source = "corpus", 
-                           docvars = data.frame(), meta = list()) {
-    structure(x,
+compile_tokens <- function(x, source, names, types, padding = FALSE,
+                           docvars = data.frame(), meta = list(), ...) {
+     structure(x,
               names = names,
               class = "tokens",
-              what = what,
-              ngrams = ngrams,
-              skip = skip,
-              concatenator = concatenator,
               padding = padding,
               types = types,
-              unit = unit,
-              meta = list("system" = meta_system_defaults(source),
-                          "user" = meta),
+              meta = make_meta("tokens", source, inherit = meta, ...),
               docvars = docvars)
 }
 

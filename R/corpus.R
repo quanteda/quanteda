@@ -96,13 +96,13 @@
 #' summary(corpus(kw))
 corpus <- function(x, ...) {
     # trap old usage of metacorpus
-    dots <- list(...)
-    if ("metacorpus" %in% names(dots)) {
-        names(dots)[which(names(dots) == "metacorpus")] <- "meta"
-        do.call(corpus, c(list(x = x), dots))
-    } else {
-        UseMethod("corpus")
-    }
+    #dots <- list(...)
+    #if ("metacorpus" %in% names(dots)) {
+    #    names(dots)[which(names(dots) == "metacorpus")] <- "meta"
+    #    do.call(corpus, c(list(x = x), dots))
+    #} else {
+    UseMethod("corpus")
+    #}
 }
 
 #' @rdname corpus
@@ -172,11 +172,11 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     }
     result <- compile_corpus(
         x, 
+        source = "character",
         names = docvar[["docname_"]],
         unit = unit,
-        source = "character",
         docvars = docvar,
-        meta =  meta
+        meta = list("user" = meta)
     )
     return(result)
 }
@@ -332,14 +332,12 @@ corpus.Corpus <- function(x, ...) {
     return(result)
 }
 
-compile_corpus <- function(x, names, unit = "documents", source = "character", 
-                           docvars = data.frame(), meta = list()) {
+compile_corpus <- function(x, source, names, 
+                           docvars = data.frame(), meta = list(), ...) {
     structure(x,
               names = names,
               class = "corpus",
-              unit = unit,
-              meta = list("system" = meta_system_defaults(source),
-                          "user" = meta),
+              meta = quanteda:::make_meta("corpus", source, inherit = meta, ...),
               docvars = docvars)
 }
 

@@ -145,29 +145,40 @@ as.corpus.corpuszip <- function(x) {
 # stracture
 upgrade_corpus <- function(x) {
     if (!is_pre2(x)) return(x)
-    metadata <- meta(x)
-    x <- unclass(x)
+    if ("documents" %in% names(x)) {
+        x <- unclass(x)
+        meta_old <- x[["metadata"]]
+        result <- corpus(x[["documents"]], text_field = "texts")
+        
+        attrs <- attributes(result)
+        attrs[["docvars"]] <-  upgrade_docvars(x[["documents"]])
+        if ("unit" %in% names(x[["settings"]])) {
+            field_object(attrs, "unit") <- x[["settings"]][["unit"]]
+        } else {
+            field_object(attrs, "unit") <- "documents"
+        }
     
-    result <- corpus(x$documents, text_field = "texts")
-    attr(result, "docvars") <- upgrade_docvars(x$documents)
-
-    if ("unit" %in% names(x$settings)) {
-        attr(result, "unit") <- x$settings$unit
+        if ("created" %in% names(meta_old)) {
+            field_system(attrs, "created") <- as.POSIXct(
+                meta_old[["created"]],
+                format = "%a %b %d %H:%M:%S %Y"
+            )
+            meta_old[["created"]] <- NULL
+        } else {
+            field_system(attrs, "created") <- Sys.time()
+        }
+    
+        # remove any null metadata fields
+        field_user(attrs) <- meta_old[sapply(meta_old, function(y) !is.null(y))]
+        attributes(result) <- attrs
     } else {
-        attr(result, "unit") <- "documents"
+        result <- x
+        if (!is.null(attr(result, "unit"))) {
+            attrs <- attributes(result)
+            field_object(attrs, "unit") <- attrs[["unit"]]
+            attrs[["unit"]] <- NULL
+            attributes(result) <- attrs
+        }
     }
-
-    if ("created" %in% names(metadata)) {
-        meta_system(result, "created") <- as.POSIXct(metadata$created, 
-                                                     format = "%a %b %d %H:%M:%S %Y")
-        metadata$created <- NULL
-    } else {
-        meta_system(result, "created") <- Sys.time()
-    }
-    
-    # remove any null metadata fields
-    metadata <- metadata[sapply(metadata, function(y) !is.null(y))]
-    meta(result) <- metadata
-    
     return(result)
 }

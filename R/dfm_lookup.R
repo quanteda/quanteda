@@ -92,13 +92,14 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
 
     valuetype <- match.arg(valuetype)
     type <- colnames(x)
+    attrs <- attributes(x)
 
     if (verbose)
         catm("applying a dictionary consisting of ", length(dictionary), " key",
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
 
     ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
-                        attr(x, "concatenator"), levels)
+                        field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")
     ids <- ids[lengths(ids) == 1]
     id_key <- match(names(ids), key)

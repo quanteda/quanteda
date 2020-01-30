@@ -131,9 +131,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
-
     ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
-                        attr(x, "concatenator"), levels)
+                        field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)
     overlap <- match(nested_scope, c("key", "dictionary"))
@@ -141,19 +140,21 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         key <- char_toupper(key)
     if (exclusive) {
         if (!is.null(nomatch)) {
-            x <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, overlap, 1)
+            result <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, overlap, 1)
         } else {
-            x <- qatd_cpp_tokens_lookup(x, key, ids, id_key, overlap, 0)
+            result <- qatd_cpp_tokens_lookup(x, key, ids, id_key, overlap, 0)
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
-        x <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), overlap, 2)
+        result <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), overlap, 2)
     }
-    attr(x, "what") <- "dictionary"
-    attr(x, "dictionary") <- dictionary
-    attributes(x, FALSE) <- attrs
-    if (exclusive) attr(x, "padding") <- FALSE
-    return(x)
+    field_object(attrs, "what") <- "dictionary"
+    field_object(attrs, "dictionary") <- dictionary
+    attr(result, "meta") <- attrs$meta
+    #if (exclusive) 
+    #    attr(result, "padding") <- FALSE
+    attributes(result, FALSE) <- attrs
+    return(result)
 }

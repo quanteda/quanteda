@@ -65,10 +65,10 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
     } else {
         attrs <- attributes(x)
         ids_pat <- pattern2list(pattern, type, valuetype, case_insensitive, 
-                                attr(x, "concatenator"), keep_nomatch = FALSE)
+                                field_object(attrs, "concatenator"), keep_nomatch = FALSE)
         type <- union(type, unlist(replacement, use.names = FALSE))
         ids_repl <- pattern2list(replacement, type, "fixed", FALSE, 
-                                 attr(x, "concatenator"), keep_nomatch = TRUE)
+                                 field_object(attrs, "concatenator"), keep_nomatch = TRUE)
         x <- qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl[attr(ids_pat, "pattern")])
         attributes(x, FALSE) <- attrs
     }

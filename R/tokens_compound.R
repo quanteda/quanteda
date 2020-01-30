@@ -102,8 +102,8 @@ tokens_compound.tokens <- function(x, pattern,
     if (any(window < 0)) stop("window sizes cannot be negative")
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
-    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join, window[1], window[2])
-    attributes(x, FALSE) <- attrs
-    attr(x, "concatenator") <- concatenator
-    return(x)
+    result <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join, window[1], window[2])
+    field_object(attrs, "concatenator") <- concatenator
+    attributes(result, FALSE) <- attrs
+    return(result)
 }

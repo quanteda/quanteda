@@ -102,6 +102,7 @@ kwic.tokens <- function(x, pattern, window = 5,
         names(pattern) <- pattern
 
     valuetype <- match.arg(valuetype)
+    window <- as.integer(window)
     type <- types(x)
     ids <- pattern2list(pattern, type,
                         valuetype, case_insensitive, attr(x, "concatenator"))

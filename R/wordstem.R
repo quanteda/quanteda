@@ -39,11 +39,13 @@ tokens_wordstem.default <- function(x, language = quanteda_options("language_ste
 #' @export
 tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
     
-    if (identical(as.integer(attributes(x)$ngrams), 1L))
+    x <- as.tokens(x)
+    attrs <- attributes(x)
+    if (identical(field_object(attrs, "ngrams"), 1L))
         types(x) <- char_wordstem(types(x), language = language)
     else 
         types(x) <- wordstem_ngrams(types(x), 
-                                    concatenator = attributes(x)$concatenator, 
+                                    concatenator = field_object(attrs, "concatenator"), 
                                     language = language)
     tokens_recompile(x)
 }
@@ -100,7 +102,8 @@ dfm_wordstem.default <- function(x, language = quanteda_options("language_stemme
 #' @export
 dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
     x <- as.dfm(x)
-    if (identical(as.integer(x@ngrams), 1L)) {
+    attrs <- attributes(x)
+    if (identical(field_object(attrs, "ngrams"), 1L)) {
         set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language)
     } else {
         set_dfm_featnames(x) <- wordstem_ngrams(featnames(x), x@concatenator, language)

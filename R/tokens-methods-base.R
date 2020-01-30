@@ -162,29 +162,37 @@ lengths.tokens <- function(x, use.names = TRUE) {
     
     t2 <- as.tokens(t2)
     t1 <- as.tokens(t1)
+    attrs2 <- attributes(t2)
+    attrs1 <- attributes(t1)
     
     if (length(intersect(docnames(t1), docnames(t2))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
-    if (!identical(attr(t1, "what"), attr(t2, "what")))
+    if (!identical(field_object(attrs1, "what"), field_object(attrs2, "what")))
         stop("Cannot combine tokens in different tokenization units", call. = FALSE)
-    if (!identical(attr(t1, "concatenator"), attr(t2, "concatenator")))
+    if (!identical(field_object(attrs1, "concatenator"), field_object(attrs2, "concatenator")))
         stop("Cannot combine tokens with different concatenators", call. = FALSE)
     
     docvar <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
                          get_docvars(t2, user = TRUE, system = TRUE))
-    attrs2 <- attributes(t2)
-    attrs1 <- attributes(t1)
     t2 <- unclass(t2)
     t1 <- unclass(t1)
     t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), 
-                 length(attrs1$types)) # shift non-zero IDs
+                 length(attrs1[["types"]])) # shift non-zero IDs
     result <- compile_tokens(
-        c(t1, t2), docvar[["docname_"]],
-        what = attr(t1, "what"),
-        ngrams = sort(unique(c(attrs1$ngrams, attrs2$ngrams))),
-        skip = sort(unique(c(attrs1$skip, attrs2$skip))),
-        concatenator = attrs1$concatenator,
-        types = c(attrs1$types, attrs2$types),
+        c(t1, t2), 
+        source = "tokens",
+        names = docvar[["docname_"]],
+        types = c(attrs1[["types"]], attrs2[["types"]]),
+        what = field_object(attrs1, "what"),
+        ngrams = sort(unique(c(
+            field_object(attrs1, "ngrams"), 
+            field_object(attrs2, "ngrams")))
+            ),
+        skip = sort(unique(c(
+            field_object(attrs1, "skip"), 
+            field_object(attrs2, "skip")))
+            ),
+        concatenator = field_object(attrs1, "concatenator"),
         docvars = docvar
     )
     result <- tokens_recompile(result)

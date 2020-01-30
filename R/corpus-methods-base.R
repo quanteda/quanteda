@@ -193,6 +193,8 @@ tail.corpus <- function(x, n = 6L, ...) {
 `+.corpus` <- function(c1, c2) {
     c1 <- as.corpus(c1)
     c2 <- as.corpus(c2)
+    attrs1 <- attributes(c1)
+    attrs2 <- attributes(c2)
     
     if (length(intersect(docnames(c1), docnames(c2))))
         stop("Cannot combine corpora with duplicated document names", 
@@ -204,11 +206,11 @@ tail.corpus <- function(x, n = 6L, ...) {
                          get_docvars(c2, user = TRUE, system = TRUE))
     result <- compile_corpus(
         c(as.character(c1), as.character(c2)), 
+        source = "corpus",
         names = c(docnames(c1), docnames(c2)),
-        unit = attr(c1, "unit"),
-        source = "corpus+",
+        unit = field_object(attrs1, "unit"),
         docvars = docvar,
-        meta = meta(c1, type = "user")
+        meta = field_user(attrs1)
     )
     return(result)
 }

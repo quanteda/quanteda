@@ -64,7 +64,8 @@ tokens_segment.tokens <- function(x, pattern,
     attrs <- attributes(x)
     type <- types(x)
     
-    ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
+    ids <- pattern2list(pattern, type, valuetype, case_insensitive, 
+                        field_object(attrs, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     
     if (pattern_position == "before") {

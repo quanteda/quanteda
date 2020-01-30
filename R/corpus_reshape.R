@@ -49,26 +49,26 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     to <- match.arg(to)
     attrs <- attributes(x)
     if (to == "documents") {
-        if (attr(x, "unit") %in% c("sentences", "paragraphs", "segments")) {
+        if (field_object(attrs, "unit") %in% c("sentences", "paragraphs", "segments")) {
             docid <- as.integer(droplevels(attrs$docvars[["docid_"]]))
             temp <- split(unclass(x), docid)
-            if (attr(x, "unit") %in% c("sentences", "segments")) {
+            if (field_object(attrs, "unit") %in% c("sentences", "segments")) {
                 result <- unlist(lapply(temp, paste0, collapse = "  "))
             } else {
                 result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
             }
-            attrs$docvars <- reshape_docvars(attrs$docvars, !duplicated(docid))
-            attrs$unit <- "documents"
+            attrs[["docvars"]] <- reshape_docvars(attrs$docvars, !duplicated(docid))
+            field_object(attrs, "unit") <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
     } else if (to %in% c("sentences", "paragraphs")) {
-        if (attrs$unit %in% "documents") {
+        if (field_object(attrs, "unit") %in% "documents") {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE,
                                   omit_empty = FALSE, what = to, ...)
             result <- temp$text
-            attrs$docvars <- reshape_docvars(attrs$docvars, temp$docnum)
-            attrs$unit <- to
+            attrs[["docvars"]] <- reshape_docvars(attrs$docvars, temp$docnum)
+            field_object(attrs, "unit") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
