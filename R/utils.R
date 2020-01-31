@@ -83,6 +83,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
         attr(x, "meta") <- value$meta
         attr(x, "docvars") <- value$docvars
     }
+    return(x)
 }
 
 
