@@ -153,6 +153,7 @@ inline Tokens recompile(Texts texts,
         Tokens texts_ = Rcpp::wrap(texts);
         texts_.attr("padding") = (bool)flags_used[0];
         texts_.attr("types") = types_;
+        texts_.attr("class") = "tokens";
         return texts_;
     }
     
@@ -193,7 +194,7 @@ inline Tokens recompile(Texts texts,
     }
     texts_.attr("types") = types_new_;
     texts_.attr("padding") = (bool)flags_used[0];
-    
+    texts_.attr("class") = "tokens";
     return texts_;
     
 }
