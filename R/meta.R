@@ -294,10 +294,12 @@ update_meta <- function(default, inherit, ...) {
     }
     for (m in names(default)) {
         if (length(update) && m %in% names(update)) {
-            stopifnot(identical(class(default[[m]]), class(update[[m]])))
+            if (!identical(class(default[[m]]), class(update[[m]])))
+                stop("Invalid update object for ", m)
             default[[m]] <- update[[m]]
         } else if (length(inherit) && m %in% names(inherit)) {
-            stopifnot(identical(class(default[[m]]), class(inherit[[m]])))
+            if (!identical(class(default[[m]]), class(inherit[[m]])))
+                stop("Invalid inherit object for ", m)
             default[[m]] <- inherit[[m]]
         }
     }
