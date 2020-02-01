@@ -183,14 +183,14 @@ tokens.character <- function(x, ...) {
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     x <- as.corpus(x)
-    #attrs <- attributes(x)
-    result <- tokens_internal(texts(x), source = "corpus", meta = meta(x, "all"), ...)
-    #attributes(result, FALSE) <- attrs
     if (include_docvars) {
-        attr(result, "docvars") <- get_docvars(x, user = TRUE, system = TRUE)
+        docvars <- get_docvars(x, user = TRUE, system = TRUE)
     } else {
-        attr(result, "docvars") <- get_docvars(x, user = FALSE, system = TRUE)
+        docvars <- get_docvars(x, user = FALSE, system = TRUE)
     }
+    result <- tokenize(texts(x), source = "corpus", 
+                       docvars = docvars, 
+                       meta = meta(x, type = "all"), ...)
     return(result)
 }
 
@@ -216,8 +216,6 @@ tokens.tokens <-  function(x,
     check_dots(list(...), names(formals("tokens")))
 
     x <- as.tokens(x)
-    ngrams <- as.integer(ngrams)
-    skip <- as.integer(skip)
     attrs <- attributes(x)
 
     if (verbose) catm("Starting tokenization...\n")
@@ -366,13 +364,12 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- lapply(x, stri_trans_nfc)
     x <- serialize_tokens(x)
-    docvar <- make_docvars(length(x), names(x))
     compile_tokens(
-        x, docvar[["docname_"]],
+        x, 
+        source = "list",
         types = attr(x, "types"), 
         concatenator = concatenator,
-        source = "list",
-        docvars = docvar
+        docvars = make_docvars(length(x), names(x))
     )
 }
 
@@ -380,19 +377,17 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #' @export
 as.tokens.tokens <- function(x, ...) {
     if (is_pre2(x)) {
-        docvar <- upgrade_docvars(attr(x, "docvars"), names(x))
         x <- compile_tokens(
-            x, docvar[["docname_"]], 
+            x, "tokens", 
             types = attr(x, "types"),
+            padding = attr(x, "padding"),
             ngrams = as.integer(attr(x, "ngrams")), 
             skip = as.integer(attr(x, "skip")),
             what = attr(x, "what"),
             concatenator = attr(x, "concatenator"),
-            padding = attr(x, "padding"),
             unit = attr(x, "unit"),
             source = "tokens",
-            docvars = docvar,
-            meta = list()
+            docvars = upgrade_docvars(attr(x, "docvars"), names(x))
         )
     }
     return(x)
@@ -425,32 +420,31 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 # ============== INTERNAL FUNCTIONS =======================================
 
-# TODO we can be rename this "tokenize" once quanteda::tokenize has gone
-tokens_internal <- function(x,
-                            what = c("word", "sentence", "character", "fastestword", "fasterword"),
-                            remove_numbers = FALSE,
-                            remove_punct = FALSE,
-                            remove_symbols = remove_punct,
-                            remove_separators = TRUE,
-                            remove_twitter = FALSE,
-                            remove_hyphens = FALSE,
-                            remove_url = FALSE,
-                            ngrams = 1L,
-                            skip = 0L,
-                            concatenator = "_",
-                            verbose = getOption("verbose"),
-                            include_docvars = TRUE,
-                            source = "corpus",
-                            meta = list(),
-                            ...) {
+tokenize <- function(x,
+                    what = c("word", "sentence", "character", "fastestword", "fasterword"),
+                    remove_numbers = FALSE,
+                    remove_punct = FALSE,
+                    remove_symbols = remove_punct,
+                    remove_separators = TRUE,
+                    remove_twitter = FALSE,
+                    remove_hyphens = FALSE,
+                    remove_url = FALSE,
+                    ngrams = 1L,
+                    skip = 0L,
+                    concatenator = "_",
+                    verbose = getOption("verbose"),
+                    include_docvars = TRUE,
+                    source = "corpus",
+                    docvars = data.frame(),
+                    meta = list(),
+                    ...) {
 
     check_dots(list(...), names(formals("tokens")))
 
     what <- match.arg(what)
     ngrams <- as.integer(ngrams)
     skip <- as.integer(skip)
-    attrs <- attributes(x)
-
+    
     # disable remove_twitter if remove_punct = FALSE
     if (!remove_punct & remove_twitter) {
         remove_twitter <- FALSE
@@ -468,9 +462,9 @@ tokens_internal <- function(x,
     time_start <- proc.time()
 
     # Split x into smaller blocks to reducre peak memory consumption
+    ndoc <- length(x)
     x <- split(x, ceiling(seq_along(x) / 10000))
     for (i in seq_along(x)) {
-
         if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
         if (what %in% c("word", "fasterword", "fastestword")) {
             temp <- preserve_special(x[[i]], remove_hyphens, remove_url, remove_twitter, verbose)
@@ -496,14 +490,19 @@ tokens_internal <- function(x,
         if (verbose) catm(length(attr(x[[i]], "types")), "unique types\n")
 
     }
-
-    x <- compile_tokens(unlist(x, recursive = FALSE), attrs$names,
-                        source = "corpus",
-                        what = what, ngrams = ngrams, skip = skip,
-                        concatenator = concatenator,
-                        types = attr(x[[length(x)]], "types"),
-                        unit = "documents",
-                        meta = meta)
+    
+    x <- compile_tokens(
+            unlist(x, recursive = FALSE), 
+            source = "corpus", 
+            types = attr(x[[length(x)]], "types"),
+            unit = "documents",
+            what = what, 
+            ngrams = ngrams, 
+            skip = skip,
+            concatenator = concatenator,
+            meta = meta, 
+            docvars = docvars
+    )
 
     if (what %in% c("word", "fasterword", "fastestword")) {
 
@@ -545,19 +544,18 @@ tokens_internal <- function(x,
         catm("Finished tokenizing and cleaning ", format(length(x), big.mark = ","), " text",
              if (length(x) > 1) "s", ".\n", sep = "")
     }
-
     return(x)
 }
 
-compile_tokens <- function(x, source, names, types, padding = FALSE,
+compile_tokens <- function(x, source, types, padding = FALSE,
                            docvars = data.frame(), meta = list(), ...) {
      structure(x,
-              names = names,
+              names = docvars[["docname_"]],
               class = "tokens",
               padding = padding,
               types = types,
-              meta = make_meta("tokens", source, inherit = meta, ...),
-              docvars = docvars)
+              docvars = docvars,
+              meta = make_meta("tokens", source, inherit = meta, ...))
 }
 
 tokens_word <- function(txt,
@@ -697,7 +695,6 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attributes(x) <- attrs
     attr(x, "types") <- types
-    class(x) <- "tokens"
     return(x)
 }
 
@@ -752,7 +749,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
-        attributes(x, FALSE) <- attrs
+        set_attrs(x) <- attrs
         return(x)
     }
 

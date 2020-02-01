@@ -101,18 +101,21 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     
     x <- as.tokens(x)
-    if (any(n <= 0)) 
+    n <- as.integer(n)
+    skip <- as.integer(skip)
+    
+    if (any(n <= 0L)) 
         stop("ngram length has to be greater than zero")
     
     attrs <- attributes(x)
-    if (identical(n, 1) && identical(skip, 0))
+    if (identical(n, 1L) && identical(skip, 0L))
         return(x)
-    x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
-    attributes(x, FALSE) <- attrs
-    attr(x, "ngrams") <- as.integer(n)
-    attr(x, "skip") <- as.integer(skip)
-    attr(x, "concatenator") <- concatenator
-    return(x)
+    result <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1L)
+    field_object(attrs, "n") <- n
+    field_object(attrs, "skip") <- skip
+    field_object(attrs, "concatenator") <- concatenator
+    set_attrs(result) <- attrs
+    return(result)
 }
 
 #' @rdname tokens_ngrams
@@ -135,16 +138,16 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
-tokens_skipgrams <- function(x, n, skip, concatenator="_") {
+tokens_skipgrams <- function(x, n, skip, concatenator = "_") {
     UseMethod("tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.default <- function(x, n, skip, concatenator="_") {
+tokens_skipgrams.default <- function(x, n, skip, concatenator = "_") {
     stop(friendly_class_undefined_message(class(x), "tokens_skipgrams"))
 }
 
 #' @export
-tokens_skipgrams.tokens <- function(x, n, skip, concatenator="_") {
+tokens_skipgrams.tokens <- function(x, n, skip, concatenator = "_") {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
 }

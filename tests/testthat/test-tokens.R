@@ -9,7 +9,9 @@ test_that("as.tokens list version works as expected", {
 })
 
 test_that("tokens indexing works as expected", {
-    toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+    toks <- tokens(c(d1 = "one two three", 
+                     d2 = "four five six", 
+                     d3 = "seven eight"))
 
     expect_equal(toks[[1]], c("one", "two", "three"))
     expect_equal(as.list(toks[c(FALSE, TRUE, FALSE)]), list(d2 = c("four", "five", "six")))

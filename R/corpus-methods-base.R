@@ -202,17 +202,15 @@ tail.corpus <- function(x, n = 6L, ...) {
     #if (!identical(attr(c1, "unit"), attr(c2, "unit")))
     #    stop("Cannot combine corpora in different units")
     
-    docvar <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
-                         get_docvars(c2, user = TRUE, system = TRUE))
-    result <- compile_corpus(
+    docvars <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
+                          get_docvars(c2, user = TRUE, system = TRUE))
+    compile_corpus(
         c(as.character(c1), as.character(c2)), 
         source = "corpus",
-        names = c(docnames(c1), docnames(c2)),
         unit = field_object(attrs1, "unit"),
-        docvars = docvar,
+        docvars = docvars,
         meta = field_user(attrs1)
     )
-    return(result)
 }
 
 #' @rdname corpus-class

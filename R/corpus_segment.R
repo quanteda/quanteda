@@ -125,19 +125,24 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     attrs <- attributes(x)
+    
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
-    result <- temp[["text"]]
-    if (!use_docvars)
-        attrs[["docvars"]] <- select_docvars(attrs$docvars, user = FALSE, system = TRUE)
-    attrs[["docvars"]] <- reshape_docvars(attrs$docvars, temp$docnum)
-    attrs[["names"]] <- attrs[["docvars"]][["docname_"]]
+    
+    if (!use_docvars) {
+        docvars <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
+    } else {
+        docvars <- attrs[["docvars"]]
+    }
+    docvars <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
     if (extract_pattern) 
-        attrs[["docvars"]][["pattern"]] <- temp$pattern
-    field_object(attrs, "unit") <- "segments"
-    #attrs$names <- attrs$docvars[["docname_"]] # enable for 1611
-    attributes(result, FALSE) <- attrs
-    return(result)
+        docvars[["pattern"]] <- temp[["pattern"]]
+    
+    compile_corpus(
+        temp[["text"]], "corpus", 
+        unit = "segments",
+        docvars = docvars, meta = meta(x, type = "all")
+    )
 }
 
 
@@ -297,6 +302,6 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         if (omit_empty)
             result <- result[!is.na(result$text),]
     }
-    return(result)
+    return(as.list(result))
 }
 

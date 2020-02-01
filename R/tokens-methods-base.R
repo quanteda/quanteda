@@ -172,8 +172,8 @@ lengths.tokens <- function(x, use.names = TRUE) {
     if (!identical(field_object(attrs1, "concatenator"), field_object(attrs2, "concatenator")))
         stop("Cannot combine tokens with different concatenators", call. = FALSE)
     
-    docvar <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
-                         get_docvars(t2, user = TRUE, system = TRUE))
+    docvars <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
+                          get_docvars(t2, user = TRUE, system = TRUE))
     t2 <- unclass(t2)
     t1 <- unclass(t1)
     t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), 
@@ -181,7 +181,6 @@ lengths.tokens <- function(x, use.names = TRUE) {
     result <- compile_tokens(
         c(t1, t2), 
         source = "tokens",
-        names = docvar[["docname_"]],
         types = c(attrs1[["types"]], attrs2[["types"]]),
         what = field_object(attrs1, "what"),
         ngrams = sort(unique(c(
@@ -193,10 +192,9 @@ lengths.tokens <- function(x, use.names = TRUE) {
             field_object(attrs2, "skip")))
             ),
         concatenator = field_object(attrs1, "concatenator"),
-        docvars = docvar
+        docvars = docvars
     )
-    result <- tokens_recompile(result)
-    return(result)
+    tokens_recompile(result)
 }
 
 #' @rdname as.tokens

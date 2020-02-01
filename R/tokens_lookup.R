@@ -152,9 +152,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     }
     field_object(attrs, "what") <- "dictionary"
     field_object(attrs, "dictionary") <- dictionary
-    attr(result, "meta") <- attrs$meta
-    #if (exclusive) 
-    #    attr(result, "padding") <- FALSE
-    attributes(result, FALSE) <- attrs
+    set_attrs(result) <- attrs
     return(result)
 }

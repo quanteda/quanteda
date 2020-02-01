@@ -173,7 +173,6 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     result <- compile_corpus(
         x, 
         source = "character",
-        names = docvar[["docname_"]],
         unit = unit,
         docvars = docvar,
         meta = list("user" = meta)
@@ -332,10 +331,11 @@ corpus.Corpus <- function(x, ...) {
     return(result)
 }
 
-compile_corpus <- function(x, source, names, 
-                           docvars = data.frame(), meta = list(), ...) {
+compile_corpus <- function(x, source, 
+                           docvars = data.frame(), 
+                           meta = list(), ...) {
     structure(x,
-              names = names,
+              names = docvars[["docname_"]],
               class = "corpus",
               meta = quanteda:::make_meta("corpus", source, inherit = meta, ...),
               docvars = docvars)

@@ -275,10 +275,12 @@ dfm.tokens <- function(x,
     }
 
     # compile the dfm
-    result <- compile_dfm(x, verbose = verbose)
+    attrs <- attributes(x)
+    result <- compile_dfm(x, "tokens", 
+                          meta = meta(x, type = "all"),
+                          docvars = attrs[["docvars"]])
 
     # copy, set attributes
-    set_dfm_slots(result) <- attributes(x)
     dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 
@@ -375,20 +377,17 @@ dfm.dfm <- function(x,
 ####
 
 ## internal function to compile the dfm
-compile_dfm <- function(x, verbose = TRUE) {
-    UseMethod("compile_dfm")
-}
+compile_dfm <- function(x, source, 
+                        docvars = data.frame(), meta = list(), ...) {
 
-compile_dfm.tokens <- function(x, verbose = TRUE) {
-
-    types <- types(x)
+    type <- types(x)
     attrs <- attributes(x)
     x <- unclass(x)
 
     # shift index for padding, if any
     index <- unlist(x, use.names = FALSE)
     if (attr(x, "padding")) {
-        types <- c("", types)
+        type <- c("", type)
         index <- index + 1
     }
 
@@ -397,8 +396,11 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                                p = cumsum(c(1, lengths(x))) - 1,
                                x = 1L,
                                dims = c(length(x), 
-                                        length(types))))
-    set_dfm_dimnames(result) <- list(attrs$docvars[["docname_"]], types)
+                                        length(type))),
+                  meta = make_meta("tokens", source, inherit = meta, ...),
+                  docvars = docvars
+                  )
+    set_dfm_dimnames(result) <- list(docvars[["docname_"]], type)
     return(result)
 }
 

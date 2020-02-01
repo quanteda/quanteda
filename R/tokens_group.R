@@ -19,14 +19,13 @@ tokens_group <- function(x, groups = NULL, fill = FALSE) {
         groups <- generate_groups(x, groups, fill)
     if (!fill)
         groups <- droplevels(groups)
-    if (length(levels(groups)) > 1) {
-        x <- base::split(unlist(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
-    } else {
-        x <- list(unlist(unclass(x), use.names = FALSE))
-        names(x) <- as.character(groups[1])
-    }
-    x <- structure(x, class = 'tokens')
-    attrs$docvars <- group_docvars(attrs$docvars, groups)
-    attributes(x, FALSE) <- attrs
-    return(x)
+    result <- base::split(unlist(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
+    docvars <- group_docvars(attrs[["docvars"]], groups)
+    compile_tokens(
+        result, "tokens", docvars[["docname_"]], 
+        types = attrs[["types"]], 
+        padding = attrs[["padding"]], 
+        docvars = docvars,
+        meta = meta(x, type = "all")
+    )
 }

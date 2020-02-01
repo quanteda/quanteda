@@ -48,17 +48,19 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     x <- as.corpus(x)
     to <- match.arg(to)
     attrs <- attributes(x)
+    if (field_object(attrs, "unit") == to)
+        return(x)
     if (to == "documents") {
         if (field_object(attrs, "unit") %in% c("sentences", "paragraphs", "segments")) {
-            docid <- as.integer(droplevels(attrs$docvars[["docid_"]]))
-            temp <- split(unclass(x), docid)
+            docnum <- as.integer(droplevels(attrs$docvars[["docid_"]]))
+            temp <- list("text" = split(unclass(x), docnum))
             if (field_object(attrs, "unit") %in% c("sentences", "segments")) {
-                result <- unlist(lapply(temp, paste0, collapse = "  "))
+                temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "  "))
             } else {
-                result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
+                temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "\n\n"))
             }
-            attrs[["docvars"]] <- reshape_docvars(attrs$docvars, !duplicated(docid))
-            field_object(attrs, "unit") <- "documents"
+            docvars <- reshape_docvars(attrs[["docvars"]], !duplicated(docnum))
+            unit <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
@@ -66,13 +68,15 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         if (field_object(attrs, "unit") %in% "documents") {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE,
                                   omit_empty = FALSE, what = to, ...)
-            result <- temp$text
-            attrs[["docvars"]] <- reshape_docvars(attrs$docvars, temp$docnum)
-            field_object(attrs, "unit") <- to
+            docvars <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
+            unit <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
     }
-    attributes(result, FALSE) <- attrs
-    return(result)
+    compile_corpus(
+        temp[["text"]], "corpus", 
+        unit = unit,
+        docvars = docvars, meta = meta(x, type = "all")
+    )
 }

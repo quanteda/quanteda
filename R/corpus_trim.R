@@ -43,28 +43,19 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
     if (is.null(max_ntoken)) max_ntoken <- 1e10 
     
     # segment corpus
-    if (what != "documents") {
-        temp <- corpus_reshape(x, to = what)
-    } else {
-        temp <- x
-    }
-    
+    temp <- corpus_reshape(x, to = what)
+
     # exclude based on lengths
     length <- ntoken(temp, remove_punct = TRUE)
     temp <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
     
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        temp <- corpus_subset(temp, !stri_detect_regex(texts(temp), 
-                                                       exclude_pattern))
+        is_pattern <- stri_detect_regex(texts(temp), exclude_pattern)
+        result <- corpus_subset(temp, !is_pattern)
     }
-    
-    if (what != "documents") {
-        result <- corpus_reshape(temp, to = "documents")
-    } else {
-        result <- temp
-    }
-    
+    if (what != "documents")
+        result <- corpus_reshape(result, to = "documents")
     return(result)
 }
 
@@ -135,22 +126,19 @@ corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000, 
                                         exclude_pattern = NULL,
                                         return_tokens = FALSE) {
-    ntok <- NULL
-    temp_sentences <- corpus_reshape(x, to = "sentences")
+    
+    temp <- corpus_reshape(x, to = "sentences")
     
     # exclude based on lengths
-    docvars(temp_sentences, "ntok") <- ntoken(temp_sentences, remove_punct = TRUE)
-    temp_sentences <- 
-        corpus_subset(temp_sentences, ntok >= min_length & ntok <= max_length)
-    docvars(temp_sentences, "ntok") <- NULL
+    length <- ntoken(temp, remove_punct = TRUE)
+    temp <- corpus_subset(temp, length >= min_length & length <= max_length)
     
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        temp_sentences <- corpus_subset(temp_sentences,
-                                        !stri_detect_regex(texts(temp_sentences),
-                                                           exclude_pattern))
+        is_pattern <- stri_detect_regex(texts(temp), exclude_pattern)
+        temp <- corpus_subset(temp, !is_pattern)
     }
-    corpus_reshape(temp_sentences, to = "document")
+    corpus_reshape(temp, to = "document")
 }
 
 
