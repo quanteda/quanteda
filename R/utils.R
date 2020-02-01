@@ -77,11 +77,13 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 
 "set_attrs<-" <- function(x, value) {
     if (isS4(x)) {
-        x@meta <- value$meta
-        x@docvars <- value$docvars
+        x@Dimnames <- value[["Dimnames"]]
+        x@meta <- value[["meta"]]
+        x@docvars <- value[["docvars"]]
     } else {
-        attr(x, "meta") <- value$meta
-        attr(x, "docvars") <- value$docvars
+        attr(x, "names") <- value[["names"]]
+        attr(x, "meta") <- value[["meta"]]
+        attr(x, "docvars") <- value[["docvars"]]
     }
     return(x)
 }
