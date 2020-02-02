@@ -141,8 +141,9 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             result <- x
         }
     }
-
-    attr(result, "what") <- "dictionary"
-    attr(result, "dictionary") <- dictionary
+    
+    field_object(attrs, "what") <- "dictionary"
+    field_object(attrs, "dictionary") <- dictionary
+    set_attrs(result) <- attrs
     return(result)
 }

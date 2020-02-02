@@ -110,7 +110,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             pattern <- stri_replace_all_fixed(
                 unlist(pattern, use.names = FALSE),
                 " ",
-                attrs$meta$object$concatenator
+                filed_object(attrs, "concatenator")
             )
         }
         ids_pat <- pattern2id(pattern, feat, valuetype, case_insensitive)

@@ -49,20 +49,21 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
-
+    
+    x <- as.dfm(x)
+    attrs <- attributes(x)
+    
     if (is.null(groups))
         groups <- docid(x)
 
-
-    if (!force && 
-        (( (! x@weightTf[["scheme"]] %in% c("count", "prop")) &&
-         x@weightDf[["scheme"]] != "unary" ) ||
-         x@weightDf[["scheme"]] != "unary")) {
-        stop("will not group a weighted dfm; use force = TRUE to override",
-             call. = FALSE)
+    if (!force) {
+        if ((!field_object(attrs, "weight_tf")[["scheme"]] %in% c("count", "prop") &&
+            field_object(attrs, "weight_df")[["scheme"]] != "unary") ||
+            field_object(attrs, "weight_df")[["scheme"]] != "unary") {
+            stop("will not group a weighted dfm; use force = TRUE to override",
+                 call. = FALSE)
+        }
     }
-    
-    x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups)
@@ -122,7 +123,7 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_do
     temp <- as(x, "dgTMatrix")
     if (is.null(features)) {
         featname <- temp@Dimnames[[2]]
-        j_new <- temp@j + 1
+        j_new <- temp@j + 1L
     } else {
         if (!is.factor(features))
             features <- factor(features, levels = unique(features))
@@ -130,11 +131,11 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_do
             features <- droplevels(features)
         featname <- levels(features)
         j <- as.integer(features)
-        j_new <- j[temp@j + 1]
+        j_new <- j[temp@j + 1L]
     }
     if (is.null(documents)) {
         docname <- temp@Dimnames[[1]]
-        i_new <- temp@i + 1
+        i_new <- temp@i + 1L
     } else {
         if (!is.factor(documents))
             documents <- factor(documents, levels = unique(features))
@@ -142,31 +143,52 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_do
             documents <- droplevels(documents)
         docname <- levels(documents)
         i <- as.integer(documents)
-        i_new <- i[temp@i + 1]
+        i_new <- i[temp@i + 1L]
     }
-
     x_new <- temp@x
-    dims <- c(length(docname), length(featname))
-    result <- new("dfm",
-                  sparseMatrix(i = i_new, j = j_new, x = x_new,
-                               dims = dims),
-                  weightTf = x@weightTf,
-                  weightDf = x@weightDf,
-                  smooth = x@smooth,
-                  ngrams = x@ngrams,
-                  skip = x@skip,
-                  meta = x@meta,
-                  concatenator = x@concatenator)
-    set_dfm_dimnames(result) <- list(docname, featname)
     
     if (use_docvars) {
         if (is.null(documents)) {
-            result@docvars <- x@docvars
+            docvars <- x@docvars
         } else {
-            result@docvars <- group_docvars(x@docvars, documents)
+            docvars <- group_docvars(x@docvars, documents)
         }
     } else {
-        result@docvars <- data.frame()
+        docvars <- make_docvars(length(docname), docname)
     }
-    return(result)
+    
+    temp <- new("dfm",
+                sparseMatrix(i = i_new, j = j_new, x = x_new,
+                             dims = c(length(docname), length(featname))))
+    compile_dfm(temp, 
+                source = "dfm",
+                features = featname,
+                docvars = docvars,
+                meta = meta(x, type = "all")
+    )
+    # 
+    # x_new <- temp@x
+    # dims <- c(length(docname), length(featname))
+    # result <- new("dfm",
+    #               sparseMatrix(i = i_new, j = j_new, x = x_new,
+    #                            dims = dims),
+    #               weightTf = x@weightTf,
+    #               weightDf = x@weightDf,
+    #               smooth = x@smooth,
+    #               ngrams = x@ngrams,
+    #               skip = x@skip,
+    #               meta = x@meta,
+    #               concatenator = x@concatenator)
+    # set_dfm_dimnames(result) <- list(docname, featname)
+    # 
+    # if (use_docvars) {
+    #     if (is.null(documents)) {
+    #         result@docvars <- x@docvars
+    #     } else {
+    #         result@docvars <- group_docvars(x@docvars, documents)
+    #     }
+    # } else {
+    #     result@docvars <- data.frame()
+    # }
+    # return(result)
 }

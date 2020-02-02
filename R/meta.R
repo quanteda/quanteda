@@ -275,7 +275,7 @@ make_meta_dfm <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
-        "weight_tf" = list(scheme = "count", base = NULL, K = NULL),
+        "weight_tf" = list(scheme = "count", base = NULL, K = NULL), # TODO: lowe case k
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
                            smoothing = NULL, threshold = NULL),
         "smooth" = 0,

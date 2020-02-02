@@ -140,6 +140,7 @@ Collate:
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
+    'object-compiler.R'
     'pattern2fixed.R'
     'phrases.R'
     'quanteda_options.R'
