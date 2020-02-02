@@ -273,16 +273,36 @@ dfm.tokens <- function(x,
                            case_insensitive = case_insensitive,
                            verbose = verbose)
     }
+    
+    if (stem) {
+        if (verbose) catm("   ... steming words\n")
+        x <- tokens_wordstem(x)
+    }
 
     # compile the dfm
+    type <- types(x)
     attrs <- attributes(x)
-    result <- compile_dfm(x, "tokens", 
-                          meta = meta(x, type = "all"),
-                          docvars = attrs[["docvars"]])
-
-    # copy, set attributes
-    dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
+    temp <- unclass(x)
+    
+    # shift index for padding, if any
+    index <- unlist(temp, use.names = FALSE)
+    if (attr(temp, "padding")) {
+        type <- c("", type)
+        index <- index + 1L
+    }
+    
+    temp <-  sparseMatrix(j = index,
+                          p = cumsum(c(1L, lengths(x))) - 1L,
+                          x = 1L,
+                          dims = c(length(x), 
+                                   length(type)))
+    compile_dfm(temp, 
+                source = "tokens", 
+                feature = type,
+                docvars = get_docvars(x, user = TRUE, system = TRUE),
+                meta = meta(x, type = "all"))
 }
+
 
 #' @noRd
 #' @author Kenneth Benoit
@@ -371,38 +391,6 @@ dfm.dfm <- function(x,
     return(x)
 }
 
-
-####
-#### core constructors for dfm
-####
-
-## internal function to compile the dfm
-compile_dfm <- function(x, source, 
-                        docvars = data.frame(), meta = list(), ...) {
-
-    type <- types(x)
-    attrs <- attributes(x)
-    x <- unclass(x)
-
-    # shift index for padding, if any
-    index <- unlist(x, use.names = FALSE)
-    if (attr(x, "padding")) {
-        type <- c("", type)
-        index <- index + 1
-    }
-
-    result <- new("dfm", 
-                  sparseMatrix(j = index,
-                               p = cumsum(c(1, lengths(x))) - 1,
-                               x = 1L,
-                               dims = c(length(x), 
-                                        length(type))),
-                  meta = make_meta("tokens", source, inherit = meta, ...),
-                  docvars = docvars
-                  )
-    set_dfm_dimnames(result) <- list(docvars[["docname_"]], type)
-    return(result)
-}
 
 
 ####

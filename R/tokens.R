@@ -547,17 +547,6 @@ tokenize <- function(x,
     return(x)
 }
 
-compile_tokens <- function(x, source, types, padding = FALSE,
-                           docvars = data.frame(), meta = list(), ...) {
-     structure(x,
-              names = docvars[["docname_"]],
-              class = "tokens",
-              padding = padding,
-              types = types,
-              docvars = docvars,
-              meta = make_meta("tokens", source, inherit = meta, ...))
-}
-
 tokens_word <- function(txt,
                         what = "word",
                         remove_numbers = FALSE,

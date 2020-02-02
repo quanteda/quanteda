@@ -330,14 +330,3 @@ corpus.Corpus <- function(x, ...) {
     meta_system(result, "source") <- "tm"
     return(result)
 }
-
-compile_corpus <- function(x, source, 
-                           docvars = data.frame(), 
-                           meta = list(), ...) {
-    structure(x,
-              names = docvars[["docname_"]],
-              class = "corpus",
-              meta = quanteda:::make_meta("corpus", source, inherit = meta, ...),
-              docvars = docvars)
-}
-
