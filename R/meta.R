@@ -227,6 +227,7 @@ make_meta_system <- meta_system_defaults # for development
 
 make_meta <- function(class, source, inherit = NULL, ...) {
     
+    source <- "something" # for development
     result <- list(
         "system" = make_meta_system(source),
         "object" = list(),
