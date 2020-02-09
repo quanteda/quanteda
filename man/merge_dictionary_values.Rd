@@ -13,7 +13,7 @@ merge_dictionary_values(dict)
 Internal function to merge values of duplicated keys
 }
 \examples{
-dict <- list("A" = list(AA = list("aaaaa"), "a"), 
+dict <- list("A" = list(AA = list("aaaaa"), "a"),
              "B" = list("b"),
              "C" = list("c"),
              "A" = list("aa"))

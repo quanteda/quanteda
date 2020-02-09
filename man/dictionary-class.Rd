@@ -8,7 +8,7 @@
 \alias{[[,dictionary2,index-method}
 \alias{$.dictionary2}
 \alias{c,dictionary2-method}
-\title{Coerce a dictionary object into a list}
+\title{dictionary class objects and functions}
 \usage{
 \S4method{as.list}{dictionary2}(x, flatten = FALSE, levels = 1:100)
 
@@ -35,11 +35,8 @@ when \code{flatten = TRUE}.}
 \item{object}{the dictionary to be extracted}
 }
 \description{
-Coerce a dictionary object into a list
-
-Extractor for dictionary objects
-
-Extractor for dictionary objects
+The \code{dictionary2} class constructed by \code{\link[=dictionary]{dictionary()}}, and associated core
+class functions.
 }
 \section{Slots}{
 
@@ -50,6 +47,10 @@ consisting of a pattern match}
 
 \item{\code{concatenator}}{character object specifying space between multi-word
 values}
+
+\item{\code{meta}}{list of object metadata}
+
+\item{\code{valuetype}}{character; one of \link{valuetype}}
 }}
 
 \keyword{dictionary}
