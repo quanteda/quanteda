@@ -48,18 +48,12 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
     attrs <- attributes(x)
     type <- types(x)
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
-    docvars <- reshape_docvars(attrs[["docvars"]], attr(result, "docnum"))
-    if (any(duplicated(docvars[["docid_"]]))) {
-        unit <- "segments"    
+    if (any(duplicated(attr(result, "docnum")))) {
+        field_object(attrs, "unit") <- "segments"    
     } else {
-        unit <- "documents"
+        field_object(attrs, "unit") <- "documents"
     }
-    compile_tokens(
-        result, "tokens",  
-        types = attr(result, "types"),
-        padding = attr(result, "padding"),
-        unit = unit,
-        docvars = group_docvars(docvars, attr(result, "docnum")),
-        meta = meta(x, type = "all")
-    )
+    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "docnum"))
+    set_attrs(result) <- attrs
+    return(result)
 }
