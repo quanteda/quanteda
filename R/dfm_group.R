@@ -69,9 +69,8 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
         groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
-    x <- group_dfm(x, documents = groups, fill = fill)
-    x <- x[levels(groups),]
-    return(x)
+    group_dfm(x, documents = groups, fill = fill)
+    
 }
 
 
@@ -116,14 +115,16 @@ is_grouped <- function(x, group) {
 
 # internal code to perform dfm compression and grouping
 # on features and/or documents
-group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_docvars = TRUE) {
+group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, 
+                      use_docvars = TRUE) {
 
     if (!length(features) && !length(documents))
         return(x)
-    temp <- as(x, "dgTMatrix")
+    attrs <- attributes(x)
+    x <- as(x, "dgTMatrix")
     if (is.null(features)) {
-        featname <- temp@Dimnames[[2]]
-        j_new <- temp@j + 1L
+        featname <- x@Dimnames[[2]]
+        j <- x@j + 1L
     } else {
         if (!is.factor(features))
             features <- factor(features, levels = unique(features))
@@ -131,11 +132,11 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_do
             features <- droplevels(features)
         featname <- levels(features)
         j <- as.integer(features)
-        j_new <- j[temp@j + 1L]
+        j <- j[x@j + 1L]
     }
     if (is.null(documents)) {
-        docname <- temp@Dimnames[[1]]
-        i_new <- temp@i + 1L
+        docname <- x@Dimnames[[1]]
+        i <- x@i + 1L
     } else {
         if (!is.factor(documents))
             documents <- factor(documents, levels = unique(features))
@@ -143,52 +144,19 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, use_do
             documents <- droplevels(documents)
         docname <- levels(documents)
         i <- as.integer(documents)
-        i_new <- i[temp@i + 1L]
+        i <- i[x@i + 1L]
     }
-    x_new <- temp@x
-    
     if (use_docvars) {
-        if (is.null(documents)) {
-            docvars <- x@docvars
-        } else {
-            docvars <- group_docvars(x@docvars, documents)
-        }
+        attrs[["docvars"]] <- select_docvars(attrs[["docvars"]], user = TRUE, system = TRUE)
     } else {
-        docvars <- make_docvars(length(docname), docname)
+        attrs[["docvars"]] <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
     }
-    
-    temp <- new("dfm",
-                sparseMatrix(i = i_new, j = j_new, x = x_new,
-                             dims = c(length(docname), length(featname))))
-    compile_dfm(temp, 
-                source = "dfm",
-                features = featname,
-                docvars = docvars,
-                meta = meta(x, type = "all")
+    compile_dfm(
+        sparseMatrix(i = i, j = j, x = x@x,
+                     dims = c(length(docname), length(featname))), 
+        features = featname,
+        unit = "documents",
+        docvars = group_docvars(attrs[["docvars"]], documents),
+        meta = attrs[["meta"]]
     )
-    # 
-    # x_new <- temp@x
-    # dims <- c(length(docname), length(featname))
-    # result <- new("dfm",
-    #               sparseMatrix(i = i_new, j = j_new, x = x_new,
-    #                            dims = dims),
-    #               weightTf = x@weightTf,
-    #               weightDf = x@weightDf,
-    #               smooth = x@smooth,
-    #               ngrams = x@ngrams,
-    #               skip = x@skip,
-    #               meta = x@meta,
-    #               concatenator = x@concatenator)
-    # set_dfm_dimnames(result) <- list(docname, featname)
-    # 
-    # if (use_docvars) {
-    #     if (is.null(documents)) {
-    #         result@docvars <- x@docvars
-    #     } else {
-    #         result@docvars <- group_docvars(x@docvars, documents)
-    #     }
-    # } else {
-    #     result@docvars <- data.frame()
-    # }
-    # return(result)
 }

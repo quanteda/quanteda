@@ -141,7 +141,9 @@ subset_docvars <- function(x, i = NULL) {
 }
 
 # Reshape docvars keeping variables that have the same values within groups
-group_docvars <- function(x, group) {
+group_docvars <- function(x, group = NULL) {
+    if (is.null(group))
+        return(x)
     l <- rep(FALSE, length(x))
     for (i in seq_along(l)) {
         if (is_system(names(x)[i]) || is_grouped(x[[i]], group)) {
