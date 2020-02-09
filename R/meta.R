@@ -213,9 +213,8 @@ meta_system <- function(x, field = NULL)
 #' @return `meta_system_defaults` returns a list of default system
 #'   values, with the user setting the "source" value.  This should be used
 #'   to set initial system meta information.
-meta_system_defaults <- function(source) {
-    list("source" = source,
-         "package-version" = utils::packageVersion("quanteda"),
+meta_system_defaults <- function() {
+    list("package-version" = utils::packageVersion("quanteda"),
          "r-version" = getRversion(),
          "system" = Sys.info()[c("sysname", "machine", "user")],
          "directory" = getwd(),
@@ -225,11 +224,10 @@ meta_system_defaults <- function(source) {
 
 make_meta_system <- meta_system_defaults # for development
 
-make_meta <- function(class, source, inherit = NULL, ...) {
+make_meta <- function(class, inherit = NULL, ...) {
     
-    source <- "something" # for development
     result <- list(
-        "system" = make_meta_system(source),
+        "system" = make_meta_system(),
         "object" = list(),
         "user" = list()
     )
@@ -261,13 +259,11 @@ make_meta_tokens <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
-        "ngrams" = 1L, 
-        "skip" = 0L,
+        "unit" = "documents",
         "what" = "word", 
-        "concatenator" = "_", 
-        "padding" = FALSE,
-        "unit" = "documents", 
-        "source" = "corpus"
+        "ngram" = 1L, 
+        "skip" = 0L,
+        "concatenator" = "_"
     )
     update_meta(default, inherit, ...)
 }
@@ -276,16 +272,25 @@ make_meta_dfm <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
-        "weight_tf" = list(scheme = "count", base = NULL, K = NULL), # TODO: lowe case k
+        "unit" = "documents",
+        "what" = "word", 
+        "ngram" = 1L,
+        "skip" = 0L,
+        "concatenator" = "_",
+        "weight_tf" = list(scheme = "count", base = NULL, K = NULL), # TODO: lower-case k
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
                            smoothing = NULL, threshold = NULL),
-        "smooth" = 0,
-        "unit" = "documents",
-        "ngrams" = 1L,
-        "skip" = 0L,
-        "concatenator" = "_"
+        "smooth" = 0
     )
     update_meta(default, inherit, ...)
+}
+
+get_meta <- function(x) {
+    if (isS4(x)) {
+        return(x@meta)
+    } else {
+        return(attr(x, "meta"))
+    }
 }
 
 update_meta <- function(default, inherit, ...) {

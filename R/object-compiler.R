@@ -6,7 +6,7 @@
 #' @param meta list for meta fields
 #' @param ... added to object meta fields  
 #' @keywords internal
-compile_dfm <- function(x, source, features,
+compile_dfm <- function(x, features,
                         docvars = data.frame(), meta = list(), ...) {
     result <- new("dfm", x)
     result@Dimnames <- list(
@@ -14,32 +14,33 @@ compile_dfm <- function(x, source, features,
         features = as.character(features)
     )
     result@docvars <- docvars
-    result@meta <- make_meta("dfm", source, inherit = meta, ...)
+    result@meta <- make_meta("dfm", inherit = meta, ...)
     return(result)
 }
 
 #' @rdname object-compiler
 #' @param types character for types of resulting `tokens`` object
 #' @param padding logical indicating if the `tokens` object contains paddings
-compile_tokens <- function(x, source, types, padding = FALSE,
+compile_tokens <- function(x, types, 
                            docvars = data.frame(), meta = list(), ...) {
+    
     structure(x,
               names = docvars[["docname_"]],
               class = "tokens",
               types = types,
-              padding = padding,
+              padding = FALSE,
               docvars = docvars,
-              meta = make_meta("tokens", source, inherit = meta, ...))
+              meta = make_meta("tokens", inherit = meta, ...))
 }
 
 #' @rdname object-compiler
-compile_corpus <- function(x, source, 
+compile_corpus <- function(x, 
                            docvars = data.frame(), 
                            meta = list(), ...) {
     structure(x,
               names = docvars[["docname_"]],
               class = "corpus",
               docvars = docvars,
-              meta = make_meta("corpus", source, inherit = meta, ...))
+              meta = make_meta("corpus", inherit = meta, ...))
 }
 
