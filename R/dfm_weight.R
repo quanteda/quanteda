@@ -117,7 +117,8 @@ dfm_weight.dfm <- function(
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-
+    attrs <- attributes(x)
+    
     ### for numeric weights
     if (!is.null(weights)) {
         if (!missing(scheme))
@@ -148,14 +149,14 @@ dfm_weight.dfm <- function(
 
         if ("K" %in% names(args) && scheme != "augmented")
             warning("K not used for this scheme")
-        if (K < 0 | K > 1.0)
+        if (K < 0 || K > 1.0)
             stop("K must be in the [0, 1] interval")
 
         if (!force && 
-            x@weightTf[["scheme"]] != "count" && 
-            x@weightTf[["scheme"]] != "unary") {
+            field_object(attrs, "weight_tf")$scheme != "count" && 
+            field_object(attrs, "weight_df")$scheme != "unary") {
             stop("will not weight a dfm already term-weighted as '",
-                 x@weightTf[["scheme"]], "'; use force = TRUE to override",
+                 field_object(attrs, "weight_tf")$scheme, "'; use force = TRUE to override",
                  call. = FALSE)
         }
 
@@ -176,20 +177,20 @@ dfm_weight.dfm <- function(
         } else if (scheme == "logcount") {
             x@x <- 1 + log(x@x, base)
             x@x[is.infinite(x@x)] <- 0
-            x@weightTf[["base"]] <- base
+            field_object(attrs, "weight_tf")$base <- base
 
         } else if (scheme == "augmented") {
             maxtf <- maxtf(x)
             x@x <- K + (1 - K) * x@x / maxtf[x@i + 1]
-            x@weightTf[["K"]] <- K
+            field_object(attrs, "weight_tf")$K <- K
 
         } else if (scheme == "logave") {
             meantf <- Matrix::rowSums(x) / Matrix::rowSums(dfm_weight(x, "boolean"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i + 1], base))
-            x@weightTf[["base"]] <- base
+            field_object(attrs, "weight_tf")$base <- base
         } 
-        
-        x@weightTf[["scheme"]] <- scheme
+        field_object(attrs, "weight_tf")$scheme <- scheme
+        set_attrs(x) <- attrs
         return(x)
     }
 }
@@ -221,8 +222,10 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 dfm_smooth.dfm <- function(x, smoothing = 1) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    x@smooth <- x@smooth + smoothing
-    x + smoothing
+    field_object(attrs, "smooth") <- field_object(attrs, "smooth") + smoothing
+    x <- x + smoothing
+    set_attrs(x) <- attrs
+    return(x)
 }
 
 # docfreq -------------
@@ -442,7 +445,8 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     slots <- get_dfm_slots(x)
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-
+    attrs <- attributes(x)
+    
     args <- list(...)
     check_dots(args, names(formals(docfreq)))
 
@@ -458,9 +462,8 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     x@x <- tfreq@x * dfreq[j]
 
     # record attributes
-    slots$weightTf <- tfreq@weightTf
-    slots$weightDf <- c(list(scheme = scheme_df, base = base), args)
-    set_dfm_slots(x) <- slots
+    field_object(attrs, "weight_df") <- c(list(scheme = scheme_df, base = base), args)
+    set_attrs(x) <- attrs
     return(x)
 }
 
