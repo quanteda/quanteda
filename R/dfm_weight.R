@@ -152,12 +152,13 @@ dfm_weight.dfm <- function(
         if (k < 0 || k > 1.0)
             stop("k must be in the [0, 1] interval")
 
-        if (!force && 
-            field_object(attrs, "weight_tf")$scheme != "count" || 
-            field_object(attrs, "weight_df")$scheme != "unary") {
-            stop("will not weight a dfm already term-weighted as '",
-                 field_object(attrs, "weight_tf")$scheme, "'; use force = TRUE to override",
-                 call. = FALSE)
+        if (!force) {
+            if (field_object(attrs, "weight_tf")$scheme != "count" || 
+                field_object(attrs, "weight_df")$scheme != "unary") {
+                stop("will not weight a dfm already term-weighted as '",
+                     field_object(attrs, "weight_tf")$scheme, "'; use force = TRUE to override",
+                     call. = FALSE)
+            }
         }
 
         if (scheme == "count") {

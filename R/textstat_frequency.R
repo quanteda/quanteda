@@ -91,22 +91,28 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
                                ...) {
     group <- frequency <- NULL
     ties_method <- match.arg(ties_method)
-    
     x <- as.dfm(x)
     
     if (!sum(x)) 
         stop(message_error("dfm_empty"))
-    if (is.null(groups)) 
+    
+    if (is.null(groups))
         groups <- rep("all", ndoc(x))
+        
+    tf <- x
+    tf <- dfm_group(tf, groups, ...)
+    tf <- as(tf, "dgTMatrix")
     
-    x <- compile_dfm(x, featnames(x))
-    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups, ...)@x
+    df <- dfm_weight(x, "boolean", force = TRUE)
+    df <- dfm_group(df, groups, ...)
+    df <- as(df, "dgTMatrix")
     
-    x <- as(dfm_group(x, groups, ...), "dgTMatrix")
-    result <- data.table(feature = colnames(x)[x@j + 1],
-                       frequency = x@x,
-                       docfreq = docfreq,
-                       group = rownames(x)[x@i + 1])
+    result <- data.table(
+        feature = colnames(tf)[tf@j + 1L],
+        frequency = tf@x,
+        docfreq = df@x,
+        group = rownames(tf)[tf@i + 1L]
+    )
 
     # get the frequency rank
     result[, rank := frank(-frequency, ties.method = ties_method), by = group]
