@@ -6,23 +6,25 @@
 #' @param meta list for meta fields
 #' @param ... added to object meta fields  
 #' @keywords internal
-compile_dfm <- function(x, features,
+build_dfm <- function(x, features,
                         docvars = data.frame(), meta = list(), ...) {
-    new("dfm", 
+    result <- new("dfm", 
         as(x, "dgCMatrix"),
-        Dimnames = list(
-              docs = as.character(docvars[["docname_"]]), 
-              features = as.character(features)
-        ),
         docvars = docvars,
         meta = make_meta("dfm", inherit = meta, ...)
     )
+    # set names directly to avoid NULL
+    result@Dimnames <- list(
+        docs = as.character(docvars[["docname_"]]), 
+        features = as.character(features)
+    )
+    return(result)
 }
 
 #' @rdname object-compiler
 #' @param types character for types of resulting `tokens`` object
 #' @param padding logical indicating if the `tokens` object contains paddings
-compile_tokens <- function(x, types, padding = FALSE,
+build_tokens <- function(x, types, padding = FALSE,
                            docvars = data.frame(), meta = list(), ...) {
     attributes(x) <- NULL
     structure(x,
@@ -35,7 +37,7 @@ compile_tokens <- function(x, types, padding = FALSE,
 }
 
 #' @rdname object-compiler
-compile_corpus <- function(x, 
+build_corpus <- function(x, 
                            docvars = data.frame(), 
                            meta = list(), ...) {
     attributes(x) <- NULL
@@ -50,7 +52,7 @@ compile_corpus <- function(x,
 upgrade_dfm <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
-    compile_dfm(
+    build_dfm(
         x, colnames(x),
         docvars = upgrade_docvars(attrs$docvars, rownames(x)),
         meta = list(system = list(),
@@ -73,7 +75,7 @@ upgrade_tokens <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
     x <- unclass(x)
-    compile_tokens(
+    build_tokens(
         x, attrs[["types"]],
         padding = attrs[["padding"]],
         docvars = upgrade_docvars(attr(x, "docvars"), names(x)),
@@ -93,38 +95,27 @@ upgrade_tokens <- function(x) {
 
 upgrade_corpus <- function(x) {
     if (!is_pre2(x)) return(x)
+    attrs <- attributes(x)
     x <- unclass(x)
     if ("documents" %in% names(x)) {
         if ("settings" %in% names(x)) {
             unit <- x[["settings"]][["units"]]
-            x[["settings"]][["unit"]] <- NULL
         } else {
             unit <- "documents"
         }
-        
-        if ("metadata" %in% names(x)) {
-            created <- as.POSIXct(
-                x[["metadata"]][["created"]],
-                format = "%a %b %d %H:%M:%S %Y"
-            )
-            x[["metadata"]][["created"]] <- NULL
-        } else {
-            created <- Sys.Date()
-        }
         meta_user <- x[["metadata"]]
-        compile_corpus(
+        build_corpus(
             x[["documents"]][["texts"]], 
             docvars = upgrade_docvars(x[["documents"]]),
-            meta = list(system = list(created = created),
+            meta = list(system = list(),
                         object = list(unit = unit),
                         user = meta_user[!sapply(meta_user, is.null)])
         )
     } else {
-        attrs <- attributes(x)
-        compile_corpus(
+        build_corpus(
             x, 
             docvars = attrs[["docvars"]],
-            meta = list(system = attrs[["meta"]][["system"]],
+            meta = list(system = list(),
                         object = list(unit = attrs[["unit"]]),
                         user = attrs[["meta"]][["user"]])
         )
