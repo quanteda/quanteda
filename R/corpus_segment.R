@@ -129,19 +129,20 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
     
-    if (!use_docvars) {
-        docvars <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
+    if (use_docvars) {
+        docvars <- select_docvars(attrs[["docvars"]], user = TRUE, system = TRUE)
     } else {
-        docvars <- attrs[["docvars"]]
+        docvars <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
     }
-    docvars <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
+    docvars <- reshape_docvars(docvars, temp[["docnum"]])
     if (extract_pattern) 
         docvars[["pattern"]] <- temp[["pattern"]]
     
     compile_corpus(
-        temp[["text"]], "corpus", 
+        temp[["text"]], 
         unit = "segments",
-        docvars = docvars, meta = meta(x, type = "all")
+        docvars = docvars, 
+        meta = get_meta(x)
     )
 }
 
