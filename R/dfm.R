@@ -296,11 +296,12 @@ dfm.tokens <- function(x,
                           x = 1L,
                           dims = c(length(x), 
                                    length(type)))
-    compile_dfm(temp, 
-                source = "tokens", 
-                feature = type,
-                docvars = get_docvars(x, user = TRUE, system = TRUE),
-                meta = meta(x, type = "all"))
+    compile_dfm(
+        temp, 
+        feature = type,
+        meta = get_meta(x),
+        docvars = get_docvars(x, user = TRUE, system = TRUE)
+    )
 }
 
 
@@ -324,6 +325,7 @@ dfm.dfm <- function(x,
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
     check_dots(list(...))
+    attrs <- attributes(x)
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")
@@ -346,10 +348,11 @@ dfm.dfm <- function(x,
         if (verbose) catm("   ... ")
         # if ngrams > 1 and remove or selct is specified, then convert these
         # into a regex that will remove any ngram containing one of the words
-        if (!identical(x@ngrams, 1L)) {
-            remove <- make_ngram_pattern(remove, valuetype, x@concatenator)
-            valuetype <- "regex"
-        }
+        # if (!identical(field_object(attrs, "ngram"), 1L)) {
+        #     remove <- make_ngram_pattern(remove, valuetype, 
+        #                                  field_object(attrs, "concatenator"))
+        #     valuetype <- "regex"
+        # }
         x <- dfm_select(x,
                         pattern = if (!is.null(remove)) remove else select,
                         selection = if (!is.null(remove)) "remove" else "keep",
@@ -417,17 +420,18 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-    result <- new("dfm", temp, 
-                  docvars = make_docvars(n = 0L))
-    set_dfm_dimnames(result) <- list(document, feature)
-    return(result)
+    compile_dfm(temp, feature,
+                docvars = make_docvars(length(document), document))
+
 }
 
 # pad dfm with zero-count features
 pad_dfm <- function(x, feature) {
     feat_pad <- setdiff(feature, featnames(x))
     if (length(feat_pad)) {
-        x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
+        suppressWarnings(
+            x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
+        )
     }
     x <- x[, feature]
     return(x)
