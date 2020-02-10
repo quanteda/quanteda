@@ -41,7 +41,7 @@ setClass("dfm",
                           # concatenator = "_",
                           # version = unlist(utils::packageVersion("quanteda")),
                           docvars = data.frame(row.names = integer()),
-                          meta = list(system = list(), user = list())),
+                          meta = list(system = list(), object = list(), user = list())),
          contains = "dgCMatrix")
 
 
@@ -90,22 +90,22 @@ setMethod("rowMeans",
 setMethod("Arith", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, get_dfm_slots(e1)),
-                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, get_dfm_slots(e1)),
-                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, get_dfm_slots(e1)),
-                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, get_dfm_slots(e1)),
-                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, get_dfm_slots(e1))
+                     `+` = matrix2dfm(as(e1, "dgCMatrix") + e2, e1@docvars, e1@meta),
+                     `-` = matrix2dfm(as(e1, "dgCMatrix") - e2, e1@docvars, e1@meta),
+                     `*` = matrix2dfm(as(e1, "dgCMatrix") * e2, e1@docvars, e1@meta),
+                     `/` = matrix2dfm(as(e1, "dgCMatrix") / e2, e1@docvars, e1@meta),
+                     `^` = matrix2dfm(as(e1, "dgCMatrix") ^ e2, e1@docvars, e1@meta)
               )
           })
 #' @rdname dfm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), get_dfm_slots(e2)),
-                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), get_dfm_slots(e2)),
-                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), get_dfm_slots(e2)),
-                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), get_dfm_slots(e2)),
-                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), get_dfm_slots(e2))
+                     `+` = matrix2dfm(e1 + as(e2, "dgCMatrix"), e2@docvars, e2@meta),
+                     `-` = matrix2dfm(e1 - as(e2, "dgCMatrix"), e2@docvars, e2@meta),
+                     `*` = matrix2dfm(e1 * as(e2, "dgCMatrix"), e2@docvars, e2@meta),
+                     `/` = matrix2dfm(e1 / as(e2, "dgCMatrix"), e2@docvars, e2@meta),
+                     `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), e2@docvars, e2@meta)
               )
           })
 
@@ -193,46 +193,46 @@ cbind.dfm <- function(...) {
     
     x <- args[[1]]
     y <- args[[2]]
-
+    
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
         x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), 
-                           dimnames = list(docs = docnames(y), features = names[1])))
+                           dimnames = list(docs = docnames(y), 
+                                           features = names[1])))
     }
 
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
         y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), 
-                           dimnames = list(docs = docnames(x), features = names[2])))
+                           dimnames = list(docs = docnames(x), 
+                                           features = names[2])))
     }
-    
+
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
     if (!nfeat(y)) return(x)
     if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
+
+    # only issue warning if these did not come from added feature names
+    if (length(intersect(colnames(x), colnames(y))))
+        warning("cbinding dfms with overlapping features", 
+                call. = FALSE)
     
-    result <-  new("dfm", Matrix::cbind2(x, y))
+    attrs <- attributes(x)
+    result <- compile_dfm(
+        Matrix::cbind2(x, y),
+        features = c(colnames(x), colnames(y)),
+        docvars = attrs[["docvars"]],
+        meta = attrs[["meta"]]
+    )
+    
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- cbind(result, args[[i]])
         }
     }
-    
-    # make any added feature names unique
-    # i_added <- stri_startswith_fixed(colnames(result), 
-    #                                  quanteda_options("base_featname"))
-    # colnames(result)[i_added] <- 
-    #     make.unique(colnames(result)[i_added], sep = "")
-    
-    # only issue warning if these did not come from added feature names
-    if (any(duplicated(colnames(result))))
-        warning("cbinding dfms with overlapping features will result in duplicated features", 
-                noBreaks. = TRUE, call. = FALSE)
-    set_dfm_slots(result) <- attributes(x)
-    set_dfm_dimnames(result) <- dimnames(result)
-    result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 
 }
@@ -261,24 +261,22 @@ rbind.dfm <- function(...) {
 
     x <- args[[1]]
     y <- args[[2]]
-    slots <- get_dfm_slots(x)
 
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
-    if (!ndoc(y)) return(x)
+
+    attrs <- attributes(x)
+    featname <- union(featnames(x), featnames(y))
+    result <- compile_dfm(
+        Matrix::rbind2(pad_dfm(x, featname), pad_dfm(y, featname)),
+        features = featname,
+        docvars = make_docvars(nrow(x) + nrow(y), c(docnames(x), docnames(y)), unique = FALSE),
+        meta = attrs[["meta"]]
+    )
     
-    if (identical(featnames(x), featnames(y))) {
-        result <- new("dfm", Matrix::rbind2(x, y))
-    } else {
-        featname <- union(featnames(x), featnames(y))
-        result <- new("dfm", Matrix::rbind2(pad_dfm(x, featname), pad_dfm(y, featname)))
-    }
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- rbind(result, args[[i]])
         }
     }
-    set_dfm_slots(result) <- slots
-    set_dfm_dimnames(result) <- dimnames(result)
-    result@docvars <- make_docvars(nrow(result), rownames(result))
     return(result)
 }
