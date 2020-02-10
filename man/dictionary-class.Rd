@@ -49,8 +49,6 @@ consisting of a pattern match}
 values}
 
 \item{\code{meta}}{list of object metadata}
-
-\item{\code{valuetype}}{character; one of \link{valuetype}}
 }}
 
 \keyword{dictionary}

@@ -12,13 +12,10 @@
 #' @slot concatenator character object specifying space between multi-word
 #'   values
 #' @slot meta list of object metadata
-#' @slot valuetype character; one of [valuetype] 
 setClass("dictionary2", contains = "list",
          slots = c(concatenator = "character",
-                   meta = "list",
-                   valuetype = "character"),
+                   meta = "list"),
          prototype = prototype(concatenator = " ",
-                               valuetype = "glob",
                                meta = list("system" = meta_system_defaults("list"),
                                            "user" = NULL))
 )
@@ -42,9 +39,6 @@ validate_dictionary <- function(dict) {
     }
     if (is.null(dict@concatenator) || dict@concatenator == "") {
         stop("Concatenator cannot be null or an empty string")
-    }
-    if (! dict@valuetype %in% c("glob", "regex", "fixed")) {
-        stop("valuetype myst be one of 'glob', 'regex', or 'fixed'")
     }
     check_entries(dict)
 }

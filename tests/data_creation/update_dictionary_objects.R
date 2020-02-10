@@ -10,6 +10,7 @@ Please cite this article when using the Lexicoder Sentiment Dictionary and relat
 ',
          source = "Young, L. & Soroka, S. (2012). Affective News: The Automated Coding of Sentiment in Political Texts. Political Communication, 29(2), 205–231.",
          url = "http://lexicoder.com",
-         license = "The LSD is available for non-commercial academic purposes only. By using data_dictionary_LSD2015, you accept these terms.  Please cite the references below when using the dictionary."
+         license = "The LSD is available for non-commercial academic purposes only. By using data_dictionary_LSD2015, you accept these terms.  Please cite the references below when using the dictionary.",
+         keywords = c("political", "news", "sentiment", "media")
     )
 usethis::use_data(data_dictionary_LSD2015, overwrite = TRUE)         
