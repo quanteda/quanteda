@@ -33,7 +33,7 @@ meta.default <- function(x, field = NULL, type = c("user", "object", "system", "
 
 #' @export
 meta.corpus <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
-    if (is_pre2(x)) 
+    if (is_pre2(x) && "metadata" %in% names(x))
         return(x[["metadata"]])
     type <- match.arg(type)
     result <- list()
@@ -231,6 +231,8 @@ make_meta <- function(class, inherit = NULL, ...) {
         "object" = list(),
         "user" = list()
     )
+    if ("system" %in% names(inherit))
+        result$system <- inherit$system
     if (class == "corpus") {
         result$object <- make_meta_corpus(inherit$object, ...)
     } else if (class == "tokens") {
@@ -238,9 +240,8 @@ make_meta <- function(class, inherit = NULL, ...) {
     } else if (class == "dfm") {
         result$object <- make_meta_dfm(inherit$object, ...)
     }
-    if ("user" %in% names(inherit)) {
+    if ("user" %in% names(inherit))
         result$user <- inherit$user
-    }
     # comming soon...
     # else if (class == "dictionary2") {
     #   make_meta_dictionary2(inherit, ...)
@@ -277,7 +278,7 @@ make_meta_dfm <- function(inherit = NULL, ...) {
         "ngram" = 1L,
         "skip" = 0L,
         "concatenator" = "_",
-        "weight_tf" = list(scheme = "count", base = NULL, K = NULL), # TODO: lower-case k
+        "weight_tf" = list(scheme = "count", base = NULL, k = NULL),
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
                            smoothing = NULL, threshold = NULL),
         "smooth" = 0
