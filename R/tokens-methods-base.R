@@ -97,6 +97,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i) {
     
+    if (missing(i)) return(x)
     x <- as.tokens(x)
     attrs <- attributes(x)
     
@@ -105,10 +106,13 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     index <- index[i]
     if (any(is.na(index)))
         stop("Subscript out of bounds")
-    x <- unclass(x)[index]
-    attrs$docvars <- subset_docvars(attrs$docvars, index)
-    attrs$names <- attrs$docvars[["docname_"]]
-    attributes(x) <- attrs
+    
+    x <- compile_tokens(
+        unclass(x)[index], 
+        attrs[["types"]], 
+        docvars = subset_docvars(attrs[["docvars"]], index),
+        meta = attrs[["meta"]]
+    )
     tokens_recompile(x)
 }
 
@@ -180,12 +184,11 @@ lengths.tokens <- function(x, use.names = TRUE) {
                  length(attrs1[["types"]])) # shift non-zero IDs
     result <- compile_tokens(
         c(t1, t2), 
-        source = "tokens",
         types = c(attrs1[["types"]], attrs2[["types"]]),
         what = field_object(attrs1, "what"),
-        ngrams = sort(unique(c(
-            field_object(attrs1, "ngrams"), 
-            field_object(attrs2, "ngrams")))
+        ngram = sort(unique(c(
+            field_object(attrs1, "ngram"), 
+            field_object(attrs2, "ngram")))
             ),
         skip = sort(unique(c(
             field_object(attrs1, "skip"), 
