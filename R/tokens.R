@@ -188,9 +188,10 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     } else {
         docvars <- get_docvars(x, user = FALSE, system = TRUE)
     }
-    result <- tokenize(texts(x), source = "corpus", 
+    result <- tokenize(texts(x), 
                        docvars = docvars, 
-                       meta = meta(x, type = "all"), ...)
+                       meta = get_meta(x), ...)
+    # TODO: move comiple_tokens to here
     return(result)
 }
 
@@ -366,7 +367,6 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- serialize_tokens(x)
     compile_tokens(
         x, 
-        source = "list",
         types = attr(x, "types"), 
         concatenator = concatenator,
         docvars = make_docvars(length(x), names(x))
@@ -376,21 +376,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
-    if (is_pre2(x)) {
-        x <- compile_tokens(
-            x, "tokens", 
-            types = attr(x, "types"),
-            padding = attr(x, "padding"),
-            ngrams = as.integer(attr(x, "ngrams")), 
-            skip = as.integer(attr(x, "skip")),
-            what = attr(x, "what"),
-            concatenator = attr(x, "concatenator"),
-            unit = attr(x, "unit"),
-            source = "tokens",
-            docvars = upgrade_docvars(attr(x, "docvars"), names(x))
-        )
-    }
-    return(x)
+    upgrade_tokens(x)
 }
 
 #' @rdname as.tokens
@@ -493,15 +479,13 @@ tokenize <- function(x,
     
     x <- compile_tokens(
             unlist(x, recursive = FALSE), 
-            source = "corpus", 
             types = attr(x[[length(x)]], "types"),
-            unit = "documents",
             what = what, 
-            ngrams = ngrams, 
+            ngram = ngrams, 
             skip = skip,
             concatenator = concatenator,
-            meta = meta, 
-            docvars = docvars
+            docvars = docvars,
+            meta = meta
     )
 
     if (what %in% c("word", "fasterword", "fastestword")) {
