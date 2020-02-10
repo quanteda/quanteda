@@ -214,25 +214,35 @@ meta_system <- function(x, field = NULL)
 #'   values, with the user setting the "source" value.  This should be used
 #'   to set initial system meta information.
 meta_system_defaults <- function() {
-    list("package-version" = utils::packageVersion("quanteda"),
-         "r-version" = getRversion(),
-         "system" = Sys.info()[c("sysname", "machine", "user")],
-         "directory" = getwd(),
-         "created" = Sys.Date()
-    )
+   list("package-version" = utils::packageVersion("quanteda"),
+        "r-version" = getRversion(),
+        "system" = Sys.info()[c("sysname", "machine", "user")],
+        "directory" = getwd(),
+        "created" = Sys.Date()
+   )
 }
 
-make_meta_system <- meta_system_defaults # for development
+# newer version of meta_system_defaults
+make_meta_system <- function(inherit = NULL) {
+    default <- list(
+        "package-version" = utils::packageVersion("quanteda"),
+        "r-version" = getRversion(),
+        "system" = Sys.info()[c("sysname", "machine", "user")],
+        "directory" = getwd(),
+        "created" = Sys.Date()
+    )
+    update_meta(default, inherit)
+}
 
 make_meta <- function(class, inherit = NULL, ...) {
     
     result <- list(
-        "system" = make_meta_system(),
+        "system" = list(),
         "object" = list(),
         "user" = list()
     )
     if ("system" %in% names(inherit))
-        result$system <- inherit$system
+        result$system <- make_meta_system(inherit$system)
     if (class == "corpus") {
         result$object <- make_meta_corpus(inherit$object, ...)
     } else if (class == "tokens") {
