@@ -116,14 +116,15 @@ dfm_trim.dfm <- function(x,
     
     termfreq_type <- match.arg(termfreq_type)
     docfreq_type <- match.arg(docfreq_type)
+    attrs <- attributes(x)
     
     # warning if already fractional
     if ((!is.null(min_termfreq) || !is.null(max_termfreq)) &&
-        x@weightTf$scheme != "count" || x@weightDf$scheme != "unary") {
+        field_object(attrs, "weight_tf")$scheme != "count" || field_object(attrs, "weight_df")$scheme != "unary") {
         warning("dfm has been previously weighted")
     }
     # warning for fractional term frequency
-    if (x@weightTf$scheme == "count" && termfreq_type == "count") {
+    if (field_object(attrs, "weight_tf")$scheme == "count" && termfreq_type == "count") {
         if (!is.null(max_termfreq) && max_termfreq < 1)
             warning("use termfreq_type = 'prop' for fractional term frequency")
         if (!is.null(min_termfreq) && min_termfreq < 1)
