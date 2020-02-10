@@ -172,7 +172,6 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     }
     result <- compile_corpus(
         x, 
-        source = "character",
         unit = unit,
         docvars = docvar,
         meta = list("user" = meta)
