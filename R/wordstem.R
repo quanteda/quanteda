@@ -106,7 +106,9 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
     if (identical(field_object(attrs, "ngrams"), 1L)) {
         set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language)
     } else {
-        set_dfm_featnames(x) <- wordstem_ngrams(featnames(x), x@concatenator, language)
+        set_dfm_featnames(x) <- wordstem_ngrams(featnames(x), 
+                                                field_object(attrs, "concatenator"), 
+                                                language)
     }
     dfm_compress(x, margin = "features")
 }

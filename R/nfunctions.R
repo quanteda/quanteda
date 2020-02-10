@@ -230,7 +230,8 @@ nsentence.corpus <- function(x, ...) {
 #' @export
 nsentence.tokens <- function(x, ...) {
     x <- as.tokens(x)
-    if (attr(x, "what") != "sentence")
+    attrs <- attributes(x)
+    if (field_object(attrs, "what") != "sentence")
         stop("nsentence on a tokens object only works if what = \"sentence\"")
     return(lengths(x))
 }
