@@ -41,7 +41,6 @@ Imports:
     magrittr,
     Matrix (>= 1.2),
     network,
-    RSpectra,
     Rcpp (>= 0.12.12),
     RcppParallel,
     sna,
@@ -53,17 +52,19 @@ Imports:
     yaml,
     proxyC (>= 0.1.4)
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
+Remotes:
+    quanteda/quanteda.textmodels
 Suggests:
-    ca,
     dplyr,     
     DT,
     e1071,
     entropy,
     ExPosition,     
     lda,
-    lsa,     
+    lsa,
     proxy,
     purrr,
+    quanteda.textmodels,
     RColorBrewer,
     rmarkdown,
     slam,
