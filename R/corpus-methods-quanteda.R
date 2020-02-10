@@ -123,9 +123,7 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    if (is_pre2(x))
-        x <- upgrade_corpus(x)
-    return(x)
+    upgrade_corpus(x)
 }
 
 #' @export
@@ -139,46 +137,4 @@ as.corpus.corpuszip <- function(x) {
     # drop internal variables
     flag <- is_system(names(x$documents))
     corpus(txt, x$docnames, docvars = x$documents[!flag])
-}
-
-# Internal function to convert corpus from data.frame character vector-based
-# stracture
-upgrade_corpus <- function(x) {
-    if (!is_pre2(x)) return(x)
-    if ("documents" %in% names(x)) {
-        x <- unclass(x)
-        meta_old <- x[["metadata"]]
-        result <- corpus(x[["documents"]], text_field = "texts")
-        
-        attrs <- attributes(result)
-        attrs[["docvars"]] <-  upgrade_docvars(x[["documents"]])
-        if ("unit" %in% names(x[["settings"]])) {
-            field_object(attrs, "unit") <- x[["settings"]][["unit"]]
-        } else {
-            field_object(attrs, "unit") <- "documents"
-        }
-    
-        if ("created" %in% names(meta_old)) {
-            field_system(attrs, "created") <- as.POSIXct(
-                meta_old[["created"]],
-                format = "%a %b %d %H:%M:%S %Y"
-            )
-            meta_old[["created"]] <- NULL
-        } else {
-            field_system(attrs, "created") <- Sys.time()
-        }
-    
-        # remove any null metadata fields
-        field_user(attrs) <- meta_old[sapply(meta_old, function(y) !is.null(y))]
-        attributes(result) <- attrs
-    } else {
-        result <- x
-        if (!is.null(attr(result, "unit"))) {
-            attrs <- attributes(result)
-            field_object(attrs, "unit") <- attrs[["unit"]]
-            attrs[["unit"]] <- NULL
-            attributes(result) <- attrs
-        }
-    }
-    return(result)
 }
