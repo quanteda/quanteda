@@ -47,12 +47,12 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
 
     # exclude based on lengths
     length <- ntoken(temp, remove_punct = TRUE)
-    temp <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
+    result <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
     
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        is_pattern <- stri_detect_regex(texts(temp), exclude_pattern)
-        result <- corpus_subset(temp, !is_pattern)
+        is_pattern <- stri_detect_regex(texts(result), exclude_pattern)
+        result <- corpus_subset(result, !is_pattern)
     }
     if (what != "documents")
         result <- corpus_reshape(result, to = "documents")
