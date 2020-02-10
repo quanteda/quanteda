@@ -75,8 +75,9 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         }
     }
     compile_corpus(
-        temp[["text"]], "corpus", 
+        temp[["text"]], 
         unit = unit,
-        docvars = docvars, meta = meta(x, type = "all")
+        docvars = docvars, 
+        meta = get_meta(x)
     )
 }
