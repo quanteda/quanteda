@@ -14,7 +14,7 @@
 #'   given base, or 0 if the count was zero: \eqn{1 +
 #'   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
 #'   \item{`boolean`}{recode all non-zero counts as 1}
-#'   \item{`augmented`}{equivalent to \eqn{K + (1 - K) *} `dfm_weight(x,
+#'   \item{`augmented`}{equivalent to \eqn{k + (1 - k) *} `dfm_weight(x,
 #'   "propmax")`}
 #'   \item{`logave`}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
 #'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
@@ -27,7 +27,7 @@
 #'   (meaning they will be unchanged).
 #' @param base base for the logarithm when `scheme` is `"logcount"` or 
 #'   `logave`
-#' @param K the K for the augmentation when `scheme = "augmented"`
+#' @param k the k for the augmentation when `scheme = "augmented"`
 #' @param force logical; if `TRUE`, apply weighting scheme even if the dfm
 #'   has been weighted before.  This can result in invalid weights, such as as
 #'   weighting by `"prop"` after applying `"logcount"`, or after
@@ -69,7 +69,7 @@ dfm_weight <- function(
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
     weights = NULL,
     base = 10,
-    K = 0.5,
+    k = 0.5,
     force = FALSE) {
     UseMethod("dfm_weight")
 }
@@ -80,7 +80,7 @@ dfm_weight.default <- function(
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
     weights = NULL,
     base = 10,
-    K = 0.5,
+    k = 0.5,
     force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_weight"))
 }
@@ -91,7 +91,7 @@ dfm_weight.dfm <- function(
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
     weights = NULL,
     base = 10,
-    K = 0.5,
+    k = 0.5,
     force = FALSE) {
 
     # traps for deprecated scheme values
@@ -147,13 +147,13 @@ dfm_weight.dfm <- function(
         scheme <- match.arg(scheme)
         args <- as.list(match.call(expand.dots = FALSE))
 
-        if ("K" %in% names(args) && scheme != "augmented")
-            warning("K not used for this scheme")
-        if (K < 0 || K > 1.0)
-            stop("K must be in the [0, 1] interval")
+        if ("k" %in% names(args) && scheme != "augmented")
+            warning("k not used for this scheme")
+        if (k < 0 || k > 1.0)
+            stop("k must be in the [0, 1] interval")
 
         if (!force && 
-            field_object(attrs, "weight_tf")$scheme != "count" && 
+            field_object(attrs, "weight_tf")$scheme != "count" || 
             field_object(attrs, "weight_df")$scheme != "unary") {
             stop("will not weight a dfm already term-weighted as '",
                  field_object(attrs, "weight_tf")$scheme, "'; use force = TRUE to override",
@@ -181,8 +181,8 @@ dfm_weight.dfm <- function(
 
         } else if (scheme == "augmented") {
             maxtf <- maxtf(x)
-            x@x <- K + (1 - K) * x@x / maxtf[x@i + 1]
-            field_object(attrs, "weight_tf")$K <- K
+            x@x <- k + (1 - k) * x@x / maxtf[x@i + 1]
+            field_object(attrs, "weight_tf")$k <- k
 
         } else if (scheme == "logave") {
             meantf <- Matrix::rowSums(x) / Matrix::rowSums(dfm_weight(x, "boolean"))
@@ -222,6 +222,7 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 dfm_smooth.dfm <- function(x, smoothing = 1) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
+    attrs <- attributes(x)
     field_object(attrs, "smooth") <- field_object(attrs, "smooth") + smoothing
     x <- x + smoothing
     set_attrs(x) <- attrs
@@ -386,8 +387,7 @@ featfreq.dfm <- function(x) {
 #'   through the ellipsis (`...`).
 #' @param base the base for the logarithms in the [dfm_weight()] and
 #'   [docfreq()] calls; default is 10
-#' @inheritParams dfm_weight
-#' @param ... additional arguments passed to [docfreq()].
+#' @inheritParams docfreq
 #' @details `dfm_tfidf` computes term frequency-inverse document frequency
 #'   weighting.  The default is to use counts instead of normalized term
 #'   frequency (the relative term frequency within document), but this
@@ -428,45 +428,35 @@ featfreq.dfm <- function(x) {
 #' @keywords dfm weighting
 #' @export
 dfm_tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                      base = 10, force = FALSE, ...) {
+                      base = 10, k = 0, threashold = 0, force = FALSE) {
     UseMethod("dfm_tfidf")
 }
 
 #' @export
 dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                              base = 10, force = FALSE, ...) {
+                              base = 10, k = 0, threashold = 0, force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_tfidf"))
 }
     
 #' @export
 dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                          base = 10, force = FALSE, ...) {
+                          base = 10, k = 0, threashold = 0, force = FALSE) {
 
-    slots <- get_dfm_slots(x)
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    attrs <- attributes(x)
     
-    args <- list(...)
-    check_dots(args, names(formals(docfreq)))
-
-    dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
-    tfreq <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
-
-    if (nfeat(x) != length(dfreq)) stop("missing some values in idf calculation")
-
-    # get the document indexes
-    j <- as(tfreq, "dgTMatrix")@j + 1
-
-    # replace just the non-zero values by product with idf
-    x@x <- tfreq@x * dfreq[j]
-
-    # record attributes
-    field_object(attrs, "weight_df") <- c(list(scheme = scheme_df, base = base), args)
+    x <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
+    v <- docfreq(x, scheme = scheme_df, base = base)
+    j <- as(x, "dgTMatrix")@j + 1L
+    x@x <- x@x * v[j]
+    attrs <- attributes(x)
+    field_object(attrs, "weight_df") <- list(scheme = scheme_df, 
+                                             base = base, 
+                                             k = k,
+                                             threadhold = threashold)
     set_attrs(x) <- attrs
     return(x)
 }
-
 
 # internal --------------
 
