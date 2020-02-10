@@ -178,10 +178,6 @@ reference:
     - is.collocations
     - is.kwic
     - kwic
-- title: Text model functions
-  desc: Fitting analytic models from text matrixes.
-  contents:
-    - starts_with("textmodel_")
 - title: Text plot functions
   desc: Plot functions for representing text and the analysis of texts.
   contents:

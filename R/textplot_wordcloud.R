@@ -150,6 +150,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param ordered.colors deprecated argument
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
+#' @importFrom graphics text
 #' @keywords internal
 #' @author Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, min_count, max_words, 
