@@ -111,7 +111,7 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     if (identical(n, 1L) && identical(skip, 0L))
         return(x)
     result <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1L)
-    field_object(attrs, "n") <- n
+    field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator
     set_attrs(result) <- attrs
