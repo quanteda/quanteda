@@ -9,8 +9,9 @@ dfm_tfidf(
   scheme_tf = "count",
   scheme_df = "inverse",
   base = 10,
-  force = FALSE,
-  ...
+  k = 0,
+  threashold = 0,
+  force = FALSE
 )
 }
 \arguments{
@@ -26,12 +27,13 @@ through the ellipsis (\code{...}).}
 \item{base}{the base for the logarithms in the \code{\link[=dfm_weight]{dfm_weight()}} and
 \code{\link[=docfreq]{docfreq()}} calls; default is 10}
 
+\item{k}{added to the denominator in the "inverse" weighting types, to
+prevent a zero document count for a term}
+
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
 weighting by \code{"prop"} after applying \code{"logcount"}, or after
 having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
-
-\item{...}{additional arguments passed to \code{\link[=docfreq]{docfreq()}}.}
 }
 \description{
 Weight a dfm by term frequency-inverse document frequency (\emph{tf-idf}),

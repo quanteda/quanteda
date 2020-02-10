@@ -10,7 +10,7 @@ dfm_weight(
   scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
   weights = NULL,
   base = 10,
-  K = 0.5,
+  k = 0.5,
   force = FALSE
 )
 
@@ -30,7 +30,7 @@ feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
 given base, or 0 if the count was zero: \eqn{1 +
   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
 \item{\code{boolean}}{recode all non-zero counts as 1}
-\item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x, "propmax")}}
+\item{\code{augmented}}{equivalent to \eqn{k + (1 - k) *} \code{dfm_weight(x, "propmax")}}
 \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
 \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 }}
@@ -45,7 +45,7 @@ named features.  Any features not named will be assigned a weight of 1.0
 \item{base}{base for the logarithm when \code{scheme} is \code{"logcount"} or
 \code{logave}}
 
-\item{K}{the K for the augmentation when \code{scheme = "augmented"}}
+\item{k}{the k for the augmentation when \code{scheme = "augmented"}}
 
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
