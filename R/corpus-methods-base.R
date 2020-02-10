@@ -206,7 +206,6 @@ tail.corpus <- function(x, n = 6L, ...) {
                           get_docvars(c2, user = TRUE, system = TRUE))
     compile_corpus(
         c(as.character(c1), as.character(c2)), 
-        source = "corpus",
         unit = field_object(attrs1, "unit"),
         docvars = docvars,
         meta = field_user(attrs1)
@@ -254,6 +253,8 @@ c.corpus <- function(..., recursive = FALSE) {
 #' # return the text itself
 #' data_corpus_inaugural[["1793-Washington"]]
 `[.corpus` <- function(x, i) {
+    
+    if (missing(i)) return(x)
     x <- as.corpus(x)
     attrs <- attributes(x)
     
@@ -262,9 +263,10 @@ c.corpus <- function(..., recursive = FALSE) {
     index <- index[i]
     if (any(is.na(index)))
         stop("Subscript out of bounds")
-    x <- unclass(x)[index]
-    attrs$docvars <- subset_docvars(attrs$docvars, index)
-    attrs$names <- attrs$docvars[["docname_"]]
-    attributes(x) <- attrs
-    return(x)
+    
+    compile_corpus(
+        unclass(x)[index], 
+        docvars = subset_docvars(attrs[["docvars"]], index), 
+        meta = attrs[["meta"]]
+    )
 }
