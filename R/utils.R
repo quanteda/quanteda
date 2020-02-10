@@ -77,13 +77,17 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 
 "set_attrs<-" <- function(x, value) {
     if (isS4(x)) {
-        #x@Dimnames[[1]] <- value[["Dimnames"]][[1]]
         x@meta <- value[["meta"]]
         x@docvars <- value[["docvars"]]
+        x@Dimnames[[1]] <- value[["docvars"]][["docname_"]]
     } else {
-        attr(x, "names") <- value[["names"]]
         attr(x, "meta") <- value[["meta"]]
         attr(x, "docvars") <- value[["docvars"]]
+        attr(x, "names") <- value[["docvars"]][["docname_"]]
+        
+        # drop extra attribues for tokens_segment
+        try({attr(x, "docnum") <- NULL}, silent = TRUE)
+        try({attr(x, "pattern") <- NULL}, silent = TRUE)
     }
     return(x)
 }
