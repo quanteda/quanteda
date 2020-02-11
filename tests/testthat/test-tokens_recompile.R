@@ -84,12 +84,12 @@ test_that("tokens_recompile: ngrams", {
     )
 
     expect_equal(
-        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$concatenator,
+        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$meta$object$concatenator,
         " "
     )
 
     expect_equal(
-        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$ngrams,
+        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$meta$object$ngram,
         2L:3L
     )
 
@@ -160,10 +160,12 @@ test_that("non-ascii types are UTF8 encoded", {
 
 test_that("keep gap and dupli argument works, #1278", {
     
-    toks <- list(c(2, 3, 4))
-    attr(toks, 'types') <- c('a', 'b', 'c', 'c', 'd')
-    attr(toks, 'class') <- 'tokens'
-    
+    toks <- quanteda:::build_tokens(
+        list(c(2, 3, 4)),
+        c('a', 'b', 'c', 'c', 'd'),
+        docvars = quanteda:::make_docvars(1L)
+    )
+
     toks2 <- quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = TRUE)
     expect_equal(attr(toks2, 'padding'), FALSE)
     expect_equal(attr(toks2, 'types'), c("b", "c"))
@@ -192,9 +194,12 @@ test_that("keep gap and dupli argument works, #1278", {
     expect_equal(quanteda:::tokens_recompile(toks, 'C++', gap = FALSE, dup = FALSE),
                  quanteda:::tokens_recompile(toks, 'R', gap = FALSE, dup = FALSE))
     
-    toks_pad <- list(c(0, 2, 3, 4))
-    attr(toks_pad, 'types') <- c('a', 'b', 'c', 'c', 'd')
-    attr(toks_pad, 'class') <- 'tokens'
+    toks_pad <- quanteda:::build_tokens(
+        list(c(0, 2, 3, 4)),
+        c('a', 'b', 'c', 'c', 'd'),
+        padding = TRUE,
+        docvars = quanteda:::make_docvars(1L)
+    )
     
     toks_pad2 <- quanteda:::tokens_recompile(toks_pad, 'C++', gap = TRUE, dup = TRUE)
     expect_equal(attr(toks_pad2, 'padding'), TRUE)
