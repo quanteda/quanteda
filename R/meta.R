@@ -224,6 +224,8 @@ meta_system_defaults <- function() {
 
 # newer version of meta_system_defaults
 make_meta_system <- function(inherit = NULL) {
+    if (is.null(inherit))
+        inherit <- list()
     default <- list(
         "package-version" = utils::packageVersion("quanteda"),
         "r-version" = getRversion(),
@@ -236,13 +238,18 @@ make_meta_system <- function(inherit = NULL) {
 
 make_meta <- function(class, inherit = NULL, ...) {
     
+    if (is.null(inherit))
+        inherit <- list()
+    
     result <- list(
         "system" = list(),
         "object" = list(),
         "user" = list()
     )
-    if ("system" %in% names(inherit))
+    
+    suppressWarnings({
         result$system <- make_meta_system(inherit$system)
+    })
     if (class == "corpus") {
         result$object <- make_meta_corpus(inherit$object, ...)
     } else if (class == "tokens") {

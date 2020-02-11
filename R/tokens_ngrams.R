@@ -114,8 +114,7 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator
-    set_attrs(result) <- attrs
-    return(result)
+    rebuild(result, attrs)
 }
 
 #' @rdname tokens_ngrams

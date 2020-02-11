@@ -365,7 +365,7 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- lapply(x, stri_trans_nfc)
     x <- serialize_tokens(x)
-    compile_tokens(
+    build_tokens(
         x, 
         types = attr(x, "types"), 
         concatenator = concatenator,
@@ -477,7 +477,7 @@ tokenize <- function(x,
 
     }
     
-    x <- compile_tokens(
+    x <- build_tokens(
             unlist(x, recursive = FALSE), 
             types = attr(x[[length(x)]], "types"),
             what = what, 
@@ -722,46 +722,44 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
-        set_attrs(x) <- attrs
-        return(x)
-    }
-
-    # Check for padding
-    index_unique <- unique(unlist(unclass(x), use.names = FALSE))
-    padding <- (index_unique == 0)
-    attrs$padding <- any(padding) # add padding flag
-    index_unique <- index_unique[!padding] # exclude padding
-
-    if (!gap && !dup) {
-        attributes(x) <- attrs
-        return(x)
-    }
-
-    # Remove gaps in the type index, if any, remap index
-    if (gap) {
-        if (any(is.na(match(seq_len(length(types(x))), index_unique)))) {
-            types_new <- types(x)[index_unique]
-            index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
-            index_unique <- c(0, index_unique) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
-            attributes(x) <- attrs
-            types(x) <- types_new
+        x <- rebuild(x, attrs)
+    } else {
+    
+        # Check for padding
+        index_unique <- unique(unlist(unclass(x), use.names = FALSE))
+        padding <- index_unique == 0
+        attrs[["padding"]] <- any(padding) # add padding flag
+        index_unique <- index_unique[!padding] # exclude padding
+    
+        if (!gap && !dup) return(x)
+    
+        # Remove gaps in the type index, if any, remap index
+        if (gap) {
+            if (any(is.na(match(seq_len(length(types(x))), index_unique)))) {
+                types_new <- types(x)[index_unique]
+                index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
+                index_unique <- c(0, index_unique) # padding index is zero but not in types
+                x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
+                attributes(x) <- attrs
+                types(x) <- types_new
+            }
         }
-    }
-
-    # Reindex duplicates, if any
-    if (dup) {
-        if (any(duplicated(types(x)))) {
-            types <- types(x)
-            types_unique <- unique(types)
-            index_mapping <- match(types, types_unique)
-            index_mapping <- c(0, index_mapping) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-            attributes(x) <- attrs
-            types(x) <- types_unique
+    
+        # Reindex duplicates, if any
+        if (dup) {
+            if (any(duplicated(types(x)))) {
+                types <- types(x)
+                types_unique <- unique(types)
+                index_mapping <- match(types, types_unique)
+                index_mapping <- c(0, index_mapping) # padding index is zero but not in types
+                x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
+                attributes(x) <- attrs
+                types(x) <- types_unique
+            }
         }
+        Encoding(types(x)) <- "UTF-8"
+        x <- rebuild(x, attrs)
     }
-    Encoding(types(x)) <- "UTF-8"
     return(x)
 }
 

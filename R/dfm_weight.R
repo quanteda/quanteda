@@ -191,8 +191,7 @@ dfm_weight.dfm <- function(
             field_object(attrs, "weight_tf")$base <- base
         } 
         field_object(attrs, "weight_tf")$scheme <- scheme
-        set_attrs(x) <- attrs
-        return(x)
+        rebuild(x, attrs)
     }
 }
 
@@ -226,8 +225,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
     attrs <- attributes(x)
     field_object(attrs, "smooth") <- field_object(attrs, "smooth") + smoothing
     x <- x + smoothing
-    set_attrs(x) <- attrs
-    return(x)
+    rebuild(x, attrs)
 }
 
 # docfreq -------------
@@ -456,8 +454,7 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
                                              base = base, 
                                              k = k,
                                              threadhold = threashold)
-    set_attrs(x) <- attrs
-    return(x)
+    rebuild(x, attrs)
 }
 
 # internal --------------

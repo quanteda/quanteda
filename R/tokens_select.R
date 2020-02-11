@@ -177,8 +177,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
     } else {
         result <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
     }
-    set_attrs(result) <- attrs
-    return(result)
+    rebuild(result, attrs)
 }
 
 #' @rdname tokens_select

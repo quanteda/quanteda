@@ -51,5 +51,5 @@ dfm_sample.dfm <- function(x, size = ifelse(margin == "documents", ndoc(x), nfea
             stop("size cannot exceed the number of features (", nfeat(x), ")")
         x <- x[, sample(nfeat(x), size, replace, prob)]
     }
-    x
+    return(x)
 }

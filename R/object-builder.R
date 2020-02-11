@@ -1,5 +1,5 @@
 #' Object compilers
-#' @rdname object-compiler
+#' @rdname object-builder
 #' @param source character that indicating source object
 #' @param feature character for feature of resulting `dfm`
 #' @param docvars data.frame for docment level variables 
@@ -21,7 +21,7 @@ build_dfm <- function(x, features,
     return(result)
 }
 
-#' @rdname object-compiler
+#' @rdname object-builder
 #' @param types character for types of resulting `tokens`` object
 #' @param padding logical indicating if the `tokens` object contains paddings
 build_tokens <- function(x, types, padding = FALSE,
@@ -36,7 +36,7 @@ build_tokens <- function(x, types, padding = FALSE,
               meta = make_meta("tokens", inherit = meta, ...))
 }
 
-#' @rdname object-compiler
+#' @rdname object-builder
 build_corpus <- function(x, 
                            docvars = data.frame(), 
                            meta = list(), ...) {
@@ -122,3 +122,21 @@ upgrade_corpus <- function(x) {
         
     }
 }
+
+rebuild <- function(x, attrs) {
+    if (isS4(x)) {
+        x@meta <- attrs[["meta"]]
+        x@docvars <- attrs[["docvars"]]
+        x@Dimnames[[1]] <- attrs[["docvars"]][["docname_"]]
+    } else {
+        attr(x, "meta") <- attrs[["meta"]]
+        attr(x, "docvars") <- attrs[["docvars"]]
+        attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+        
+        # drop extra attribues for tokens_segment
+        try({attr(x, "docnum") <- NULL}, silent = TRUE)
+        try({attr(x, "pattern") <- NULL}, silent = TRUE)
+    }
+    return(x)
+}
+

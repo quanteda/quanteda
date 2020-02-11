@@ -31,15 +31,6 @@ setClass("dfm",
                    meta = "list"),
          prototype = list(Dim = integer(2), 
                           Dimnames = list(docs = character(), features = character()),
-                          # weightTf = list(scheme = "count", base = NULL, K = NULL),
-                          # weightDf = list(scheme = "unary", base = NULL, c = NULL,
-                          #                 smoothing = NULL, threshold = NULL),
-                          # smooth = 0,
-                          # unit = "documents",
-                          # ngrams = 1L,
-                          # skip = 0L,
-                          # concatenator = "_",
-                          # version = unlist(utils::packageVersion("quanteda")),
                           docvars = data.frame(row.names = integer()),
                           meta = list(system = list(), object = list(), user = list())),
          contains = "dgCMatrix")
@@ -221,7 +212,7 @@ cbind.dfm <- function(...) {
                 call. = FALSE)
     
     attrs <- attributes(x)
-    result <- compile_dfm(
+    result <- build_dfm(
         Matrix::cbind2(x, y),
         features = c(colnames(x), colnames(y)),
         docvars = attrs[["docvars"]],
@@ -266,7 +257,7 @@ rbind.dfm <- function(...) {
 
     attrs <- attributes(x)
     featname <- union(featnames(x), featnames(y))
-    result <- compile_dfm(
+    result <- build_dfm(
         Matrix::rbind2(pad_dfm(x, featname), pad_dfm(y, featname)),
         features = featname,
         docvars = make_docvars(nrow(x) + nrow(y), c(docnames(x), docnames(y)), unique = FALSE),

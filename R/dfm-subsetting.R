@@ -31,7 +31,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
     if (!missing(i))
         attrs[["docvars"]] <- subset_docvars(attrs[["docvars"]], index_row)
     
-    compile_dfm(
+    build_dfm(
         x, colnames(x),
         docvars = attrs[["docvars"]],
         meta = attrs[["meta"]]

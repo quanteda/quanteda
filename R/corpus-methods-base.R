@@ -204,7 +204,7 @@ tail.corpus <- function(x, n = 6L, ...) {
     
     docvars <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
                           get_docvars(c2, user = TRUE, system = TRUE))
-    compile_corpus(
+    build_corpus(
         c(as.character(c1), as.character(c2)), 
         unit = field_object(attrs1, "unit"),
         docvars = docvars,
@@ -264,7 +264,7 @@ c.corpus <- function(..., recursive = FALSE) {
     if (any(is.na(index)))
         stop("Subscript out of bounds")
     
-    compile_corpus(
+    build_corpus(
         unclass(x)[index], 
         docvars = subset_docvars(attrs[["docvars"]], index), 
         meta = attrs[["meta"]]

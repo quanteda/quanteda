@@ -170,13 +170,12 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     } else {
         unit <- "documents"
     }
-    result <- compile_corpus(
+    build_corpus(
         x, 
         unit = unit,
         docvars = docvar,
         meta = list("user" = meta)
     )
-    return(result)
 }
 
 #' @rdname corpus

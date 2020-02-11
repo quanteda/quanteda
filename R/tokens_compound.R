@@ -104,6 +104,5 @@ tokens_compound.tokens <- function(x, pattern,
     if (length(window) == 1) window <- rep(window, 2)
     result <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join, window[1], window[2])
     field_object(attrs, "concatenator") <- concatenator
-    set_attrs(result) <- attrs
-    return(result)
+    rebuild(result, attrs)
 }

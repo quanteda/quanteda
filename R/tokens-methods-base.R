@@ -107,13 +107,13 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     if (any(is.na(index)))
         stop("Subscript out of bounds")
     
-    x <- compile_tokens(
+    result <- build_tokens(
         unclass(x)[index], 
         attrs[["types"]], 
         docvars = subset_docvars(attrs[["docvars"]], index),
         meta = attrs[["meta"]]
     )
-    tokens_recompile(x)
+    tokens_recompile(result)
 }
 
 #' @method "[[" tokens
@@ -182,9 +182,9 @@ lengths.tokens <- function(x, use.names = TRUE) {
     t1 <- unclass(t1)
     t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), 
                  length(attrs1[["types"]])) # shift non-zero IDs
-    result <- compile_tokens(
+    result <- build_tokens(
         c(t1, t2), 
-        types = c(attrs1[["types"]], attrs2[["types"]]),
+        c(attrs1[["types"]], attrs2[["types"]]),
         what = field_object(attrs1, "what"),
         ngram = sort(unique(c(
             field_object(attrs1, "ngram"), 

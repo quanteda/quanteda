@@ -296,7 +296,7 @@ dfm.tokens <- function(x,
                           x = 1L,
                           dims = c(length(x), 
                                    length(type)))
-    compile_dfm(
+    build_dfm(
         temp, 
         feature = type,
         meta = get_meta(x),
@@ -420,8 +420,8 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-    compile_dfm(temp, feature,
-                docvars = make_docvars(length(document), document))
+    build_dfm(temp, feature,
+              docvars = make_docvars(length(document), document))
 
 }
 

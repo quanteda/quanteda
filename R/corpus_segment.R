@@ -138,7 +138,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     if (extract_pattern) 
         docvars[["pattern"]] <- temp[["pattern"]]
     
-    compile_corpus(
+    build_corpus(
         temp[["text"]], 
         unit = "segments",
         docvars = docvars, 

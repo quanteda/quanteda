@@ -75,24 +75,6 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     return(x)
 }
 
-"set_attrs<-" <- function(x, value) {
-    if (isS4(x)) {
-        x@meta <- value[["meta"]]
-        x@docvars <- value[["docvars"]]
-        x@Dimnames[[1]] <- value[["docvars"]][["docname_"]]
-    } else {
-        attr(x, "meta") <- value[["meta"]]
-        attr(x, "docvars") <- value[["docvars"]]
-        attr(x, "names") <- value[["docvars"]][["docname_"]]
-        
-        # drop extra attribues for tokens_segment
-        try({attr(x, "docnum") <- NULL}, silent = TRUE)
-        try({attr(x, "pattern") <- NULL}, silent = TRUE)
-    }
-    return(x)
-}
-
-
 #' Function to assign multiple slots to a S4 object
 #' @param x an S4 object
 #' @param exceptions slots to ignore

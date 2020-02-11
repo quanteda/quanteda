@@ -74,7 +74,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             stop("reshape to sentences or paragraphs only goes from documents")
         }
     }
-    compile_corpus(
+    build_corpus(
         temp[["text"]], 
         unit = unit,
         docvars = docvars, 

@@ -70,7 +70,7 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
         ids_repl <- pattern2list(replacement, type, "fixed", FALSE, 
                                  field_object(attrs, "concatenator"), keep_nomatch = TRUE)
         result <- qatd_cpp_tokens_replace(x, type, ids_pat, ids_repl[attr(ids_pat, "pattern")])
-        set_attrs(result) <- attrs
+        result <- rebuild(result, attrs)
     }
     return(result)
 }

@@ -139,7 +139,7 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
     if (is.null(meta)) 
         meta <- make_meta("dfm")
     
-    compile_dfm(
+    build_dfm(
         as(Matrix(x, sparse = TRUE), "dgCMatrix"),
         featname,
         docvars = docvars,

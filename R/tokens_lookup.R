@@ -151,6 +151,5 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         result <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), overlap, 2)
     }
     field_object(attrs, "what") <- "dictionary"
-    set_attrs(result) <- attrs
-    return(result)
+    rebuild(result, attrs)
 }

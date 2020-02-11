@@ -77,6 +77,5 @@ tokens_segment.tokens <- function(x, pattern,
     field_object(attrs, "unit") <- "segments"
     if (extract_pattern)
         attrs[["docvars"]][["pattern"]] <- attr(result, "pattern")
-    set_attrs(result) <- attrs
-    return(result)
+    rebuild(result, attrs)
 }

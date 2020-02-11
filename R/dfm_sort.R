@@ -34,7 +34,7 @@ dfm_sort.dfm <- function(x, decreasing = TRUE,
   x <- as.dfm(x)
   if (!nfeat(x) || !ndoc(x)) return(x)
   margin <- match.arg(margin)
-  class_org <- class(x)
+  
   if (margin == "features") {
     x <- x[, order(colSums(x), decreasing = decreasing)]
   } else if (margin == "documents") {
@@ -43,6 +43,5 @@ dfm_sort.dfm <- function(x, decreasing = TRUE,
     x <- x[order(rowSums(x), decreasing = decreasing),
            order(colSums(x), decreasing = decreasing)]
   }
-  class(x) <- class_org
   return(x)
 }
