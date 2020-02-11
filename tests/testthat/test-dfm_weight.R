@@ -157,23 +157,23 @@ test_that("dfm_weight works with zero-frequency features (#929)", {
 })
 
 test_that("settings are recorded for tf-idf weightings", {
-    mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
-                 text2 = "New York City has raised a taxes: an income tax and a sales tax.")
-    d <- dfm(mytexts, remove_punct = TRUE)
+    txt <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
+             text2 = "New York City has raised a taxes: an income tax and a sales tax.")
+    dfmt <- dfm(txt, remove_punct = TRUE)
+    dfmt_tfidf <- dfm_tfidf(dfmt)
+    expect_equal(dfmt_tfidf@meta$object$weight_tf$scheme, "count")
+    expect_equal(dfmt_tfidf@meta$object$weight_df$scheme, "inverse")
+    expect_equal(dfmt_tfidf@meta$object$weight_df[["base"]], 10)
 
-    expect_equal(dfm_tfidf(d)@weightTf[["scheme"]], "count")
-    expect_equal(dfm_tfidf(d)@weightDf[["scheme"]], "inverse")
-    expect_equal(dfm_tfidf(d)@weightDf[["base"]], 10)
+    expect_equal(dfmt_tfidf@meta$object$weight_tf$scheme, "count")
+    expect_equal(dfmt_tfidf@meta$object$weight_df$scheme, "inverse")
+    expect_equal(dfm_tfidf(dfmt, base = 10)@meta$object$weight_df[["base"]], 10)
+    expect_equal(dfm_tfidf(dfmt, base = 2)@meta$object$weight_df[["base"]], 2)
+    expect_equal(dfm_tfidf(dfmt, scheme_tf = "prop", base = 2)@meta$object$weight_tf$scheme, "prop")
+    expect_equal(dfm_tfidf(dfmt, scheme_tf = "prop", base = 2)@meta$object$weight_df[["base"]], 2)
 
-    expect_equal(dfm_tfidf(d)@weightTf[["scheme"]], "count")
-    expect_equal(dfm_tfidf(d)@weightDf[["scheme"]], "inverse")
-    expect_equal(dfm_tfidf(d, base = 10)@weightDf[["base"]], 10)
-    expect_equal(dfm_tfidf(d, base = 2)@weightDf[["base"]], 2)
-    expect_equal(dfm_tfidf(d, scheme_tf = "prop", base = 2)@weightTf[["scheme"]], "prop")
-    expect_equal(dfm_tfidf(d, scheme_tf = "prop", base = 2)@weightDf[["base"]], 2)
-
-    expect_equal(dfm_tfidf(d, scheme_df = "inversemax")@weightDf[["scheme"]], "inversemax")
-    expect_equal(dfm_tfidf(d, scheme_df = "inversemax", k = 1)@weightDf[["k"]], 1)
+    expect_equal(dfm_tfidf(dfmt, scheme_df = "inversemax")@meta$object$weight_df$scheme, "inversemax")
+    expect_equal(dfm_tfidf(dfmt, scheme_df = "inversemax", k = 1)@meta$object$weight_df$k, 1)
 })
 
 test_that("weights argument works, issue 1150", {
@@ -271,19 +271,19 @@ test_that("docfreq works previously a weighted dfm (#1237)", {
 })
 
 test_that("smooth slot is correctly set (#1274)", {
-    expect_equal(data_dfm_lbgexample@smooth, 0)
+    expect_equal(as.dfm(data_dfm_lbgexample)@meta$object$smooth, 0)
 
     # smoothed by 1
     dfms1 <- dfm_smooth(data_dfm_lbgexample, smoothing = 1)
-    expect_equal(dfms1@smooth, 1)
+    expect_equal(dfms1@meta$object$smooth, 1)
 
     # smoothed by 0.5
     dfms0_5 <- dfm_smooth(data_dfm_lbgexample, smoothing = 0.5)
-    expect_equal(dfms0_5@smooth, 0.5)
+    expect_equal(dfms0_5@meta$object$smooth, 0.5)
 
     # smoothed by 1 and then by another 2
     dfms1_2 <- dfm_smooth(dfms1, smoothing = 2)
-    expect_equal(dfms1_2@smooth, 3)
+    expect_equal(dfms1_2@meta$object$smooth, 3)
 })
 
 test_that("dfm_weight invalid scheme produces error", {

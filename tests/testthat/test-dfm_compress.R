@@ -10,7 +10,8 @@ test_that("dfm_compress: simple test", {
     expect_equal(
         as.matrix(dfm_compress(mat, margin = "features")),
         matrix(c(1,2,0,2,1,1,0,2,5), nrow = 3,
-               dimnames = list(docs = docnames(mat), features = c("b", "a", "c")))
+               dimnames = list(docs = c("text1", "text2", "text1"),
+                               features = c("b", "a", "c")))
     )
     expect_equal(
         as.matrix(dfm_compress(mat, margin = "both")),

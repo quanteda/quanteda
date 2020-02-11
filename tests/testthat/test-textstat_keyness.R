@@ -112,8 +112,10 @@ test_that("textstat_keyness combines non-target rows correctly", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h",
                    d3 = "a a a a b b c c d d d d d d"))
-    expect_equivalent(textstat_keyness(mydfm, 1),
-                 textstat_keyness(rbind(mydfm[1, ], new("dfm", mydfm[2, ] + mydfm[3, ])), target = "d1"))
+    expect_equivalent(
+      textstat_keyness(mydfm, 1),
+      textstat_keyness(rbind(mydfm[1, ], mydfm[2, ], mydfm[3, ]), target = "d1")
+    )
 })
 
 test_that("textstat_keyness errors", {

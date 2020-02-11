@@ -189,45 +189,12 @@ test_that("as.dfm to and from a matrix works with docvars", {
     )
 })
 
-test_that("as.dfm works on old objects", {
-    load("../data/pre_v2_objects/data_dfm_pre2.rda")
-    expect_is(as.dfm(data_dfm_pre2), "dfm")
-    expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
-    expect_identical(
-        names(as.dfm(data_dfm_pre2)@meta),
-        c("user", "system")
-    )
-})
-
-# test_that("rbind duplicates docvars", {
-#     txt <- c(docA = "a a a b c c f",
-#              docB = "a b b b c d",
-#              docC = "c c c f f")
-#     crp <- corpus(txt, 
-#                   docvars = data.frame(y = 1:3))
-#     d <- dfm(crp)
+# test_that("as.dfm works on old objects", {
+#     load("../data/pre_v2_objects/data_dfm_pre2.rda")
+#     expect_is(as.dfm(data_dfm_pre2), "dfm")
+#     expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
 #     expect_identical(
-#         attributes(rbind(d, d)@docvars)$row.names,
-#         c("docA", "docB", "docC",
-#           "docA.1", "docB.1", "docC.1")
+#         names(as.dfm(data_dfm_pre2)@meta),
+#         c("user", "system")
 #     )
-#     expect_identical(
-#         attributes(d[c(1:3, 1:3)]@docvars)$row.names,
-#         c("docA", "docB", "docC",
-#           "docA.1", "docB.1", "docC.1")
-#     )
-#     expect_identical(
-#         attributes(d[c(1:3, 1:3)]@docvars)$row.names,
-#         attributes(rbind(d, d)@docvars)$row.names
-#     )
-# })
-# 
-# test_that("cbind correctly handles docvars", {
-#     txt <- c(docA = "a a a b c c f",
-#              docB = "a b b b c d",
-#              docC = "c c c f f")
-#     crp <- corpus(txt, 
-#                   docvars = data.frame(y = 1:3))
-#     d <- dfm(crp)
-#     # ADD TESTS
 # })

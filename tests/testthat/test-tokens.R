@@ -551,7 +551,7 @@ test_that("combined tokens objects have all the attributes", {
                      names(attributes(toks1)))
     expect_identical(attr(c(toks1, toks4), "meta")$object$what, "word")
     expect_identical(attr(c(toks1, toks4), "meta")$object$concatenator, "_")
-    expect_identical(attr(c(toks1, toks4), "meta")$object$ngrams, c(1L, 2L))
+    expect_identical(attr(c(toks1, toks4), "meta")$object$ngram, c(1L, 2L))
     expect_identical(attr(c(toks1, toks4), "meta")$object$skip, c(0L, 2L))
     expect_identical(docnames(dfm(c(toks1, toks4))), c("text1", "text4"))
 
@@ -559,7 +559,7 @@ test_that("combined tokens objects have all the attributes", {
                      names(attributes(toks1)))
     expect_identical(attr(c(toks1, toks5), "meta")$object$what, "word")
     expect_identical(attr(c(toks1, toks5), "meta")$object$concatenator, "_")
-    expect_identical(attr(c(toks1, toks5), "meta")$object$ngrams, 1L)
+    expect_identical(attr(c(toks1, toks5), "meta")$object$ngram, 1L)
     expect_identical(attr(c(toks1, toks5), "meta")$object$skip, 0L)
     expect_identical(docnames(dfm(c(toks1, toks5))), c("text1", "text5"))
 

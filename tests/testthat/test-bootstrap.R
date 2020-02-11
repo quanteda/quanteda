@@ -21,25 +21,22 @@ test_that("bootstrap_dfm works with character and corpus objects", {
         featnames(bs2[[2]])
     )
 
-    # check that all documents have at least one sentence
-    expect_true(all(unlist(lapply(bs1, rowSums)) > 0))
+    # are document names of resamples identical?
+    expect_identical(
+        docnames(bs2[[1]]),
+        docnames(bs2[[2]])
+    )
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.")
-    corp <- corpus(txt,
-                       docvars = data.frame(country = c("UK", "USA"),
-                                            year = c(1990, 2000)),
-                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
-    dfmat <- dfm(corpus_reshape(corp, to = "sentences"))
-
     corp <- corpus(txt, 
-                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
-    mydfm <- dfm(corpus_reshape(corp, to = "sentences"))
+                   docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
+    dfmt <- dfm(corpus_reshape(corp, to = "sentences"))
     
     set.seed(10)
-    bs1 <- bootstrap_dfm(mydfm, n = 3, verbose = FALSE)
+    bs1 <- bootstrap_dfm(dfmt, n = 3, verbose = FALSE)
     expect_equivalent(bs1[[1]], 
                       dfm(corp))
     
