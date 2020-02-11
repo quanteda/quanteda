@@ -303,14 +303,6 @@ make_meta_dfm <- function(inherit = NULL, ...) {
     update_meta(default, inherit, ...)
 }
 
-get_meta <- function(x) {
-    if (isS4(x)) {
-        return(x@meta)
-    } else {
-        return(attr(x, "meta"))
-    }
-}
-
 update_meta <- function(default, inherit, ...) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {

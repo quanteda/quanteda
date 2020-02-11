@@ -59,7 +59,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             } else {
                 temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "\n\n"))
             }
-            docvars <- reshape_docvars(attrs[["docvars"]], !duplicated(docnum))
+            attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], !duplicated(docnum))
             unit <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
@@ -68,7 +68,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         if (field_object(attrs, "unit") %in% "documents") {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE,
                                   omit_empty = FALSE, what = to, ...)
-            docvars <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
+            attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
             unit <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
@@ -77,7 +77,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     build_corpus(
         temp[["text"]], 
         unit = unit,
-        docvars = docvars, 
-        meta = get_meta(x)
+        docvars = attrs[["docvars"]], 
+        meta = attrs[["meta"]]
     )
 }

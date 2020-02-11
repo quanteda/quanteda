@@ -2,7 +2,7 @@
 #' @rdname object-builder
 #' @param source character that indicating source object
 #' @param feature character for feature of resulting `dfm`
-#' @param docvars data.frame for docment level variables 
+#' @param docvars data.frame for document level variables 
 #' @param meta list for meta fields
 #' @param ... added to object meta fields  
 #' @keywords internal

@@ -299,8 +299,8 @@ dfm.tokens <- function(x,
     build_dfm(
         temp, 
         feature = type,
-        meta = get_meta(x),
-        docvars = get_docvars(x, user = TRUE, system = TRUE)
+        docvars = get_docvars(x, user = TRUE, system = TRUE),
+        meta = attrs[["meta"]]
     )
 }
 

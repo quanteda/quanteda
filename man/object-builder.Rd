@@ -20,7 +20,7 @@ build_tokens(
 build_corpus(x, docvars = data.frame(), meta = list(), ...)
 }
 \arguments{
-\item{docvars}{data.frame for docment level variables}
+\item{docvars}{data.frame for document level variables}
 
 \item{meta}{list for meta fields}
 

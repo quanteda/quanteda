@@ -183,6 +183,7 @@ tokens.character <- function(x, ...) {
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     x <- as.corpus(x)
+    attrs <- attributes(x)
     if (include_docvars) {
         docvars <- get_docvars(x, user = TRUE, system = TRUE)
     } else {
@@ -190,7 +191,7 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     }
     result <- tokenize(texts(x), 
                        docvars = docvars, 
-                       meta = get_meta(x), ...)
+                       meta = attrs[["meta"]], ...)
     # TODO: move comiple_tokens to here
     return(result)
 }
