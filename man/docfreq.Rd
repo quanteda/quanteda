@@ -10,42 +10,40 @@ docfreq(
   smoothing = 0,
   k = 0,
   base = 10,
-  threshold = 0,
-  use.names = TRUE
+  threshold = 0
 )
 }
 \arguments{
-\item{x}{a \link{dfm}}
+\item{x}{object for which idf or tf-idf will be computed (a document-feature
+matrix)}
 
-\item{scheme}{type of document frequency weighting, computed as
-follows, where \eqn{N} is defined as the number of documents in the dfm and
-\eqn{s} is the smoothing constant:
+\item{scheme}{a label of the weight type:
 \describe{
-\item{\code{count}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
-\item{\code{inverse}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
-\item{\code{inversemax}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
-\item{\code{inverseprob}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
-\item{\code{unary}}{1 for each feature}
+\item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
+\item{\code{prop}}{the proportion of the feature counts of total feature
+counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+\item{\code{propmax}}{the proportion of the feature counts of the highest
+feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
+\item{\code{logcount}}{take the 1 + the logarithm of each count, for the
+given base, or 0 if the count was zero: \eqn{1 +
+  \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
+\item{\code{boolean}}{recode all non-zero counts as 1}
+\item{\code{augmented}}{equivalent to \eqn{k + (1 - k) *} \code{dfm_weight(x, "propmax")}}
+\item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
+\deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 }}
 
-\item{smoothing}{added to the quotient before taking the logarithm}
+\item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 
-\item{k}{added to the denominator in the "inverse" weighting types, to
-prevent a zero document count for a term}
+\item{k}{the k for the augmentation when \code{scheme = "augmented"}}
 
-\item{base}{the base with respect to which logarithms in the inverse document
-frequency weightings are computed; default is 10 (see Manning,
-Raghavan, and Schütze 2008, p123).}
+\item{base}{the base for the logarithms in the \code{\link[=dfm_weight]{dfm_weight()}} and
+\code{\link[=docfreq]{docfreq()}} calls; default is 10}
 
 \item{threshold}{numeric value of the threshold \emph{above which} a feature
 will considered in the computation of document frequency.  The default is
 0, meaning that a feature's document frequency will be the number of
 documents in which it occurs greater than zero times.}
-
-\item{use.names}{logical; if \code{TRUE} attach feature labels as names of
-the resulting numeric vector}
-
-\item{...}{not used}
 }
 \value{
 a numeric vector of document frequencies for each feature

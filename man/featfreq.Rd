@@ -20,5 +20,8 @@ across all documents in the dfm. This is equivalent to \code{colSums(x)}.
 dfmat <- dfm(data_char_sampletext)
 featfreq(dfmat)
 }
+\seealso{
+\code{\link[=dfm_tfidf]{dfm_tfidf()}}, \code{\link[=dfm_weight]{dfm_weight()}}
+}
 \keyword{dfm}
 \keyword{weighting}

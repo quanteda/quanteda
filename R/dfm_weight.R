@@ -32,13 +32,17 @@
 #'   has been weighted before.  This can result in invalid weights, such as as
 #'   weighting by `"prop"` after applying `"logcount"`, or after
 #'   having grouped a dfm using [dfm_group()].
+#' @param threshold numeric value of the threshold *above which* a feature 
+#'   will considered in the computation of document frequency.  The default is 
+#'   0, meaning that a feature's document frequency will be the number of 
+#'   documents in which it occurs greater than zero times.
 #' @return `dfm_weight` returns the dfm with weighted values.  Note the
 #'   because the default weighting scheme is `"count"`, simply calling this
 #'   function on an unweighted dfm will return the same object.  Many users will
 #'   want the normalized dfm consisting of the proportions of the feature counts
 #'   within each document, which requires setting `scheme = "prop"`.
 #' @export
-#' @seealso [dfm_tfidf()], [docfreq()]
+#' @seealso [docfreq()]
 #' @keywords dfm
 #' @examples
 #' dfmat1 <- dfm(data_corpus_inaugural)
@@ -237,30 +241,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' feature occurs more than a given frequency threshold.  (The default threshold
 #' is  zero, meaning that any feature occurring at least once in a document will
 #' be counted.)
-#' @param x a [dfm]
-#' @param scheme type of document frequency weighting, computed as
-#' follows, where \eqn{N} is defined as the number of documents in the dfm and
-#' \eqn{s} is the smoothing constant:
-#' \describe{
-#' \item{`count`}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
-#' \item{`inverse`}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
-#' \item{`inversemax`}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
-#' \item{`inverseprob`}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
-#' \item{`unary`}{1 for each feature}
-#' }
-#' @param smoothing added to the quotient before taking the logarithm
-#' @param k added to the denominator in the "inverse" weighting types, to 
-#'   prevent a zero document count for a term
-#' @param base the base with respect to which logarithms in the inverse document
-#' frequency weightings are computed; default is 10 (see Manning, 
-#'   Raghavan, and Schütze 2008, p123).
-#' @param threshold numeric value of the threshold *above which* a feature 
-#'   will considered in the computation of document frequency.  The default is 
-#'   0, meaning that a feature's document frequency will be the number of 
-#'   documents in which it occurs greater than zero times.
-#' @param use.names	logical; if `TRUE` attach feature labels as names of 
-#'   the resulting numeric vector
-#' @param ... not used
+#' @inheritParams dfm_weight
 #' @return a numeric vector of document frequencies for each feature
 #' @keywords weighting dfm
 #' @export
@@ -289,16 +270,14 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax",
                                   "inverseprob", "unary"),
-                    smoothing = 0, k = 0, base = 10, threshold = 0,
-                    use.names = TRUE) {
+                    smoothing = 0, k = 0, base = 10, threshold = 0) {
     UseMethod("docfreq")
 }
 
 #' @export
 docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
                                           "inverseprob", "unary"),
-                        smoothing = 0, k = 0, base = 10, threshold = 0,
-                        use.names = TRUE) {
+                        smoothing = 0, k = 0, base = 10, threshold = 0) {
     stop(friendly_class_undefined_message(class(x), "docfreq"))
 }
 
@@ -306,8 +285,7 @@ docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
                                       "inverseprob", "unary"),
-                        smoothing = 0, k = 0, base = 10, threshold = 0,
-                        use.names = TRUE) {
+                        smoothing = 0, k = 0, base = 10, threshold = 0) {
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
@@ -327,22 +305,16 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     } else if (scheme == "count") {
         result <- colSums(x > threshold)
     } else if (scheme == "inverse") {
-        result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count",
-                                                          use.names = FALSE))),
-                      base = base)
+        result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count"))), base = base)
     } else if (scheme == "inversemax") {
-        temp <- docfreq(x, "count", use.names = FALSE)
+        temp <- docfreq(x, "count")
         result <- log(smoothing + (max(temp) / (k + temp)), base = base)
     } else if (scheme == "inverseprob") {
-        temp <- docfreq(x, "count", use.names = FALSE)
-        result <- pmax(0, log( (ndoc(x) - temp) / (k + temp), base = base) )
+        temp <- docfreq(x, "count")
+        result <- pmax(0, log((ndoc(x) - temp) / (k + temp), base = base))
     }
-    if (use.names) {
-        names(result) <- featnames(x)
-    } else {
-        result <- unname(result)
-    }
-    result
+    names(result) <- featnames(x)
+    return(result)
 }
 
 # docfreq -------------
@@ -354,6 +326,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #' @param x a [dfm]
 #' @return a (named) numeric vector of feature frequencies
 #' @keywords weighting dfm
+#' @seealso [dfm_tfidf()], [dfm_weight()]
 #' @export
 #' @examples 
 #' dfmat <- dfm(data_char_sampletext)
@@ -385,7 +358,6 @@ featfreq.dfm <- function(x) {
 #'   `"inverse"`.
 #' @param base the base for the logarithms in the [dfm_weight()] and
 #'   [docfreq()] calls; default is 10
-#' @inheritParams docfreq
 #' @rdname dfm_weight
 #' @details `dfm_tfidf` computes term frequency-inverse document frequency
 #'   weighting.  The default is to use counts instead of normalized term
@@ -394,7 +366,6 @@ featfreq.dfm <- function(x) {
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
 #'   *Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
-#' @seealso [dfm_weight()], [docfreq()]
 #' @keywords dfm weighting
 #' @examples 
 #' dfmat1 <- as.dfm(data_dfm_lbgexample)

@@ -70,6 +70,11 @@ having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
 
 \item{scheme_df}{scheme for \code{\link[=docfreq]{docfreq()}}; defaults to
 \code{"inverse"}.}
+
+\item{threshold}{numeric value of the threshold \emph{above which} a feature
+will considered in the computation of document frequency.  The default is
+0, meaning that a feature's document frequency will be the number of
+documents in which it occurs greater than zero times.}
 }
 \value{
 \code{dfm_weight} returns the dfm with weighted values.  Note the
@@ -155,9 +160,7 @@ Manning, C. D., Raghavan, P., & Schütze, H. (2008).
 \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
-\code{\link[=dfm_tfidf]{dfm_tfidf()}}, \code{\link[=docfreq]{docfreq()}}
-
-\code{\link[=dfm_weight]{dfm_weight()}}, \code{\link[=docfreq]{docfreq()}}
+\code{\link[=docfreq]{docfreq()}}
 }
 \keyword{dfm}
 \keyword{weighting}
