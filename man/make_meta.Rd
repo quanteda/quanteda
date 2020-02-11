@@ -23,7 +23,7 @@ update_meta(default, inherit, ...)
 
 \item{inherit}{list from the meta attribute}
 
-\item{...}{values assined to the object meta fields}
+\item{...}{values assigned to the object meta fields}
 
 \item{default}{default values for the meta attribute}
 }

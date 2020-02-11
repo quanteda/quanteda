@@ -225,7 +225,7 @@ meta_system_defaults <- function() {
 #' Internal functions to create a list for the meta attribute
 #' @param class object class either `dfm`, `tokens` or `corpus`
 #' @param inherit list from the meta attribute
-#' @param ... values assined to the object meta fields
+#' @param ... values assigned to the object meta fields
 #' @keywords internal
 make_meta <- function(class, inherit = NULL, ...) {
     

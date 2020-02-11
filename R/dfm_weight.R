@@ -382,12 +382,11 @@ featfreq.dfm <- function(x) {
 #'   matrix)
 #' @param scheme_tf scheme for [dfm_weight()]; defaults to `"count"`
 #' @param scheme_df scheme for [docfreq()]; defaults to
-#'   `"inverse"`.  Other options to [docfreq()] can be passed
-#'   through the ellipsis (`...`).
+#'   `"inverse"`.
 #' @param base the base for the logarithms in the [dfm_weight()] and
 #'   [docfreq()] calls; default is 10
 #' @inheritParams docfreq
-#' @inheritParams dfm_weight
+#' @rdname dfm_weight
 #' @details `dfm_tfidf` computes term frequency-inverse document frequency
 #'   weighting.  The default is to use counts instead of normalized term
 #'   frequency (the relative term frequency within document), but this
@@ -450,10 +449,12 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
     j <- as(x, "dgTMatrix")@j + 1L
     x@x <- x@x * v[j]
     attrs <- attributes(x)
-    field_object(attrs, "weight_df") <- list(scheme = scheme_df, 
-                                             base = base, 
-                                             k = k,
-                                             threadhold = threashold)
+    field_object(attrs, "weight_df") <- list(
+        scheme = scheme_df, 
+        base = base, 
+        k = k,
+        threadhold = threashold
+    )
     rebuild(x, attrs)
 }
 
