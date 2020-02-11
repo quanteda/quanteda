@@ -41,12 +41,15 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
     
     x <- as.tokens(x)
     attrs <- attributes(x)
-    if (identical(field_object(attrs, "ngrams"), 1L))
+    if (identical(field_object(attrs, "ngrams"), 1L)) {
         types(x) <- char_wordstem(types(x), language = language)
-    else 
-        types(x) <- wordstem_ngrams(types(x), 
-                                    concatenator = field_object(attrs, "concatenator"), 
-                                    language = language)
+    } else { 
+        types(x) <- wordstem_ngrams(
+            types(x), 
+            concatenator = field_object(attrs, "concatenator"), 
+            language = language
+            )
+    }
     tokens_recompile(x)
 }
 
@@ -106,9 +109,11 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
     if (identical(field_object(attrs, "ngrams"), 1L)) {
         set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language)
     } else {
-        set_dfm_featnames(x) <- wordstem_ngrams(featnames(x), 
-                                                field_object(attrs, "concatenator"), 
-                                                language)
+        set_dfm_featnames(x) <- wordstem_ngrams(
+            featnames(x), 
+            field_object(attrs, "concatenator"), 
+            language
+        )
     }
     dfm_compress(x, margin = "features")
 }
@@ -118,10 +123,8 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
 
 # stemming for ngrams, internal function
 wordstem_ngrams <- function(x, concatenator, language) {
-    result <- lapply(x, strsplit, concatenator, fixed = TRUE)
-    result <- lapply(result, function(y) lapply(y, SnowballC::wordStem, language = language))
-    result <- lapply(result, function(y) vapply(y, paste, character(1), collapse = concatenator))
-    # simple way to return a character vector if supplied a character vector
-    if (!is.list(x)) result <- unlist(result)
-    result
+    temp <- lapply(stri_split_fixed(x, concatenator),
+                   SnowballC::wordStem, language = language)
+    temp <- stri_paste_list(temp, sep = concatenator)
+    unlist(temp, use.names = FALSE)
 }

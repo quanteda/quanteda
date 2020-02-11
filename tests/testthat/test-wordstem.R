@@ -1,4 +1,4 @@
-library(quanteda)
+context("test wordstem")
 
 test_that("character wordstem test to test testing.", {
     expect_equal(char_wordstem('testing', "porter"), 'test')
@@ -8,16 +8,16 @@ test_that("character wordstem test to test testing.", {
 test_that("can wordstem dfms with zero features and zero docs", {
     
     # zero feature documents
-    dfm1 <- dfm(c("one", "0"), stem = TRUE, remove_numbers = TRUE)
-    dfm2 <- dfm(c("one", "!!"), stem = TRUE, remove_punct = TRUE)
-    expect_equal(ndoc(dfm1), ndoc(dfm2), 2)
+    dfmt1 <- dfm(c("one", "0"), stem = TRUE, remove_numbers = TRUE)
+    dfmt2 <- dfm(c("one", "!!"), stem = TRUE, remove_punct = TRUE)
+    expect_equal(ndoc(dfmt1), ndoc(dfmt2), 2)
     
     # features with zero docfreq
-    mydfm <- dfm(c("stemming porter three", "stemming four five"))
-    mydfm[2, 4] <- 0
-    mydfm <- new("dfm", mydfm)
-    dfm_wordstem(mydfm, language = "english")
-    expect_equal(nfeat(dfm_wordstem(mydfm)), 5)
+    dfmt3 <- dfm(c("stemming porter three", "stemming four five"))
+    dfmt3[2, 4] <- 0
+    dfmt3 <- as.dfm(dfmt3)
+    dfm_wordstem(dfmt3, language = "english")
+    expect_equal(nfeat(dfm_wordstem(dfmt3)), 5)
     
 })
 
@@ -43,20 +43,22 @@ test_that("can wordstem dfm with unigrams", {
     txt <- c(d1 = "stemming stems plurals perfectly",
              d2 = "one two three")
     toks <- tokens(txt)
-    dfmtoks <- dfm(toks)
-    expect_equal(featnames(dfm_wordstem(dfmtoks, language = "porter")),
+    dfm <- dfm(toks)
+    expect_equal(featnames(dfm_wordstem(dfm, language = "porter")),
                  c("stem", "plural", "perfectli", "on", "two", "three"))
 })
 
 test_that("can wordstem dfm with ngrams", {
     txt <- c(d1 = "stemming stems stemmed plurals perfectly",
              d2 = "one two three")
-    dfmtxt <- dfm(txt, ngrams = 2)
-    dfmtxt_stemmed <- dfm_wordstem(dfmtxt, language = "english")
-    expect_equal(sort(featnames(dfmtxt_stemmed)),
+    dfmt <- dfm(txt, ngrams = 2)
+    dfmt_stemmed <- dfm_wordstem(dfmt, language = "english")
+    expect_equal(sort(featnames(dfmt_stemmed)),
                  c("one_two", "plural_perfect", "stem_plural", "stem_stem","two_three"))
-    expect_equal(dfmtxt@ngrams, dfmtxt_stemmed@ngrams)
-    expect_equal(dfmtxt@concatenator, dfmtxt_stemmed@concatenator)
+    expect_equal(dfmt@meta$object$ngram, 
+                 dfmt_stemmed@meta$object$ngram)
+    expect_equal(dfmt@meta$object$concatenator, 
+                 dfmt_stemmed@meta$object$concatenator)
 })
 
 test_that("wordstem works with tokens with padding = TRUE", {
