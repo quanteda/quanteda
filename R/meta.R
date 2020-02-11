@@ -222,20 +222,11 @@ meta_system_defaults <- function() {
    )
 }
 
-# newer version of meta_system_defaults
-make_meta_system <- function(inherit = NULL) {
-    if (is.null(inherit))
-        inherit <- list()
-    default <- list(
-        "package-version" = utils::packageVersion("quanteda"),
-        "r-version" = getRversion(),
-        "system" = Sys.info()[c("sysname", "machine", "user")],
-        "directory" = getwd(),
-        "created" = Sys.Date()
-    )
-    update_meta(default, inherit)
-}
-
+#' Internal functions to create a list for the meta attribute
+#' @param class object class either `dfm`, `tokens` or `corpus`
+#' @param inherit list from the meta attribute
+#' @param ... values assined to the object meta fields
+#' @keywords internal
 make_meta <- function(class, inherit = NULL, ...) {
     
     if (is.null(inherit))
@@ -266,6 +257,21 @@ make_meta <- function(class, inherit = NULL, ...) {
     return(result)
 }
 
+# newer version of meta_system_defaults
+make_meta_system <- function(inherit = NULL) {
+    if (is.null(inherit))
+        inherit <- list()
+    default <- list(
+        "package-version" = utils::packageVersion("quanteda"),
+        "r-version" = getRversion(),
+        "system" = Sys.info()[c("sysname", "machine", "user")],
+        "directory" = getwd(),
+        "created" = Sys.Date()
+    )
+    update_meta(default, inherit)
+}
+
+#' @rdname make_meta
 make_meta_corpus <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
@@ -273,6 +279,7 @@ make_meta_corpus <- function(inherit = NULL, ...) {
     update_meta(default, inherit, ...)
 }
 
+#' @rdname make_meta
 make_meta_tokens <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
@@ -286,6 +293,7 @@ make_meta_tokens <- function(inherit = NULL, ...) {
     update_meta(default, inherit, ...)
 }
 
+#' @rdname make_meta
 make_meta_dfm <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
@@ -303,6 +311,8 @@ make_meta_dfm <- function(inherit = NULL, ...) {
     update_meta(default, inherit, ...)
 }
 
+#' @rdname make_meta
+#' @param default default values for the meta attribute
 update_meta <- function(default, inherit, ...) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {
