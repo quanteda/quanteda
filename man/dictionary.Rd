@@ -89,7 +89,7 @@ dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
 head(dfm(data_corpus_inaugural, dictionary = dictlg))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
-download.file("https://goo.gl/5gmwXq", tf <- tempfile())
+download.file("http://bit.ly/37cV95h", tf <- tempfile())
 dictliwc <- dictionary(file = tf, format = "LIWC")
 head(dfm(data_corpus_inaugural, dictionary = dictliwc))
 }

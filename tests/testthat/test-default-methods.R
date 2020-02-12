@@ -350,29 +350,6 @@ test_that("test new docnames<- methods", {
     )
 })
 
-test_that("test default textmodel methods", {
-    expect_error(
-        textmodel_affinity(TRUE, FALSE),
-        "textmodel_affinity\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_ca(TRUE),
-        "textmodel_ca\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_nb(TRUE),
-        "textmodel_nb\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_wordfish(TRUE),
-        "textmodel_wordfish\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_wordscores(TRUE),
-        "textmodel_wordscores\\(\\) only works on dfm.*objects"
-    )
-})
-
 test_that("test default textstat methods", {
     expect_error(
         textstat_dist(TRUE),
@@ -410,16 +387,8 @@ test_that("test default textstat methods", {
 
 test_that("test default textplot methods", {
     expect_error(
-        textplot_influence(TRUE),
-        "textplot_influence\\(\\) only works on influence\\..*textmodel_affinity objects"
-    )
-    expect_error(
         textplot_keyness(TRUE),
         "textplot_keyness\\(\\) only works on keyness objects"
-    )
-    expect_error(
-        textplot_scale1d(TRUE),
-        "textplot_scale1d\\(\\) only works on predict\\.textmodel.*objects"
     )
     expect_error(
         textplot_wordcloud(TRUE),

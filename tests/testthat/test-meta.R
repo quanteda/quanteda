@@ -28,13 +28,20 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(dfmat), targetmeta3)
     meta(dfmat)[2] <- NULL
     expect_identical(meta(dfmat), targetmeta2)
+
+    dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
+    meta(dict, "usermeta1") <- "test1"
+    meta(dict)["usermeta2"] <- "test2"
+    meta(dict)$usermeta3    <- "test3"
+    expect_identical(meta(dict), targetmeta3)
+    meta(dict)[2] <- NULL
+    expect_identical(meta(dict), targetmeta2)
 })
 
-test_that("meta.default produces expected error", {
+test_that("meta produces expected error with ineligible object classes", {
     expect_error(
         meta(NULL),
-        "meta() only works on corpus, dfm, tokens objects",
-        fixed = TRUE
+        ".*meta\\(\\) only works on corpus, tokens, dfm, or dictionary objects$"
     )
 })
 
@@ -66,6 +73,10 @@ test_that("meta<- works", {
         meta(corp),
         list(newmeta = "some meta info")
     )
+
+    dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
+    meta(dict, "source") <- "source is test-meta.R."
+    expect_identical(meta(dict), list(source = "source is test-meta.R."))
 })
 
 test_that("meta_system", {
@@ -92,16 +103,20 @@ test_that("meta_system", {
 
 test_that("meta_system<-", {
     corp <- corpus(c("one", "two"))
-    corp2 <- quanteda:::"meta_system<-.corpus"(corp, "source", "test-meta.R")
+    corp2 <- quanteda:::"meta_system<-"(corp, "source", "test-meta.R")
     expect_identical(quanteda:::meta_system(corp2, "source"), "test-meta.R")
 
     toks <- tokens(corp)
-    toks2 <- quanteda:::"meta_system<-.tokens"(toks, "source", "test-meta.R")
+    toks2 <- quanteda:::"meta_system<-"(toks, "source", "test-meta.R")
     expect_identical(quanteda:::meta_system(toks2, "source"), "test-meta.R")
 
     dfmat <- dfm(toks)
-    dfmat2 <- quanteda:::"meta_system<-.dfm"(dfmat, "source", "dfm test")
+    dfmat2 <- quanteda:::"meta_system<-"(dfmat, "source", "dfm test")
     expect_identical(quanteda:::meta_system(dfmat2, "source"), "dfm test")
+
+    dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
+    dict <- quanteda:::"meta_system<-"(dict, "source", "dict test")
+    expect_identical(quanteda:::meta_system(dict, "source"), "dict test")
 })
 
 test_that("adding summary info works", {

@@ -1,5 +1,8 @@
 # class definition and class functions --------
-
+#' dictionary class objects and functions
+#' 
+#' The `dictionary2` class constructed by [dictionary()], and associated core
+#' class functions.
 #' @rdname dictionary-class
 #' @export
 #' @keywords internal dictionary
@@ -8,9 +11,14 @@
 #'   consisting of a pattern match
 #' @slot concatenator character object specifying space between multi-word
 #'   values
+#' @slot meta list of object metadata
 setClass("dictionary2", contains = "list",
-         slots = c(concatenator = "character"),
-         prototype = prototype(concatenator = " "))
+         slots = c(concatenator = "character",
+                   meta = "list"),
+         prototype = prototype(concatenator = " ",
+                               meta = list("system" = meta_system_defaults("list"),
+                                           "user" = NULL))
+)
 
 setValidity("dictionary2", function(object) {
     # does every element have a name? simply needs to pass
@@ -134,7 +142,7 @@ check_entries <- function(dict) {
 #' head(dfm(data_corpus_inaugural, dictionary = dictlg))
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
-#' download.file("https://goo.gl/5gmwXq", tf <- tempfile())
+#' download.file("http://bit.ly/37cV95h", tf <- tempfile())
 #' dictliwc <- dictionary(file = tf, format = "LIWC")
 #' head(dfm(data_corpus_inaugural, dictionary = dictliwc))
 #' }
@@ -220,7 +228,6 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 
 # coercion and checking methods -----------
 
-#' Coerce a dictionary object into a list
 #' @param object the dictionary to be coerced
 #' @param flatten flatten the nested structure if `TRUE`
 #' @param levels integer vector indicating levels in the dictionary. Used only
@@ -231,11 +238,12 @@ setMethod("as.list",
           signature = c("dictionary2"),
           function(x, flatten = FALSE, levels = 1:100) {
               if (flatten) {
-                result <- flatten_dictionary(x, levels)
-                attr(result, "concatenator") <- NULL
-                return(result)
+                  result <- flatten_dictionary(x, levels)
+                  # remove added attributes
+                  attributes(result)[setdiff(names(attributes(result)), "names")] <- NULL
+                  return(result)
               } else {
-                simplify_dictionary(x)
+                  simplify_dictionary(x)
               }
           })
 
@@ -326,9 +334,9 @@ is.dictionary <- function(x) {
 #' @param max_nval max number of values to print; default is from the
 #'   `print_dictionary_max_nval` setting of [quanteda_options()]
 #' @export
-setMethod("print", signature(x = "dictionary2"), 
-          function(x, 
-                   max_nkey = quanteda_options("print_dictionary_max_nkey"), 
+setMethod("print", signature(x = "dictionary2"),
+          function(x,
+                   max_nkey = quanteda_options("print_dictionary_max_nkey"),
                    max_nval = quanteda_options("print_dictionary_max_nval"),
                    show_summary = quanteda_options("print_dictionary_summary"),
                    ...) {
@@ -348,13 +356,13 @@ setMethod("print", signature(x = "dictionary2"),
 setMethod("show", signature(object = "dictionary2"), function(object) print(object))
 
 # Internal function to print dictionary
-print_dictionary <- function(entry, level = 1, 
+print_dictionary <- function(entry, level = 1,
                              max_nkey, max_nval, show_summary, ...) {
     unused_dots(...)
     nkey <- length(entry)
-    if (max_nkey < 0) 
+    if (max_nkey < 0)
         max_nkey <- length(entry)
-    
+
     entry <- head(unclass(entry), max_nkey)
     if (!length(entry)) return()
     is_category <- vapply(entry, is.list, logical(1))
@@ -362,7 +370,7 @@ print_dictionary <- function(entry, level = 1,
     pad <- rep("  ", level - 1)
     word <- unlist(entry[!is_category], use.names = FALSE)
     if (length(word)) {
-        if (max_nval < 0) 
+        if (max_nval < 0)
             max_nval <- length(word)
         cat(pad, "- ", paste(head(word, max_nval), collapse = ", "), sep = "")
         nval_rem <- length(word) - max_nval
@@ -376,12 +384,11 @@ print_dictionary <- function(entry, level = 1,
     }
     nkey_rem <- nkey - max_nkey
     if (nkey_rem > 0) {
-        cat(pad, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key", 
+        cat(pad, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key",
             if (nkey_rem > 1) "s", " ]\n", sep = "")
     }
 }
 
-#' Extractor for dictionary objects
 #' @param object the dictionary to be extracted
 #' @param i index for entries
 #' @rdname dictionary-class
@@ -394,7 +401,6 @@ setMethod("[",
               new("dictionary2", x[i][is_category], concatenator = x@concatenator)
           })
 
-#' Extractor for dictionary objects
 #' @param object the dictionary to be extracted
 #' @param i index for entries
 #' @rdname dictionary-class
