@@ -91,6 +91,7 @@ Language: en-GB
 Collate:
     'RcppExports.R'
     'View.R'
+    'meta.R'
     'quanteda-documentation.R'
     'aaa.R'
     'bootstrap_dfm.R'
@@ -135,7 +136,6 @@ Collate:
     'fcm.R'
     'fcm_select.R'
     'kwic.R'
-    'meta.R'
     'metadoc.R'
     'nfunctions.R'
     'nscrabble.R'
