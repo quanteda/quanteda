@@ -72,6 +72,7 @@
 #' 
 #' <http://github.com/quanteda/quanteda>
 #' @import stringi data.table methods Matrix ggplot2
+#' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda, .registration = TRUE
 "_PACKAGE"
 
