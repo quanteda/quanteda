@@ -54,5 +54,5 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
         field_object(attrs, "unit") <- "documents"
     }
     attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "docnum"))
-    rebuild(result, attrs)
+    rebuild_tokens(result, attrs)
 }

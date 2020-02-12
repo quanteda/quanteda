@@ -3,6 +3,7 @@
 #' @param source character that indicating source object
 #' @param feature character for feature of resulting `dfm`
 #' @param docvars data.frame for document level variables 
+#' @param attrs a list of attributes to be reassigned
 #' @param meta list for meta fields
 #' @param ... added to object meta fields  
 #' @keywords internal
@@ -22,6 +23,14 @@ build_dfm <- function(x, features,
 }
 
 #' @rdname object-builder
+rebuild_dfm <- function(x, attrs) {
+    x@meta <- attrs[["meta"]]
+    x@docvars <- attrs[["docvars"]]
+    x@Dimnames[[1]] <- attrs[["docvars"]][["docname_"]]
+    return(x)
+}
+
+#' @rdname object-builder
 #' @param types character for types of resulting `tokens`` object
 #' @param padding logical indicating if the `tokens` object contains paddings
 build_tokens <- function(x, types, padding = FALSE,
@@ -37,6 +46,21 @@ build_tokens <- function(x, types, padding = FALSE,
 }
 
 #' @rdname object-builder
+rebuild_tokens <- function(x, attrs) {
+    
+    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    attr(x, "docvars") <- attrs[["docvars"]]
+    attr(x, "meta") <- attrs[["meta"]]
+    
+    # drop extra attribues for tokens_segment
+    try({attr(x, "docnum") <- NULL}, silent = TRUE)
+    try({attr(x, "pattern") <- NULL}, silent = TRUE)
+    
+    return(x)
+}
+
+
+#' @rdname object-builder
 build_corpus <- function(x, 
                            docvars = data.frame(), 
                            meta = list(), ...) {
@@ -47,6 +71,32 @@ build_corpus <- function(x,
               docvars = docvars,
               meta = make_meta("corpus", inherit = meta, ...))
 }
+
+#' @rdname object-builder
+rebuild_corpus <- function(x, attrs) {
+    
+    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    attr(x, "docvars") <- attrs[["docvars"]]
+    attr(x, "meta") <- attrs[["meta"]]
+    return(x)
+}
+
+#' @rdname object-builder
+build_dictionary2 <- function(x, 
+                              meta = list(), ...) {
+    
+    new("dictionary2", x,
+        meta = make_meta("dictionary2", inherit = meta, ...))
+
+}
+
+#' @rdname object-builder
+rebuild_dictionary2 <- function(x, attrs) {
+    
+    attr(x, "meta") <- attrs[["meta"]]
+    return(x)
+}
+
 
 
 upgrade_dfm <- function(x) {
@@ -123,20 +173,10 @@ upgrade_corpus <- function(x) {
     }
 }
 
-rebuild <- function(x, attrs) {
-    if (isS4(x)) {
-        x@meta <- attrs[["meta"]]
-        x@docvars <- attrs[["docvars"]]
-        x@Dimnames[[1]] <- attrs[["docvars"]][["docname_"]]
-    } else {
-        attr(x, "meta") <- attrs[["meta"]]
-        attr(x, "docvars") <- attrs[["docvars"]]
-        attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-        
-        # drop extra attribues for tokens_segment
-        try({attr(x, "docnum") <- NULL}, silent = TRUE)
-        try({attr(x, "pattern") <- NULL}, silent = TRUE)
-    }
-    return(x)
+upgrade_dictionary2 <- function(x) {
+    if (!is_pre2(x)) return(x)
+    attrs <- attributes(x)
+    build_dictionary2(x,
+                      separator = attrs[["concatenator"]],
+                      valuetype = "glob")
 }
-

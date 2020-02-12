@@ -723,7 +723,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
-        x <- rebuild(x, attrs)
+        x <- rebuild_tokens(x, attrs)
     } else {
     
         # Check for padding
@@ -759,7 +759,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
             }
         }
         Encoding(types(x)) <- "UTF-8"
-        x <- rebuild(x, attrs)
+        x <- rebuild_tokens(x, attrs)
     }
     return(x)
 }

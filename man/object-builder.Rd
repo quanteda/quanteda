@@ -2,11 +2,18 @@
 % Please edit documentation in R/object-builder.R
 \name{build_dfm}
 \alias{build_dfm}
+\alias{rebuild_dfm}
 \alias{build_tokens}
+\alias{rebuild_tokens}
 \alias{build_corpus}
+\alias{rebuild_corpus}
+\alias{build_dictionary2}
+\alias{rebuild_dictionary2}
 \title{Object compilers}
 \usage{
 build_dfm(x, features, docvars = data.frame(), meta = list(), ...)
+
+rebuild_dfm(x, attrs)
 
 build_tokens(
   x,
@@ -17,7 +24,15 @@ build_tokens(
   ...
 )
 
+rebuild_tokens(x, attrs)
+
 build_corpus(x, docvars = data.frame(), meta = list(), ...)
+
+rebuild_corpus(x, attrs)
+
+build_dictionary2(x, meta = list(), ...)
+
+rebuild_dictionary2(x, attrs)
 }
 \arguments{
 \item{docvars}{data.frame for document level variables}
@@ -25,6 +40,8 @@ build_corpus(x, docvars = data.frame(), meta = list(), ...)
 \item{meta}{list for meta fields}
 
 \item{...}{added to object meta fields}
+
+\item{attrs}{a list of attributes to be reassigned}
 
 \item{types}{character for types of resulting `tokens`` object}
 

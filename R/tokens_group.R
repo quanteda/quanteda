@@ -21,7 +21,7 @@ tokens_group <- function(x, groups = NULL, fill = FALSE) {
         groups <- droplevels(groups)
     result <- group_tokens(x, groups)
     attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups)
-    rebuild(result, attrs)
+    rebuild_tokens(result, attrs)
 }
 
 group_tokens <- function(x, groups) {
