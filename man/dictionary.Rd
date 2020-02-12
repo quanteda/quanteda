@@ -82,14 +82,14 @@ c(dict["christmas"], dict["country"])
 \dontrun{
 # import the Laver-Garry dictionary from Provalis Research
 dictfile <- tempfile()
-download.file("https://provalisresearch.com/Download/LaverGarry.zip", 
+download.file("https://provalisresearch.com/Download/LaverGarry.zip",
               dictfile, mode = "wb")
 unzip(dictfile, exdir = (td <- tempdir()))
 dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
 head(dfm(data_corpus_inaugural, dictionary = dictlg))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
-download.file("https://goo.gl/5gmwXq", tf <- tempfile())
+download.file("http://bit.ly/37cV95h", tf <- tempfile())
 dictliwc <- dictionary(file = tf, format = "LIWC")
 head(dfm(data_corpus_inaugural, dictionary = dictliwc))
 }

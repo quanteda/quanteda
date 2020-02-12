@@ -48,7 +48,7 @@ dict <- quanteda:::read_dict_lexicoder(
 dict <- quanteda:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
-# dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat", 
+# dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
 #                            encoding = "iso-8859-1")
 }
 
@@ -56,7 +56,7 @@ dict <- quanteda:::read_dict_liwc(
     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
 )
 
-dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd", 
+dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
                                                     package = "quanteda"))
 }
 \keyword{dictionary}

@@ -398,19 +398,19 @@ featfreq.dfm <- function(x) {
 #' @keywords dfm weighting
 #' @export
 dfm_tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                      base = 10, k = 0, threashold = 0, force = FALSE) {
+                      base = 10, k = 0, threshold = 0, force = FALSE) {
     UseMethod("dfm_tfidf")
 }
 
 #' @export
 dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                              base = 10, k = 0, threashold = 0, force = FALSE) {
+                              base = 10, k = 0, threshold = 0, force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_tfidf"))
 }
     
 #' @export
 dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                          base = 10, k = 0, threashold = 0, force = FALSE) {
+                          base = 10, k = 0, threshold = 0, force = FALSE) {
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
@@ -424,7 +424,7 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
         scheme = scheme_df, 
         base = base, 
         k = k,
-        threadhold = threashold
+        threahold = threshold
     )
     rebuild(x, attrs)
 }

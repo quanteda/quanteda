@@ -35,59 +35,36 @@ meta.default <- function(x, field = NULL, type = c("user", "object", "system", "
 meta.corpus <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
     if (is_pre2(x) && "metadata" %in% names(x))
         return(x[["metadata"]])
-    type <- match.arg(type)
-    result <- list()
-    if (type %in% c("user", "all"))
-        result <- c(result, attr(x, "meta")$user)
-    if (type %in% c("object", "all"))
-        result <- c(result, attr(x, "meta")$object)
-    if (type %in% c("system", "all"))
-        result <- c(result, attr(x, "meta")$system)
-    if (is.null(field)) {
-        return(result)
-    } else {
-        return(result[[field]])
-    }
+    select_meta(attr(x, "meta"), field, type)
 }
 
 #' @export
 meta.tokens <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
-    if (is_pre2(x)) 
-        return(NULL)
-    type <- match.arg(type)
-    result <- list()
-    if (type %in% c("user", "all"))
-        result <- c(result, attr(x, "meta")$user)
-    if (type %in% c("object", "all"))
-        result <- c(result, attr(x, "meta")$object)
-    if (type %in% c("system", "all"))
-        result <- c(result, attr(x, "meta")$system)
-    if (is.null(field)) {
-        return(result)
-    } else {
-        return(result[[field]])
-    }
+    if (is_pre2(x)) return(NULL)
+    select_meta(attr(x, "meta"), field, type)
 }
 
 #' @export
 meta.dfm <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
-    if (is_pre2(x)) 
-        return(NULL)
+    if (is_pre2(x)) return(NULL)
+    select_meta(x@meta, field, type)
+}
+
+select_meta <- function(x, field, type = c("user", "object", "system", "all")) {
     type <- match.arg(type)
     result <- list()
     if (type %in% c("user", "all"))
-        result <- c(result, x@meta$user)
+        result <- c(result, x$user)
     if (type %in% c("object", "all"))
-        result <- c(result, x@meta$object)
+        result <- c(result, x$object)
     if (type %in% c("system", "all"))
-        result <- c(result, x@meta$system)
+        result <- c(result, x$system)
     if (is.null(field)) {
         return(result)
     } else {
         return(result[[field]])
     }
 }
-
 
 # meta<-   -----------
 

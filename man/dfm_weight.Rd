@@ -23,7 +23,7 @@ dfm_tfidf(
   scheme_df = "inverse",
   base = 10,
   k = 0,
-  threashold = 0,
+  threshold = 0,
   force = FALSE
 )
 }

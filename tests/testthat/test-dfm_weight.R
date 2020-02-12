@@ -124,12 +124,8 @@ test_that("docfreq works when features have duplicated names (#829)", {
     mydfm <- dfm(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b e e f f f"))
     colnames(mydfm)[3] <- "b"
     expect_equal(
-        docfreq(mydfm, use.names = TRUE),
+        docfreq(mydfm),
         c(a = 2, b = 3, b = 1, d = 1, e = 3, f = 2)
-    )
-    expect_equal(
-        docfreq(mydfm, use.names = FALSE),
-        c(2, 3, 1, 1, 3, 2)
     )
 })
 
