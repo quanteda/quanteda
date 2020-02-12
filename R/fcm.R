@@ -64,22 +64,20 @@
 #'   type [fcm].
 #'   
 #' @references 
-#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
-#'   "[A
-#'    comparative study of word co-occurrence for term clustering in language 
-#'   model-based sentence retrieval.](https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf)" *Human Language Technologies: The 
-#'   2010 Annual Conference of the North American Chapter of the ACL*, Los 
-#'   Angeles, California, June 2010, 325-328.
+#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "[A comparative study of
+#'   word co-occurrence for term clustering in language model-based sentence
+#'   retrieval.](https://www.aclweb.org/anthology/N10-1046)" *Human Language
+#'   Technologies: The 2010 Annual Conference of the North American Chapter of
+#'   the ACL*, Los Angeles, California, June 2010, 325-328.
 #'   
-#'   Jurafsky, D. & Martin, J.H. (2018).
-#'   From *Speech and Language Processing: An Introduction to Natural Language Processing, 
-#'   Computational Linguistics, and Speech Recognition*. Draft of September 23, 2018 
-#'   (Chapter 6, Vector Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
+#'   Jurafsky, D. & Martin, J.H. (2018). From *Speech and Language Processing:
+#'   An Introduction to Natural Language Processing, Computational Linguistics,
+#'   and Speech Recognition*. Draft of September 23, 2018 (Chapter 6, Vector
+#'   Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
 #'   
-#'   Church, K. W. & P. Hanks (1990) .
-#'  [Word association norms,
-#'   mutual information, and lexicography](http://dl.acm.org/citation.cfm?id=89095). *Computational Linguistics*,
-#'   16(1), 22-29.
+#'  Church, K. W. & P. Hanks (1990). [Word association norms, mutual
+#'  information, and lexicography](http://dl.acm.org/citation.cfm?id=89095).
+#'  *Computational Linguistics*, 16(1), 22-29.
 #' @examples
 #' # see http://bit.ly/29b2zOA
 #' txt1 <- "A D A C E A D F E B A C E D"
