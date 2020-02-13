@@ -310,13 +310,11 @@ test_that("convert.corpus works", {
     )
     expect_warning(
         convert(corp, to = "data.frame", nothing = TRUE),
-        "Argument nothing not used.",
-        fixed = TRUE
+        "nothing argument is not used in.*",
     )
     expect_warning(
         convert(dfm(corp), to = "data.frame", nothing = TRUE),
-        "Argument nothing not used.",
-        fixed = TRUE
+        "nothing argument is not used in.*",
     )
 
     expect_identical(

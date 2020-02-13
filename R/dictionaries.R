@@ -9,8 +9,6 @@
 #' @slot .Data named list of mode character, where each element name is a
 #'   dictionary "key" and each element is one or more dictionary entry "values"
 #'   consisting of a pattern match
-#' @slot concatenator character object specifying space between multi-word
-#'   values
 #' @slot meta list of object metadata
 setClass("dictionary2", contains = "list",
          slots = c(
@@ -297,7 +295,8 @@ as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", to
 #' @export
 #' @noRd
 #' @method as.dictionary dictionary2
-as.dictionary.dictionary2 <- function(x) {
+as.dictionary.dictionary2 <- function(x, ...) {
+    unused_dots(...)
     upgrade_dictionary2(x)
 }
 

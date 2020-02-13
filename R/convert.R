@@ -87,7 +87,7 @@ convert.default <- function(x, to, ...) {
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
                                   "lsa", "matrix", "data.frame", "tripletlist"),
                         docvars = NULL, omit_empty = TRUE, ...) {
-    check_dots(list(...))
+    unused_dots(...)
     x <- as.dfm(x)
     to <- match.arg(to)
     attrs <- attributes(x)
@@ -144,7 +144,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' convert(corp, to = "data.frame")
 #' convert(corp, to = "json")
 convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...) {
-    check_dots(list(...))
+    unused_dots(...)
     to <- match.arg(to)
 
     if (to == "data.frame") {

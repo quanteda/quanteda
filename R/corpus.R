@@ -143,9 +143,9 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
         row.names(docvars) <- NULL
         if (any(is_system(names(docvars))))
             stop(message_error("docvars_invalid"))
-        docvar <- cbind(make_docvars(length(x), docnames), docvars)
+        docvars <- cbind(make_docvars(length(x), docnames), docvars)
     } else {
-        docvar <- make_docvars(length(x), docnames)
+        docvars <- make_docvars(length(x), docnames)
     }
     
     # normalize Unicode
@@ -165,7 +165,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    if (any(duplicated(docvar[["docid_"]]))) {
+    if (any(duplicated(docvars[["docid_"]]))) {
         unit <- "segments"    
     } else {
         unit <- "documents"
@@ -173,7 +173,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     build_corpus(
         x, 
         unit = unit,
-        docvars = docvar,
+        docvars = docvars,
         meta = list("user" = meta)
     )
 }

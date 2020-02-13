@@ -717,13 +717,13 @@ test_that("dfm warns of argument not used", {
     mx <- dfm(toks)
 
     expect_warning(dfm(txt, xxxxx = "something", yyyyy = "else"),
-                   "Arguments xxxxx, yyyyy not used")
+                   "^xxxxx, yyyyy arguments are not used")
     expect_warning(dfm(corp, xxxxx = "something", yyyyy = "else"),
-                   "Arguments xxxxx, yyyyy not used")
+                   "^xxxxx, yyyyy arguments are not used")
     expect_warning(dfm(toks, xxxxx = "something", yyyyy = "else"),
-                   "Arguments xxxxx, yyyyy not used")
+                   "^xxxxx, yyyyy arguments are not used")
     expect_warning(dfm(mx, xxxxx = "something", yyyyy = "else"),
-                   "Arguments xxxxx, yyyyy not used")
+                   "^xxxxx, yyyyy arguments are not used")
 
 })
 
@@ -1007,19 +1007,19 @@ test_that("format_sparsity works correctly", {
 test_that("unused argument warning only happens only once (#1509)", {
     expect_warning(
         dfm("some text", NOTARG = TRUE),
-        "^Argument NOTARG not used\\.$"
+        "^NOTARG argument is not used\\.$"
     )
     expect_warning(
         dfm(corpus("some text"), NOTARG = TRUE),
-        "^Argument NOTARG not used\\.$"
+        "^NOTARG argument is not used\\.$"
     )
     expect_warning(
         dfm(tokens("some text"), NOTARG = TRUE),
-        "^Argument NOTARG not used\\.$"
+        "^NOTARG argument is not used\\.$"
     )
     expect_warning(
         dfm(tokens("some text"), NOTARG = TRUE, NOTARG2 = FALSE),
-        "^Arguments NOTARG, NOTARG2 not used\\.$"
+        "^NOTARG, NOTARG2 arguments are not used\\.$"
     )
 })
 

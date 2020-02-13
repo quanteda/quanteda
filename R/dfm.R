@@ -223,7 +223,7 @@ dfm.tokens <- function(x,
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
         x <- tokens(x, ...)
     } else {
-        check_dots(list(...), names(formals("dfm")))
+        unused_dots(...)
     }
 
     if (tolower) {
@@ -322,9 +322,10 @@ dfm.dfm <- function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
+    unused_dots(...)
+    
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
-    check_dots(list(...))
     attrs <- attributes(x)
 
     if (!is.null(groups)) {

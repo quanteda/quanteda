@@ -174,7 +174,7 @@ textstat_lexdiv.dfm <- function(x,
                                 log.base = 10,
                                 ...) {
 
-    check_dots(list(...))
+    unused_dots(...)
     tokens_only_measures <-  c("MATTR", "MSTTR")
 
     x <- as.dfm(x)
@@ -220,7 +220,7 @@ textstat_lexdiv.tokens <-
              MSTTR_segment = 100L,
              ...) {
 
-    check_dots(list(...))
+    unused_dots(...)
     tokens_only_measures <-  c("MATTR", "MSTTR")
 
     # additional token handling

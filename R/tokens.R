@@ -215,7 +215,7 @@ tokens.tokens <-  function(x,
                            include_docvars = TRUE,
                            ...) {
 
-    check_dots(list(...), names(formals("tokens")))
+    unused_dots(...)
 
     x <- as.tokens(x)
     attrs <- attributes(x)
@@ -426,7 +426,7 @@ tokenize <- function(x,
                     meta = list(),
                     ...) {
 
-    check_dots(list(...), names(formals("tokens")))
+    unused_dots(...)
 
     what <- match.arg(what)
     ngrams <- as.integer(ngrams)

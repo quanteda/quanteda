@@ -175,17 +175,6 @@ escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
-# function to check dots arguments against a list of permissible arguments
-check_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) == 0) return()
-    args <- names(dots)
-    impermissible_args <-  setdiff(args, permissible_args)
-    if (length(impermissible_args))
-        warning("Argument", if (length(impermissible_args) > 1) "s " else " ",
-                paste(impermissible_args, collapse = ", "), " not used.",
-                noBreaks. = TRUE, call. = FALSE)
-}
-
 #' Print friendly object class not defined message
 #'
 #' Checks valid methods and issues a friendlier error message in case the method is
@@ -239,11 +228,9 @@ check_font <- function(font) {
 unused_dots <- function(...) {
     arg <- names(list(...))
     if (length(arg) == 1) {
-        warning(arg[1], " argument is not used in ",
-                sys.call(2)[1], "()", call. = FALSE)
+        warning(arg[1], " argument is not used.")
     } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used in ",
-                sys.call(2)[1], "()", call. = FALSE)
+        warning(paste0(arg, collapse = ", "), " arguments are not used.")
     }
 }
 

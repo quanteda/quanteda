@@ -335,7 +335,7 @@ test_that("test topfeatures default", {
 test_that("test new as.dictionary methods", {
     expect_error(
         as.dictionary(TRUE),
-        "as\\.dictionary\\(\\) only works on data\\.frame objects"
+        "as\\.dictionary\\(\\) only works on data\\.frame, dictionary2 objects"
     )   
 })
 

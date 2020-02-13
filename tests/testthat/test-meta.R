@@ -5,6 +5,7 @@ test_that("meta/meta<- works user data", {
     corp <- corpus(txt, docvars = data.frame(dv = 1:2))
     toks <- tokens(corp)
     dfmat <- dfm(toks)
+    dict <- dictionary(list("key1" = "aaa", "key2" = "bbb"))
     targetmeta3 <- list(usermeta1 = "test1", usermeta2 = "test2", usermeta3 = "test3")
     targetmeta2 <- list(usermeta1 = "test1", usermeta3 = "test3")
     
@@ -28,6 +29,14 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(dfmat), targetmeta3)
     meta(dfmat)[2] <- NULL
     expect_identical(meta(dfmat), targetmeta2)
+    
+    meta(dict, "usermeta1") <- "test1"
+    meta(dict)["usermeta2"] <- "test2"
+    meta(dict)$usermeta3    <- "test3"
+    expect_identical(meta(dict), targetmeta3)
+    meta(dict)[2] <- NULL
+    expect_identical(meta(dict), targetmeta2)
+    
 })
 
 test_that("meta.default produces expected error", {
