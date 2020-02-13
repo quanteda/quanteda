@@ -115,17 +115,17 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @param remove_unigram ignore single-word patterns if `TRUE`
 #' @seealso [pattern2id()]
 #' @keywords internal
-pattern2list <- function(pattern, types, valuetype, case_insensitive,
+pattern2list <- function(x, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
                          keep_nomatch = FALSE) {
 
-    if (is.dfm(pattern))
+    if (is.dfm(x))
         stop("dfm cannot be used as pattern")
 
-    if (is.collocations(pattern)) {
-        if (nrow(pattern) == 0) return(list())
-        temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
-        names(temp) <- pattern$collocation
+    if (is.collocations(x)) {
+        if (nrow(x) == 0) return(list())
+        temp <- stri_split_charclass(x$collocation, "\\p{Z}")
+        names(temp) <- x$collocation
         if (case_insensitive) {
             result <- pattern2id(temp, types, valuetype = "fixed", TRUE)
         } else {
@@ -134,23 +134,25 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
         }
         attr(result, "pattern") <- match(names(result), names(temp))
     } else {
-        if (length(pattern) == 0) return(list())
-        if (is.dictionary(pattern)) {
-            temp <- flatten_dictionary(pattern, levels)
+        if (length(x) == 0) return(list())
+        if (is.dictionary(x)) {
+            x <- as.dictionary(x)
+            attrs <- attributes(x)
+            temp <- flatten_dictionary(x, levels)
             key <- names(temp)
-            temp <- split_values(temp, pattern@concatenator, concatenator)
-        } else if (is.list(pattern)) {
-            temp <- pattern
-            names(temp) <- stri_c_list(pattern, " ")
+            temp <- split_values(temp, " ", concatenator)
+        } else if (is.list(x)) {
+            temp <- x
+            names(temp) <- stri_c_list(x, " ")
         } else {
-            temp <- as.list(pattern)
-            names(temp) <- pattern
+            temp <- as.list(x)
+            names(temp) <- x
         }
         if (remove_unigram)
             temp <- temp[lengths(temp) > 1] # drop single-word patterns
         result <- pattern2id(temp, types, valuetype, case_insensitive, keep_nomatch)
         attr(result, "pattern") <- match(names(result), names(temp))
-        if (is.dictionary(pattern))
+        if (is.dictionary(x))
             attr(result, "key") <- key
     }
     return(result)

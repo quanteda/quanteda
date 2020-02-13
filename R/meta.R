@@ -50,6 +50,12 @@ meta.dfm <- function(x, field = NULL, type = c("user", "object", "system", "all"
     select_meta(x@meta, field, type)
 }
 
+#' @export
+meta.dictionary2 <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
+    if (is_pre2(x)) return(NULL)
+    select_meta(x@meta, field, type)
+}
+
 select_meta <- function(x, field, type = c("user", "object", "system", "all")) {
     type <- match.arg(type)
     result <- list()
@@ -75,7 +81,7 @@ select_meta <- function(x, field, type = c("user", "object", "system", "all")) {
 #' @aliases "metacorpus<-"
 "meta<-" <- "metacorpus<-" <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
-    if (is.list(value) && length(names(value)) != length(value))
+        if (is.list(value) && length(names(value)) != length(value))
         stop("every element of the meta list must be named")
     UseMethod("meta<-")
 }
@@ -108,6 +114,16 @@ select_meta <- function(x, field, type = c("user", "object", "system", "all")) {
 
 #' @export
 `meta<-.dfm` <- function(x, field = NULL, value) {
+    if (is.null(field)) {
+        x@meta$user <- value
+    } else {
+        x@meta$user[[field]] <- value
+    }
+    return(x)
+}
+
+#' @export
+`meta<-.dictionary2` <- function(x, field = NULL, value) {
     if (is.null(field)) {
         x@meta$user <- value
     } else {
@@ -224,13 +240,13 @@ make_meta <- function(class, inherit = NULL, ...) {
         result$object <- make_meta_tokens(inherit$object, ...)
     } else if (class == "dfm") {
         result$object <- make_meta_dfm(inherit$object, ...)
+    } else if (class == "dictionary2") {
+        result$object <- make_meta_dictionary2(inherit, ...)
     }
+    
     if ("user" %in% names(inherit))
         result$user <- inherit$user
-    # comming soon...
-    # else if (class == "dictionary2") {
-    #   make_meta_dictionary2(inherit, ...)
-    #}
+
     return(result)
 }
 
@@ -285,6 +301,15 @@ make_meta_dfm <- function(inherit = NULL, ...) {
                            smoothing = NULL, threshold = NULL),
         "smooth" = 0
     )
+    update_meta(default, inherit, ...)
+}
+
+#' @rdname make_meta
+make_meta_dictionary2 <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    default <- list("valuetype" = "glob",
+                    "separator" = " ")
     update_meta(default, inherit, ...)
 }
 
