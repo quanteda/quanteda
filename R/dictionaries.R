@@ -1,6 +1,6 @@
 # class definition and class functions --------
 #' dictionary class objects and functions
-#' 
+#'
 #' The `dictionary2` class constructed by [dictionary()], and associated core
 #' class functions.
 #' @rdname dictionary-class
@@ -15,7 +15,7 @@ setClass("dictionary2", contains = "list",
              meta = "list"
          ),
          prototype = prototype(
-             meta = list(system = list(), 
+             meta = list(system = list(),
                          object = list(),
                          user = list())
              )
@@ -408,7 +408,7 @@ setMethod("[",
               x <- unclass(x)
               attrs <- attributes(x)
               is_category <- vapply(x[i], function(y) is.list(y), logical(1))
-              build_dictionary2(x[i][is_category], 
+              build_dictionary2(x[i][is_category],
                                 separator = field_object(attrs, "separator"),
                                 valuetype = field_object(attrs, "valuetype"))
           })
@@ -427,7 +427,7 @@ setMethod("[[",
               if (all(is_category == FALSE)) {
                   unlist(x[[i]], use.names = FALSE)
               } else {
-                  build_dictionary2(x[[i]][is_category], 
+                  build_dictionary2(x[[i]][is_category],
                                     separator = field_object(attrs, "separator"),
                                     valuetype = field_object(attrs, "valuetype"))
               }

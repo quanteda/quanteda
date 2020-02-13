@@ -91,7 +91,7 @@ type \link{fcm}.
 txt1 <- "A D A C E A D F E B A C E D"
 fcm(txt1, context = "window", window = 2)
 fcm(txt1, context = "window", count = "weighted", window = 3)
-fcm(txt1, context = "window", count = "weighted", window = 3, 
+fcm(txt1, context = "window", count = "weighted", window = 3,
              weights = c(3, 2, 1), ordered = TRUE, tri = FALSE)
 
 # with multiple documents
@@ -109,19 +109,17 @@ fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
 }
 \references{
-Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
-"\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language Technologies: The
-2010 Annual Conference of the North American Chapter of the ACL}, Los
-Angeles, California, June 2010, 325-328.
+Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "\href{https://www.aclweb.org/anthology/N10-1046}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language
+Technologies: The 2010 Annual Conference of the North American Chapter of
+the ACL}, Los Angeles, California, June 2010, 325-328.
 
-Jurafsky, D. & Martin, J.H. (2018).
-From \emph{Speech and Language Processing: An Introduction to Natural Language Processing,
-Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018
-(Chapter 6, Vector Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
+Jurafsky, D. & Martin, J.H. (2018). From \emph{Speech and Language Processing:
+An Introduction to Natural Language Processing, Computational Linguistics,
+and Speech Recognition}. Draft of September 23, 2018 (Chapter 6, Vector
+Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 
-Church, K. W. & P. Hanks (1990) .
-\href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms, mutual information, and lexicography}. \emph{Computational Linguistics},
-16(1), 22-29.
+Church, K. W. & P. Hanks (1990). \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms, mutual information, and lexicography}.
+\emph{Computational Linguistics}, 16(1), 22-29.
 }
 \author{
 Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)

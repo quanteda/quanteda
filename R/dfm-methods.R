@@ -133,12 +133,12 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
     featname <- colnames(x)
     if (ncol(x) > length(featname))
         featname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
-    
+
     if (is.null(docvars))
         docvars <- make_docvars(nrow(x), docname, FALSE)
-    if (is.null(meta)) 
+    if (is.null(meta))
         meta <- make_meta("dfm")
-    
+
     build_dfm(
         as(Matrix(x, sparse = TRUE), "dgCMatrix"),
         featname,

@@ -37,8 +37,8 @@ to sentences, and then back to documents (possibly after modifying the sentences
 }
 \examples{
 # simple example
-corp1 <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-                 textwo = "Premiere phrase.  Deuxieme phrase."), 
+corp1 <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
+                 textwo = "Premiere phrase.  Deuxieme phrase."),
                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
 summary(corp1)
 summary(corpus_reshape(corp1, to = "sentences"))
@@ -48,7 +48,7 @@ summary(corpus_reshape(corp1, to = "sentences"))
 corp2para <- corpus_reshape(corp2, to = "paragraphs")
 corp2para
 summary(corp2para, 50, showmeta = TRUE)
-## Note that Bush 2005 is recorded as a single paragraph because that text 
+## Note that Bush 2005 is recorded as a single paragraph because that text
 ## used a single \n to mark the end of a paragraph.
 }
 \keyword{corpus}

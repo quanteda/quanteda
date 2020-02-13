@@ -203,7 +203,7 @@ textstat_simil.dfm <- function(x, y = NULL, selection = NULL,
     if (!is.null(selection))
         .Deprecated(msg = "'selection' is deprecated. Use 'y' instead.")
     unused_dots(...)
-    
+
     x <- as.dfm(x)
     margin <- match.arg(margin)
     method <- match.arg(method)
@@ -317,7 +317,7 @@ textstat_dist.dfm <- function(x, y = NULL, selection = NULL,
                               p = 2, ...) {
     if (!is.null(selection))
         .Deprecated(msg = "'selection' is deprecated. Use 'y' instead.")
-    
+
     unused_dots(...)
     x <- as.dfm(x)
 

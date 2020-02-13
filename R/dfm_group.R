@@ -49,10 +49,10 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
-    
+
     x <- as.dfm(x)
     attrs <- attributes(x)
-    
+
     if (is.null(groups))
         groups <- docid(x)
 
@@ -69,7 +69,7 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
         groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
-    
+
     # remove NA groups
     x <- dfm_subset(x, !is.na(groups))
     groups <- groups[!is.na(groups)]
@@ -98,14 +98,6 @@ generate_groups <- function(x, groups, drop = FALSE) {
     return(groups)
 }
 
-
-# select docvar fields that have all the same values within groups
-# group_docvars <- function(x, group) {
-#     result <- x[match(levels(group), group), sapply(x, is_grouped, as.integer(group)), drop = FALSE]
-#     rownames(result) <- as.character(levels(group))
-#     return(result)
-# }
-
 # check if values are uniform within groups
 is_grouped <- function(x, group) {
     if (is.list(x)) {
@@ -119,7 +111,7 @@ is_grouped <- function(x, group) {
 
 # internal code to perform dfm compression and grouping
 # on features and/or documents
-group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE, 
+group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
                       use_docvars = TRUE) {
 
     if (!length(features) && !length(documents))
@@ -157,7 +149,7 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
     }
     build_dfm(
         sparseMatrix(i = i, j = j, x = x@x,
-                     dims = c(length(docname), length(featname))), 
+                     dims = c(length(docname), length(featname))),
         features = featname,
         unit = "documents",
         docvars = group_docvars(attrs[["docvars"]], documents),

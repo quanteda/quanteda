@@ -1,5 +1,5 @@
 #' Sort a dfm by frequency of one or more margins
-#' 
+#'
 #' Sorts a [dfm] by descending frequency of total features, total features
 #' in documents, or both.
 #' @param x Document-feature matrix created by [dfm()]
@@ -16,25 +16,25 @@
 #' head(dfmat)
 #' head(dfm_sort(dfmat))
 #' head(dfm_sort(dfmat, decreasing = FALSE, "both"))
-dfm_sort <- function(x, decreasing = TRUE, 
+dfm_sort <- function(x, decreasing = TRUE,
                      margin = c("features", "documents", "both")) {
   UseMethod("dfm_sort")
 }
 
 #' @export
-dfm_sort.default <- function(x, decreasing = TRUE, 
+dfm_sort.default <- function(x, decreasing = TRUE,
                              margin = c("features", "documents", "both")) {
   stop(friendly_class_undefined_message(class(x), "dfm_sort"))
 }
 
 #' @export
-dfm_sort.dfm <- function(x, decreasing = TRUE, 
+dfm_sort.dfm <- function(x, decreasing = TRUE,
                          margin = c("features", "documents", "both")) {
-  
+
   x <- as.dfm(x)
   if (!nfeat(x) || !ndoc(x)) return(x)
   margin <- match.arg(margin)
-  
+
   if (margin == "features") {
     x <- x[, order(colSums(x), decreasing = decreasing)]
   } else if (margin == "documents") {

@@ -12,16 +12,16 @@ NULL
 #'   `print_corpus_max_nchar` setting of [quanteda_options()]
 #' @method print corpus
 #' @export
-print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"), 
-                         max_nchar = quanteda_options("print_corpus_max_nchar"), 
-                         show_summary = quanteda_options("print_corpus_summary"), 
+print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc"),
+                         max_nchar = quanteda_options("print_corpus_max_nchar"),
+                         show_summary = quanteda_options("print_corpus_summary"),
                          ...) {
     unused_dots(...)
     x <- as.corpus(x)
-    
+
     docvars <- docvars(x)
     ndoc <- ndoc(x)
-    if (max_ndoc < 0) 
+    if (max_ndoc < 0)
         max_ndoc <- ndoc(x)
 
     if (show_summary) {
@@ -38,7 +38,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
         label <- paste0(names(x), " :")
         x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
         len <- stri_length(x)
-        if (max_nchar < 0) 
+        if (max_nchar < 0)
             max_nchar <- max(len)
         for (i in seq_along(label)) {
             cat(label[i], "\n", sep = "")
@@ -51,7 +51,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", 
+            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document",
                 if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
 
@@ -195,17 +195,15 @@ tail.corpus <- function(x, n = 6L, ...) {
     c2 <- as.corpus(c2)
     attrs1 <- attributes(c1)
     attrs2 <- attributes(c2)
-    
+
     if (length(intersect(docnames(c1), docnames(c2))))
-        stop("Cannot combine corpora with duplicated document names", 
+        stop("Cannot combine corpora with duplicated document names",
              call. = FALSE)
-    #if (!identical(attr(c1, "unit"), attr(c2, "unit")))
-    #    stop("Cannot combine corpora in different units")
-    
-    docvars <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE), 
+
+    docvars <- rbind_fill(get_docvars(c1, user = TRUE, system = TRUE),
                           get_docvars(c2, user = TRUE, system = TRUE))
     build_corpus(
-        c(as.character(c1), as.character(c2)), 
+        c(as.character(c1), as.character(c2)),
         unit = field_object(attrs1, "unit"),
         docvars = docvars,
         meta = field_user(attrs1)
@@ -253,20 +251,20 @@ c.corpus <- function(..., recursive = FALSE) {
 #' # return the text itself
 #' data_corpus_inaugural[["1793-Washington"]]
 `[.corpus` <- function(x, i) {
-    
+
     if (missing(i)) return(x)
     x <- as.corpus(x)
     attrs <- attributes(x)
-    
+
     index <- seq_along(docnames(x))
     names(index) <- docnames(x)
     index <- index[i]
     if (any(is.na(index)))
         stop("Subscript out of bounds")
-    
+
     build_corpus(
-        unclass(x)[index], 
-        docvars = subset_docvars(attrs[["docvars"]], index), 
+        unclass(x)[index],
+        docvars = subset_docvars(attrs[["docvars"]], index),
         meta = attrs[["meta"]]
     )
 }

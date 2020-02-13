@@ -32,7 +32,7 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
-    
+
     x <- as.tokens(x)
     if (length(size) > 1L)
         stop("Size must be a single integer")
@@ -44,12 +44,12 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
         stop("Overlap must be smaller than size")
     if (!use_docvars)
         docvars(x) <- NULL
-    
+
     attrs <- attributes(x)
     type <- types(x)
     result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
     if (any(duplicated(attr(result, "docnum")))) {
-        field_object(attrs, "unit") <- "segments"    
+        field_object(attrs, "unit") <- "segments"
     } else {
         field_object(attrs, "unit") <- "documents"
     }

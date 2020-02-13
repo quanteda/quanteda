@@ -73,14 +73,14 @@ head(tstat1, 10)
 # plot 20 most frequent words
 library("ggplot2")
 ggplot(tstat1[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
-    geom_point() + 
+    geom_point() +
     coord_flip() +
     labs(x = NULL, y = "Frequency")
 
 # plot relative frequencies by group
-dfmat3 <- data_corpus_inaugural \%>\% 
-    corpus_subset(Year > 2000) \%>\% 
-    dfm(remove = stopwords("english"), remove_punct = TRUE) \%>\% 
+dfmat3 <- data_corpus_inaugural \%>\%
+    corpus_subset(Year > 2000) \%>\%
+    dfm(remove = stopwords("english"), remove_punct = TRUE) \%>\%
     dfm_group(groups = "President") \%>\%
     dfm_weight(scheme = "prop")
 

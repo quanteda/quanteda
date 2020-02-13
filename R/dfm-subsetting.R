@@ -1,9 +1,9 @@
 subset_dfm <- function(x, i, j, ..., drop) {
-    
+
     if (missing(i) && missing(j)) return(x)
     x <- as.dfm(x)
     attrs <- attributes(x)
-    if (nargs() == 2) 
+    if (nargs() == 2)
         stop("Subscript out of bounds")
     if (!missing(i)) {
         index_row <- seq_len(nrow(x))
@@ -25,12 +25,12 @@ subset_dfm <- function(x, i, j, ..., drop) {
     } else if (missing(i) && !missing(j)) {
         x <- "["(as(x, "Matrix"), , j, ..., drop = FALSE)
     } else {
-        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
+        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
     }
-    
+
     if (!missing(i))
         attrs[["docvars"]] <- subset_docvars(attrs[["docvars"]], index_row)
-    
+
     build_dfm(
         x, colnames(x),
         docvars = attrs[["docvars"]],
@@ -44,7 +44,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
 #' @param ... additional arguments not used here
 #' @rdname dfm-class
 #' @export
-#' @examples 
+#' @examples
 #' # dfm subsetting
 #' dfmat <- dfm(tokens(c("this contains lots of stopwords",
 #'                   "no if, and, or but about it: lots",

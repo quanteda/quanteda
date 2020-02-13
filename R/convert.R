@@ -314,7 +314,7 @@ dtm2lda <- function(x, omit_empty = TRUE) {
                                                 as.integer(x$i))
     if (omit_empty) {
         docs[slam::row_sums(x) == 0] <- NULL
-    } else { 
+    } else {
         docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)),
                                              sum(slam::row_sums(x) == 0))
     }

@@ -52,8 +52,8 @@ head(data_corpus_inaugural$President)
 # assigning document variables to a corpus
 corp <- data_corpus_inaugural
 docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
-head(docvars(corp)) 
-corp$fullname <- paste(data_corpus_inaugural$FirstName, 
+head(docvars(corp))
+corp$fullname <- paste(data_corpus_inaugural$FirstName,
                        data_corpus_inaugural$President)
 tail(corp$fullname)
 

@@ -9,13 +9,13 @@
     if (is.null(field)) {
         if (is.null(value)) {
             x <- x[flag]
-        } else { 
+        } else {
             if (is.matrix(value))
                 value <- as.data.frame(value, stringsAsFactors = FALSE)
             if (is.data.frame(value)) {
                 if (nrow(value) != nrow(x))
                     stop(message_error("docvar_mismatch"))
-                if (!is.character(names(value)) || length(names(value)) != ncol(value) || 
+                if (!is.character(names(value)) || length(names(value)) != ncol(value) ||
                     any(is.na(names(value)))) {
                     stop(message_error("docvar_nocolname"), call. = FALSE)
                 }
@@ -89,7 +89,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
     if (n == 0) {
         result <- data.frame("docname_" = character(),
                              "docid_" = factor(),
-                             "segid_" = integer(), 
+                             "segid_" = integer(),
                               stringsAsFactors = FALSE)
     } else {
         if (unique) {
@@ -118,7 +118,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
 # internal function to duplicate or dedplicate docvar rows
 reshape_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
-    x <- x[i,, drop = FALSE]
+    x <- x[i, , drop = FALSE]
     if (is.numeric(i) && any(duplicated(i))) {
         x[["segid_"]] <- stats::ave(i == i, i, FUN = cumsum)
         x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
@@ -132,7 +132,7 @@ reshape_docvars <- function(x, i = NULL) {
 
 subset_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
-    x <- x[i,, drop = FALSE]
+    x <- x[i, , drop = FALSE]
     if (is.numeric(i) && any(duplicated(i))) {
         x[["docname_"]] <- paste0(x[["docname_"]], ".", stats::ave(i == i, i, FUN = cumsum))
     }
@@ -147,7 +147,7 @@ group_docvars <- function(x, group = NULL) {
     l <- rep(FALSE, length(x))
     for (i in seq_along(l)) {
         if (is_system(names(x)[i]) || is_grouped(x[[i]], group)) {
-            l[i] <- TRUE    
+            l[i] <- TRUE
         }
     }
     result <- x[match(levels(group), group), l, drop = FALSE]
@@ -159,14 +159,14 @@ group_docvars <- function(x, group = NULL) {
 
 # internal function to upgrade docvars to modern format
 upgrade_docvars <- function(x, docname = NULL) {
-    if (sum(is_system(colnames(x))) == 3) 
+    if (sum(is_system(colnames(x))) == 3)
         return(x)
     if (is.null(docname))
         docname <- rownames(x)
     if (is.null(x) || length(x) == 0) {
         result <- make_docvars(length(docname), docname, FALSE)
     } else {
-        result <- cbind(make_docvars(nrow(x), docname, FALSE), 
+        result <- cbind(make_docvars(nrow(x), docname, FALSE),
                         x[!is_system(names(x)) & !is_system_old(names(x))])
         if ("_document" %in% names(x))
             result[["docid_"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
@@ -190,24 +190,24 @@ is_system_old <- function(x) {
 # core docvars methods -------
 
 #' Get or set document-level variables
-#' 
+#'
 #' Get or set variables associated with a document in a [corpus],
 #' [tokens] or [dfm] object.
-#' @param x [corpus], [tokens], or [dfm] object whose 
+#' @param x [corpus], [tokens], or [dfm] object whose
 #'   document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @return `docvars` returns a data.frame of the document-level variables, 
-#'   dropping the second dimension to form a vector if a single docvar is 
+#' @return `docvars` returns a data.frame of the document-level variables,
+#'   dropping the second dimension to form a vector if a single docvar is
 #'   returned.
 #' @section Accessing or assigning docvars using the `$` operator:
 #' As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
 #' the `$` operator.  See [docvars-internal] for details.
-#' @examples 
+#' @examples
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
 #' tail(docvars(data_corpus_inaugural, "President"), 10)
 #' head(data_corpus_inaugural$President)
-#' 
+#'
 #' @export
 #' @keywords corpus
 docvars <- function(x, field = NULL) {
@@ -223,14 +223,14 @@ docvars.default <- function(x, field = NULL) {
 #' @export
     docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
-    select_docvars(attr(x, 'docvars'), field, user = TRUE, system = FALSE, drop = TRUE)
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.tokens <- function(x, field = NULL) {
     x <- as.tokens(x)
-    select_docvars(attr(x, 'docvars'), field, user = TRUE, system = FALSE, drop = TRUE)
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
@@ -243,29 +243,8 @@ docvars.dfm <- function(x, field = NULL) {
 #' @noRd
 #' @keywords internal
 docvars.kwic <- function(x) {
-    select_docvars(attr(x, 'docvars'), NULL)
+    select_docvars(attr(x, "docvars"), NULL)
 }
-
-# #' @noRd
-# #' @export
-# `$.corpus` <- function(x, value) {
-#     x <- as.corpus(x)
-#     select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
-# }
-# 
-# #' @noRd
-# #' @export
-# `$.tokens` <- function(x, value) {
-#     x <- as.tokens(x)
-#     select_docvars(attr(x, 'docvars'), value, user = TRUE, system = FALSE, drop = TRUE)
-# }
-# 
-# #' @noRd
-# #' @export
-# `$.dfm` <- function(x, value) {
-#     x <- as.dfm(x)
-#     select_docvars(x@docvars, value, user = TRUE, system = FALSE, drop = TRUE)
-# }
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable
@@ -276,17 +255,17 @@ docvars.kwic <- function(x) {
 #' matrix.  Recognizing that in some cases, you may need to modify or add
 #' document variables to downstream objects, the assignment operator is defined
 #' for [tokens] or [dfm] objects as well.  Use with caution.
-#' 
+#'
 #' @return `docvars<-` assigns `value` to the named `field`
-#' @examples 
+#' @examples
 #' # assigning document variables to a corpus
 #' corp <- data_corpus_inaugural
 #' docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
-#' head(docvars(corp)) 
-#' corp$fullname <- paste(data_corpus_inaugural$FirstName, 
+#' head(docvars(corp))
+#' corp$fullname <- paste(data_corpus_inaugural$FirstName,
 #'                        data_corpus_inaugural$President)
 #' tail(corp$fullname)
-#' 
+#'
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
     UseMethod("docvars<-")
@@ -321,7 +300,7 @@ docvars.kwic <- function(x) {
 
 access_dvs <- function(x, name) {
     if (!name %in% names(docvars(x)))
-        return(NULL) 
+        return(NULL)
     else
         return(docvars(x, name))
 }
@@ -338,7 +317,7 @@ assign_dvs <- function(x, name, value) {
 #' @param name a literal character string specifying a single [docvars] name
 #' @keywords corpus operators
 #' @export
-#' @examples 
+#' @examples
 #' # accessing or assigning docvars for a corpus using "$"
 #' data_corpus_inaugural$Year
 "$.corpus" <- access_dvs
@@ -347,7 +326,7 @@ assign_dvs <- function(x, name, value) {
 #' @method $<- corpus
 #' @param value a vector of document variable values to be assigned to `name`
 #' @export
-#' @examples 
+#' @examples
 #' data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
 #' data_corpus_inaugural$century
 "$<-.corpus" <- assign_dvs
@@ -357,8 +336,8 @@ assign_dvs <- function(x, name, value) {
 #' @keywords tokens operators
 #' @export
 #' @examples
-#' 
-#' # accessing or assigning docvars for tokens using "$" 
+#'
+#' # accessing or assigning docvars for tokens using "$"
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
 #' toks$Year
 "$.tokens" <- access_dvs
@@ -366,7 +345,7 @@ assign_dvs <- function(x, name, value) {
 #' @rdname docvars-internal
 #' @method $<- tokens
 #' @export
-#' @examples 
+#' @examples
 #' toks$Year <- 1991:1995
 #' toks$Year
 #' toks$nonexistent <- TRUE
@@ -378,8 +357,8 @@ assign_dvs <- function(x, name, value) {
 #' @keywords dfm operators
 #' @export
 #' @examples
-#' 
-#' # accessing or assigning docvars for a dfm using "$" 
+#'
+#' # accessing or assigning docvars for a dfm using "$"
 #' dfmat <- dfm(toks)
 #' dfmat$Year
 "$.dfm" <- access_dvs
@@ -387,7 +366,7 @@ assign_dvs <- function(x, name, value) {
 #' @rdname docvars-internal
 #' @method $<- dfm
 #' @export
-#' @examples 
+#' @examples
 #' dfmat$Year <- 1991:1995
 #' dfmat$Year
 #' dfmat$nonexistent <- TRUE

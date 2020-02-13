@@ -106,7 +106,7 @@
 #'             groups = ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"),
 #'                             "Govt", "Opposition"),
 #'             tolower = FALSE, verbose = TRUE)
-#' 
+#'
 dfm <- function(x,
                 tolower = TRUE,
                 stem = FALSE,
@@ -162,8 +162,8 @@ dfm.character <- function(x,
         tolower = tolower,
         stem = stem,
         select = select, remove = remove,
-        dictionary = dictionary, 
-        thesaurus = thesaurus, 
+        dictionary = dictionary,
+        thesaurus = thesaurus,
         valuetype = valuetype,
         case_insensitive = case_insensitive,
         groups = groups,
@@ -273,9 +273,9 @@ dfm.tokens <- function(x,
                            case_insensitive = case_insensitive,
                            verbose = verbose)
     }
-    
+
     if (stem) {
-        if (verbose) catm("   ... steming words\n")
+        if (verbose) catm("   ... stemming words\n")
         x <- tokens_wordstem(x)
     }
 
@@ -283,21 +283,21 @@ dfm.tokens <- function(x,
     type <- types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
-    
+
     # shift index for padding, if any
     index <- unlist(temp, use.names = FALSE)
     if (attr(temp, "padding")) {
         type <- c("", type)
         index <- index + 1L
     }
-    
+
     temp <-  sparseMatrix(j = index,
                           p = cumsum(c(1L, lengths(x))) - 1L,
                           x = 1L,
-                          dims = c(length(x), 
+                          dims = c(length(x),
                                    length(type)))
     build_dfm(
-        temp, 
+        temp,
         features = type,
         docvars = get_docvars(x, user = TRUE, system = TRUE),
         meta = attrs[["meta"]]
@@ -323,7 +323,7 @@ dfm.dfm <- function(x,
                     ...) {
 
     unused_dots(...)
-    
+
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
@@ -350,7 +350,7 @@ dfm.dfm <- function(x,
         # if ngrams > 1 and remove or selct is specified, then convert these
         # into a regex that will remove any ngram containing one of the words
         # if (!identical(field_object(attrs, "ngram"), 1L)) {
-        #     remove <- make_ngram_pattern(remove, valuetype, 
+        #     remove <- make_ngram_pattern(remove, valuetype,
         #                                  field_object(attrs, "concatenator"))
         #     valuetype <- "regex"
         # }
@@ -361,12 +361,12 @@ dfm.dfm <- function(x,
                         case_insensitive = case_insensitive,
                         verbose = verbose)
     }
-    
+
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-    
+
     language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose)
@@ -390,7 +390,7 @@ dfm.dfm <- function(x,
         catm("   ... created a",
              paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
              "sparse dfm\n   ... complete. \nElapsed time:",
-             format( (proc.time() - dfm_env$START_TIME)[3], digits = 3),
+             format((proc.time() - dfm_env$START_TIME)[3], digits = 3),
              "seconds.\n")
     return(x)
 }

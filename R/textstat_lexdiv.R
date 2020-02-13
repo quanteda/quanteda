@@ -5,39 +5,39 @@
 #' Calculate the lexical diversity of text(s).
 #' @details `textstat_lexdiv` calculates the lexical diversity of documents
 #'   using a variety of indices.
-#'   
+#'
 #' @details In the following formulas, \eqn{N} refers to the total number of
 #'   tokens, \eqn{V} to the number of types, and \eqn{f_v(i, N)} to the numbers
 #'   of types occurring \eqn{i} times in a sample of length \eqn{N}.
 #'   \describe{
-#'      
+#'
 #'   \item{`"TTR"`:}{The ordinary *Type-Token Ratio*: \deqn{TTR =
 #'   \frac{V}{N}}{TTR =  V / N}}
-#'   
-#'   \item{`"C"`:}{Herdan's *C* (Herdan, 1960, as cited in Tweedie & 
-#'   Baayen, 1998; sometimes referred to as *LogTTR*): \deqn{C = 
+#'
+#'   \item{`"C"`:}{Herdan's *C* (Herdan, 1960, as cited in Tweedie &
+#'   Baayen, 1998; sometimes referred to as *LogTTR*): \deqn{C =
 #'   \frac{\log{V}}{\log{N}}}{C = log(V) / log(N)}}
-#'   
-#'   \item{`"R"`:}{Guiraud's *Root TTR* (Guiraud, 1954, as cited in 
+#'
+#'   \item{`"R"`:}{Guiraud's *Root TTR* (Guiraud, 1954, as cited in
 #'   Tweedie & Baayen, 1998): \deqn{R = \frac{V}{\sqrt{N}}}{R = V / sqrt(N)}}
-#'   
-#'   \item{`"CTTR"`:}{Carroll's *Corrected TTR*: \deqn{CTTR = 
+#'
+#'   \item{`"CTTR"`:}{Carroll's *Corrected TTR*: \deqn{CTTR =
 #'   \frac{V}{\sqrt{2N}}}{CTTR = V / sqrt(2N)}}
-#'   
-#'   \item{`"U"`:}{Dugast's *Uber Index*  (Dugast, 1978, as cited in 
+#'
+#'   \item{`"U"`:}{Dugast's *Uber Index*  (Dugast, 1978, as cited in
 #'   Tweedie & Baayen, 1998): \deqn{U = \frac{(\log{N})^2}{\log{N} - \log{V}}}{U
 #'   = log(N)^2 / log(N) - log(V)}}
-#'   
-#'   \item{`"S"`:}{Summer's index: \deqn{S = 
+#'
+#'   \item{`"S"`:}{Summer's index: \deqn{S =
 #'   \frac{\log{\log{V}}}{\log{\log{N}}}}{S = log(log(V)) / log(log(N))}}
-#'   
+#'
 #'   \item{`"K"`:}{Yule's *K*  (Yule, 1944, as presented in Tweedie &
 #'   Baayen, 1998, Eq. 16) is calculated by: \deqn{K = 10^4 \times
 #'   \left[ -\frac{1}{N} + \sum_{i=1}^{V} f_v(i, N) \left( \frac{i}{N} \right)^2 \right] }}
 #'
 #'   \item{`"I"`:}{Yule's *I*  (Yule, 1944) is calculated by: \deqn{I = \frac{V^2}{M_2 - V}}
 #'   \deqn{M_2 = \sum_{i=1}^{V} i^2 * f_v(i, N)}}
-#'   
+#'
 #'   \item{`"D"`:}{Simpson's *D*  (Simpson 1949, as presented in
 #'   Tweedie & Baayen, 1998, Eq. 17) is calculated by:
 #'   \deqn{D = \sum_{i=1}^{V} f_v(i, N) \frac{i}{N} \frac{i-1}{N-1}}}
@@ -46,7 +46,7 @@
 #'   Tweedie & Baayen, 1998, Eq. 18) is calculated by:
 #'   \deqn{V_m = \sqrt{ \sum_{i=1}^{V} f_v(i, N) (i/N)^2 - \frac{i}{V} }}}
 #'
-#'   \item{`"Maas"`:}{Maas' indices (\eqn{a}, \eqn{\log{V_0}} & 
+#'   \item{`"Maas"`:}{Maas' indices (\eqn{a}, \eqn{\log{V_0}} &
 #'   \eqn{\log{}_{e}{V_0}}): \deqn{a^2 = \frac{\log{N} -
 #'   \log{V}}{\log{N}^2}}{a^2 = log(N) - log(V) / log(N)^2} \deqn{\log{V_0} =
 #'   \frac{\log{V}}{\sqrt{1 - \frac{\log{V}}{\log{N}}^2}}}{log(V0) = log(V) /
@@ -59,12 +59,12 @@
 #'   full text will be examined (see Maas, 1972, p. 67 ff. for details).  Note:
 #'   for the current method (for a dfm) there is no computation on separate
 #'   halves of the text.}
-#'   
+#'
 #'   \item{`"MATTR"`:}{The Moving-Average Type-Token Ratio (Covington &
 #'   McFall, 2010) calculates TTRs for a moving window of tokens from the first
 #'   to the last token, computing a TTR for each window. The MATTR is the mean
 #'   of the TTRs of each window.}
-#'   
+#'
 #'   \item{`"MSTTR"`:}{Mean Segmental Type-Token Ratio (sometimes referred
 #'   to as *Split TTR*) splits the tokens into segments of the given size,
 #'   TTR for each segment is calculated and the mean of these values returned.
@@ -73,7 +73,7 @@
 #'   windows of that size. Tokens at the end which do not make a full segment
 #'   are ignored.}
 #'   }
-#'   
+#'
 #' @param x an [dfm] or [tokens] input object for whose documents
 #'   lexical diversity will be computed
 #' @param measure a character vector defining the measure to compute
@@ -89,7 +89,7 @@
 #'   is FALSE to preserve such words as is, with the hyphens.
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logarithms)
-#' @param MATTR_window a numeric value defining the size of the moving window 
+#' @param MATTR_window a numeric value defining the size of the moving window
 #'   for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)
 #' @param MSTTR_segment a numeric value defining the size of the each segment
 #'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
@@ -97,40 +97,43 @@
 #' @author Kenneth Benoit and Jiong Wei Lua. Many of the formulas have been
 #'   reimplemented from functions written by Meik Michalke in the \pkg{koRpus}
 #'   package.
-#' @references 
-#'   Covington, M.A. & McFall, J.D. (2010). 
-#'   [Cutting the Gordian Knot: The 
-#'   Moving-Average Type-Token Ratio (MATTR)](https://doi.org/10.1080/09296171003643098). *Journal of Quantitative 
-#'   Linguistics*, 17(2), 94--100.
-#'   
-#'   Herdan, G. (1955). [A New Derivation 
-#'   and Interpretation of Yule's 'Characteristic' *K*](https://doi.org/10.1007/BF01587632). *Zeitschrift für 
+#' @references
+#'   Covington, M.A. & McFall, J.D. (2010). [Cutting the Gordian Knot: The
+#'   Moving-Average Type-Token Ratio
+#'   (MATTR)](https://doi.org/10.1080/09296171003643098). *Journal of
+#'   Quantitative Linguistics*, 17(2), 94--100.
+#'
+#'   Herdan, G. (1955). [A New Derivation and Interpretation of Yule's
+#'   'Characteristic' *K*](https://doi.org/10.1007/BF01587632). *Zeitschrift für
 #'   angewandte Mathematik und Physik*, 6(4): 332--334.
-#'   
-#'   Maas, H.D. (1972). Über den Zusammenhang zwischen Wortschatzumfang und 
-#'   Länge eines Textes. *Zeitschrift für Literaturwissenschaft und 
-#'   Linguistik*, 2(8), 73--96.
-#'   
-#'   McCarthy, P.M. &  Jarvis, S. (2007). [vocd: 
-#'   A Theoretical and Empirical Evaluation](https://doi.org/10.1177/0265532207080767). *Language Testing*, 24(4), 459--488.
-#'   
-#'   McCarthy, P.M. & Jarvis, S. (2010). [MTLD, 
-#'   vocd-D, and HD-D: A Validation Study of Sophisticated Approaches to Lexical Diversity 
-#'   Assessment](https://doi.org/10.3758/BRM.42.2.381). *Behaviour Research Methods*, 42(2), 381--392.
-#'   
-#'   Michalke, M. (2014) *koRpus: An R Package for Text Analysis*. 
-#'   R package version 0.05-5. <http://reaktanz.de/?c=hacking&s=koRpus>
-#'   
-#'   Simpson, E.H. (1949). [Measurement of Diversity](https://doi.org/10.1038/163688a0). 
-#'   *Nature*, 163: 688.
-#'   
-#'   Tweedie. F.J. and Baayen, R.H. (1998). [How 
-#'   Variable May a Constant Be? Measures of Lexical Richness in Perspective](https://doi.org/10.1023/A:1001749303137). *Computers and the 
+#'
+#'   Maas, H.D. (1972). Über den Zusammenhang zwischen Wortschatzumfang und
+#'   Länge eines Textes. *Zeitschrift für Literaturwissenschaft und Linguistik*,
+#'   2(8), 73--96.
+#'
+#'   McCarthy, P.M. &  Jarvis, S. (2007). [vocd: A Theoretical and Empirical
+#'   Evaluation](https://doi.org/10.1177/0265532207080767). *Language Testing*,
+#'   24(4), 459--488.
+#'
+#'   McCarthy, P.M. & Jarvis, S. (2010). [MTLD, vocd-D, and HD-D: A Validation
+#'   Study of Sophisticated Approaches to Lexical Diversity
+#'   Assessment](https://doi.org/10.3758/BRM.42.2.381). *Behaviour Research
+#'   Methods*, 42(2), 381--392.
+#'
+#'   Michalke, M. (2014) *koRpus: An R Package for Text Analysis*. R package
+#'   version 0.05-5. <http://reaktanz.de/?c=hacking&s=koRpus>
+#'
+#'   Simpson, E.H. (1949). [Measurement of
+#'   Diversity](https://doi.org/10.1038/163688a0). *Nature*, 163: 688.
+#'
+#'   Tweedie. F.J. and Baayen, R.H. (1998). [How Variable May a Constant Be?
+#'   Measures of Lexical Richness in
+#'   Perspective](https://doi.org/10.1023/A:1001749303137). *Computers and the
 #'   Humanities*, 32(5), 323--352.
-#'   
+#'
 #'   Yule, G. U. (1944)  *The Statistical Study of Literary Vocabulary.*
 #'   Cambridge: Cambridge University Press.
-#'   
+#'
 #' @return A data.frame of documents and their lexical diversity scores.
 #' @export
 #' @examples
@@ -141,11 +144,11 @@
 #'           pineapple shrimp, lemon shrimp, coconut shrimp, pepper shrimp, shrimp soup,
 #'           shrimp stew, shrimp salad, shrimp and potatoes, shrimp burger, shrimp
 #'           sandwich.")
-#' tokens(txt) %>% 
+#' tokens(txt) %>%
 #'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
-#' dfm(txt) %>% 
+#' dfm(txt) %>%
 #'     textstat_lexdiv(measure = c("TTR", "CTTR", "K"))
-#'     
+#'
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 2000))
 #' textstat_lexdiv(toks, c("CTTR", "TTR", "MATTR"), MATTR_window = 100)
 textstat_lexdiv <- function(x,
@@ -229,10 +232,7 @@ textstat_lexdiv.tokens <-
                 remove_symbols = remove_symbols)
 
     if (remove_punct) {
-        # this will be replaced with
-        # x <- tokens(x, remove_punct = TRUE)
-        # when we resolve #1445
-        x <- tokens_remove(x, "^\\p{P}+$", valuetype = "regex")
+        x <- tokens(x, remove_punct = TRUE)
     }
 
     # get and validate measures
@@ -268,8 +268,8 @@ textstat_lexdiv.tokens <-
 
 #' @name compute_lexdiv_stats
 #' @title Compute lexical diversity from a dfm or tokens
-#' @description 
-#' Internal functions used in [textstat_lexdiv()], for computing 
+#' @description
+#' Internal functions used in [textstat_lexdiv()], for computing
 #' lexical diversity measures on dfms or tokens objects
 #' @param x a [dfm] object
 #' @param measure a list of lexical diversity measures.
@@ -333,20 +333,20 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
         yule_i[is.infinite(yule_i)] <- 0
         temp[, I := yule_i]
     }
-    
+
     if ("D" %in% measure)
         temp[, D := vapply(ViN,
-                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ( (y$i - 1) / (y$n_tokens - 1)) ),
+                           function(y) sum(y$ViN * (y$i / y$n_tokens) * ((y$i - 1) / (y$n_tokens - 1))),
                            numeric(1))]
 
     if ("Vm" %in% measure)
         temp[, Vm := vapply(ViN,
-                            function(y) sqrt( sum(y$ViN * (y$i / y$n_tokens) ^ 2) - 1 / y$n_types[1] ),
+                            function(y) sqrt(sum(y$ViN * (y$i / y$n_tokens) ^ 2) - 1 / y$n_types[1]),
                             numeric(1))]
 
     if ("Maas" %in% measure) {
         measure <- c(measure, "lgV0", "lgeV0")
-        temp[, Maas := sqrt( (log(n_tokens, base = log.base) - log(n_types, base = log.base) ) /
+        temp[, Maas := sqrt((log(n_tokens, base = log.base) - log(n_types, base = log.base)) /
                              log(n_tokens, base = log.base) ^ 2)]
         temp[, lgV0 := log10(n_types) / sqrt(1 - (log10(n_types) / (log10(n_tokens) + 0)) ^ 2)]
         temp[, lgeV0 := log(n_types) / sqrt(1 - (log(n_types) / (log(n_tokens) + 0)) ^ 2)]
@@ -367,7 +367,7 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
 #' @rdname compute_lexdiv_stats
 #' @details `compute_lexdiv_tokens_stats` in an internal function that
 #'   computes the lexical diversity measures from a [dfm] input.
-#' @param MATTR_window a numeric value defining the size of the moving window 
+#' @param MATTR_window a numeric value defining the size of the moving window
 #'   for computation of the Moving-Average Type-Token Ratio (Covington & McFall, 2010)
 #' @param MSTTR_segment a numeric value defining the size of the each segment
 #'   for the computation of the the Mean Segmental Type-Token Ratio (Johnson, 1944)
@@ -391,7 +391,7 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR"),
 # specific functions for tokens-only moving average measures -----------
 
 #' Compute the Moving-Average Type-Token Ratio (MATTR)
-#' 
+#'
 #' From a tokens object, computes the Moving-Average Type-Token Ratio (MATTR)
 #' from Covington & McFall (2010), averaging all of the sequential moving
 #' windows of tokens of size `MATTR_window` across the text, returning the
@@ -420,7 +420,7 @@ compute_mattr <- function(x, MATTR_window = 100L) {
 }
 
 #' Compute the Mean Segmental Type-Token Ratio (MSTTR)
-#' 
+#'
 #' Compute the Mean Segmental Type-Token Ratio (Johnson 1944) for a tokens input.
 #' @param x input [tokens]
 #' @param segment_size the size of the segment
@@ -448,7 +448,7 @@ compute_msttr <- function(x, MSTTR_segment) {
 # additional utility functions ------------
 
 #' Split a dfm's hyphenated features into constituent parts
-#' 
+#'
 #' Takes a dfm that contains features with hyphenated words, such as
 #' "split-second" and turns them into features that split the elements
 #' in the same was as `tokens(x, remove_hyphens = TRUE)` would have done.
@@ -476,8 +476,7 @@ dfm_split_hyphenated_features <- function(x) {
 
     # combine dfms and suppress duplicated feature name warning
     result <- suppressWarnings(cbind(x[, -hyphenated_index], splitdfm))
-    
+
     # compress features to combine same-named features
     dfm_compress(result, margin = "features")
 }
-
