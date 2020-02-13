@@ -321,11 +321,11 @@ test_that("unused argument warnings for tokens work as expected", {
     )
     expect_warning(
         tokens(c(d1 = "This: punctuation"), notarg1 = TRUE),
-        "^Argument notarg1 not used\\."
+        "^notarg1 argument is not used"
     )
     expect_warning(
         tokens(c(d1 = "This: punctuation"), notarg1 = TRUE, notarg2 = FALSE),
-        "^Arguments notarg1, notarg2 not used\\."
+        "^notarg1, notarg2 arguments are not used\\."
     )
 
 })
@@ -658,9 +658,9 @@ test_that("types<- with wrong value generates error", {
 })
 
 test_that("tokens.tokens warns about unused arguments", {
-    expect_warning(fixed = TRUE,
+    expect_warning(
         tokens(tokens("one two three"), notanarg = TRUE),
-        "Argument notanarg not used."
+        "^notanarg argument is not used"
     )
 })
 
