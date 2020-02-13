@@ -182,6 +182,11 @@ test_that("deprecated remove_ arguments work", {
         "'remove_hyphens' is deprecated, use 'split_hyphens' instead.",
         fixed = TRUE
     )
+    expect_warning(
+        tokens(tokens(txt, what = "word"), remove_hyphens = TRUE),
+        "'remove_hyphens' is deprecated, use 'split_hyphens' instead.",
+        fixed = TRUE
+    )
 })
 
 test_that("remove_punct and remove_twitter interact correctly, #607", {
@@ -202,7 +207,6 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
 })
 
 test_that("+ operator works with tokens", {
-
     txt1 <- c(d1 = "This is sample document one.",
               d2 = "Here is the second sample document.")
     txt2 <- c(d3 = "And the third document.")
@@ -212,6 +216,11 @@ test_that("+ operator works with tokens", {
         length(attr(toks_added, "types"))
     )
     expect_equal(ndoc(toks_added), 3)
+    
+    expect_error(
+        tokens(txt1, what = "word") + tokens(txt2, what = "sentence"),
+        "Cannot combine tokens in different tokenization units"
+    )
 })
 
 test_that("+ works with empty padded tokens (#1695)", {
@@ -939,4 +948,12 @@ test_that("tokens printing works", {
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
     )
+})
+
+test_that("tokens.list() works", {
+    lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    expect_identical(as.list(tokens(lis)), lis)
+    expect_identical(as.list(tokens(lis, split_hyphens = TRUE)), 
+                     list(d1 = c("one", "two", "-", "three", "@test"), 
+                          d2 = c("four", ".")))
 })
