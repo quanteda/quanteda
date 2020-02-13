@@ -1,5 +1,5 @@
 #' Randomly sample documents or features from a dfm
-#' 
+#'
 #' Sample randomly from a dfm object, from documents or features.
 #' @param x the [dfm] object whose documents or features will be sampled
 #' @param size a positive number, the number of documents or features to select.
@@ -11,8 +11,8 @@
 #' @param margin dimension (of a [dfm]) to sample: can be `documents` or
 #'   `features`
 #' @export
-#' @return A dfm object with number of documents or features equal to `size`, drawn 
-#'   from the dfm `x`.  
+#' @return A dfm object with number of documents or features equal to `size`, drawn
+#'   from the dfm `x`.
 #' @seealso [sample]
 #' @keywords dfm
 #' @examples

@@ -1,5 +1,5 @@
 #' Virtual class "dfm" for a document-feature matrix
-#' 
+#'
 #' The dfm class of object is a type of [Matrix-class][Matrix::Matrix-class] object with
 #' additional slots, described below.  \pkg{quanteda} uses two subclasses of the
 #' `dfm` class, depending on whether the object can be represented by a
@@ -23,13 +23,13 @@
 #' @keywords internal dfm
 setClass("dfm",
          slots = c(
-                   # weightTf = "list", weightDf = "list", 
+                   # weightTf = "list", weightDf = "list",
                    # smooth = "numeric", unit = "character",
-                   # ngrams = "integer", skip = "integer", 
+                   # ngrams = "integer", skip = "integer",
                    # concatenator = "character", version = "integer",
                    docvars = "data.frame",
                    meta = "list"),
-         prototype = list(Dim = integer(2), 
+         prototype = list(Dim = integer(2),
                           Dimnames = list(docs = character(), features = character()),
                           docvars = data.frame(row.names = integer()),
                           meta = list(system = list(), object = list(), user = list())),
@@ -50,28 +50,28 @@ setMethod("t",
 #'   the calculations
 #' @param dims ignored
 #' @export
-setMethod("colSums", 
+setMethod("colSums",
           signature = (x = "dfm"),
           function(x, ...) Matrix::colSums(as(x, "dgCMatrix"), ...))
 
 #' @method rowSums dfm
 #' @rdname dfm-class
 #' @export
-setMethod("rowSums", 
+setMethod("rowSums",
           signature = (x = "dfm"),
           function(x, ...) Matrix::rowSums(as(x, "dgCMatrix"), ...))
 
 #' @method colMeans dfm
 #' @rdname dfm-class
 #' @export
-setMethod("colMeans", 
+setMethod("colMeans",
           signature = (x = "dfm"),
           function(x, ...) Matrix::colMeans(as(x, "dgCMatrix"), ...))
 
 #' @method rowSums dfm
 #' @rdname dfm-class
 #' @export
-setMethod("rowMeans", 
+setMethod("rowMeans",
           signature = (x = "dfm"),
           function(x, ...) Matrix::rowMeans(as(x, "dgCMatrix"), ...))
 
@@ -102,7 +102,7 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
 
 
 #' Coerce a dfm to a matrix or data.frame
-#' 
+#'
 #' Methods for coercing a [dfm] object to a matrix or data.frame object.
 #' @rdname as.matrix.dfm
 #' @param x dfm to be coerced
@@ -113,14 +113,14 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
 #' @examples
 #' # coercion to matrix
 #' as.matrix(data_dfm_lbgexample[, 1:10])
-#' 
+#'
 as.matrix.dfm <- function(x, ...) {
     as(x, "matrix")
 }
 
 
 #' Convert a dfm to a data.frame
-#' 
+#'
 #' Deprecated function to convert a dfm into a data.frame.
 #' Recommended that you use `convert(x, to = "data.frame")` instead.
 #' @param document optional first column of mode `character` in the
@@ -137,7 +137,7 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
     .Deprecated("convert(x, to = \"data.frame\")")
     if (!(is.character(document) || is.null(document)))
         stop("document must be character or NULL")
-    df <- data.frame(as.matrix(x), row.names = row.names, 
+    df <- data.frame(as.matrix(x), row.names = row.names,
                      check.names = check.names)
     if (!is.null(document)) df <- cbind(document, df, stringsAsFactors = FALSE)
     df
@@ -145,10 +145,10 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
 
 
 #' Combine dfm objects by Rows or Columns
-#' 
-#' Combine a [dfm] with another dfm, or numeric, or matrix object, 
+#'
+#' Combine a [dfm] with another dfm, or numeric, or matrix object,
 #' returning a dfm with the combined documents or features, respectively.
-#' 
+#'
 #' @param ... [dfm], numeric, or matrix  objects to be joined column-wise
 #'   (`cbind`) or row-wise (`rbind`) to the first.  Numeric objects
 #'   not confirming to the row or column dimension will be recycled as normal.
@@ -162,7 +162,7 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
 #' @export
 #' @method cbind dfm
 #' @keywords internal dfm
-#' @examples 
+#' @examples
 #' # cbind() for dfm objects
 #' (dfmat1 <- dfm(c("a b c d", "c d e f")))
 #' (dfmat2 <- dfm(c("a b", "x y z")))
@@ -171,33 +171,33 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
 #' cbind(100, dfmat1)
 #' cbind(dfmat1, matrix(c(101, 102), ncol = 1))
 #' cbind(matrix(c(101, 102), ncol = 1), dfmat1)
-#' 
+#'
 cbind.dfm <- function(...) {
-    
+
     args <- list(...)
     names <- names(args) # for non-dfm objects
-    
-    if (!any(vapply(args, is.dfm, logical(1)))) 
+
+    if (!any(vapply(args, is.dfm, logical(1))))
         stop("at least one input object must be a dfm")
 
     if (length(args) == 1) return(args[[1]])
-    
+
     x <- args[[1]]
     y <- args[[2]]
-    
+
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
-        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), 
-                           dimnames = list(docs = docnames(y), 
+        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y),
+                           dimnames = list(docs = docnames(y),
                                            features = names[1])))
     }
 
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
-        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), 
-                           dimnames = list(docs = docnames(x), 
+        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x),
+                           dimnames = list(docs = docnames(x),
                                            features = names[2])))
     }
 
@@ -208,9 +208,9 @@ cbind.dfm <- function(...) {
 
     # only issue warning if these did not come from added feature names
     if (length(intersect(colnames(x), colnames(y))))
-        warning("cbinding dfms with overlapping features", 
+        warning("cbinding dfms with overlapping features",
                 call. = FALSE)
-    
+
     attrs <- attributes(x)
     result <- build_dfm(
         Matrix::cbind2(x, y),
@@ -218,14 +218,13 @@ cbind.dfm <- function(...) {
         docvars = attrs[["docvars"]],
         meta = attrs[["meta"]]
     )
-    
+
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- cbind(result, args[[i]])
         }
     }
     return(result)
-
 }
 
 #' @rdname cbind.dfm
@@ -237,8 +236,8 @@ cbind.dfm <- function(...) {
 #'   currently preserved.
 #' @export
 #' @method rbind dfm
-#' @examples 
-#' 
+#' @examples
+#'
 #' # rbind() for dfm objects
 #' (dfmat1 <- dfm(c(doc1 = "This is one sample text sample.")))
 #' (dfmat2 <- dfm(c(doc2 = "One two three text text.")))
@@ -246,7 +245,7 @@ cbind.dfm <- function(...) {
 #' rbind(dfmat1, dfmat2)
 #' rbind(dfmat1, dfmat2, dfmat3)
 rbind.dfm <- function(...) {
-    
+
     args <- list(...)
     if (length(args) == 1) return(args[[1]])
 
@@ -263,7 +262,7 @@ rbind.dfm <- function(...) {
         docvars = make_docvars(nrow(x) + nrow(y), c(docnames(x), docnames(y)), unique = FALSE),
         meta = attrs[["meta"]]
     )
-    
+
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- rbind(result, args[[i]])

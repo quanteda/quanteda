@@ -3,8 +3,8 @@
 #' Creates a corpus object from available sources.  The currently available
 #' sources are:
 #' \itemize{
-#' \item a [character] vector, consisting of one document per 
-#' element; if the elements are named, these names will be used as document 
+#' \item a [character] vector, consisting of one document per
+#' element; if the elements are named, these names will be used as document
 #' names.
 #' \item a [data.frame] (or a \pkg{tibble} `tbl_df`), whose default
 #' document id is a variable identified by `docid_field`; the text of the
@@ -41,15 +41,15 @@
 #' @return A [corpus-class] class object containing the original texts,
 #'   document-level variables, document-level metadata, corpus-level metadata,
 #'   and default settings for subsequent processing of the corpus.
-#' 
+#'
 #'   For \pkg{quanteda} >= 2.0, this is a specially classed character vector. It
 #'   has many additional attributes but **you should not access these
 #'   attributes directly**, especially if you are another package author. Use the
 #'   extractor and replacement functions instead, or else your code is not only
 #'   going to be uglier, but also likely to break should the internal structure
-#'   of a corpus object change.  Using the accessor and replacement functions 
+#'   of a corpus object change.  Using the accessor and replacement functions
 #'   ensures that future code to manipulate corpus objects will continue to work.
-#' @seealso [corpus-class], [docvars()], 
+#' @seealso [corpus-class], [docvars()],
 #'   [meta()], [texts()], [ndoc()],
 #'   [docnames()]
 #' @details The texts and document variables of corpus objects can also be
@@ -95,14 +95,7 @@
 #' kw <- kwic(data_corpus_inaugural, "southern")
 #' summary(corpus(kw))
 corpus <- function(x, ...) {
-    # trap old usage of metacorpus
-    #dots <- list(...)
-    #if ("metacorpus" %in% names(dots)) {
-    #    names(dots)[which(names(dots) == "metacorpus")] <- "meta"
-    #    do.call(corpus, c(list(x = x), dots))
-    #} else {
     UseMethod("corpus")
-    #}
 }
 
 #' @rdname corpus
@@ -114,7 +107,7 @@ corpus.default <- function(x, ...) {
 
 #' @rdname corpus
 #' @export
-corpus.corpus <- function(x, docnames = quanteda::docnames(x), 
+corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           docvars = quanteda::docvars(x),
                           meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
@@ -125,12 +118,12 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, 
+corpus.character <- function(x, docnames = NULL, docvars = NULL,
                              meta = list(), unique_docnames = TRUE, ...) {
-    
+
     unused_dots(...)
     x[is.na(x)] <- ""
-    
+
     if (!is.null(docnames)) {
         if (length(docnames) != length(x))
             stop(message_error("docnames_mismatch"))
@@ -147,31 +140,31 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     } else {
         docvars <- make_docvars(length(x), docnames)
     }
-    
+
     # normalize Unicode
     x <- stri_trans_nfc(x)
-    
+
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
-                                c("\u201C", "\u201D", "\u201F", 
+                                c("\u201C", "\u201D", "\u201F",
                                   "\u2018", "\u201B", "\u2019"),
                                 c("\"", "\"", "\"",
                                   "\'", "\'", "\'"), vectorize_all = FALSE)
-    
+
     # replace all hyphens with simple hyphen
     x <- stri_replace_all_regex(x, "\\p{Pd}", "-")
-    
+
     # normalize EOL
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
-    
+
     if (any(duplicated(docvars[["docid_"]]))) {
-        unit <- "segments"    
+        unit <- "segments"
     } else {
         unit <- "documents"
     }
     build_corpus(
-        x, 
+        x,
         unit = unit,
         docvars = docvars,
         meta = list("user" = meta)
@@ -186,13 +179,13 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", 
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                               meta = list(), unique_docnames = TRUE, ...) {
-    
+
     unused_dots(...)
     # coerce data.frame variants to data.frame - for #1232
     x <- as.data.frame(x)
-    
+
     text_index <- 0
     if (length(text_field) != 1)
         stop("text_field must refer to a single column")
@@ -205,7 +198,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
         stop("text_field column not found or invalid")
     if (!is.character(x[[text_index]]))
         stop("text_field must refer to a character mode column")
-    
+
     docid_index <- 0
     if (length(docid_field) != 1)
         stop("docid_field must refer to a single column")
@@ -219,7 +212,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
         }
         if (is.na(docid_index)) {
             if (identical(docid_field, "doc_id")) {
-                if (is.character(attr(x, "row.names"))) { 
+                if (is.character(attr(x, "row.names"))) {
                     docname <- rownames(x)
                 } else {
                     docname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
@@ -232,16 +225,16 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
             docname <- as.character(x[[docid_index]])
         }
     }
-    
+
     # detect missing or NA in names - for #1388
     is_empty <- (!nzchar(names(x)) | is.na(names(x)))
     docvars <- x[c(docid_index, text_index) * -1]
     rownames(docvars) <- NULL
-    
+
     is_empty <- is_empty[c(docid_index, text_index) * -1]
     if (any(is_empty))
         names(docvars)[is_empty] <- paste0("V", seq(length(docvars))[is_empty])
-    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname, 
+    result <- corpus(x[[text_index]], docvars = docvars, docnames = docname,
                      meta = meta, unique_docnames = unique_docnames)
     meta_system(result, "source") <- "data.frame"
     return(result)
@@ -255,27 +248,27 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #'   therefore being twice the number of rows in the kwic.
 #' @param extract_keyword logical; if  `TRUE`, save the keyword matching
 #'   `pattern` as a new docvar `keyword`
-#' @examples 
+#' @examples
 #' # from a kwic
 #' kw <- kwic(data_char_sampletext, "econom*", separator = "",
 #'            remove_separators = FALSE) # keep original separators
 #' summary(corpus(kw))
 #' summary(corpus(kw, split_context = FALSE))
 #' texts(corpus(kw, split_context = FALSE))
-#' 
+#'
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
-    
+
     unused_dots(...)
     class(x) <- "data.frame"
-    
+
     if (split_context) {
-        pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], 
+        pre <- corpus(x[, c("docname", "from", "to", "pre", "keyword")],
                       docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = FALSE)
         docvars(pre, "context") <- "pre"
         docnames(pre) <- paste0(docnames(pre), ".pre")
-        
-        post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], 
+
+        post <- corpus(x[, c("docname", "from", "to", "post", "keyword")],
                        docid_field = "docname", text_field = "post",
                        meta = meta, unique_docnames = FALSE)
         docvars(post, "context") <- "post"
@@ -288,7 +281,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
     }
-    
+
     meta_system(result, "source") <- "kwic"
     return(result)
 }
@@ -296,13 +289,13 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
 #' @rdname corpus
 #' @export
 corpus.Corpus <- function(x, ...) {
-    
+
     unused_dots(...)
-    
+
     if (inherits(x, what = "VCorpus")) {
         x <- unclass(x)
         docs <- x$content
-        
+
         txt <- character()
         docvars <- data.frame()
         for (i in seq_along(docs)) {
@@ -316,7 +309,7 @@ corpus.Corpus <- function(x, ...) {
             docvars <- rbind_fill(docvars, as.data.frame(meta, stringsAsFactors = FALSE))
         }
         names(txt) <- names(docs)
-        
+
     } else if (inherits(x, what = "SimpleCorpus")) {
         x <- unclass(x)
         txt <- x$content
