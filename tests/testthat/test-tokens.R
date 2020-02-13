@@ -957,3 +957,92 @@ test_that("tokens.list() works", {
                      list(d1 = c("one", "two", "-", "three", "@test"), 
                           d2 = c("four", ".")))
 })
+
+test_that("tokens.character(x, padding = TRUE) works", {
+    txt <- c(doc1 = "One 2, £ https://qunteda.org one-two.")
+    
+    # punct
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_punct = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "2", "", "£", "https://qunteda.org", "one-two", ""))
+    )
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_punct = TRUE, padding = FALSE)),
+        list(doc1 = c("One", "2", "£", "https://qunteda.org", "one-two"))
+    )
+    
+    # symbols
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_symbols = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "2", ",", "", "https://qunteda.org", "one-two", "."))
+    )
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_symbols = TRUE, padding = FALSE)),
+        list(doc1 = c("One", "2", ",", "https://qunteda.org", "one-two", "."))
+    )
+    
+    # numbers
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_numbers = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "", ",", "£", "https://qunteda.org", "one-two", "."))
+    )
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_numbers = TRUE, padding = FALSE)),
+        list(doc1 = c("One", ",", "£", "https://qunteda.org", "one-two", "."))
+    )
+
+    # url
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_url = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "2", ",", "£", "", "one-two", "."))
+    )
+    expect_identical(
+        as.list(tokens(txt, what = "word", remove_url = TRUE, padding = FALSE)),
+        list(doc1 = c("One", "2", ",", "£", "one-two", "."))
+    )
+})
+
+test_that("tokens.tokens(x, padding = TRUE) works", {
+    txt <- c(doc1 = "One 2, £ https://qunteda.org one-two.")
+    toks <- tokens(txt)
+    
+    # punct
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_punct = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "2", "", "£", "https://qunteda.org", "one-two", ""))
+    )
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_punct = TRUE, padding = FALSE)),
+        list(doc1 = c("One", "2", "£", "https://qunteda.org", "one-two"))
+    )
+    
+    # symbols
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_symbols = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "2", ",", "", "https://qunteda.org", "one-two", "."))
+    )
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_symbols = TRUE, padding = FALSE)),
+        list(doc1 = c("One", "2", ",", "https://qunteda.org", "one-two", "."))
+    )
+    
+    # numbers
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_numbers = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "", ",", "£", "https://qunteda.org", "one-two", "."))
+    )
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_numbers = TRUE, padding = FALSE)),
+        list(doc1 = c("One", ",", "£", "https://qunteda.org", "one-two", "."))
+    )
+
+    # url
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_url = TRUE, padding = TRUE)),
+        list(doc1 = c("One", "2", ",", "£", "", "one-two", "."))
+    )
+    expect_identical(
+        as.list(tokens(toks, what = "word", remove_url = TRUE, padding = FALSE)),
+        list(doc1 = c("One", "2", ",", "£", "one-two", "."))
+    )
+})

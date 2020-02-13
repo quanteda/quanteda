@@ -1,4 +1,4 @@
-# main tokens functions ----------
+# tokens() ----------
 
 #' Construct a tokens object
 #'
@@ -40,6 +40,7 @@
 #'   `"self-aware"` becomes `c("self", "-", "aware")`
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
+#' @inheritParams tokens_select
 #' @param verbose if `TRUE`, print timing messages to the console
 #' @param ... used to pass arguments among the functions
 #' @section Details:
@@ -140,6 +141,7 @@ tokens <-  function(x,
                     split_tags = FALSE,
                     split_hyphens = FALSE,
                     include_docvars = TRUE,
+                    padding = FALSE,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
@@ -174,6 +176,7 @@ tokens.list <- function(x,
                         split_tags = FALSE,
                         split_hyphens = FALSE,
                         include_docvars = TRUE,
+                        padding = FALSE,
                         verbose = quanteda_options("verbose"),
                         ...) {
     tokens(as.tokens(x),
@@ -201,6 +204,7 @@ tokens.character <- function(x,
                              split_tags = FALSE,
                              split_hyphens = FALSE,
                              include_docvars = TRUE,
+                             padding = FALSE,
                              verbose = quanteda_options("verbose"),
                              ...) {
     tokens(corpus(x),
@@ -213,6 +217,7 @@ tokens.character <- function(x,
            split_tags = split_tags,
            split_hyphens = split_hyphens,
            include_docvars = include_docvars,
+           padding = padding,
            verbose = verbose,
            ...)
 }
@@ -231,6 +236,7 @@ tokens.corpus <- function(x,
                           split_tags = FALSE,
                           split_hyphens = FALSE,
                           include_docvars = TRUE,
+                          padding = FALSE,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
@@ -281,6 +287,7 @@ tokens.corpus <- function(x,
                      split_tags = FALSE,
                      split_hyphens = FALSE,
                      include_docvars = FALSE,
+                     padding = padding,
                      verbose = verbose)
 
     attributes(result, FALSE) <- attrs
@@ -309,6 +316,7 @@ tokens.tokens <-  function(x,
                            split_tags = FALSE,
                            split_hyphens = FALSE,
                            include_docvars = TRUE,
+                           padding = FALSE,
                            verbose = quanteda_options("verbose"),
                            ...) {
     x <- as.tokens(x)
@@ -346,7 +354,7 @@ tokens.tokens <-  function(x,
     if (length(removals$regex_to_remove)) {
         if (verbose) catm("...removing", paste(removals$removing_msg, collapse = ", "), "\n")
         x <- tokens_remove(x, paste(removals$regex_to_remove, collapse = "|"),
-                           valuetype = "regex",  padding = FALSE,
+                           valuetype = "regex",  padding = padding,
                            startpos = 1, endpos = -1)
     }
 

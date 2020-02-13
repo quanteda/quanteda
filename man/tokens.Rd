@@ -15,6 +15,7 @@ tokens(
   split_tags = FALSE,
   split_hyphens = FALSE,
   include_docvars = TRUE,
+  padding = FALSE,
   verbose = quanteda_options("verbose"),
   ...
 )
@@ -56,6 +57,11 @@ hyphenation and hyphenation-like characters in between words, e.g.
 
 \item{include_docvars}{if \code{TRUE}, pass docvars through to the tokens object.
 Does not apply when the input is a character data or a list of characters.}
+
+\item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
+previously existed.  This is useful if a positional match is needed between
+the pre- and post-selected tokens, for instance if a window of adjacency
+needs to be computed.}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
