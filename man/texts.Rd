@@ -18,6 +18,7 @@ texts(x) <- value
 \item{groups}{either: a character vector containing the names of document
 variables to be used for grouping; or a factor or object that can be
 coerced into a factor equal in length or rows to the number of documents.
+\code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
 
 \item{spacer}{when concatenating texts by using \code{groups}, this will be the

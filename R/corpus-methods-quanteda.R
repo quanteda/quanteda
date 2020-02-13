@@ -37,7 +37,7 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
     if (!is.null(groups)) {
         if (!is.factor(groups))
             groups <- generate_groups(x, groups)
-        result <- texts(as.character(unclass(x)), groups = groups, spacer = spacer)
+        result <- stri_c_list(split(x, groups), sep = spacer)
         attrs$docvars <- group_docvars(attrs$docvars, groups)
     } else {
         result <- as.character(unclass(x))
@@ -47,13 +47,10 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
 }
 
 #' @noRd
+#' @importFrom stringi stri_c_list
 #' @export
 texts.character <- function(x, groups = NULL, spacer = " ") {
-    if (is.null(groups)) return(x)
-    if (!is.factor(groups)) groups <- factor(groups, unique(groups))
-    result <- stri_c_list(split(x, groups), sep = spacer)
-    names(result) <- levels(groups)
-    return(result)
+    texts(corpus(x), groups = groups, spacer = spacer)
 }
 
 #' @rdname texts

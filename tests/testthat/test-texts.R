@@ -19,7 +19,7 @@ test_that("test texts with groups", {
                                              label_factor = factor(c("A", "B", "A")),
                                              label_txt = c("A", "B", "A")))
 
-    expect_identical(texts(txt, groups = c(TRUE, FALSE, TRUE))[1], 
+    expect_identical(texts(txt, groups = c(TRUE, FALSE, TRUE))[2], 
                      c("TRUE" = "This is first document something completely different"))
     expect_identical(texts(txt, groups = factor(c("A", "B", "A")))[1], 
                      c(A = "This is first document something completely different"))
@@ -66,5 +66,18 @@ test_that("as.corpus.corpuszip works (legacy only", {
     expect_identical(
         texts(as.corpus(data_corpus_zipprev2)),
         c(a = "text one", b = "text two")
+    )
+})
+
+test_that("groups drops NA", {
+    txt <- c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA")
+    grvar <- c("Yes", "Yes", "No", NA, NA)
+    expect_identical(
+        texts(txt, groups = grvar),
+        c(No = "Doc2", Yes = "Doc 1 Doc 1b")
+    )
+    expect_identical(
+        texts(corpus(txt), groups = grvar),
+        c(No = "Doc2", Yes = "Doc 1 Doc 1b")
     )
 })

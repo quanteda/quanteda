@@ -69,8 +69,12 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
         groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
-    group_dfm(x, documents = groups, fill = fill)
     
+    # remove NA groups
+    x <- dfm_subset(x, !is.na(groups))
+    groups <- groups[!is.na(groups)]
+    
+    group_dfm(x, documents = groups, fill = fill)
 }
 
 
