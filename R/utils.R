@@ -228,9 +228,9 @@ check_font <- function(font) {
 unused_dots <- function(...) {
     arg <- names(list(...))
     if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.")
+        warning(arg[1], " argument is not used.", call. = FALSE)
     } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.")
+        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
     }
 }
 

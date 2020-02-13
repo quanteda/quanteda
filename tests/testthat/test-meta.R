@@ -42,7 +42,7 @@ test_that("meta/meta<- works user data", {
 test_that("meta.default produces expected error", {
     expect_error(
         meta(NULL),
-        "meta() only works on corpus, dfm, tokens objects",
+        "meta() only works on corpus, dfm, dictionary2, tokens objects",
         fixed = TRUE
     )
 })
@@ -154,7 +154,7 @@ test_that("adding summary info works", {
     # test errors when non-tokens ... are passed
     expect_warning(
         quanteda:::add_summary_metadata(corp1, not_arg = TRUE),
-        "^Argument not_arg not used\\.$"
+        "^not_arg argument is not used"
     )
 })
 
