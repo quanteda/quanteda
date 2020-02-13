@@ -73,9 +73,9 @@ char_ngrams(letters[1:3], n = 1:3)
 
 # skipgrams
 toks <- tokens("insurgents killed in ongoing fighting")
-tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
-tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
-tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
+tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ")
+tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
+tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
 }
 \references{
 Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.

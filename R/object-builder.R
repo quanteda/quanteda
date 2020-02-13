@@ -2,21 +2,21 @@
 #' @rdname object-builder
 #' @param source character that indicating source object
 #' @param feature character for feature of resulting `dfm`
-#' @param docvars data.frame for document level variables 
+#' @param docvars data.frame for document level variables
 #' @param attrs a list of attributes to be reassigned
 #' @param meta list for meta fields
-#' @param ... added to object meta fields  
+#' @param ... added to object meta fields
 #' @keywords internal
 build_dfm <- function(x, features,
                         docvars = data.frame(), meta = list(), ...) {
-    result <- new("dfm", 
+    result <- new("dfm",
         as(x, "dgCMatrix"),
         docvars = docvars,
         meta = make_meta("dfm", inherit = meta, ...)
     )
     # set names directly to avoid NULL
     result@Dimnames <- list(
-        docs = as.character(docvars[["docname_"]]), 
+        docs = as.character(docvars[["docname_"]]),
         features = as.character(features)
     )
     return(result)
@@ -47,22 +47,22 @@ build_tokens <- function(x, types, padding = FALSE,
 
 #' @rdname object-builder
 rebuild_tokens <- function(x, attrs) {
-    
+
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
-    
+
     # drop extra attribues for tokens_segment
     try({attr(x, "docnum") <- NULL}, silent = TRUE)
     try({attr(x, "pattern") <- NULL}, silent = TRUE)
-    
+
     return(x)
 }
 
 
 #' @rdname object-builder
-build_corpus <- function(x, 
-                           docvars = data.frame(), 
+build_corpus <- function(x,
+                           docvars = data.frame(),
                            meta = list(), ...) {
     attributes(x) <- NULL
     structure(x,
@@ -74,7 +74,7 @@ build_corpus <- function(x,
 
 #' @rdname object-builder
 rebuild_corpus <- function(x, attrs) {
-    
+
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
@@ -82,9 +82,9 @@ rebuild_corpus <- function(x, attrs) {
 }
 
 #' @rdname object-builder
-build_dictionary2 <- function(x, 
+build_dictionary2 <- function(x,
                               meta = list(), ...) {
-    
+
     new("dictionary2", x,
         meta = make_meta("dictionary2", inherit = meta, ...))
 
@@ -92,7 +92,7 @@ build_dictionary2 <- function(x,
 
 #' @rdname object-builder
 rebuild_dictionary2 <- function(x, attrs) {
-    
+
     attr(x, "meta") <- attrs[["meta"]]
     return(x)
 }
@@ -107,13 +107,13 @@ upgrade_dfm <- function(x) {
         docvars = upgrade_docvars(attrs$docvars, rownames(x)),
         meta = list(system = list(),
                     object = list(
-                        ngram = as.integer(attrs[["ngrams"]]), 
+                        ngram = as.integer(attrs[["ngrams"]]),
                         skip = as.integer(attrs[["skip"]]),
                         concatenator = attrs[["concatenator"]],
-                        weight_tf = list(scheme = attrs[["weightTf"]][["scheme"]], 
+                        weight_tf = list(scheme = attrs[["weightTf"]][["scheme"]],
                                          base = attrs[["weightTf"]][["scheme"]],
                                          k = attrs[["weightTf"]][["K"]]),
-                        weight_df = list(scheme = attrs[["weightDf"]][["scheme"]], 
+                        weight_df = list(scheme = attrs[["weightDf"]][["scheme"]],
                                          base = attrs[["weightDf"]][["scheme"]]),
                         smooth = attrs[["smooth"]]
                     ),
@@ -155,7 +155,7 @@ upgrade_corpus <- function(x) {
         }
         meta_user <- x[["metadata"]]
         build_corpus(
-            x[["documents"]][["texts"]], 
+            x[["documents"]][["texts"]],
             docvars = upgrade_docvars(x[["documents"]]),
             meta = list(system = list(),
                         object = list(unit = unit),
@@ -163,13 +163,13 @@ upgrade_corpus <- function(x) {
         )
     } else {
         build_corpus(
-            x, 
+            x,
             docvars = attrs[["docvars"]],
             meta = list(system = list(),
                         object = list(unit = attrs[["unit"]]),
                         user = attrs[["meta"]][["user"]])
         )
-        
+
     }
 }
 

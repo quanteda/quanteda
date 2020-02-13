@@ -21,11 +21,11 @@
 #'   otherwise, replace values in dictionary with keys while leaving other
 #'   features unaffected
 #' @param nested_scope how to treat matches from different dictionary keys that
-#'   are nested.  When one value is nested within another, such as "a b" being 
+#'   are nested.  When one value is nested within another, such as "a b" being
 #'   nested within "a b c", `the `tokens_lookup()` will match the longer.  When
-#'   `nested_scope = "key"`, this longer-match priority is applied only 
-#'   within the key, while `"dictionary"` applies it across keys, matching only 
-#'   the key with the longer pattern, not the matches nested within that longer 
+#'   `nested_scope = "key"`, this longer-match priority is applied only
+#'   within the key, while `"dictionary"` applies it across keys, matching only
+#'   the key with the longer pattern, not the matches nested within that longer
 #'   pattern from other keys.  See Details.
 #' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
@@ -78,7 +78,7 @@
 #'
 #' # show unmatched tokens
 #' tokens_lookup(toks2, dict3, nomatch = "_UNMATCHED")
-#' 
+#'
 #' # nested matching differences
 #' dict4 <- dictionary(list(paper = "New York Times", city = "New York"))
 #' toks4 <- tokens("The New York Times is a New York paper.")
@@ -88,19 +88,19 @@
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
-                          valuetype = c("glob", "regex", "fixed"), 
+                          valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
-    UseMethod("tokens_lookup")    
+    UseMethod("tokens_lookup")
 }
 
 #' @export
 tokens_lookup.default <- function(x, dictionary, levels = 1:5,
-                                 valuetype = c("glob", "regex", "fixed"), 
+                                 valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE,
                                  capkeys = !exclusive,
                                  exclusive = TRUE,
@@ -112,7 +112,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
 
 #' @export
 tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
-                          valuetype = c("glob", "regex", "fixed"), 
+                          valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
@@ -128,9 +128,9 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     nested_scope <- match.arg(nested_scope)
     attrs <- attributes(x)
     type <- types(x)
-    if (verbose) 
-        catm("applying a dictionary consisting of ", length(dictionary), " key", 
-             if (length(dictionary) > 1L) "s" else "", "\n", sep="")
+    if (verbose)
+        catm("applying a dictionary consisting of ", length(dictionary), " key",
+             if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
     ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
                         field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")

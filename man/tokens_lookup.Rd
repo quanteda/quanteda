@@ -50,7 +50,7 @@ unmatched tokens.}
 
 \item{nested_scope}{how to treat matches from different dictionary keys that
 are nested.  When one value is nested within another, such as "a b" being
-nested within "a b c", \code{the }tokens_lookup()\verb{will match the longer.  When}nested_scope = "key"\verb{, this longer-match priority is applied only  within the key, while }"dictionary"` applies it across keys, matching only
+nested within "a b c", \code{the }tokens_lookup()\verb{will match the longer.  When}nested_scope = "key"\verb{, this longer-match priority is applied only within the key, while }"dictionary"` applies it across keys, matching only
 the key with the longer pattern, not the matches nested within that longer
 pattern from other keys.  See Details.}
 

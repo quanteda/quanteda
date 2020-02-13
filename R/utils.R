@@ -322,7 +322,7 @@ rbind_fill <- function(x, y) {
             names(fill1) <- name1_missing
             x <- cbind(x, fill1)
         }
-        
+
         name2_missing <- setdiff(name, name2)
         if (length(name2_missing)) {
             fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))

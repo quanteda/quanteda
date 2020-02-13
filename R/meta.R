@@ -86,11 +86,6 @@ select_meta <- function(x, field, type = c("user", "object", "system", "all")) {
     UseMethod("meta<-")
 }
 
-# #' @export
-# "meta<-.default" <- function(x, field = NULL, value) {
-#     stop(friendly_class_undefined_message(class(x), "meta<-"))
-# }
-
 #' @export
 `meta<-.corpus` <- function(x, field = NULL, value) {
     if (is.null(field)) {
@@ -189,7 +184,7 @@ meta_system <- function(x, field = NULL)
     }
     return(x)
 }
-    
+
 
 #' @rdname meta_system
 `meta_system<-.dfm` <- function(x, field = NULL, value) {
@@ -221,16 +216,16 @@ meta_system_defaults <- function() {
 #' @param ... values assigned to the object meta fields
 #' @keywords internal
 make_meta <- function(class, inherit = NULL, ...) {
-    
+
     if (is.null(inherit))
         inherit <- list()
-    
+
     result <- list(
         "system" = list(),
         "object" = list(),
         "user" = list()
     )
-    
+
     suppressWarnings({
         result$system <- make_meta_system(inherit$system)
     })
@@ -243,7 +238,7 @@ make_meta <- function(class, inherit = NULL, ...) {
     } else if (class == "dictionary2") {
         result$object <- make_meta_dictionary2(inherit, ...)
     }
-    
+
     if ("user" %in% names(inherit))
         result$user <- inherit$user
 
@@ -278,8 +273,8 @@ make_meta_tokens <- function(inherit = NULL, ...) {
         inherit <- list()
     default <- list(
         "unit" = "documents",
-        "what" = "word", 
-        "ngram" = 1L, 
+        "what" = "word",
+        "ngram" = 1L,
         "skip" = 0L,
         "concatenator" = "_"
     )
@@ -292,7 +287,7 @@ make_meta_dfm <- function(inherit = NULL, ...) {
         inherit <- list()
     default <- list(
         "unit" = "documents",
-        "what" = "word", 
+        "what" = "word",
         "ngram" = 1L,
         "skip" = 0L,
         "concatenator" = "_",

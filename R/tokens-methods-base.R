@@ -46,16 +46,16 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #'   `print_tokens_max_ntoken` setting of [quanteda_options()]
 #' @param ... not used
 #' @export
-print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"), 
-                         max_ntoken = quanteda_options("print_tokens_max_ntoken"), 
+print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"),
+                         max_ntoken = quanteda_options("print_tokens_max_ntoken"),
                          show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
     unused_dots(...)
     docvars <- docvars(x)
     ndoc <- ndoc(x)
-    if (max_ndoc < 0) 
+    if (max_ndoc < 0)
         max_ndoc <- ndoc(x)
-    
+
     if (show_summary) {
         cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
             if (ndoc > 1L) "s" else "", sep = "")
@@ -70,7 +70,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         label <- paste0(names(x), " :")
         types <- c("", types(x))
         len <- lengths(x)
-        if (max_ntoken < 0) 
+        if (max_ntoken < 0)
             max_ntoken <- max(len)
         x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
         for (i in seq_along(label)) {
@@ -82,7 +82,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", 
+            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document",
                 if (ndoc_rem > 1) "s", " ]\n", sep = "")
     }
 }
@@ -96,20 +96,20 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 #' str(toks)
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i) {
-    
+
     if (missing(i)) return(x)
     x <- as.tokens(x)
     attrs <- attributes(x)
-    
+
     index <- seq_along(docnames(x))
     names(index) <- docnames(x)
     index <- index[i]
     if (any(is.na(index)))
         stop("Subscript out of bounds")
-    
+
     result <- build_tokens(
-        unclass(x)[index], 
-        attrs[["types"]], 
+        unclass(x)[index],
+        attrs[["types"]],
         docvars = subset_docvars(attrs[["docvars"]], index),
         meta = attrs[["meta"]]
     )
@@ -163,35 +163,35 @@ lengths.tokens <- function(x, use.names = TRUE) {
 #'
 #' @export
 `+.tokens` <- function(t1, t2) {
-    
+
     t2 <- as.tokens(t2)
     t1 <- as.tokens(t1)
     attrs2 <- attributes(t2)
     attrs1 <- attributes(t1)
-    
+
     if (length(intersect(docnames(t1), docnames(t2))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
     if (!identical(field_object(attrs1, "what"), field_object(attrs2, "what")))
         stop("Cannot combine tokens in different tokenization units", call. = FALSE)
     if (!identical(field_object(attrs1, "concatenator"), field_object(attrs2, "concatenator")))
         stop("Cannot combine tokens with different concatenators", call. = FALSE)
-    
-    docvars <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE), 
+
+    docvars <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE),
                           get_docvars(t2, user = TRUE, system = TRUE))
     t2 <- unclass(t2)
     t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)), 
+    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)),
                  length(attrs1[["types"]])) # shift non-zero IDs
     result <- build_tokens(
-        c(t1, t2), 
+        c(t1, t2),
         c(attrs1[["types"]], attrs2[["types"]]),
         what = field_object(attrs1, "what"),
         ngram = sort(unique(c(
-            field_object(attrs1, "ngram"), 
+            field_object(attrs1, "ngram"),
             field_object(attrs2, "ngram")))
             ),
         skip = sort(unique(c(
-            field_object(attrs1, "skip"), 
+            field_object(attrs1, "skip"),
             field_object(attrs2, "skip")))
             ),
         concatenator = field_object(attrs1, "concatenator"),

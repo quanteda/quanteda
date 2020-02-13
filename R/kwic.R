@@ -104,10 +104,10 @@ kwic.tokens <- function(x, pattern, window = 5,
     valuetype <- match.arg(valuetype)
     window <- as.integer(window)
     attrs <- attributes(x)
-    ids <- pattern2list(pattern, attrs[["types"]], valuetype, 
+    ids <- pattern2list(pattern, attrs[["types"]], valuetype,
                         case_insensitive, field_object(attrs, "concatenator"))
     result <- data.frame(
-        "docname" = character(), 
+        "docname" = character(),
         "from" = integer(),
         "to" = integer(),
         "pre" = character(),
@@ -125,7 +125,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     if (nrow(result))
         result <- result[order(match(result[["docname"]], docnames(x)),
                                result[["from"]],
-                               result[["to"]]),]
+                               result[["to"]]), ]
     rownames(result) <- NULL
     attr(result, "ntoken") <- ntoken(x)
     class(result) <- c("kwic", "data.frame")
@@ -179,4 +179,3 @@ print.kwic <- function(x, ...) {
         x <- as.data.frame(x)
     NextMethod("[")
 }
-        

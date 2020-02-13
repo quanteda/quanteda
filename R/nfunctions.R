@@ -1,22 +1,22 @@
 #' Count the number of documents or features
-#' 
+#'
 #' Get the number of documents or features in an object.
 #' @details `ndoc` returns the number of documents in an object
 #'   whose texts are organized as "documents" (a [corpus],
 #'   [dfm], or [tokens] object, a readtext object from the
 #'   \pkg{readtext} package).
-#'   
+#'
 #' @param x a \pkg{quanteda} object: a [corpus], [dfm], or
 #'   [tokens] object, or a readtext object from the \pkg{readtext} package.
 #' @return an integer (count) of the number of documents or features
 #' @export
-#' @examples 
+#' @examples
 #' # number of documents
 #' ndoc(data_corpus_inaugural)
 #' ndoc(corpus_subset(data_corpus_inaugural, Year > 1980))
 #' ndoc(tokens(data_corpus_inaugural))
 #' ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
-#' 
+#'
 ndoc <- function(x) {
     UseMethod("ndoc")
 }
@@ -44,7 +44,7 @@ ndoc.tokens <- function(x) {
 
 #' @rdname ndoc
 #' @details `nfeat` returns the number of features from a dfm; it is an
-#'   alias for `ntype` when applied to dfm objects.  This function is only 
+#'   alias for `ntype` when applied to dfm objects.  This function is only
 #'   defined for [dfm] objects because only these have "features".  (To count
 #'   tokens, see [ntoken()].)
 #' @export
@@ -69,15 +69,15 @@ nfeat.dfm <- function(x) {
 }
 
 #' Count the number of tokens or types
-#' 
+#'
 #' Get the count of tokens (total features) or types (unique tokens).
-#' @param x a \pkg{quanteda} object: a character, [corpus], 
+#' @param x a \pkg{quanteda} object: a character, [corpus],
 #'   [tokens], or [dfm] object
 #' @param ... additional arguments passed to [tokens()]
-#' @note Due to differences between raw text tokens and features that have been 
-#'   defined for a [dfm], the counts may be different for dfm objects and the 
-#'   texts from which the dfm was generated.  Because the method tokenizes the 
-#'   text in order to count the tokens, your results will depend on the options 
+#' @note Due to differences between raw text tokens and features that have been
+#'   defined for a [dfm], the counts may be different for dfm objects and the
+#'   texts from which the dfm was generated.  Because the method tokenizes the
+#'   text in order to count the tokens, your results will depend on the options
 #'   passed through to [tokens()].
 #' @return named integer vector of the counts of the total tokens or types
 #' @details
@@ -93,7 +93,7 @@ nfeat.dfm <- function(x) {
 #' ntype(char_tolower(txt))   # fewer types
 #' ntoken(char_tolower(txt), remove_punct = TRUE)
 #' ntype(char_tolower(txt), remove_punct = TRUE)
-#' 
+#'
 #' # with some real texts
 #' ntoken(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
 #' ntype(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
@@ -110,7 +110,7 @@ ntoken.default <- function(x, ...) {
 }
 
 #' @rdname ntoken
-#' @details 
+#' @details
 #' For [dfm] objects, `ntype` will only return the count of features
 #' that occur more than zero times in the dfm.
 #' @export
@@ -178,13 +178,13 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
-    if (length(list(...))) 
+    if (length(list(...)))
         x <- tokens(x, ...)
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
 
 #' Count the number of sentences
-#' 
+#'
 #' Return the count of sentences in a corpus or character object.
 #' @param x a character or [corpus] whose sentences will be counted
 #' @param ... additional arguments passed to [tokens()]
