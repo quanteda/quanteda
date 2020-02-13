@@ -45,9 +45,6 @@ class functions.
 dictionary "key" and each element is one or more dictionary entry "values"
 consisting of a pattern match}
 
-\item{\code{concatenator}}{character object specifying space between multi-word
-values}
-
 \item{\code{meta}}{list of object metadata}
 }}
 
