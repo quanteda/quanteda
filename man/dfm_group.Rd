@@ -12,6 +12,7 @@ dfm_group(x, groups = NULL, fill = FALSE, force = FALSE)
 \item{groups}{either: a character vector containing the names of document
 variables to be used for grouping; or a factor or object that can be
 coerced into a factor equal in length or rows to the number of documents.
+\code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
 
 \item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use

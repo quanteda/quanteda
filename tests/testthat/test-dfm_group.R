@@ -289,3 +289,16 @@ test_that("restore original unit when groups = NULL", {
     expect_equal(ndoc(corp_sent), ndoc(dfmt_sent))
     expect_equal(as.matrix(dfmt), as.matrix(dfm(corp)))
 })
+
+test_that("dfm_group works with NA group labels", {
+    corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
+                   docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
+    expect_identical(
+        dfm(corp, groups = "factorvar"),
+        dfm(corp[1:3], groups = "factorvar")
+    )
+    # expect_identical(
+    #     dfm(corp) %>% dfm_group(groups = "factorvar"),
+    #     dfm(corp[1:3]) %>% dfm_group(groups = "factorvar")
+    # )
+})
