@@ -1046,3 +1046,30 @@ test_that("tokens.tokens(x, padding = TRUE) works", {
         list(doc1 = c("One", "2", ",", "£", "one-two", "."))
     )
 })
+
+test_that("tokenizing Japanese with URLs works", {
+    txt <- c(d1 = "私のユーザー名は@quantedainitです。")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("私", "の", "ユーザー", "名", "は", "@quantedainit", "です", "。"))
+    )
+
+    txt <- c(d1 = "私のウェブサイトはhttps://www.nichibenren.or.jp/です。")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("私", "の", "ウェブサイト", "は", "https://www.nichibenren.or.jp/", "です", "。"))
+    )
+    
+    txt <- c(d1 = "10,000人のフォロワーがいます。")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("10,000", "人", "の", "フォロワー", "がい", "ます", "。"))
+    )
+    
+    txt <- c(d1 = "私のウェブサイトはhttps://www.nichibenren.or.jp/です。10,000人のフォロワーがいます。")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c( "私", "の", "ウェブサイト", "は", "https://www.nichibenren.or.jp/", "です", "。", "10,000", 
+                     "人", "の", "フォロワー", "がい", "ます", "。"))
+    )
+})

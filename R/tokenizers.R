@@ -56,6 +56,11 @@ tokenize_word <- function(x,
                                 vectorize_all = FALSE)
     # substitute characters not to split
     x <- preserve_special(x, split_hyphens, split_tags, verbose)
+    # pad URLs with an additional space - for e.g. Japanese text with URLs
+    if (version >= 2) {
+        regex_url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+        x <- stri_replace_all_regex(x, regex_url, " $0 ")
+    }
 
     # -------- initial split on white space
     # this and the index_url can be removed if we are able to modify the rules in
