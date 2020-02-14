@@ -44,8 +44,6 @@ documents in which it occurs greater than zero times.}
 
 \item{use.names}{logical; if \code{TRUE} attach feature labels as names of
 the resulting numeric vector}
-
-\item{...}{not used}
 }
 \value{
 a numeric vector of document frequencies for each feature

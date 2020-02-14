@@ -11,7 +11,6 @@
 #' @param margin character indicating on which margin to compress a dfm, either 
 #'   `"documents"`, `"features"`, or `"both"` (default).  For fcm
 #'   objects, `"documents"` has no effect.
-#' @param ... additional arguments passed from generic to specific methods
 #' @return `dfm_compress` returns a [dfm] whose dimensions have been
 #'   recombined by summing the cells across identical dimension names
 #'   ([docnames] or [featnames]).  The [docvars] will be
