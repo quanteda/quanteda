@@ -241,6 +241,23 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' feature occurs more than a given frequency threshold.  (The default threshold
 #' is  zero, meaning that any feature occurring at least once in a document will
 #' be counted.)
+#' @param x a [dfm]
+#' @param scheme type of document frequency weighting, computed as
+#' follows, where \eqn{N} is defined as the number of documents in the dfm and
+#' \eqn{s} is the smoothing constant:
+#' \describe{
+#' \item{`count`}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
+#' \item{`inverse`}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
+#' \item{`inversemax`}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
+#' \item{`inverseprob`}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
+#' \item{`unary`}{1 for each feature}
+#' }
+#' @param smoothing added to the quotient before taking the logarithm
+#' @param k added to the denominator in the "inverse" weighting types, to 
+#'   prevent a zero document count for a term
+#' @param base the base with respect to which logarithms in the inverse document
+#' frequency weightings are computed; default is 10 (see Manning, 
+#'   Raghavan, and Schütze 2008, p123).
 #' @inheritParams dfm_weight
 #' @return a numeric vector of document frequencies for each feature
 #' @keywords weighting dfm
