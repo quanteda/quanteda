@@ -11,7 +11,6 @@
 #' @param margin character indicating on which margin to compress a dfm, either 
 #'   \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 #'   objects, \code{"documents"} has no effect.
-#' @param ... additional arguments passed from generic to specific methods
 #' @return \code{dfm_compress} returns a \link{dfm} whose dimensions have been
 #'   recombined by summing the cells across identical dimension names
 #'   (\link{docnames} or \link{featnames}).  The \link{docvars} will be

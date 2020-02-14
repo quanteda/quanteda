@@ -15,8 +15,6 @@ fcm_compress(x)
 \item{margin}{character indicating on which margin to compress a dfm, either 
 \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 objects, \code{"documents"} has no effect.}
-
-\item{...}{additional arguments passed from generic to specific methods}
 }
 \value{
 \code{dfm_compress} returns a \link{dfm} whose dimensions have been

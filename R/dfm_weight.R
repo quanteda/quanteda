@@ -269,7 +269,6 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   documents in which it occurs greater than zero times.
 #' @param use.names	logical; if \code{TRUE} attach feature labels as names of 
 #'   the resulting numeric vector
-#' @param ... not used
 #' @return a numeric vector of document frequencies for each feature
 #' @keywords weighting dfm
 #' @export
