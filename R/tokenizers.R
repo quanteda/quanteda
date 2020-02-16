@@ -44,7 +44,7 @@ NULL
 tokenize_word <- function(x,
                           split_tags = FALSE,
                           split_hyphens = FALSE,
-                          version = 2,
+                          version = 1,
                           verbose = quanteda_options("verbose")) {
 
     named <- names(x)
@@ -57,43 +57,35 @@ tokenize_word <- function(x,
     # substitute characters not to split
     x <- preserve_special(x, split_hyphens, split_tags, verbose)
     # pad URLs with an additional space - for e.g. Japanese text with URLs
-    if (version >= 2) {
-        regex_url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-        x <- stri_replace_all_regex(x, regex_url, " $0 ")
-    }
-
-    # -------- initial split on white space
-    # this and the index_url can be removed if we are able to modify the rules in
-    # type for stri_split_boundaries()
-    if (verbose) catm("...segmenting tokens\n")
+    regex_url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+    x <- stri_replace_all_regex(x, regex_url, " $0 ")
     # make NAs ""
     x[is.na(x)] <- ""
+
+    if (verbose) catm("...segmenting tokens\n")
+
+    # -------- tokenize words
     if (version >= 2) {
+        # -------- initial split on white space
+        # this and the index_url can be removed if we are able to modify the rules 
+        # in type for stri_split_boundaries()
         x <- stri_split_regex(x, "[\\p{Z}\\p{C}]+", omit_empty = FALSE)
+        if (verbose) catm("...vectorizing tokens\n")
+        doc_lengths <- cumsum(lengths(x))
+        docindex <- c(0, doc_lengths)
+        x <- unlist(x)
+        index_url <- stri_detect_fixed(x, "://")
+        if (verbose) catm("...applying second stage smart tokenization\n")
+        x[!index_url] <- stri_split_boundaries(x[!index_url], type = "word")
+        if (verbose) catm("...tidying up\n")
+        x <- split(x, cut(seq_along(x), docindex, include.lowest = FALSE, labels = named))
+        # handle nested lists from 2nd stage stri_split_boundaries() call
+        x <- lapply(x, unlist)
+    } else {
+        x <- stri_split_boundaries(x, type = "word")
     }
-
-    # -------- get document indexes and then unlist tokens
-    if (verbose) catm("...vectorizing tokens\n")
-    doc_lengths <- cumsum(lengths(x))
-    docindex <- c(0, doc_lengths)
-    x <- unlist(x)
-
-    # -------- identify URLs to protext in second stage tokenization
-    index_url <- if (version >= 2) stri_detect_fixed(x, "://") else rep(FALSE, length(x))
-
-    # -------- apply ICU word tokenizer to everything not indexed for preservation
-    if (verbose) catm("...applying second stage smart tokenization\n")
-    x[!index_url] <- stri_split_boundaries(x[!index_url], type = "word")
-
-    # -------- convert the vector back to a list
-    if (verbose) catm("...tidying up\n")
-    x <- split(x, cut(seq_along(x), docindex, include.lowest = FALSE, labels = named))
-    # handle nested lists from 2nd stage stri_split_boundaries() call
-    x <- lapply(x, unlist)
-
-    # -------- reattach names and return
-    names(x) <- named
-    return(x)
+    
+    return(structure(x, names = named))
 }
 
 # substitutions to preserve hyphens and tags
@@ -120,7 +112,7 @@ tokenize_word1 <- function(x,
                           ...) {
     check_dots(list(...))
     tokenize_word(x, split_tags = split_tags, split_hyphens = split_hyphens,
-                       verbose = verbose, version = 1)
+                       verbose = verbose, version = 2)
 }
 
 #' @rdname tokenize_internal
