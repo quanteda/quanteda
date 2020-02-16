@@ -50,8 +50,8 @@
     
     -  All `remove_*` options to `tokens()` now remove them from tokens objects by calling `tokens.tokens()`, after constructing the object.  "Pre-processing" is now  actually post-processing using `tokens_*()` methods internally, after a conservative tokenization on token boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (#1503, #1446, #1801)    
     
-    -  Internal tokenizers are re-implemented in `tokenizers.R`, which input character and return a named list.  These have `split_*` options that can prevent the word tokenizer from splitting infix hyphens or social media tag punctuation characters (such as `#hashtags`).  To maintain consistency with current behaviour, an internal tokenizer accessible as `what = "word1"` is provided.
-
+    -  Internal tokenizers are re-implemented in `tokenizers.R`, which input character and return a named list.  These include a new `split_hyphens` option that can prevent the word tokenizer from splitting infix hyphens.  A new `what = "word2"` internal tokenizer implements similar behaviour but preserves URLs, email addresses, and social media tags (#hastags and @usernames) from being split.
+    
 
 ## Bug fixes and stability enhancements
 

@@ -4,28 +4,16 @@
 \alias{tokenize_internal}
 \alias{tokenize}
 \alias{tokenize_word}
-\alias{tokenize_word1}
+\alias{tokenize_word2}
 \alias{tokenize_character}
 \alias{tokenize_sentence}
 \alias{tokenize_fasterword}
 \alias{tokenize_fastestword}
 \title{quanteda tokenizers}
 \usage{
-tokenize_word(
-  x,
-  split_tags = FALSE,
-  split_hyphens = FALSE,
-  version = 2,
-  verbose = quanteda_options("verbose")
-)
+tokenize_word(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
 
-tokenize_word1(
-  x,
-  split_tags = FALSE,
-  split_hyphens = FALSE,
-  verbose = getOption("verbose"),
-  ...
-)
+tokenize_word2(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
 
 tokenize_character(x, ...)
 
@@ -38,30 +26,19 @@ tokenize_fastestword(x, ...)
 \arguments{
 \item{x}{(named) character; input texts}
 
-\item{split_tags}{logical; keep (social media) tags intact, such as "#hashtags" and
-"#usernames", even when punctuation will be removed.  The rules defining a
-valid "tag" can be found
-\href{https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/}{here}
-for hashtags and
-\href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
-for usernames.}
-
 \item{split_hyphens}{logical; if \code{TRUE}, split words that are connected by
 hyphenation and hyphenation-like characters in between words, e.g.
 \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
-
-\item{version}{integer; if 1, behave the same as pre-v2 "word" (meaning
-that URLs and email addresses are split up)}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
 \item{...}{used to pass arguments among the functions}
 }
 \value{
-a list of characters corresponding to the (most conservative) tokens,
-including whitespace where applicable; except for \code{tokenize_word1()}, which
-is a legacy tokenizer to match the pre-v2 behaviour, and therefore returns
-a \link{tokens} object
+a list of characters corresponding to the (most conservative)
+tokenization, including whitespace where applicable; except for
+\code{tokenize_word1()}, which is a special tokenizer for Internet language that
+includes URLs, #hashtags, @usernames, and email addresses.
 }
 \description{
 Internal methods for tokenization providing default and legacy methods for
@@ -77,8 +54,8 @@ txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc6 = "Self-aware machines! \U0001f600")
 tokenize_word(txt)
 tokenize_word(txt, split_hyphens = TRUE)
-tokenize_word1(txt, split_hyphens = FALSE)
-tokenize_word1(txt, split_hyphens = TRUE)
+tokenize_word2(txt, split_hyphens = FALSE)
+tokenize_word2(txt, split_hyphens = TRUE)
 tokenize_fasterword(txt)
 tokenize_fastestword(txt)
 tokenize_sentence(txt)
