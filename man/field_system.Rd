@@ -7,7 +7,7 @@
 \alias{field_object<-}
 \alias{field_user}
 \alias{field_user<-}
-\title{Internal functions to access or assign metadata}
+\title{Shortcut functions to access or assign metadata}
 \usage{
 field_system(x, field = NULL)
 
@@ -22,15 +22,15 @@ field_user(x, field = NULL)
 field_user(x, field = NULL) <- value
 }
 \arguments{
-\item{x}{an object for which the metadata will be read or set}
+\item{x}{a list of attributes extracted from a \code{dfm}, \code{tokens}, or \code{corpus}
+object by \code{attributes(x)}}
 
-\item{field}{metadata field name(s); if \code{NULL} (default), return all
-metadata names}
-
-\item{value}{new value of the metadata field}
+\item{field}{name of the sub-field to access or assign values}
 }
 \description{
-Internal functions to access or replace an object metadata field
-from a list of attributes.
+Internal functions to access or replace an object metadata field without
+going through attribute trees. \code{field_system()}, \code{field_object()} and
+\code{field_user()} correspond to the system, object and user meta fields,
+respectively.
 }
 \keyword{internal}

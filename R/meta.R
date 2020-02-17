@@ -338,12 +338,16 @@ update_meta <- function(default, inherit, ...) {
 
 # field_system -----------
 
-#' Internal functions to access or assign metadata
-#' 
-#' Internal functions to access or replace an object metadata field 
-#' from a list of attributes.
+#' Shortcut functions to access or assign metadata
+#'
+#' Internal functions to access or replace an object metadata field without
+#' going through attribute trees. `field_system()`, `field_object()` and
+#' `field_user()` correspond to the system, object and user meta fields,
+#' respectively.
 #' @rdname field_system
-#' @inheritParams meta_system
+#' @param x a list of attributes extracted from a `dfm`, `tokens`, or `corpus`
+#'   object by `attributes(x)`
+#' @param field name of the sub-field to access or assign values
 #' @keywords internal
 field_system <- function(x, field = NULL) {
     if (is.null(field)) {
