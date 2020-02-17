@@ -326,7 +326,6 @@ dfm.dfm <- function(x,
 
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
-    attrs <- attributes(x)
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n")

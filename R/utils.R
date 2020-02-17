@@ -137,7 +137,6 @@ pattern2list <- function(x, types, valuetype, case_insensitive,
         if (length(x) == 0) return(list())
         if (is.dictionary(x)) {
             x <- as.dictionary(x)
-            attrs <- attributes(x)
             temp <- flatten_dictionary(x, levels)
             key <- names(temp)
             temp <- split_values(temp, " ", concatenator)

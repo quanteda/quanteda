@@ -93,7 +93,6 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
                               stringsAsFactors = FALSE)
     } else {
         if (unique) {
-            docnum <- match(docname, unique(docname))
             if (any(duplicated(docname))) {
                 segid <- stats::ave(docname == docname, docname, FUN = cumsum)
                 docid <- paste0(docname, ".", segid)
@@ -102,7 +101,6 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
                 docid <- docname
             }
         } else {
-            docnum <- seq(1L, n)
             segid <- rep(1L, n)
             docid <- docname
         }
