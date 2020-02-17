@@ -39,7 +39,7 @@ data_corpus_inaugural$Year
 data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
 data_corpus_inaugural$century
 
-# accessing or assigning docvars for tokens using "$" 
+# accessing or assigning docvars for tokens using "$"
 toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
 toks$Year
 toks$Year <- 1991:1995
@@ -47,7 +47,7 @@ toks$Year
 toks$nonexistent <- TRUE
 docvars(toks)
 
-# accessing or assigning docvars for a dfm using "$" 
+# accessing or assigning docvars for a dfm using "$"
 dfmat <- dfm(toks)
 dfmat$Year
 dfmat$Year <- 1991:1995

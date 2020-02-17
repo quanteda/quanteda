@@ -175,9 +175,10 @@ NULL
 #' Groups can be the name(s) of document variables (as a character vector), or
 #' variables whose length or number of rows (if a data.frame) equal the number
 #' of documents.
-#' @param groups either: a character vector containing the names of document
-#'   variables to be used for grouping; or a factor or object that can be
+#' @param groups either: a character vector containing the names of document 
+#'   variables to be used for grouping; or a factor or object that can be 
 #'   coerced into a factor equal in length or rows to the number of documents.
+#'   `NA` values of the grouping value are dropped.
 #'   See [groups] for details.
 #' @name groups
 #' @keywords internal

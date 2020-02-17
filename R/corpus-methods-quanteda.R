@@ -30,6 +30,7 @@ texts <- function(x, groups = NULL, spacer = " ") {
 }
 
 #' @noRd
+#' @importFrom stringi stri_c_list
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
@@ -37,7 +38,7 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
     if (!is.null(groups)) {
         if (!is.factor(groups))
             groups <- generate_groups(x, groups)
-        result <- texts(as.character(unclass(x)), groups = groups, spacer = spacer)
+        result <- stri_c_list(split(x, groups), sep = spacer)
         attrs$docvars <- group_docvars(attrs$docvars, groups)
     } else {
         result <- as.character(unclass(x))
@@ -47,13 +48,10 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
 }
 
 #' @noRd
+#' @importFrom stringi stri_c_list
 #' @export
 texts.character <- function(x, groups = NULL, spacer = " ") {
-    if (is.null(groups)) return(x)
-    if (!is.factor(groups)) groups <- factor(groups, unique(groups))
-    result <- stri_c_list(split(x, groups), sep = spacer)
-    names(result) <- levels(groups)
-    return(result)
+    texts(corpus(x), groups = groups, spacer = spacer)
 }
 
 #' @rdname texts
@@ -123,9 +121,7 @@ as.corpus.default <- function(x) {
 #' @export
 #' @method as.corpus corpus
 as.corpus.corpus <- function(x) {
-    if (is_pre2(x))
-        x <- upgrade_corpus(x)
-    return(x)
+    upgrade_corpus(x)
 }
 
 #' @export
@@ -139,35 +135,4 @@ as.corpus.corpuszip <- function(x) {
     # drop internal variables
     flag <- is_system(names(x$documents))
     corpus(txt, x$docnames, docvars = x$documents[!flag])
-}
-
-# Internal function to convert corpus from data.frame character vector-based
-# stracture
-upgrade_corpus <- function(x) {
-    if (!is_pre2(x)) return(x)
-    metadata <- meta(x)
-    x <- unclass(x)
-    
-    result <- corpus(x$documents, text_field = "texts")
-    attr(result, "docvars") <- upgrade_docvars(x$documents)
-
-    if ("unit" %in% names(x$settings)) {
-        attr(result, "unit") <- x$settings$unit
-    } else {
-        attr(result, "unit") <- "documents"
-    }
-
-    if ("created" %in% names(metadata)) {
-        meta_system(result, "created") <- as.POSIXct(metadata$created, 
-                                                     format = "%a %b %d %H:%M:%S %Y")
-        metadata$created <- NULL
-    } else {
-        meta_system(result, "created") <- Sys.time()
-    }
-    
-    # remove any null metadata fields
-    metadata <- metadata[sapply(metadata, function(y) !is.null(y))]
-    meta(result) <- metadata
-    
-    return(result)
 }

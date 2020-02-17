@@ -87,9 +87,10 @@ convert.default <- function(x, to, ...) {
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
                                   "lsa", "matrix", "data.frame", "tripletlist"),
                         docvars = NULL, omit_empty = TRUE, ...) {
-    check_dots(list(...))
+    unused_dots(...)
     x <- as.dfm(x)
     to <- match.arg(to)
+    attrs <- attributes(x)
 
     if (!is.null(docvars)) {
         if (!is.data.frame(docvars))
@@ -99,11 +100,11 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
     }
 
     if ((to %in% c("stm", "lda", "topicmodels")) &&
-        (x@weightTf$scheme != "count" || x@weightDf$scheme != "unary")) {
+        (field_object(attrs, "weight_tf")$scheme != "count" || field_object(attrs, "weight_df")$scheme != "unary")) {
         stop("cannot convert a non-count dfm to a topic model format")
     }
 
-    if (!(to %in% c("lda", "topicmodels")) && !missing(omit_empty) && omit_empty) {
+    if (!to %in% c("lda", "topicmodels") && !missing(omit_empty) && omit_empty) {
         warning("omit_empty not used for 'to = \"", to, "\"'")
     }
 
@@ -143,7 +144,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' convert(corp, to = "data.frame")
 #' convert(corp, to = "json")
 convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...) {
-    check_dots(list(...))
+    unused_dots(...)
     to <- match.arg(to)
 
     if (to == "data.frame") {
@@ -246,12 +247,13 @@ dfm2austin <- function(x) {
 #' @rdname convert-wrappers
 #' @param weighting a \pkg{tm} weight, see [tm::weightTf()]
 dfm2tm <- function(x, weighting = tm::weightTf) {
+    attrs <- attributes(x)
     if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the tm package installed for this conversion.")
     if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
 
-    if (!(x@weightTf$scheme == "count" && x@weightDf$scheme == "unary")) {
+    if (!(field_object(attrs, "weight_tf")$scheme == "count" && field_object(attrs, "weight_df")$scheme == "unary")) {
         warning("converted DocumentTermMatrix will not have weight attributes set correctly")
     }
     tm::as.DocumentTermMatrix(slam::as.simple_triplet_matrix(x),
@@ -310,11 +312,12 @@ dtm2lda <- function(x, omit_empty = TRUE) {
     docs[slam::row_sums(x) > 0] <- split.matrix(rbind(as.integer(x$j) - 1L,
                                                       as.integer(x$v)),
                                                 as.integer(x$i))
-    if (omit_empty)
+    if (omit_empty) {
         docs[slam::row_sums(x) == 0] <- NULL
-    else docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(),
-                                                         ncol = 0, nrow = 2)),
+    } else {
+        docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)),
                                              sum(slam::row_sums(x) == 0))
+    }
     list(documents = docs, vocab = colnames(x))
 }
 

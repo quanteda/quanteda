@@ -402,13 +402,14 @@ test_that("dictionary constructor works on a dictionary", {
 
 test_that("combine method is working with dictionary objects", {
 
-    dict1 <- dictionary(list(A = c("aa", "aaa")))
-    dict2 <- dictionary(list(B = c("b", "bb")))
+    dict1 <- dictionary(list(A = c("aa", "aaa")), separator = "+")
+    dict2 <- dictionary(list(B = c("b", "bb")), separator = "-")
     dict3 <- dictionary(list(A = c("aaaa", "aaaaa")))
     expect_equal(c(dict1, dict2),
-                 dictionary(list(A = c("aa", "aaa"), B = c("b", "bb"))))
+                 dictionary(list(A = c("aa", "aaa"), B = c("b", "bb")), separator = "+"))
     expect_equal(c(dict1, dict2, dict3),
-                 dictionary(list(A = c("aa", "aaa"), B = c("b", "bb"), A = c("aaaa", "aaaaa"))))
+                 dictionary(list(A = c("aa", "aaa"), B = c("b", "bb"), A = c("aaaa", "aaaaa")), 
+                            separator = "+"))
 })
 
 test_that("dictionary constructor clean values", {

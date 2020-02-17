@@ -133,7 +133,7 @@
 #'
 #'   Yule, G. U. (1944)  *The Statistical Study of Literary Vocabulary.*
 #'   Cambridge: Cambridge University Press.
-#'   
+#'
 #' @return A data.frame of documents and their lexical diversity scores.
 #' @export
 #' @examples
@@ -177,7 +177,7 @@ textstat_lexdiv.dfm <- function(x,
                                 log.base = 10,
                                 ...) {
 
-    check_dots(list(...))
+    unused_dots(...)
     tokens_only_measures <-  c("MATTR", "MSTTR")
 
     x <- as.dfm(x)
@@ -228,7 +228,7 @@ textstat_lexdiv.tokens <-
              MSTTR_segment = 100L,
              ...) {
 
-    check_dots(list(...))
+    unused_dots(...)
     tokens_only_measures <-  c("MATTR", "MSTTR")
 
     # additional token handling

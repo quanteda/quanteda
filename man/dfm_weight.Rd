@@ -3,6 +3,7 @@
 \name{dfm_weight}
 \alias{dfm_weight}
 \alias{dfm_smooth}
+\alias{dfm_tfidf}
 \title{Weight the feature frequencies in a dfm}
 \usage{
 dfm_weight(
@@ -10,14 +11,25 @@ dfm_weight(
   scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
   weights = NULL,
   base = 10,
-  K = 0.5,
+  k = 0.5,
   force = FALSE
 )
 
 dfm_smooth(x, smoothing = 1)
+
+dfm_tfidf(
+  x,
+  scheme_tf = "count",
+  scheme_df = "inverse",
+  base = 10,
+  k = 0,
+  threshold = 0,
+  force = FALSE
+)
 }
 \arguments{
-\item{x}{document-feature matrix created by \link{dfm}}
+\item{x}{object for which idf or tf-idf will be computed (a document-feature
+matrix)}
 
 \item{scheme}{a label of the weight type:
 \describe{
@@ -30,7 +42,7 @@ feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
 given base, or 0 if the count was zero: \eqn{1 +
   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
 \item{\code{boolean}}{recode all non-zero counts as 1}
-\item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x, "propmax")}}
+\item{\code{augmented}}{equivalent to \eqn{k + (1 - k) *} \code{dfm_weight(x, "propmax")}}
 \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
 \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 }}
@@ -42,10 +54,10 @@ applied as multipliers to the existing feature counts for the corresponding
 named features.  Any features not named will be assigned a weight of 1.0
 (meaning they will be unchanged).}
 
-\item{base}{base for the logarithm when \code{scheme} is \code{"logcount"} or
-\code{logave}}
+\item{base}{the base for the logarithms in the \code{\link[=dfm_weight]{dfm_weight()}} and
+\code{\link[=docfreq]{docfreq()}} calls; default is 10}
 
-\item{K}{the K for the augmentation when \code{scheme = "augmented"}}
+\item{k}{the k for the augmentation when \code{scheme = "augmented"}}
 
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
@@ -53,6 +65,16 @@ weighting by \code{"prop"} after applying \code{"logcount"}, or after
 having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
 
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
+
+\item{scheme_tf}{scheme for \code{\link[=dfm_weight]{dfm_weight()}}; defaults to \code{"count"}}
+
+\item{scheme_df}{scheme for \code{\link[=docfreq]{docfreq()}}; defaults to
+\code{"inverse"}.}
+
+\item{threshold}{numeric value of the threshold \emph{above which} a feature
+will considered in the computation of document frequency.  The default is
+0, meaning that a feature's document frequency will be the number of
+documents in which it occurs greater than zero times.}
 }
 \value{
 \code{dfm_weight} returns the dfm with weighted values.  Note the
@@ -67,7 +89,14 @@ matrix from sparse to dense format, so may exceed memory requirements
 depending on the size of your input matrix.
 }
 \description{
-Weight the feature frequencies in a dfm
+Weight a dfm by term frequency-inverse document frequency (\emph{tf-idf}),
+with full control over options.  Uses fully sparse methods for efficiency.
+}
+\details{
+\code{dfm_tfidf} computes term frequency-inverse document frequency
+weighting.  The default is to use counts instead of normalized term
+frequency (the relative term frequency within document), but this
+can be overridden using \code{scheme_tf = "prop"}.
 }
 \examples{
 dfmat1 <- dfm(data_corpus_inaugural)
@@ -93,13 +122,45 @@ dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 # smooth the dfm
 dfmat <- dfm(data_corpus_inaugural)
 dfm_smooth(dfmat, 0.5)
+dfmat1 <- as.dfm(data_dfm_lbgexample)
+head(dfmat1[, 5:10])
+head(dfm_tfidf(dfmat1)[, 5:10])
+docfreq(dfmat1)[5:15]
+head(dfm_weight(dfmat1)[, 5:10])
+
+# replication of worked example from
+# https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
+dfmat2 <-
+    matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
+           byrow = TRUE, nrow = 2,
+           dimnames = list(docs = c("document1", "document2"),
+                           features = c("this", "is", "a", "sample",
+                                        "another", "example"))) \%>\%
+    as.dfm()
+dfmat2
+docfreq(dfmat2)
+dfm_tfidf(dfmat2, scheme_tf = "prop") \%>\% round(digits = 2)
+
+\dontrun{
+# comparison with tm
+if (requireNamespace("tm")) {
+    convert(dfmat2, to = "tm") \%>\% tm::weightTfIdf() \%>\% as.matrix()
+    # same as:
+    dfm_tfidf(dfmat2, base = 2, scheme_tf = "prop")
+}
+}
 }
 \references{
 Manning, C.D., Raghavan, P., & Schütze, H. (2008).
 \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
 \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+
+Manning, C. D., Raghavan, P., & Schütze, H. (2008).
+\emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+\url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
-\code{\link[=dfm_tfidf]{dfm_tfidf()}}, \code{\link[=docfreq]{docfreq()}}
+\code{\link[=docfreq]{docfreq()}}
 }
 \keyword{dfm}
+\keyword{weighting}

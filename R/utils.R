@@ -115,17 +115,17 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 #' @param remove_unigram ignore single-word patterns if `TRUE`
 #' @seealso [pattern2id()]
 #' @keywords internal
-pattern2list <- function(pattern, types, valuetype, case_insensitive,
+pattern2list <- function(x, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
                          keep_nomatch = FALSE) {
 
-    if (is.dfm(pattern))
+    if (is.dfm(x))
         stop("dfm cannot be used as pattern")
 
-    if (is.collocations(pattern)) {
-        if (nrow(pattern) == 0) return(list())
-        temp <- stri_split_charclass(pattern$collocation, "\\p{Z}")
-        names(temp) <- pattern$collocation
+    if (is.collocations(x)) {
+        if (nrow(x) == 0) return(list())
+        temp <- stri_split_charclass(x$collocation, "\\p{Z}")
+        names(temp) <- x$collocation
         if (case_insensitive) {
             result <- pattern2id(temp, types, valuetype = "fixed", TRUE)
         } else {
@@ -134,23 +134,24 @@ pattern2list <- function(pattern, types, valuetype, case_insensitive,
         }
         attr(result, "pattern") <- match(names(result), names(temp))
     } else {
-        if (length(pattern) == 0) return(list())
-        if (is.dictionary(pattern)) {
-            temp <- flatten_dictionary(pattern, levels)
+        if (length(x) == 0) return(list())
+        if (is.dictionary(x)) {
+            x <- as.dictionary(x)
+            temp <- flatten_dictionary(x, levels)
             key <- names(temp)
-            temp <- split_values(temp, pattern@concatenator, concatenator)
-        } else if (is.list(pattern)) {
-            temp <- pattern
-            names(temp) <- stri_c_list(pattern, " ")
+            temp <- split_values(temp, " ", concatenator)
+        } else if (is.list(x)) {
+            temp <- x
+            names(temp) <- stri_c_list(x, " ")
         } else {
-            temp <- as.list(pattern)
-            names(temp) <- pattern
+            temp <- as.list(x)
+            names(temp) <- x
         }
         if (remove_unigram)
             temp <- temp[lengths(temp) > 1] # drop single-word patterns
         result <- pattern2id(temp, types, valuetype, case_insensitive, keep_nomatch)
         attr(result, "pattern") <- match(names(result), names(temp))
-        if (is.dictionary(pattern))
+        if (is.dictionary(x))
             attr(result, "key") <- key
     }
     return(result)
@@ -171,17 +172,6 @@ is_regex <- function(x) {
 #' @keywords internal
 escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
-}
-
-# function to check dots arguments against a list of permissible arguments
-check_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) == 0) return()
-    args <- names(dots)
-    impermissible_args <-  setdiff(args, permissible_args)
-    if (length(impermissible_args))
-        warning("Argument", if (length(impermissible_args) > 1) "s " else " ",
-                paste(impermissible_args, collapse = ", "), " not used.",
-                noBreaks. = TRUE, call. = FALSE)
 }
 
 #' Print friendly object class not defined message
@@ -237,11 +227,23 @@ check_font <- function(font) {
 unused_dots <- function(...) {
     arg <- names(list(...))
     if (length(arg) == 1) {
-        warning(arg[1], " argument is not used in ",
-                sys.call(2)[1], "()", call. = FALSE)
+        warning(arg[1], " argument is not used.", call. = FALSE)
     } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used in ",
-                sys.call(2)[1], "()", call. = FALSE)
+        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
+    }
+}
+
+# function to check dots arguments against a list of permissible arguments
+# needed for tokens.R only
+# because (...) evaluated in parent fn is different from being passed through
+check_dots <-  function(dots, permissible_args = NULL) {
+    if (length(dots) == 0) return()
+    args <- names(dots)
+    arg <-  setdiff(args, permissible_args)
+    if (length(arg) == 1) {
+        warning(arg[1], " argument is not used.", call. = FALSE)
+    } else if (length(arg) > 1) {
+        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
     }
 }
 
@@ -318,7 +320,7 @@ get_object_version <- function(x) {
 #' @return `ispre2()` returns `TRUE` if the object was created before
 #' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
-    (! "meta" %in% names(attributes(x)))
+    is.null(attributes(x)[["meta"]][["object"]])
 }
 
 # internal function to rbind data.frames that have different columns
@@ -333,7 +335,7 @@ rbind_fill <- function(x, y) {
             names(fill1) <- name1_missing
             x <- cbind(x, fill1)
         }
-        
+
         name2_missing <- setdiff(name, name2)
         if (length(name2_missing)) {
             fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))

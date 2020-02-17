@@ -11,6 +11,11 @@ test_that("test show.corpus", {
     )
     expect_output(
         print(corpus(c("The", "quick", "brown", "fox"),
+                     docvars = data.frame(list(test = 1:4)))),
+        "Corpus consisting of 4 documents and 1 docvar."
+    )
+    expect_output(
+        print(corpus(c("The", "quick", "brown", "fox"),
                     docvars = data.frame(list(test = 1:4)))),
         "Corpus consisting of 4 documents and 1 docvar."
     )
@@ -100,7 +105,6 @@ test_that("test corpus constructors works for kwic", {
                          texts()),
       txt
     )
-
     corp <- corpus(kw, split_context = TRUE, extract_keyword = FALSE)
 })
 
@@ -463,18 +467,6 @@ test_that("upgrade_corpus is working", {
     expect_true(is.factor(attr(corp3, "docvars")[["docid_"]]))
 })
 
-test_that("metacorpus argument works", {
-    expect_identical(
-        meta(corpus("aa bb cc", metacorpus = list(citation = "My book"))),
-        meta(corpus("aa bb cc", meta = list(citation = "My book")))
-    )
-    corp <- corpus("aa bb cc", metacorpus = list(citation = "My book"))
-    expect_equal(meta(corp)$citation, "My book")
-    expect_equal(meta(corp, type = "system")$source, "character")
-    expect_equal(meta(corpus(corp), type = "system")$source, "corpus")
-    expect_equal(meta(corpus(kwic(corp, "bb", window = 1)), type = "system")$source, "kwic")
-})
-
 test_that("metadoc works but raise deprecation warning", {
     corp <- corpus(c("aa bb cc", "ccc dd"))
     suppressWarnings(expect_equal(colnames(metadoc(corp)), character()))
@@ -577,14 +569,15 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
     expect_identical(
         meta(as.corpus(data_corpus_pre2), type = "user"),
         list(source = "Gerhard Peters and John T. Woolley. The American Presidency Project.",
-             notes = "http://www.presidency.ucsb.edu/inaugurals.php")
+             notes = "http://www.presidency.ucsb.edu/inaugurals.php",
+             created = "Tue Jun 13 14:51:47 2017")
     )
     expect_true(
-        all(c("source", "package-version", "r-version", "system", "directory", "created") %in%
+        all(c("package-version", "r-version", "system", "directory", "created") %in%
             names(meta(as.corpus(data_corpus_pre2), type = "system")))
     )
     expect_is(meta(as.corpus(data_corpus_pre2), "created", type = "system"),
-              "POSIXct"
+              "Date"
     )
 
     # test when there is no created date
@@ -599,23 +592,23 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
 })
 
 test_that("corpus indexing works as expected", {
-  corp <- corpus(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-
-  expect_equal(corp[[1]], "one two three")
-  expect_equal(as.character(corp[c(FALSE, TRUE, TRUE)]),
-               c(d2 = "four five six", d3 = "seven eight")
-  )
-  expect_equal(as.character(corp[c(2, 3)]),
-               c(d2 = "four five six", d3 = "seven eight")
-  )
-  expect_equal(as.character(corp[c("d2", "d3")]),
-               c(d2 = "four five six", d3 = "seven eight")
-  )
-  expect_equal(as.character(corp[c(-2, -3)]),
-               c(d1 = "one two three")
-  )
-  expect_error(corp[4], "Subscript out of bounds")
-  expect_error(corp[1:4], "Subscript out of bounds")
-  expect_error(corp["d4"], "Subscript out of bounds")
-  expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
+    corp <- corpus(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+    
+    expect_equal(corp[[1]], "one two three")
+    expect_equal(as.character(corp[c(FALSE, TRUE, TRUE)]), 
+                 c(d2 = "four five six", d3 = "seven eight")
+    )
+    expect_equal(as.character(corp[c(2, 3)]), 
+                 c(d2 = "four five six", d3 = "seven eight")
+    )
+    expect_equal(as.character(corp[c("d2", "d3")]), 
+                 c(d2 = "four five six", d3 = "seven eight")
+    )
+    expect_equal(as.character(corp[c(-2, -3)]), 
+                 c(d1 = "one two three")
+    ) 
+    expect_error(corp[4], "Subscript out of bounds")
+    expect_error(corp[1:4], "Subscript out of bounds")
+    expect_error(corp["d4"], "Subscript out of bounds")
+    expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
 })

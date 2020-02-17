@@ -141,7 +141,8 @@ tokens_select.tokens <- function(x, pattern = NULL,
             ids <- list()
         }
     } else {
-        ids <- pattern2list(pattern, type, valuetype, case_insensitive, attr(x, "concatenator"))
+        ids <- pattern2list(pattern, type, valuetype, case_insensitive,
+                            field_object(attrs, "concatenator"))
     }
 
     # selection by nchar
@@ -172,12 +173,11 @@ tokens_select.tokens <- function(x, pattern = NULL,
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
     if (selection == "keep") {
-        x <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
+        result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
     } else {
-        x <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
+        result <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
     }
-    attributes(x, FALSE) <- attrs
-    return(x)
+    rebuild_tokens(result, attrs)
 }
 
 #' @rdname tokens_select

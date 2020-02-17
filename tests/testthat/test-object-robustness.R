@@ -8,7 +8,7 @@ test_that("corpus is/as methods work with old and new formats", {
 
     expect_true(quanteda:::is_pre2(data_corpus_pre2))
     expect_false(quanteda:::is_pre2(as.corpus(data_corpus_pre2)))
-    expect_false(quanteda:::is_pre2(data_corpus_inaugural))
+    #expect_false(quanteda:::is_pre2(data_corpus_inaugural))
 })
 
 test_that("tokens is/as methods work with old and new formats", {

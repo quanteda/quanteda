@@ -30,6 +30,7 @@ phrase.default <- function(x) {
 }
 
 #' @noRd
+#' @importFrom stringi stri_split_charclass
 #' @export
 phrase.character <- function(x) {
     phrase(stri_split_charclass(x, "\\p{Z}"))

@@ -47,31 +47,36 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     x <- as.corpus(x)
     to <- match.arg(to)
     attrs <- attributes(x)
+    if (field_object(attrs, "unit") == to)
+        return(x)
     if (to == "documents") {
-        if (attr(x, "unit") %in% c("sentences", "paragraphs", "segments")) {
-            docid <- as.integer(droplevels(attrs$docvars[["docid_"]]))
-            temp <- split(unclass(x), docid)
-            if (attr(x, "unit") %in% c("sentences", "segments")) {
-                result <- unlist(lapply(temp, paste0, collapse = "  "))
+        if (field_object(attrs, "unit") %in% c("sentences", "paragraphs", "segments")) {
+            docnum <- as.integer(droplevels(attrs$docvars[["docid_"]]))
+            temp <- list("text" = split(unclass(x), docnum))
+            if (field_object(attrs, "unit") %in% c("sentences", "segments")) {
+                temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "  "))
             } else {
-                result <- unlist(lapply(temp, paste0, collapse = "\n\n"))
+                temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "\n\n"))
             }
-            attrs$docvars <- reshape_docvars(attrs$docvars, !duplicated(docid))
-            attrs$unit <- "documents"
+            attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], !duplicated(docnum))
+            unit <- "documents"
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
     } else if (to %in% c("sentences", "paragraphs")) {
-        if (attrs$unit %in% "documents") {
+        if (field_object(attrs, "unit") %in% "documents") {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE,
                                   omit_empty = FALSE, what = to, ...)
-            result <- temp$text
-            attrs$docvars <- reshape_docvars(attrs$docvars, temp$docnum)
-            attrs$unit <- to
+            attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
+            unit <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
     }
-    attributes(result, FALSE) <- attrs
-    return(result)
+    build_corpus(
+        temp[["text"]],
+        unit = unit,
+        docvars = attrs[["docvars"]],
+        meta = attrs[["meta"]]
+    )
 }

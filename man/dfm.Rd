@@ -60,6 +60,7 @@ exact matching. See \link{valuetype} for details.}
 \item{groups}{either: a character vector containing the names of document
 variables to be used for grouping; or a factor or object that can be
 coerced into a factor equal in length or rows to the number of documents.
+\code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
 
 \item{verbose}{display messages if \code{TRUE}}

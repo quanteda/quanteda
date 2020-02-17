@@ -86,6 +86,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     is_dfm <- FALSE
+    attrs <- attributes(x)
     feat <- featnames(x)
 
     id <- seq_len(nfeat(x))
@@ -109,7 +110,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             pattern <- stri_replace_all_fixed(
                 unlist(pattern, use.names = FALSE),
                 " ",
-                attr(x, "concatenator")
+                field_object(attrs, "concatenator")
             )
         }
         ids_pat <- pattern2id(pattern, feat, valuetype, case_insensitive)

@@ -8,11 +8,11 @@
 \alias{metacorpus<-}
 \title{Get or set object metadata}
 \usage{
-meta(x, field = NULL, type = c("user", "system", "all"))
+meta(x, field = NULL, type = c("user", "object", "system", "all"))
 
 meta(x, field = NULL) <- value
 
-metacorpus(x, field = NULL, type = c("user", "system", "all"))
+metacorpus(x, field = NULL, type = c("user", "object", "system", "all"))
 
 metacorpus(x, field = NULL) <- value
 }
@@ -22,33 +22,30 @@ metacorpus(x, field = NULL) <- value
 \item{field}{metadata field name(s); if \code{NULL} (default), return all
 metadata names}
 
-\item{type}{\code{"user"} for user-supplied metadata;
-\code{"system"} for metadata set automatically when the object is created;
+\item{type}{\code{"user"} for user-provided corpus-level metadata;
+\code{"system"} for metadata set automatically when the corpus is created;
 or \code{"all"} for all metadata.}
 
 \item{value}{new value of the metadata field}
 }
 \value{
-For \code{meta}, a named list of the metadata fields.
+For \code{meta}, a named list of the metadata fields in the corpus.
 
-For \verb{meta <-}, the object with the updated user-level metadata.  Only
+For \verb{meta <-}, the corpus with the updated user-level metadata.  Only
 user-level metadata may be assigned.
 }
 \description{
-Get or set metadata in a \link{corpus}, \link{tokens}, \link{dfm}, or \link{dictionary} object.
+Get or set the object metadata in a \link{corpus}, \link{tokens}, \link{dfm}, or
+\link{dictionary} object. With the exception of dictionaries, this will be
+corpus-level metadata.
 }
 \details{
-\code{metacorpus} and \verb{metacorpus<-} are synonyms for \code{meta()} and \verb{meta()<-} for
-\link{corpus} objects, but are deprecated.
+\code{metacorpus} and \verb{metacorpus<-} are synonyms but are deprecated.
 }
 \examples{
 meta(data_corpus_inaugural)
 meta(data_corpus_inaugural, "source")
 meta(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
 meta(data_corpus_inaugural, "citation")
-
-dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
-meta(dict, "source") <- "The example from meta()."
-meta(dict)
 }
-\keyword{meta}
+\keyword{corpus}

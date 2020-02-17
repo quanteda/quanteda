@@ -1,5 +1,5 @@
 #' Tabulate feature frequencies
-#' 
+#'
 #' Produces counts and document frequencies summaries of the features in a
 #' [dfm], optionally grouped by a [docvars] variable or other supplied
 #' grouping variable.
@@ -28,13 +28,13 @@
 #' frequencies are within group.  If groups is not specified, the `group`
 #' column is omitted from the returned data.frame.}
 #' }
-#' @examples 
+#' @examples
 #' set.seed(20)
 #' dfmat1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
 #' textstat_frequency(dfmat1)
 #' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "first")
 #' textstat_frequency(dfmat1, groups = c("one", "two", "one"), ties_method = "dense")
-#' 
+#'
 #' dfmat2 <- corpus_subset(data_corpus_inaugural, President == "Obama") %>%
 #'    dfm(remove_punct = TRUE, remove = stopwords("english"))
 #' tstat1 <- textstat_frequency(dfmat2)
@@ -44,20 +44,20 @@
 #' # plot 20 most frequent words
 #' library("ggplot2")
 #' ggplot(tstat1[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
-#'     geom_point() + 
+#'     geom_point() +
 #'     coord_flip() +
 #'     labs(x = NULL, y = "Frequency")
-#' 
+#'
 #' # plot relative frequencies by group
-#' dfmat3 <- data_corpus_inaugural %>% 
-#'     corpus_subset(Year > 2000) %>% 
-#'     dfm(remove = stopwords("english"), remove_punct = TRUE) %>% 
+#' dfmat3 <- data_corpus_inaugural %>%
+#'     corpus_subset(Year > 2000) %>%
+#'     dfm(remove = stopwords("english"), remove_punct = TRUE) %>%
 #'     dfm_group(groups = "President") %>%
 #'     dfm_weight(scheme = "prop")
-#' 
+#'
 #' # calculate relative frequency by president
 #' tstat2 <- textstat_frequency(dfmat3, n = 10, groups = "President")
-#' 
+#'
 #' # plot frequencies
 #' ggplot(data = tstat2, aes(x = factor(nrow(tstat2):1), y = frequency)) +
 #'     geom_point() +
@@ -71,12 +71,12 @@
 #'   their term and document frequencies within groups.
 #' @export
 #' @keywords plot
-textstat_frequency <- function(x, n = NULL, groups = NULL, 
+textstat_frequency <- function(x, n = NULL, groups = NULL,
                                ties_method = c("min", "average", "first", "random", "max", "dense"),
                                ...) {
     UseMethod("textstat_frequency")
 }
-    
+
 #' @export
 textstat_frequency.default <- function(x, n = NULL, groups = NULL,
                                ties_method = c("min", "average", "first", "random", "max", "dense"),
@@ -91,25 +91,33 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
                                ...) {
     group <- frequency <- NULL
     ties_method <- match.arg(ties_method)
-    
     x <- as.dfm(x)
-    if (!sum(x)) stop(message_error("dfm_empty"))
 
-    if (is.null(groups)) groups <- rep("all", ndoc(x))
-    
-    x@weightTf[["scheme"]] <- "count" # reset for docfreq
-    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups, ...)@x
-    
-    x <- as(dfm_group(x, groups, ...), "dgTMatrix")
-    result <- data.table(feature = colnames(x)[x@j + 1],
-                       frequency = x@x,
-                       docfreq = docfreq,
-                       group = rownames(x)[x@i + 1])
+    if (!sum(x))
+        stop(message_error("dfm_empty"))
+
+    if (is.null(groups))
+        groups <- rep("all", ndoc(x))
+
+    tf <- x
+    tf <- dfm_group(tf, groups, ...)
+    tf <- as(tf, "dgTMatrix")
+
+    df <- dfm_weight(x, "boolean", force = TRUE)
+    df <- dfm_group(df, groups, ...)
+    df <- as(df, "dgTMatrix")
+
+    result <- data.table(
+        feature = colnames(tf)[tf@j + 1L],
+        frequency = tf@x,
+        docfreq = df@x,
+        group = rownames(tf)[tf@i + 1L]
+    )
 
     # get the frequency rank
     result[, rank := frank(-frequency, ties.method = ties_method), by = group]
     setorder(result, group, rank)
-    
+
     # keep only first n items by group, if n is specified
     if (!is.null(n)) {
         stopifnot(is.numeric(n))
@@ -117,7 +125,7 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
     }
 
     setcolorder(result, c("feature", "frequency", "rank", "docfreq", "group"))
-    
+
     # make into data.frame, class it, and return
     result <- setDF(result)
     class(result) <- c("frequency", "textstat", "data.frame")

@@ -10,8 +10,7 @@ docfreq(
   smoothing = 0,
   k = 0,
   base = 10,
-  threshold = 0,
-  use.names = TRUE
+  threshold = 0
 )
 }
 \arguments{
@@ -41,9 +40,6 @@ Raghavan, and Schütze 2008, p123).}
 will considered in the computation of document frequency.  The default is
 0, meaning that a feature's document frequency will be the number of
 documents in which it occurs greater than zero times.}
-
-\item{use.names}{logical; if \code{TRUE} attach feature labels as names of
-the resulting numeric vector}
 }
 \value{
 a numeric vector of document frequencies for each feature
@@ -61,7 +57,7 @@ docfreq(dfmat1[, 1:20])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-dfmat2 <- 
+dfmat2 <-
     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
            byrow = TRUE, nrow = 2,
            dimnames = list(docs = c("document1", "document2"),

@@ -3,47 +3,6 @@ context("test textstat_simil")
 mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
 mt <- dfm_trim(mt, min_termfreq = 10)
 
-test_that("test old and new textstat_simil are the same", {
-    expect_equivalent(as.matrix(textstat_simil(mt)),
-                      as.matrix(textstat_simil_old(mt, diag = TRUE, upper = TRUE)),
-                      tolerance = 0.01)
-
-    expect_equivalent(as.matrix(textstat_simil(mt, margin = "features")),
-                      as.matrix(textstat_simil_old(mt, margin = "features")),
-                      tolerance = 0.01)
-
-    expect_equivalent(as.matrix(textstat_simil(mt, y = mt["1985-Reagan", ])),
-                      as.matrix(textstat_simil_old(mt, selection = "1985-Reagan")),
-                      tolerance = 0.01)
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "cosine")),
-                      as.matrix(textstat_simil_old(mt, method = "cosine")),
-                      tolerance = 0.01)
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "correlation")),
-                      as.matrix(textstat_simil_old(mt, method = "correlation")))
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "jaccard")),
-                      as.matrix(textstat_simil_old(mt, method = "jaccard")))
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "ejaccard")),
-                      as.matrix(textstat_simil_old(mt, method = "ejaccard")))
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "dice")),
-                      as.matrix(textstat_simil_old(mt, method = "dice")))
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "edice")),
-                      as.matrix(textstat_simil_old(mt, method = "edice")))
-
-    expect_equivalent(as.matrix(textstat_simil(mt, method = "simple matching")),
-                      as.matrix(textstat_simil_old(mt, method = "simple matching")))
-
-    # old function is wrong (KW)
-    #expect_equivalent(as.matrix(textstat_simil(mt, method = "faith")),
-    #                  as.matrix(textstat_simil_old(mt, method = "faith")))
-
-})
-
 test_that("y errors if not a dfm", {
     expect_error(
         textstat_simil(mt, y = c("mr", "president"), margin = "features"),

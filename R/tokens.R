@@ -250,7 +250,6 @@ tokens.corpus <- function(x,
     }
     check_dots(dots, c(names(formals(tokens))))
 
-    
     # call the appropriate tokenizer function
     if (verbose) catm("...starting tokenization\n")
     tokenizer_fn <- switch(what,
@@ -260,35 +259,45 @@ tokens.corpus <- function(x,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
                            fastestword = tokenize_fastestword)
-    result <- tokenizer_fn(texts(x), split_hyphens = split_hyphens, verbose = verbose)
-    result <- as.tokens(result)
+    
+    # split x into smaller blocks to reducre peak memory consumption
+    x <- split(x, ceiling(seq_along(x) / 10000))
+    for (i in seq_along(x)) {
+        if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
+        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, verbose = verbose)
+        if (verbose) catm("...serializing tokens ")
+        if (i == 1) {
+            x[[i]] <- serialize_tokens(temp)
+        } else {
+            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
+        }
+        if (verbose) catm(length(attr(x[[i]], "types")), "unique types\n")
+    }
+    
+    result <- build_tokens(
+        unlist(x, recursive = FALSE), 
+        types = attr(x[[length(x)]], "types"),
+        what = what, 
+        docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
+        meta = attrs[["meta"]]
+    )
 
     if (what %in% c("word", "word2") && !split_hyphens)
         result <- restore_special(result, split_hyphens = FALSE, split_tags = !(what == "word2"))
     
     if (!remove_separators && !what %in% c("word", "character"))
         warning("remove_separators is always TRUE for this type")
-
+    
     result <- tokens.tokens(result,
-                     remove_punct = remove_punct,
-                     remove_symbols = remove_symbols,
-                     remove_numbers = remove_numbers,
-                     remove_url = remove_url,
-                     remove_separators = remove_separators,
-                     split_hyphens = FALSE,
-                     include_docvars = FALSE,
-                     padding = padding,
-                     verbose = verbose)
-
-    attributes(result, FALSE) <- attrs
-    if (include_docvars) {
-        attr(result, "docvars") <- get_docvars(x, user = TRUE, system = TRUE)
-    } else {
-        attr(result, "docvars") <- get_docvars(x, user = FALSE, system = TRUE)
-    }
-    attr(result, "what") <- what
-    attr(result, "unit") <- attr(x, "unit")
-    attr(result, "meta") <- attr(x, "meta")
+                            remove_punct = remove_punct,
+                            remove_symbols = remove_symbols,
+                            remove_numbers = remove_numbers,
+                            remove_url = remove_url,
+                            remove_separators = remove_separators,
+                            split_hyphens = FALSE,
+                            include_docvars = TRUE,
+                            padding = padding,
+                            verbose = verbose)
     return(result)
 }
 
@@ -310,11 +319,13 @@ tokens.tokens <-  function(x,
                            ...) {
     x <- as.tokens(x)
     dots <- list(...)
+    
     # deprecated arguments
     if ("remove_hyphens" %in% names(dots)) {
         split_hyphens <- dots$remove_hyphens
         .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
         dots$remove_hyphens <- NULL
+
     }
     if ("remove_twitter" %in% names(dots)) {
         .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
@@ -401,22 +412,18 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 as.tokens.list <- function(x, concatenator = "_", ...) {
     x <- lapply(x, stri_trans_nfc)
     x <- serialize_tokens(x)
-    docvar <- make_docvars(length(x), names(x))
-    compile_tokens(x, docvar[["docname_"]],
-                   concatenator = concatenator,
-                   types = attr(x, "types"), source = "list",
-                   docvars = docvar) %>%
-        tokens_recompile()
+    build_tokens(
+        x, 
+        types = attr(x, "types"), 
+        concatenator = concatenator,
+        docvars = make_docvars(length(x), names(x))
+    )
 }
 
 #' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
-    if (is_pre2(x)) {
-        attr(x, "docvars") <- upgrade_docvars(attr(x, "docvars"), names(x))
-        attr(x, "meta") <- meta_system_defaults("tokens")
-    }
-    return(x)
+    upgrade_tokens(x)
 }
 
 #' @rdname as.tokens
@@ -442,9 +449,8 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #' @export
 #' @return `is.tokens` returns `TRUE` if the object is of class
 #'   tokens, `FALSE` otherwise.
-is.tokens <- function(x) {
-    "tokens" %in% class(x)
-}
+is.tokens <- function(x) "tokens" %in% class(x)
+
 
 # utility functions ------------
 
@@ -453,7 +459,6 @@ compile_removals_regex <- function(remove_separators = FALSE,
                                    remove_symbols = FALSE,
                                    remove_numbers = FALSE,
                                    remove_url = FALSE) {
-
     regex_to_remove <- removing_msg <- character()
 
     if (remove_separators) {
@@ -477,29 +482,12 @@ compile_removals_regex <- function(remove_separators = FALSE,
         regex_to_remove <- c(regex_to_remove, "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))")
         removing_msg <- c(removing_msg, "URLs")
     }
+    
     return(list(regex_to_remove = regex_to_remove, removing_msg = removing_msg))
 }
 
-    compile_tokens <- function(x, names, types, ngrams = 1L, skip = 0L,
-                           what = "word", concatenator = "_", padding = FALSE,
-                           unit = "documents", source = "corpus",
-                           docvars = data.frame(), meta = list()) {
-    structure(x,
-              names = names,
-              class = "tokens",
-              what = what,
-              ngrams = ngrams,
-              skip = skip,
-              concatenator = concatenator,
-              padding = padding,
-              types = types,
-              unit = unit,
-              meta = list("system" = meta_system_defaults(source),
-                          "user" = meta),
-              docvars = docvars)
-}
 
-#' Function to serialized list-of-character tokens
+#' Function to serialize list-of-character tokens
 #'
 #' Creates a serialized object of tokens, called by [tokens()].
 #' @param x a list of character vectors
@@ -529,7 +517,6 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attributes(x) <- attrs
     attr(x, "types") <- types
-    class(x) <- "tokens"
     return(x)
 }
 
@@ -584,46 +571,44 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
-        attributes(x, FALSE) <- attrs
-        return(x)
-    }
-
-    # Check for padding
-    index_unique <- unique(unlist(unclass(x), use.names = FALSE))
-    padding <- (index_unique == 0)
-    attrs$padding <- any(padding) # add padding flag
-    index_unique <- index_unique[!padding] # exclude padding
-
-    if (!gap && !dup) {
-        attributes(x) <- attrs
-        return(x)
-    }
-
-    # Remove gaps in the type index, if any, remap index
-    if (gap) {
-        if (any(is.na(match(seq_len(length(types(x))), index_unique)))) {
-            types_new <- types(x)[index_unique]
-            index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
-            index_unique <- c(0, index_unique) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
-            attributes(x) <- attrs
-            types(x) <- types_new
+        x <- rebuild_tokens(x, attrs)
+    } else {
+    
+        # Check for padding
+        index_unique <- unique(unlist(unclass(x), use.names = FALSE))
+        padding <- index_unique == 0
+        attrs[["padding"]] <- any(padding) # add padding flag
+        index_unique <- index_unique[!padding] # exclude padding
+    
+        if (!gap && !dup) return(x)
+    
+        # Remove gaps in the type index, if any, remap index
+        if (gap) {
+            if (any(is.na(match(seq_len(length(types(x))), index_unique)))) {
+                types_new <- types(x)[index_unique]
+                index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
+                index_unique <- c(0, index_unique) # padding index is zero but not in types
+                x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
+                attributes(x) <- attrs
+                types(x) <- types_new
+            }
         }
-    }
-
-    # Reindex duplicates, if any
-    if (dup) {
-        if (any(duplicated(types(x)))) {
-            types <- types(x)
-            types_unique <- unique(types)
-            index_mapping <- match(types, types_unique)
-            index_mapping <- c(0, index_mapping) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-            attributes(x) <- attrs
-            types(x) <- types_unique
+    
+        # Reindex duplicates, if any
+        if (dup) {
+            if (any(duplicated(types(x)))) {
+                types <- types(x)
+                types_unique <- unique(types)
+                index_mapping <- match(types, types_unique)
+                index_mapping <- c(0, index_mapping) # padding index is zero but not in types
+                x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
+                attributes(x) <- attrs
+                types(x) <- types_unique
+            }
         }
+        Encoding(types(x)) <- "UTF-8"
+        x <- rebuild_tokens(x, attrs)
     }
-    Encoding(types(x)) <- "UTF-8"
     return(x)
 }
 

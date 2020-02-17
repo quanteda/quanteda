@@ -14,7 +14,7 @@
 #'   given base, or 0 if the count was zero: \eqn{1 +
 #'   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
 #'   \item{`boolean`}{recode all non-zero counts as 1}
-#'   \item{`augmented`}{equivalent to \eqn{K + (1 - K) *} `dfm_weight(x,
+#'   \item{`augmented`}{equivalent to \eqn{k + (1 - k) *} `dfm_weight(x,
 #'   "propmax")`}
 #'   \item{`logave`}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
 #'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
@@ -25,24 +25,28 @@
 #'   applied as multipliers to the existing feature counts for the corresponding
 #'   named features.  Any features not named will be assigned a weight of 1.0
 #'   (meaning they will be unchanged).
-#' @param base base for the logarithm when `scheme` is `"logcount"` or 
+#' @param base base for the logarithm when `scheme` is `"logcount"` or
 #'   `logave`
-#' @param K the K for the augmentation when `scheme = "augmented"`
+#' @param k the k for the augmentation when `scheme = "augmented"`
 #' @param force logical; if `TRUE`, apply weighting scheme even if the dfm
 #'   has been weighted before.  This can result in invalid weights, such as as
 #'   weighting by `"prop"` after applying `"logcount"`, or after
 #'   having grouped a dfm using [dfm_group()].
+#' @param threshold numeric value of the threshold *above which* a feature
+#'   will considered in the computation of document frequency.  The default is
+#'   0, meaning that a feature's document frequency will be the number of
+#'   documents in which it occurs greater than zero times.
 #' @return `dfm_weight` returns the dfm with weighted values.  Note the
 #'   because the default weighting scheme is `"count"`, simply calling this
 #'   function on an unweighted dfm will return the same object.  Many users will
 #'   want the normalized dfm consisting of the proportions of the feature counts
 #'   within each document, which requires setting `scheme = "prop"`.
 #' @export
-#' @seealso [dfm_tfidf()], [docfreq()]
+#' @seealso [docfreq()]
 #' @keywords dfm
 #' @examples
 #' dfmat1 <- dfm(data_corpus_inaugural)
-#' 
+#'
 #' dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
 #' topfeatures(dfmat2)
 #' dfmat3 <- dfm_weight(dfmat1)
@@ -51,25 +55,25 @@
 #' topfeatures(dfmat4)
 #' dfmat5 <- dfm_weight(dfmat1, scheme = "logave")
 #' topfeatures(dfmat5)
-#' 
+#'
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
 #' head(dfm_tfidf(dfmat1, scheme_tf = "logcount"))
-#' 
+#'
 #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
 #' (dfmat6 <- dfm(str, remove = stopwords("english")))
 #' dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
-#' 
+#'
 #' @references  Manning, C.D., Raghavan, P., & Schütze, H. (2008).
-#'   *An Introduction to Information Retrieval*. Cambridge: Cambridge University Press. 
+#'   *An Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 dfm_weight <- function(
     x,
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
     weights = NULL,
     base = 10,
-    K = 0.5,
+    k = 0.5,
     force = FALSE) {
     UseMethod("dfm_weight")
 }
@@ -80,7 +84,7 @@ dfm_weight.default <- function(
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
     weights = NULL,
     base = 10,
-    K = 0.5,
+    k = 0.5,
     force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_weight"))
 }
@@ -91,7 +95,7 @@ dfm_weight.dfm <- function(
     scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
     weights = NULL,
     base = 10,
-    K = 0.5,
+    k = 0.5,
     force = FALSE) {
 
     # traps for deprecated scheme values
@@ -117,6 +121,7 @@ dfm_weight.dfm <- function(
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
+    attrs <- attributes(x)
 
     ### for numeric weights
     if (!is.null(weights)) {
@@ -136,7 +141,7 @@ dfm_weight.dfm <- function(
         names(weight) <- featnames(x)
         weights <- weights[!ignore]
         weight[match(names(weights), names(weight))] <- weights
-        
+
         weight <- Diagonal(x = weight)
         colnames(weight) <- colnames(x)
         return(as.dfm(x %*% weight))
@@ -146,17 +151,18 @@ dfm_weight.dfm <- function(
         scheme <- match.arg(scheme)
         args <- as.list(match.call(expand.dots = FALSE))
 
-        if ("K" %in% names(args) && scheme != "augmented")
-            warning("K not used for this scheme")
-        if (K < 0 | K > 1.0)
-            stop("K must be in the [0, 1] interval")
+        if ("k" %in% names(args) && scheme != "augmented")
+            warning("k not used for this scheme")
+        if (k < 0 || k > 1.0)
+            stop("k must be in the [0, 1] interval")
 
-        if (!force && 
-            x@weightTf[["scheme"]] != "count" && 
-            x@weightTf[["scheme"]] != "unary") {
-            stop("will not weight a dfm already term-weighted as '",
-                 x@weightTf[["scheme"]], "'; use force = TRUE to override",
-                 call. = FALSE)
+        if (!force) {
+            if (field_object(attrs, "weight_tf")$scheme != "count" ||
+                field_object(attrs, "weight_df")$scheme != "unary") {
+                stop("will not weight a dfm already term-weighted as '",
+                     field_object(attrs, "weight_tf")$scheme, "'; use force = TRUE to override",
+                     call. = FALSE)
+            }
         }
 
         if (scheme == "count") {
@@ -176,21 +182,20 @@ dfm_weight.dfm <- function(
         } else if (scheme == "logcount") {
             x@x <- 1 + log(x@x, base)
             x@x[is.infinite(x@x)] <- 0
-            x@weightTf[["base"]] <- base
+            field_object(attrs, "weight_tf")$base <- base
 
         } else if (scheme == "augmented") {
             maxtf <- maxtf(x)
-            x@x <- K + (1 - K) * x@x / maxtf[x@i + 1]
-            x@weightTf[["K"]] <- K
+            x@x <- k + (1 - k) * x@x / maxtf[x@i + 1]
+            field_object(attrs, "weight_tf")$k <- k
 
         } else if (scheme == "logave") {
             meantf <- Matrix::rowSums(x) / Matrix::rowSums(dfm_weight(x, "boolean"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i + 1], base))
-            x@weightTf[["base"]] <- base
-        } 
-        
-        x@weightTf[["scheme"]] <- scheme
-        return(x)
+            field_object(attrs, "weight_tf")$base <- base
+        }
+        field_object(attrs, "weight_tf")$scheme <- scheme
+        rebuild_dfm(x, attrs)
     }
 }
 
@@ -204,7 +209,7 @@ dfm_weight.dfm <- function(
 #'   matrix from sparse to dense format, so may exceed memory requirements
 #'   depending on the size of your input matrix.
 #' @export
-#' @examples 
+#' @examples
 #' # smooth the dfm
 #' dfmat <- dfm(data_corpus_inaugural)
 #' dfm_smooth(dfmat, 0.5)
@@ -221,14 +226,16 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 dfm_smooth.dfm <- function(x, smoothing = 1) {
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    x@smooth <- x@smooth + smoothing
-    x + smoothing
+    attrs <- attributes(x)
+    field_object(attrs, "smooth") <- field_object(attrs, "smooth") + smoothing
+    x <- x + smoothing
+    rebuild_dfm(x, attrs)
 }
 
 # docfreq -------------
 
 #' Compute the (weighted) document frequency of a feature
-#' 
+#'
 #' For a [dfm] object, returns a (weighted) document frequency for each
 #' term.  The default is a simple count of the number of documents in which a
 #' feature occurs more than a given frequency threshold.  (The default threshold
@@ -251,22 +258,17 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' @param base the base with respect to which logarithms in the inverse document
 #' frequency weightings are computed; default is 10 (see Manning, 
 #'   Raghavan, and Schütze 2008, p123).
-#' @param threshold numeric value of the threshold *above which* a feature 
-#'   will considered in the computation of document frequency.  The default is 
-#'   0, meaning that a feature's document frequency will be the number of 
-#'   documents in which it occurs greater than zero times.
-#' @param use.names	logical; if `TRUE` attach feature labels as names of 
-#'   the resulting numeric vector
+#' @inheritParams dfm_weight
 #' @return a numeric vector of document frequencies for each feature
 #' @keywords weighting dfm
 #' @export
-#' @examples 
+#' @examples
 #' dfmat1 <- dfm(data_corpus_inaugural[1:2])
 #' docfreq(dfmat1[, 1:20])
-#' 
+#'
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' dfmat2 <- 
+#' dfmat2 <-
 #'     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'            byrow = TRUE, nrow = 2,
 #'            dimnames = list(docs = c("document1", "document2"),
@@ -280,30 +282,27 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' docfreq(dfmat2, scheme = "unary")
 #' docfreq(dfmat2, scheme = "inversemax")
 #' docfreq(dfmat2, scheme = "inverseprob")
-#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
+#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008).
 #'   *Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax",
                                   "inverseprob", "unary"),
-                    smoothing = 0, k = 0, base = 10, threshold = 0,
-                    use.names = TRUE) {
+                    smoothing = 0, k = 0, base = 10, threshold = 0) {
     UseMethod("docfreq")
 }
 
 #' @export
 docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
                                           "inverseprob", "unary"),
-                        smoothing = 0, k = 0, base = 10, threshold = 0,
-                        use.names = TRUE) {
+                        smoothing = 0, k = 0, base = 10, threshold = 0) {
     stop(friendly_class_undefined_message(class(x), "docfreq"))
 }
 
-    
+
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
                                       "inverseprob", "unary"),
-                        smoothing = 0, k = 0, base = 10, threshold = 0,
-                        use.names = TRUE) {
+                        smoothing = 0, k = 0, base = 10, threshold = 0) {
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
@@ -323,35 +322,30 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     } else if (scheme == "count") {
         result <- colSums(x > threshold)
     } else if (scheme == "inverse") {
-        result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count",
-                                                          use.names = FALSE))),
-                      base = base)
+        result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count"))), base = base)
     } else if (scheme == "inversemax") {
-        temp <- docfreq(x, "count", use.names = FALSE)
+        temp <- docfreq(x, "count")
         result <- log(smoothing + (max(temp) / (k + temp)), base = base)
     } else if (scheme == "inverseprob") {
-        temp <- docfreq(x, "count", use.names = FALSE)
-        result <- pmax(0, log( (ndoc(x) - temp) / (k + temp), base = base) )
+        temp <- docfreq(x, "count")
+        result <- pmax(0, log((ndoc(x) - temp) / (k + temp), base = base))
     }
-    if (use.names) {
-        names(result) <- featnames(x)
-    } else {
-        result <- unname(result)
-    }
-    result
+    names(result) <- featnames(x)
+    return(result)
 }
 
 # docfreq -------------
 
 #' Compute the frequencies of features
-#' 
+#'
 #' For a [dfm] object, returns a frequency for each feature, computed
 #' across all documents in the dfm. This is equivalent to `colSums(x)`.
 #' @param x a [dfm]
 #' @return a (named) numeric vector of feature frequencies
 #' @keywords weighting dfm
+#' @seealso [dfm_tfidf()], [dfm_weight()]
 #' @export
-#' @examples 
+#' @examples
 #' dfmat <- dfm(data_char_sampletext)
 #' featfreq(dfmat)
 featfreq <- function(x) {
@@ -371,48 +365,45 @@ featfreq.dfm <- function(x) {
 # dfm_tfidf ---------------
 
 #' Weight a dfm by *tf-idf*
-#' 
-#' Weight a dfm by term frequency-inverse document frequency (*tf-idf*), 
+#'
+#' Weight a dfm by term frequency-inverse document frequency (*tf-idf*),
 #' with full control over options.  Uses fully sparse methods for efficiency.
-#' @param x object for which idf or tf-idf will be computed (a document-feature 
+#' @param x object for which idf or tf-idf will be computed (a document-feature
 #'   matrix)
 #' @param scheme_tf scheme for [dfm_weight()]; defaults to `"count"`
 #' @param scheme_df scheme for [docfreq()]; defaults to
-#'   `"inverse"`.  Other options to [docfreq()] can be passed
-#'   through the ellipsis (`...`).
+#'   `"inverse"`.
 #' @param base the base for the logarithms in the [dfm_weight()] and
 #'   [docfreq()] calls; default is 10
-#' @inheritParams dfm_weight
-#' @param ... additional arguments passed to [docfreq()].
+#' @rdname dfm_weight
 #' @details `dfm_tfidf` computes term frequency-inverse document frequency
 #'   weighting.  The default is to use counts instead of normalized term
 #'   frequency (the relative term frequency within document), but this
 #'   can be overridden using `scheme_tf = "prop"`.
-#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
+#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008).
 #'   *Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
-#' @seealso [dfm_weight()], [docfreq()]
 #' @keywords dfm weighting
-#' @examples 
+#' @examples
 #' dfmat1 <- as.dfm(data_dfm_lbgexample)
 #' head(dfmat1[, 5:10])
 #' head(dfm_tfidf(dfmat1)[, 5:10])
 #' docfreq(dfmat1)[5:15]
 #' head(dfm_weight(dfmat1)[, 5:10])
-#' 
+#'
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' dfmat2 <- 
+#' dfmat2 <-
 #'     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'            byrow = TRUE, nrow = 2,
 #'            dimnames = list(docs = c("document1", "document2"),
-#'                            features = c("this", "is", "a", "sample", 
+#'                            features = c("this", "is", "a", "sample",
 #'                                         "another", "example"))) %>%
 #'     as.dfm()
-#' dfmat2    
+#' dfmat2
 #' docfreq(dfmat2)
 #' dfm_tfidf(dfmat2, scheme_tf = "prop") %>% round(digits = 2)
-#' 
+#'
 #' \dontrun{
 #' # comparison with tm
 #' if (requireNamespace("tm")) {
@@ -423,46 +414,37 @@ featfreq.dfm <- function(x) {
 #' }
 #' @keywords dfm weighting
 #' @export
-dfm_tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                      base = 10, force = FALSE, ...) {
+dfm_tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse",
+                      base = 10, k = 0, threshold = 0, force = FALSE) {
     UseMethod("dfm_tfidf")
 }
 
 #' @export
-dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                              base = 10, force = FALSE, ...) {
+dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse",
+                              base = 10, k = 0, threshold = 0, force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_tfidf"))
 }
-    
-#' @export
-dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", 
-                          base = 10, force = FALSE, ...) {
 
-    slots <- get_dfm_slots(x)
+#' @export
+dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
+                          base = 10, k = 0, threshold = 0, force = FALSE) {
+
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
 
-    args <- list(...)
-    check_dots(args, names(formals(docfreq)))
-
-    dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
-    tfreq <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
-
-    if (nfeat(x) != length(dfreq)) stop("missing some values in idf calculation")
-
-    # get the document indexes
-    j <- as(tfreq, "dgTMatrix")@j + 1
-
-    # replace just the non-zero values by product with idf
-    x@x <- tfreq@x * dfreq[j]
-
-    # record attributes
-    slots$weightTf <- tfreq@weightTf
-    slots$weightDf <- c(list(scheme = scheme_df, base = base), args)
-    set_dfm_slots(x) <- slots
-    return(x)
+    x <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
+    v <- docfreq(x, scheme = scheme_df, base = base)
+    j <- as(x, "dgTMatrix")@j + 1L
+    x@x <- x@x * v[j]
+    attrs <- attributes(x)
+    field_object(attrs, "weight_df") <- list(
+        scheme = scheme_df,
+        base = base,
+        k = k,
+        threahold = threshold
+    )
+    rebuild_dfm(x, attrs)
 }
-
 
 # internal --------------
 

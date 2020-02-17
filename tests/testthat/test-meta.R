@@ -5,9 +5,10 @@ test_that("meta/meta<- works user data", {
     corp <- corpus(txt, docvars = data.frame(dv = 1:2))
     toks <- tokens(corp)
     dfmat <- dfm(toks)
+    dict <- dictionary(list("key1" = "aaa", "key2" = "bbb"))
     targetmeta3 <- list(usermeta1 = "test1", usermeta2 = "test2", usermeta3 = "test3")
     targetmeta2 <- list(usermeta1 = "test1", usermeta3 = "test3")
-
+    
     meta(corp, "usermeta1") <- "test1"
     meta(corp)["usermeta2"] <- "test2"
     meta(corp)$usermeta3    <- "test3"
@@ -21,27 +22,28 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(toks), targetmeta3)
     meta(toks)[2] <- NULL
     expect_identical(meta(toks), targetmeta2)
-
+    
     meta(dfmat, "usermeta1") <- "test1"
     meta(dfmat)["usermeta2"] <- "test2"
     meta(dfmat)$usermeta3    <- "test3"
     expect_identical(meta(dfmat), targetmeta3)
     meta(dfmat)[2] <- NULL
     expect_identical(meta(dfmat), targetmeta2)
-
-    dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
+    
     meta(dict, "usermeta1") <- "test1"
     meta(dict)["usermeta2"] <- "test2"
     meta(dict)$usermeta3    <- "test3"
     expect_identical(meta(dict), targetmeta3)
     meta(dict)[2] <- NULL
     expect_identical(meta(dict), targetmeta2)
+    
 })
 
-test_that("meta produces expected error with ineligible object classes", {
+test_that("meta.default produces expected error", {
     expect_error(
         meta(NULL),
-        ".*meta\\(\\) only works on corpus, tokens, dfm, or dictionary objects$"
+        "meta() only works on corpus, dfm, dictionary2, tokens objects",
+        fixed = TRUE
     )
 })
 
@@ -67,16 +69,12 @@ test_that("meta<- works", {
         meta(corp) <- list("needs to be named"),
         "every element of the meta list must be named"
     )
-
+    
     meta(corp, "newmeta") <- "some meta info"
     expect_identical(
         meta(corp),
         list(newmeta = "some meta info")
     )
-
-    dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
-    meta(dict, "source") <- "source is test-meta.R."
-    expect_identical(meta(dict), list(source = "source is test-meta.R."))
 })
 
 test_that("meta_system", {
@@ -90,11 +88,11 @@ test_that("meta_system", {
         quanteda:::meta_system(corp) <- list("needs to be named"),
         "every element of the meta list must be named"
     )
-
-    namlist <- c("source", "package-version", "r-version", "system",
+    
+    namlist <- c("package-version", "r-version", "system", 
                  "directory", "created") %in% names(quanteda:::meta_system(corp))
     expect_true(all(namlist))
-
+    
     expect_identical(
         meta(corp, type = "system"),
         quanteda:::meta_system(corp)
@@ -103,20 +101,16 @@ test_that("meta_system", {
 
 test_that("meta_system<-", {
     corp <- corpus(c("one", "two"))
-    corp2 <- quanteda:::"meta_system<-"(corp, "source", "test-meta.R")
+    corp2 <- quanteda:::"meta_system<-.corpus"(corp, "source", "test-meta.R")
     expect_identical(quanteda:::meta_system(corp2, "source"), "test-meta.R")
-
+    
     toks <- tokens(corp)
-    toks2 <- quanteda:::"meta_system<-"(toks, "source", "test-meta.R")
+    toks2 <- quanteda:::"meta_system<-.tokens"(toks, "source", "test-meta.R")
     expect_identical(quanteda:::meta_system(toks2, "source"), "test-meta.R")
-
+    
     dfmat <- dfm(toks)
-    dfmat2 <- quanteda:::"meta_system<-"(dfmat, "source", "dfm test")
+    dfmat2 <- quanteda:::"meta_system<-.dfm"(dfmat, "source", "dfm test")
     expect_identical(quanteda:::meta_system(dfmat2, "source"), "dfm test")
-
-    dict <- dictionary(list(neg = c("bad", "awful"), pos = "good"))
-    dict <- quanteda:::"meta_system<-"(dict, "source", "dict test")
-    expect_identical(quanteda:::meta_system(dict, "source"), "dict test")
 })
 
 test_that("adding summary info works", {
@@ -126,7 +120,7 @@ test_that("adding summary info works", {
         summary(corp),
         quanteda:::get_summary_metadata(corp)
     )
-
+    
     # for over 100 documents
     set.seed(10)
     corp <- corpus(sample(LETTERS, size = 110, replace = TRUE)) %>%
@@ -135,7 +129,7 @@ test_that("adding summary info works", {
         summary(corp, n = ndoc(corp)),
         quanteda:::get_summary_metadata(corp)
     )
-
+    
     # expect_warning(
     #     get_summary_metadata(corp[1:10]),
     #     "^documents have changed; computing summary$"
@@ -144,7 +138,7 @@ test_that("adding summary info works", {
         suppressWarnings(quanteda:::get_summary_metadata(corp[1:10])),
         summary(corp[1:10])
     )
-
+    
     # test when tokens options are passed
     corp1 <- corpus(c(d1 = "One. Two!", d2 = "One 2"))
     corp2 <- quanteda:::add_summary_metadata(corp1,
@@ -158,11 +152,11 @@ test_that("adding summary info works", {
         summary(corp2[1], remove_punct = TRUE, remove_numbers = TRUE),
         quanteda:::get_summary_metadata(corp2[1], remove_punct = TRUE, remove_numbers = TRUE)
     )
-
+    
     # test errors when non-tokens ... are passed
     expect_warning(
         quanteda:::add_summary_metadata(corp1, not_arg = TRUE),
-        "^Argument not_arg not used\\.$"
+        "^not_arg argument is not used"
     )
 })
 
@@ -170,15 +164,76 @@ test_that("adding extended summary information works", {
     corp <- corpus(c("One, two ®, 3. ", "😚 Yeah!!"))
     extsumm <- quanteda:::summarize_texts_extended(corp)
     expect_true(all(
-        c("total_tokens", "all_tokens", "total_punctuation", "total_symbols",
+        c("total_tokens", "all_tokens", "total_punctuation", "total_symbols", 
           "total_numbers", "total_words", "total_stopwords", "top_dfm") %in%
         names(extsumm)
     ))
     expect_is(extsumm$top_dfm, "dfm")
-
+    
     corp <- quanteda:::add_summary_metadata(corp, extended = TRUE)
     expect_equivalent(
-        meta(corp, "summary_extended", type = "system"),
+        meta(corp, "summary_extended", type = "system"), 
         extsumm
     )
+})
+
+
+test_that("object meta information is handled properly", {
+    
+    # make object meta for corpus
+    meta_corp1 <- quanteda:::make_meta("corpus")
+    expect_identical(
+        names(meta_corp1),
+        c("system", "object", "user")
+    )
+    
+    # add fields for tokens
+    meta_inherit <- meta_corp1
+    meta_inherit$object$concatenator <- "+"
+    meta_inherit$object$ngram <- 10L
+    
+    # make object meta for tokens
+    meta_toks1 <- quanteda:::make_meta("tokens", 
+                                       inherit = meta_inherit,
+                                       unit = "sentences")
+    expect_identical(
+        names(meta_toks1),
+        c("system", "object", "user")
+    )
+    expect_identical(meta_toks1$object$concatenator, "+")
+    expect_identical(meta_toks1$object$ngram, 10L)
+    expect_identical(meta_toks1$object$unit, "sentences")
+    
+    # add unused field
+    meta_inherit$object$xxx <- 999
+    expect_warning(
+        quanteda:::make_meta("tokens", "corpus", inherit = meta_inherit),
+        "xxx is ignored.", fixed = TRUE
+    )
+    meta_inherit$object$xxx <- NULL # correct
+    expect_warning(
+        quanteda:::make_meta("tokens", xxx = 999),
+        "xxx is ignored.", fixed = TRUE
+    )
+
+    # assign invalid values to used field
+    meta_inherit$object$skip <- FALSE
+    expect_error(
+        quanteda:::make_meta("tokens", inherit = meta_inherit)
+    )
+    meta_inherit$object$skip <- 0L # correct
+    expect_error(
+        quanteda:::make_meta("tokens", skip = FALSE)
+    )
+    # make object meta for dfm
+    meta_dfm1 <- quanteda:::make_meta("dfm", 
+                                      inherit = meta_inherit,
+                                      unit = "paragraphs")
+    expect_identical(
+        names(meta_dfm1),
+        c("system", "object", "user")
+    )
+    expect_identical(meta_dfm1$object$concatenator, "+")
+    expect_identical(meta_dfm1$object$ngram, 10L)
+    expect_identical(meta_dfm1$object$unit, "paragraphs")
 })

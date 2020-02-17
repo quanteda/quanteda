@@ -70,15 +70,7 @@ as.dfm.default <- function(x) {
 #' @method as.dfm dfm
 #' @export
 as.dfm.dfm <- function(x) {
-    if (is_pre2(x)) {
-        slots <- get_dfm_slots(x)
-        x <- new("dfm", as(x, "dgCMatrix"),
-                 meta = list(user = list(),
-                             system = list()),
-                 docvars = upgrade_docvars(x@docvars, rownames(x)))
-        set_dfm_slots(x) <- slots
-    }
-    return(x)
+    upgrade_dfm(x)
 }
 
 #' @noRd
@@ -130,23 +122,29 @@ as.dfm.TermDocumentMatrix <- function(x) {
 
 #' Converts a Matrix to a dfm
 #' @param x a Matrix
-#' @param slots slots a list of values to be assigned to slots
+#' @param meta a list of values to be assigned to slots
 #' @keywords internal
-matrix2dfm <- function(x, slots = NULL) {
+matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
 
-    rowname <- rownames(x)
-    if (nrow(x) > length(rowname))
-        rowname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
+    docname <- rownames(x)
+    if (nrow(x) > length(docname))
+        docname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
 
-    colname <- colnames(x)
-    if (ncol(x) > length(colname))
-        colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    featname <- colnames(x)
+    if (ncol(x) > length(featname))
+        featname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
 
-    x <- Matrix(x, sparse = TRUE)
-    x <- new("dfm", as(x, "dgCMatrix"), docvars = make_docvars(nrow(x), rowname, FALSE))
-    set_dfm_dimnames(x) <- list(rowname, colname)
-    set_dfm_slots(x) <- slots
-    return(x)
+    if (is.null(docvars))
+        docvars <- make_docvars(nrow(x), docname, FALSE)
+    if (is.null(meta))
+        meta <- make_meta("dfm")
+
+    build_dfm(
+        as(Matrix(x, sparse = TRUE), "dgCMatrix"),
+        featname,
+        docvars = docvars,
+        meta = meta
+    )
 }
 
 #' Set values to a dfm's S4 slots

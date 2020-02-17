@@ -6,7 +6,7 @@
 tokens_compound and kwic.}
 \usage{
 pattern2list(
-  pattern,
+  x,
   types,
   valuetype,
   case_insensitive,
@@ -17,10 +17,6 @@ pattern2list(
 )
 }
 \arguments{
-\item{pattern}{a character vector, list of character vectors,
-\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
-details.}
-
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}

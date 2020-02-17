@@ -59,11 +59,11 @@ this distinguished honor."
 toks <- tokens(txts)
 
 # split by any punctuation
-tokens_segment(toks, "^\\\\p{Sterm}$", valuetype = "regex", 
-               extract_pattern = TRUE, 
+tokens_segment(toks, "^\\\\p{Sterm}$", valuetype = "regex",
+               extract_pattern = TRUE,
                pattern_position = "after")
-tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed", 
-               extract_pattern = TRUE, 
+tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed",
+               extract_pattern = TRUE,
                pattern_position = "after")
 }
 \keyword{internal}

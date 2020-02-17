@@ -168,7 +168,7 @@ ntype.corpus <- function(x, ...) {
 
 #' @export
 ntype.dfm <- function(x, ...) {
-    check_dots(list(...))
+    unused_dots(...)
     x <- as.dfm(x)
     # only returns total non-zero features
     result <- as.integer(rowSums(x > 0))
@@ -229,7 +229,8 @@ nsentence.corpus <- function(x) {
 #' @export
 nsentence.tokens <- function(x) {
     x <- as.tokens(x)
-    if (attr(x, "what") != "sentence")
+    attrs <- attributes(x)
+    if (field_object(attrs, "what") != "sentence")
         stop("nsentence on a tokens object only works if what = \"sentence\"")
     return(lengths(x))
 }

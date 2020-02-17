@@ -91,7 +91,7 @@ type \link{fcm}.
 txt1 <- "A D A C E A D F E B A C E D"
 fcm(txt1, context = "window", window = 2)
 fcm(txt1, context = "window", count = "weighted", window = 3)
-fcm(txt1, context = "window", count = "weighted", window = 3, 
+fcm(txt1, context = "window", count = "weighted", window = 3,
              weights = c(3, 2, 1), ordered = TRUE, tri = FALSE)
 
 # with multiple documents

@@ -202,3 +202,4 @@ test_that("dictionary works consistently on dfm", {
         featnames(dfm_remove(mx, pattern = dict)),
         c("a", "b", "c"))
 })
+

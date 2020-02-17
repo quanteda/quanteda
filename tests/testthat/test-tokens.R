@@ -9,7 +9,9 @@ test_that("as.tokens list version works as expected", {
 })
 
 test_that("tokens indexing works as expected", {
-    toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+    toks <- tokens(c(d1 = "one two three", 
+                     d2 = "four five six", 
+                     d3 = "seven eight"))
 
     expect_equal(toks[[1]], c("one", "two", "three"))
     expect_equal(as.list(toks[c(FALSE, TRUE, FALSE)]), list(d2 = c("four", "five", "six")))
@@ -197,11 +199,10 @@ test_that("+ operator works with tokens", {
         length(attr(toks_added, "types"))
     )
     expect_equal(ndoc(toks_added), 3)
-    
-    expect_error(
-        tokens(txt1, what = "word2") + tokens(txt2, what = "sentence"),
-        "Cannot combine tokens in different tokenization units"
-    )
+    # expect_error(
+    #     tokens(txt1, what = "word2") + tokens(txt2, what = "sentence"),
+    #     "Cannot combine tokens in different tokenization units"
+    # )
 })
 
 test_that("+ works with empty padded tokens (#1695)", {
@@ -332,11 +333,11 @@ test_that("unused argument warnings for tokens work as expected", {
     )
     expect_warning(
         tokens(c(d1 = "This: punctuation"), notarg1 = TRUE),
-        "^Argument notarg1 not used\\."
+        "^notarg1 argument is not used"
     )
     expect_warning(
         tokens(c(d1 = "This: punctuation"), notarg1 = TRUE, notarg2 = FALSE),
-        "^Arguments notarg1, notarg2 not used\\."
+        "^notarg1, notarg2 arguments are not used\\."
     )
 
 })
@@ -433,7 +434,6 @@ test_that("tokens.tokens() does nothing by default", {
                    remove_punct = FALSE,
                    remove_symbols = FALSE,
                    remove_separators = TRUE,
-                   split_tags = FALSE,
                    split_hyphens = FALSE,
                    remove_url = FALSE)
     expect_equal(toks, tokens(toks))
@@ -562,7 +562,7 @@ test_that("combined tokens objects have all the attributes", {
     toks3 <- tokens(c(text3 = "d e f"), what = "sentence")
     expect_warning(
         toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2),
-        "Arguments ngram, skip not used."
+        "ngram, skip arguments are not used."
     )
     toks5 <- tokens(c(text5 = "d e f"))
 
@@ -575,18 +575,18 @@ test_that("combined tokens objects have all the attributes", {
 
     expect_identical(names(attributes(c(toks1, toks4))),
                      names(attributes(toks1)))
-    expect_identical(attr(c(toks1, toks4), "what"), "word")
-    expect_identical(attr(c(toks1, toks4), "concatenator"), "_")
-    expect_identical(attr(c(toks1, toks4), "ngrams"), 1L)
-    expect_identical(attr(c(toks1, toks4), "skip"), 0L)
+    expect_identical(attr(c(toks1, toks4), "meta")$object$what, "word")
+    expect_identical(attr(c(toks1, toks4), "meta")$object$concatenator, "_")
+    expect_identical(attr(c(toks1, toks4), "meta")$object$ngram, c(1L))
+    expect_identical(attr(c(toks1, toks4), "meta")$object$skip, c(0L))
+    
     expect_identical(docnames(dfm(c(toks1, toks4))), c("text1", "text4"))
-
     expect_identical(names(attributes(c(toks1, toks5))),
                      names(attributes(toks1)))
-    expect_identical(attr(c(toks1, toks5), "what"), "word")
-    expect_identical(attr(c(toks1, toks5), "concatenator"), "_")
-    expect_identical(attr(c(toks1, toks5), "ngrams"), 1L)
-    expect_identical(attr(c(toks1, toks5), "skip"), 0L)
+    expect_identical(attr(c(toks1, toks5), "meta")$object$what, "word")
+    expect_identical(attr(c(toks1, toks5), "meta")$object$concatenator, "_")
+    expect_identical(attr(c(toks1, toks5), "meta")$object$ngram, 1L)
+    expect_identical(attr(c(toks1, toks5), "meta")$object$skip, 0L)
     expect_identical(docnames(dfm(c(toks1, toks5))), c("text1", "text5"))
 
 })
@@ -684,9 +684,9 @@ test_that("types<- with wrong value generates error", {
 })
 
 test_that("tokens.tokens warns about unused arguments", {
-    expect_warning(fixed = TRUE,
+    expect_warning(
         tokens(tokens("one two three"), notanarg = TRUE),
-        "Argument notanarg not used."
+        "^notanarg argument is not used"
     )
 })
 
@@ -708,7 +708,7 @@ test_that("tokens.tokens(x, split_hyphens = TRUE, verbose = TRUE) works as expec
 test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected  (#1683)", {
     expect_warning(
         tokens(tokens("No Twitter."), split_tags = TRUE),
-        "Argument split_tags not used"
+        "split_tags argument is not used"
     )
     expect_message(
         tokens(tokens("Removing #hashtags.", what = "word2", verbose = TRUE)),

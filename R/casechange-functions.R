@@ -67,7 +67,6 @@ tokens_toupper.tokens <- function(x) {
 #'   case-converted
 #' @param keep_acronyms logical; if `TRUE`, do not lowercase any
 #'   all-uppercase words (applies only to `*_tolower()` functions)
-#' @import stringi
 #' @export
 #' @examples
 #' txt1 <- c(txt1 = "b A A", txt2 = "C C a b B")

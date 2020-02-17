@@ -21,6 +21,7 @@ within group if \code{groups} is specified}
 \item{groups}{either: a character vector containing the names of document
 variables to be used for grouping; or a factor or object that can be
 coerced into a factor equal in length or rows to the number of documents.
+\code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
 
 \item{ties_method}{character string specifying how ties are treated.  See
@@ -72,14 +73,14 @@ head(tstat1, 10)
 # plot 20 most frequent words
 library("ggplot2")
 ggplot(tstat1[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
-    geom_point() + 
+    geom_point() +
     coord_flip() +
     labs(x = NULL, y = "Frequency")
 
 # plot relative frequencies by group
-dfmat3 <- data_corpus_inaugural \%>\% 
-    corpus_subset(Year > 2000) \%>\% 
-    dfm(remove = stopwords("english"), remove_punct = TRUE) \%>\% 
+dfmat3 <- data_corpus_inaugural \%>\%
+    corpus_subset(Year > 2000) \%>\%
+    dfm(remove = stopwords("english"), remove_punct = TRUE) \%>\%
     dfm_group(groups = "President") \%>\%
     dfm_weight(scheme = "prop")
 
