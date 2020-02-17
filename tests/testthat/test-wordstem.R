@@ -10,7 +10,7 @@ test_that("can wordstem dfms with zero features and zero docs", {
     dfmt1 <- dfm(c("one", "0"), stem = TRUE, remove_numbers = TRUE)
     dfmt2 <- dfm(c("one", "!!"), stem = TRUE, remove_punct = TRUE)
     expect_equal(ndoc(dfmt1), ndoc(dfmt2), 2)
-    
+
     # features with zero docfreq
     dfmt3 <- dfm(c("stemming porter three", "stemming four five"))
     dfmt3[2, 4] <- 0
@@ -41,9 +41,26 @@ test_that("can wordstem dfm with unigrams", {
     txt <- c(d1 = "stemming stems plurals perfectly",
              d2 = "one two three")
     toks <- tokens(txt)
-    dfm <- dfm(toks)
-    expect_equal(featnames(dfm_wordstem(dfm, language = "porter")),
+    dfmat <- dfm(toks)
+    expect_equal(featnames(dfm_wordstem(dfmat, language = "porter")),
                  c("stem", "plural", "perfectli", "on", "two", "three"))
+})
+
+test_that("can wordstem dfm with ngrams", {
+    txt <- c(d1 = "stemming stems stemmed plurals perfectly",
+             d2 = "one two three")
+    dfmat <- tokens(txt) %>% tokens_ngrams(n = 2) %>% dfm()
+    dfmat_stemmed <- dfm_wordstem(dfmtxt, language = "english")
+    expect_equal(sort(featnames(dfmat_stemmed)),
+                 c("one_two", "plural_perfect", "stem_plural", "stem_stem", "two_three"))
+    expect_identical(
+        meta(dfmat, "ngram", "object"),
+        meta(dfmat_stemmed, "ngram", "object")
+    )
+    expect_identical(
+        meta(dfmat, "concatenator", "object"),
+        meta(dfmat_stemmed, "concatenator", "object")
+    )
 })
 
 test_that("wordstem works with tokens with padding = TRUE", {
