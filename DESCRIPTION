@@ -37,7 +37,6 @@ Imports:
     ggplot2 (>= 2.2.0),
     ggrepel,
     jsonlite,
-    lubridate,
     magrittr,
     Matrix (>= 1.2),
     network,
