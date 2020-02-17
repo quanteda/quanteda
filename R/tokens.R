@@ -280,22 +280,9 @@ tokens.corpus <- function(x,
                             padding = padding,
                             verbose = verbose)
     
-    if (include_docvars) {
-        docvars <- get_docvars(x, user = TRUE, system = TRUE)
-    } else {
-        docvars <- get_docvars(x, user = FALSE, system = TRUE)
-    }
+    if (include_docvars) docvars(result) <- docvars(x)
 
-    build_tokens(
-            unlist(x, recursive = FALSE), 
-            types = attr(x[[length(x)]], "types"),
-            what = what, 
-            ngram = 1L, 
-            skip = 0L,
-            concatenator = "_",
-            docvars = docvars,
-            meta = attrs[["meta"]]
-    )
+    return(result)
 }
 
 #' @rdname tokens
