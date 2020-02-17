@@ -1,12 +1,11 @@
 context("test wordstem")
 
 test_that("character wordstem test to test testing.", {
-    expect_equal(char_wordstem('testing', "porter"), 'test')
-    expect_equal(char_wordstem('testing', "english"), 'test')
+    expect_equal(char_wordstem("testing", "porter"), "test")
+    expect_equal(char_wordstem("testing", "english"), "test")
 })
 
 test_that("can wordstem dfms with zero features and zero docs", {
-    
     # zero feature documents
     dfmt1 <- dfm(c("one", "0"), stem = TRUE, remove_numbers = TRUE)
     dfmt2 <- dfm(c("one", "!!"), stem = TRUE, remove_punct = TRUE)
@@ -18,7 +17,6 @@ test_that("can wordstem dfms with zero features and zero docs", {
     dfmt3 <- as.dfm(dfmt3)
     dfm_wordstem(dfmt3, language = "english")
     expect_equal(nfeat(dfm_wordstem(dfmt3)), 5)
-    
 })
 
 test_that("can wordstem tokens", {
@@ -33,7 +31,7 @@ test_that("can wordstem tokens", {
 test_that("can wordstem token ngrams", {
     txt <- c(d1 = "stemming plurals perfectly",
              d2 = "one two three")
-    toks <- tokens(txt, ngrams = 2)
+    toks <- tokens(txt) %>% tokens_ngrams(n = 2)
     expect_equal(as.list(tokens_wordstem(toks, "english")),
                  list(d1 = c("stem_plural", "plural_perfect"),
                       d2 = c("one_two", "two_three")))
@@ -72,9 +70,9 @@ test_that("wordstem works with tokens with padding = TRUE", {
 
 test_that("wordstem works on tokens that include separators (#909)", {
     txt <- "Tests for developers."
-    toks <- tokens(txt, remove_separators = FALSE, remove_punct = TRUE)
+    toks <- tokens(txt, remove_punct = TRUE)
     expect_equal(
         as.list(tokens_wordstem(toks, language = "english")),
-        list(text1 = c("Test", " ", "for", " ", "develop"))
+        list(text1 = c("Test", "for", "develop"))
     )
 })

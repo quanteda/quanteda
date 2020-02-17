@@ -14,7 +14,7 @@
 #'   excluding all others.  This can be used in lieu of a dictionary if there
 #'   are only specific features that a user wishes to keep. To extract only
 #'   Twitter usernames, for example, set `select = "@@*"` and make sure that
-#'   `remove_twitter = FALSE` as an additional argument passed to [tokens].
+#'   `split_tags = FALSE` as an additional argument passed to [tokens].
 #'   Note: `select = "^@@\\\w+\\\b"` would be the regular expression version of
 #'   this matching pattern.  The pattern matching type will be set by
 #'   `valuetype`.  See also [tokens_remove()].
@@ -97,8 +97,8 @@
 #' txttweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(txttweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
-#' dfm(txttweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
+#' dfm(txttweets, select = "#*", split_tags = FALSE)  # keep only hashtags
+#' dfm(txttweets, select = "^#.*$", valuetype = "regex", split_tags = FALSE)
 #'
 #' # for a dfm
 #' dfmat3 <- dfm(data_corpus_irishbudget2010)
@@ -396,7 +396,6 @@ dfm.dfm <- function(x,
 }
 
 
-
 ####
 #### utility functions
 ####
@@ -421,9 +420,9 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
+    
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))
-
 }
 
 # pad dfm with zero-count features

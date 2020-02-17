@@ -70,7 +70,7 @@ kwic.corpus <- function(x, pattern, window = 5,
                         separator = " ",
                         case_insensitive = TRUE, ...) {
     x <- as.corpus(x)
-    kwic(tokens(x, ...),
+    kwic(tokens(x, what = "word", ...),
          pattern, window, valuetype, separator, case_insensitive)
 }
 

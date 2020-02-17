@@ -141,7 +141,9 @@ test_that("adding summary info works", {
     
     # test when tokens options are passed
     corp1 <- corpus(c(d1 = "One. Two!", d2 = "One 2"))
-    corp2 <- quanteda:::add_summary_metadata(corp1, remove_punct = TRUE, remove_numbers = TRUE)
+    corp2 <- quanteda:::add_summary_metadata(corp1,
+                                             remove_punct = TRUE,
+                                             remove_numbers = TRUE)
     expect_identical(
         summary(corp1, remove_punct = TRUE, remove_numbers = TRUE),
         quanteda:::get_summary_metadata(corp2)

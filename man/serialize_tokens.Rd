@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens.R
 \name{serialize_tokens}
 \alias{serialize_tokens}
-\title{Function to serialized list-of-character tokens}
+\title{Function to serialize list-of-character tokens}
 \usage{
 serialize_tokens(x, types_reserved = NULL, ...)
 }

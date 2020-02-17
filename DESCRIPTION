@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 1.9.9009
+Version: 1.9.9011
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -37,7 +37,6 @@ Imports:
     ggplot2 (>= 2.2.0),
     ggrepel,
     jsonlite,
-    lubridate,
     magrittr,
     Matrix (>= 1.2),
     network,
@@ -76,6 +75,7 @@ Suggests:
     tibble,
     tidytext,
     tm (>= 0.6),
+    tokenizers,
     topicmodels,
     xtable,
     knitr,
@@ -158,6 +158,7 @@ Collate:
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
+    'tokenizers.R'
     'tokens-methods-base.R'
     'tokens.R'
     'tokens_chunk.R'

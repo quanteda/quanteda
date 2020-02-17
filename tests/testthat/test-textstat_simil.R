@@ -19,16 +19,16 @@ test_that("selection takes integer or logical vector", {
     l1 <- featnames(mt) %in% c("mr", "president")
     expect_equivalent(textstat_simil(mt, y = mt[, l1], margin = "features"),
                       textstat_simil(mt, y = mt[, c("mr", "president")], margin = "features"))
-    
+
     expect_error(textstat_simil(mt, "xxxx", margin = "features"))
     expect_error(textstat_simil(mt, 1000, margin = "features"))
-    
-    expect_equivalent(textstat_simil(mt, y = mt[c(2,4), ], margin = "documents"),
+
+    expect_equivalent(textstat_simil(mt, y = mt[c(2, 4), ], margin = "documents"),
                       textstat_simil(mt, y = mt[c("1985-Reagan", "1993-Clinton"), ], margin = "documents"))
     l2 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
     expect_equivalent(textstat_simil(mt, y = mt[l2, ], margin = "documents"),
                       textstat_simil(mt, y = mt[c("1985-Reagan", "1993-Clinton"), ], margin = "documents"))
-    
+
     expect_error(textstat_simil(mt, y = "nothing", margin = "documents"))
     expect_error(textstat_simil(mt, y = 100, margin = "documents"))
 })
@@ -127,27 +127,27 @@ test_that("textstat_simil() returns NA for zero-variance documents", {
 test_that("selection is always on columns (#1549)", {
     mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
     suppressWarnings(expect_equal(
-        textstat_simil(mt, margin = "documents", selection = c("1985-Reagan", "1989-Bush")) %>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "documents", selection = c("1985-Reagan", "1989-Bush")) %>%
+            as.matrix() %>%
+            colnames(),
         c("1985-Reagan", "1989-Bush")
     ))
     suppressWarnings(expect_equal(
-        textstat_simil(mt, margin = "documents", selection = c(2, 3)) %>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "documents", selection = c(2, 3)) %>%
+            as.matrix() %>%
+            colnames(),
         c("1985-Reagan", "1989-Bush")
     ))
     suppressWarnings(expect_equal(
-        textstat_simil(mt, margin = "features", selection = c("justice", "and"))%>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "features", selection = c("justice", "and")) %>%
+            as.matrix() %>%
+            colnames(),
         c("justice", "and")
     ))
     suppressWarnings(expect_equal(
-        textstat_simil(mt, margin = "features", selection = c(4, 6))%>% 
-            as.matrix() %>% 
-            colnames(), 
+        textstat_simil(mt, margin = "features", selection = c(4, 6)) %>%
+            as.matrix() %>%
+            colnames(),
         c("mr", "chief")
     ))
 })
@@ -164,12 +164,12 @@ test_that("all similarities are between 0 and 1", {
 })
 
 test_that("textstat_simil is stable across repetitions", {
-    res <- textstat_simil(mt, y = mt[c(2, 4), ], 
+    res <- textstat_simil(mt, y = mt[c(2, 4), ],
                           margin = "documents")
     set.seed(10)
     resv <- list()
     for (i in 1:100) {
-        resv[[i]] <- as.matrix(textstat_simil(mt, y = mt[2, ], 
+        resv[[i]] <- as.matrix(textstat_simil(mt, y = mt[2, ],
                                               margin = "documents"))
     }
     rescols <- do.call(cbind, resv)
@@ -389,6 +389,7 @@ test_that("min_simil argument works", {
         as.list(tstat, diag = FALSE),
         list("1981-Reagan" = c("1985-Reagan" = 0.981771),
              "1985-Reagan" = c("1981-Reagan" = 0.981771)),
+        tol = .001
     )
     expect_equal(
         sapply(as.list(tstat, diag = TRUE), "[", 1),
@@ -412,7 +413,7 @@ test_that("test that min_simil coercion to matrix works as expected", {
         c("2013-Obama" = 0.6373, "2017-Trump" = 0),
         tol = .0001
     )
-   
+
     tstat2 <- textstat_simil(dfmat, y = dfmat[c("2009-Obama", "2013-Obama"), ],
                              method = "cosine", margin = "documents", min_simil = 0.6)
     expect_equal(

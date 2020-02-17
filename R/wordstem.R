@@ -17,7 +17,6 @@
 #'   <http://www.iso.org/iso/home/standards/language_codes.htm> for the
 #'   ISO-639 language codes
 #' @export
-#' @import stringi
 #' @return `tokens_wordstem` returns a [tokens] object whose word
 #'   types have been stemmed.
 #' @examples
@@ -36,6 +35,7 @@ tokens_wordstem.default <- function(x, language = quanteda_options("language_ste
     stop(friendly_class_undefined_message(class(x), "tokens_wordstem"))
 }
 
+#' @importFrom stringi stri_split_fixed stri_paste_list
 #' @export
 tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
 
@@ -55,7 +55,6 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
 
 
 #' @rdname tokens_wordstem
-#' @import stringi
 #' @export
 #' @return `char_wordstem` returns a [character] object whose word
 #'   types have been stemmed.
@@ -72,9 +71,10 @@ char_wordstem.default <- function(x, language = quanteda_options("language_stemm
     stop(friendly_class_undefined_message(class(x), "char_wordstem"))
 }
 
+#' @importFrom stringi stri_detect_regex
 #' @export
 char_wordstem.character <- function(x, language = quanteda_options("language_stemmer")) {
-    if (any(stringi::stri_detect_regex(x, "^\\P{Z}+\\p{Z}+") & !is.na(x)))
+    if (any(stri_detect_regex(x, "^\\P{Z}+\\p{Z}+") & !is.na(x)))
         stop("whitespace detected: you can only stem tokenized texts")
     result <- SnowballC::wordStem(x, language)
     result[which(is.na(x))] <- NA

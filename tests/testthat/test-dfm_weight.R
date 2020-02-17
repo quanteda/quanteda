@@ -95,6 +95,18 @@ test_that("docfreq works as expected", {
         as.vector(docfreq(mydfm, scheme = "inverseprob")),
         pmax(0, log10((nrow(mydfm) - docfreq(mydfm, "count")) / docfreq(mydfm, "count")))
     )
+    expect_warning(
+        docfreq(mydfm, scheme = "unary", base = 2),
+        "base not used for this scheme"
+    )
+    expect_warning(
+        docfreq(mydfm, scheme = "unary", k = 1),
+        "k not used for this scheme"
+    )
+    expect_warning(
+        docfreq(mydfm, scheme = "unary", smoothing = 1),
+        "smoothing not used for this scheme"
+    )
 })
 
 test_that("tf with logave now working as expected", {

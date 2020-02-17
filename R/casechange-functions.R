@@ -67,7 +67,6 @@ tokens_toupper.tokens <- function(x) {
 #'   case-converted
 #' @param keep_acronyms logical; if `TRUE`, do not lowercase any
 #'   all-uppercase words (applies only to `*_tolower()` functions)
-#' @import stringi
 #' @export
 #' @examples
 #' txt1 <- c(txt1 = "b A A", txt2 = "C C a b B")
@@ -89,6 +88,7 @@ char_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "char_tolower"))
 }
 
+#' @importFrom stringi stri_extract_all_regex stri_replace_all_regex stri_trans_tolower
 #' @export
 char_tolower.character <- function(x, keep_acronyms = FALSE) {
     name <- names(x)
@@ -121,6 +121,7 @@ char_toupper.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "char_toupper"))
 }
 
+#' @importFrom stringi stri_trans_toupper
 #' @export
 char_toupper.character <- function(x) {
     name <- names(x)

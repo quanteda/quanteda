@@ -1,5 +1,10 @@
 # DO NOT CHANGE the "init" and "install" sections below
 
+environment:
+  USE_RTOOLS: true
+  matrix:
+   - TF_VERSION: 2.0.0
+
 # Download script file from GitHub
 init:
   ps: |
@@ -9,6 +14,9 @@ init:
 
 install:
   ps: Bootstrap
+
+cache:
+  - C:\RLibrary
 
 # Adapt as necessary starting from here
 
@@ -40,6 +48,3 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
-
-environment:
-  R_VERSION: 3.5.3

@@ -38,7 +38,9 @@ nscrabble.character <- function(x, FUN = sum) {
                              values = as.integer(rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2)))
     setkey(letterVals, letter)
     
-    textChars <- as.list(tokens(x, what = "character", remove_punct = TRUE))
+    textChars <- tokens(x, what = "character", remove_separators = TRUE,
+                        remove_punct = TRUE, remove_symbols = TRUE, remove_numbers = TRUE) %>%
+        tokens_tolower()
     textDT <- data.table(docIndex = rep(seq_along(textChars), lengths(textChars)),
                          Char = unlist(textChars, use.names = FALSE))
     setkey(textDT, Char)

@@ -91,8 +91,9 @@
 #' corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed",
 #'                            pattern_position = "after", extract_pattern = FALSE)
 #' cbind(texts(corpseg3), docvars(corpseg3))
-#'
-#' @import stringi
+#' 
+#' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed 
+#'   stri_locate_first_fixed
 #' @export
 corpus_segment <- function(x, pattern = "##*",
                            valuetype = c("glob", "regex", "fixed"),
@@ -209,8 +210,8 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           omit_empty = TRUE, what = "other", ...) {
 
     # normalize EOL
-    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
+    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
 
     # use preset regex pattern
     if (what == "paragraphs") {
@@ -225,17 +226,18 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
 
         if (valuetype == "glob") {
             # treat as fixed if no glob character is detected
-            if (!any(stri_detect_charclass(pattern, c("[*?]")))) {
+            if (!any(stringi::stri_detect_charclass(pattern, c("[*?]")))) {
                 valuetype <- "fixed"
             } else {
                 pattern <- escape_regex(pattern)
-                pattern <- stri_replace_all_fixed(pattern, "*", "(\\S*)")
-                pattern <- stri_replace_all_fixed(pattern, "?", "(\\S)")
+                pattern <- stringi::stri_replace_all_fixed(pattern, '*', '(\\S*)')
+                pattern <- stringi::stri_replace_all_fixed(pattern, '?', '(\\S)')
                 valuetype <- "regex"
             }
         }
-
-        x <- stri_trim_both(x)
+        
+        x <- stringi::stri_trim_both(x)
+        
         if (valuetype == "fixed") {
             if (pattern_position == "after") {
                 x <- stri_replace_all_fixed(x, pattern, stri_c(pattern, "\uE000"),

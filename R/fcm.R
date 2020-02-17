@@ -218,7 +218,6 @@ fcm.tokens <- function(x, context = c("document", "window"),
         } else {
             weights <- rep(1, window)
         }
-        if (!is.tokens(x)) x <- as.tokens(x)
         type <- types(x)
         boolean <- count == "boolean"
         result <- as(qatd_cpp_fcm(x, length(type), weights, boolean, ordered),

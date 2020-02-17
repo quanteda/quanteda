@@ -184,14 +184,19 @@ textstat_lexdiv.dfm <- function(x,
     if (!sum(x)) stop(message_error("dfm_empty"))
 
     # special character handling
+    # splitting hyphens
     if (remove_hyphens)
         x <- dfm_split_hyphenated_features(x)
-    if (remove_numbers)
-        x <- dfm_remove(x, "^\\p{N}+$", valuetype = "regex")
-    if (remove_punct)
-        x <- dfm_remove(x, "^\\p{P}+$", valuetype = "regex")
-    if (remove_symbols)
-        x <- dfm_remove(x, "^\\p{S}+$", valuetype = "regex")
+    # other removals
+    removals <- compile_removals_regex(remove_separators = FALSE,
+                                       remove_punct = remove_punct,
+                                       remove_symbols = remove_symbols,
+                                       remove_numbers = remove_numbers,
+                                       remove_url = TRUE)
+    if (length(removals$regex_to_remove)) {
+        x <- dfm_remove(x, paste(removals$regex_to_remove, collapse = "|"),
+                           valuetype = "regex")
+    }
 
     if (!sum(x))
         stop(message_error("dfm_empty after removal of numbers, symbols, punctuations, hyphens"))
@@ -227,13 +232,11 @@ textstat_lexdiv.tokens <-
     tokens_only_measures <-  c("MATTR", "MSTTR")
 
     # additional token handling
-    x <- tokens(x, remove_hyphens = remove_hyphens,
+    x <- tokens(x, split_hyphens = remove_hyphens,
                 remove_numbers = remove_numbers,
-                remove_symbols = remove_symbols)
-
-    if (remove_punct) {
-        x <- tokens(x, remove_punct = TRUE)
-    }
+                remove_symbols = remove_symbols,
+                remove_punct = remove_punct,
+                remove_url = TRUE)
 
     # get and validate measures
     available_measures <- as.character(formals()$measure)[-1]
@@ -468,7 +471,7 @@ dfm_split_hyphenated_features <- function(x) {
     if (length(hyphenated_index) == 0) return(x)
 
     # split the hyphenated feature names into a list of components
-    splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], remove_hyphens = TRUE))
+    splitfeatures <- as.list(tokens(featnames(x)[hyphenated_index], split_hyphens = TRUE))
 
     # efficiently create a new dfm from hyphenated feature name components
     splitdfm <- x[, rep(hyphenated_index, times = lengths(splitfeatures))]
