@@ -28,6 +28,7 @@ nscrabble.default <- function(x, FUN = sum) {
 }
 
 #' @rdname nscrabble
+#' @importFrom data.table setkey
 #' @noRd
 #' @export
 nscrabble.character <- function(x, FUN = sum) {

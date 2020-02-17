@@ -50,7 +50,7 @@ test_that("can wordstem dfm with ngrams", {
     txt <- c(d1 = "stemming stems stemmed plurals perfectly",
              d2 = "one two three")
     dfmat <- tokens(txt) %>% tokens_ngrams(n = 2) %>% dfm()
-    dfmat_stemmed <- dfm_wordstem(dfmtxt, language = "english")
+    dfmat_stemmed <- dfm_wordstem(dfmat, language = "english")
     expect_equal(sort(featnames(dfmat_stemmed)),
                  c("one_two", "plural_perfect", "stem_plural", "stem_stem", "two_three"))
     expect_identical(

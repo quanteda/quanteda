@@ -308,6 +308,7 @@ dfm.tokens <- function(x,
 #' @noRd
 #' @author Kenneth Benoit
 #' @import Matrix
+#' @importFrom stringi stri_trans_totitle
 #' @export
 dfm.dfm <- function(x,
                     tolower = TRUE,

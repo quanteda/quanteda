@@ -288,6 +288,7 @@ NULL
 #'   measures using logs)
 #' @details `compute_lexdiv_dfm_stats` in an internal function that
 #'   computes the lexical diversity measures from a [dfm] input.
+#' @importFrom data.table :=
 compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
 
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <-

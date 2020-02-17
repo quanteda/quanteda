@@ -169,7 +169,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
 #'                d2 = "a a b c c d d d d e f h"))
 #' quanteda:::keyness_chi2_dt(dfmat)
 #' @keywords textstat internal
-#' @import data.table
+#' @importFrom data.table data.table :=
 #' @importFrom stats dchisq
 #' @references
 #'   <https://en.wikipedia.org/wiki/Yates's_correction_for_continuity>
@@ -222,6 +222,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
 
 #' @rdname keyness
 #' @importFrom stats chisq.test
+#' @importFrom data.table data.table :=
 #' @details
 #' `keyness_chi2_stats` uses element-by-element application of
 #' [chisq.test][stats::chisq.test].

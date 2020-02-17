@@ -84,7 +84,7 @@ textstat_frequency.default <- function(x, n = NULL, groups = NULL,
     stop(friendly_class_undefined_message(class(x), "textstat_frequency"))
 }
 
-#' @importFrom data.table data.table setcolorder setorder frank
+#' @importFrom data.table data.table setcolorder setorder frank := .SD setDF
 #' @export
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
                                ties_method = c("min", "average", "first", "random", "max", "dense"),

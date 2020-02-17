@@ -71,7 +71,7 @@
 #' @section Source code and additional information:
 #'
 #' <http://github.com/quanteda/quanteda>
-#' @import data.table methods Matrix ggplot2
+#' @import methods Matrix
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda, .registration = TRUE
 "_PACKAGE"

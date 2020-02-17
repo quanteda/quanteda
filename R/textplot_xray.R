@@ -57,6 +57,7 @@ textplot_xray.default <- function(..., scale = c("absolute", "relative"),
     stop(friendly_class_undefined_message(class(x), "textplot_xray"))
 }
 
+#' @importFrom data.table :=
 #' @export
 textplot_xray.kwic <- function(..., scale = c("absolute", "relative"),
                                sort = FALSE) {

@@ -188,7 +188,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
 
 
 #' @noRd
-#' @import data.table
+#' @importFrom data.table data.table
 #' @import Matrix
 #' @export
 fcm.tokens <- function(x, context = c("document", "window"),
