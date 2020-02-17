@@ -6,7 +6,7 @@
 \alias{meta<-}
 \alias{"metacorpus<-"}
 \alias{metacorpus<-}
-\title{Get or set corpus metadata}
+\title{Get or set object metadata}
 \usage{
 meta(x, field = NULL, type = c("user", "object", "system", "all"))
 
@@ -35,7 +35,9 @@ For \verb{meta <-}, the corpus with the updated user-level metadata.  Only
 user-level metadata may be assigned.
 }
 \description{
-Get or set the corpus-level metadata in a \link{corpus} object.
+Get or set the object metadata in a \link{corpus}, \link{tokens}, \link{dfm}, or
+\link{dictionary} object. With the exception of dictionaries, this will be
+corpus-level metadata.
 }
 \details{
 \code{metacorpus} and \verb{metacorpus<-} are synonyms but are deprecated.

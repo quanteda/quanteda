@@ -1,8 +1,10 @@
 # metacorpus ---------------------
 
-#' Get or set corpus metadata
+#' Get or set object metadata
 #'
-#' Get or set the corpus-level metadata in a [corpus] object.
+#' Get or set the object metadata in a [corpus], [tokens], [dfm], or
+#' [dictionary] object. With the exception of dictionaries, this will be
+#' corpus-level metadata.
 #'
 #' `metacorpus` and `metacorpus<-` are synonyms but are deprecated.
 #' @param x an object for which the metadata will be read or set
