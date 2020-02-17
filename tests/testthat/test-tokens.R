@@ -177,7 +177,13 @@ test_that("defunct remove_twitter warning works", {
     toks <- tokens(txt)
     expect_error(
         tokens(txt, remove_twitter = TRUE),
-        class = "defunctError"
+        "'remove_twitter' is defunct, use 'what = \"word2\"' instead.",
+        class = "defunctError", fixed = TRUE
+    )
+    expect_error(
+        tokens(toks, remove_twitter = TRUE),
+        "'remove_twitter' is defunct, use 'what = \"word2\"' instead.",
+        class = "defunctError", fixed = TRUE
     )
 })
 

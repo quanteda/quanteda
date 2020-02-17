@@ -173,8 +173,12 @@ test_that("fcm.dfm works same as fcm.tokens", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
     toks <- tokens(char_tolower(txt), remove_punct = TRUE)
+    dfmat <- dfm(toks)
     expect_equal(fcm(toks, context = "document"),
-                 fcm(dfm(toks), context = "document"))
+                 fcm(dfmat, context = "document"))
+    
+    fcmat <- fcm(dfm_weight(dfmat, scheme = "boolean"))
+    expect_equal(as.vector(fcmat[1, ]), c(0, 1, 1, 2, 2, 1, 1, 2, 1, 1))
 })
 
 test_that("fcm.dfm only works for context = \"document\"", {
@@ -185,7 +189,7 @@ test_that("fcm.dfm only works for context = \"document\"", {
                  "fcm.dfm only works on context = \"document\"")
 })
 
-test_that("fcm.dfm does works for context = \"document\" with weighed counts", {
+test_that("fcm.dfm does works for context = \"document\" with weighted counts", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
     toks <- tokens(char_tolower(txt), remove_punct = TRUE)
