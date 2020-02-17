@@ -16,49 +16,38 @@
     
 3.  Corpus objects now store default summary statistics for efficiency.  When these are present, `summary.corpus()` retrieves them rather than computing them on the fly.
 
-4.  Redesigned index operators for core objects.
+4.  New index operators for core objects.  The main change here is to redefine the `$` operator for corpus, tokens, and dfm objects (all objects that retain docvars) to allow this operator to access single docvars by name.  Some other index operators have been redefined as well, such as `[.corpus` returning a slice of a corpus, and `[[.corpus` returning the texts from a corpus.
 
-    TABLE HERE
+    See the full details at https://github.com/quanteda/quanteda/wiki/indexing_core_objects.
     
 5.  `*_subset()` functions.  
 
-     The `subset` argument now must be logical, and the `select` argument has been removed.  (This is part of `base::subset()` but has never made sense, either in **quanteda** or **base**!)
+     The `subset` argument now must be logical, and the `select` argument has been removed.  (This is part of `base::subset()` but has never made sense, either in **quanteda** or **base**.)
 
 6.  Return format from `textstat_simil()` and `textstat_dist()`.
 
-    Now defaults to a data.frame of pairwise similarities or distances, making these functions return a data.frame just like the other textstat functions.  Coercion methods are provided for `as.dist()`, `as.simil()`, `as.matrix()`, and `as.Matrix()` (producing a ?? sparse symmetric matrix).
+    Now defaults to a sparse matrix from the **Matrix** package, but coercion methods are provided for `as.data.frame()`, to make these functions return a data.frame just like the other textstat functions.  Additional coercion methods are provided for `as.dist()`, `as.simil()`, and `as.matrix()`. 
     
-7.  settings functions (and related slots and object attributes) are gone.
+7.  settings functions (and related slots and object attributes) are gone.  These are now replaced by a new `meta(x, type = "object")` that records object-specific meta-data, including settings such as the `n` for tokens (to record the `ngrams`).
 
-8.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
+8.  All included data objects are upgraded to the new formats.  This includes the three corpus objects, the single dfm data object, and the LSD 2015 dictionary object.
 
-9.  New print methods for core objects (corpus, tokens, dfm, dictionary) now exist, each with new global options to control the number of documents shown, as well as the length of a text snippet (corpus), the tokens (tokens), dfm cells (dfm), or keys and values (dictionary).
+9.  New print methods for core objects (corpus, tokens, dfm, dictionary) now exist, each with new global options to control the number of documents shown, as well as the length of a text snippet (corpus), the tokens (tokens), dfm cells (dfm), or keys and values (dictionary).  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
 
-10.  New print methods with new global options.  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
-
-11. All textmodels and related functions have been moved to a new package **quanteda.textmodels**.  This makes them easier to maintain and update, and keeps the size of the core package down.
+10. All textmodels and related functions have been moved to a new package **quanteda.textmodels**.  This makes them easier to maintain and update, and keeps the size of the core package down.
     
-    -  The option `remove_twitter` has been replaced in `tokens()` by `split_tags`, which preserves valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the `#` and `@` punctuation characters if `remove_punct = TRUE`.
-    
-    - The option `remove_hyphens` is removed and deprecated, but replaced by `split_hyphens`.  This preserves infix (internal) hyphens rather than splitting them.
-    
-    - All tokens options are therefore _intervention_ options, to split or remove things that by default are not split or removed.  `tokens.tokens()` will remove what is found, but cannot "undo" a removal -- for instance it cannot replace missing punctuation characters if these have already been removed.
-  
- 11. **quanteda** v2 implements major changes to the `tokens()` constructor.  These are designed to simplify the code and its maintenance in **quanteda**, to allow users to work with other (external) tokenizers, and to improve consistency across the tokens processing options.  Changes include:
+11. **quanteda** v2 implements major changes to the `tokens()` constructor.  These are designed to simplify the code and its maintenance in **quanteda**, to allow users to work with other (external) tokenizers, and to improve consistency across the tokens processing options.  Changes include:
 
-    -  A new method `tokens.list(x, ...)` constructs a `tokens` object from named list of characters, allowing users to tokenize texts using some other function (or package) such as `tokenize_words()`, `tokenize_sentences()`, or `tokenize_tweets()` from the **tokenizers** package, or the list returned by `spacyr::spacy_tokenize()`.  
+    -  A new method `tokens.list(x, ...)` constructs a `tokens` object from named list of characters, allowing users to tokenize texts using some other function (or package) such as `tokenize_words()`, `tokenize_sentences()`, or `tokenize_tweets()` from the **tokenizers** package, or the list returned by `spacyr::spacy_tokenize()`.  This allows users to use their choice of tokenizer, as long as it returns a named list of characters.  With `tokens.list()`, all tokens processing (`remove_*`) options can be applied, or the list can be converted directly to a `tokens` object without processing using `as.tokens.list()`.
     
-    -  All `remove_*` options to `tokens()` now remove them from tokens objects by calling `tokens.tokens()`, after constructing the object.  "Pre-processing" is now  actually post-processing using `tokens_*()` methods internally, after a conservative tokenization on token boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (#1503, #1446, #1801)    
+    - All tokens options are now _intervention_ options, to split or remove things that by default are not split or removed.  All `remove_*` options to `tokens()` now remove them from tokens objects by calling `tokens.tokens()`, after constructing the object.  "Pre-processing" is now  actually post-processing using `tokens_*()` methods internally, after a conservative tokenization on token boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (#1503, #1446, #1801)    
     
-    -  Internal tokenizers are re-implemented in `tokenizers.R`, which input character and return a named list.  These include a new `split_hyphens` option that can prevent the word tokenizer from splitting infix hyphens.  A new `what = "word2"` internal tokenizer implements similar behaviour but preserves URLs, email addresses, and social media tags (#hastags and @usernames) from being split.
+    Note that `tokens.tokens()` will remove what is found, but cannot "undo" a removal -- for instance it cannot replace missing punctuation characters if these have already been removed.
+
+    - The option `remove_hyphens` is removed and deprecated, but replaced by `split_hyphens`.  This preserves infix (internal) hyphens rather than splitting them.  This behaviour is implemented in both the `what = "word"` and `what = "word2"` tokenizer options.  This option is `FALSE` by default.
     
-
-## Bug fixes and stability enhancements
-
-*  docnames now enforced to be character (formerly, could be numeric for some objects).
-*  docnames are now enforced to be strictly unique for all object classes.
-*  Grouping operations in `tokens_group()` and `dfm_group()` are more robust to using multiple grouping variables, and preserve these correctly as docvars in the new dfm.  (#1809)
-
+    -  The option `remove_twitter` has been removed.  The new `what = "word2"` is a specialist tokenizer that preserves tags and URLs and email-addresses.  "Tags" are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the `#` and `@` punctuation characters, even if `remove_punct = TRUE`.
+    
 ## New features
 
 * Changed the default value of the `size` argument in `dfm_sample()` to the number of features, not the number of documents.  (#1643)
@@ -67,16 +56,24 @@
 * Added a `convert()` method for corpus objects, to convert them into data.frame or json formats.
 * Added a `spacy_tokenize()` method for corpus objects, to provide direct access via the **spacyr** package.
 
-## Other improvements
-
-* All of the (three) included corpus objects have been cleaned up and augmented with improved meta-data and docvars.  The inaugural speech corpus, for instance, now includes the President's political party affiliation.
-
 ## Behaviour changes
 
 * Added a `force = TRUE` option and error checking for the situations of applying `dfm_weight()` or `dfm_group()` to a dfm that has already been weighted.  (#1545)  The function `textstat_frequency()` now allows passing this argument to `dfm_group()` via `...`.  (#1646)
 * `textstat_frequency()` now has a new argument for resolving ties when ranking term frequencies, defaulting to the "min" method.  (#1634)
 * New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via `$`.  (See Index Operators for Core Objects above.)
 * `textstat_entropy()` now produces a data.frame that is more consistent with other `textstat` methods.  (#1690)
+
+## Bug fixes and stability enhancements
+
+*  docnames now enforced to be character (formerly, could be numeric for some objects).
+*  docnames are now enforced to be strictly unique for all object classes.
+*  Grouping operations in `tokens_group()` and `dfm_group()` are more robust to using multiple grouping variables, and preserve these correctly as docvars in the new dfm.  (#1809)
+*  Some fixes to documented ... objects in two functions that were previously causing CRAN check failures on the release of 1.5.2.
+
+## Other improvements
+
+* All of the (three) included corpus objects have been cleaned up and augmented with improved meta-data and docvars.  The inaugural speech corpus, for instance, now includes the President's political party affiliation.
+
 
 
 # quanteda 1.5.2
