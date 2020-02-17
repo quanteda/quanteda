@@ -259,15 +259,35 @@ tokens.corpus <- function(x,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
                            fastestword = tokenize_fastestword)
-    result <- tokenizer_fn(texts(x), split_hyphens = split_hyphens, verbose = verbose)
-    result <- as.tokens(result)
+    
+    # split x into smaller blocks to reducre peak memory consumption
+    x <- split(x, ceiling(seq_along(x) / 10000))
+    for (i in seq_along(x)) {
+        if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
+        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, verbose = verbose)
+        if (verbose) catm("...serializing tokens ")
+        if (i == 1) {
+            x[[i]] <- serialize_tokens(temp)
+        } else {
+            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
+        }
+        if (verbose) catm(length(attr(x[[i]], "types")), "unique types\n")
+    }
+    
+    result <- build_tokens(
+        unlist(x, recursive = FALSE), 
+        types = attr(x[[length(x)]], "types"),
+        what = what, 
+        docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
+        meta = attrs[["meta"]]
+    )
 
     if (what %in% c("word", "word2") && !split_hyphens)
         result <- restore_special(result, split_hyphens = FALSE, split_tags = !(what == "word2"))
     
     if (!remove_separators && !what %in% c("word", "character"))
         warning("remove_separators is always TRUE for this type")
-
+    
     result <- tokens.tokens(result,
                             remove_punct = remove_punct,
                             remove_symbols = remove_symbols,
@@ -275,12 +295,9 @@ tokens.corpus <- function(x,
                             remove_url = remove_url,
                             remove_separators = remove_separators,
                             split_hyphens = FALSE,
-                            include_docvars = FALSE,
+                            include_docvars = TRUE,
                             padding = padding,
                             verbose = verbose)
-    
-    if (include_docvars) docvars(result) <- docvars(x)
-
     return(result)
 }
 
