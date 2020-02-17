@@ -46,19 +46,6 @@ test_that("can wordstem dfm with unigrams", {
                  c("stem", "plural", "perfectli", "on", "two", "three"))
 })
 
-test_that("can wordstem dfm with ngrams", {
-    txt <- c(d1 = "stemming stems stemmed plurals perfectly",
-             d2 = "one two three")
-    dfmt <- dfm(txt, ngrams = 2)
-    dfmt_stemmed <- dfm_wordstem(dfmt, language = "english")
-    expect_equal(sort(featnames(dfmt_stemmed)),
-                 c("one_two", "plural_perfect", "stem_plural", "stem_stem","two_three"))
-    expect_equal(dfmt@meta$object$ngram, 
-                 dfmt_stemmed@meta$object$ngram)
-    expect_equal(dfmt@meta$object$concatenator, 
-                 dfmt_stemmed@meta$object$concatenator)
-})
-
 test_that("wordstem works with tokens with padding = TRUE", {
     txt <- c(d1 = "stemming plurals perfectly",
              d2 = "one two three")
