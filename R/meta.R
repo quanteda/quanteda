@@ -1,4 +1,4 @@
-# metacorpus ---------------------
+# meta ---------------------
 
 #' Get or set object metadata
 #'
@@ -199,6 +199,9 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+`meta_system<-.dictionary` <- `meta_system<-.dfm`
+
+#' @rdname meta_system
 #' @param source character; the input object class
 #' @return `meta_system_defaults` returns a list of default system
 #'   values, with the user setting the "source" value.  This should be used
@@ -211,6 +214,8 @@ meta_system_defaults <- function() {
         "created" = Sys.Date()
    )
 }
+
+# make_meta ------------
 
 #' Internal functions to create a list for the meta attribute
 #' @param class object class either `dfm`, `tokens` or `corpus`
@@ -331,7 +336,12 @@ update_meta <- function(default, inherit, ...) {
     return(default)
 }
 
-#' Internal functions to access meta filed in a list of attributes
+# field_system -----------
+
+#' Internal functions to access or assign metadata
+#' 
+#' Internal functions to access or replace an object metadata field 
+#' from a list of attributes.
 #' @rdname field_system
 #' @inheritParams meta_system
 #' @keywords internal

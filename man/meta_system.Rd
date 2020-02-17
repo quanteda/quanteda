@@ -6,6 +6,7 @@
 \alias{meta_system<-.corpus}
 \alias{meta_system<-.tokens}
 \alias{meta_system<-.dfm}
+\alias{meta_system<-.dictionary}
 \alias{meta_system_defaults}
 \title{Internal function to get, set or initialize system metadata}
 \usage{
@@ -18,6 +19,8 @@ meta_system(x, field = NULL) <- value
 \method{meta_system}{tokens}(x, field = NULL) <- value
 
 \method{meta_system}{dfm}(x, field = NULL) <- value
+
+\method{meta_system}{dictionary}(x, field = NULL) <- value
 
 meta_system_defaults()
 }

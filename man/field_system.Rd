@@ -7,7 +7,7 @@
 \alias{field_object<-}
 \alias{field_user}
 \alias{field_user<-}
-\title{Internal functions to access meta filed in a list of attributes}
+\title{Internal functions to access or assign metadata}
 \usage{
 field_system(x, field = NULL)
 
@@ -30,6 +30,7 @@ metadata names}
 \item{value}{new value of the metadata field}
 }
 \description{
-Internal functions to access meta filed in a list of attributes
+Internal functions to access or replace an object metadata field
+from a list of attributes.
 }
 \keyword{internal}
