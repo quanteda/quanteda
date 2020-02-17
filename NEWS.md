@@ -32,10 +32,27 @@
 
 8.  All included data objects are upgraded to the new formats.  This includes the three corpus objects and the single dfm data object.
 
-9.  New print methods with new global options.  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
+9.  New print methods for core objects (corpus, tokens, dfm, dictionary) now exist, each with new global options to control the number of documents shown, as well as the length of a text snippet (corpus), the tokens (tokens), dfm cells (dfm), or keys and values (dictionary).
 
-10. All textmodels and related functions have been moved to a new package **quanteda.textmodels**.  This makes them easier to maintain and update, and keeps the size of the core package down.
+10.  New print methods with new global options.  Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.
+
+11. All textmodels and related functions have been moved to a new package **quanteda.textmodels**.  This makes them easier to maintain and update, and keeps the size of the core package down.
     
+    -  The option `remove_twitter` has been replaced in `tokens()` by `split_tags`, which preserves valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the `#` and `@` punctuation characters if `remove_punct = TRUE`.
+    
+    - The option `remove_hyphens` is removed and deprecated, but replaced by `split_hyphens`.  This preserves infix (internal) hyphens rather than splitting them.
+    
+    - All tokens options are therefore _intervention_ options, to split or remove things that by default are not split or removed.  `tokens.tokens()` will remove what is found, but cannot "undo" a removal -- for instance it cannot replace missing punctuation characters if these have already been removed.
+  
+ 11. **quanteda** v2 implements major changes to the `tokens()` constructor.  These are designed to simplify the code and its maintenance in **quanteda**, to allow users to work with other (external) tokenizers, and to improve consistency across the tokens processing options.  Changes include:
+
+    -  A new method `tokens.list(x, ...)` constructs a `tokens` object from named list of characters, allowing users to tokenize texts using some other function (or package) such as `tokenize_words()`, `tokenize_sentences()`, or `tokenize_tweets()` from the **tokenizers** package, or the list returned by `spacyr::spacy_tokenize()`.  
+    
+    -  All `remove_*` options to `tokens()` now remove them from tokens objects by calling `tokens.tokens()`, after constructing the object.  "Pre-processing" is now  actually post-processing using `tokens_*()` methods internally, after a conservative tokenization on token boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (#1503, #1446, #1801)    
+    
+    -  Internal tokenizers are re-implemented in `tokenizers.R`, which input character and return a named list.  These include a new `split_hyphens` option that can prevent the word tokenizer from splitting infix hyphens.  A new `what = "word2"` internal tokenizer implements similar behaviour but preserves URLs, email addresses, and social media tags (#hastags and @usernames) from being split.
+    
+
 ## Bug fixes and stability enhancements
 
 *  docnames now enforced to be character (formerly, could be numeric for some objects).

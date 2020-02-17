@@ -1,29 +1,24 @@
 context("test corpus")
 
 test_that("test show.corpus", {
-
-    expect_that(
-        show(corpus(c("The"))),
-        prints_text("Corpus consisting of 1 document.")
+    expect_output(
+        print(corpus(c("The"))),
+        "Corpus consisting of 1 document."
     )
-
-    expect_that(
-        show(corpus(c("The", "quick", "brown", "fox"))),
-        prints_text("Corpus consisting of 4 documents.")
+    expect_output(
+        print(corpus(c("The", "quick", "brown", "fox"))),
+        "Corpus consisting of 4 documents."
     )
-
-    expect_that(
-        show(corpus(c("The", "quick", "brown", "fox"),
+    expect_output(
+        print(corpus(c("The", "quick", "brown", "fox"),
                     docvars = data.frame(list(test = 1:4)))),
-        prints_text("Corpus consisting of 4 documents and 1 docvar.")
+        "Corpus consisting of 4 documents and 1 docvar."
     )
-
-    expect_that(
-        show(corpus(c("The", "quick", "brown", "fox"),
+    expect_output(
+        print(corpus(c("The", "quick", "brown", "fox"),
                     docvars = data.frame(list(test = 1:4, test2 = 1:4)))),
-        prints_text("Corpus consisting of 4 documents and 2 docvars.")
+        "Corpus consisting of 4 documents and 2 docvars."
     )
-
 })
 
 
@@ -32,7 +27,7 @@ test_that("test corpus constructors works for kwic", {
 
     # split_context = TRUE, extract_keyword = TRUE
     corp <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)
-    expect_that(corp, is_a("corpus"))
+    expect_is(corp, "corpus")
     expect_equal(names(docvars(corp)),
                  c("from", "to", "keyword", "context"))
 
@@ -54,10 +49,9 @@ test_that("test corpus constructors works for kwic", {
     )
 
     # test text handling for punctuation - there should be no space before the ?
-    corp <- corpus(kwic(data_char_sampletext, "econom*", window = 10,
-                        separator = "",
-                        remove_separators = FALSE),
-                        split_context = FALSE, extract_keyword = FALSE)
+    corp <- tokens(data_char_sampletext, what = "word", remove_separators = FALSE) %>%
+      kwic("econom*", window = 10, separator = "") %>%
+      corpus(split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
         texts(corp)[2],
         c("text1.L390" = "it is decimating the domestic economy? As we are tired ")
@@ -66,35 +60,45 @@ test_that("test corpus constructors works for kwic", {
     # ; and !
     txt <- c("This is; a test!")
     expect_equivalent(
-        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE),
-                     split_context = FALSE)),
+        suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
+          kwic("a", window = 10, separator = "") %>%
+          corpus(remove_separators = FALSE, split_context = FALSE) %>%
+          texts()),
         txt
     )
 
     # quotes
     txt <- "This 'is' only a test!"
     expect_equivalent(
-         texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE),
-                      split_context = FALSE)),
-         txt
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
+                         kwic("a", window = 10, separator = "") %>%
+                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
+                         texts()),
+      txt
     )
     txt <- "This \"is\" only a test!"
     expect_equivalent(
-        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE),
-                     split_context = FALSE)),
-        txt
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
+                         kwic("a", window = 10, separator = "") %>%
+                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
+                         texts()),
+      txt
     )
     txt <- 'This "is" only (a) test!'
     expect_equivalent(
-        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE),
-                     split_context = FALSE)),
-        txt
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
+                         kwic("a", window = 10, separator = "") %>%
+                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
+                         texts()),
+      txt
     )
     txt <- "This is only (a) test!"
     expect_equivalent(
-        texts(corpus(kwic(txt, "a", window = 10, separator = "", remove_separators = FALSE),
-                     split_context = FALSE)),
-        txt
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
+                         kwic("a", window = 10, separator = "") %>%
+                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
+                         texts()),
+      txt
     )
 
     corp <- corpus(kw, split_context = TRUE, extract_keyword = FALSE)
@@ -212,7 +216,7 @@ test_that("corpus works for texts with duplicate filenames", {
 })
 
 test_that("create a corpus on a corpus", {
-  
+
     corp <- data_corpus_irishbudget2010
     expect_equivalent(
         as.corpus(corp),
@@ -263,29 +267,29 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
 })
 
 test_that("c.corpus errors work as expected", {
-  
+
   corp1 <- corpus(c(d1 = "This is sample document one.",
                     d2 = "Here is the second sample document."))
   corp2 <- corpus(c(d3 = "And the third document."))
   corp3 <- corpus(c(d4 = "This is sample document 4."))
   corp4 <- corpus(c(d1 = "This is sample document five!. This is a long document."))
   corp5 <- corpus_reshape(corp4)
-  
+
   expect_equal(
     c(corp1),
     corp1
   )
-  
+
   expect_equal(
     c(corp1, corp2),
     corp1 + corp2
   )
-  
+
   expect_equal(
     c(corp1, corp2, corp3),
     corp1 + corp2 + corp3
   )
-  
+
   # issue #1836
   expect_error(
     c(corp1, corp4),
@@ -295,16 +299,16 @@ test_that("c.corpus errors work as expected", {
   #  c(corp1, corp5),
   #  "Cannot combine corpora in different units"
   #)
-  
+
   corp <- c(data_corpus_inaugural[1:2],
             data_corpus_inaugural[3:5],
             data_corpus_inaugural[6:10])
-  
+
   expect_equivalent(
     corp,
     data_corpus_inaugural[1:10]
   )
-  
+
   expect_equal(
     docvars(corp),
     docvars(data_corpus_inaugural[1:10])
@@ -515,14 +519,14 @@ test_that("corpus printing works", {
     )
     expect_output(
         print(corp, max_ndoc = 0, max_nchar = 0, show_summary = TRUE),
-        "Corpus consisting of 14 documents and 6 docvars.", 
+        "Corpus consisting of 14 documents and 6 docvars.",
         fixed = TRUE
     )
     expect_output(
         print(corp, max_ndoc = 2, max_nchar = 10, show_summary = TRUE),
         paste0('Corpus consisting of 14 documents and 6 docvars.\n',
                'Lenihan, Brian (FF) :\n',
-               '"When I pre..."\n\n', 
+               '"When I pre..."\n\n',
                'Bruton, Richard (FG) :\n',
                '"This draco..."\n\n',
                '[ reached max_ndoc ... 12 more documents ]'),
@@ -531,40 +535,40 @@ test_that("corpus printing works", {
     expect_output(
         print(corp, max_ndoc = 2, max_nchar = 10, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
-               '"When I pre..."\n\n', 
+               '"When I pre..."\n\n',
                'Bruton, Richard (FG) :\n',
                '"This draco..."\n\n',
                '[ reached max_ndoc ... 12 more documents ]'),
-        fixed = TRUE 
+        fixed = TRUE
     )
     expect_output(
         print(corp[1:2], max_ndoc = 2, max_nchar = 10, show_summary = FALSE),
         paste0('Lenihan, Brian (FF) :\n',
-               '"When I pre..."\n\n', 
+               '"When I pre..."\n\n',
                'Bruton, Richard (FG) :\n',
-               '"This draco..."\n'), 
-        fixed = TRUE 
+               '"This draco..."\n'),
+        fixed = TRUE
     )
     expect_output(
         print(corpus("a b c d"), max_ndoc = -1, max_nchar = 2),
         paste0('Corpus consisting of 1 document.\n',
                'text1 :\n',
                '"a ..."\n'),
-        fixed = TRUE 
+        fixed = TRUE
     )
     expect_output(
       print(corpus("a b c d"), max_ndoc = -1, max_nchar = 10),
       paste0('Corpus consisting of 1 document.\n',
              'text1 :\n',
              '"a b c d"\n'),
-      fixed = TRUE 
+      fixed = TRUE
     )
     expect_output(
         print(corpus("a b c d"), max_ndoc = -1, max_nchar = -1),
         paste0('Corpus consisting of 1 document.\n',
                'text1 :\n',
                '"a b c d"\n'),
-        fixed = TRUE 
+        fixed = TRUE
     )
 })
 
@@ -576,13 +580,13 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
              notes = "http://www.presidency.ucsb.edu/inaugurals.php")
     )
     expect_true(
-        all(c("source", "package-version", "r-version", "system", "directory", "created") %in% 
+        all(c("source", "package-version", "r-version", "system", "directory", "created") %in%
             names(meta(as.corpus(data_corpus_pre2), type = "system")))
     )
     expect_is(meta(as.corpus(data_corpus_pre2), "created", type = "system"),
               "POSIXct"
     )
-    
+
     # test when there is no created date
     data_corpus_pre2 <- unclass(data_corpus_pre2)
     data_corpus_pre2$metadata$created <- NULL
@@ -596,24 +600,22 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
 
 test_that("corpus indexing works as expected", {
   corp <- corpus(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-  
+
   expect_equal(corp[[1]], "one two three")
-  expect_equal(as.character(corp[c(FALSE, TRUE, TRUE)]), 
+  expect_equal(as.character(corp[c(FALSE, TRUE, TRUE)]),
                c(d2 = "four five six", d3 = "seven eight")
   )
-  expect_equal(as.character(corp[c(2, 3)]), 
+  expect_equal(as.character(corp[c(2, 3)]),
                c(d2 = "four five six", d3 = "seven eight")
   )
-  expect_equal(as.character(corp[c("d2", "d3")]), 
+  expect_equal(as.character(corp[c("d2", "d3")]),
                c(d2 = "four five six", d3 = "seven eight")
   )
-  expect_equal(as.character(corp[c(-2, -3)]), 
+  expect_equal(as.character(corp[c(-2, -3)]),
                c(d1 = "one two three")
-  ) 
+  )
   expect_error(corp[4], "Subscript out of bounds")
   expect_error(corp[1:4], "Subscript out of bounds")
   expect_error(corp["d4"], "Subscript out of bounds")
   expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
 })
-
-

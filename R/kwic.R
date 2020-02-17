@@ -70,7 +70,7 @@ kwic.corpus <- function(x, pattern, window = 5,
                         separator = " ",
                         case_insensitive = TRUE, ...) {
     x <- as.corpus(x)
-    kwic(tokens(x, ...),
+    kwic(tokens(x, what = "word", ...),
          pattern, window, valuetype, separator, case_insensitive)
 }
 
@@ -106,7 +106,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     ids <- pattern2list(pattern, type,
                         valuetype, case_insensitive, attr(x, "concatenator"))
     result <- data.frame(
-        "docname" = character(), 
+        "docname" = character(),
         "from" = integer(),
         "to" = integer(),
         "pre" = character(),
@@ -124,7 +124,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     if (nrow(result))
         result <- result[order(match(result[["docname"]], docnames(x)),
                                result[["from"]],
-                               result[["to"]]),]
+                               result[["to"]]), ]
     rownames(result) <- NULL
     attr(result, "ntoken") <- ntoken(x)
     class(result) <- c("kwic", "data.frame")
@@ -178,4 +178,3 @@ print.kwic <- function(x, ...) {
         x <- as.data.frame(x)
     NextMethod("[")
 }
-        

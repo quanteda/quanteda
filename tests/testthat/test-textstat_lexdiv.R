@@ -16,7 +16,7 @@ test_that("textstat_lexdiv CTTR works correctly", {
 
     expect_equivalent(
         textstat_lexdiv(mydfm, "CTTR")$CTTR,
-        c(2 / sqrt(2 * 8), 2 / sqrt( 2 * 4)),
+        c(2 / sqrt(2 * 8), 2 / sqrt(2 * 4)),
         tolerance = 0.01
     )
 })
@@ -49,7 +49,7 @@ test_that("textstat_lexdiv Maas works correctly", {
 
     expect_equivalent(
         textstat_lexdiv(mydfm, "Maas")$Maas[1],
-        sqrt( (log10(8) - log10(2)) / log10(8) ^ 2),
+        sqrt((log10(8) - log10(2)) / log10(8) ^ 2),
         tolerance = 0.01
     )
 })
@@ -186,7 +186,7 @@ test_that("textstat_lexdiv supports removal of hyphenation", {
     y <- dfm(c(d1 = "apple-pear orange-fruit elephant-ferrari",
                d2 = "alpha-beta charlie-delta echo-foxtrot"))
     z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
-               d2 = "alpha beta charlie delta echo foxtrot" ))
+               d2 = "alpha beta charlie delta echo foxtrot"))
     expect_identical(
         textstat_lexdiv(y, measure = static_measures, remove_hyphens = TRUE),
         textstat_lexdiv(z, measure = static_measures, remove_hyphens = TRUE)
@@ -212,7 +212,7 @@ test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
              "A shrimp-kabob costs $0.50, shrimp costs $0.25.")
     expect_identical(
         textstat_lexdiv(tokens(txt), measure = "TTR", remove_hyphens = TRUE),
-        textstat_lexdiv(dfm(txt), measure = "TTR", remove_hyphens = TRUE)
+        textstat_lexdiv(dfm(txt, tolower = FALSE), measure = "TTR", remove_hyphens = TRUE)
     )
     expect_identical(
         textstat_lexdiv(tokens(txt), measure = "TTR",

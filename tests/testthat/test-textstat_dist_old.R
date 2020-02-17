@@ -238,7 +238,7 @@ test_that("as.list.dist works as expected",{
     expect_equal(
         as.list(ddist)$`1981-Reagan`[1:3], 
         c("2017-Trump" = 108.74282, "2013-Obama" = 103.31989, "2001-Bush" = 94.67312),
-        tolerance = 0.001
+        tolerance = 0.01
     )
 })
 

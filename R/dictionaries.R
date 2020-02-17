@@ -154,6 +154,7 @@ dictionary <- function(x, file = NULL, format = NULL,
 }
 
 # method for when x is not supplied, but file is
+#' @importFrom stringi stri_trans_tolower
 #' @export
 dictionary.default <- function(x, file = NULL, format = NULL,
                                separator = " ",
@@ -200,6 +201,7 @@ dictionary.default <- function(x, file = NULL, format = NULL,
                                               # for compatibility
 }
 
+#' @importFrom stringi stri_length
 #' @export
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
@@ -448,6 +450,7 @@ setMethod("c",
 #' @param concatenator_dictionary concatenator from a dictionary object
 #' @param concatenator_tokens concatenator from a tokens object
 #' @keywords internal
+#' @importFrom stringi stri_detect_fixed stri_split_fixed stri_replace_all_fixed
 split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 
     key <- rep(names(dict), lengths(dict))
@@ -535,6 +538,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
 #'
 #' @param dict the dictionary whose values will be lowercased
 #' @keywords dictionary internal
+#' @importFrom stringi stri_trans_tolower
 #' @examples
 #' dict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #'                           SUBKEY2 = c("C", "D")),

@@ -3,7 +3,7 @@
 #' @description A set of functions for creating and managing text corpora, extracting
 #' features from text corpora, and analyzing those features using quantitative
 #' methods.
-#'   
+#'
 #' @details \pkg{quanteda} makes it easy to manage texts in the form of a corpus, defined
 #' as a collection of texts that includes document-level variables specific to
 #' each text, as well as meta-data for documents and for the collection as a
@@ -14,7 +14,7 @@
 #' tokenized documents into a document-feature matrix are both extremely fast
 #' and extremely simple to use. \pkg{quanteda} can segment texts easily by
 #' words, paragraphs, sentences, or even user-supplied delimiters and tags.
-#'   
+#'
 #' @details Built on the text processing functions in the \pkg{stringi} package, which is
 #' in turn built on C++ implementation of the ICU libraries for Unicode text
 #' handling, \pkg{quanteda} pays special attention to fast and correct
@@ -49,9 +49,9 @@
 #' package for correspondence analysis, or scaling with the austin package)
 #' machine learning through a variety of other packages that take matrix or
 #' matrix-like inputs.
-#'   
+#'
 #' @details
-#'  Additional features of \pkg{quanteda} include: 
+#'  Additional features of \pkg{quanteda} include:
 #' * powerful, flexible tools for working with [dictionaries][dictionary];
 #' * the ability to identify [keywords][textstat_keyness] associated with
 #'   documents or groups of documents;
@@ -67,11 +67,11 @@
 #'   document; and
 #' * flexible, easy to use graphical tools to portray many of the analyses
 #'   available in the package.
-#'   
+#'
 #' @section Source code and additional information:
-#' 
+#'
 #' <http://github.com/quanteda/quanteda>
-#' @import stringi data.table methods Matrix ggplot2
+#' @import data.table methods Matrix ggplot2
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda, .registration = TRUE
 "_PACKAGE"
@@ -111,7 +111,7 @@
 NULL
 
 #' Pattern for feature, token and keyword matching
-#' 
+#'
 #' Pattern(s) for use in matching features, tokens, and keywords through a
 #' [valuetype] pattern.
 #' @param pattern a character vector, list of character vectors,
@@ -143,26 +143,26 @@ NULL
 #'     }
 #'   }
 #' @name pattern
-#' @examples 
+#' @examples
 #' # these are interpreted literally
 #' (patt1 <- c("president", "white house", "house of representatives"))
 #' # as multi-word sequences
 #' phrase(patt1)
-#' 
+#'
 #' # three single-word patterns
 #' (patt2 <- c("president", "white_house", "house_of_representatives"))
 #' phrase(patt2)
-#' 
+#'
 #' # this is equivalent to phrase(patt1)
-#' (patt3 <- list(c("president"), c("white", "house"), 
+#' (patt3 <- list(c("president"), c("white", "house"),
 #'                c("house", "of", "representatives")))
 #'
-#' # glob expression can be used 
+#' # glob expression can be used
 #' phrase(patt4 <- c("president?", "white house", "house * representatives"))
-#' 
+#'
 #' # this is equivalent to phrase(patt4)
 #' (patt5 <- list(c("president?"), c("white", "house"), c("house", "*", "representatives")))
-#' 
+#'
 #' # dictionary with multi-word matches
 #' (dict1 <- dictionary(list(us = c("president", "white house", "house of representatives"))))
 #' phrase(dict1)
@@ -170,14 +170,14 @@ NULL
 NULL
 
 #' Grouping variable(s) for various functions
-#' 
-#' Groups for aggregation by various functions that take grouping options. 
+#'
+#' Groups for aggregation by various functions that take grouping options.
 #' Groups can be the name(s) of document variables (as a character vector), or
 #' variables whose length or number of rows (if a data.frame) equal the number
 #' of documents.
-#' @param groups either: a character vector containing the names of document 
-#'   variables to be used for grouping; or a factor or object that can be 
-#'   coerced into a factor equal in length or rows to the number of documents. 
+#' @param groups either: a character vector containing the names of document
+#'   variables to be used for grouping; or a factor or object that can be
+#'   coerced into a factor equal in length or rows to the number of documents.
 #'   See [groups] for details.
 #' @name groups
 #' @keywords internal
@@ -195,13 +195,13 @@ NULL
 #' @param show_summary print a brief summary indicating the number of documents
 #'   and other characteristics of the object, such as docvars or sparsity.
 #' @seealso [quanteda_options()]
-#' @examples 
+#' @examples
 #' corp <- corpus(data_char_ukimmig2010)
 #' print(corp, max_ndoc = 3, max_nchar = 40)
-#' 
+#'
 #' toks <- tokens(corp)
 #' print(toks, max_ndoc = 3, max_ntoken = 6)
-#' 
+#'
 #' dfmat <- dfm(toks)
 #' print(dfmat, max_ndoc = 3, max_nfeat = 10)
-NULL  
+NULL

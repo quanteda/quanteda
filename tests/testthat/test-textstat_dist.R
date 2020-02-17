@@ -11,10 +11,10 @@ test_that("test old and new textstat_dist are the same", {
     expect_equivalent(textstat_dist(mt, margin = "features") %>% as.matrix() %>% as.dist(),
                       textstat_dist_old(mt, margin = "features"),
                       tolerance = 0.01)
-    suppressWarnings(expect_equivalent(textstat_dist(mt, selection = "1985-Reagan") %>% as.matrix(), 
+    suppressWarnings(expect_equivalent(textstat_dist(mt, selection = "1985-Reagan") %>% as.matrix(),
                       textstat_dist_old(mt, selection = "1985-Reagan") %>% as.matrix(),
                       tolerance = 0.01))
-    expect_equivalent(textstat_dist(mt, y = mt["1985-Reagan", ]) %>% as.matrix(), 
+    expect_equivalent(textstat_dist(mt, y = mt["1985-Reagan", ]) %>% as.matrix(),
                       textstat_dist_old(mt, selection = "1985-Reagan") %>% as.matrix(),
                       tolerance = 0.01)
 
@@ -75,16 +75,16 @@ test_that("selection takes integer or logical vector", {
     expect_equivalent(textstat_dist(mt, selection = l3, margin = "features"),
                       textstat_dist(mt, selection = c("mr", "president"), margin = "features"))
     })
-    
+
     expect_error(textstat_dist(mt, y = "xxxx", margin = "features"))
     expect_error(textstat_dist(mt, y = 1000, margin = "features"))
-    
+
     expect_equivalent(textstat_dist(mt, y = mt[c(2, 4), ], margin = "documents"),
                       textstat_dist(mt, y = mt[c("1985-Reagan", "1993-Clinton"), ], margin = "documents"))
     l4 <- docnames(mt) %in% c("1985-Reagan", "1993-Clinton")
     expect_equivalent(textstat_dist(mt, y = mt[l4, ], margin = "documents"),
                       textstat_dist(mt, y = mt[c("1985-Reagan", "1993-Clinton"), ], margin = "documents"))
-    
+
     expect_error(textstat_dist(mt, y = "nothing", margin = "documents"))
     expect_error(textstat_dist(mt, y = 100, margin = "documents"))
 })
@@ -161,8 +161,8 @@ test_that("selection is always on columns (#1549)", {
     mt <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980))
     suppressWarnings({
         expect_equal(
-        colnames(textstat_dist(mt, margin = "documents", 
-                               selection = c("1985-Reagan", "1989-Bush")) %>% as.matrix()), 
+        colnames(textstat_dist(mt, margin = "documents",
+                               selection = c("1985-Reagan", "1989-Bush")) %>% as.matrix()),
         c("1985-Reagan", "1989-Bush")
     )
     expect_equal(

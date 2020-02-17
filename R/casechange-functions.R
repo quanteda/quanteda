@@ -89,6 +89,7 @@ char_tolower.default <- function(x, keep_acronyms = FALSE) {
     stop(friendly_class_undefined_message(class(x), "char_tolower"))
 }
 
+#' @importFrom stringi stri_extract_all_regex stri_replace_all_regex stri_trans_tolower
 #' @export
 char_tolower.character <- function(x, keep_acronyms = FALSE) {
     name <- names(x)
@@ -121,6 +122,7 @@ char_toupper.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "char_toupper"))
 }
 
+#' @importFrom stringi stri_trans_toupper
 #' @export
 char_toupper.character <- function(x) {
     name <- names(x)
