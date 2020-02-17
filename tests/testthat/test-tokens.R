@@ -154,11 +154,6 @@ test_that("remove_url works as expected", {
 test_that("deprecated remove_ arguments work", {
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
     toks <- tokens(txt)
-    expect_error(
-        tokens(txt, remove_twitter = TRUE),
-        "'remove_twitter' is defunct, use 'what = \"word2\"' instead.", fixed = TRUE,
-        class = "defunctError"
-    )
     txt <- "Pre- and post-war self-fulfilling."
     expect_identical(
         as.character(tokens(txt, what = "word2", remove_punct = TRUE, split_hyphens = TRUE)),
@@ -174,6 +169,15 @@ test_that("deprecated remove_ arguments work", {
         tokens(tokens(txt, what = "word2"), remove_hyphens = TRUE),
         "'remove_hyphens' is deprecated, use 'split_hyphens' instead.",
         fixed = TRUE
+    )
+})
+
+test_that("defunct remove_twitter warning works", {
+    txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
+    toks <- tokens(txt)
+    expect_error(
+        tokens(txt, remove_twitter = TRUE),
+        class = "defunctError"
     )
 })
 
