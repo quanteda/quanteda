@@ -49,7 +49,7 @@ test_that("test corpus constructors works for kwic", {
     )
 
     # test text handling for punctuation - there should be no space before the ?
-    corp <- tokens(data_char_sampletext, what = "word1", remove_separators = FALSE) %>%
+    corp <- tokens(data_char_sampletext, what = "word", remove_separators = FALSE) %>%
       kwic("econom*", window = 10, separator = "") %>%
       corpus(split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
@@ -60,7 +60,7 @@ test_that("test corpus constructors works for kwic", {
     # ; and !
     txt <- c("This is; a test!")
     expect_equivalent(
-        suppressWarnings(tokens(txt, what = "word1", remove_separators = FALSE) %>%
+        suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
           kwic("a", window = 10, separator = "") %>%
           corpus(remove_separators = FALSE, split_context = FALSE) %>%
           texts()),
@@ -70,7 +70,7 @@ test_that("test corpus constructors works for kwic", {
     # quotes
     txt <- "This 'is' only a test!"
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word1", remove_separators = FALSE) %>%
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
                          kwic("a", window = 10, separator = "") %>%
                          corpus(remove_separators = FALSE, split_context = FALSE) %>%
                          texts()),
@@ -78,7 +78,7 @@ test_that("test corpus constructors works for kwic", {
     )
     txt <- "This \"is\" only a test!"
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word1", remove_separators = FALSE) %>%
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
                          kwic("a", window = 10, separator = "") %>%
                          corpus(remove_separators = FALSE, split_context = FALSE) %>%
                          texts()),
@@ -86,7 +86,7 @@ test_that("test corpus constructors works for kwic", {
     )
     txt <- 'This "is" only (a) test!'
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word1", remove_separators = FALSE) %>%
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
                          kwic("a", window = 10, separator = "") %>%
                          corpus(remove_separators = FALSE, split_context = FALSE) %>%
                          texts()),
@@ -94,7 +94,7 @@ test_that("test corpus constructors works for kwic", {
     )
     txt <- "This is only (a) test!"
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word1", remove_separators = FALSE) %>%
+      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
                          kwic("a", window = 10, separator = "") %>%
                          corpus(remove_separators = FALSE, split_context = FALSE) %>%
                          texts()),

@@ -129,7 +129,7 @@ test_that("tokens_segment works with tags", {
     corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
                      d2 = "##TEST3 Four"),
                    docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
-    toks <- tokens(corp)
+    toks <- tokens(corp, what = "word2")
     toks_seg1 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = TRUE)
     vars1 <- docvars(toks_seg1)

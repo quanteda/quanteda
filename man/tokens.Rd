@@ -12,7 +12,6 @@ tokens(
   remove_numbers = FALSE,
   remove_url = FALSE,
   remove_separators = TRUE,
-  split_tags = FALSE,
   split_hyphens = FALSE,
   include_docvars = TRUE,
   padding = FALSE,
@@ -38,18 +37,12 @@ valid social media tags if \code{preserve_tags = TRUE}}
 numbers, but not words that start with digits, e.g. \verb{2day}}
 
 \item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning with
-http(s) -- see section "Dealing with URLs".}
+http(s) -- see section "Dealing with URLs".  The default \code{what = "word"}
+will split URLs, so if you are using a \pkg{quanteda} tokenizer and wish
+to keep or remove URLs, then use \code{what = "word2"}.}
 
 \item{remove_separators}{logical; if \code{TRUE} remove separators and separator
 characters (Unicode "Separator" \verb{[Z]} and "Control" \verb{[C]} categories)}
-
-\item{split_tags}{logical; keep (social media) tags intact, such as "#hashtags" and
-"#usernames", even when punctuation will be removed.  The rules defining a
-valid "tag" can be found
-\href{https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/}{here}
-for hashtags and
-\href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
-for usernames.}
 
 \item{split_hyphens}{logical; if \code{TRUE}, split words that are connected by
 hyphenation and hyphenation-like characters in between words, e.g.
@@ -111,21 +104,25 @@ splits infix hyphens, or \pkg{spacyr}.
 
 \section{quanteda tokenizer}{
 
-A new (v2) "smarter" word tokenizer \code{what = "word"} now preserves URLs and email addresses, as
-well as maintains the (pre-v2) behaviours of preserving infix hyphens and
-not splitting social media "tag" prefixes.  This uses
-\link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")},
-but that improves on this by: not splitting words with infix hyphens (e.g.
-"self-aware"), not splitting social media tag characters (#hashtags and
-@usernames), and preserving URLs and email addresses
+The default word tokenizer \code{what = "word"} splits tokens using
+\link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")}
+but by default preserves infix hyphens (e.g. "self-funding").
+
+The \code{what = "word2"} tokenizer implements the same methods as \code{"word"} but
+is designed to handle tokens usually found in social media or Internet
+texts that contain URLs and email addresses, as well as social media tag
+characters (#hashtags and @usernames), and preserving URLs and email
+addresses.  This is slower and should only be used when your text contains
+such tokens.  The rules defining a
+valid "tag" can be found
+\href{https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/}{here}
+for hashtags and
+\href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
+for usernames.  Separators are automatically removed with \code{what = "word2"}.
 
 For backward compatibility, the following older tokenizers are also supported
 through \code{what}:
 \describe{
-\item{\code{"word1"}}{Classic internal tokenizer that splits similar to
-\link[stringi:stri_split_boundaries]{stri_split_boundaries}, but splits up the
-components of URLs and email addresses.  This was the method used prior to
-version 2.}
 \item{\code{"fasterword"}}{(legacy) splits on whitespace and control characters, using
 \code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
 \item{\code{"fastestword"}}{(legacy) splits on the space character, using
@@ -143,15 +140,16 @@ txt <- c(doc1 = "A sentence, showing how tokens() works.",
          doc3 = "Self-documenting code??",
          doc4 = "£1,000,000 for 50¢ is gr8 4ever \U0001f600")
 tokens(txt)
-tokens(txt, what = "word1")
+tokens(txt, what = "word2")
 
 # removing punctuation marks and tags
 tokens(txt[1:2], remove_punct = TRUE)
-tokens(txt[1:2], remove_punct = TRUE, split_tags = TRUE)
+tokens(txt[1:2], remove_punct = TRUE, what = "word2")
 
 # splitting hyphenated words
 tokens(txt[3])
 tokens(txt[3], split_hyphens = TRUE)
+tokens(txt[3], what = "word2", split_hyphens = FALSE)
 
 # symbols and numbers
 tokens(txt[4])
