@@ -340,3 +340,4 @@ test_that("convert.corpus works", {
     )
 
     })
+

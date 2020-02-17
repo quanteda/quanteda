@@ -199,11 +199,10 @@ test_that("+ operator works with tokens", {
         length(attr(toks_added, "types"))
     )
     expect_equal(ndoc(toks_added), 3)
-    
-    expect_error(
-        tokens(txt1, what = "word2") + tokens(txt2, what = "sentence"),
-        "Cannot combine tokens in different tokenization units"
-    )
+    # expect_error(
+    #     tokens(txt1, what = "word2") + tokens(txt2, what = "sentence"),
+    #     "Cannot combine tokens in different tokenization units"
+    # )
 })
 
 test_that("+ works with empty padded tokens (#1695)", {
@@ -435,7 +434,6 @@ test_that("tokens.tokens() does nothing by default", {
                    remove_punct = FALSE,
                    remove_symbols = FALSE,
                    remove_separators = TRUE,
-                   split_tags = FALSE,
                    split_hyphens = FALSE,
                    remove_url = FALSE)
     expect_equal(toks, tokens(toks))
@@ -564,7 +562,7 @@ test_that("combined tokens objects have all the attributes", {
     toks3 <- tokens(c(text3 = "d e f"), what = "sentence")
     expect_warning(
         toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2),
-        "Arguments ngram, skip not used."
+        "ngram, skip arguments are not used."
     )
     toks5 <- tokens(c(text5 = "d e f"))
 
@@ -579,8 +577,8 @@ test_that("combined tokens objects have all the attributes", {
                      names(attributes(toks1)))
     expect_identical(attr(c(toks1, toks4), "meta")$object$what, "word")
     expect_identical(attr(c(toks1, toks4), "meta")$object$concatenator, "_")
-    expect_identical(attr(c(toks1, toks4), "meta")$object$ngram, c(1L, 2L))
-    expect_identical(attr(c(toks1, toks4), "meta")$object$skip, c(0L, 2L))
+    expect_identical(attr(c(toks1, toks4), "meta")$object$ngram, c(1L))
+    expect_identical(attr(c(toks1, toks4), "meta")$object$skip, c(0L))
     
     expect_identical(docnames(dfm(c(toks1, toks4))), c("text1", "text4"))
     expect_identical(names(attributes(c(toks1, toks5))),
@@ -710,7 +708,7 @@ test_that("tokens.tokens(x, split_hyphens = TRUE, verbose = TRUE) works as expec
 test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected  (#1683)", {
     expect_warning(
         tokens(tokens("No Twitter."), split_tags = TRUE),
-        "Argument split_tags not used"
+        "split_tags argument is not used"
     )
     expect_message(
         tokens(tokens("Removing #hashtags.", what = "word2", verbose = TRUE)),

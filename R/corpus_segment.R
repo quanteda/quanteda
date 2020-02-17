@@ -93,7 +93,7 @@
 #' cbind(texts(corpseg3), docvars(corpseg3))
 #' 
 #' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed 
-#'   stri_locate_first_fixed
+#'   stri_locate_first_fixed stri_sub
 #' @export
 corpus_segment <- function(x, pattern = "##*",
                            valuetype = c("glob", "regex", "fixed"),
@@ -184,6 +184,7 @@ char_segment.default <- function(x, pattern = "##*",
 }
 
 #' @export
+#' @importFrom stringi stri_locate_first_regex stri_trim_both stri_locate_last_regex
 char_segment.character <- function(x, pattern = "##*",
                                    valuetype = c("glob", "regex", "fixed"),
                                    case_insensitive = TRUE,

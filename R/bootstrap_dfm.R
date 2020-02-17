@@ -33,6 +33,7 @@ bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("ve
 }
 
 #' @noRd
+#' @importFrom stringi stri_replace_all_fixed
 #' @export
 bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     if (verbose)

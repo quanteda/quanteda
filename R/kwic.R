@@ -145,6 +145,7 @@ is.kwic <- function(x) {
 }
 
 #' @method print kwic
+#' @importFrom stringi stri_c
 #' @noRd
 #' @export
 print.kwic <- function(x, ...) {

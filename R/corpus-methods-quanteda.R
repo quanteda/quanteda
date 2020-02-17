@@ -30,6 +30,7 @@ texts <- function(x, groups = NULL, spacer = " ") {
 }
 
 #' @noRd
+#' @importFrom stringi stri_c_list
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)

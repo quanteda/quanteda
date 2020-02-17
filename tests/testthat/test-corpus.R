@@ -573,7 +573,7 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
              created = "Tue Jun 13 14:51:47 2017")
     )
     expect_true(
-        all(c("source", "package-version", "r-version", "system", "directory", "created") %in%
+        all(c("package-version", "r-version", "system", "directory", "created") %in%
             names(meta(as.corpus(data_corpus_pre2), type = "system")))
     )
     expect_is(meta(as.corpus(data_corpus_pre2), "created", type = "system"),

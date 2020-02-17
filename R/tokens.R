@@ -248,9 +248,8 @@ tokens.corpus <- function(x,
     if ("remove_twitter" %in% names(dots)) {
         .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
     }
-    unused_dots(dots)
+    check_dots(dots, c(names(formals(tokens))))
 
-    
     # call the appropriate tokenizer function
     if (verbose) catm("...starting tokenization\n")
     tokenizer_fn <- switch(what,
@@ -314,7 +313,7 @@ tokens.tokens <-  function(x,
     if ("remove_twitter" %in% names(dots)) {
         .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
     }
-    unused_dots(dots)
+    check_dots(dots, c(names(formals(tokens))))
 
     # splits
     if (split_hyphens) {

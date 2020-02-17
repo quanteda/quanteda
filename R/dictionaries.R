@@ -645,6 +645,7 @@ merge_dictionary_values <- function(dict) {
 #' A dictionary is internally a list of list to keys and values to coexist in
 #' the same level.
 #' @param dict list of object
+#' @importFrom stringi stri_trim_both stri_enc_toutf8
 #' @keywords internal
 list2dictionary <- function(dict) {
     for (i in seq_along(dict)) {
@@ -674,6 +675,7 @@ NULL
 #' @rdname read_dict_functions
 #' @description `read_dict_lexicoder` imports Lexicoder files in the `.lc3` format.
 #' @param path the full path and filename of the dictionary file to be read
+#' @importFrom stringi stri_read_lines stri_trim_both
 #' @keywords dictionary internal
 #' @examples
 #' dict <- quanteda:::read_dict_lexicoder(
@@ -794,6 +796,8 @@ nest_dictionary <- function(dict, depth) {
 #' @rdname read_dict_functions
 #' @description `read_dict_liwc` imports LIWC dictionary files in the
 #'   `.dic` format.
+#' @importFrom stringi stri_extract_first_regex stri_extract_last_regex stri_replace_first_regex
+#' stri_read_lines stri_extract_first_regex
 #' @examples
 #'
 #' dict <- quanteda:::read_dict_liwc(

@@ -234,6 +234,20 @@ unused_dots <- function(...) {
     }
 }
 
+# function to check dots arguments against a list of permissible arguments
+# needed for tokens.R only
+# because (...) evaluated in parent fn is different from being passed through
+check_dots <-  function(dots, permissible_args = NULL) {
+    if (length(dots) == 0) return()
+    args <- names(dots)
+    arg <-  setdiff(args, permissible_args)
+    if (length(arg) == 1) {
+        warning(arg[1], " argument is not used.", call. = FALSE)
+    } else if (length(arg) > 1) {
+        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
+    }
+}
+
 #' Return an error message
 #' @param key type of error message
 #' @keywords internal
