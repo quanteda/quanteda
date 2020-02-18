@@ -39,60 +39,35 @@ NULL
 #'   stri_replace_all_regex stri_detect_fixed stri_replace_all_fixed
 #' @export
 tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
-    named <- names(x)
+    
+    m <- names(x)
+    x[is.na(x)] <- "" # make NAs ""
 
     # remove variant selector & whitespace with diacritical marks
     x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
                                 vectorize_all = FALSE)
     # substitute characters not to split
     x <- preserve_special(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
-    # make NAs ""
-    x[is.na(x)] <- ""
 
     if (verbose) catm("...segmenting tokens\n")
-    structure(stri_split_boundaries(x, type = "word"), names = named)
+    structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
 #' @rdname tokenize_internal
 #' @importFrom stringi stri_replace_all_regex stri_detect_fixed stri_split_boundaries
 #' @export
 tokenize_word2 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
-    named <- names(x)
-
-    # -------- special processing
+    
+    m <- names(x)
+    x[is.na(x)] <- "" # make NAs ""
+    
     # this will not be needed if we can modify the ICU type rules to protect them
     # remove variant selector & whitespace with diacritical marks
     x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
                                 vectorize_all = FALSE)
-    # substitute characters not to split
-    x <- preserve_special(x, split_hyphens = split_hyphens, split_tags = FALSE, verbose = verbose)
-    # pad URLs with an additional space - for e.g. Japanese text with URLs
-    regex_url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-    x <- stri_replace_all_regex(x, regex_url, " $0 ")
-    # make NAs ""
-    x[is.na(x)] <- ""
 
     if (verbose) catm("...segmenting tokens\n")
-
-    # -------- initial split on white space
-    # this and the index_url can be removed if we are able to modify the rules 
-    # in type for stri_split_boundaries()
-    x <- stri_split_regex(x, "[\\p{Z}\\p{C}]+", omit_empty = FALSE)
-    if (verbose) catm("...vectorizing tokens\n")
-    doc_lengths <- cumsum(lengths(x))
-    docindex <- c(0, doc_lengths)
-    x <- unlist(x)
-    index_url <- stri_detect_fixed(x, "://")
-    
-    # -------- second-stage "smart" tokenization
-    if (verbose) catm("...applying second stage smart tokenization\n")
-    x[!index_url] <- stri_split_boundaries(x[!index_url], type = "word")
-    if (verbose) catm("...tidying up\n")
-    x <- split(x, cut(seq_along(x), docindex, include.lowest = FALSE, labels = named))
-    # handle nested lists from 2nd stage stri_split_boundaries() call
-    x <- lapply(x, unlist)
-    
-    return(structure(x, names = named))
+    structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
 # substitutions to preserve hyphens and tags
@@ -107,6 +82,67 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     }
     return(x)
 }
+
+
+preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
+    
+    url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+    hyphen <- "\\p{Pd}"
+    tag <- "[@#]"
+    
+    m <- names(x)
+    regex <- url
+    if (!split_hyphens)
+        if (verbose) catm("...preserving hyphens\n")
+        regex <- c(regex, hyphen)
+    if (!split_tags)
+        if (verbose) catm("...preserving social media tags (#, @)\n")
+        regex <- c(regex, tag)
+    special <- unlist(stri_extract_all_regex(x, paste(regex, collapse = "|")))
+    special <- unique(special[!is.na(special)])
+    if (length(special)) {
+        x <- stri_replace_all_fixed(
+            x, 
+            special, 
+            paste0("\u100000", seq_along(special), "\u100001"), 
+            vectorize_all = FALSE
+        )
+    }
+    structure(x, names = m, special = special)
+}
+
+# re-substitute the replacement hyphens and tags
+restore_special <- function(x, split_hyphens, split_tags, verbose) {
+    types <- types(x)
+    if (!split_hyphens)
+        types <- stri_replace_all_fixed(types, "_hy_", "-")
+    if (!split_tags)
+        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
+                                        vectorize_all = FALSE)
+    if (!identical(types, types(x))) {
+        types(x) <- types
+        x <- tokens_recompile(x)
+    }
+    return(x)
+}
+
+restore_special2 <- function(x, special) {
+    types <- types(x)
+    if (length(special)) {
+        types <- stri_replace_all_fixed(
+            types, 
+            paste0("\u100000", seq_along(special), "\u100001"), 
+            special,
+            vectorize_all = FALSE
+        )
+    }
+    if (!identical(types, types(x))) {
+        types(x) <- types
+        x <- tokens_recompile(x)
+    }
+    return(x)
+}
+
 
 # legacy tokenizers ----------
 

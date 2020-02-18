@@ -258,7 +258,13 @@ tokens.corpus <- function(x,
                            sentence = tokenize_sentence,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
-                           fastestword = tokenize_fastestword)
+                           fastestw, ord = tokenize_fastestword)
+    
+    
+    if (what == "word2") {
+        x <- preserve_special2(x, split_hyphens = split_hyphens, verbose = verbose)
+        special <- attr(x, "special")
+    }
     
     # split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
@@ -282,8 +288,11 @@ tokens.corpus <- function(x,
         meta = attrs[["meta"]]
     )
 
-    if (what %in% c("word", "word2") && !split_hyphens)
-        result <- restore_special(result, split_hyphens = FALSE, split_tags = !(what == "word2"))
+    if (what == "word" && !split_hyphens)
+        result <- restore_special(result, split_hyphens = FALSE, split_tags = TRUE)
+    
+    if (what == "word2")
+        result <- restore_special2(result, special)
     
     if (!remove_separators && !what %in% c("word", "character"))
         warning("remove_separators is always TRUE for this type")
@@ -608,21 +617,6 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
         }
         Encoding(types(x)) <- "UTF-8"
         x <- rebuild_tokens(x, attrs)
-    }
-    return(x)
-}
-
-# re-substitute the replacement hyphens and tags
-restore_special <- function(x, split_hyphens, split_tags, verbose) {
-    types <- types(x)
-    if (!split_hyphens)
-        types <- stri_replace_all_fixed(types, "_hy_", "-")
-    if (!split_tags)
-        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
-                                        vectorize_all = FALSE)
-    if (!identical(types, types(x))) {
-        types(x) <- types
-        x <- tokens_recompile(x)
     }
     return(x)
 }
