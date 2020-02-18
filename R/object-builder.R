@@ -1,11 +1,21 @@
+# documentation function -------
+
 #' Object compilers
-#' @rdname object-builder
-#' @param source character that indicating source object
-#' @param feature character for feature of resulting `dfm`
+#' 
+#' Functions to build or re-build core objects, or to upgrade earlier versions
+#' of these objects to the current format.
+#' @name object-builders
+#' @param x an input [corpus], [dfm], [tokens], or [dictionary] object
+#' @param ... further objects passed to object metadata
+#' @keywords internal
+NULL
+
+# dfm --------------
+
+#' @rdname object-builders
+#' @param features character for feature of resulting `dfm`
 #' @param docvars data.frame for document level variables
-#' @param attrs a list of attributes to be reassigned
 #' @param meta list for meta fields
-#' @param ... added to object meta fields
 #' @keywords internal
 build_dfm <- function(x, features,
                         docvars = data.frame(), meta = list(), ...) {
@@ -22,7 +32,8 @@ build_dfm <- function(x, features,
     return(result)
 }
 
-#' @rdname object-builder
+#' @rdname object-builders
+#' @param attrs a list of attributes to be reassigned
 rebuild_dfm <- function(x, attrs) {
     x@meta <- attrs[["meta"]]
     x@docvars <- attrs[["docvars"]]
@@ -30,75 +41,7 @@ rebuild_dfm <- function(x, attrs) {
     return(x)
 }
 
-#' @rdname object-builder
-#' @param types character for types of resulting `tokens`` object
-#' @param padding logical indicating if the `tokens` object contains paddings
-build_tokens <- function(x, types, padding = FALSE,
-                           docvars = data.frame(), meta = list(), ...) {
-    attributes(x) <- NULL
-    structure(x,
-              names = docvars[["docname_"]],
-              class = "tokens",
-              types = types,
-              padding = padding,
-              docvars = docvars,
-              meta = make_meta("tokens", inherit = meta, ...))
-}
-
-#' @rdname object-builder
-rebuild_tokens <- function(x, attrs) {
-
-    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-    attr(x, "docvars") <- attrs[["docvars"]]
-    attr(x, "meta") <- attrs[["meta"]]
-
-    # drop extra attribues for tokens_segment
-    try({attr(x, "docnum") <- NULL}, silent = TRUE)
-    try({attr(x, "pattern") <- NULL}, silent = TRUE)
-
-    return(x)
-}
-
-
-#' @rdname object-builder
-build_corpus <- function(x,
-                           docvars = data.frame(),
-                           meta = list(), ...) {
-    attributes(x) <- NULL
-    structure(x,
-              names = docvars[["docname_"]],
-              class = "corpus",
-              docvars = docvars,
-              meta = make_meta("corpus", inherit = meta, ...))
-}
-
-#' @rdname object-builder
-rebuild_corpus <- function(x, attrs) {
-
-    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-    attr(x, "docvars") <- attrs[["docvars"]]
-    attr(x, "meta") <- attrs[["meta"]]
-    return(x)
-}
-
-#' @rdname object-builder
-build_dictionary2 <- function(x,
-                              meta = list(), ...) {
-
-    new("dictionary2", x,
-        meta = make_meta("dictionary2", inherit = meta, ...))
-
-}
-
-#' @rdname object-builder
-rebuild_dictionary2 <- function(x, attrs) {
-
-    attr(x, "meta") <- attrs[["meta"]]
-    return(x)
-}
-
-
-
+#' @rdname object-builders
 upgrade_dfm <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
@@ -121,6 +64,37 @@ upgrade_dfm <- function(x) {
     )
 }
 
+# tokens -------
+
+#' @rdname object-builders
+#' @param types character for types of resulting `tokens`` object
+#' @param padding logical indicating if the `tokens` object contains paddings
+build_tokens <- function(x, types, padding = FALSE,
+                         docvars = data.frame(), meta = list(), ...) {
+    attributes(x) <- NULL
+    structure(x,
+              names = docvars[["docname_"]],
+              class = "tokens",
+              types = types,
+              padding = padding,
+              docvars = docvars,
+              meta = make_meta("tokens", inherit = meta, ...))
+}
+
+#' @rdname object-builders
+rebuild_tokens <- function(x, attrs) {
+    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    attr(x, "docvars") <- attrs[["docvars"]]
+    attr(x, "meta") <- attrs[["meta"]]
+
+    # drop extra attribues for tokens_segment
+    try({attr(x, "docnum") <- NULL}, silent = TRUE)
+    try({attr(x, "pattern") <- NULL}, silent = TRUE)
+
+    return(x)
+}
+
+#' @rdname object-builders
 upgrade_tokens <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
@@ -143,6 +117,32 @@ upgrade_tokens <- function(x) {
 }
 
 
+# corpus --------
+
+#' @rdname object-builders
+#' @param class class to be attached to the built object
+build_corpus <- function(x,
+                         docvars = data.frame(),
+                         meta = list(),
+                         class = "corpus",
+                         ...) {
+    attributes(x) <- NULL
+    structure(x,
+              names = docvars[["docname_"]],
+              class = class,
+              docvars = docvars,
+              meta = make_meta("corpus", inherit = meta, ...))
+}
+
+#' @rdname object-builders
+rebuild_corpus <- function(x, attrs) {
+    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    attr(x, "docvars") <- attrs[["docvars"]]
+    attr(x, "meta") <- attrs[["meta"]]
+    return(x)
+}
+
+#' @rdname object-builders
 upgrade_corpus <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
@@ -173,6 +173,23 @@ upgrade_corpus <- function(x) {
     }
 }
 
+
+# dictionary ------
+
+#' @rdname object-builders
+build_dictionary2 <- function(x, meta = list(), ...) {
+    new("dictionary2", x,
+        meta = make_meta("dictionary2", inherit = meta, ...))
+
+}
+
+#' @rdname object-builders
+rebuild_dictionary2 <- function(x, attrs) {
+    attr(x, "meta") <- attrs[["meta"]]
+    return(x)
+}
+
+#' @rdname object-builders
 upgrade_dictionary2 <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)

@@ -206,7 +206,8 @@ tail.corpus <- function(x, n = 6L, ...) {
         c(as.character(c1), as.character(c2)),
         unit = field_object(attrs1, "unit"),
         docvars = docvars,
-        meta = field_user(attrs1)
+        meta = field_user(attrs1),
+        class = attrs1[["class"]]
     )
 }
 
@@ -265,6 +266,7 @@ c.corpus <- function(..., recursive = FALSE) {
     build_corpus(
         unclass(x)[index],
         docvars = subset_docvars(attrs[["docvars"]], index),
-        meta = attrs[["meta"]]
+        meta = attrs[["meta"]],
+        class = attrs[["class"]]
     )
 }
