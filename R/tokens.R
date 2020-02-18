@@ -258,7 +258,7 @@ tokens.corpus <- function(x,
                            sentence = tokenize_sentence,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
-                           fastestw, ord = tokenize_fastestword)
+                           fastestword = tokenize_fastestword)
     
     
     if (what == "word2") {
