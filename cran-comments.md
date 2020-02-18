@@ -17,7 +17,12 @@
 
 No ERRORs, NOTEs, or WARNINGs produced.
 
-
 ## Downstream dependencies
 
-The **RNewsflow** package... had a problem in executing an example but I fixed this in a pull request to that package (https://github.com/kasperwelbers/RNewsflow/pull/4) that has now been merged.  The maintainer Kasper Welbers (kasperwelbers@gmail.com) is planning to refresh the CRAN version today.
+**tosca**:  This package errors on a test but I notified the maintainers and actuall fixed this code in a pull request that was merged into the **tosca** master branch on 21 December 2019: https://github.com/Docma-TU/tosca/commit/dae6ed5bb7457a65693d130dfeb6388b75ae27b4 (21 December 2019).  They simply need to resubmit the updated (and passing, on GitHub) package to CRAN.
+
+**tidytext**:  We fixed the breaking changes in a pull request accepted on 7 December 2019 (https://github.com/juliasilge/tidytext/pull/160), and this is fixed now in the GitHub master.  They simply need to resubmit the updated (and passing, on GitHub) package to CRAN.
+
+**preText**:  The split of some of the functions previously in **quanteda** into a new **quanteda.textmodels** package meant that **preText** needed its namespace references to these functions updated.  I've issued a pull request (https://github.com/matthewjdenny/preText/pull/9) to fix this, and suggested that the maintainer refresh this package on CRAN as soon as **quanteda.textmodels** is accepted and published.
+
+**sentometrics**: This package has lots of problems with quanteda v2 and we are busy trying to fix them.
