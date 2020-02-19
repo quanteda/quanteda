@@ -7,9 +7,9 @@
 docfreq(
   x,
   scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
+  base = 10,
   smoothing = 0,
   k = 0,
-  base = 10,
   threshold = 0
 )
 }
@@ -27,14 +27,14 @@ follows, where \eqn{N} is defined as the number of documents in the dfm and
 \item{\code{unary}}{1 for each feature}
 }}
 
+\item{base}{the base with respect to which logarithms in the inverse document
+frequency weightings are computed; default is 10 (see Manning, Raghavan,
+and Schütze 2008, p123).}
+
 \item{smoothing}{added to the quotient before taking the logarithm}
 
 \item{k}{added to the denominator in the "inverse" weighting types, to
 prevent a zero document count for a term}
-
-\item{base}{the base with respect to which logarithms in the inverse document
-frequency weightings are computed; default is 10 (see Manning,
-Raghavan, and Schütze 2008, p123).}
 
 \item{threshold}{numeric value of the threshold \emph{above which} a feature
 will considered in the computation of document frequency.  The default is

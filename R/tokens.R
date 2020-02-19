@@ -246,7 +246,9 @@ tokens.corpus <- function(x,
         dots$remove_hyphens <- NULL
     }
     if ("remove_twitter" %in% names(dots)) {
-        .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
+        .Deprecated(msg = "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.")
+        if (dots$remove_twitter == FALSE && what == "word") what <- "word2"
+        dots$remove_twitter <- NULL
     }
     check_dots(dots, c(names(formals(tokens))))
 
@@ -262,7 +264,8 @@ tokens.corpus <- function(x,
     
     
     if (what == "word2") {
-        x <- preserve_special2(x, split_hyphens = split_hyphens, verbose = verbose)
+        x <- preserve_special2(x, split_hyphens = split_hyphens, 
+                               split_tags = FALSE, verbose = verbose)
         special <- attr(x, "special")
     }
     
@@ -337,7 +340,8 @@ tokens.tokens <-  function(x,
 
     }
     if ("remove_twitter" %in% names(dots)) {
-        .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
+        .Deprecated(msg = "'remove_twitter' is deprecated and inactive for tokens.tokens()")
+        dots$remove_twitter <- NULL    
     }
     check_dots(dots, c(names(formals(tokens))))
 
@@ -351,12 +355,12 @@ tokens.tokens <-  function(x,
         x <- tokens_remove(x, "^[\\p{Z}\\p{C}]$", valuetype = "regex")
     
     # removals
-    removals <- compile_removals_regex(#remove_separators = remove_separators,
+    removals <- compile_removals_regex(remove_separators = remove_separators,
                                        remove_punct = remove_punct,
                                        remove_symbols = remove_symbols,
                                        remove_numbers = remove_numbers,
                                        remove_url = remove_url)
-    if (length(removals$regex_to_remove)) {
+    if (length(removals$regex_to_remove) || remove_separators) {
         if (verbose) catm("...removing", paste(removals$removing_msg, collapse = ", "), "\n")
         x <- tokens_remove(x, paste(removals$regex_to_remove, collapse = "|"),
                            valuetype = "regex",  padding = padding,
@@ -466,17 +470,17 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 # utility functions ------------
 
-compile_removals_regex <- function(#remove_separators = FALSE,
+compile_removals_regex <- function(remove_separators = FALSE,
                                    remove_punct = FALSE,
                                    remove_symbols = FALSE,
                                    remove_numbers = FALSE,
                                    remove_url = FALSE) {
     regex_to_remove <- removing_msg <- character()
 
-    #if (remove_separators) {
+    if (remove_separators) {
     #    regex_to_remove <- c(regex_to_remove, "^[\\p{Z}\\p{C}]$")
-    #    removing_msg <- c(removing_msg, "separators")
-    #}
+        removing_msg <- c(removing_msg, "separators")
+    }
     if (remove_punct) {
         regex_to_remove <- c(regex_to_remove, "^\\p{P}+$")
         removing_msg <- c(removing_msg, "punctuation")
