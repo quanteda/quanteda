@@ -24,5 +24,3 @@ No ERRORs, NOTEs, or WARNINGs produced.
 **tidytext**:  We fixed the breaking changes in a pull request accepted on 7 December 2019 (https://github.com/juliasilge/tidytext/pull/160), and this is fixed now in the GitHub master.  They simply need to resubmit the updated (and passing, on GitHub) package to CRAN.
 
 **preText**:  The split of some of the functions previously in **quanteda** into a new **quanteda.textmodels** package meant that **preText** needed its namespace references to these functions updated.  I've issued a pull request (https://github.com/matthewjdenny/preText/pull/9) to fix this, and suggested that the maintainer refresh this package on CRAN as soon as **quanteda.textmodels** is accepted and published.
-
-**sentometrics**: This package has lots of problems with quanteda v2 and we are busy trying to fix them.
