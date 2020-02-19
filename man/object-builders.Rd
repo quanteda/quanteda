@@ -16,7 +16,14 @@
 \alias{upgrade_dictionary2}
 \title{Object compilers}
 \usage{
-build_dfm(x, features, docvars = data.frame(), meta = list(), ...)
+build_dfm(
+  x,
+  features,
+  docvars = data.frame(),
+  meta = list(),
+  class = "dfm",
+  ...
+)
 
 rebuild_dfm(x, attrs)
 
@@ -28,6 +35,7 @@ build_tokens(
   padding = FALSE,
   docvars = data.frame(),
   meta = list(),
+  class = "tokens",
   ...
 )
 
@@ -56,6 +64,8 @@ upgrade_dictionary2(x)
 
 \item{meta}{list for meta fields}
 
+\item{class}{class to be attached to the built object}
+
 \item{...}{further objects passed to object metadata}
 
 \item{attrs}{a list of attributes to be reassigned}
@@ -63,8 +73,6 @@ upgrade_dictionary2(x)
 \item{types}{character for types of resulting `tokens`` object}
 
 \item{padding}{logical indicating if the \code{tokens} object contains paddings}
-
-\item{class}{class to be attached to the built object}
 }
 \description{
 Functions to build or re-build core objects, or to upgrade earlier versions

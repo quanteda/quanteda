@@ -18,8 +18,9 @@ NULL
 #' @param meta list for meta fields
 #' @keywords internal
 build_dfm <- function(x, features,
-                        docvars = data.frame(), meta = list(), ...) {
-    result <- new("dfm",
+                      docvars = data.frame(), meta = list(), 
+                      class = "dfm", ...) {
+    result <- new(class,
         as(x, "dgCMatrix"),
         docvars = docvars,
         meta = make_meta("dfm", inherit = meta, ...)
@@ -70,11 +71,12 @@ upgrade_dfm <- function(x) {
 #' @param types character for types of resulting `tokens`` object
 #' @param padding logical indicating if the `tokens` object contains paddings
 build_tokens <- function(x, types, padding = FALSE,
-                         docvars = data.frame(), meta = list(), ...) {
+                         docvars = data.frame(), meta = list(), 
+                         class = "tokens", ...) {
     attributes(x) <- NULL
     structure(x,
               names = docvars[["docname_"]],
-              class = "tokens",
+              class = class,
               types = types,
               padding = padding,
               docvars = docvars,
@@ -86,6 +88,7 @@ rebuild_tokens <- function(x, attrs) {
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
+    attr(x, "class") <- attrs[["class"]]
 
     # drop extra attribues for tokens_segment
     try({attr(x, "docnum") <- NULL}, silent = TRUE)
@@ -139,6 +142,7 @@ rebuild_corpus <- function(x, attrs) {
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
+    attr(x, "class") <- attrs[["class"]]
     return(x)
 }
 

@@ -1,6 +1,6 @@
 context("test object builder functions")
 
-test_that("corpus object builders retain class", {
+test_that("corpus object builder retains class", {
     corp <- corpus(c("a / b", "a / b c", "abc"),
                    docvars = data.frame(dv = 11:13),
                    meta = list(mymeta = "Test meta"))
@@ -23,3 +23,19 @@ test_that("corpus object builders retain class", {
     )
 })
 
+test_that("tokens object builder retains class", {
+    corp <- corpus(c("a / b", "a / b c", "abc"),
+                   docvars = data.frame(dv = 11:13),
+                   meta = list(mymeta = "Test meta"))
+    toks <- tokens(corp)
+    class(toks) <- c("myclass", class(toks))
+    
+    expect_identical(
+        class(toks),
+        class(tokens_sample(toks, size = 2))
+    )
+    expect_identical(
+        class(toks),
+        class(toks[1:2])
+    )
+})

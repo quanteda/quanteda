@@ -111,7 +111,8 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         unclass(x)[index],
         attrs[["types"]],
         docvars = subset_docvars(attrs[["docvars"]], index),
-        meta = attrs[["meta"]]
+        meta = attrs[["meta"]],
+        class = attrs[["class"]]
     )
     tokens_recompile(result)
 }
@@ -195,7 +196,8 @@ lengths.tokens <- function(x, use.names = TRUE) {
             field_object(attrs2, "skip")))
             ),
         concatenator = field_object(attrs1, "concatenator"),
-        docvars = docvars
+        docvars = docvars,
+        class = attrs1[["class"]]
     )
     tokens_recompile(result)
 }
