@@ -175,17 +175,38 @@ test_that("deprecated remove_ arguments work", {
 })
 
 test_that("defunct remove_twitter warning works", {
+    # character
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
-    toks <- tokens(txt)
-    expect_error(
+    expect_warning(
         tokens(txt, remove_twitter = TRUE),
-        "'remove_twitter' is defunct, use 'what = \"word2\"' instead.",
-        class = "defunctError", fixed = TRUE
+        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.",
+        fixed = TRUE
     )
-    expect_error(
+    expect_warning(
+        tokens(txt, remove_twitter = FALSE),
+        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.",
+        fixed = TRUE
+    )
+    expect_identical(
+        suppressWarnings(as.list(tokens(txt, remove_twitter = FALSE, remove_punct = TRUE))),
+        list(text1 = c("they", "#stretched", "in", "a", "never-ending", "@line"))
+    )
+    expect_identical(
+        suppressWarnings(tokens(txt, remove_twitter = FALSE, remove_punct = TRUE)),
+        tokens(txt, what = "word2", remove_punct = TRUE)
+    )
+    
+    # tokens
+    toks <- tokens(txt)
+    expect_warning(
         tokens(toks, remove_twitter = TRUE),
-        "'remove_twitter' is defunct, use 'what = \"word2\"' instead.",
-        class = "defunctError", fixed = TRUE
+        "'remove_twitter' is deprecated and inactive for tokens.tokens()",
+        fixed = TRUE
+    )
+    expect_warning(
+        tokens(toks, remove_twitter = FALSE),
+        "'remove_twitter' is deprecated and inactive for tokens.tokens()",
+        fixed = TRUE
     )
 })
 

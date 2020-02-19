@@ -246,7 +246,9 @@ tokens.corpus <- function(x,
         dots$remove_hyphens <- NULL
     }
     if ("remove_twitter" %in% names(dots)) {
-        .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
+        .Deprecated(msg = "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.")
+        if (dots$remove_twitter == FALSE && what == "word") what <- "word2"
+        dots$remove_twitter <- NULL
     }
     check_dots(dots, c(names(formals(tokens))))
 
@@ -337,7 +339,8 @@ tokens.tokens <-  function(x,
 
     }
     if ("remove_twitter" %in% names(dots)) {
-        .Defunct(msg = "'remove_twitter' is defunct, use 'what = \"word2\"' instead.")
+        .Deprecated(msg = "'remove_twitter' is deprecated and inactive for tokens.tokens()")
+        dots$remove_twitter <- NULL    
     }
     check_dots(dots, c(names(formals(tokens))))
 
