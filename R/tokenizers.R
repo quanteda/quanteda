@@ -98,17 +98,21 @@ preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
     if (!split_tags)
         if (verbose) catm("...preserving social media tags (#, @)\n")
         regex <- c(regex, tag)
-    special <- unlist(stri_extract_all_regex(x, paste(regex, collapse = "|")))
-    special <- unique(special[!is.na(special)])
-    if (length(special)) {
-        x <- stri_replace_all_fixed(
-            x, 
-            special, 
-            paste0("\u100000", seq_along(special), "\u100001"), 
-            vectorize_all = FALSE
-        )
+    special <- stri_extract_all_regex(x, paste(regex, collapse = "|"))
+    sp <- unlist(special)
+    sp <- unique(sp[!is.na(sp)])
+    si <- paste0("\u100000", seq_along(sp), "\u100001")
+    names(si) <- sp
+    if (length(si)) {
+        x <- mapply(function(x, y) {
+            if (length(y)) {
+                stri_replace_all_fixed(x, y, si[y], vectorize_all = FALSE)
+            } else {
+                return(x)
+            }
+        }, x, special)
     }
-    structure(x, names = m, special = special)
+    structure(x, names = m, special = si)
 }
 
 # re-substitute the replacement hyphens and tags
@@ -131,8 +135,8 @@ restore_special2 <- function(x, special) {
     if (length(special)) {
         types <- stri_replace_all_fixed(
             types, 
-            paste0("\u100000", seq_along(special), "\u100001"), 
-            special,
+            special, 
+            names(special),
             vectorize_all = FALSE
         )
     }
