@@ -106,7 +106,7 @@ preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
         si <- paste0("\u100000", seq_along(sp), "\u100001")
         names(si) <- sp
         x <- mapply(function(x, y) {
-            if (length(y)) {
+            if (!is.na(y[1])) { # check NA for no match
                 stri_replace_all_fixed(x, y, si[y], vectorize_all = FALSE)
             } else {
                 return(x)
