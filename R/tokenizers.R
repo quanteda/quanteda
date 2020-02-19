@@ -87,7 +87,7 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
 preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
     
     url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-    hyphen <- "\\p{Pd}"
+    hyphen <- "[\\p{Pd}]"
     tag <- "[@#]"
     
     m <- names(x)
@@ -100,10 +100,11 @@ preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
         regex <- c(regex, tag)
     special <- stri_extract_all_regex(x, paste(regex, collapse = "|"))
     sp <- unlist(special)
-    sp <- unique(sp[!is.na(sp)])
-    si <- paste0("\u100000", seq_along(sp), "\u100001")
-    names(si) <- sp
-    if (length(si)) {
+    sp <- sp[!is.na(sp)]
+    if (length(sp)) {
+        sp <- unique(sp)
+        si <- paste0("\u100000", seq_along(sp), "\u100001")
+        names(si) <- sp
         x <- mapply(function(x, y) {
             if (length(y)) {
                 stri_replace_all_fixed(x, y, si[y], vectorize_all = FALSE)
@@ -111,6 +112,9 @@ preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
                 return(x)
             }
         }, x, special)
+    } else {
+        si <- character()
+        names(si) <- character()
     }
     structure(x, names = m, special = si)
 }
