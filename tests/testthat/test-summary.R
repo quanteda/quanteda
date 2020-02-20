@@ -30,7 +30,7 @@ test_that("print.summary.corpus work", {
     )
     expect_output(
         print(summ1[, c("Types", "Tokens")]),
-        "^\\s+Types Tokens\\n1\\s+625\\s+1538"
+        "^\\s+Types Tokens\\n1\\s+625\\s+153"
     )
 })
 

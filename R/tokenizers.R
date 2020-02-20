@@ -34,30 +34,11 @@ NULL
 # improved tokenizer ----------
 
 #' @rdname tokenize_internal
-#' @inheritParams tokens
-#' @importFrom stringi stri_detect_regex stri_detect_charclass
-#'   stri_replace_all_regex stri_detect_fixed stri_replace_all_fixed
+#' @importFrom stringi stri_replace_all_regex stri_detect_fixed stri_split_boundaries
 #' @export
 tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
     
-    m <- names(x)
-    x[is.na(x)] <- "" # make NAs ""
-
-    # remove variant selector & whitespace with diacritical marks
-    x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
-                                vectorize_all = FALSE)
-    # substitute characters not to split
-    x <- preserve_special(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
-
     if (verbose) catm("...segmenting tokens\n")
-    structure(stri_split_boundaries(x, type = "word"), names = m)
-}
-
-#' @rdname tokenize_internal
-#' @importFrom stringi stri_replace_all_regex stri_detect_fixed stri_split_boundaries
-#' @export
-tokenize_word2 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
-    
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
     
@@ -66,25 +47,10 @@ tokenize_word2 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
                                 vectorize_all = FALSE)
 
-    if (verbose) catm("...segmenting tokens\n")
     structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
-# substitutions to preserve hyphens and tags
 preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
-    if (!split_hyphens) {
-        if (verbose) catm("...preserving hyphens\n")
-        x <- stri_replace_all_regex(x, "(\\w)\\p{Pd}+", "$1_hy_")
-    }
-    if (!split_tags) {
-        if (verbose) catm("...preserving social media tags (#, @)\n")
-        x <- stri_replace_all_fixed(x, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
-    }
-    return(x)
-}
-
-
-preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
     
     url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
     hyphen <- "[\\p{Pd}]"
@@ -92,12 +58,14 @@ preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
     
     m <- names(x)
     regex <- url
-    if (!split_hyphens)
+    if (!split_hyphens) {
         if (verbose) catm("...preserving hyphens\n")
         regex <- c(regex, hyphen)
-    if (!split_tags)
+    }
+    if (!split_tags) {
         if (verbose) catm("...preserving social media tags (#, @)\n")
         regex <- c(regex, tag)
+    }
     special <- stri_extract_all_regex(x, paste(regex, collapse = "|"))
     sp <- unlist(special)
     sp <- sp[!is.na(sp)]
@@ -119,22 +87,7 @@ preserve_special2 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
     structure(x, names = m, special = si)
 }
 
-# re-substitute the replacement hyphens and tags
-restore_special <- function(x, split_hyphens, split_tags, verbose) {
-    types <- types(x)
-    if (!split_hyphens)
-        types <- stri_replace_all_fixed(types, "_hy_", "-")
-    if (!split_tags)
-        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
-                                        vectorize_all = FALSE)
-    if (!identical(types, types(x))) {
-        types(x) <- types
-        x <- tokens_recompile(x)
-    }
-    return(x)
-}
-
-restore_special2 <- function(x, special) {
+restore_special <- function(x, special) {
     types <- types(x)
     if (length(special)) {
         types <- stri_replace_all_fixed(
@@ -153,6 +106,54 @@ restore_special2 <- function(x, special) {
 
 
 # legacy tokenizers ----------
+
+#' @rdname tokenize_internal
+#' @inheritParams tokens
+#' @importFrom stringi stri_detect_regex stri_detect_charclass
+#'   stri_replace_all_regex stri_detect_fixed stri_replace_all_fixed
+#' @export
+tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
+    
+    m <- names(x)
+    x[is.na(x)] <- "" # make NAs ""
+
+    # remove variant selector & whitespace with diacritical marks
+    x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
+                                vectorize_all = FALSE)
+    # substitute characters not to split
+    x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
+
+    if (verbose) catm("...segmenting tokens\n")
+    structure(stri_split_boundaries(x, type = "word"), names = m)
+}
+
+# substitutions to preserve hyphens and tags
+preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
+    if (!split_hyphens) {
+        if (verbose) catm("...preserving hyphens\n")
+        x <- stri_replace_all_regex(x, "(\\w)\\p{Pd}+", "$1_hy_")
+    }
+    if (!split_tags) {
+        if (verbose) catm("...preserving social media tags (#, @)\n")
+        x <- stri_replace_all_fixed(x, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
+    }
+    return(x)
+}
+
+# re-substitute the replacement hyphens and tags
+restore_special1 <- function(x, split_hyphens, split_tags, verbose) {
+    types <- types(x)
+    if (!split_hyphens)
+        types <- stri_replace_all_fixed(types, "_hy_", "-")
+    if (!split_tags)
+        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
+                                        vectorize_all = FALSE)
+    if (!identical(types, types(x))) {
+        types(x) <- types
+        x <- tokens_recompile(x)
+    }
+    return(x)
+}
 
 #' @rdname tokenize_internal
 #' @importFrom stringi stri_split_boundaries

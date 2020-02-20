@@ -46,7 +46,7 @@
 
     - The option `remove_hyphens` is removed and deprecated, but replaced by `split_hyphens`.  This preserves infix (internal) hyphens rather than splitting them.  This behaviour is implemented in both the `what = "word"` and `what = "word2"` tokenizer options.  This option is `FALSE` by default.
     
-    -  The option `remove_twitter` has been removed.  The new `what = "word2"` is a specialist tokenizer that preserves tags and URLs and email-addresses.  "Tags" are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the `#` and `@` punctuation characters, even if `remove_punct = TRUE`.
+    -  The option `remove_twitter` has been removed.  The new `what = "word"` is a smarter tokenizer that preserves social media tags, URLs, and email-addresses.  "Tags" are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the `#` and `@` punctuation characters, even if `remove_punct = TRUE`.
     
 ## New features
 

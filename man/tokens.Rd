@@ -20,10 +20,13 @@ tokens(
 )
 }
 \arguments{
-\item{x}{a (uniquely) named list of characters or a \link{tokens} object; or a
-\link{corpus}, or a character object that will be tokenized}
+\item{x}{the input object to the tokens constructor, one of:
+a (uniquely) named \strong{list} of characters; a \link{tokens} object; or a
+\link{corpus} or \link{character} object that will be tokenized}
 
-\item{what}{character; which tokenizer to use.  The default  \verb{what = "word"`` is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2) are also supported, including the default }what = "word1"`.
+\item{what}{character; which tokenizer to use.  The default \code{what = "word"}
+is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
+are also supported, including the default \code{what = "word1"}.
 See the Details and quanteda Tokenizer below.}
 
 \item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
@@ -37,9 +40,7 @@ valid social media tags if \code{preserve_tags = TRUE}}
 numbers, but not words that start with digits, e.g. \verb{2day}}
 
 \item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning with
-http(s) -- see section "Dealing with URLs".  The default \code{what = "word"}
-will split URLs, so if you are using a \pkg{quanteda} tokenizer and wish
-to keep or remove URLs, then use \code{what = "word2"}.}
+http(s)}
 
 \item{remove_separators}{logical; if \code{TRUE} remove separators and separator
 characters (Unicode "Separator" \verb{[Z]} and "Control" \verb{[C]} categories)}
@@ -88,11 +89,10 @@ not remove or split anything, however, unless the user requests it.
 Using external tokenizers is best done by piping the output from these
 other tokenizers into the \code{tokens()} constructor, with additional removal
 and splitting options applied at the construction stage.  These will only
-have an effect,
-however, if the tokens exist for which removal is specified at in the
-\code{tokens()} call.  For instance, it is impossible to remove punctuation if
-the input list to \code{tokens()} already had its punctuation tokens removed at
-the external tokenization stage.
+have an effect, however, if the tokens exist for which removal is specified
+at in the \code{tokens()} call.  For instance, it is impossible to remove
+punctuation if the input list to \code{tokens()} already had its punctuation
+tokens removed at the external tokenization stage.
 
 To construct a tokens object from a list with no additional processing, call
 \code{\link[=as.tokens]{as.tokens()}} instead of \code{tokens()}.
@@ -106,23 +106,20 @@ splits infix hyphens, or \pkg{spacyr}.
 
 The default word tokenizer \code{what = "word"} splits tokens using
 \link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")}
-but by default preserves infix hyphens (e.g. "self-funding").
-
-The \code{what = "word2"} tokenizer implements the same methods as \code{"word"} but
-is designed to handle tokens usually found in social media or Internet
-texts that contain URLs and email addresses, as well as social media tag
-characters (#hashtags and @usernames), and preserving URLs and email
-addresses.  This is slower and should only be used when your text contains
-such tokens.  The rules defining a
-valid "tag" can be found
+but by default preserves infix hyphens (e.g. "self-funding"), URLs, and
+social media "tag" characters (#hashtags and @usernames), and email
+addresses.  The rules defining a valid "tag" can be found
 \href{https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/}{here}
 for hashtags and
 \href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
-for usernames.  Separators are automatically removed with \code{what = "word2"}.
+for usernames.
 
 For backward compatibility, the following older tokenizers are also supported
 through \code{what}:
 \describe{
+\item{\code{"word1"}}{(legacy) implements similar behaviour to the version of
+\code{what = "word"} found in pre-version 2.  (It preserves social media tags and
+infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
 \item{\code{"fasterword"}}{(legacy) splits on whitespace and control characters, using
 \code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
 \item{\code{"fastestword"}}{(legacy) splits on the space character, using
@@ -140,16 +137,14 @@ txt <- c(doc1 = "A sentence, showing how tokens() works.",
          doc3 = "Self-documenting code??",
          doc4 = "£1,000,000 for 50¢ is gr8 4ever \U0001f600")
 tokens(txt)
-tokens(txt, what = "word2")
+tokens(txt, what = "word1")
 
-# removing punctuation marks and tags
+# removing punctuation marks but keeping tags and URLs
 tokens(txt[1:2], remove_punct = TRUE)
-tokens(txt[1:2], remove_punct = TRUE, what = "word2")
 
 # splitting hyphenated words
 tokens(txt[3])
 tokens(txt[3], split_hyphens = TRUE)
-tokens(txt[3], what = "word2", split_hyphens = FALSE)
 
 # symbols and numbers
 tokens(txt[4])
