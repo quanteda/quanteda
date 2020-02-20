@@ -188,7 +188,7 @@ textstat_lexdiv.dfm <- function(x,
     if (remove_hyphens)
         x <- dfm_split_hyphenated_features(x)
     # other removals
-    removals <- compile_removals_regex(remove_separators = FALSE,
+    removals <- compile_removals_regex(#remove_separators = FALSE,
                                        remove_punct = remove_punct,
                                        remove_symbols = remove_symbols,
                                        remove_numbers = remove_numbers,
