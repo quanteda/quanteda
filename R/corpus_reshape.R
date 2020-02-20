@@ -77,6 +77,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         temp[["text"]],
         unit = unit,
         docvars = attrs[["docvars"]],
-        meta = attrs[["meta"]]
+        meta = attrs[["meta"]],
+        class = attrs[["class"]]
     )
 }

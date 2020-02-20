@@ -143,7 +143,8 @@ corpus_segment.corpus <- function(x, pattern = "##*",
         temp[["text"]],
         unit = "segments",
         docvars = docvars,
-        meta = attrs[["meta"]]
+        meta = attrs[["meta"]],
+        class = attrs[["class"]]
     )
 }
 
