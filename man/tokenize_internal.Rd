@@ -4,7 +4,7 @@
 \alias{tokenize_internal}
 \alias{tokenize}
 \alias{tokenize_word}
-\alias{tokenize_word2}
+\alias{tokenize_word1}
 \alias{tokenize_character}
 \alias{tokenize_sentence}
 \alias{tokenize_fasterword}
@@ -13,7 +13,7 @@
 \usage{
 tokenize_word(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
 
-tokenize_word2(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
+tokenize_word1(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
 
 tokenize_character(x, ...)
 

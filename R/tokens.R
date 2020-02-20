@@ -11,9 +11,10 @@
 #' not be possible to remove things that are not present.  For instance, if the
 #' `tokens` object has already had punctuation removed, then `tokens(x,
 #' remove_punct = TRUE)` will have no additional effect.
-#' @param x a (uniquely) named list of characters or a [tokens] object; or a
-#'   [corpus], or a character object that will be tokenized
-#' @param what character; which tokenizer to use.  The default  `what = "word"``
+#' @param x the input object to the tokens constructor, one of: 
+#'   a (uniquely) named **list** of characters; a [tokens] object; or a
+#'   [corpus] or [character] object that will be tokenized
+#' @param what character; which tokenizer to use.  The default `what = "word"`
 #'   is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
 #'   are also supported, including the default `what = "word1"`.
 #'   See the Details and quanteda Tokenizer below.
@@ -25,9 +26,7 @@
 #' @param remove_numbers logical; if `TRUE` remove tokens that consist only of
 #'   numbers, but not words that start with digits, e.g. `2day`
 #' @param remove_url logical; if `TRUE` find and eliminate URLs beginning with
-#'   http(s) -- see section "Dealing with URLs".  The default `what = "word"`
-#'   will split URLs, so if you are using a \pkg{quanteda} tokenizer and wish
-#'   to keep or remove URLs, then use `what = "word2"`.
+#'   http(s)
 #' @param remove_separators logical; if `TRUE` remove separators and separator
 #'   characters (Unicode "Separator" `[Z]` and "Control" `[C]` categories)
 #' @param split_hyphens logical; if `TRUE`, split words that are connected by
@@ -50,11 +49,10 @@
 #'   Using external tokenizers is best done by piping the output from these
 #'   other tokenizers into the `tokens()` constructor, with additional removal
 #'   and splitting options applied at the construction stage.  These will only
-#'   have an effect,
-#'   however, if the tokens exist for which removal is specified at in the
-#'   `tokens()` call.  For instance, it is impossible to remove punctuation if
-#'   the input list to `tokens()` already had its punctuation tokens removed at
-#'   the external tokenization stage.
+#'   have an effect, however, if the tokens exist for which removal is specified
+#'   at in the `tokens()` call.  For instance, it is impossible to remove
+#'   punctuation if the input list to `tokens()` already had its punctuation
+#'   tokens removed at the external tokenization stage.
 #'
 #'   To construct a tokens object from a list with no additional processing, call
 #'   [as.tokens()] instead of `tokens()`.
@@ -64,25 +62,22 @@
 #'   splits infix hyphens, or \pkg{spacyr}.
 #'
 #' @section quanteda tokenizer:
-#'   The default word tokenizer `what = "word"` splits tokens using 
+#'   The default word tokenizer `what = "word"` splits tokens using
 #'   [stri_split_boundaries(x, type = "word")][stringi::stri_split_boundaries]
-#'   but by default preserves infix hyphens (e.g. "self-funding").
-#'   
-#'   The `what = "word2"` tokenizer implements the same methods as `"word"` but
-#'   is designed to handle tokens usually found in social media or Internet
-#'   texts that contain URLs and email addresses, as well as social media tag
-#'   characters (#hashtags and @usernames), and preserving URLs and email 
-#'   addresses.  This is slower and should only be used when your text contains
-#'   such tokens.  The rules defining a
-#'   valid "tag" can be found
+#'   but by default preserves infix hyphens (e.g. "self-funding"), URLs, and
+#'   social media "tag" characters (#hashtags and @usernames), and email
+#'   addresses.  The rules defining a valid "tag" can be found
 #'   [here](https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/)
 #'   for hashtags and
 #'   [here](https://help.twitter.com/en/managing-your-account/twitter-username-rules)
-#'   for usernames.  Separators are automatically removed with `what = "word2"`.
+#'   for usernames.
 #'   
 #'   For backward compatibility, the following older tokenizers are also supported
 #'   through `what`:
 #'   \describe{
+#'   \item{`"word1"`}{(legacy) implements similar behaviour to the version of
+#'   `what = "word"` found in pre-version 2.  (It preserves social media tags and
+#'   infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
 #'   \item{`"fasterword"`}{(legacy) splits on whitespace and control characters, using
 #'   `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
 #'   \item{`"fastestword"`}{(legacy) splits on the space character, using
@@ -104,16 +99,14 @@
 #'          doc3 = "Self-documenting code??",
 #'          doc4 = "£1,000,000 for 50¢ is gr8 4ever \U0001f600")
 #' tokens(txt)
-#' tokens(txt, what = "word2")
+#' tokens(txt, what = "word1")
 #'
-#' # removing punctuation marks and tags
+#' # removing punctuation marks but keeping tags and URLs
 #' tokens(txt[1:2], remove_punct = TRUE)
-#' tokens(txt[1:2], remove_punct = TRUE, what = "word2")
 #'
 #' # splitting hyphenated words
 #' tokens(txt[3])
 #' tokens(txt[3], split_hyphens = TRUE)
-#' tokens(txt[3], what = "word2", split_hyphens = FALSE)
 #'
 #' # symbols and numbers
 #' tokens(txt[4])
@@ -203,7 +196,7 @@ tokens.character <- function(x,
                              padding = FALSE,
                              verbose = quanteda_options("verbose"),
                              ...) {
-    tokens(corpus(x),
+    tokens.corpus(corpus(x),
            what = what,
            remove_punct = remove_punct,
            remove_symbols = remove_symbols,
@@ -237,7 +230,7 @@ tokens.corpus <- function(x,
     attrs <- attributes(x)
 
     dots <- list(...)
-    what <- match.arg(what, c("word", "word2", "sentence", "character",
+    what <- match.arg(what, c("word", "word1", "sentence", "character",
                               "fasterword", "fastestword"))
     # deprecated arguments
     if ("remove_hyphens" %in% names(dots)) {
@@ -247,7 +240,7 @@ tokens.corpus <- function(x,
     }
     if ("remove_twitter" %in% names(dots)) {
         .Deprecated(msg = "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.")
-        if (dots$remove_twitter == FALSE && what == "word") what <- "word2"
+        if (dots$remove_twitter == FALSE && what == "word1") what <- "word"
         dots$remove_twitter <- NULL
     }
     check_dots(dots, c(names(formals(tokens))))
@@ -256,11 +249,18 @@ tokens.corpus <- function(x,
     if (verbose) catm("...starting tokenization\n")
     tokenizer_fn <- switch(what,
                            word = tokenize_word,
-                           word2 = tokenize_word2,
+                           word1 = tokenize_word1,
                            sentence = tokenize_sentence,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
                            fastestword = tokenize_fastestword)
+    
+    
+    if (what == "word") {
+        x <- preserve_special(x, split_hyphens = split_hyphens, 
+                               split_tags = FALSE, verbose = verbose)
+        special <- attr(x, "special")
+    }
     
     # split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
@@ -284,11 +284,12 @@ tokens.corpus <- function(x,
         meta = attrs[["meta"]]
     )
 
-    if (what %in% c("word", "word2") && !split_hyphens)
-        result <- restore_special(result, split_hyphens = FALSE, split_tags = !(what == "word2"))
-    
-    if (!remove_separators && !what %in% c("word", "character"))
+    if (!remove_separators && !what %in% c("word", "word1", "character"))
         warning("remove_separators is always TRUE for this type")
+    if (what == "word")
+        result <- restore_special(result, special)
+    if (what == "word1" && !split_hyphens)
+        result <- restore_special1(result, split_hyphens = FALSE, split_tags = TRUE)
     
     result <- tokens.tokens(result,
                             remove_punct = remove_punct,
@@ -341,17 +342,20 @@ tokens.tokens <-  function(x,
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
     
+    if (remove_separators)
+        x <- tokens_remove(x, "^[\\p{Z}\\p{C}]$", valuetype = "regex")
+    
     # removals
     removals <- compile_removals_regex(remove_separators = remove_separators,
                                        remove_punct = remove_punct,
                                        remove_symbols = remove_symbols,
                                        remove_numbers = remove_numbers,
                                        remove_url = remove_url)
-    if (length(removals$regex_to_remove)) {
+    if (length(removals$regex_to_remove) || remove_separators) {
         if (verbose) catm("...removing", paste(removals$removing_msg, collapse = ", "), "\n")
         x <- tokens_remove(x, paste(removals$regex_to_remove, collapse = "|"),
                            valuetype = "regex",  padding = padding,
-                           startpos = 1, endpos = -1)
+                           startpos = 1L, endpos = -1L)
     }
 
     if (!include_docvars)
@@ -465,7 +469,7 @@ compile_removals_regex <- function(remove_separators = FALSE,
     regex_to_remove <- removing_msg <- character()
 
     if (remove_separators) {
-        regex_to_remove <- c(regex_to_remove, "^[\\p{Z}\\p{C}]$")
+    #    regex_to_remove <- c(regex_to_remove, "^[\\p{Z}\\p{C}]$")
         removing_msg <- c(removing_msg, "separators")
     }
     if (remove_punct) {
@@ -611,21 +615,6 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
         }
         Encoding(types(x)) <- "UTF-8"
         x <- rebuild_tokens(x, attrs)
-    }
-    return(x)
-}
-
-# re-substitute the replacement hyphens and tags
-restore_special <- function(x, split_hyphens, split_tags, verbose) {
-    types <- types(x)
-    if (!split_hyphens)
-        types <- stri_replace_all_fixed(types, "_hy_", "-")
-    if (!split_tags)
-        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
-                                        vectorize_all = FALSE)
-    if (!identical(types, types(x))) {
-        types(x) <- types
-        x <- tokens_recompile(x)
     }
     return(x)
 }
