@@ -47,7 +47,7 @@ text segmentation.
 \examples{
 \dontrun{
 txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
-         doc2 = "The £1,000,000 question.",
+         doc2 = "The Â£1,000,000 question.",
          doc4 = "Line 1.\nLine2\n\nLine3.",
          doc5 = "?",
          doc6 = "Self-aware machines! \U0001f600")

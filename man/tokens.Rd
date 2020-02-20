@@ -135,7 +135,7 @@ consider using \pkg{spacyr}.} }
 txt <- c(doc1 = "A sentence, showing how tokens() works.",
          doc2 = "@quantedainit and #textanalysis https://example.com?p=123.",
          doc3 = "Self-documenting code??",
-         doc4 = "£1,000,000 for 50¢ is gr8 4ever \U0001f600")
+         doc4 = "Â£1,000,000 for 50Â¢ is gr8 4ever \U0001f600")
 tokens(txt)
 tokens(txt, what = "word1")
 
