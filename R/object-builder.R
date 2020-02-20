@@ -73,10 +73,11 @@ upgrade_dfm <- function(x) {
 build_tokens <- function(x, types, padding = FALSE,
                          docvars = data.frame(), meta = list(), 
                          class = "tokens", ...) {
+    stopifnot(length(x) == length(docvars[["docname_"]]))
     attributes(x) <- NULL
     structure(x,
               names = docvars[["docname_"]],
-              class = class,
+              class = union(class, "tokens"),
               types = types,
               padding = padding,
               docvars = docvars,
@@ -88,7 +89,7 @@ rebuild_tokens <- function(x, attrs) {
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- attrs[["class"]]
+    attr(x, "class") <- union(attrs[["class"]], "tokens")
 
     # drop extra attribues for tokens_segment
     try({attr(x, "docnum") <- NULL}, silent = TRUE)
@@ -129,10 +130,11 @@ build_corpus <- function(x,
                          meta = list(),
                          class = "corpus",
                          ...) {
+    stopifnot(length(x) == length(docvars[["docname_"]]))
     attributes(x) <- NULL
     structure(x,
               names = docvars[["docname_"]],
-              class = class,
+              class = union(class, "corpus"),
               docvars = docvars,
               meta = make_meta("corpus", inherit = meta, ...))
 }
@@ -142,7 +144,7 @@ rebuild_corpus <- function(x, attrs) {
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- attrs[["class"]]
+    attr(x, "class") <- union(attrs[["class"]], "corpus")
     return(x)
 }
 
