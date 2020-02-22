@@ -343,7 +343,7 @@ tokens.tokens <-  function(x,
     }
     
     if (remove_separators)
-        x <- tokens_remove(x, "^[\\p{Z}\\p{C}]$", valuetype = "regex")
+        x <- tokens_remove(x, "^[\\p{Z}\\p{C}]+$", valuetype = "regex")
     
     # removals
     removals <- compile_removals_regex(remove_separators = remove_separators,
