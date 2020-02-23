@@ -20,8 +20,17 @@ test_that("dfm_weight works", {
     # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
     str <- c("this is a  a sample", "this is another example another example example")
     wikidfm <- dfm(str)
-    expect_equivalent(round(as.matrix(dfm_tfidf(wikidfm, scheme_tf = "prop")), 2),
-                      matrix(c(0, 0, 0, 0, 0.12, 0, 0.06, 0, 0, 0.09, 0, 0.13), nrow = 2))
+    expect_equal(
+        as.matrix(dfm_tfidf(wikidfm, scheme_tf = "prop")),
+        matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"),
+                               features = c("this", "is", "a", "sample", "another", "example"))),
+        tol = .0001
+    )
+    print(as.matrix(dfm_tfidf(wikidfm, scheme_tf = "prop")))
+    print(matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
+                 dimnames = list(docs = c("text1", "text2"),
+                                 features = c("this", "is", "a", "sample", "another", "example"))))
 })
 
 test_that("dfm_weight works with weights", {

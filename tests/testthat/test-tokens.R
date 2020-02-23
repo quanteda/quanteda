@@ -420,7 +420,7 @@ test_that("tokens works for strange spaces (#796)", {
 
 test_that("tokens works with control characters", {
     txt <- "Left-to-Right Override \u202D Zero-Width Non-Breaking Space \ufeff"
-    expect_equal(ntoken(txt), c(text1 = 7))
+    expect_equal(ntoken(txt), c(text1 = 5))
 })
 
 test_that("tokens remove whitespace with combining characters (#882)", {
