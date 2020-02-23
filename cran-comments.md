@@ -15,7 +15,14 @@
 
 ## R CMD check results
 
-No ERRORs, NOTEs, or WARNINGs produced.
+No ERRORs, NOTEs, or WARNINGs produced, except:
+
+```
+Suggests or Enhances not in mainstream repositories:
+  quanteda.textmodels
+```
+
+but we submitted quanteda.textmodels as a new package to CRAN on 18 February so this will be fixed once that package is accepted.
 
 ## Downstream dependencies
 
