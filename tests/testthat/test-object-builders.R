@@ -48,12 +48,12 @@ test_that("object builder is robust agains different input", {
                                     docvars = quanteda:::make_docvars(1L),
                                     class = "myclass")
     expect_equal(
-        class(corp), c("myclass", "corpus")
+        class(corp), c("myclass", "corpus", "character")
     )
     class(corp) <- "myclass2"
     corp2 <- quanteda:::rebuild_corpus(corp, attributes(corp))
     expect_equal(
-        class(corp2), c("myclass2", "corpus")
+        class(corp2), c("myclass2", "corpus", "character")
     )
     
     toks <- quanteda:::build_tokens(list(1:3), 
