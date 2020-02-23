@@ -134,7 +134,7 @@ build_corpus <- function(x,
     attributes(x) <- NULL
     structure(x,
               names = docvars[["docname_"]],
-              class = union(class, "corpus"),
+              class = union(class, c("corpus", "character")),
               docvars = docvars,
               meta = make_meta("corpus", inherit = meta, ...))
 }
@@ -144,7 +144,7 @@ rebuild_corpus <- function(x, attrs) {
     attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- union(attrs[["class"]], "corpus")
+    attr(x, "class") <- union(attrs[["class"]], c("corpus", "character"))
     return(x)
 }
 
