@@ -107,7 +107,7 @@ as.dfm.dfmSparse <- function(x) {
 as.dfm.DocumentTermMatrix <- function(x) {
     as.dfm(
         sparseMatrix(i = x$i, j = x$j, x = x$v,
-                     dim = dim(x),
+                     dims = dim(x),
                      dimnames = list(docs = rownames(x),
                                      features = colnames(x))))
 }
@@ -118,7 +118,7 @@ as.dfm.DocumentTermMatrix <- function(x) {
 as.dfm.TermDocumentMatrix <- function(x) {
     as.dfm(
         sparseMatrix(i = x$j, j = x$i, x = x$v,
-                     dim = rev(dim(x)),
+                     dims = rev(dim(x)),
                      dimnames = list(docs = colnames(x), 
                                      features = rownames(x))))
 }
