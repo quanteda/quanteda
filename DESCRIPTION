@@ -64,6 +64,7 @@ Suggests:
     RColorBrewer,
     rmarkdown,
     slam,
+    spacyr,
     spelling,
     stm,     
     svs,     
@@ -141,6 +142,7 @@ Collate:
     'phrases.R'
     'quanteda_options.R'
     'readtext-methods.R'
+    'spacyr-methods.R'
     'stopwords.R'
     'textplot_keyness.R'
     'textplot_network.R'
