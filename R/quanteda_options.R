@@ -139,7 +139,7 @@ get_options_default <- function(){
                  print_dfm_max_ndoc = 6L,
                  print_dfm_max_nfeat = 10L,
                  print_dfm_summary = TRUE,
-                 print_corpus_max_ndoc = 0L,
+                 print_corpus_max_ndoc = 6L,
                  print_corpus_max_nchar = 60L,
                  print_corpus_summary = TRUE,
                  print_tokens_max_ndoc = 6L,
