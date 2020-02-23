@@ -15,6 +15,7 @@
 #' 
 #' @param x an object returned by `spacy_parse`, or (for
 #'   `spacy_parse`) a [corpus] object
+#' @param ... not used for these functions
 #' @examples 
 #' \dontrun{
 #' library("spacyr")

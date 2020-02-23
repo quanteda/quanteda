@@ -22,6 +22,8 @@
 \arguments{
 \item{x}{an object returned by \code{spacy_parse}, or (for
 \code{spacy_parse}) a \link{corpus} object}
+
+\item{...}{not used for these functions}
 }
 \description{
 These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
