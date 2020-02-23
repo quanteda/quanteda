@@ -10,14 +10,12 @@
 #' [spacy_tokenize][spacyr::spacy_tokenize] to work directly with [corpus]
 #' objects.
 #' @name spacyr-methods
-#' @importFrom spacyr spacy_parse
 #' @details `spacy_parse(x, ...)` and `spacy_tokenize(x, ...)` work directly on 
 #' \pkg{quanteda} [corpus] objects.
 #' 
 #' @param x an object returned by `spacy_parse`, or (for
 #'   `spacy_parse`) a [corpus] object
-#' @param ... unused except for `spacy_parse`, in which case it passes
-#'   through extra arguments to that function
+#' @param ... not used for these functions
 #' @examples 
 #' \dontrun{
 #' library("spacyr")
@@ -34,16 +32,6 @@
 #' docnames(parsed)
 #' }
 NULL
-
-#' @rdname spacyr-methods
-#' @importFrom spacyr spacy_parse
-#' @export
-spacy_parse.corpus <- function(x, ...) spacy_parse(texts(x), ...)
-
-#' @rdname spacyr-methods
-#' @importFrom spacyr spacy_tokenize
-#' @export
-spacy_tokenize.corpus <- function(x, ...) spacy_tokenize(texts(x), ...)
 
 #' @rdname spacyr-methods
 #' @details

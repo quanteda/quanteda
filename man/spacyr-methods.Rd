@@ -2,8 +2,6 @@
 % Please edit documentation in R/spacyr-methods.R
 \name{spacyr-methods}
 \alias{spacyr-methods}
-\alias{spacy_parse.corpus}
-\alias{spacy_tokenize.corpus}
 \alias{docnames.spacyr_parsed}
 \alias{ndoc.spacyr_parsed}
 \alias{ntoken.spacyr_parsed}
@@ -11,10 +9,6 @@
 \alias{nsentence.spacyr_parsed}
 \title{Extensions for and from spacy_parse objects}
 \usage{
-\method{spacy_parse}{corpus}(x, ...)
-
-\method{spacy_tokenize}{corpus}(x, ...)
-
 \method{docnames}{spacyr_parsed}(x)
 
 \method{ndoc}{spacyr_parsed}(x)
@@ -29,8 +23,7 @@
 \item{x}{an object returned by \code{spacy_parse}, or (for
 \code{spacy_parse}) a \link{corpus} object}
 
-\item{...}{unused except for \code{spacy_parse}, in which case it passes
-through extra arguments to that function}
+\item{...}{not used for these functions}
 }
 \description{
 These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
