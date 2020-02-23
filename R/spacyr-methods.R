@@ -10,7 +10,6 @@
 #' [spacy_tokenize][spacyr::spacy_tokenize] to work directly with [corpus]
 #' objects.
 #' @name spacyr-methods
-#' @importFrom spacyr spacy_parse
 #' @details `spacy_parse(x, ...)` and `spacy_tokenize(x, ...)` work directly on 
 #' \pkg{quanteda} [corpus] objects.
 #' 
