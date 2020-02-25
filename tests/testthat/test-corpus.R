@@ -612,3 +612,16 @@ test_that("corpus indexing works as expected", {
     expect_error(corp["d4"], "Subscript out of bounds")
     expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
 })
+
+test_that("corpus normalize dashes and hyphens", {
+  corp <- corpus(c(d1 = "thanks--great, good-bye",
+                   d2 = "100‒200, maybe ⁓150", 
+                   d3 = "cut here –––––––––"))
+  
+  expect_equal(texts(corp), 
+               c(d1 = "thanks - great, good-bye",
+                 d2 = "100 - 200, maybe  - 150", 
+                 d3 = "cut here  - ")
+  )
+})
+
