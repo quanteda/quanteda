@@ -281,7 +281,8 @@ test_that("group_docvar drops list column (#1553)", {
 
 
 test_that("restore original unit when groups = NULL", {
-    corp <- head(data_corpus_inaugural, 2)
+    corp <- corpus(data_corpus_inaugural) # normalize hyphens
+    corp <- head(corp, 2)
     corp_sent <- corpus_reshape(corp)
     dfmt_sent <- dfm(corp_sent)
     dfmt <- dfm_group(dfmt_sent)
