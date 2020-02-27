@@ -25,6 +25,10 @@ test_that("tokens_replace works with regular pattern and replacement", {
                  list(doc1 = c("a", "bb", "BB", "cc", "DD", "ee"), 
                       doc2 = c("a", "bb", "cc", "DD", "ee")))
     
+    # fixed, no match
+    expect_equal(as.list(tokens_replace(toks_test, "x", "y", "fixed", case_insensitive = FALSE)),
+                 as.list(toks_test))
+    
     # glob, case-insensitive
     expect_equal(as.list(tokens_replace(toks_test, c('a*', 'b*'), c('a', 'b'), "glob", case_insensitive = TRUE)),
                  list(doc1 = c("a", "b", "b", "cc", "DD", "ee"), 
@@ -40,6 +44,9 @@ test_that("tokens_replace works with regular pattern and replacement", {
                  list(doc1 = c("a", "bb", "BB", "cc", "DD", "ee"), 
                       doc2 = c("a", "bb", "cc", "DD", "ee")))
     
+    # glob, no match
+    expect_equal(as.list(tokens_replace(toks_test, "x*", "y", "glob", case_insensitive = FALSE)),
+                 as.list(toks_test))
     
     # regex, case-insensitive
     expect_equal(as.list(tokens_replace(toks_test, c('a.', 'b.'), c('a', 'b'), "regex", case_insensitive = TRUE)),
@@ -55,6 +62,10 @@ test_that("tokens_replace works with regular pattern and replacement", {
     expect_equal(as.list(tokens_replace(toks_test, c('a.', 'a.'), c('a', 'aaa'), "regex", case_insensitive = FALSE)),
                  list(doc1 = c("a", "bb", "BB", "cc", "DD", "ee"), 
                       doc2 = c("a", "bb", "cc", "DD", "ee")))
+    
+    # regex, no match
+    expect_equal(as.list(tokens_replace(toks_test, "x.*", "y", "regex", case_insensitive = FALSE)),
+                 as.list(toks_test))
     
     
 })
