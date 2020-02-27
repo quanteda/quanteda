@@ -144,7 +144,8 @@ print.summary.corpus <- function(x, ...) {
 #' @method head corpus
 #' @keywords corpus
 #' @examples
-#' head(data_corpus_irishbudget2010, 3) %>% summary()
+#' head(data_corpus_inaugural, 3) %>% 
+#'    summary()
 #'
 head.corpus <- function(x, n = 6L, ...) {
     x <- as.corpus(x)
@@ -157,7 +158,8 @@ head.corpus <- function(x, n = 6L, ...) {
 #' @method tail corpus
 #' @export
 #' @examples
-#' tail(data_corpus_irishbudget2010, 3) %>% summary()
+#' tail(data_corpus_inaugural, 3) %>% 
+#'     summary()
 tail.corpus <- function(x, n = 6L, ...) {
     x <- as.corpus(x)
     stopifnot(length(n) == 1L)

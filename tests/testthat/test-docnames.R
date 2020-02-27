@@ -70,7 +70,7 @@ test_that("special names<- operator works as planned", {
 
 
 test_that("docnames are alwyas unique", {
-    
+    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
     corp <- data_corpus_irishbudget2010
     toks <- tokens(corp)
     dfmt <- dfm(toks)

@@ -208,6 +208,7 @@ test_that("fcm works as expected for tokens_hashed", {
 })
 
 test_that("fcm print works as expected", {
+    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
     dfmt <- dfm(data_corpus_irishbudget2010[1:2],
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
     fcmt <- fcm(dfmt)

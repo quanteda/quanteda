@@ -41,13 +41,14 @@ tokens. Please use \code{\link[=tokens_lookup]{tokens_lookup()}} with \code{excl
 to replace \link{dictionary} values.
 }
 \examples{
-toks1 <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE)
+toks1 <- tokens(data_corpus_inaugural, remove_punct = TRUE)
 
 # lemmatization
-infle <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
-lemma <- rep("focus", length(infle))
-toks2 <- tokens_replace(toks1, infle, lemma, valuetype = "fixed")
-kwic(toks2, "focus*")
+taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
+lemma <- rep("TAX", length(taxwords))
+toks2 <- tokens_replace(toks1, taxwords, lemma, valuetype = "fixed")
+kwic(toks2, "TAX") \%>\% 
+    tail(10)
 
 # stemming
 type <- types(toks1)
@@ -56,9 +57,9 @@ toks3 <- tokens_replace(toks1, type, stem, valuetype = "fixed", case_insensitive
 identical(toks3, tokens_wordstem(toks1, "porter"))
 
 # multi-multi substitution
-toks4 <- tokens_replace(toks1, phrase(c("Minister Deputy Lenihan")),
-                              phrase(c("Minister Deputy Conor Lenihan")))
-kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
+toks4 <- tokens_replace(toks1, phrase(c("Supreme Court")),
+                        phrase(c("Supreme Court of the United States")))
+kwic(toks4, phrase(c("Supreme Court of the United States")))
 }
 \seealso{
 tokens_lookup

@@ -77,7 +77,6 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
 #' s <- c(.9, .99, .999, .9999, .99999, 
 #'        .1, .01, .001, .0001, .000001, .0000001, .00000001, .000000000001, 
 #'        sparsity(dfm(data_corpus_inaugural)),
-#'        sparsity(dfm(data_corpus_irishbudget2010)),
 #'        .12312431242134)
 #' for (i in s) 
 #'     print(paste0(format(i, width = 10),  ":  ", quanteda:::format_sparsity(i)))

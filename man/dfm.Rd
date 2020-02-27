@@ -92,27 +92,28 @@ combining and refactoring the documents of the dfm according to the groups.
 }
 \examples{
 ## for a corpus
-dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980)
-dfm(dfmat1)
-dfm(dfmat1, tolower = FALSE)
+corp <- corpus_subset(data_corpus_inaugural, Year > 1980)
+dfm(corp)
+dfm(corp, tolower = FALSE)
 
 # grouping documents by docvars in a corpus
-dfm(dfmat1, groups = "President", verbose = TRUE)
+dfm(corp, groups = "President", verbose = TRUE)
 
 # with English stopwords and stemming
-dfm(dfmat1, remove = stopwords("english"), stem = TRUE, verbose = TRUE)
+dfm(corp, remove = stopwords("english"), stem = TRUE, verbose = TRUE)
 # works for both words in ngrams too
-dfm("Banking industry", stem = TRUE, ngrams = 2)
+tokens("Banking industry") \%>\%
+    tokens_ngrams(n = 2) \%>\%
+    dfm(stem = TRUE)
 
 # with dictionaries
-dfmat2 <- corpus_subset(data_corpus_inaugural, Year > 1900)
 dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                opposition = c("Opposition", "reject", "notincorpus"),
                taxing = "taxing",
                taxation = "taxation",
                taxregex = "tax*",
                country = "states"))
-dfm(dfmat2, dictionary = dict)
+dfm(corpus_subset(data_corpus_inaugural, Year > 1900), dictionary = dict)
 
 
 # removing stopwords
@@ -143,11 +144,7 @@ dfm(txttweets, select = "#*", split_tags = FALSE)  # keep only hashtags
 dfm(txttweets, select = "^#.*$", valuetype = "regex", split_tags = FALSE)
 
 # for a dfm
-dfmat3 <- dfm(data_corpus_irishbudget2010)
-dfmat4 <- dfm(dfmat3,
-            groups = ifelse(docvars(data_corpus_irishbudget2010, "party") \%in\% c("FF", "Green"),
-                            "Govt", "Opposition"),
-            tolower = FALSE, verbose = TRUE)
+dfm(corpus_subset(data_corpus_inaugural, Year > 1980), groups = "Party")
 
 }
 \seealso{
