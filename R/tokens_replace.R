@@ -58,7 +58,9 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
     type <- types(x)
     if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
         type_new <- replace_type(type, pattern, replacement, case_insensitive)
-        if (!identical(type, type_new)) {
+        if (identical(type, type_new)) {
+            result <- x
+        } else {
             attr(x, "types") <- type_new
             result <- tokens_recompile(x)
         }
