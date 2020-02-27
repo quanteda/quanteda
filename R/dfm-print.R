@@ -41,9 +41,10 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
         max_ndoc <- ndoc
     if (max_nfeat < 0 || max_nfeat > nfeat)
         max_nfeat <- nfeat
-    
-    Matrix::printSpMatrix(x[seq_len(max_ndoc), seq_len(max_nfeat)], 
-                          col.names = TRUE, zero.print = 0)
+    if (max_ndoc > 0 && max_nfeat > 0) {
+        Matrix::printSpMatrix(x[seq_len(max_ndoc), seq_len(max_nfeat)], 
+                              col.names = TRUE, zero.print = 0)
+    }
     ndoc_rem <- ndoc - max_ndoc
     nfeat_rem <- nfeat - max_nfeat
     if (ndoc_rem > 0 || nfeat_rem > 0) {
