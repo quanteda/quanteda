@@ -384,6 +384,7 @@ lapply(as.list(tstat_sim), head, 10)
 Aquí realizamos una demostración de escalamiento de documentos unsupervised comparado con el modelo "wordfish":
 
 ```{r}
+library("quanteda.textmodels")
 dfmat_ire <- dfm(data_corpus_irishbudget2010)
 tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
 

@@ -10,6 +10,7 @@ To test the performance of calculation applying on dense dfm matrix versus on sp
 
 ```{r}
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+library("quanteda.textmodels")
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 wfm_sparse <- function(x){
     textmodel_wordfish(x, dir = c(6,5), threads =  1)

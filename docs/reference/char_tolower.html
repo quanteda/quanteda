@@ -44,12 +44,12 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Convert the case of character objects — char_tolower" />
-<meta property="og:description" content="char_tolower and char_toupper are replacements for 
-tolower and toupper based on the stringi 
-package.  The stringi functions for case conversion are superior to the
-base functions because they correctly handle case conversion for
-Unicode.  In addition, the *_tolower functions provide an option for
-preserving acronyms." />
+<meta property="og:description" content="char_tolower and char_toupper are replacements for
+base::tolower() and base::tolower()
+based on the stringi package.  The stringi functions for case
+conversion are superior to the base functions because they correctly
+handle case conversion for Unicode.  In addition, the *_tolower() functions
+provide an option for preserving acronyms." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -92,7 +92,7 @@ preserving acronyms." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -215,12 +215,12 @@ preserving acronyms." />
     </div>
 
     <div class="ref-description">
-    <p><code>char_tolower</code> and <code>char_toupper</code> are replacements for 
-<a href='https://rdrr.io/r/base/chartr.html'>tolower</a> and <a href='https://rdrr.io/r/base/chartr.html'>toupper</a> based on the <span class="pkg">stringi</span> 
-package.  The <span class="pkg">stringi</span> functions for case conversion are superior to the
-<span class="pkg">base</span> functions because they correctly handle case conversion for
-Unicode.  In addition, the <code>*_tolower</code> functions provide an option for
-preserving acronyms.</p>
+    <p><code>char_tolower</code> and <code>char_toupper</code> are replacements for
+<a href='https://rdrr.io/r/base/chartr.html'>base::tolower()</a> and <a href='https://rdrr.io/r/base/chartr.html'>base::tolower()</a>
+based on the <span class="pkg">stringi</span> package.  The <span class="pkg">stringi</span> functions for case
+conversion are superior to the <span class="pkg">base</span> functions because they correctly
+handle case conversion for Unicode.  In addition, the <code>*_tolower()</code> functions
+provide an option for preserving acronyms.</p>
     </div>
 
     <pre class="usage"><span class='fu'>char_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -232,13 +232,13 @@ preserving acronyms.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the input object whose character/tokens/feature elements will be 
+      <td><p>the input object whose character/tokens/feature elements will be
 case-converted</p></td>
     </tr>
     <tr>
       <th>keep_acronyms</th>
-      <td><p>logical; if <code>TRUE</code>, do not lowercase any 
-all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
+      <td><p>logical; if <code>TRUE</code>, do not lowercase any
+all-uppercase words (applies only to <code>*_tolower()</code> functions)</p></td>
     </tr>
     </table>
 
@@ -275,7 +275,7 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

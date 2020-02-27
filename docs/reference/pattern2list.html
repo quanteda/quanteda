@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert various input as pattern to a vector used in tokens_select, 
+<title>Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic. — pattern2list • quanteda</title>
 
 
@@ -44,9 +44,9 @@ tokens_compound and kwic. — pattern2list • quanteda</title>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Convert various input as pattern to a vector used in tokens_select, 
+<meta property="og:title" content="Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic. — pattern2list" />
-<meta property="og:description" content="Convert various input as pattern to a vector used in tokens_select, 
+<meta property="og:description" content="Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic." />
 <meta name="twitter:card" content="summary" />
 
@@ -90,7 +90,7 @@ tokens_compound and kwic." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -207,19 +207,19 @@ tokens_compound and kwic." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert various input as pattern to a vector used in tokens_select, 
+    <h1>Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic.</h1>
     
     <div class="hidden name"><code>pattern2list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert various input as pattern to a vector used in tokens_select, 
+    <p>Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pattern2list</span>(
-  <span class='no'>pattern</span>,
+  <span class='no'>x</span>,
   <span class='no'>types</span>,
   <span class='no'>valuetype</span>,
   <span class='no'>case_insensitive</span>,
@@ -233,20 +233,15 @@ tokens_compound and kwic.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pattern</th>
-      <td><p>a character vector, list of character vectors,
-<a href='dictionary.html'>dictionary</a>, or <a href='textstat_collocations.html'>collocations</a> object.  See <a href='pattern.html'>pattern</a> for
-details.</p></td>
-    </tr>
-    <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore the case of dictionary values if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>concatenator</th>
@@ -264,7 +259,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='pattern2id.html'>pattern2id</a></code></p></div>
+    <div class='dont-index'><p><code><a href='pattern2id.html'>pattern2id()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -280,7 +275,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

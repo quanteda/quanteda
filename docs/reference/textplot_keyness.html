@@ -46,7 +46,7 @@
 <meta property="og:title" content="Plot word keyness — textplot_keyness" />
 <meta property="og:description" content="Plot the results of a &quot;keyword&quot; of features comparing their differential
 associations with a target and a reference group, after calculating keyness
-using textstat_keyness." />
+using textstat_keyness()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -89,7 +89,7 @@ using textstat_keyness." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -214,7 +214,7 @@ using textstat_keyness." />
     <div class="ref-description">
     <p>Plot the results of a "keyword" of features comparing their differential
 associations with a target and a reference group, after calculating keyness
-using <code><a href='textstat_keyness.html'>textstat_keyness</a></code>.</p>
+using <code><a href='textstat_keyness.html'>textstat_keyness()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>textplot_keyness</span>(
@@ -235,7 +235,7 @@ using <code><a href='textstat_keyness.html'>textstat_keyness</a></code>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a return object from <code><a href='textstat_keyness.html'>textstat_keyness</a></code></p></td>
+      <td><p>a return object from <code><a href='textstat_keyness.html'>textstat_keyness()</a></code></p></td>
     </tr>
     <tr>
       <th>show_reference</th>
@@ -263,7 +263,7 @@ and reference categories, for a feature to be included in the plot</p></td>
       <th>color</th>
       <td><p>character or integer; colors of bars for target and reference documents.
 <code>color</code> must have two elements when <code>show_reference = TRUE</code>.  See
-<a href='https://ggplot2.tidyverse.org/reference/aes_colour_fill_alpha.html'>color</a>.</p></td>
+<a href='https://ggplot2.tidyverse.org/reference/aes_colour_fill_alpha.html'>ggplot2::color</a>.</p></td>
     </tr>
     <tr>
       <th>labelcolor</th>
@@ -272,7 +272,7 @@ and reference categories, for a feature to be included in the plot</p></td>
     <tr>
       <th>labelsize</th>
       <td><p>numeric; size of feature labels and bars.  See
-<a href='https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html'>size</a>.</p></td>
+<a href='https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html'>ggplot2::size</a>.</p></td>
     </tr>
     <tr>
       <th>font</th>
@@ -285,7 +285,7 @@ and reference categories, for a feature to be included in the plot</p></td>
     <p>a <span class="pkg">ggplot2</span> object</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='textstat_keyness.html'>textstat_keyness</a></code></p></div>
+    <div class='dont-index'><p><code><a href='textstat_keyness.html'>textstat_keyness()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># compare Trump speeches to other Presidents by chi^2</span>
@@ -323,7 +323,7 @@ and reference categories, for a feature to be included in the plot</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

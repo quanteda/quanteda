@@ -46,7 +46,7 @@
 <meta property="og:title" content="Split tokens by a separator pattern — tokens_split" />
 <meta property="og:description" content="Replaces tokens by multiple replacements consisting of elements split by a
 separator pattern, with the option of retaining the separator.  This function
-effectively reverses the operation of tokens_compound." />
+effectively reverses the operation of tokens_compound()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -89,7 +89,7 @@ effectively reverses the operation of tokens_compound." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -214,7 +214,7 @@ effectively reverses the operation of tokens_compound." />
     <div class="ref-description">
     <p>Replaces tokens by multiple replacements consisting of elements split by a
 separator pattern, with the option of retaining the separator.  This function
-effectively reverses the operation of <code><a href='tokens_compound.html'>tokens_compound</a></code>.</p>
+effectively reverses the operation of <code><a href='tokens_compound.html'>tokens_compound()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tokens_split</span>(
@@ -237,9 +237,9 @@ effectively reverses the operation of <code><a href='tokens_compound.html'>token
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>remove_separator</th>
@@ -251,24 +251,24 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># undo tokens_compound()</span>
 <span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"pork barrel is an idiomatic multi-word expression"</span>)
-<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "pork_barrel" "is"          "an"          "idiomatic"   "multi-word" 
 #&gt; [6] "expression" 
 #&gt; </div><div class='input'><span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>tokens_split</span>(<span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+    <span class='fu'>tokens_split</span>(<span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "pork"       "barrel"     "is"         "an"         "idiomatic" 
 #&gt; [6] "multi-word" "expression"
 #&gt; </div><div class='input'>
 <span class='co'># similar to tokens(x, remove_hyphen = TRUE) but post-tokenization </span>
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"UK-EU negotiation is not going anywhere as of 2018-12-24."</span>)
-<span class='fu'>tokens_split</span>(<span class='no'>toks2</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>"-"</span>, <span class='kw'>remove_separator</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_split</span>(<span class='no'>toks2</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>"-"</span>, <span class='kw'>remove_separator</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt;  [1] "UK"          "-"           "EU"          "negotiation" "is"         
 #&gt;  [6] "not"         "going"       "anywhere"    "as"          "of"         
-#&gt; [11] "2018"        "-"           "12"          "-"           "24"         
-#&gt; [16] "."          
+#&gt; [11] "2018"        "-"          
+#&gt; [ ... and 4 more ]
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -284,7 +284,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

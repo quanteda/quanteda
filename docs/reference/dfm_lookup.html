@@ -93,7 +93,7 @@ the document)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -250,24 +250,25 @@ the document).</p>
     </tr>
     <tr>
       <th>levels</th>
-      <td><p>levels of entries in a hierarchical dictionary that will be 
+      <td><p>levels of entries in a hierarchical dictionary that will be
 applied</p></td>
     </tr>
     <tr>
       <th>exclusive</th>
-      <td><p>if <code>TRUE</code>, remove all features not in dictionary, 
-otherwise, replace values in dictionary with keys while leaving other 
+      <td><p>if <code>TRUE</code>, remove all features not in dictionary,
+otherwise, replace values in dictionary with keys while leaving other
 features unaffected</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore the case of dictionary values if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>capkeys</th>
@@ -276,8 +277,8 @@ distinguish them from other features</p></td>
     </tr>
     <tr>
       <th>nomatch</th>
-      <td><p>an optional character naming a new feature that will contain 
-the counts of features of <code>x</code> not matched to a dictionary key.  If 
+      <td><p>an optional character naming a new feature that will contain
+the counts of features of <code>x</code> not matched to a dictionary key.  If
 <code>NULL</code> (default), do not tabulate unmatched features.</p></td>
     </tr>
     <tr>
@@ -289,10 +290,10 @@ the counts of features of <code>x</code> not matched to a dictionary key.  If
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>If using <code>dfm_lookup</code> with dictionaries containing multi-word
-  values, matches will only occur if the features themselves are multi-word
-  or formed from ngrams. A better way to match dictionary values that include
-  multi-word patterns is to apply <code><a href='tokens_lookup.html'>tokens_lookup</a></code> to the tokens,
-  and then construct the dfm.</p>
+values, matches will only occur if the features themselves are multi-word
+or formed from ngrams. A better way to match dictionary values that include
+multi-word patterns is to apply <code><a href='tokens_lookup.html'>tokens_lookup()</a></code> to the tokens,
+and then construct the dfm.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>dfm_replace</p></div>
@@ -307,54 +308,47 @@ the counts of features of <code>x</code> not matched to a dictionary key.  If
                <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span>),
              <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
 <span class='no'>dfmat</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50.0% sparse).
-#&gt; 2 x 11 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas ruined opposition tax plan . united_states sweden progressive
 #&gt;   text1         1      1          1   1    1 1             0      0           0
 #&gt;   text2         0      0          0   0    0 0             1      1           1
 #&gt;        features
-#&gt; docs    taxation ?
-#&gt;   text1        0 0
-#&gt;   text2        1 1</div><div class='input'>
+#&gt; docs    taxation
+#&gt;   text1        0
+#&gt;   text2        1
+#&gt; [ reached max_nfeat ... 1 more feature ]</div><div class='input'>
 <span class='co'># glob format</span>
 <span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
 #&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
 #&gt;   text2         0          0       1        0       2</div><div class='input'>
 <span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
 <span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
 #&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
 #&gt;   text2         0          0       2        1       2</div><div class='input'>
 <span class='co'># fixed format: no pattern matching</span>
 <span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       0        0       0
 #&gt;   text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       0        0       0
 #&gt;   text2         0          0       0        0       2</div><div class='input'>
 <span class='co'># show unmatched tokens</span>
 <span class='fu'>dfm_lookup</span>(<span class='no'>dfmat</span>, <span class='no'>dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country _UNMATCHED
 #&gt;   text1         1          1       1        0       0          3
@@ -376,7 +370,7 @@ the counts of features of <code>x</code> not matched to a dictionary key.  If
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

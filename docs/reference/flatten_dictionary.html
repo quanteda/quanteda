@@ -47,7 +47,7 @@
 <meta property="og:description" content="Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
 vectors. Works like unlist(dictionary, recursive=TRUE) except that
-the recursion does not go to the bottom level.  Called by dfm." />
+the recursion does not go to the bottom level.  Called by dfm()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -90,7 +90,7 @@ the recursion does not go to the bottom level.  Called by dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -216,7 +216,7 @@ the recursion does not go to the bottom level.  Called by dfm." />
     <p>Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
 vectors. Works like <code><a href='https://rdrr.io/r/base/unlist.html'>unlist(dictionary, recursive=TRUE)</a></code> except that
-the recursion does not go to the bottom level.  Called by <code><a href='dfm.html'>dfm</a></code>.</p>
+the recursion does not go to the bottom level.  Called by <code><a href='dfm.html'>dfm()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>flatten_dictionary</span>(
@@ -268,8 +268,36 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
 #&gt;  [9] "*deceiv*"      "*betray*"      "shame*"        "scandal*"     
 #&gt; [13] "truth*"        "dishonest*"    "establishm*"   "ruling*"      
 #&gt; 
-#&gt; attr(,"concatenator")
-#&gt; [1] " "</div><div class='input'>
+#&gt; attr(,"meta")
+#&gt; attr(,"meta")$system
+#&gt; attr(,"meta")$system$`package-version`
+#&gt; [1] ‘2.0.0’
+#&gt; 
+#&gt; attr(,"meta")$system$`r-version`
+#&gt; [1] ‘3.6.2’
+#&gt; 
+#&gt; attr(,"meta")$system$system
+#&gt;   sysname   machine      user 
+#&gt;  "Darwin"  "x86_64" "kbenoit" 
+#&gt; 
+#&gt; attr(,"meta")$system$directory
+#&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
+#&gt; 
+#&gt; attr(,"meta")$system$created
+#&gt; [1] "2020-02-27"
+#&gt; 
+#&gt; 
+#&gt; attr(,"meta")$object
+#&gt; attr(,"meta")$object$valuetype
+#&gt; [1] "glob"
+#&gt; 
+#&gt; attr(,"meta")$object$separator
+#&gt; [1] " "
+#&gt; 
+#&gt; 
+#&gt; attr(,"meta")$user
+#&gt; list()
+#&gt; </div><div class='input'>
 <span class='no'>dict2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1a1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1a11"</span>, <span class='st'>"l1a12"</span>),
                             <span class='kw'>level1a2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1a21"</span>, <span class='st'>"l1a22"</span>)),
              <span class='kw'>level1b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1b1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1b11"</span>, <span class='st'>"l1b12"</span>),
@@ -321,7 +349,7 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

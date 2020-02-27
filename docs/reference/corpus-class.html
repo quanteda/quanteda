@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -213,12 +213,7 @@
     <p>Extensions of base R functions for corpus objects.</p>
     </div>
 
-    <pre class="usage"># S3 method for corpus
-print(x, ...)
-
-is.corpus(x)
-
-is.corpuszip(x)
+    <pre class="usage">is.corpus(x)
 
 # S3 method for summary.corpus
 print(x, ...)
@@ -230,16 +225,7 @@ print(x, ...)
 c(..., recursive = FALSE)
 
 # S3 method for corpus
-[(x, i, j = NULL, ..., drop = TRUE)
-
-# S3 method for corpus
-[[(x, i, ...)
-
-# S3 method for corpus
-[[(x, i) <- value
-
-# S3 method for corpus
-str(object, ...)</pre>
+[(x, i)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -247,10 +233,6 @@ str(object, ...)</pre>
     <tr>
       <th>x</th>
       <td><p>a corpus object</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>not used</p></td>
     </tr>
     <tr>
       <th>c1</th>
@@ -262,7 +244,7 @@ str(object, ...)</pre>
     </tr>
     <tr>
       <th>recursive</th>
-      <td><p>logical used by `c()` method, always set to `FALSE`</p></td>
+      <td><p>logical used by <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> method, always set to <code>FALSE</code></p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -276,76 +258,66 @@ str(object, ...)</pre>
       <th>drop</th>
       <td><p>if <code>TRUE</code>, return a vector if extracting a single document
 variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
-<code><a href='https://rdrr.io/r/base/drop.html'>drop</a></code> for further details.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>a vector that will form a new docvar</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>the corpus about which you want structural information</p></td>
+<code><a href='https://rdrr.io/r/base/drop.html'>drop()</a></code> for further details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>is.corpus</code> returns <code>TRUE</code> if the object is a corpus</p>
-<p><code>is.corpuszip</code> returns <code>TRUE</code> if the object is a compressed corpus</p>
+<p>The <code>+</code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> operators return a <code><a href='corpus.html'>corpus()</a></code> object.</p>
+<p>Indexing a corpus works in three ways, as of v2.x.x:</p><ul>
+<li><p><code>[</code> returns a subsetted corpus</p></li>
+<li><p><code>[[</code> returns the textual contents of a subsetted corpus (similar to <code><a href='texts.html'>texts()</a></code>)</p></li>
+<li><p><code>$</code> returns a vector containing the single named <a href='docvars.html'>docvars</a></p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>+</code> operator for a corpus object will combine two corpus 
-  objects, resolving any non-matching <code><a href='docvars.html'>docvars</a></code> or 
-  <code><a href='metadoc.html'>metadoc</a></code> fields by making them into <code>NA</code> values for the 
-  corpus lacking that field.  Corpus-level meta data is concatenated, except 
-  for <code>source</code> and <code>notes</code>, which are stamped with information 
-  pertaining to the creation of the new joined corpus.</p>  
-<p>The `c()` operator is also defined for corpus class objects, and provides
-  an easy way to combine multiple corpus objects.</p>  
-<p>There are some issues that need to be addressed in future revisions of 
-  quanteda concerning the use of factors to store document variables and 
-  meta-data.  Currently most or all of these are not recorded as factors, 
-  because we use <code>stringsAsFactors=FALSE</code> in the 
-  <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></code> calls that are used to create and store the 
-  document-level information, because the texts should always be stored as 
-  character vectors and never as factors.</p>
+    <p>The <code>+</code> operator for a corpus object will combine two corpus
+objects, resolving any non-matching <code><a href='docvars.html'>docvars()</a></code> by making them
+into <code>NA</code> values for the corpus lacking that field. Corpus-level meta
+data is concatenated, except for <code>source</code> and <code>notes</code>, which are
+stamped with information pertaining to the creation of the new joined
+corpus.</p>
+<p>The <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> operator is also defined for corpus class objects, and provides
+an easy way to combine multiple corpus objects.</p>
+<p>There are some issues that need to be addressed in future revisions of
+quanteda concerning the use of factors to store document variables and
+meta-data.  Currently most or all of these are not recorded as factors,
+because we use <code>stringsAsFactors=FALSE</code> in the
+<code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> calls that are used to create and store the
+document-level information, because the texts should always be stored as
+character vectors and never as factors.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='summary.corpus.html'>summary.corpus</a></code></p></div>
+    <div class='dont-index'><p><code><a href='summary.corpus.html'>summary.corpus()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># concatenate corpus objects</span>
-<span class='no'>corpus1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
-<span class='no'>corpus2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>3</span>:<span class='fl'>4</span>])
-<span class='no'>corpus3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>5</span>:<span class='fl'>6</span>])
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>corpus1</span>, <span class='no'>corpus2</span>, <span class='no'>corpus3</span>))</div><div class='output co'>#&gt; Corpus consisting of 6 documents:
+    <pre class="examples"><div class='input'><span class='co'># concatenate corpus objects</span>
+<span class='no'>corp1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
+<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>3</span>:<span class='fl'>4</span>])
+<span class='no'>corp3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>5</span>:<span class='fl'>6</span>])
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>corp1</span>, <span class='no'>corp2</span>, <span class='no'>corp3</span>))</div><div class='output co'>#&gt; Corpus consisting of 6 documents, showing 6 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences
 #&gt;           BNP  1125   3280        88
 #&gt;     Coalition   142    260         4
 #&gt;  Conservative   251    499        15
-#&gt;        Greens   322    679        21
-#&gt;        Labour   298    683        29
+#&gt;        Greens   322    677        21
+#&gt;        Labour   298    680        29
 #&gt;        LibDem   251    483        14
-#&gt; 
-#&gt; Source: Concatenation by c.corpus()
-#&gt; Created: Mon Nov 25 08:41:45 2019
-#&gt; Notes: </div><div class='input'>
-<span class='co'># ways to index corpus elements</span>
-<span class='no'>data_corpus_inaugural</span>[<span class='st'>"1793-Washington"</span>]    <span class='co'># 2nd Washington inaugural speech</span></div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
-#&gt; "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n " </div><div class='input'><span class='no'>data_corpus_inaugural</span>[<span class='fl'>2</span>]                    <span class='co'># same</span></div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
-#&gt; "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n " </div><div class='input'><span class='co'># access the docvars from data_corpus_irishbudget2010</span>
-<span class='no'>data_corpus_irishbudget2010</span>[, <span class='st'>"year"</span>]</div><div class='output co'>#&gt;  [1] "2010" "2010" "2010" "2010" "2010" "2010" "2010" "2010" "2010" "2010"
-#&gt; [11] "2010" "2010" "2010" "2010"</div><div class='input'># same
-# data_corpus_irishbudget2010[["year"]]            
-
-# create a new document variable
-# data_corpus_irishbudget2010[["govtopp"]] <- 
-#   ifelse(data_corpus_irishbudget2010[["party"]] %in% c("FF", "Greens"), 
-#             "Government", "Opposition")
-# docvars(data_corpus_irishbudget2010)
-</div></pre>
+#&gt; </div><div class='input'>
+<span class='co'># two ways to index corpus elements</span>
+<span class='no'>data_corpus_inaugural</span>[<span class='st'>"1793-Washington"</span>]</div><div class='output co'>#&gt; Corpus consisting of 1 document and 4 docvars.
+#&gt; 1793-Washington :
+#&gt; "Fellow citizens, I am again called upon by the voice of my c..."
+#&gt; </div><div class='input'><span class='no'>data_corpus_inaugural</span>[<span class='fl'>2</span>]</div><div class='output co'>#&gt; Corpus consisting of 1 document and 4 docvars.
+#&gt; 1793-Washington :
+#&gt; "Fellow citizens, I am again called upon by the voice of my c..."
+#&gt; </div><div class='input'>
+<span class='co'># return the text itself</span>
+<span class='no'>data_corpus_inaugural</span><span class='kw'>[[</span><span class='st'>"1793-Washington"</span>]]</div><div class='output co'>#&gt; [1] "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -363,7 +335,7 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

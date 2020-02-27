@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -173,7 +173,7 @@
 <h2 class="hasAnchor">
 <a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
 <p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem APIから、キーワード“選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2">corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span>)</a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/stringi/man/stri_trans_nf.html">stri_trans_nfkc</a></span>(<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp)) <span class="co"># 表記を標準化</span></a></code></pre></div>
 </div>
@@ -286,7 +286,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

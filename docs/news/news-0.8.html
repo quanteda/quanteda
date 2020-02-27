@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -245,7 +245,7 @@
 <li><p>new methods for <code>tokenizedTexts</code> objects: <code><a href="../reference/dfm.html">dfm()</a></code>, <code>removeFeatures()</code>, and <code>syllables()</code></p></li>
 <li><p><code>syllables()</code> is now much faster, using matching through <code>stringi</code> and merging using <code>data.table</code>.</p></li>
 <li><p>added <code>readability()</code> to compute (fast!) readability indexes on a text or corpus</p></li>
-<li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector> and <code>concatenator = "_"</code>. The new arguments to <code>tokenize()</code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
+<li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector> and <code>concatenator = "_"</code>. The new arguments to <code><a href="../reference/tokenize_internal.html">tokenize()</a></code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
 </ul>
 </div>
 <div id="bug-fixes-13" class="section level2">
@@ -267,7 +267,7 @@
 <li><p><code>sample.corpus()</code> now samples documents from a corpus, and <code>sample.dfm()</code> samples documents or features from a dfm. <code>trim()</code> method for with <code>nsample</code> argument now calls <code>sample.dfm()</code>.</p></li>
 <li><p>tokenize improvements for what = “sentence”: more robust to specifying options, and does not split sentences after common abbreviations such as “Dr.”, “Prof.”, etc.</p></li>
 <li><p>corpus() no longer automatically converts encodings detected as non-UTF-8, as this detection is too imprecise.</p></li>
-<li><p>new function <code><a href="../reference/scrabble.html">scrabble()</a></code> computes English Scrabble word values for any text, applying any summary numerical function.</p></li>
+<li><p>new function <code>scrabble()</code> computes English Scrabble word values for any text, applying any summary numerical function.</p></li>
 <li>
 <p>dfm() now 2x faster, replacing previous data.table matching with direct construction of sparse matrix from match().<br>
 Code is also much simpler, based on using three new functions that are also available directly:</p>
@@ -383,7 +383,7 @@ Code is also much simpler, based on using three new functions that are also avai
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

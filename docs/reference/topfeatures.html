@@ -88,7 +88,7 @@ as a whole or separated by document." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -247,17 +247,18 @@ of features</p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+      <td><p>either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
+<code>NA</code> values of the grouping value are dropped.
 See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named numeric vector of feature counts, where the names are the 
-  feature labels, or a list of these if <code>groups</code> is given.</p>
+    <p>A named numeric vector of feature counts, where the names are the
+feature labels, or a list of these if <code>groups</code> is given.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>) <span class='kw'>%&gt;%</span>
@@ -266,14 +267,14 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 
 <span class='co'># most frequent features</span>
 <span class='fu'>topfeatures</span>(<span class='no'>dfmat1</span>)</div><div class='output co'>#&gt;  the  and   of   to  our   we    a   in   is that 
-#&gt; 1100  927  761  584  565  539  426  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>)</div><div class='output co'>#&gt;      us    must america     new  people   world  nation    time     can freedom 
+#&gt; 1100  927  761  584  565  539  424  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>)</div><div class='output co'>#&gt;      us    must america     new  people   world  nation    time     can freedom 
 #&gt;     165      99      98      93      90      87      79      73      72      71 </div><div class='input'>
 <span class='co'># least frequent features</span>
 <span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;     hatfield      mondale        baker       moomaw    momentous   occurrence 
 #&gt;            1            1            1            1            1            1 
 #&gt;    routinely       unique       really every-4-year 
 #&gt;            1            1            1            1 </div><div class='input'>
-<span class='co'># top features of individual documents  </span>
+<span class='co'># top features of individual documents</span>
 <span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>dfmat2</span>))</div><div class='output co'>#&gt; $`1981-Reagan`
 #&gt;         us government       must    believe     people 
 #&gt;         25         16         10         10          9 
@@ -295,8 +296,8 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 #&gt;      29      27      20      13      12 
 #&gt; 
 #&gt; $`2001-Bush`
-#&gt;       us citizens  country    story   nation 
-#&gt;       11        9        9        9        8 
+#&gt;       us citizens  country   nation  america 
+#&gt;       11        9        9        8        8 
 #&gt; 
 #&gt; $`2005-Bush`
 #&gt; freedom liberty america   every  nation 
@@ -315,11 +316,7 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 #&gt;       18       11       10        9        8 
 #&gt; </div><div class='input'>
 <span class='co'># grouping by president last name</span>
-<span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; $Reagan
-#&gt;         us government     people      world        one 
-#&gt;         52         29         25         23         22 
-#&gt; 
-#&gt; $Bush
+<span class='fu'>topfeatures</span>(<span class='no'>dfmat2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; $Bush
 #&gt; freedom      us  nation america     can 
 #&gt;      36      27      27      27      24 
 #&gt; 
@@ -330,6 +327,10 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 #&gt; $Obama
 #&gt;     us   must    can nation people 
 #&gt;     44     25     20     18     18 
+#&gt; 
+#&gt; $Reagan
+#&gt;         us government     people      world        one 
+#&gt;         52         29         25         23         22 
 #&gt; 
 #&gt; $Trump
 #&gt;  america american   people  country      one 
@@ -353,7 +354,7 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

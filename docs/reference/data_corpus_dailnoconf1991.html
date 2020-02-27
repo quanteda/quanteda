@@ -89,7 +89,7 @@ coalition. (See Laver and Benoit 2002 for details.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -222,26 +222,24 @@ coalition. (See Laver and Benoit 2002 for details.)</p>
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>data_corpus_dailnoconf1991</code> is a corpus with 58 texts, 
-  including docvars for <code>name</code>, <code>party</code>, and <code>position</code>.</p>
+    <p><code>data_corpus_dailnoconf1991</code> is a corpus with 58 texts,
+including docvars for <code>name</code>, <code>party</code>, and <code>position</code>.</p>
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     <p><a href='https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/'>https://www.oireachtas.ie/en/debates/debate/dail/1991-10-16/10/</a></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Laver, M. &amp; Benoit, K.R. (2002). 
-  <a href='https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf'>Locating 
-  TDs in Policy Spaces: Wordscoring Dáil Speeches</a>. <em>Irish Political 
-  Studies</em>, 17(1), 59--73.</p>
-<p>Laver, M., Benoit, K.R., &amp; Garry, J. (2003). 
-  <a href='https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf'>Estimating Policy 
-  Positions from Political Text using Words as Data</a>. <em>American
-  Political Science Review</em>, 97(2), 311--331.</p>
+    <p>Laver, M. &amp; Benoit, K.R. (2002).
+<a href='https://kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf'>Locating TDs in Policy Spaces: Wordscoring Dáil Speeches</a>. <em>Irish Political
+Studies</em>, 17(1), 59--73.</p>
+<p>Laver, M., Benoit, K.R., &amp; Garry, J. (2003).
+<a href='https://kenbenoit.net/pdfs/WORDSCORESAPSR.pdf'>Estimating Policy Positions from Political Text using Words as Data</a>. <em>American
+Political Science Review</em>, 97(2), 311--331.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='no'>data_dfm_dailnoconf1991</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_dailnoconf1991</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tmod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_affinity.html'>textmodel_affinity</a></span>(<span class='no'>data_dfm_dailnoconf1991</span>,
+<span class='no'>tmod</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_affinity</span>(<span class='no'>data_dfm_dailnoconf1991</span>,
                            <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Govt"</span>, <span class='st'>"Opp"</span>, <span class='st'>"Opp"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fl'>55</span>)))
 (<span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>tmod</span>))
 <span class='no'>dat</span> <span class='kw'>&lt;-</span>
@@ -273,7 +271,7 @@ coalition. (See Laver and Benoit 2002 for details.)</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

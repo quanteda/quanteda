@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -180,7 +180,24 @@
 <a href="#construct-a-document-feature-matrix-of-twitter-posts" class="anchor"></a>Construct a document-feature matrix of Twitter posts</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">tweet_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_tweets, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(tweet_dfm)</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 6 documents, 42,328 features (100.0% sparse).</code></pre>
+<pre><code>## Document-feature matrix of: 6 documents, 42,428 features (100.0% sparse) and 34 docvars.
+##         features
+## docs     oggi pomeriggio a partire dalle 18.00 interverrò #pomeriggio5 su
+##   tweet1    1          1 2       1     1     1          1            1  1
+##   tweet2    0          0 1       0     0     0          0            0  0
+##   tweet3    0          0 0       0     0     0          0            0  0
+##   tweet4    0          0 0       0     0     0          0            0  0
+##   tweet5    0          0 0       0     0     0          0            0  0
+##   tweet6    0          0 0       0     0     0          0            0  0
+##         features
+## docs     #canale5
+##   tweet1        1
+##   tweet2        0
+##   tweet3        0
+##   tweet4        0
+##   tweet5        0
+##   tweet6        0
+## [ reached max_nfeat ... 42,418 more features ]</code></pre>
 </div>
 <div id="hashtags" class="section level1">
 <h1 class="hasAnchor">
@@ -200,23 +217,14 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">tag_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(tag_dfm)</a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(tag_fcm)</a></code></pre></div>
 <pre><code>## Feature co-occurrence matrix of: 6 by 6 features.
-## 6 x 6 sparse Matrix of class "fcm"
 ##                  features
-## features          #pomeriggio5 #canale5 #miaou #iovotoitaliano #fdian
-##   #pomeriggio5               0        2      0               0      0
-##   #canale5                   0        0      0               0      1
-##   #miaou                     0        0      0               0      0
-##   #iovotoitaliano            0        0      0               0     60
-##   #fdian                     0        0      0               0      0
-##   #espanyaensroba            0        0      0               0      0
-##                  features
-## features          #espanyaensroba
-##   #pomeriggio5                  0
-##   #canale5                      0
-##   #miaou                        0
-##   #iovotoitaliano               0
-##   #fdian                        0
-##   #espanyaensroba               0</code></pre>
+## features          #pomeriggio5 #canale5 #miaou #iovotoitaliano #fdian #bravo
+##   #pomeriggio5               0        2      0               0      0      0
+##   #canale5                   0        0      0               0      1      0
+##   #miaou                     0        0      0               0      0      0
+##   #iovotoitaliano            0        0      0               0     60      0
+##   #fdian                     0        0      0               0      0      0
+##   #bravo                     0        0      0               0      0      0</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">topgat_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(tag_fcm, <span class="dt">pattern =</span> toptag)</a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(topgat_fcm, <span class="dt">min_freq =</span> <span class="fl">0.1</span>, <span class="dt">edge_alpha =</span> <span class="fl">0.8</span>, <span class="dt">edge_size =</span> <span class="dv">5</span>)</a></code></pre></div>
 <pre><code>## Registered S3 method overwritten by 'network':
@@ -235,7 +243,7 @@
 <a class="sourceLine" id="cb11-2" title="2">topuser &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(user_dfm, <span class="dv">50</span>))</a>
 <a class="sourceLine" id="cb11-3" title="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(topuser)</a></code></pre></div>
 <pre><code>## [1] "@pablo_iglesias_" "@elenavalenciano" "@canete2014_"     "@nigel_farage"   
-## [5] "@martinschulz"    "@mlp_officiel"</code></pre>
+## [5] "@martinschulz"    "@giorgiameloni"</code></pre>
 </div>
 <div id="construct-feature-occurrence-matrix-of-usernames" class="section level2">
 <h2 class="hasAnchor">
@@ -243,7 +251,6 @@
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">user_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(user_dfm)</a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(user_fcm)</a></code></pre></div>
 <pre><code>## Feature co-occurrence matrix of: 6 by 6 features.
-## 6 x 6 sparse Matrix of class "fcm"
 ##                   features
 ## features           @pacomarhuenda @pablo_iglesias_ @kopriths @gapatzhs
 ##   @pacomarhuenda                0                1         0         0
@@ -296,7 +303,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

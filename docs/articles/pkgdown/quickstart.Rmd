@@ -396,6 +396,7 @@ lapply(as.list(sim), head, 10)
 
 Here is a demonstration of unsupervised document scaling comparing the "wordfish" model: 
 ```{r}
+library("quanteda.textmodels")
 # make prettier document names
 ie_dfm <- dfm(data_corpus_irishbudget2010)
 textmodel_wordfish(ie_dfm, dir = c(2, 1))

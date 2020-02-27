@@ -44,7 +44,7 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Convert the case of tokens — tokens_tolower" />
-<meta property="og:description" content="tokens_tolower and tokens_toupper convert the features of a
+<meta property="og:description" content="tokens_tolower() and tokens_toupper() convert the features of a
 tokens object and re-index the types." />
 <meta name="twitter:card" content="summary" />
 
@@ -88,7 +88,7 @@ tokens object and re-index the types." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -211,7 +211,7 @@ tokens object and re-index the types." />
     </div>
 
     <div class="ref-description">
-    <p><code>tokens_tolower</code> and <code>tokens_toupper</code> convert the features of a
+    <p><code>tokens_tolower()</code> and <code>tokens_toupper()</code> convert the features of a
 <a href='tokens.html'>tokens</a> object and re-index the types.</p>
     </div>
 
@@ -224,13 +224,13 @@ tokens object and re-index the types." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the input object whose character/tokens/feature elements will be 
+      <td><p>the input object whose character/tokens/feature elements will be
 case-converted</p></td>
     </tr>
     <tr>
       <th>keep_acronyms</th>
-      <td><p>logical; if <code>TRUE</code>, do not lowercase any 
-all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
+      <td><p>logical; if <code>TRUE</code>, do not lowercase any
+all-uppercase words (applies only to <code>*_tolower()</code> functions)</p></td>
     </tr>
     </table>
 
@@ -238,13 +238,13 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># for a document-feature matrix</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"b A A"</span>, <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"C C a b B"</span>))
-<span class='fu'>tokens_tolower</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_tolower</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; txt1 :
 #&gt; [1] "b" "a" "a"
 #&gt; 
 #&gt; txt2 :
 #&gt; [1] "c" "c" "a" "b" "b"
-#&gt; </div><div class='input'><span class='fu'>tokens_toupper</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_toupper</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; txt1 :
 #&gt; [1] "B" "A" "A"
 #&gt; 
@@ -265,7 +265,7 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

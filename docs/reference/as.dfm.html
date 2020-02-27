@@ -46,9 +46,9 @@
 <meta property="og:title" content="Coercion and checking functions for dfm objects — as.dfm" />
 <meta property="og:description" content="Convert an eligible input object into a dfm, or check whether an object is a
 dfm.  Current eligible inputs for coercion to a dfm are: matrix,
-(sparse) Matrix, TermDocumentMatrix,
-DocumentTermMatrix, data.frame, and other dfm
-objects." />
+(sparse) Matrix,
+TermDocumentMatrix and DocumentTermMatrix
+(from the tm package), data.frame, and other dfm objects." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -91,7 +91,7 @@ objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -216,9 +216,9 @@ objects." />
     <div class="ref-description">
     <p>Convert an eligible input object into a dfm, or check whether an object is a
 dfm.  Current eligible inputs for coercion to a dfm are: <a href='https://rdrr.io/r/base/matrix.html'>matrix</a>,
-(sparse) <a href='https://rdrr.io/pkg/Matrix/man/Matrix.html'>Matrix</a>, <a href='https://rdrr.io/pkg/tm/man/matrix.html'>TermDocumentMatrix</a>,
-<a href='https://rdrr.io/pkg/tm/man/matrix.html'>DocumentTermMatrix</a>, <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>, and other <a href='dfm.html'>dfm</a>
-objects.</p>
+(sparse) <a href='https://rdrr.io/pkg/Matrix/man/Matrix.html'>Matrix</a>,
+TermDocumentMatrix and DocumentTermMatrix
+(from the <span class="pkg">tm</span> package), <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>, and other <a href='dfm.html'>dfm</a> objects.</p>
     </div>
 
     <pre class="usage"><span class='fu'>as.dfm</span>(<span class='no'>x</span>)
@@ -237,13 +237,13 @@ objects.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>as.dfm</code> converts an input object into a <a href='dfm.html'>dfm</a>.  Row names
-  are used for docnames, and column names for featnames, of the resulting
-  dfm.</p>
+are used for docnames, and column names for featnames, of the resulting
+dfm.</p>
 <p><code>is.dfm</code> returns <code>TRUE</code> if and only if its argument is a <a href='dfm.html'>dfm</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='as.data.frame.dfm.html'>as.data.frame.dfm</a></code>, <code><a href='as.matrix.dfm.html'>as.matrix.dfm</a></code>,
-  <code><a href='convert.html'>convert</a></code></p></div>
+    <div class='dont-index'><p><code><a href='as.data.frame.dfm.html'>as.data.frame.dfm()</a></code>, <code><a href='as.matrix.dfm.html'>as.matrix.dfm()</a></code>,
+<code><a href='convert.html'>convert()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -260,7 +260,7 @@ objects.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

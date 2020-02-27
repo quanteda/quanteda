@@ -46,10 +46,10 @@
 <meta property="og:title" content="Recombine a dfm or fcm by combining identical dimension elements — dfm_compress" />
 <meta property="og:description" content="&quot;Compresses&quot; or groups a dfm or fcm whose dimension names are
 the same, for either documents or features.  This may happen, for instance,
-if features are made equivalent through application of a thesaurus.  It could also be needed after a 
-cbind.dfm or rbind.dfm operation.  In most cases, you will not
-need to call `dfm_compress`, since it is called automatically by functions that change the 
-dimensions of the dfm, e.g. dfm_tolower." />
+if features are made equivalent through application of a thesaurus.  It could also be needed after a
+cbind.dfm() or rbind.dfm() operation.  In most cases, you will not
+need to call dfm_compress, since it is called automatically by functions that change the
+dimensions of the dfm, e.g. dfm_tolower()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -92,7 +92,7 @@ dimensions of the dfm, e.g. dfm_tolower." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -217,10 +217,10 @@ dimensions of the dfm, e.g. dfm_tolower." />
     <div class="ref-description">
     <p>"Compresses" or groups a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> whose dimension names are
 the same, for either documents or features.  This may happen, for instance,
-if features are made equivalent through application of a thesaurus.  It could also be needed after a 
-<code><a href='cbind.dfm.html'>cbind.dfm</a></code> or <code><a href='cbind.dfm.html'>rbind.dfm</a></code> operation.  In most cases, you will not
-need to call `dfm_compress`, since it is called automatically by functions that change the 
-dimensions of the dfm, e.g. <code><a href='dfm_tolower.html'>dfm_tolower</a></code>.</p>
+if features are made equivalent through application of a thesaurus.  It could also be needed after a
+<code><a href='cbind.dfm.html'>cbind.dfm()</a></code> or <code><a href='cbind.dfm.html'>rbind.dfm()</a></code> operation.  In most cases, you will not
+need to call <code>dfm_compress</code>, since it is called automatically by functions that change the
+dimensions of the dfm, e.g. <code><a href='dfm_tolower.html'>dfm_tolower()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dfm_compress</span>(<span class='no'>x</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
@@ -236,22 +236,18 @@ dimensions of the dfm, e.g. <code><a href='dfm_tolower.html'>dfm_tolower</a></co
     </tr>
     <tr>
       <th>margin</th>
-      <td><p>character indicating on which margin to compress a dfm, either 
+      <td><p>character indicating on which margin to compress a dfm, either
 <code>"documents"</code>, <code>"features"</code>, or <code>"both"</code> (default).  For fcm
 objects, <code>"documents"</code> has no effect.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments passed from generic to specific methods</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>dfm_compress</code> returns a <a href='dfm.html'>dfm</a> whose dimensions have been
-  recombined by summing the cells across identical dimension names
-  (<a href='docnames.html'>docnames</a> or <a href='featnames.html'>featnames</a>).  The <a href='docvars.html'>docvars</a> will be
-  preserved for combining by features but not when documents are combined.</p>
+recombined by summing the cells across identical dimension names
+(<a href='docnames.html'>docnames</a> or <a href='featnames.html'>featnames</a>).  The <a href='docvars.html'>docvars</a> will be
+preserved for combining by features but not when documents are combined.</p>
 <p><code>fcm_compress</code> returns an <a href='fcm.html'>fcm</a> whose features have been
 recombined by combining counts of identical features, summing their counts.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
@@ -265,24 +261,20 @@ document context.</p>
              <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>dfmat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat</span>))
 <span class='no'>dfmat</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (46.7% sparse).
-#&gt; 3 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c a b
 #&gt;   text1 1 2 0 0 0
 #&gt;   text2 1 0 2 1 1
 #&gt;   text1 0 1 5 0 0</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (30.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c a b
 #&gt;   text1 1 3 5 0 0
 #&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 3 features (22.2% sparse).
-#&gt; 3 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2
 #&gt;   text1 0 1 5</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (0.0% sparse).
-#&gt; 2 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 3 5
@@ -303,7 +295,6 @@ document context.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>fcmat2</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>fcmat2</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>tolower</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>fcmat2</span>))
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>fcmat2</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>fcmat2</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='st'>"fox"</span>
 <span class='no'>fcmat2</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
-#&gt; 7 x 7 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features the fox jumped over fox dog jumped
 #&gt;   the      0   2      1    2   2   2      1
@@ -313,7 +304,6 @@ document context.</p>
 #&gt;   fox      0   0      0    0   0   2      1
 #&gt;   dog      0   0      0    0   0   0      1
 #&gt;   jumped   0   0      0    0   0   0      0</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>fcmat2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
-#&gt; 5 x 5 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features the fox jumped over dog
 #&gt;   the      0   4      2    2   2
@@ -337,7 +327,7 @@ document context.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

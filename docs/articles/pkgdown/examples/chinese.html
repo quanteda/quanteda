@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@
 <a href="#download-corpus" class="anchor"></a>Download corpus</h1>
 <p>Download corpus constructed from <em>Report on the Work of the Government</em> published by Premier of the State Council between 1954 and 2017. You can download the corpus using the <strong>quanteda.corpora</strong> package.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># read text files</span></a>
-<a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(quanteda.corpora)</a>
 <a class="sourceLine" id="cb3-2" title="2">corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</a></code></pre></div>
 </div>
@@ -228,11 +228,12 @@
 <div id="unsupervised-document-scaling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#unsupervised-document-scaling" class="anchor"></a>Unsupervised document scaling</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)</a>
-<a class="sourceLine" id="cb9-2" title="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
-<a class="sourceLine" id="cb9-3" title="3">y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]</a>
-<a class="sourceLine" id="cb9-4" title="4">y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]</a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)</a>
+<a class="sourceLine" id="cb9-2" title="2">wf &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)</a>
+<a class="sourceLine" id="cb9-3" title="3">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb9-4" title="4">y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]</a>
+<a class="sourceLine" id="cb9-5" title="5">y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</a></code></pre></div>
 <p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocations" class="section level2">
@@ -256,80 +257,80 @@
 <td align="right">1787</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.681248</td>
-<td align="right">129.07450</td>
+<td align="right">5.681516</td>
+<td align="right">129.08061</td>
 </tr>
 <tr class="even">
 <td align="left">１ ９</td>
 <td align="right">678</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.550501</td>
-<td align="right">95.50843</td>
+<td align="right">6.550767</td>
+<td align="right">95.51231</td>
 </tr>
 <tr class="odd">
 <td align="left">亿 元</td>
 <td align="right">689</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.465125</td>
-<td align="right">93.26342</td>
+<td align="right">7.465391</td>
+<td align="right">93.26674</td>
 </tr>
 <tr class="even">
 <td align="left">０ ０</td>
 <td align="right">491</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.736795</td>
-<td align="right">85.64818</td>
+<td align="right">5.737061</td>
+<td align="right">85.65216</td>
 </tr>
 <tr class="odd">
 <td align="left">现代 化</td>
 <td align="right">632</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.970359</td>
-<td align="right">83.79122</td>
+<td align="right">6.970625</td>
+<td align="right">83.79442</td>
 </tr>
 <tr class="even">
 <td align="left">体制 改革</td>
 <td align="right">504</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.213023</td>
-<td align="right">77.67687</td>
+<td align="right">5.213290</td>
+<td align="right">77.68085</td>
 </tr>
 <tr class="odd">
 <td align="left">９ ５</td>
 <td align="right">350</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.747687</td>
-<td align="right">75.33269</td>
+<td align="right">5.747953</td>
+<td align="right">75.33618</td>
 </tr>
 <tr class="even">
 <td align="left">五年 计划</td>
 <td align="right">341</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.378963</td>
-<td align="right">71.91355</td>
+<td align="right">5.379229</td>
+<td align="right">71.91712</td>
 </tr>
 <tr class="odd">
 <td align="left">各级 政府</td>
 <td align="right">306</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.130473</td>
-<td align="right">66.85150</td>
+<td align="right">6.130740</td>
+<td align="right">66.85440</td>
 </tr>
 <tr class="even">
 <td align="left">增长 百分</td>
 <td align="right">300</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.540657</td>
-<td align="right">66.11816</td>
+<td align="right">5.540923</td>
+<td align="right">66.12134</td>
 </tr>
 </tbody>
 </table>
@@ -351,80 +352,80 @@
 <td align="right">12</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.406485</td>
-<td align="right">12.89405</td>
+<td align="right">5.406843</td>
+<td align="right">12.89491</td>
 </tr>
 <tr class="even">
 <td align="left">亿 元</td>
 <td align="right">14</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">8.302483</td>
-<td align="right">12.62130</td>
+<td align="right">8.302839</td>
+<td align="right">12.62184</td>
 </tr>
 <tr class="odd">
 <td align="left">调 控</td>
 <td align="right">11</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.593472</td>
-<td align="right">12.41243</td>
+<td align="right">7.593829</td>
+<td align="right">12.41301</td>
 </tr>
 <tr class="even">
 <td align="left">政府 工作</td>
 <td align="right">9</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">4.709869</td>
-<td align="right">11.07905</td>
+<td align="right">4.710228</td>
+<td align="right">11.07990</td>
 </tr>
 <tr class="odd">
 <td align="left">深入 实施</td>
 <td align="right">8</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.018234</td>
-<td align="right">10.92377</td>
+<td align="right">5.018592</td>
+<td align="right">10.92455</td>
 </tr>
 <tr class="even">
 <td align="left">党 中央</td>
 <td align="right">7</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.746878</td>
-<td align="right">10.90837</td>
+<td align="right">5.747235</td>
+<td align="right">10.90905</td>
 </tr>
 <tr class="odd">
 <td align="left">体制 改革</td>
 <td align="right">11</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.317035</td>
-<td align="right">10.53518</td>
+<td align="right">5.317394</td>
+<td align="right">10.53589</td>
 </tr>
 <tr class="even">
 <td align="left">国内 生产</td>
 <td align="right">6</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.166520</td>
-<td align="right">10.48816</td>
+<td align="right">6.166877</td>
+<td align="right">10.48876</td>
 </tr>
 <tr class="odd">
 <td align="left">现代 化</td>
 <td align="right">8</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.705688</td>
-<td align="right">10.43435</td>
+<td align="right">5.706046</td>
+<td align="right">10.43500</td>
 </tr>
 <tr class="even">
 <td align="left">基础 设施</td>
 <td align="right">7</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.549273</td>
-<td align="right">10.42465</td>
+<td align="right">7.549629</td>
+<td align="right">10.42514</td>
 </tr>
 </tbody>
 </table>
@@ -457,7 +458,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -45,10 +45,10 @@
 
 <meta property="og:title" content="Convert regex and glob patterns to type IDs or fixed patterns — pattern2id" />
 <meta property="og:description" content="pattern2id converts regex or glob to type IDs to allow
-  C++ function to perform fast searches in tokens object. C++ functions use a
-  list of type IDs to construct a hash table, against which sub-vectors of
-  tokens object are matched. This function constructs an index of glob
-  patterns for faster matching.
+C++ function to perform fast searches in tokens object. C++ functions use a
+list of type IDs to construct a hash table, against which sub-vectors of
+tokens object are matched. This function constructs an index of glob
+patterns for faster matching.
 pattern2fixed converts regex and glob patterns to fixed patterns.
 index_types is an auxiliary function for pattern2id that
 constructs an index of &quot;glob&quot; or &quot;fixed&quot; patterns to avoid expensive
@@ -96,7 +96,7 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -220,10 +220,10 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
 
     <div class="ref-description">
     <p><code>pattern2id</code> converts regex or glob to type IDs to allow
-  C++ function to perform fast searches in tokens object. C++ functions use a
-  list of type IDs to construct a hash table, against which sub-vectors of
-  tokens object are matched. This function constructs an index of glob
-  patterns for faster matching.</p>
+C++ function to perform fast searches in tokens object. C++ functions use a
+list of type IDs to construct a hash table, against which sub-vectors of
+tokens object are matched. This function constructs an index of glob
+patterns for faster matching.</p>
 <p><code>pattern2fixed</code> converts regex and glob patterns to fixed patterns.</p>
 <p><code>index_types</code> is an auxiliary function for <code>pattern2id</code> that
 constructs an index of "glob" or "fixed" patterns to avoid expensive
@@ -260,17 +260,18 @@ details.</p></td>
     </tr>
     <tr>
       <th>types</th>
-      <td><p>unique types of tokens obtained by <code><a href='types.html'>types</a></code></p></td>
+      <td><p>unique types of tokens obtained by <code><a href='types.html'>types()</a></code></p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>if <code>TRUE</code>, ignores case when matching</p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>keep_nomatch</th>
@@ -285,11 +286,11 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>pattern2id</code> returns a list of integer vectors containing type
-  IDs</p>
+IDs</p>
 <p><code>pattern2fixed</code> returns a list of character vectors containing
-  types</p>
+types</p>
 <p><code>index_types</code> returns a list of integer vectors containing type
-  IDs with index keys as an attribute</p>
+IDs with index keys as an attribute</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
@@ -365,7 +366,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

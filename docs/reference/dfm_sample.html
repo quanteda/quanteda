@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -252,8 +252,8 @@ vector being sampled.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dfm object with number of documents or features equal to <code>size</code>, drawn 
-  from the dfm <code>x</code>.</p>
+    <p>A dfm object with number of documents or features equal to <code>size</code>, drawn
+from the dfm <code>x</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://rdrr.io/r/base/sample.html'>sample</a></p></div>
@@ -262,27 +262,22 @@ vector being sampled.</p></td>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>10</span>)
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a b c c d"</span>, <span class='st'>"a a c c d d d"</span>))
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d
 #&gt;   text1 1 1 2 1
 #&gt;   text2 2 0 2 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sample</span>(<span class='no'>dfmat</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d
 #&gt;   text1 1 1 2 1
 #&gt;   text2 2 0 2 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sample</span>(<span class='no'>dfmat</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
-#&gt;        features
-#&gt; docs    a b c d
-#&gt;   text2 2 0 2 3
-#&gt;   text2 2 0 2 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sample</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
+#&gt;          features
+#&gt; docs      a b c d
+#&gt;   text2.1 2 0 2 3
+#&gt;   text2.2 2 0 2 3</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sample</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
 #&gt;        features
 #&gt; docs    d c b a
 #&gt;   text1 1 2 1 1
 #&gt;   text2 3 2 0 2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sample</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (0.0% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    c c c d
 #&gt;   text1 2 2 2 1
@@ -303,7 +298,7 @@ vector being sampled.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -222,12 +222,12 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <span class="pkg">quanteda</span> object: a character, <a href='corpus.html'>corpus</a>, 
+      <td><p>a <span class="pkg">quanteda</span> object: a character, <a href='corpus.html'>corpus</a>,
 <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens</a></code></p></td>
+      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens()</a></code></p></td>
     </tr>
     </table>
 
@@ -238,16 +238,16 @@
 
     <p>The precise definition of "tokens" for objects not yet tokenized (e.g.
 <a href='https://rdrr.io/r/base/character.html'>character</a> or <a href='corpus.html'>corpus</a> objects) can be controlled through optional
-arguments passed to <code><a href='tokens.html'>tokens</a></code> through <code>...</code>.</p>
+arguments passed to <code><a href='tokens.html'>tokens()</a></code> through <code>...</code>.</p>
 <p>For <a href='dfm.html'>dfm</a> objects, <code>ntype</code> will only return the count of features
 that occur more than zero times in the dfm.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Due to differences between raw text tokens and features that have been 
-  defined for a <a href='dfm.html'>dfm</a>, the counts may be different for dfm objects and the 
-  texts from which the dfm was generated.  Because the method tokenizes the 
-  text in order to count the tokens, your results will depend on the options 
-  passed through to <code><a href='tokens.html'>tokens</a></code>.</p>
+    <p>Due to differences between raw text tokens and features that have been
+defined for a <a href='dfm.html'>dfm</a>, the counts may be different for dfm objects and the
+texts from which the dfm was generated.  Because the method tokenizes the
+text in order to count the tokens, your results will depend on the options
+passed through to <code><a href='tokens.html'>tokens()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
@@ -263,7 +263,7 @@ that occur more than zero times in the dfm.</p>
 <span class='fu'>ntoken</span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&lt;</span> <span class='fl'>1806</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson 
 #&gt;            1430             135            2318            1726            2166 </div><div class='input'><span class='fu'>ntype</span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&lt;</span> <span class='fl'>1806</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson 
 #&gt;             617              91             819             711             799 </div><div class='input'><span class='fu'>ntoken</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&lt;</span> <span class='fl'>1800</span>)))</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams 
-#&gt;            1538             147            2578 </div><div class='input'><span class='fu'>ntype</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&lt;</span> <span class='fl'>1800</span>)))</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams 
+#&gt;            1537             147            2577 </div><div class='input'><span class='fu'>ntype</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&lt;</span> <span class='fl'>1800</span>)))</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams 
 #&gt;             603              95             801 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -282,7 +282,7 @@ that occur more than zero times in the dfm.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

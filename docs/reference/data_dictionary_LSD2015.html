@@ -88,7 +88,7 @@ format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -245,27 +245,26 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
     <h2 class="hasAnchor" id="license-and-conditions"><a class="anchor" href="#license-and-conditions"></a>License and Conditions</h2>
 
     
- 
+
 <p>The LSD is available for non-commercial academic purposes only. By using
-  <code>data_dictionary_LSD2015</code>, you accept these terms.</p>  
+<code>data_dictionary_LSD2015</code>, you accept these terms.</p>
 <p>Please cite the references below when using the dictionary.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>The objectives, development and reliability of the dictionary are discussed
-  in detail in Young and Soroka (2012). Please cite this article when using the
-  Lexicoder Sentiment Dictionary and related resources.
-  Young, L. &amp; Soroka, S. (2012). <em>Lexicoder Sentiment
-  Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>  
-<p>Young, L. &amp; Soroka, S. (2012). 
-  <a href='https://doi.org/10.1080/10584609.2012.671234'>Affective News: 
-  The Automated Coding of Sentiment in Political Texts</a>. 
-  <em>Political Communication</em>, 29(2), 205--231.</p>
+in detail in Young and Soroka (2012). Please cite this article when using the
+Lexicoder Sentiment Dictionary and related resources.
+Young, L. &amp; Soroka, S. (2012). <em>Lexicoder Sentiment
+Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
+<p>Young, L. &amp; Soroka, S. (2012).
+<a href='https://doi.org/10.1080/10584609.2012.671234'>Affective News: The Automated Coding of Sentiment in Political Texts</a>.
+<em>Political Communication</em>, 29(2), 205--231.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"This aggressive policy will not win friends."</span>
 
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
 #&gt; [6] "POSITIVE"     "POSITIVE"     "."           
@@ -276,7 +275,7 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 <span class='co'># notice that double-counting of negated and non-negated terms is avoided </span>
 <span class='co'># when using nested_scope = "dictionary"</span>
 <span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>,
-              <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>nested_scope</span> <span class='kw'>=</span> <span class='st'>"dictionary"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+              <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>nested_scope</span> <span class='kw'>=</span> <span class='st'>"dictionary"</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
 #&gt; [6] "POSITIVE"     "."           
@@ -286,7 +285,6 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 
 <span class='co'># on larger examples - notice that few negations are used</span>
 <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_ukimmig2010</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 9 documents, 4 features (47.2% sparse).
-#&gt; 9 x 4 sparse Matrix of class "dfm"
 #&gt;               features
 #&gt; docs           negative positive neg_positive neg_negative
 #&gt;   BNP               146      107            0            0
@@ -295,9 +293,7 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 #&gt;   Greens             23       37            2            0
 #&gt;   Labour             14       31            0            0
 #&gt;   LibDem             22       26            0            0
-#&gt;   PC                  9        8            0            0
-#&gt;   SNP                 4       13            0            0
-#&gt;   UKIP               18       29            0            0</div><div class='input'><span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_char_ukimmig2010</span>, <span class='st'>"not"</span>)</div><div class='output co'>#&gt;                                                                       
+#&gt; [ reached max_ndoc ... 3 more documents ]</div><div class='input'><span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_char_ukimmig2010</span>, <span class='st'>"not"</span>)</div><div class='output co'>#&gt;                                                                       
 #&gt;           [BNP, 434]        resident population of Britain was | not |
 #&gt;           [BNP, 480]                 in England and Wales were | not |
 #&gt;           [BNP, 523]               2005 birth rate figure does | not |
@@ -311,23 +307,23 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 #&gt;  [Conservative, 101]                      of thousands a year, | not |
 #&gt;  [Conservative, 313] foreign students or existing institutions | not |
 #&gt;         [Greens, 67]                     thousand years. It is | not |
-#&gt;        [Greens, 384]                     be a positive choice, | not |
-#&gt;        [Greens, 465]                     manifesto.- We should | not |
-#&gt;        [Greens, 479]        people whose immigration status is | not |
-#&gt;        [Greens, 537]              provided for people who have | not |
-#&gt;        [Greens, 626]           who have been trafficked should | not |
-#&gt;        [Greens, 661]          - Those seeking sanctuary should | not |
+#&gt;        [Greens, 383]                     be a positive choice, | not |
+#&gt;        [Greens, 464]                     manifesto.- We should | not |
+#&gt;        [Greens, 478]        people whose immigration status is | not |
+#&gt;        [Greens, 535]              provided for people who have | not |
+#&gt;        [Greens, 624]           who have been trafficked should | not |
+#&gt;        [Greens, 659]          - Those seeking sanctuary should | not |
 #&gt;         [Labour, 61]                  of employment and wages, | not |
-#&gt;        [Labour, 151]              rising employment and wages, | not |
-#&gt;        [Labour, 427]                  of employment and wages, | not |
-#&gt;        [Labour, 575]                Britain is a privilege and | not |
+#&gt;        [Labour, 150]              rising employment and wages, | not |
+#&gt;        [Labour, 425]                  of employment and wages, | not |
+#&gt;        [Labour, 573]                Britain is a privilege and | not |
 #&gt;        [LibDem, 277]            This route to citizenship will | not |
 #&gt;        [LibDem, 469]           individuals for whom removal is | not |
 #&gt;          [UKIP, 124]      ensuring any future immigration does | not |
-#&gt;          [UKIP, 367]           deportation. Such citizens will | not |
-#&gt;          [UKIP, 386]                have completed a period of | not |
-#&gt;          [UKIP, 626]            future the British courts will | not |
-#&gt;          [UKIP, 689]          admitting officer that marriage, | not |
+#&gt;          [UKIP, 366]           deportation. Such citizens will | not |
+#&gt;          [UKIP, 385]                have completed a period of | not |
+#&gt;          [UKIP, 625]            future the British courts will | not |
+#&gt;          [UKIP, 688]          admitting officer that marriage, | not |
 #&gt;                                        
 #&gt;  born in this country(                 
 #&gt;  " white British"(                     
@@ -363,7 +359,6 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='no'>data_dictionary_LSD2015</span>)
 
 <span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks</span>), <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.0% sparse).
-#&gt; 1 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    negative positive neg_positive neg_negative
 #&gt;   text1        2        1            1            0</div></pre>
@@ -384,7 +379,7 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

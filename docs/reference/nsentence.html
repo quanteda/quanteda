@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -213,7 +213,7 @@
     <p>Return the count of sentences in a corpus or character object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>nsentence</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>nsentence</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,10 +222,6 @@
       <th>x</th>
       <td><p>a character or <a href='corpus.html'>corpus</a> whose sentences will be counted</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens</a></code></p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -233,11 +229,11 @@
     <p>count(s) of the total sentences per text</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>nsentence()</code> relies on the boundaries definitions in the
-  <span class="pkg">stringi</span> package (see <a href='https://rdrr.io/pkg/stringi/man/stri_opts_brkiter.html'>stri_opts_brkiter</a>).  It does not
-  count sentences correctly if the text has been transformed to lower case,
-  and for this reason <code>nsentence()</code> will issue a warning if it detects
-  all lower-cased text.</p>
+    <p><code>nsentence()</code> relies on the boundaries definitions in the <span class="pkg">stringi</span>
+package (see <a href='https://rdrr.io/pkg/stringi/man/stri_opts_brkiter.html'>stri_opts_brkiter</a>).  It does not
+count sentences correctly if the text has been transformed to lower case,
+and for this reason <code>nsentence()</code> will issue a warning if it detects all
+lower-cased text.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
@@ -262,7 +258,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

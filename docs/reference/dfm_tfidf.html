@@ -44,7 +44,7 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Weight a dfm by <em>tf-idf</em> — dfm_tfidf" />
-<meta property="og:description" content="Weight a dfm by term frequency-inverse document frequency (tf-idf), 
+<meta property="og:description" content="Weight a dfm by term frequency-inverse document frequency (tf-idf),
 with full control over options.  Uses fully sparse methods for efficiency." />
 <meta name="twitter:card" content="summary" />
 
@@ -88,7 +88,7 @@ with full control over options.  Uses fully sparse methods for efficiency." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -211,7 +211,7 @@ with full control over options.  Uses fully sparse methods for efficiency." />
     </div>
 
     <div class="ref-description">
-    <p>Weight a dfm by term frequency-inverse document frequency (<em>tf-idf</em>), 
+    <p>Weight a dfm by term frequency-inverse document frequency (<em>tf-idf</em>),
 with full control over options.  Uses fully sparse methods for efficiency.</p>
     </div>
 
@@ -229,30 +229,29 @@ with full control over options.  Uses fully sparse methods for efficiency.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>object for which idf or tf-idf will be computed (a document-feature 
+      <td><p>object for which idf or tf-idf will be computed (a document-feature
 matrix)</p></td>
     </tr>
     <tr>
       <th>scheme_tf</th>
-      <td><p>scheme for <code><a href='dfm_weight.html'>dfm_weight</a></code>; defaults to <code>"count"</code></p></td>
+      <td><p>scheme for <code><a href='dfm_weight.html'>dfm_weight()</a></code>; defaults to <code>"count"</code></p></td>
     </tr>
     <tr>
       <th>scheme_df</th>
-      <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code>; defaults to
-<code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed
-through the ellipsis (<code>...</code>).</p></td>
+      <td><p>scheme for <code><a href='docfreq.html'>docfreq()</a></code>; defaults to
+<code>"inverse"</code>.</p></td>
     </tr>
     <tr>
       <th>base</th>
-      <td><p>the base for the logarithms in the <code><a href='tf.html'>tf</a></code> and
-<code><a href='docfreq.html'>docfreq</a></code> calls; default is 10</p></td>
+      <td><p>the base for the logarithms in the <code><a href='dfm_weight.html'>dfm_weight()</a></code> and
+<code><a href='docfreq.html'>docfreq()</a></code> calls; default is 10</p></td>
     </tr>
     <tr>
       <th>force</th>
       <td><p>logical; if <code>TRUE</code>, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
 weighting by <code>"prop"</code> after applying <code>"logcount"</code>, or after
-having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.</p></td>
+having grouped a dfm using <code><a href='dfm_group.html'>dfm_group()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -263,22 +262,18 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>dfm_tfidf</code> computes term frequency-inverse document frequency
-  weighting.  The default is to use counts instead of normalized term
-  frequency (the relative term frequency within document), but this
-  can be overridden using <code>scheme_tf = "prop"</code>.</p>
+weighting.  The default is to use counts instead of normalized term
+frequency (the relative term frequency within document), but this
+can be overridden using <code>scheme_tf = "prop"</code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Manning, C. D., Raghavan, P., &amp; Schütze, H. (2008). 
-  <em>Introduction to Information Retrieval</em>. Cambridge: Cambridge University Press.
-  <a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='dfm_weight.html'>dfm_weight</a></code>, <code><a href='docfreq.html'>docfreq</a></code></p></div>
+    <p>Manning, C. D., Raghavan, P., &amp; Schütze, H. (2008).
+<em>Introduction to Information Retrieval</em>. Cambridge: Cambridge University Press.
+<a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='no'>data_dfm_lbgexample</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat1</span>[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
 #&gt;   R1 45 78 115 146 158 146
@@ -287,7 +282,6 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
 #&gt;   R4  0  0   0   0   0   0
 #&gt;   R5  0  0   0   0   0   0
 #&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat1</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs        E          F         G        H        I        J
 #&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
@@ -297,7 +291,6 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
 #&gt;   R5  0        0          0         0        0        0      
 #&gt;   V1  0        0          0         0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>dfmat1</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; E F G H I J K L M N O 
 #&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='no'>dfmat1</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
 #&gt;   R1 45 78 115 146 158 146
@@ -316,13 +309,11 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
                                         <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='as.dfm.html'>as.dfm</a></span>()
 <span class='no'>dfmat2</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
 #&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>dfmat2</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
 #&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;            features
 #&gt; docs        this is    a sample another example
 #&gt;   document1    0  0 0.12   0.06    0       0   
@@ -330,7 +321,7 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># comparison with tm</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>)) {
-    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()
     <span class='co'># same as:</span>
     <span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat2</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
 }
@@ -342,7 +333,6 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
       <li><a href="#references">References</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -352,7 +342,7 @@ having grouped a dfm using <code><a href='dfm_group.html'>dfm_group</a></code>.<
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -346,7 +346,7 @@ These steps don’t necessarily require the processing steps above.
 <h2 class="hasAnchor">
 <a href="#dfm-the-swiss-army-knife" class="anchor"></a>dfm, the Swiss Army knife</h2>
 <p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code><a href="../../reference/dfm.html">dfm()</a></code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available in <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
-<p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
+<p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code><a href="../../reference/pipe.html">%&gt;%</a></code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(mycorpus, <span class="dt">group =</span> <span class="st">"party"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="st">    </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -390,7 +390,7 @@ These steps don’t necessarily require the processing steps above.
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

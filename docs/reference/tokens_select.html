@@ -44,14 +44,13 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Select or remove tokens from a tokens object — tokens_select" />
-<meta property="og:description" content="These function select or discard tokens from a tokens objects.  For 
-convenience, the functions tokens_remove and tokens_keep 
-are defined as shortcuts for 
-tokens_select(x, pattern, selection = &quot;remove&quot;) and tokens_select(x, pattern, selection = &quot;keep&quot;), 
-respectively.  The most common 
-usage for tokens_remove will be to eliminate stop words from a text or
-text-based object, while the most common use of tokens_select will be 
-to select tokens with only positive pattern matches from a list of regular 
+<meta property="og:description" content="These function select or discard tokens from a tokens objects.  For
+convenience, the functions tokens_remove and tokens_keep are defined as
+shortcuts for tokens_select(x, pattern, selection = &quot;remove&quot;) and
+tokens_select(x, pattern, selection = &quot;keep&quot;), respectively.  The most
+common usage for tokens_remove will be to eliminate stop words from a text
+or text-based object, while the most common use of tokens_select will be to
+select tokens with only positive pattern matches from a list of regular
 expressions, including a dictionary." />
 <meta name="twitter:card" content="summary" />
 
@@ -95,7 +94,7 @@ expressions, including a dictionary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -218,14 +217,13 @@ expressions, including a dictionary." />
     </div>
 
     <div class="ref-description">
-    <p>These function select or discard tokens from a <a href='tokens.html'>tokens</a> objects.  For 
-convenience, the functions <code>tokens_remove</code> and <code>tokens_keep</code> 
-are defined as shortcuts for 
-<code>tokens_select(x, pattern, selection = "remove")</code> and <code>tokens_select(x, pattern, selection = "keep")</code>, 
-respectively.  The most common 
-usage for <code>tokens_remove</code> will be to eliminate stop words from a text or
-text-based object, while the most common use of <code>tokens_select</code> will be 
-to select tokens with only positive pattern matches from a list of regular 
+    <p>These function select or discard tokens from a <a href='tokens.html'>tokens</a> objects.  For
+convenience, the functions <code>tokens_remove</code> and <code>tokens_keep</code> are defined as
+shortcuts for <code>tokens_select(x, pattern, selection = "remove")</code> and
+<code>tokens_select(x, pattern, selection = "keep")</code>, respectively.  The most
+common usage for <code>tokens_remove</code> will be to eliminate stop words from a text
+or text-based object, while the most common use of <code>tokens_select</code> will be to
+select tokens with only positive pattern matches from a list of regular
 expressions, including a dictionary.</p>
     </div>
 
@@ -239,6 +237,8 @@ expressions, including a dictionary.</p>
   <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startpos</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>endpos</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>)
 )
 
@@ -261,38 +261,39 @@ details.</p></td>
     </tr>
     <tr>
       <th>selection</th>
-      <td><p>whether to <code>"keep"</code> or <code>"remove"</code> the tokens 
-matching <code>pattern</code></p></td>
+      <td><p>whether to <code>"keep"</code> or <code>"remove"</code> the tokens matching
+<code>pattern</code></p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>padding</th>
       <td><p>if <code>TRUE</code>, leave an empty string where the removed tokens
 previously existed.  This is useful if a positional match is needed between
-the pre- and post-selected tokens, for instance if a window of adjacency 
+the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.</p></td>
     </tr>
     <tr>
       <th>window</th>
       <td><p>integer of length 1 or 2; the size of the window of tokens
-  adjacent to <code>pattern</code> that will be selected. The window is symmetric
-  unless a vector of two elements is supplied, in which case the first
-  element will be the token length of the window before <code>pattern</code>, and
-  the second will be the token length of the window after <code>pattern</code>.
-  The default is <code>0</code>, meaning that only the pattern matched token(s) are
-  selected, with no adjacent terms.</p>
+adjacent to <code>pattern</code> that will be selected. The window is symmetric
+unless a vector of two elements is supplied, in which case the first
+element will be the token length of the window before <code>pattern</code>, and
+the second will be the token length of the window after <code>pattern</code>.
+The default is <code>0</code>, meaning that only the pattern matched token(s) are
+selected, with no adjacent terms.</p>
 <p>Terms from overlapping windows are never double-counted, but simply
-  returned in the pattern match. This is because <code>tokens_select</code> never
-  redefines the document units; for this, see <code><a href='kwic.html'>kwic</a></code>.</p></td>
+returned in the pattern match. This is because <code>tokens_select</code> never
+redefines the document units; for this, see <code><a href='kwic.html'>kwic()</a></code>.</p></td>
     </tr>
     <tr>
       <th>min_nchar, max_nchar</th>
@@ -302,9 +303,16 @@ maximum length in characters for tokens to be removed or kept; defaults are
 to) any selection based on pattern matches.</p></td>
     </tr>
     <tr>
+      <th>startpos, endpos</th>
+      <td><p>integer; position of tokens in documents where pattern
+matching starts and ends, where 1 is the first token in a document.  For
+negative indexes, counting starts at the ending token of the document, so
+that -1 denotes the last token in the document, -2 the second to last, etc.</p></td>
+    </tr>
+    <tr>
       <th>verbose</th>
-      <td><p>if <code>TRUE</code> print messages about how many tokens were 
-selected or removed</p></td>
+      <td><p>if <code>TRUE</code> print messages about how many tokens were selected
+or removed</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -317,31 +325,31 @@ selected or removed</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <a href='tokens.html'>tokens</a> object with tokens selected or removed based on their
-  match to <code>pattern</code></p>
+match to <code>pattern</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## tokens_select with simple examples</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"This is a sentence."</span>, <span class='st'>"This is a second sentence."</span>),
                  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "This" "is"   "a"   
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "This" "is"   "a"   
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "This" "is"   "a"    ""    
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "This" "is"   "a"    ""     ""    
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "sentence"
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "second"   "sentence"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] ""         ""         ""         "sentence"
 #&gt; 
@@ -349,13 +357,13 @@ selected or removed</p></td>
 #&gt; [1] ""         ""         ""         "second"   "sentence"
 #&gt; </div><div class='input'>
 <span class='co'># how case_insensitive works</span>
-<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "sentence"
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "second"   "sentence"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "This"     "sentence"
 #&gt; 
@@ -363,19 +371,19 @@ selected or removed</p></td>
 #&gt; [1] "This"     "second"   "sentence"
 #&gt; </div><div class='input'>
 <span class='co'># use window</span>
-<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='st'>"second"</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='st'>"second"</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; character(0)
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "a"        "second"   "sentence"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='st'>"second"</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='st'>"second"</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "This"     "is"       "a"        "sentence"
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "This" "is"  
-#&gt; </div><div class='input'><span class='fu'>tokens_remove</span>(<span class='no'>toks</span>, <span class='st'>"is"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_remove</span>(<span class='no'>toks</span>, <span class='st'>"is"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "This"     "sentence"
 #&gt; 
@@ -386,7 +394,7 @@ selected or removed</p></td>
                    execute the functions of its Chief Magistrate."</span>,
          <span class='no'>wash2</span> <span class='kw'>&lt;-</span> <span class='st'>"When the occasion proper for it shall arrive, I shall endeavor to express
                    the high sense I entertain of this distinguished honor."</span>)
-<span class='fu'>tokens_remove</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_remove</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "Fellow"     "citizens"   "called"     "upon"       "voice"     
 #&gt;  [6] "country"    "execute"    "functions"  "Chief"      "Magistrate"
@@ -397,7 +405,7 @@ selected or removed</p></td>
 #&gt;  [9] "sense"         "entertain"     "distinguished" "honor"        
 #&gt; </div><div class='input'>
 <span class='co'># token_keep example: keep two-letter words</span>
-<span class='fu'>tokens_keep</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='st'>"??"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_keep</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='st'>"??"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "am" "by" "of" "my" "to" "of"
 #&gt; 
@@ -419,7 +427,7 @@ selected or removed</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

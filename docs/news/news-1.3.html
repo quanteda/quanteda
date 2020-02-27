@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -210,9 +210,9 @@
 <h1 class="page-header">
 <a href="#quanteda-130" class="anchor"></a>quanteda 1.3.0<small> 2018-06-05 </small>
 </h1>
-<div id="new-features-7" class="section level2">
+<div id="new-features-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-7" class="anchor"></a>New Features</h2>
+<a href="#new-features-8" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code>to = "tripletlist"</code> output type for <code><a href="../reference/convert.html">convert()</a></code>, to convert a dfm into a simple triplet list. (#1321)</li>
 <li>Added <code><a href="../reference/tokens_tortl.html">tokens_tortl()</a></code> and <code><a href="../reference/tokens_tortl.html">char_tortl()</a></code> to add markers for right-to-left language tokens and character objects. (#1322)</li>
@@ -225,14 +225,14 @@
 <li>Improved <code><a href="../reference/corpus.html">corpus.kwic()</a></code> by adding new arguments <code>split_context</code> and <code>extract_keyword</code>.</li>
 <li>
 <code><a href="../reference/dfm_select.html">dfm_remove(x, selection = anydfm)</a></code> is now equivalent to <code><a href="../reference/dfm_select.html">dfm_remove(x, selection = featnames(anydfm))</a></code>. (#1320)</li>
-<li>Improved consistency of <code><a href="../reference/predict.textmodel_nb.html">predict.textmodel_nb()</a></code> returns, and added <code>type =</code> argument. (#1329)</li>
+<li>Improved consistency of <code>predict.textmodel_nb()</code> returns, and added <code>type =</code> argument. (#1329)</li>
 </ul>
 </div>
 <div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed a bug in <code><a href="../reference/textmodel_affinity.html">textmodel_affinity()</a></code> that caused failure when the input dfm had been compiled with <code>tolower = FALSE</code>. (#1338)</li>
+<li>Fixed a bug in <code>textmodel_affinity()</code> that caused failure when the input dfm had been compiled with <code>tolower = FALSE</code>. (#1338)</li>
 <li>Fixed a bug affecting <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> when <code>nomatch</code> is used. (#1347)</li>
 <li>Fixed a problem whereby NA texts created a “document” (or tokens) containing <code>"NA"</code> (#1372)</li>
 </ul>
@@ -259,9 +259,9 @@
 <code><a href="../reference/corpus.html">corpus.data.frame()</a></code> is now robust to handling data.frame inputs with improper or missing variable names (#1388).</li>
 </ul>
 </div>
-<div id="new-features-6" class="section level2">
+<div id="new-features-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-6" class="anchor"></a>New Features</h2>
+<a href="#new-features-7" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code><a href="../reference/textplot_network.html">as.igraph.fcm()</a></code> method for converting an fcm object into an <strong>igraph</strong> graph object.</li>
 <li>Added a <code>case_insensitive</code> argument to <code><a href="../reference/corpus_segment.html">char_segment()</a></code> and <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>.</li>
@@ -282,13 +282,13 @@
 <li>Add error checking for functions taking dfm inputs in case a dfm has empty features (#1419).</li>
 <li>For <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>, fixed a bug in Dale-Chall-based measures and in the Spache word list measure. These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists. The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (#1410)</li>
 <li>Fixed problems with basic dfm operations (<code><a href="https://rdrr.io/r/base/colSums.html">rowMeans()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html">rowSums()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html">colMeans()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html">colSums()</a></code>) caused by not having access to the <strong>Matrix</strong> package methods. (#1428)</li>
-<li>Fixed problem in <code><a href="../reference/textplot_scale1d.html">textplot_scale1d()</a></code> when input a predicted wordscores object with <code>se.fit = TRUE</code> (#1440).</li>
+<li>Fixed problem in <code>textplot_scale1d()</code> when input a predicted wordscores object with <code>se.fit = TRUE</code> (#1440).</li>
 <li>Improved the stability of <code><a href="../reference/textplot_network.html">textplot_network()</a></code>. (#1460)</li>
 </ul>
 </div>
-<div id="new-features-5" class="section level2">
+<div id="new-features-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-5" class="anchor"></a>New Features</h2>
+<a href="#new-features-6" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added new argument <code>intermediate</code> to <code><a href="../reference/textstat_readability.html">textstat_readability(x, measure, intermediate = FALSE)</a></code>, which if <code>TRUE</code> returns intermediate quantities used in the computation of readability statistics. Useful for verification or direct use of the intermediate quantities.</li>
 <li>Added a new <code>separator</code> argument to <code><a href="../reference/kwic.html">kwic()</a></code> to allow a user to define which characters will be added between tokens returned from a keywords in context search. (#1449)</li>
@@ -318,9 +318,9 @@
 <li>Diagonals on a <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> return object coerced to matrix now default to 1.0, rather than 0.0 (#1494).</li>
 </ul>
 </div>
-<div id="new-features-4" class="section level2">
+<div id="new-features-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-4" class="anchor"></a>New Features</h2>
+<a href="#new-features-5" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added the following measures to <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>: Yule’s <em>K</em>, Simpson’s <em>D</em>, and Herdan’s <em>Vm</em>.</li>
 </ul>
@@ -345,7 +345,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

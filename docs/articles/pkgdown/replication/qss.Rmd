@@ -95,7 +95,7 @@ We can use the `textplot_wordcloud()` function to plot word clouds of the most f
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 set.seed(100)
 textplot_wordcloud(dfm_papers[c("No. 12", "No. 24"), ], 
-                   max.words = 50, comparison = TRUE)
+                   max_words = 50, comparison = TRUE)
 ```
 
 Since **quanteda** cannot do stem completion, we will skip that part.

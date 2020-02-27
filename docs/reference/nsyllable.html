@@ -45,15 +45,15 @@
 
 <meta property="og:title" content="Count syllables in a text — nsyllable" />
 <meta property="og:description" content="Returns a count of the number of syllables in texts. For English
-  words, the syllable count is exact and looked up from the CMU pronunciation
-  dictionary, from the default syllable dictionary data_int_syllables. 
-  For any word not in the dictionary, the syllable count is estimated by 
-  counting vowel clusters.  
-data_int_syllables is a quanteda-supplied data object consisting of a 
-  named numeric vector of syllable counts for the words used as names.  This 
-  is the default object used to count English syllables.  This object that 
-  can be accessed directly, but we strongly encourage you to access it only 
-  through the nsyllable() wrapper function." />
+words, the syllable count is exact and looked up from the CMU pronunciation
+dictionary, from the default syllable dictionary data_int_syllables.
+For any word not in the dictionary, the syllable count is estimated by
+counting vowel clusters.
+data_int_syllables is a quanteda-supplied data object consisting of a
+named numeric vector of syllable counts for the words used as names.  This
+is the default object used to count English syllables.  This object that
+can be accessed directly, but we strongly encourage you to access it only
+through the nsyllable() wrapper function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -96,7 +96,7 @@ data_int_syllables is a quanteda-supplied data object consisting of a
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -220,15 +220,15 @@ data_int_syllables is a quanteda-supplied data object consisting of a
 
     <div class="ref-description">
     <p>Returns a count of the number of syllables in texts. For English
-  words, the syllable count is exact and looked up from the CMU pronunciation
-  dictionary, from the default syllable dictionary <code>data_int_syllables</code>. 
-  For any word not in the dictionary, the syllable count is estimated by 
-  counting vowel clusters.</p>  
-<p><code>data_int_syllables</code> is a quanteda-supplied data object consisting of a 
-  named numeric vector of syllable counts for the words used as names.  This 
-  is the default object used to count English syllables.  This object that 
-  can be accessed directly, but we strongly encourage you to access it only 
-  through the <code>nsyllable()</code> wrapper function.</p>
+words, the syllable count is exact and looked up from the CMU pronunciation
+dictionary, from the default syllable dictionary <code>data_int_syllables</code>.
+For any word not in the dictionary, the syllable count is estimated by
+counting vowel clusters.</p>
+<p><code>data_int_syllables</code> is a quanteda-supplied data object consisting of a
+named numeric vector of syllable counts for the words used as names.  This
+is the default object used to count English syllables.  This object that
+can be accessed directly, but we strongly encourage you to access it only
+through the <code>nsyllable()</code> wrapper function.</p>
     </div>
 
     <pre class="usage"><span class='fu'>nsyllable</span>(
@@ -242,41 +242,41 @@ data_int_syllables is a quanteda-supplied data object consisting of a
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>character vector or <code>tokens</code> object  whose 
-syllables will be counted.  This will count all syllables in a character 
-vector without regard to separating tokens, so it is recommended that x be 
+      <td><p>character vector or <code>tokens</code> object  whose
+syllables will be counted.  This will count all syllables in a character
+vector without regard to separating tokens, so it is recommended that x be
 individual terms.</p></td>
     </tr>
     <tr>
       <th>syllable_dictionary</th>
-      <td><p>optional named integer vector of syllable counts where 
-the names are lower case tokens.  When set to <code>NULL</code> (default), then 
-the function will use the quanteda data object <code>data_int_syllables</code>, an 
+      <td><p>optional named integer vector of syllable counts where
+the names are lower case tokens.  When set to <code>NULL</code> (default), then
+the function will use the quanteda data object <code>data_int_syllables</code>, an
 English pronunciation dictionary from CMU.</p></td>
     </tr>
     <tr>
       <th>use.names</th>
-      <td><p>logical; if <code>TRUE</code>, assign the tokens as the names of 
+      <td><p>logical; if <code>TRUE</code>, assign the tokens as the names of
 the syllable count vector</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>x</code> is a character vector, a named numeric vector of the 
-  counts of the syllables in each element.  If <code>x</code> is a <a href='tokens.html'>tokens</a>
-  object, return a list of syllable counts where each list element corresponds
-  to the tokens in a document.</p>
+    <p>If <code>x</code> is a character vector, a named numeric vector of the
+counts of the syllables in each element.  If <code>x</code> is a <a href='tokens.html'>tokens</a>
+object, return a list of syllable counts where each list element corresponds
+to the tokens in a document.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>All tokens are automatically converted to lowercase to perform the
-  matching with the syllable dictionary, so there is no need to perform this
-  step prior to calling <code>nsyllable()</code>.</p>
-<p>`nsyllable()` only works reliably for English, as the only syllable count
-  dictionary we could find is the freely available CMU pronunciation
-  dictionary at <code>http://www.speech.cs.cmu.edu/cgi-bin/cmudict</code>.  If you
-  have a dictionary for another language, please email the package
-  maintainer as we would love to include it.</p>
+matching with the syllable dictionary, so there is no need to perform this
+step prior to calling <code>nsyllable()</code>.</p>
+<p><code>nsyllable()</code> only works reliably for English, as the only syllable count
+dictionary we could find is the freely available CMU pronunciation
+dictionary at <code>http://www.speech.cs.cmu.edu/cgi-bin/cmudict</code>.  If you
+have a dictionary for another language, please email the package
+maintainer as we would love to include it.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># character</span>
@@ -320,7 +320,7 @@ the syllable count vector</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

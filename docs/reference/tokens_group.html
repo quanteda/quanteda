@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -213,7 +213,7 @@
     <p>Recombine documents tokens by groups</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>tokens_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,9 +224,10 @@
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+      <td><p>either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
+<code>NA</code> values of the grouping value are dropped.
 See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     </table>
@@ -237,27 +238,24 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 <span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span>),
                    <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; grp1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; grp2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; 1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; 2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='https://quanteda.io/reference/tokens_group.html'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; 1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; 2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; 
-#&gt; 3 :
-#&gt; character(0)
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -273,7 +271,7 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

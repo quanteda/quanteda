@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -210,9 +210,9 @@
 <h1 class="page-header">
 <a href="#quanteda-099-17" class="anchor"></a>quanteda 0.9.9-17<small> 2017-01-27 </small>
 </h1>
-<div id="new-features-17" class="section level2">
+<div id="new-features-18" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-17" class="anchor"></a>New features</h2>
+<a href="#new-features-18" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
@@ -254,9 +254,9 @@
 <li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).</li>
 </ul>
 </div>
-<div id="new-features-18" class="section level2">
+<div id="new-features-19" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-18" class="anchor"></a>New features</h2>
+<a href="#new-features-19" class="anchor"></a>New features</h2>
 <ul>
 <li>New textstat function <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br>
 </li>
@@ -399,7 +399,7 @@
 <tbody>
 <tr class="odd">
 <td align="left"><code>tokens</code></td>
-<td align="left"><code>tokenize()</code></td>
+<td align="left"><code><a href="../reference/tokenize_internal.html">tokenize()</a></code></td>
 <td align="left">
 <code>tokens</code> class object</td>
 </tr>
@@ -733,9 +733,9 @@
 <h1 class="page-header">
 <a href="#quanteda-099-24" class="anchor"></a>quanteda 0.9.9-24<small> 2017-02-13 </small>
 </h1>
-<div id="new-features-16" class="section level2">
+<div id="new-features-17" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-16" class="anchor"></a>New features</h2>
+<a href="#new-features-17" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> can now go from sentences and paragraph units back to documents.</li>
@@ -747,7 +747,7 @@
 <code><a href="../reference/docvars.html">docvars()</a></code> on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).</li>
 <li>Redesigned <code>textmodel_scale1d</code> now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.</li>
 <li>
-<code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (#482, #124)</li>
+<code>textmodel_wordfish()</code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (#482, #124)</li>
 <li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)</li>
 <li>Package options (for verbose, threads) can now be set or queried using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</li>
 <li>Improved performance and better documentation for <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>. (#634)</li>
@@ -795,9 +795,9 @@
 <h1 class="page-header">
 <a href="#quanteda-099-50" class="anchor"></a>quanteda 0.9.9-50<small> 2017-04-20 </small>
 </h1>
-<div id="new-features-15" class="section level2">
+<div id="new-features-16" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-15" class="anchor"></a>New features</h2>
+<a href="#new-features-16" class="anchor"></a>New features</h2>
 <ul>
 <li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code><a href="https://rdrr.io/pkg/tm/man/SimpleCorpus.html">tm::SimpleCorpus</a></code> object. (#680)</li>
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
@@ -841,9 +841,9 @@
 <h1 class="page-header">
 <a href="#quanteda-099-65" class="anchor"></a>quanteda 0.9.9-65<small> 2017-05-26 </small>
 </h1>
-<div id="new-features-14" class="section level2">
+<div id="new-features-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-14" class="anchor"></a>New features</h2>
+<a href="#new-features-15" class="anchor"></a>New features</h2>
 <ul>
 <li>Improvements and consolidation of methods for detecting multi-word expressions, now active only through <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (#753, #803). This function is still under development and likely to change further.</li>
 <li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (#756).</li>
@@ -923,7 +923,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

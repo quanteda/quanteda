@@ -6,9 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Virtual class "fcm" for a feature co-occurrence matrix
-The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
-additional slots, described below. — fcm-class • quanteda</title>
+<title>Virtual class "fcm" for a feature co-occurrence matrix — fcm-class • quanteda</title>
 
 
 <!-- jquery -->
@@ -45,11 +43,8 @@ additional slots, described below. — fcm-class • quanteda</title>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Virtual class "fcm" for a feature co-occurrence matrix
-The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
-additional slots, described below. — fcm-class" />
-<meta property="og:description" content="Virtual class &quot;fcm&quot; for a feature co-occurrence matrix
-The fcm class of object is a special type of fcm object with
+<meta property="og:title" content="Virtual class "fcm" for a feature co-occurrence matrix — fcm-class" />
+<meta property="og:description" content="The fcm class of object is a special type of fcm object with
 additional slots, described below." />
 <meta name="twitter:card" content="summary" />
 
@@ -93,7 +88,7 @@ additional slots, described below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -210,16 +205,13 @@ additional slots, described below." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Virtual class "fcm" for a feature co-occurrence matrix
-The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
-additional slots, described below.</h1>
+    <h1>Virtual class "fcm" for a feature co-occurrence matrix</h1>
     
     <div class="hidden name"><code>fcm-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Virtual class "fcm" for a feature co-occurrence matrix
-The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
+    <p>The fcm class of object is a special type of <a href='fcm.html'>fcm</a> object with
 additional slots, described below.</p>
     </div>
 
@@ -306,7 +298,7 @@ Arith(e1, e2)
 
 <dt><code>tri</code></dt><dd><p>whether the lower triangle of the symmetric \(V \times V\) matrix is recorded</p></dd>
 
-<dt><code>ordered</code></dt><dd><p>whether a term appears before or after the target feature 
+<dt><code>ordered</code></dt><dd><p>whether a term appears before or after the target feature
 are counted separately</p></dd>
 
 </dl>
@@ -320,13 +312,12 @@ are counted separately</p></dd>
                   <span class='st'>"no if, and, or but about it: lots"</span>),
                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>fcmat</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
-#&gt; 3 x 12 sparse Matrix of class "fcm"
 #&gt;           features
-#&gt; features   this contains lots of stopwords no if and or but about it
-#&gt;   this        0        1    1  1         1  0  0   0  0   0     0  0
-#&gt;   contains    0        0    1  1         1  0  0   0  0   0     0  0
-#&gt;   lots        0        0    0  1         1  1  1   1  1   1     1  1</div><div class='input'><span class='no'>fcmat</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
-#&gt; 2 x 5 sparse Matrix of class "fcm"
+#&gt; features   this contains lots of stopwords no if and or but
+#&gt;   this        0        1    1  1         1  0  0   0  0   0
+#&gt;   contains    0        0    1  1         1  0  0   0  0   0
+#&gt;   lots        0        0    0  1         1  1  1   1  1   1
+#&gt; [ reached max_nfeat ... 2 more features ]</div><div class='input'><span class='no'>fcmat</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
 #&gt;            features
 #&gt; features    this contains lots of stopwords
 #&gt;   of           0        0    0  0         1
@@ -349,7 +340,7 @@ are counted separately</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

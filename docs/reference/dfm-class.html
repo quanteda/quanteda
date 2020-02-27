@@ -91,7 +91,7 @@ then a dfmDense object.  See Details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -311,23 +311,22 @@ the calculations</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>dfm</code> class is a virtual class that will contain
-  <a href='https://rdrr.io/pkg/Matrix/man/dgCMatrix-class.html'>dgCMatrix-class</a>.</p>
+<a href='https://rdrr.io/pkg/Matrix/man/dgCMatrix-class.html'>dgCMatrix-class</a>.</p>
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
 
 <dl class='dl-horizontal'>
-<dt><code>settings</code></dt><dd><p>settings that govern corpus handling and subsequent downstream
-operations, including the settings used to clean and tokenize the texts,
-and to create the dfm.  See <code><a href='settings.html'>settings</a></code>.</p></dd>
-
-<dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is
+<dt><code>weightTf</code></dt><dd><p>the type of term frequency weighting applied to the dfm.  Default is
 <code>"frequency"</code>, indicating that the values in the cells of the dfm are
-simple feature counts. To change this, use the <code><a href='dfm_weight.html'>dfm_weight</a></code>
+simple feature counts. To change this, use the <code><a href='dfm_weight.html'>dfm_weight()</a></code>
 method.</p></dd>
 
+<dt><code>weightFf</code></dt><dd><p>the type of document frequency weighting applied to the dfm. See
+<code><a href='docfreq.html'>docfreq()</a></code>.</p></dd>
+
 <dt><code>smooth</code></dt><dd><p>a smoothing parameter, defaults to zero.  Can be changed using
-the <code><a href='dfm_weight.html'>dfm_smooth</a></code> method.</p></dd>
+the <code><a href='dfm_weight.html'>dfm_smooth()</a></code> method.</p></dd>
 
 <dt><code>Dimnames</code></dt><dd><p>These are inherited from <a href='https://rdrr.io/pkg/Matrix/man/Matrix-class.html'>Matrix-class</a> but are
 named <code>docs</code> and <code>features</code> respectively.</p></dd>
@@ -344,16 +343,11 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
                   <span class='st'>"and a third document is it"</span>),
                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>dfmat</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (59.4% sparse).
-#&gt; 2 x 16 sparse Matrix of class "dfm"
 #&gt;        features
-#&gt; docs    this contains lots of stopwords no if and or but about it a third
-#&gt;   text1    1        1    1  1         1  0  0   0  0   0     0  0 0     0
-#&gt;   text2    0        0    1  0         0  1  1   1  1   1     1  1 0     0
-#&gt;        features
-#&gt; docs    document is
-#&gt;   text1        0  0
-#&gt;   text2        0  0</div><div class='input'><span class='no'>dfmat</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfm"
+#&gt; docs    this contains lots of stopwords no if and or but
+#&gt;   text1    1        1    1  1         1  0  0   0  0   0
+#&gt;   text2    0        0    1  0         0  1  1   1  1   1
+#&gt; [ reached max_nfeat ... 6 more features ]</div><div class='input'><span class='no'>dfmat</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
 #&gt;        features
 #&gt; docs    this contains lots of stopwords
 #&gt;   text1    1        1    1  1         1
@@ -375,7 +369,7 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

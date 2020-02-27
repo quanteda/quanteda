@@ -88,7 +88,7 @@ valuetype pattern." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -230,28 +230,28 @@ details.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>pattern</code> argument is a vector of patterns, including
-  sequences, to match in a target object, whose match type is specified by
-  <code><a href='valuetype.html'>valuetype</a></code>. Note that an empty pattern (<code>""</code>) will match
-  "padding" in a <a href='tokens.html'>tokens</a> object.</p><dl class='dl-horizontal'>
-  <dt><code>character</code></dt><dd><p>A character vector of token patterns to be selected
-  or removed. Whitespace is not privileged, so that in a character vector,
-  white space is interpreted literally. If you wish to consider
-  whitespace-separated elements as sequences of tokens, wrap the argument in
-  <code><a href='phrase.html'>phrase</a></code>.</p></dd>
-  <dt><code>list of character objects</code></dt><dd><p>If the list elements are character
-  vectors of length 1, then this is equivalent to a vector of characters.  If
-  a list element contains a vector of characters longer than length 1, then
-  for matching will consider these as sequences of matches, equivalent to
-  wrapping the argument in <code><a href='phrase.html'>phrase</a></code>, except for matching to
-  <a href='dfm.html'>dfm</a> features where this does not apply.</p></dd>
-  <dt><code>dictionary</code></dt><dd><p>Values in <a href='dictionary.html'>dictionary</a> are used as patterns,
-  for literal matches. Multi-word values are automatically converted into
-  phrases, so performing selection or compounding using a dictionary is the
-  same as wrapping the dictionary in <code><a href='phrase.html'>phrase</a></code>.</p></dd>
-  <dt><code>collocations</code></dt><dd><p>Collocations objects created from
-  <code><a href='textstat_collocations.html'>textstat_collocations</a></code>, which are treated as phrases
-  automatically.</p></dd>
-  
+sequences, to match in a target object, whose match type is specified by
+<code><a href='valuetype.html'>valuetype()</a></code>. Note that an empty pattern (<code>""</code>) will match
+"padding" in a <a href='tokens.html'>tokens</a> object.</p><dl class='dl-horizontal'>
+<dt><code>character</code></dt><dd><p>A character vector of token patterns to be selected
+or removed. Whitespace is not privileged, so that in a character vector,
+white space is interpreted literally. If you wish to consider
+whitespace-separated elements as sequences of tokens, wrap the argument in
+<code><a href='phrase.html'>phrase()</a></code>.</p></dd>
+<dt><code>list of character objects</code></dt><dd><p>If the list elements are character
+vectors of length 1, then this is equivalent to a vector of characters.  If
+a list element contains a vector of characters longer than length 1, then
+for matching will consider these as sequences of matches, equivalent to
+wrapping the argument in <code><a href='phrase.html'>phrase()</a></code>, except for matching to
+<a href='dfm.html'>dfm</a> features where this does not apply.</p></dd>
+<dt><code>dictionary</code></dt><dd><p>Values in <a href='dictionary.html'>dictionary</a> are used as patterns,
+for literal matches. Multi-word values are automatically converted into
+phrases, so performing selection or compounding using a dictionary is the
+same as wrapping the dictionary in <code><a href='phrase.html'>phrase()</a></code>.</p></dd>
+<dt><code>collocations</code></dt><dd><p>Collocations objects created from
+<code><a href='textstat_collocations.html'>textstat_collocations()</a></code>, which are treated as phrases
+automatically.</p></dd>
+
 </dl>
 
 
@@ -290,7 +290,7 @@ details.</p></td>
 #&gt; [[3]]
 #&gt; [1] "house"           "of"              "representatives"
 #&gt; </div><div class='input'>
-<span class='co'># glob expression can be used </span>
+<span class='co'># glob expression can be used</span>
 <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president?"</span>, <span class='st'>"white house"</span>, <span class='st'>"house * representatives"</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president?"
 #&gt; 
@@ -337,7 +337,7 @@ details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

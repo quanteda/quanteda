@@ -44,7 +44,7 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Remove sentences based on their token lengths or a pattern match — corpus_trimsentences" />
-<meta property="og:description" content="Removes sentences from a corpus or a character vector shorter than a 
+<meta property="og:description" content="Removes sentences from a corpus or a character vector shorter than a
 specified length." />
 <meta name="twitter:card" content="summary" />
 
@@ -88,7 +88,7 @@ specified length." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -211,7 +211,7 @@ specified length." />
     </div>
 
     <div class="ref-description">
-    <p>Removes sentences from a corpus or a character vector shorter than a 
+    <p>Removes sentences from a corpus or a character vector shorter than a
 specified length.</p>
     </div>
 
@@ -239,7 +239,7 @@ specified length.</p>
     </tr>
     <tr>
       <th>min_length, max_length</th>
-      <td><p>minimum and maximum lengths in word tokens 
+      <td><p>minimum and maximum lengths in word tokens
 (excluding punctuation)</p></td>
     </tr>
     <tr>
@@ -258,13 +258,13 @@ removed.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <a href='corpus.html'>corpus</a> or character vector equal in length to the input, or
-  a tokenized set of sentences if .  If the input was a corpus, then the all
-  docvars and metadata are preserved.  For documents whose sentences have
-  been removed entirely, a null string (<code>""</code>) will be returned.</p>
+a tokenized set of sentences if .  If the input was a corpus, then the all
+docvars and metadata are preserved.  For documents whose sentences have
+been removed entirely, a null string (<code>""</code>) will be returned.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This function has been superseded by <code><a href='corpus_trim.html'>corpus_trim</a></code>; use
-  that function instead.</p>
+    <p>This function has been superseded by <code><a href='corpus_trim.html'>corpus_trim()</a></code>; use
+that function instead.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PAGE 1. A single sentence.  Short sentence. Three word sentence."</span>,
@@ -317,7 +317,7 @@ removed.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

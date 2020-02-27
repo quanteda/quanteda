@@ -88,7 +88,7 @@ possibility of overlapping the chunks." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -244,10 +244,10 @@ if <code>FALSE</code>, drop the docvars in the chunked tokens</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='tokens.html'>tokens</a> object whose documents have been split into chunks of
-  length <code>size</code>.</p>
+length <code>size</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='tokens_segment.html'>tokens_segment</a></code></p></div>
+    <div class='dont-index'><p><code><a href='tokens_segment.html'>tokens_segment()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of
@@ -256,7 +256,7 @@ if <code>FALSE</code>, drop the docvars in the chunked tokens</p></td>
                   endeavor to express the high sense I entertain of this
                   distinguished honor."</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txts</span>)
-<span class='fu'>tokens_chunk</span>(<span class='no'>toks</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; tokens from 10 documents.
+<span class='fu'>tokens_chunk</span>(<span class='no'>toks</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Tokens consisting of 10 documents.
 #&gt; doc1.1 :
 #&gt; [1] "Fellow"   "citizens" ","        "I"        "am"      
 #&gt; 
@@ -275,18 +275,7 @@ if <code>FALSE</code>, drop the docvars in the chunked tokens</p></td>
 #&gt; doc2.1 :
 #&gt; [1] "When"     "the"      "occasion" "proper"   "for"     
 #&gt; 
-#&gt; doc2.2 :
-#&gt; [1] "it"     "shall"  "arrive" ","      "I"     
-#&gt; 
-#&gt; doc2.3 :
-#&gt; [1] "shall"    "endeavor" "to"       "express"  "the"     
-#&gt; 
-#&gt; doc2.4 :
-#&gt; [1] "high"      "sense"     "I"         "entertain" "of"       
-#&gt; 
-#&gt; doc2.5 :
-#&gt; [1] "this"          "distinguished" "honor"         "."            
-#&gt; </div><div class='input'><span class='fu'>tokens_chunk</span>(<span class='no'>toks</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>overlap</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; tokens from 47 documents.
+#&gt; [ reached max_ndoc ... 4 more documents ]</div><div class='input'><span class='fu'>tokens_chunk</span>(<span class='no'>toks</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>overlap</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Tokens consisting of 47 documents.
 #&gt; doc1.1 :
 #&gt; [1] "Fellow"   "citizens" ","        "I"        "am"      
 #&gt; 
@@ -305,132 +294,7 @@ if <code>FALSE</code>, drop the docvars in the chunked tokens</p></td>
 #&gt; doc1.6 :
 #&gt; [1] "again"  "called" "upon"   "by"     "the"   
 #&gt; 
-#&gt; doc1.7 :
-#&gt; [1] "called" "upon"   "by"     "the"    "voice" 
-#&gt; 
-#&gt; doc1.8 :
-#&gt; [1] "upon"  "by"    "the"   "voice" "of"   
-#&gt; 
-#&gt; doc1.9 :
-#&gt; [1] "by"    "the"   "voice" "of"    "my"   
-#&gt; 
-#&gt; doc1.10 :
-#&gt; [1] "the"     "voice"   "of"      "my"      "country"
-#&gt; 
-#&gt; doc1.11 :
-#&gt; [1] "voice"   "of"      "my"      "country" "to"     
-#&gt; 
-#&gt; doc1.12 :
-#&gt; [1] "of"      "my"      "country" "to"      "execute"
-#&gt; 
-#&gt; doc1.13 :
-#&gt; [1] "my"      "country" "to"      "execute" "the"    
-#&gt; 
-#&gt; doc1.14 :
-#&gt; [1] "country"   "to"        "execute"   "the"       "functions"
-#&gt; 
-#&gt; doc1.15 :
-#&gt; [1] "to"        "execute"   "the"       "functions" "of"       
-#&gt; 
-#&gt; doc1.16 :
-#&gt; [1] "execute"   "the"       "functions" "of"        "its"      
-#&gt; 
-#&gt; doc1.17 :
-#&gt; [1] "the"       "functions" "of"        "its"       "Chief"    
-#&gt; 
-#&gt; doc1.18 :
-#&gt; [1] "functions"  "of"         "its"        "Chief"      "Magistrate"
-#&gt; 
-#&gt; doc1.19 :
-#&gt; [1] "of"         "its"        "Chief"      "Magistrate" "."         
-#&gt; 
-#&gt; doc1.20 :
-#&gt; [1] "its"        "Chief"      "Magistrate" "."         
-#&gt; 
-#&gt; doc1.21 :
-#&gt; [1] "Chief"      "Magistrate" "."         
-#&gt; 
-#&gt; doc1.22 :
-#&gt; [1] "Magistrate" "."         
-#&gt; 
-#&gt; doc1.23 :
-#&gt; [1] "."
-#&gt; 
-#&gt; doc2.1 :
-#&gt; [1] "When"     "the"      "occasion" "proper"   "for"     
-#&gt; 
-#&gt; doc2.2 :
-#&gt; [1] "the"      "occasion" "proper"   "for"      "it"      
-#&gt; 
-#&gt; doc2.3 :
-#&gt; [1] "occasion" "proper"   "for"      "it"       "shall"   
-#&gt; 
-#&gt; doc2.4 :
-#&gt; [1] "proper" "for"    "it"     "shall"  "arrive"
-#&gt; 
-#&gt; doc2.5 :
-#&gt; [1] "for"    "it"     "shall"  "arrive" ","     
-#&gt; 
-#&gt; doc2.6 :
-#&gt; [1] "it"     "shall"  "arrive" ","      "I"     
-#&gt; 
-#&gt; doc2.7 :
-#&gt; [1] "shall"  "arrive" ","      "I"      "shall" 
-#&gt; 
-#&gt; doc2.8 :
-#&gt; [1] "arrive"   ","        "I"        "shall"    "endeavor"
-#&gt; 
-#&gt; doc2.9 :
-#&gt; [1] ","        "I"        "shall"    "endeavor" "to"      
-#&gt; 
-#&gt; doc2.10 :
-#&gt; [1] "I"        "shall"    "endeavor" "to"       "express" 
-#&gt; 
-#&gt; doc2.11 :
-#&gt; [1] "shall"    "endeavor" "to"       "express"  "the"     
-#&gt; 
-#&gt; doc2.12 :
-#&gt; [1] "endeavor" "to"       "express"  "the"      "high"    
-#&gt; 
-#&gt; doc2.13 :
-#&gt; [1] "to"      "express" "the"     "high"    "sense"  
-#&gt; 
-#&gt; doc2.14 :
-#&gt; [1] "express" "the"     "high"    "sense"   "I"      
-#&gt; 
-#&gt; doc2.15 :
-#&gt; [1] "the"       "high"      "sense"     "I"         "entertain"
-#&gt; 
-#&gt; doc2.16 :
-#&gt; [1] "high"      "sense"     "I"         "entertain" "of"       
-#&gt; 
-#&gt; doc2.17 :
-#&gt; [1] "sense"     "I"         "entertain" "of"        "this"     
-#&gt; 
-#&gt; doc2.18 :
-#&gt; [1] "I"             "entertain"     "of"            "this"         
-#&gt; [5] "distinguished"
-#&gt; 
-#&gt; doc2.19 :
-#&gt; [1] "entertain"     "of"            "this"          "distinguished"
-#&gt; [5] "honor"        
-#&gt; 
-#&gt; doc2.20 :
-#&gt; [1] "of"            "this"          "distinguished" "honor"        
-#&gt; [5] "."            
-#&gt; 
-#&gt; doc2.21 :
-#&gt; [1] "this"          "distinguished" "honor"         "."            
-#&gt; 
-#&gt; doc2.22 :
-#&gt; [1] "distinguished" "honor"         "."            
-#&gt; 
-#&gt; doc2.23 :
-#&gt; [1] "honor" "."    
-#&gt; 
-#&gt; doc2.24 :
-#&gt; [1] "."
-#&gt; </div></pre>
+#&gt; [ reached max_ndoc ... 41 more documents ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -447,7 +311,7 @@ if <code>FALSE</code>, drop the docvars in the chunked tokens</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

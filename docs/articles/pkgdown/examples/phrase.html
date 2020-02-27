@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -190,11 +190,11 @@
 <p><code><a href="../../../reference/kwic.html">kwic()</a></code> is useful to find multi-word expressions in tokens. If you are not sure if “United” and “States” are separated, check their positions (e.g. “434:435”).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword)))</a></code></pre></div>
 <pre><code>##                                                                              
-##  [1789-Washington, 434:435]            of the people of the | United States |
-##  [1789-Washington, 530:531]          more than those of the | United States |
-##       [1797-Adams, 525:526]     saw the Constitution of the | United States |
-##     [1797-Adams, 1717:1718]      to the Constitution of the | United States |
-##     [1797-Adams, 2481:2482] support the Constitution of the | United States |
+##  [1789-Washington, 433:434]            of the people of the | United States |
+##  [1789-Washington, 529:530]          more than those of the | United States |
+##       [1797-Adams, 524:525]     saw the Constitution of the | United States |
+##     [1797-Adams, 1716:1717]      to the Constitution of the | United States |
+##     [1797-Adams, 2480:2481] support the Constitution of the | United States |
 ##   [1805-Jefferson, 441:442]       sees a taxgatherer of the | United States |
 ##                                       
 ##  a Government instituted by themselves
@@ -209,7 +209,7 @@
 <a href="#select-tokens" class="anchor"></a>Select tokens</h3>
 <p>Similarly, you can select or remove multi-word expression using <code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword)))</a></code></pre></div>
-<pre><code>## tokens from 6 documents.
+<pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "United" "States" "United" "States"
 ## 
@@ -234,7 +234,7 @@
 <p><code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> joins elements of multi-word expressions by underscore, so they become “United_States” and “New_York”.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">comp_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(multiword))</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(comp_toks, <span class="dt">pattern =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</a></code></pre></div>
-<pre><code>## tokens from 6 documents.
+<pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "United_States" "United_States"
 ## 
@@ -264,7 +264,7 @@
 <h3 class="hasAnchor">
 <a href="#lookup-dictionary" class="anchor"></a>Lookup dictionary</h3>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span>(toks, <span class="dt">dictionary =</span> multiword_dict))</a></code></pre></div>
-<pre><code>## tokens from 6 documents.
+<pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "country" "country"
 ## 
@@ -299,12 +299,12 @@
 <a class="sourceLine" id="cb13-5" title="5"><span class="st">       </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">tolower =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb13-6" title="6"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(col)</a></code></pre></div>
 <pre><code>##           collocation count count_nested length   lambda        z
-## 1       United States   157            0      2 8.648770 28.48952
-## 2  Federal Government    32            0      2 5.579973 21.89541
-## 3        Almighty God    15            0      2 7.109404 18.22275
-## 4       Chief Justice    13            0      2 8.846522 18.12255
-## 5 Constitution United    19            0      2 4.037256 16.01611
-## 6         North South     8            0      2 8.155828 15.41992</code></pre>
+## 1       United States   157            0      2 8.643402 28.47183
+## 2  Federal Government    32            0      2 5.574604 21.87433
+## 3        Almighty God    15            0      2 7.104053 18.20903
+## 4       Chief Justice    13            0      2 8.841175 18.11159
+## 5 Constitution United    19            0      2 4.031888 15.99481
+## 6         North South     8            0      2 8.150481 15.40980</code></pre>
 </div>
 <div id="compound-collocations" class="section level3">
 <h3 class="hasAnchor">
@@ -313,11 +313,11 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">comp_toks2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> col)</a>
 <a class="sourceLine" id="cb15-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(comp_toks2, <span class="dt">pattern =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</a></code></pre></div>
 <pre><code>##                                                                          
-##  [1789-Washington, 434]            of the people of the | United_States |
-##  [1789-Washington, 529]          more than those of the | United_States |
-##       [1797-Adams, 525]     saw the Constitution of the | United_States |
-##      [1797-Adams, 1716]      to the Constitution of the | United_States |
-##      [1797-Adams, 2479] support the Constitution of the | United_States |
+##  [1789-Washington, 433]            of the people of the | United_States |
+##  [1789-Washington, 528]          more than those of the | United_States |
+##       [1797-Adams, 524]     saw the Constitution of the | United_States |
+##      [1797-Adams, 1715]      to the Constitution of the | United_States |
+##      [1797-Adams, 2478] support the Constitution of the | United_States |
 ##   [1805-Jefferson, 441]       sees a taxgatherer of the | United_States |
 ##                                       
 ##  a Government instituted by themselves
@@ -330,11 +330,11 @@
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">comp_toks3 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="dt">pattern =</span> <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(col<span class="op">$</span>collocation))</a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(comp_toks3, <span class="dt">pattern =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</a></code></pre></div>
 <pre><code>##                                                                          
-##  [1789-Washington, 434]            of the people of the | United_States |
-##  [1789-Washington, 529]          more than those of the | United_States |
-##       [1797-Adams, 525]     saw the Constitution of the | United_States |
-##      [1797-Adams, 1716]      to the Constitution of the | United_States |
-##      [1797-Adams, 2479] support the Constitution of the | United_States |
+##  [1789-Washington, 433]            of the people of the | United_States |
+##  [1789-Washington, 528]          more than those of the | United_States |
+##       [1797-Adams, 524]     saw the Constitution of the | United_States |
+##      [1797-Adams, 1715]      to the Constitution of the | United_States |
+##      [1797-Adams, 2478] support the Constitution of the | United_States |
 ##   [1805-Jefferson, 441]       sees a taxgatherer of the | United_States |
 ##                                       
 ##  a Government instituted by themselves
@@ -371,7 +371,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

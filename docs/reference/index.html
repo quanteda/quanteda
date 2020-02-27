@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -329,7 +329,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="docvars.html">docvars()</a></code> <code><a href="docvars.html">`docvars<-`()</a></code> </p>
+          <p><code><a href="docvars.html">docvars()</a></code> <code><a href="docvars.html">`docvars<-`()</a></code> <code><a href="docvars.html">`$`(<i>&lt;corpus&gt;</i>)</a></code> <code><a href="docvars.html">`$<-`(<i>&lt;corpus&gt;</i>)</a></code> <code><a href="docvars.html">`$`(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="docvars.html">`$<-`(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="docvars.html">`$`(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="docvars.html">`$<-`(<i>&lt;dfm&gt;</i>)</a></code> </p>
         </td>
         <td><p>Get or set document-level variables</p></td>
       </tr><tr>
@@ -341,9 +341,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="metacorpus.html">metacorpus()</a></code> <code><a href="metacorpus.html">`metacorpus<-`()</a></code> </p>
+          <p><code><a href="meta.html">meta()</a></code> <code><a href="meta.html">`meta<-`()</a></code> <code><a href="meta.html">metacorpus()</a></code> <code><a href="meta.html">`metacorpus<-`()</a></code> </p>
         </td>
-        <td><p>Get or set corpus metadata</p></td>
+        <td><p>Get or set object metadata</p></td>
       </tr><tr>
         
         <td>
@@ -356,12 +356,6 @@
           <p><code><a href="texts.html">texts()</a></code> <code><a href="texts.html">`texts<-`()</a></code> <code><a href="texts.html">as.character(<i>&lt;corpus&gt;</i>)</a></code> </p>
         </td>
         <td><p>Get or assign corpus texts</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as.corpus.corpuszip.html">as.corpus(<i>&lt;corpuszip&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Coerce a compressed corpus to a standard corpus</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -375,7 +369,7 @@
         <td>
           <p><code><a href="tokens.html">tokens()</a></code> </p>
         </td>
-        <td><p>Tokenize a set of texts</p></td>
+        <td><p>Construct a tokens object</p></td>
       </tr><tr>
         
         <td>
@@ -457,7 +451,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="as.tokens.html">as.tokens()</a></code> <code><a href="as.tokens.html">as.list(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.character(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> <code><a href="as.tokens.html">unlist(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">`+`(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">c(<i>&lt;tokens&gt;</i>)</a></code> </p>
+          <p><code><a href="as.tokens.html">as.list(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.character(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> <code><a href="as.tokens.html">unlist(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">`+`(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">c(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.tokens()</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> </p>
         </td>
         <td><p>Coercion, checking, and combining functions for tokens objects</p></td>
       </tr>
@@ -605,6 +599,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="featfreq.html">featfreq()</a></code> </p>
+        </td>
+        <td><p>Compute the frequencies of features</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="head.dfm.html">head(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="head.dfm.html">tail(<i>&lt;dfm&gt;</i>)</a></code> </p>
         </td>
         <td><p>Return the first or last part of a dfm</p></td>
@@ -641,9 +641,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="featfreq.html">featfreq()</a></code> </p>
+          <p><code><a href="as.fcm.html">as.fcm()</a></code> </p>
         </td>
-        <td><p>Compute the frequencies of features</p></td>
+        <td><p>Coercion and checking functions for fcm objects</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -669,7 +669,7 @@
         <td>
           <p><code><a href="textstat_entropy.html">textstat_entropy()</a></code> </p>
         </td>
-        <td><p>Compute entropy of documents or features</p></td>
+        <td><p>Compute entropies of documents or features</p></td>
       </tr><tr>
         
         <td>
@@ -706,6 +706,20 @@
           <p><code><a href="topfeatures.html">topfeatures()</a></code> </p>
         </td>
         <td><p>Identify the most frequent features in a dfm</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-text-models" class="hasAnchor"><a href="#section-text-models" class="anchor"></a>Text models</h2>
+          <p class="section-desc"><p>Functions for fitting models to textual data.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="textmodels.html">textmodels</a></code> </p>
+        </td>
+        <td><p>Models for scaling and classification of textual data</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -756,61 +770,11 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-text-model-functions" class="hasAnchor"><a href="#section-text-model-functions" class="anchor"></a>Text model functions</h2>
-          <p class="section-desc"><p>Fitting analytic models from text matrixes.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="textmodel_affinity.html">textmodel_affinity()</a></code> </p>
-        </td>
-        <td><p>Class affinity maximum likelihood text scaling model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="textmodel_ca.html">textmodel_ca()</a></code> </p>
-        </td>
-        <td><p>Correspondence analysis of a document-feature matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="textmodel_lsa.html">textmodel_lsa()</a></code> </p>
-        </td>
-        <td><p>Latent Semantic Analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="textmodel_nb.html">textmodel_nb()</a></code> </p>
-        </td>
-        <td><p>Naive Bayes classifier for texts</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="textmodel_wordfish.html">textmodel_wordfish()</a></code> </p>
-        </td>
-        <td><p>Wordfish text model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="textmodel_wordscores.html">textmodel_wordscores()</a></code> </p>
-        </td>
-        <td><p>Wordscores text model</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
           <h2 id="section-text-plot-functions" class="hasAnchor"><a href="#section-text-plot-functions" class="anchor"></a>Text plot functions</h2>
           <p class="section-desc"><p>Plot functions for representing text and the analysis of texts.</p></p>
         </th>
       </tr>
       <tr>
-        
-        <td>
-          <p><code><a href="textplot_influence.html">textplot_influence()</a></code> </p>
-        </td>
-        <td><p>Influence plot for text scaling models</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="textplot_keyness.html">textplot_keyness()</a></code> </p>
@@ -822,12 +786,6 @@
           <p><code><a href="textplot_network.html">textplot_network()</a></code> <code><a href="textplot_network.html">as.network(<i>&lt;fcm&gt;</i>)</a></code> <code><a href="textplot_network.html">as.igraph(<i>&lt;fcm&gt;</i>)</a></code> </p>
         </td>
         <td><p>Plot a network of feature co-occurrences</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="textplot_scale1d.html">textplot_scale1d()</a></code> </p>
-        </td>
-        <td><p>Plot a fitted scaling model</p></td>
       </tr><tr>
         
         <td>
@@ -857,12 +815,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="nfeature.html">nfeature()</a></code> </p>
-        </td>
-        <td><p>Defunct form of nfeat</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="nscrabble.html">nscrabble()</a></code> </p>
         </td>
         <td><p>Count the Scrabble letter values of text</p></td>
@@ -887,9 +839,21 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="print-quanteda.html">print(<i>&lt;corpus&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="print-quanteda.html">show(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;dictionary2&gt;</i>)</a></code> <code><a href="print-quanteda.html">show(<i>&lt;dictionary2&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;fcm&gt;</i>)</a></code> <code><a href="print-quanteda.html">show(<i>&lt;fcm&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;tokens&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print methods for quanteda core objects</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="docnames.html">docnames()</a></code> <code><a href="docnames.html">`docnames<-`()</a></code> </p>
         </td>
         <td><p>Get or set document names</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spacyr-methods.html">docnames(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">ndoc(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">ntoken(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">ntype(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">nsentence(<i>&lt;spacyr_parsed&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extensions for and from spacy_parse objects</p></td>
       </tr><tr>
         
         <td>
@@ -913,15 +877,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="as.list.dist.html">as.list(<i>&lt;dist&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Coerce a dist object into a list</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="convert.html">convert()</a></code> </p>
         </td>
-        <td><p>Convert a dfm to a non-quanteda format</p></td>
+        <td><p>Convert quanteda objects to non-quanteda formats</p></td>
       </tr><tr>
         
         <td>
@@ -931,7 +889,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="spacyr-methods.html">spacy_parse(<i>&lt;corpus&gt;</i>)</a></code> </p>
+          <p><code><a href="spacyr-methods.html">docnames(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">ndoc(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">ntoken(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">ntype(<i>&lt;spacyr_parsed&gt;</i>)</a></code> <code><a href="spacyr-methods.html">nsentence(<i>&lt;spacyr_parsed&gt;</i>)</a></code> </p>
         </td>
         <td><p>Extensions for and from spacy_parse objects</p></td>
       </tr>
@@ -949,9 +907,9 @@
       <li><a href="#section-character-functions">Character functions</a></li>
       <li><a href="#section-text-matrix-functions">Text matrix functions</a></li>
       <li><a href="#section-text-statistics">Text statistics</a></li>
+      <li><a href="#section-text-models">Text models</a></li>
       <li><a href="#section-dictionary-functions">Dictionary functions</a></li>
       <li><a href="#section-phrase-discovery-functions">Phrase discovery functions</a></li>
-      <li><a href="#section-text-model-functions">Text model functions</a></li>
       <li><a href="#section-text-plot-functions">Text plot functions</a></li>
       <li><a href="#section-utility-functions">Utility functions</a></li>
       <li><a href="#section-miscellaneous-functions">Miscellaneous functions</a></li>
@@ -962,7 +920,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

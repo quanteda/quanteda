@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -219,42 +219,45 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See valuetype for details.</p></td>
+    </tr>
+    <tr>
+      <th>case_insensitive</th>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Pattern matching in in <span class="pkg">quanteda</span> uses "glob"-style pattern
-  matching as the default, because this is simpler than regular expression
-  matching while addressing most users' needs.  It is also has the advantage
-  of being identical to fixed pattern matching when the wildcard characters
-  (`*` and `?`) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use
-  glob matching.</p>  
-<p></p><dl class='dl-horizontal'>
-  <dt><code>"glob"</code></dt><dd><p>"glob"-style wildcard expressions, the quanteda default.  
-    The implementation used in <span class="pkg">quanteda</span> uses `*` to match any number of any 
-    characters including none, and `?` to match any single character.  See also 
-  <code><a href='https://rdrr.io/r/utils/glob2rx.html'>glob2rx</a></code> and References below.</p></dd>
-  <dt><code>"regex"</code></dt><dd><p>Regular expression matching.</p></dd>
-  <dt><code>"fixed"</code></dt><dd><p>Fixed (literal) pattern matching.</p></dd>
-  
+matching as the default, because this is simpler than regular expression
+matching while addressing most users' needs.  It is also has the advantage
+of being identical to fixed pattern matching when the wildcard characters
+(<code>*</code> and <code>?</code>) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use glob
+matching.</p>
+<dl class='dl-horizontal'>
+<dt><code>"glob"</code></dt><dd><p>"glob"-style wildcard expressions, the quanteda
+default. The implementation used in <span class="pkg">quanteda</span> uses <code>*</code> to match any
+number of any characters including none, and <code>?</code> to match any single
+character.  See also <code><a href='https://rdrr.io/r/utils/glob2rx.html'>utils::glob2rx()</a></code> and References below.</p></dd>
+<dt><code>"regex"</code></dt><dd><p>Regular expression matching.</p></dd> <dt><code>"fixed"</code></dt><dd><p>Fixed
+(literal) pattern matching.</p></dd> 
 </dl>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>If "fixed" is used with <code>case_insensitive = TRUE</code>, features will 
-  typically be lowercased internally prior to matching.  Also, glob matches
-  are converted to regular expressions (using <a href='https://rdrr.io/r/utils/glob2rx.html'>glob2rx</a>) when
-  they contain wild card characters, and to fixed pattern matches when they
-  do not.</p>
+    <p>If "fixed" is used with <code>case_insensitive = TRUE</code>, features will
+typically be lowercased internally prior to matching.  Also, glob matches
+are converted to regular expressions (using <a href='https://rdrr.io/r/utils/glob2rx.html'>glob2rx</a>) when
+they contain wild card characters, and to fixed pattern matches when they
+do not.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/utils/glob2rx.html'>glob2rx</a></code>, 
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>, 
-<code><a href='https://rdrr.io/pkg/stringi/man/stringi-search-regex.html'>stringi-search-regex</a></code>, <code><a href='https://rdrr.io/pkg/stringi/man/stringi-search-fixed.html'>stringi-search-fixed</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/utils/glob2rx.html'>utils::glob2rx()</a></code>, <a href='https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>,
+<code><a href='https://rdrr.io/pkg/stringi/man/stringi-search-regex.html'>stringi::stringi-search-regex()</a></code>, <code><a href='https://rdrr.io/pkg/stringi/man/stringi-search-fixed.html'>stringi::stringi-search-fixed()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -272,7 +275,7 @@ or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

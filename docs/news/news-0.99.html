@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -210,12 +210,12 @@
 <h1 class="page-header">
 <a href="#quanteda-099" class="anchor"></a>quanteda 0.99<small> 2017-08-15 </small>
 </h1>
-<div id="new-features-13" class="section level2">
+<div id="new-features-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-13" class="anchor"></a>New Features</h2>
+<a href="#new-features-14" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code>, which works on tokens objects in the same way as <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> does on corpus objects (#902).</li>
-<li>Added <strong>magrittr</strong> pipe support (#927). <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code> can now be used with <strong>quanteda</strong> without needing to attach <strong>magrittr</strong> (or, as many users apparently believe, the entire tidyverse.)<br>
+<li>Added <strong>magrittr</strong> pipe support (#927). <code><a href="../reference/pipe.html">%&gt;%</a></code> can now be used with <strong>quanteda</strong> without needing to attach <strong>magrittr</strong> (or, as many users apparently believe, the entire tidyverse.)<br>
 </li>
 <li>
 <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> now behaves more logically and flexibly, and is clearly differentiated from <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> in terms of its functionality. Its documentation is also vastly improved. (#908)</li>
@@ -254,12 +254,12 @@
 <h1 class="page-header">
 <a href="#quanteda-0999" class="anchor"></a>quanteda 0.99.9<small> 2017-09-22 </small>
 </h1>
-<div id="new-features-12" class="section level2">
+<div id="new-features-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-12" class="anchor"></a>New Features</h2>
+<a href="#new-features-13" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added methods for changing the docnames of tokens and dfm objects (#987).</li>
-<li>Added new function <code><a href="../reference/textmodel_lsa.html">textmodel_lsa()</a></code> for Latent Semantic Analysis.</li>
+<li>Added new function <code>textmodel_lsa()</code> for Latent Semantic Analysis.</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements-12" class="section level2">
@@ -275,16 +275,16 @@
 <h1 class="page-header">
 <a href="#quanteda-09912" class="anchor"></a>quanteda 0.99.12<small> 2017-10-06 </small>
 </h1>
-<div id="new-features-11" class="section level2">
+<div id="new-features-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-11" class="anchor"></a>New Features</h2>
+<a href="#new-features-12" class="anchor"></a>New Features</h2>
 <ul>
 <li>
 <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code> has a new <code>window</code> argument, permitting selection within an asymmetric window around the <code>pattern</code> of selection. (#521)</li>
 <li>
 <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code> now allows token types to be substituted directly and quickly.</li>
 <li>
-<code><a href="../reference/textmodel_affinity.html">textmodel_affinity()</a></code> now adds functionality to fit the Perry and Benoit (2017) class affinity model.</li>
+<code>textmodel_affinity()</code> now adds functionality to fit the Perry and Benoit (2017) class affinity model.</li>
 <li>Added a <code>spacy_parse</code> method for corpus objects. Also restored quanteda methods for <strong>spacyr</strong> <code>spacy_parsed</code> objects.</li>
 </ul>
 </div>
@@ -292,7 +292,7 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements-11" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Improved documentation for <code><a href="../reference/textmodel_nb.html">textmodel_nb()</a></code> (#1010), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
+<li>Improved documentation for <code>textmodel_nb()</code> (#1010), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
 </ul>
 </div>
 <div id="behaviour-changes-8" class="section level2">
@@ -302,10 +302,10 @@
 <li>All of the deprecated functions are now removed. (#991)</li>
 <li>
 <code><a href="../reference/tokens_group.html">tokens_group()</a></code> is now significantly faster.</li>
-<li>The deprecated “list of characters” <code>tokenize()</code> function and all methods associated with the <code>tokenizedTexts</code> object types have been removed.</li>
+<li>The deprecated “list of characters” <code><a href="../reference/tokenize_internal.html">tokenize()</a></code> function and all methods associated with the <code>tokenizedTexts</code> object types have been removed.</li>
 <li>Added convenience functions for keeping tokens or features: <code><a href="../reference/tokens_select.html">tokens_keep()</a></code>, <code><a href="../reference/dfm_select.html">dfm_keep()</a></code>, and <code><a href="../reference/dfm_select.html">fcm_keep()</a></code>. (#1037)</li>
 <li>
-<code>textmodel_NB()</code> has been replaced by <code><a href="../reference/textmodel_nb.html">textmodel_nb()</a></code>.</li>
+<code>textmodel_NB()</code> has been replaced by <code>textmodel_nb()</code>.</li>
 </ul>
 </div>
 </div>
@@ -327,7 +327,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

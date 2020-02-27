@@ -88,7 +88,7 @@ as the sum (default) or mean of the character values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -226,25 +226,25 @@ as the sum (default) or mean of the character values.</p>
     </tr>
     <tr>
       <th>FUN</th>
-      <td><p>function to be applied to the character values in the text; 
-default is <code>sum</code>, but could also be <code>mean</code> or a user-supplied 
+      <td><p>function to be applied to the character values in the text;
+default is <code>sum</code>, but could also be <code>mean</code> or a user-supplied
 function</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a (named) integer vector of Scrabble letter values, computed using 
-  <code>FUN</code>, corresponding to the input text(s)</p>
+    <p>a (named) integer vector of Scrabble letter values, computed using
+<code>FUN</code>, corresponding to the input text(s)</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Character values are only defined for non-accented Latin a-z, A-Z 
-  letters.  Lower-casing is unnecessary.</p>  
+    <p>Character values are only defined for non-accented Latin a-z, A-Z
+letters.  Lower-casing is unnecessary.</p>
 <p>We would be happy to add more languages to this <em>extremely useful
-  function</em> if you send us the values for your language!</p>
+function</em> if you send us the values for your language!</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>nscrabble</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"muzjiks"</span>, <span class='st'>"excellency"</span>))</div><div class='output co'>#&gt; [1] 29 24</div><div class='input'><span class='fu'>nscrabble</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='no'>mean</span>)</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson 
+    <pre class="examples"><div class='input'><span class='fu'>nscrabble</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"muzjiks"</span>, <span class='st'>"excellency"</span>))</div><div class='output co'>#&gt; [1] 29 24</div><div class='input'><span class='fu'>nscrabble</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_inaugural</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='no'>mean</span>)</div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson 
 #&gt;        1.706789        1.721875        1.624590        1.678183        1.663654 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -264,7 +264,7 @@ function</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

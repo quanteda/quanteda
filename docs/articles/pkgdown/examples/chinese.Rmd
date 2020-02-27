@@ -78,6 +78,7 @@ topfeatures(ch_fcm["改革", ])
 ## Unsupervised document scaling
 
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
+library("quanteda.textmodels")
 wf <- textmodel_wordfish(ch_dfm)
 y <- 1954:2017
 y <- y[y <= 1964 | y >= 1975]

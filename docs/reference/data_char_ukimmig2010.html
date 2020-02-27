@@ -88,7 +88,7 @@ to immigration or asylum-seekers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -226,23 +226,19 @@ to immigration or asylum-seekers.</p>
     <pre class="examples"><div class='input'><span class='no'>data_corpus_ukimmig2010</span> <span class='kw'>&lt;-</span>
     <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>,
            <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>data_char_ukimmig2010</span>)))
-<span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>data_corpus_ukimmig2010</span>, <span class='st'>"language"</span>) <span class='kw'>&lt;-</span> <span class='st'>"english"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>data_corpus_ukimmig2010</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents:
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>data_corpus_ukimmig2010</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 9 documents:
 #&gt; 
-#&gt;          Text Types Tokens Sentences _language        party
-#&gt;           BNP  1125   3280        88   english          BNP
-#&gt;     Coalition   142    260         4   english    Coalition
-#&gt;  Conservative   251    499        15   english Conservative
-#&gt;        Greens   322    679        21   english       Greens
-#&gt;        Labour   298    683        29   english       Labour
-#&gt;        LibDem   251    483        14   english       LibDem
-#&gt;            PC    77    114         5   english           PC
-#&gt;           SNP    88    134         4   english          SNP
-#&gt;          UKIP   346    723        27   english         UKIP
-#&gt; 
-#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Nov 25 08:41:57 2019
-#&gt; Notes: </div></pre>
+#&gt;          Text Types Tokens Sentences        party
+#&gt;           BNP  1125   3280        88          BNP
+#&gt;     Coalition   142    260         4    Coalition
+#&gt;  Conservative   251    499        15 Conservative
+#&gt;        Greens   322    677        21       Greens
+#&gt;        Labour   298    680        29       Labour
+#&gt;        LibDem   251    483        14       LibDem
+#&gt;            PC    77    114         5           PC
+#&gt;           SNP    88    134         4          SNP
+#&gt;          UKIP   346    722        27         UKIP
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -257,7 +253,7 @@ to immigration or asylum-seekers.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

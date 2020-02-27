@@ -89,7 +89,7 @@ comparison = TRUE, it plots comparison word clouds by document." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -320,20 +320,19 @@ aspect ratio only supported if rotation = 0.</p></td>
     <tr>
       <th>comparison</th>
       <td><p>if <code>TRUE</code>, plot a wordcloud that compares documents in
-the same way as <code><a href='https://rdrr.io/pkg/wordcloud/man/comparison.cloud.html'>comparison.cloud</a></code></p></td>
+the same way as <code><a href='https://rdrr.io/pkg/wordcloud/man/comparison.cloud.html'>wordcloud::comparison.cloud()</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The default is to plot the word cloud of all features, summed across
-  documents.  To produce word cloud plots for specific document or set of
-  documents, you need to slice out the document(s) from the dfm object.</p>  
-<p>Comparison wordcloud plots may be plotted by setting <code>comparison =
-  TRUE</code>, which plots a separate grouping for <em>each document</em> in the dfm.
-  This means that you will need to slice out just a few documents from the
-  dfm, or to create a dfm where the "documents" represent a subset or a
-  grouping of documents by some document variable.</p>
+documents.  To produce word cloud plots for specific document or set of
+documents, you need to slice out the document(s) from the dfm object.</p>
+<p>Comparison wordcloud plots may be plotted by setting <code>comparison = TRUE</code>, which plots a separate grouping for <em>each document</em> in the dfm.
+This means that you will need to slice out just a few documents from the
+dfm, or to create a dfm where the "documents" represent a subset or a
+grouping of documents by some document variable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># plot the features (without stopwords) from Obama's inaugural addresses</span>
@@ -369,14 +368,14 @@ the same way as <code><a href='https://rdrr.io/pkg/wordcloud/man/comparison.clou
 
     <h2>Author</h2>
     <p>Kohei Watanabe, building on code from Ian Fellows's <span class="pkg">wordcloud</span>
-  package.</p>
+package.</p>
   </div>
 </div>
 
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

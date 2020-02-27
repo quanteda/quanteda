@@ -144,6 +144,7 @@ Collate:
     'readtext-methods.R'
     'spacyr-methods.R'
     'stopwords.R'
+    'textmodel.R'
     'textplot_keyness.R'
     'textplot_network.R'
     'textplot_wordcloud.R'

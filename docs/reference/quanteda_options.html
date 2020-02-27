@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@
     <tr>
       <th>...</th>
       <td><p>options to be set, as key-value pair, same as
-<code><a href='https://rdrr.io/r/base/options.html'>options</a></code>. This may be a list of valid key-value pairs, useful
+<code><a href='https://rdrr.io/r/base/options.html'>options()</a></code>. This may be a list of valid key-value pairs, useful
 for setting a group of options at once (see examples).</p></td>
     </tr>
     <tr>
@@ -233,7 +233,7 @@ their default values</p></td>
       <th>initialize</th>
       <td><p>logical; if <code>TRUE</code>, reset only the <span class="pkg">quanteda</span>
 options that are not already defined.  Used for setting initial values when
-some have been defined previously, such as in `.Rprofile`.</p></td>
+some have been defined previously, such as in <code>.Rprofile</code>.</p></td>
     </tr>
     </table>
 
@@ -264,9 +264,9 @@ from another object</p></dd> <dt><code>base_featname</code></dt><dd><p>character
 features that are unnamed when they are added, for whatever reason, to a dfm
 through an operation that adds features</p></dd>
 <dt><code>base_compname</code></dt><dd><p>character; stem name for components that are
-created by matrix factorization</p></dd> 
-<dt><code>language_stemmer</code></dt><dd><p>character; language option for <a href='tokens_wordstem.html'>char_wordstem</a>, 
-<a href='tokens_wordstem.html'>tokens_wordstem</a>, and <a href='tokens_wordstem.html'>dfm_wordstem</a></p></dd> 
+created by matrix factorization</p></dd>
+<dt><code>language_stemmer</code></dt><dd><p>character; language option for <a href='tokens_wordstem.html'>char_wordstem</a>,
+<a href='tokens_wordstem.html'>tokens_wordstem</a>, and <a href='tokens_wordstem.html'>dfm_wordstem</a></p></dd>
 
 </dl>
 
@@ -279,10 +279,40 @@ created by matrix factorization</p></dd>
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $print_dfm_max_ndoc
-#&gt; [1] 20
+#&gt; [1] 6
 #&gt; 
 #&gt; $print_dfm_max_nfeat
+#&gt; [1] 10
+#&gt; 
+#&gt; $print_dfm_summary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $print_corpus_max_ndoc
+#&gt; [1] 6
+#&gt; 
+#&gt; $print_corpus_max_nchar
+#&gt; [1] 60
+#&gt; 
+#&gt; $print_corpus_summary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $print_tokens_max_ndoc
+#&gt; [1] 6
+#&gt; 
+#&gt; $print_tokens_max_ntoken
+#&gt; [1] 12
+#&gt; 
+#&gt; $print_tokens_summary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $print_dictionary_max_nkey
+#&gt; [1] 6
+#&gt; 
+#&gt; $print_dictionary_max_nval
 #&gt; [1] 20
+#&gt; 
+#&gt; $print_dictionary_summary
+#&gt; [1] TRUE
 #&gt; 
 #&gt; $base_docname
 #&gt; [1] "text"
@@ -320,7 +350,7 @@ created by matrix factorization</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

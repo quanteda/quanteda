@@ -390,6 +390,7 @@ Aquí realizamos una demostración de escalamiento de documentos unsupervised co
 
 ```{r}
 # make prettier document names
+library("quanteda.textmodels")
 ieDfm <- dfm(data_corpus_irishbudget2010)
 textmodel_wordfish(ieDfm, dir = c(2, 1))
 ```

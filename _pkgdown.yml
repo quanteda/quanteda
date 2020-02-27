@@ -80,7 +80,6 @@ reference:
     - metadoc
     - texts
     - as.character.corpus
-    - as.corpus.corpuszip
 - title: Tokens functions
   desc: Functions for constructing and manipulating tokens class objects.
   contents:
@@ -138,6 +137,7 @@ reference:
     - dfm_weight
     - dfm_wordstem
     - docfreq
+    - featfreq
     - head.dfm
     - tail.dfm
     - as.dfm
@@ -151,6 +151,7 @@ reference:
     - fcm_tolower
     - fcm_toupper
     - fcm_sort
+    - as.fcm
     - is.fcm
 - title: Text statistics
   desc: Functions for computing statistics from texts and dfm objects.
@@ -165,6 +166,10 @@ reference:
     - textstat_readability
     - sparsity
     - topfeatures
+- title: Text models
+  desc: Functions for fitting models to textual data.
+  contents:
+    - textmodels
 - title: Dictionary functions
   desc: Constructor and utility functions for working with dictionaries.
   contents:
@@ -186,18 +191,18 @@ reference:
   desc: R-like functions to return counts and object information.
   contents:
     - ndoc
-    - nfeature
+    - nfeat
     - nscrabble
     - nsentence
     - nsyllable
     - ntoken
     - ntype
+    - print-quanteda
     - starts_with("docnames")
     - featnames
 - title: Miscellaneous functions
   contents:
     - phrase
-    - as.list.dist
     - convert
     - bootstrap_dfm
     - spacyr-methods

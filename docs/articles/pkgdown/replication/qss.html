@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -175,7 +175,7 @@
 <h2 class="hasAnchor">
 <a href="#download-the-corpus" class="anchor"></a>Download the Corpus</h2>
 <p>To get the textual data, you need to install and load the <strong>qss</strong> package first that comes with the book.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"kosukeimai/qss-package"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"kosukeimai/qss-package"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="section-5-1-1-the-disputed-authorship-of-the-federalist-papers" class="section level2">
 <h2 class="hasAnchor">
@@ -216,106 +216,124 @@
 <a class="sourceLine" id="cb6-3" title="3">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## Creating a dfm from a corpus input...</code></pre>
 <pre><code>##    ... lowercasing</code></pre>
-<pre><code>##    ... found 85 documents, 8,630 features</code></pre>
-<pre><code>##    ... created a 85 x 8,630 sparse dfm
-##    ... complete. 
-## Elapsed time: 0.301 seconds.</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># remove stop words and stem words</span></a>
-<a class="sourceLine" id="cb11-2" title="2">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(dfm_prep, <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))</a>
-<a class="sourceLine" id="cb11-3" title="3"></a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="co"># inspect</span></a>
-<a class="sourceLine" id="cb11-5" title="5">dfm_papers</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 85 documents, 4,859 features (89.1% sparse).</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># sort into alphabetical order of features, to match book example</span></a>
-<a class="sourceLine" id="cb13-2" title="2">dfm_papers &lt;-<span class="st"> </span>dfm_papers[, <span class="kw"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers))]</a>
-<a class="sourceLine" id="cb13-3" title="3"></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="co"># inspect some documents in the dfm</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 6 documents, 8 features (97.9% sparse).
-## 6 x 8 sparse Matrix of class "dfm"
+<pre><code>##    ... found 85 documents, 8,669 features</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># remove stop words and stem words</span></a>
+<a class="sourceLine" id="cb10-2" title="2">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(dfm_prep, <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))</a>
+<a class="sourceLine" id="cb10-3" title="3"></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co"># inspect</span></a>
+<a class="sourceLine" id="cb10-5" title="5">dfm_papers</a></code></pre></div>
+<pre><code>## Document-feature matrix of: 85 documents, 4,898 features (89.2% sparse) and 3 docvars.
 ##        features
-## docs    1st 2d 3d 4th 5th abandon abat abb
-##   No. 1   0  0  0   0   0       0    0   0
-##   No. 2   0  0  0   0   0       0    0   0
-##   No. 3   0  0  0   0   0       0    0   0
-##   No. 4   0  0  0   0   0       0    0   0
-##   No. 5   1  0  0   0   0       0    0   0
-##   No. 6   0  0  0   0   0       0    0   0</code></pre>
+## docs    unequivoc experi ineffici subsist feder govern call upon deliber new
+##   No. 1         1      1        1       1     1      9    1    6       3   5
+##   No. 2         0      3        0       0     2      9    1    1       1   2
+##   No. 3         0      1        0       0     2     20    0    0       0   1
+##   No. 4         0      2        0       0     0     20    1    0       0   0
+##   No. 5         0      1        0       0     0      3    0    0       0   0
+##   No. 6         0      3        0       0     0      4    0    4       0   1
+## [ reached max_ndoc ... 79 more documents, reached max_nfeat ... 4,888 more features ]</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># sort into alphabetical order of features, to match book example</span></a>
+<a class="sourceLine" id="cb12-2" title="2">dfm_papers &lt;-<span class="st"> </span>dfm_papers[, <span class="kw"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers))]</a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co"># inspect some documents in the dfm</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</a></code></pre></div>
+<pre><code>## Document-feature matrix of: 6 documents, 8 features (93.8% sparse) and 3 docvars.
+##        features
+## docs    --all --especi --i --is --our --the --these --wherea
+##   No. 1     0        0   0    0     0     0       0        0
+##   No. 2     0        0   0    0     0     0       0        0
+##   No. 3     0        1   0    0     0     0       0        1
+##   No. 4     0        0   0    0     0     0       0        0
+##   No. 5     0        0   0    0     0     0       0        0
+##   No. 6     0        0   0    0     0     1       0        0</code></pre>
 <p>The <strong>tm</strong> package considers features such as “1st” to be numbers, whereas <strong>quanteda</strong> does not. We can remove these easily using a wildcard removal:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(dfm_papers, <span class="st">"[0-9]"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## removed 5 features</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 6 documents, 8 features (91.7% sparse).
-## 6 x 8 sparse Matrix of class "dfm"
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">dfm_papers &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(dfm_papers, <span class="st">"[0-9]"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## removed 17 features</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm_papers, <span class="dt">nf =</span> <span class="dv">8</span>)</a></code></pre></div>
+<pre><code>## Document-feature matrix of: 6 documents, 8 features (93.8% sparse) and 3 docvars.
 ##        features
-## docs    abandon abat abb abet abhorr abil abject abl
-##   No. 1       0    0   0    0      0    0      0   1
-##   No. 2       0    0   0    0      0    1      0   0
-##   No. 3       0    0   0    0      0    0      0   2
-##   No. 4       0    0   0    0      0    0      0   1
-##   No. 5       0    0   0    0      0    0      0   0
-##   No. 6       0    0   0    0      0    0      0   0</code></pre>
+## docs    --all --especi --i --is --our --the --these --wherea
+##   No. 1     0        0   0    0     0     0       0        0
+##   No. 2     0        0   0    0     0     0       0        0
+##   No. 3     0        1   0    0     0     0       0        1
+##   No. 4     0        0   0    0     0     0       0        0
+##   No. 5     0        0   0    0     0     0       0        0
+##   No. 6     0        0   0    0     0     1       0        0</code></pre>
 </div>
 <div id="section-5-1-3-topic-discovery" class="section level2">
 <h2 class="hasAnchor">
 <a href="#section-5-1-3-topic-discovery" class="anchor"></a>Section 5.1.3: Topic Discovery</h2>
 <p>We can use the <code><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code> function to plot word clouds of the most frequent words in Papers 12 and 24.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb19-2" title="2"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_papers[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"No. 12"</span>, <span class="st">"No. 24"</span>), ], </a>
-<a class="sourceLine" id="cb19-3" title="3">                   <span class="dt">max.words =</span> <span class="dv">50</span>, <span class="dt">comparison =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(dfm_papers[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"No. 12"</span>, <span class="st">"No. 24"</span>), ], </a>
+<a class="sourceLine" id="cb18-3" title="3">                   <span class="dt">max.words =</span> <span class="dv">50</span>, <span class="dt">comparison =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="qss_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 <p>Since <strong>quanteda</strong> cannot do stem completion, we will skip that part.</p>
 <p>Next, we identify clusters of similar essay based on term frequency-inverse document frequency (<em>tf-idf</em>) and apply the <span class="math inline">\(k\)</span>-means algorithm to the weighted dfm.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># tf-idf calculation</span></a>
-<a class="sourceLine" id="cb20-2" title="2">dfm_papers_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_tfidf.html">dfm_tfidf</a></span>(dfm_papers, <span class="dt">base =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb20-3" title="3"></a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="co"># 10 most important words for Paper No. 12</span></a>
-<a class="sourceLine" id="cb20-5" title="5"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">12</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># tf-idf calculation</span></a>
+<a class="sourceLine" id="cb19-2" title="2">dfm_papers_tfidf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_tfidf.html">dfm_tfidf</a></span>(dfm_papers, <span class="dt">base =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb19-3" title="3"></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="co"># 10 most important words for Paper No. 12</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">12</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##     revenu contraband     patrol      excis      coast      trade        per 
 ##   19.42088   19.22817   19.22817   19.12214   16.22817   15.01500   14.47329 
-##        tax       cent     gallon 
+##        tax      --all       cent 
 ##   13.20080   12.81878   12.81878</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># 10 most important words for Paper No. 24</span></a>
-<a class="sourceLine" id="cb22-2" title="2"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">24</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># 10 most important words for Paper No. 24</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(dfm_papers_tfidf[<span class="dv">24</span>, ], <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##   garrison  dock-yard settlement      spain       armi   frontier    arsenal 
 ##  24.524777  19.228173  16.228173  13.637564  12.770999  12.262389  10.818782 
 ##    western       post     nearer 
 ##  10.806108  10.228173   9.648857</code></pre>
 <p>We can match the clustering as follows:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">k &lt;-<span class="st"> </span><span class="dv">4</span>  <span class="co"># number of clusters</span></a>
-<a class="sourceLine" id="cb24-2" title="2"></a>
-<a class="sourceLine" id="cb24-3" title="3"><span class="co"># subset The Federalist papers written by Hamilton</span></a>
-<a class="sourceLine" id="cb24-4" title="4"></a>
-<a class="sourceLine" id="cb24-5" title="5">dfm_papers_tfidf_hamilton &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(dfm_papers_tfidf, author <span class="op">==</span><span class="st"> "hamilton"</span>)</a>
-<a class="sourceLine" id="cb24-6" title="6"></a>
-<a class="sourceLine" id="cb24-7" title="7"><span class="co"># run k-means</span></a>
-<a class="sourceLine" id="cb24-8" title="8">km_out &lt;-<span class="st"> </span>stats<span class="op">::</span><span class="kw"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span>(dfm_papers_tfidf_hamilton, <span class="dt">centers =</span> k)</a>
-<a class="sourceLine" id="cb24-9" title="9"></a>
-<a class="sourceLine" id="cb24-10" title="10">km_out<span class="op">$</span>iter <span class="co"># check the convergence; number of iterations may vary</span></a></code></pre></div>
-<pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(km_out<span class="op">$</span>centers) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers_tfidf_hamilton)</a>
-<a class="sourceLine" id="cb26-2" title="2"></a>
-<a class="sourceLine" id="cb26-3" title="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>k) { <span class="co"># loop for each cluster</span></a>
-<a class="sourceLine" id="cb26-4" title="4">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"CLUSTER"</span>, i, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb26-5" title="5">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"Top 10 words:</span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># 10 most important terms at the centroid</span></a>
-<a class="sourceLine" id="cb26-6" title="6">  <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(km_out<span class="op">$</span>centers[i, ], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb26-7" title="7">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb26-8" title="8">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"Federalist Papers classified: </span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># extract essays classified</span></a>
-<a class="sourceLine" id="cb26-9" title="9">  <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(dfm_papers_tfidf_hamilton)[km_out<span class="op">$</span>cluster <span class="op">==</span><span class="st"> </span>i])</a>
-<a class="sourceLine" id="cb26-10" title="10">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb26-11" title="11">}</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">k &lt;-<span class="st"> </span><span class="dv">4</span>  <span class="co"># number of clusters</span></a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co"># subset The Federalist papers written by Hamilton</span></a>
+<a class="sourceLine" id="cb23-4" title="4"></a>
+<a class="sourceLine" id="cb23-5" title="5">dfm_papers_tfidf_hamilton &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(dfm_papers_tfidf, author <span class="op">==</span><span class="st"> "hamilton"</span>)</a>
+<a class="sourceLine" id="cb23-6" title="6"></a>
+<a class="sourceLine" id="cb23-7" title="7"><span class="co"># run k-means</span></a>
+<a class="sourceLine" id="cb23-8" title="8">km_out &lt;-<span class="st"> </span>stats<span class="op">::</span><span class="kw"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span>(dfm_papers_tfidf_hamilton, <span class="dt">centers =</span> k)</a>
+<a class="sourceLine" id="cb23-9" title="9"></a>
+<a class="sourceLine" id="cb23-10" title="10">km_out<span class="op">$</span>iter <span class="co"># check the convergence; number of iterations may vary</span></a></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(km_out<span class="op">$</span>centers) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(dfm_papers_tfidf_hamilton)</a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>k) { <span class="co"># loop for each cluster</span></a>
+<a class="sourceLine" id="cb25-4" title="4">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"CLUSTER"</span>, i, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb25-5" title="5">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"Top 10 words:</span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># 10 most important terms at the centroid</span></a>
+<a class="sourceLine" id="cb25-6" title="6">  <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(km_out<span class="op">$</span>centers[i, ], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb25-7" title="7">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb25-8" title="8">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"Federalist Papers classified: </span><span class="ch">\n</span><span class="st">"</span>) <span class="co"># extract essays classified</span></a>
+<a class="sourceLine" id="cb25-9" title="9">  <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(dfm_papers_tfidf_hamilton)[km_out<span class="op">$</span>cluster <span class="op">==</span><span class="st"> </span>i])</a>
+<a class="sourceLine" id="cb25-10" title="10">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb25-11" title="11">}</a></code></pre></div>
 <pre><code>## CLUSTER 1 
 ## Top 10 words:
-##     armi  militia   revenu militari      war    trade    taxat     upon 
-## 6.271473 5.204072 4.634529 4.413837 4.349851 4.222969 4.065847 4.049374 
-##     land      tax 
-## 4.007387 3.889522 
+##      trade   merchant manufactur     market    commerc      navig     revenu 
+##  18.351669  18.010180  14.037686  13.637564  11.214252  10.816517   9.416185 
+##   landhold       navi       ship 
+##   8.545855   8.233234   8.040714 
 ## 
 ## Federalist Papers classified: 
-##  [1] "No. 6"  "No. 7"  "No. 8"  "No. 11" "No. 12" "No. 15" "No. 21" "No. 22"
-##  [9] "No. 24" "No. 25" "No. 26" "No. 29" "No. 30" "No. 34" "No. 35" "No. 36"
+## [1] "No. 11" "No. 12" "No. 35"
 ## 
 ## CLUSTER 2 
+## Top 10 words:
+##    senat     upon   presid     armi    court    claus  militia    offic 
+## 3.912991 3.640413 3.100660 2.919085 2.776862 2.636133 2.428567 2.374450 
+## governor  appoint 
+## 2.294413 2.125990 
+## 
+## Federalist Papers classified: 
+##  [1] "No. 1"  "No. 6"  "No. 7"  "No. 8"  "No. 9"  "No. 13" "No. 15" "No. 16"
+##  [9] "No. 17" "No. 21" "No. 22" "No. 23" "No. 24" "No. 25" "No. 26" "No. 27"
+## [17] "No. 28" "No. 29" "No. 30" "No. 31" "No. 32" "No. 33" "No. 34" "No. 36"
+## [25] "No. 59" "No. 60" "No. 61" "No. 65" "No. 66" "No. 67" "No. 68" "No. 69"
+## [33] "No. 70" "No. 71" "No. 72" "No. 73" "No. 74" "No. 75" "No. 76" "No. 77"
+## [41] "No. 78" "No. 79" "No. 80" "No. 84" "No. 85"
+## 
+## CLUSTER 3 
 ## Top 10 words:
 ##       juri      trial      court     crimin  admiralti     equiti   chanceri 
 ##  218.20102   84.74567   62.47940   42.06871   40.87463   38.24428   37.86574 
@@ -325,7 +343,7 @@
 ## Federalist Papers classified: 
 ## [1] "No. 83"
 ## 
-## CLUSTER 3 
+## CLUSTER 4 
 ## Top 10 words:
 ##     court     appel jurisdict    suprem      juri    tribun    cogniz  inferior 
 ##  69.68857  35.27513  25.46591  24.79126  22.16104  21.27125  19.12214  18.76875 
@@ -333,53 +351,40 @@
 ##  16.21098  13.52348 
 ## 
 ## Federalist Papers classified: 
-## [1] "No. 81" "No. 82"
-## 
-## CLUSTER 4 
-## Top 10 words:
-##    senat   presid    claus     upon    court governor    offic  appoint 
-## 5.459987 4.228173 3.530536 3.456783 3.254136 3.134332 3.071945 2.823580 
-##  impeach    nomin 
-## 2.737110 2.658907 
-## 
-## Federalist Papers classified: 
-##  [1] "No. 1"  "No. 9"  "No. 13" "No. 16" "No. 17" "No. 23" "No. 27" "No. 28"
-##  [9] "No. 31" "No. 32" "No. 33" "No. 59" "No. 60" "No. 61" "No. 65" "No. 66"
-## [17] "No. 67" "No. 68" "No. 69" "No. 70" "No. 71" "No. 72" "No. 73" "No. 74"
-## [25] "No. 75" "No. 76" "No. 77" "No. 78" "No. 79" "No. 80" "No. 84" "No. 85"</code></pre>
+## [1] "No. 81" "No. 82"</code></pre>
 </div>
 <div id="section-5-1-4-authorship-prediction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#section-5-1-4-authorship-prediction" class="anchor"></a>Section 5.1.4: Authorship Prediction</h2>
 <p>In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predict authorship.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># term frequency per 1000 words</span></a>
-<a class="sourceLine" id="cb28-2" title="2">tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(dfm_prep, <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">1000</span></a>
-<a class="sourceLine" id="cb28-3" title="3"></a>
-<a class="sourceLine" id="cb28-4" title="4"><span class="co"># select words of interest</span></a>
-<a class="sourceLine" id="cb28-5" title="5">words &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"although"</span>, <span class="st">"always"</span>, <span class="st">"commonly"</span>, <span class="st">"consequently"</span>,</a>
-<a class="sourceLine" id="cb28-6" title="6">           <span class="st">"considerable"</span>, <span class="st">"enough"</span>, <span class="st">"there"</span>, <span class="st">"upon"</span>, <span class="st">"while"</span>, <span class="st">"whilst"</span>)</a>
-<a class="sourceLine" id="cb28-7" title="7">tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(tfm, words, <span class="dt">valuetype =</span> <span class="st">"fixed"</span>)</a>
-<a class="sourceLine" id="cb28-8" title="8"></a>
-<a class="sourceLine" id="cb28-9" title="9"><span class="co"># average among Hamilton/Madison essays</span></a>
-<a class="sourceLine" id="cb28-10" title="10">tfm_ave &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_group.html">dfm_group</a></span>(<span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(author)), <span class="st">"author"</span>) <span class="op">/</span></a>
-<a class="sourceLine" id="cb28-11" title="11"><span class="st">           </span><span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(tfm, <span class="st">"author"</span>)))</a>
-<a class="sourceLine" id="cb28-12" title="12">    </a>
-<a class="sourceLine" id="cb28-13" title="13"><span class="co"># bind docvars from corpus and tfm to a data frame</span></a>
-<a class="sourceLine" id="cb28-14" title="14">author_data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw), tfm)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># term frequency per 1000 words</span></a>
+<a class="sourceLine" id="cb27-2" title="2">tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(dfm_prep, <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb27-3" title="3"></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="co"># select words of interest</span></a>
+<a class="sourceLine" id="cb27-5" title="5">words &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"although"</span>, <span class="st">"always"</span>, <span class="st">"commonly"</span>, <span class="st">"consequently"</span>,</a>
+<a class="sourceLine" id="cb27-6" title="6">           <span class="st">"considerable"</span>, <span class="st">"enough"</span>, <span class="st">"there"</span>, <span class="st">"upon"</span>, <span class="st">"while"</span>, <span class="st">"whilst"</span>)</a>
+<a class="sourceLine" id="cb27-7" title="7">tfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(tfm, words, <span class="dt">valuetype =</span> <span class="st">"fixed"</span>)</a>
+<a class="sourceLine" id="cb27-8" title="8"></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="co"># average among Hamilton/Madison essays</span></a>
+<a class="sourceLine" id="cb27-10" title="10">tfm_ave &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_group.html">dfm_group</a></span>(<span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(author)), <span class="st">"author"</span>) <span class="op">/</span></a>
+<a class="sourceLine" id="cb27-11" title="11"><span class="st">           </span><span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(tfm, <span class="st">"author"</span>)))</a>
+<a class="sourceLine" id="cb27-12" title="12">    </a>
+<a class="sourceLine" id="cb27-13" title="13"><span class="co"># bind docvars from corpus and tfm to a data frame</span></a>
+<a class="sourceLine" id="cb27-14" title="14">author_data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corpus_raw), tfm)</a></code></pre></div>
 <pre><code>## Warning: 'as.data.frame.dfm' is deprecated.
 ## Use 'convert(x, to = "data.frame")' instead.
 ## See help("Deprecated")</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="co"># create numeric variable that takes value 1 for Hamilton's essays,</span></a>
-<a class="sourceLine" id="cb30-2" title="2"><span class="co"># -1 for Madison's essays and NA for the essays with unknown authorship</span></a>
-<a class="sourceLine" id="cb30-3" title="3">author_data<span class="op">$</span>author_numeric &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>, <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb30-4" title="4">                                     <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>, <span class="dv">-1</span>, <span class="ot">NA</span>))</a>
-<a class="sourceLine" id="cb30-5" title="5"></a>
-<a class="sourceLine" id="cb30-6" title="6"><span class="co"># use only known authors for training set</span></a>
-<a class="sourceLine" id="cb30-7" title="7">author_data_known &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span>(author_data)</a>
-<a class="sourceLine" id="cb30-8" title="8"></a>
-<a class="sourceLine" id="cb30-9" title="9">hm_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,</a>
-<a class="sourceLine" id="cb30-10" title="10">             <span class="dt">data =</span> author_data_known)</a>
-<a class="sourceLine" id="cb30-11" title="11">hm_fit</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># create numeric variable that takes value 1 for Hamilton's essays,</span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="co"># -1 for Madison's essays and NA for the essays with unknown authorship</span></a>
+<a class="sourceLine" id="cb29-3" title="3">author_data<span class="op">$</span>author_numeric &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>, <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb29-4" title="4">                                     <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(author_data<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>, <span class="dv">-1</span>, <span class="ot">NA</span>))</a>
+<a class="sourceLine" id="cb29-5" title="5"></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="co"># use only known authors for training set</span></a>
+<a class="sourceLine" id="cb29-7" title="7">author_data_known &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span>(author_data)</a>
+<a class="sourceLine" id="cb29-8" title="8"></a>
+<a class="sourceLine" id="cb29-9" title="9">hm_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,</a>
+<a class="sourceLine" id="cb29-10" title="10">             <span class="dt">data =</span> author_data_known)</a>
+<a class="sourceLine" id="cb29-11" title="11">hm_fit</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = author_numeric ~ upon + there + consequently + whilst, 
@@ -387,73 +392,73 @@
 ## 
 ## Coefficients:
 ##  (Intercept)          upon         there  consequently        whilst  
-##      -0.2729        0.2240        0.1278       -0.5596       -0.8378</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">hm_fitted &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/fitted.values.html">fitted</a></span>(hm_fit) <span class="co"># fitted values</span></a>
-<a class="sourceLine" id="cb32-2" title="2"><span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(hm_fitted)</a></code></pre></div>
-<pre><code>## [1] 0.7175527</code></pre>
+##      -0.2726        0.2240        0.1276       -0.5595       -0.8382</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">hm_fitted &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/fitted.values.html">fitted</a></span>(hm_fit) <span class="co"># fitted values</span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(hm_fitted)</a></code></pre></div>
+<pre><code>## [1] 0.717532</code></pre>
 </div>
 <div id="section-5-1-5-cross-validation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#section-5-1-5-cross-validation" class="anchor"></a>Section 5.1.5: Cross-Validation</h2>
 <p>Finally, we assess how well the model fits the data by classifying each essay based on its fitted value.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="co"># proportion of correctly classified essays by Hamilton</span></a>
-<a class="sourceLine" id="cb34-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="co"># proportion of correctly classified essays by Hamilton</span></a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="co"># proportion of correctly classified essays by Madison</span></a>
-<a class="sourceLine" id="cb36-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># proportion of correctly classified essays by Madison</span></a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_fitted[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">n &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(author_data_known)</a>
-<a class="sourceLine" id="cb38-2" title="2">hm_classify &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, n) <span class="co"># a container vector with missing values</span></a>
-<a class="sourceLine" id="cb38-3" title="3"></a>
-<a class="sourceLine" id="cb38-4" title="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb38-5" title="5">  <span class="co"># fit the model to the data after removing the ith observation</span></a>
-<a class="sourceLine" id="cb38-6" title="6">  sub_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,</a>
-<a class="sourceLine" id="cb38-7" title="7">                <span class="dt">data =</span> author_data_known[<span class="op">-</span>i, ]) <span class="co"># exclude ith row</span></a>
-<a class="sourceLine" id="cb38-8" title="8">  <span class="co"># predict the authorship for the ith observation</span></a>
-<a class="sourceLine" id="cb38-9" title="9">  hm_classify[i] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(sub_fit, <span class="dt">newdata =</span> author_data_known[i, ])</a>
-<a class="sourceLine" id="cb38-10" title="10">}</a>
-<a class="sourceLine" id="cb38-11" title="11"></a>
-<a class="sourceLine" id="cb38-12" title="12"><span class="co"># proportion of correctly classified essays by Hamilton</span></a>
-<a class="sourceLine" id="cb38-13" title="13"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">n &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(author_data_known)</a>
+<a class="sourceLine" id="cb37-2" title="2">hm_classify &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, n) <span class="co"># a container vector with missing values</span></a>
+<a class="sourceLine" id="cb37-3" title="3"></a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb37-5" title="5">  <span class="co"># fit the model to the data after removing the ith observation</span></a>
+<a class="sourceLine" id="cb37-6" title="6">  sub_fit &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(author_numeric <span class="op">~</span><span class="st"> </span>upon <span class="op">+</span><span class="st"> </span>there <span class="op">+</span><span class="st"> </span>consequently <span class="op">+</span><span class="st"> </span>whilst,</a>
+<a class="sourceLine" id="cb37-7" title="7">                <span class="dt">data =</span> author_data_known[<span class="op">-</span>i, ]) <span class="co"># exclude ith row</span></a>
+<a class="sourceLine" id="cb37-8" title="8">  <span class="co"># predict the authorship for the ith observation</span></a>
+<a class="sourceLine" id="cb37-9" title="9">  hm_classify[i] &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(sub_fit, <span class="dt">newdata =</span> author_data_known[i, ])</a>
+<a class="sourceLine" id="cb37-10" title="10">}</a>
+<a class="sourceLine" id="cb37-11" title="11"></a>
+<a class="sourceLine" id="cb37-12" title="12"><span class="co"># proportion of correctly classified essays by Hamilton</span></a>
+<a class="sourceLine" id="cb37-13" title="13"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "hamilton"</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="co"># proportion of correctly classified essays by Madison</span></a>
-<a class="sourceLine" id="cb40-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="co"># proportion of correctly classified essays by Madison</span></a>
+<a class="sourceLine" id="cb39-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(hm_classify[author_data_known<span class="op">$</span>author <span class="op">==</span><span class="st"> "madison"</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1">disputed &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">49</span>, <span class="dv">50</span><span class="op">:</span><span class="dv">57</span>, <span class="dv">62</span>, <span class="dv">63</span>) <span class="co"># 11 essays with disputed authorship</span></a>
-<a class="sourceLine" id="cb42-2" title="2">tf_disputed &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(author)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb42-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(<span class="dt">to =</span> <span class="st">"data.frame"</span>)</a>
-<a class="sourceLine" id="cb42-4" title="4"></a>
-<a class="sourceLine" id="cb42-5" title="5">author_data<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(hm_fit, <span class="dt">newdata =</span> author_data)</a>
-<a class="sourceLine" id="cb42-6" title="6"></a>
-<a class="sourceLine" id="cb42-7" title="7">author_data<span class="op">$</span>prediction <span class="co"># predicted values</span></a></code></pre></div>
-<pre><code>##  [1]  0.73682138 -0.13810334 -1.35072048 -0.03823549 -0.27285552  0.71537231
-##  [7]  1.33178340  0.19414036  0.37516964 -0.20369832  0.67584796  0.99478176
-## [13]  1.39348825 -1.18908379  1.20446180  0.63999272  0.91390560 -0.38341254
-## [19] -0.62471327 -0.12453888  0.91552544  1.08097849  0.88528696  1.01192444
-## [25]  0.08226598  0.72338300  1.08177034  0.71354396  1.47718825  1.53672871
-## [31]  1.85572895  0.71920518  1.07664097  1.26163462  0.90800379  1.06339810
-## [37] -0.81826934 -0.56126822 -0.27285552 -0.10309170 -0.47343432 -0.17492007
-## [43] -0.60654100 -0.86944061 -1.67765248 -0.91487748 -0.13268399 -0.13500254
-## [49] -0.96784742 -0.06907196 -1.46790700 -0.27285552 -0.54229524 -0.54529610
-## [55]  0.04081584 -0.56418213 -1.18177840 -0.41902525  0.55200092  0.98676075
-## [61]  0.59237415 -0.97795312 -0.21203157 -0.18295716  1.15640459  1.12403237
-## [67]  0.78348571  0.11197467  1.12824159  0.70981781  0.34751104  0.84257351
-## [73]  1.24182206  0.91612261  0.50276872  1.05480578  1.05926761  0.90585578
-## [79]  0.54292995  0.64035410  0.91773469  0.31189155  0.80869221  0.73649069
-## [85]  1.00895939</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">disputed &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">49</span>, <span class="dv">50</span><span class="op">:</span><span class="dv">57</span>, <span class="dv">62</span>, <span class="dv">63</span>) <span class="co"># 11 essays with disputed authorship</span></a>
+<a class="sourceLine" id="cb41-2" title="2">tf_disputed &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_subset.html">dfm_subset</a></span>(tfm, <span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(author)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(<span class="dt">to =</span> <span class="st">"data.frame"</span>)</a>
+<a class="sourceLine" id="cb41-4" title="4"></a>
+<a class="sourceLine" id="cb41-5" title="5">author_data<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(hm_fit, <span class="dt">newdata =</span> author_data)</a>
+<a class="sourceLine" id="cb41-6" title="6"></a>
+<a class="sourceLine" id="cb41-7" title="7">author_data<span class="op">$</span>prediction <span class="co"># predicted values</span></a></code></pre></div>
+<pre><code>##  [1]  0.73768464 -0.13782232 -1.34949546 -0.03726198 -0.27260150  0.71608946
+##  [7]  1.33305417  0.19430381  0.37527561 -0.20370616  0.67761054  0.99570534
+## [13]  1.39583970 -1.18883138  1.20394080  0.64006971  0.91392946 -0.38351761
+## [19] -0.62452227 -0.12454929  0.91528287  1.08076648  0.88536557  1.01183209
+## [25]  0.08240655  0.72280160  1.08126274  0.71318962  1.47672651  1.53687933
+## [31]  1.85577458  0.71867094  1.07694810  1.26145113  0.90808772  1.06271294
+## [37] -0.81811611 -0.56124851 -0.27260150 -0.10315913 -0.47331564 -0.17481686
+## [43] -0.60642641 -0.86957188 -1.67770002 -0.91487008 -0.13260245 -0.13506652
+## [49] -0.96746088 -0.06914737 -1.46815233 -0.27260150 -0.54233568 -0.54491631
+## [55]  0.04068389 -0.56443682 -1.18224817 -0.41884589  0.55174620  0.98661237
+## [61]  0.59219807 -0.97749851 -0.21229842 -0.18304354  1.15649104  1.12415464
+## [67]  0.78361589  0.11218357  1.12613283  0.70756825  0.34756688  0.84224235
+## [73]  1.24198954  0.91587979  0.50289511  1.05475649  1.05950995  0.90561725
+## [79]  0.54280911  0.64026888  0.91726770  0.31226274  0.80855305  0.73601064
+## [85]  1.00888419</code></pre>
 <p>Finally, we plot the fitted values for each Federalist paper with the <strong>ggplot2</strong> package.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1">author_data<span class="op">$</span>author_plot &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(author_data<span class="op">$</span>author), <span class="st">"unknown"</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(author_data<span class="op">$</span>author))</a>
-<a class="sourceLine" id="cb44-2" title="2"></a>
-<a class="sourceLine" id="cb44-3" title="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb44-4" title="4"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> author_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> paper_numeric, </a>
-<a class="sourceLine" id="cb44-5" title="5">                               <span class="dt">y =</span> prediction, </a>
-<a class="sourceLine" id="cb44-6" title="6">                               <span class="dt">shape =</span> author_plot, </a>
-<a class="sourceLine" id="cb44-7" title="7">                               <span class="dt">colour =</span> author_plot)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb44-8" title="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb44-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb44-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Federalist Papers"</span>, <span class="dt">y =</span> <span class="st">"Predicted values"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb44-11" title="11"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb44-12" title="12"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title=</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">author_data<span class="op">$</span>author_plot &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(author_data<span class="op">$</span>author), <span class="st">"unknown"</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(author_data<span class="op">$</span>author))</a>
+<a class="sourceLine" id="cb43-2" title="2"></a>
+<a class="sourceLine" id="cb43-3" title="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb43-4" title="4"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> author_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> paper_numeric, </a>
+<a class="sourceLine" id="cb43-5" title="5">                               <span class="dt">y =</span> prediction, </a>
+<a class="sourceLine" id="cb43-6" title="6">                               <span class="dt">shape =</span> author_plot, </a>
+<a class="sourceLine" id="cb43-7" title="7">                               <span class="dt">colour =</span> author_plot)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-8" title="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-9" title="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb43-10" title="10"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"Federalist Papers"</span>, <span class="dt">y =</span> <span class="st">"Predicted values"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-11" title="11"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb43-12" title="12"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.title=</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())</a></code></pre></div>
 <p><img src="qss_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 </div>
   </div>
@@ -479,7 +484,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

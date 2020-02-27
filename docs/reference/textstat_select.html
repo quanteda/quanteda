@@ -89,7 +89,7 @@ textstat_keyness or textstat_frequency based on
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -245,13 +245,14 @@ match the pattern</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     </table>
 
@@ -260,14 +261,15 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     <pre class="examples"><div class='input'><span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
 <span class='no'>tstat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>dfmat</span>)
-<span class='fu'>textstat_select</span>(<span class='no'>tstat</span>, <span class='st'>'america*'</span>)</div><div class='output co'>#&gt;          feature        chi2            p n_target n_reference
-#&gt; 7        america 176.6114029 0.000000e+00      130          54
-#&gt; 9      americans 150.6479704 0.000000e+00       67           7
-#&gt; 16     america's  94.0689468 0.000000e+00       35           0
-#&gt; 107     american  19.0970791 1.242349e-05       69          94
-#&gt; 1134    americas   0.7944222 3.727663e-01        2           1
-#&gt; 2290  american's   0.2648039 6.068389e-01        1           0
-#&gt; 6902 americanism  -0.3721574 5.418307e-01        0           1</div><div class='input'>
+<span class='fu'>textstat_select</span>(<span class='no'>tstat</span>, <span class='st'>'america*'</span>)</div><div class='output co'>#&gt;             feature        chi2            p n_target n_reference
+#&gt; 7           america 177.5365715 0.0000000000      130          54
+#&gt; 9         americans 148.6185835 0.0000000000       66           7
+#&gt; 16        america's  94.4295385 0.0000000000       35           0
+#&gt; 108        american  19.3211638 0.0000110475       69          94
+#&gt; 1137       americas   0.8010805 0.3707705247        2           1
+#&gt; 1898 americans--and   0.2670232 0.6053356412        1           0
+#&gt; 2301     american's   0.2670232 0.6053356412        1           0
+#&gt; 6945    americanism  -0.3707365 0.5426030892        0           1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -283,7 +285,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

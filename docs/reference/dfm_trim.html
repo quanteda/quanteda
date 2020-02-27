@@ -45,15 +45,15 @@
 
 <meta property="og:title" content="Trim a dfm using frequency threshold-based feature selection — dfm_trim" />
 <meta property="og:description" content="Returns a document by feature matrix reduced in size based on
-  document and term frequency, usually in terms of a minimum frequency, but
-  may also be in terms of maximum frequencies.  Setting a combination of
-  minimum and maximum frequencies will select features based on a range.
+document and term frequency, usually in terms of a minimum frequency, but
+may also be in terms of maximum frequencies.  Setting a combination of
+minimum and maximum frequencies will select features based on a range.
 Feature selection is implemented by considering features across
-  all documents, by summing them for term frequency, or counting the
-  documents in which they occur for document frequency. Rank and quantile
-  versions of these are also implemented, for taking the first \(n\)
-  features in terms of descending order of overall global counts or document
-  frequencies, or as a quantile of all frequencies." />
+all documents, by summing them for term frequency, or counting the
+documents in which they occur for document frequency. Rank and quantile
+versions of these are also implemented, for taking the first \(n\)
+features in terms of descending order of overall global counts or document
+frequencies, or as a quantile of all frequencies." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -96,7 +96,7 @@ Feature selection is implemented by considering features across
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -220,15 +220,15 @@ Feature selection is implemented by considering features across
 
     <div class="ref-description">
     <p>Returns a document by feature matrix reduced in size based on
-  document and term frequency, usually in terms of a minimum frequency, but
-  may also be in terms of maximum frequencies.  Setting a combination of
-  minimum and maximum frequencies will select features based on a range.</p>
+document and term frequency, usually in terms of a minimum frequency, but
+may also be in terms of maximum frequencies.  Setting a combination of
+minimum and maximum frequencies will select features based on a range.</p>
 <p>Feature selection is implemented by considering features across
-  all documents, by summing them for term frequency, or counting the
-  documents in which they occur for document frequency. Rank and quantile
-  versions of these are also implemented, for taking the first \(n\)
-  features in terms of descending order of overall global counts or document
-  frequencies, or as a quantile of all frequencies.</p>
+all documents, by summing them for term frequency, or counting the
+documents in which they occur for document frequency. Rank and quantile
+versions of these are also implemented, for taking the first \(n\)
+features in terms of descending order of overall global counts or document
+frequencies, or as a quantile of all frequencies.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dfm_trim</span>(
@@ -255,7 +255,7 @@ Feature selection is implemented by considering features across
       <th>min_termfreq, max_termfreq</th>
       <td><p>minimum/maximum values of feature frequencies
 across all documents, below/above which features will
-  be removed</p></td>
+be removed</p></td>
     </tr>
     <tr>
       <th>termfreq_type</th>
@@ -265,7 +265,7 @@ term frequencies by the total sum; <code>"rank"</code> is matched against the
 inverted ranking of features in terms of overall frequency, so that 1, 2,
 ... are the highest and second highest frequency features, and so on;
 <code>"quantile"</code> sets the cutoffs according to the quantiles (see
-<code><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></code>) of term frequencies.</p></td>
+<code><a href='https://rdrr.io/r/stats/quantile.html'>quantile()</a></code>) of term frequencies.</p></td>
     </tr>
     <tr>
       <th>min_docfreq, max_docfreq</th>
@@ -275,12 +275,11 @@ frequency, below/above which features will be removed</p></td>
     <tr>
       <th>docfreq_type</th>
       <td><p>specify how <code>min_docfreq</code> and <code>max_docfreq</code> are
-interpreted.   <code>"count"</code> is the same as <code><a href='docfreq.html'>docfreq</a>(x, scheme
-= "count")</code>; <code>"prop"</code> divides the document frequencies by the total
+interpreted.   <code>"count"</code> is the same as <code>[docfreq](x, scheme = "count")</code>; <code>"prop"</code> divides the document frequencies by the total
 sum; <code>"rank"</code> is matched against the inverted ranking of document
 frequency, so that 1, 2, ... are the features with the highest and second
 highest document frequencies, and so on; <code>"quantile"</code> sets the cutoffs
-according to the quantiles (see <code><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></code>) of document
+according to the quantiles (see <code><a href='https://rdrr.io/r/stats/quantile.html'>quantile()</a></code>) of document
 frequencies.</p></td>
     </tr>
     <tr>
@@ -304,25 +303,70 @@ with <span class="pkg">tm</span></p></td>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Trimming a <a href='dfm.html'>dfm</a> object is an operation based on the <em>values</em>
-  in the document-feature matrix.  To select subsets of a dfm based on the
-  features themselves (meaning the feature labels from
-  <code><a href='featnames.html'>featnames</a></code>) -- such as those matching a regular expression, or
-  removing features matching a stopword list, use <code><a href='dfm_select.html'>dfm_select</a></code>.</p>
+in the document-feature matrix.  To select subsets of a dfm based on the
+features themselves (meaning the feature labels from
+<code><a href='featnames.html'>featnames()</a></code>) -- such as those matching a regular expression, or
+removing features matching a stopword list, use <code><a href='dfm_select.html'>dfm_select()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select</a></code>, <code><a href='dfm_sample.html'>dfm_sample</a></code></p></div>
+    <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select()</a></code>, <code><a href='dfm_sample.html'>dfm_sample()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse).</div><div class='input'>
+    <pre class="examples"><div class='input'>(<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse) and 4 docvars.
+#&gt;                  features
+#&gt; docs              fellow-citizens  of the senate and house representatives :
+#&gt;   1789-Washington               1  71 116      1  48     2               2 1
+#&gt;   1793-Washington               0  11  13      0   2     0               0 1
+#&gt;   1797-Adams                    3 140 163      1 130     0               2 0
+#&gt;   1801-Jefferson                2 104 130      0  81     0               0 1
+#&gt;   1805-Jefferson                0 101 143      0  93     0               0 0
+#&gt;                  features
+#&gt; docs              among vicissitudes
+#&gt;   1789-Washington     1            1
+#&gt;   1793-Washington     0            0
+#&gt;   1797-Adams          4            0
+#&gt;   1801-Jefferson      1            0
+#&gt;   1805-Jefferson      7            0
+#&gt; [ reached max_nfeat ... 1,938 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &gt;= 10 times and in &gt;= 2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.2% sparse) and 4 docvars.
+#&gt;                  features
+#&gt; docs               of the and among to no have me with than
+#&gt;   1789-Washington  71 116  48     1 48  8   12  8   17    6
+#&gt;   1793-Washington  11  13   2     0  5  0    1  1    0    0
+#&gt;   1797-Adams      140 163 130     4 72  6    7  5   16    7
+#&gt;   1801-Jefferson  104 130  81     1 61  1   10  4   20    0
+#&gt;   1805-Jefferson  101 143  93     7 83  7   24  8   28    2
+#&gt; [ reached max_nfeat ... 96 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &gt;= 10 times and in at least 0.4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.2% sparse) and 4 docvars.
+#&gt;                  features
+#&gt; docs               of the and among to no have me with than
+#&gt;   1789-Washington  71 116  48     1 48  8   12  8   17    6
+#&gt;   1793-Washington  11  13   2     0  5  0    1  1    0    0
+#&gt;   1797-Adams      140 163 130     4 72  6    7  5   16    7
+#&gt;   1801-Jefferson  104 130  81     1 61  1   10  4   20    0
+#&gt;   1805-Jefferson  101 143  93     7 83  7   24  8   28    2
+#&gt; [ reached max_nfeat ... 96 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &lt;= 10 times and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse) and 4 docvars.
+#&gt;                  features
+#&gt; docs              senate house representatives vicissitudes incident event
+#&gt;   1789-Washington      1     2               2            1        1     2
+#&gt;   1793-Washington      0     0               0            0        0     0
+#&gt;   1797-Adams           1     0               2            0        0     0
+#&gt;   1801-Jefferson       0     0               0            0        0     0
+#&gt;   1805-Jefferson       0     0               0            0        0     0
+#&gt;                  features
+#&gt; docs              filled greater anxieties notification
+#&gt;   1789-Washington      1       1         1            1
+#&gt;   1793-Washington      0       0         0            0
+#&gt;   1797-Adams           0       0         0            0
+#&gt;   1801-Jefferson       0       1         0            0
+#&gt;   1805-Jefferson       0       0         0            0
+#&gt; [ reached max_nfeat ... 1,665 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &lt;= 10 times and in at most 3/4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 0 features.
-#&gt; 5 x 0 sparse Matrix of class "dfm"
+<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 0 features and 4 docvars.
 #&gt;                  features
 #&gt; docs             
 #&gt;   1789-Washington
@@ -331,9 +375,32 @@ with <span class="pkg">tm</span></p></td>
 #&gt;   1801-Jefferson 
 #&gt;   1805-Jefferson </div><div class='input'>
 <span class='co'># keep only words occurring 5 times in 1000, and in 2 of 5 of documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.005</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 30 features (7.33% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.005</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 30 features (7.33% sparse) and 4 docvars.
+#&gt;                  features
+#&gt; docs               of the and to have with that which by   ,
+#&gt;   1789-Washington  71 116  48 48   12   17   18    36 20  70
+#&gt;   1793-Washington  11  13   2  5    1    0    1     1  2   5
+#&gt;   1797-Adams      140 163 130 72    7   16   22    20 30 201
+#&gt;   1801-Jefferson  104 130  81 61   10   20   24    25 16 128
+#&gt;   1805-Jefferson  101 143  93 83   24   28   37    23 22 142
+#&gt; [ reached max_nfeat ... 20 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,676 features (76.5% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,676 features (76.5% sparse) and 4 docvars.
+#&gt;                  features
+#&gt; docs              senate house representatives vicissitudes incident event
+#&gt;   1789-Washington      1     2               2            1        1     2
+#&gt;   1793-Washington      0     0               0            0        0     0
+#&gt;   1797-Adams           1     0               2            0        0     0
+#&gt;   1801-Jefferson       0     0               0            0        0     0
+#&gt;   1805-Jefferson       0     0               0            0        0     0
+#&gt;                  features
+#&gt; docs              filled greater anxieties notification
+#&gt;   1789-Washington      1       1         1            1
+#&gt;   1793-Washington      0       0         0            0
+#&gt;   1797-Adams           0       0         0            0
+#&gt;   1801-Jefferson       0       1         0            0
+#&gt;   1805-Jefferson       0       0         0            0
+#&gt; [ reached max_nfeat ... 1,666 more features ]</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># compare to removeSparseTerms from the tm package</span>
 (<span class='no'>dfmattm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='st'>"tm"</span>))
@@ -358,7 +425,7 @@ with <span class="pkg">tm</span></p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

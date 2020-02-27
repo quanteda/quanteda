@@ -47,7 +47,7 @@
 <meta property="og:description" content="Segment tokens by splitting on a pattern match. This is useful for breaking
 the tokenized texts into smaller document units, based on a regular pattern
 or a user-supplied annotation. While it normally makes more sense to do this
-at the corpus level (see corpus_segment), tokens_segment
+at the corpus level (see corpus_segment()), tokens_segment
 provides the option to perform this operation on tokens." />
 <meta name="twitter:card" content="summary" />
 
@@ -91,7 +91,7 @@ provides the option to perform this operation on tokens." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -217,7 +217,7 @@ provides the option to perform this operation on tokens." />
     <p>Segment tokens by splitting on a pattern match. This is useful for breaking
 the tokenized texts into smaller document units, based on a regular pattern
 or a user-supplied annotation. While it normally makes more sense to do this
-at the corpus level (see <code><a href='corpus_segment.html'>corpus_segment</a></code>), <code>tokens_segment</code>
+at the corpus level (see <code><a href='corpus_segment.html'>corpus_segment()</a></code>), <code>tokens_segment</code>
 provides the option to perform this operation on tokens.</p>
     </div>
 
@@ -246,13 +246,14 @@ details.</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>extract_pattern</th>
@@ -261,14 +262,14 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     </tr>
     <tr>
       <th>pattern_position</th>
-      <td><p>either <code>"before"</code> or <code>"after"</code>, depending 
-on whether the pattern precedes the text (as with a tag) or follows the 
+      <td><p>either <code>"before"</code> or <code>"after"</code>, depending
+on whether the pattern precedes the text (as with a tag) or follows the
 text (as with punctuation delimiters)</p></td>
     </tr>
     <tr>
       <th>use_docvars</th>
-      <td><p>if <code>TRUE</code>, repeat the docvar values for each 
-segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus. 
+      <td><p>if <code>TRUE</code>, repeat the docvar values for each
+segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.</p></td>
     </tr>
@@ -276,8 +277,8 @@ are not desired for the segmented corpus.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>tokens_segment</code> returns a <a href='tokens.html'>tokens</a> object whose documents 
-  have been split by patterns</p>
+    <p><code>tokens_segment</code> returns a <a href='tokens.html'>tokens</a> object whose documents
+have been split by patterns</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my country to
@@ -289,38 +290,28 @@ this distinguished honor."</span>
 <span class='co'># split by any punctuation</span>
 <span class='fu'>tokens_segment</span>(<span class='no'>toks</span>, <span class='st'>"^\\p{Sterm}$"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
                <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-               <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+               <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; text1.1 :
-#&gt;  [1] "Fellow"     "citizens"   ","          "I"          "am"        
-#&gt;  [6] "again"      "called"     "upon"       "by"         "the"       
-#&gt; [11] "voice"      "of"         "my"         "country"    "to"        
-#&gt; [16] "execute"    "the"        "functions"  "of"         "its"       
-#&gt; [21] "Chief"      "Magistrate"
+#&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
+#&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
+#&gt; [ ... and 10 more ]
 #&gt; 
 #&gt; text1.2 :
-#&gt;  [1] "When"          "the"           "occasion"      "proper"       
-#&gt;  [5] "for"           "it"            "shall"         "arrive"       
-#&gt;  [9] ","             "I"             "shall"         "endeavor"     
-#&gt; [13] "to"            "express"       "the"           "high"         
-#&gt; [17] "sense"         "I"             "entertain"     "of"           
-#&gt; [21] "this"          "distinguished" "honor"        
+#&gt;  [1] "When"     "the"      "occasion" "proper"   "for"      "it"      
+#&gt;  [7] "shall"    "arrive"   ","        "I"        "shall"    "endeavor"
+#&gt; [ ... and 11 more ]
 #&gt; </div><div class='input'><span class='fu'>tokens_segment</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"."</span>, <span class='st'>"?"</span>, <span class='st'>"!"</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
                <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-               <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+               <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; text1.1 :
-#&gt;  [1] "Fellow"     "citizens"   ","          "I"          "am"        
-#&gt;  [6] "again"      "called"     "upon"       "by"         "the"       
-#&gt; [11] "voice"      "of"         "my"         "country"    "to"        
-#&gt; [16] "execute"    "the"        "functions"  "of"         "its"       
-#&gt; [21] "Chief"      "Magistrate"
+#&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
+#&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
+#&gt; [ ... and 10 more ]
 #&gt; 
 #&gt; text1.2 :
-#&gt;  [1] "When"          "the"           "occasion"      "proper"       
-#&gt;  [5] "for"           "it"            "shall"         "arrive"       
-#&gt;  [9] ","             "I"             "shall"         "endeavor"     
-#&gt; [13] "to"            "express"       "the"           "high"         
-#&gt; [17] "sense"         "I"             "entertain"     "of"           
-#&gt; [21] "this"          "distinguished" "honor"        
+#&gt;  [1] "When"     "the"      "occasion" "proper"   "for"      "it"      
+#&gt;  [7] "shall"    "arrive"   ","        "I"        "shall"    "endeavor"
+#&gt; [ ... and 11 more ]
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -337,7 +328,7 @@ this distinguished honor."</span>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

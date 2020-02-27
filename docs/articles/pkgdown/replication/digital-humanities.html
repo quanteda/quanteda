@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -207,7 +207,7 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># verify that "orphan" is the end of the novel</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</a></code></pre></div>
 <pre><code>##                                                             
-##  [Moby Dick, 255352] children, only found another | orphan |
+##  [Moby Dick, 250814] children, only found another | orphan |
 ##                              
 ##  . End of Project Gutenberg's</code></pre>
 <p>If we want to count the number of lines, we can do so by counting the newlines in the text.</p>
@@ -237,17 +237,17 @@
 <p>We will skip straight to getting the character vector of tokens:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">moby_word_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>()</a>
 <a class="sourceLine" id="cb21-2" title="2">(total_length &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(moby_word_v))</a></code></pre></div>
-<pre><code>## [1] 210000</code></pre>
+<pre><code>## [1] 208961</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">moby_word_v[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
-<pre><code>##  [1] "chapter"  "1"        "loomings" "call"     "me"       "ishmael" 
-##  [7] "some"     "years"    "ago"      "never"</code></pre>
+<pre><code>##  [1] "chapter"    "1"          "loomings"   "call"       "me"        
+##  [6] "ishmael"    "some"       "years"      "ago--never" "mind"</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">moby_word_v[<span class="dv">99986</span>] </a></code></pre></div>
-<pre><code>## [1] "in"</code></pre>
+<pre><code>## [1] "ingenious"</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">moby_word_v[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</a></code></pre></div>
 <pre><code>## [1] "call"    "me"      "ishmael"</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># check positions of "whale"</span></a>
 <a class="sourceLine" id="cb29-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a></code></pre></div>
-<pre><code>## [1] 2030 2060 2203 2415 4048 4211</code></pre>
+<pre><code>## [1] 2011 2041 2182 2393 4014 4175</code></pre>
 </div>
 <div id="beginning-the-analysis" class="section level2">
 <h2 class="hasAnchor">
@@ -255,50 +255,49 @@
 <p>The code below uses the tokenized text to the occurrence of the word <em>whale</em>. To include the possessive form <em>whale’s</em>, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob. A <em>glob</em> is a simple wildcard matching pattern common on Unix systems – asterisks match zero or more characters.</p>
 <p>Note that the counts below do not match those in the book, due to differences in how the book has split on any non-word character, while <strong>quanteda</strong>’s tokenizer splits on a more comprehensive set of “word boundaries”. <strong>quanteda</strong>’s <code><a href="../../../reference/tokens.html">tokens()</a></code> function by default does not remove punctuation or numbers (both defined as “non-word” characters) by default. To more closely match the counts in the book, we have removed punctuation.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(moby_word_v[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)])</a></code></pre></div>
-<pre><code>## [1] 908</code></pre>
+<pre><code>## [1] 896</code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="co"># total occurrences of "whale" including possessive</span></a>
 <a class="sourceLine" id="cb33-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(moby_word_v[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(moby_word_v[<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(moby_word_v <span class="op">==</span><span class="st"> "whale's"</span>)])</a></code></pre></div>
-<pre><code>## [1] 1028</code></pre>
+<pre><code>## [1] 1015</code></pre>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># same thing using kwic()</span></a>
 <a class="sourceLine" id="cb35-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="dt">pattern =</span> <span class="st">"whale"</span>))</a></code></pre></div>
-<pre><code>## [1] 908</code></pre>
+<pre><code>## [1] 896</code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="dt">pattern =</span> <span class="st">"whale*"</span>)) <span class="co"># includes words like "whalemen"</span></a></code></pre></div>
 <pre><code>## [1] 1565</code></pre>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">(total_whale_hits &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="dt">pattern =</span> <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)))</a></code></pre></div>
-<pre><code>## [1] 1028</code></pre>
+<pre><code>## [1] 1015</code></pre>
 <p>What fraction of the total words (excluding punctuation) in the novel are “whale”?</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">total_whale_hits <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)  </a></code></pre></div>
 <pre><code>##       text1 
-## 0.004895238</code></pre>
+## 0.004857366</code></pre>
 <p>With <code><a href="../../../reference/ntoken.html">ntype()</a></code> we can calculate the size of the vocabulary – includes possessive forms, but excludes punctuation, symbols and numbers.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co"># total unique words</span></a>
 <a class="sourceLine" id="cb43-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(moby_word_v))</a></code></pre></div>
-<pre><code>## [1] 18524</code></pre>
+<pre><code>## [1] 19738</code></pre>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../../reference/char_tolower.html">char_tolower</a></span>(novel_v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## text1 
-## 18524</code></pre>
+## 19738</code></pre>
 <p>To quickly sort the word types by their frequency, we can use the <code><a href="../../../reference/dfm.html">dfm()</a></code> command to create a matrix of counts of each word type – a document-frequency matrix. In this case there is only one document, the entire book.</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># ten most frequent words</span></a>
 <a class="sourceLine" id="cb47-2" title="2">moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb47-3" title="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(moby_dfm, <span class="dt">nf =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 10 features (0.0% sparse).
-## 1 x 10 sparse Matrix of class "dfm"
 ##        features
-## docs    chapter 1 loomings call  me ishmael some years ago never
-##   text1     172 2        1   54 628      19  608    91  35   203</code></pre>
+## docs    chapter 1 loomings call  me ishmael some years ago--never mind
+##   text1     172 2        1   54 614      18  604    90          1   76</code></pre>
 <p>Getting the list of the most frequent 10 terms is easy, using <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code>.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">10</span>) </a></code></pre></div>
 <pre><code>##    feature frequency rank docfreq group
-## 1      the     14173    1       1   all
-## 2       of      6446    2       1   all
-## 3      and      6311    3       1   all
-## 4        a      4605    4       1   all
-## 5       to      4511    5       1   all
-## 6       in      4071    6       1   all
-## 7     that      2950    7       1   all
-## 8      his      2495    8       1   all
-## 9       it      2394    9       1   all
-## 10       i      1976   10       1   all</code></pre>
+## 1      the     14071    1       1   all
+## 2       of      6439    2       1   all
+## 3      and      6258    3       1   all
+## 4        a      4537    4       1   all
+## 5       to      4492    5       1   all
+## 6       in      4050    6       1   all
+## 7     that      2904    7       1   all
+## 8      his      2485    8       1   all
+## 9       it      2356    9       1   all
+## 10       i      1936   10       1   all</code></pre>
 <p>Finally, if we wish to plot the most frequent (50) terms, we can supply the results of <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code> to <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> to plot their frequency by their rank:</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co"># plot frequency of 50 most frequent terms </span></a>
 <a class="sourceLine" id="cb51-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
@@ -322,33 +321,32 @@
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="co"># frequencies of "he" and "she" - these are matrixes, not numerics</span></a>
 <a class="sourceLine" id="cb53-2" title="2">sorted_moby_freqs_t[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</a></code></pre></div>
 <pre><code>##   he  she  him  her 
-## 1758  112 1058  330</code></pre>
+## 1733  110 1040  324</code></pre>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co"># another method: indexing the dfm</span></a>
 <a class="sourceLine" id="cb55-2" title="2">moby_dfm[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0.0% sparse).
-## 1 x 4 sparse Matrix of class "dfm"
 ##        features
 ## docs      he she  him her
-##   text1 1758 112 1058 330</code></pre>
+##   text1 1733 110 1040 324</code></pre>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">sorted_moby_freqs_t[<span class="dv">1</span>]</a></code></pre></div>
 <pre><code>##   the 
-## 14173</code></pre>
+## 14071</code></pre>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">sorted_moby_freqs_t[<span class="st">"the"</span>]</a></code></pre></div>
 <pre><code>##   the 
-## 14173</code></pre>
+## 14071</code></pre>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1"><span class="co"># term frequency ratios</span></a>
 <a class="sourceLine" id="cb61-2" title="2">sorted_moby_freqs_t[<span class="st">"him"</span>] <span class="op">/</span><span class="st"> </span>sorted_moby_freqs_t[<span class="st">"her"</span>]</a></code></pre></div>
 <pre><code>##      him 
-## 3.206061</code></pre>
+## 3.209877</code></pre>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1">sorted_moby_freqs_t[<span class="st">"he"</span>] <span class="op">/</span><span class="st"> </span>sorted_moby_freqs_t[<span class="st">"she"</span>]</a></code></pre></div>
 <pre><code>##       he 
-## 15.69643</code></pre>
+## 15.75455</code></pre>
 <p>Total number of tokens:</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1"><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(moby_dfm)</a></code></pre></div>
 <pre><code>##  text1 
-## 210000</code></pre>
+## 208961</code></pre>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sorted_moby_freqs_t)</a></code></pre></div>
-<pre><code>## [1] 210000</code></pre>
+<pre><code>## [1] 208961</code></pre>
 </div>
 <div id="recycling" class="section level2">
 <h2 class="hasAnchor">
@@ -357,16 +355,15 @@
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">sorted_moby_rel_freqs_t &lt;-<span class="st"> </span>sorted_moby_freqs_t <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(sorted_moby_freqs_t) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb69-2" title="2">sorted_moby_rel_freqs_t[<span class="st">"the"</span>]</a></code></pre></div>
 <pre><code>##      the 
-## 6.749048</code></pre>
+## 6.733792</code></pre>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="co"># by weighting the dfm directly</span></a>
 <a class="sourceLine" id="cb71-2" title="2">moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb71-3" title="3"></a>
 <a class="sourceLine" id="cb71-4" title="4"><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(moby_dfm_pct, <span class="dt">pattern =</span> <span class="st">"the"</span>)</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0.0% sparse).
-## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs         the
-##   text1 6.749048</code></pre>
+##   text1 6.733792</code></pre>
 <p>Plotting the most frequent terms, replicating the plot from the book:</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sorted_moby_rel_freqs_t[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">type =</span> <span class="st">"b"</span>,</a>
 <a class="sourceLine" id="cb73-2" title="2">     <span class="dt">xlab =</span> <span class="st">"Top Ten Words"</span>, <span class="dt">ylab =</span> <span class="st">"Percentage of Full Text"</span>, <span class="dt">xaxt =</span> <span class="st">"n"</span>)</a>
@@ -404,7 +401,7 @@
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1"><span class="co"># identify the chapter break locations</span></a>
 <a class="sourceLine" id="cb77-2" title="2">chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CHAPTER </span><span class="ch">\\</span><span class="st">d"</span>)), <span class="dt">valuetype =</span> <span class="st">"regex"</span>)<span class="op">$</span>from</a>
 <a class="sourceLine" id="cb77-3" title="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(chap_positions_v)</a></code></pre></div>
-<pre><code>## [1]     1  2581  4287 11236 13169 14043</code></pre>
+<pre><code>## [1]     1  2506  4167 10929 12809 13662</code></pre>
 </div>
 <div id="identifying-chapter-breaks" class="section level2">
 <h2 class="hasAnchor">
@@ -417,33 +414,25 @@
 <pre><code>## Corpus consisting of 136 documents, showing 10 documents:
 ## 
 ##          Text Types Tokens Sentences                       pattern
-##   Moby Dick.1   917   2575       101        CHAPTER 1. Loomings.\n
-##   Moby Dick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.\n
-##   Moby Dick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.\n
-##   Moby Dick.4   681   1927        54 CHAPTER 4. The Counterpane.\n
-##   Moby Dick.5   405    869        29       CHAPTER 5. Breakfast.\n
-##   Moby Dick.6   466    942        44      CHAPTER 6. The Street.\n
-##   Moby Dick.7   519   1082        40      CHAPTER 7. The Chapel.\n
-##   Moby Dick.8   478   1080        29      CHAPTER 8. The Pulpit.\n
-##   Moby Dick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
-##  Moby Dick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
-## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Mon Nov 25 08:47:14 2019
-## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
+##   Moby Dick.1   922   2500       101        CHAPTER 1. Loomings.\n
+##   Moby Dick.2   658   1655        60  CHAPTER 2. The Carpet-Bag.\n
+##   Moby Dick.3  1785   6756       264 CHAPTER 3. The Spouter-Inn.\n
+##   Moby Dick.4   688   1874        54 CHAPTER 4. The Counterpane.\n
+##   Moby Dick.5   404    848        29       CHAPTER 5. Breakfast.\n
+##   Moby Dick.6   464    930        44      CHAPTER 6. The Street.\n
+##   Moby Dick.7   517   1070        40      CHAPTER 7. The Chapel.\n
+##   Moby Dick.8   478   1069        29      CHAPTER 8. The Pulpit.\n
+##   Moby Dick.9  1274   4201       166      CHAPTER 9. The Sermon.\n
+##  Moby Dick.10   660   1767        66 CHAPTER 10. A Bosom Friend.\n</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="https://rdrr.io/pkg/stringi/man/stri_trim.html">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/stringi/man/stri_trim.html">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))</a>
 <a class="sourceLine" id="cb81-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(chapters_corp, <span class="dt">n =</span> <span class="dv">3</span>)</a></code></pre></div>
 <pre><code>## Corpus consisting of 136 documents, showing 3 documents:
 ## 
 ##         Text Types Tokens Sentences                     pattern
-##  Moby Dick.1   917   2575       101        CHAPTER 1. Loomings.
-##  Moby Dick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
-##  Moby Dick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
-## 
-## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/vignettes/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Mon Nov 25 08:47:14 2019
-## Notes: corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
+##  Moby Dick.1   922   2500       101        CHAPTER 1. Loomings.
+##  Moby Dick.2   658   1655        60  CHAPTER 2. The Carpet-Bag.
+##  Moby Dick.3  1785   6756       264 CHAPTER 3. The Spouter-Inn.</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</a></code></pre></div>
 <div id="barplots-of-whale-and-ahab" class="section level3">
@@ -476,7 +465,32 @@
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the <code>head</code> function, which prints the first few rows and columns.</p>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">rel_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb86-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(rel_dfm)</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 6 documents, 18,629 features (95.9% sparse).</code></pre>
+<pre><code>## Document-feature matrix of: 6 documents, 19,840 features (96.1% sparse) and 1 docvar.
+##                              features
+## docs                                call        me   ishmael        .
+##   CHAPTER 1. Loomings.        0.04000000 0.9600000 0.0800000 3.200000
+##   CHAPTER 2. The Carpet-Bag.  0          0.3625378 0.2416918 2.719033
+##   CHAPTER 3. The Spouter-Inn. 0.01480166 0.6216696 0         3.271166
+##   CHAPTER 4. The Counterpane. 0          1.0138741 0         2.721451
+##   CHAPTER 5. Breakfast.       0          0.1179245 0         3.066038
+##   CHAPTER 6. The Street.      0          0.1075269 0         4.193548
+##                              features
+## docs                                some      years ago--never       mind
+##   CHAPTER 1. Loomings.        0.44000000 0.04000000       0.04 0.04000000
+##   CHAPTER 2. The Carpet-Bag.  0.06042296 0.06042296       0    0.06042296
+##   CHAPTER 3. The Spouter-Inn. 0.25162818 0.05920663       0    0.04440497
+##   CHAPTER 4. The Counterpane. 0.05336179 0                0    0.05336179
+##   CHAPTER 5. Breakfast.       0.23584906 0                0    0         
+##   CHAPTER 6. The Street.      0.10752688 0                0    0         
+##                              features
+## docs                                 how      long
+##   CHAPTER 1. Loomings.        0.12000000 0.0800000
+##   CHAPTER 2. The Carpet-Bag.  0.06042296 0        
+##   CHAPTER 3. The Spouter-Inn. 0.05920663 0.1480166
+##   CHAPTER 4. The Counterpane. 0.21344717 0.1067236
+##   CHAPTER 5. Breakfast.       0.23584906 0.2358491
+##   CHAPTER 6. The Street.      0.21505376 0        
+## [ reached max_nfeat ... 19,830 more features ]</code></pre>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="co"># subset dfm and convert to data.frame object</span></a>
 <a class="sourceLine" id="cb88-2" title="2">rel_chap_freq &lt;-<span class="st"> </span>rel_dfm <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb88-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_keep</a></span>(<span class="dt">pattern =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -509,8 +523,8 @@
 <a class="sourceLine" id="cb90-4" title="4"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## Warning: 'selection' is deprecated. Use 'y' instead.</code></pre>
 <pre><code>##           whale       ahab
-## call  0.1207825 -0.1057048
-## me   -0.2505902  0.1624160</code></pre>
+## call  0.1182011 -0.1023440
+## me   -0.2481038  0.1726057</code></pre>
 <p>With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.</p>
 </div>
 <div id="testing-correlation-with-randomization" class="section level2">
@@ -554,19 +568,19 @@
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1"><span class="co"># for first few chapters</span></a>
 <a class="sourceLine" id="cb98-2" title="2"><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
-##                        2575                        1700 
+##                        2500                        1655 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
-##                        6943                        1927 
+##                        6756                        1874 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
-##                         869                         942</code></pre>
+##                         848                         930</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" title="1"><span class="co"># average</span></a>
 <a class="sourceLine" id="cb100-2" title="2">(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
-##                    2.808070                    2.611367 
+##                    2.711497                    2.515198 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
-##                    3.981078                    2.829662 
+##                    3.784874                    2.723837 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
-##                    2.145679                    2.021459</code></pre>
+##                    2.099010                    2.004310</code></pre>
 </div>
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor">
@@ -586,12 +600,12 @@
 <a href="#ranking-the-values" class="anchor"></a>6.4 Ranking the values</h2>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" title="1">mean_word_use_m &lt;-<span class="st"> </span>(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp))</a>
 <a class="sourceLine" id="cb104-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(mean_word_use_m, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a></code></pre></div>
-<pre><code>## CHAPTER 135. The Chase.--Third Day.    CHAPTER 54. The Town-Ho's Story. 
-##                            4.169544                            4.150151 
+<pre><code>##    CHAPTER 54. The Town-Ho's Story. CHAPTER 135. The Chase.--Third Day. 
+##                            4.027246                            3.975346 
 ##               CHAPTER 16. The Ship.         CHAPTER 3. The Spouter-Inn. 
-##                            4.051861                            3.981078 
+##                            3.863528                            3.784874 
 ##               CHAPTER 32. Cetology.         CHAPTER 64. Stubb's Supper. 
-##                            3.542857                            3.468721</code></pre>
+##                            3.462576                            3.394640</code></pre>
 </div>
 <div id="calculating-the-ttr" class="section level2">
 <h2 class="hasAnchor">
@@ -601,16 +615,16 @@
 <a class="sourceLine" id="cb106-2" title="2"><span class="st">    </span><span class="kw"><a href="../../../reference/textstat_lexdiv.html">textstat_lexdiv</a></span>(<span class="dt">measure =</span> <span class="st">"TTR"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb106-3" title="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##                       document       TTR
-## 1         CHAPTER 1. Loomings. 0.3824989
-## 2   CHAPTER 2. The Carpet-Bag. 0.4295676
-## 3  CHAPTER 3. The Spouter-Inn. 0.2803147
-## 4  CHAPTER 4. The Counterpane. 0.3954189
-## 5        CHAPTER 5. Breakfast. 0.5101215
-## 6       CHAPTER 6. The Street. 0.5363748
-## 7       CHAPTER 7. The Chapel. 0.5095745
-## 8       CHAPTER 8. The Pulpit. 0.4846885
-## 9       CHAPTER 9. The Sermon. 0.3310075
-## 10 CHAPTER 10. A Bosom Friend. 0.3982017</code></pre>
+## 1         CHAPTER 1. Loomings. 0.3893443
+## 2   CHAPTER 2. The Carpet-Bag. 0.4382889
+## 3  CHAPTER 3. The Spouter-Inn. 0.2908181
+## 4  CHAPTER 4. The Counterpane. 0.4038929
+## 5        CHAPTER 5. Breakfast. 0.5163488
+## 6       CHAPTER 6. The Street. 0.5390335
+## 7       CHAPTER 7. The Chapel. 0.5127660
+## 8       CHAPTER 8. The Pulpit. 0.4872881
+## 9       CHAPTER 9. The Sermon. 0.3365115
+## 10 CHAPTER 10. A Bosom Friend. 0.4036223</code></pre>
 </div>
 </div>
 <div id="hapax-richness" class="section level1">
@@ -620,20 +634,20 @@
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" title="1"><span class="co"># hapaxes per document</span></a>
 <a class="sourceLine" id="cb108-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
-##                         609                         437 
+##                         620                         448 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
-##                        1084                         464 
+##                        1144                         476 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
-##                         276                         343</code></pre>
+##                         279                         343</code></pre>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" title="1"><span class="co"># as a proportion</span></a>
 <a class="sourceLine" id="cb110-2" title="2">hapax_proportion &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chap_dfm)</a>
 <a class="sourceLine" id="cb110-3" title="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(hapax_proportion)</a></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
-##                   0.2365049                   0.2570588 
+##                   0.2480000                   0.2706949 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
-##                   0.1561285                   0.2407888 
+##                   0.1693310                   0.2540021 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
-##                   0.3176064                   0.3641189</code></pre>
+##                   0.3290094                   0.3688172</code></pre>
 <p>To plot this:</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span>(hapax_proportion, <span class="dt">beside =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">names.arg =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(chap_dfm)))</a></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-41-1.png" width="768"></p>
@@ -644,7 +658,7 @@
 <p>For this, and the next chapter, we simply use <strong>quanteda</strong>’s excellent <code><a href="../../../reference/kwic.html">kwic()</a></code> function. To find the indexes of the token positions for “gutenberg”, for instance, we use the following, which returns a data.frame with the name <code>from</code> indicating the index position of the start of the token match:</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" title="1">gutenberg_kwic &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"gutenberg"</span>)</a>
 <a class="sourceLine" id="cb113-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(gutenberg_kwic<span class="op">$</span>from, <span class="dv">10</span>)</a></code></pre></div>
-<pre><code>##  [1]      3     52    108 255375 255538 255650 255697 255891 256007 256105</code></pre>
+<pre><code>##  [1]      3     52    108 250837 250984 251093 251140 251328 251444 251542</code></pre>
 </div>
 <div id="do-it-kwic-better" class="section level1">
 <h1 class="hasAnchor">
@@ -658,23 +672,23 @@
 <p>Now we can use <code><a href="../../../reference/kwic.html">kwic()</a></code> to find out where in each novel this occurred:</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" title="1">(dogkwic &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(litcorpus, <span class="dt">pattern =</span> <span class="st">"dog"</span>))</a></code></pre></div>
 <pre><code>##                                                                        
-##              [Moby Dick, 17213]    all over like a Newfoundland | dog |
-##              [Moby Dick, 31814]        was seen swimming like a | dog |
-##              [Moby Dick, 59904]                       .-- Down, | dog |
-##              [Moby Dick, 60005]          not tamely be called a | dog |
-##              [Moby Dick, 60528]             didn't he call me a | dog |
-##              [Moby Dick, 86935]   sacrifice of the sacred White | Dog |
-##             [Moby Dick, 125588]            life that lives in a | dog |
-##             [Moby Dick, 125684]   the sagacious kindness of the | dog |
-##             [Moby Dick, 159443] " The ungracious and ungrateful | dog |
-##             [Moby Dick, 159485]           Give way, greyhounds! | Dog |
-##             [Moby Dick, 170812]             to the whale that a | dog |
-##             [Moby Dick, 194020]             the Ram-- lecherous | dog |
-##             [Moby Dick, 197596]                  .( Bunger, you | dog |
-##             [Moby Dick, 198082]              die in pickle, you | dog |
-##             [Moby Dick, 198711]                Ahab, and like a | dog |
-##             [Moby Dick, 240998]       air as a sagacious ship's | dog |
-##  [Sense and Sensibility, 78321]        fellow! such a deceitful | dog |
+##              [Moby Dick, 16674]    all over like a Newfoundland | dog |
+##              [Moby Dick, 31013]        was seen swimming like a | dog |
+##              [Moby Dick, 58638]     filling one at last.--Down, | dog |
+##              [Moby Dick, 58739]          not tamely be called a | dog |
+##              [Moby Dick, 59246]             didn't he call me a | dog |
+##              [Moby Dick, 85209]   sacrifice of the sacred White | Dog |
+##             [Moby Dick, 123450]            life that lives in a | dog |
+##             [Moby Dick, 123546]   the sagacious kindness of the | dog |
+##             [Moby Dick, 156899] " The ungracious and ungrateful | dog |
+##             [Moby Dick, 156937]           Give way, greyhounds! | Dog |
+##             [Moby Dick, 168078]             to the whale that a | dog |
+##             [Moby Dick, 191097]    Aries, or the Ram--lecherous | dog |
+##             [Moby Dick, 194532]                  .( Bunger, you | dog |
+##             [Moby Dick, 194986]              die in pickle, you | dog |
+##             [Moby Dick, 195603]                Ahab, and like a | dog |
+##             [Moby Dick, 236973]       air as a sagacious ship's | dog |
+##  [Sense and Sensibility, 77413]        fellow! such a deceitful | dog |
 ##                            
 ##  just from the water,      
 ##  , throwing his long arms  
@@ -746,30 +760,30 @@
 <a class="sourceLine" id="cb120-9" title="9"></a>
 <a class="sourceLine" id="cb120-10" title="10"><span class="co"># get top five terms per topic</span></a>
 <a class="sourceLine" id="cb120-11" title="11"><span class="kw"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##      Topic 1     Topic 2   Topic 3     Topic 4   Topic 5     Topic 6    
-## [1,] "welfare"   "debt"    "failed"    "child"   "taoiseach" "taoiseach"
-## [2,] "proposals" "nama"    "strategy"  "benefit" "gael"      "employees"
-## [3,] "stimulus"  "turned"  "needed"    "day"     "fine"      "rate"     
-## [4,] "system"    "purpose" "ministers" "today"   "may"       "referred" 
-## [5,] "taxation"  "fianna"  "system"    "bank"    "irish"     "debate"   
-##      Topic 7       Topic 8   Topic 9  Topic 10  Topic 11    Topic 12  
-## [1,] "alternative" "fianna"  "fianna" "level"   "care"      "fianna"  
-## [2,] "citizenship" "welfare" "fáil"   "welfare" "welfare"   "fáil"    
-## [3,] "wealth"      "system"  "side"   "million" "per"       "national"
-## [4,] "adjustment"  "fáil"    "level"  "scheme"  "allowance" "irish"   
-## [5,] "breaks"      "taken"   "third"  "support" "hit"       "support" 
-##      Topic 13     Topic 14       Topic 15  Topic 16   Topic 17  Topic 18   
-## [1,] "investment" "society"      "welfare" "spending" "levy"    "case"     
-## [2,] "measures"   "enterprising" "system"  "welfare"  "million" "day"      
-## [3,] "review"     "create"       "rate"    "pension"  "carbon"  "stimulus" 
-## [4,] "reduction"  "kind"         "fáil"    "scheme"   "change"  "taoiseach"
-## [5,] "million"    "sense"        "high"    "measures" "welfare" "given"    
-##      Topic 19     Topic 20      
-## [1,] "support"    "review"      
-## [2,] "million"    "million"     
-## [3,] "investment" "contribution"
-## [4,] "confidence" "investment"  
-## [5,] "continue"   "bill"</code></pre>
+<pre><code>##      Topic 1      Topic 2      Topic 3     Topic 4     Topic 5        Topic 6  
+## [1,] "million"    "million"    "care"      "measures"  "equal"        "fáil"   
+## [2,] "pension"    "support"    "welfare"   "day"       "society"      "welfare"
+## [3,] "reduction"  "back"       "per"       "welfare"   "enterprising" "high"   
+## [4,] "investment" "confidence" "allowance" "increases" "nation"       "back"   
+## [5,] "reduced"    "investment" "hit"       "bill"      "sense"        "still"  
+##      Topic 7   Topic 8   Topic 9    Topic 10    Topic 11      Topic 12 
+## [1,] "levy"    "vision"  "fianna"   "failed"    "kind"        "benefit"
+## [2,] "million" "face"    "fáil"     "strategy"  "imagination" "child"  
+## [3,] "carbon"  "part"    "national" "ministers" "policies"    "welfare"
+## [4,] "change"  "needed"  "support"  "confront"  "wit"         "bank"   
+## [5,] "welfare" "changes" "irish"    "address"   "create"      "today"  
+##      Topic 13    Topic 14      Topic 15   Topic 16    Topic 17    Topic 18  
+## [1,] "families"  "alternative" "2010"     "taoiseach" "taoiseach" "welfare" 
+## [2,] "supports"  "citizenship" "measures" "fine"      "employees" "system"  
+## [3,] "fianna"    "wealth"      "spending" "gael"      "rate"      "fianna"  
+## [4,] "irish"     "adjustment"  "welfare"  "may"       "referred"  "taxation"
+## [5,] "taoiseach" "breaks"      "system"   "irish"     "debate"    "stimulus"
+##      Topic 19     Topic 20 
+## [1,] "2010"       "day"    
+## [2,] "welfare"    "child"  
+## [3,] "measures"   "much"   
+## [4,] "employment" "fianna" 
+## [5,] "investment" "million"</code></pre>
 </div>
   </div>
 
@@ -831,7 +845,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

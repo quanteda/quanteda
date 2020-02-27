@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -182,17 +182,18 @@
 <a class="sourceLine" id="cb2-5" title="5">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(txt)</a>
 <a class="sourceLine" id="cb2-6" title="6">mydfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 3 documents, 11 features (36.4% sparse).
-## 3 x 11 sparse Matrix of class "dfm"
 ##     features
-## docs shipment of gold damaged in a fire delivery silver arrived truck
-##   d1        1  1    1       1  1 1    1        0      0       0     0
-##   d2        0  1    0       0  1 1    0        1      2       1     1
-##   d3        1  1    1       0  1 1    0        0      0       1     1</code></pre>
+## docs shipment of gold damaged in a fire delivery silver arrived
+##   d1        1  1    1       1  1 1    1        0      0       0
+##   d2        0  1    0       0  1 1    0        1      2       1
+##   d3        1  1    1       0  1 1    0        0      0       1
+## [ reached max_nfeat ... 1 more feature ]</code></pre>
 </div>
 <div id="construct-the-lsa-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#construct-the-lsa-model" class="anchor"></a>Construct the LSA model</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">mylsa &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_lsa.html">textmodel_lsa</a></span>(mydfm)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2">mylsa &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html">textmodel_lsa</a></span>(mydfm)</a></code></pre></div>
 <pre><code>## Warning in fun(A, k, nu, nv, opts, mattype = "dgCMatrix"): all singular values
 ## are requested, svd() is used instead</code></pre>
 <p>the new document vector coordinates in the reduced 2-dimensional space is:</p>
@@ -207,15 +208,16 @@
 <a href="#apply-the-constructed-lsa-model-to-new-data" class="anchor"></a>Apply the constructed LSA model to new data</h1>
 <p>Now the new unseen document can be represented in the reduced 2-dimensional space. The unseen query document:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">querydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"gold silver truck"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> mydfm)</a>
-<a class="sourceLine" id="cb8-3" title="3">querydfm</a></code></pre></div>
+<a class="sourceLine" id="cb8-2" title="2"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> mydfm)</a></code></pre></div>
+<pre><code>## Warning: pattern = dfm is deprecated; use dfm_match() instead</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">querydfm</a></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 11 features (72.7% sparse).
-## 1 x 11 sparse Matrix of class "dfm"
 ##        features
-## docs    shipment of gold damaged in a fire delivery silver arrived truck
-##   text1        0  0    1       0  0 0    0        0      1       0     1</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">newq &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(mylsa, <span class="dt">newdata =</span> querydfm)</a>
-<a class="sourceLine" id="cb10-2" title="2">newq<span class="op">$</span>docs_newspace[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
+## docs    shipment of gold damaged in a fire delivery silver arrived
+##   text1        0  0    1       0  0 0    0        0      1       0
+## [ reached max_nfeat ... 1 more feature ]</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">newq &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(mylsa, <span class="dt">newdata =</span> querydfm)</a>
+<a class="sourceLine" id="cb12-2" title="2">newq<span class="op">$</span>docs_newspace[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
 <pre><code>## [1] -0.2140026 -0.1820571</code></pre>
 </div>
   </div>
@@ -238,7 +240,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -49,7 +49,7 @@ function is created for lemmatization or user-defined stemming. It support
 substitution of multi-word features by multi-word features, but substitution
 is fastest when pattern and replacement are character vectors
 and valuetype = &quot;fixed&quot; as the function only substitute types of
-tokens. Please use tokens_lookup with exclusive = FALSE
+tokens. Please use tokens_lookup() with exclusive = FALSE
 to replace dictionary values." />
 <meta name="twitter:card" content="summary" />
 
@@ -93,7 +93,7 @@ to replace dictionary values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ function is created for lemmatization or user-defined stemming. It support
 substitution of multi-word features by multi-word features, but substitution
 is fastest when <code>pattern</code> and <code>replacement</code> are character vectors
 and <code>valuetype = "fixed"</code> as the function only substitute types of
-tokens. Please use <code><a href='tokens_lookup.html'>tokens_lookup</a></code> with <code>exclusive = FALSE</code>
+tokens. Please use <code><a href='tokens_lookup.html'>tokens_lookup()</a></code> with <code>exclusive = FALSE</code>
 to replace <a href='dictionary.html'>dictionary</a> values.</p>
     </div>
 
@@ -253,13 +253,14 @@ of character vectors of the same length as <code>pattern</code></p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -279,22 +280,22 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 <span class='no'>lemma</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"focus"</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>infle</span>))
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='no'>infle</span>, <span class='no'>lemma</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)
 <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks2</span>, <span class='st'>"focus*"</span>)</div><div class='output co'>#&gt;                                                                           
-#&gt;     [Lenihan, Brian (FF), 998]        measures A key feature and | focus |
-#&gt;    [Lenihan, Brian (FF), 4990] 2010 our investment projects will | focus |
-#&gt;   [Bruton, Richard (FG), 1948]           budget and see that the | focus |
-#&gt;      [Burton, Joan (LAB), 830]        must therefore be the main | focus |
-#&gt;     [Burton, Joan (LAB), 3256]           the budget had just one | focus |
-#&gt;     [Burton, Joan (LAB), 3727]     the garden county however the | focus |
-#&gt;     [Burton, Joan (LAB), 4517]              That is too narrow a | focus |
-#&gt;     [Burton, Joan (LAB), 4712]       economic revival that has a | focus |
-#&gt;    [Morgan, Arthur (SF), 2891]     creating new jobs Instead the | focus |
-#&gt;    [Morgan, Arthur (SF), 3420]           what should be the main | focus |
-#&gt;    [Morgan, Arthur (SF), 6225]     must be completely redrawn to | focus |
-#&gt;      [Cowen, Brian (FF), 2788]         2010 The scheme will also | focus |
-#&gt;      [Cowen, Brian (FF), 3394]    to maximise the efficiency and | focus |
-#&gt;      [Cowen, Brian (FF), 4018]        in place with a particular | focus |
-#&gt;  [ODonnell, Kieran (FG), 1774]     coherent plan which should be | focus |
-#&gt;   [Gilmore, Eamon (LAB), 2390]   also states More recent studies | focus |
+#&gt;    [Lenihan, Brian (FF), 1003]        measures A key feature and | focus |
+#&gt;    [Lenihan, Brian (FF), 5045] 2010 our investment projects will | focus |
+#&gt;   [Bruton, Richard (FG), 1956]           budget and see that the | focus |
+#&gt;      [Burton, Joan (LAB), 837]        must therefore be the main | focus |
+#&gt;     [Burton, Joan (LAB), 3274]           the budget had just one | focus |
+#&gt;     [Burton, Joan (LAB), 3745]     the garden county however the | focus |
+#&gt;     [Burton, Joan (LAB), 4547]              That is too narrow a | focus |
+#&gt;     [Burton, Joan (LAB), 4742]       economic revival that has a | focus |
+#&gt;    [Morgan, Arthur (SF), 2905]     creating new jobs Instead the | focus |
+#&gt;    [Morgan, Arthur (SF), 3440]           what should be the main | focus |
+#&gt;    [Morgan, Arthur (SF), 6267]     must be completely redrawn to | focus |
+#&gt;      [Cowen, Brian (FF), 2810]         2010 The scheme will also | focus |
+#&gt;      [Cowen, Brian (FF), 3425]    to maximise the efficiency and | focus |
+#&gt;      [Cowen, Brian (FF), 4050]        in place with a particular | focus |
+#&gt;  [ODonnell, Kieran (FG), 1790]     coherent plan which should be | focus |
+#&gt;   [Gilmore, Eamon (LAB), 2408]   also states More recent studies | focus |
 #&gt;                                   
 #&gt;  of today's budget is regaining   
 #&gt;  on labour-intensive areas such as
@@ -321,9 +322,9 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 <span class='no'>toks4</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Minister Deputy Lenihan"</span>)),
                               <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Minister Deputy Conor Lenihan"</span>)))
 <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks4</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Minister Deputy Conor Lenihan"</span>)))</div><div class='output co'>#&gt;                                                                           
-#&gt;       [Burton, Joan (LAB), 1805:1808]                ought to be cut The |
-#&gt;       [Burton, Joan (LAB), 1970:1973] their extra contribution comes The |
-#&gt;  [OCaolain, Caoimhghin (SF), 571:574]         thanks that carers get The |
+#&gt;       [Burton, Joan (LAB), 1815:1818]                ought to be cut The |
+#&gt;       [Burton, Joan (LAB), 1981:1984] their extra contribution comes The |
+#&gt;  [OCaolain, Caoimhghin (SF), 578:581]         thanks that carers get The |
 #&gt;                                                                    
 #&gt;  Minister Deputy Conor Lenihan | should note that in this          
 #&gt;  Minister Deputy Conor Lenihan | had a simple choice today         
@@ -343,7 +344,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

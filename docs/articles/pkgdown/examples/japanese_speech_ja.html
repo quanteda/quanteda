@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -177,8 +177,38 @@
 <h2 class="hasAnchor">
 <a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
 <p>本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは<strong>quanteda.corpora</strong>を用いてダウンロードできる．</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2">full_corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="st">"data_corpus_foreignaffairscommittee"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</a></code></pre></div>
+<pre><code>## 
+##   
+   checking for file ‘/private/var/folders/1v/ps2x_tvd0yg0lypdlshg_vwc0000gp/T/RtmpUIVE3s/remotes14502a2e5010/quanteda-quanteda.corpora-5933cc8/DESCRIPTION’ ...
+  
+✓  checking for file ‘/private/var/folders/1v/ps2x_tvd0yg0lypdlshg_vwc0000gp/T/RtmpUIVE3s/remotes14502a2e5010/quanteda-quanteda.corpora-5933cc8/DESCRIPTION’
+## 
+  
+─  preparing ‘quanteda.corpora’: (1.1s)
+## 
+  
+   checking DESCRIPTION meta-information ...
+  
+✓  checking DESCRIPTION meta-information
+## 
+  
+─  checking for LF line-endings in source and make files and shell scripts
+## 
+  
+─  checking for empty or unneeded directories
+##    Removed empty directory ‘quanteda.corpora/sources’
+## 
+  
+─  looking to see if a ‘data/datalist’ file should be added
+## 
+  
+─  building ‘quanteda.corpora_0.87.tar.gz’ (2.6s)
+## 
+  
+   
+## </code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">full_corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="st">"data_corpus_foreignaffairscommittee"</span>)</a></code></pre></div>
 <div id="how-to-make-corpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-to-make-corpus" class="anchor"></a>コーパスの作成手順</h3>
@@ -187,58 +217,56 @@
 <h4 class="hasAnchor">
 <a href="#download-speeches" class="anchor"></a>議事録をダウンロード</h4>
 <p>国会会議録のダウンロードには<strong>kaigiroku</strong>パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらを最後に連結すると良い．</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"amatsuo/kaigiroku"</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(kaigiroku)</a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="co"># 年ごとに議事録をダウンロード</span></a>
-<a class="sourceLine" id="cb3-5" title="5">folder_download &lt;-<span class="st"> "~/temp/download"</span></a>
-<a class="sourceLine" id="cb3-6" title="6">committee &lt;-<span class="st"> "外務"</span></a>
-<a class="sourceLine" id="cb3-7" title="7"></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="cf">for</span> (year <span class="cf">in</span> <span class="dv">1947</span><span class="op">:</span><span class="dv">2017</span>) {</a>
-<a class="sourceLine" id="cb3-9" title="9">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()), year, committee, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb3-10" title="10">  temp &lt;-<span class="st"> </span><span class="kw">get_meeting</span>(<span class="dt">meetingName =</span> committee, <span class="dt">year =</span> year)</a>
-<a class="sourceLine" id="cb3-11" title="11">  <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span>(temp)) <span class="cf">next</span></a>
-<a class="sourceLine" id="cb3-12" title="12">  <span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(temp, <span class="dt">file =</span> <span class="kw"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%s/%s_%s.rds"</span>, folder_download, year, committee))</a>
-<a class="sourceLine" id="cb3-13" title="13">  <span class="kw"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb3-14" title="14">}</a>
-<a class="sourceLine" id="cb3-15" title="15"></a>
-<a class="sourceLine" id="cb3-16" title="16"><span class="co"># ファイルを結合して保存</span></a>
-<a class="sourceLine" id="cb3-17" title="17">file_all &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(folder_download, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">".rds"</span>)</a>
-<a class="sourceLine" id="cb3-18" title="18">speech &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()</a>
-<a class="sourceLine" id="cb3-19" title="19"><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(speech, <span class="dt">file =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(folder_download, <span class="st">"committee_speeches.rds"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"amatsuo/kaigiroku"</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(kaigiroku)</a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co"># 年ごとに議事録をダウンロード</span></a>
+<a class="sourceLine" id="cb5-5" title="5">folder_download &lt;-<span class="st"> "~/temp/download"</span></a>
+<a class="sourceLine" id="cb5-6" title="6">committee &lt;-<span class="st"> "外務"</span></a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="cf">for</span> (year <span class="cf">in</span> <span class="dv">1947</span><span class="op">:</span><span class="dv">2017</span>) {</a>
+<a class="sourceLine" id="cb5-9" title="9">  <span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()), year, committee, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb5-10" title="10">  temp &lt;-<span class="st"> </span><span class="kw">get_meeting</span>(<span class="dt">meetingName =</span> committee, <span class="dt">year =</span> year)</a>
+<a class="sourceLine" id="cb5-11" title="11">  <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span>(temp)) <span class="cf">next</span></a>
+<a class="sourceLine" id="cb5-12" title="12">  <span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(temp, <span class="dt">file =</span> <span class="kw"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%s/%s_%s.rds"</span>, folder_download, year, committee))</a>
+<a class="sourceLine" id="cb5-13" title="13">  <span class="kw"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-14" title="14">}</a>
+<a class="sourceLine" id="cb5-15" title="15"></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co"># ファイルを結合して保存</span></a>
+<a class="sourceLine" id="cb5-17" title="17">file_all &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(folder_download, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">".rds"</span>)</a>
+<a class="sourceLine" id="cb5-18" title="18">speech &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()</a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(speech, <span class="dt">file =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(folder_download, <span class="st">"committee_speeches.rds"</span>))</a></code></pre></div>
 </div>
 <div id="create-corpus" class="section level4">
 <h4 class="hasAnchor">
 <a href="#create-corpus" class="anchor"></a>コーパスの作成</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/load.html">load</a></span>(<span class="st">"temp/committee_speeches.rda"</span>)</a>
-<a class="sourceLine" id="cb4-2" title="2">full_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(foreign_affairs_committee_speeches, <span class="dt">text_field =</span> <span class="st">"speech"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/load.html">load</a></span>(<span class="st">"temp/committee_speeches.rda"</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2">full_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(foreign_affairs_committee_speeches, <span class="dt">text_field =</span> <span class="st">"speech"</span>)</a></code></pre></div>
 </div>
 </div>
 </div>
 <div id="number-of-speeches" class="section level2">
 <h2 class="hasAnchor">
 <a href="#number-of-speeches" class="anchor"></a>議事録の数と期間を取得</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(full_corp)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(full_corp)</a></code></pre></div>
 <pre><code>## [1] 287298</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(full_corp, <span class="st">"date"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(full_corp, <span class="st">"date"</span>))</a></code></pre></div>
 <pre><code>## [1] "1947-06-30" "2017-11-29"</code></pre>
 </div>
 <div id="pre-processing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#pre-processing" class="anchor"></a>前処理</h1>
 <p>発言者のいないレコード（典型的には各議事録の0番目の出席者，議題等の部分）を取り除く，また，各発言の冒頭は発言者の氏名と役職名なので，その部分から役職名を取り出して新しい<code>docvar</code>を作る．</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">full_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(full_corp, speaker <span class="op">!=</span><span class="st"> ""</span>)</a>
-<a class="sourceLine" id="cb9-2" title="2"></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="co">## capacity変数の作成</span></a>
-<a class="sourceLine" id="cb9-4" title="4">capacity &lt;-<span class="st"> </span>full_corp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span>(<span class="dv">1</span>, <span class="dv">20</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span>(<span class="st">"</span><span class="ch">\\</span><span class="st">s+.+|</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">""</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># 冒頭の名前部分の取り出し</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>( <span class="st">"^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)"</span>, <span class="st">"</span><span class="ch">\\</span><span class="st">1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># 冒頭の○から，名前部分までを消去</span></a>
-<a class="sourceLine" id="cb9-8" title="8"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(<span class="st">"（.+）"</span>, <span class="st">""</span>)</a></code></pre></div>
-<pre><code>## Warning in stri_sub(string, from = start, to = end): argument is not an atomic
-## vector; coercing</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">capacity &lt;-<span class="st"> </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(capacity, <span class="st">"^○.+"</span>, <span class="st">"Other"</span>) <span class="co"># マイナーな役職名は一括して"Other"に</span></a>
-<a class="sourceLine" id="cb11-2" title="2">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(capacity)))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">full_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(full_corp, speaker <span class="op">!=</span><span class="st"> ""</span>)</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">## capacity変数の作成</span></a>
+<a class="sourceLine" id="cb11-4" title="4">capacity &lt;-<span class="st"> </span>full_corp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span>(<span class="dv">1</span>, <span class="dv">20</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span>(<span class="st">"</span><span class="ch">\\</span><span class="st">s+.+|</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">""</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># 冒頭の名前部分の取り出し</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>( <span class="st">"^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)"</span>, <span class="st">"</span><span class="ch">\\</span><span class="st">1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># 冒頭の○から，名前部分までを消去</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="st">  </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(<span class="st">"（.+）"</span>, <span class="st">""</span>)</a>
+<a class="sourceLine" id="cb11-9" title="9">capacity &lt;-<span class="st"> </span><span class="kw"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(capacity, <span class="st">"^○.+"</span>, <span class="st">"Other"</span>) <span class="co"># マイナーな役職名は一括して"Other"に</span></a>
+<a class="sourceLine" id="cb11-10" title="10">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(capacity)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">capacity</th>
@@ -755,124 +783,124 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">経費</td>
-<td align="left">武正委員</td>
-<td align="left">留保</td>
 <td align="left">租税条約</td>
-<td align="left">インドネシア</td>
-<td align="left">後に</td>
-<td align="left">漁業</td>
-<td align="left">日本国</td>
-<td align="left">土地</td>
-<td align="left">能力</td>
-</tr>
-<tr class="even">
-<td align="left">計上</td>
-<td align="left">被害</td>
-<td align="left">一年</td>
-<td align="left">香港</td>
-<td align="left">警察</td>
-<td align="left">現場</td>
-<td align="left">イラン</td>
-<td align="left">成果</td>
-<td align="left">農業</td>
-<td align="left">安保条約</td>
-</tr>
-<tr class="odd">
-<td align="left">真剣</td>
-<td align="left">検証</td>
-<td align="left">経験</td>
-<td align="left">同様</td>
-<td align="left">ヨーロッパ</td>
-<td align="left">日韓</td>
-<td align="left">雇用</td>
-<td align="left">並びに</td>
-<td align="left">宣言</td>
-<td align="left">記事</td>
-</tr>
-<tr class="even">
-<td align="left">住民</td>
-<td align="left">普天間</td>
-<td align="left">否定</td>
-<td align="left">業務</td>
-<td align="left">被害</td>
-<td align="left">禁止</td>
-<td align="left">利用</td>
-<td align="left">場所</td>
-<td align="left">平和条約</td>
-<td align="left">仮に</td>
-</tr>
-<tr class="odd">
-<td align="left">ケニア</td>
-<td align="left">笠井委員</td>
-<td align="left">在日米軍</td>
-<td align="left">提案理由</td>
-<td align="left">ミャンマー</td>
-<td align="left">主権</td>
-<td align="left">一般的</td>
-<td align="left">に対し</td>
-<td align="left">資源</td>
-<td align="left">イギリス</td>
-</tr>
-<tr class="even">
-<td align="left">定員</td>
-<td align="left">場所</td>
-<td align="left">原因</td>
-<td align="left">両国間</td>
-<td align="left">武器</td>
-<td align="left">平和条約</td>
-<td align="left">与える</td>
-<td align="left">議題</td>
-<td align="left">パキスタン</td>
-<td align="left">部隊</td>
-</tr>
-<tr class="odd">
-<td align="left">総額</td>
-<td align="left">東門委員</td>
-<td align="left">紛争</td>
-<td align="left">旅券</td>
-<td align="left">教育</td>
-<td align="left">幾ら</td>
-<td align="left">現場</td>
-<td align="left">パキスタン</td>
-<td align="left">タイ</td>
-<td align="left">行使</td>
-</tr>
-<tr class="even">
-<td align="left">繁栄</td>
-<td align="left">批判</td>
-<td align="left">首脳会談</td>
-<td align="left">資する</td>
-<td align="left">センター</td>
-<td align="left">発効</td>
-<td align="left">障害者</td>
-<td align="left">広島</td>
-<td align="left">民主党</td>
-<td align="left">ページ</td>
-</tr>
-<tr class="odd">
-<td align="left">円借款</td>
-<td align="left">背景</td>
-<td align="left">山口</td>
-<td align="left">開始</td>
-<td align="left">認める</td>
-<td align="left">四島</td>
-<td align="left">輸入</td>
-<td align="left">今申</td>
-<td align="left">移民</td>
+<td align="left">過程</td>
+<td align="left">危険</td>
 <td align="left">イスラエル</td>
+<td align="left">イギリス</td>
+<td align="left">研究</td>
+<td align="left">ドル</td>
+<td align="left">攻撃</td>
+<td align="left">漁業</td>
+<td align="left">前回</td>
 </tr>
 <tr class="even">
+<td align="left">防止</td>
+<td align="left">人権</td>
+<td align="left">旅券</td>
+<td align="left">捜査</td>
+<td align="left">部隊</td>
+<td align="left">否定</td>
+<td align="left">計上</td>
+<td align="left">戦略</td>
+<td align="left">資源</td>
+<td align="left">査察</td>
+</tr>
+<tr class="odd">
+<td align="left">フィリピン</td>
+<td align="left">センター</td>
+<td align="left">警察</td>
+<td align="left">ヨーロッパ</td>
+<td align="left">質疑</td>
+<td align="left">首脳会談</td>
 <td align="left">図る</td>
+<td align="left">在日米軍</td>
+<td align="left">参考人</td>
+<td align="left">危険</td>
+</tr>
+<tr class="even">
+<td align="left">イラン</td>
+<td align="left">手段</td>
+<td align="left">業務</td>
+<td align="left">経過</td>
+<td align="left">武力行使</td>
 <td align="left">今申</td>
+<td align="left">促進</td>
 <td align="left">国内法</td>
-<td align="left">相互</td>
-<td align="left">疑問</td>
-<td align="left">自民党</td>
+<td align="left">二国間</td>
+<td align="left">現時点</td>
+</tr>
+<tr class="odd">
+<td align="left">人権</td>
+<td align="left">成果</td>
+<td align="left">行使</td>
+<td align="left">アフガニスタン</td>
+<td align="left">常任理事国</td>
+<td align="left">真剣</td>
+<td align="left">進める</td>
+<td align="left">大きい</td>
+<td align="left">ミャンマー</td>
+<td align="left">二国間</td>
+</tr>
+<tr class="even">
+<td align="left">所得</td>
+<td align="left">進める</td>
+<td align="left">パキスタン</td>
+<td align="left">竹島</td>
+<td align="left">引き渡し</td>
+<td align="left">変更</td>
+<td align="left">国際協力</td>
+<td align="left">パキスタン</td>
 <td align="left">出る</td>
-<td align="left">宣言</td>
-<td align="left">共通</td>
-<td align="left">前向き</td>
+<td align="left">詰め</td>
+</tr>
+<tr class="odd">
+<td align="left">課税</td>
+<td align="left">独立</td>
+<td align="left">一層</td>
+<td align="left">拒否</td>
+<td align="left">完全</td>
+<td align="left">自身</td>
+<td align="left">香港</td>
+<td align="left">禁止</td>
+<td align="left">輸入</td>
+<td align="left">会合</td>
+</tr>
+<tr class="even">
+<td align="left">回避</td>
+<td align="left">経験</td>
+<td align="left">能力</td>
+<td align="left">意識</td>
+<td align="left">在日米軍</td>
+<td align="left">お互いに</td>
+<td align="left">利用</td>
+<td align="left">抗議</td>
+<td align="left">経費</td>
+<td align="left">発揮</td>
+</tr>
+<tr class="odd">
+<td align="left">意義</td>
+<td align="left">難民</td>
+<td align="left">資する</td>
+<td align="left">ドル</td>
+<td align="left">フランス</td>
+<td align="left">被害</td>
+<td align="left">提案理由</td>
+<td align="left">記憶</td>
+<td align="left">国内法</td>
+<td align="left">批判</td>
+</tr>
+<tr class="even">
+<td align="left">租税</td>
+<td align="left">生活</td>
+<td align="left">児童</td>
+<td align="left">幾ら</td>
+<td align="left">場所</td>
+<td align="left">配慮</td>
+<td align="left">経済協力</td>
+<td align="left">長い</td>
+<td align="left">マグロ</td>
+<td align="left">活用</td>
 </tr>
 </tbody>
 </table>
@@ -914,7 +942,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

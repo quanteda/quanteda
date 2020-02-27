@@ -46,7 +46,7 @@
 <meta property="og:title" content="Combine documents in a dfm by a grouping variable — dfm_group" />
 <meta property="og:description" content="Combine documents in a dfm by a grouping variable, which can also be
 one of the docvars attached to the dfm. This is identical in
-functionality to using the &quot;groups&quot; argument in dfm." />
+functionality to using the &quot;groups&quot; argument in dfm()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -89,7 +89,7 @@ functionality to using the &quot;groups&quot; argument in dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -214,7 +214,7 @@ functionality to using the &quot;groups&quot; argument in dfm." />
     <div class="ref-description">
     <p>Combine documents in a <a href='dfm.html'>dfm</a> by a grouping variable, which can also be
 one of the <a href='docvars.html'>docvars</a> attached to the dfm. This is identical in
-functionality to using the <code>"groups"</code> argument in <code><a href='dfm.html'>dfm</a></code>.</p>
+functionality to using the <code>"groups"</code> argument in <code><a href='dfm.html'>dfm()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dfm_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -228,9 +228,10 @@ functionality to using the <code>"groups"</code> argument in <code><a href='dfm.
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+      <td><p>either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
+<code>NA</code> values of the grouping value are dropped.
 See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     <tr>
@@ -245,7 +246,7 @@ observed.  Has no effect if the <code>groups</code> variable(s) are not factors.
       <td><p>logical; if <code>TRUE</code>, group by summing existing counts, even
 if the dfm has been weighted.  This can result in invalid sums, such as
 adding log counts (when a dfm has been weighted by <code>"logcount"</code> for
-instance using <code><a href='dfm_weight.html'>dfm_weight</a></code>).  Does not apply to the term
+instance using <code><a href='dfm_weight.html'>dfm_weight()</a></code>).  Does not apply to the term
 weight schemes "count" and "prop".</p></td>
     </tr>
     </table>
@@ -253,41 +254,37 @@ weight schemes "count" and "prop".</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to
-  the unique group combinations, and whose cell values are the sums of the
-  previous values summed by group. Document-level variables that have no
-  variation within groups are saved in <a href='docvars.html'>docvars</a>.  Document-level
-  variables that are lists are dropped from grouping, even when these exhibit
-  no variation within groups.</p>
+the unique group combinations, and whose cell values are the sums of the
+previous values summed by group. Document-level variables that have no
+variation within groups are saved in <a href='docvars.html'>docvars</a>.  Document-level
+variables that are lists are dropped from grouping, even when these exhibit
+no variation within groups.</p>
 <p>Setting the <code>fill = TRUE</code> offers a way to "pad" a dfm with document
-  groups that may not have been observed, but for which an empty document is
-  needed, for various reasons.  If <code>groups</code> is a factor of dates, for
-  instance, then using <code>fill = TRUE</code> ensures that the new documents will
-  consist of one row of the dfm per date, regardless of whether any documents
-  previously existed with that date.</p>
+groups that may not have been observed, but for which an empty document is
+needed, for various reasons.  If <code>groups</code> is a factor of dates, for
+instance, then using <code>fill = TRUE</code> ensures that the new documents will
+consist of one row of the dfm per date, regardless of whether any documents
+previously existed with that date.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span>),
-                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
+               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>)
-<span class='fu'>dfm_group</span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
+<span class='fu'>dfm_group</span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
-#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'>dfm_group</span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
+#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'>dfm_group</span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0
 #&gt;    2 2 0 3 3</div><div class='input'>
 <span class='co'># equivalent</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
-#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfm"
+#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>dfmat</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0
@@ -307,7 +304,7 @@ weight schemes "count" and "prop".</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

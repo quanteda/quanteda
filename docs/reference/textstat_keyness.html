@@ -44,7 +44,7 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Calculate keyness statistics — textstat_keyness" />
-<meta property="og:description" content="Calculate &quot;keyness&quot;, a score for features that occur differentially across 
+<meta property="og:description" content="Calculate &quot;keyness&quot;, a score for features that occur differentially across
 different categories.  Here, the categories are defined by reference to a
 &quot;target&quot; document index in the dfm, with the reference group
 consisting of all other documents." />
@@ -90,7 +90,7 @@ consisting of all other documents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -213,7 +213,7 @@ consisting of all other documents." />
     </div>
 
     <div class="ref-description">
-    <p>Calculate "keyness", a score for features that occur differentially across 
+    <p>Calculate "keyness", a score for features that occur differentially across
 different categories.  Here, the categories are defined by reference to a
 "target" document index in the <a href='dfm.html'>dfm</a>, with the reference group
 consisting of all other documents.</p>
@@ -236,121 +236,130 @@ consisting of all other documents.</p>
     </tr>
     <tr>
       <th>target</th>
-      <td><p>the document index (numeric, character or logical) identifying 
-the document forming the "target" for computing keyness; all other 
+      <td><p>the document index (numeric, character or logical) identifying
+the document forming the "target" for computing keyness; all other
 documents' feature frequencies will be combined for use as a reference</p></td>
     </tr>
     <tr>
       <th>measure</th>
       <td><p>(signed) association measure to be used for computing keyness.
-Currently available: <code>"chi2"</code>; <code>"exact"</code> (Fisher's exact test); 
-<code>"lr"</code> for the likelihood ratio; <code>"pmi"</code> for pointwise mutual 
+Currently available: <code>"chi2"</code>; <code>"exact"</code> (Fisher's exact test);
+<code>"lr"</code> for the likelihood ratio; <code>"pmi"</code> for pointwise mutual
 information.</p></td>
     </tr>
     <tr>
       <th>sort</th>
-      <td><p>logical; if <code>TRUE</code> sort features scored in descending order 
+      <td><p>logical; if <code>TRUE</code> sort features scored in descending order
 of the measure, otherwise leave in original feature order</p></td>
     </tr>
     <tr>
       <th>correction</th>
-      <td><p>if <code>"default"</code>, Yates correction is applied to 
-<code>"chi2"</code>; William's correction is applied to <code>"lr"</code>; and no 
-correction is applied for the <code>"exact"</code> and <code>"pmi"</code> measures. 
-Specifying a value other than the default can be used to override the 
-defaults, for instance to apply the Williams correction to the chi2 
-measure.  Specifying a correction for the <code>"exact"</code> and <code>"pmi"</code> 
+      <td><p>if <code>"default"</code>, Yates correction is applied to
+<code>"chi2"</code>; William's correction is applied to <code>"lr"</code>; and no
+correction is applied for the <code>"exact"</code> and <code>"pmi"</code> measures.
+Specifying a value other than the default can be used to override the
+defaults, for instance to apply the Williams correction to the chi2
+measure.  Specifying a correction for the <code>"exact"</code> and <code>"pmi"</code>
 measures has no effect and produces a warning.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame of computed statistics and associated p-values, where 
-  the features scored name each row, and the number of occurrences for both 
-  the target and reference groups. For <code>measure = "chi2"</code> this is the 
-  chi-squared value, signed positively if the observed value in the target 
-  exceeds its expected value; for <code>measure = "exact"</code> this is the 
-  estimate of the odds ratio; for <code>measure = "lr"</code> this is the 
-  likelihood ratio \(G2\) statistic; for <code>"pmi"</code> this is the pointwise
-  mutual information statistics.</p>
+    <p>a data.frame of computed statistics and associated p-values, where
+the features scored name each row, and the number of occurrences for both
+the target and reference groups. For <code>measure = "chi2"</code> this is the
+chi-squared value, signed positively if the observed value in the target
+exceeds its expected value; for <code>measure = "exact"</code> this is the
+estimate of the odds ratio; for <code>measure = "lr"</code> this is the
+likelihood ratio \(G2\) statistic; for <code>"pmi"</code> this is the pointwise
+mutual information statistics.</p>
 <p><code>textstat_keyness</code> returns a data.frame of features and
-  their keyness scores and frequency counts.</p>
+their keyness scores and frequency counts.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Bondi, M. &amp; Scott, M. (eds) (2010). <em>Keyness in 
-  Texts</em>. Amsterdam, Philadelphia: John Benjamins.</p>  
-<p>Stubbs, M. (2010). Three Concepts of Keywords. In <em>Keyness in 
-  Texts</em>, Bondi, M. &amp; Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
-  John Benjamins.</p>  
-<p>Scott, M. &amp; Tribble, C. (2006). <em>Textual Patterns: Keyword and Corpus 
-  Analysis in Language Education</em>. Amsterdam: Benjamins: 55.</p>  
-<p>Dunning, T. (1993). <a href='https://dl.acm.org/citation.cfm?id=972454'>Accurate Methods 
-  for the Statistics of Surprise and Coincidence</a>. <em>Computational Linguistics</em>, 19(1): 61--74.</p>
+    <p>Bondi, M. &amp; Scott, M. (eds) (2010). <em>Keyness in
+Texts</em>. Amsterdam, Philadelphia: John Benjamins.</p>
+<p>Stubbs, M. (2010). Three Concepts of Keywords. In <em>Keyness in
+Texts</em>, Bondi, M. &amp; Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
+John Benjamins.</p>
+<p>Scott, M. &amp; Tribble, C. (2006). <em>Textual Patterns: Keyword and Corpus
+Analysis in Language Education</em>. Amsterdam: Benjamins: 55.</p>
+<p>Dunning, T. (1993). <a href='https://dl.acm.org/citation.cfm?id=972454'>Accurate Methods for the Statistics of Surprise and Coincidence</a>. <em>Computational
+Linguistics</em>, 19(1): 61--74.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># compare pre- v. post-war terms using grouping</span>
 <span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat1</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>dfmat1</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
-#&gt; 1         we 702.0019 0      960         779
-#&gt; 2          - 395.1361 0      450         312
-#&gt; 3          . 226.6654 0     1804        3141
-#&gt; 4        our 187.8329 0      874        1307
-#&gt; 5         us 186.0132 0      262         216
-#&gt; 6          : 178.1283 0      105          29
-#&gt; 7    america 176.6114 0      130          54
-#&gt; 8      world 175.1354 0      188         123
-#&gt; 9  americans 150.6480 0       67           7
-#&gt; 10       new 141.3690 0      150          97</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>tstat1</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
-#&gt; 9348         upon  -51.91189 5.804246e-13       39         332
-#&gt; 9349           it  -52.69911 3.888001e-13      257        1132
-#&gt; 9350       public  -55.99225 7.271961e-14       11         213
-#&gt; 9351       states  -59.13009 1.476597e-14       28         305
-#&gt; 9352 constitution  -61.16666 5.218048e-15        6         200
-#&gt; 9353           be  -72.21927 0.000000e+00      257        1224
-#&gt; 9354       should  -83.10741 0.000000e+00       15         309
-#&gt; 9355        which -160.14560 0.000000e+00       95         911
-#&gt; 9356           of -179.17847 0.000000e+00     1437        5666
-#&gt; 9357          the -299.85716 0.000000e+00     1988        8094</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat1</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,399 features (35.0% sparse).
+#&gt;           features
+#&gt; docs       fellow-citizens   of  the senate  and house representatives   :
+#&gt;   post-war               0 1437 1988      2 1455     3               0 105
+#&gt;   pre-war               39 5665 8093     13 3851     8              19  29
+#&gt;           features
+#&gt; docs       among vicissitudes
+#&gt;   post-war    22            0
+#&gt;   pre-war     86            5
+#&gt; [ reached max_nfeat ... 9,389 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>dfmat1</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
+#&gt; 1         we 707.0479 0      960         779
+#&gt; 2          . 230.7676 0     1804        3141
+#&gt; 3         -- 197.5479 0      199         123
+#&gt; 4        our 190.8214 0      874        1306
+#&gt; 5         us 187.3596 0      262         216
+#&gt; 6          : 178.9679 0      105          29
+#&gt; 7    america 177.5366 0      130          54
+#&gt; 8      world 176.2401 0      188         123
+#&gt; 9  americans 148.6186 0       66           7
+#&gt; 10       new 142.2551 0      150          97</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>tstat1</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
+#&gt; 9390           it  -51.27459 8.031353e-13      257        1129
+#&gt; 9391         upon  -51.53143 7.045475e-13       39         332
+#&gt; 9392       public  -55.70987 8.404388e-14       11         213
+#&gt; 9393       states  -58.75698 1.787459e-14       28         305
+#&gt; 9394 constitution  -60.89244 5.995204e-15        6         200
+#&gt; 9395           be  -71.23360 0.000000e+00      257        1224
+#&gt; 9396       should  -82.69550 0.000000e+00       15         309
+#&gt; 9397        which -158.73301 0.000000e+00       95         910
+#&gt; 9398           of -175.43330 0.000000e+00     1437        5665
+#&gt; 9399          the -294.16169 0.000000e+00     1988        8093</div><div class='input'>
 <span class='co'># compare pre- v. post-war terms using logical vector</span>
 <span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
-#&gt; 1         we 702.0019 0      960         779
-#&gt; 2          - 395.1361 0      450         312
-#&gt; 3          . 226.6654 0     1804        3141
-#&gt; 4        our 187.8329 0      874        1307
-#&gt; 5         us 186.0132 0      262         216
-#&gt; 6          : 178.1283 0      105          29
-#&gt; 7    america 176.6114 0      130          54
-#&gt; 8      world 175.1354 0      188         123
-#&gt; 9  americans 150.6480 0       67           7
-#&gt; 10       new 141.3690 0      150          97</div><div class='input'>
+#&gt; 1         we 707.0479 0      960         779
+#&gt; 2          . 230.7676 0     1804        3141
+#&gt; 3         -- 197.5479 0      199         123
+#&gt; 4        our 190.8214 0      874        1306
+#&gt; 5         us 187.3596 0      262         216
+#&gt; 6          : 178.9679 0      105          29
+#&gt; 7    america 177.5366 0      130          54
+#&gt; 8      world 176.2401 0      188         123
+#&gt; 9  americans 148.6186 0       66           7
+#&gt; 10       new 142.2551 0      150          97</div><div class='input'>
 <span class='co'># compare Trump 2017 to other post-war preseidents</span>
 <span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>period</span> <span class='kw'>==</span> <span class='st'>"post-war"</span>))
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat3</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;         feature     chi2            p n_target n_reference
-#&gt; 1     protected 76.64466 0.000000e+00        5           1
-#&gt; 2          will 51.44795 7.351897e-13       40         299
-#&gt; 3         while 48.23022 3.790079e-12        6           7
-#&gt; 4         obama 47.85727 4.584000e-12        3           0
-#&gt; 5         we've 47.85727 4.584000e-12        3           0
-#&gt; 6       america 31.45537 2.040775e-08       18         112
-#&gt; 7         again 27.81145 1.337322e-07        9          33
-#&gt; 8      everyone 27.67876 1.432269e-07        4           5
-#&gt; 9          your 26.67898 2.402201e-07       11          50
-#&gt; 10 transferring 25.54569 4.320292e-07        2           0</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat3</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2            p n_target n_reference
+#&gt; 1  protected 76.16493 0.000000e+00        5           1
+#&gt; 2          - 69.35184 1.110223e-16       11          20
+#&gt; 3       will 50.84346 1.000311e-12       40         299
+#&gt; 4      while 47.90052 4.484080e-12        6           7
+#&gt; 5      obama 47.56110 5.331624e-12        3           0
+#&gt; 6      we've 47.56110 5.331624e-12        3           0
+#&gt; 7    america 31.12584 2.418301e-08       18         112
+#&gt; 8      again 28.59131 8.938220e-08        9          32
+#&gt; 9   everyone 27.48612 1.582257e-07        4           5
+#&gt; 10      your 26.43285 2.728609e-07       11          50</div><div class='input'>
 <span class='co'># using the likelihood ratio method</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='no'>dfmat3</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature        G2            p n_target n_reference
-#&gt; 1       will 24.604106 7.040156e-07       41         317
-#&gt; 2    america 14.040255 1.789387e-04       19         130
-#&gt; 3       your 10.435140 1.236402e-03       12          68
-#&gt; 4      again  9.758516 1.784939e-03       10          51
-#&gt; 5      while  9.504990 2.049139e-03        7          25
-#&gt; 6   american  8.877690 2.886766e-03       12          76
-#&gt; 7  protected  8.820562 2.978550e-03        6          19
-#&gt; 8       back  6.853526 8.846653e-03        7          34
-#&gt; 9        you  6.713202 9.570175e-03       14         121
-#&gt; 10   country  5.821599 1.583055e-02       10          72</div></pre>
+#&gt; 1       will 24.503820 7.416265e-07       41         317
+#&gt; 2          - 19.342361 1.092554e-05       12          38
+#&gt; 3    america 13.990375 1.837489e-04       19         130
+#&gt; 4       your 10.402855 1.258206e-03       12          68
+#&gt; 5      again  9.972178 1.589234e-03       10          50
+#&gt; 6      while  9.484004 2.072712e-03        7          25
+#&gt; 7   american  8.847068 2.935601e-03       12          76
+#&gt; 8  protected  8.802374 3.008388e-03        6          19
+#&gt; 9       back  6.834410 8.941822e-03        7          34
+#&gt; 10       you  6.681709 9.740719e-03       14         121</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -367,7 +376,7 @@ measures has no effect and produces a warning.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

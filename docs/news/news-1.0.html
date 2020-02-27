@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -210,14 +210,14 @@
 <h1 class="page-header">
 <a href="#quanteda-100" class="anchor"></a>quanteda 1.0.0<small> 2018-01-28 </small>
 </h1>
-<div id="new-features-10" class="section level2">
+<div id="new-features-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-10" class="anchor"></a>New Features</h2>
+<a href="#new-features-11" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code>vertex_labelfont</code> to <code><a href="../reference/textplot_network.html">textplot_network()</a></code>.</li>
-<li>Added <code><a href="../reference/textmodel_lsa.html">textmodel_lsa()</a></code> for Latent Semantic Analysis models.<br>
+<li>Added <code>textmodel_lsa()</code> for Latent Semantic Analysis models.<br>
 </li>
-<li>Added <code><a href="../reference/textmodel_affinity.html">textmodel_affinity()</a></code> for the Perry and Benoit (2017) class affinity scaling model.</li>
+<li>Added <code>textmodel_affinity()</code> for the Perry and Benoit (2017) class affinity scaling model.</li>
 <li>Added Chinese stopwords.</li>
 <li>Added a pkgdown vignette for applications in the Chinese language.</li>
 <li>Added <code><a href="../reference/textplot_network.html">textplot_network()</a></code> function.</li>
@@ -229,12 +229,12 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements-10" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Performance has been improved for <code><a href="../reference/fcm.html">fcm()</a></code> and for <code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>.</li>
+<li>Performance has been improved for <code><a href="../reference/fcm.html">fcm()</a></code> and for <code>textmodel_wordfish()</code>.</li>
 <li>
 <code><a href="../reference/dfm.html">dfm()</a></code> now correctly passes through all <code>...</code> arguments to <code><a href="../reference/tokens.html">tokens()</a></code>. (#1121)</li>
 <li>All <code>dfm_*()</code> functions now work correctly with empty dfm objects. (#1133)</li>
 <li>Fixed a bug in <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> for named weight vectors (#1150)</li>
-<li>Fixed a bug preventing <code><a href="../reference/textplot_influence.html">textplot_influence()</a></code> from working (#1116).</li>
+<li>Fixed a bug preventing <code>textplot_influence()</code> from working (#1116).</li>
 </ul>
 </div>
 <div id="behaviour-changes-7" class="section level2">
@@ -243,9 +243,9 @@
 <ul>
 <li>The convenience wrappers to <code><a href="../reference/convert.html">convert()</a></code> are simplified and no longer exported. To convert a dfm, <code><a href="../reference/convert.html">convert()</a></code> is now the only official function.</li>
 <li>
-<code><a href="../reference/ndoc.html">nfeat()</a></code> replaces <code><a href="../reference/nfeature.html">nfeature()</a></code>, which is now deprecated. (#1134)</li>
+<code><a href="../reference/ndoc.html">nfeat()</a></code> replaces <code>nfeature()</code>, which is now deprecated. (#1134)</li>
 <li>
-<code><a href="../reference/textmodel_wordshoal.html">textmodel_wordshoal()</a></code> has been removed, and relocated to a new package (<strong>wordshoal</strong>).</li>
+<code>textmodel_wordshoal()</code> has been removed, and relocated to a new package (<strong>wordshoal</strong>).</li>
 <li>The generic wrapper function <code>textmodel()</code>, which used to be a gateway to specific <code>textmodel_*()</code> functions, has been removed.</li>
 <li>(Most of) the <code>textmodel_*()</code> have been reimplemented to make their behaviour consistent with the <code>lm/glm()</code> families of models, including especially how the <code>predict</code>, <code>summary</code>, and <code>coef</code> methods work (#1007, #108).</li>
 <li>The GitHub home for the repository has been moved to <a href="https://github.com/quanteda/quanteda" class="uri">https://github.com/quanteda/quanteda</a>.</li>
@@ -268,7 +268,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

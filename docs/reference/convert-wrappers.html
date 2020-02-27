@@ -45,7 +45,7 @@
 
 <meta property="og:title" content="Convenience wrappers for dfm convert — convert-wrappers" />
 <meta property="og:description" content="To make the usage as consistent as possible with other packages, quanteda
-also provides shortcut wrappers to convert, designed to be
+also provides shortcut wrappers to convert(), designed to be
 similar in syntax to analogous commands in the packages to whose format they
 are converting." />
 <meta name="twitter:card" content="summary" />
@@ -90,7 +90,7 @@ are converting." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -214,7 +214,7 @@ are converting." />
 
     <div class="ref-description">
     <p>To make the usage as consistent as possible with other packages, quanteda
-also provides shortcut wrappers to <code><a href='convert.html'>convert</a></code>, designed to be
+also provides shortcut wrappers to <code><a href='convert.html'>convert()</a></code>, designed to be
 similar in syntax to analogous commands in the packages to whose format they
 are converting.</p>
     </div>
@@ -250,15 +250,14 @@ are converting.</p>
     </tr>
     <tr>
       <th>weighting</th>
-      <td><p>a <span class="pkg">tm</span> weight, see <code><a href='https://rdrr.io/pkg/tm/man/weightTf.html'>weightTf</a></code></p></td>
+      <td><p>a <span class="pkg">tm</span> weight, see <code><a href='https://rdrr.io/pkg/tm/man/weightTf.html'>tm::weightTf()</a></code></p></td>
     </tr>
     <tr>
       <th>omit_empty</th>
       <td><p>logical; if <code>TRUE</code>, omit empty documents and features
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when <code>to = "lda"</code> or
-<code>to = "topicmodels"</code>.  For <code>to = "stm"</code> format, `omit_empty`` is
-always <code>TRUE</code>.</p></td>
+<code>to = "topicmodels"</code>.  For <code>to = "stm"</code> format, <code>omit_empty`` is always </code>TRUE`.</p></td>
     </tr>
     <tr>
       <th>docvars</th>
@@ -275,38 +274,38 @@ documents with non-zero counts.  Only affects the "stm" format.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A converted object determined by the value of <code>to</code> (see above). 
-  See conversion target package documentation for more detailed descriptions 
-  of the return formats.</p>
+    <p>A converted object determined by the value of <code>to</code> (see above).
+See conversion target package documentation for more detailed descriptions
+of the return formats.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>as.wfm</code> converts a quanteda <a href='dfm.html'>dfm</a> into the
 <code>wfm</code> format used by the <code>austin</code> package.</p>
-<p><code>as.DocumentTermMatrix</code> will convert a quanteda <a href='dfm.html'>dfm</a> into
-  the <span class="pkg">tm</span> package's <a href='https://rdrr.io/pkg/tm/man/matrix.html'>DocumentTermMatrix</a> format. Note: The
-  <span class="pkg">tm</span> package version of <code>as.TermDocumentMatrix</code> allows a
-  <code>weighting</code> argument, which supplies a weighting function for 
-  <a href='https://rdrr.io/pkg/tm/man/matrix.html'>TermDocumentMatrix</a>.  Here the default is for term frequency
-  weighting. If you want a different weighting, apply the weights after
-  converting using one of the <span class="pkg">tm</span> functions. For other available
-  weighting functions from the <span class="pkg">tm</span> package, see 
-  <code><a href='https://rdrr.io/pkg/tm/man/matrix.html'>TermDocumentMatrix</a></code>.</p>
+<p><code>as.DocumentTermMatrix</code> will convert a quanteda <a href='dfm.html'>dfm</a> into the
+<span class="pkg">tm</span> package's DocumentTermMatrix format. Note: The
+<span class="pkg">tm</span> package version of <code>as.TermDocumentMatrix()</code> allows a <code>weighting</code>
+argument, which supplies a weighting function for
+<code>TermDocumentMatrix()</code>.  Here the default is for
+term frequency weighting. If you want a different weighting, apply the
+weights after converting using one of the <span class="pkg">tm</span> functions. For other
+available weighting functions from the <span class="pkg">tm</span> package, see
+TermDocumentMatrix.</p>
 <p><code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
-of terms in documents used by the <span class="pkg">lda</span> package (a list with components 
-"documents" and "vocab" as needed by 
-  <code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a></code>).</p>
+of terms in documents used by the <span class="pkg">lda</span> package (a list with components
+"documents" and "vocab" as needed by
+<code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda::lda.collapsed.gibbs.sampler()</a></code>).</p>
 <p><code>dfm2ldaformat</code> provides converts a <a href='dfm.html'>dfm</a> into the list
 representation of terms in documents used by the <span class="pkg">lda</span> package (a list
 with components "documents" and "vocab" as needed by
-<code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a></code>).</p>
+<code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda::lda.collapsed.gibbs.sampler()</a></code>).</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Additional coercion methods to base R objects are also available:</p><dl class='dl-horizontal'>
-<dt><code><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a>(x)</code></dt><dd><p>converts a <a href='dfm.html'>dfm</a> into
-  a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
-  
-  <dt><code><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a>(x)</code></dt><dd><p>converts a <a href='dfm.html'>dfm</a> into a
-  <a href='https://rdrr.io/r/base/matrix.html'>matrix</a></p></dd> 
+<dt><code>[as.data.frame](x)</code></dt><dd><p>converts a <a href='dfm.html'>dfm</a> into
+a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
+
+<dt><code>[as.matrix](x)</code></dt><dd><p>converts a <a href='dfm.html'>dfm</a> into a
+<a href='https://rdrr.io/r/base/matrix.html'>matrix</a></p></dd> 
 </dl>
 
 
@@ -347,7 +346,7 @@ with components "documents" and "vocab" as needed by
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

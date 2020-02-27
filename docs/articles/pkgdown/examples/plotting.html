@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -278,7 +278,24 @@
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">dfm_rel_freq &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural_subset), <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb14-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm_rel_freq)</a></code></pre></div>
-<pre><code>## Document-feature matrix of: 6 documents, 4,215 features (85.1% sparse).</code></pre>
+<pre><code>## Document-feature matrix of: 6 documents, 4,224 features (85.1% sparse) and 4 docvars.
+##                  features
+## docs                      my    friends        ,    before          i
+##   1953-Eisenhower 0.14593214 0.14593214 4.596862 0.1824152 0.10944911
+##   1957-Eisenhower 0.20975354 0.10487677 6.345045 0.1573152 0.05243838
+##   1961-Kennedy    0.19493177 0.06497726 5.458090 0.1299545 0.32488629
+##   1965-Johnson    0.17564403 0.05854801 5.562061 0.2341920 0.87822014
+##   1969-Nixon      0.29021559 0          5.555556 0.1243781 0.87064677
+##   1973-Nixon      0.05012531 0.05012531 4.812030 0.2005013 0.60150376
+##                  features
+## docs                   begin      the expression       of     those
+##   1953-Eisenhower 0.03648304 6.238599 0.03648304 5.180591 0.1459321
+##   1957-Eisenhower 0          5.977976 0          5.034085 0.1573152
+##   1961-Kennedy    0.19493177 5.588044 0          4.223522 0.4548408
+##   1965-Johnson    0          4.508197 0          3.337237 0.1756440
+##   1969-Nixon      0          5.638474 0          3.897181 0.4560531
+##   1973-Nixon      0          4.160401 0          3.408521 0.3007519
+## [ reached max_nfeat ... 4,214 more features ]</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">rel_freq &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(dfm_rel_freq, <span class="dt">groups =</span> <span class="st">"President"</span>)</a>
 <a class="sourceLine" id="cb16-2" title="2"></a>
 <a class="sourceLine" id="cb16-3" title="3"><span class="co"># Filter the term "american"</span></a>
@@ -339,32 +356,34 @@
 <h2 class="hasAnchor">
 <a href="#wordscores" class="anchor"></a>Wordscores</h2>
 <p>Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents (“virgin texts”). You can plot the position of words (features) against the logged term frequency, or the position of the documents.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># Transform corpus to dfm</span></a>
-<a class="sourceLine" id="cb20-2" title="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
-<a class="sourceLine" id="cb20-3" title="3"></a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="co"># Set reference scores</span></a>
-<a class="sourceLine" id="cb20-5" title="5">refscores &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, <span class="dv">4</span>), <span class="dv">1</span>, <span class="dv">-1</span>, <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, <span class="dv">8</span>))</a>
-<a class="sourceLine" id="cb20-6" title="6"></a>
-<a class="sourceLine" id="cb20-7" title="7"><span class="co"># Predict Wordscores model</span></a>
-<a class="sourceLine" id="cb20-8" title="8">ws &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordscores.html">textmodel_wordscores</a></span>(ie_dfm, <span class="dt">y =</span> refscores, <span class="dt">smooth =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb20-9" title="9"></a>
-<a class="sourceLine" id="cb20-10" title="10"><span class="co"># Plot estimated word positions (highlight words and print them in red)</span></a>
-<a class="sourceLine" id="cb20-11" title="11"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(ws,</a>
-<a class="sourceLine" id="cb20-12" title="12">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>), </a>
-<a class="sourceLine" id="cb20-13" title="13">                 <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)</a>
+<a class="sourceLine" id="cb20-2" title="2"></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="co"># Transform corpus to dfm</span></a>
+<a class="sourceLine" id="cb20-4" title="4">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
+<a class="sourceLine" id="cb20-5" title="5"></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co"># Set reference scores</span></a>
+<a class="sourceLine" id="cb20-7" title="7">refscores &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, <span class="dv">4</span>), <span class="dv">1</span>, <span class="dv">-1</span>, <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, <span class="dv">8</span>))</a>
+<a class="sourceLine" id="cb20-8" title="8"></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="co"># Predict Wordscores model</span></a>
+<a class="sourceLine" id="cb20-10" title="10">ws &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordscores.html">textmodel_wordscores</a></span>(ie_dfm, <span class="dt">y =</span> refscores, <span class="dt">smooth =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb20-11" title="11"></a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="co"># Plot estimated word positions (highlight words and print them in red)</span></a>
+<a class="sourceLine" id="cb20-13" title="13"><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(ws,</a>
+<a class="sourceLine" id="cb20-14" title="14">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>), </a>
+<a class="sourceLine" id="cb20-15" title="15">                 <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># Get predictions</span></a>
 <a class="sourceLine" id="cb21-2" title="2">pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(ws, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb21-3" title="3"></a>
 <a class="sourceLine" id="cb21-4" title="4"><span class="co"># Plot estimated document positions and group by "party" variable</span></a>
-<a class="sourceLine" id="cb21-5" title="5"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
 <a class="sourceLine" id="cb21-6" title="6">                 <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># Plot estimated document positions using the LBG transformation and group by "party" variable</span></a>
 <a class="sourceLine" id="cb22-2" title="2"></a>
 <a class="sourceLine" id="cb22-3" title="3">pred_lbg &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(ws, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>, <span class="dt">rescaling =</span> <span class="st">"lbg"</span>)</a>
 <a class="sourceLine" id="cb22-4" title="4"></a>
-<a class="sourceLine" id="cb22-5" title="5"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred_lbg, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(pred_lbg, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
 <a class="sourceLine" id="cb22-6" title="6">                 <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-3.png" width="768"></p>
 </div>
@@ -373,17 +392,18 @@
 <a href="#wordfish" class="anchor"></a>Wordfish</h2>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># Estimate Wordfish model</span></a>
-<a class="sourceLine" id="cb23-2" title="2">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb23-3" title="3"></a>
-<a class="sourceLine" id="cb23-4" title="4"><span class="co"># Plot estimated word positions</span></a>
-<a class="sourceLine" id="cb23-5" title="5"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">margin =</span> <span class="st">"features"</span>, </a>
-<a class="sourceLine" id="cb23-6" title="6">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"government"</span>, <span class="st">"global"</span>, <span class="st">"children"</span>, </a>
-<a class="sourceLine" id="cb23-7" title="7">                                 <span class="st">"bank"</span>, <span class="st">"economy"</span>, <span class="st">"the"</span>, <span class="st">"citizenship"</span>,</a>
-<a class="sourceLine" id="cb23-8" title="8">                                 <span class="st">"productivity"</span>, <span class="st">"deficit"</span>), </a>
-<a class="sourceLine" id="cb23-9" title="9">                 <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb23-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)</a>
+<a class="sourceLine" id="cb23-3" title="3">wf &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">6</span>,<span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb23-4" title="4"></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="co"># Plot estimated word positions</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">margin =</span> <span class="st">"features"</span>, </a>
+<a class="sourceLine" id="cb23-7" title="7">                 <span class="dt">highlighted =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"government"</span>, <span class="st">"global"</span>, <span class="st">"children"</span>, </a>
+<a class="sourceLine" id="cb23-8" title="8">                                 <span class="st">"bank"</span>, <span class="st">"economy"</span>, <span class="st">"the"</span>, <span class="st">"citizenship"</span>,</a>
+<a class="sourceLine" id="cb23-9" title="9">                                 <span class="st">"productivity"</span>, <span class="st">"deficit"</span>), </a>
+<a class="sourceLine" id="cb23-10" title="10">                 <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="768"></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co"># Plot estimated document positions</span></a>
-<a class="sourceLine" id="cb24-2" title="2"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb24-2" title="2"><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-2.png" width="768"></p>
 </div>
 <div id="correspondence-analysis" class="section level2">
@@ -394,10 +414,10 @@
 <a class="sourceLine" id="cb25-2" title="2">ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)</a>
 <a class="sourceLine" id="cb25-3" title="3"></a>
 <a class="sourceLine" id="cb25-4" title="4"><span class="co"># Run correspondence analysis on dfm</span></a>
-<a class="sourceLine" id="cb25-5" title="5">ca &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_ca.html">textmodel_ca</a></span>(ie_dfm)</a>
+<a class="sourceLine" id="cb25-5" title="5">ca &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_ca.html">textmodel_ca</a></span>(ie_dfm)</a>
 <a class="sourceLine" id="cb25-6" title="6"></a>
 <a class="sourceLine" id="cb25-7" title="7"><span class="co"># Plot estimated positions and group by party</span></a>
-<a class="sourceLine" id="cb25-8" title="8"><span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(ca, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="kw"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(ca, <span class="dt">margin =</span> <span class="st">"documents"</span>,</a>
 <a class="sourceLine" id="cb25-9" title="9">                 <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</a></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 </div>
@@ -442,7 +462,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

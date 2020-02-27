@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -285,7 +285,7 @@
 <li><p>Fixed a bug in <code>as.matrix.similMatrix()</code> that caused scrambled conversion when feature sets compared were unequal, which normally occurs when setting <code>similarity(x, n = &lt;something&gt;)</code> when n &lt; nfeature(x)</p></li>
 <li><p>Fixed a bug in which a corpusSource object (from <code>textfile()</code>) with empty docvars prevented this argument from being supplied to <code><a href="../reference/corpus.html">corpus(corpusSourceObject, docvars = something)</a></code>.</p></li>
 <li><p>Fixed inaccurate documentation for <code>weight()</code>, which previously listed unavailable options.</p></li>
-<li><p>More accurate and complete documentation for <code>tokenize()</code>.</p></li>
+<li><p>More accurate and complete documentation for <code><a href="../reference/tokenize_internal.html">tokenize()</a></code>.</p></li>
 <li><p>traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.</p></li>
 <li><p>Fixed a bug in <code>textfile()</code> that prevented passthrough arguments in …, such as <code>fileEncoding =</code> or <code>encoding =</code></p></li>
 <li><p>Fixed a bug in <code>textfile()</code> that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)</p></li>
@@ -345,7 +345,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Fixed a bug in applyDictionary(x, dictionary, exclusive = FALSE) when the dictionary produced no matches at all, caused by an attempt to negative index a NULL. #115</p></li>
 <li><p>Fixed #117, a bug where wordstem.tokenizedTexts() removed attributes from the object, causing a failure of dfm.tokenizedTexts().</p></li>
 <li><p>Fixed #119, a bug in selectFeatures.tokenizedTexts(x, features, selection = “remove”) that returned a NULL for a document’s tokens when no matching pattern for removal was found.</p></li>
-<li><p>Improved the behaviour of the <code>removeHyphens</code> option to <code>tokenize()</code> when <code>what = "fasterword"</code> or <code>what "fastestword"</code>.</p></li>
+<li><p>Improved the behaviour of the <code>removeHyphens</code> option to <code><a href="../reference/tokenize_internal.html">tokenize()</a></code> when <code>what = "fasterword"</code> or <code>what "fastestword"</code>.</p></li>
 <li><p>readability() now returns measures in order called, not function definition order.</p></li>
 <li><p>textmodel(x, model = “wordfish”) now removes zero-frequency documents and words prior to calling Rcpp.</p></li>
 <li><p>Fixed a bug in sample.corpus() that caused an error when no docvars existed. #128</p></li>
@@ -356,9 +356,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <h1 class="page-header">
 <a href="#quanteda-098" class="anchor"></a>quanteda 0.9.8<small> 2016-07-28 </small>
 </h1>
-<div id="new-features-19" class="section level2">
+<div id="new-features-20" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-19" class="anchor"></a>New Features</h2>
+<a href="#new-features-20" class="anchor"></a>New Features</h2>
 <ul>
 <li>Improved the performance of <code>selectFeatures.tokenizedTexts()</code>.<br>
 </li>
@@ -399,7 +399,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li>(0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)</li>
 <li>(0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)</li>
 <li>(0.9.8.4) Fix a bug in <code>selectFeatures.dfm()</code> that ignored <code>case_insensitive = TRUE</code> settings (#251) correct the documentation for this function.</li>
-<li>(0.9.8.3) Fix a bug in <code><a href="../reference/tf.html">tf(x, scheme = "propmax")</a></code> that returned a wrong computation; correct the documentation for this function.</li>
+<li>(0.9.8.3) Fix a bug in <code>tf(x, scheme = "propmax")</code> that returned a wrong computation; correct the documentation for this function.</li>
 <li>(0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the “textField” argument (a single file containing multiple documents).<br>
 </li>
 <li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. #239<br>
@@ -420,9 +420,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li>Fixed bug in textmodel_NB() for non-“uniform” priors (#241)</li>
 </ul>
 </div>
-<div id="changes" class="section level2">
+<div id="changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes" class="anchor"></a>Changes</h2>
+<a href="#changes-1" class="anchor"></a>Changes</h2>
 <ul>
 <li>Added <code>warn = FALSE</code> to the <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> calls in <code>textfile()</code>, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.</li>
 <li>
@@ -451,7 +451,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

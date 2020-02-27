@@ -45,8 +45,8 @@
 
 <meta property="og:title" content="Extract a subset of a dfm — dfm_subset" />
 <meta property="og:description" content="Returns document subsets of a dfm that meet certain conditions,
-including direct logical operations on docvars (document-level variables). 
-dfm_subset functions identically to subset.data.frame,
+including direct logical operations on docvars (document-level variables).
+dfm_subset functions identically to subset.data.frame(),
 using non-standard evaluation to evaluate conditions based on the
 docvars in the dfm." />
 <meta name="twitter:card" content="summary" />
@@ -91,7 +91,7 @@ docvars in the dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -215,13 +215,13 @@ docvars in the dfm." />
 
     <div class="ref-description">
     <p>Returns document subsets of a dfm that meet certain conditions,
-including direct logical operations on docvars (document-level variables). 
-<code>dfm_subset</code> functions identically to <code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame</a></code>,
+including direct logical operations on docvars (document-level variables).
+<code>dfm_subset</code> functions identically to <code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code>,
 using non-standard evaluation to evaluate conditions based on the
 <a href='docvars.html'>docvars</a> in the dfm.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,12 +236,6 @@ using non-standard evaluation to evaluate conditions based on the
 values are taken as false</p></td>
     </tr>
     <tr>
-      <th>select</th>
-      <td><p>expression, indicating the docvars to select from the dfm; or a
-<a href='dfm.html'>dfm</a> object, in which case the returned dfm will contain the same
-documents as the original dfm, even if these are empty.  See Details.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>not used</p></td>
     </tr>
@@ -250,53 +244,35 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><a href='dfm.html'>dfm</a> object, with a subset of documents (and docvars) selected
-  according to arguments</p>
+according to arguments</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>To select or subset <em>features</em>, see <code><a href='dfm_select.html'>dfm_select</a></code> instead.</p>
+    <p>To select or subset <em>features</em>, see <code><a href='dfm_select.html'>dfm_select()</a></code> instead.</p>
 <p>When <code>select</code> is a dfm, then the returned dfm will be equal in
-  document dimension and order to the dfm used for selection.  This is the
-  document-level version of using <code><a href='dfm_select.html'>dfm_select</a></code> where
-  <code>pattern</code> is a dfm: that function matches features, while
-  <code>dfm_subset</code> will match documents.</p>
+document dimension and order to the dfm used for selection.  This is the
+document-level version of using <code><a href='dfm_select.html'>dfm_select()</a></code> where
+<code>pattern</code> is a dfm: that function matches features, while
+<code>dfm_subset</code> will match documents.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b c d"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b e"</span>,
-                     <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"b b c e"</span>, <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"e e f a b"</span>),
-                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
+                 <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"b b c e"</span>, <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"e e f a b"</span>),
+               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
 <span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>)
 <span class='co'># selecting on a docvars condition</span>
-<span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
+<span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d3 0 2 1 0 1 0
 #&gt;   d4 1 1 0 0 2 1</div><div class='input'><span class='co'># selecting on a supplied vector</span>
-<span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
+<span class='fu'>dfm_subset</span>(<span class='no'>dfmat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d1 1 1 1 1 0 0
-#&gt;   d3 0 2 1 0 1 0</div><div class='input'>
-<span class='co'># selecting on a dfm</span>
-<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
-<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
-<span class='fu'>dfm_subset</span>(<span class='no'>dfmat1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfmat2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50.0% sparse).
-#&gt; 3 x 4 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs a b c d
-#&gt;   d1 1 2 1 0
-#&gt;   d2 0 2 1 1
-#&gt;   d3 0 0 0 0</div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfmat1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfmat2</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50.0% sparse).
-#&gt; 3 x 4 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs a b c d
-#&gt;   d3 0 0 0 0
-#&gt;   d1 1 2 1 0
-#&gt;   d2 0 2 1 1</div></pre>
+#&gt;   d3 0 2 1 0 1 0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -314,7 +290,7 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

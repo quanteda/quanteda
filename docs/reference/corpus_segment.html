@@ -90,7 +90,7 @@ transcript) or a user-supplied annotation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -253,13 +253,14 @@ details.</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for 
-"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
-or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
+wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
+exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>case_insensitive</th>
-      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
     </tr>
     <tr>
       <th>extract_pattern</th>
@@ -275,8 +276,8 @@ punctuation delimiters)</p></td>
     </tr>
     <tr>
       <th>use_docvars</th>
-      <td><p>if <code>TRUE</code>, repeat the docvar values for each 
-segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus. 
+      <td><p>if <code>TRUE</code>, repeat the docvar values for each
+segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.</p></td>
     </tr>
@@ -292,55 +293,55 @@ are not desired for the segmented corpus.</p></td>
 <p><code>char_segment</code> returns a character vector of segmented texts</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For segmentation into syntactic units defined by the locale (such as 
-sentences), use <code><a href='corpus_reshape.html'>corpus_reshape</a></code> instead.  In cases where more 
-fine-grained segmentation is needed, such as that based on commas or 
-semi-colons (phrase delimiters within a sentence), 
-<code>corpus_segment</code> offers greater user control than 
-<code><a href='corpus_reshape.html'>corpus_reshape</a></code>.</p>
+    <p>For segmentation into syntactic units defined by the locale (such as
+sentences), use <code><a href='corpus_reshape.html'>corpus_reshape()</a></code> instead.  In cases where more
+fine-grained segmentation is needed, such as that based on commas or
+semi-colons (phrase delimiters within a sentence),
+<code>corpus_segment()</code> offers greater user control than
+<code><a href='corpus_reshape.html'>corpus_reshape()</a></code>.</p>
     <h2 class="hasAnchor" id="boundaries-and-segmentation-explained"><a class="anchor" href="#boundaries-and-segmentation-explained"></a>Boundaries and segmentation explained</h2>
 
     <p>The <code>pattern</code> acts as a
-  boundary delimiter that defines the segmentation points for splitting a
-  text into new "document" units.  Boundaries are always defined as the
-  pattern matches, plus the end and beginnings of each document.  The new
-  "documents" that are created following the segmentation will then be the
-  texts found between boundaries.</p>  
-<p>The pattern itself will be saved as a new document variable named 
-  <code>pattern</code>.  This is most useful when segmenting a text according to 
-  tags such as names in a transcript, section titles, or user-supplied 
-  annotations.  If the beginning of the file precedes a pattern match, then 
-  the extracted text will have a <code>NA</code> for the extracted <code>pattern</code> 
-  document variable (or when <code>pattern_position = "after"</code>, this will be 
-  true for the text split between the last pattern match and the end of the 
-  document).</p>  
-<p>To extract syntactically defined sub-document units such as sentences and 
-  paragraphs, use <code><a href='corpus_reshape.html'>corpus_reshape</a></code> instead.</p>
+boundary delimiter that defines the segmentation points for splitting a
+text into new "document" units.  Boundaries are always defined as the
+pattern matches, plus the end and beginnings of each document.  The new
+"documents" that are created following the segmentation will then be the
+texts found between boundaries.</p>
+<p>The pattern itself will be saved as a new document variable named
+<code>pattern</code>.  This is most useful when segmenting a text according to
+tags such as names in a transcript, section titles, or user-supplied
+annotations.  If the beginning of the file precedes a pattern match, then
+the extracted text will have a <code>NA</code> for the extracted <code>pattern</code>
+document variable (or when <code>pattern_position = "after"</code>, this will be
+true for the text split between the last pattern match and the end of the
+document).</p>
+<p>To extract syntactically defined sub-document units such as sentences and
+paragraphs, use <code><a href='corpus_reshape.html'>corpus_reshape()</a></code> instead.</p>
     <h2 class="hasAnchor" id="using-patterns"><a class="anchor" href="#using-patterns"></a>Using patterns</h2>
 
     <p>One of the most common uses for
-  <code>corpus_segment</code> is to partition a corpus into sub-documents using
-  tags.  The default pattern value is designed for a user-annotated tag that
-  is a term beginning with double "hash" signs, followed by a whitespace, for
-  instance as <code>##INTRODUCTION The text</code>.</p>  
-<p>Glob and fixed pattern types use a whitespace character to signal the end 
-  of the pattern.</p>  
-<p>For more advanced pattern matches that could include whitespace or 
-  newlines, a regex pattern type can be used, for instance a text such as</p>  
-<p><code>Mr. Smith: Text</code> <br /> <code>Mrs. Jones: More text</code></p>  
+<code>corpus_segment</code> is to partition a corpus into sub-documents using
+tags.  The default pattern value is designed for a user-annotated tag that
+is a term beginning with double "hash" signs, followed by a whitespace, for
+instance as <code>##INTRODUCTION The text</code>.</p>
+<p>Glob and fixed pattern types use a whitespace character to signal the end
+of the pattern.</p>
+<p>For more advanced pattern matches that could include whitespace or
+newlines, a regex pattern type can be used, for instance a text such as</p>
+<p><code>Mr. Smith: Text</code> <br /> <code>Mrs. Jones: More text</code></p>
 <p>could have as <code>pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"</code>, which
-  would catch the title, the name, and the colon.</p>  
-<p>For custom boundary delimitation using punctuation characters that come 
-  come at the end of a clause or sentence (such as <code>,</code> and<code>.</code>, 
-  these can be specified manually and <code>pattern_position</code> set to 
-  <code>"after"</code>. To keep the punctuation characters in the text (as with 
-  sentence segmentation), set <code>extract_pattern = FALSE</code>.  (With most tag
-  applications, users will want to remove the patterns from the text, as they
-  are annotations rather than parts of the text itself.)</p>
+would catch the title, the name, and the colon.</p>
+<p>For custom boundary delimitation using punctuation characters that come
+come at the end of a clause or sentence (such as <code>,</code> and<code>.</code>,
+these can be specified manually and <code>pattern_position</code> set to
+<code>"after"</code>. To keep the punctuation characters in the text (as with
+sentence segmentation), set <code>extract_pattern = FALSE</code>.  (With most tag
+applications, users will want to remove the patterns from the text, as they
+are annotations rather than parts of the text itself.)</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='corpus_reshape.html'>corpus_reshape</a></code>, for segmenting texts into pre-defined 
-  syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
+    <div class='dont-index'><p><code><a href='corpus_reshape.html'>corpus_reshape()</a></code>, for segmenting texts into pre-defined
+syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## segmenting a corpus</span>
@@ -351,45 +352,31 @@ semi-colons (phrase delimiters within a sentence),
                   ##DOC3 Third document starts here.  End of third document."</span>,
                  <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
 <span class='no'>corpseg1</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg1</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg1</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corpseg1</span>))</div><div class='output co'>#&gt;                                                texts(corpseg1)  pattern
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg1</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg1</span>))</div><div class='output co'>#&gt;                                                texts(corpseg1)  pattern
 #&gt; text1.1                              This is the introduction.  ##INTRO
 #&gt; text1.2 This is the first document.  Second sentence in Doc 1.   ##DOC1
 #&gt; text1.3    Third document starts here.  End of third document.   ##DOC3
 #&gt; text2.1                                               Document  ##INTRO
 #&gt; text2.2                                      Two starts before ##NUMBER
-#&gt; text2.3                                                 Three. ##NUMBER
-#&gt;         _document _docid _segid
-#&gt; text1.1     text1      1      1
-#&gt; text1.2     text1      1      2
-#&gt; text1.3     text1      1      3
-#&gt; text2.1     text2      2      1
-#&gt; text2.2     text2      2      2
-#&gt; text2.3     text2      2      3</div><div class='input'>
+#&gt; text2.3                                                 Three. ##NUMBER</div><div class='input'>
 <span class='co'># segmenting a transcript based on speaker identifiers</span>
 <span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='st'>"Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again."</span>)
 <span class='no'>corpseg2</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp2</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\b[A-Z].+\\s[A-Z][a-z]+:"</span>,
-                            <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg2</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg2</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corpseg2</span>))</div><div class='output co'>#&gt;              texts(corpseg2)     pattern _document _docid _segid
-#&gt; text1.1                Text.  Mr. Smith:     text1      1      1
-#&gt; text1.2           More text. Mrs. Jones:     text1      1      2
-#&gt; text1.3 I'm speaking, again.  Mr. Smith:     text1      1      3</div><div class='input'>
+                           <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg2</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg2</span>))</div><div class='output co'>#&gt;              texts(corpseg2)     pattern
+#&gt; text1.1                Text.  Mr. Smith:
+#&gt; text1.2           More text. Mrs. Jones:
+#&gt; text1.3 I'm speaking, again.  Mr. Smith:</div><div class='input'>
 <span class='co'># segmenting a corpus using crude end-of-sentence segmentation</span>
 <span class='no'>corpseg3</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
-                            <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>, <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg3</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg3</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corpseg3</span>))</div><div class='output co'>#&gt;                                                     texts(corpseg3) _document
-#&gt; text1.1                           ##INTRO This is the introduction.     text1
-#&gt; text1.2                          ##DOC1 This is the first document.     text1
-#&gt; text1.3                                   Second sentence in Doc 1.     text1
-#&gt; text1.4                          ##DOC3 Third document starts here.     text1
-#&gt; text1.5                                      End of third document.     text1
-#&gt; text2.1 ##INTRO Document ##NUMBER Two starts before ##NUMBER Three.     text2
-#&gt;         _docid _segid
-#&gt; text1.1      1      1
-#&gt; text1.2      1      2
-#&gt; text1.3      1      3
-#&gt; text1.4      1      4
-#&gt; text1.5      1      5
-#&gt; text2.1      2      1</div><div class='input'>
+                           <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>, <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corpseg3</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corpseg3</span>))</div><div class='output co'>#&gt;                                                     texts(corpseg3)
+#&gt; text1.1                           ##INTRO This is the introduction.
+#&gt; text1.2                          ##DOC1 This is the first document.
+#&gt; text1.3                                   Second sentence in Doc 1.
+#&gt; text1.4                          ##DOC3 Third document starts here.
+#&gt; text1.5                                      End of third document.
+#&gt; text2.1 ##INTRO Document ##NUMBER Two starts before ##NUMBER Three.</div><div class='input'>
 <span class='co'>## segmenting a character vector</span>
 
 <span class='co'># segment into paragraphs and removing the "- " bullet points</span>
@@ -418,7 +405,7 @@ semi-colons (phrase delimiters within a sentence),
 #&gt; - Those who have been trafficked should not be subject to summary deportation. They should receive a temporary right to stay and have the same right to apply to remain as others seeking to migrate.
 #&gt; 
 #&gt; - Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately.</div><div class='input'><span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>4</span>],
-             <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\n\\n(\\-\\s){0,1}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
+             <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\n\\n(-\\s){0,1}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
              <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.1 
 #&gt;                                                                                                                                                                                                                                                                                                      "Migration is a fact of life.  People have always moved from one country to another, and as a practical matter the ability to control borders without oppressive measures is more limited than most politicians like to pretend. Much of our language, culture and way of life have been enriched by successive new arrivals over two thousand years. It is not just a matter of immigration: over 5 million British Citizens benefit from other countries' liberal immigration policies by living abroad." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.2 
@@ -469,7 +456,7 @@ semi-colons (phrase delimiters within a sentence),
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

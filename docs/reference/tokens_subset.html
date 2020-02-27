@@ -47,7 +47,7 @@
 <meta property="og:description" content="Returns document subsets of a tokens that meet certain conditions, including
 direct logical operations on docvars (document-level variables).
 tokens_subset functions identically to
-subset.data.frame, using non-standard evaluation to evaluate
+subset.data.frame(), using non-standard evaluation to evaluate
 conditions based on the docvars in the tokens." />
 <meta name="twitter:card" content="summary" />
 
@@ -91,7 +91,7 @@ conditions based on the docvars in the tokens." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -217,11 +217,11 @@ conditions based on the docvars in the tokens." />
     <p>Returns document subsets of a tokens that meet certain conditions, including
 direct logical operations on docvars (document-level variables).
 <code>tokens_subset</code> functions identically to
-<code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame</a></code>, using non-standard evaluation to evaluate
+<code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code>, using non-standard evaluation to evaluate
 conditions based on the <a href='docvars.html'>docvars</a> in the tokens.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tokens_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,12 +236,6 @@ conditions based on the <a href='docvars.html'>docvars</a> in the tokens.</p>
 values are taken as false</p></td>
     </tr>
     <tr>
-      <th>select</th>
-      <td><p>expression, indicating the docvars to select from the tokens;
-or a <a href='tokens.html'>tokens</a> object, in which case the returned tokens will contain the same
-documents in the same order as the original tokens, even if these are empty.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>not used</p></td>
     </tr>
@@ -250,52 +244,30 @@ documents in the same order as the original tokens, even if these are empty.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><a href='tokens.html'>tokens</a> object, with a subset of documents (and docvars)
-  selected according to arguments</p>
+selected according to arguments</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b c d"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b e"</span>,
                  <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"b b c e"</span>, <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"e e f a b"</span>),
                  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
-<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
 <span class='co'># selecting on a docvars condition</span>
-<span class='fu'>tokens_subset</span>(<span class='no'>toks1</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_subset</span>(<span class='no'>toks</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; d3 :
 #&gt; [1] "b" "b" "c" "e"
 #&gt; 
 #&gt; d4 :
 #&gt; [1] "e" "e" "f" "a" "b"
 #&gt; </div><div class='input'><span class='co'># selecting on a supplied vector</span>
-<span class='fu'>tokens_subset</span>(<span class='no'>toks1</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_subset</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; d1 :
 #&gt; [1] "a" "b" "c" "d"
 #&gt; 
 #&gt; d3 :
 #&gt; [1] "b" "b" "c" "e"
-#&gt; </div><div class='input'>
-<span class='co'># selecting on a tokens</span>
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
-<span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
-<span class='fu'>tokens_subset</span>(<span class='no'>toks2</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>toks3</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
-#&gt; d1 :
-#&gt; [1] "a" "b" "b" "c"
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "b" "b" "c" "d"
-#&gt; 
-#&gt; d3 :
-#&gt; character(0)
-#&gt; </div><div class='input'><span class='fu'>tokens_subset</span>(<span class='no'>toks2</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>toks3</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>)])</div><div class='output co'>#&gt; tokens from 3 documents.
-#&gt; d3 :
-#&gt; character(0)
-#&gt; 
-#&gt; d1 :
-#&gt; [1] "a" "b" "b" "c"
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "b" "b" "c" "d"
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -313,7 +285,7 @@ documents in the same order as the original tokens, even if these are empty.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

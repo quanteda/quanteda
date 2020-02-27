@@ -392,6 +392,7 @@ lapply(as.list(tstat_sim), head, 10)
 
 ```{r}
 # make prettier document names
+library("quanteda.textmodels")
 dfmat_ire <- dfm(data_corpus_irishbudget2010)
 tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
 

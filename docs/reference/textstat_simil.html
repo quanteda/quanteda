@@ -45,10 +45,10 @@
 
 <meta property="og:title" content="Similarity and distance computation between documents or features — textstat_simil" />
 <meta property="og:description" content="These functions compute matrixes of distances and similarities between
-documents or features from a dfm and return a matrix of
+documents or features from a dfm() and return a matrix of
 similarities or distances in a sparse format.  These methods are fast
 and robust because they operate directly on the sparse dfm objects.
-The output can easily be coerced to an ordinary matrix, a data.frame of 
+The output can easily be coerced to an ordinary matrix, a data.frame of
 pairwise comparisons, or a dist format." />
 <meta name="twitter:card" content="summary" />
 
@@ -92,7 +92,7 @@ pairwise comparisons, or a dist format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -216,10 +216,10 @@ pairwise comparisons, or a dist format." />
 
     <div class="ref-description">
     <p>These functions compute matrixes of distances and similarities between
-documents or features from a <code><a href='dfm.html'>dfm</a></code> and return a matrix of
+documents or features from a <code><a href='dfm.html'>dfm()</a></code> and return a matrix of
 similarities or distances in a sparse format.  These methods are fast
 and robust because they operate directly on the sparse <a href='dfm.html'>dfm</a> objects.
-The output can easily be coerced to an ordinary matrix, a data.frame of 
+The output can easily be coerced to an ordinary matrix, a data.frame of
 pairwise comparisons, or a <a href='https://rdrr.io/r/stats/dist.html'>dist</a> format.</p>
     </div>
 
@@ -299,7 +299,7 @@ values will not be returned</p></td>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>the top <code>n</code> highest-ranking items will be returned.  If n is 
+      <td><p>the top <code>n</code> highest-ranking items will be returned.  If n is
 <code>NULL</code>, return all items.</p></td>
     </tr>
     <tr>
@@ -329,37 +329,37 @@ values will not be returned</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A sparse matrix from the <span class="pkg">Matrix</span> package that will be symmetric 
-  unless <code>y</code> is specified.</p>     
-<p>These can be transformed easily into a list format using <code><a href='https://rdrr.io/r/base/list.html'>as.list()</a></code>,
-  which returns a list for each unique element of the second of the pairs,
-  <code>as.dist</code> to be transformed into a <a href='https://rdrr.io/r/stats/dist.html'>dist</a> object, or
-  <code>as.matrix</code> to convert it into an ordinary matrix.</p>
+    <p>A sparse matrix from the <span class="pkg">Matrix</span> package that will be symmetric
+unless <code>y</code> is specified.</p>
+<p>These can be transformed easily into a list format using <code><a href='https://rdrr.io/r/base/list.html'>as.list()</a></code>, which
+returns a list for each unique element of the second of the pairs,
+<code><a href='https://rdrr.io/r/stats/dist.html'>as.dist()</a></code> to be transformed into a <a href='https://rdrr.io/r/stats/dist.html'>dist</a> object, or
+<code><a href='https://rdrr.io/r/base/matrix.html'>as.matrix()</a></code> to convert it into an ordinary matrix.</p>
 <p><code>as.data.list</code> for a <code>textstat_simil</code> or
-  <code>textstat_dist</code> object returns a list equal in length to the columns of the 
-  simil or dist object, with the rows and their values as named  elements.  By default,
-  this list excludes same-time pairs (when <code>diag = FALSE</code>) and sorts the values
-  in descending order (when <code>sorted = TRUE</code>).</p>
+<code>textstat_dist</code> object returns a list equal in length to the columns of the
+simil or dist object, with the rows and their values as named  elements.  By default,
+this list excludes same-time pairs (when <code>diag = FALSE</code>) and sorts the values
+in descending order (when <code>sorted = TRUE</code>).</p>
 <p><code>as.data.frame</code> for a <code>textstat_simil</code> or
-  <code>textstat_dist</code> object returns a data.frame of pairwise combinations
-  and the and their similarity or distance value.</p>
+<code>textstat_dist</code> object returns a data.frame of pairwise combinations
+and the and their similarity or distance value.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>textstat_simil</code> options are: <code>"correlation"</code> (default),
-  <code>"cosine"</code>, <code>"jaccard"</code>, <code>"ejaccard"</code>, <code>"dice"</code>,
-  <code>"edice"</code>, <code>"simple matching"</code>, and <code>"hamman"</code>.</p>
-<p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default), 
-  <code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
-  and <code>"minkowski"</code>.</p>
+<code>"cosine"</code>, <code>"jaccard"</code>, <code>"ejaccard"</code>, <code>"dice"</code>,
+<code>"edice"</code>, <code>"simple matching"</code>, and <code>"hamman"</code>.</p>
+<p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default),
+<code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
+and <code>"minkowski"</code>.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>If you want to compute similarity on a "normalized" dfm object
-  (controlling for variable document lengths, for methods such as correlation
-  for which different document lengths matter), then wrap the input dfm in
-  <code><a href='dfm_weight.html'>dfm_weight</a>(x, "prop")</code>.</p>
+(controlling for variable document lengths, for methods such as correlation
+for which different document lengths matter), then wrap the input dfm in
+<code>[dfm_weight](x, "prop")</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/stats/dist.html'>stats::as.dist()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># similarities for documents</span>
@@ -367,53 +367,53 @@ values will not be returned</p></td>
              <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
 (<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; textstat_simil object; method = "cosine"
 #&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
-#&gt; 2001-Bush      1.000     0.520      0.541      0.556      0.452
-#&gt; 2005-Bush      0.520     1.000      0.458      0.516      0.435
-#&gt; 2009-Obama     0.541     0.458      1.000      0.637      0.448
-#&gt; 2013-Obama     0.556     0.516      0.637      1.000      0.455
-#&gt; 2017-Trump     0.452     0.435      0.448      0.455      1.000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
-#&gt; 2001-Bush  1.0000000 0.5204355  0.5411649  0.5561972  0.4518935
-#&gt; 2005-Bush  0.5204355 1.0000000  0.4575297  0.5163644  0.4349030
-#&gt; 2009-Obama 0.5411649 0.4575297  1.0000000  0.6373318  0.4481950
-#&gt; 2013-Obama 0.5561972 0.5163644  0.6373318  1.0000000  0.4546945
-#&gt; 2017-Trump 0.4518935 0.4349030  0.4481950  0.4546945  1.0000000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt; $`2001-Bush`
+#&gt; 2001-Bush      1.000     0.524      0.545      0.560      0.455
+#&gt; 2005-Bush      0.524     1.000      0.458      0.516      0.435
+#&gt; 2009-Obama     0.545     0.458      1.000      0.637      0.448
+#&gt; 2013-Obama     0.560     0.516      0.637      1.000      0.455
+#&gt; 2017-Trump     0.455     0.435      0.448      0.455      1.000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 2001-Bush  1.0000000 0.5240877  0.5449626  0.5601004  0.4550648
+#&gt; 2005-Bush  0.5240877 1.0000000  0.4575297  0.5163644  0.4349030
+#&gt; 2009-Obama 0.5449626 0.4575297  1.0000000  0.6373318  0.4481950
+#&gt; 2013-Obama 0.5601004 0.5163644  0.6373318  1.0000000  0.4546945
+#&gt; 2017-Trump 0.4550648 0.4349030  0.4481950  0.4546945  1.0000000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat1</span>)</div><div class='output co'>#&gt; $`2001-Bush`
 #&gt; 2013-Obama 2009-Obama  2005-Bush 2017-Trump 
-#&gt;  0.5561972  0.5411649  0.5204355  0.4518935 
+#&gt;  0.5601004  0.5449626  0.5240877  0.4550648 
 #&gt; 
 #&gt; $`2005-Bush`
 #&gt;  2001-Bush 2013-Obama 2009-Obama 2017-Trump 
-#&gt;  0.5204355  0.5163644  0.4575297  0.4349030 
+#&gt;  0.5240877  0.5163644  0.4575297  0.4349030 
 #&gt; 
 #&gt; $`2009-Obama`
 #&gt; 2013-Obama  2001-Bush  2005-Bush 2017-Trump 
-#&gt;  0.6373318  0.5411649  0.4575297  0.4481950 
+#&gt;  0.6373318  0.5449626  0.4575297  0.4481950 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt; 2009-Obama  2001-Bush  2005-Bush 2017-Trump 
-#&gt;  0.6373318  0.5561972  0.5163644  0.4546945 
+#&gt;  0.6373318  0.5601004  0.5163644  0.4546945 
 #&gt; 
 #&gt; $`2017-Trump`
-#&gt; 2013-Obama  2001-Bush 2009-Obama  2005-Bush 
-#&gt;  0.4546945  0.4518935  0.4481950  0.4349030 
+#&gt;  2001-Bush 2013-Obama 2009-Obama  2005-Bush 
+#&gt;  0.4550648  0.4546945  0.4481950  0.4349030 
 #&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat1</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $`2001-Bush`
 #&gt;  2001-Bush 2013-Obama 2009-Obama  2005-Bush 2017-Trump 
-#&gt;  1.0000000  0.5561972  0.5411649  0.5204355  0.4518935 
+#&gt;  1.0000000  0.5601004  0.5449626  0.5240877  0.4550648 
 #&gt; 
 #&gt; $`2005-Bush`
 #&gt;  2005-Bush  2001-Bush 2013-Obama 2009-Obama 2017-Trump 
-#&gt;  1.0000000  0.5204355  0.5163644  0.4575297  0.4349030 
+#&gt;  1.0000000  0.5240877  0.5163644  0.4575297  0.4349030 
 #&gt; 
 #&gt; $`2009-Obama`
 #&gt; 2009-Obama 2013-Obama  2001-Bush  2005-Bush 2017-Trump 
-#&gt;  1.0000000  0.6373318  0.5411649  0.4575297  0.4481950 
+#&gt;  1.0000000  0.6373318  0.5449626  0.4575297  0.4481950 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt; 2013-Obama 2009-Obama  2001-Bush  2005-Bush 2017-Trump 
-#&gt;  1.0000000  0.6373318  0.5561972  0.5163644  0.4546945 
+#&gt;  1.0000000  0.6373318  0.5601004  0.5163644  0.4546945 
 #&gt; 
 #&gt; $`2017-Trump`
-#&gt; 2017-Trump 2013-Obama  2001-Bush 2009-Obama  2005-Bush 
-#&gt;  1.0000000  0.4546945  0.4518935  0.4481950  0.4349030 
+#&gt; 2017-Trump  2001-Bush 2013-Obama 2009-Obama  2005-Bush 
+#&gt;  1.0000000  0.4550648  0.4546945  0.4481950  0.4349030 
 #&gt; </div><div class='input'>
 <span class='co'># min_simil</span>
 (<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>min_simil</span> <span class='kw'>=</span> <span class='fl'>0.6</span>))</div><div class='output co'>#&gt; textstat_simil object; method = "cosine"
@@ -431,19 +431,19 @@ values will not be returned</p></td>
 <span class='co'># similarities for for specific documents</span>
 <span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='st'>"2017-Trump"</span>, ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; textstat_simil object; method = "correlation"
 #&gt;            2017-Trump
-#&gt; 2001-Bush       0.364
+#&gt; 2001-Bush       0.367
 #&gt; 2005-Bush       0.344
 #&gt; 2009-Obama      0.343
 #&gt; 2013-Obama      0.361
 #&gt; 2017-Trump      1.000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='st'>"2017-Trump"</span>, ], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; textstat_simil object; method = "cosine"
 #&gt;            2017-Trump
-#&gt; 2001-Bush       0.452
+#&gt; 2001-Bush       0.455
 #&gt; 2005-Bush       0.435
 #&gt; 2009-Obama      0.448
 #&gt; 2013-Obama      0.455
 #&gt; 2017-Trump      1.000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"2009-Obama"</span>, <span class='st'>"2013-Obama"</span>), ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; textstat_simil object; method = "correlation"
 #&gt;            2009-Obama 2013-Obama
-#&gt; 2001-Bush       0.439      0.468
+#&gt; 2001-Bush       0.443      0.472
 #&gt; 2005-Bush       0.337      0.420
 #&gt; 2009-Obama      1.000      0.550
 #&gt; 2013-Obama      0.550      1.000
@@ -474,67 +474,67 @@ values will not be returned</p></td>
 #&gt;           1           1           1           1           1           1 
 #&gt; </div><div class='input'>
 
-<span class='co'># distances for documents </span>
+<span class='co'># distances for documents</span>
 (<span class='no'>tstat4</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; textstat_dist object; method = "euclidean"
 #&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
-#&gt; 2001-Bush          0      52.8       49.9       48.3       47.6
-#&gt; 2005-Bush       52.8         0       60.8       56.9       57.4
-#&gt; 2009-Obama      49.9      60.8          0       48.0       54.9
-#&gt; 2013-Obama      48.3      56.9       48.0          0       53.7
-#&gt; 2017-Trump      47.6      57.4       54.9       53.7          0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
-#&gt; 2001-Bush    0.00000  52.84884   49.94997   48.31149   47.61302
-#&gt; 2005-Bush   52.84884   0.00000   60.84406   56.85948   57.41080
-#&gt; 2009-Obama  49.94997  60.84406    0.00000   47.98958   54.91812
-#&gt; 2013-Obama  48.31149  56.85948   47.98958    0.00000   53.73081
-#&gt; 2017-Trump  47.61302  57.41080   54.91812   53.73081    0.00000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt; $`2001-Bush`
+#&gt; 2001-Bush          0      52.6       49.7       48.0       47.3
+#&gt; 2005-Bush       52.6         0       60.8       56.9       57.4
+#&gt; 2009-Obama      49.7      60.8          0       48.0       54.9
+#&gt; 2013-Obama      48.0      56.9       48.0          0       53.7
+#&gt; 2017-Trump      47.3      57.4       54.9       53.7          0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 2001-Bush    0.00000  52.58327   49.66890   48.02083   47.31807
+#&gt; 2005-Bush   52.58327   0.00000   60.84406   56.85948   57.41080
+#&gt; 2009-Obama  49.66890  60.84406    0.00000   47.98958   54.91812
+#&gt; 2013-Obama  48.02083  56.85948   47.98958    0.00000   53.73081
+#&gt; 2017-Trump  47.31807  57.41080   54.91812   53.73081    0.00000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt; $`2001-Bush`
 #&gt;  2005-Bush 2009-Obama 2013-Obama 2017-Trump 
-#&gt;   52.84884   49.94997   48.31149   47.61302 
+#&gt;   52.58327   49.66890   48.02083   47.31807 
 #&gt; 
 #&gt; $`2005-Bush`
 #&gt; 2009-Obama 2017-Trump 2013-Obama  2001-Bush 
-#&gt;   60.84406   57.41080   56.85948   52.84884 
+#&gt;   60.84406   57.41080   56.85948   52.58327 
 #&gt; 
 #&gt; $`2009-Obama`
 #&gt;  2005-Bush 2017-Trump  2001-Bush 2013-Obama 
-#&gt;   60.84406   54.91812   49.94997   47.98958 
+#&gt;   60.84406   54.91812   49.66890   47.98958 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt;  2005-Bush 2017-Trump  2001-Bush 2009-Obama 
-#&gt;   56.85948   53.73081   48.31149   47.98958 
+#&gt;   56.85948   53.73081   48.02083   47.98958 
 #&gt; 
 #&gt; $`2017-Trump`
 #&gt;  2005-Bush 2009-Obama 2013-Obama  2001-Bush 
-#&gt;   57.41080   54.91812   53.73081   47.61302 
+#&gt;   57.41080   54.91812   53.73081   47.31807 
 #&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></span>(<span class='no'>tstat4</span>)</div><div class='output co'>#&gt;            2001-Bush 2005-Bush 2009-Obama 2013-Obama
-#&gt; 2005-Bush   52.84884                                
-#&gt; 2009-Obama  49.94997  60.84406                      
-#&gt; 2013-Obama  48.31149  56.85948   47.98958           
-#&gt; 2017-Trump  47.61302  57.41080   54.91812   53.73081</div><div class='input'>
+#&gt; 2005-Bush   52.58327                                
+#&gt; 2009-Obama  49.66890  60.84406                      
+#&gt; 2013-Obama  48.02083  56.85948   47.98958           
+#&gt; 2017-Trump  47.31807  57.41080   54.91812   53.73081</div><div class='input'>
 <span class='co'># distances for specific documents</span>
 <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='st'>"2017-Trump"</span>, ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; textstat_dist object; method = "euclidean"
 #&gt;            2017-Trump
-#&gt; 2001-Bush        47.6
+#&gt; 2001-Bush        47.3
 #&gt; 2005-Bush        57.4
 #&gt; 2009-Obama       54.9
 #&gt; 2013-Obama       53.7
 #&gt; 2017-Trump          0</div><div class='input'>(<span class='no'>tstat5</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>dfmat</span>, <span class='no'>dfmat</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), ], <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; textstat_dist object; method = "euclidean"
 #&gt;            2009-Obama 2013-Obama
-#&gt; 2001-Bush        49.9       48.3
+#&gt; 2001-Bush        49.7       48.0
 #&gt; 2005-Bush        60.8       56.9
 #&gt; 2009-Obama          0       48.0
 #&gt; 2013-Obama       48.0          0
 #&gt; 2017-Trump       54.9       53.7</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tstat5</span>)</div><div class='output co'>#&gt;            2009-Obama 2013-Obama
-#&gt; 2001-Bush    49.94997   48.31149
+#&gt; 2001-Bush    49.66890   48.02083
 #&gt; 2005-Bush    60.84406   56.85948
 #&gt; 2009-Obama    0.00000   47.98958
 #&gt; 2013-Obama   47.98958    0.00000
 #&gt; 2017-Trump   54.91812   53.73081</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>tstat5</span>)</div><div class='output co'>#&gt; $`2009-Obama`
 #&gt;  2005-Bush 2017-Trump  2001-Bush 2013-Obama 
-#&gt;   60.84406   54.91812   49.94997   47.98958 
+#&gt;   60.84406   54.91812   49.66890   47.98958 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt;  2005-Bush 2017-Trump  2001-Bush 2009-Obama 
-#&gt;   56.85948   53.73081   48.31149   47.98958 
+#&gt;   56.85948   53.73081   48.02083   47.98958 
 #&gt; </div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># plot a dendrogram after converting the object into distances</span>
@@ -558,7 +558,7 @@ values will not be returned</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

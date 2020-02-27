@@ -30,6 +30,7 @@ mydfm
 
 # Construct the LSA model
 ```{r}
+library("quanteda.textmodels")
 mylsa <- textmodel_lsa(mydfm)
 ```
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Utility function to create a object with new set of attributes — create • quanteda</title>
+<title>Function to assign multiple slots to a S4 object — create • quanteda</title>
 
 
 <!-- jquery -->
@@ -43,8 +43,8 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Utility function to create a object with new set of attributes — create" />
-<meta property="og:description" content="Utility function to create a object with new set of attributes" />
+<meta property="og:title" content="Function to assign multiple slots to a S4 object — create" />
+<meta property="og:description" content="Function to assign multiple slots to a S4 object" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -204,13 +204,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Utility function to create a object with new set of attributes</h1>
+    <h1>Function to assign multiple slots to a S4 object</h1>
     
     <div class="hidden name"><code>create.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Utility function to create a object with new set of attributes</p>
+    <p>Function to assign multiple slots to a S4 object</p>
     </div>
 
     <pre class="usage"><span class='fu'>create</span>(<span class='no'>x</span>, <span class='no'>what</span>, <span class='kw'>attrs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overwrite_attributes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
@@ -230,6 +230,14 @@
       <th>overwrite_attributes</th>
       <td><p>overwrite attributes of the input object, if <code>TRUE</code></p></td>
     </tr>
+    <tr>
+      <th>exceptions</th>
+      <td><p>slots to ignore</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>a list of attributes extracted by attributes()</p></td>
+    </tr>
     </table>
 
 
@@ -246,7 +254,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
