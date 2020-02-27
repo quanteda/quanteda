@@ -3,11 +3,29 @@
 \name{docvars}
 \alias{docvars}
 \alias{docvars<-}
+\alias{$.corpus}
+\alias{$<-.corpus}
+\alias{$.tokens}
+\alias{$<-.tokens}
+\alias{$.dfm}
+\alias{$<-.dfm}
 \title{Get or set document-level variables}
 \usage{
 docvars(x, field = NULL)
 
 docvars(x, field = NULL) <- value
+
+\method{$}{corpus}(x, name)
+
+\method{$}{corpus}(x, name) <- value
+
+\method{$}{tokens}(x, name)
+
+\method{$}{tokens}(x, name) <- value
+
+\method{$}{dfm}(x, name)
+
+\method{$}{dfm}(x, name) <- value
 }
 \arguments{
 \item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
@@ -15,7 +33,9 @@ document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
 
-\item{value}{the new values of the document-level variable}
+\item{value}{a vector of document variable values to be assigned to \code{name}}
+
+\item{name}{a literal character string specifying a single \link{docvars} name}
 }
 \value{
 \code{docvars} returns a data.frame of the document-level variables,
@@ -40,7 +60,7 @@ for \link{tokens} or \link{dfm} objects as well.  Use with caution.
 \section{Accessing or assigning docvars using the \code{$} operator}{
 
 As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
-the \code{$} operator.  See \link{docvars-internal} for details.
+the \code{$} operator.  See Examples.
 }
 
 \examples{
@@ -57,5 +77,26 @@ corp$fullname <- paste(data_corpus_inaugural$FirstName,
                        data_corpus_inaugural$President)
 tail(corp$fullname)
 
+
+# accessing or assigning docvars for a corpus using "$"
+data_corpus_inaugural$Year
+data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
+data_corpus_inaugural$century
+
+# accessing or assigning docvars for tokens using "$"
+toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
+toks$Year
+toks$Year <- 1991:1995
+toks$Year
+toks$nonexistent <- TRUE
+docvars(toks)
+
+# accessing or assigning docvars for a dfm using "$"
+dfmat <- dfm(toks)
+dfmat$Year
+dfmat$Year <- 1991:1995
+dfmat$Year
+dfmat$nonexistent <- TRUE
+docvars(dfmat)
 }
 \keyword{corpus}

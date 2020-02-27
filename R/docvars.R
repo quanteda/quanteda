@@ -199,7 +199,7 @@ is_system_old <- function(x) {
 #'   returned.
 #' @section Accessing or assigning docvars using the `$` operator:
 #' As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
-#' the `$` operator.  See [docvars-internal] for details.
+#' the `$` operator.  See Examples.
 #' @examples
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
@@ -308,19 +308,17 @@ assign_dvs <- function(x, name, value) {
     return(x)
 }
 
-#' @name docvars-internal
-#' @title Extract methods for docvars
+#' @rdname docvars
 #' @method $ corpus
-#' @inheritParams docvars
 #' @param name a literal character string specifying a single [docvars] name
-#' @keywords corpus operators
 #' @export
 #' @examples
+#' 
 #' # accessing or assigning docvars for a corpus using "$"
 #' data_corpus_inaugural$Year
 "$.corpus" <- access_dvs
 
-#' @rdname docvars-internal
+#' @rdname docvars
 #' @method $<- corpus
 #' @param value a vector of document variable values to be assigned to `name`
 #' @export
@@ -329,9 +327,8 @@ assign_dvs <- function(x, name, value) {
 #' data_corpus_inaugural$century
 "$<-.corpus" <- assign_dvs
 
-#' @rdname docvars-internal
+#' @rdname docvars
 #' @method $ tokens
-#' @keywords tokens operators
 #' @export
 #' @examples
 #'
@@ -340,7 +337,7 @@ assign_dvs <- function(x, name, value) {
 #' toks$Year
 "$.tokens" <- access_dvs
 
-#' @rdname docvars-internal
+#' @rdname docvars
 #' @method $<- tokens
 #' @export
 #' @examples
@@ -350,9 +347,8 @@ assign_dvs <- function(x, name, value) {
 #' docvars(toks)
 "$<-.tokens" <- assign_dvs
 
-#' @rdname docvars-internal
+#' @rdname docvars
 #' @method $ dfm
-#' @keywords dfm operators
 #' @export
 #' @examples
 #'
@@ -361,7 +357,7 @@ assign_dvs <- function(x, name, value) {
 #' dfmat$Year
 "$.dfm" <- access_dvs
 
-#' @rdname docvars-internal
+#' @rdname docvars
 #' @method $<- dfm
 #' @export
 #' @examples

@@ -43,7 +43,7 @@ which requires tokenizing the text.
 corp <- corpus(data_char_ukimmig2010)
 corp <- quanteda:::add_summary_metadata(corp)
 quanteda:::get_summary_metadata(corp)
-#' 
+
 \dontrun{
 # using extended summary
 
@@ -51,9 +51,10 @@ extended_data <- quanteda:::summarize_texts_extended(data_corpus_inaugural)
 
 textplot_wordcloud(extended_data$top_dfm, max_words = 100)
 
-ggplot2::ggplot(data.frame(extended_data$all_tokens), aes(x = all_tokens)) +
+library("ggplot2")
+ggplot(data.frame(all_tokens = extended_data$all_tokens), aes(x = all_tokens)) +
    geom_histogram(color = "darkblue", fill = "lightblue") +
-   xlab("Total length in tokens"
+   xlab("Total length in tokens")
 }
 }
 \keyword{corpus}
