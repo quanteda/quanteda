@@ -24,7 +24,10 @@ setMethod("print", signature(x = "dfm"),
                           if (ncol(docvars) == 1L) "" else "s", sep = "")
                   cat(".\n")
               }
-              print_dfm(x, max_ndoc, max_nfeat, ...)
+              if (max_ndoc < 0) 
+                  max_ndoc <- ndoc(x)
+              if (max_ndoc > 0) 
+                  print_dfm(x, max_ndoc, max_nfeat, ...)
           })
 
 #' @rdname print-quanteda

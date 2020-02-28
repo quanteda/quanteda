@@ -560,7 +560,7 @@ test_that("dfm head, tail work as expected", {
 
 test_that("dfm print works with options as expected", {
     dfmt <- dfm(data_corpus_irishbudget2010,
-               remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
+                remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
         paste0("^Document-feature matrix of: 14 documents, 5,055 features \\(80\\.9% sparse\\) and 6 docvars\\.",
@@ -581,9 +581,7 @@ test_that("dfm print works with options as expected", {
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 0, max_nfeat = -1, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
-               "\\n",
-               "\\[ reached max_ndoc \\.\\.\\. 5 more documents \\]$")
+        "^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.$"
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = 0, show_summary = TRUE),
