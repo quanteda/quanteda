@@ -224,13 +224,13 @@ dfm.tokens <- function(x,
     }
 
     if (tolower) {
-        if (verbose) catm("   ... lowercasing\n", sep = "")
+        if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
 
     if (verbose) {
-        catm("   ... found ",
+        catm(" ...found ",
              format(length(x), big.mark = ","), " document",
              # TODO: replace with: ntoken()
              ifelse(length(x) > 1, "s", ""),
@@ -243,14 +243,14 @@ dfm.tokens <- function(x,
     }
 
     if (!is.null(groups)) {
-        if (verbose) catm("   ... grouping texts\n")
+        if (verbose) catm(" ...grouping texts\n")
         x <- tokens_group(x, groups, fill = FALSE)
     }
 
     # use tokens_lookup for tokens objects
     if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
-        if (verbose) catm("   ... ")
+        if (verbose) catm(" ...")
         x <- tokens_lookup(x, dictionary,
                            exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                            valuetype = valuetype,
@@ -262,7 +262,7 @@ dfm.tokens <- function(x,
     if (!is.null(c(remove, select))) {
         if (!is.null(remove) & !is.null(select))
             stop("only one of select and remove may be supplied at once")
-        if (verbose) catm("   ... ")
+        if (verbose) catm(" ...")
         x <- tokens_select(x,
                            pattern = if (!is.null(remove)) remove else select,
                            selection = if (!is.null(remove)) "remove" else "keep",
@@ -272,7 +272,7 @@ dfm.tokens <- function(x,
     }
 
     if (stem) {
-        if (verbose) catm("   ... stemming words\n")
+        if (verbose) catm(" ...stemming words\n")
         x <- tokens_wordstem(x)
     }
 
@@ -293,12 +293,14 @@ dfm.tokens <- function(x,
                           x = 1L,
                           dims = c(length(x),
                                    length(type)))
-    build_dfm(
-        temp,
-        features = type,
-        docvars = get_docvars(x, user = TRUE, system = TRUE),
-        meta = attrs[["meta"]]
-    )
+    dfm.dfm(
+        build_dfm(
+            temp,
+            features = type,
+            docvars = get_docvars(x, user = TRUE, system = TRUE),
+            meta = attrs[["meta"]]),
+        tolower = FALSE, stem = FALSE, verbose = verbose
+    ) 
 }
 
 
@@ -326,13 +328,13 @@ dfm.dfm <- function(x,
     valuetype <- match.arg(valuetype)
 
     if (!is.null(groups)) {
-        if (verbose) catm("   ... grouping texts\n")
+        if (verbose) catm(" ...grouping texts\n")
         x <- dfm_group(x, groups, fill = FALSE)
     }
 
     if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
-        if (verbose) catm("   ... ")
+        if (verbose) catm(" ...")
         x <- dfm_lookup(x, dictionary,
                         exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                         valuetype = valuetype,
@@ -343,7 +345,7 @@ dfm.dfm <- function(x,
     if (!is.null(c(remove, select))) {
         if (!is.null(remove) & !is.null(select))
             stop("only one of select and remove may be supplied at once")
-        if (verbose) catm("   ... ")
+        if (verbose) catm(" ...")
         # if ngrams > 1 and remove or selct is specified, then convert these
         # into a regex that will remove any ngram containing one of the words
         # if (!identical(field_object(attrs, "ngram"), 1L)) {
@@ -360,14 +362,14 @@ dfm.dfm <- function(x,
     }
 
     if (tolower) {
-        if (verbose) catm("   ... lowercasing\n", sep = "")
+        if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
 
     language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose)
-            catm("   ... stemming features (", stri_trans_totitle(language),
+            catm(" ...stemming features (", stri_trans_totitle(language),
                  ")\n", sep = "")
         nfeat_org <- nfeat(x)
         x <- dfm_wordstem(x, language)
@@ -383,12 +385,12 @@ dfm.dfm <- function(x,
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
 
-    if (verbose)
-        catm("   ... created a",
-             paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
-             "sparse dfm\n   ... complete. \nElapsed time:",
-             format((proc.time() - dfm_env$START_TIME)[3], digits = 3),
-             "seconds.\n")
+    if (verbose) {
+        catm(" ...complete, elapsed time: ",
+             format((proc.time() - dfm_env$START_TIME)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
+             "sparse dfm.\n")
+    }
     return(x)
 }
 

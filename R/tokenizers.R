@@ -38,7 +38,7 @@ NULL
 #' @export
 tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
     
-    if (verbose) catm("...segmenting tokens\n")
+    if (verbose) catm(" ...segmenting tokens\n")
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
     
@@ -59,11 +59,11 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     m <- names(x)
     regex <- url
     if (!split_hyphens) {
-        if (verbose) catm("...preserving hyphens\n")
+        if (verbose) catm(" ...preserving hyphens\n")
         regex <- c(regex, hyphen)
     }
     if (!split_tags) {
-        if (verbose) catm("...preserving social media tags (#, @)\n")
+        if (verbose) catm(" ...preserving social media tags (#, @)\n")
         regex <- c(regex, tag)
     }
     special <- stri_extract_all_regex(x, paste(regex, collapse = "|"))
@@ -123,25 +123,25 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     # substitute characters not to split
     x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
-    if (verbose) catm("...segmenting tokens\n")
+    if (verbose) catm(" ...segmenting tokens\n")
     structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
 # substitutions to preserve hyphens and tags
 preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
     if (!split_hyphens) {
-        if (verbose) catm("...preserving hyphens\n")
+        if (verbose) catm(" ...preserving hyphens\n")
         x <- stri_replace_all_regex(x, "(\\w)\\p{Pd}+", "$1_hy_")
     }
     if (!split_tags) {
-        if (verbose) catm("...preserving social media tags (#, @)\n")
+        if (verbose) catm(" ...preserving social media tags (#, @)\n")
         x <- stri_replace_all_fixed(x, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
     }
     return(x)
 }
 
 # re-substitute the replacement hyphens and tags
-restore_special1 <- function(x, split_hyphens, split_tags, verbose) {
+restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose) {
     types <- types(x)
     if (!split_hyphens)
         types <- stri_replace_all_fixed(types, "_hy_", "-")
@@ -167,7 +167,7 @@ tokenize_character <- function(x, ...) {
 #'   stri_split_boundaries stri_trim_right
 #' @export
 tokenize_sentence <- function(x, ..., verbose = FALSE) {
-    if (verbose) catm("...segmenting into sentences.\n")
+    if (verbose) catm(" ...segmenting into sentences.\n")
     named <- names(x)
 
     # Replace . delimiter from common title abbreviations, with _pd_
