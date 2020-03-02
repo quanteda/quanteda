@@ -27,10 +27,10 @@ test_that("dfm_weight works", {
                                features = c("this", "is", "a", "sample", "another", "example"))),
         tol = .0001
     )
-    print(as.matrix(dfm_tfidf(wikidfm, scheme_tf = "prop")))
-    print(matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
-                 dimnames = list(docs = c("text1", "text2"),
-                                 features = c("this", "is", "a", "sample", "another", "example"))))
+    # print(as.matrix(dfm_tfidf(wikidfm, scheme_tf = "prop")))
+    # print(matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
+    #              dimnames = list(docs = c("text1", "text2"),
+    #                              features = c("this", "is", "a", "sample", "another", "example"))))
 })
 
 test_that("dfm_weight works with weights", {

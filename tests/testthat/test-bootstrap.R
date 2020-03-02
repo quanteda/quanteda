@@ -9,8 +9,8 @@ test_that("bootstrap_dfm works with character and corpus objects", {
                                         year = c(1990, 2000, 2005)))
     set.seed(10)
     bs1 <- bootstrap_dfm(corp, n = 10, verbose = TRUE)
-    print(bs1[[1]], -1, -1)
-    print(dfm(corp), -1, -1)
+    # print(bs1[[1]], -1, -1)
+    # print(dfm(corp), -1, -1)
     expect_equal(bs1[[1]], dfm(corp))
     
     bs2 <- bootstrap_dfm(txt, n = 10, verbose = TRUE)
