@@ -2,8 +2,8 @@ context("test corpus_reshape")
 
 test_that("corpus_reshape works for sentences", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-                         texttwo = "Premiere phrase.  Deuxieme phrase."), 
-                         docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
+                     texttwo = "Premiere phrase.  Deuxieme phrase."), 
+                   docvars = data.frame(country = factor(c("UK", "USA")), year=c(1990, 2000)))
     corp_reshaped <- corpus_reshape(corp, to = "sentences")
     expect_equal(as.character(corp_reshaped)[4], c(texttwo.1 = "Premiere phrase."))
     expect_equal(docvars(corp_reshaped, "country"), factor(c("UK", "UK", "UK", "USA", "USA")))
