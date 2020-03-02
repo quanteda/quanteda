@@ -134,6 +134,7 @@ texts(data_corpus_inaugural)[2]
 Para obtener la data resumida de textos de un corpus, se puede llamar al método `summary()` definido para un corpus.
 
 ```{r}
+data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
 summary(data_corpus_irishbudget2010)
 ```
 

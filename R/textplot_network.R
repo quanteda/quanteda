@@ -32,7 +32,7 @@
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' set.seed(100)
-#' toks <- corpus_subset(data_corpus_irishbudget2010) %>%
+#' toks <- data_char_ukimmig2010 %>%
 #'     tokens(remove_punct = TRUE) %>%
 #'     tokens_tolower() %>%
 #'     tokens_remove(pattern = stopwords("english"), padding = FALSE)

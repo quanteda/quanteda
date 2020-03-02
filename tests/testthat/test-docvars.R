@@ -1,5 +1,7 @@
 context("test docvars")
 
+data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
+
 test_that("make_docvars() works", {
     
     docvar1 <- quanteda:::make_docvars(0L, docname = character())

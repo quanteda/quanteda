@@ -148,6 +148,7 @@ texts(data_corpus_inaugural)[2]
 为了总结语料库中的文本，我们可以调用一个为语料库定义的函数`summary()`。
 
 ```{r}
+data(data_corpus_irishbudget2010, package = "quanteda.corpora")
 summary(data_corpus_irishbudget2010)
 ```
 

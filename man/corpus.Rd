@@ -128,8 +128,6 @@ corpus(data_char_ukimmig2010)
 summary(corpus(data_char_ukimmig2010,
                docvars = data.frame(party = names(data_char_ukimmig2010))), 5)
 
-corpus(texts(data_corpus_irishbudget2010))
-
 # import a tm VCorpus
 if (requireNamespace("tm", quietly = TRUE)) {
     data(crude, package = "tm")    # load in a tm example VCorpus
