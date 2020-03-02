@@ -141,7 +141,7 @@ preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
 }
 
 # re-substitute the replacement hyphens and tags
-restore_special1 <- function(x, split_hyphens, split_tags, verbose) {
+restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose) {
     types <- types(x)
     if (!split_hyphens)
         types <- stri_replace_all_fixed(types, "_hy_", "-")

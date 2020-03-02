@@ -239,7 +239,7 @@ tokens.corpus <- function(x,
         dots$remove_hyphens <- NULL
     }
     if ("remove_twitter" %in% names(dots)) {
-        .Deprecated(msg = "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.")
+        .Deprecated(msg = "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.")
         if (dots$remove_twitter == FALSE && what == "word1") what <- "word"
         dots$remove_twitter <- NULL
     }
@@ -365,7 +365,7 @@ tokens.tokens <-  function(x,
     if (verbose) {
         catm(" ...complete, elapsed time: ",
              format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " documents",
+        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " document",
              if (length(x) > 1) "s", ".\n", sep = "")
     }
     return(x)

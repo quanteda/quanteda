@@ -179,12 +179,12 @@ test_that("defunct remove_twitter warning works", {
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
     expect_warning(
         tokens(txt, remove_twitter = TRUE),
-        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.",
+        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.",
         fixed = TRUE
     )
     expect_warning(
         tokens(txt, remove_twitter = FALSE),
-        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word2\"' instead.",
+        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.",
         fixed = TRUE
     )
     expect_identical(
@@ -1084,5 +1084,24 @@ test_that("preserve_special works", {
     expect_identical(
         quanteda:::preserve_special1(txt, split_tags = TRUE),
         txt
+    )
+})
+
+test_that("output is correct for word1", {
+    expect_message(
+        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        "preserving hyphens"
+    )
+    expect_message(
+        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        "Finished constructing tokens from 9 documents"
+    )
+    expect_message(
+        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        "^Creating a tokens object from a character input"
+    )
+    expect_message(
+        tmp <- tokens(data_char_ukimmig2010, what = "sentence", verbose = TRUE),
+        "segmenting into sentences"
     )
 })

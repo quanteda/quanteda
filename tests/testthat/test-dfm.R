@@ -1025,3 +1025,33 @@ test_that("dfm feature and document names have encoding", {
     #expect_true(all(Encoding(rownames(mt4)) == "UTF-8")) fix in new corpus
 })
 
+test_that("dfm verbose = TRUE works as expected", {
+    expect_message(
+        tmp <- dfm(data_corpus_inaugural[1:3], verbose = TRUE),
+        "Creating a dfm from a corpus input"
+    )
+    expect_message(
+        tmp <- dfm(data_corpus_inaugural[1:3], verbose = TRUE),
+        "Finished constructing a 3 x 1,\\d{3} sparse dfm"
+    )
+    expect_message(
+        tmp <- dfm(data_corpus_inaugural[1:3], dictionary = data_dictionary_LSD2015, verbose = TRUE),
+        "applying a dictionary consisting of 4 keys"
+    )
+    expect_message(
+        tmp <- dfm(data_corpus_inaugural[1:3], groups = "President", verbose = TRUE),
+        "grouping texts"
+    )
+    expect_message(
+        tmp <- dfm(data_corpus_inaugural[1:3], stem = TRUE, verbose = TRUE),
+        "stemming words"
+    )
+    expect_error(
+        dfm("one two three", remove = "one", select = "three"),
+        "only one of select and remove may be supplied at once"
+    )
+    
+    toks <- tokens(c("one two", "two three four"))
+    attributes(toks)$types[4] <- NA
+    dfm(toks)
+})
