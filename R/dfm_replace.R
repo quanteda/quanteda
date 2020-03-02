@@ -12,13 +12,14 @@
 #' @param verbose print status messages if `TRUE`
 #' @export
 #' @examples
-#' dfmat1 <- dfm(data_corpus_irishbudget2010)
+#' dfmat1 <- dfm(data_corpus_inaugural)
 #'
 #' # lemmatization
-#' lis <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
-#' lemma <- rep("focus", length(lis))
-#' dfmat2 <- dfm_replace(dfmat1, pattern = lis, replacement = lemma)
-#' featnames(dfm_select(dfmat2, pattern = lis))
+#' taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
+#' lemma <- rep("TAX", length(taxwords))
+#' featnames(dfm_select(dfmat1, pattern = taxwords))
+#' dfmat2 <- dfm_replace(dfmat1, pattern = taxwords, replacement = lemma)
+#' featnames(dfm_select(dfmat2, pattern = taxwords))
 #'
 #' # stemming
 #' feat <- featnames(dfmat1)

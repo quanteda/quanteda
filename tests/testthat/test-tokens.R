@@ -882,7 +882,7 @@ test_that("test that what = \"word\" works the same as \"word2\"", {
 
 
 test_that("tokens printing works", {
-
+    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
     toks <- tokens(data_corpus_irishbudget2010)
     expect_silent(
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = FALSE)

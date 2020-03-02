@@ -2,8 +2,8 @@
 
 test_that("summary method works for corpus", {
     expect_output(
-        summary(print(data_corpus_irishbudget2010)), 
-        regexp = "^Corpus consisting of 14 documents"
+        summary(print(data_corpus_inaugural[1:58])), 
+        regexp = "^Corpus consisting of 58 documents and 4 docvars\\."
     )
 })
 
@@ -19,10 +19,10 @@ test_that("summary.corpus works with longer corpora n > default (#1242)", {
 })
 
 test_that("print.summary.corpus work", {
-    summ1 <- summary(data_corpus_inaugural[1:58] + data_corpus_dailnoconf1991)
+    summ1 <- summary(data_corpus_inaugural[1:20] + data_corpus_inaugural[21:58])
     expect_output(
         print(summ1),
-        "Corpus consisting of 116 documents, showing 100 documents:"
+        "Corpus consisting of 58 documents, showing 58 documents:"
     )
     expect_output(
         print(summ1[1:5, ]),

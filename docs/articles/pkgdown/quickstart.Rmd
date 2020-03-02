@@ -147,6 +147,7 @@ texts(data_corpus_inaugural)[2]
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
 
 ```{r}
+data(data_corpus_irishbudget2010, package = "quanteda.corpora")
 summary(data_corpus_irishbudget2010)
 ```
 

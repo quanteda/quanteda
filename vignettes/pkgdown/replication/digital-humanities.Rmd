@@ -489,6 +489,7 @@ plot(pres_cluster, xlab = "", sub = "",
 Finally, Jockers' book introduces topic modelling of a corpus and the visualisation through wordclouds. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 (`data_corpus_irishbudget2010`) and classify 20 topics using Latent Dirichlet Allocation.
 
 ```{r}
+data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
 dfm_speeches <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, 
                 remove = stopwords("english")) %>% 

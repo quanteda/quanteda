@@ -72,6 +72,7 @@ test_that("dfm_group and tokens_group are equivalent", {
 })
 
 test_that("generate_groups works for tokens objects", {
+    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
     toks <- tokens(data_corpus_irishbudget2010)
     expect_equal(
         quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
@@ -96,6 +97,7 @@ test_that("generate_groups works for tokens objects", {
 })
 
 test_that("generate_groups works for corpus objects", {
+    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
     corp <- as.corpus(data_corpus_irishbudget2010)
     expect_equal(
         quanteda:::generate_groups(corp, rep(c("A", "B"), each = 7)),

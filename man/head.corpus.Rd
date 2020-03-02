@@ -26,8 +26,10 @@ by \code{n}.
 For a \link{corpus} object, returns the first or last \code{n} documents.
 }
 \examples{
-head(data_corpus_irishbudget2010, 3) \%>\% summary()
+head(data_corpus_inaugural, 3) \%>\% 
+   summary()
 
-tail(data_corpus_irishbudget2010, 3) \%>\% summary()
+tail(data_corpus_inaugural, 3) \%>\% 
+    summary()
 }
 \keyword{corpus}

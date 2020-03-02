@@ -1,5 +1,7 @@
 context("test corpus")
 
+data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
+
 test_that("test show.corpus", {
     expect_output(
         print(corpus(c("The"))),
@@ -220,7 +222,6 @@ test_that("corpus works for texts with duplicate filenames", {
 })
 
 test_that("create a corpus on a corpus", {
-
     corp <- data_corpus_irishbudget2010
     expect_equivalent(
         as.corpus(corp),
