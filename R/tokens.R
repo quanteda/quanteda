@@ -246,7 +246,7 @@ tokens.corpus <- function(x,
     check_dots(dots, c(names(formals(tokens))))
 
     # call the appropriate tokenizer function
-    if (verbose) catm("...starting tokenization\n")
+    if (verbose) catm(" ...starting tokenization\n")
     tokenizer_fn <- switch(what,
                            word = tokenize_word,
                            word1 = tokenize_word1,
@@ -265,15 +265,16 @@ tokens.corpus <- function(x,
     # split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
     for (i in seq_along(x)) {
-        if (verbose) catm("...tokenizing", i, "of", length(x), "blocks\n")
+        if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
         temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, verbose = verbose)
-        if (verbose) catm("...serializing tokens ")
+        if (verbose) catm(" ...serializing tokens, ")
         if (i == 1) {
             x[[i]] <- serialize_tokens(temp)
         } else {
             x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
         }
-        if (verbose) catm(length(attr(x[[i]], "types")), "unique types\n")
+        if (verbose) catm(format(length(attr(x[[i]], "types")), big.mark = ",", trim = TRUE),
+                          "unique types\n")
     }
     
     result <- build_tokens(
@@ -338,7 +339,7 @@ tokens.tokens <-  function(x,
 
     # splits
     if (split_hyphens) {
-        if (verbose) catm("...splitting hyphens\n")
+        if (verbose) catm(" ...splitting hyphens\n")
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
     
@@ -352,7 +353,7 @@ tokens.tokens <-  function(x,
                                        remove_numbers = remove_numbers,
                                        remove_url = remove_url)
     if (length(removals$regex_to_remove) || remove_separators) {
-        if (verbose) catm("...removing", paste(removals$removing_msg, collapse = ", "), "\n")
+        if (verbose) catm(" ...removing", paste(removals$removing_msg, collapse = ", "), "\n")
         x <- tokens_remove(x, paste(removals$regex_to_remove, collapse = "|"),
                            valuetype = "regex",  padding = padding,
                            startpos = 1L, endpos = -1L)
@@ -362,9 +363,9 @@ tokens.tokens <-  function(x,
         docvars(x) <- NULL
 
     if (verbose) {
-        catm("...total elapsed: ",
+        catm(" ...complete, elapsed time: ",
              format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " text",
+        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " documents",
              if (length(x) > 1) "s", ".\n", sep = "")
     }
     return(x)
