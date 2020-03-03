@@ -249,9 +249,9 @@ dfm2austin <- function(x) {
 dfm2tm <- function(x, weighting = tm::weightTf) {
     attrs <- attributes(x)
     if (!requireNamespace("tm", quietly = TRUE))
-        stop("You must install the tm package installed for this conversion.")
+        stop("You must install the tm package for this conversion.")
     if (!requireNamespace("slam", quietly = TRUE))
-        stop("You must install the slam package installed for this conversion.")
+        stop("You must install the slam package for this conversion.")
 
     if (!(field_object(attrs, "weight_tf")$scheme == "count" && field_object(attrs, "weight_df")$scheme == "unary")) {
         warning("converted DocumentTermMatrix will not have weight attributes set correctly")
@@ -286,7 +286,7 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
 dfm2lda <- function(x, omit_empty = TRUE) {
     x <- as.dfm(x)
     if (!requireNamespace("tm", quietly = TRUE))
-        stop("You must install the slam package installed for this conversion.")
+        stop("You must install the slam package for this conversion.")
     dtm2lda(dfm2dtm(x, omit_empty = omit_empty), omit_empty = omit_empty)
 }
 
@@ -304,7 +304,7 @@ dfm2lda <- function(x, omit_empty = TRUE) {
 #' @keywords internal
 dtm2lda <- function(x, omit_empty = TRUE) {
     if (!requireNamespace("slam", quietly = TRUE))
-        stop("You must install the slam package installed for this conversion.")
+        stop("You must install the slam package for this conversion.")
 
     docs <- vector(mode = "list", length = nrow(x))
     names(docs) <- rownames(x)
@@ -329,11 +329,10 @@ split.matrix <- function(x, f, drop = FALSE, ...) {
 
 #' @rdname convert-wrappers
 dfm2dtm <- function(x, omit_empty = TRUE) {
-
     if (!requireNamespace("tm", quietly = TRUE))
-        stop("You must install the tm package installed for this conversion.")
+        stop("You must install the tm package for this conversion.")
     if (!requireNamespace("slam", quietly = TRUE))
-        stop("You must install the slam package installed for this conversion.")
+        stop("You must install the slam package for this conversion.")
 
     x <- as.dfm(x)
     x <- as(x, "dgTMatrix")
@@ -397,11 +396,11 @@ ijv.to.doc <- function(i, j, v) {
 #' }
 #' @keywords internal
 dfm2lsa <- function(x) {
-    x <- as.matrix(x)
-    result <- apply(x, c(1, 2), as.integer) # convert to integer
-    names(dimnames(result)) <- c("docs", "terms")
-    class(result) <- "textmatrix"
-    t(result)
+    if (!requireNamespace("lsa", quietly = TRUE))
+        stop("You must install the lsa package for this conversion.")
+    x <- t(as.matrix(x))
+    names(dimnames(x))[1] <- "terms"
+    lsa::as.textmatrix(x)
 }
 
 dfm2tripletlist <- function(x) {
