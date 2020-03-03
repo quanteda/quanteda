@@ -123,7 +123,6 @@ dfm <- function(x,
 
     dfm_env$START_TIME <- proc.time()
     object_class <- class(x)[1]
-    if (object_class == "dfmSparse") object_class <- "dfm"
     if (verbose) message("Creating a dfm from a ", object_class, " input...")
     UseMethod("dfm")
 }
@@ -212,9 +211,9 @@ dfm.tokens <- function(x,
     valuetype <- match.arg(valuetype)
 
     # set document names if none
-    if (is.null(names(x))) {
-        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
-    }
+    # if (is.null(names(x))) {
+    #     names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
+    # }
 
     # call tokens only if options given
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
@@ -271,9 +270,10 @@ dfm.tokens <- function(x,
                            verbose = verbose)
     }
 
+    language <- quanteda_options("language_stemmer")
     if (stem) {
-        if (verbose) catm(" ...stemming words\n")
-        x <- tokens_wordstem(x)
+        if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
+        x <- tokens_wordstem(x, language = language)
     }
 
     # compile the dfm
@@ -346,7 +346,7 @@ dfm.dfm <- function(x,
         if (!is.null(remove) & !is.null(select))
             stop("only one of select and remove may be supplied at once")
         if (verbose) catm(" ...")
-        # if ngrams > 1 and remove or selct is specified, then convert these
+        # if ngrams > 1 and remove or select is specified, then convert these
         # into a regex that will remove any ngram containing one of the words
         # if (!identical(field_object(attrs, "ngram"), 1L)) {
         #     remove <- make_ngram_pattern(remove, valuetype,
@@ -370,7 +370,7 @@ dfm.dfm <- function(x,
     if (stem) {
         if (verbose)
             catm(" ...stemming features (", stri_trans_totitle(language),
-                 ")\n", sep = "")
+                 ")", sep = "")
         nfeat_org <- nfeat(x)
         x <- dfm_wordstem(x, language)
         if (verbose)
@@ -400,15 +400,15 @@ dfm.dfm <- function(x,
 ####
 
 ## convert patterns (remove and select) to ngram regular expressions
-make_ngram_pattern <- function(features, valuetype, concatenator) {
-    if (valuetype == "glob") {
-        features <- stri_replace_all_regex(features, "\\*", ".*")
-        features <- stri_replace_all_regex(features, "\\?", ".{1}")
-    }
-    features <- paste0("(\\b|(\\w+", concatenator, ")+)",
-                       features, "(\\b|(", concatenator, "\\w+)+)")
-    features
-}
+# make_ngram_pattern <- function(features, valuetype, concatenator) {
+#     if (valuetype == "glob") {
+#         features <- stri_replace_all_regex(features, "\\*", ".*")
+#         features <- stri_replace_all_regex(features, "\\?", ".{1}")
+#     }
+#     features <- paste0("(\\b|(\\w+", concatenator, ")+)",
+#                        features, "(\\b|(", concatenator, "\\w+)+)")
+#     features
+# }
 
 # create an empty dfm for given features and documents
 make_null_dfm <- function(feature = NULL, document = NULL) {
@@ -437,17 +437,17 @@ pad_dfm <- function(x, feature) {
 }
 
 # foce dfm conformat for prediction with new data
-force_conformance <- function(x, feature, force) {
-    if (force) {
-        n <- length(featnames(x)) - length(intersect(featnames(x), feature))
-        if (n)
-            warning(n, " feature", if (n == 1) "" else "s",
-                    " in newdata not used in prediction.",
-                    call. = FALSE, noBreaks. = TRUE)
-        return(dfm_match(x, feature))
-    } else {
-        if (!identical(featnames(x), feature))
-            stop("newdata's feature set is not conformant to model terms.")
-        return(x)
-    }
-}
+# force_conformance <- function(x, feature, force) {
+#     if (force) {
+#         n <- length(featnames(x)) - length(intersect(featnames(x), feature))
+#         if (n)
+#             warning(n, " feature", if (n == 1) "" else "s",
+#                     " in newdata not used in prediction.",
+#                     call. = FALSE, noBreaks. = TRUE)
+#         return(dfm_match(x, feature))
+#     } else {
+#         if (!identical(featnames(x), feature))
+#             stop("newdata's feature set is not conformant to model terms.")
+#         return(x)
+#     }
+# }

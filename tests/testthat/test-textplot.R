@@ -127,6 +127,28 @@ test_that("test textplot_wordcloud comparison works", {
     expect_silent(
         textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
     )
+    expect_error(
+        textplot_wordcloud(dfm(data_corpus_inaugural[1:9]), comparison = TRUE),
+        "Too many documents to plot comparison, use 8 or fewer documents"
+    )
+    
+    dfmsmall <- dfm(data_corpus_inaugural[1:9], groups = "President", remove = stopwords("en"), remove_punct = TRUE) %>%
+        dfm_trim(min_termfreq = 20)
+    expect_silent(textplot_wordcloud(dfmsmall, comparison = TRUE))
+    expect_silent(textplot_wordcloud(dfmsmall, color = 1:5))
+    expect_warning(
+        textplot_wordcloud(dfmsmall, scale = 1:4),
+        "scale is deprecated"
+    )
+    expect_warning(
+        textplot_wordcloud(dfmsmall, random.order = TRUE),
+        "random.order is deprecated; use random_order instead"
+    )
+    expect_warning(
+        textplot_wordcloud(dfmsmall, max.words = 10),
+        "max.words is deprecated; use max_words instead"
+    )
+    
     dev.off()
     expect_error(
         textplot_wordcloud(testdfm, comparison = TRUE),

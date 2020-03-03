@@ -549,6 +549,10 @@ test_that("cannot supply remove and select in one call (#793)", {
         dfm(toks, select = "one", remove = "two"),
         "only one of select and remove may be supplied at once"
     )
+    expect_error(
+        dfm(dfm(toks), select = "one", remove = "two"),
+        "only one of select and remove may be supplied at once"
+    )
 })
 
 test_that("dfm with selection options produces correct output", {
@@ -1039,12 +1043,24 @@ test_that("dfm verbose = TRUE works as expected", {
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
+        tmp <- dfm(dfm(data_corpus_inaugural[1:3]), dictionary = data_dictionary_LSD2015, verbose = TRUE),
+        "applying a dictionary consisting of 4 keys"
+    )
+    expect_message(
         tmp <- dfm(data_corpus_inaugural[1:3], groups = "President", verbose = TRUE),
         "grouping texts"
     )
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:3], stem = TRUE, verbose = TRUE),
-        "stemming words"
+        tmp <- dfm(data_corpus_inaugural[1:2], stem = TRUE, verbose = TRUE),
+        "stemming types \\(English\\)"
+    )
+    expect_message(
+        tmp <- dfm(dfm(data_corpus_inaugural[1:2]), stem = TRUE, verbose = TRUE),
+        "stemming features \\(English\\)"
+    )
+    expect_message(
+        tmp <- dfm(dfm(data_corpus_inaugural[1:3]), groups = "President", verbose = TRUE),
+        "grouping texts"
     )
     expect_error(
         dfm("one two three", remove = "one", select = "three"),
@@ -1055,3 +1071,31 @@ test_that("dfm verbose = TRUE works as expected", {
     attributes(toks)$types[4] <- NA
     dfm(toks)
 })
+
+test_that("dfm_sort works as expected", {
+    dfmat <- dfm(c(d1 = "z z x y a b", d3 = "x y y y c", d2 = "a z"))
+    expect_identical(
+        featnames(dfm_sort(dfmat, margin = "features", decreasing = TRUE)),
+        c("y", "z", "x", "a", "b", "c")
+    )
+    expect_identical(
+        featnames(dfm_sort(dfmat, margin = "features", decreasing = FALSE)),
+        c("b", "c", "x", "a", "z", "y")
+    )
+    expect_identical(
+        docnames(dfm_sort(dfmat, margin = "documents", decreasing = TRUE)),
+        c("d1", "d3", "d2")
+    )
+    expect_identical(
+        docnames(dfm_sort(dfmat, margin = "documents", decreasing = FALSE)),
+        rev(c("d1", "d3", "d2"))
+    )
+})
+
+# test_that("make_ngram_pattern()", {
+#     expect_equal(
+#         quanteda:::make_ngram_pattern(c("one", "two"), "glob", "_"),
+#         c("(\\b|(\\w+_)+)one(\\b|(_\\w+)+)", "(\\b|(\\w+_)+)two(\\b|(_\\w+)+)"),
+#         fixed = TRUE
+#     )
+# })

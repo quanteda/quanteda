@@ -545,3 +545,28 @@ test_that("works correctly in edge cases", {
     expect_error(docvars(corp, "var4") <- 1:3)
 })
 
+
+test_that("metadoc works but raise deprecation warning", {
+    corp <- corpus(c("aa bb cc", "ccc dd"))
+    suppressWarnings(expect_equal(colnames(metadoc(corp)), character()))
+    suppressWarnings(metadoc(corp, "var1") <- c(1, 5))
+    suppressWarnings(metadoc(corp, "var2") <- c("T", "F"))
+    suppressWarnings(expect_equal(colnames(metadoc(corp)), c("_var1", "_var2")))
+    expect_warning(metadoc(corp), "metadoc is deprecated")
+    
+    corp <- corpus(c("aa bb cc", "ccc dd"))
+    toks <- tokens(corp)
+    suppressWarnings(expect_equal(colnames(metadoc(toks)), character()))
+    suppressWarnings(metadoc(toks, "var1") <- c(1, 5))
+    suppressWarnings(metadoc(toks, "var2") <- c("T", "F"))
+    suppressWarnings(expect_equal(colnames(metadoc(toks)), c("_var1", "_var2")))
+    expect_warning(metadoc(toks), "metadoc is deprecated")
+    
+    corp <- corpus(c("aa bb cc", "ccc dd"))
+    dfmat <- dfm(corp)
+    suppressWarnings(expect_equal(colnames(metadoc(dfmat)), character()))
+    suppressWarnings(metadoc(dfmat, "var1") <- c(1, 5))
+    suppressWarnings(metadoc(dfmat, "var2") <- c("T", "F"))
+    suppressWarnings(expect_equal(colnames(metadoc(dfmat)), c("_var1", "_var2")))
+    expect_warning(metadoc(dfmat), "metadoc is deprecated")
+})

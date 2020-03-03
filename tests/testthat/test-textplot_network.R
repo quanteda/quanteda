@@ -1,7 +1,7 @@
 context("test textplot_network.R")
 
 test_that("test textplot_network", {
-    skip_on_os("linux")
+    #skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
@@ -17,7 +17,7 @@ test_that("test textplot_network", {
 
 
 test_that("test textplot_network works with vectorlized argument", {
-    skip_on_os("linux")
+    #skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
