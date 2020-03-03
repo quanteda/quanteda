@@ -554,6 +554,7 @@ test_that("metadoc works but raise deprecation warning", {
     suppressWarnings(expect_equal(colnames(metadoc(corp)), c("_var1", "_var2")))
     expect_warning(metadoc(corp), "metadoc is deprecated")
     
+    corp <- corpus(c("aa bb cc", "ccc dd"))
     toks <- tokens(corp)
     suppressWarnings(expect_equal(colnames(metadoc(toks)), character()))
     suppressWarnings(metadoc(toks, "var1") <- c(1, 5))
@@ -561,7 +562,8 @@ test_that("metadoc works but raise deprecation warning", {
     suppressWarnings(expect_equal(colnames(metadoc(toks)), c("_var1", "_var2")))
     expect_warning(metadoc(toks), "metadoc is deprecated")
     
-    dfmat <- dfm(toks)
+    corp <- corpus(c("aa bb cc", "ccc dd"))
+    dfmat <- dfm(corp)
     suppressWarnings(expect_equal(colnames(metadoc(dfmat)), character()))
     suppressWarnings(metadoc(dfmat, "var1") <- c(1, 5))
     suppressWarnings(metadoc(dfmat, "var2") <- c("T", "F"))
