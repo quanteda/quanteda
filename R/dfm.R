@@ -435,19 +435,3 @@ pad_dfm <- function(x, feature) {
     x <- x[, feature]
     return(x)
 }
-
-# foce dfm conformat for prediction with new data
-# force_conformance <- function(x, feature, force) {
-#     if (force) {
-#         n <- length(featnames(x)) - length(intersect(featnames(x), feature))
-#         if (n)
-#             warning(n, " feature", if (n == 1) "" else "s",
-#                     " in newdata not used in prediction.",
-#                     call. = FALSE, noBreaks. = TRUE)
-#         return(dfm_match(x, feature))
-#     } else {
-#         if (!identical(featnames(x), feature))
-#             stop("newdata's feature set is not conformant to model terms.")
-#         return(x)
-#     }
-# }
