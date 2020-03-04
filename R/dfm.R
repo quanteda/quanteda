@@ -210,11 +210,6 @@ dfm.tokens <- function(x,
                        ...) {
     valuetype <- match.arg(valuetype)
 
-    # set document names if none
-    # if (is.null(names(x))) {
-    #     names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
-    # }
-
     # call tokens only if options given
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
         x <- tokens(x, ...)
@@ -300,7 +295,7 @@ dfm.tokens <- function(x,
             docvars = get_docvars(x, user = TRUE, system = TRUE),
             meta = attrs[["meta"]]),
         tolower = FALSE, stem = FALSE, verbose = verbose
-    ) 
+    )
 }
 
 
@@ -419,7 +414,7 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-    
+
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))
 }
