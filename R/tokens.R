@@ -483,7 +483,7 @@ compile_removals_regex <- function(remove_separators = FALSE,
     }
     if (remove_numbers) {
         # includes currency amounts and those containing , or . digit separators
-        regex_to_remove <- c(regex_to_remove, "^\\p{Sc}{0,1}([0-9]{1,3}([,.][0-9]{3})*([,.][0-9]+)?|[.,][0-9]+)\\p{Sc}{0,1}$")
+        regex_to_remove <- c(regex_to_remove, "^\\p{Sc}{0,1}([0-9]{1,3}([,.][0-9]{3})*([,.][0-9]+)?|[.,][0-9]+)\\p{Sc}{0,1}$|^\\d+$")
         removing_msg <- c(removing_msg, "numbers")
     }
     if (remove_url) {
