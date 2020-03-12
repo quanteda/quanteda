@@ -1099,3 +1099,25 @@ test_that("dfm_sort works as expected", {
 #         fixed = TRUE
 #     )
 # })
+
+test_that("test dfm transpose for #1903", {
+    dfmat <- dfm(c(d1 = "one two three", d2 = "two two three"))
+    dfmat_t <- t(dfmat)
+    expect_equal(
+        names(dimnames(dfmat_t)),
+        c("features", "docs")
+    )
+    expect_equal(
+        docnames(dfmat_t), 
+        c("one", "two", "three")
+    )
+    expect_equal(
+        dfmat_t@docvars$docname_,
+        c("one", "two", "three")
+    )
+    expect_equal(
+        names(dfmat_t@meta),
+        c("system", "object", "user")
+    )
+})
+

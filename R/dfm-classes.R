@@ -42,7 +42,12 @@ setClass("dfm",
 #' @rdname dfm-class
 setMethod("t",
           signature = (x = "dfm"),
-          function(x) as.dfm(t(as(x, "dgCMatrix"))))
+          function(x) { 
+              dnames <- names(x@Dimnames)
+              x <- as.dfm(t(as(x, "dgCMatrix")))
+              names(x@Dimnames) <- rev(dnames)
+              return(x)
+          })
 
 #' @method colSums dfm
 #' @rdname dfm-class
