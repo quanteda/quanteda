@@ -1105,3 +1105,20 @@ test_that("output is correct for word1", {
         "segmenting into sentences"
     )
 })
+
+test_that("remove_numbers functions correctly", {
+    txt <- "1 and 12 123 1975 12345 100,000 $1,000.00 123,123,456 and 50¢ 1.200,34 
+            100bn 20-year-old 4ever gr8"
+    toks1 <- tokens(txt, remove_numbers = TRUE)
+    toks2 <- tokens(txt, what = "fasterword", remove_numbers = TRUE)
+
+    expect_identical(
+        as.character(toks1),
+        c("and","$", "and", "¢", "100bn", "20-year-old", "4ever", "gr8")
+    )
+
+    expect_identical(
+        as.character(toks2),
+        c("and", "and", "100bn", "20-year-old", "4ever", "gr8")
+    )
+})

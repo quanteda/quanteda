@@ -1,10 +1,17 @@
-# quanteda > 2.0
+# quanteda 2.0.1
 
 ## Changes
 
 * Moved `data_corpus_irishbudget2010` and `data_corpus_dailnoconf1991` to the **quanteda.textmodels** package.
 * Em dashes and double dashes between words, whether surrounded by a space or not, are now converted to " - " to distinguish them from infix hyphens.  (#1889)
+* Verbose output for dfm and tokens creation is now corrected and more consistent.  (#1894)
 
+## Bug fixes and stability enhancements
+
+* Number removal is now both improved and fixed (#1909).
+* Fixed an issue causing CRAN errors in pre-v4, related to the new default of `stringsAsFactors = FALSE` for data.frame objects.
+* An error in the print method for dfm objects is now fixed (#1897)
+* Fixed a bug in `tokens_replace()` when the pattern was not matched (#1895)
 
 # quanteda 2.0
 
