@@ -1114,11 +1114,11 @@ test_that("remove_numbers functions correctly", {
 
     expect_identical(
         as.character(toks1),
-        c("and","$", "and", "¢", "20-year-old", "4ever", "gr8")
+        c("and","$", "and", "¢", "100bn", "20-year-old", "4ever", "gr8")
     )
 
     expect_identical(
         as.character(toks2),
-        c("and", "and", "20-year-old", "4ever", "gr8")
+        c("and", "and", "100bn", "20-year-old", "4ever", "gr8")
     )
 })
