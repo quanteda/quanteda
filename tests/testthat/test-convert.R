@@ -91,6 +91,7 @@ test_that("test austin package converter", {
 
 test_that("test lsa converter", {
     skip_if_not_installed("lsa")
+    skip_on_cran()
     require(lsa)
     # create some files
     td <- tempfile()
