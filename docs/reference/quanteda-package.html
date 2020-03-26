@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -47,7 +51,6 @@
 <meta property="og:description" content="A set of functions for creating and managing text corpora, extracting
 features from text corpora, and analyzing those features using quantitative
 methods." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -75,7 +78,7 @@ methods." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -89,7 +92,7 @@ methods." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -207,7 +210,7 @@ methods." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>An R package for the quantitative analysis of textual data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/quanteda-documentation.R'><code>R/quanteda-documentation.R</code></a></small>
     <div class="hidden name"><code>quanteda-package.Rd</code></div>
     </div>
 
@@ -294,37 +297,10 @@ available in the package.</p></li>
 </div>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#details">Details</a></li>
-      <li><a href="#source-code-and-additional-information">Source code and additional information</a></li>
-      <li><a href="#see-also">See also</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p><strong>Maintainer</strong>: Kenneth Benoit <a href='mailto:kbenoit@lse.ac.uk'>kbenoit@lse.ac.uk</a> (<a href='https://orcid.org/0000-0002-0797-564X'>ORCID</a>) [copyright holder]</p>
-<p>Authors:</p><ul>
-<li><p>Kohei Watanabe <a href='mailto:watanabe.kohei@gmail.com'>watanabe.kohei@gmail.com</a> (<a href='https://orcid.org/0000-0001-6519-5265'>ORCID</a>)</p></li>
-<li><p>Haiyan Wang <a href='mailto:whyinsa@yahoo.com'>whyinsa@yahoo.com</a> (<a href='https://orcid.org/0000-0003-4992-4311'>ORCID</a>)</p></li>
-<li><p>Paul Nulty <a href='mailto:paul.nulty@gmail.com'>paul.nulty@gmail.com</a> (<a href='https://orcid.org/0000-0002-7214-4666'>ORCID</a>)</p></li>
-<li><p>Adam Obeng <a href='mailto:quanteda@binaryeagle.com'>quanteda@binaryeagle.com</a> (<a href='https://orcid.org/0000-0002-2906-4775'>ORCID</a>)</p></li>
-<li><p>Stefan Müller <a href='mailto:mullers@tcd.ie'>mullers@tcd.ie</a> (<a href='https://orcid.org/0000-0002-6315-4125'>ORCID</a>)</p></li>
-<li><p>Akitaka Matsuo <a href='mailto:a.matsuo@lse.ac.uk'>a.matsuo@lse.ac.uk</a> (<a href='https://orcid.org/0000-0002-3323-6330'>ORCID</a>)</p></li>
-<li><p>Jiong Wei Lua <a href='mailto:J.W.Lua@lse.ac.uk'>J.W.Lua@lse.ac.uk</a></p></li>
-<li><p>Jouni Kuha <a href='mailto:j.kuha@lse.ac.uk'>j.kuha@lse.ac.uk</a> (<a href='https://orcid.org/0000-0002-1156-8465'>ORCID</a>)</p></li>
-<li><p>William Lowe <a href='mailto:wlowe@princeton.edu'>wlowe@princeton.edu</a> (<a href='https://orcid.org/0000-0002-1549-6163'>ORCID</a>)</p></li>
-</ul>
-
-<p>Other contributors:</p><ul>
-<li><p>Christian Müller <a href='mailto:C.Mueller@lse.ac.uk'>C.Mueller@lse.ac.uk</a> [contributor]</p></li>
-<li><p>Lori Young (Lexicoder Sentiment Dictionary 2015) [data contributor]</p></li>
-<li><p>Stuart Soroka (Lexicoder Sentiment Dictionary 2015) [data contributor]</p></li>
-<li><p>Ian Fellows <a href='mailto:ian@fellstat.com'>ian@fellstat.com</a> (authored wordcloud C source code (modified)) [copyright holder]</p></li>
-<li><p>European Research Council (ERC-2011-StG 283794-QUANTESS) [funder]</p></li>
-</ul>
-
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -335,7 +311,7 @@ available in the package.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

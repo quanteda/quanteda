@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -51,7 +55,6 @@ is fastest when pattern and replacement are character vectors
 and valuetype = &quot;fixed&quot; as the function only substitute types of
 tokens. Please use tokens_lookup() with exclusive = FALSE
 to replace dictionary values." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -79,7 +82,7 @@ to replace dictionary values." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -93,7 +96,7 @@ to replace dictionary values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -211,7 +214,7 @@ to replace dictionary values." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Replace tokens in a tokens object</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens_replace.R'><code>R/tokens_replace.R</code></a></small>
     <div class="hidden name"><code>tokens_replace.Rd</code></div>
     </div>
 
@@ -273,71 +276,58 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     <div class='dont-index'><p>tokens_lookup</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># lemmatization</span>
-<span class='no'>infle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foci"</span>, <span class='st'>"focus"</span>, <span class='st'>"focused"</span>, <span class='st'>"focuses"</span>, <span class='st'>"focusing"</span>, <span class='st'>"focussed"</span>, <span class='st'>"focusses"</span>)
-<span class='no'>lemma</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"focus"</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>infle</span>))
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='no'>infle</span>, <span class='no'>lemma</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)
-<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks2</span>, <span class='st'>"focus*"</span>)</div><div class='output co'>#&gt;                                                                           
-#&gt;    [Lenihan, Brian (FF), 1003]        measures A key feature and | focus |
-#&gt;    [Lenihan, Brian (FF), 5045] 2010 our investment projects will | focus |
-#&gt;   [Bruton, Richard (FG), 1956]           budget and see that the | focus |
-#&gt;      [Burton, Joan (LAB), 837]        must therefore be the main | focus |
-#&gt;     [Burton, Joan (LAB), 3274]           the budget had just one | focus |
-#&gt;     [Burton, Joan (LAB), 3745]     the garden county however the | focus |
-#&gt;     [Burton, Joan (LAB), 4547]              That is too narrow a | focus |
-#&gt;     [Burton, Joan (LAB), 4742]       economic revival that has a | focus |
-#&gt;    [Morgan, Arthur (SF), 2905]     creating new jobs Instead the | focus |
-#&gt;    [Morgan, Arthur (SF), 3440]           what should be the main | focus |
-#&gt;    [Morgan, Arthur (SF), 6267]     must be completely redrawn to | focus |
-#&gt;      [Cowen, Brian (FF), 2810]         2010 The scheme will also | focus |
-#&gt;      [Cowen, Brian (FF), 3425]    to maximise the efficiency and | focus |
-#&gt;      [Cowen, Brian (FF), 4050]        in place with a particular | focus |
-#&gt;  [ODonnell, Kieran (FG), 1790]     coherent plan which should be | focus |
-#&gt;   [Gilmore, Eamon (LAB), 2408]   also states More recent studies | focus |
-#&gt;                                   
-#&gt;  of today's budget is regaining   
-#&gt;  on labour-intensive areas such as
-#&gt;  has been on the front            
-#&gt;  of policy The Labour Party       
-#&gt;  and that was just too            
-#&gt;  of the feature is not            
-#&gt;  There is a character in          
-#&gt;  other than the dream of          
-#&gt;  was on rates of pay              
-#&gt;  of economic recovery which is    
-#&gt;  on the more labour intensive     
-#&gt;  on providing information via the 
-#&gt;  of our investment and ensure     
-#&gt;  on some of the worst             
-#&gt;  on jobs The Taoiseach is         
-#&gt;  on country cases provide evidence</div><div class='input'>
+<span class='no'>taxwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"tax"</span>, <span class='st'>"taxing"</span>, <span class='st'>"taxed"</span>, <span class='st'>"taxed"</span>, <span class='st'>"taxation"</span>)
+<span class='no'>lemma</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"TAX"</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>taxwords</span>))
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='no'>taxwords</span>, <span class='no'>lemma</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)
+<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks2</span>, <span class='st'>"TAX"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt;                                                                         
+#&gt;  [1925-Coolidge, 3004]                     a living we must have | TAX |
+#&gt;  [1925-Coolidge, 3116]               correct course to follow in | TAX |
+#&gt;     [1981-Reagan, 273]                      for their labor by a | TAX |
+#&gt;     [1981-Reagan, 290]             productivity But great as our | TAX |
+#&gt;    [1981-Reagan, 1521]               and to lighten our punitive | TAX |
+#&gt;     [1985-Reagan, 496]                were right to believe that | TAX |
+#&gt;    [1985-Reagan, 1106]                lives We must simplify our | TAX |
+#&gt;    [1985-Reagan, 1418] permanently control Government's power to | TAX |
+#&gt;    [1985-Reagan, 1438]              spend its citizens money and | TAX |
+#&gt;      [2013-Obama, 739]          remake our government revamp our | TAX |
+#&gt;                                               
+#&gt;  reform The method of raising                 
+#&gt;  and all other economic legislation           
+#&gt;  system which penalizes successful achievement
+#&gt;  burden is it has not                         
+#&gt;  burden And these will be                     
+#&gt;  rates have been reduced inflation            
+#&gt;  system make it more fair                     
+#&gt;  and spend We must act                        
+#&gt;  them into servitude when the                 
+#&gt;  Code reform our schools and                  </div><div class='input'>
 <span class='co'># stemming</span>
 <span class='no'>type</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='types.html'>types</a></span>(<span class='no'>toks1</span>)
 <span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_wordstem.html'>char_wordstem</a></span>(<span class='no'>type</span>, <span class='st'>"porter"</span>)
 <span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='no'>type</span>, <span class='no'>stem</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>toks3</span>, <span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span>(<span class='no'>toks1</span>, <span class='st'>"porter"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># multi-multi substitution</span>
-<span class='no'>toks4</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Minister Deputy Lenihan"</span>)),
-                              <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Minister Deputy Conor Lenihan"</span>)))
-<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks4</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Minister Deputy Conor Lenihan"</span>)))</div><div class='output co'>#&gt;                                                                           
-#&gt;       [Burton, Joan (LAB), 1815:1818]                ought to be cut The |
-#&gt;       [Burton, Joan (LAB), 1981:1984] their extra contribution comes The |
-#&gt;  [OCaolain, Caoimhghin (SF), 578:581]         thanks that carers get The |
-#&gt;                                                                    
-#&gt;  Minister Deputy Conor Lenihan | should note that in this          
-#&gt;  Minister Deputy Conor Lenihan | had a simple choice today         
-#&gt;  Minister Deputy Conor Lenihan | claims the overriding objective of</div></pre>
+<span class='no'>toks4</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_replace</span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Supreme Court"</span>)),
+                        <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Supreme Court of the United States"</span>)))
+<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks4</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Supreme Court of the United States"</span>)))</div><div class='output co'>#&gt;                                                               
+#&gt;   [1857-Buchanan, 441:446] which legitimately belongs to the |
+#&gt;  [1861-Lincoln, 2323:2328]              to be decided by the |
+#&gt;  [1861-Lincoln, 2465:2470]         fixed by decisions of the |
+#&gt;   [1889-Harrison, 408:413]        by the organization of the |
+#&gt;                                                                        
+#&gt;  Supreme Court of the United States | of the United States before      
+#&gt;  Supreme Court of the United States | nor do I deny that               
+#&gt;  Supreme Court of the United States | the instant they are made        
+#&gt;  Supreme Court of the United States | shall have been suitably observed</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -348,7 +338,7 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

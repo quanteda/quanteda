@@ -100,19 +100,16 @@
     <loc>https://quanteda.io/reference/data-internal.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/data-relocated.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/data_char_sampletext.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/data_char_ukimmig2010.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/data_corpus_dailnoconf1991.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/data_corpus_inaugural.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_corpus_irishbudget2010.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/data_dfm_lbgexample.html</loc>

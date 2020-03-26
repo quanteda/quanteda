@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -46,7 +50,6 @@
 <meta property="og:title" content="Summarize a corpus — summary.corpus" />
 <meta property="og:description" content="Displays information about a corpus, including attributes and metadata such
 as date of number of texts, creation and source." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -74,7 +77,7 @@ as date of number of texts, creation and source." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -88,7 +91,7 @@ as date of number of texts, creation and source." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -206,7 +209,7 @@ as date of number of texts, creation and source." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Summarize a corpus</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods-base.R'><code>R/corpus-methods-base.R</code></a></small>
     <div class="hidden name"><code>summary.corpus.Rd</code></div>
     </div>
 
@@ -262,18 +265,18 @@ meta-data</p></td>
 #&gt;     1829-Jackson   517   1208        25 1829    Jackson          Andrew
 #&gt;     1833-Jackson   499   1267        29 1833    Jackson          Andrew
 #&gt;    1837-VanBuren  1315   4158        95 1837  Van Buren          Martin
-#&gt;    1841-Harrison  1912   9086       210 1841   Harrison   William Henry
-#&gt;        1845-Polk  1335   5182       153 1845       Polk      James Knox
+#&gt;    1841-Harrison  1898   9123       210 1841   Harrison   William Henry
+#&gt;        1845-Polk  1334   5186       153 1845       Polk      James Knox
 #&gt;      1849-Taylor   496   1178        22 1849     Taylor         Zachary
 #&gt;      1853-Pierce  1165   3636       104 1853     Pierce        Franklin
-#&gt;    1857-Buchanan   945   3081        89 1857   Buchanan           James
-#&gt;     1861-Lincoln  1075   3997       135 1861    Lincoln         Abraham
-#&gt;     1865-Lincoln   360    773        26 1865    Lincoln         Abraham
-#&gt;       1869-Grant   487   1225        40 1869      Grant      Ulysses S.
+#&gt;    1857-Buchanan   945   3083        89 1857   Buchanan           James
+#&gt;     1861-Lincoln  1075   3999       135 1861    Lincoln         Abraham
+#&gt;     1865-Lincoln   360    775        26 1865    Lincoln         Abraham
+#&gt;       1869-Grant   485   1229        40 1869      Grant      Ulysses S.
 #&gt;       1873-Grant   552   1472        43 1873      Grant      Ulysses S.
-#&gt;       1877-Hayes   832   2703        59 1877      Hayes   Rutherford B.
+#&gt;       1877-Hayes   831   2707        59 1877      Hayes   Rutherford B.
 #&gt;    1881-Garfield  1021   3209       111 1881   Garfield        James A.
-#&gt;   1885-Cleveland   675   1814        44 1885  Cleveland          Grover
+#&gt;   1885-Cleveland   676   1816        44 1885  Cleveland          Grover
 #&gt;    1889-Harrison  1352   4721       157 1889   Harrison        Benjamin
 #&gt;   1893-Cleveland   821   2125        58 1893  Cleveland          Grover
 #&gt;    1897-McKinley  1232   4353       130 1897   McKinley         William
@@ -287,22 +290,22 @@ meta-data</p></td>
 #&gt;      1929-Hoover  1090   3860       158 1929     Hoover         Herbert
 #&gt;   1933-Roosevelt   743   2057        85 1933  Roosevelt     Franklin D.
 #&gt;   1937-Roosevelt   725   1989        96 1937  Roosevelt     Franklin D.
-#&gt;   1941-Roosevelt   528   1513        68 1941  Roosevelt     Franklin D.
+#&gt;   1941-Roosevelt   526   1519        68 1941  Roosevelt     Franklin D.
 #&gt;   1945-Roosevelt   275    633        26 1945  Roosevelt     Franklin D.
-#&gt;      1949-Truman   782   2502       116 1949     Truman        Harry S.
-#&gt;  1953-Eisenhower   901   2741       119 1953 Eisenhower       Dwight D.
+#&gt;      1949-Truman   781   2504       116 1949     Truman        Harry S.
+#&gt;  1953-Eisenhower   900   2743       119 1953 Eisenhower       Dwight D.
 #&gt;  1957-Eisenhower   621   1907        92 1957 Eisenhower       Dwight D.
-#&gt;     1961-Kennedy   567   1539        52 1961    Kennedy         John F.
-#&gt;     1965-Johnson   569   1708        93 1965    Johnson   Lyndon Baines
-#&gt;       1969-Nixon   744   2412       103 1969      Nixon Richard Milhous
+#&gt;     1961-Kennedy   566   1541        52 1961    Kennedy         John F.
+#&gt;     1965-Johnson   568   1710        93 1965    Johnson   Lyndon Baines
+#&gt;       1969-Nixon   743   2416       103 1969      Nixon Richard Milhous
 #&gt;       1973-Nixon   544   1995        68 1973      Nixon Richard Milhous
-#&gt;      1977-Carter   528   1367        52 1977     Carter           Jimmy
+#&gt;      1977-Carter   527   1369        52 1977     Carter           Jimmy
 #&gt;      1981-Reagan   902   2780       128 1981     Reagan          Ronald
 #&gt;      1985-Reagan   925   2909       123 1985     Reagan          Ronald
 #&gt;        1989-Bush   795   2673       141 1989       Bush          George
 #&gt;     1993-Clinton   642   1833        81 1993    Clinton            Bill
 #&gt;     1997-Clinton   773   2436       111 1997    Clinton            Bill
-#&gt;        2001-Bush   621   1802        97 2001       Bush       George W.
+#&gt;        2001-Bush   621   1806        97 2001       Bush       George W.
 #&gt;        2005-Bush   772   2312        99 2005       Bush       George W.
 #&gt;       2009-Obama   938   2689       110 2009      Obama          Barack
 #&gt;       2013-Obama   814   2317        88 2013      Obama          Barack
@@ -408,13 +411,10 @@ meta-data</p></td>
 <span class='no'>sumcorp</span>$<span class='no'>Types</span> / <span class='no'>sumcorp</span>$<span class='no'>Tokens</span> <span class='co'># crude type-token ratio</span></div><div class='output co'>#&gt; [1] 0.3429878 0.5461538 0.5030060 0.4756278 0.4382353 0.5196687 0.6754386
 #&gt; [8] 0.6567164 0.4792244</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -425,7 +425,7 @@ meta-data</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

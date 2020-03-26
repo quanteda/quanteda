@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -62,7 +66,6 @@ as metacorpus information.
 a corpus object.
 
 " />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -90,7 +93,7 @@ a corpus object.
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -104,7 +107,7 @@ a corpus object.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -222,7 +225,7 @@ a corpus object.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Construct a corpus object</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus.R'><code>R/corpus.R</code></a></small>
     <div class="hidden name"><code>corpus.Rd</code></div>
     </div>
 
@@ -252,9 +255,9 @@ as <a href='meta.html'>metacorpus</a> information.</p></li>
 <span class='co'># S3 method for corpus</span>
 <span class='fu'>corpus</span>(
   <span class='no'>x</span>,
-  <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='https://quanteda.io/reference/docnames.html'>docnames</a></span>(<span class='no'>x</span>),
-  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='https://quanteda.io/reference/docvars.html'>docvars</a></span>(<span class='no'>x</span>),
-  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='https://quanteda.io/reference/meta.html'>meta</a></span>(<span class='no'>x</span>),
+  <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>x</span>),
+  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>x</span>),
+  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='meta.html'>meta</a></span>(<span class='no'>x</span>),
   <span class='no'>...</span>
 )
 
@@ -405,26 +408,6 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;        Greens   322    677        21       Greens
 #&gt;        Labour   298    680        29       Labour
 #&gt; </div><div class='input'>
-<span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents.
-#&gt; Lenihan, Brian (FF) :
-#&gt; "When I presented the supplementary budget to this House last..."
-#&gt; 
-#&gt; Bruton, Richard (FG) :
-#&gt; "This draconian budget should not be happening today. It is h..."
-#&gt; 
-#&gt; Burton, Joan (LAB) :
-#&gt; "The other day, Goldman Sachs circulated a note about the Iri..."
-#&gt; 
-#&gt; Morgan, Arthur (SF) :
-#&gt; "We have heard it now. So the worst is over, as we have been ..."
-#&gt; 
-#&gt; Cowen, Brian (FF) :
-#&gt; "This country has to address probably the biggest challenge t..."
-#&gt; 
-#&gt; Kenny, Enda (FG) :
-#&gt; "At the end of his response the Taoiseach said that we have t..."
-#&gt; 
-#&gt; [ reached max_ndoc ... 8 more documents ]</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
     <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>crude</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)    <span class='co'># load in a tm example VCorpus</span>
@@ -440,15 +423,15 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 }</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 9 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;           BNP  1125   3280        88     NA 2020-02-27 00:23:17          NA
-#&gt;     Coalition   142    260         4     NA 2020-02-27 00:23:17          NA
-#&gt;  Conservative   251    499        15     NA 2020-02-27 00:23:17          NA
-#&gt;        Greens   322    677        21     NA 2020-02-27 00:23:17          NA
-#&gt;        Labour   298    680        29     NA 2020-02-27 00:23:17          NA
-#&gt;        LibDem   251    483        14     NA 2020-02-27 00:23:17          NA
-#&gt;            PC    77    114         5     NA 2020-02-27 00:23:17          NA
-#&gt;           SNP    88    134         4     NA 2020-02-27 00:23:17          NA
-#&gt;          UKIP   346    722        27     NA 2020-02-27 00:23:17          NA
+#&gt;           BNP  1125   3280        88     NA 2020-03-26 16:04:27          NA
+#&gt;     Coalition   142    260         4     NA 2020-03-26 16:04:27          NA
+#&gt;  Conservative   251    499        15     NA 2020-03-26 16:04:27          NA
+#&gt;        Greens   322    677        21     NA 2020-03-26 16:04:27          NA
+#&gt;        Labour   298    680        29     NA 2020-03-26 16:04:27          NA
+#&gt;        LibDem   251    483        14     NA 2020-03-26 16:04:27          NA
+#&gt;            PC    77    114         5     NA 2020-03-26 16:04:27          NA
+#&gt;           SNP    88    134         4     NA 2020-03-26 16:04:27          NA
+#&gt;          UKIP   346    722        27     NA 2020-03-26 16:04:27          NA
 #&gt;  heading id language origin
 #&gt;       NA  1       en     NA
 #&gt;       NA  2       en     NA
@@ -491,31 +474,31 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;        1797-Adams.1.pre     5      5         1 1802 1802 southern     pre
 #&gt;        1825-Adams.1.pre     4      5         1 2427 2427 southern     pre
 #&gt;      1861-Lincoln.1.pre     4      5         1   96   96 Southern     pre
-#&gt;      1865-Lincoln.1.pre     5      5         1  276  276 southern     pre
+#&gt;      1865-Lincoln.1.pre     5      5         1  278  278 southern     pre
 #&gt;        1877-Hayes.1.pre     5      5         1  376  376 Southern     pre
-#&gt;        1877-Hayes.2.pre     5      5         1  944  944 Southern     pre
-#&gt;        1877-Hayes.3.pre     5      5         1 1236 1236 Southern     pre
+#&gt;        1877-Hayes.2.pre     5      5         1  946  946 Southern     pre
+#&gt;        1877-Hayes.3.pre     5      5         1 1238 1238 Southern     pre
 #&gt;     1881-Garfield.1.pre     5      5         1  988  988 Southern     pre
 #&gt;         1909-Taft.1.pre     4      5         1 4026 4026 Southern     pre
 #&gt;         1909-Taft.2.pre     5      5         1 4227 4227 Southern     pre
 #&gt;         1909-Taft.3.pre     5      5         1 4347 4347 Southern     pre
 #&gt;         1909-Taft.4.pre     5      5         1 4532 4532 Southern     pre
 #&gt;         1909-Taft.5.pre     5      5         1 4592 4592 Southern     pre
-#&gt;   1953-Eisenhower.1.pre     5      5         1 1219 1219 southern     pre
+#&gt;   1953-Eisenhower.1.pre     5      5         1 1221 1221 southern     pre
 #&gt;       1797-Adams.1.post     5      5         1 1802 1802 southern    post
 #&gt;       1825-Adams.1.post     5      5         1 2427 2427 southern    post
 #&gt;     1861-Lincoln.1.post     5      5         1   96   96 Southern    post
-#&gt;     1865-Lincoln.1.post     5      5         2  276  276 southern    post
+#&gt;     1865-Lincoln.1.post     5      5         2  278  278 southern    post
 #&gt;       1877-Hayes.1.post     5      5         2  376  376 Southern    post
-#&gt;       1877-Hayes.2.post     5      5         1  944  944 Southern    post
-#&gt;       1877-Hayes.3.post     5      5         1 1236 1236 Southern    post
+#&gt;       1877-Hayes.2.post     5      5         1  946  946 Southern    post
+#&gt;       1877-Hayes.3.post     5      5         1 1238 1238 Southern    post
 #&gt;    1881-Garfield.1.post     5      5         2  988  988 Southern    post
 #&gt;        1909-Taft.1.post     5      5         2 4026 4026 Southern    post
 #&gt;        1909-Taft.2.post     5      5         1 4227 4227 Southern    post
 #&gt;        1909-Taft.3.post     5      5         1 4347 4347 Southern    post
 #&gt;        1909-Taft.4.post     5      5         1 4532 4532 Southern    post
 #&gt;        1909-Taft.5.post     5      5         1 4592 4592 Southern    post
-#&gt;  1953-Eisenhower.1.post     5      5         1 1219 1219 southern    post
+#&gt;  1953-Eisenhower.1.post     5      5         1 1221 1221 southern    post
 #&gt; </div><div class='input'><span class='co'># from a kwic</span>
 <span class='no'>kw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_char_sampletext</span>, <span class='st'>"econom*"</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>""</span>,
            <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='co'># keep original separators</span>
@@ -552,16 +535,10 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt; " the domestic economy, stimulating demand" </div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -572,7 +549,7 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

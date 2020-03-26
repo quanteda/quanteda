@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -49,7 +53,6 @@ packages. The general function convert provides easy conversion from a dfm
 to the document-term representations used in all other text analysis packages
 for which conversions are defined.  For corpus objects, convert provides
 an easy way to make a corpus and its document variables into a data.frame." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -77,7 +80,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -91,7 +94,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -209,7 +212,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert quanteda objects to non-quanteda formats</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/convert.R'><code>R/convert.R</code></a></small>
     <div class="hidden name"><code>convert.Rd</code></div>
     </div>
 
@@ -245,7 +248,7 @@ an easy way to make a corpus and its document variables into a data.frame.</p>
     </tr>
     <tr>
       <th>to</th>
-      <td><p>target conversion format, one of:</p><dl class='dl-horizontal'>
+      <td><p>target conversion format, one of:</p><dl'>
 <dt><code>"lda"</code></dt><dd><p>a list with components "documents" and "vocab" as
 needed by the function
 <a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a> from the
@@ -311,19 +314,19 @@ of the return formats.</p>
 <span class='no'>stmmat</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>stmmat</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
-#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 2 17 3 96 4 1 5 5 7 3 ...
-#&gt;   ..$ 1977-Carter : int [1:2, 1:502] 1 5 2 5 3 65 4 7 5 4 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 2 9 3 174 4 7 5 3 7 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 2 12 3 177 4 13 5 7 7 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 2 7 3 166 4 14 5 16 7 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 3 139 4 6 5 5 8 81 10 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 2 13 3 131 4 13 5 7 7 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 3 110 4 4 5 7 7 1 8 96 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:734] 1 2 3 120 4 3 5 8 7 2 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 2 22 3 130 4 22 5 4 6 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 3 99 4 14 5 5 8 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 3 96 4 9 5 8 8 88 ...
-#&gt;  $ vocab    : chr [1:3466] "-" "--" "," ";" ...
+#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 1 17 2 96 3 1 4 5 6 3 ...
+#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 11 2 65 3 7 4 4 7 52 ...
+#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 1 9 2 174 3 7 4 3 6 5 ...
+#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 1 12 2 177 3 13 4 7 6 3 ...
+#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 1 7 2 166 3 14 4 16 6 5 ...
+#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 2 139 3 6 4 5 7 81 9 4 ...
+#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 1 13 2 131 3 13 4 7 6 3 ...
+#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 1 2 2 110 3 4 4 7 6 1 ...
+#&gt;   ..$ 2005-Bush   : int [1:2, 1:734] 1 2 2 120 3 3 4 8 6 2 ...
+#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 1 22 2 130 3 22 4 4 5 1 ...
+#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...
+#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...
+#&gt;  $ vocab    : chr [1:3463] "-" "," ";" ":" ...
 #&gt;  $ meta     :'data.frame':	12 obs. of  4 variables:
 #&gt;   ..$ Year     : int [1:12] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...
 #&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
@@ -332,9 +335,9 @@ of the return formats.</p>
 <span class='co'># triplet</span>
 <span class='no'>tripletmat</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tripletlist"</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tripletmat</span>)</div><div class='output co'>#&gt; List of 3
-#&gt;  $ document : chr [1:8389] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
-#&gt;  $ feature  : chr [1:8389] "mr" "mr" "mr" "mr" ...
-#&gt;  $ frequency: num [1:8389] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
+#&gt;  $ document : chr [1:8388] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
+#&gt;  $ feature  : chr [1:8388] "mr" "mr" "mr" "mr" ...
+#&gt;  $ frequency: num [1:8388] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># tm's DocumentTermMatrix format</span>
 <span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
@@ -356,14 +359,10 @@ of the return formats.</p>
 #&gt; 1     d1 Text one.     1   one
 #&gt; 2     d2 Text two.     2   two</div><div class='input'><span class='fu'>convert</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"json"</span>)</div><div class='output co'>#&gt; [{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}] </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -374,7 +373,7 @@ of the return formats.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
