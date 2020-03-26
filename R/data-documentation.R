@@ -127,8 +127,7 @@
 #' ## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   
 #' 
 #' # on larger examples - notice that few negations are used
-#' dfm(data_char_ukimmig2010, dictionary = data_dictionary_LSD2015)
-#' kwic(data_char_ukimmig2010, "not")
+#' dfm(data_char_ukimmig2010[1:5], dictionary = data_dictionary_LSD2015)
 #' 
 #' # compound neg_negative and neg_positive tokens before creating a dfm object
 #' toks <- tokens_compound(tokens(txt), data_dictionary_LSD2015)

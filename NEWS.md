@@ -12,6 +12,8 @@
 * Fixed an issue causing CRAN errors in pre-v4, related to the new default of `stringsAsFactors = FALSE` for data.frame objects.
 * An error in the print method for dfm objects is now fixed (#1897)
 * Fixed a bug in `tokens_replace()` when the pattern was not matched (#1895)
+* Fixed the names of dimensions not exchanging when a dfm was transposed (#1903)
+
 
 # quanteda 2.0
 
