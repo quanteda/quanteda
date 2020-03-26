@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -71,7 +75,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -85,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -202,12 +206,12 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small>dev</small></h1>
+      <h1 data-toc-skip>Changelog <small>dev</small></h1>
       
     </div>
 
     <div id="quanteda-099-17" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.9-17">
 <a href="#quanteda-099-17" class="anchor"></a>quanteda 0.9.9-17<small> 2017-01-27 </small>
 </h1>
 <div id="new-features-18" class="section level2">
@@ -217,10 +221,10 @@
 <li>
 <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
 <li>
-<code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> implements new rules for nested and linked sequences in dictionary values. See #502.</li>
+<code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> implements new rules for nested and linked sequences in dictionary values. See <a href='https://github.com/quanteda/quanteda/issues/502'>#502</a>.</li>
 <li>
-<code><a href="../reference/tokens_compound.html">tokens_compound()</a></code> has a new <code>join</code> argument for better handling of nested and linked sequences. See #517.</li>
-<li>Internal operations on <code>tokens</code> are now significantly faster due to a reimplementation of the hash table functions in C++. (#510)</li>
+<code><a href="../reference/tokens_compound.html">tokens_compound()</a></code> has a new <code>join</code> argument for better handling of nested and linked sequences. See <a href='https://github.com/quanteda/quanteda/issues/517'>#517</a>.</li>
+<li>Internal operations on <code>tokens</code> are now significantly faster due to a reimplementation of the hash table functions in C++. (<a href='https://github.com/quanteda/quanteda/issues/510'>#510</a>)</li>
 <li>
 <code><a href="../reference/dfm.html">dfm()</a></code> now works with multi-word dictionaries and thesauruses, which previously worked only with <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code>.</li>
 <li>
@@ -231,10 +235,10 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed C++ incompatibilities on older platforms due to compiler incompatibilities with the required TBB libraries (for multi-threading) (#531, #532, #535), in addition to safeguarding against other compiler warnings across a variety of new tested undefined behaviours.<br>
+<li>Fixed C++ incompatibilities on older platforms due to compiler incompatibilities with the required TBB libraries (for multi-threading) (<a href='https://github.com/quanteda/quanteda/issues/531'>#531</a>, <a href='https://github.com/quanteda/quanteda/issues/532'>#532</a>, <a href='https://github.com/quanteda/quanteda/issues/535'>#535</a>), in addition to safeguarding against other compiler warnings across a variety of new tested undefined behaviours.<br>
 </li>
-<li>Fixed a bug in <code><a href="../reference/convert.html">convert(x, to = "lsa")</a></code> that transposed row and column names (#526)</li>
-<li>Added missing <code><a href="../reference/fcm.html">fcm()</a></code> method for corpus objects (#538)</li>
+<li>Fixed a bug in <code><a href="../reference/convert.html">convert(x, to = "lsa")</a></code> that transposed row and column names (<a href='https://github.com/quanteda/quanteda/issues/526'>#526</a>)</li>
+<li>Added missing <code><a href="../reference/fcm.html">fcm()</a></code> method for corpus objects (<a href='https://github.com/quanteda/quanteda/issues/538'>#538</a>)</li>
 <li>Fixed some minor issues with reading in Lexicoder format dictionaries (Improvements to Lexicoder dictionary handling</li>
 </ul>
 </div>
@@ -246,12 +250,12 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed a bug causing <code>dfm</code> and <code>tokens</code> to break on &gt; 10,000 documents. (#438)</li>
+<li>Fixed a bug causing <code>dfm</code> and <code>tokens</code> to break on &gt; 10,000 documents. (<a href='https://github.com/quanteda/quanteda/issues/438'>#438</a>)</li>
 <li>Fixed a bug in <code><a href="../reference/tokens.html">tokens(x, what = "character", removeSeparators = TRUE)</a></code> that returned an empty string.<br>
 </li>
-<li>Fixed a bug in <code>corpus.VCorpus</code> if the VCorpus contains a single document. (#445)</li>
-<li>Fixed a bug in <code>dfm_compress</code> in which the function failed on documents that contained zero feature counts. (#467)</li>
-<li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).</li>
+<li>Fixed a bug in <code>corpus.VCorpus</code> if the VCorpus contains a single document. (<a href='https://github.com/quanteda/quanteda/issues/445'>#445</a>)</li>
+<li>Fixed a bug in <code>dfm_compress</code> in which the function failed on documents that contained zero feature counts. (<a href='https://github.com/quanteda/quanteda/issues/467'>#467</a>)</li>
+<li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (<a href='https://github.com/quanteda/quanteda/issues/471'>#471</a>), also affecting predicted classes (<a href='https://github.com/quanteda/quanteda/issues/476'>#476</a>).</li>
 </ul>
 </div>
 <div id="new-features-19" class="section level2">
@@ -691,27 +695,27 @@
 <a href="#other-new-features" class="anchor"></a>Other new features</h2>
 <ul>
 <li>
-<code>to = "lsa"</code> functionality added to <code><a href="../reference/convert.html">convert()</a></code> (#414)<br>
+<code>to = "lsa"</code> functionality added to <code><a href="../reference/convert.html">convert()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/414'>#414</a>)<br>
 </li>
 <li>Much faster pattern matching in general, through an overhaul of how <code>valuetype</code> matches work for many functions.<br>
 </li>
 <li>Added experimental <code>View</code> methods for <code>kwic</code> objects, based on Javascript Datatables.<br>
 </li>
 <li>
-<code>kwic</code> is completely rewritten, now uses fast hashed index matching in C++ and fully implements vectorized matches (#306) and all <code>valuetype</code>s (#307).</li>
+<code>kwic</code> is completely rewritten, now uses fast hashed index matching in C++ and fully implements vectorized matches (<a href='https://github.com/quanteda/quanteda/issues/306'>#306</a>) and all <code>valuetype</code>s (<a href='https://github.com/quanteda/quanteda/issues/307'>#307</a>).</li>
 <li>
 <code>tokens_lookup</code>, <code>tokens_select</code>, and <code>tokens_remove</code> are faster and use parallelization (based on the TBB library).</li>
 <li>
 <code>textstat_dist</code> and <code>textstat_simil</code> add fast, sparse, and parallel computation of many new distance and similarity matrices.<br>
 </li>
 <li>Added <code>textmodel_wordshoal</code> fitting function.</li>
-<li>Add <code>max_docfreq</code> and <code>min_docfreq</code> arguments, and better verbose output, to <code>dfm_trim</code> (#383).</li>
+<li>Add <code>max_docfreq</code> and <code>min_docfreq</code> arguments, and better verbose output, to <code>dfm_trim</code> (<a href='https://github.com/quanteda/quanteda/issues/383'>#383</a>).</li>
 <li>Added support for batch hashing of tokens through <code><a href="../reference/tokens.html">tokens()</a></code>, for more memory-efficient token hashing when dealing with very large numbers of documents.<br>
 </li>
 <li>Added support for in-memory compressed corpus objects.</li>
 <li>Consolidated corpus-level metadata arguments in <code><a href="../reference/corpus.html">corpus()</a></code> through the <code>metacorpus</code> list argument.<br>
 </li>
-<li>Added Greek stopwords. (See #282).<br>
+<li>Added Greek stopwords. (See <a href='https://github.com/quanteda/quanteda/issues/282'>#282</a>).<br>
 </li>
 <li>Added index handling <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>, and <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> for (hashed) <code>tokens</code> objects.<br>
 </li>
@@ -723,14 +727,14 @@
 <li>Added new (hashed) <code>tokens</code> class object.</li>
 <li>Added plot method for fitted <code>textmodel_wordscores objects</code>.<br>
 </li>
-<li>Added fast <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> method (formerly <code>applyDictionary()</code>), that also works with dictionaries that have multi-word keys. Addresses but does not entirely yet solve #188.</li>
+<li>Added fast <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> method (formerly <code>applyDictionary()</code>), that also works with dictionaries that have multi-word keys. Addresses but does not entirely yet solve <a href='https://github.com/quanteda/quanteda/issues/188'>#188</a>.</li>
 <li>Added <code><a href="../reference/sparsity.html">sparsity()</a></code> function to compute the sparsity of a dfm.</li>
 <li>Added feature co-occurrence matrix functions (<code>fcm</code>).</li>
 </ul>
 </div>
 </div>
     <div id="quanteda-099-24" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.9-24">
 <a href="#quanteda-099-24" class="anchor"></a>quanteda 0.9.9-24<small> 2017-02-13 </small>
 </h1>
 <div id="new-features-17" class="section level2">
@@ -744,17 +748,17 @@
 <li>Added option to <code><a href="../reference/tokens.html">tokens()</a></code> and <code><a href="../reference/dfm.html">dfm()</a></code> for passing docvars through to to tokens and dfm objects, and added <code><a href="../reference/docvars.html">docvars()</a></code> and <code><a href="../reference/metadoc.html">metadoc()</a></code> methods for tokens and dfm class objects. Overall, the code for docvars and metadoc is now more robust and consistent.<br>
 </li>
 <li>
-<code><a href="../reference/docvars.html">docvars()</a></code> on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).</li>
+<code><a href="../reference/docvars.html">docvars()</a></code> on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of <a href='https://github.com/quanteda/quanteda/issues/242'>#242</a>).</li>
 <li>Redesigned <code>textmodel_scale1d</code> now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.</li>
 <li>
-<code>textmodel_wordfish()</code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (#482, #124)</li>
-<li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)</li>
+<code>textmodel_wordfish()</code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (<a href='https://github.com/quanteda/quanteda/issues/482'>#482</a>, <a href='https://github.com/quanteda/quanteda/issues/124'>#124</a>)</li>
+<li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (<a href='https://github.com/quanteda/quanteda/issues/603'>#603</a>)</li>
 <li>Package options (for verbose, threads) can now be set or queried using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</li>
-<li>Improved performance and better documentation for <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>. (#634)</li>
+<li>Improved performance and better documentation for <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/634'>#634</a>)</li>
 <li>Added functions <code><a href="../reference/corpus_trimsentences.html">corpus_trimsentences()</a></code> and <code><a href="../reference/corpus_trimsentences.html">char_trimsentences()</a></code> to remove sentences from a corpus or character object, based on token length or pattern matching.</li>
-<li>Added options to <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>: <code>min_sentence_length</code> and <code>max_sentence_length</code>. (#632)</li>
-<li>Indexing now works for dictionaries, for slicing out keys and values (<code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>), or accessing values directly (<code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>). (#651)</li>
-<li>Began the consolidation of collocation detection and scoring into a new function <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code><a href="../reference/textstat_collocations.html">collocations()</a></code> and <code>sequences()</code> functions. (#434) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
+<li>Added options to <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>: <code>min_sentence_length</code> and <code>max_sentence_length</code>. (<a href='https://github.com/quanteda/quanteda/issues/632'>#632</a>)</li>
+<li>Indexing now works for dictionaries, for slicing out keys and values (<code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>), or accessing values directly (<code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>). (<a href='https://github.com/quanteda/quanteda/issues/651'>#651</a>)</li>
+<li>Began the consolidation of collocation detection and scoring into a new function <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code><a href="../reference/textstat_collocations.html">collocations()</a></code> and <code>sequences()</code> functions. (<a href='https://github.com/quanteda/quanteda/issues/434'>#434</a>) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
 </ul>
 </div>
 <div id="behaviour-changes-11" class="section level2">
@@ -766,7 +770,7 @@
 <li>
 <code><a href="../reference/metadoc.html">metadoc()</a></code> now returns a vector instead of a data.frame for a single variable, similar to <code><a href="../reference/docvars.html">docvars()</a></code>
 </li>
-<li>Most <code>verbose</code> options now take the default from <code><a href="https://rdrr.io/r/base/options.html">getOption("verbose")</a></code> rather than fixing the value in the function signatures. (#577)</li>
+<li>Most <code>verbose</code> options now take the default from <code><a href="https://rdrr.io/r/base/options.html">getOption("verbose")</a></code> rather than fixing the value in the function signatures. (<a href='https://github.com/quanteda/quanteda/issues/577'>#577</a>)</li>
 <li>
 <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> now return a matrix if a <code>selection</code> argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.</li>
 <li>All remaining camelCase arguments are gone. For commonly used ones, such as those in <code><a href="../reference/tokens.html">tokens()</a></code>, the old arguments (e.g. <code>removePunct</code>) still produce the same behaviour but with a deprecation warning.</li>
@@ -777,94 +781,94 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed an problem in tokens generation for some irregular characters (#554).</li>
-<li>Fixed a problem in setting the parallel thread size on single-core machines (#556).</li>
-<li>Fixed problems for <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> on a corpus with no docvars (#571).</li>
+<li>Fixed an problem in tokens generation for some irregular characters (<a href='https://github.com/quanteda/quanteda/issues/554'>#554</a>).</li>
+<li>Fixed a problem in setting the parallel thread size on single-core machines (<a href='https://github.com/quanteda/quanteda/issues/556'>#556</a>).</li>
+<li>Fixed problems for <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> on a corpus with no docvars (<a href='https://github.com/quanteda/quanteda/issues/571'>#571</a>).</li>
 <li>
-<code>removeURL</code> in <code><a href="../reference/tokens.html">tokens()</a></code> now removes URLs where the first part of the URL is a single letter (#587).</li>
+<code>removeURL</code> in <code><a href="../reference/tokens.html">tokens()</a></code> now removes URLs where the first part of the URL is a single letter (<a href='https://github.com/quanteda/quanteda/issues/587'>#587</a>).</li>
 <li>
-<code>dfm_select</code> now works correctly for ngram features (#589).</li>
-<li>Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).</li>
+<code>dfm_select</code> now works correctly for ngram features (<a href='https://github.com/quanteda/quanteda/issues/589'>#589</a>).</li>
+<li>Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of <a href='https://github.com/quanteda/quanteda/issues/580'>#580</a>).</li>
 <li>Fixed a bug in the behaviour for <code><a href="../reference/dfm_select.html">dfm_select(x, features)</a></code> when <code>features</code> was a dfm, that failed to produce the intended featnames matches for the output dfm.</li>
-<li>Fixed a bug in <code><a href="../reference/corpus_segment.html">corpus_segment(x, what = "tags")</a></code> when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618, #634).</li>
-<li>Fixed some problems with dictionary construction and reading some dictionary formats (#454, #455, #459).</li>
+<li>Fixed a bug in <code><a href="../reference/corpus_segment.html">corpus_segment(x, what = "tags")</a></code> when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (<a href='https://github.com/quanteda/quanteda/issues/618'>#618</a>, <a href='https://github.com/quanteda/quanteda/issues/634'>#634</a>).</li>
+<li>Fixed some problems with dictionary construction and reading some dictionary formats (<a href='https://github.com/quanteda/quanteda/issues/454'>#454</a>, <a href='https://github.com/quanteda/quanteda/issues/455'>#455</a>, <a href='https://github.com/quanteda/quanteda/issues/459'>#459</a>).</li>
 </ul>
 </div>
 </div>
     <div id="quanteda-099-50" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.9-50">
 <a href="#quanteda-099-50" class="anchor"></a>quanteda 0.9.9-50<small> 2017-04-20 </small>
 </h1>
 <div id="new-features-16" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-16" class="anchor"></a>New features</h2>
 <ul>
-<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code><a href="https://rdrr.io/pkg/tm/man/SimpleCorpus.html">tm::SimpleCorpus</a></code> object. (#680)</li>
+<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code><a href="https://rdrr.io/pkg/tm/man/SimpleCorpus.html">tm::SimpleCorpus</a></code> object. (<a href='https://github.com/quanteda/quanteda/issues/680'>#680</a>)</li>
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
 <li>Conversion of a dfm to an stm object now passes docvars through in the <code>$meta</code> of the return object.</li>
-<li>New <code><a href="../reference/dfm_group.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (#725).</li>
+<li>New <code><a href="../reference/dfm_group.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (<a href='https://github.com/quanteda/quanteda/issues/725'>#725</a>).</li>
 <li>Methods for extending quanteda functions to readtext objects updated to match CRAN release of readtext package.</li>
 <li>Corpus constructor methods for data.frame objects now conform to the “text interchange format” for corpus data.frames, automatically recognizing <code>doc_id</code> and <code>text</code> fields, which also provides interoperability with the <strong>readtext</strong> package. corpus construction methods are now more explicitly tailored to input object classes.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-15" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-16" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-15" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-16" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>
-<code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> behaves more robustly on different platforms, especially for keys whose values match no features (#704).</li>
+<code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> behaves more robustly on different platforms, especially for keys whose values match no features (<a href='https://github.com/quanteda/quanteda/issues/704'>#704</a>).</li>
 <li>
 <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> no longer take the <code>n</code> argument, as this was not sorting features in correct order.</li>
-<li>Fixed failure of <code><a href="../reference/tokens.html">tokens(x, what = "character")</a></code> when <code>x</code> included Twitter characters <code>@</code> and <code>#</code> (#637).</li>
-<li>Fixed bug #707 where <code>ntype.dfm()</code> produced an incorrect result.</li>
-<li>Fixed bug #706 where <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> and <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> for single-document returns when <code>drop = TRUE</code>.</li>
+<li>Fixed failure of <code><a href="../reference/tokens.html">tokens(x, what = "character")</a></code> when <code>x</code> included Twitter characters <code>@</code> and <code>#</code> (<a href='https://github.com/quanteda/quanteda/issues/637'>#637</a>).</li>
+<li>Fixed bug <a href='https://github.com/quanteda/quanteda/issues/707'>#707</a> where <code>ntype.dfm()</code> produced an incorrect result.</li>
+<li>Fixed bug <a href='https://github.com/quanteda/quanteda/issues/706'>#706</a> where <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> and <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> for single-document returns when <code>drop = TRUE</code>.</li>
 <li>Improved the robustness of <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code>.</li>
 <li>
-<code>print</code>, and <code>head</code>, and <code>tail</code> methods for <code>dfm</code> are more robust (#684).</li>
-<li>Fixed bug in <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> caused by zero-count documents and zero-count features in a dfm (#699, #700, #701). This also removes docvar rows from <code>$meta</code> when this is passed through the dfm, for zero-count documents.</li>
-<li>Corrected broken handling of nested Yoshikoder dictionaries in <code><a href="../reference/dictionary.html">dictionary()</a></code>. (#722)</li>
+<code>print</code>, and <code>head</code>, and <code>tail</code> methods for <code>dfm</code> are more robust (<a href='https://github.com/quanteda/quanteda/issues/684'>#684</a>).</li>
+<li>Fixed bug in <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> caused by zero-count documents and zero-count features in a dfm (<a href='https://github.com/quanteda/quanteda/issues/699'>#699</a>, <a href='https://github.com/quanteda/quanteda/issues/700'>#700</a>, <a href='https://github.com/quanteda/quanteda/issues/701'>#701</a>). This also removes docvar rows from <code>$meta</code> when this is passed through the dfm, for zero-count documents.</li>
+<li>Corrected broken handling of nested Yoshikoder dictionaries in <code><a href="../reference/dictionary.html">dictionary()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/722'>#722</a>)</li>
 <li>
 <code>dfm_compress</code> now preserves a dfm’s docvars if collapsing only on the features margin, which means that <code><a href="../reference/dfm_tolower.html">dfm_tolower()</a></code> and <code><a href="../reference/dfm_tolower.html">dfm_toupper()</a></code> no longer remove the docvars.</li>
 <li>
-<code><a href="../reference/dfm_compress.html">fcm_compress()</a></code> now retains the fcm class, and generates and error when an asymmetric compression is attempted (#728).</li>
+<code><a href="../reference/dfm_compress.html">fcm_compress()</a></code> now retains the fcm class, and generates and error when an asymmetric compression is attempted (<a href='https://github.com/quanteda/quanteda/issues/728'>#728</a>).</li>
 <li>
-<code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code> now returns the collocations as character, not as a factor (#736)</li>
-<li>Fixed a bug in <code><a href="../reference/dfm_lookup.html">dfm_lookup(x, exclusive = FALSE)</a></code> wherein an empty dfm ws returned with there was no no match (#116).</li>
-<li>Argument passing through <code><a href="../reference/dfm.html">dfm()</a></code> to <code><a href="../reference/tokens.html">tokens()</a></code> is now robust, and preserves variables defined in the calling environment (#721).</li>
-<li>Fixed issues related to dictionaries failing when applying <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>, <code><a href="https://rdrr.io/r/base/names.html">names()</a></code>, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (#744)</li>
-<li>Dictionary import using the LIWC format is more robust to improperly formatted input files (#685).</li>
+<code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code> now returns the collocations as character, not as a factor (<a href='https://github.com/quanteda/quanteda/issues/736'>#736</a>)</li>
+<li>Fixed a bug in <code><a href="../reference/dfm_lookup.html">dfm_lookup(x, exclusive = FALSE)</a></code> wherein an empty dfm ws returned with there was no no match (<a href='https://github.com/quanteda/quanteda/issues/116'>#116</a>).</li>
+<li>Argument passing through <code><a href="../reference/dfm.html">dfm()</a></code> to <code><a href="../reference/tokens.html">tokens()</a></code> is now robust, and preserves variables defined in the calling environment (<a href='https://github.com/quanteda/quanteda/issues/721'>#721</a>).</li>
+<li>Fixed issues related to dictionaries failing when applying <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>, <code><a href="https://rdrr.io/r/base/names.html">names()</a></code>, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (<a href='https://github.com/quanteda/quanteda/issues/744'>#744</a>)</li>
+<li>Dictionary import using the LIWC format is more robust to improperly formatted input files (<a href='https://github.com/quanteda/quanteda/issues/685'>#685</a>).</li>
 <li>Weights applied using <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> now print friendlier error messages when the weight vector contains features not found in the dfm. See <a href="https://stackoverflow.com/questions/44132313/can-the-anew-dictionary-be-used-for-sentiment-analysis-in-quanteda/">this Stack Overflow question</a> for the use case that sparked this improvement.</li>
 </ul>
 </div>
 </div>
     <div id="quanteda-099-65" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.9-65">
 <a href="#quanteda-099-65" class="anchor"></a>quanteda 0.9.9-65<small> 2017-05-26 </small>
 </h1>
 <div id="new-features-15" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-15" class="anchor"></a>New features</h2>
 <ul>
-<li>Improvements and consolidation of methods for detecting multi-word expressions, now active only through <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (#753, #803). This function is still under development and likely to change further.</li>
-<li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (#756).</li>
+<li>Improvements and consolidation of methods for detecting multi-word expressions, now active only through <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (<a href='https://github.com/quanteda/quanteda/issues/753'>#753</a>, <a href='https://github.com/quanteda/quanteda/issues/803'>#803</a>). This function is still under development and likely to change further.</li>
+<li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (<a href='https://github.com/quanteda/quanteda/issues/756'>#756</a>).</li>
 <li>
 <code>ngram</code> formation is now significantly faster, including with skips (skipgrams).</li>
 <li>Improvements to <code><a href="../reference/topfeatures.html">topfeatures()</a></code>:
 <ul>
-<li>now accepts a <code>groups</code> argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).</li>
-<li>new argument <code>scheme</code> that takes the default of (frequency) <code>"count"</code> but also a new <code>"docfreq"</code> value (#408).</li>
+<li>now accepts a <code>groups</code> argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (<a href='https://github.com/quanteda/quanteda/issues/336'>#336</a>).</li>
+<li>new argument <code>scheme</code> that takes the default of (frequency) <code>"count"</code> but also a new <code>"docfreq"</code> value (<a href='https://github.com/quanteda/quanteda/issues/408'>#408</a>).</li>
 </ul>
 </li>
-<li>New wrapper <code><a href="../reference/phrase.html">phrase()</a></code> converts whitespace-separated multi-word patterns into a list of patterns. This affects the feature/pattern matching in <code>tokens/dfm_select/remove</code>, <code>tokens_compound</code>, <code>tokens/dfm_lookup</code>, and <code>kwic</code>. <code><a href="../reference/phrase.html">phrase()</a></code> and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent. (See #820, #787, #740, #837, #836, #838)</li>
+<li>New wrapper <code><a href="../reference/phrase.html">phrase()</a></code> converts whitespace-separated multi-word patterns into a list of patterns. This affects the feature/pattern matching in <code>tokens/dfm_select/remove</code>, <code>tokens_compound</code>, <code>tokens/dfm_lookup</code>, and <code>kwic</code>. <code><a href="../reference/phrase.html">phrase()</a></code> and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent. (See <a href='https://github.com/quanteda/quanteda/issues/820'>#820</a>, <a href='https://github.com/quanteda/quanteda/issues/787'>#787</a>, <a href='https://github.com/quanteda/quanteda/issues/740'>#740</a>, <a href='https://github.com/quanteda/quanteda/issues/837'>#837</a>, <a href='https://github.com/quanteda/quanteda/issues/836'>#836</a>, <a href='https://github.com/quanteda/quanteda/issues/838'>#838</a>)</li>
 <li>
-<code><a href="../reference/corpus.html">corpus.Corpus()</a></code> for creating a corpus from a <strong>tm</strong> Corpus now works with more complex objects that include document-level variables, such as data from the <strong>manifestoR</strong> package (#849).</li>
+<code><a href="../reference/corpus.html">corpus.Corpus()</a></code> for creating a corpus from a <strong>tm</strong> Corpus now works with more complex objects that include document-level variables, such as data from the <strong>manifestoR</strong> package (<a href='https://github.com/quanteda/quanteda/issues/849'>#849</a>).</li>
 <li>New plot function <code><a href="../reference/textplot_keyness.html">textplot_keyness()</a></code> plots term “keyness”, the association of words with contrasting classes as measured by <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code>.</li>
-<li>Added corpus constructor for corpus objects (#690).</li>
-<li>Added dictionary constructor for dictionary objects (#690).</li>
-<li>Added a tokens constructor for tokens objects (#690), including updates to <code><a href="../reference/tokens.html">tokens()</a></code> that improve the consistency and efficiency of the tokenization.</li>
-<li>Added new <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>: <code>language_stemmer</code> and <code>language_stopwords</code>, now used for default in <code>*_wordstem</code> functions and <code><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords()</a></code> for defaults, respectively. Also uses this option in <code><a href="../reference/dfm.html">dfm()</a></code> when <code>stem = TRUE</code>, rather than hard-wiring in the “english” stemmer (#386).</li>
-<li>Added a new function <code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> to compile feature frequencies, possibly by groups. (#825)</li>
-<li>Added <code>nomatch</code> option to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code>, to provide tokens or feature counts for categories not matched to any dictionary key. (#496)</li>
+<li>Added corpus constructor for corpus objects (<a href='https://github.com/quanteda/quanteda/issues/690'>#690</a>).</li>
+<li>Added dictionary constructor for dictionary objects (<a href='https://github.com/quanteda/quanteda/issues/690'>#690</a>).</li>
+<li>Added a tokens constructor for tokens objects (<a href='https://github.com/quanteda/quanteda/issues/690'>#690</a>), including updates to <code><a href="../reference/tokens.html">tokens()</a></code> that improve the consistency and efficiency of the tokenization.</li>
+<li>Added new <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>: <code>language_stemmer</code> and <code>language_stopwords</code>, now used for default in <code>*_wordstem</code> functions and <code><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords()</a></code> for defaults, respectively. Also uses this option in <code><a href="../reference/dfm.html">dfm()</a></code> when <code>stem = TRUE</code>, rather than hard-wiring in the “english” stemmer (<a href='https://github.com/quanteda/quanteda/issues/386'>#386</a>).</li>
+<li>Added a new function <code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> to compile feature frequencies, possibly by groups. (<a href='https://github.com/quanteda/quanteda/issues/825'>#825</a>)</li>
+<li>Added <code>nomatch</code> option to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code>, to provide tokens or feature counts for categories not matched to any dictionary key. (<a href='https://github.com/quanteda/quanteda/issues/496'>#496</a>)</li>
 </ul>
 </div>
 <div id="behaviour-changes-10" class="section level2">
@@ -872,50 +876,44 @@
 <a href="#behaviour-changes-10" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>The functions <code>sequences()</code> and <code><a href="../reference/textstat_collocations.html">collocations()</a></code> have been removed and replaced by <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>.</li>
-<li>(Finally) we added “will” to the list of English stopwords (#818).</li>
+<li>(Finally) we added “will” to the list of English stopwords (<a href='https://github.com/quanteda/quanteda/issues/818'>#818</a>).</li>
 <li>
-<code>dfm</code> objects with one or both dimensions having zero length, and empty <code>kwic</code> objects now display more appropriately in their print methods (per #811).</li>
-<li>Pattern matches are now implemented more consistently across functions. In functions such as <code>*_select</code>, <code>*_remove</code>, <code>tokens_compound</code>, <code>features</code> has been replaced by <code>pattern</code>, and in <code>kwic</code>, <code>keywords</code> has been replaced by <code>pattern</code>. These all behave consistently with respect to <code>pattern</code>, which now has a unified single help page and parameter description.(#839) See also above new features related to <code><a href="../reference/phrase.html">phrase()</a></code>.</li>
-<li>We have improved the performance of the C++ routines that handle many of the <code>tokens_*</code> functions using hashed tokens, making some of them 10x faster (#853).</li>
-<li>Upgrades to the <code><a href="../reference/dfm_group.html">dfm_group()</a></code> function now allow “empty” documents to be created using the <code>fill = TRUE</code> option, for making documents conform to a selection (similar to how <code><a href="../reference/dfm_select.html">dfm_select()</a></code> works for features, when supplied a dfm as the pattern argument). The <code>groups</code> argument now behaves consistently across the functions where it is used. (#854)</li>
+<code>dfm</code> objects with one or both dimensions having zero length, and empty <code>kwic</code> objects now display more appropriately in their print methods (per <a href='https://github.com/quanteda/quanteda/issues/811'>#811</a>).</li>
+<li>Pattern matches are now implemented more consistently across functions. In functions such as <code>*_select</code>, <code>*_remove</code>, <code>tokens_compound</code>, <code>features</code> has been replaced by <code>pattern</code>, and in <code>kwic</code>, <code>keywords</code> has been replaced by <code>pattern</code>. These all behave consistently with respect to <code>pattern</code>, which now has a unified single help page and parameter description.(<a href='https://github.com/quanteda/quanteda/issues/839'>#839</a>) See also above new features related to <code><a href="../reference/phrase.html">phrase()</a></code>.</li>
+<li>We have improved the performance of the C++ routines that handle many of the <code>tokens_*</code> functions using hashed tokens, making some of them 10x faster (<a href='https://github.com/quanteda/quanteda/issues/853'>#853</a>).</li>
+<li>Upgrades to the <code><a href="../reference/dfm_group.html">dfm_group()</a></code> function now allow “empty” documents to be created using the <code>fill = TRUE</code> option, for making documents conform to a selection (similar to how <code><a href="../reference/dfm_select.html">dfm_select()</a></code> works for features, when supplied a dfm as the pattern argument). The <code>groups</code> argument now behaves consistently across the functions where it is used. (<a href='https://github.com/quanteda/quanteda/issues/854'>#854</a>)</li>
 <li>
 <code><a href="../reference/dictionary.html">dictionary()</a></code> now requires its main argument to be a list, not a series of elements that can be used to build a list.</li>
-<li>Some changes to the behaviour of <code><a href="../reference/tokens.html">tokens()</a></code> have improved the behaviour of <code>remove_hyphens = FALSE</code>, which now behaves more correctly regardless of the setting of <code>remove_punct</code> (#887).</li>
+<li>Some changes to the behaviour of <code><a href="../reference/tokens.html">tokens()</a></code> have improved the behaviour of <code>remove_hyphens = FALSE</code>, which now behaves more correctly regardless of the setting of <code>remove_punct</code> (<a href='https://github.com/quanteda/quanteda/issues/887'>#887</a>).</li>
 <li>Improved <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> function allows cbinding vectors, matrixes, and (recyclable) scalars to dfm objects.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-14" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-14" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-15" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>For the underlying methods behind <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before. We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size &gt; 2.<br>
 </li>
 <li>LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.</li>
 <li>
-<code>textmodel_NB(x, y, distribution = "Bernoulli")</code> was previously inactive even when this option was set. It has now been fully implemented and tested (#776, #780).</li>
-<li>Separators including rare spacing characters are now handled more robustly by the <code>remove_separators</code> argument in <code><a href="../reference/tokens.html">tokens()</a></code>. See #796.</li>
-<li>Improved memory usage when computing <code><a href="../reference/ntoken.html">ntoken()</a></code> and <code><a href="../reference/ntoken.html">ntype()</a></code>. (#795)</li>
+<code>textmodel_NB(x, y, distribution = "Bernoulli")</code> was previously inactive even when this option was set. It has now been fully implemented and tested (<a href='https://github.com/quanteda/quanteda/issues/776'>#776</a>, <a href='https://github.com/quanteda/quanteda/issues/780'>#780</a>).</li>
+<li>Separators including rare spacing characters are now handled more robustly by the <code>remove_separators</code> argument in <code><a href="../reference/tokens.html">tokens()</a></code>. See <a href='https://github.com/quanteda/quanteda/issues/796'>#796</a>.</li>
+<li>Improved memory usage when computing <code><a href="../reference/ntoken.html">ntoken()</a></code> and <code><a href="../reference/ntoken.html">ntype()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/795'>#795</a>)</li>
 <li>Improvements to <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> now does not throw an error when <strong>quanteda</strong> functions are called directly without attaching the package. In addition, <strong>quanteda</strong> options can be set now in .Rprofile and will not be overwritten when the options initialization takes place when attaching the package.</li>
 <li>Fixed a bug in <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> that wrongly computed the number of words with fewer than 3 syllables in a text; this affected the <code>FOG.NRI</code> and the <code>Linsear.Write</code> measures only.</li>
 <li>Fixed mistakes in the computation of two docfreq schemes: <code>"logave"</code> and <code>"inverseprob"</code>.</li>
 <li>Fixed a bug in the handling of multi-thread options where the settings using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> did not actually set the number of threads. In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.</li>
-<li>Fixed a bug causing failure when functions that use <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> are called without the namespace or package being attached or loaded (#864).</li>
-<li>Fixed a bug in overloading the View method that caused all named objects in the RStudio/Source pane to be named “x”. (#893)</li>
+<li>Fixed a bug causing failure when functions that use <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> are called without the namespace or package being attached or loaded (<a href='https://github.com/quanteda/quanteda/issues/864'>#864</a>).</li>
+<li>Fixed a bug in overloading the View method that caused all named objects in the RStudio/Source pane to be named “x”. (<a href='https://github.com/quanteda/quanteda/issues/893'>#893</a>)</li>
 </ul>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-099-17">0.9.9-17</a></li>
-        <li><a href="#quanteda-099-24">0.9.9-24</a></li>
-        <li><a href="#quanteda-099-50">0.9.9-50</a></li>
-        <li><a href="#quanteda-099-65">0.9.9-65</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -927,7 +925,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

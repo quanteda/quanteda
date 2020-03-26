@@ -6,16 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Replication: word embedding (gloVe/word2vec) • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
-<script src="../../../pkgdown.js"></script><!-- docsearch --><script src="../../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../../bootstrap-toc.css">
+<script src="../../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
+<script src="../../../pkgdown.js"></script><!-- docsearch --><script src="../../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../../extra.css" rel="stylesheet">
 <script src="../../../extra.js"></script><meta property="og:title" content="Replication: word embedding (gloVe/word2vec)">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="quanteda">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -27,7 +27,7 @@
   gtag('config', 'UA-144616-24');
 </script>
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -157,54 +157,56 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Replication: word embedding (gloVe/word2vec)</h1>
+      <h1 data-toc-skip>Replication: word embedding (gloVe/word2vec)</h1>
                         <h4 class="author">Kenneth Benoit, Haiyan Wang and Kohei Watanabe</h4>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/replication/text2vec.Rmd"><code>vignettes/pkgdown/replication/text2vec.Rmd</code></a></small>
       <div class="hidden name"><code>text2vec.Rmd</code></div>
 
     </div>
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda"</span>)</pre></body></html></div>
 <p>This is intended to show how <strong>quanteda</strong> can be used with the <a href="http://text2vec.org"><strong>text2vec</strong></a> package in order to replicate its <a href="http://text2vec.org/glove.html">gloVe example</a>.</p>
 <div id="download-the-corpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download-the-corpus" class="anchor"></a>Download the corpus</h2>
 <p>Download a corpus comprising the texts used in the <a href="http://text2vec.org/glove.html"><strong>text2vec</strong> vignette</a>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">wiki_corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">wiki_corp</span> <span class="kw">&lt;-</span> <span class="kw pkg">quanteda.corpora</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html">download</a></span>(<span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1"</span>)</pre></body></html></div>
 </div>
 <div id="select-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#select-features" class="anchor"></a>Select features</h2>
 <p>First, we tokenize the corpus, and then get the names of the features that occur five times or more. Trimming the features before constructing the fcm:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(wiki_corp)</a>
-<a class="sourceLine" id="cb3-2" title="2">feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki_toks, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_termfreq =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="st">    </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">wiki_toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="no">wiki_corp</span>)
+<span class="no">feats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="no">wiki_toks</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">5</span>) <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../../reference/featnames.html">featnames</a></span>()</pre></body></html></div>
 <pre><code>## Creating a dfm from a tokens input...</code></pre>
-<pre><code>##    ... lowercasing</code></pre>
-<pre><code>##    ... found 1 document, 253,854 features</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span></a>
-<a class="sourceLine" id="cb7-2" title="2">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>##  ...lowercasing</code></pre>
+<pre><code>##  ...found 1 document, 253,854 features</code></pre>
+<pre><code>##  ...complete, elapsed time:  1.09 seconds.</code></pre>
+<pre><code>## Finished constructing a 1 x 253,854 sparse dfm.</code></pre>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span>
+<span class="no">wiki_toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">wiki_toks</span>, <span class="no">feats</span>, <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 </div>
 <div id="construct-the-feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#construct-the-feature-co-occurrence-matrix" class="anchor"></a>Construct the feature co-occurrence matrix</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">wiki_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(wiki_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">count =</span> <span class="st">"weighted"</span>, <span class="dt">weights =</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">tri =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">wiki_fcm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span>(<span class="no">wiki_toks</span>, <span class="kw">context</span> <span class="kw">=</span> <span class="st">"window"</span>, <span class="kw">count</span> <span class="kw">=</span> <span class="st">"weighted"</span>, <span class="kw">weights</span> <span class="kw">=</span> <span class="fl">1</span> / (<span class="fl">1</span>:<span class="fl">5</span>), <span class="kw">tri</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 </div>
 <div id="fit-word-embedding-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-word-embedding-model" class="anchor"></a>Fit word embedding model</h2>
 <p>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe model</a> using <a href="http://text2vec.org"><strong>rsparse</strong></a>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"text2vec"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"text2vec"</span>)</pre></body></html></div>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.</p>
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">glove &lt;-<span class="st"> </span>GlobalVectors<span class="op">$</span><span class="kw">new</span>(<span class="dt">rank =</span> <span class="dv">50</span>, <span class="dt">x_max =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb10-2" title="2">wv_main &lt;-<span class="st"> </span>glove<span class="op">$</span><span class="kw"><a href="https://rdrr.io/pkg/text2vec/man/reexports.html">fit_transform</a></span>(wiki_fcm, <span class="dt">n_iter =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb10-3" title="3">                               <span class="dt">convergence_tol =</span> <span class="fl">0.01</span>, <span class="dt">n_threads =</span> <span class="dv">8</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">glove</span> <span class="kw">&lt;-</span> <span class="no">GlobalVectors</span>$<span class="fu">new</span>(<span class="kw">rank</span> <span class="kw">=</span> <span class="fl">50</span>, <span class="kw">x_max</span> <span class="kw">=</span> <span class="fl">10</span>)
+<span class="no">wv_main</span> <span class="kw">&lt;-</span> <span class="no">glove</span>$<span class="fu"><a href="https://rdrr.io/pkg/text2vec/man/reexports.html">fit_transform</a></span>(<span class="no">wiki_fcm</span>, <span class="kw">n_iter</span> <span class="kw">=</span> <span class="fl">10</span>,
+                               <span class="kw">convergence_tol</span> <span class="kw">=</span> <span class="fl">0.01</span>, <span class="kw">n_threads</span> <span class="kw">=</span> <span class="fl">8</span>)</pre></body></html></div>
 <pre><code>## INFO  [11:34:46.671] epoch 1, loss 0.1660 
 ## INFO  [11:34:58.978] epoch 2, loss 0.1230 
 ## INFO  [11:35:11.520] epoch 3, loss 0.1081 
@@ -215,59 +217,49 @@
 ## INFO  [11:36:14.872] epoch 8, loss 0.0866 
 ## INFO  [11:36:27.590] epoch 9, loss 0.0849 
 ## INFO  [11:36:44.058] epoch 10, loss 0.0834</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(wv_main)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">wv_main</span>)</pre></body></html></div>
 <pre><code>## [1] 71290    50</code></pre>
 </div>
 <div id="averaging-learned-word-vectors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#averaging-learned-word-vectors" class="anchor"></a>Averaging learned word vectors</h2>
 <p>The two vectors are main and context. According to the Glove paper, averaging the two word vectors results in more accurate representation.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">wv_context &lt;-<span class="st"> </span>glove<span class="op">$</span>components</a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(wv_context)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">wv_context</span> <span class="kw">&lt;-</span> <span class="no">glove</span>$<span class="no">components</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">wv_context</span>)</pre></body></html></div>
 <pre><code>## [1]    50 71290</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">word_vectors &lt;-<span class="st"> </span>wv_main <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/t.html">t</a></span>(wv_context)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">word_vectors</span> <span class="kw">&lt;-</span> <span class="no">wv_main</span> + <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="no">wv_context</span>)</pre></body></html></div>
 </div>
 <div id="examining-term-representations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examining-term-representations" class="anchor"></a>Examining term representations</h2>
 <p>Now we can find the closest word vectors for <code>paris - france + germany</code></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">berlin &lt;-<span class="st"> </span>word_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="st">  </span>word_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="st">  </span>word_vectors[<span class="st">"germany"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>]</a>
-<a class="sourceLine" id="cb17-4" title="4">cos_sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="dt">x =</span> <span class="kw"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(word_vectors), <span class="dt">y =</span> <span class="kw"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(berlin),</a>
-<a class="sourceLine" id="cb17-5" title="5">                          <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(cos_sim[, <span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">berlin</span> <span class="kw">&lt;-</span> <span class="no">word_vectors</span>[<span class="st">"paris"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] -
+  <span class="no">word_vectors</span>[<span class="st">"france"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] +
+  <span class="no">word_vectors</span>[<span class="st">"germany"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>]
+<span class="no">cos_sim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(<span class="no">word_vectors</span>), <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(<span class="no">berlin</span>),
+                          <span class="kw">method</span> <span class="kw">=</span> <span class="st">"cosine"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">cos_sim</span>[, <span class="fl">1</span>], <span class="kw">decreasing</span> <span class="kw">=</span> <span class="fl">TRUE</span>), <span class="fl">5</span>)</pre></body></html></div>
 <pre><code>##     paris    berlin    munich      near   germany 
 ## 0.7661132 0.7354615 0.7161062 0.6537753 0.6524224</code></pre>
 <p>Here is another example for <code>london = paris - france + uk + england</code></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">london &lt;-<span class="st">  </span>word_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span></a>
-<a class="sourceLine" id="cb19-2" title="2"><span class="st">    </span>word_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-3" title="3"><span class="st">    </span>word_vectors[<span class="st">"uk"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-4" title="4"><span class="st">    </span>word_vectors[<span class="st">"england"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>]</a>
-<a class="sourceLine" id="cb19-5" title="5"></a>
-<a class="sourceLine" id="cb19-6" title="6">cos_sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="kw"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(word_vectors), <span class="dt">y =</span> <span class="kw"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(london),</a>
-<a class="sourceLine" id="cb19-7" title="7">                          <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)</a>
-<a class="sourceLine" id="cb19-8" title="8"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(cos_sim[, <span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">london</span> <span class="kw">&lt;-</span>  <span class="no">word_vectors</span>[<span class="st">"paris"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] -
+    <span class="no">word_vectors</span>[<span class="st">"france"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] +
+    <span class="no">word_vectors</span>[<span class="st">"uk"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] +
+    <span class="no">word_vectors</span>[<span class="st">"england"</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>]
+
+<span class="no">cos_sim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(<span class="no">word_vectors</span>), <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span>(<span class="no">london</span>),
+                          <span class="kw">margin</span> <span class="kw">=</span> <span class="st">"documents"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"cosine"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">cos_sim</span>[, <span class="fl">1</span>], <span class="kw">decreasing</span> <span class="kw">=</span> <span class="fl">TRUE</span>), <span class="fl">5</span>)</pre></body></html></div>
 <pre><code>##    london      york        at        uk   england 
 ## 0.7997464 0.7733473 0.7576137 0.7568586 0.7409973</code></pre>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#download-the-corpus">Download the corpus</a></li>
-      <li><a href="#select-features">Select features</a></li>
-      <li><a href="#construct-the-feature-co-occurrence-matrix">Construct the feature co-occurrence matrix</a></li>
-      <li><a href="#fit-word-embedding-model">Fit word embedding model</a></li>
-      <li><a href="#averaging-learned-word-vectors">Averaging learned word vectors</a></li>
-      <li><a href="#examining-term-representations">Examining term representations</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -278,7 +270,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

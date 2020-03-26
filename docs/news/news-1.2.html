@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -71,7 +75,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -85,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -202,29 +206,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small>1.2</small></h1>
+      <h1 data-toc-skip>Changelog <small>1.2</small></h1>
       
     </div>
 
     <div id="quanteda-120" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.2.0">
 <a href="#quanteda-120" class="anchor"></a>quanteda 1.2.0<small> 2018-04-15 </small>
 </h1>
 <div id="new-features-9" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-9" class="anchor"></a>New Features</h2>
 <ul>
-<li>Added an <code><a href="../reference/nsentence.html">nsentence()</a></code> method for <strong>spacyr</strong> parsed objects. (#1289)</li>
+<li>Added an <code><a href="../reference/nsentence.html">nsentence()</a></code> method for <strong>spacyr</strong> parsed objects. (<a href='https://github.com/quanteda/quanteda/issues/1289'>#1289</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-8" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-8" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-9" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Fix bug in <code><a href="../reference/nsyllable.html">nsyllable()</a></code> that incorrectly handled cased words, and returned wrong names with <code>use.names = TRUE</code>. (#1282)</li>
-<li>Fix the overwriting of <code><a href="../reference/summary.character.html">summary.character()</a></code> caused by previous import of the <strong>network</strong> package namespace. (#1285)</li>
+<li>Fix bug in <code><a href="../reference/nsyllable.html">nsyllable()</a></code> that incorrectly handled cased words, and returned wrong names with <code>use.names = TRUE</code>. (<a href='https://github.com/quanteda/quanteda/issues/1282'>#1282</a>)</li>
+<li>Fix the overwriting of <code><a href="../reference/summary.character.html">summary.character()</a></code> caused by previous import of the <strong>network</strong> package namespace. (<a href='https://github.com/quanteda/quanteda/issues/1285'>#1285</a>)</li>
 <li>
-<code><a href="../reference/dfm_weight.html">dfm_smooth()</a></code> now correctly sets the smooth value in the dfm (#1274). Arithmetic operations on dfm objects are now much more consistent and do not drop attributes of the dfm, as sometimes happened with earlier versions.</li>
+<code><a href="../reference/dfm_weight.html">dfm_smooth()</a></code> now correctly sets the smooth value in the dfm (<a href='https://github.com/quanteda/quanteda/issues/1274'>#1274</a>). Arithmetic operations on dfm objects are now much more consistent and do not drop attributes of the dfm, as sometimes happened with earlier versions.</li>
 </ul>
 </div>
 <div id="behaviour-changes-5" class="section level2">
@@ -232,24 +236,21 @@
 <a href="#behaviour-changes-5" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>
-<code><a href="../reference/tokens_tolower.html">tokens_toupper()</a></code> and <code><a href="../reference/tokens_tolower.html">tokens_tolower()</a></code> no longer remove unused token types. Solves #1278.</li>
+<code><a href="../reference/tokens_tolower.html">tokens_toupper()</a></code> and <code><a href="../reference/tokens_tolower.html">tokens_tolower()</a></code> no longer remove unused token types. Solves <a href='https://github.com/quanteda/quanteda/issues/1278'>#1278</a>.</li>
 <li>
-<code><a href="../reference/dfm_trim.html">dfm_trim()</a></code> now takes more options, and these are implemented more consistently. <code>min_termfreq</code> and <code>max_termfreq</code> have replaced <code>min_count</code> and <code>max_count</code>, and these can be modified using a <code>termfreq_type</code> argument. (Similar options are implemented for <code>docfreq_type</code>.) Solves #1253, #1254.</li>
+<code><a href="../reference/dfm_trim.html">dfm_trim()</a></code> now takes more options, and these are implemented more consistently. <code>min_termfreq</code> and <code>max_termfreq</code> have replaced <code>min_count</code> and <code>max_count</code>, and these can be modified using a <code>termfreq_type</code> argument. (Similar options are implemented for <code>docfreq_type</code>.) Solves <a href='https://github.com/quanteda/quanteda/issues/1253'>#1253</a>, <a href='https://github.com/quanteda/quanteda/issues/1254'>#1254</a>.</li>
 <li>
-<code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> now take valid dfm indexes for the relevant margin for the <code>selection</code> argument. Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed. Solves #1266.</li>
-<li>Improved performance for <code><a href="../reference/dfm_group.html">dfm_group()</a></code> (#1295).</li>
+<code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> now take valid dfm indexes for the relevant margin for the <code>selection</code> argument. Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed. Solves <a href='https://github.com/quanteda/quanteda/issues/1266'>#1266</a>.</li>
+<li>Improved performance for <code><a href="../reference/dfm_group.html">dfm_group()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/1295'>#1295</a>).</li>
 </ul>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-120">1.2.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -261,7 +262,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
