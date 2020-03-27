@@ -342,3 +342,36 @@ test_that("convert.corpus works", {
 
     })
 
+test_that("convert to = data.frame works", {
+    dfmat <- dfm(c(d1 = "this is a fine document",
+                   d2 = "this is a fine feature"))
+    expect_identical(
+        convert(dfmat, to = "data.frame"),
+        data.frame(
+            doc_id = c("d1", "d2"),
+            this = c(1, 1),
+            is = c(1, 1),
+            a = c(1, 1),
+            fine = c(1, 1),
+            document = c(1, 0),
+            feature = c(0, 1), stringsAsFactors = FALSE
+        )
+    )
+    expect_identical(
+      convert(dfmat, to = "data.frame", docid_field = "__document"),
+      data.frame(
+        "__document" = c("d1", "d2"),
+        this = c(1, 1),
+        is = c(1, 1),
+        a = c(1, 1),
+        fine = c(1, 1),
+        document = c(1, 0),
+        feature = c(0, 1), 
+        stringsAsFactors = FALSE, check.names = FALSE
+      )
+    )
+    expect_error(
+        convert(dfmat, to = "data.frame", docid_field = "document"),
+        "'document' matches a feature in the dfm; use a different docid_field value"
+    )
+})
