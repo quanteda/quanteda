@@ -7,7 +7,11 @@
 \alias{data_int_syllables}
 \alias{data_char_wordlists}
 \title{Internal data sets}
-\format{An object of class \code{integer} of length 133245.}
+\format{
+An object of class \code{integer} of length 133245.
+
+An object of class \code{list} of length 2.
+}
 \usage{
 data_int_syllables
 

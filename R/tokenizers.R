@@ -52,12 +52,14 @@ tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("
 
 preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
     
-    url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-    hyphen <- "[\\p{Pd}]"
-    tag <- "[@#]"
+    name <- names(x)
+    x <- as.character(x)
     
-    m <- names(x)
-    regex <- url
+    hyphen <- "[\\p{Pd}]"
+    tag <- "[#@]"
+    url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+    
+    regex <- character()
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
         regex <- c(regex, hyphen)
@@ -66,37 +68,47 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         regex <- c(regex, tag)
     }
-    special <- stri_extract_all_regex(x, paste(regex, collapse = "|"))
-    sp <- unlist(special)
-    sp <- sp[!is.na(sp)]
-    if (length(sp)) {
-        sp <- unique(sp)
-        si <- paste0("\u100000", seq_along(sp), "\u100001")
-        names(si) <- sp
-        x <- mapply(function(x, y) {
-            if (!is.na(y[1])) { # check NA for no match
-                stri_replace_all_fixed(x, y, si[y], vectorize_all = FALSE)
-            } else {
-                return(x)
-            }
-        }, x, special)
-    } else {
-        si <- character()
-        names(si) <- character()
-    }
-    structure(x, names = m, special = si)
-}
-
-restore_special <- function(x, special) {
-    types <- types(x)
-    if (length(special)) {
-        types <- stri_replace_all_fixed(
-            types, 
-            special, 
-            names(special),
+    regex <- c(regex, url)
+    
+    s <- stri_extract_all_regex(x, paste(regex, collapse = "|"),  omit_no_match = TRUE)
+    r <- lengths(s)
+    s <- unlist(s, use.names = FALSE)
+    
+    # index specials
+    index <- split(rep(seq_along(x), r), factor(s, levels = unique(s)))
+    special <- paste0("\u100000", seq_along(index), "\u100001")
+    names(special) <- names(index)
+    for (i in seq_along(index)) {
+        x[index[[i]]] <- stri_replace_all_fixed(
+            x[index[[i]]], 
+            names(special)[i], 
+            special[i],
             vectorize_all = FALSE
         )
     }
+    structure(x, names = name, special = special)
+}
+
+restore_special <- function(x, special) {
+    
+    types <- types(x)
+    # extract all placeholders
+    d <- stri_extract_all_regex(types, "\u100000\\d+\u100001", omit_no_match = TRUE)
+    r <- lengths(d)
+    d <- unlist(d, use.names = FALSE)
+    
+    # index placeholders
+    index <- split(rep(seq_along(types), r), factor(d, levels = unique(d)))
+    pos <- fastmatch::fmatch(names(index), special)
+    for (i in seq_along(index)) {
+        types[index[[i]]] <- stri_replace_all_fixed(
+                                types[index[[i]]], 
+                                special[pos[i]], 
+                                names(special)[pos[i]],
+                                vectorize_all = FALSE
+                             )
+    }
+    
     if (!identical(types, types(x))) {
         types(x) <- types
         x <- tokens_recompile(x)
@@ -123,7 +135,7 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     # substitute characters not to split
     x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
-    if (verbose) catm(" ...segmenting tokens\n")
+    if (verbose) catm(" ...segmenting texts\n")
     structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
