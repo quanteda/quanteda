@@ -52,11 +52,13 @@ tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("
 
 preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
     
+    name <- names(x)
+    x <- as.character(x)
+    
     hyphen <- "[\\p{Pd}]"
     tag <- "[#@]"
     url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
     
-    m <- names(x)
     regex <- character()
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
@@ -67,30 +69,30 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
         regex <- c(regex, tag)
     }
     regex <- c(regex, url)
-    special <- stri_extract_all_regex(x, paste(regex, collapse = "|"))
-    sp <- unlist(special)
-    sp <- sp[!is.na(sp)]
-    if (length(sp)) {
-        sp <- unique(sp)
-        si <- paste0("\u100000", seq_along(sp), "\u100001")
-        x <- mapply(function(x, y) {
-            if (!is.na(y[1])) { # check NA for no match
-                stri_replace_all_fixed(x, y, si[fastmatch::fmatch(y, sp)], vectorize_all = FALSE)
-            } else {
-                return(x)
-            }
-        }, x, special)
-        names(si) <- sp
-    } else {
-        si <- character()
-        names(si) <- character()
+    
+    s <- stri_extract_all_regex(x, paste(regex, collapse = "|"),  omit_no_match = TRUE)
+    r <- lengths(s)
+    s <- unlist(s, use.names = FALSE)
+    
+    # index specials
+    index <- split(rep(seq_along(x), r), factor(s, levels = unique(s)))
+    special <- paste0("\u100000", seq_along(index), "\u100001")
+    names(special) <- names(index)
+    for (i in seq_along(index)) {
+        x[index[[i]]] <- stri_replace_all_fixed(
+            x[index[[i]]], 
+            names(special)[i], 
+            special[i],
+            vectorize_all = FALSE
+        )
     }
-    structure(x, names = m, special = si)
+    structure(x, names = name, special = special)
 }
 
 restore_special <- function(x, special) {
     
     types <- types(x)
+    # extract all placeholders
     d <- stri_extract_all_regex(types, "\u100000\\d+\u100001", omit_no_match = TRUE)
     r <- lengths(d)
     d <- unlist(d, use.names = FALSE)
