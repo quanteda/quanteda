@@ -4,12 +4,14 @@
 \name{data_corpus_inaugural}
 \alias{data_corpus_inaugural}
 \title{US presidential inaugural address texts}
-\format{a \link{corpus} object with the following docvars:
+\format{
+a \link{corpus} object with the following docvars:
 \itemize{
 \item \code{Year} a four-digit integer year
 \item \code{President} character; President's last name
 \item \code{FirstName} character; President's first name (and possibly middle initial)
-}}
+}
+}
 \source{
 \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and
 \url{http://www.presidency.ucsb.edu/inaugurals.php}.

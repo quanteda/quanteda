@@ -5,7 +5,9 @@
 \alias{data_dfm_lbgexample}
 \alias{data_dfm_LBGexample}
 \title{dfm from data in Table 1 of Laver, Benoit, and Garry (2003)}
-\format{A \link{dfm} object with 6 documents and 37 features.}
+\format{
+A \link{dfm} object with 6 documents and 37 features.
+}
 \usage{
 data_dfm_lbgexample
 }
