@@ -1,3 +1,10 @@
+# quanteda 2.0.2
+
+## Changes
+
+* Fixed a performance issue causing slowdowns in tokenizing (using the default `what = "word"`) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).
+
+
 # quanteda 2.0.1
 
 ## Changes
