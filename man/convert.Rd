@@ -14,6 +14,7 @@ convert(x, to, ...)
     "tripletlist"),
   docvars = NULL,
   omit_empty = TRUE,
+  docid_field = "doc_id",
   ...
 )
 
@@ -56,6 +57,9 @@ documents with non-zero counts.  Only affects the "stm" format.}
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when \code{to = "lda"} or
 \code{to = "topicmodels"}.  For \code{to = "stm"} format, \verb{omit_empty`` is always }TRUE`.}
+
+\item{docid_field}{character; the name of the column containing document
+names used when \code{to = "data.frame"}.  Unused for other conversions.}
 
 \item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[jsonlite]{prettify}}}
 }

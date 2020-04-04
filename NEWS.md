@@ -9,6 +9,14 @@
 
 ## Changes
 
+## Bug fixes and stability enhancements
+
+* `convert(x, to = "data.frame")` now outputs the first column as "doc_id" rather than "document" since "document" is a commonly occurring term in many texts. (#1918)
+
+# quanteda 2.0.1
+
+## Changes
+
 * Moved `data_corpus_irishbudget2010` and `data_corpus_dailnoconf1991` to the **quanteda.textmodels** package.
 * Em dashes and double dashes between words, whether surrounded by a space or not, are now converted to " - " to distinguish them from infix hyphens.  (#1889)
 * Verbose output for dfm and tokens creation is now corrected and more consistent.  (#1894)

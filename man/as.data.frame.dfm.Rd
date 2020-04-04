@@ -9,6 +9,7 @@
   row.names = NULL,
   ...,
   document = docnames(x),
+  docid_field = "doc_id",
   check.names = FALSE
 )
 }
@@ -22,6 +23,9 @@
 
 \item{document}{optional first column of mode \code{character} in the
 data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
+
+\item{docid_field}{character; the name of the column containing document
+names used when \code{to = "data.frame"}.  Unused for other conversions.}
 
 \item{check.names}{logical.  If \code{TRUE} then the names of the
     variables in the data frame are checked to ensure that they are

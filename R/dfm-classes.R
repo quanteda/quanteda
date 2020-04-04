@@ -132,20 +132,20 @@ as.matrix.dfm <- function(x, ...) {
 #'   data.frame, defaults `docnames(x)`.  Set to `NULL` to exclude.
 #' @inheritParams base::as.data.frame
 #' @inheritParams base::data.frame
+#' @inheritParams convert
 #' @param ... unused
 #' @method as.data.frame dfm
 #' @keywords internal dfm
 #' @seealso [convert()]
 #' @export
 as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
-                              check.names = FALSE) {
+                              docid_field = "doc_id", check.names = FALSE) {
     .Deprecated("convert(x, to = \"data.frame\")")
-    if (!(is.character(document) || is.null(document)))
-        stop("document must be character or NULL")
-    df <- data.frame(as.matrix(x), row.names = row.names,
-                     check.names = check.names)
-    if (!is.null(document)) df <- cbind(document, df, stringsAsFactors = FALSE)
-    df
+    result <- dfm2dataframe(x, row.names = NULL, ..., document = document,
+                            docid_field = docid_field, check.names = check.names)
+    if (!is.null(row.names))
+        row.names(result) <- row.names
+    result
 }
 
 

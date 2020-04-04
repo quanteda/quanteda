@@ -39,6 +39,8 @@
 #'   that do not accept empty documents.  Only used when `to = "lda"` or
 #'   `to = "topicmodels"`.  For `to = "stm"` format, `omit_empty`` is
 #'   always `TRUE`.
+#' @param docid_field character; the name of the column containing document
+#'   names used when `to = "data.frame"`.  Unused for other conversions.
 #' @param ... unused directly
 #' @return A converted object determined by the value of `to` (see above).
 #'   See conversion target package documentation for more detailed descriptions
@@ -86,7 +88,8 @@ convert.default <- function(x, to, ...) {
 #' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
                                   "lsa", "matrix", "data.frame", "tripletlist"),
-                        docvars = NULL, omit_empty = TRUE, ...) {
+                        docvars = NULL, omit_empty = TRUE, docid_field = "doc_id", 
+                        ...) {
     unused_dots(...)
     x <- as.dfm(x)
     to <- match.arg(to)
@@ -121,7 +124,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
     else if (to == "lsa")
         return(dfm2lsa(x))
     else if (to == "data.frame")
-        return(dfm2dataframe(x))
+        return(dfm2dataframe(x, docid_field = docid_field))
     else if (to == "matrix")
         return(as.matrix(x))
     else if (to == "tripletlist")
@@ -415,11 +418,17 @@ dfm2tripletlist <- function(x) {
 }
 
 dfm2dataframe <- function(x, row.names = NULL, ..., document = docnames(x),
-                          check.names = FALSE) {
+                          docid_field = "doc_id", check.names = FALSE) {
     if (!(is.character(document) || is.null(document)))
         stop("document must be character or NULL")
     df <- data.frame(as.matrix(x), row.names = row.names,
                      check.names = check.names)
-    if (!is.null(document)) df <- cbind(document, df, stringsAsFactors = FALSE)
+    if (!is.null(document)) {
+        if (docid_field %in% names(df)) {
+            stop("'", docid_field, "' matches a feature in the dfm; use a different docid_field value")
+        }
+        df <- cbind(document, df, stringsAsFactors = FALSE)
+        names(df)[1] <- docid_field
+    }
     df
 }
