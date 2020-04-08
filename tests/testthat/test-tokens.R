@@ -1075,6 +1075,14 @@ test_that("tokenizing Japanese with URLs works", {
     )
 })
 
+test_that("tokenizing Japanese hashtags", {
+    txt <- c(d1 = "オリンピック延期決定！ #政治 #安部政権")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("オリンピック", "延期", "決定", "！", "#政治", "#安部政権"))
+    )
+})
+
 test_that("preserve_special works", {
     txt <- "This @username used this #hashtag."
     expect_identical(

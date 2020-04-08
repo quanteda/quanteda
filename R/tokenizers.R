@@ -56,7 +56,7 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     x <- as.character(x)
     
     hyphen <- "[\\p{Pd}]"
-    tag <- "[#@]"
+    tag <- "[#@]\\w+"
     url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
     
     regex <- character()
@@ -102,11 +102,11 @@ restore_special <- function(x, special) {
     pos <- fastmatch::fmatch(names(index), special)
     for (i in seq_along(index)) {
         types[index[[i]]] <- stri_replace_all_fixed(
-                                types[index[[i]]], 
-                                special[pos[i]], 
-                                names(special)[pos[i]],
-                                vectorize_all = FALSE
-                             )
+            types[index[[i]]], 
+            special[pos[i]], 
+            names(special)[pos[i]],
+            vectorize_all = FALSE
+        )
     }
     
     if (!identical(types, types(x))) {
