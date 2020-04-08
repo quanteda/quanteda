@@ -56,7 +56,8 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     x <- as.character(x)
     
     hyphen <- "[\\p{Pd}]"
-    tag <- "[#@]\\w+"
+    username <- "@[a-zA-Z0-9_]{1,15}"
+    hashtag <- "#\\w+"
     url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
     
     regex <- character()
@@ -66,7 +67,7 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     }
     if (!split_tags) {
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
-        regex <- c(regex, tag)
+        regex <- c(regex, username, hashtag)
     }
     regex <- c(regex, url)
     
