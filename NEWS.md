@@ -3,6 +3,7 @@
 ## Changes
 
 * Fixed a performance issue causing slowdowns in tokenizing (using the default `what = "word"`) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).
+* Updated the (default) "word" tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in `quanteda_options()`.  The following are now preserved: `#政治` as well as Weibo-style hashtags such as `#英国首相#".
 
 
 # quanteda 2.0.1
