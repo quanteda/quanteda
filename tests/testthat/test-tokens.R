@@ -1100,10 +1100,10 @@ test_that("emails address is preserved", {
 })
 
 test_that("longer tags are preserved", {
-    txt <- c(d1 = "#quanteda #q-x #q_y #q")
+    txt <- c(d1 = "#quanteda #q-x #q_y #q")q100 #
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c("#quanteda", "#q-x", "#q_y", "#q"))
+        list(d1 = c("#quanteda", "#q-x", "#q_y", "#q"#q100", "))
     )
 })
 
