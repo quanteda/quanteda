@@ -27,7 +27,9 @@
 #' created by matrix factorization} 
 #' \item{`language_stemmer`}{character; language option for [char_wordstem], 
 #' [tokens_wordstem], and [dfm_wordstem]} 
-#' }
+#' \item{`pattern_hashtag`}{character; regex pattern to avoid segmenting hashtags} 
+#' \item{`pattern_username`}{character; regex pattern to avoid segmenting social
+#' media usernames and email addresses} }
 #' @return When called using a `key = value` pair (where `key` can be
 #' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
@@ -151,6 +153,8 @@ get_options_default <- function(){
                  base_docname = "text",
                  base_featname = "feat",
                  base_compname = "comp",
-                 language_stemmer = "english")
+                 language_stemmer = "english",
+                 pattern_hashtag = "#\\w+|#\\w+#",
+                 pattern_username = "@")
     return(opts)
 }

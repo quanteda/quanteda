@@ -52,7 +52,9 @@ through an operation that adds features}
 created by matrix factorization}
 \item{\code{language_stemmer}}{character; language option for \link{char_wordstem},
 \link{tokens_wordstem}, and \link{dfm_wordstem}}
-}
+\item{\code{pattern_hashtag}}{character; regex pattern to avoid segmenting hashtags}
+\item{\code{pattern_username}}{character; regex pattern to avoid segmenting social
+media usernames and email addresses} }
 }
 \examples{
 (opt <- quanteda_options())
