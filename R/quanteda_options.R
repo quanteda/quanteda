@@ -154,7 +154,7 @@ get_options_default <- function(){
                  base_featname = "feat",
                  base_compname = "comp",
                  language_stemmer = "english",
-                 pattern_hashtag = "#\\w+|#\\w+#",
+                 pattern_hashtag = "#\\w+#?",
                  pattern_username = "@")
     return(opts)
 }

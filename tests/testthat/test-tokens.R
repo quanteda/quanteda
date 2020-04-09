@@ -1075,11 +1075,19 @@ test_that("tokenizing Japanese with URLs works", {
     )
 })
 
-test_that("tokenizing Japanese hashtags works", {
+test_that("Non-ASCII hashtags are preserved", {
     txt <- c(d1 = "オリンピック延期決定！ #政治 #安部政権")
     expect_identical(
         as.list(tokens(txt, what = "word")),
         list(d1 = c("オリンピック", "延期", "決定", "！", "#政治", "#安部政権"))
+    )
+})
+
+test_that("Weibo-style hashtags are preserved", {
+    txt <- c(d1 = "#英国首相#仍在ICU")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("#英国首相#", "仍在", "ICU"))
     )
 })
 
@@ -1099,8 +1107,7 @@ test_that("longer tags are preserved", {
     )
 })
 
-
-tet_that("preold serve_special works", {
+test_that("old preserve_special works", {
     txt <- "This @username used this #hashtag."
     expect_identical(
         quanteda:::preserve_special1(txt, split_tags = FALSE),
