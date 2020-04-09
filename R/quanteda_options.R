@@ -27,9 +27,9 @@
 #' created by matrix factorization} 
 #' \item{`language_stemmer`}{character; language option for [char_wordstem], 
 #' [tokens_wordstem], and [dfm_wordstem]} 
-#' \item{`pattern_hashtag`}{character; regex pattern to avoid segmenting hashtags} 
-#' \item{`pattern_username`}{character; regex pattern to avoid segmenting social
-#' media usernames and email addresses} }
+#' \item{`pattern_hashtag`, `pattern_username`}{character; regex patterns for
+#' (social media) hashtags and usernames respectively, used to avoid segmenting
+#' these in the default internal "word" tokenizer}}
 #' @return When called using a `key = value` pair (where `key` can be
 #' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
