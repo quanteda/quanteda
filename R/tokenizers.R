@@ -56,10 +56,10 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     x <- as.character(x)
     
     hyphen <- "[\\p{Pd}]"
-    username <- "@[a-zA-Z0-9_]{1,15}"
-    hashtag <- "#\\w+"
+    username <- quanteda_options("pattern_username") # preserves email address too
+    hashtag <- quanteda_options("pattern_hashtag")
     url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-    
+
     regex <- character()
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
@@ -76,21 +76,30 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     s <- unlist(s, use.names = FALSE)
     
     # index specials
-    index <- split(rep(seq_along(x), r), factor(s, levels = unique(s)))
-    special <- paste0("\u100000", seq_along(index), "\u100001")
-    names(special) <- names(index)
-    for (i in seq_along(index)) {
-        x[index[[i]]] <- stri_replace_all_fixed(
-            x[index[[i]]], 
-            names(special)[i], 
-            special[i],
-            vectorize_all = FALSE
-        )
-    }
+    u <- unique(s)
+    u <- u[order(stri_length(u), decreasing = TRUE)] # substitute longer match first
+    index <- split(rep(seq_along(x), r), factor(s, levels = u))
+    if (length(index)) {
+        special <- paste0("\u100000", seq_along(index), "\u100001")
+        names(special) <- names(index)
+        for (i in seq_along(index)) {
+            x[index[[i]]] <- stri_replace_all_fixed(
+                x[index[[i]]], 
+                names(special)[i], 
+                special[i],
+                vectorize_all = FALSE
+            )
+        }
+    } else {
+        special <- character()
+    } 
     structure(x, names = name, special = special)
 }
 
 restore_special <- function(x, special) {
+
+    if (!length(special))
+        return(x)
     
     types <- types(x)
     # extract all placeholders
@@ -100,16 +109,17 @@ restore_special <- function(x, special) {
     
     # index placeholders
     index <- split(rep(seq_along(types), r), factor(d, levels = unique(d)))
-    pos <- fastmatch::fmatch(names(index), special)
-    for (i in seq_along(index)) {
-        types[index[[i]]] <- stri_replace_all_fixed(
-            types[index[[i]]], 
-            special[pos[i]], 
-            names(special)[pos[i]],
-            vectorize_all = FALSE
-        )
+    if (length(index)) {
+        pos <- fastmatch::fmatch(names(index), special)
+        for (i in seq_along(index)) {
+            types[index[[i]]] <- stri_replace_all_fixed(
+                types[index[[i]]], 
+                special[pos[i]], 
+                names(special)[pos[i]],
+                vectorize_all = FALSE
+            )
+        }
     }
-    
     if (!identical(types, types(x))) {
         types(x) <- types
         x <- tokens_recompile(x)

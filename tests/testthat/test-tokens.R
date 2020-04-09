@@ -1075,7 +1075,7 @@ test_that("tokenizing Japanese with URLs works", {
     )
 })
 
-test_that("tokenizing Japanese hashtags", {
+test_that("tokenizing Japanese hashtags works", {
     txt <- c(d1 = "オリンピック延期決定！ #政治 #安部政権")
     expect_identical(
         as.list(tokens(txt, what = "word")),
@@ -1083,7 +1083,24 @@ test_that("tokenizing Japanese hashtags", {
     )
 })
 
-test_that("preserve_special works", {
+test_that("emails address is preserved", {
+    txt <- c(d1 = "support@quanteda.io @quanteda")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("support@quanteda.io", "@quanteda"))
+    )
+})
+
+test_that("longer tags are preserved", {
+    txt <- c(d1 = "#quanteda #q-x #q_y #q")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("#quanteda", "#q-x", "#q_y", "#q"))
+    )
+})
+
+
+tet_that("preold serve_special works", {
     txt <- "This @username used this #hashtag."
     expect_identical(
         quanteda:::preserve_special1(txt, split_tags = FALSE),
