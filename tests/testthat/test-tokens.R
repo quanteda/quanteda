@@ -1099,11 +1099,11 @@ test_that("emails address is preserved", {
     )
 })
 
-test_that("longer tags are preserved", {
-    txt <- c(d1 = "#quanteda #q-x #q_y #q")q100 #
+test_that("hashtags are preserved", {
+    txt <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c("#quanteda", "#q-x", "#q_y", "#q"#q100", "))
+        list(d1 = c("#quanteda", "#q-x", "#q_y", "#q100", "#q"))
     )
 })
 
