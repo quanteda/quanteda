@@ -126,39 +126,43 @@ test_that("tokens_segment works when removing punctuation match, remove_delimite
 
 
 test_that("tokens_segment works with tags", {
-    corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
-                     d2 = "##TEST3 Four"),
+    corp <- corpus(c(d1 = "__TEST__ One two __TEST2__ Three",
+                     d2 = "__TEST3__ Four"),
                    docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
     toks <- tokens(corp, what = "word")
-    toks_seg1 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex",
+    toks_seg1 <- tokens_segment(toks, "__[A-Z0-9]+__", valuetype = "regex",
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = TRUE)
     vars1 <- docvars(toks_seg1)
     expect_equal(vars1$test, c("A", "A", "B"))
-    expect_equal(vars1$pattern, c("##TEST", "##TEST2", "##TEST3"))
+    expect_equal(vars1$pattern, c("__TEST__", "__TEST2__", "__TEST3__"))
     expect_equal(as.list(toks_seg1),
                  list(d1.1 = c("One", "two"), d1.2 = "Three", d2.1 = "Four"))
 
-    toks_seg2 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex",
+    toks_seg2 <- tokens_segment(toks, "__[A-Z0-9]+__", valuetype = "regex",
                                 pattern_position = "before", extract_pattern = FALSE, use_docvars = TRUE)
     vars2 <- docvars(toks_seg2)
     expect_equal(vars2$test, c("A", "A", "B"))
     expect_equal(vars2$pattern, NULL)
     expect_equal(as.list(toks_seg2),
-                 list(d1.1 = c("##TEST", "One", "two"), d1.2 = c("##TEST2", "Three"), d2.1 = c("##TEST3", "Four")))
+                 list(d1.1 = c("__TEST__", "One", "two"), 
+                      d1.2 = c("__TEST2__", "Three"), 
+                      d2.1 = c("__TEST3__", "Four")))
 
-    toks_seg3 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex",
+    toks_seg3 <- tokens_segment(toks, "__[A-Z0-9]+__", valuetype = "regex",
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
     vars3 <- docvars(toks_seg3)
     expect_equal(vars3$test, NULL)
-    expect_equal(vars3$pattern, c("##TEST", "##TEST2", "##TEST3"))
+    expect_equal(vars3$pattern, c("__TEST__", "__TEST2__", "__TEST3__"))
     expect_equal(as.list(toks_seg3),
                  list(d1.1 = c("One", "two"), d1.2 = "Three", d2.1 = "Four"))
 
-    toks_seg4 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex",
+    toks_seg4 <- tokens_segment(toks, "__[A-Z0-9]+__", valuetype = "regex",
                                 pattern_position = "before", extract_pattern = FALSE, use_docvars = FALSE)
     vars4 <- docvars(toks_seg4)
     expect_equal(vars4$test, NULL)
     expect_equal(vars4$pattern, NULL)
     expect_equal(as.list(toks_seg4),
-                 list(d1.1 = c("##TEST", "One", "two"), d1.2 = c("##TEST2", "Three"), d2.1 = c("##TEST3", "Four")))
+                 list(d1.1 = c("__TEST__", "One", "two"), 
+                      d1.2 = c("__TEST2__", "Three"), 
+                      d2.1 = c("__TEST3__", "Four")))
 })
