@@ -420,3 +420,11 @@ test_that("friendly_class_undefined_message for featfreq()", {
         "featfreq\\(\\) only works on dfm objects"
     )
 })
+
+test_that("friendly_class_undefined_message for char_select()", {
+    expect_error(
+        char_select(tokens(data_char_sampletext)),
+        "char_select() only works on character objects",
+        fixed = TRUE
+    )
+})
