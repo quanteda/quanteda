@@ -93,6 +93,7 @@ Collate:
     'aaa.R'
     'bootstrap_dfm.R'
     'casechange-functions.R'
+    'char_select.R'
     'character-methods.R'
     'convert.R'
     'corpus-addsummary-metadata.R'

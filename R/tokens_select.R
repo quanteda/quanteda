@@ -1,6 +1,6 @@
 #' Select or remove tokens from a tokens object
 #'
-#' These function select or discard tokens from a [tokens] objects.  For
+#' These function select or discard tokens from a [tokens] object.  For
 #' convenience, the functions `tokens_remove` and `tokens_keep` are defined as
 #' shortcuts for `tokens_select(x, pattern, selection = "remove")` and
 #' `tokens_select(x, pattern, selection = "keep")`, respectively.  The most
