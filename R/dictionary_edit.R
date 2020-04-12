@@ -21,9 +21,9 @@ dictionary_edit.default <- function(x) {
 #' @export
 dictionary_edit.dictionary2 <- function(x) {
     x <- as.dictionary(x)
-    x_meta <- meta(x)
-    x <- dictionary(list_edit(as.list(x)), tolower = FALSE)
-    meta(x) <- x_meta
+    attrs <- attributes(x)
+    x <- build_dictionary2(list_edit(as.list(x)))
+    x <- rebuild_dictionary2(x, attrs)
     title <- meta(x, "title")
     if (!is.null(title)) meta(x, "title") <- paste(title, "(edited)")
     x
