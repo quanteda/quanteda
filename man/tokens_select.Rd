@@ -81,7 +81,7 @@ a \link{tokens} object with tokens selected or removed based on their
 match to \code{pattern}
 }
 \description{
-These function select or discard tokens from a \link{tokens} objects.  For
+These function select or discard tokens from a \link{tokens} object.  For
 convenience, the functions \code{tokens_remove} and \code{tokens_keep} are defined as
 shortcuts for \code{tokens_select(x, pattern, selection = "remove")} and
 \code{tokens_select(x, pattern, selection = "keep")}, respectively.  The most
