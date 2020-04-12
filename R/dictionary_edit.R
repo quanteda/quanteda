@@ -20,6 +20,7 @@ dictionary_edit.default <- function(x) {
 
 #' @export
 dictionary_edit.dictionary2 <- function(x) {
+    x <- as.dictionary(x)
     x_meta <- meta(x)
     x <- dictionary(list_edit(as.list(x)), tolower = FALSE)
     meta(x) <- x_meta
@@ -47,6 +48,7 @@ list_edit <- function(x) {
 #' @param sep a character vector of strings to append after each element,
 #'   defaults to `"\n"` so that each word will be on its own line in the editor
 #' @export
+#' @importFrom data.table fwrite
 #' @examples
 #' \dontrun{
 #' my_stopwords <- stopwords("en", source = "snowball") %>%
@@ -56,7 +58,13 @@ char_edit <- function(x, sep = "\n") {
     if (!is.vector(x) || !is.character(x))
         stop("x must be a character vector")
     tfile <- tempfile(fileext = ".txt")
-    cat(x, sep = sep, file = tfile)
+    fwrite(as.list(x), file = tfile, sep = sep, col.names = FALSE, quote = FALSE)
     try(edited <- utils::edit(file = tfile), silent = TRUE)
-    readLines(tfile)
+    result <- readLines(tfile, encoding = "UTF-8")
+    if (result[length(result)] == "")
+        result <- result[-length(result)]
+    result
 }
+
+# possible way to test this:
+# https://stackoverflow.com/questions/41372146/test-interaction-with-users-in-r-package
