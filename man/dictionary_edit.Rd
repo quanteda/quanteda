@@ -6,17 +6,17 @@
 \alias{char_edit}
 \title{Conveniently edit dictionaries}
 \usage{
-dictionary_edit(x)
+dictionary_edit(x, ...)
 
-list_edit(x)
+list_edit(x, ...)
 
-char_edit(x, sep = "\\n")
+char_edit(x, ...)
 }
 \arguments{
 \item{x}{a \link{dictionary} or (list of) character elements}
 
-\item{sep}{a character vector of strings to append after each element,
-defaults to \code{"\\n"} so that each word will be on its own line in the editor}
+\item{...}{(optional) arguments passed to \code{\link[utils:edit]{utils::edit()}} (such as the choice
+of editor)}
 }
 \value{
 an edited version of the input object
@@ -29,12 +29,12 @@ for interactive editing of (lists of) character objects.  These can be useful
 for instance in editing stopword lists.
 }
 \examples{
+# edit the positive and negative entries from the LSD2015
 \dontrun{
-# edit some supplied stopwords
-my_posneg_dict <- dictionary_edit(data_dictionary_LSD2015[1:2])
-}
+my_posneg_dict <- dictionary_edit(data_dictionary_LSD2015[1:2])}
+
+# edit the system stopwords
 \dontrun{
 my_stopwords <- stopwords("en", source = "snowball") \%>\%
-    char_edit()
-}
+    char_edit()}
 }
