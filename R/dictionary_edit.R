@@ -48,7 +48,7 @@ list_edit <- function(x) {
 #' @param sep a character vector of strings to append after each element,
 #'   defaults to `"\n"` so that each word will be on its own line in the editor
 #' @export
-#' @importFrom data.table fwrite
+#' @importFrom stringi stri_write_lines
 #' @examples
 #' \dontrun{
 #' my_stopwords <- stopwords("en", source = "snowball") %>%
@@ -58,7 +58,7 @@ char_edit <- function(x, sep = "\n") {
     if (!is.vector(x) || !is.character(x))
         stop("x must be a character vector")
     tfile <- tempfile(fileext = ".txt")
-    fwrite(as.list(x), file = tfile, sep = sep, col.names = FALSE, quote = FALSE)
+    stri_write_lines(x, fname = tfile)
     try(edited <- utils::edit(file = tfile), silent = TRUE)
     result <- readLines(tfile, encoding = "UTF-8")
     if (result[length(result)] == "")
