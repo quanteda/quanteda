@@ -409,9 +409,12 @@ setMethod("[",
               x <- unclass(x)
               attrs <- attributes(x)
               is_category <- vapply(x[i], function(y) is.list(y), logical(1))
-              build_dictionary2(x[i][is_category],
+              result <- build_dictionary2(x[i][is_category],
                                 separator = field_object(attrs, "separator"),
                                 valuetype = field_object(attrs, "valuetype"))
+              meta(result) <- attrs[["meta"]][["user"]]
+              result@meta$object <- attrs[["meta"]][["object"]]
+              result
           })
 
 #' @param object the dictionary to be extracted

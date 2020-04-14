@@ -123,6 +123,7 @@ Collate:
     'dfm_trim.R'
     'dfm_weight.R'
     'dictionaries.R'
+    'dictionary_edit.R'
     'dimnames.R'
     'directionchange-functions.R'
     'fcm-classes.R'

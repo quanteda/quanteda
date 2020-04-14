@@ -49,7 +49,7 @@ rebuild_corpus(x, attrs)
 
 upgrade_corpus(x)
 
-build_dictionary2(x, meta = list(), ...)
+build_dictionary2(x, meta = list(), class = "dictionary2", ...)
 
 rebuild_dictionary2(x, attrs)
 
