@@ -1,6 +1,6 @@
 context("test dfm")
 
-data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
+load("../data/corpora/data_corpus_irishbudget2010.rda")
 
 test_that("test c.corpus", {
     expect_equal(

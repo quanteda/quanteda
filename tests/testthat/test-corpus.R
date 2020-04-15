@@ -1,6 +1,6 @@
 context("test corpus")
 
-data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
+load("../data/corpora/data_corpus_irishbudget2010.rda")
 
 test_that("test show.corpus", {
     expect_output(

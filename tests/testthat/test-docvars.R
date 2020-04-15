@@ -1,6 +1,6 @@
 context("test docvars")
 
-data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
+load("../data/corpora/data_corpus_irishbudget2010.rda")
 
 test_that("make_docvars() works", {
     
