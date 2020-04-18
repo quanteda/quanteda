@@ -122,6 +122,7 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
     if (!is.null(n)) {
         stopifnot(is.numeric(n))
         result <- result[, .SD[seq_len(n)], by = group]
+        result <- result[!is.na(frequency)] # fixes #1929
     }
 
     setcolorder(result, c("feature", "frequency", "rank", "docfreq", "group"))
