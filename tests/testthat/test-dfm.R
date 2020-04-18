@@ -1,7 +1,5 @@
 context("test dfm")
 
-load("../data/corpora/data_corpus_irishbudget2010.rda")
-
 test_that("test c.corpus", {
     expect_equal(
         matrix(dfm(corpus(c("What does the fox say?", "What does the fox say?", "")),
@@ -42,7 +40,7 @@ test_that("test rbind.dfm with different columns", {
     dfmt4 <- as.dfm(matrix(c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0), nrow = 2,
                     dimnames = list(c("text1", "text2"),
                                     c("does", "fox", "say", "the", "what"))))
-    
+
     expect_true(
         setequal(featnames(dfmt3), featnames(dfmt4))
     )
@@ -60,7 +58,7 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
     dfmt2 <- dfm("fox say fox", remove_punct = TRUE)
     dfmt3 <- dfm("The quick brown fox", remove_punct = TRUE)
     dfmt4 <- rbind(dfmt1, dfmt2, dfmt3)
-    
+
     dfmt5 <- as.dfm(matrix(
         c(0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0),
         nrow = 3,
@@ -69,7 +67,7 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
             c("brown", "does", "fox", "quick", "say", "the", "what")
         )
     ))
-    
+
     expect_true(
         setequal(featnames(dfmt4), featnames(dfmt5))
     )
@@ -128,7 +126,7 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 })
 
 test_that("dfm.dfm works as expected", {
-    corp <- data_corpus_irishbudget2010
+    corp <- data_corpus_inaugural
     toks <- tokens(corp)
     dfmt <- dfm(toks, tolower = FALSE)
 
@@ -154,11 +152,11 @@ test_that("dfm.dfm works as expected", {
                      dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = TRUE)))
 
     dfmt_group <- dfm(dfmt,
-                      groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in%
-                                           c("FF", "Green"), "Govt", "Opposition"),
+                      groups =  ifelse(docvars(data_corpus_inaugural, "Party") %in%
+                                           c("Democratic", "Republican"), "Mainstream", "Minor"),
                       tolower = FALSE)
     expect_identical(colSums(dfmt_group), colSums(dfmt_group))
-    expect_identical(docnames(dfmt_group), c("Govt", "Opposition"))
+    expect_identical(docnames(dfmt_group), c("Mainstream", "Minor"))
 
     dict <- dictionary(list(articles = c("The", "a", "an"),
                             preps = c("of", "for", "In")), tolower = FALSE)
@@ -359,7 +357,6 @@ test_that("dfm works with relational operators", {
 })
 
 test_that("dfm addition (+) keeps attributes #1279", {
-    
     dfmt <- head(data_dfm_lbgexample, 4, nf = 3)
 
     # @settings slot
@@ -494,33 +491,33 @@ test_that("dfm head, tail work as expected", {
 })
 
 test_that("dfm print works with options as expected", {
-    dfmt <- dfm(data_corpus_irishbudget2010,
+    dfmt <- dfm(data_corpus_inaugural[1:14],
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 14 documents, 5,055 features \\(80\\.9% sparse\\) and 6 docvars\\.",
+        paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(82\\.0% sparse\\) and 4 docvars",
                ".*",
-               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 5,045 more features \\]$")
+               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more features \\]$")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.",
                ".*",
-               "Cowen, Brian \\(FF\\)\\s+4\\s+17\\s+0\\s+394\\s+0$")
+               "1789-Washington\\s+3\\s+2\\s+5\\s+71\\s+116")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.",
                ".*",
-               "Cowen, Brian \\(FF\\)\\s+4\\s+17\\s+0\\s+394\\s+0$")
+               "1805-Jefferson\\s+8\\s+1\\s+10\\s+101\\s+143")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 0, max_nfeat = -1, show_summary = TRUE),
-        "^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.$"
+        "^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.$"
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = 0, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(28\\.0% sparse\\) and 6 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.",
                "\\n",
                "\\[ reached max_nfeat \\.\\.\\. 5 more features ]$")
     )
@@ -528,9 +525,8 @@ test_that("dfm print works with options as expected", {
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = FALSE),
         paste0("^\\s+features",
                ".*",
-               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 5,045 more features \\]$")
+               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more features \\]$")
     )
-
 })
 
 test_that("cannot supply remove and select in one call (#793)", {
@@ -649,7 +645,8 @@ test_that("dfm works when features are created (#946", {
 
     expect_equal(
         as.matrix(dfm_match(dfm1, featnames(dfm2))),
-        matrix(c(3, 4, 5, 6, 0, 0), nrow = 2, dimnames = list(docs = c("doc1", "doc2"), features = c("b", "c", "feat_2")))
+        matrix(c(3, 4, 5, 6, 0, 0), nrow = 2,
+               dimnames = list(docs = c("doc1", "doc2"), features = c("b", "c", "feat_2")))
     )
 
     expect_equal(
@@ -752,7 +749,7 @@ test_that("test null dfm is handled properly", {
     # constructor
     expect_equal(dfm(mx), mx)
 
-    # selection/grouping
+    # selection and grouping
     expect_equal(dfm_select(mx), mx)
     expect_equal(dfm_select(mx, "a"), mx)
     expect_equal(dfm_trim(mx), mx)
@@ -804,7 +801,7 @@ test_that("test empty dfm is handled properly (#1419)", {
     # constructor
     expect_equal(dfm(mx), mx)
 
-    # selection/grouping
+    # selection and grouping
     expect_equal(dfm_select(mx), mx)
     expect_equal(dfm_select(mx, "a"), mx)
     expect_equal(dfm_trim(mx), mx)
@@ -973,7 +970,7 @@ test_that("unused argument warning only happens only once (#1509)", {
 })
 
 test_that("dfm.tokens() with groups works as expected", {
-    x <- tokens(data_corpus_irishbudget2010)
+    x <- tokens(data_corpus_inaugural)
     groupeddfm <- dfm(tokens(x),
                       groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2)))
     expect_equal(ndoc(groupeddfm), 2)
@@ -1066,7 +1063,7 @@ test_that("dfm verbose = TRUE works as expected", {
         dfm("one two three", remove = "one", select = "three"),
         "only one of select and remove may be supplied at once"
     )
-    
+
     toks <- tokens(c("one two", "two three four"))
     attributes(toks)$types[4] <- NA
     dfm(toks)
@@ -1092,14 +1089,6 @@ test_that("dfm_sort works as expected", {
     )
 })
 
-# test_that("make_ngram_pattern()", {
-#     expect_equal(
-#         quanteda:::make_ngram_pattern(c("one", "two"), "glob", "_"),
-#         c("(\\b|(\\w+_)+)one(\\b|(_\\w+)+)", "(\\b|(\\w+_)+)two(\\b|(_\\w+)+)"),
-#         fixed = TRUE
-#     )
-# })
-
 test_that("test dfm transpose for #1903", {
     dfmat <- dfm(c(d1 = "one two three", d2 = "two two three"))
     dfmat_t <- t(dfmat)
@@ -1108,7 +1097,7 @@ test_that("test dfm transpose for #1903", {
         c("features", "docs")
     )
     expect_equal(
-        docnames(dfmat_t), 
+        docnames(dfmat_t),
         c("one", "two", "three")
     )
     expect_equal(
@@ -1120,4 +1109,3 @@ test_that("test dfm transpose for #1903", {
         c("system", "object", "user")
     )
 })
-
