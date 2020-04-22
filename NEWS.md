@@ -7,6 +7,9 @@
 * Added new methods `char_select()`, `char_keep()`, and `char_remove()` for easy manipulation of character vectors.
 * Added `dictionary_edit()` for easy, interactive editing of dictionaries, plus the functions `char_edit()` and `list_edit()` for editing character and list of character objects.
 
+## Bug fixes
+
+* Fixed a problem caused by Narrow No-Break Space (NNBSP) not being recognized as an intra-token space. (#1934)
 
 # quanteda 2.0.1
 

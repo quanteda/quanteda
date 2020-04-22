@@ -142,12 +142,18 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     # normalize Unicode
     x <- stri_trans_nfc(x)
 
-    # convert the dreaded "curly quotes" to ASCII equivalents
+    # convert the dreaded "curly quotes" to ASCII equivalents;
+    # also:
+    # replace the troublesome Narrow No-Break Space (NNBSP)
+    # (see #1934 or https://github.com/gagolews/stringi/issues/377)
     x <- stri_replace_all_fixed(x,
                                 c("\u201C", "\u201D", "\u201F",
-                                  "\u2018", "\u201B", "\u2019"),
+                                  "\u2018", "\u201B", "\u2019",
+                                  "\u202F"),
                                 c("\"", "\"", "\"",
-                                  "\'", "\'", "\'"), vectorize_all = FALSE)
+                                  "\'", "\'", "\'",
+                                  " "), 
+                                vectorize_all = FALSE)
 
     # replace all hyphens with simple hyphen
     x <- stri_replace_all_fixed(x, c("\u2012", "\u2013", "\u2014", "\u2015", "\u2053"), "--", 

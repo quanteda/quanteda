@@ -1154,3 +1154,28 @@ test_that("remove_numbers functions correctly", {
         c("and", "and", "100bn", "20-year-old", "4ever", "gr8")
     )
 })
+
+test_that("all spaces are correctly recognized", {
+    txt <- c("one\u0020two",  # space
+             "one\u00A0two",  # No-Break Space (NBSP)
+             "one\u1680two",  # Ogham Space Mark
+             "one\u2000two",  # En Quad
+             "one\u2001two",  # Em Quad
+             "one\u2002two",  # En Space
+             "one\u2003two",  # Em Space
+             "one\u2003two",  # En Space
+             "one\u2003two",  # En Space
+             "one\u2004two",  # Three-Per-Em Space
+             "one\u2005two",  # Four-Per-Em Space
+             "one\u2006two",  # Six-Per-Em Space
+             "one\u2007two",  # Figure Space
+             "one\u2008two",  # Punctuation Space
+             "one\u2009two",  # Thin Space
+             "one\u200Atwo",  # Hair Space
+             "one\u202Ftwo",  # Narrow No-Break Space (NNBSP)
+             "one\u205Ftwo",  # Medium Mathematical Space (MMSP)
+             "one\u3000two"   # Ideographic Space
+    )
+    toks <- tokens(txt)
+    expect_true(all(lengths(toks) == 2))
+})
