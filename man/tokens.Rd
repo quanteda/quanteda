@@ -27,7 +27,7 @@ a (uniquely) named \strong{list} of characters; a \link{tokens} object; or a
 \item{what}{character; which tokenizer to use.  The default \code{what = "word"}
 is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
 are also supported, including the default \code{what = "word1"}.
-See the Details and quanteda Tokenizer below.}
+See the Details and quanteda Tokenizers below.}
 
 \item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
 "Punctuation" \verb{[P]} class, with exceptions for those used as prefixes for
@@ -102,7 +102,7 @@ are generally faster than the default (built-in) tokenizer but always
 splits infix hyphens, or \pkg{spacyr}.
 }
 
-\section{quanteda tokenizer}{
+\section{quanteda Tokenizers}{
 
 The default word tokenizer \code{what = "word"} splits tokens using
 \link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")}
@@ -114,21 +114,28 @@ for hashtags and
 \href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
 for usernames.
 
-For backward compatibility, the following older tokenizers are also supported
-through \code{what}:
+In versions < 2, the argument \code{remove_twitter} controlled whether social
+media tags were preserved or removed, even when \code{remove_punct = TRUE}.
+This argument is not longer functional in versions >= 2.  If greater
+control over social media tags is desired, you should user an alternative
+tokenizer, including non-\pkg{quanteda} options.
+
+For backward compatibility, the following older tokenizers are also
+supported through \code{what}:
 \describe{
 \item{\code{"word1"}}{(legacy) implements similar behaviour to the version of
-\code{what = "word"} found in pre-version 2.  (It preserves social media tags and
-infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
-\item{\code{"fasterword"}}{(legacy) splits on whitespace and control characters, using
-\code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
+\code{what = "word"} found in pre-version 2.  (It preserves social media tags
+and infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
+\item{\code{"fasterword"}}{(legacy) splits on whitespace and control characters,
+using \code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
 \item{\code{"fastestword"}}{(legacy) splits on the space character, using
 \code{stringi::stri_split_fixed(x, " ")}}
 \item{\code{"character"}}{tokenization into individual characters}
-\item{\code{"sentence"}}{sentence segmenter based on \link[stringi:stri_split_boundaries]{stri_split_boundaries},
-but with additional rules to avoid splits on words like "Mr." that would otherwise
-incorrectly be detected as sentence boundaries.  For better sentence tokenization,
-consider using \pkg{spacyr}.} }
+\item{\code{"sentence"}}{sentence segmenter based on
+\link[stringi:stri_split_boundaries]{stri_split_boundaries}, but with
+additional rules to avoid splits on words like "Mr." that would otherwise
+incorrectly be detected as sentence boundaries.  For better sentence
+tokenization, consider using \pkg{spacyr}.} }
 }
 
 \examples{
@@ -164,6 +171,7 @@ tokenizers::tokenize_sentences(
 
 }
 \seealso{
-\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=as.list.tokens]{as.list.tokens()}}, \code{\link[=as.tokens]{as.tokens()}}
+\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=as.list.tokens]{as.list.tokens()}},
+\code{\link[=as.tokens]{as.tokens()}}
 }
 \keyword{tokens}

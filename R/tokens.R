@@ -17,7 +17,7 @@
 #' @param what character; which tokenizer to use.  The default `what = "word"`
 #'   is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
 #'   are also supported, including the default `what = "word1"`.
-#'   See the Details and quanteda Tokenizer below.
+#'   See the Details and quanteda Tokenizers below.
 #' @param remove_punct logical; if `TRUE` remove all characters in the Unicode
 #'   "Punctuation" `[P]` class, with exceptions for those used as prefixes for
 #'   valid social media tags if `preserve_tags = TRUE`
@@ -61,7 +61,7 @@
 #'   are generally faster than the default (built-in) tokenizer but always
 #'   splits infix hyphens, or \pkg{spacyr}.
 #'
-#' @section quanteda tokenizer:
+#' @section quanteda Tokenizers:
 #'   The default word tokenizer `what = "word"` splits tokens using
 #'   [stri_split_boundaries(x, type = "word")][stringi::stri_split_boundaries]
 #'   but by default preserves infix hyphens (e.g. "self-funding"), URLs, and
@@ -72,25 +72,33 @@
 #'   [here](https://help.twitter.com/en/managing-your-account/twitter-username-rules)
 #'   for usernames.
 #'   
-#'   For backward compatibility, the following older tokenizers are also supported
-#'   through `what`:
+#'   In versions < 2, the argument `remove_twitter` controlled whether social
+#'   media tags were preserved or removed, even when `remove_punct = TRUE`.
+#'   This argument is not longer functional in versions >= 2.  If greater
+#'   control over social media tags is desired, you should user an alternative
+#'   tokenizer, including non-\pkg{quanteda} options.
+#'   
+#'   For backward compatibility, the following older tokenizers are also
+#'   supported through `what`:
 #'   \describe{
 #'   \item{`"word1"`}{(legacy) implements similar behaviour to the version of
-#'   `what = "word"` found in pre-version 2.  (It preserves social media tags and
-#'   infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
-#'   \item{`"fasterword"`}{(legacy) splits on whitespace and control characters, using
-#'   `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
+#'   `what = "word"` found in pre-version 2.  (It preserves social media tags
+#'   and infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
+#'   \item{`"fasterword"`}{(legacy) splits on whitespace and control characters,
+#'   using `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
 #'   \item{`"fastestword"`}{(legacy) splits on the space character, using
 #'   `stringi::stri_split_fixed(x, " ")`}
 #'   \item{`"character"`}{tokenization into individual characters}
-#'   \item{`"sentence"`}{sentence segmenter based on [stri_split_boundaries][stringi::stri_split_boundaries],
-#'   but with additional rules to avoid splits on words like "Mr." that would otherwise
-#'   incorrectly be detected as sentence boundaries.  For better sentence tokenization,
-#'   consider using \pkg{spacyr}.} }
+#'   \item{`"sentence"`}{sentence segmenter based on
+#'   [stri_split_boundaries][stringi::stri_split_boundaries], but with
+#'   additional rules to avoid splits on words like "Mr." that would otherwise
+#'   incorrectly be detected as sentence boundaries.  For better sentence
+#'   tokenization, consider using \pkg{spacyr}.} }
 #'
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
-#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [as.list.tokens()], [as.tokens()]
+#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [as.list.tokens()],
+#'   [as.tokens()]
 #' @keywords tokens
 #' @export
 #' @examples
@@ -239,8 +247,8 @@ tokens.corpus <- function(x,
         dots$remove_hyphens <- NULL
     }
     if ("remove_twitter" %in% names(dots)) {
-        .Deprecated(msg = "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.")
-        if (dots$remove_twitter == FALSE && what == "word1") what <- "word"
+        warning("'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
+                call. = FALSE)
         dots$remove_twitter <- NULL
     }
     check_dots(dots, c(names(formals(tokens))))
