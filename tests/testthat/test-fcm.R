@@ -176,7 +176,7 @@ test_that("fcm.dfm works same as fcm.tokens", {
     dfmat <- dfm(toks)
     expect_equal(fcm(toks, context = "document"),
                  fcm(dfmat, context = "document"))
-    
+
     fcmat <- fcm(dfm_weight(dfmat, scheme = "boolean"))
     expect_equal(as.vector(fcmat[1, ]), c(0, 1, 1, 2, 2, 1, 1, 2, 1, 1))
 })
@@ -208,19 +208,18 @@ test_that("fcm works as expected for tokens_hashed", {
 })
 
 test_that("fcm print works as expected", {
-    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-    dfmt <- dfm(data_corpus_irishbudget2010[1:2],
+    dfmt <- dfm(data_corpus_inaugural[1:2],
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
     fcmt <- fcm(dfmt)
     expect_output(print(fcmt, max_nfeat = 6, show_summary = TRUE),
-                  paste0("^Feature co-occurrence matrix of: 2,251 by 2,251 features\\.",
+                  paste0("^Feature co-occurrence matrix of: 634 by 634 features\\.",
                          ".*",
-                         "\\[ reached max_feat \\.\\.\\. 2,245 more features, reached max_nfeat \\.\\.\\. 2,245 more features \\]$")
+                         "\\[ reached max_feat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628 more features \\]$")
     )
     expect_output(print(fcmt[1:5, 1:5], max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
                          ".*",
-                         "supplementary\\s+0\\s+0\\s+0\\s+0\\s+21$")
+                         "fellow\\s+3\\s+6\\s+16\\s+224\\s+361")
     )
     expect_output(print(fcmt[1:10, 1:2], max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 10 by 2 features\\.",
@@ -230,17 +229,17 @@ test_that("fcm print works as expected", {
     expect_output(print(fcmt[1:5, 1:5], max_nfeat = -1, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
                          ".*",
-                         "supplementary\\s+0\\s+0\\s+0\\s+0\\s+21$")
+                         "the\\s+0\\s+0\\s+0\\s+0\\s+6748$")
     )
     expect_output(print(fcmt[1:10, 1:2], max_nfeat = -1, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 10 by 2 features\\.",
                          ".*",
-                         "last\\s+0\\s+0$")
+                         ":\\s+0\\s+0$")
     )
     expect_output(print(fcmt, max_nfeat = 6, show_summary = FALSE),
                   paste0("^\\s+features",
                          ".*",
-                         "\\[ reached max_feat \\.\\.\\. 2,245 more features, reached max_nfeat \\.\\.\\. 2,245 more features \\]$")
+                         "\\[ reached max_feat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628 more features \\]$")
     )
 })
 

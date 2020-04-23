@@ -27,7 +27,6 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
 })
 
 test_that("docnames are character", {
-    
     txt <- c("a b c", "d e f", "h i j")
     corp <- corpus(txt)
     docnames(corp) <- c(1, 5, 9)
@@ -41,11 +40,10 @@ test_that("docnames are character", {
     docnames(dfmat) <- c(4, 8, 0)
     expect_identical(dfmat@Dimnames$docs, c("4", "8", "0"))
     expect_identical(attr(dfmat, "docvars")[["docname_"]], c("4", "8", "0"))
-
 })
 
 test_that("special names<- operator works as planned", {
-    
+
     corp <- corpus(LETTERS[1:3], docnames = letters[1:3])
     names(corp)[1] <- "X"
     expect_identical(
@@ -59,7 +57,7 @@ test_that("special names<- operator works as planned", {
         names(toks),
         attr(toks, "docvars")[["docname_"]]
     )
-    
+
     dfmat <- dfm(corpus(LETTERS[1:3], docnames = letters[1:3]))
     rownames(dfmat)[1] <- "X"
     expect_identical(
@@ -70,52 +68,46 @@ test_that("special names<- operator works as planned", {
 
 
 test_that("docnames are alwyas unique", {
-    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-    corp <- data_corpus_irishbudget2010
+    corp <- data_corpus_inaugural
     toks <- tokens(corp)
-    dfmt <- dfm(toks)
-    
+    dfmat <- dfm(toks)
+
     corp1 <- corp
-    docnames(corp1) <- docvars(corp1, "party")
+    docnames(corp1) <- docvars(corp1, "Party")
     expect_false(any(duplicated((docnames(corp1)))))
     expect_false(any(duplicated((attr(corp1, "names")))))
-    
+
     corp2 <- corp[c(5, 5)]
     expect_false(any(duplicated((docnames(corp2)))))
     expect_identical(docnames(corp2), attr(corp2, "names"))
-    
-    corp3 <- corp[c("Cowen, Brian (FF)", "Cowen, Brian (FF)")]
+
+    corp3 <- corp[c("1805-Jefferson", "1805-Jefferson")]
     expect_false(any(duplicated((docnames(corp3)))))
     expect_identical(docnames(corp3), attr(corp3, "names"))
-    
+
     toks1 <- toks
-    docnames(toks1) <- docvars(toks1, "party")
+    docnames(toks1) <- docvars(toks1, "Party")
     expect_false(any(duplicated((docnames(toks1)))))
     expect_identical(docnames(toks1), attr(toks1, "names"))
-    
+
     toks2 <- toks[c(5, 5)]
     expect_false(any(duplicated((docnames(toks2)))))
     expect_identical(docnames(toks2), attr(toks2, "names"))
-    
-    toks3 <- toks[c("Cowen, Brian (FF)", "Cowen, Brian (FF)")]
+
+    toks3 <- toks[c("1805-Jefferson", "1805-Jefferson")]
     expect_false(any(duplicated((docnames(toks3)))))
     expect_identical(docnames(toks3), attr(toks3, "names"))
-    
-    dfmt1 <- dfmt
-    docnames(dfmt1) <- docvars(dfmt1, "party")
-    expect_false(any(duplicated((docnames(dfmt1)))))
-    expect_identical(docnames(dfmt1), dfmt1@Dimnames[["docs"]])
-    
-    dfmt2 <- dfmt[c(5, 5),]
-    expect_false(any(duplicated((docnames(dfmt2)))))
-    expect_identical(docnames(dfmt2), dfmt2@Dimnames[["docs"]])
-    
-    dfmt3 <- dfmt[c("Cowen, Brian (FF)", "Cowen, Brian (FF)"),]
-    expect_false(any(duplicated((docnames(dfmt3)))))
-    expect_identical(docnames(dfmt3), dfmt3@Dimnames[["docs"]])
+
+    dfmat1 <- dfmat
+    docnames(dfmat1) <- docvars(dfmat1, "Party")
+    expect_false(any(duplicated((docnames(dfmat1)))))
+    expect_identical(docnames(dfmat1), dfmat1@Dimnames[["docs"]])
+
+    dfmat2 <- dfmat[c(5, 5), ]
+    expect_false(any(duplicated((docnames(dfmat2)))))
+    expect_identical(docnames(dfmat2), dfmat2@Dimnames[["docs"]])
+
+    dfmat3 <- dfmat[c("1805-Jefferson", "1805-Jefferson"), ]
+    expect_false(any(duplicated((docnames(dfmat3)))))
+    expect_identical(docnames(dfmat3), dfmat3@Dimnames[["docs"]])
 })
-
-
-
-
-

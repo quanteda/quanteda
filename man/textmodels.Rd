@@ -8,5 +8,5 @@ The \verb{textmodel_*()} functions formerly in \pkg{quanteda} have now been move
 to the \pkg{quanteda.textmodels} package.
 }
 \seealso{
-\link[quanteda.textmodels:quanteda.textmodels-package]{quanteda.textmodels}
+\code{quanteda.textmodels::quanteda.textmodels-package}
 }

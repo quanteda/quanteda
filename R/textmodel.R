@@ -3,5 +3,5 @@
 #' The `textmodel_*()` functions formerly in \pkg{quanteda} have now been moved 
 #' to the \pkg{quanteda.textmodels} package.
 #' @name textmodels
-#' @seealso [quanteda.textmodels][quanteda.textmodels::quanteda.textmodels-package]
+#' @seealso `quanteda.textmodels::quanteda.textmodels-package`
 NULL
