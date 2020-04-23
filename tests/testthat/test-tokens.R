@@ -179,12 +179,12 @@ test_that("defunct remove_twitter warning works", {
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
     expect_warning(
         tokens(txt, remove_twitter = TRUE),
-        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.",
+        "'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
         fixed = TRUE
     )
     expect_warning(
         tokens(txt, remove_twitter = FALSE),
-        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.",
+        "'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
         fixed = TRUE
     )
     expect_identical(
