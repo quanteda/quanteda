@@ -121,7 +121,7 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL,
     # keep only first n items by group, if n is specified
     if (!is.null(n)) {
         stopifnot(is.numeric(n))
-        result <- result[, .SD[seq_len(n)], by = group]
+        result <- result[, head(.SD, n), by = group]
     }
 
     setcolorder(result, c("feature", "frequency", "rank", "docfreq", "group"))
