@@ -162,8 +162,8 @@ test_that("lsa converter works under extreme situations", {
 })
 
 test_that("topicmodels converter works under extreme situations", {
-  skip_on_os("mac") 
-  skip_if_not_installed("topicmodels")
+    skip_on_os("mac") 
+    skip_if_not_installed("topicmodels")
     require(topicmodels)
     #zero-count document
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0,

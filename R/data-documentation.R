@@ -143,7 +143,7 @@
 #' * `data_corpus_irishbudget2010`
 #' @name data-relocated
 #' @aliases data_corpus_dailnoconf1991 data_corpus_irishbudget2010
-#' @seealso [quanteda.textmodels][quanteda.textmodels::quanteda.textmodels-package]
+#' @seealso `quanteda.textmodels::quanteda.textmodels-package`
 NULL
 
 #' Internal data sets

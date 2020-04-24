@@ -35,6 +35,7 @@ test_that("selection takes integer or logical vector", {
 
 test_that("textstat_simil() returns NA for empty dfm", {
     skip("Skip until textstat_simil() has been corrected for empty dfms")
+    skip_if_not_installed("proxy")
     mt <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_equivalent(
         as.matrix(textstat_simil(mt, method = "correlation")),
