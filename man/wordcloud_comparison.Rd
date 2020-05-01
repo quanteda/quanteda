@@ -33,7 +33,7 @@ wordcloud_comparison(
 )
 }
 \arguments{
-\item{x}{a dfm object}
+\item{x}{a \link{dfm} or \link{textstat_keyness} object}
 
 \item{min_size}{size of the smallest word}
 
@@ -41,8 +41,9 @@ wordcloud_comparison(
 
 \item{min_count}{words with frequency below min_count will not be plotted}
 
-\item{max_words}{maximum number of words to be plotted. least frequent terms
-dropped.}
+\item{max_words}{maximum number of words to be plotted. The least frequent
+terms dropped.  The maximum frequency will be split evenly across
+categories when \code{comparison = TRUE}.}
 
 \item{color}{color of words from least to most frequent}
 
@@ -62,14 +63,14 @@ the color is chosen based on the frequency}
 \item{ordered_color}{if \code{TRUE}, then colors are assigned to words in
 order.}
 
-\item{labelcolor}{color of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labelcolor}{color of group labels. Only used when \code{comparison = TRUE}.}
 
-\item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labelsize}{size of group labels. Only used when \code{comparison = TRUE}.}
 
 \item{labeloffset}{position of group labels. Only used when
-\code{comparison=TRUE}.}
+\code{comparison = TRUE}.}
 
-\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
+\item{fixed_aspect}{logical; if \code{TRUE}, the aspect ratio is fixed. Variable
 aspect ratio only supported if rotation = 0.}
 
 \item{scale}{deprecated argument}

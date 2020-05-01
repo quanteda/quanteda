@@ -106,6 +106,14 @@ test_that("test textplot_wordcloud works for dfm objects", {
     expect_silent(textplot_wordcloud(mt))
 })
 
+test_that("test textplot_wordcloud works for keyness objects", {
+    tstat <- head(data_corpus_inaugural, 2) %>%
+        dfm(remove_punct = TRUE, remove = stopwords("en")) %>%
+        textstat_keyness(target = 1)
+    expect_silent(textplot_wordcloud(tstat, max_words = 50))
+    expect_silent(textplot_wordcloud(tstat, comparison = FALSE, max_words = 50))
+})
+
 test_that("test textplot_wordcloud comparison works", {
     skip_on_travis()
     skip_on_cran()
