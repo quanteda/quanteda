@@ -91,7 +91,6 @@ test_that("test austin package converter", {
 
 test_that("test lsa converter", {
     skip_if_not_installed("lsa")
-    skip_on_cran()
     require(lsa)
     # create some files
     td <- tempfile()
@@ -102,12 +101,13 @@ test_that("test lsa converter", {
     # read them, create a document-term matrix
     lsamat <- lsa::textmatrix(td)
 
-    lsamat2 <- convert(dfm(tokens(c(D1 = c("cat dog mouse"),
-                                    D2 = c("hamster mouse sushi"),
-                                    D3 = c("dog monster monster")))),
-                       to = "lsa")
+    dfmat <- dfm(tokens(c(D1 = c("cat dog mouse"),
+                          D2 = c("hamster mouse sushi"),
+                          D3 = c("dog monster monster"))))
+    # guarantee sort order
+    dfmat <- dfmat[, sort(featnames(dfmat))]
+    lsamat2 <- convert(dfmat, to = "lsa")
     expect_equivalent(lsamat, lsamat2)
-
 })
 
 test_that("test stm converter: under extreme situations ", {
