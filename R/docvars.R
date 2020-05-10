@@ -113,7 +113,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
     return(result)
 }
 
-#' Internal function to duplicate or dedplicate docvar rows
+#' Internal function to subset or duplicate docvar rows
 #' @param x docvar data.frame
 #' @param i numeric or logical vector for subsetting/duplicating rows
 #' @keywords internal
