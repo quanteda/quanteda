@@ -97,7 +97,8 @@ kwic.tokens <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-
+    
+    x <- as.tokens(x)
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern
 
