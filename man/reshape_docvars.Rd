@@ -2,7 +2,7 @@
 % Please edit documentation in R/docvars.R
 \name{reshape_docvars}
 \alias{reshape_docvars}
-\title{Internal function to duplicate or dedplicate docvar rows}
+\title{Internal function to subset or duplicate docvar rows}
 \usage{
 reshape_docvars(x, i = NULL)
 }
@@ -12,6 +12,6 @@ reshape_docvars(x, i = NULL)
 \item{i}{numeric or logical vector for subsetting/duplicating rows}
 }
 \description{
-Internal function to duplicate or dedplicate docvar rows
+Internal function to subset or duplicate docvar rows
 }
 \keyword{internal}
