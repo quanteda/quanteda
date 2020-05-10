@@ -131,17 +131,6 @@ reshape_docvars <- function(x, i = NULL) {
     return(x)
 }
 
-# TODO: consider merging subset_docvars and reshape_docvars
-subset_docvars <- function(x, i = NULL) {
-    if (is.null(i)) return(x)
-    x <- x[i, , drop = FALSE]
-    if (is.numeric(i) && any(duplicated(i))) {
-        x[["docname_"]] <- paste0(x[["docname_"]], ".", stats::ave(i == i, i, FUN = cumsum))
-    }
-    rownames(x) <- NULL
-    return(x)
-}
-
 # Reshape docvars keeping variables that have the same values within groups
 group_docvars <- function(x, group = NULL) {
     if (is.null(group))

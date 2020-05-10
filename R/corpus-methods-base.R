@@ -267,7 +267,7 @@ c.corpus <- function(..., recursive = FALSE) {
 
     build_corpus(
         unclass(x)[index],
-        docvars = subset_docvars(attrs[["docvars"]], index),
+        docvars = reshape_docvars(attrs[["docvars"]], index),
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
