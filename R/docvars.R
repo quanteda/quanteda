@@ -113,21 +113,25 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
     return(result)
 }
 
-# internal function to duplicate or dedplicate docvar rows
+#' Internal function to duplicate or dedplicate docvar rows
+#' @param x docvar data.frame
+#' @param i numeric or logical vector for subsetting/duplicating rows
+#' @keywords internal
 reshape_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i, , drop = FALSE]
-    if (is.numeric(i) && any(duplicated(i))) {
-        x[["segid_"]] <- stats::ave(i == i, i, FUN = cumsum)
+    if (any(duplicated(x[["docid_"]]))) {
+        x[["segid_"]] <- stats::ave(x[["docid_"]] == x[["docid_"]], x[["docid_"]], FUN = cumsum)
         x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
     } else {
         x[["segid_"]] <- rep(1L, nrow(x))
-        x[["docname_"]] <- as.character(x[["docid_"]])
+        x[["docname_"]] <- paste0(as.character(x[["docid_"]]))
     }
     rownames(x) <- NULL
     return(x)
 }
 
+# TODO: consider merging subset_docvars and reshape_docvars
 subset_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i, , drop = FALSE]

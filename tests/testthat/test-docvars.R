@@ -31,6 +31,39 @@ test_that("make_docvars() works", {
 
 })
 
+test_that("reshape_docvars() words", {
+    
+    docvar1 <- data.frame("docname_" = c("doc1", "doc2"),
+                          "docid_" = c("doc1", "doc2"),
+                          "segid_" = c(1, 2), stringsAsFactors = FALSE)
+    
+    expect_identical(
+        quanteda:::reshape_docvars(docvar1, c(1, 2))[["docname_"]],
+        c("doc1", "doc2")
+    )
+    expect_identical(
+        quanteda:::reshape_docvars(docvar1, c(1, 1, 2, 2))[["docname_"]],
+        c("doc1.1", "doc1.2", "doc2.1", "doc2.2")
+    )
+    
+    docvar2 <- data.frame("docname_" = c("doc1.1", "doc1.2"),
+                          "docid_" = c("doc1", "doc1"),
+                          "segid_" = c(1, 1))
+    expect_identical(
+        quanteda:::reshape_docvars(docvar2, c(1, 2))[["docname_"]],
+        c("doc1.1", "doc1.2")
+    )
+    expect_identical(
+        quanteda:::reshape_docvars(docvar2, c(1, 1, 2, 2))[["docname_"]],
+        c("doc1.1", "doc1.2", "doc1.3", "doc1.4")
+    )
+    expect_identical(
+        quanteda:::reshape_docvars(docvar2, c(1, 1, 1, 1))[["docname_"]],
+        c("doc1.1", "doc1.2", "doc1.3", "doc1.4")
+    )
+})
+    
+
 test_that("upgrade_docvars() works", {
     docvar1 <- data.frame()
     docvar2 <- data.frame("var1" = c(100, 200, 300),

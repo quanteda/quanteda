@@ -216,3 +216,17 @@ test_that("corpus_segment works with multiple patterns (#1394)", {
     
 })
 
+test_that("corpus_segment works can be used multiple times", {
+    corp <- corpus(c("##DOC1 First sentences in Doc 1.  Second sentence in Doc 1.
+                      ##DOC2 First sentences in Doc 2.  Second sentence in Doc 2."))
+    corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
+                               pattern_position = "before", extract_pattern = TRUE)
+    corp_seg2 <- corpus_segment(corp_seg, ".", valuetype = "fixed", 
+                                pattern_position = "after", extract_pattern = TRUE)
+    
+    expect_equal(texts(corp_seg2), c("text1.1" = "First sentences in Doc 1",
+                                     "text1.2" = "Second sentence in Doc 1",
+                                     "text1.3" = "First sentences in Doc 2",
+                                     "text1.4" = "Second sentence in Doc 2"))
+})
+
