@@ -392,7 +392,7 @@ test_that("test default textplot methods", {
     )
     expect_error(
         textplot_wordcloud(TRUE),
-        "textplot_wordcloud\\(\\) only works on dfm objects"
+        "textplot_wordcloud\\(\\) only works on dfm, keyness objects"
     )
     expect_error(
         textplot_xray(TRUE),

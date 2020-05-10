@@ -6,6 +6,7 @@
 * Updated the (default) "word" tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in `quanteda_options()`.  The following are now preserved: `#政治` as well as Weibo-style hashtags such as `#英国首相#".
 * Added new methods `char_select()`, `char_keep()`, and `char_remove()` for easy manipulation of character vectors.
 * Added `dictionary_edit()` for easy, interactive editing of dictionaries, plus the functions `char_edit()` and `list_edit()` for editing character and list of character objects.
+* Added a method to `textplot_wordcloud()` that plots objects from `textstat_keyness()`, to visualize keywords either by comparison or for the target category only.
 
 ## Bug fixes and stability enhancements
 
