@@ -427,16 +427,13 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
     x <- proxy2triplet(x, upper)
     if (!diag)
         x <- diag2na(x)
-    allnames <- unique(cnames <- c(colnames(x), rnames <- rownames(x)))
-    result <- data.frame(x = factor(match(rnames[x@i + 1L], allnames),
-                                    levels = seq_along(allnames), labels = allnames),
-                         y = factor(match(cnames[x@j + 1L], allnames),
-                                    levels = seq_along(allnames), labels = allnames),
+    
+    all <- unique(c(colnames(x), rownames(x)))
+    result <- data.frame(x = factor(rownames(x)[x@i + 1L], levels = all),
+                         y = factor(colnames(x)[x@j + 1L], levels = all),
                          stat = x@x,
                          stringsAsFactors = FALSE)
     result <- subset(result, !is.na(stat))
-    
-    allfactors <- 
 
     # replace x and y with margin names
     names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
