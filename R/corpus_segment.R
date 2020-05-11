@@ -194,7 +194,7 @@ char_segment.character <- function(x, pattern = "##*",
 
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-    temp <- corpus_segment(corpus(x, names(x)),
+    temp <- corpus_segment(corpus(x, names(x), unique_docnames = FALSE),
                            pattern, valuetype, case_insensitive,
                            remove_pattern, pattern_position)
     result <- texts(temp)

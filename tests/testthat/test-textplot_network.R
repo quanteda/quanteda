@@ -28,8 +28,7 @@ test_that("test textplot_network works with vectorlized argument", {
 })
 
 test_that("textplot_network error when fcm is too large", {
-    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-    testdfm <- dfm(data_corpus_irishbudget2010)
+    testdfm <- fcm(data_corpus_inaugural[1:5])
     expect_error(textplot_network(testdfm, min_freq = 1, offset = 0, omit_isolated = FALSE),
                  'fcm is too large for a network plot')
 })

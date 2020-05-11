@@ -290,7 +290,6 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
 #' @rdname corpus
 #' @export
 corpus.Corpus <- function(x, ...) {
-
     unused_dots(...)
 
     if (inherits(x, what = "VCorpus")) {
@@ -301,7 +300,7 @@ corpus.Corpus <- function(x, ...) {
         docvars <- data.frame()
         for (i in seq_along(docs)) {
             doc <- docs[[i]]
-            txt <- c(txt, doc$content)
+            txt <- c(txt, paste(doc$content, collapse = "\n\n"))
             l <- lengths(doc$meta)
             meta <- rep(list(NA), length(l))
             names(meta) <- names(doc$meta)

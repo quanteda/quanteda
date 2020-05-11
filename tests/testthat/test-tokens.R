@@ -9,8 +9,8 @@ test_that("as.tokens list version works as expected", {
 })
 
 test_that("tokens indexing works as expected", {
-    toks <- tokens(c(d1 = "one two three", 
-                     d2 = "four five six", 
+    toks <- tokens(c(d1 = "one two three",
+                     d2 = "four five six",
                      d3 = "seven eight"))
 
     expect_equal(toks[[1]], c("one", "two", "three"))
@@ -179,12 +179,12 @@ test_that("defunct remove_twitter warning works", {
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
     expect_warning(
         tokens(txt, remove_twitter = TRUE),
-        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.",
+        "'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
         fixed = TRUE
     )
     expect_warning(
         tokens(txt, remove_twitter = FALSE),
-        "'remove_twitter' is deprecated; for FALSE, use 'what = \"word\"' instead.",
+        "'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
         fixed = TRUE
     )
     expect_identical(
@@ -195,7 +195,7 @@ test_that("defunct remove_twitter warning works", {
         suppressWarnings(tokens(txt, remove_twitter = FALSE, remove_punct = TRUE)),
         tokens(txt, what = "word", remove_punct = TRUE)
     )
-    
+
     # tokens
     toks <- tokens(txt)
     expect_warning(
@@ -600,7 +600,7 @@ test_that("combined tokens objects have all the attributes", {
     expect_identical(attr(c(toks1, toks4), "meta")$object$concatenator, "_")
     expect_identical(attr(c(toks1, toks4), "meta")$object$ngram, c(1L))
     expect_identical(attr(c(toks1, toks4), "meta")$object$skip, c(0L))
-    
+
     expect_identical(docnames(dfm(c(toks1, toks4))), c("text1", "text4"))
     expect_identical(names(attributes(c(toks1, toks5))),
                      names(attributes(toks1)))
@@ -609,7 +609,6 @@ test_that("combined tokens objects have all the attributes", {
     expect_identical(attr(c(toks1, toks5), "meta")$object$ngram, 1L)
     expect_identical(attr(c(toks1, toks5), "meta")$object$skip, 0L)
     expect_identical(docnames(dfm(c(toks1, toks5))), c("text1", "text5"))
-
 })
 
 test_that("tokens fasterword handles newlines correctly (#1447)", {
@@ -882,49 +881,47 @@ test_that("test that what = \"word\" works the same as \"word2\"", {
 
 
 test_that("tokens printing works", {
-    data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-    toks <- tokens(data_corpus_irishbudget2010)
+    toks <- tokens(data_corpus_inaugural[1:14])
     expect_silent(
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = FALSE)
     )
     expect_output(
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
-        "Tokens consisting of 14 documents and 6 docvars.",
+        "Tokens consisting of 14 documents and 4 docvars.",
         fixed = TRUE
     )
     expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
-            paste0('Tokens consisting of 14 documents and 6 docvars.\n',
-                   'Lenihan, Brian (FF) :\n',
-                   '[1] "When"      "I"         "presented"\n',
-                   '[ ... and 8,638 more ]\n\n',
-                   'Bruton, Richard (FG) :\n',
-                   '[1] "This"      "draconian" "budget"   \n',
-                   '[ ... and 4,443 more ]\n\n',
-                   '[ reached max_ndoc ... 12 more documents ]'),
+        paste0('Tokens consisting of 14 documents and 4 docvars.\n',
+               '1789-Washington :\n',
+               '[1] "Fellow-Citizens" "of"              "the"            \n',
+               '[ ... and 1,534 more ]\n\n',
+               '1793-Washington :\n',
+               '[1] "Fellow"   "citizens" ","       \n',
+               '[ ... and 144 more ]\n\n',
+               '[ reached max_ndoc ... 12 more documents ]'),
         fixed = TRUE
     )
-
     expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = FALSE),
-        paste0('Lenihan, Brian (FF) :\n',
-               '[1] "When"      "I"         "presented"\n',
-               '[ ... and 8,638 more ]\n\n',
-               'Bruton, Richard (FG) :\n',
-               '[1] "This"      "draconian" "budget"   \n',
-               '[ ... and 4,443 more ]\n\n',
+        paste0('1789-Washington :\n',
+               '[1] "Fellow-Citizens" "of"              "the"            \n',
+               '[ ... and 1,534 more ]\n\n',
+               '1793-Washington :\n',
+               '[1] "Fellow"   "citizens" ","       \n',
+               '[ ... and 144 more ]\n\n',
                '[ reached max_ndoc ... 12 more documents ]'),
         fixed = TRUE
     )
     expect_output(
         print(toks[1:2], max_ndoc = 2, max_ntoken = 3, show_summary = FALSE),
-        paste0('Lenihan, Brian (FF) :\n',
-               '[1] "When"      "I"         "presented"\n',
-               '[ ... and 8,638 more ]\n\n',
-               'Bruton, Richard (FG) :\n',
-               '[1] "This"      "draconian" "budget"   \n',
-               '[ ... and 4,443 more ]\n'),
-        fixed = TRUE 
+        paste0('1789-Washington :\n',
+               '[1] "Fellow-Citizens" "of"              "the"            \n',
+               '[ ... and 1,534 more ]\n\n',
+               '1793-Washington :\n',
+               '[1] "Fellow"   "citizens" ","       \n',
+               '[ ... and 144 more ]\n'),
+        fixed = TRUE
     )
 
     expect_output(
@@ -954,14 +951,14 @@ test_that("tokens printing works", {
 test_that("tokens.list() works", {
     lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
     expect_identical(as.list(tokens(lis)), lis)
-    expect_identical(as.list(tokens(lis, split_hyphens = TRUE)), 
-                     list(d1 = c("one", "two", "-", "three", "@test"), 
+    expect_identical(as.list(tokens(lis, split_hyphens = TRUE)),
+                     list(d1 = c("one", "two", "-", "three", "@test"),
                           d2 = c("four", ".")))
 })
 
 test_that("tokens.character(x, padding = TRUE) works", {
     txt <- c(doc1 = "One 2, £ https://qunteda.org one-two.")
-    
+
     # punct
     expect_identical(
         as.list(tokens(txt, what = "word", remove_punct = TRUE, padding = TRUE)),
@@ -971,7 +968,7 @@ test_that("tokens.character(x, padding = TRUE) works", {
         as.list(tokens(txt, what = "word", remove_punct = TRUE, padding = FALSE)),
         list(doc1 = c("One", "2", "£", "https://qunteda.org", "one-two"))
     )
-    
+
     # symbols
     expect_identical(
         as.list(tokens(txt, what = "word", remove_symbols = TRUE, padding = TRUE)),
@@ -981,7 +978,7 @@ test_that("tokens.character(x, padding = TRUE) works", {
         as.list(tokens(txt, what = "word", remove_symbols = TRUE, padding = FALSE)),
         list(doc1 = c("One", "2", ",", "https://qunteda.org", "one-two", "."))
     )
-    
+
     # numbers
     expect_identical(
         as.list(tokens(txt, what = "word", remove_numbers = TRUE, padding = TRUE)),
@@ -1006,7 +1003,7 @@ test_that("tokens.character(x, padding = TRUE) works", {
 test_that("tokens.tokens(x, padding = TRUE) works", {
     txt <- c(doc1 = "One 2, £ https://qunteda.org one-two.")
     toks <- tokens(txt, what = "word")
-    
+
     # punct
     expect_identical(
         as.list(tokens(toks, what = "word", remove_punct = TRUE, padding = TRUE)),
@@ -1016,7 +1013,7 @@ test_that("tokens.tokens(x, padding = TRUE) works", {
         as.list(tokens(toks, what = "word", remove_punct = TRUE, padding = FALSE)),
         list(doc1 = c("One", "2", "£", "https://qunteda.org", "one-two"))
     )
-    
+
     # symbols
     expect_identical(
         as.list(tokens(toks, what = "word", remove_symbols = TRUE, padding = TRUE)),
@@ -1026,7 +1023,7 @@ test_that("tokens.tokens(x, padding = TRUE) works", {
         as.list(tokens(toks, what = "word", remove_symbols = TRUE, padding = FALSE)),
         list(doc1 = c("One", "2", ",", "https://qunteda.org", "one-two", "."))
     )
-    
+
     # numbers
     expect_identical(
         as.list(tokens(toks, what = "word", remove_numbers = TRUE, padding = TRUE)),
@@ -1060,17 +1057,17 @@ test_that("tokenizing Japanese with URLs works", {
         as.list(tokens(txt, what = "word")),
         list(d1 = c("私", "の", "ウェブサイト", "は", "https://www.nichibenren.or.jp/", "です", "。"))
     )
-    
+
     txt <- c(d1 = "10,000人のフォロワーがいます。")
     expect_identical(
         as.list(tokens(txt, what = "word")),
         list(d1 = c("10,000", "人", "の", "フォロワー", "がい", "ます", "。"))
     )
-    
+
     txt <- c(d1 = "私のウェブサイトはhttps://www.nichibenren.or.jp/です。10,000人のフォロワーがいます。")
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c( "私", "の", "ウェブサイト", "は", "https://www.nichibenren.or.jp/", "です", "。", "10,000", 
+        list(d1 = c("私", "の", "ウェブサイト", "は", "https://www.nichibenren.or.jp/", "です", "。", "10,000",
                      "人", "の", "フォロワー", "がい", "ます", "。"))
     )
 })
@@ -1139,14 +1136,14 @@ test_that("output is correct for word1", {
 })
 
 test_that("remove_numbers functions correctly", {
-    txt <- "1 and 12 123 1975 12345 100,000 $1,000.00 123,123,456 and 50¢ 1.200,34 
+    txt <- "1 and 12 123 1975 12345 100,000 $1,000.00 123,123,456 and 50¢ 1.200,34
             100bn 20-year-old 4ever gr8"
     toks1 <- tokens(txt, remove_numbers = TRUE)
     toks2 <- tokens(txt, what = "fasterword", remove_numbers = TRUE)
 
     expect_identical(
         as.character(toks1),
-        c("and","$", "and", "¢", "100bn", "20-year-old", "4ever", "gr8")
+        c("and", "$", "and", "¢", "100bn", "20-year-old", "4ever", "gr8")
     )
 
     expect_identical(

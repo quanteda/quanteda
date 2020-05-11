@@ -14,5 +14,5 @@ package:
 }
 }
 \seealso{
-\link[quanteda.textmodels:quanteda.textmodels-package]{quanteda.textmodels}
+\code{quanteda.textmodels::quanteda.textmodels-package}
 }

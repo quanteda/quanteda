@@ -137,8 +137,7 @@ texts(data_corpus_inaugural)[2]
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
 
 ```{r}
-data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-summary(data_corpus_irishbudget2010)
+summary(data_corpus_inaugural, n = 5)
 ```
 
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
@@ -321,13 +320,13 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-dfmat_ire <- dfm(data_corpus_irishbudget2010, groups = "party",
+dfmat_pres <- dfm(tail(data_corpus_inaugural, 20), groups = "Party",
                   remove = stopwords("english"), remove_punct = TRUE)
 ```
 
 We can sort this dfm, and inspect it:
 ```{r}
-dfm_sort(dfmat_ire)[, 1:10]
+dfm_sort(dfmat_pres)
 ```
 
 ### Grouping words by dictionary or equivalence class
@@ -377,7 +376,7 @@ tstat_obama
 ```
 
 We can use these distances to plot a dendrogram, clustering presidents:
-```{r, fig.width = 10, fig.height = 7, eval = TRUE}
+```{r, fig.width = 8, fig.height = 5, eval = TRUE}
 data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
                stem = TRUE, remove_punct = TRUE,
@@ -406,12 +405,13 @@ lapply(as.list(tstat_sim), head, 10)
 
 Here is a demonstration of unsupervised document scaling comparing the "Wordfish" model: 
 ```{r fig.width = 7, fig.height = 5}
-dfmat_ire <- dfm(data_corpus_irishbudget2010)
-library("quanteda.textmodels")
-# tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
-
-# plot the Wordfish estimates by party
-# textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
+if (require("quanteda.textmodels")) {
+  dfmat_ire <- dfm(data_corpus_irishbudget2010)
+  tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
+  
+  # plot the Wordfish estimates by party
+  textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
+}
 ```
 
 ## Topic models
@@ -424,7 +424,10 @@ quant_dfm <- dfm(data_corpus_irishbudget2010,
                  remove = stopwords("english"))
 quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
+```
 
+Now we can fit the topic model and plot it:
+```{r fig.width = 7, fig.height = 5}
 set.seed(100)
 if (require("stm")) {
     my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)

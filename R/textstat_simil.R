@@ -427,10 +427,10 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
     x <- proxy2triplet(x, upper)
     if (!diag)
         x <- diag2na(x)
-    result <- data.frame(x = factor(x@i + 1L,
-                                    levels = seq_along(rownames(x)), labels = rownames(x)),
-                         y = factor(match(colnames(x)[x@j + 1L], rownames(x)),
-                                    levels = seq_along(rownames(x)), labels = rownames(x)),
+    
+    all <- unique(c(colnames(x), rownames(x)))
+    result <- data.frame(x = factor(rownames(x)[x@i + 1L], levels = all),
+                         y = factor(colnames(x)[x@j + 1L], levels = all),
                          stat = x@x,
                          stringsAsFactors = FALSE)
     result <- subset(result, !is.na(stat))

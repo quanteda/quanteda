@@ -113,3 +113,13 @@ test_that("test textstat_frequency with groups and weighted dfm (#1646)", {
         tolerance = .01
     )
 })
+
+test_that("textstat_frequency does not return NAs when n > nfeat", {
+  dfmat <- dfm(c("a a b c d", "a d d e", "a b b"))
+  
+  # should not have NA
+  expect_identical(nrow(textstat_frequency(dfmat, n = 6)), 5L)
+  
+  # should not have NA
+  expect_identical(nrow(textstat_frequency(dfmat, n = 6, groups = c(1, 2, 2))), 8L)
+})

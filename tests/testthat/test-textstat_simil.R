@@ -35,6 +35,7 @@ test_that("selection takes integer or logical vector", {
 
 test_that("textstat_simil() returns NA for empty dfm", {
     skip("Skip until textstat_simil() has been corrected for empty dfms")
+    skip_if_not_installed("proxy")
     mt <- dfm_trim(data_dfm_lbgexample, 1000)
     expect_equivalent(
         as.matrix(textstat_simil(mt, method = "correlation")),
@@ -550,3 +551,28 @@ test_that("symmetric class is correctly given", {
         t(Matrix::triu(siml2))
     )
 })
+
+test_that("as.data.frame works with subsetted object", {
+    levs <- c(paste0("R", 1:5), "V1")
+    simildf <- textstat_simil(data_dfm_lbgexample[-1, ], data_dfm_lbgexample[1, ]) %>%
+        as.data.frame()
+    expect_equal(
+        simildf,
+        data.frame(document1 = factor(levs[-1], levels = levs),
+                   document2 = factor(rep("R1", 5), levels = levs),
+                   correlation = c(0.18, -0.29, -0.32, -0.32, -0.12)),
+        tol = .01
+    )
+    expect_identical(levels(simildf$document1), levels(simildf$document1))
+    
+    simildf <- textstat_simil(data_dfm_lbgexample, data_dfm_lbgexample[c(1, 3), ]) %>%
+        as.data.frame()
+    levs2 <- levs[c(1, 3, 2, 4:6)]
+    expect_identical(
+        simildf[, -3],
+        data.frame(document1 = factor(c(levs[-1], levs[-3]), levels = levs2),
+                   document2 = factor(c(rep("R1", 5), c(rep("R3", 5))), levels = levs2))
+    )
+    expect_identical(levels(simildf$document1), levels(simildf$document1))
+})
+    
