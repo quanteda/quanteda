@@ -78,13 +78,13 @@ select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = 
 
 # internal function to make new system-level docvars
 make_docvars <- function(n, docname = NULL, unique = TRUE) {
-
+    
     stopifnot(is.integer(n))
     if (is.null(docname)) {
         docname <- paste0(quanteda_options("base_docname"), seq_len(n))
     } else {
         stopifnot(n == length(docname))
-        docname <- as.character(docname)
+        docname <- stri_trans_nfc(as.character(docname))
     }
     if (n == 0) {
         result <- data.frame("docname_" = character(),
@@ -120,13 +120,8 @@ make_docvars <- function(n, docname = NULL, unique = TRUE) {
 reshape_docvars <- function(x, i = NULL) {
     if (is.null(i)) return(x)
     x <- x[i, , drop = FALSE]
-    if (any(duplicated(x[["docid_"]]))) {
-        x[["segid_"]] <- stats::ave(x[["docid_"]] == x[["docid_"]], x[["docid_"]], FUN = cumsum)
-        x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
-    } else {
-        x[["segid_"]] <- rep(1L, nrow(x))
-        x[["docname_"]] <- paste0(as.character(x[["docid_"]]))
-    }
+    temp <- make_docvars(nrow(x), x[["docid_"]], TRUE)
+    x[c("docname_", "docid_", "segid_")] <- temp
     rownames(x) <- NULL
     return(x)
 }
