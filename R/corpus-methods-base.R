@@ -86,21 +86,27 @@ is.corpus <- function(x) {
 #' summary(corp, showmeta = TRUE) # show the meta-data
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
-summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ...) {
+summary.corpus <- function(object, cache = TRUE, ...) {
+    parent <- deparse(substitute(object))
     object <- as.corpus(object)
-    ndoc_all <- ndoc(object)
-    object <- head(object, n)
-    ndoc_show <- ndoc(object)
-    result <- if (!is.null(meta(object, "summary", type = "system"))) {
-        get_summary_metadata(object, ...)
+    if (cache) {
+        hash <- digest::digest(list(object, utils::packageVersion("quanteda"), ...),
+                               algo = "sha256")
+        if (identical(meta_system(object, "summary")[["hash"]], hash)) {
+            cat("Use summary cache\n")
+            result <- meta_system(object, "summary")[["data"]]
+        } else {
+            cat("Summarize and cache\n")
+            result <- summarize_texts(texts(object), ...)
+            meta_system(object, "summary") <- list(hash = hash, data = result)
+        }
+        assign(parent, object, env = parent.frame())
     } else {
-        summarize_texts(texts(object), tolower = tolower, ...)
+        cat("Summarize but don't not cache\n")
+        result <- summarize_texts(texts(object), ...)
+        meta_system(object, "summary") <- NULL
     }
-    if (showmeta)
-        result <- cbind(result, docvars(object))
-    attr(result, "ndoc_all") <- ndoc_all
-    attr(result, "ndoc_show") <- ndoc_show
-    class(result) <- c("summary.corpus", "data.frame")
+    #class(result) <- c("summary.corpus", "data.frame")
     return(result)
 }
 

@@ -4,19 +4,19 @@
 \alias{summary.corpus}
 \title{Summarize a corpus}
 \usage{
-\method{summary}{corpus}(object, n = 100, tolower = FALSE, showmeta = TRUE, ...)
+\method{summary}{corpus}(object, cache = TRUE, ...)
 }
 \arguments{
 \item{object}{corpus to be summarized}
 
-\item{n}{maximum number of texts to describe, default=100}
+\item{...}{additional arguments passed through to \code{\link[=tokens]{tokens()}}}
 
-\item{tolower}{convert texts to lower case before counting types}
+\item{n}{maximum number of texts to describe, default=100}
 
 \item{showmeta}{set to \code{TRUE} to include document-level
 meta-data}
 
-\item{...}{additional arguments passed through to \code{\link[=tokens]{tokens()}}}
+\item{tolower}{convert texts to lower case before counting types}
 }
 \description{
 Displays information about a corpus, including attributes and metadata such
