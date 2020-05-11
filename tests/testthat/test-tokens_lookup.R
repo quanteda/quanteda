@@ -503,3 +503,9 @@ test_that("dictionary nested_scope is independent of orders", {
     )
 })
 
+test_that("tokens_lookup return tokens even if no matches", {
+    dict <- dictionary(list('en'=list('foreign policy' = 'aaaaa', 'domestic politics' = 'bbbbb')))
+    toks <- tokens(data_corpus_inaugural[1:5])
+    expect_equal(types(tokens_lookup(toks, dict)),
+                 c("en.foreign policy", "en.domestic politics"))
+})

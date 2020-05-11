@@ -132,10 +132,11 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     } else {
         if (exclusive) {
             if (!is.null(nomatch)) {
-                result <- cbind(x[, 0], as.dfm(cbind(structure(ntoken(x),
-                                                               names = nomatch))))
+                result <- as.dfm(matrix(ntoken(x), ncol = 1,
+                                        dimnames = list(docnames(x), nomatch)))
             } else {
-                result <- x[, 0] # dfm without features
+                result <- make_null_dfm(document = docnames(x), 
+                                        feature = key)
             }
         } else {
             result <- x
