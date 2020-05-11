@@ -110,7 +110,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     result <- build_tokens(
         unclass(x)[index],
         attrs[["types"]],
-        docvars = subset_docvars(attrs[["docvars"]], index),
+        docvars = reshape_docvars(attrs[["docvars"]], index),
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )

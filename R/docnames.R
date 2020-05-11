@@ -64,8 +64,9 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    value <- make_docnames(value)
-    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
+    temp <- make_docvars(length(value), value, TRUE)
+    attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
+    attr(x, "names") <- temp[["docname_"]]
     return(x)
 }
 
@@ -73,8 +74,9 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    value <- make_docnames(value)
-    attr(x, "names") <- attr(x, "docvars")[["docname_"]] <- value
+    temp <- make_docvars(length(value), value, TRUE)
+    attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
+    attr(x, "names") <- temp[["docname_"]]
     return(x)
 }
 
@@ -82,15 +84,9 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    value <- make_docnames(value)
-    x@Dimnames[["docs"]] <- x@docvars[["docname_"]] <- value
-    return(x)
-}
-
-make_docnames <- function(x) {
-    x <- stri_trans_nfc(as.character(x))
-    if (any(duplicated(x)))
-        x <- paste0(x, ".", stats::ave(x == x, x, FUN = cumsum))
+    temp <- make_docvars(length(value), value, TRUE)
+    x@docvars[c("docname_", "docid_", "segid_")] <- temp
+    x@Dimnames[["docs"]] <- temp[["docname_"]]
     return(x)
 }
 
