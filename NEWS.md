@@ -11,6 +11,7 @@
 ## Bug fixes and stability enhancements
 
 * Stopped returning `NA` for non-existent features when `n` > `nfeat(x)` in `textstat_frequency(x, n)`.  (#1929)
+* Fixed a problem in `dfm_lookup()` and `tokens_lookup()` in which an error was caused when no dictionary key returned a single match (#1946).
 
 
 # quanteda 2.0.1
