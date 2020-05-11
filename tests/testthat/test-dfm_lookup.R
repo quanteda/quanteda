@@ -117,12 +117,20 @@ test_that("dfm_lookup works with multi-word keys, issue #704", {
 
 test_that("dfm_lookup return dfm even if no matches, issue #704", {
     dict <- dictionary(list('en'=list('foreign policy' = 'aaaaa', 'domestic politics' = 'bbbbb')))
-    testdfm <- dfm(data_corpus_inaugural[1:5])
-    expect_true(is.dfm(dfm_lookup(testdfm, dict)))
+    dfmt <- dfm(data_corpus_inaugural[1:5])
+    expect_identical(
+        featnames(dfm_lookup(dfmt, dict)),
+        c("en.foreign policy", "en.domestic politics")
+    )
+    expect_identical(
+        colSums(dfm_lookup(dfmt, dict)),
+        c("en.foreign policy" = 0, "en.domestic politics" = 0)
+    )
 })
 
 test_that("dfm_lookup return all features even if no matches when exclusive = FALSE, issue #116", {
-    dict <- dictionary(list('en'=list('foreign policy' = 'aaaaa', 'domestic politics' = 'bbbbb')))
+    dict <- dictionary(list("en" = list("foreign policy" = "aaaaa", 
+                                        "domestic politics" = "bbbbb")))
     testdfm <- dfm(data_corpus_inaugural[1:5])
     expect_equivalent(testdfm, dfm_lookup(testdfm, dict, exclusive = FALSE))
 })
