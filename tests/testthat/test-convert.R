@@ -105,7 +105,8 @@ test_that("test lsa converter", {
                           D2 = c("hamster mouse sushi"),
                           D3 = c("dog monster monster"))))
     # guarantee sort order
-    dfmat <- dfmat[, sort(featnames(dfmat))]
+    # was temporarily required when tests broke following release of R 4.0
+    # dfmat <- dfmat[, sort(featnames(dfmat))]
     lsamat2 <- convert(dfmat, to = "lsa")
     expect_equivalent(lsamat, lsamat2)
 })
