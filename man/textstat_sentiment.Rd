@@ -57,3 +57,9 @@ textstat_sentiment(toks, pos = c("positive", "neg_negative"),
 sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
 textstat_sentiment(toks, fun = sent_fn)
 }
+\references{
+Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
+Scaling Policy Preferences from Coded Political Texts. \emph{Legislative Studies
+Quarterly}, 36(1), 123–155.
+\url{http://doi.org/10.1111/j.1939-9162.2010.00006.x}
+}

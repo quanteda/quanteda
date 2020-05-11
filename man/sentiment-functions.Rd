@@ -29,7 +29,7 @@ such as \code{smooth} for the logit scale.
 
 \code{sent_logit} is \eqn{log(\frac{pos}{neg})}.
 
-\code{sent_abspropdiff} is \eqn{\frac{pos - neg}{N}}, where \deqn{N}
+\code{sent_abspropdiff} is \eqn{\frac{pos - neg}{N}}, where \eqn{N}
 is the total number of all features in a document.
 
 \code{rel_abspropdiff} is \eqn{\frac{pos - neg}{pos + neg}}.
@@ -44,7 +44,7 @@ a scaling function needs the count of non-sentiment associated features.)
 Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
 Scaling Policy Preferences from Coded Political Texts. \emph{Legislative Studies
 Quarterly}, 36(1), 123–155.
-\link{http://doi.org/10.1111/j.1939-9162.2010.00006.x}
+\url{http://doi.org/10.1111/j.1939-9162.2010.00006.x}
 }
 \keyword{internal}
 \keyword{textstat}
