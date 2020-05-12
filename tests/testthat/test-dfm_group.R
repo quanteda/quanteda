@@ -303,3 +303,19 @@ test_that("dfm_group works with NA group labels", {
     #     dfm(corp[1:3]) %>% dfm_group(groups = "factorvar")
     # )
 })
+
+test_that("displayed matrix rownames are correct after dfm_group (#1949)", {
+    expect_identical(
+        docnames(dfm(letters[1:3], groups = c("x", "x", "y"))),
+        c("x", "y")
+    )
+    expect_output(
+        print(dfm(letters[1:3], groups = c("x", "x", "y"))),
+        "Document-feature matrix of: 2 documents, 3 features (50.0% sparse).
+    features
+docs a b c
+   x 1 1 0
+   y 0 0 1",
+        fixed = TRUE
+    )
+})
