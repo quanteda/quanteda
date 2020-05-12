@@ -139,6 +139,7 @@ group_docvars <- function(x, group = NULL) {
     temp <- make_docvars(length(levels(group)), levels(group), TRUE)
     result <- x[match(levels(group), group), l, drop = FALSE]
     result[c("docname_", "docid_", "segid_")] <- temp
+    rownames(result) <- NULL
     return(result)
 }
 
