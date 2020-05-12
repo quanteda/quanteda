@@ -87,25 +87,26 @@ is.corpus <- function(x) {
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 summary.corpus <- function(object, cache = TRUE, ...) {
-    parent <- deparse(substitute(object))
+    #parent <- deparse(substitute(object))
     object <- as.corpus(object)
+    meta <- meta(object, "all")
     if (cache) {
         hash <- digest::digest(list(object, utils::packageVersion("quanteda"), ...),
                                algo = "sha256")
-        if (identical(meta_system(object, "summary")[["hash"]], hash)) {
+        if (identical(meta[["object"]][["summary"]][["hash"]], hash)) {
             cat("Use summary cache\n")
-            result <- meta_system(object, "summary")[["data"]]
+            result <- meta[["object"]][["summary"]][["data"]]
         } else {
             cat("Summarize and cache\n")
             result <- summarize_texts(texts(object), ...)
-            meta_system(object, "summary") <- list(hash = hash, data = result)
+            meta[["object"]][["summary"]] <- list("hash" = hash, "data" = result)
         }
-        assign(parent, object, env = parent.frame())
     } else {
         cat("Summarize but don't not cache\n")
         result <- summarize_texts(texts(object), ...)
-        meta_system(object, "summary") <- NULL
+        meta[["object"]][["summary"]] <- NULL
     }
+    qatd_cpp_set_meta(object, meta)
     #class(result) <- c("summary.corpus", "data.frame")
     return(result)
 }

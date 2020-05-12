@@ -91,6 +91,11 @@ bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups
 }
 
 // [[Rcpp::export]]
+void qatd_cpp_set_meta(CharacterVector texts_, List meta_) {
+    texts_.attr("meta") = meta_;
+}
+
+// [[Rcpp::export]]
 bool qatd_cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
     return true;
