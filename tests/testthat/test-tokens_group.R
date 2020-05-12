@@ -127,3 +127,12 @@ test_that("tokens_group works with NA group labels", {
         list(No = "Doc2", Yes = c("Doc", "1", "Doc", "1b"))
     )
 })
+
+test_that("element names are correctly reset after tokens_group() - #1949", {
+    expect_identical(
+        tokens(letters[1:3]) %>% 
+            quanteda:::tokens_group(groups = c("x", "x", "y")) %>%
+            names(),
+        c("x", "y")
+    )
+})
