@@ -93,18 +93,18 @@ summary.corpus <- function(object, cache = TRUE, ...) {
     if (cache) {
         hash <- digest::digest(list(object, utils::packageVersion("quanteda"), ...),
                                algo = "sha256")
-        if (identical(meta[["object"]][["summary"]][["hash"]], hash)) {
+        if (identical(meta$object$summary$hash, hash)) {
             cat("Use summary cache\n")
-            result <- meta[["object"]][["summary"]][["data"]]
+            result <- meta$object$summary$data
         } else {
             cat("Summarize and cache\n")
             result <- summarize_texts(texts(object), ...)
-            meta[["object"]][["summary"]] <- list("hash" = hash, "data" = result)
+            meta$object$summary <- list("hash" = hash, "data" = result)
         }
     } else {
         cat("Summarize but don't not cache\n")
         result <- summarize_texts(texts(object), ...)
-        meta[["object"]][["summary"]] <- NULL
+        meta$object$summary <- NULL
     }
     qatd_cpp_set_meta(object, meta)
     #class(result) <- c("summary.corpus", "data.frame")
