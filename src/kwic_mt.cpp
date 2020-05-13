@@ -99,7 +99,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     dev::Timer timer;
     std::vector<Targets> temp(texts.size());
     
-    dev::start_timer("Search keywords", timer);
+    //dev::start_timer("Search keywords", timer);
 #if QUANTEDA_USE_TBB
     kwic_mt kwic_mt(texts, temp, spans, map_pats);
     parallelFor(0, texts.size(), kwic_mt);
@@ -108,14 +108,14 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         temp[h] = kwic(texts[h], spans, map_pats);
     }
 #endif
-    dev::stop_timer("Search keywords", timer);
+    //dev::stop_timer("Search keywords", timer);
     
     // Get total number of matches
     std::size_t n = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
         n += temp[h].size();
     }
-    dev::start_timer("Create strings", timer);
+    //dev::start_timer("Create strings", timer);
     IntegerVector documents_(n), segments_(n);
     IntegerVector pat_(n), pos_from_(n), pos_to_(n);
     CharacterVector coxs_name_(n), coxs_pre_(n), coxs_target_(n), coxs_post_(n);
@@ -152,8 +152,8 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             j++;
         }
     }
-    dev::stop_timer("Create strings", timer);
-    dev::start_timer("Create data.frame", timer);
+    //dev::stop_timer("Create strings", timer);
+    //dev::start_timer("Create data.frame", timer);
     DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
                                           _["from"]    = pos_from_,
                                           _["to"]      = pos_to_,
@@ -162,7 +162,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["post"]    = coxs_post_,
                                           _["pattern"] = pat_,
                                           _["stringsAsFactors"] = false);
-    dev::stop_timer("Create data.frame", timer);
+    //dev::stop_timer("Create data.frame", timer);
     output_.attr("docid") = documents_;
     output_.attr("segid") = segments_;
     return output_;
