@@ -8,7 +8,8 @@ typedef std::vector<Target> Targets;
 
 Targets kwic(Text tokens,
                    const std::vector<std::size_t> &spans,
-                   const MultiMapNgrams &map_pats){
+                   const MultiMapNgrams &map_pats,
+                   UintParam &match_count){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -22,6 +23,7 @@ Targets kwic(Text tokens,
             for (auto it = range.first; it != range.second; ++it) {
                 unsigned int pat = it->second;
                 targets.push_back(std::make_tuple(pat, i, i + span - 1));
+                match_count++;
             }
         }
     }
@@ -39,17 +41,20 @@ struct kwic_mt : public Worker{
     std::vector<Targets> &temp;
     const std::vector<std::size_t> &spans;
     const MultiMapNgrams &map_pats;
+    UintParam &match_count;
     
     // Constructor
     kwic_mt(Texts &texts_, std::vector<Targets> &temp_,
-            const std::vector<std::size_t> &spans_, const MultiMapNgrams &map_pats_):
-            texts(texts_), temp(temp_), spans(spans_), map_pats(map_pats_) {}
+            const std::vector<std::size_t> &spans_, const MultiMapNgrams &map_pats_,
+            UintParam &match_count_):
+            texts(texts_), temp(temp_), spans(spans_), map_pats(map_pats_), 
+            match_count(match_count_) {}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            temp[h] = kwic(texts[h], spans, map_pats);
+            temp[h] = kwic(texts[h], spans, map_pats, match_count);
         }
     }
 };
@@ -100,25 +105,22 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     std::vector<Targets> temp(texts.size());
     
     //dev::start_timer("Search keywords", timer);
+    UintParam match_count = 0;
 #if QUANTEDA_USE_TBB
-    kwic_mt kwic_mt(texts, temp, spans, map_pats);
+    kwic_mt kwic_mt(texts, temp, spans, map_pats, match_count);
     parallelFor(0, texts.size(), kwic_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = kwic(texts[h], spans, map_pats);
+        temp[h] = kwic(texts[h], spans, map_pats, match_count);
     }
 #endif
     //dev::stop_timer("Search keywords", timer);
     
-    // Get total number of matches
-    std::size_t n = 0;
-    for (std::size_t h = 0; h < temp.size(); h++) {
-        n += temp[h].size();
-    }
     //dev::start_timer("Create strings", timer);
-    IntegerVector documents_(n), segments_(n);
-    IntegerVector pat_(n), pos_from_(n), pos_to_(n);
-    CharacterVector coxs_name_(n), coxs_pre_(n), coxs_target_(n), coxs_post_(n);
+    IntegerVector documents_(match_count), segments_(match_count);
+    IntegerVector pat_(match_count), pos_from_(match_count), pos_to_(match_count);
+    CharacterVector coxs_name_(match_count), coxs_pre_(match_count);
+    CharacterVector coxs_target_(match_count), coxs_post_(match_count);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
