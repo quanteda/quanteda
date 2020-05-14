@@ -55,7 +55,7 @@ textplot_xray(kwic(corp, pattern = "america*"),
 # how to modify the ggplot with different options
 library(ggplot2)
 tplot <- textplot_xray(kwic(corp, pattern = "american"), 
-                   kwic(corp, pattern = "people"))
+                       kwic(corp, pattern = "people"))
 tplot + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 
 # adjust the names of the document names
