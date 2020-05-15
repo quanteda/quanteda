@@ -91,7 +91,9 @@ shortcuts for \code{tokens_select(x, pattern, selection = "remove")} and
 common usage for \code{tokens_remove} will be to eliminate stop words from a text
 or text-based object, while the most common use of \code{tokens_select} will be to
 select tokens with only positive pattern matches from a list of regular
-expressions, including a dictionary.
+expressions, including a dictionary. \code{startpos} and \code{endpos} determine the
+positions of tokens searched for \code{pattern} and areas affected are
+expanded by \code{window}.
 }
 \examples{
 ## tokens_select with simple examples

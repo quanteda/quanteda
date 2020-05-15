@@ -7,7 +7,9 @@
 #' common usage for `tokens_remove` will be to eliminate stop words from a text
 #' or text-based object, while the most common use of `tokens_select` will be to
 #' select tokens with only positive pattern matches from a list of regular
-#' expressions, including a dictionary.
+#' expressions, including a dictionary. `startpos` and `endpos` determine the
+#' positions of tokens searched for `pattern` and areas affected are 
+#' expanded by `window`.
 #' @param x [tokens] object whose token elements will be removed or kept
 #' @inheritParams pattern
 #' @param selection whether to `"keep"` or `"remove"` the tokens matching
@@ -61,7 +63,7 @@
 #' tokens_select(toks, c("b", "f"), selection = "remove", window = 1)
 #' tokens_remove(toks, c("b", "f"), window = c(0, 1))
 #' tokens_select(toks, pattern = c("e", "g"), window = c(1, 2))
-#'
+#' 
 tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
