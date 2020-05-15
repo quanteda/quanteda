@@ -46,21 +46,22 @@
 #' @export
 #' @examples
 #' ## tokens_select with simple examples
-#' toks <- tokens(c("This is a sentence.", "This is a second sentence."),
-#'                  remove_punct = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = TRUE)
+#' toks <- as.tokens(list(letters, LETTERS))
+#' tokens_select(toks, c("b", "e", "f"), selection = "keep", padding = FALSE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "keep", padding = TRUE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", padding = FALSE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", padding = TRUE)
 #'
 #' # how case_insensitive works
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", case_insensitive = TRUE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", case_insensitive = FALSE)
 #'
 #' # use window
-#' tokens_select(toks, "second", selection = "keep", window = 1)
-#' tokens_select(toks, "second", selection = "remove", window = 1)
-#' tokens_remove(toks, "is", window = c(0, 1))
+#' tokens_select(toks, c("b", "f"), selection = "keep", window = 1)
+#' tokens_select(toks, c("b", "f"), selection = "remove", window = 1)
+#' tokens_remove(toks, c("b", "f"), window = c(0, 1))
+#' tokens_select(toks, pattern = c("e", "g"), window = c(1, 2))
+#'
 tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
@@ -88,11 +89,13 @@ tokens_select.default <- function(x, pattern = NULL,
 #' @examples
 #' toks <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 #' feats <- c("this", "sample", "is")
+#'
 #' # keeping tokens
 #' tokens_select(toks, feats, selection = "keep")
 #' tokens_select(toks, feats, selection = "keep", padding = TRUE)
 #' tokens_select(toks, feats, selection = "keep", case_insensitive = FALSE)
 #' tokens_select(toks, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
+#'
 #' # removing tokens
 #' tokens_select(toks, feats, selection = "remove")
 #' tokens_select(toks, feats, selection = "remove", padding = TRUE)
@@ -115,13 +118,14 @@ tokens_select.default <- function(x, pattern = NULL,
 #' # with minimum length
 #' tokens_select(toks2, min_nchar = 2, "keep") # simplified form
 #'
-#' # with starting adn ending positions
+#' # with starting and ending positions
 #' tokens_select(toks, "*", startpos = 3)  # exclude first two tokens
 #' tokens_select(toks, "*", endpos = 3)    # include only first 3 tokens
 #' tokens_select(toks, "*", startpos = -3) # include only last 2 tokens
 #'
 #' # combining positional selection with pattern matching
 #' tokens_select(toks, "t*", endpos = 3)
+#'
 tokens_select.tokens <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
@@ -190,10 +194,11 @@ tokens_select.tokens <- function(x, pattern = NULL,
 #' @export
 #' @examples
 #' # tokens_remove example: remove stopwords
-#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
-#'                    execute the functions of its Chief Magistrate.",
-#'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
-#'                    the high sense I entertain of this distinguished honor.")
+#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my
+#'                    country to execute the functions of its Chief Magistrate.",
+#'          wash2 <- "When the occasion proper for it shall arrive, I shall
+#'                    endeavor to express the high sense I entertain of this
+#'                    distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
 tokens_remove <- function(x, ...) {
@@ -208,6 +213,7 @@ tokens_remove <- function(x, ...) {
 #' @examples
 #' # token_keep example: keep two-letter words
 #' tokens_keep(tokens(txt, remove_punct = TRUE), "??")
+#'
 tokens_keep <- function(x, ...) {
     if ("selection" %in% names(list(...))) {
         stop("tokens_keep cannot include selection argument")
