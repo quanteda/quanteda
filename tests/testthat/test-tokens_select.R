@@ -554,10 +554,46 @@ test_that("position arguments are working", {
              doc3 = c("a"))
     )
     expect_identical(
+        as.list(tokens_select(toks, "*", startpos = rep(1, 3), endpos = rep(3, 3))),
+        list(doc1 = c("a", "b", "c"),
+             doc2 = c("a", "b", "c"),
+             doc3 = c("a"))
+    )
+    expect_identical(
+        as.list(tokens_select(toks, "*", startpos = c(1, 2), endpos = c(3))),
+        list(doc1 = c("a", "b", "c"),
+             doc2 = c("a", "b", "c"),
+             doc3 = c("a"))
+    )
+    expect_identical(
+        as.list(tokens_select(toks, "*", startpos = c(1, 2, 2), endpos = c(3, 2, 1))),
+        list(doc1 = c("a", "b", "c"),
+             doc2 = c("b"),
+             doc3 = character())
+    )
+    expect_identical(
         as.list(tokens_remove(toks, "*", startpos = 1, endpos = 3)),
         list(doc1 = c("d", "e"),
              doc2 = character(),
              doc3 = character())
+    )
+    expect_identical(
+        as.list(tokens_remove(toks, "*", startpos = rep(1, 3), endpos = rep(3, 3))),
+        list(doc1 = c("d", "e"),
+             doc2 = character(),
+             doc3 = character())
+    )
+    expect_identical(
+        as.list(tokens_remove(toks, "*", startpos = c(1, 2), endpos = c(3))),
+        list(doc1 = c("d", "e"),
+             doc2 = character(),
+             doc3 = character())
+    )
+    expect_identical(
+        as.list(tokens_remove(toks, "*", startpos = c(1, 2, 2), endpos = c(3, 2, 1))),
+        list(doc1 = c("d", "e"),
+             doc2 = c("a", "c"),
+             doc3 = c("a"))
     )
 
     expect_identical(
@@ -641,7 +677,19 @@ test_that("position arguments are working", {
              doc3 = c("a"))
     )
     expect_identical(
+        as.list(tokens_select(toks, "*", startpos = numeric(), endpos = numeric())),
+        list(doc1 = c("a", "b", "c", "d", "e"),
+             doc2 = c("a", "b", "c"),
+             doc3 = c("a"))
+    )
+    expect_identical(
         as.list(tokens_remove(toks, "*", startpos = -100, endpos = 100)),
+        list(doc1 = character(),
+             doc2 = character(),
+             doc3 = character())
+    )
+    expect_identical(
+        as.list(tokens_remove(toks, "*", startpos = numeric(), endpos = numeric())),
         list(doc1 = character(),
              doc2 = character(),
              doc3 = character())

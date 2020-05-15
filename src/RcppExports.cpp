@@ -262,8 +262,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_select
-List qatd_cpp_tokens_select(const List& texts_, const CharacterVector types_, const List& words_, int mode, bool padding, int window_left, int window_right, int pos_from, int pos_to);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP pos_fromSEXP, SEXP pos_toSEXP) {
+List qatd_cpp_tokens_select(const List& texts_, const CharacterVector types_, const List& words_, int mode, bool padding, int window_left, int window_right, const IntegerVector pos_from_, const IntegerVector pos_to_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP pos_from_SEXP, SEXP pos_to_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -274,9 +274,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
     Rcpp::traits::input_parameter< int >::type window_left(window_leftSEXP);
     Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
-    Rcpp::traits::input_parameter< int >::type pos_from(pos_fromSEXP);
-    Rcpp::traits::input_parameter< int >::type pos_to(pos_toSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, types_, words_, mode, padding, window_left, window_right, pos_from, pos_to));
+    Rcpp::traits::input_parameter< const IntegerVector >::type pos_from_(pos_from_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type pos_to_(pos_to_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_));
     return rcpp_result_gen;
 END_RCPP
 }
