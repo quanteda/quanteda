@@ -48,12 +48,12 @@ the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.}
 
 \item{window}{integer of length 1 or 2; the size of the window of tokens
-adjacent to \code{pattern} that will be selected. The window is symmetric
-unless a vector of two elements is supplied, in which case the first
-element will be the token length of the window before \code{pattern}, and
-the second will be the token length of the window after \code{pattern}.
-The default is \code{0}, meaning that only the pattern matched token(s) are
-selected, with no adjacent terms.
+adjacent to \code{pattern} that will be selected. The window is symmetric unless
+a vector of two elements is supplied, in which case the first element will
+be the token length of the window before \code{pattern}, and the second will be
+the token length of the window after \code{pattern}. The default is \code{0}, meaning
+that only the pattern matched token(s) are selected, with no adjacent
+terms.
 
 Terms from overlapping windows are never double-counted, but simply
 returned in the pattern match. This is because \code{tokens_select} never
@@ -61,13 +61,16 @@ redefines the document units; for this, see \code{\link[=kwic]{kwic()}}.}
 
 \item{min_nchar, max_nchar}{optional numerics specifying the minimum and
 maximum length in characters for tokens to be removed or kept; defaults are
-\code{NULL} for no limits.  These are applied after (and hence, in addition
-to) any selection based on pattern matches.}
+\code{NULL} for no limits.  These are applied after (and hence, in addition to)
+any selection based on pattern matches.}
 
 \item{startpos, endpos}{integer; position of tokens in documents where pattern
 matching starts and ends, where 1 is the first token in a document.  For
 negative indexes, counting starts at the ending token of the document, so
-that -1 denotes the last token in the document, -2 the second to last, etc.}
+that -1 denotes the last token in the document, -2 the second to last, etc.
+When the length of the vector is equal to \code{ndoc}, tokens in corresponding
+positions will be selected. Otherwise, only the first element in the vector
+is used.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were selected
 or removed}

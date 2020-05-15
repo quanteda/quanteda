@@ -3,6 +3,8 @@
 #include "recompile.h"
 using namespace quanteda;
 
+typedef std::pair<int, int> Position;
+typedef std::vector<Position> Positions;
 
 Text keep_token(Text tokens, 
           const std::vector<std::size_t> &spans,
@@ -132,12 +134,12 @@ struct select_mt : public Worker{
     const int &mode;
     const bool &padding;
     const std::pair<int, int> &window;
-    const std::pair<int, int> &pos;
+    const Positions &pos;
     
     // Constructor
     select_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
               const SetNgrams &set_words_, const int &mode_, const bool &padding_, 
-              const std::pair<int, int> &window_, const std::pair<int, int> &pos_):
+              const std::pair<int, int> &window_, const Positions &pos_):
               texts(texts_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_), 
               window(window_), pos(pos_){}
     
@@ -146,11 +148,11 @@ struct select_mt : public Worker{
         //Rcout << "Range " << begin << " " << end << "\n";
         if (mode == 1) {
             for (std::size_t h = begin; h < end; h++) {
-                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos);
+                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
             }
         } else if (mode == 2) {
             for (std::size_t h = begin; h < end; h++) {
-                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos);
+                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
             }
         } else {
             for (std::size_t h = begin; h < end; h++) {
@@ -180,16 +182,27 @@ List qatd_cpp_tokens_select(const List &texts_,
                             bool padding,
                             int window_left,
                             int window_right,
-                            int pos_from,
-                            int pos_to){
+                            const IntegerVector pos_from_,
+                            const IntegerVector pos_to_){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     std::pair<int, int> window(window_left, window_right);
-    std::pair<int, int> pos(pos_from, pos_to);
     
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
+    
+    size_t len = std::min(pos_from_.size(), pos_to_.size());
+    Positions pos(texts.size());
+    for (size_t g = 0; g < pos.size(); g++) {
+        if (len == pos.size()) {
+            pos[g] = std::make_pair(pos_from_[g], pos_to_[g]);
+        } else if (len == 1) {
+            pos[g] = std::make_pair(pos_from_[0], pos_to_[0]);
+        } else {
+            pos[g] = std::make_pair(1, -1);
+        }
+    }
     
     // dev::Timer timer;
     // dev::start_timer("Token select", timer);
@@ -199,11 +212,11 @@ List qatd_cpp_tokens_select(const List &texts_,
 #else
     if (mode == 1) {
         for (std::size_t h = 0; h < texts.size(); h++) {
-            texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos);
+            texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
         }
     } else if(mode == 2) {
         for (std::size_t h = 0; h < texts.size(); h++) {
-            texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos);
+            texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
         }
     } else {
         for (std::size_t h = 0; h < texts.size(); h++){

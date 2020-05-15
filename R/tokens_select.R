@@ -20,12 +20,12 @@
 #'   the pre- and post-selected tokens, for instance if a window of adjacency
 #'   needs to be computed.
 #' @param window integer of length 1 or 2; the size of the window of tokens
-#'   adjacent to `pattern` that will be selected. The window is symmetric
-#'   unless a vector of two elements is supplied, in which case the first
-#'   element will be the token length of the window before `pattern`, and
-#'   the second will be the token length of the window after `pattern`.
-#'   The default is `0`, meaning that only the pattern matched token(s) are
-#'   selected, with no adjacent terms.
+#'   adjacent to `pattern` that will be selected. The window is symmetric unless
+#'   a vector of two elements is supplied, in which case the first element will
+#'   be the token length of the window before `pattern`, and the second will be
+#'   the token length of the window after `pattern`. The default is `0`, meaning
+#'   that only the pattern matched token(s) are selected, with no adjacent
+#'   terms.
 #'
 #'   Terms from overlapping windows are never double-counted, but simply
 #'   returned in the pattern match. This is because `tokens_select` never
@@ -34,10 +34,13 @@
 #'   matching starts and ends, where 1 is the first token in a document.  For
 #'   negative indexes, counting starts at the ending token of the document, so
 #'   that -1 denotes the last token in the document, -2 the second to last, etc.
+#'   When the length of the vector is equal to `ndoc`, tokens in corresponding
+#'   positions will be selected. Otherwise, only the first element in the vector
+#'   is used.
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
-#'   `NULL` for no limits.  These are applied after (and hence, in addition
-#'   to) any selection based on pattern matches.
+#'   `NULL` for no limits.  These are applied after (and hence, in addition to)
+#'   any selection based on pattern matches.
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
