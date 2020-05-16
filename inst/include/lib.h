@@ -15,9 +15,9 @@ using namespace RcppParallel;
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
-// setting for unordered_map and unordered_set 
-const float GLOBAL_PATTERNS_MAX_LOAD_FACTOR = 0.1;
-const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.5;
+// global setting for unordered_map and unordered_set 
+extern float GLOBAL_PATTERNS_MAX_LOAD_FACTOR;
+extern float GLOBAL_NGRAMS_MAX_LOAD_FACTOR;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
 #if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 

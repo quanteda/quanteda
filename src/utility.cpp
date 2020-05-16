@@ -90,6 +90,27 @@ bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups
     return(true);
 }
 
+float GLOBAL_PATTERNS_MAX_LOAD_FACTOR = 0.05;
+float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
+
+// [[Rcpp::export]]
+void qatd_cpp_set_load_factor(std::string type, float value) {
+    if (0 < value && value < 1.0) {
+        if (type == "pattern")
+            GLOBAL_PATTERNS_MAX_LOAD_FACTOR = value;
+        if (type == "ngram")
+            GLOBAL_PATTERNS_MAX_LOAD_FACTOR = value;
+    }
+}
+
+// [[Rcpp::export]]
+List qatd_cpp_get_load_factor() {
+    return List::create(
+         _["patterns"] = GLOBAL_PATTERNS_MAX_LOAD_FACTOR,
+         _["ngrams"] = GLOBAL_NGRAMS_MAX_LOAD_FACTOR
+    );
+}
+
 // [[Rcpp::export]]
 bool qatd_cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
