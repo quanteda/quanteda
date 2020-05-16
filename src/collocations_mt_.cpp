@@ -307,7 +307,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
     unsigned int id_ignore = UINT_MAX; // use largest limit as filler
     
     SetUnigrams set_ignore;
-    set_ignore.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    set_ignore.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     for (size_t g = 0; g < words_ignore.size(); g++) {
         set_ignore.insert(words_ignore[g]);
     }
@@ -323,7 +323,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
 #endif
     
     MapNgramsPair counts_seq;
-    counts_seq.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    counts_seq.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     
     //dev::Timer timer;
     //dev::start_timer("Count", timer);

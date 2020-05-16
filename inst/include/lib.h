@@ -16,7 +16,7 @@ using namespace RcppParallel;
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
 // global setting for unordered_map and unordered_set 
-extern float GLOBAL_PATTERNS_MAX_LOAD_FACTOR;
+extern float GLOBAL_PATTERN_MAX_LOAD_FACTOR;
 extern float GLOBAL_NGRAMS_MAX_LOAD_FACTOR;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
@@ -191,8 +191,8 @@ namespace quanteda{
     }
 
     inline std::vector<std::size_t> register_ngrams(List patterns_, SetNgrams &set) {
-
-        set.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        
+        set.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
         Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
         std::vector<std::size_t> spans(patterns.size());
         for (size_t g = 0; g < patterns.size(); g++) {
@@ -207,7 +207,7 @@ namespace quanteda{
 
     inline std::vector<std::size_t> register_ngrams(List patterns_, IntegerVector ids_, MapNgrams &map) {
 
-        map.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        map.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
         Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
         std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
         std::vector<std::size_t> spans(patterns.size());
