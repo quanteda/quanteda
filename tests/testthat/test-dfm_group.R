@@ -162,8 +162,8 @@ test_that("test dfm_group keeps group-level variables", {
     expect_equal(
          dfm_group(dfmt, grp1)@docvars,
          data.frame("docname_" = c("A", "C", "D"),
-                    "docid_" = factor(c("text3", "text4", "text1"), 
-                                      levels = c("text1", "text2", "text3", "text4")),
+                    "docid_" = factor(c("A", "C", "D"), 
+                                      levels = c("A", "C", "D")),
                     "segid_" = c(1L, 1L, 1L),
                     grp = c("A", "C", "D"),
                     var1 = c(2, 2, 1),
@@ -176,9 +176,9 @@ test_that("test dfm_group keeps group-level variables", {
     expect_equal(
         dfm_group(dfmt, grp2, fill = TRUE)@docvars,
         data.frame("docname_" = c("A", "B", "C", "D"),
-                   "docid_" = factor(c("text3", NA, "text4", "text1"), 
-                                       levels = c("text1", "text2", "text3", "text4")),
-                   "segid_" = c(1L, NA, 1L, 1L),
+                   "docid_" = factor(c("A", "B", "C", "D"), 
+                                       levels = c("A", "B", "C", "D")),
+                   "segid_" = c(1L, 1L, 1L, 1L),
                    grp = c("A", NA, "C", "D"),
                    var1 = c(2, NA, 2, 1),
                    var3 = c("y", NA, NA, "x"),
@@ -262,7 +262,7 @@ test_that("group_docvar drops list column (#1553)", {
     data$lis <- list(1:3, -5, 3:4, 1)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
                  data.frame("docname_" = c("1", "2", "3"),
-                            "docid_" = factor(c("text1", "text2", "text3")),
+                            "docid_" = factor(c("1", "2", "3")),
                             "segid_" = c(1L, 1L, 1L),
                             vec1 = c(1, 3, 6),
                             vec2 = c("a", "b", "c"),
@@ -302,4 +302,20 @@ test_that("dfm_group works with NA group labels", {
     #     dfm(corp) %>% dfm_group(groups = "factorvar"),
     #     dfm(corp[1:3]) %>% dfm_group(groups = "factorvar")
     # )
+})
+
+test_that("displayed matrix rownames are correct after dfm_group (#1949)", {
+    expect_identical(
+        docnames(dfm(letters[1:3], groups = c("x", "x", "y"))),
+        c("x", "y")
+    )
+    expect_output(
+        print(dfm(letters[1:3], groups = c("x", "x", "y"))),
+        "Document-feature matrix of: 2 documents, 3 features (50.0% sparse).
+    features
+docs a b c
+   x 1 1 0
+   y 0 0 1",
+        fixed = TRUE
+    )
 })
