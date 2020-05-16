@@ -15,6 +15,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(corp), targetmeta3)
     meta(corp)[2] <- NULL
     expect_identical(meta(corp), targetmeta2)
+    expect_identical(names(meta(corp, type = "all")), 
+                     c("system", "object", "user"))
 
     meta(toks, "usermeta1") <- "test1"
     meta(toks)["usermeta2"] <- "test2"
@@ -22,6 +24,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(toks), targetmeta3)
     meta(toks)[2] <- NULL
     expect_identical(meta(toks), targetmeta2)
+    expect_identical(names(meta(toks, type = "all")), 
+                     c("system", "object", "user"))
     
     meta(dfmat, "usermeta1") <- "test1"
     meta(dfmat)["usermeta2"] <- "test2"
@@ -29,6 +33,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(dfmat), targetmeta3)
     meta(dfmat)[2] <- NULL
     expect_identical(meta(dfmat), targetmeta2)
+    expect_identical(names(meta(dfmat, type = "all")), 
+                     c("system", "object", "user"))
     
     meta(dict, "usermeta1") <- "test1"
     meta(dict)["usermeta2"] <- "test2"
@@ -36,6 +42,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(dict), targetmeta3)
     meta(dict)[2] <- NULL
     expect_identical(meta(dict), targetmeta2)
+    expect_identical(names(meta(dict, type = "all")), 
+                     c("system", "object", "user"))
     
 })
 
