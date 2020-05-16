@@ -4,27 +4,19 @@
 \alias{textstat_sentiment}
 \title{Compute sentiment using a dictionary method}
 \usage{
-textstat_sentiment(
-  x,
-  pos = "positive",
-  neg = "negative",
-  neut = NULL,
-  fun = sent_logit,
-  ...
-)
+textstat_sentiment(x, dictionary, fun = sent_logit, ...)
 }
 \arguments{
-\item{x}{a \link{dfm} or \link{tokens} object containing sentiment types or features}
+\item{x}{a character, \link{corpus}, \link{tokens}, or \link{dfm} object containing
+text, tokens, or features whose sentiment will be scored}
 
-\item{pos, neg}{character; names of the dictionary keys or features
-for positive and negative sentiment, respectively}
-
-\item{neut}{character; (optional) name of the neutral sentiment feature or
-key}
+\item{dictionary}{a \link{dictionary} that has \link{polarity} set, indicating which
+keys are associated with positive, negative, and (optionally) neutral
+sentiment}
 
 \item{fun}{function; the formula for computing sentiment, which must refer to
-\code{pos}, \code{neg}, and (optionally) \code{neut}.  Default is the Lowe et al (2001)
-"logit" scale which is the log of (positive / negative) counts.  See
+\code{pos}, \code{neg}, and (optionally) \code{neut}.  The default is the "logit" scale
+(Lowe et al 2011) which is the log of (positive / negative) counts.  See
 \link{sentiment-functions} for details and for additional available functions,
 as well as details on how to supply custom functions.}
 
@@ -39,23 +31,27 @@ assigned categories (types or features) of positive, negative, and neutral
 sentiment. Several formulas are available, or the user can supply a new one.
 }
 \examples{
-toks <- tail(data_corpus_inaugural, n = 5) \%>\%
-    tokens(remove_punct = TRUE, remove_numbers = TRUE) \%>\%
-    tokens_lookup(dictionary = data_dictionary_LSD2015, nomatch = "_other_")
-textstat_sentiment(toks)
-textstat_sentiment(toks, smooth = 1)
-textstat_sentiment(toks, fun = sent_relpropdiff)
-
+corp <- tail(data_corpus_inaugural, n = 5)
+toks <- tokens(corp)
 dfmat <- dfm(toks)
-textstat_sentiment(dfmat)
+polar1 <- list(pos = "positive", neg = "negative")
+polar2 <- list(pos = c("positive", "neg_negative"),
+               neg = c("negative", "neg_positive"))
+               
+polarity(data_dictionary_LSD2015) <- polar1
+textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
+textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
+textstat_sentiment(dfmat, dictionary = data_dictionary_LSD2015)
 
-# works with multiple types associated with each sentiment category
-textstat_sentiment(toks, pos = c("positive", "neg_negative"),
-                   neg = c("negative", "neg_positive"))
+polarity(data_dictionary_LSD2015) <- polar2
+textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
+textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
+textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
+textstat_sentiment(dfmat, dictionary = data_dictionary_LSD2015)
 
 # with a user-supplied function
 sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
-textstat_sentiment(toks, fun = sent_fn)
+textstat_sentiment(toks, data_dictionary_LSD2015, fun = sent_fn)
 }
 \references{
 Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).

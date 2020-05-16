@@ -8,6 +8,7 @@
 * Added `dictionary_edit()` for easy, interactive editing of dictionaries, plus the functions `char_edit()` and `list_edit()` for editing character and list of character objects.
 * Added a method to `textplot_wordcloud()` that plots objects from `textstat_keyness()`, to visualize keywords either by comparison or for the target category only.
 * Improved the performance of `kwic()` (#1840).
+* Added a new function `textstat_sentiment()` for computing sentiment using a dictionary with a polarity setting (through a new function `polarity()`).
 
 ## Bug fixes and stability enhancements
 
