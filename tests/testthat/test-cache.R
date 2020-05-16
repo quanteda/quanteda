@@ -21,3 +21,15 @@ test_that("test caching is working", {
     expect_identical(quanteda:::get_cache(dfmt, "something"), cache3)
     
 })
+
+test_that("test caching is passed to downstream objects", {
+    
+    cache <- data.frame(number = sample(1:100, 10))
+    corp <- corpus(c("a b c d"))
+    quanteda:::set_cache(corp, "summary", cache)
+    expect_identical(attr(corp, "meta")$object$summary$data, cache)
+    toks <- tokens(corp)
+    expect_identical(attr(toks, "meta")$object$summary$data, cache)
+    dfmt <- dfm(toks)
+    expect_identical(dfmt@meta$object$summary$data, cache)
+})

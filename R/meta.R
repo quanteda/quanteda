@@ -265,7 +265,10 @@ make_meta_system <- function(inherit = NULL) {
 make_meta_corpus <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
-    default <- list("unit" = "documents")
+    default <- list("unit" = "documents",
+                    "summary" = list("hash" = character(), 
+                                     "data" = data.frame())
+                    )
     update_meta(default, inherit, ...)
 }
 
@@ -278,7 +281,9 @@ make_meta_tokens <- function(inherit = NULL, ...) {
         "what" = "word",
         "ngram" = 1L,
         "skip" = 0L,
-        "concatenator" = "_"
+        "concatenator" = "_",
+        "summary" = list("hash" = character(), 
+                         "data" = data.frame())
     )
     update_meta(default, inherit, ...)
 }
@@ -296,7 +301,9 @@ make_meta_dfm <- function(inherit = NULL, ...) {
         "weight_tf" = list(scheme = "count", base = NULL, k = NULL),
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
                            smoothing = NULL, threshold = NULL),
-        "smooth" = 0
+        "smooth" = 0,
+        "summary" = list("hash" = character(), 
+                         "data" = data.frame())
     )
     update_meta(default, inherit, ...)
 }
