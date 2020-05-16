@@ -58,19 +58,14 @@ meta.dictionary2 <- function(x, field = NULL, type = c("user", "object", "system
     select_meta(x@meta, field, type)
 }
 
-select_meta <- function(x, field, type = c("user", "object", "system", "all")) {
+select_meta <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
     type <- match.arg(type)
-    result <- list()
-    if (type %in% c("user", "all"))
-        result <- c(result, x$user)
-    if (type %in% c("object", "all"))
-        result <- c(result, x$object)
-    if (type %in% c("system", "all"))
-        result <- c(result, x$system)
+    if (type == "all")
+        return(x)
     if (is.null(field)) {
-        return(result)
+        return(x[[type]])
     } else {
-        return(result[[field]])
+        return(x[[type]][[field]])
     }
 }
 
