@@ -180,6 +180,6 @@ test_that("max_load_factor can be configured", {
     quanteda:::qatd_cpp_set_load_factor("ngrams", -1.0)
     quanteda:::qatd_cpp_set_load_factor("ngrams", 2.0)
     expect_equal(quanteda:::qatd_cpp_get_load_factor(),
-                 list(patterns = 0.2, ngrams = 0.7))
+                 list(pattern = 0.2, ngrams = 0.7), tolerance = 0.001)
     
 })
