@@ -11,26 +11,11 @@
 #' head(summary_ukimmig2010)
 summarize_texts <- function(object, tolower = FALSE, ...) {
 
-    dict <- dictionary(list(
-        "number" = "\\p{N}",
-        "punct" = "\\p{P}",
-        "symbol" = "\\p{S}",
-        "any" = "[\\p{N}\\p{P}\\p{S}]"
-    ))
+    
     is_dup <- duplicated(texts(object))
     n_sent <- ntoken(tokens(object, what = "sentence"))
-    temp <- dfm(tokens(object, ...))
-    if (tolower) 
-        temp <- dfm_tolower(temp)
-    result <- convert(
-        dfm_lookup(temp, dictionary = dict, valuetype = "regex"),
-        "data.frame"
-    )
-    result$n_sent <- n_sent
-    result$n_token <- ntoken(temp)
-    result$n_type <- nfeat(temp) 
-    result$dupli <- is_dup
-    result$noise <- result$any / result$n_token
+    tosk <- tokens(object, ...)
+    
     return(result)
 }
 
@@ -58,38 +43,71 @@ summarize_texts <- function(object, tolower = FALSE, ...) {
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 summary.corpus <- function(object, cache = TRUE, ...) {
-    #parent <- deparse(substitute(object))
     object <- as.corpus(object)
-    meta <- meta(object, "all")
     if (cache) {
-        hash <- digest::digest(list(object, utils::packageVersion("quanteda"), ...),
-                               algo = "sha256")
-        if (identical(meta$object$summary$hash, hash)) {
-            cat("Use summary cache\n")
-            result <- meta$object$summary$data
-        } else {
-            cat("Summarize and cache\n")
-            result <- summarize_texts(texts(object), ...)
-            meta$object$summary <- list("hash" = hash, "data" = result)
-        }
+        result <- get_cache(object, "summary", ...)
+        if (!is.null(result))
+            return(result)
     } else {
-        cat("Summarize but don't not cache\n")
-        result <- summarize_texts(texts(object), ...)
-        meta$object$summary <- NULL
+        clear_cache(object, "summary")
     }
-    qatd_cpp_set_meta(object, meta)
-    #class(result) <- c("summary.corpus", "data.frame")
+    
+    result <- summary(tokens(object, ...))
+    result$n_sent <- ntoken(tokens(object, what = "sentence"))
+    result$is_dup <- duplicated(object)
+    
+    set_cache(object, "summary", result, ...)
     return(result)
 }
 
 #' @method summary tokens
 summary.tokens <- function(object, cache = TRUE, ...) {
+    object <- as.tokens(object)
+    if (cache) {
+        result <- get_cache(object, "summary", ...)
+        if (!is.null(result))
+            return(result)
+    } else {
+        clear_cache(object, "summary")
+    }
     
+    result <- summary(dfm(object, ...))
+    result$n_sent <- NA
+    result$is_dup <- duplicated(object)
+    
+    set_cache(object, "summary", result, ...)
+    return(result)
 }
 
 #' @method summary dfm
 summary.dfm <- function(object, cache = TRUE, ...) {
+    object <- as.dfm(object)
+    if (cache) {
+        result <- get_cache(object, "summary", ...)
+        if (!is.null(result))
+            return(result)
+    } else {
+        clear_cache(object, "summary")
+    }
     
+    dict <- dictionary(list(
+        "number" = "\\p{N}",
+        "punct" = "\\p{P}",
+        "symbol" = "\\p{S}",
+        "any" = "[\\p{N}\\p{P}\\p{S}]"
+    ))
+    result <- convert(
+        dfm_lookup(object, dictionary = dict, valuetype = "regex"),
+        "data.frame"
+    )
+    result$n_token <- ntoken(temp)
+    result$n_type <- nfeat(temp) 
+    result$noise <- result$any / result$n_token
+    result$n_sent <- NA
+    result$dupli <- NA
+    
+    set_cache(object, "summary", result, ...)
+    return(result)
 }
 
 #' @export
@@ -117,4 +135,37 @@ print.summary.corpus <- function(x, ...) {
     NextMethod("[")
 }
 
+get_cache <- function(x, field, ...) {
+    meta <- meta(x, type = "all")
+    hash <- hash_object(x, ...)
+    #print(hash)
+    if (identical(meta$object[[field]][["hash"]], hash)) {
+        result <- meta$object[[field]][["data"]]
+    } else {
+        result <- NULL
+    }
+    return(result)
+}
 
+set_cache <- function(x, field, object, ...) {
+    meta <- meta(x, type = "all")
+    hash <- hash_object(x, ...)
+    #print(hash)
+    meta$object[[field]] <- list("hash" = hash, "data" = object)
+    print(meta)
+    qatd_cpp_set_meta(x, meta)
+}
+
+clear_cache <- function(x, field) {
+    meta <- meta(x, type = "all")
+    if (!field %in% names(meta$object))
+        return(FALSE)
+    meta$object[[field]] <- NULL
+    qatd_cpp_set_meta(x, meta)
+}
+
+hash_object <- function(x, ...) {
+    attributes(x) <- NULL
+    digest::digest(list(x, utils::packageVersion("quanteda"), ...),
+                   algo = "sha256")
+}
