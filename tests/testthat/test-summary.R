@@ -5,7 +5,7 @@ test_that("summary method works", {
     dfmt <- dfm(toks)
     
     # corpus
-    summ_corp <- summary(corp, cache = TRUE)
+    summ_corp <- summary(corp, cache = FALSE)
     expect_equal(
         summ_corp$punct,
         unname(ntoken(dfm_select(dfmt, "[\\p{P}]", valuetype = "regex")))
@@ -22,10 +22,9 @@ test_that("summary method works", {
         summ_corp$is_dup,
         rep(FALSE, ndoc(corp))
     )
-    expect_identical(summ_corp, meta(corp, type = "object")$summary$data)
     
     # tokens
-    summ_toks <- summary(toks, cache = TRUE)
+    summ_toks <- summary(toks, cache = FALSE)
     expect_equal(
         summ_toks$punct,
         unname(ntoken(dfm_select(dfmt, "[\\p{P}]", valuetype = "regex")))
@@ -42,10 +41,9 @@ test_that("summary method works", {
         summ_toks$is_dup,
         rep(FALSE, ndoc(toks))
     )
-    expect_identical(summ_toks, meta(toks, type = "object")$summary$data)
     
     # dfm
-    summ_dfm <- summary(dfmt, cache = TRUE)
+    summ_dfm <- summary(dfmt, cache = FALSE)
     expect_equal(
         summ_dfm$punct,
         unname(ntoken(dfm_select(dfmt, "[\\p{P}]", valuetype = "regex")))
@@ -62,7 +60,6 @@ test_that("summary method works", {
         summ_dfm$is_dup,
         rep(NA, ndoc(dfmt))
     )
-    expect_identical(summ_dfm, meta(dfmt, type = "object")$summary$data)
     
 })
 
