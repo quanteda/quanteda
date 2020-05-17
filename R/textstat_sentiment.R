@@ -5,10 +5,10 @@
 #' Compute sentiment scores from tokens or document-feature matrices, based on
 #' assigned categories (types or features) of positive, negative, and neutral
 #' sentiment. Several formulas are available, or the user can supply a new one.
-#' @param x a character, [corpus], [tokens], or [dfm] object containing 
+#' @param x a character, [corpus], [tokens], or [dfm] object containing
 #'   text, tokens, or features whose sentiment will be scored
 #' @param dictionary a [dictionary] that has [polarity] set, indicating which
-#'   keys are associated with positive, negative, and (optionally) neutral 
+#'   keys are associated with positive, negative, and (optionally) neutral
 #'   sentiment
 #' @param fun function; the formula for computing sentiment, which must refer to
 #'   `pos`, `neg`, and (optionally) `neut`.  The default is the "logit" scale
@@ -29,18 +29,18 @@
 #' polar1 <- list(pos = "positive", neg = "negative")
 #' polar2 <- list(pos = c("positive", "neg_negative"),
 #'                neg = c("negative", "neg_positive"))
-#'                
+#'
 #' polarity(data_dictionary_LSD2015) <- polar1
 #' textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
 #' textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
 #' textstat_sentiment(dfmat, dictionary = data_dictionary_LSD2015)
-#' 
+#'
 #' polarity(data_dictionary_LSD2015) <- polar2
 #' textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
 #' textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
 #' textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
 #' textstat_sentiment(dfmat, dictionary = data_dictionary_LSD2015)
-#' 
+#'
 #' # with a user-supplied function
 #' sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
 #' textstat_sentiment(toks, data_dictionary_LSD2015, fun = sent_fn)
@@ -68,7 +68,7 @@ textstat_sentiment.tokens <- function(x, dictionary, ...) {
     dict <- get_polarity_dictionary(dictionary)
     poldict <- dictionary(polarity(dict))
     polarity(poldict) <- polarity(dict)
-    
+
     tokens(x) %>%
         tokens_lookup(dictionary = dict, nomatch = "other") %>%
         dfm() %>%
@@ -82,11 +82,11 @@ textstat_sentiment.dfm <- function(x, dictionary, fun = sent_logit, ...) {
     result <- fun(dfm_lookup(x, dict, nomatch = "other"), ...)
     result <- convert(as.dfm(result), to = "data.frame")
     names(result)[2] <- "sentiment"
-    
+
     class(result) <- c("sentiment", "textstat", "data.frame")
     attr(result, "fun") <- fun
     attr(result, "fun_name") <- as.character(substitute(fun))
-    
+
     result
 }
 
@@ -99,7 +99,7 @@ textstat_sentiment.dfm <- function(x, dictionary, fun = sent_logit, ...) {
 #' sentiment analysis.  Polarity consists of a set of dictionary keys that are
 #' associated with positive, negative, and (optionally) neutral categories for
 #' use in [textstat_sentiment()].
-#' 
+#'
 #' A dictionary may have only one set of polarities at a time, but may be
 #' changed as needed.
 #' @param x a [dictionary] object
@@ -115,7 +115,7 @@ textstat_sentiment.dfm <- function(x, dictionary, fun = sent_logit, ...) {
 #' polarity(simpledict)
 #' polarity(simpledict) <- list(pos = "happy", neg = "sad")
 #' polarity(simpledict)
-#' 
+#'
 #' # can list multiple keys
 #' polarity(data_dictionary_LSD2015) <- list(
 #'     pos = c("positive", "neg_negative"),
@@ -133,8 +133,8 @@ polarity.dictionary2 <- function(x) {
 
 #' @rdname polarity
 #' @param value list consisting of named character vectors `pos`, `neg`, and
-#'   (optionally) `neut` corresponding to positive, negative, and neutral 
-#'   sentiment categories respectively.  Each element may contain multiple 
+#'   (optionally) `neut` corresponding to positive, negative, and neutral
+#'   sentiment categories respectively.  Each element may contain multiple
 #'   key names.  The `neut` category is optional but `pos` and `neg` must be
 #'   supplied.
 #' @return `polarity<-` sets the dictionary's polarity.
@@ -145,19 +145,19 @@ polarity.dictionary2 <- function(x) {
 
 #' @export
 "polarity<-.dictionary2" <- function(x, value) {
-    if (!setequal(union(c("pos", "neg", "neut"), names(value)), 
+    if (!setequal(union(c("pos", "neg", "neut"), names(value)),
                   c("pos", "neg", "neut")) ||
         !is.list(value)) {
         stop("value must be a list of 'pos', 'neg', and (optionally) 'neut'",
             call. = FALSE)
     }
-    
+
     x@meta$object$polarity <- value
     x
 }
 
 #' Get a standard polarity dictionary for sentiment analysis
-#' 
+#'
 #' Checks and standardizes a [dictionary] object with its [polarity] set, so
 #' that the polarity categories are standardized into the keys `pos`, `neg`, and
 #' (optionally) `neut`.  Also checks that the dictionary contains all of the
@@ -169,18 +169,18 @@ polarity.dictionary2 <- function(x) {
 #' @keywords internal
 get_polarity_dictionary <- function(dictionary) {
     poles <- polarity(dictionary)
-    
+
     # check the poles
     if (is.null(poles)) {
-        stop("polarity is not set for this dictionary; see ?polarity", 
+        stop("polarity is not set for this dictionary; see ?polarity",
              call. = FALSE)
     }
-    if (! all(polematch <- unlist(poles, use.names = FALSE) %in%
-              names(dictionary)) ) {
+    if (!all(polematch <- unlist(poles, use.names = FALSE) %in%
+              names(dictionary))) {
         stop(polematch[!polematch], " key not found in this dictionary",
              cqll. = FALSE)
     }
-    
+
     # standardize the dictionary
     dictlist <- list(
         pos = unlist(dictionary[poles$pos], use.names = FALSE),
@@ -188,7 +188,7 @@ get_polarity_dictionary <- function(dictionary) {
         neut = unlist(dictionary[poles$neut], use.names = FALSE)
     )
     dict <- dictionary(dictlist[!sapply(dictlist, is.null)])
-    
+
     # set the polarity to the keys
     newpoles <- list(pos = "pos", neg = "neg")
     if (!is.null(dictlist$neut)) newpoles <- c(newpoles, list(neut = "neut"))
@@ -200,17 +200,17 @@ get_polarity_dictionary <- function(dictionary) {
 # sentiment formula functions --------------
 
 #' Sentiment functions
-#' 
+#'
 #' Functions for computing sentiment, for [textstat_sentiment()].  Each function
 #' takes . Additional arguments may be passed via `...`,
 #' such as `smooth` for the logit scale.
-#' 
-#' @details 
+#'
+#' @details
 #' User supplied functions must take `x` and `...`, and refer to the required
 #' feature names for the sentiment categories `pos`,
-#' `neg`, `neut`, and `other`.  (The `other` category is only required when 
+#' `neg`, `neut`, and `other`.  (The `other` category is only required when
 #' a scaling function needs the count of non-sentiment associated features.)
-#' 
+#'
 #' @param x a [dfm] that has the following required feature names: `pos`,
 #' `neg`, `neut`, and `other`
 #' @param ... additional parameters as needed
@@ -239,7 +239,7 @@ sent_abspropdiff <- function(x, ...) {
     (x[, "pos"] - x[, "neg"]) / rowSums(x)
 }
 
-#' @description `rel_abspropdiff` is \eqn{\frac{pos - neg}{pos + neg}}.
+#' @description `sent_relpropdiff` is \eqn{\frac{pos - neg}{pos + neg}}.
 #' @rdname sentiment-functions
 #' @export
 sent_relpropdiff <- function(x, ...) {

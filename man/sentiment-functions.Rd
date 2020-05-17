@@ -32,7 +32,7 @@ such as \code{smooth} for the logit scale.
 \code{sent_abspropdiff} is \eqn{\frac{pos - neg}{N}}, where \eqn{N}
 is the total number of all features in a document.
 
-\code{rel_abspropdiff} is \eqn{\frac{pos - neg}{pos + neg}}.
+\code{sent_relpropdiff} is \eqn{\frac{pos - neg}{pos + neg}}.
 }
 \details{
 User supplied functions must take \code{x} and \code{...}, and refer to the required

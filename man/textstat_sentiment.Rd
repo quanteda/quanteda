@@ -37,7 +37,7 @@ dfmat <- dfm(toks)
 polar1 <- list(pos = "positive", neg = "negative")
 polar2 <- list(pos = c("positive", "neg_negative"),
                neg = c("negative", "neg_positive"))
-               
+
 polarity(data_dictionary_LSD2015) <- polar1
 textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
 textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
