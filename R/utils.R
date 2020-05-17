@@ -369,10 +369,10 @@ set_cache <- function(x, field, object, ...) {
 
 clear_cache <- function(x, field) {
     meta <- meta(x, type = "all")
-    if (!field %in% names(meta$object))
-        return(FALSE)
-    meta$object[[field]] <- NULL
-    qatd_cpp_set_meta(x, meta)
+    if (field %in% names(meta$object)) {
+        meta$object[[field]] <- list()
+        qatd_cpp_set_meta(x, meta)
+    }
 }
 
 hash_object <- function(x, ...) {

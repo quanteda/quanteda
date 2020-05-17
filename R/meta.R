@@ -267,7 +267,7 @@ make_meta_corpus <- function(inherit = NULL, ...) {
         inherit <- list()
     default <- list("unit" = "documents",
                     "summary" = list("hash" = character(), 
-                                     "data" = data.frame())
+                                     "data" = NULL)
                     )
     update_meta(default, inherit, ...)
 }
@@ -283,7 +283,7 @@ make_meta_tokens <- function(inherit = NULL, ...) {
         "skip" = 0L,
         "concatenator" = "_",
         "summary" = list("hash" = character(), 
-                         "data" = data.frame())
+                         "data" = NULL)
     )
     update_meta(default, inherit, ...)
 }
@@ -303,7 +303,7 @@ make_meta_dfm <- function(inherit = NULL, ...) {
                            smoothing = NULL, threshold = NULL),
         "smooth" = 0,
         "summary" = list("hash" = character(), 
-                         "data" = data.frame())
+                         "data" = NULL)
     )
     update_meta(default, inherit, ...)
 }
