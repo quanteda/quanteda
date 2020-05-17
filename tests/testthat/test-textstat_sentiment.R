@@ -76,6 +76,20 @@ test_that("different sentiment functions work as expected", {
     )
 })
 
+test_that("textstat_sentiment error conditions work", {
+    dict <- dictionary(list(
+        happy = c("happy", "jubilant", "exuberant"),
+        sad = c("sad", "morose", "down"),
+        okay = "just okay"
+    ))
+    expect_error(
+        textstat_sentiment("Happy, sad, neutral.", dictionary = dict),
+        "polarity is not set for this dictionary; see ?polarity", 
+        fixed = TRUE
+    )
+    
+})
+
 test_that("polarity functions work", {
     dict <- dictionary(list(
         happy = c("happy", "jubilant", "exuberant"),
@@ -103,10 +117,24 @@ test_that("polarity functions work", {
         list(pos = c("happy", "okay"), neg = "sad")
     )
 
+    expect_error(
+        polarity(dict) <- list(blank = "happy", neg = "sad"),
+        "value must be a list of 'pos', 'neg', and (optionally) 'neut'",
+        fixed = TRUE
+    )
+    expect_error(
+        polarity(dict) <- list(pos = "happy", neg = "sad", neutr = "okay"),
+        "value must be a list of 'pos', 'neg', and (optionally) 'neut'",
+        fixed = TRUE
+    )
+    
     # this should generate an error
-    polarity(dict) <- list(pos = "notfound", neg = "sad")
+    expect_error(
+        polarity(dict) <- list(pos = "notfound", neg = "sad"),
+        "'notfound' key not found in this dictionary"
+    )
 
-    # should test that both pos and neg are assigned
+    # should test that both pos and neg are assigned ?
 
 })
 
@@ -128,5 +156,12 @@ test_that("get_polarity_dictionary() works", {
     expect_identical(
         quanteda:::get_polarity_dictionary(dict) %>% polarity(),
         list(pos = "pos", neg = "neg", neut = "neut")
+    )
+    
+    polarity(dict) <- list(pos = "happy", neg = "sad", neut = "okay")
+    dict["okay"] <- NULL
+    expect_error(
+        quanteda:::get_polarity_dictionary(dict),
+        "'okay' key not found in this dictionary"
     )
 })

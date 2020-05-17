@@ -151,6 +151,7 @@ polarity.dictionary2 <- function(x) {
         stop("value must be a list of 'pos', 'neg', and (optionally) 'neut'",
             call. = FALSE)
     }
+    check_that_poles_exist(x, value)
 
     x@meta$object$polarity <- value
     x
@@ -175,12 +176,8 @@ get_polarity_dictionary <- function(dictionary) {
         stop("polarity is not set for this dictionary; see ?polarity",
              call. = FALSE)
     }
-    if (!all(polematch <- unlist(poles, use.names = FALSE) %in%
-              names(dictionary))) {
-        stop(polematch[!polematch], " key not found in this dictionary",
-             cqll. = FALSE)
-    }
-
+    check_that_poles_exist(dictionary, poles)
+    
     # standardize the dictionary
     dictlist <- list(
         pos = unlist(dictionary[poles$pos], use.names = FALSE),
@@ -195,6 +192,16 @@ get_polarity_dictionary <- function(dictionary) {
     polarity(dict) <- newpoles
 
     return(dict)
+}
+
+
+check_that_poles_exist <- function(dictionary, poles) {
+    poles <- unlist(poles, use.names = FALSE)
+    polematch <- poles %in% names(dictionary)
+    if (!all(polematch)) {
+        stop("'", poles[!polematch], "' key not found in this dictionary", 
+             call. = FALSE)
+    }
 }
 
 # sentiment formula functions --------------
