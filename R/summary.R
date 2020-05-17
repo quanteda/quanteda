@@ -21,55 +21,28 @@
 #' dfmat <- dfm(toks)
 #' summary(dfmat, cache = TRUE)
 summary.corpus <- function(object, cache = TRUE, ...) {
-    object <- as.corpus(object)
-    if (cache) {
-        result <- get_cache(object, "summary", ...)
-        if (!is.null(result))
-            return(result)
-    } else {
-        clear_cache(object, "summary")
-    }
-    
-    result <- summary.tokens(tokens(object), ...)
-    result$n_sent <- ntoken(tokens(object, what = "sentence"))
-    result$is_dup <- duplicated(object)
-    
-    if (cache)
-        set_cache(object, "summary", result, ...)
-    return(result)
+    summarize(as.corpus(object), cache, ...)
 }
 
 #' @method summary tokens
 #' @export
 summary.tokens <- function(object, cache = TRUE, ...) {
-    object <- as.tokens(object)
-    if (cache) {
-        result <- get_cache(object, "summary", ...)
-        if (!is.null(result))
-            return(result)
-    } else {
-        clear_cache(object, "summary")
-    }
-    
-    result <- summary.dfm(dfm(object), ...)
-    result$n_sent <- NA
-    result$is_dup <- duplicated(object)
-    
-    if (cache)
-        set_cache(object, "summary", result, ...)
-    return(result)
+    summarize(as.tokens(object), cache, ...)
 }
 
 #' @method summary dfm
 #' @export
 summary.dfm <- function(object, cache = TRUE, ...) {
-    object <- as.dfm(object)
+    summarize(as.dfm(object), cache, ...)
+}
+
+summarize <- function(x, cache = TRUE, ...) {
     if (cache) {
-        result <- get_cache(object, "summary", ...)
+        result <- get_cache(x, "summary", ...)
         if (!is.null(result))
             return(result)
     } else {
-        clear_cache(object, "summary")
+        clear_cache(x, "summary")
     }
     
     dict <- dictionary(list(
@@ -78,17 +51,23 @@ summary.dfm <- function(object, cache = TRUE, ...) {
         "symbol" = "\\p{S}",
         "any" = "[\\p{N}\\p{P}\\p{S}]"
     ))
+    temp <- dfm(x, ...)
     result <- convert(
-        dfm_lookup(object, dictionary = dict, valuetype = "regex"),
+        dfm_lookup(temp, dictionary = dict, valuetype = "regex"),
         "data.frame"
     )
-    result$n_token <- ntoken(object)
-    result$n_type <- nfeat(object) 
+    result$n_token <- ntoken(temp)
+    result$n_type <- nfeat(temp) 
     result$noise <- result$any / result$n_token
     result$n_sent <- NA
     result$is_dup <- NA
     
+    if (is.corpus(x))
+        result$n_sent <- ntoken(tokens(x, what = "sentence"))
+    if (is.corpus(x) || is.tokens(x))
+        result$is_dup <- duplicated(x)
+    
     if (cache)
-        set_cache(object, "summary", result, ...)
+        set_cache(x, "summary", result, ...)
     return(result)
 }
