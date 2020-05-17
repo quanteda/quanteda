@@ -177,7 +177,7 @@ get_polarity_dictionary <- function(dictionary) {
              call. = FALSE)
     }
     check_that_poles_exist(dictionary, poles)
-    
+
     # standardize the dictionary
     dictlist <- list(
         pos = unlist(dictionary[poles$pos], use.names = FALSE),
@@ -199,7 +199,7 @@ check_that_poles_exist <- function(dictionary, poles) {
     poles <- unlist(poles, use.names = FALSE)
     polematch <- poles %in% names(dictionary)
     if (!all(polematch)) {
-        stop("'", poles[!polematch], "' key not found in this dictionary", 
+        stop("'", poles[!polematch], "' key not found in this dictionary",
              call. = FALSE)
     }
 }
@@ -209,24 +209,43 @@ check_that_poles_exist <- function(dictionary, poles) {
 #' Sentiment functions
 #'
 #' Functions for computing sentiment, for [textstat_sentiment()].  Each function
-#' takes . Additional arguments may be passed via `...`,
-#' such as `smooth` for the logit scale.
+#' takes an input [dfm] with fixed feature names (see Details), and returns a sparse Matrix
+#' with a single column representing the results of the sentiment calculation.
 #'
 #' @details
-#' User supplied functions must take `x` and `...`, and refer to the required
-#' feature names for the sentiment categories `pos`,
-#' `neg`, `neut`, and `other`.  (The `other` category is only required when
-#' a scaling function needs the count of non-sentiment associated features.)
+#' User supplied functions must take `x` and optional additional arguments, such
+#' as `smooth` for a smoothing constant for the logit scaling function. feature
+#' names for the sentiment categories `pos`, `neg`, `neut`, and `other`.  (The
+#' `other` category is only required when a scaling function needs the count of
+#' non-sentiment associated features.)
+#'
+#' Additional arguments may be passed via `...`, such as `smooth` for the logit
+#' scale.
 #'
 #' @param x a [dfm] that has the following required feature names: `pos`,
 #' `neg`, `neut`, and `other`
-#' @param ... additional parameters as needed
+#' @return a sparse \pkg{Matrix} object of documents by sentiment score, where
+#'   the sentiment score is the only column.  (Its name is unimportant as this
+#'   will not be used by [textstat_sentiment()].)
 #' @keywords textstat internal
 #' @references  Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
 #'   Scaling Policy Preferences from Coded Political Texts. _Legislative Studies
 #'   Quarterly_, 36(1), 123–155.
 #'   <http://doi.org/10.1111/j.1939-9162.2010.00006.x>
 #' @name sentiment-functions
+#' @examples
+#' dfmat <- dfm(c("pos pos pos neg pos pos", "neg neg pos pos pos"))
+#' sent_logit(dfmat)
+#' sent_abspropdiff(dfmat)
+#'
+#' # user-supplied function
+#' my_sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
+#' my_sent_fn(dfmat)
+#'
+#' # user supplied function with fixed weights and using neutral category
+#' dfmat2 <- dfm(c("pos pos neut neg neut pos", "neg neg neut neut pos"))
+#' my_sent_fn2 <- function(x) (x[, "pos"]*3 + x[, "neut"]*2 + x[, "neg"]*1)/3
+#' my_sent_fn2(dfmat2)
 NULL
 
 #' @description `sent_logit` is \eqn{log(\frac{pos}{neg})}.
@@ -234,7 +253,7 @@ NULL
 #' @param smooth additional smoothing function added to `pos` and `neg` before
 #'   logarithmic transformation
 #' @export
-sent_logit <- function(x, smooth = 0.5, ...) {
+sent_logit <- function(x, smooth = 0.5) {
     log(x[, "pos"] + smooth) - log(x[, "neg"] + smooth)
 }
 
@@ -242,13 +261,13 @@ sent_logit <- function(x, smooth = 0.5, ...) {
 #'   is the total number of all features in a document.
 #' @rdname sentiment-functions
 #' @export
-sent_abspropdiff <- function(x, ...) {
+sent_abspropdiff <- function(x) {
     (x[, "pos"] - x[, "neg"]) / rowSums(x)
 }
 
 #' @description `sent_relpropdiff` is \eqn{\frac{pos - neg}{pos + neg}}.
 #' @rdname sentiment-functions
 #' @export
-sent_relpropdiff <- function(x, ...) {
+sent_relpropdiff <- function(x) {
     (x[, "pos"] - x[, "neg"]) / (x[, "pos"] + x[, "neg"])
 }

@@ -7,11 +7,11 @@
 \alias{sent_relpropdiff}
 \title{Sentiment functions}
 \usage{
-sent_logit(x, smooth = 0.5, ...)
+sent_logit(x, smooth = 0.5)
 
-sent_abspropdiff(x, ...)
+sent_abspropdiff(x)
 
-sent_relpropdiff(x, ...)
+sent_relpropdiff(x)
 }
 \arguments{
 \item{x}{a \link{dfm} that has the following required feature names: \code{pos},
@@ -19,13 +19,16 @@ sent_relpropdiff(x, ...)
 
 \item{smooth}{additional smoothing function added to \code{pos} and \code{neg} before
 logarithmic transformation}
-
-\item{...}{additional parameters as needed}
+}
+\value{
+a sparse \pkg{Matrix} object of documents by sentiment score, where
+the sentiment score is the only column.  (Its name is unimportant as this
+will not be used by \code{\link[=textstat_sentiment]{textstat_sentiment()}}.)
 }
 \description{
 Functions for computing sentiment, for \code{\link[=textstat_sentiment]{textstat_sentiment()}}.  Each function
-takes . Additional arguments may be passed via \code{...},
-such as \code{smooth} for the logit scale.
+takes an input \link{dfm} with fixed feature names (see Details), and returns a sparse Matrix
+with a single column representing the results of the sentiment calculation.
 
 \code{sent_logit} is \eqn{log(\frac{pos}{neg})}.
 
@@ -35,10 +38,28 @@ is the total number of all features in a document.
 \code{sent_relpropdiff} is \eqn{\frac{pos - neg}{pos + neg}}.
 }
 \details{
-User supplied functions must take \code{x} and \code{...}, and refer to the required
-feature names for the sentiment categories \code{pos},
-\code{neg}, \code{neut}, and \code{other}.  (The \code{other} category is only required when
-a scaling function needs the count of non-sentiment associated features.)
+User supplied functions must take \code{x} and optional additional arguments, such
+as \code{smooth} for a smoothing constant for the logit scaling function. feature
+names for the sentiment categories \code{pos}, \code{neg}, \code{neut}, and \code{other}.  (The
+\code{other} category is only required when a scaling function needs the count of
+non-sentiment associated features.)
+
+Additional arguments may be passed via \code{...}, such as \code{smooth} for the logit
+scale.
+}
+\examples{
+dfmat <- dfm(c("pos pos pos neg pos pos", "neg neg pos pos pos"))
+sent_logit(dfmat)
+sent_abspropdiff(dfmat)
+
+# user-supplied function
+my_sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
+my_sent_fn(dfmat)
+
+# user supplied function with fixed weights and using neutral category
+dfmat2 <- dfm(c("pos pos neut neg neut pos", "neg neg neut neut pos"))
+my_sent_fn2 <- function(x) (x[, "pos"]*3 + x[, "neut"]*2 + x[, "neg"]*1)/3
+my_sent_fn2(dfmat2)
 }
 \references{
 Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
