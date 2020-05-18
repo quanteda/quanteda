@@ -15,9 +15,9 @@ using namespace RcppParallel;
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
-// setting for unordered_map and unordered_set 
-const float GLOBAL_PATTERNS_MAX_LOAD_FACTOR = 0.1;
-const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.5;
+// global setting for unordered_map and unordered_set 
+extern float GLOBAL_PATTERN_MAX_LOAD_FACTOR;
+extern float GLOBAL_NGRAMS_MAX_LOAD_FACTOR;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
 #if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
@@ -191,14 +191,20 @@ namespace quanteda{
     }
 
     inline std::vector<std::size_t> register_ngrams(List patterns_, SetNgrams &set) {
-
-        set.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        
+        set.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
         Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
         std::vector<std::size_t> spans(patterns.size());
         for (size_t g = 0; g < patterns.size(); g++) {
             set.insert(patterns[g]);
             spans[g] = patterns[g].size();
         }
+        
+        // Rcout << "current max_load_factor: " << set.max_load_factor() << std::endl;
+        // Rcout << "current size           : " << set.size() << std::endl;
+        // Rcout << "current bucket_count   : " << set.unsafe_bucket_count() << std::endl;
+        // Rcout << "current load_factor    : " << set.load_factor() << std::endl;
+        
         sort(spans.begin(), spans.end());
         spans.erase(unique(spans.begin(), spans.end()), spans.end());
         std::reverse(std::begin(spans), std::end(spans));
@@ -207,7 +213,7 @@ namespace quanteda{
 
     inline std::vector<std::size_t> register_ngrams(List patterns_, IntegerVector ids_, MapNgrams &map) {
 
-        map.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        map.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
         Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
         std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
         std::vector<std::size_t> spans(patterns.size());

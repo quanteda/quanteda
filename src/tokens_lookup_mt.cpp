@@ -180,7 +180,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     //dev::start_timer("Map construction", timer);
 
     MultiMapNgrams map_keys;
-    map_keys.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     
