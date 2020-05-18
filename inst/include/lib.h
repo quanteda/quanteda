@@ -199,6 +199,12 @@ namespace quanteda{
             set.insert(patterns[g]);
             spans[g] = patterns[g].size();
         }
+        
+        // Rcout << "current max_load_factor: " << set.max_load_factor() << std::endl;
+        // Rcout << "current size           : " << set.size() << std::endl;
+        // Rcout << "current bucket_count   : " << set.unsafe_bucket_count() << std::endl;
+        // Rcout << "current load_factor    : " << set.load_factor() << std::endl;
+        
         sort(spans.begin(), spans.end());
         spans.erase(unique(spans.begin(), spans.end()), spans.end());
         std::reverse(std::begin(spans), std::end(spans));
