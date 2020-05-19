@@ -87,7 +87,8 @@ summarize <- function(x, cache = TRUE, ...) {
     if (is.corpus(x) || is.tokens(x))
         result$is_dup <- duplicated(x)
     result <- result[c("document", "n_token", "n_type", "n_sent",
-                       names(dict), "noise", "is_dup")]
+                       "number", "punct", "symbol", "any",
+                       "noise", "is_dup")]
     if (cache)
         set_cache(x, "summary", result, ...)
     return(result)
