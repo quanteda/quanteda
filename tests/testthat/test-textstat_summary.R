@@ -1,7 +1,7 @@
 test_that("textstat_summary method works", {
     
     corp <- data_corpus_inaugural[10:15]
-    toks <- tokens(corp)
+    toks <- tokens_tolower(tokens(corp))
     dfmt <- dfm(toks)
     
     # corpus
