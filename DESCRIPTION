@@ -159,6 +159,7 @@ Collate:
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
+    'textstat_summary.R'
     'tokenizers.R'
     'tokens-methods-base.R'
     'tokens.R'

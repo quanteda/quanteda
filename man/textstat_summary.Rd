@@ -2,20 +2,34 @@
 % Please edit documentation in R/textstat_summary.R
 \name{textstat_summary}
 \alias{textstat_summary}
-\title{Summarize a corpus}
+\title{Summarize documents}
 \usage{
 textstat_summary(x, cache = TRUE, ...)
 }
 \arguments{
+\item{x}{corpus to be summarized}
+
 \item{cache}{if \code{TRUE}, use internal cache from the second time}
 
 \item{...}{additional arguments passed through to \code{\link[=dfm]{dfm()}}}
-
-\item{object}{corpus to be summarized}
 }
 \description{
-Displays information about a corpus, including attributes and metadata such
-as date of number of texts, creation and source.
+Count the total number of number tokens and sentences.
+}
+\details{
+Count the total number tokens and sentences as well as
+tokens with numbers, punctuation marks or symbols.
+\itemize{
+\item n_token = number of tokens; equal to \code{\link[=ntoken]{ntoken()}}
+\item n_type = number of unique tokens; equal to \code{\link[=ntype]{ntype()}}
+\item n_sent = number of sentences; equal \code{ntoken(tokens(x), what = "sentence")}
+\item number = number of tokens with numbers (\verb{\\p\{N\}})
+\item punct = number of tokens with numbers (\verb{\\p\{P\}})
+\item symbol = number of tokens with numbers (\verb{\\p\{S\}})
+\item any = number of tokens with numbers (\verb{[\\p\{N\}\\p\{P\}\\p\{S\}]})
+\item noise = \eqn{any / n_token}
+\item is_dup = existence of identical documents
+}
 }
 \examples{
 corp <- data_corpus_inaugural

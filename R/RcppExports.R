@@ -85,16 +85,16 @@ qatd_cpp_is_grouped_character <- function(values_, groups_) {
     .Call(`_quanteda_qatd_cpp_is_grouped_character`, values_, groups_)
 }
 
-
-qatd_cpp_set_meta <- function(object_, meta_) {
-    invisible(.Call(`_quanteda_qatd_cpp_set_meta`, object_, meta_))
-
 qatd_cpp_set_load_factor <- function(type, value) {
     invisible(.Call(`_quanteda_qatd_cpp_set_load_factor`, type, value))
 }
 
 qatd_cpp_get_load_factor <- function() {
     .Call(`_quanteda_qatd_cpp_get_load_factor`)
+}
+
+qatd_cpp_set_meta <- function(object_, meta_) {
+    invisible(.Call(`_quanteda_qatd_cpp_set_meta`, object_, meta_))
 }
 
 qatd_cpp_tbb_enabled <- function() {
