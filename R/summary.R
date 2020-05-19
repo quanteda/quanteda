@@ -9,65 +9,53 @@
 #'   meta-data
 #' @param tolower convert texts to lower case before counting types
 #' @param ... additional arguments passed through to [tokens()]
-#' @rdname quanteda-summary
 #' @export
 #' @method summary corpus
 #' @keywords internal corpus
 #' @examples
-#' corp <- data_corpus_inaugural
-#' summary(corp, cache = TRUE)
-#' toks <- tokens(corp)
-#' summary(toks, cache = TRUE)
-#' dfmat <- dfm(toks)
-#' summary(dfmat, cache = TRUE)
-summary.corpus <- function(object, cache = TRUE, ...) {
-    summarize(as.corpus(object), cache, ...)
-}
-
-#' @method summary tokens
-#' @export
-summary.tokens <- function(object, cache = TRUE, ...) {
-    summarize(as.tokens(object), cache, ...)
-}
-
-#' @method summary dfm
-#' @export
-summary.dfm <- function(object, cache = TRUE, ...) {
-    summarize(as.dfm(object), cache, ...)
-}
-
-summarize <- function(x, cache = TRUE, ...) {
-    if (cache) {
-        result <- get_cache(x, "summary", ...)
-        if (!is.null(result))
-            return(result)
-    } else {
-        clear_cache(x, "summary")
-    }
-    
-    dict <- dictionary(list(
-        "number" = "\\p{N}",
-        "punct" = "\\p{P}",
-        "symbol" = "\\p{S}",
-        "any" = "[\\p{N}\\p{P}\\p{S}]"
-    ))
-    temp <- dfm(x, ...)
-    result <- convert(
-        dfm_lookup(temp, dictionary = dict, valuetype = "regex"),
-        "data.frame"
-    )
-    result$n_token <- ntoken(temp)
-    result$n_type <- nfeat(temp) 
-    result$noise <- result$any / result$n_token
-    result$n_sent <- NA
-    result$is_dup <- NA
-    
-    if (is.corpus(x))
-        result$n_sent <- ntoken(tokens(x, what = "sentence"))
-    if (is.corpus(x) || is.tokens(x))
-        result$is_dup <- duplicated(x)
-    
-    if (cache)
-        set_cache(x, "summary", result, ...)
+#' summary(data_corpus_inaugural)
+#' summary(data_corpus_inaugural, n = 10)
+#' corp <- corpus(data_char_ukimmig2010,
+#'                docvars = data.frame(party=names(data_char_ukimmig2010)))
+#' summary(corp, showmeta = TRUE) # show the meta-data
+#' sumcorp <- summary(corp) # (quietly) assign the results
+#' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
+summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ...) {
+    object <- as.corpus(object)
+    ndoc_all <- ndoc(object)
+    object <- head(object, n)
+    ndoc_show <- ndoc(object)
+    result <- summarize_texts(texts(object), tolower = tolower, ...)
+    result <- textstat_summary(object, chace = FALSE, tolower = tolower, ...)
+    if (showmeta)
+        result <- cbind(result, docvars(object))
+    attr(result, "ndoc_all") <- ndoc_all
+    attr(result, "ndoc_show") <- ndoc_show
+    class(result) <- c("summary.corpus", "data.frame")
     return(result)
+}
+
+#' @export
+#' @rdname corpus-class
+#' @method print summary.corpus
+print.summary.corpus <- function(x, ...) {
+    
+    ndoc_all <- attr(x, "ndoc_all")
+    ndoc_show <- attr(x, "ndoc_show")
+    
+    cat("Corpus consisting of ", ndoc_all, " document", if (ndoc_all > 1) "s" else "", sep = "")
+    if (!is.null(ndoc_show))
+        cat(", showing ", ndoc_show, " document", if (ndoc_show > 1) "s" else "", sep = "")
+    cat(":\n\n")
+    print.data.frame(x, row.names = FALSE)
+    cat("\n")
+}
+
+#' @noRd
+#' @export
+#' @method [ summary.corpus
+`[.summary.corpus` <- function(x, i, j, ...) {
+    class(x) <- "data.frame"
+    row.names(x) <- NULL
+    NextMethod("[")
 }
