@@ -100,7 +100,7 @@ List qatd_cpp_tokens_replace(const List &texts_,
     //dev::start_timer("Map construction", timer);
 
     MapNgrams map_pat;
-    map_pat.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    map_pat.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams pats = Rcpp::as<Ngrams>(patterns_);
 
     size_t len = std::min(pats.size(), ids_repls.size());

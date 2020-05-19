@@ -85,7 +85,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     CharacterVector names_ = texts_.attr("names");
 
     MultiMapNgrams map_pats;
-    map_pats.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    map_pats.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
     std::vector<unsigned int> pats = Rcpp::as< std::vector<unsigned int> >(pats_);
     
