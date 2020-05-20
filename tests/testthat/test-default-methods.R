@@ -428,3 +428,12 @@ test_that("friendly_class_undefined_message for char_select()", {
         fixed = TRUE
     )
 })
+
+test_that("friendly_class_undefined_message for textstat_summary()", {
+    expect_error(
+        textstat_summary(data_char_sampletext),
+        "textstat_summary() only works on corpus, dfm, tokens objects",
+        fixed = TRUE
+    )
+})
+
