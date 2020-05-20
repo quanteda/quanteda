@@ -170,19 +170,6 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     network::set.vertex.attribute(x, "frequency", f[network::network.vertex.names(x)])
 }
 
-#' summary.character method to override the network::summary.character()
-#'
-#' Necessary to prevent the \pkg{network} package's `summary.character` method
-#' from causing inconsistent behaviour with other summary methods.
-#' @param object the character input
-#' @param ... for additional passing of arguments to default method
-#' @keywords internal
-#' @method summary character
-#' @export
-summary.character <- function(object, ...) {
-    base::summary.default(object, ...)
-}
-
 # as.igraph ----------
 
 #' Convert an fcm to an igraph object
