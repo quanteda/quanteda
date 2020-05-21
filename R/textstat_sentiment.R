@@ -91,37 +91,130 @@ textstat_sentiment.dfm <- function(x, dictionary, fun = sent_logit, ...) {
 }
 
 
-# polarity setting and checking functions --------------
+# valence setting and checking functions --------------
 
-#' Set or get the sentiment polarity of a dictionary
+#' Set or get the valences of dictionary values or keys
 #'
-#' Set or retrieve the polarity of a [dictionary] object for the purposes of
-#' sentiment analysis.  Polarity consists of a set of dictionary keys that are
-#' associated with positive, negative, and (optionally) neutral categories for
-#' use in [textstat_sentiment()].
+#' Set or retrieve the valences of a [dictionary] object for the purposes of
+#' sentiment analysis.  Valences consist of numerical values attached to each
+#' dictionary "value".  For dictionaries with a more "polarity"-based approach,
+#' a key may have the same valence for every value in that key -- for instance,
+#' -1 for all values in a "negative" key.
+#' 
+#' Valences are used only in [textstat_sentiment()].
 #'
-#' A dictionary may have only one set of polarities at a time, but may be
+#' A dictionary may have only one set of valences at a time, but may be
 #' changed as needed.
 #' @param x a [dictionary] object
-#' @return `polarity()` returns the polarity as a list.
+#' @return `valences()` returns the valences as a list named numeric vectors,
+#'   where each list element corresponds to a key in the dictionary, and each
+#'   numeric element matches a value within that key.
 #' @keywords dictionary textstat utility
+#' @seealso [textstat_sentiment()], [polarity()]
 #' @export
 #'
 #' @examples
-#' simpledict <- dictionary(list(
+#' # setting valences
+#' dict <- dictionary(list(
+#'     happiness = c("happy", "jubilant", "exuberant", "content"),
+#'     anger = c("mad", "peeved", "irate", "furious", "livid")
+#' ))
+#' valence(dict)
+#' # using a 5-point scale: 1:1 match
+#' valence(dict) <- list(happiness = c(3, 4, 5, 2),
+#'                       anger = c(3.1, 2.4, 2.9, 4.1, 5.0))
+#' valence(dict)
+#' # with single valences applied to all values within the keys
+#' valence(dict) <- c(happiness = 1, anger = -1)
+#' valence(dict)
+#' # with named elements - order does not matter
+#' valence(dict) <- list(
+#'     happiness = c(exuberant = 5, jubilant = 4, happy = 3, content = 2)
+#' ) 
+#' valence(dict) 
+#' 
+valence <- function(x) {
+    UseMethod("valence")
+}
+
+#' @export
+valence.dictionary2 <- function(x) {
+    x@meta$object$valence
+}
+
+#' @rdname valence
+#' @param value named list consisting of numerical value.  The names of the
+#'   elements must correspond to a dictionary key. Each element must be:
+#'   * a single numeric value that will be applied to all of the dictionary
+#'   values in that key; or
+#'   * a vector of numeric values that matches the length and order of the
+#'   dictionary values in that key; or
+#'   * a named numeric vector where each element name matches dictionary values
+#'   in the key.
+#' @return `valence<-` sets the dictionary's valences.
+#' @export
+"valence<-" <- function(x, value) {
+    UseMethod("valence<-")
+}
+
+#' @export
+"valence<-.dictionary2" <- function(x, value) {
+    value <- as.list(value)
+    check_valences(x, value)
+    x@meta$object$valence <- set_valences(x, value)
+    x
+}    
+
+check_valences <- function(dictionary, valences) {
+    if (!is.list(valences) || any(names(valences) == ""))
+        stop("valence must be a fully named list", call. = FALSE)
+    for (key in names(valences)) {
+        if (!key %in% names(dictionary))
+            stop("'", key, "' is not a dictionary key", call. = FALSE)
+        if (length(valences[[key]]) != 1 &&
+            length(valences[[key]]) != length(dictionary[[key]]))
+            stop("valence value length not equal to number of values for key '",
+                 key, "'", call. = FALSE)
+    }
+}    
+
+set_valences <- function(dictionary, valences) {
+    for (key in names(valences)) {
+        if (length(valences[[key]]) == 1)
+            valences[[key]] <- rep(valences[[key]], length(dictionary[[key]]))
+        valences[[key]] <- structure(valences[[key]], names = dictionary[[key]])
+    }
+    valences
+}
+
+# polarity setting and checking functions --------------
+
+#' Set or get polarities for dictionary keys
+#' 
+#' `polarity()` is a shortcut to valences that allows an easier method for 
+#' setting valences that are the same within a key, for example a key for
+#' "positive" or "negative" whose values will have a uniform valence.  It
+#' operates by setting the same valences for all values in the key.
+#' @return `polarity()` returns the numeric valences of keys as a list.
+#' @keywords dictionary textstat utility internal
+#' @export
+#' @examples
+#' # setting polarities
+#' dict <- dictionary(list(
 #'     happy = c("happy", "jubilant", "exuberant"),
 #'     sad = c("sad", "morose", "down")
 #' ))
-#' polarity(simpledict)
-#' polarity(simpledict) <- list(pos = "happy", neg = "sad")
-#' polarity(simpledict)
+#' polarity(dict)
+#' polarity(dict) <- c(happy = 1, sad = -1)
+#' polarity(dict)
+#' valence(dict)
 #'
 #' # can list multiple keys
 #' polarity(data_dictionary_LSD2015) <- list(
-#'     pos = c("positive", "neg_negative"),
-#'     neg = c("negative", "neg_positive")
+#'     "positive" = 1, "neg_negative" = 1, "negative" = -1, "neg_positive" = -1
 #' )
 #' polarity(data_dictionary_LSD2015)
+#' lapply(valence(data_dictionary_LSD2015), head)
 polarity <- function(x) {
     UseMethod("polarity")
 }
@@ -132,11 +225,6 @@ polarity.dictionary2 <- function(x) {
 }
 
 #' @rdname polarity
-#' @param value list consisting of named character vectors `pos`, `neg`, and
-#'   (optionally) `neut` corresponding to positive, negative, and neutral
-#'   sentiment categories respectively.  Each element may contain multiple
-#'   key names.  The `neut` category is optional but `pos` and `neg` must be
-#'   supplied.
 #' @return `polarity<-` sets the dictionary's polarity.
 #' @export
 "polarity<-" <- function(x, value) {
@@ -145,129 +233,8 @@ polarity.dictionary2 <- function(x) {
 
 #' @export
 "polarity<-.dictionary2" <- function(x, value) {
-    if (!setequal(union(c("pos", "neg", "neut"), names(value)),
-                  c("pos", "neg", "neut")) ||
-        !is.list(value)) {
-        stop("value must be a list of 'pos', 'neg', and (optionally) 'neut'",
-            call. = FALSE)
-    }
-    check_that_poles_exist(x, value)
-
+    value <- as.list(value)
+    valence(x) <- value
     x@meta$object$polarity <- value
     x
-}
-
-#' Get a standard polarity dictionary for sentiment analysis
-#'
-#' Checks and standardizes a [dictionary] object with its [polarity] set, so
-#' that the polarity categories are standardized into the keys `pos`, `neg`, and
-#' (optionally) `neut`.  Also checks that the dictionary contains all of the
-#' keys named in the polarity object.  (It is necessary to check here since the
-#' dictionary could have been subset after creation.)
-#' @param dictionary a \pkg{quanteda} [dictionary]
-#' @return a single-level [dictionary] with keys `pos`, `neg`, and (optionally)
-#'   `neut`.
-#' @keywords internal
-get_polarity_dictionary <- function(dictionary) {
-    poles <- polarity(dictionary)
-
-    # check the poles
-    if (is.null(poles)) {
-        stop("polarity is not set for this dictionary; see ?polarity",
-             call. = FALSE)
-    }
-    check_that_poles_exist(dictionary, poles)
-
-    # standardize the dictionary
-    dictlist <- list(
-        pos = unlist(dictionary[poles$pos], use.names = FALSE),
-        neg = unlist(dictionary[poles$neg], use.names = FALSE),
-        neut = unlist(dictionary[poles$neut], use.names = FALSE)
-    )
-    dict <- dictionary(dictlist[!sapply(dictlist, is.null)])
-
-    # set the polarity to the keys
-    newpoles <- list(pos = "pos", neg = "neg")
-    if (!is.null(dictlist$neut)) newpoles <- c(newpoles, list(neut = "neut"))
-    polarity(dict) <- newpoles
-
-    return(dict)
-}
-
-
-check_that_poles_exist <- function(dictionary, poles) {
-    poles <- unlist(poles, use.names = FALSE)
-    polematch <- poles %in% names(dictionary)
-    if (!all(polematch)) {
-        stop("'", poles[!polematch], "' key not found in this dictionary",
-             call. = FALSE)
-    }
-}
-
-# sentiment formula functions --------------
-
-#' Sentiment functions
-#'
-#' Functions for computing sentiment, for [textstat_sentiment()].  Each function
-#' takes an input [dfm] with fixed feature names (see Details), and returns a sparse Matrix
-#' with a single column representing the results of the sentiment calculation.
-#'
-#' @details
-#' User supplied functions must take `x` and optional additional arguments, such
-#' as `smooth` for a smoothing constant for the logit scaling function. feature
-#' names for the sentiment categories `pos`, `neg`, `neut`, and `other`.  (The
-#' `other` category is only required when a scaling function needs the count of
-#' non-sentiment associated features.)
-#'
-#' Additional arguments may be passed via `...`, such as `smooth` for the logit
-#' scale.
-#'
-#' @param x a [dfm] that has the following required feature names: `pos`,
-#' `neg`, `neut`, and `other`
-#' @return a sparse \pkg{Matrix} object of documents by sentiment score, where
-#'   the sentiment score is the only column.  (Its name is unimportant as this
-#'   will not be used by [textstat_sentiment()].)
-#' @keywords textstat internal
-#' @references  Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
-#'   Scaling Policy Preferences from Coded Political Texts. _Legislative Studies
-#'   Quarterly_, 36(1), 123–155.
-#'   <http://doi.org/10.1111/j.1939-9162.2010.00006.x>
-#' @name sentiment-functions
-#' @examples
-#' dfmat <- dfm(c("pos pos pos neg pos pos", "neg neg pos pos pos"))
-#' sent_logit(dfmat)
-#' sent_abspropdiff(dfmat)
-#'
-#' # user-supplied function
-#' my_sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
-#' my_sent_fn(dfmat)
-#'
-#' # user supplied function with fixed weights and using neutral category
-#' dfmat2 <- dfm(c("pos pos neut neg neut pos", "neg neg neut neut pos"))
-#' my_sent_fn2 <- function(x) (x[, "pos"]*3 + x[, "neut"]*2 + x[, "neg"]*1)/3
-#' my_sent_fn2(dfmat2)
-NULL
-
-#' @description `sent_logit` is \eqn{log(\frac{pos}{neg})}.
-#' @rdname sentiment-functions
-#' @param smooth additional smoothing function added to `pos` and `neg` before
-#'   logarithmic transformation
-#' @export
-sent_logit <- function(x, smooth = 0.5) {
-    log(x[, "pos"] + smooth) - log(x[, "neg"] + smooth)
-}
-
-#' @description `sent_abspropdiff` is \eqn{\frac{pos - neg}{N}}, where \eqn{N}
-#'   is the total number of all features in a document.
-#' @rdname sentiment-functions
-#' @export
-sent_abspropdiff <- function(x) {
-    (x[, "pos"] - x[, "neg"]) / rowSums(x)
-}
-
-#' @description `sent_relpropdiff` is \eqn{\frac{pos - neg}{pos + neg}}.
-#' @rdname sentiment-functions
-#' @export
-sent_relpropdiff <- function(x) {
-    (x[, "pos"] - x[, "neg"]) / (x[, "pos"] + x[, "neg"])
 }

@@ -3,52 +3,42 @@
 \name{polarity}
 \alias{polarity}
 \alias{polarity<-}
-\title{Set or get the sentiment polarity of a dictionary}
+\title{Set or get polarities for dictionary keys}
 \usage{
 polarity(x)
 
 polarity(x) <- value
 }
-\arguments{
-\item{x}{a \link{dictionary} object}
-
-\item{value}{list consisting of named character vectors \code{pos}, \code{neg}, and
-(optionally) \code{neut} corresponding to positive, negative, and neutral
-sentiment categories respectively.  Each element may contain multiple
-key names.  The \code{neut} category is optional but \code{pos} and \code{neg} must be
-supplied.}
-}
 \value{
-\code{polarity()} returns the polarity as a list.
+\code{polarity()} returns the numeric valences of keys as a list.
 
 \verb{polarity<-} sets the dictionary's polarity.
 }
 \description{
-Set or retrieve the polarity of a \link{dictionary} object for the purposes of
-sentiment analysis.  Polarity consists of a set of dictionary keys that are
-associated with positive, negative, and (optionally) neutral categories for
-use in \code{\link[=textstat_sentiment]{textstat_sentiment()}}.
-}
-\details{
-A dictionary may have only one set of polarities at a time, but may be
-changed as needed.
+\code{polarity()} is a shortcut to valences that allows an easier method for
+setting valences that are the same within a key, for example a key for
+"positive" or "negative" whose values will have a uniform valence.  It
+operates by setting the same valences for all values in the key.
 }
 \examples{
-simpledict <- dictionary(list(
+# setting polarities
+dict <- dictionary(list(
     happy = c("happy", "jubilant", "exuberant"),
     sad = c("sad", "morose", "down")
 ))
-polarity(simpledict)
-polarity(simpledict) <- list(pos = "happy", neg = "sad")
-polarity(simpledict)
+polarity(dict)
+polarity(dict) <- c(happy = 1, sad = -1)
+polarity(dict)
+valence(dict)
 
 # can list multiple keys
 polarity(data_dictionary_LSD2015) <- list(
-    pos = c("positive", "neg_negative"),
-    neg = c("negative", "neg_positive")
+    "positive" = 1, "neg_negative" = 1, "negative" = -1, "neg_positive" = -1
 )
 polarity(data_dictionary_LSD2015)
+lapply(valence(data_dictionary_LSD2015), head)
 }
 \keyword{dictionary}
+\keyword{internal}
 \keyword{textstat}
 \keyword{utility}
