@@ -8,6 +8,7 @@
 #'   text, tokens, or features whose sentiment will be scored
 #' @param dictionary a [dictionary] that has [valence] set, in the form of 
 #'   numerical valences associated with sentiment
+#' @param ... not used here
 #' @return a data.frame of sentiment scores
 #' @export
 #' @references  

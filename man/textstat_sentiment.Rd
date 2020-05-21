@@ -12,6 +12,8 @@ text, tokens, or features whose sentiment will be scored}
 
 \item{dictionary}{a \link{dictionary} that has \link{valence} set, in the form of
 numerical valences associated with sentiment}
+
+\item{...}{not used here}
 }
 \value{
 a data.frame of sentiment scores
