@@ -26,7 +26,7 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
     object <- head(object, n)
     ndoc_show <- ndoc(object)
     result <- textstat_summary(object, cache = FALSE, tolower = tolower, ...)
-    result <- result[,c("document", "n_type", "n_token", "n_sent")]
+    result <- result[,c("document", "types", "tokens", "sents")]
     names(result) <- c("Text", "Types", "Tokens", "Sentences")
     if (showmeta)
         result <- cbind(result, docvars(object))
