@@ -1,6 +1,13 @@
 context("test quanteda_options")
 
+test_that("quanteda_options initialization works", {
+    options('quanteda_initialized' = NULL)
+    quanteda_options()
+    expect_true(getOption('quanteda_initialized'))
+})
+
 test_that("quanteda_options initialize works correctly", {
+    
     threads_temp <- getOption("quanteda_threads")
     quanteda_options(verbose = TRUE, threads = 1)
     quanteda_options(initialize = TRUE)
