@@ -13,7 +13,7 @@
 #'   \item numbers = number of numeric tokens 
 #'   (`^\p{Sc}{0,1}\p{N}+([.,]*\p{N})*\p{Sc}{0,1}$`)
 #'   \item symbols = number of symbols (`^\p{S}$`)
-#'   \item tags = number of tags; combination of 
+#'   \item tags = number of tags; sum of 
 #'   `pattern_username` and `pattern_hashtag` in [quanteda_options()]
 #'   \item emojis = number of emojis (`^\p{Emoji_Presentation}+$`)
 #' }

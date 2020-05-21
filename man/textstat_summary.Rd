@@ -28,7 +28,7 @@ special tokens such as numbers, punctuation marks, symbols, tags and emojis.
 \item numbers = number of numeric tokens
 (\verb{^\\p\{Sc\}\{0,1\}\\p\{N\}+([.,]*\\p\{N\})*\\p\{Sc\}\{0,1\}$})
 \item symbols = number of symbols (\verb{^\\p\{S\}$})
-\item tags = number of tags; combination of
+\item tags = number of tags; sum of
 \code{pattern_username} and \code{pattern_hashtag} in \code{\link[=quanteda_options]{quanteda_options()}}
 \item emojis = number of emojis (\verb{^\\p\{Emoji_Presentation\}+$})
 }
