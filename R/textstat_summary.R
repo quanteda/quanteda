@@ -64,7 +64,7 @@ summarize <- function(x, cache = TRUE, ...) {
     }
     
     patterns <- removals_regex(punct = TRUE, symbols = TRUE, 
-                               number = TRUE, url = TRUE)
+                               numbers = TRUE, url = TRUE)
     patterns[["hashtag"]] <- "^#"
     patterns[["emoji"]] <- "^[\\p{Emoji_Presentation}]+$"
     dict <- dictionary(patterns)
@@ -77,10 +77,10 @@ summarize <- function(x, cache = TRUE, ...) {
     )
     result <- data.frame(
         "document" = docnames(y),
+        "duplicated" = NA,
+        "n_sent" = NA,
         "n_token" = ntoken(y),
         "n_type" = ntype(y),
-        "n_sent" = NA,
-        "duplicated" = NA,
         "punct" = as.integer(temp$punct),
         "numbers" = as.integer(temp$numbers),
         "symbols" = as.integer(temp$symbols),

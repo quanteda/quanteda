@@ -4,7 +4,7 @@ test_that("textstat_summary method works", {
     toks <- tokens_tolower(tokens(corp))
     dfmt <- dfm(toks)
     
-    col_summ <- c("document", "n_token", "n_type", "n_sent", "duplicated",
+    col_summ <- c("document", "duplicated", "n_sent", "n_token", "n_type",
                   "punct", "numbers", "symbols", "url",
                   "hashtag", "emoji")
     
