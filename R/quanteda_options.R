@@ -155,6 +155,6 @@ get_options_default <- function(){
                  base_compname = "comp",
                  language_stemmer = "english",
                  pattern_hashtag = "#\\w+#?",
-                 pattern_username = "@")
+                 pattern_username = "@[a-zA-Z0-9]+")
     return(opts)
 }
