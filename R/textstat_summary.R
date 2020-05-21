@@ -65,35 +65,37 @@ summarize <- function(x, cache = TRUE, ...) {
     
     patterns <- removals_regex(punct = TRUE, symbols = TRUE, 
                                numbers = TRUE, url = TRUE)
-    patterns[["hashtag"]] <- "^#"
+    patterns[["tag"]] <- list("username" = paste0("^", quanteda_options("pattern_username"), "$"),
+                              "hashtag" = paste0("^", quanteda_options("pattern_hashtag"), "$"))
     patterns[["emoji"]] <- "^[\\p{Emoji_Presentation}]+$"
     dict <- dictionary(patterns)
     
     y <- dfm(x, ...)
     temp <- convert(
-        dfm_lookup(y, dictionary = dict, valuetype = "regex"),
+        dfm_lookup(y, dictionary = dict, valuetype = "regex", levels = 1),
         "data.frame",
         docid_field = "document"
     )
     result <- data.frame(
         "document" = docnames(y),
-        "duplicated" = NA,
-        "n_sent" = NA,
-        "n_token" = ntoken(y),
-        "n_type" = ntype(y),
-        "punct" = as.integer(temp$punct),
+        "chars" = NA,
+        "sents" = NA,
+        "tokens" = ntoken(y),
+        "types" = ntype(y),
+        "puncts" = as.integer(temp$punct),
         "numbers" = as.integer(temp$numbers),
         "symbols" = as.integer(temp$symbols),
-        "url" = as.integer(temp$url),
-        "hashtag" = as.integer(temp$hashtag),
-        "emoji" = as.integer(temp$emoji),
+        "urls" = as.integer(temp$url),
+        "tags" = as.integer(temp$tag),
+        "emojis" = as.integer(temp$emoji),
+        row.names = seq_len(ndoc(y)),
         stringsAsFactors = FALSE
     )
     
-    if (is.corpus(x))
-        result$n_sent <- ntoken(tokens(x, what = "sentence"))
-    if (is.corpus(x) || is.tokens(x))
-        result$duplicated <- duplicated(x)
+    if (is.corpus(x)) {
+        result$chars <- nchar(x)
+        result$sents <- ntoken(tokens(x, what = "sentence"))
+    }
 
     if (cache)
         set_cache(x, "summary", result, ...)
