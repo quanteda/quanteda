@@ -17,18 +17,20 @@ textstat_summary(x, cache = TRUE, ...)
 Count the total number of number tokens and sentences.
 }
 \details{
-Count the total number tokens and sentences as well as
-tokens with numbers, punctuation marks or symbols.
+Count the total number of characters, tokens and sentences as well as
+special tokens such as numbers, punctuation marks, symbols, tags and emojis.
 \itemize{
-\item n_token = number of tokens; equal to \code{\link[=ntoken]{ntoken()}}
-\item n_type = number of unique tokens; equal to \code{\link[=ntype]{ntype()}}
-\item n_sent = number of sentences; equal \code{ntoken(tokens(x), what = "sentence")}
-\item number = number of tokens with numbers (\verb{\\p\{N\}})
-\item punct = number of tokens with numbers (\verb{\\p\{P\}})
-\item symbol = number of tokens with numbers (\verb{\\p\{S\}})
-\item any = number of tokens with numbers (\verb{[\\p\{N\}\\p\{P\}\\p\{S\}]})
-\item noise = \eqn{any / n_token}
-\item is_dup = existence of identical documents
+\item chars = number of characters; equal to \code{\link[=nchar]{nchar()}}
+\item sents = number of sentences; equal \code{ntoken(tokens(x), what = "sentence")}
+\item tokens = number of tokens; equal to \code{\link[=ntoken]{ntoken()}}
+\item types = number of unique tokens; equal to \code{\link[=ntype]{ntype()}}
+\item puncts = number of punctuation marks (\verb{^\\p\{P\}+$})
+\item numbers = number of numeric tokens
+(\verb{^\\p\{Sc\}\{0,1\}\\p\{N\}+([.,]*\\p\{N\})*\\p\{Sc\}\{0,1\}$})
+\item symbols = number of symbols (\verb{^\\p\{S\}$})
+\item tags = number of tags; combination of
+\code{pattern_username} and \code{pattern_hashtag} in \code{\link[=quanteda_options]{quanteda_options()}}
+\item emojis = number of emojis (\verb{^\\p\{Emoji_Presentation\}+$})
 }
 }
 \examples{

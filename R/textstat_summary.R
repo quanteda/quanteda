@@ -2,18 +2,20 @@
 #'
 #' Count the total number of number tokens and sentences.
 #'
-#' Count the total number tokens and sentences as well as
-#' tokens with numbers, punctuation marks or symbols.
+#' Count the total number of characters, tokens and sentences as well as
+#' special tokens such as numbers, punctuation marks, symbols, tags and emojis.
 #' \itemize{
-#'   \item n_token = number of tokens; equal to [ntoken()]
-#'   \item n_type = number of unique tokens; equal to [ntype()]
-#'   \item n_sent = number of sentences; equal `ntoken(tokens(x), what = "sentence")`
-#'   \item number = number of tokens with numbers (`\p{N}`)
-#'   \item punct = number of tokens with numbers (`\p{P}`)
-#'   \item symbol = number of tokens with numbers (`\p{S}`)
-#'   \item any = number of tokens with numbers (`[\p{N}\p{P}\p{S}]`)
-#'   \item noise = \eqn{any / n_token}
-#'   \item is_dup = existence of identical documents
+#'   \item chars = number of characters; equal to [nchar()]
+#'   \item sents = number of sentences; equal `ntoken(tokens(x), what = "sentence")`
+#'   \item tokens = number of tokens; equal to [ntoken()]
+#'   \item types = number of unique tokens; equal to [ntype()]
+#'   \item puncts = number of punctuation marks (`^\p{P}+$`)
+#'   \item numbers = number of numeric tokens 
+#'   (`^\p{Sc}{0,1}\p{N}+([.,]*\p{N})*\p{Sc}{0,1}$`)
+#'   \item symbols = number of symbols (`^\p{S}$`)
+#'   \item tags = number of tags; combination of 
+#'   `pattern_username` and `pattern_hashtag` in [quanteda_options()]
+#'   \item emojis = number of emojis (`^\p{Emoji_Presentation}+$`)
 #' }
 #' @param x corpus to be summarized
 #' @param cache if `TRUE`, use internal cache from the second time
@@ -67,7 +69,7 @@ summarize <- function(x, cache = TRUE, ...) {
                                numbers = TRUE, url = TRUE)
     patterns[["tag"]] <- list("username" = paste0("^", quanteda_options("pattern_username"), "$"),
                               "hashtag" = paste0("^", quanteda_options("pattern_hashtag"), "$"))
-    patterns[["emoji"]] <- "^[\\p{Emoji_Presentation}]+$"
+    patterns[["emoji"]] <- "^\\p{Emoji_Presentation}+$"
     dict <- dictionary(patterns)
     
     y <- dfm(x, ...)
