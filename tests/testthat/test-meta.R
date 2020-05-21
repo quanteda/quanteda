@@ -15,6 +15,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(corp), targetmeta3)
     meta(corp)[2] <- NULL
     expect_identical(meta(corp), targetmeta2)
+    expect_identical(names(meta(corp, type = "all")), 
+                     c("system", "object", "user"))
 
     meta(toks, "usermeta1") <- "test1"
     meta(toks)["usermeta2"] <- "test2"
@@ -22,6 +24,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(toks), targetmeta3)
     meta(toks)[2] <- NULL
     expect_identical(meta(toks), targetmeta2)
+    expect_identical(names(meta(toks, type = "all")), 
+                     c("system", "object", "user"))
     
     meta(dfmat, "usermeta1") <- "test1"
     meta(dfmat)["usermeta2"] <- "test2"
@@ -29,6 +33,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(dfmat), targetmeta3)
     meta(dfmat)[2] <- NULL
     expect_identical(meta(dfmat), targetmeta2)
+    expect_identical(names(meta(dfmat, type = "all")), 
+                     c("system", "object", "user"))
     
     meta(dict, "usermeta1") <- "test1"
     meta(dict)["usermeta2"] <- "test2"
@@ -36,6 +42,8 @@ test_that("meta/meta<- works user data", {
     expect_identical(meta(dict), targetmeta3)
     meta(dict)[2] <- NULL
     expect_identical(meta(dict), targetmeta2)
+    expect_identical(names(meta(dict, type = "all")), 
+                     c("system", "object", "user"))
     
 })
 
@@ -120,7 +128,7 @@ test_that("adding summary info works", {
         summary(corp),
         quanteda:::get_summary_metadata(corp)
     )
-    
+
     # for over 100 documents
     set.seed(10)
     corp <- corpus(sample(LETTERS, size = 110, replace = TRUE)) %>%
@@ -129,7 +137,7 @@ test_that("adding summary info works", {
         summary(corp, n = ndoc(corp)),
         quanteda:::get_summary_metadata(corp)
     )
-    
+
     # expect_warning(
     #     get_summary_metadata(corp[1:10]),
     #     "^documents have changed; computing summary$"
@@ -138,7 +146,7 @@ test_that("adding summary info works", {
         suppressWarnings(quanteda:::get_summary_metadata(corp[1:10])),
         summary(corp[1:10])
     )
-    
+
     # test when tokens options are passed
     corp1 <- corpus(c(d1 = "One. Two!", d2 = "One 2"))
     corp2 <- quanteda:::add_summary_metadata(corp1,
@@ -152,7 +160,7 @@ test_that("adding summary info works", {
         summary(corp2[1], remove_punct = TRUE, remove_numbers = TRUE),
         quanteda:::get_summary_metadata(corp2[1], remove_punct = TRUE, remove_numbers = TRUE)
     )
-    
+
     # test errors when non-tokens ... are passed
     expect_warning(
         quanteda:::add_summary_metadata(corp1, not_arg = TRUE),
@@ -164,15 +172,15 @@ test_that("adding extended summary information works", {
     corp <- corpus(c("One, two ®, 3. ", "😚 Yeah!!"))
     extsumm <- quanteda:::summarize_texts_extended(corp)
     expect_true(all(
-        c("total_tokens", "all_tokens", "total_punctuation", "total_symbols", 
+        c("total_tokens", "all_tokens", "total_punctuation", "total_symbols",
           "total_numbers", "total_words", "total_stopwords", "top_dfm") %in%
         names(extsumm)
     ))
     expect_is(extsumm$top_dfm, "dfm")
-    
+
     corp <- quanteda:::add_summary_metadata(corp, extended = TRUE)
     expect_equivalent(
-        meta(corp, "summary_extended", type = "system"), 
+        meta(corp, "summary_extended", type = "system"),
         extsumm
     )
 })

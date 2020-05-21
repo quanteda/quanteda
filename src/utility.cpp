@@ -123,6 +123,11 @@ List qatd_cpp_get_load_factor() {
 }
 
 // [[Rcpp::export]]
+void qatd_cpp_set_meta(RObject object_, List meta_) {
+    object_.attr("meta") = meta_;
+}
+
+// [[Rcpp::export]]
 bool qatd_cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
     return true;

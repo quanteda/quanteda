@@ -325,6 +325,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_set_meta
+void qatd_cpp_set_meta(RObject object_, List meta_);
+RcppExport SEXP _quanteda_qatd_cpp_set_meta(SEXP object_SEXP, SEXP meta_SEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type object_(object_SEXP);
+    Rcpp::traits::input_parameter< List >::type meta_(meta_SEXP);
+    qatd_cpp_set_meta(object_, meta_);
+    return R_NilValue;
+END_RCPP
+}
 // qatd_cpp_tbb_enabled
 bool qatd_cpp_tbb_enabled();
 RcppExport SEXP _quanteda_qatd_cpp_tbb_enabled() {
@@ -375,6 +386,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_is_grouped_character", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_character, 2},
     {"_quanteda_qatd_cpp_set_load_factor", (DL_FUNC) &_quanteda_qatd_cpp_set_load_factor, 2},
     {"_quanteda_qatd_cpp_get_load_factor", (DL_FUNC) &_quanteda_qatd_cpp_get_load_factor, 0},
+    {"_quanteda_qatd_cpp_set_meta", (DL_FUNC) &_quanteda_qatd_cpp_set_meta, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
     {"_quanteda_qatd_cpp_is_overlap", (DL_FUNC) &_quanteda_qatd_cpp_is_overlap, 5},
     {NULL, NULL, 0}
