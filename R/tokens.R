@@ -351,20 +351,24 @@ tokens.tokens <-  function(x,
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
     
-    if (remove_separators)
-        x <- tokens_remove(x, "^[\\p{Z}\\p{C}]+$", valuetype = "regex")
-    
     # removals
-    removals <- compile_removals_regex(remove_separators = remove_separators,
-                                       remove_punct = remove_punct,
-                                       remove_symbols = remove_symbols,
-                                       remove_numbers = remove_numbers,
-                                       remove_url = remove_url)
-    if (length(removals$regex_to_remove) || remove_separators) {
-        if (verbose) catm(" ...removing", paste(removals$removing_msg, collapse = ", "), "\n")
-        x <- tokens_remove(x, paste(removals$regex_to_remove, collapse = "|"),
-                           valuetype = "regex",  padding = padding,
-                           startpos = 1L, endpos = -1L)
+    removals <- removals_regex(separators = remove_separators,
+                               punct = remove_punct,
+                               symbols = remove_symbols,
+                               numbers = remove_numbers,
+                               url = remove_url)
+    
+    if (length(removals) && verbose)
+        catm(" ...removing", paste(stri_replace_all_fixed(names(removals), "url", "URL"), collapse = ", "), "\n")
+    
+    if (length(removals[["separators"]])) {
+        x <- tokens_remove(x, removals[["separators"]], valuetype = "regex")
+        removals["separators"] <- NULL
+    }
+    
+    if (length(removals)) {
+        x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
+                           valuetype = "regex",  padding = padding)
     }
 
     if (!include_docvars)
@@ -470,36 +474,23 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 # utility functions ------------
 
-compile_removals_regex <- function(remove_separators = FALSE,
-                                   remove_punct = FALSE,
-                                   remove_symbols = FALSE,
-                                   remove_numbers = FALSE,
-                                   remove_url = FALSE) {
-    regex_to_remove <- removing_msg <- character()
-
-    if (remove_separators) {
-    #    regex_to_remove <- c(regex_to_remove, "^[\\p{Z}\\p{C}]$")
-        removing_msg <- c(removing_msg, "separators")
-    }
-    if (remove_punct) {
-        regex_to_remove <- c(regex_to_remove, "^\\p{P}+$")
-        removing_msg <- c(removing_msg, "punctuation")
-    }
-    if (remove_symbols) {
-        regex_to_remove <- c(regex_to_remove, "^\\p{S}$")
-        removing_msg <- c(removing_msg, "symbols")
-    }
-    if (remove_numbers) {
-        # includes currency amounts and those containing , or . digit separators, and 100bn
-        regex_to_remove <- c(regex_to_remove, "^\\p{Sc}{0,1}\\p{N}+([.,]*\\p{N})*\\p{Sc}{0,1}$")
-        removing_msg <- c(removing_msg, "numbers")
-    }
-    if (remove_url) {
-        regex_to_remove <- c(regex_to_remove, "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))")
-        removing_msg <- c(removing_msg, "URLs")
-    }
-    
-    return(list(regex_to_remove = regex_to_remove, removing_msg = removing_msg))
+removals_regex <- function(separators = FALSE,
+                           punct = FALSE,
+                           symbols = FALSE,
+                           numbers = FALSE,
+                           url = FALSE) {
+    regex <- list()
+    if (separators)
+        regex[["separators"]] = "^[\\p{Z}\\p{C}]+$"
+    if (punct)
+        regex[["punctuation"]] = "^\\p{P}+$"
+    if (symbols)
+        regex[["symbols"]] = "^\\p{S}$"
+    if (numbers) # includes currency amounts and those containing , or . digit separators, and 100bn
+        regex[["numbers"]] = "^\\p{Sc}{0,1}\\p{N}+([.,]*\\p{N})*\\p{Sc}{0,1}$"
+    if (url)
+        regex[["urls"]] = "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))"
+    return(regex)
 }
 
 

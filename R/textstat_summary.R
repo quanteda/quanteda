@@ -63,12 +63,9 @@ summarize <- function(x, cache = TRUE, ...) {
         clear_cache(x, "summary")
     }
     
-    dict <- dictionary(list(
-        "number" = "\\p{N}",
-        "punct" = "\\p{P}",
-        "symbol" = "\\p{S}",
-        "any" = "[\\p{N}\\p{P}\\p{S}]"
-    ))
+    patterns <- removals_regex(punct = TRUE, symbols = TRUE, number = TRUE)
+    patterns$any <- paste0(unlist(patterns), collapse = "|")
+    dict <- dictionary(patterns)
     
     temp <- dfm(x, ...)
     result <- convert(
@@ -78,7 +75,6 @@ summarize <- function(x, cache = TRUE, ...) {
     )
     result$n_token <- ntoken(temp)
     result$n_type <- ntype(temp)
-    result$noise <- result$any / result$n_token
     result$n_sent <- NA
     result$is_dup <- NA
     
@@ -87,8 +83,8 @@ summarize <- function(x, cache = TRUE, ...) {
     if (is.corpus(x) || is.tokens(x))
         result$is_dup <- duplicated(x)
     result <- result[c("document", "n_token", "n_type", "n_sent",
-                       "number", "punct", "symbol", "any",
-                       "noise", "is_dup")]
+                       "punctuation", "numbers", "symbols", "any",
+                       "is_dup")]
     if (cache)
         set_cache(x, "summary", result, ...)
     return(result)

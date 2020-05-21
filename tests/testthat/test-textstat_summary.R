@@ -16,19 +16,21 @@ test_that("textstat_summary method works", {
     )
     expect_equal(
         names(summ_corp),
-        c("document", "n_token", "n_type", "n_sent", "number", 
-          "punct", "symbol", "any", "noise", "is_dup")
+        c("document", "n_token", "n_type", "n_sent",  
+          "punctuation", "numbers", "symbols", "any", "is_dup")
     )
     
     # tokens
     summ_toks <- textstat_summary(toks, cache = FALSE)
     expect_equal(
         summ_toks$punct,
-        unname(ntoken(tokens_select(toks, "[\\p{P}]", valuetype = "regex")))
+        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(punct = TRUE)[[1]], 
+                                    valuetype = "regex")))
     )
     expect_equal(
         summ_toks$number,
-        unname(ntoken(tokens_select(toks, "[\\p{N}]", valuetype = "regex")))
+        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(numbers = TRUE)[[1]], 
+                                    valuetype = "regex")))
     )
     expect_equal(
         summ_toks$n_token,
@@ -48,19 +50,21 @@ test_that("textstat_summary method works", {
     )
     expect_equal(
         names(summ_toks),
-        c("document", "n_token", "n_type", "n_sent", "number", 
-          "punct", "symbol", "any", "noise", "is_dup")
+        c("document", "n_token", "n_type", "n_sent",  
+          "punctuation", "numbers", "symbols", "any", "is_dup")
     )
     
     # dfm
     summ_dfm <- textstat_summary(dfmt, cache = FALSE)
     expect_equal(
         summ_dfm$punct,
-        unname(ntoken(dfm_select(dfmt, "[\\p{P}]", valuetype = "regex")))
+        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(punct = TRUE)[[1]], 
+                                 valuetype = "regex")))
     )
     expect_equal(
         summ_dfm$number,
-        unname(ntoken(dfm_select(dfmt, "[\\p{N}]", valuetype = "regex")))
+        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(numbers = TRUE)[[1]], 
+                                 valuetype = "regex")))
     )
     expect_equal(
         summ_dfm$n_token,
@@ -80,8 +84,8 @@ test_that("textstat_summary method works", {
     )
     expect_equal(
         names(summ_dfm),
-        c("document", "n_token", "n_type", "n_sent", "number", 
-          "punct", "symbol", "any", "noise", "is_dup")
+        c("document", "n_token", "n_type", "n_sent",  
+          "punctuation", "numbers", "symbols", "any", "is_dup")
     )
 })
 
