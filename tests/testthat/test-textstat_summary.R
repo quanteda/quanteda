@@ -4,6 +4,10 @@ test_that("textstat_summary method works", {
     toks <- tokens_tolower(tokens(corp))
     dfmt <- dfm(toks)
     
+    col_summ <- c("document", "n_token", "n_type", "n_sent", "duplicated",
+                  "punct", "numbers", "symbols", "url",
+                  "hashtag", "emoji")
+    
     # corpus
     summ_corp <- textstat_summary(corp, cache = FALSE)
     expect_equal(
@@ -11,13 +15,12 @@ test_that("textstat_summary method works", {
         unname(ntoken(tokens(corp, what = "sentence")))
     )
     expect_equal(
-        summ_corp$is_dup,
+        summ_corp$duplicated,
         rep(FALSE, ndoc(corp))
     )
     expect_equal(
         names(summ_corp),
-        c("document", "n_token", "n_type", "n_sent",  
-          "punctuation", "numbers", "symbols", "any", "is_dup")
+        col_summ
     )
     
     # tokens
@@ -45,13 +48,12 @@ test_that("textstat_summary method works", {
         rep(NA, ndoc(toks))
     )
     expect_equal(
-        summ_toks$is_dup,
+        summ_toks$duplicated,
         rep(FALSE, ndoc(toks))
     )
     expect_equal(
         names(summ_toks),
-        c("document", "n_token", "n_type", "n_sent",  
-          "punctuation", "numbers", "symbols", "any", "is_dup")
+        col_summ
     )
     
     # dfm
@@ -79,16 +81,25 @@ test_that("textstat_summary method works", {
         rep(NA, ndoc(dfmt))
     )
     expect_equal(
-        summ_dfm$is_dup,
+        summ_dfm$duplicated,
         rep(NA, ndoc(dfmt))
     )
     expect_equal(
         names(summ_dfm),
-        c("document", "n_token", "n_type", "n_sent",  
-          "punctuation", "numbers", "symbols", "any", "is_dup")
+        col_summ
     )
 })
 
+test_that("summary chache counts hashtag and emoji correctly", {
+    txt <- c("£ € 👏 Rock on❗ 💪️🎸",
+             "Hi #qi #quanteda https://quanteda.io")
+    toks <- tokens(txt)
+    summ <- textstat_summary(toks, cache = FALSE)
+    expect_identical(summ$n_token, c(8L, 4L))
+    expect_identical(summ$hashtag, c(0L, 2L))
+    expect_identical(summ$emoji, c(4L, 0L))
+    expect_identical(summ$url, c(0L, 1L))
+})
 
 test_that("textstat_summary chaching is working", {
     

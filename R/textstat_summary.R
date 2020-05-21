@@ -63,28 +63,38 @@ summarize <- function(x, cache = TRUE, ...) {
         clear_cache(x, "summary")
     }
     
-    patterns <- removals_regex(punct = TRUE, symbols = TRUE, number = TRUE)
-    patterns$any <- paste0(unlist(patterns), collapse = "|")
+    patterns <- removals_regex(punct = TRUE, symbols = TRUE, 
+                               number = TRUE, url = TRUE)
+    patterns[["hashtag"]] <- "^#"
+    patterns[["emoji"]] <- "^[\\p{Emoji_Presentation}]+$"
     dict <- dictionary(patterns)
     
-    temp <- dfm(x, ...)
-    result <- convert(
-        dfm_lookup(temp, dictionary = dict, valuetype = "regex"),
+    y <- dfm(x, ...)
+    temp <- convert(
+        dfm_lookup(y, dictionary = dict, valuetype = "regex"),
         "data.frame",
         docid_field = "document"
     )
-    result$n_token <- ntoken(temp)
-    result$n_type <- ntype(temp)
-    result$n_sent <- NA
-    result$is_dup <- NA
+    result <- data.frame(
+        "document" = docnames(y),
+        "n_token" = ntoken(y),
+        "n_type" = ntype(y),
+        "n_sent" = NA,
+        "duplicated" = NA,
+        "punct" = as.integer(temp$punct),
+        "numbers" = as.integer(temp$numbers),
+        "symbols" = as.integer(temp$symbols),
+        "url" = as.integer(temp$url),
+        "hashtag" = as.integer(temp$hashtag),
+        "emoji" = as.integer(temp$emoji),
+        stringsAsFactors = FALSE
+    )
     
     if (is.corpus(x))
         result$n_sent <- ntoken(tokens(x, what = "sentence"))
     if (is.corpus(x) || is.tokens(x))
-        result$is_dup <- duplicated(x)
-    result <- result[c("document", "n_token", "n_type", "n_sent",
-                       "punctuation", "numbers", "symbols", "any",
-                       "is_dup")]
+        result$duplicated <- duplicated(x)
+
     if (cache)
         set_cache(x, "summary", result, ...)
     return(result)

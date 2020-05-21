@@ -358,8 +358,13 @@ tokens.tokens <-  function(x,
                                numbers = remove_numbers,
                                url = remove_url)
     
-    if (length(removals) && verbose)
-        catm(" ...removing", paste(stri_replace_all_fixed(names(removals), "url", "URL"), collapse = ", "), "\n")
+    if (length(removals) && verbose) {
+        msg <- stri_replace_all_fixed(names(removals), 
+                                      c("url", "punct"), 
+                                      c("URLs", "punctuation"),
+                                      vectorize_all = FALSE)
+        catm(" ...removing", paste(msg, collapse = ", "), "\n")
+    }
     
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex")
@@ -483,13 +488,13 @@ removals_regex <- function(separators = FALSE,
     if (separators)
         regex[["separators"]] = "^[\\p{Z}\\p{C}]+$"
     if (punct)
-        regex[["punctuation"]] = "^\\p{P}+$"
+        regex[["punct"]] = "^\\p{P}+$"
     if (symbols)
         regex[["symbols"]] = "^\\p{S}$"
     if (numbers) # includes currency amounts and those containing , or . digit separators, and 100bn
         regex[["numbers"]] = "^\\p{Sc}{0,1}\\p{N}+([.,]*\\p{N})*\\p{Sc}{0,1}$"
     if (url)
-        regex[["urls"]] = "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))"
+        regex[["url"]] = "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))"
     return(regex)
 }
 
