@@ -50,10 +50,19 @@ dict <- dictionary(list(
     anger = c("mad", "peeved", "irate", "furious", "livid")
 ))
 valence(dict)
-# using a 5-point scale
+# using a 5-point scale: 1:1 match
 valence(dict) <- list(happiness = c(3, 4, 5, 2),
                       anger = c(3.1, 2.4, 2.9, 4.1, 5.0))
 valence(dict)
+# with single valences applied to all values within the keys
+valence(dict) <- c(happiness = 1, anger = -1)
+valence(dict)
+# with named elements - order does not matter
+valence(dict) <- list(
+    happiness = c(exuberant = 5, jubilant = 4, happy = 3, content = 2)
+) 
+valence(dict) 
+
 }
 \seealso{
 \code{\link[=textstat_sentiment]{textstat_sentiment()}}, \code{\link[=polarity]{polarity()}}

@@ -3,53 +3,63 @@
 #' Compute sentiment using a dictionary method
 #'
 #' Compute sentiment scores from tokens or document-feature matrices, based on
-#' assigned categories (types or features) of positive, negative, and neutral
-#' sentiment. Several formulas are available, or the user can supply a new one.
+#' the valences of dictionary keys and values.
 #' @param x a character, [corpus], [tokens], or [dfm] object containing
 #'   text, tokens, or features whose sentiment will be scored
-#' @param dictionary a [dictionary] that has [polarity] set, indicating which
-#'   keys are associated with positive, negative, and (optionally) neutral
-#'   sentiment
-#' @param fun function; the formula for computing sentiment, which must refer to
-#'   `pos`, `neg`, and (optionally) `neut`.  The default is the "logit" scale
-#'   (Lowe et al 2011) which is the log of (positive / negative) counts.  See
-#'   [sentiment-functions] for details and for additional available functions,
-#'   as well as details on how to supply custom functions.
-#' @param ... additional arguments passed to `fun`
+#' @param dictionary a [dictionary] that has [valence] set, in the form of 
+#'   numerical valences associated with sentiment
 #' @return a data.frame of sentiment scores
 #' @export
-#' @references  Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
+#' @references  
+#'   For a discussion of how to aggregate sentiment scores to the document
+#'   level, see:
+#'   
+#'   Lowe, W., Benoit, K. R., Mikhaylov, S., & Laver, M. (2011).
 #'   Scaling Policy Preferences from Coded Political Texts. _Legislative Studies
 #'   Quarterly_, 36(1), 123–155.
 #'   <http://doi.org/10.1111/j.1939-9162.2010.00006.x>
+#' @seealso [valence()]
 #' @examples
 #' corp <- tail(data_corpus_inaugural, n = 5)
 #' toks <- tokens(corp)
 #' dfmat <- dfm(toks)
-#' polar1 <- list(pos = "positive", neg = "negative")
-#' polar2 <- list(pos = c("positive", "neg_negative"),
-#'                neg = c("negative", "neg_positive"))
 #'
-#' polarity(data_dictionary_LSD2015) <- polar1
-#' textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
+#' valence(data_dictionary_LSD2015) <- list(positive = 1, neg_negative = 1, 
+#'                                          negative = -1, neg_positive = -1)
 #' textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
+#' # slightly different because does not account for phrases
 #' textstat_sentiment(dfmat, dictionary = data_dictionary_LSD2015)
+#' 
+#' # Lowe et al (2011) log(pos / neg)
+#' as.dfm(log(dfmat + 0.5)) %>%
+#'     textstat_sentiment(dictionary = data_dictionary_LSD2015)
 #'
-#' polarity(data_dictionary_LSD2015) <- polar2
-#' textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
-#' textstat_sentiment(toks, dictionary = data_dictionary_LSD2015)
-#' textstat_sentiment(corp, dictionary = data_dictionary_LSD2015)
-#' textstat_sentiment(dfmat, dictionary = data_dictionary_LSD2015)
+#' \dontrun{
+#' 
+#' # AFINN
+#' afinn <- tidytext::get_sentiments(lexicon = c("afinn"))
+#' data_dictionary_afinn <- dictionary(list(afinn = afinn$word))
+#' valence(data_dictionary_afinn) <- list(afinn = afinn$value)
+#' textstat_sentiment(toks, dictionary = data_dictionary_afinn)
+#' 
+#' # ANEW
+#' anew <- read.delim(url("https://bit.ly/2zZ44w0"))
+#' anew <- anew[!duplicated(anew$Word), ] # because some words repeat
+#' data_dictionary_anew <- dictionary(list(pleasure = anew$Word, 
+#'                                         arousal = anew$Word, 
+#'                                         dominance = anew$Word))
+#' valence(data_dictionary_anew) <- list(pleasure = anew$ValMn, 
+#'                                       arousal = anew$AroMn, 
+#'                                       dominance = anew$DomMn)
+#' textstat_sentiment(toks, data_dictionary_anew["pleasure"])
+#' textstat_sentiment(toks, data_dictionary_anew["arousal"])}
 #'
-#' # with a user-supplied function
-#' sent_fn <- function(x) (x[, "pos"] - x[, "neg"]) / rowSums(x) * 100
-#' textstat_sentiment(toks, data_dictionary_LSD2015, fun = sent_fn)
-textstat_sentiment <- function(x, dictionary, fun = sent_logit, ...) {
+textstat_sentiment <- function(x, dictionary, ...) {
     UseMethod("textstat_sentiment")
 }
 
 #' @export
-textstat_sentiment.default <-  function(x, dictionary, fun = sent_logit, ...) {
+textstat_sentiment.default <-  function(x, dictionary, ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_sentiment"))
 }
 
@@ -65,31 +75,43 @@ textstat_sentiment.corpus <- function(x, ...) {
 
 #' @export
 textstat_sentiment.tokens <- function(x, dictionary, ...) {
-    dict <- get_polarity_dictionary(dictionary)
-    poldict <- dictionary(polarity(dict))
-    polarity(poldict) <- polarity(dict)
-
-    tokens(x) %>%
-        tokens_lookup(dictionary = dict, nomatch = "other") %>%
+    valence(dictionary) <- set_valences(dictionary, valence(dictionary))
+    numdict <- dictionary(as.list(flip_valence(dictionary)))
+    as.tokens(x) %>%
+        tokens_lookup(dictionary = numdict, nomatch = "other") %>%
         dfm() %>%
-        textstat_sentiment(dictionary = poldict, ...)
+        aggregate_valence()
 }
 
 #' @export
-textstat_sentiment.dfm <- function(x, dictionary, fun = sent_logit, ...) {
-    dict <- get_polarity_dictionary(dictionary)
-
-    result <- fun(dfm_lookup(x, dict, nomatch = "other"), ...)
-    result <- convert(as.dfm(result), to = "data.frame")
-    names(result)[2] <- "sentiment"
-
-    class(result) <- c("sentiment", "textstat", "data.frame")
-    attr(result, "fun") <- fun
-    attr(result, "fun_name") <- as.character(substitute(fun))
-
-    result
+textstat_sentiment.dfm <- function(x, dictionary, ...) {
+    valence(dictionary) <- set_valences(dictionary, valence(dictionary))
+    numdict <- dictionary(as.list(flip_valence(dictionary)))
+    as.dfm(x) %>%
+        dfm_lookup(dictionary = numdict, nomatch = "other") %>%
+        aggregate_valence()
 }
 
+# internal sentiment calculation functions -----------
+
+# uses Kohei's approach to make the valence values into the keys, and 
+# then groups all values together under that score
+flip_valence <- function(dictionary) {
+    v <- valence(dictionary)
+    if (is.null(v)) stop("valence not set")
+    
+    structure(unlist(sapply(v, names), use.names = FALSE), 
+              names = unlist(v, use.names = FALSE))
+}
+
+aggregate_valence <- function(x, normalize = TRUE) {
+    other_index <- match("other", colnames(x))
+    other <- as.vector(x[, other_index])
+    x <- x[, -other_index]
+    data.frame(doc_id = docnames(x),
+               sentiment = as.vector(x %*% as.numeric(colnames(x))
+                                     / (if (normalize) rowSums(x) else 1)))
+}
 
 # valence setting and checking functions --------------
 
@@ -179,10 +201,18 @@ check_valences <- function(dictionary, valences) {
 }    
 
 set_valences <- function(dictionary, valences) {
+    # only use valences for keys in dictionary
+    valences <- valences[names(valences) %in% names(dictionary)]
+    if (!length(valences))
+        stop("no valenced keys found")
+    
     for (key in names(valences)) {
+        # repeat valences if only a single value is supplied
         if (length(valences[[key]]) == 1)
             valences[[key]] <- rep(valences[[key]], length(dictionary[[key]]))
-        valences[[key]] <- structure(valences[[key]], names = dictionary[[key]])
+        # use dictionary values as names if none supplied
+        if (length(names(valences[[key]])) != length(valences[[key]]))
+            names(valences[[key]]) <- dictionary[[key]]
     }
     valences
 }
