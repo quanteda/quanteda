@@ -1096,7 +1096,7 @@ test_that("emails address is preserved", {
     )
 })
 
-test_that("hasusername is preserved", {
+test_that("username is preserved", {
     txt <- c(d1 = "@quanteda @koheiw7 @QUANEDA_INITIATIVE")
     expect_identical(
         as.list(tokens(txt, what = "word")),
