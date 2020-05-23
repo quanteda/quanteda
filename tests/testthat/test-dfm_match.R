@@ -39,3 +39,12 @@ test_that("test dfm_match", {
     expect_error(dfm_match(mt, 1:3),
                  "features must be a character vector")
 })
+
+test_that("dfm_match works with padding", {
+    toks <- tokens("aa bb !", padding = TRUE, remove_punct = TRUE)
+    dfmt <- dfm(toks)
+    expect_identical(
+        featnames(dfm_match(dfmt, c("aa", "bb", "cc", ""))),
+        c("aa", "bb", "cc", "")
+    )
+})
