@@ -427,6 +427,6 @@ pad_dfm <- function(x, feature) {
             x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
         )
     }
-    x <- x[, feature]
+    x <- x[, match(feature, featnames(x))]
     return(x)
 }
