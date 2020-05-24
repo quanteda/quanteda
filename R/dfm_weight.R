@@ -121,7 +121,7 @@ dfm_weight.dfm <- function(
             .Deprecated(msg = 'scheme = "tfidf" is deprecated; use dfm_tfidf(x) instead')
             return(dfm_tfidf(x, base = base))
         } else if (scheme == "logsmooth") {
-            return(dfm_smooth(x, smoothing) %>% log(base = base) %>% as.dfm())
+            return(as.dfm(log(dfm_smooth(x, smoothing), base = base)))
         }
     }
 
