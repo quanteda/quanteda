@@ -7,10 +7,12 @@
 \usage{
 dfm_weight(
   x,
-  scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+  scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave",
+    "logsmooth"),
   weights = NULL,
   base = 10,
   k = 0.5,
+  smoothing = 0.5,
   force = FALSE
 )
 
@@ -21,9 +23,10 @@ dfm_smooth(x, smoothing = 1)
 
 \item{scheme}{a label of the weight type:
 \describe{
-\item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
-\item{\code{prop}}{the proportion of the feature counts of total feature
-counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+\item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm
+is created)}
+\item{\code{prop}}{the proportion of the feature counts of total feature counts
+(aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
 \item{\code{propmax}}{the proportion of the feature counts of the highest
 feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
 \item{\code{logcount}}{take the 1 + the logarithm of each count, for the
@@ -31,8 +34,10 @@ given base, or 0 if the count was zero: \eqn{1 +
   \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
 \item{\code{boolean}}{recode all non-zero counts as 1}
 \item{\code{augmented}}{equivalent to \eqn{k + (1 - k) *} \code{dfm_weight(x, "propmax")}}
-\item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-\deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+\item{\code{logave}}{(1 + the log of the counts) / (1 + log of the average count
+within document), or \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 +
+  \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+\item{\code{logsmooth}}{log of the counts + \code{smooth}, or \eqn{tf_{ij} + s}}
 }}
 
 \item{weights}{if \code{scheme} is unused, then \code{weights} can be a named
@@ -47,12 +52,13 @@ named features.  Any features not named will be assigned a weight of 1.0
 
 \item{k}{the k for the augmentation when \code{scheme = "augmented"}}
 
+\item{smoothing}{constant added to the dfm cells for smoothing, default is 1
+for \code{dfm_smooth()} and 0.5 for \code{dfm_weight()}}
+
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
 weighting by \code{"prop"} after applying \code{"logcount"}, or after
 having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
-
-\item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
 \code{dfm_weight} returns the dfm with weighted values.  Note the
