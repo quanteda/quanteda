@@ -317,3 +317,19 @@ test_that("featfreq() works", {
         c(a = 4, b = 2, c = 1)
     )
 })
+
+test_that("logsmooth works", {
+    dfmat <- dfm(c("a a a b c d d", "b b c d d d"))
+    expect_equivalent(
+        dfm_weight(dfmat, scheme = "logsmooth", smoothing = 0.5, base = exp(1)) %>% as.matrix(),
+        matrix(log(c(3, 0, 1, 2, 1, 1, 2, 3) + 0.5), nrow = 2)
+    )
+    expect_equivalent(
+        dfm_weight(dfmat, scheme = "logsmooth", smoothing = 0.5, base = 10) %>% as.matrix(),
+        matrix(log10(c(3, 0, 1, 2, 1, 1, 2, 3) + 0.5), nrow = 2)
+    )
+    expect_equivalent(
+        dfm_weight(dfmat, scheme = "logsmooth", smoothing = 1, base = 10) %>% as.matrix(),
+        matrix(log10(c(3, 0, 1, 2, 1, 1, 2, 3) + 1), nrow = 2)
+    )
+})
