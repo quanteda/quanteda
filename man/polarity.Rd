@@ -29,6 +29,7 @@ dict <- dictionary(list(
 polarity(dict)
 polarity(dict) <- c(happy = 1, sad = -1)
 polarity(dict)
+dict
 valence(dict)
 
 # can list multiple keys

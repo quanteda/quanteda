@@ -356,6 +356,16 @@ setMethod("print", signature(x = "dictionary2"),
                       if (nkey == 1L) "y" else "ies", sep = "")
                   if (lev != "") cat(" and ", depth, " nested levels", sep = "")
                   cat(".\n")
+                  if (!is.null(polarity(x))) {
+                      cat("Polarities: ")
+                      cat(mapply(paste, names(polarity(x)), 
+                                 unlist(as.character(polarity(x)), use.names = FALSE)) %>%
+                          paste(collapse = ", "), 
+                          "\b.\n")
+                  } else if (!is.null(valence(x))) {
+                      cat("Valences set for keys: ")
+                      cat(paste(names(valence(x)), collapse = ", "), "\b.\n")
+                  }
               }
               print_dictionary(x, 1, max_nkey, max_nval, ...)
           })
@@ -414,6 +424,12 @@ setMethod("[",
                                 valuetype = field_object(attrs, "valuetype"))
               meta(result) <- attrs[["meta"]][["user"]]
               result@meta$object <- attrs[["meta"]][["object"]]
+              # subset valence on top-level keys
+              if (!is.null(valence(result)))
+                  valence(result) <- valence(result)[names(result)]
+              # subset valence on top-level keys
+              if (!is.null(polarity(result)))
+                  polarity(result) <- polarity(result)[names(result)]
               result
           })
 
@@ -501,14 +517,14 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' Converts a hierarchical dictionary (a named list of named lists, ending in
 #' character vectors at the lowest level) into a flat list of character
-#' vectors. Works like `unlist(dictionary, recursive=TRUE)` except that
+#' vectors. Works like `unlist(dictionary, recursive = TRUE)` except that
 #' the recursion does not go to the bottom level.  Called by [dfm()].
 #'
-#' @param tree list to be flattened
+#' @param dict list to be flattened
 #' @param levels integer vector indicating levels in the dictionary
 #' @param level internal argument to pass current levels
-#' @param key_tree internal argument to pass for parent keys
-#' @param dict internal argument to pass flattened dictionary
+#' @param key_parent internal argument to pass for parent keys
+#' @param dict_flat internal argument to pass flattened dictionary
 #' @return A dictionary flattened to variable levels
 #' @keywords internal dictionary
 #' @author Kohei Watanabe
@@ -523,7 +539,7 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
 #'                             level1a2 = c("l1a21", "l1a22")),
-#'              level1b = list(level1b1 = c("l1b11", "l1b12"),
+#'               level1b = list(level1b1 = c("l1b11", "l1b12"),
 #'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
 #'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
 #'                              level1c1b = list(level1c1b1 = c("lowestalone"))))

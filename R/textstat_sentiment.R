@@ -79,7 +79,8 @@ textstat_sentiment.tokens <- function(x, dictionary, ...) {
     valence(dictionary) <- set_valences(dictionary, valence(dictionary))
     numdict <- dictionary(as.list(flip_valence(dictionary)))
     as.tokens(x) %>%
-        tokens_lookup(dictionary = numdict, nomatch = "other") %>%
+        tokens_lookup(dictionary = numdict, nomatch = "other",
+                      nested_scope = "dictionary") %>%
         dfm() %>%
         aggregate_valence()
 }
@@ -162,7 +163,11 @@ valence <- function(x) {
 
 #' @export
 valence.dictionary2 <- function(x) {
-    x@meta$object$valence
+    if (!is.null(polarity(x)) && is.null(x@meta$object$valence)) {
+        set_valences(x, polarity(x))
+    } else {
+        x@meta$object$valence
+    }
 }
 
 #' @rdname valence
@@ -189,11 +194,15 @@ valence.dictionary2 <- function(x) {
 }    
 
 check_valences <- function(dictionary, valences) {
+    if (dictionary_depth(dictionary) > 1)
+        stop("valenced dictionaries cannot be nested", call. = FALSE)
     if (!is.list(valences) || any(names(valences) == ""))
         stop("valence must be a fully named list", call. = FALSE)
     for (key in names(valences)) {
         if (!key %in% names(dictionary))
             stop("'", key, "' is not a dictionary key", call. = FALSE)
+        if (!is.numeric(valences[[key]]))
+            stop("valence values must be numeric", call. = FALSE)
         if (length(valences[[key]]) != 1 &&
             length(valences[[key]]) != length(dictionary[[key]]))
             stop("valence value length not equal to number of values for key '",
@@ -205,7 +214,7 @@ set_valences <- function(dictionary, valences) {
     # only use valences for keys in dictionary
     valences <- valences[names(valences) %in% names(dictionary)]
     if (!length(valences))
-        stop("no valenced keys found")
+        stop("no valence or polarity keys found")
     
     for (key in names(valences)) {
         # repeat valences if only a single value is supplied
@@ -238,6 +247,7 @@ set_valences <- function(dictionary, valences) {
 #' polarity(dict)
 #' polarity(dict) <- c(happy = 1, sad = -1)
 #' polarity(dict)
+#' dict
 #' valence(dict)
 #'
 #' # can list multiple keys
@@ -265,7 +275,8 @@ polarity.dictionary2 <- function(x) {
 #' @export
 "polarity<-.dictionary2" <- function(x, value) {
     value <- as.list(value)
-    valence(x) <- value
+    # valence(x) <- value
+    check_valences(x, value)
     x@meta$object$polarity <- value
     x
 }

@@ -1,70 +1,73 @@
 context("test textstat_sentiment")
 
-test_that("textstat_sentiment works on all object types", {
-    skip("until code is final")
+test_that("textstat_sentiment works for logit scale", {
+    skip("until we can figure this out")
+    
+    dict <- dictionary(list(positive = c("good", "great"),
+                            negative = c("bad"),
+                            neg_positive = "not good",
+                            neg_negative = "not bad"))
     txt <- c(d1 = "good good bad bad good word1 word1 word1 word2 word2",
              d2 = "good",
              d3 = "notsentiment",
-             d4 = "Great!",
-             d5 = "good good")
-
+             d4 = "Great! Not bad.",
+             d5 = "good good not good bad")
     smooth <- 0.5
     logit <- c(log(3 + smooth) - log(2 + smooth),
                log(1 + smooth) - log(0 + smooth),
                log(0 + smooth) - log(0 + smooth),
                log(1 + smooth) - log(0 + smooth),
-               log(2 + smooth) - log(0 + smooth))
-
+               log(2 + smooth) - log(1 + smooth))
+    
+    # for two categories
+    polarity(dict) <- list(positive = 1, negative = -1)
+    dfmat <- tokens(txt) %>%
+        tokens_lookup(dictionary = dict, nested_scope = "dictionary") %>%
+        dfm()
+    dfmat <- as.dfm(log(dfmat + smooth))
     expect_equivalent(
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015),
+        textstat_sentiment(dfmat, dictionary = dict),
         data.frame(doc_id = names(txt), sentiment = logit, stringsAsFactors = FALSE)
     )
-    expect_identical(
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015),
-        textstat_sentiment(corpus(txt), dictionary = data_dictionary_LSD2015)
-    )
-    expect_identical(
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015),
-        textstat_sentiment(tokens(txt), dictionary = data_dictionary_LSD2015)
-    )
-    expect_identical(
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015),
-        textstat_sentiment(dfm(txt), dictionary = data_dictionary_LSD2015)
-    )
+    
+    # for multiple categories within one polarity
+    polarity(dict) <- list(positive = 1, negative = -1, 
+                           neg_negative = 1, neg_positive = -1)
+    
+    ##
+    ## will fail because the zero categories of the neg_* get 0.5 added to them
+    ##
 })
 
-test_that("different sentiment functions work as expected", {
-    skip("until code is final")
+test_that("relative proportional differences works as expected", {
+    skip("until this is fixed")
     txt <- c(d1 = "good good bad bad good word1 word1 word1 word2 word2",
              d2 = "good",
              d3 = "notsentiment",
              d4 = "Great!",
              d5 = "good good")
-
-    # logit scale
-    smooth <- 0.5
-    logit <- c(log(3 + smooth) - log(2 + smooth),
-               log(1 + smooth) - log(0 + smooth),
-               log(0 + smooth) - log(0 + smooth),
-               log(1 + smooth) - log(0 + smooth),
-               log(2 + smooth) - log(0 + smooth))
-    expect_equal(
-        logit,
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015)$sentiment
-    )
-
+    
     # relative proportional difference
     rpd <- c(3 - 2,
              1 - 0,
              0 - 0,
              1 - 0,
              2 - 0) / c(5, 1, 0, 1, 2)
+    rpd[3] <- 0
     expect_equal(
         rpd,
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015,
-                           fun = sent_relpropdiff)$sentiment
+        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015)$sentiment
     )
+})
 
+test_that("relative proportional differences works as expected", {
+    skip("until this is fixed")
+    txt <- c(d1 = "good good bad bad good word1 word1 word1 word2 word2",
+             d2 = "good",
+             d3 = "notsentiment",
+             d4 = "Great!",
+             d5 = "good good")
+    
     # absolute proportional difference
     apd <- c(3 - 2,
              1 - 0,
@@ -73,100 +76,132 @@ test_that("different sentiment functions work as expected", {
              2 - 0) / unname(ntoken(txt))
     expect_equal(
         apd,
-        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015,
-                           fun = sent_abspropdiff)$sentiment
+        textstat_sentiment(txt, dictionary = data_dictionary_LSD2015)$sentiment
     )
+})
+
+test_that("teststat_sentiment works for polarity categories", {
+    
 })
 
 test_that("textstat_sentiment error conditions work", {
-    skip("until code is final")
+    skip("until fixed in code")
     dict <- dictionary(list(
         happy = c("happy", "jubilant", "exuberant"),
         sad = c("sad", "morose", "down"),
         okay = "just okay"
+    ))
+    valence(dict) <- list(
+        happy = c("happy" = 1, "jubilant" = 2, "exuberant" = 2),
+        sad = c("sad" = -1, "morose" = -2, "down" = -1),
+        okay = c("just okay" = 0.5)
+    )
+    txt <- c(d1 = "sad word happy word exuberant",
+             d2 = "down sad just okay",
+             d3 = "sad happy word word")
+    
+    dfmat <- tokens(txt) %>%
+        tokens_lookup(dict, nested_scope = "dictionary", nomatch = "other") %>%
+        dfm()
+    
+    sent <- c((-1 + 1 + 2) / 5,
+              (-1 - 1 + 0.5) / 3,
+              (-1 + 1) / 4)
+    expect_equal(
+        textstat_sentiment(txt, dict),
+        data.frame(doc_id = docnames(dfmat),
+                   sentiment = sent)
+    )
+    
+    sent2 <- c((-1 + 1 + 2) / 3,
+               (-1 - 1 + 0.5) / 3,
+               (-1 + 1) / 2)
+    expect_equal(
+        textstat_sentiment(txt, dict),
+        data.frame(doc_id = docnames(dfmat),
+                   sentiment = sent2)
+    )
+})
+    
+test_that("textstat_sentiment error conditions work", {
+    dict <- dictionary(list(
+            happy = c("happy", "jubilant", "exuberant"),
+            sad = c("sad", "morose", "down"),
+            okay = "just okay"
     ))
     expect_error(
         textstat_sentiment("Happy, sad, neutral.", dictionary = dict),
-        "polarity is not set for this dictionary; see ?polarity", 
-        fixed = TRUE
+        "no valence or polarity keys found"
     )
-    
 })
 
 test_that("polarity functions work", {
-    skip("until code is final")
     dict <- dictionary(list(
         happy = c("happy", "jubilant", "exuberant"),
         sad = c("sad", "morose", "down"),
         okay = "just okay"
     ))
-
+    
     expect_equal(polarity(dict), NULL)
 
-    polarity(dict) <- list(pos = "happy", neg = "sad")
-    expect_identical(
-        polarity(dict),
-        list(pos = "happy", neg = "sad")
-    )
-
-    polarity(dict) <- list(pos = "happy", neg = "sad", neut = "okay")
-    expect_identical(
-        polarity(dict),
-        list(pos = "happy", neg = "sad", neut = "okay")
-    )
-
-    polarity(dict) <- list(pos = c("happy", "okay"), neg = "sad")
-    expect_identical(
-        polarity(dict),
-        list(pos = c("happy", "okay"), neg = "sad")
-    )
-
     expect_error(
-        polarity(dict) <- list(blank = "happy", neg = "sad"),
-        "value must be a list of 'pos', 'neg', and (optionally) 'neut'",
-        fixed = TRUE
+        polarity(dict) <- list(pos = "happy", neg = "sad"),
+        "'pos' is not a dictionary key"
     )
     expect_error(
-        polarity(dict) <- list(pos = "happy", neg = "sad", neutr = "okay"),
-        "value must be a list of 'pos', 'neg', and (optionally) 'neut'",
-        fixed = TRUE
+        polarity(dict) <- list(happy = "a", sad = -1),
+        "valence values must be numeric"
     )
     
-    # this should generate an error
-    expect_error(
-        polarity(dict) <- list(pos = "notfound", neg = "sad"),
-        "'notfound' key not found in this dictionary"
+    polarity(dict) <- list(happy = 1, sad = -1, okay = 0)
+    expect_identical(
+        polarity(dict),
+        list(happy = 1, sad = -1, okay = 0)
     )
 
-    # should test that both pos and neg are assigned ?
-
+    expect_identical(
+        valence(dict),
+        list(happy = c(happy = 1, jubilant = 1, exuberant = 1), 
+             sad = c(sad = -1, morose = -1, down = -1), 
+             okay = c(`just okay` = 0))
+    )
 })
 
-test_that("get_polarity_dictionary() works", {
-    skip("until code is final")
+test_that("valence error checks work", {
+    dict <- dictionary(list(top = c("top1", "top2"),
+                            nested = list(nest1 = c("a", "one"),
+                                          nest2 = c("b", "two"))))
+    expect_error(
+        valence(dict) <- list(top = c(1, 2), nested = -5),
+        "valenced dictionaries cannot be nested"
+    )
+})
+
+test_that("dictionary print method shows valence and polarity", {
     dict <- dictionary(list(
         happy = c("happy", "jubilant", "exuberant"),
-        sad = c("sad", "morose", "down"),
-        okay = "just okay"
+        sad = c("sad", "morose", "down")
     ))
-    polarity(dict) <- list(pos = "happy", neg = "sad", neut = "okay")
-
-    expect_identical(
-        quanteda:::get_polarity_dictionary(dict) %>% as.list,
-        list(pos = c("happy", "jubilant", "exuberant"),
-             neg = c("sad", "morose", "down"),
-             neut = "just okay")
-    )
-
-    expect_identical(
-        quanteda:::get_polarity_dictionary(dict) %>% polarity(),
-        list(pos = "pos", neg = "neg", neut = "neut")
-    )
+    polarity(dict) <- c(happy = 1, sad = -1)
+    expect_output(print(dict),
+        "Dictionary object with 2 key entries.
+Polarities: happy 1, sad -1 \b.
+- [happy]:
+  - happy, jubilant, exuberant
+- [sad]:
+  - sad, morose, down", fixed = TRUE)
     
-    polarity(dict) <- list(pos = "happy", neg = "sad", neut = "okay")
-    dict["okay"] <- NULL
-    expect_error(
-        quanteda:::get_polarity_dictionary(dict),
-        "'okay' key not found in this dictionary"
-    )
+    dict <- dictionary(list(
+        happiness = c("happy", "jubilant", "exuberant", "content"),
+        anger = c("mad", "peeved", "irate", "furious", "livid")
+    ))
+    valence(dict) <- list(happiness = c(3, 4, 5, 2),
+                          anger = c(3.1, 2.4, 2.9, 4.1, 5.0))
+    expect_output(print(dict),
+        "Dictionary object with 2 key entries.
+Valences set for keys: happiness, anger \b.
+- [happiness]:
+  - happy, jubilant, exuberant, content
+- [anger]:
+  - mad, peeved, irate, furious, livid", fixed = TRUE)
 })
