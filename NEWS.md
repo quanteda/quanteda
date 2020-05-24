@@ -1,21 +1,24 @@
-# quanteda 2.0.2
+# quanteda 2.1.0 (when released)
 
 ## Changes
 
+* Added `textstat_summary()` to provide detailed information about dfm, tokens and corpus objects. It will replace `summary()` in future versions.
 * Fixed a performance issue causing slowdowns in tokenizing (using the default `what = "word"`) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).
-* Updated the (default) "word" tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in `quanteda_options()`.  The following are now preserved: `#政治` as well as Weibo-style hashtags such as `#英国首相#".
+* Updated the (default) "word" tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in `quanteda_options()`.  The following are now preserved: "#政治" as well as Weibo-style hashtags such as "#英国首相#".
 * Added new methods `char_select()`, `char_keep()`, and `char_remove()` for easy manipulation of character vectors.
 * Added `dictionary_edit()` for easy, interactive editing of dictionaries, plus the functions `char_edit()` and `list_edit()` for editing character and list of character objects.
 * Added a method to `textplot_wordcloud()` that plots objects from `textstat_keyness()`, to visualize keywords either by comparison or for the target category only.
 * Improved the performance of `kwic()` (#1840).
-* Added a new function `textstat_sentiment()` for computing sentiment using a dictionary with a polarity setting (through a new function `polarity()`).
+* Added new `logsmooth` scheme to `dfm_weight()`.
+* Added new `textstat_summary()` method, which returns summary information about the tokens/types/features etc in an object.  It also caches summary information so that this can be retrieved on subsequent calls, rather than re-computed.
+* Added a new function `textstat_sentiment()` for computing sentiment using a dictionary with a valences set (through a new function `valence()`).
 
 ## Bug fixes and stability enhancements
 
 * Stopped returning `NA` for non-existent features when `n` > `nfeat(x)` in `textstat_frequency(x, n)`.  (#1929)
 * Fixed a problem in `dfm_lookup()` and `tokens_lookup()` in which an error was caused when no dictionary key returned a single match (#1946).
 * Fixed a bug that caused a `textstat_simil/dist` object converted to a data.frame to drop its `document2` labels (#1939).
-
+* Fixed a bug causing `dfm_match()` to fail on a dfm that included "pads" (`""`). (#1960)
 
 # quanteda 2.0.1
 

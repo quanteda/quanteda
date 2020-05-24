@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 2.0.2
+Version: 2.0.9000
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -48,7 +48,8 @@ Imports:
     stringi,
     xml2,
     yaml,
-    proxyC (>= 0.1.4)
+    proxyC (>= 0.1.4),
+    digest
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     dplyr,     
@@ -94,7 +95,6 @@ Collate:
     'bootstrap_dfm.R'
     'casechange-functions.R'
     'char_select.R'
-    'character-methods.R'
     'convert.R'
     'corpus-addsummary-metadata.R'
     'corpus-methods-base.R'
@@ -146,6 +146,7 @@ Collate:
     'readtext-methods.R'
     'spacyr-methods.R'
     'stopwords.R'
+    'summary.R'
     'textmodel.R'
     'textplot_keyness.R'
     'textplot_network.R'
@@ -160,6 +161,7 @@ Collate:
     'textstat_readability.R'
     'textstat_sentiment.R'
     'textstat_simil.R'
+    'textstat_summary.R'
     'tokenizers.R'
     'tokens-methods-base.R'
     'tokens.R'

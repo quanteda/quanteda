@@ -56,11 +56,12 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     x <- as.character(x)
     
     hyphen <- "[\\p{Pd}]"
-    username <- quanteda_options("pattern_username") # preserves email address too
+    username <- quanteda_options("pattern_username") 
     hashtag <- quanteda_options("pattern_hashtag")
-    url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+    # preserves web and email address
+    address <- "(https?:\\/\\/(www\\.)?|@)[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
 
-    regex <- character()
+    regex <- address
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
         regex <- c(regex, hyphen)
@@ -69,7 +70,6 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         regex <- c(regex, username, hashtag)
     }
-    regex <- c(regex, url)
     
     s <- stri_extract_all_regex(x, paste(regex, collapse = "|"),  omit_no_match = TRUE)
     r <- lengths(s)

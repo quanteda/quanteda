@@ -62,15 +62,13 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
         args <- args[[1]]
     
     # initialize automatically it not yet done so
-    if (is.null(options('quanteda_initialized')) || !"package:quanteda" %in% search())
+    if (is.null(getOption('quanteda_initialized')) || !"package:quanteda" %in% search())
         quanteda_initialize()
         
     if (initialize) {
-        quanteda_initialize()
-        return(invisible(TRUE))
+        return(invisible(quanteda_initialize()))
     } else if (reset) {
-        quanteda_reset()
-        return(invisible(TRUE))
+        return(invisible(quanteda_reset()))
     } else if (!length(args)) {
         # return all option values with names
         opts_names <- names(get_options_default())
@@ -95,7 +93,7 @@ quanteda_initialize <- function() {
         if (is.null(getOption(paste0("quanteda_", key))))
             set_option_value(key, opts[[key]])
     }
-    options('quanteda_initialized' = TRUE)
+    unlist(options('quanteda_initialized' = TRUE), use.names = FALSE)
 }
 
 quanteda_reset <- function() {
@@ -103,7 +101,7 @@ quanteda_reset <- function() {
     for (key in names(opts)) {
         set_option_value(key, opts[[key]])
     }
-    options('quanteda_initialized' = TRUE)
+    unlist(options('quanteda_initialized' = TRUE), use.names = FALSE)
 }
 
 set_option_value <- function(key, value) {
@@ -155,6 +153,6 @@ get_options_default <- function(){
                  base_compname = "comp",
                  language_stemmer = "english",
                  pattern_hashtag = "#\\w+#?",
-                 pattern_username = "@")
+                 pattern_username = "@[a-zA-Z0-9_]+")
     return(opts)
 }

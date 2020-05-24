@@ -90,6 +90,43 @@ bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups
     return(true);
 }
 
+float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
+float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
+
+/* 
+ * Internal function to set max_load_factors of hash tables used for pattern
+ * matching and ngram generation. Smaller values will increase the speed but also 
+ * the use of RAM. Ngram generation requires significantly larger amount of
+ * storage than pattern matching, so should be larger.
+ * See: https://en.cppreference.com/w/cpp/container/unordered_map/max_load_factor
+ * @param pattern or ngrams
+ * @param value between 0 and 1.0
+ */
+//
+// [[Rcpp::export]]
+void qatd_cpp_set_load_factor(std::string type, float value) {
+    
+    if (0 < value && value < 1.0) {
+        if (type == "pattern")
+            GLOBAL_PATTERN_MAX_LOAD_FACTOR = value;
+        if (type == "ngrams")
+            GLOBAL_NGRAMS_MAX_LOAD_FACTOR = value;
+    }
+}
+
+// [[Rcpp::export]]
+List qatd_cpp_get_load_factor() {
+    return List::create(
+         _["pattern"] = GLOBAL_PATTERN_MAX_LOAD_FACTOR,
+         _["ngrams"] = GLOBAL_NGRAMS_MAX_LOAD_FACTOR
+    );
+}
+
+// [[Rcpp::export]]
+void qatd_cpp_set_meta(RObject object_, List meta_) {
+    object_.attr("meta") = meta_;
+}
+
 // [[Rcpp::export]]
 bool qatd_cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB

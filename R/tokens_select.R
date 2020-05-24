@@ -7,7 +7,9 @@
 #' common usage for `tokens_remove` will be to eliminate stop words from a text
 #' or text-based object, while the most common use of `tokens_select` will be to
 #' select tokens with only positive pattern matches from a list of regular
-#' expressions, including a dictionary.
+#' expressions, including a dictionary. `startpos` and `endpos` determine the
+#' positions of tokens searched for `pattern` and areas affected are 
+#' expanded by `window`.
 #' @param x [tokens] object whose token elements will be removed or kept
 #' @inheritParams pattern
 #' @param selection whether to `"keep"` or `"remove"` the tokens matching
@@ -20,12 +22,12 @@
 #'   the pre- and post-selected tokens, for instance if a window of adjacency
 #'   needs to be computed.
 #' @param window integer of length 1 or 2; the size of the window of tokens
-#'   adjacent to `pattern` that will be selected. The window is symmetric
-#'   unless a vector of two elements is supplied, in which case the first
-#'   element will be the token length of the window before `pattern`, and
-#'   the second will be the token length of the window after `pattern`.
-#'   The default is `0`, meaning that only the pattern matched token(s) are
-#'   selected, with no adjacent terms.
+#'   adjacent to `pattern` that will be selected. The window is symmetric unless
+#'   a vector of two elements is supplied, in which case the first element will
+#'   be the token length of the window before `pattern`, and the second will be
+#'   the token length of the window after `pattern`. The default is `0`, meaning
+#'   that only the pattern matched token(s) are selected, with no adjacent
+#'   terms.
 #'
 #'   Terms from overlapping windows are never double-counted, but simply
 #'   returned in the pattern match. This is because `tokens_select` never
@@ -34,30 +36,34 @@
 #'   matching starts and ends, where 1 is the first token in a document.  For
 #'   negative indexes, counting starts at the ending token of the document, so
 #'   that -1 denotes the last token in the document, -2 the second to last, etc.
+#'   When the length of the vector is equal to `ndoc`, tokens in corresponding
+#'   positions will be selected. Otherwise, only the first element in the vector
+#'   is used.
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
-#'   `NULL` for no limits.  These are applied after (and hence, in addition
-#'   to) any selection based on pattern matches.
+#'   `NULL` for no limits.  These are applied after (and hence, in addition to)
+#'   any selection based on pattern matches.
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
 #' @examples
 #' ## tokens_select with simple examples
-#' toks <- tokens(c("This is a sentence.", "This is a second sentence."),
-#'                  remove_punct = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = TRUE)
+#' toks <- as.tokens(list(letters, LETTERS))
+#' tokens_select(toks, c("b", "e", "f"), selection = "keep", padding = FALSE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "keep", padding = TRUE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", padding = FALSE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", padding = TRUE)
 #'
 #' # how case_insensitive works
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", case_insensitive = TRUE)
+#' tokens_select(toks, c("b", "e", "f"), selection = "remove", case_insensitive = FALSE)
 #'
 #' # use window
-#' tokens_select(toks, "second", selection = "keep", window = 1)
-#' tokens_select(toks, "second", selection = "remove", window = 1)
-#' tokens_remove(toks, "is", window = c(0, 1))
+#' tokens_select(toks, c("b", "f"), selection = "keep", window = 1)
+#' tokens_select(toks, c("b", "f"), selection = "remove", window = 1)
+#' tokens_remove(toks, c("b", "f"), window = c(0, 1))
+#' tokens_select(toks, pattern = c("e", "g"), window = c(1, 2))
+#' 
 tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
@@ -85,11 +91,13 @@ tokens_select.default <- function(x, pattern = NULL,
 #' @examples
 #' toks <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 #' feats <- c("this", "sample", "is")
+#'
 #' # keeping tokens
 #' tokens_select(toks, feats, selection = "keep")
 #' tokens_select(toks, feats, selection = "keep", padding = TRUE)
 #' tokens_select(toks, feats, selection = "keep", case_insensitive = FALSE)
 #' tokens_select(toks, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
+#'
 #' # removing tokens
 #' tokens_select(toks, feats, selection = "remove")
 #' tokens_select(toks, feats, selection = "remove", padding = TRUE)
@@ -112,13 +120,14 @@ tokens_select.default <- function(x, pattern = NULL,
 #' # with minimum length
 #' tokens_select(toks2, min_nchar = 2, "keep") # simplified form
 #'
-#' # with starting adn ending positions
+#' # with starting and ending positions
 #' tokens_select(toks, "*", startpos = 3)  # exclude first two tokens
 #' tokens_select(toks, "*", endpos = 3)    # include only first 3 tokens
 #' tokens_select(toks, "*", startpos = -3) # include only last 2 tokens
 #'
 #' # combining positional selection with pattern matching
 #' tokens_select(toks, "t*", endpos = 3)
+#'
 tokens_select.tokens <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
@@ -187,10 +196,11 @@ tokens_select.tokens <- function(x, pattern = NULL,
 #' @export
 #' @examples
 #' # tokens_remove example: remove stopwords
-#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
-#'                    execute the functions of its Chief Magistrate.",
-#'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
-#'                    the high sense I entertain of this distinguished honor.")
+#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my
+#'                    country to execute the functions of its Chief Magistrate.",
+#'          wash2 <- "When the occasion proper for it shall arrive, I shall
+#'                    endeavor to express the high sense I entertain of this
+#'                    distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
 tokens_remove <- function(x, ...) {
@@ -205,6 +215,7 @@ tokens_remove <- function(x, ...) {
 #' @examples
 #' # token_keep example: keep two-letter words
 #' tokens_keep(tokens(txt, remove_punct = TRUE), "??")
+#'
 tokens_keep <- function(x, ...) {
     if ("selection" %in% names(list(...))) {
         stop("tokens_keep cannot include selection argument")

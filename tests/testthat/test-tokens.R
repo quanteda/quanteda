@@ -1089,14 +1089,22 @@ test_that("Weibo-style hashtags are preserved", {
 })
 
 test_that("emails address is preserved", {
-    txt <- c(d1 = "support@quanteda.io @quanteda")
+    txt <- c(d1 = "support@quanteda.io K.Watanabe@qi1234.co.jp")
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c("support@quanteda.io", "@quanteda"))
+        list(d1 = c("support@quanteda.io", "K.Watanabe@qi1234.co.jp"))
     )
 })
 
-test_that("hashtags are preserved", {
+test_that("username is preserved", {
+    txt <- c(d1 = "@quanteda @koheiw7 @QUANEDA_INITIATIVE")
+    expect_identical(
+        as.list(tokens(txt, what = "word")),
+        list(d1 = c("@quanteda", "@koheiw7", "@QUANEDA_INITIATIVE"))
+    )
+})
+
+test_that("htags are preserved", {
     txt <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
         as.list(tokens(txt, what = "word")),
