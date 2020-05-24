@@ -5,9 +5,10 @@
 #' @param x document-feature matrix created by [dfm]
 #' @param scheme a label of the weight type:
 #' \describe{
-#'   \item{`count`}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
-#'   \item{`prop`}{the proportion of the feature counts of total feature
-#'   counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+#'   \item{`count`}{\eqn{tf_{ij}}, an integer feature count (default when a dfm
+#'   is created)}
+#'   \item{`prop`}{the proportion of the feature counts of total feature counts
+#'   (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
 #'   \item{`propmax`}{the proportion of the feature counts of the highest
 #'   feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
 #'   \item{`logcount`}{take the 1 + the logarithm of each count, for the
@@ -16,8 +17,10 @@
 #'   \item{`boolean`}{recode all non-zero counts as 1}
 #'   \item{`augmented`}{equivalent to \eqn{k + (1 - k) *} `dfm_weight(x,
 #'   "propmax")`}
-#'   \item{`logave`}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-#'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+#'   \item{`logave`}{(1 + the log of the counts) / (1 + log of the average count
+#'   within document), or \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 +
+#'   \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+#'   \item{`logsmooth`}{log of the counts + `smooth`, or \eqn{tf_{ij} + s}}
 #' }
 #' @param weights if `scheme` is unused, then `weights` can be a named
 #'   numeric vector of weights to be applied to the dfm, where the names of the
@@ -66,10 +69,12 @@
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 dfm_weight <- function(
     x,
-    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", 
+               "logave", "logsmooth"),
     weights = NULL,
     base = 10,
     k = 0.5,
+    smoothing = 0.5,
     force = FALSE) {
     UseMethod("dfm_weight")
 }
@@ -77,10 +82,12 @@ dfm_weight <- function(
 #' @export
 dfm_weight.default <- function(
     x,
-    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", 
+               "logave", "logsmooth"),
     weights = NULL,
     base = 10,
     k = 0.5,
+    smoothing = 0.5,
     force = FALSE) {
     stop(friendly_class_undefined_message(class(x), "dfm_weight"))
 }
@@ -92,6 +99,7 @@ dfm_weight.dfm <- function(
     weights = NULL,
     base = 10,
     k = 0.5,
+    smoothing = 0.5,
     force = FALSE) {
 
     # traps for deprecated scheme values
@@ -112,6 +120,8 @@ dfm_weight.dfm <- function(
         } else if (scheme == "tfidf") {
             .Deprecated(msg = 'scheme = "tfidf" is deprecated; use dfm_tfidf(x) instead')
             return(dfm_tfidf(x, base = base))
+        } else if (scheme == "logsmooth") {
+            return(as.dfm(log(dfm_smooth(x, smoothing), base = base)))
         }
     }
 
@@ -199,7 +209,8 @@ dfm_weight.dfm <- function(
 # dfm_smooth --------------
 
 #' @rdname dfm_weight
-#' @param smoothing constant added to the dfm cells for smoothing, default is 1
+#' @param smoothing constant added to the dfm cells for smoothing, default is 1 
+#'   for `dfm_smooth()` and 0.5 for `dfm_weight()`
 #' @return `dfm_smooth` returns a dfm whose values have been smoothed by
 #'   adding the `smoothing` amount. Note that this effectively converts a
 #'   matrix from sparse to dense format, so may exceed memory requirements
