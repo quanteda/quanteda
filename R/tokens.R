@@ -264,42 +264,42 @@ tokens.corpus <- function(x,
                            fastestword = tokenize_fastestword)
     
     
-    if (what == "word") {
-        x <- preserve_special(x, split_hyphens = split_hyphens, 
-                               split_tags = FALSE, verbose = verbose)
-        special <- attr(x, "special")
-    }
+    if (!remove_separators && !what %in% c("word", "word1", "character"))
+        warning("remove_separators is always TRUE for this type")
     
     # split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
     for (i in seq_along(x)) {
+        if (what == "word") {
+            x[[i]] <- preserve_special(x[[i]], split_hyphens = split_hyphens, 
+                                  split_tags = FALSE, verbose = verbose)
+            special <- attr(x[[i]], "special")
+        }
         if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
         temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, verbose = verbose)
         if (verbose) catm(" ...serializing tokens, ")
-        if (i == 1) {
-            x[[i]] <- serialize_tokens(temp)
-        } else {
-            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
-        }
+        x[[i]] <- serialize_tokens(temp)
         if (verbose) catm(format(length(attr(x[[i]], "types")), big.mark = ",", trim = TRUE),
                           "unique types\n")
+        if (what == "word")
+            x[[i]] <- restore_special(x[[i]], special, recompile = FALSE)
+        if (what == "word1" && !split_hyphens)
+            x[[i]] <- restore_special1(x[[i]], split_hyphens = FALSE, split_tags = TRUE, recompile = FALSE)
     }
+    type <- unique(unlist(lapply(x, attr, "types"), use.names = FALSE))
+    result <- lapply(x, function(y) {
+        map <- c(0L, fastmatch::fmatch(attr(y, "types"), type))
+        y <- lapply(y, function(z) map[z + 1L])
+        return(y)
+    })
     
     result <- build_tokens(
         unlist(x, recursive = FALSE), 
-        types = attr(x[[length(x)]], "types"),
-        what = what, 
+        types = type, what = what, 
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
 
-    if (!remove_separators && !what %in% c("word", "word1", "character"))
-        warning("remove_separators is always TRUE for this type")
-    if (what == "word")
-        result <- restore_special(result, special)
-    if (what == "word1" && !split_hyphens)
-        result <- restore_special1(result, split_hyphens = FALSE, split_tags = TRUE)
-    
     result <- tokens.tokens(result,
                             remove_punct = remove_punct,
                             remove_symbols = remove_symbols,

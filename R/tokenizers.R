@@ -164,14 +164,15 @@ preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
 }
 
 # re-substitute the replacement hyphens and tags
-restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose) {
+restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, recopile = TRUE, 
+                             verbose = FALSE) {
     type <- attr(x, "types")
     if (!split_hyphens)
         type <- stri_replace_all_fixed(type, "_hy_", "-")
     if (!split_tags)
         type <- stri_replace_all_fixed(type, c("_ht_", "_as_"), c("#", "@"),
                                        vectorize_all = FALSE)
-    if (!identical(type, attr(x, "types"))) {
+    if (!identical(type, attr(x, "types")) && recopile) {
         attr(x, "types") <- type
         x <- tokens_recompile(x)
     }
