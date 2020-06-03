@@ -96,32 +96,32 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     structure(x, names = name, special = special)
 }
 
-restore_special <- function(x, special) {
+restore_special <- function(x, special, recompile = TRUE) {
 
     if (!length(special))
         return(x)
     
-    types <- types(x)
+    type <- attr(x, "types")
     # extract all placeholders
-    d <- stri_extract_all_regex(types, "\u100000\\d+\u100001", omit_no_match = TRUE)
+    d <- stri_extract_all_regex(type, "\u100000\\d+\u100001", omit_no_match = TRUE)
     r <- lengths(d)
     d <- unlist(d, use.names = FALSE)
     
     # index placeholders
-    index <- split(rep(seq_along(types), r), factor(d, levels = unique(d)))
+    index <- split(rep(seq_along(type), r), factor(d, levels = unique(d)))
     if (length(index)) {
         pos <- fastmatch::fmatch(names(index), special)
         for (i in seq_along(index)) {
-            types[index[[i]]] <- stri_replace_all_fixed(
-                types[index[[i]]], 
+            type[index[[i]]] <- stri_replace_all_fixed(
+                type[index[[i]]], 
                 special[pos[i]], 
                 names(special)[pos[i]],
                 vectorize_all = FALSE
             )
         }
     }
-    if (!identical(types, types(x))) {
-        types(x) <- types
+    if (!identical(type, attr(x, "types")) && recompile) {
+        attr(x, "types") <- type
         x <- tokens_recompile(x)
     }
     return(x)
@@ -165,14 +165,14 @@ preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
 
 # re-substitute the replacement hyphens and tags
 restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose) {
-    types <- types(x)
+    type <- attr(x, "types")
     if (!split_hyphens)
-        types <- stri_replace_all_fixed(types, "_hy_", "-")
+        type <- stri_replace_all_fixed(type, "_hy_", "-")
     if (!split_tags)
-        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
-                                        vectorize_all = FALSE)
-    if (!identical(types, types(x))) {
-        types(x) <- types
+        type <- stri_replace_all_fixed(type, c("_ht_", "_as_"), c("#", "@"),
+                                       vectorize_all = FALSE)
+    if (!identical(type, attr(x, "types"))) {
+        attr(x, "types") <- type
         x <- tokens_recompile(x)
     }
     return(x)

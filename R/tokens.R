@@ -580,9 +580,9 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 
     method <- match.arg(method)
     attrs <- attributes(x)
-
+    type <- attr(x, "types")
     if (method == "C++") {
-        x <- qatd_cpp_tokens_recompile(x, types(x), gap, dup)
+        x <- qatd_cpp_tokens_recompile(x, type, gap, dup)
         x <- rebuild_tokens(x, attrs)
     } else {
     
@@ -596,29 +596,29 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
     
         # Remove gaps in the type index, if any, remap index
         if (gap) {
-            if (any(is.na(match(seq_len(length(types(x))), index_unique)))) {
-                types_new <- types(x)[index_unique]
+            if (any(is.na(match(seq_len(length(type)), index_unique)))) {
+                type_new <- type[index_unique]
                 index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
                 index_unique <- c(0, index_unique) # padding index is zero but not in types
                 x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
                 attributes(x) <- attrs
-                types(x) <- types_new
+                type <- type_new
             }
         }
     
         # Reindex duplicates, if any
         if (dup) {
-            if (any(duplicated(types(x)))) {
-                types <- types(x)
-                types_unique <- unique(types)
-                index_mapping <- match(types, types_unique)
+            if (any(duplicated(type))) {
+                type_unique <- unique(type)
+                index_mapping <- match(type, type_unique)
                 index_mapping <- c(0, index_mapping) # padding index is zero but not in types
                 x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
                 attributes(x) <- attrs
-                types(x) <- types_unique
+                type <- type_unique
             }
         }
-        Encoding(types(x)) <- "UTF-8"
+        Encoding(type) <- "UTF-8"
+        attr(x, "types") <- type
         x <- rebuild_tokens(x, attrs)
     }
     return(x)
