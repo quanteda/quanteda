@@ -142,19 +142,6 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     # normalize Unicode
     x <- stri_trans_nfc(x)
 
-    # convert the dreaded "curly quotes" to ASCII equivalents
-    x <- stri_replace_all_fixed(x,
-                                c("\u201C", "\u201D", "\u201F",
-                                  "\u2018", "\u201B", "\u2019"),
-                                c("\"", "\"", "\"",
-                                  "\'", "\'", "\'"), vectorize_all = FALSE)
-
-    # replace all hyphens with simple hyphen
-    x <- stri_replace_all_fixed(x, c("\u2012", "\u2013", "\u2014", "\u2015", "\u2053"), "--", 
-                                vectorize_all = FALSE)
-    x <- stri_replace_all_regex(x, c("\\p{Pd}", "\\p{Pd}{2,}"), c("-", " - "), 
-                                vectorize_all = FALSE)
-
     # normalize EOL
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh

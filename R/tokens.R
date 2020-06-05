@@ -270,6 +270,7 @@ tokens.corpus <- function(x,
     # split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
     for (i in seq_along(x)) {
+        x[[i]] <- normalize_characters(x[[i]])
         if (what == "word") {
             x[[i]] <- preserve_special(x[[i]], split_hyphens = split_hyphens, 
                                   split_tags = FALSE, verbose = verbose)

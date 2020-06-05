@@ -229,3 +229,21 @@ tokenize_fasterword <- function(x, ...) {
 tokenize_fastestword <- function(x, ...) {
     stri_split_regex(x, " ")
 }
+
+
+normalize_characters <- function(x) {
+    # convert the dreaded "curly quotes" to ASCII equivalents
+    x <- stri_replace_all_fixed(x,
+                                c("\u201C", "\u201D", "\u201F",
+                                  "\u2018", "\u201B", "\u2019"),
+                                c("\"", "\"", "\"",
+                                  "\'", "\'", "\'"), vectorize_all = FALSE)
+    
+    # replace all hyphens with simple hyphen
+    x <- stri_replace_all_fixed(x, c("\u2012", "\u2013", "\u2014", "\u2015", "\u2053"), "--", 
+                                vectorize_all = FALSE)
+    x <- stri_replace_all_regex(x, c("\\p{Pd}", "\\p{Pd}{2,}"), c("-", " - "), 
+                                vectorize_all = FALSE)
+    
+    return(x)
+}
