@@ -110,7 +110,7 @@ test_that("test rbind.dfm with the same features, but in a different order", {
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
     generate_testdfm <- function(n) {
-        dfm(paste("X", 1:n, sep = ""))
+        dfm(paste("X", seq_len(n), sep = ""))
     }
     expect_equal(nfeat(generate_testdfm(10000)), 10000)
     expect_equal(nfeat(generate_testdfm(20000)), 20000)
