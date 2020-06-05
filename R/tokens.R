@@ -269,28 +269,28 @@ tokens.corpus <- function(x,
     
     # split x into smaller blocks to reducre peak memory consumption
     x <- split(x, ceiling(seq_along(x) / 10000))
-    for (i in seq_along(x)) {
-        x[[i]] <- normalize_characters(x[[i]])
+    x <- lapply(x, function(y) {
+        y <- normalize_characters(y)
         if (what == "word") {
-            x[[i]] <- preserve_special(x[[i]], split_hyphens = split_hyphens, 
+            y <- preserve_special(y, split_hyphens = split_hyphens, 
                                   split_tags = FALSE, verbose = verbose)
-            special <- attr(x[[i]], "special")
+            special <- attr(y, "special")
         }
-        if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
-        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, verbose = verbose)
-        if (verbose) catm(" ...serializing tokens, ")
-        x[[i]] <- serialize_tokens(temp)
-        if (verbose) catm(format(length(attr(x[[i]], "types")), big.mark = ",", trim = TRUE),
-                          "unique types\n")
+        if (verbose) 
+            catm(" ...", head(names(y), 1), "to", tail(names(y), 1), "by pid=", Sys.getpid(), "\n")
+        y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
         if (what == "word")
-            x[[i]] <- restore_special(x[[i]], special, recompile = FALSE)
+            y <- restore_special(y, special, recompile = FALSE)
         if (what == "word1" && !split_hyphens)
-            x[[i]] <- restore_special1(x[[i]], split_hyphens = FALSE, split_tags = TRUE, recompile = FALSE)
-    }
+            y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE, recompile = FALSE)
+        return(y)
+    })
     type <- unique(unlist(lapply(x, attr, "types"), use.names = FALSE))
-    result <- lapply(x, function(y) {
-        map <- c(0L, fastmatch::fmatch(attr(y, "types"), type))
-        y <- lapply(y, function(z) map[z + 1L])
+    if (verbose) 
+        catm(format(length(type), big.mark = ",", trim = TRUE), "unique types\n")
+    x <- lapply(x, function(y) {
+        map <- fastmatch::fmatch(attr(y, "types"), type)
+        y <- lapply(y, function(z) map[z])
         return(y)
     })
     
@@ -349,7 +349,8 @@ tokens.tokens <-  function(x,
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
-        x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
+        x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE,
+                          verbose = verbose)
     }
     
     # removals
@@ -368,13 +369,15 @@ tokens.tokens <-  function(x,
     }
     
     if (length(removals[["separators"]])) {
-        x <- tokens_remove(x, removals[["separators"]], valuetype = "regex")
+        x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
+                           verbose = verbose)
         removals["separators"] <- NULL
     }
     
     if (length(removals)) {
         x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
-                           valuetype = "regex",  padding = padding)
+                           valuetype = "regex",  padding = padding,
+                           verbose = verbose)
     }
 
     if (!include_docvars)
