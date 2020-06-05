@@ -268,16 +268,17 @@ tokens.corpus <- function(x,
         warning("remove_separators is always TRUE for this type")
     
     # split x into smaller blocks to reducre peak memory consumption
+    x <- texts(x)
     x <- split(x, ceiling(seq_along(x) / 10000))
     x <- lapply(x, function(y) {
+        if (verbose) 
+            catm(" ...", head(names(y), 1), "to", tail(names(y), 1), "by process", Sys.getpid(), "\n")
         y <- normalize_characters(y)
         if (what == "word") {
             y <- preserve_special(y, split_hyphens = split_hyphens, 
                                   split_tags = FALSE, verbose = verbose)
             special <- attr(y, "special")
         }
-        if (verbose) 
-            catm(" ...", head(names(y), 1), "to", tail(names(y), 1), "by pid=", Sys.getpid(), "\n")
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
         if (what == "word")
             y <- restore_special(y, special, recompile = FALSE)
@@ -287,7 +288,7 @@ tokens.corpus <- function(x,
     })
     type <- unique(unlist(lapply(x, attr, "types"), use.names = FALSE))
     if (verbose) 
-        catm(format(length(type), big.mark = ",", trim = TRUE), "unique types\n")
+        catm(" ...", format(length(type), big.mark = ",", trim = TRUE), "unique types\n")
     x <- lapply(x, function(y) {
         map <- fastmatch::fmatch(attr(y, "types"), type)
         y <- lapply(y, function(z) map[z])
@@ -349,8 +350,7 @@ tokens.tokens <-  function(x,
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
-        x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE,
-                          verbose = verbose)
+        x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
     
     # removals
@@ -370,14 +370,14 @@ tokens.tokens <-  function(x,
     
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
-                           verbose = verbose)
+                           verbose = FALSE)
         removals["separators"] <- NULL
     }
     
     if (length(removals)) {
         x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
                            valuetype = "regex",  padding = padding,
-                           verbose = verbose)
+                           verbose = FALSE)
     }
 
     if (!include_docvars)

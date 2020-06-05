@@ -38,7 +38,7 @@ NULL
 #' @export
 tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
     
-    if (verbose) catm(" ...segmenting tokens\n")
+    if (verbose) catm(" ...segmenting texts\n")
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
     
