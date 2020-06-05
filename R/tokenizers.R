@@ -120,9 +120,10 @@ restore_special <- function(x, special, recompile = TRUE) {
             )
         }
     }
-    if (!identical(type, attr(x, "types")) && recompile) {
+    if (!identical(type, attr(x, "types"))) {
         attr(x, "types") <- type
-        x <- tokens_recompile(x)
+        if (recompile)
+            x <- tokens_recompile(x)
     }
     return(x)
 }
@@ -164,7 +165,7 @@ preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
 }
 
 # re-substitute the replacement hyphens and tags
-restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, recopile = TRUE, 
+restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, recompile = TRUE, 
                              verbose = FALSE) {
     type <- attr(x, "types")
     if (!split_hyphens)
@@ -172,9 +173,10 @@ restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, recopil
     if (!split_tags)
         type <- stri_replace_all_fixed(type, c("_ht_", "_as_"), c("#", "@"),
                                        vectorize_all = FALSE)
-    if (!identical(type, attr(x, "types")) && recopile) {
+    if (!identical(type, attr(x, "types"))) {
         attr(x, "types") <- type
-        x <- tokens_recompile(x)
+        if (recompile)
+            x <- tokens_recompile(x)
     }
     return(x)
 }
