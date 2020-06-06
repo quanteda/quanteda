@@ -269,7 +269,7 @@ tokens.corpus <- function(x,
     
     # split x into smaller blocks to reducre peak memory consumption
     x <- texts(x)
-    x <- split(x, ceiling(seq_along(x) / 10000))
+    x <- split(x, factor(ceiling(seq_along(x) / 10000)))
     x <- lapply(x, function(y) {
         if (verbose) 
             catm(" ...", head(names(y), 1), "to", tail(names(y), 1), "by process", Sys.getpid(), "\n")
@@ -281,9 +281,9 @@ tokens.corpus <- function(x,
         }
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
         if (what == "word")
-            y <- restore_special(y, special, recompile = FALSE)
+            y <- restore_special(y, special)
         if (what == "word1" && !split_hyphens)
-            y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE, recompile = FALSE)
+            y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
         return(y)
     })
     type <- unique(unlist(lapply(x, attr, "types"), use.names = FALSE))
