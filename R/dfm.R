@@ -381,7 +381,7 @@ dfm.dfm <- function(x,
         x <- x[, !is_na, drop = FALSE]
 
     if (verbose) {
-        catm(" ...complete, elapsed time: ",
+        catm(" ...complete, elapsed time:",
              format((proc.time() - dfm_env$START_TIME)[3], digits = 3), "seconds.\n")
         catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
              "sparse dfm.\n")
