@@ -54,7 +54,10 @@ created by matrix factorization}
 \link{tokens_wordstem}, and \link{dfm_wordstem}}
 \item{\code{pattern_hashtag}, \code{pattern_username}}{character; regex patterns for
 (social media) hashtags and usernames respectively, used to avoid segmenting
-these in the default internal "word" tokenizer}}
+these in the default internal "word" tokenizer}
+\item{\code{block_size}}{integer; specifies the
+number of documents to be tokenized at a time in blocked tokenization.
+When the number is large, tokenization becomes faster but also memory-intensive.}}
 }
 \examples{
 (opt <- quanteda_options())

@@ -29,7 +29,10 @@
 #' [tokens_wordstem], and [dfm_wordstem]} 
 #' \item{`pattern_hashtag`, `pattern_username`}{character; regex patterns for
 #' (social media) hashtags and usernames respectively, used to avoid segmenting
-#' these in the default internal "word" tokenizer}}
+#' these in the default internal "word" tokenizer}
+#' \item{`block_size`}{integer; specifies the
+#'   number of documents to be tokenized at a time in blocked tokenization.
+#'   When the number is large, tokenization becomes faster but also memory-intensive.}}
 #' @return When called using a `key = value` pair (where `key` can be
 #' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
@@ -153,6 +156,7 @@ get_options_default <- function(){
                  base_compname = "comp",
                  language_stemmer = "english",
                  pattern_hashtag = "#\\w+#?",
-                 pattern_username = "@[a-zA-Z0-9_]+")
+                 pattern_username = "@[a-zA-Z0-9_]+",
+                 block_size = 10000L)
     return(opts)
 }
