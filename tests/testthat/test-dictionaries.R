@@ -183,6 +183,29 @@ test_that("dictionary printing works", {
         ),
         fixed = TRUE
     )
+    
+    # print nested leves (#1967)
+    lis <- as.list(letters[1:10])
+    names(lis) <- LETTERS[1:10]
+    dict2 <- dictionary(list("letters" = lis))
+    expect_output(
+      print(dict2),
+      "- [letters]:\n",
+      fixed = TRUE
+    )
+    expect_output(
+        print(dict2, max_nkey = 5),
+        "[ reached max_nkey ... 5 more keys ]",
+        fixed = TRUE
+    )
+    expect_output(
+      print(dict2, max_nkey = -1),
+      paste0(
+        "  - [J]:\n",
+        "    - j"
+      ),
+      fixed = TRUE
+    )
 })
 
 
