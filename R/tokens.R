@@ -389,7 +389,7 @@ tokens.tokens <-  function(x,
         docvars(x) <- NULL
 
     if (verbose) {
-        catm(" ...complete, elapsed time: ",
+        catm(" ...complete, elapsed time:",
              format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
         catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " document",
              if (length(x) > 1) "s", ".\n", sep = "")
