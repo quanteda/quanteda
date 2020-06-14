@@ -30,7 +30,7 @@
 #' \item{`pattern_hashtag`, `pattern_username`}{character; regex patterns for
 #' (social media) hashtags and usernames respectively, used to avoid segmenting
 #' these in the default internal "word" tokenizer}
-#' \item{`block_size`}{integer; specifies the
+#' \item{`tokens_block_size`}{integer; specifies the
 #'   number of documents to be tokenized at a time in blocked tokenization.
 #'   When the number is large, tokenization becomes faster but also memory-intensive.}}
 #' @return When called using a `key = value` pair (where `key` can be
@@ -157,6 +157,6 @@ get_options_default <- function(){
                  language_stemmer = "english",
                  pattern_hashtag = "#\\w+#?",
                  pattern_username = "@[a-zA-Z0-9_]+",
-                 block_size = 10000L)
+                 tokens_block_size = 10000L)
     return(opts)
 }

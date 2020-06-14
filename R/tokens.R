@@ -269,7 +269,7 @@ tokens.corpus <- function(x,
 
     # split x into smaller blocks to reduce peak memory consumption
     x <- texts(x)
-    x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("block_size"))))
+    x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
     x <- lapply(x, function(y) {
         if (verbose)
             catm(" ...", head(names(y), 1), " to ", tail(names(y), 1), "\n", sep = "")
