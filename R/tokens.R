@@ -269,11 +269,13 @@ tokens.corpus <- function(x,
 
     # split x into smaller blocks to reduce peak memory consumption
     x <- texts(x)
-    x <- split(x, factor(ceiling(seq_along(x) / 10000)))
+    x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("block_size"))))
     x <- lapply(x, function(y) {
         if (verbose)
-            catm(" ...", head(names(y), 1), " to ", tail(names(y), 1),
-                 " by process ", Sys.getpid(), "\n", sep = "")
+            catm(" ...", head(names(y), 1), " to ", tail(names(y), 1), "\n", sep = "")
+            #catm(" ...", head(names(y), 1), " to ", tail(names(y), 1),
+            #     " by process ", Sys.getpid(), "\n", sep = "")
+            
         y <- normalize_characters(y)
         if (what == "word") {
             y <- preserve_special(y, split_hyphens = split_hyphens,

@@ -38,7 +38,7 @@ NULL
 #' @export
 tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
 
-    if (verbose) catm(" ...segmenting texts\n")
+    if (verbose) catm(" ...segmenting into words\n")
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
 
@@ -145,7 +145,7 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     # substitute characters not to split
     x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
-    if (verbose) catm(" ...segmenting texts\n")
+    if (verbose) catm(" ...segmenting into words\n")
     structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
