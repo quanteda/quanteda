@@ -379,10 +379,10 @@ print_dictionary <- function(entry, level = 1,
     unused_dots(...)
 
     nkey <- length(entry)
-    if (max_nkey < 0)
-        max_nkey <- length(entry)
+    entry <- unclass(entry)
+    if (max_nkey >= 0)
+        entry <- head(unclass(entry), max_nkey)
 
-    entry <- head(unclass(entry), max_nkey)
     if (!length(entry)) return()
     is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
@@ -401,7 +401,7 @@ print_dictionary <- function(entry, level = 1,
             cat(pad, "- [", names(category[i]), "]:\n", sep = "")
         print_dictionary(category[[i]], level + 1, max_nkey, max_nval, show_summary)
     }
-    nkey_rem <- nkey - max_nkey
+    nkey_rem <- nkey - length(entry)
     if (nkey_rem > 0) {
         cat(pad, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key",
             if (nkey_rem > 1) "s", " ]\n", sep = "")

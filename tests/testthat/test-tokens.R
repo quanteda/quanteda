@@ -804,7 +804,7 @@ test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as e
     )
     expect_message(
         tokens(tokens("Removing separators", remove_separators = TRUE), verbose = TRUE),
-        c("elapsed time:  .+ seconds")
+        c("elapsed time: .+ seconds")
     )
 })
 
@@ -1045,6 +1045,31 @@ test_that("tokens.tokens(x, padding = TRUE) works", {
     )
 })
 
+test_that("special1 functions are working", {
+    expect_identical(
+        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
+                                     split_hyphens = TRUE, split_tags = FALSE),
+        "_ht_quanteda _ht_q-x _ht_q_y _ht_q100 _ht_q"
+    )
+    expect_identical(
+        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
+                                     split_hyphens = FALSE, split_tags = FALSE),
+        "_ht_quanteda _ht_q_hy_x _ht_q_y _ht_q100 _ht_q"
+    )
+    toks1 <- list(1:5)
+    attr(toks1, "types") <- c("_ht_quanteda", "_ht_q-x", "_ht_q_y", "_ht_q100", "_ht_q")
+    expect_identical(
+        attr(quanteda:::restore_special1(toks1, split_hyphens = TRUE, split_tags = FALSE), "types"),
+        c("#quanteda", "#q-x", "#q_y", "#q100", "#q")
+    )
+    toks2 <- list(1:5)
+    attr(toks2, "types") <- c("_ht_quanteda", "_ht_q_hy_x", "_ht_q_y", "_ht_q100", "_ht_q")
+    expect_identical(
+        attr(quanteda:::restore_special1(toks2, split_hyphens = FALSE, split_tags = FALSE), "types"),
+        c("#quanteda", "#q-x", "#q_y", "#q100", "#q")
+    )
+})
+
 test_that("tokenizing Japanese with URLs works", {
     txt <- c(d1 = "私のユーザー名は@quantedainitです。")
     expect_identical(
@@ -1104,7 +1129,7 @@ test_that("username is preserved", {
     )
 })
 
-test_that("htags are preserved", {
+test_that("tags are preserved", {
     txt <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
         as.list(tokens(txt, what = "word")),
@@ -1159,3 +1184,5 @@ test_that("remove_numbers functions correctly", {
         c("and", "and", "100bn", "20-year-old", "4ever", "gr8")
     )
 })
+
+

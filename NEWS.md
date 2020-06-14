@@ -2,6 +2,8 @@
 
 ## Changes
 
+* Added `block_size` to `quanteda_options()` to control the number of documents in blocked tokenization.
+* Fixed `print.dictionary2()` to control the printing of nested levels with `max_nkey` (#1967)
 * Added `textstat_summary()` to provide detailed information about dfm, tokens and corpus objects. It will replace `summary()` in future versions.
 * Fixed a performance issue causing slowdowns in tokenizing (using the default `what = "word"`) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).
 * Updated the (default) "word" tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in `quanteda_options()`.  The following are now preserved: "#政治" as well as Weibo-style hashtags such as "#英国首相#".

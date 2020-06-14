@@ -37,11 +37,11 @@ NULL
 #' @importFrom stringi stri_replace_all_regex stri_detect_fixed stri_split_boundaries
 #' @export
 tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
-    
-    if (verbose) catm(" ...segmenting tokens\n")
+
+    if (verbose) catm(" ...segmenting into words\n")
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
-    
+
     # this will not be needed if we can modify the ICU type rules to protect them
     # remove variant selector & whitespace with diacritical marks
     x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
@@ -51,12 +51,12 @@ tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("
 }
 
 preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
-    
+
     name <- names(x)
     x <- as.character(x)
-    
+
     hyphen <- "[\\p{Pd}]"
-    username <- quanteda_options("pattern_username") 
+    username <- quanteda_options("pattern_username")
     hashtag <- quanteda_options("pattern_hashtag")
     # preserves web and email address
     address <- "(https?:\\/\\/(www\\.)?|@)[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
@@ -70,11 +70,11 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         regex <- c(regex, username, hashtag)
     }
-    
+
     s <- stri_extract_all_regex(x, paste(regex, collapse = "|"),  omit_no_match = TRUE)
     r <- lengths(s)
     s <- unlist(s, use.names = FALSE)
-    
+
     # index specials
     u <- unique(s)
     u <- u[order(stri_length(u), decreasing = TRUE)] # substitute longer match first
@@ -84,45 +84,44 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
         names(special) <- names(index)
         for (i in seq_along(index)) {
             x[index[[i]]] <- stri_replace_all_fixed(
-                x[index[[i]]], 
-                names(special)[i], 
+                x[index[[i]]],
+                names(special)[i],
                 special[i],
                 vectorize_all = FALSE
             )
         }
     } else {
         special <- character()
-    } 
+    }
     structure(x, names = name, special = special)
 }
 
-restore_special <- function(x, special) {
+restore_special <- function(x, special, recompile = TRUE) {
 
     if (!length(special))
         return(x)
-    
-    types <- types(x)
+
+    type <- attr(x, "types")
     # extract all placeholders
-    d <- stri_extract_all_regex(types, "\u100000\\d+\u100001", omit_no_match = TRUE)
+    d <- stri_extract_all_regex(type, "\u100000\\d+\u100001", omit_no_match = TRUE)
     r <- lengths(d)
     d <- unlist(d, use.names = FALSE)
-    
+
     # index placeholders
-    index <- split(rep(seq_along(types), r), factor(d, levels = unique(d)))
+    index <- split(rep(seq_along(type), r), factor(d, levels = unique(d)))
     if (length(index)) {
         pos <- fastmatch::fmatch(names(index), special)
         for (i in seq_along(index)) {
-            types[index[[i]]] <- stri_replace_all_fixed(
-                types[index[[i]]], 
-                special[pos[i]], 
+            type[index[[i]]] <- stri_replace_all_fixed(
+                type[index[[i]]],
+                special[pos[i]],
                 names(special)[pos[i]],
                 vectorize_all = FALSE
             )
         }
     }
-    if (!identical(types, types(x))) {
-        types(x) <- types
-        x <- tokens_recompile(x)
+    if (!identical(type, attr(x, "types"))) {
+        attr(x, "types") <- type
     }
     return(x)
 }
@@ -136,7 +135,7 @@ restore_special <- function(x, special) {
 #'   stri_replace_all_regex stri_detect_fixed stri_replace_all_fixed
 #' @export
 tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
-    
+
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
 
@@ -146,7 +145,7 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     # substitute characters not to split
     x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
-    if (verbose) catm(" ...segmenting texts\n")
+    if (verbose) catm(" ...segmenting into words\n")
     structure(stri_split_boundaries(x, type = "word"), names = m)
 }
 
@@ -164,16 +163,15 @@ preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
 }
 
 # re-substitute the replacement hyphens and tags
-restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose) {
-    types <- types(x)
+restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose = FALSE) {
+    type <- attr(x, "types")
     if (!split_hyphens)
-        types <- stri_replace_all_fixed(types, "_hy_", "-")
+        type <- stri_replace_all_fixed(type, "_hy_", "-")
     if (!split_tags)
-        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"),
-                                        vectorize_all = FALSE)
-    if (!identical(types, types(x))) {
-        types(x) <- types
-        x <- tokens_recompile(x)
+        type <- stri_replace_all_fixed(type, c("_ht_", "_as_"), c("#", "@"),
+                                       vectorize_all = FALSE)
+    if (!identical(type, attr(x, "types"))) {
+        attr(x, "types") <- type
     }
     return(x)
 }
@@ -227,4 +225,22 @@ tokenize_fasterword <- function(x, ...) {
 #' @export
 tokenize_fastestword <- function(x, ...) {
     stri_split_regex(x, " ")
+}
+
+
+normalize_characters <- function(x) {
+    # convert the dreaded "curly quotes" to ASCII equivalents
+    x <- stri_replace_all_fixed(x,
+                                c("\u201C", "\u201D", "\u201F",
+                                  "\u2018", "\u201B", "\u2019"),
+                                c("\"", "\"", "\"",
+                                  "\'", "\'", "\'"), vectorize_all = FALSE)
+
+    # replace all hyphens with simple hyphen
+    x <- stri_replace_all_fixed(x, c("\u2012", "\u2013", "\u2014", "\u2015", "\u2053"), "--",
+                                vectorize_all = FALSE)
+    x <- stri_replace_all_regex(x, c("\\p{Pd}", "\\p{Pd}{2,}"), c("-", " - "),
+                                vectorize_all = FALSE)
+
+    return(x)
 }
