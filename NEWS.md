@@ -7,6 +7,7 @@
 * Added `textstat_summary()` to provide detailed information about dfm, tokens and corpus objects. It will replace `summary()` in future versions.
 * Fixed a performance issue causing slowdowns in tokenizing (using the default `what = "word"`) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).
 * Updated the (default) "word" tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in `quanteda_options()`.  The following are now preserved: "#政治" as well as Weibo-style hashtags such as "#英国首相#".
+* `convert(x, to = "data.frame")` now outputs the first column as "doc_id" rather than "document" since "document" is a commonly occurring term in many texts. (#1918)
 * Added new methods `char_select()`, `char_keep()`, and `char_remove()` for easy manipulation of character vectors.
 * Added `dictionary_edit()` for easy, interactive editing of dictionaries, plus the functions `char_edit()` and `list_edit()` for editing character and list of character objects.
 * Added a method to `textplot_wordcloud()` that plots objects from `textstat_keyness()`, to visualize keywords either by comparison or for the target category only.
@@ -21,13 +22,6 @@
 * Fixed a bug that caused a `textstat_simil/dist` object converted to a data.frame to drop its `document2` labels (#1939).
 * Fixed a bug causing `dfm_match()` to fail on a dfm that included "pads" (`""`). (#1960)
 
-# quanteda 2.0.1
-
-## Changes
-
-## Bug fixes and stability enhancements
-
-* `convert(x, to = "data.frame")` now outputs the first column as "doc_id" rather than "document" since "document" is a commonly occurring term in many texts. (#1918)
 
 # quanteda 2.0.1
 
