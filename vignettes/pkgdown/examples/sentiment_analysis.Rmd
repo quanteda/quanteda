@@ -1,0 +1,193 @@
+---
+title: "Sentiment Analysis using Dictionaries"
+author: "Kenneth Benoit"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "##"
+)
+library("quanteda", warn.conflicts = FALSE, verbose = FALSE)
+```
+
+## Overview
+
+Sentiment analysis using dictionaries can be applied to any text, tokens, or dfm using `textstat_sentiment()`.  This function takes the **quanteda** object as an input, along with a dictionary whose valence or polarity has been set.  The two ways of setting dictionary values allow a user to weight each _key_ with a polarity weight, or each _value_ within keys with a _valence_ weight.
+
+Dictionaries consist of keys and values, where the "key" is the canonical category such as "positive" or "negative", and the "values" consist of the patterns assigned to each key that will be counted as occurrences of those keys when its dictionary is applied using `tokens_lookup()` or `dfm_lookup()`.
+
+In the Lexicoder Sentiment Dictionary 2015 (`data_dictionary_LSD2015`) that is distributed with *the package, **quanteda**, instance, the dictionary has four keys, with between 1,721 and 2,860 values each:
+```{r}
+print(data_dictionary_LSD2015, max_nval = 5)
+lengths(data_dictionary_LSD2015)
+```
+As can be seen, these use "glob" pattern matches and may be multi-word values, such as "a lie" or "no damag*".
+
+
+## Polarity and valence
+
+Dictionaries can have both polarity and valence weights.  "Polarity" is a weight applied to dictionary keys, whereas "valence" is a weight applied individually to each value.
+
+### Polarity weights
+
+Polarity weighting assigns a single scalar numeric weight to a dictionary key, usually -1 (for negative sentiment, for instance) or +1 (for positive sentiment).  The polarity can be set for the dictionary, which is then indicated when the dictionary is printed, or indicated when calling the function `polarity()`.
+
+```{r}
+polarity(data_dictionary_LSD2015)
+
+# set the polarities
+polarity(data_dictionary_LSD2015) <- list(positive = 1, negative = -1)
+polarity(data_dictionary_LSD2015)
+```
+
+The numeric values mean that when `a dictionary is constructed, `textstat_sentiment()` is applied to this dictionary, then each term counted will be weighted as -1 and +1 for negative and positive categories, respectively, and these values summed to produce a sentiment value.
+
+The weights could be 
+
+### Valence weights
+
+Valence weighting is like polarity, but can be set for each individual value within a key.  This allows different weights to be assigned within dictionary keys, for instance with different strengths of positivity or negativity.
+
+If we wanted to nuance this dictionary, for instance, we could assign valences to each key:
+```{r}
+dict <- dictionary(list(neg = c("bad", "awful", "horrific"),
+                        pos = c("good", "great", "amazing")))
+dict
+```
+This dictionary has no valences until they are set.  To assign valences, we use the `valence()` replacement function, assigning it a list with the values equal to the dictionary structure:
+```{r}
+valence(dict) <- list(neg = c(bad = -1, awful = -1.5, horrific = -2),
+                      pos = c(good = 1, great = 1.7, amazing = 2.2))
+```
+Now, we can see that the valences are set:
+```{r}
+dict
+valence(dict)
+```
+
+This allows sentiment to be counted for dictionaries like the [Affective Norms for English Words (ANEW)](https://csea.phhp.ufl.edu/media.html#bottommedia) dictionary, which has numerical weights from 1.0 to 9.0 for word values in each of three categories: pleasure, arousal, and dominance.  As a **quanteda** dictionary, this would consist of three dictionary keys (one for each of pleasure, arousal, and dominance) and each word pattern would form a value in each key.  Each word value, furthermore, would have a valence.  This allows a single dictionary to contain multiple categories of valence, which can be combined or examined separately using `textstat_sentiment()`.  We return to the example of the ANEW dictionary below.
+
+Valence can also be assigned to provide the same weight to every value within a key, making it equivalent to polarity.  For instance:
+```{r}
+dict <- dictionary(list(neg = c("bad", "awful", "horrific"),
+                        pos = c("good", "great", "amazing")))
+valence(dict) <- list(neg = -1, pos = 1)
+print(dict)
+valence(dict)
+```
+
+### Effects of polarity and valence weights on other functions
+
+These weights are not currently used by any function other than `textstat_sentiment()`.  When using dictionaries with a polarity or valence in any other function, these have no effect.
+
+
+## Computing sentiment
+
+### Simple example with user-supplied valences
+
+For a dictionary whose polarity or sentiment has been set, computing sentiment is simple: `textstat_sentiment()` is applied to the object along with the dictionary.  Here, we demonstrate this for the LSD2105.
+
+```{r}
+txt <- c(doc1 = "This is a fantastic, wonderful example.",
+         doc2 = "The settlement was not amiable.",
+         doc3 = "The good, the bad, and the ugly.")
+toks <- tokens(txt)
+
+polarity(data_dictionary_LSD2015) <- list(positive = 1, negative = -1)
+```
+
+First, let's see what will be matched.  First, we will apply just the positive and negative keys.
+```{r}
+tokens_lookup(toks, data_dictionary_LSD2015[c("positive", "negative")],
+              exclusive = FALSE)
+```
+To compute sentiment, `textstat_sentiment()` will count the two positive and zero negative matches from the first example, and average these across all matches, for score of 1.0.  In the second document, the positive match will generate a score of 1.0, and in the third document, the scores will be `sum(1, -1, -1) / 3 = -0.33`.
+```{r}
+textstat_sentiment(toks, data_dictionary_LSD2015)
+```
+Note that if we include the other dictionary keys, however, then "not amicable" will be matched in the `neg_positive` count, rather than the word "amicable" being counted as positive.  Because many dictionary values may be multi-word patterns, we always recommend using `textstat_sentiment()` on tokens, rather than on `dfm` objects whose features are dictionary keys rather than values.
+
+```{r}
+polarity(data_dictionary_LSD2015) <- list(positive = 1, negative = -1, 
+                                          neg_negative = 1, neg_positive = -1)
+textstat_sentiment(toks, data_dictionary_LSD2015)
+```
+Here, document 2 is now computed as -1 because its dictionary match is actually to the "neg_positive" category that has a valence of -1.  The sentiment function ignored the key whose polarity was not set before, but applies it with `nested_scope = "dictionary"` when it is set, to ensure that only the longer phrase is matched.
+```{r}
+tokens_lookup(toks, data_dictionary_LSD2015, exclusive = FALSE, 
+              nested_scope = "dictionary")
+```
+
+### Using the AFINN dictionary
+
+We can fetch this dictionary from the **tidytext** package:
+```{r}
+afinn <- tidytext::get_sentiments(lexicon = c("afinn"))
+set.seed(42)
+dplyr::sample_n(afinn, 6)
+```
+
+To make this into a **quanteda** dictionary:
+```{r}
+data_dictionary_afinn <- dictionary(list(afinn = afinn$word))
+valence(data_dictionary_afinn) <- list(afinn = afinn$value)
+data_dictionary_afinn
+```
+This dictionary has a single key we have called "afinn", with the valences set from the original afinn data.frame/tibble.
+
+We can now use this to apply `textstat_sentiment()`:
+```{r}
+textstat_sentiment(toks, data_dictionary_afinn)
+```
+How was this computed?  We can use the dictionary to examine the words, and also to get their sentiment.
+```{r}
+tokssel <- tokens_select(toks, data_dictionary_afinn)
+tokssel
+
+valence(data_dictionary_afinn)$afinn[as.character(tokssel)]
+```
+So here, doc1 had a score of `(4 + 4) / 2 = 4`, doc2 has no score because none of its tokens matched values in the AFINN dictionary, and doc3 was `(3 + -3 + -3) / 3 = -1`.
+
+### ANEW
+
+```{r}
+anew <- read.delim(url("https://bit.ly/2zZ44w0"))
+anew <- anew[!duplicated(anew$Word), ] # because some words repeat
+data_dictionary_anew <- dictionary(list(pleasure = anew$Word, 
+                                        arousal = anew$Word, 
+                                        dominance = anew$Word))
+valence(data_dictionary_anew) <- list(pleasure = anew$ValMn, 
+                                      arousal = anew$AroMn, 
+                                      dominance = anew$DomMn)
+```
+
+The best way to compute sentiment is to choose a key and use it separately, because each key here contains the same values. 
+```{r}
+tokens_lookup(toks, data_dictionary_anew, exclusive = FALSE)
+textstat_sentiment(toks, data_dictionary_anew["pleasure"])
+textstat_sentiment(toks, data_dictionary_anew["arousal"])
+```
+
+If we don't subset the dictionary keys, it will combine them, which is probably not want we want:
+```{r}
+textstat_sentiment(toks, data_dictionary_anew)
+
+tokssel <- tokens_select(toks, data_dictionary_anew)
+vals <- lapply(valence(data_dictionary_anew), 
+               function(x) x[as.character(tokssel)])
+vals
+```
+Without selection, the average is across all three keys:
+```{r}
+mean(unlist(vals))
+```
+
+
+## References
+
+
+Bradley, M.M. & Lang, P.J. (2017). [Affective Norms for English Words (ANEW): Instruction manual and affective ratings](https://www.uvm.edu/pdodds/teaching/courses/2009-08UVM-300/docs/others/everything/bradley1999a.pdf). _Technical Report C-3_. Gainesville, FL: UF Center for the Study of Emotion and Attention.
