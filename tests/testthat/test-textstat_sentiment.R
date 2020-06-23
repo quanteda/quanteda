@@ -24,7 +24,7 @@ test_that("textstat_sentiment works for logit scale", {
     dfmat <- tokens(txt) %>%
         tokens_lookup(dictionary = dict, nested_scope = "dictionary") %>%
         dfm()
-    dfmat <- as.dfm(log(dfmat + smooth))
+    dfmat <- dfm_weight(dfmat, scheme = "logsmooth", base = exp(1))
     expect_equivalent(
         textstat_sentiment(dfmat, dictionary = dict),
         data.frame(doc_id = names(txt), sentiment = logit, stringsAsFactors = FALSE)
@@ -205,3 +205,7 @@ Valences set for keys: happiness, anger \b.
 - [anger]:
   - mad, peeved, irate, furious, livid", fixed = TRUE)
 })
+
+# Open questions:
+#   - What should sentiment be if no dictionary matches are found?  NaN, NA, or 0?
+#   - How to apply the lookup to a dfm that has already had a dictionary applied?
