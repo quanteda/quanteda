@@ -235,6 +235,7 @@ set_valences <- function(dictionary, valences) {
 #' setting valences that are the same within a key, for example a key for
 #' "positive" or "negative" whose values will have a uniform valence.  It
 #' operates by setting the same valences for all values in the key.
+#' @inheritParams valence
 #' @return `polarity()` returns the numeric valences of keys as a list.
 #' @keywords dictionary textstat utility internal
 #' @export

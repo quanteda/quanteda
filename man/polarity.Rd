@@ -9,6 +9,20 @@ polarity(x)
 
 polarity(x) <- value
 }
+\arguments{
+\item{x}{a \link{dictionary} object}
+
+\item{value}{named list consisting of numerical value.  The names of the
+elements must correspond to a dictionary key. Each element must be:
+\itemize{
+\item a single numeric value that will be applied to all of the dictionary
+values in that key; or
+\item a vector of numeric values that matches the length and order of the
+dictionary values in that key; or
+\item a named numeric vector where each element name matches dictionary values
+in the key.
+}}
+}
 \value{
 \code{polarity()} returns the numeric valences of keys as a list.
 
