@@ -371,13 +371,17 @@ test_that("corpus.data.frame sets docnames correctly", {
     )
 })
 
-test_that("corpus handles NA correctly (#1372)", {
+test_that("corpus handles NA correctly (#1372, #1969)", {
+    txt <- c("a b c", NA, "d e f")
     expect_true(!any(
-        is.na(texts(corpus(c("a b c", NA, "d e f"))))
+        is.na(texts(corpus(txt)))
     ))
+    expect_warning(
+        corpus(txt),
+        "NA is replaced by empty string"
+    )
     expect_true(!any(
-        is.na(texts(corpus(data.frame(text = c("a b c", NA, "d e f"),
-                                      stringsAsFactors = FALSE))))
+        is.na(texts(corpus(data.frame(text = txt, stringsAsFactors = FALSE))))
     ))
 })
 
