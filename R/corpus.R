@@ -120,8 +120,12 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
                              meta = list(), unique_docnames = TRUE, ...) {
 
     unused_dots(...)
-    x[is.na(x)] <- ""
-
+    is_na <- is.na(x)
+    if (any(is.na(x))) {
+        warning("NA is replaced by empty string", call. = FALSE)
+        x[is_na] <- ""
+    }
+    
     if (!is.null(docnames)) {
         if (length(docnames) != length(x))
             stop(message_error("docnames_mismatch"))
