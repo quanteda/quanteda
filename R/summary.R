@@ -21,6 +21,7 @@
 #' sumcorp <- summary(corp) # (quietly) assign the results
 #' sumcorp$Types / sumcorp$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ...) {
+    .Deprecated("textstat_summary()")
     object <- as.corpus(object)
     ndoc_all <- ndoc(object)
     object <- head(object, n)
