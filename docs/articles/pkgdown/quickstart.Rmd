@@ -372,18 +372,19 @@ We can use these distances to plot a dendrogram, clustering presidents:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_sotu, package = "quanteda.corpora")
 pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
-               stem = TRUE, remove_punct = TRUE,
-               remove = stopwords("english"))
+                stem = TRUE, remove_punct = TRUE,
+                remove = stopwords("english"))
 pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
-# hiarchical clustering the distance object
+# hierchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
 # label with document names
 pres_cluster$labels <- docnames(pres_dfm)
 # plot as a dendrogram
-plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+plot(pres_cluster, xlab = "", sub = "", 
+     main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 We can also look at term similarities:
