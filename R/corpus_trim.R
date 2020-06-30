@@ -54,7 +54,7 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
         is_pattern <- stri_detect_regex(texts(result), exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
-    if (what != "documents")
+    if (what != "documents" && ndoc(result) > 0)
         result <- corpus_reshape(result, to = "documents")
     return(result)
 }

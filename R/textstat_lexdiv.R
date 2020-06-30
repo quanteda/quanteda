@@ -364,6 +364,7 @@ compute_lexdiv_dfm_stats <- function(x, measure = NULL, log.base = 10) {
     result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
     if (length(measure))
         result <- cbind(result, as.data.frame(temp[, measure, with = FALSE]))
+    result[is.na(result)] <- NA
     class(result) <- c("lexdiv", "textstat", "data.frame")
     return(result)
 }
@@ -388,6 +389,7 @@ compute_lexdiv_tokens_stats <- function(x, measure = c("MATTR", "MSTTR"),
 
     # reorder output as originally supplied
     result <- result[, c("document", measure), drop = FALSE]
+    result[is.na(result)] <- NA
     class(result) <- c("lexdiv", "textstat", "data.frame")
     return(result)
 }

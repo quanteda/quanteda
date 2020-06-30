@@ -22,6 +22,7 @@
 * Fixed a bug that caused a `textstat_simil/dist` object converted to a data.frame to drop its `document2` labels (#1939).
 * Fixed a bug causing `dfm_match()` to fail on a dfm that included "pads" (`""`). (#1960)
 * Updated the `data_dfm_lbgexample` object using more modern dfm internals.
+* Updates `textstat_readability()`, `textstat_lexdiv()`, and `nscrabble()` so that empty texts are not dropped in the result. (#1976)
 
 
 # quanteda 2.0.1
