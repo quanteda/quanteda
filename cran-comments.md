@@ -19,7 +19,14 @@ Resubmission - fixes soft dependency on the **formatR** package, now added under
 
 No ERRORs, NOTEs, or WARNINGs produced, _except_:
 
-There are several URLs not working on the Windows platform, but in previous correspondence with Uwe Ligges, I was told that this was a CRAN issue due to the JSTOR firewall, and something that CRAN needs to fix (and that I should retain the links despite the warnings).
+```
+> checking installed package size ... NOTE
+    installed size is  5.1Mb
+    sub-directories of 1Mb or more:
+      R   2.0Mb
+```
+
+and: There are several URLs not working on the Windows platform, but in previous correspondence with Uwe Ligges, I was told that this was a CRAN issue due to the JSTOR firewall, and something that CRAN needs to fix (and that I should retain the links despite the warnings).
 
 
 ## Downstream dependencies
