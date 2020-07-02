@@ -366,24 +366,32 @@ dfmat_inaug_subset[, 1:10]
 
 ## Similarities between texts
 
-```{r fig.width = 6}
+```{r fig.width = 6, fig.height = 3}
 dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
                             remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 tstat_obama <- textstat_simil(dfmat_inaug_post1980,
                               dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ],
                               margin = "documents", method = "cosine")
 tstat_obama
-# dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")
+dotchart(as.list(tstat_obama)$"2013-Obama", xlab = "Cosine similarity", pch = 19)
 ```
 
-We can use these distances to plot a dendrogram, clustering presidents:
-```{r, fig.width = 8, fig.height = 5, eval = TRUE}
+We can use these distances to plot a dendrogram, clustering presidents.  
+First, load some data.
+```{r, eval = FALSE}
 data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
-               stem = TRUE, remove_punct = TRUE,
-               remove = stopwords("english"))
+                  stem = TRUE, remove_punct = TRUE,
+                  remove = stopwords("english"))
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
+```
 
+```{r echo = FALSE}
+load("../tests/data/dfmat_sotu.rda")
+```
+
+Now we compute clusters and plot the dendrogram:
+```{r, fig.width = 8, fig.height = 5}
 # hierarchical clustering - get distances on normalized dfm
 tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
 # hiarchical clustering the distance object
