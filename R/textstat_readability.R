@@ -526,9 +526,11 @@ textstat_readability.corpus <- function(x,
 
     x <- texts(x)
     if (!is.null(min_sentence_length) || !is.null(max_sentence_length)) {
-        x <- char_trim(x, "sentences",
-                       min_ntoken = min_sentence_length,
-                       max_ntoken = max_sentence_length)
+        temp <- char_trim(x, "sentences",
+                          min_ntoken = min_sentence_length,
+                          max_ntoken = max_sentence_length)
+        x[names(temp)] <- temp
+        x[!names(x) %in% names(temp)] <- ""
     }
 
     # get sentence lengths - BEFORE lower-casing
@@ -798,8 +800,12 @@ textstat_readability.corpus <- function(x,
                                                   "W6C", "W7C", "Wlt3Sy", "W_wl.Dale.Chall", "W_wl.Spache"))])
 
     result <- cbind(result, as.data.frame(temp[, measure, with = FALSE]))
+    
+    # make any NA or NaN into NA (for #1976)
+    result[is.na(result)] <- NA
+    
     class(result) <- c("readability", "textstat", "data.frame")
-    rownames(result) <- as.character(seq_len(nrow(result)))
+    rownames(result) <- NULL # as.character(seq_len(nrow(result)))
     return(result)
 }
 

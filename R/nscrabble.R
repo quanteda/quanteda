@@ -48,8 +48,9 @@ nscrabble.character <- function(x, FUN = sum) {
     
     textDT <- letterVals[textDT]
     textDT <- textDT[order(docIndex), FUN(values, na.rm = TRUE), by = docIndex]
-    result <- textDT[, V1]
-    if (!is.null(names(x))) names(result) <- names(x)
+    
+    result <- structure(rep(NA, length(x)), names = names(x))
+    result[textDT[, docIndex]] <- textDT[, V1]
     result
 }
 

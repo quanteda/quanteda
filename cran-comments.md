@@ -1,28 +1,34 @@
 # Submission notes
 
-RESUBMISSION: Fixed a test that failed on the pre-v4 R because of stringsAsFactors differences.
+Resubmission - fixes soft dependency on the **formatR** package, now added under `Suggests:`.
 
 ## Purpose
     
-- Fixes some issues related to the development release of R 4.0 that sets `stringsAsFactors = FALSE` by default, that were showing up as errors on the CRAN checks (Debian, Fedora, and Solaris platforms).
-- Fixes some minor bugs discovered following the milestone v2.0.0 release.
-- Moves two data objects to another package, reducing the size of the package.
-
+- Numerous improvements and some bug fixes.
+- Fixes a noLD issue (on Solaris) noted on 25 June by Brian Ripley by email.
+- Fixes some errors on the CRAN results, related to the missing soft dependency on the **formatR** package.
 
 ## Test environments
 
-* local macOS 10.15.3, R 3.6.3
-* ubuntu Ubuntu 18.04 LTS and 18.10, R 3.6.3
+* local macOS 10.15.5, R 4.0.1
+* Ubuntu 18.04 LTS and 18.10, R 4.0.2
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
-* rhub::check_on_debian()
-* rhub::check_on_solaris()
 
 ## R CMD check results
 
-No ERRORs, NOTEs, or WARNINGs produced.
+No ERRORs, NOTEs, or WARNINGs produced, _except_:
+
+```
+> checking installed package size ... NOTE
+    installed size is  5.1Mb
+    sub-directories of 1Mb or more:
+      R   2.0Mb
+```
+
+and: There are several URLs not working on the Windows platform, but in previous correspondence with Uwe Ligges, I was told that this was a CRAN issue due to the JSTOR firewall, and something that CRAN needs to fix (and that I should retain the links despite the warnings).
 
 
 ## Downstream dependencies
 
-This release causes no *new* breaks in other packages.
+This release causes no breaks in other packages.

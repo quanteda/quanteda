@@ -599,3 +599,10 @@ test_that("corpus indexing works as expected", {
     expect_error(corp[c("d1", "d4")], "Subscript out of bounds")
 })
 
+test_that("printing a corpus works that has no documents", {
+    corp <- corpus(c("one", "two", "three"), docvars = data.frame(dv = 1:3))
+    expect_output(
+      print(corpus_subset(corp, rep(FALSE, 3))),
+      "Corpus consisting of 0 documents and 1 docvar."
+    )
+})

@@ -26,14 +26,14 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
 
     if (show_summary) {
         cat("Corpus consisting of ", format(ndoc, big.mark = ","), " document",
-            if (ndoc(x) > 1L) "s" else "", sep = "")
+            if (ndoc(x) != 1L) "s" else "", sep = "")
         if (ncol(docvars))
             cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
                 if (ncol(docvars) == 1L) "" else "s", sep = "")
         cat(".\n")
     }
 
-    if (max_ndoc > 0) {
+    if (max_ndoc > 0 && ndoc(x) > 0) {
         x <- head(texts(x), max_ndoc)
         label <- paste0(names(x), " :")
         x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")

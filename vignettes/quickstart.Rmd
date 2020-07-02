@@ -2,14 +2,15 @@
 title: "Quick Start Guide"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Quick Start Guide to quanteda}
+  %\VignetteIndexEntry{Quick Start Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = FALSE,
-                      comment = "##")
+                      comment = "##",
+                      tidy = TRUE)
 ```
 
 # Installing the package
@@ -184,7 +185,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
 
-```{r, tidy=TRUE}
+```{r}
 kwic(data_corpus_inaugural, pattern = "terror")
 ```
 
