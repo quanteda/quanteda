@@ -49,6 +49,9 @@
     <loc>https://quanteda.io/reference/cbind.dfm.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/char_select.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/char_tolower.html</loc>
   </url>
   <url>
@@ -179,6 +182,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/dictionary.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/dictionary_edit.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/docfreq.html</loc>
@@ -352,6 +358,9 @@
     <loc>https://quanteda.io/reference/replace_dictionary_values.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/reshape_docvars.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/sample_bygroup.html</loc>
   </url>
   <url>
@@ -380,12 +389,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/split_values.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summarize_texts.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary.character.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/summary.corpus.html</loc>
@@ -440,6 +443,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/textstat_simil.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/textstat_summary.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokenize_internal.html</loc>
@@ -548,6 +554,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/quickstart_es.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/articles/pkgdown/quickstart_hi.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/quickstart_ja.html</loc>

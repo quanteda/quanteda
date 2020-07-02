@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -114,6 +114,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -208,7 +211,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Base method extensions for corpus objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods-base.R'><code>R/corpus-methods-base.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods-base.R'><code>R/corpus-methods-base.R</code></a>, <a href='https://github.com/quanteda/quanteda/blob/master/R/summary.R'><code>R/summary.R</code></a></small>
     <div class="hidden name"><code>corpus-class.Rd</code></div>
     </div>
 
@@ -218,9 +221,6 @@
 
     <pre class="usage">is.corpus(x)
 
-# S3 method for summary.corpus
-print(x, ...)
-
 # S3 method for corpus
 +(c1, c2)
 
@@ -228,7 +228,10 @@ print(x, ...)
 c(..., recursive = FALSE)
 
 # S3 method for corpus
-[(x, i)</pre>
+[(x, i)
+
+# S3 method for summary.corpus
+print(x, ...)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -336,7 +339,7 @@ character vectors and never as factors.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

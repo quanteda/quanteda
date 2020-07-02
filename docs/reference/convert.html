@@ -94,7 +94,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -118,6 +118,9 @@ an easy way to make a corpus and its document variables into a data.frame." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -233,6 +236,7 @@ an easy way to make a corpus and its document variables into a data.frame.</p>
     <span class='st'>"tripletlist"</span>),
   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='st'>"doc_id"</span>,
   <span class='no'>...</span>
 )
 
@@ -289,6 +293,11 @@ documents with non-zero counts.  Only affects the "stm" format.</p></td>
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when <code>to = "lda"</code> or
 <code>to = "topicmodels"</code>.  For <code>to = "stm"</code> format, <code>omit_empty`` is always </code>TRUE`.</p></td>
+    </tr>
+    <tr>
+      <th>docid_field</th>
+      <td><p>character; the name of the column containing document
+names used when <code>to = "data.frame"</code>.  Unused for other conversions.</p></td>
     </tr>
     <tr>
       <th>pretty</th>
@@ -373,7 +382,7 @@ of the return formats.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

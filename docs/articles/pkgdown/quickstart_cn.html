@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
     </li>
     <li>
       <a href="../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -154,7 +157,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="quickstart_cn_files/header-attrs-2.3/header-attrs.js"></script><script src="quickstart_cn_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>快速入门指南</h1>
@@ -773,7 +776,7 @@
 <span class="co"># 按文档名标注</span>
 <span class="no">pres_cluster</span>$<span class="no">labels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/docnames.html">docnames</a></span>(<span class="no">dfmat_sotu</span>)
 <span class="co"># 绘制树状图</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">pres_cluster</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">sub</span> <span class="kw">=</span> <span class="st">""</span>,
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pres_cluster</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">sub</span> <span class="kw">=</span> <span class="st">""</span>,
      <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</pre></body></html></div>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-34-1.png" width="960"></p>
 <p>我们也可查看特征相似度:</p>
@@ -781,8 +784,8 @@
                       <span class="kw">method</span> <span class="kw">=</span> <span class="st">"cosine"</span>, <span class="kw">margin</span> <span class="kw">=</span> <span class="st">"features"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">tstat_sim</span>), <span class="no">head</span>, <span class="fl">10</span>)</pre></body></html></div>
 <pre><code>## $fair
-##      time    better       far        us  strategi     lower      long       one 
-## 0.8266617 0.8135324 0.8036487 0.8003029 0.8002557 0.7995066 0.7977770 0.7949795 
+##      time    better       far  strategi        us     lower      long       one 
+## 0.8266617 0.8135324 0.8036487 0.8002557 0.8000581 0.7995066 0.7977770 0.7949795 
 ##   practic  american 
 ## 0.7944127 0.7892432 
 ## 
@@ -803,8 +806,13 @@
 <a href="#scaling-document-positions" class="anchor"></a>文档位置的缩放分析</h2>
 <p>我们在<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
 <div class="sourceCode" id="cb79"><html><body><pre class="r"><span class="co"># make prettier document names</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)
-<span class="no">dfmat_ire</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)</pre></body></html></div>
+<pre><code>## 
+## Attaching package: 'quanteda.textmodels'</code></pre>
+<pre><code>## The following object is masked from 'package:quanteda':
+## 
+##     data_dfm_lbgexample</code></pre>
+<div class="sourceCode" id="cb82"><html><body><pre class="r"><span class="no">dfmat_ire</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>)
 <span class="no">tmod_wf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="no">dfmat_ire</span>, <span class="kw">dir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>))
 
 <span class="co"># plot the Wordfish estimates by party</span>
@@ -815,7 +823,7 @@
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>主题模型</h2>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
-<div class="sourceCode" id="cb80"><html><body><pre class="r"><span class="no">dfmat_ire2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>,
+<div class="sourceCode" id="cb83"><html><body><pre class="r"><span class="no">dfmat_ire2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>,
                   <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
                   <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
 <span class="no">dfmat_ire2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="no">dfmat_ire2</span>, <span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">max_docfreq</span> <span class="kw">=</span> <span class="fl">10</span>)
@@ -838,36 +846,36 @@
 ##   Cowen, Brian (FF)               1      3    2
 ##   Kenny, Enda (FG)                0      2    5
 ## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</code></pre>
-<div class="sourceCode" id="cb82"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
+<div class="sourceCode" id="cb85"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
 <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">topicmodels</span>)) {
     <span class="no">my_lda_fit20</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html">LDA</a></span>(<span class="fu"><a href="../../reference/convert.html">convert</a></span>(<span class="no">dfmat_ire2</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="st">"topicmodels"</span>), <span class="kw">k</span> <span class="kw">=</span> <span class="fl">20</span>)
     <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(<span class="no">my_lda_fit20</span>, <span class="fl">5</span>)
 }</pre></body></html></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1      Topic 2     Topic 3       Topic 4     Topic 5     
-## [1,] "told"       "care"      "welfare"     "failed"    "welfare"   
-## [2,] "back"       "per"       "support"     "strategy"  "system"    
-## [3,] "place"      "allowance" "back"        "needed"    "child"     
-## [4,] "disastrous" "welfare"   "development" "ministers" "sinn"      
-## [5,] "increase"   "hit"       "continue"    "system"    "pre-budget"
-##      Topic 6       Topic 7   Topic 8    Topic 9     Topic 10   Topic 11     
-## [1,] "kind"        "system"  "fianna"   "taoiseach" "measures" "alternative"
-## [2,] "carbon"      "protect" "fáil"     "employees" "spending" "wealth"     
-## [3,] "imagination" "food"    "national" "rate"      "million"  "matter"     
-## [4,] "change"      "welfare" "irish"    "referred"  "scheme"   "speak"      
-## [5,] "levy"        "set"     "support"  "debate"    "review"   "position"   
-##      Topic 12 Topic 13  Topic 14  Topic 15       Topic 16      Topic 17   
-## [1,] "fianna" "welfare" "child"   "society"      "adjustment"  "taoiseach"
-## [2,] "fáil"   "fianna"  "benefit" "enterprising" "instead"     "fine"     
-## [3,] "side"   "fáil"    "day"     "sense"        "yesterday"   "gael"     
-## [4,] "level"  "worst"   "today"   "equal"        "property"    "may"      
-## [5,] "third"  "system"  "bank"    "nation"       "citizenship" "irish"    
-##      Topic 18  Topic 19 Topic 20    
-## [1,] "child"   "exiles" "million"   
-## [2,] "benefit" "taxes"  "investment"
-## [3,] "rate"    "stated" "adjustment"
-## [4,] "fianna"  "side"   "programme" 
-## [5,] "family"  "level"  "projects"</code></pre>
+<pre><code>##      Topic 1  Topic 2     Topic 3  Topic 4    Topic 5    Topic 6      
+## [1,] "fianna" "care"      "create" "per"      "system"   "kind"       
+## [2,] "fáil"   "allowance" "system" "welfare"  "taxation" "imagination"
+## [3,] "side"   "system"    "keep"   "million"  "fáil"     "policies"   
+## [4,] "level"  "policies"  "built"  "families" "worst"    "wit"        
+## [5,] "third"  "back"      "sure"   "family"   "high"     "create"     
+##      Topic 7    Topic 8   Topic 9      Topic 10    Topic 11    Topic 12   
+## [1,] "fianna"   "child"   "support"    "scheme"    "taoiseach" "taoiseach"
+## [2,] "fáil"     "benefit" "hospital"   "measures"  "fine"      "employees"
+## [3,] "national" "day"     "real"       "reduction" "gael"      "rate"     
+## [4,] "irish"    "today"   "needs"      "recent"    "may"       "referred" 
+## [5,] "support"  "bank"    "adjustment" "welfare"   "irish"     "debate"   
+##      Topic 13  Topic 14    Topic 15     Topic 16   Topic 17      Topic 18      
+## [1,] "levy"    "failed"    "welfare"    "million"  "alternative" "enterprising"
+## [2,] "million" "strategy"  "recovery"   "scheme"   "citizenship" "equal"       
+## [3,] "carbon"  "needed"    "child"      "level"    "wealth"      "sense"       
+## [4,] "change"  "ministers" "fianna"     "measures" "adjustment"  "society"     
+## [5,] "welfare" "system"    "employment" "recent"   "breaks"      "going"       
+##      Topic 19   Topic 20     
+## [1,] "spending" "welfare"    
+## [2,] "review"   "support"    
+## [3,] "million"  "investment" 
+## [4,] "measures" "confidence" 
+## [5,] "changes"  "development"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -877,14 +885,14 @@
 <div id="chinese-stop-words" class="section level2">
 <h2 class="hasAnchor">
 <a href="#chinese-stop-words" class="anchor"></a>中文停用词：取自百度停用词</h2>
-<div class="sourceCode" id="cb85"><html><body><pre class="r"><span class="co"># 读取中文停用词</span>
+<div class="sourceCode" id="cb88"><html><body><pre class="r"><span class="co"># 读取中文停用词</span>
 <span class="no">stopw_zh</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"zh"</span>, <span class="kw">source</span> <span class="kw">=</span> <span class="st">"misc"</span>)
 
 <span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</pre></body></html></div>
 <pre><code>## Tokens consisting of 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
-<div class="sourceCode" id="cb87"><html><body><pre class="r"><span class="co"># 除去停用词</span>
+<div class="sourceCode" id="cb90"><html><body><pre class="r"><span class="co"># 除去停用词</span>
 <span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"zh"</span>, <span class="kw">source</span> <span class="kw">=</span> <span class="st">"misc"</span>))</pre></body></html></div>
 <pre><code>## Tokens consisting of 1 document.
@@ -895,7 +903,7 @@
 <h2 class="hasAnchor">
 <a href="#chinese-government-report" class="anchor"></a>例子：中国总理的“政府工作报告”</h2>
 <p>四十九份中国总理的“政府工作报告”，1954 - 2017</p>
-<div class="sourceCode" id="cb89"><html><body><pre class="r"><span class="co"># 读取文件</span>
+<div class="sourceCode" id="cb92"><html><body><pre class="r"><span class="co"># 读取文件</span>
 <span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span>(<span class="st">"examples/data/data_corpus_chinesegovreport.rda"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">data_corpus_chinesegovreport</span>, <span class="fl">10</span>)</pre></body></html></div>
 <pre><code>## Corpus consisting of 49 documents, showing 10 documents:
@@ -911,7 +919,7 @@
 ##   text8  1892  11675       387 1964政府工作报告_周恩来_摘要.txt 1964  周恩来
 ##   text9   966   3183       125      1975政府工作报告_周恩来.txt 1975  周恩来
 ##  text10  2964  19118       659      1978政府工作报告_华国锋.txt 1978  华国锋</code></pre>
-<div class="sourceCode" id="cb91"><html><body><pre class="r"><span class="co"># 分词</span>
+<div class="sourceCode" id="cb94"><html><body><pre class="r"><span class="co"># 分词</span>
 <span class="no">toks_china</span> <span class="kw">&lt;-</span> <span class="no">data_corpus_chinesegovreport</span> <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"zh"</span>, <span class="kw">source</span> <span class="kw">=</span> <span class="st">"misc"</span>))
@@ -921,7 +929,7 @@
 <span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span>(<span class="no">dfmat_china</span>)</pre></body></html></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
-<div class="sourceCode" id="cb93"><html><body><pre class="r"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span>
+<div class="sourceCode" id="cb96"><html><body><pre class="r"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span>
 <span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span>
 
 <span class="co"># 绘制词云图</span>
@@ -1238,7 +1246,7 @@
 <div id="feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feature-co-occurrence-matrix" class="anchor"></a>特征共现矩阵</h2>
-<div class="sourceCode" id="cb95"><html><body><pre class="r"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span>
+<div class="sourceCode" id="cb98"><html><body><pre class="r"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span>
 <span class="no">corp_china2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">data_corpus_chinesegovreport</span>, <span class="no">Year</span> <span class="kw">==</span> <span class="st">"2017"</span>)
 <span class="no">toks_china2</span> <span class="kw">&lt;-</span> <span class="no">corp_china2</span> <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
@@ -1248,7 +1256,7 @@
 <span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span>(<span class="no">fcmat_china1</span>[<span class="st">"改革"</span>, ])</pre></body></html></div>
 <pre><code>## 推进 制度   性 体制 完善    "   试   点 农村   要 
 ##   18   14   11   11   10    8    8    8    7    7</code></pre>
-<div class="sourceCode" id="cb97"><html><body><pre class="r"><span class="co"># fcm 共现窗口为："改革" + “xx”</span>
+<div class="sourceCode" id="cb100"><html><body><pre class="r"><span class="co"># fcm 共现窗口为："改革" + “xx”</span>
 <span class="no">fcmat_china2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/fcm.html">fcm</a></span>(<span class="no">toks_china2</span>, <span class="kw">context</span> <span class="kw">=</span> <span class="st">"window"</span>, <span class="kw">ordered</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">tri</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span>(<span class="no">fcmat_china2</span>[<span class="st">"改革"</span>, ])</pre></body></html></div>
 <pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
@@ -1257,16 +1265,16 @@
 <div id="wordfish" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wordfish" class="anchor"></a>文本缩放模型</h2>
-<div class="sourceCode" id="cb99"><html><body><pre class="r"><span class="no">wfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="no">dfmat_china</span>)
+<div class="sourceCode" id="cb102"><html><body><pre class="r"><span class="no">wfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="no">dfmat_china</span>)
 <span class="no">y</span> <span class="kw">&lt;-</span> <span class="fl">1954</span>:<span class="fl">2017</span>
 <span class="no">y</span> <span class="kw">&lt;-</span> <span class="no">y</span>[-<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">y</span> <span class="kw">==</span> <span class="fl">1963</span> <span class="kw">|</span> <span class="no">y</span> <span class="kw">==</span> <span class="fl">1961</span> <span class="kw">|</span> <span class="no">y</span> <span class="kw">==</span> <span class="fl">1962</span> <span class="kw">|</span> (<span class="no">y</span> <span class="kw">&gt;</span> <span class="fl">1964</span> <span class="kw">&amp;</span> <span class="no">y</span> <span class="kw">&lt;</span> <span class="fl">1975</span>) <span class="kw">|</span> <span class="no">y</span> <span class="kw">==</span> <span class="fl">1976</span> <span class="kw">|</span> <span class="no">y</span> <span class="kw">==</span> <span class="fl">1977</span>)]
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">y</span>, <span class="no">wfm</span>$<span class="no">theta</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Year"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Position"</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">y</span>, <span class="no">wfm</span>$<span class="no">theta</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Year"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Position"</span>)</pre></body></html></div>
 <p><img src="quickstart_cn_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocation" class="anchor"></a>词组 - 双词词组/三词词组等</h2>
-<div class="sourceCode" id="cb100"><html><body><pre class="r"><span class="co"># 所有报告中的双词词组</span>
+<div class="sourceCode" id="cb103"><html><body><pre class="r"><span class="co"># 所有报告中的双词词组</span>
 <span class="no">tstat_col</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="no">toks_china</span>, <span class="kw">size</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">min_count</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">tolower</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">tstat_col</span>, <span class="fl">10</span>)</pre></body></html></div>
 <pre><code>##    collocation count count_nested length   lambda         z
@@ -1280,7 +1288,7 @@
 ## 8    五年 计划   341            0      2 5.379229  71.91712
 ## 9    各级 政府   306            0      2 6.130740  66.85440
 ## 10   增长 百分   300            0      2 5.540923  66.12134</code></pre>
-<div class="sourceCode" id="cb102"><html><body><pre class="r"><span class="co"># 2017 报告中的双词词组</span>
+<div class="sourceCode" id="cb105"><html><body><pre class="r"><span class="co"># 2017 报告中的双词词组</span>
 <span class="no">tstat_col2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="no">toks_china2</span>, <span class="kw">size</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">tolower</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">tstat_col2</span>, <span class="fl">10</span>)</pre></body></html></div>
 <pre><code>##    collocation count count_nested length   lambda        z
@@ -1314,7 +1322,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

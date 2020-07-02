@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -114,6 +114,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -218,10 +221,12 @@
 
     <pre class="usage"><span class='fu'>dfm_weight</span>(
   <span class='no'>x</span>,
-  <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"logcount"</span>, <span class='st'>"boolean"</span>, <span class='st'>"augmented"</span>, <span class='st'>"logave"</span>),
+  <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"logcount"</span>, <span class='st'>"boolean"</span>, <span class='st'>"augmented"</span>, <span class='st'>"logave"</span>,
+    <span class='st'>"logsmooth"</span>),
   <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
   <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
@@ -237,9 +242,10 @@
     <tr>
       <th>scheme</th>
       <td><p>a label of the weight type:</p><dl'>
-<dt><code>count</code></dt><dd><p>\(tf_{ij}\), an integer feature count (default when a dfm is created)</p></dd>
-<dt><code>prop</code></dt><dd><p>the proportion of the feature counts of total feature
-counts (aka relative frequency), calculated as \(tf_{ij} / \sum_j tf_{ij}\)</p></dd>
+<dt><code>count</code></dt><dd><p>\(tf_{ij}\), an integer feature count (default when a dfm
+is created)</p></dd>
+<dt><code>prop</code></dt><dd><p>the proportion of the feature counts of total feature counts
+(aka relative frequency), calculated as \(tf_{ij} / \sum_j tf_{ij}\)</p></dd>
 <dt><code>propmax</code></dt><dd><p>the proportion of the feature counts of the highest
 feature count in a document, \(tf_{ij} / \textrm{max}_j tf_{ij}\)</p></dd>
 <dt><code>logcount</code></dt><dd><p>take the 1 + the logarithm of each count, for the
@@ -247,8 +253,10 @@ given base, or 0 if the count was zero: \(1 +
   \textrm{log}_{base}(tf_{ij})\) if \(tf_{ij} &gt; 0\), or 0 otherwise.</p></dd>
 <dt><code>boolean</code></dt><dd><p>recode all non-zero counts as 1</p></dd>
 <dt><code>augmented</code></dt><dd><p>equivalent to \(k + (1 - k) *\) <code>dfm_weight(x, "propmax")</code></p></dd>
-<dt><code>logave</code></dt><dd><p>1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-$$\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}$$</p></dd>
+<dt><code>logave</code></dt><dd><p>(1 + the log of the counts) / (1 + log of the average count
+within document), or $$\frac{1 + \textrm{log}_{base} tf_{ij}}{1 +
+  \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}$$</p></dd>
+<dt><code>logsmooth</code></dt><dd><p>log of the counts + <code>smooth</code>, or \(tf_{ij} + s\)</p></dd>
 
 </dl></td>
     </tr>
@@ -271,15 +279,16 @@ named features.  Any features not named will be assigned a weight of 1.0
       <td><p>the k for the augmentation when <code>scheme = "augmented"</code></p></td>
     </tr>
     <tr>
+      <th>smoothing</th>
+      <td><p>constant added to the dfm cells for smoothing, default is 1
+for <code>dfm_smooth()</code> and 0.5 for <code>dfm_weight()</code></p></td>
+    </tr>
+    <tr>
       <th>force</th>
       <td><p>logical; if <code>TRUE</code>, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as
 weighting by <code>"prop"</code> after applying <code>"logcount"</code>, or after
 having grouped a dfm using <code><a href='dfm_group.html'>dfm_group()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>smoothing</th>
-      <td><p>constant added to the dfm cells for smoothing, default is 1</p></td>
     </tr>
     </table>
 
@@ -387,7 +396,7 @@ depending on the size of your input matrix.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

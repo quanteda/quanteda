@@ -91,7 +91,7 @@ from wordcloud::comparison.cloud()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -115,6 +115,9 @@ from wordcloud::comparison.cloud()." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -251,7 +254,7 @@ from <code><a href='https://rdrr.io/pkg/wordcloud/man/comparison.cloud.html'>wor
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a dfm object</p></td>
+      <td><p>a <a href='dfm.html'>dfm</a> or <a href='textstat_keyness.html'>textstat_keyness</a> object</p></td>
     </tr>
     <tr>
       <th>min_size</th>
@@ -267,8 +270,9 @@ from <code><a href='https://rdrr.io/pkg/wordcloud/man/comparison.cloud.html'>wor
     </tr>
     <tr>
       <th>max_words</th>
-      <td><p>maximum number of words to be plotted. least frequent terms
-dropped.</p></td>
+      <td><p>maximum number of words to be plotted. The least frequent
+terms dropped.  The maximum frequency will be split evenly across
+categories when <code>comparison = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>color</th>
@@ -304,20 +308,20 @@ order.</p></td>
     </tr>
     <tr>
       <th>labelcolor</th>
-      <td><p>color of group labels. Only used when <code>compariosn=TRUE</code>.</p></td>
+      <td><p>color of group labels. Only used when <code>comparison = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>labelsize</th>
-      <td><p>size of group labels. Only used when <code>compariosn=TRUE</code>.</p></td>
+      <td><p>size of group labels. Only used when <code>comparison = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>labeloffset</th>
       <td><p>position of group labels. Only used when
-<code>comparison=TRUE</code>.</p></td>
+<code>comparison = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>fixed_aspect</th>
-      <td><p>if <code>TRUE</code>, the aspect ratio is fixed. Variable
+      <td><p>logical; if <code>TRUE</code>, the aspect ratio is fixed. Variable
 aspect ratio only supported if rotation = 0.</p></td>
     </tr>
     <tr>
@@ -379,7 +383,7 @@ aspect ratio only supported if rotation = 0.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -154,7 +157,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="plotting_files/header-attrs-2.3/header-attrs.js"></script><script src="plotting_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Example: textual data visualization</h1>
@@ -356,9 +359,13 @@
 <h2 class="hasAnchor">
 <a href="#wordscores" class="anchor"></a>Wordscores</h2>
 <p>Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents (“virgin texts”). You can plot the position of words (features) against the logged term frequency, or the position of the documents.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)
-
-<span class="co"># Transform corpus to dfm</span>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)</pre></body></html></div>
+<pre><code>## 
+## Attaching package: 'quanteda.textmodels'</code></pre>
+<pre><code>## The following object is masked from 'package:quanteda':
+## 
+##     data_dfm_lbgexample</code></pre>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="co"># Transform corpus to dfm</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">data_corpus_irishbudget2010</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"quanteda.textmodels"</span>)
 <span class="no">ie_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>)
 
@@ -373,14 +380,14 @@
                  <span class="kw">highlighted</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>),
                  <span class="kw">highlighted_color</span> <span class="kw">=</span> <span class="st">"red"</span>)</pre></body></html></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="co"># Get predictions</span>
+<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="co"># Get predictions</span>
 <span class="no">pred</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="no">ws</span>, <span class="kw">se.fit</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
 <span class="co"># Plot estimated document positions and group by "party" variable</span>
 <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(<span class="no">pred</span>, <span class="kw">margin</span> <span class="kw">=</span> <span class="st">"documents"</span>,
                  <span class="kw">groups</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">data_corpus_irishbudget2010</span>, <span class="st">"party"</span>))</pre></body></html></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="co"># Plot estimated document positions using the LBG transformation and group by "party" variable</span>
+<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="co"># Plot estimated document positions using the LBG transformation and group by "party" variable</span>
 
 <span class="no">pred_lbg</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="no">ws</span>, <span class="kw">se.fit</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">rescaling</span> <span class="kw">=</span> <span class="st">"lbg"</span>)
 
@@ -392,7 +399,7 @@
 <h2 class="hasAnchor">
 <a href="#wordfish" class="anchor"></a>Wordfish</h2>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="co"># Estimate Wordfish model</span>
+<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="co"># Estimate Wordfish model</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"quanteda.textmodels"</span>)
 <span class="no">wf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>), <span class="kw">dir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">6</span>,<span class="fl">5</span>))
 
@@ -403,7 +410,7 @@
                                  <span class="st">"productivity"</span>, <span class="st">"deficit"</span>),
                  <span class="kw">highlighted_color</span> <span class="kw">=</span> <span class="st">"red"</span>)</pre></body></html></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="768"></p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="co"># Plot estimated document positions</span>
+<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="co"># Plot estimated document positions</span>
 <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(<span class="no">wf</span>, <span class="kw">groups</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">data_corpus_irishbudget2010</span>, <span class="st">"party"</span>))</pre></body></html></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-2.png" width="768"></p>
 </div>
@@ -411,7 +418,7 @@
 <h2 class="hasAnchor">
 <a href="#correspondence-analysis" class="anchor"></a>Correspondence Analysis</h2>
 <p>You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).</p>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="co"># Transform corpus to dfm</span>
+<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="co"># Transform corpus to dfm</span>
 <span class="no">ie_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>)
 
 <span class="co"># Run correspondence analysis on dfm</span>
@@ -447,7 +454,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

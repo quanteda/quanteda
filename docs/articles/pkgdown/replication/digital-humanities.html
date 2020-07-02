@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -154,7 +157,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="digital-humanities_files/header-attrs-2.3/header-attrs.js"></script><script src="digital-humanities_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Replication: Text Analysis with R for Students of Literature</h1>
@@ -365,7 +368,7 @@
 ## docs        the
 ##   text1 6.74908</code></pre>
 <p>Plotting the most frequent terms, replicating the plot from the book:</p>
-<div class="sourceCode" id="cb73"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">sorted_moby_rel_freqs_t</span>[<span class="fl">1</span>:<span class="fl">10</span>], <span class="kw">type</span> <span class="kw">=</span> <span class="st">"b"</span>,
+<div class="sourceCode" id="cb73"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sorted_moby_rel_freqs_t</span>[<span class="fl">1</span>:<span class="fl">10</span>], <span class="kw">type</span> <span class="kw">=</span> <span class="st">"b"</span>,
      <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Top Ten Words"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Percentage of Full Text"</span>, <span class="kw">xaxt</span> <span class="kw">=</span> <span class="st">"n"</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span>(<span class="fl">1</span>,<span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">labels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">sorted_moby_rel_freqs_t</span>[<span class="fl">1</span>:<span class="fl">10</span>]))</pre></body></html></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
@@ -465,7 +468,7 @@
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the <code>head</code> function, which prints the first few rows and columns.</p>
 <div class="sourceCode" id="cb86"><html><body><pre class="r"><span class="no">rel_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="no">chap_dfm</span>, <span class="kw">scheme</span> <span class="kw">=</span> <span class="st">"prop"</span>) * <span class="fl">100</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">rel_dfm</span>)</pre></body></html></div>
-<pre><code>## Document-feature matrix of: 6 documents, 18,629 features (95.9% sparse) and 1 docvar.
+<pre><code>## Document-feature matrix of: 6 documents, 18,630 features (95.9% sparse) and 1 docvar.
 ##                              features
 ## docs                                call        me    ishmael        .
 ##   CHAPTER 1. Loomings.        0.03924647 0.9811617 0.07849294 3.139717
@@ -490,7 +493,7 @@
 ##   CHAPTER 4. The Counterpane. 0.1048218 0.05241090
 ##   CHAPTER 5. Breakfast.       0.1160093 0         
 ##   CHAPTER 6. The Street.      0         0         
-## [ reached max_nfeat ... 18,619 more features ]</code></pre>
+## [ reached max_nfeat ... 18,620 more features ]</code></pre>
 <div class="sourceCode" id="cb88"><html><body><pre class="r"><span class="co"># subset dfm and convert to data.frame object</span>
 <span class="no">rel_chap_freq</span> <span class="kw">&lt;-</span> <span class="no">rel_dfm</span> <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../../../reference/dfm_select.html">dfm_keep</a></span>(<span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>)) <span class="kw">%&gt;%</span>
@@ -523,8 +526,8 @@
     <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fl">2</span>)</pre></body></html></div>
 <pre><code>## Warning: 'selection' is deprecated. Use 'y' instead.</code></pre>
 <pre><code>##           whale       ahab
-## call  0.1203484 -0.1056474
-## me   -0.2503967  0.1642701</code></pre>
+## call  0.1203478 -0.1056476
+## me   -0.2503964  0.1642716</code></pre>
 <p>With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.</p>
 </div>
 <div id="testing-correlation-with-randomization" class="section level2">
@@ -585,14 +588,14 @@
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extracting-word-usage-means" class="anchor"></a>6.3 Extracting Word Usage Means</h2>
-<p>Since the quotient of the number of tokens and number of types is a vector, we can simply feed this to <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> using the pipe operator:</p>
+<p>Since the quotient of the number of tokens and number of types is a vector, we can simply feed this to <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> using the pipe operator:</p>
 <div class="sourceCode" id="cb102"><html><body><pre class="r">(<span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span>(<span class="no">chapters_corp</span>) / <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span>(<span class="no">chapters_corp</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw">type</span> <span class="kw">=</span> <span class="st">"h"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Mean word frequency"</span>)</pre></body></html></div>
+    <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="kw">type</span> <span class="kw">=</span> <span class="st">"h"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Mean word frequency"</span>)</pre></body></html></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-36-1.png" width="768"></p>
 <p>For the scaled plot:</p>
 <div class="sourceCode" id="cb103"><html><body><pre class="r">(<span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span>(<span class="no">chapters_corp</span>) / <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span>(<span class="no">chapters_corp</span>)) <span class="kw">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>() <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw">type</span> <span class="kw">=</span> <span class="st">"h"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Scaled mean word frequency"</span>)</pre></body></html></div>
+    <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="kw">type</span> <span class="kw">=</span> <span class="st">"h"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Scaled mean word frequency"</span>)</pre></body></html></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-37-1.png" width="768"></p>
 </div>
 <div id="ranking-the-values" class="section level2">
@@ -600,12 +603,12 @@
 <a href="#ranking-the-values" class="anchor"></a>6.4 Ranking the values</h2>
 <div class="sourceCode" id="cb104"><html><body><pre class="r"><span class="no">mean_word_use_m</span> <span class="kw">&lt;-</span> (<span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span>(<span class="no">chapters_corp</span>) / <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span>(<span class="no">chapters_corp</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">mean_word_use_m</span>, <span class="kw">decreasing</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</pre></body></html></div>
-<pre><code>##     CHAPTER 54. The Town-Ho's Story. CHAPTER 135. The Chase. - Third Day. 
-##                             4.129814                             4.115981 
-##                CHAPTER 16. The Ship.          CHAPTER 3. The Spouter-Inn. 
-##                             4.015863                             3.944381 
-##                CHAPTER 32. Cetology.          CHAPTER 64. Stubb's Supper. 
-##                             3.524490                             3.451914</code></pre>
+<pre><code>##    CHAPTER 54. The Town-Ho's Story. CHAPTER 135. The Chase.--Third Day. 
+##                            4.129814                            4.112832 
+##               CHAPTER 16. The Ship.         CHAPTER 3. The Spouter-Inn. 
+##                            4.015863                            3.944381 
+##               CHAPTER 32. Cetology.         CHAPTER 64. Stubb's Supper. 
+##                            3.524490                            3.451914</code></pre>
 </div>
 <div id="calculating-the-ttr" class="section level2">
 <h2 class="hasAnchor">
@@ -737,7 +740,7 @@
 <span class="no">pres_cluster</span>$<span class="no">labels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/docnames.html">docnames</a></span>(<span class="no">pres_dfm</span>)
 
 <span class="co"># plot as a dendrogram</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">pres_cluster</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">sub</span> <span class="kw">=</span> <span class="st">""</span>,
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pres_cluster</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">sub</span> <span class="kw">=</span> <span class="st">""</span>,
      <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</pre></body></html></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-46-1.png" width="700"></p>
 </div>
@@ -761,30 +764,30 @@
 
 <span class="co"># get top five terms per topic</span>
 <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(<span class="no">LDA_fit_20</span>, <span class="fl">5</span>)</pre></body></html></div>
-<pre><code>##      Topic 1    Topic 2    Topic 3   Topic 4     Topic 5   Topic 6    
-## [1,] "parties"  "million"  "million" "failed"    "levy"    "taoiseach"
-## [2,] "gael"     "spending" "review"  "strategy"  "million" "employees"
-## [3,] "spending" "pension"  "welfare" "needed"    "carbon"  "rate"     
-## [4,] "taxation" "scheme"   "reduce"  "ministers" "change"  "referred" 
-## [5,] "per"      "system"   "tourism" "system"    "welfare" "debate"   
-##      Topic 7      Topic 8      Topic 9       Topic 10       Topic 11 Topic 12  
-## [1,] "support"    "investment" "kind"        "society"      "fianna" "fianna"  
-## [2,] "welfare"    "measures"   "imagination" "enterprising" "fáil"   "fáil"    
-## [3,] "adjustment" "scheme"     "policies"    "sense"        "side"   "national"
-## [4,] "million"    "level"      "wit"         "equal"        "level"  "irish"   
-## [5,] "irish"      "welfare"    "create"      "nation"       "third"  "support" 
-##      Topic 13      Topic 14   Topic 15  Topic 16  Topic 17    Topic 18     
-## [1,] "alternative" "welfare"  "child"   "child"   "taoiseach" "continue"   
-## [2,] "citizenship" "system"   "place"   "benefit" "fine"      "investment" 
-## [3,] "wealth"      "fianna"   "believe" "day"     "gael"      "million"    
-## [4,] "adjustment"  "fáil"     "system"  "today"   "may"       "scheme"     
-## [5,] "breaks"      "stimulus" "welfare" "bank"    "irish"     "development"
-##      Topic 19     Topic 20   
-## [1,] "support"    "care"     
-## [2,] "million"    "welfare"  
-## [3,] "including"  "per"      
-## [4,] "enterprise" "allowance"
-## [5,] "back"       "hit"</code></pre>
+<pre><code>##      Topic 1    Topic 2     Topic 3       Topic 4     Topic 5      Topic 6    
+## [1,] "fianna"   "taoiseach" "imagination" "failed"    "million"    "welfare"  
+## [2,] "welfare"  "fine"      "authority"   "strategy"  "support"    "taken"    
+## [3,] "fáil"     "gael"      "real"        "needed"    "welfare"    "local"    
+## [4,] "high"     "may"       "national"    "ministers" "investment" "increased"
+## [5,] "policies" "irish"     "tackle"      "vision"    "back"       "system"   
+##      Topic 7    Topic 8      Topic 9    Topic 10    Topic 11       Topic 12
+## [1,] "fianna"   "system"     "spending" "care"      "society"      "fianna"
+## [2,] "fáil"     "proposals"  "review"   "welfare"   "enterprising" "fáil"  
+## [3,] "national" "taxation"   "measures" "per"       "sense"        "side"  
+## [4,] "irish"    "much"       "reduced"  "allowance" "equal"        "level" 
+## [5,] "support"  "employment" "details"  "hit"       "nation"       "third" 
+##      Topic 13    Topic 14  Topic 15    Topic 16     Topic 17 Topic 18  
+## [1,] "taoiseach" "welfare" "million"   "action"     "child"  "kind"    
+## [2,] "employees" "child"   "scheme"    "create"     "bank"   "wit"     
+## [3,] "rate"      "since"   "increases" "clear"      "day"    "moral"   
+## [4,] "referred"  "irish"   "reduce"    "hit"        "banks"  "policies"
+## [5,] "debate"    "benefit" "measures"  "employment" "today"  "create"  
+##      Topic 19      Topic 20 
+## [1,] "alternative" "benefit"
+## [2,] "citizenship" "society"
+## [3,] "wealth"      "know"   
+## [4,] "adjustment"  "burden" 
+## [5,] "breaks"      "day"</code></pre>
 </div>
   </div>
 
@@ -803,7 +806,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

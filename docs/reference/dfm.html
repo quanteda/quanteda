@@ -91,7 +91,7 @@ tokens, or even other dfm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -115,6 +115,9 @@ tokens, or even other dfm object." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -354,7 +357,7 @@ combining and refactoring the documents of the dfm according to the groups.</p>
 #&gt;   2001-Bush          0        0 110  0  96     0       0         3    1    0
 #&gt; [ reached max_ndoc ... 4 more documents, reached max_nfeat ... 3,469 more features ]</div><div class='input'>
 <span class='co'># grouping documents by docvars in a corpus</span>
-<span class='fu'>dfm</span>(<span class='no'>corp</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'> ...lowercasing</span></div><div class='output co'>#&gt; <span class='message'> ...found 10 documents, 3,261 features</span></div><div class='output co'>#&gt; <span class='message'> ...grouping texts</span></div><div class='output co'>#&gt; <span class='message'> ...complete, elapsed time:  0.052 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished constructing a 5 x 3,261 sparse dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,261 features (64.2% sparse) and 2 docvars.
+<span class='fu'>dfm</span>(<span class='no'>corp</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'> ...lowercasing</span></div><div class='output co'>#&gt; <span class='message'> ...found 10 documents, 3,261 features</span></div><div class='output co'>#&gt; <span class='message'> ...grouping texts</span></div><div class='output co'>#&gt; <span class='message'> ...complete, elapsed time: 0.046 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished constructing a 5 x 3,261 sparse dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,261 features (64.2% sparse) and 2 docvars.
 #&gt;          features
 #&gt; docs      senator hatfield   , mr   . chief justice president vice bush
 #&gt;   Bush          2        0 396  7 336     2      11        13    3    1
@@ -364,7 +367,7 @@ combining and refactoring the documents of the dfm according to the groups.</p>
 #&gt;   Trump         0        0  96  0  88     1       1         5    0    1
 #&gt; [ reached max_nfeat ... 3,251 more features ]</div><div class='input'>
 <span class='co'># with English stopwords and stemming</span>
-<span class='fu'>dfm</span>(<span class='no'>corp</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'> ...lowercasing</span></div><div class='output co'>#&gt; <span class='message'> ...found 10 documents, 3,261 features</span></div><div class='output co'>#&gt; <span class='message'> ...</span></div><div class='output co'>#&gt; <span class='message'>removed 131 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'> ...stemming types (English)</span></div><div class='output co'>#&gt; <span class='message'> ...complete, elapsed time:  0.073 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished constructing a 10 x 2,304 sparse dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,304 features (75.1% sparse) and 4 docvars.
+<span class='fu'>dfm</span>(<span class='no'>corp</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'> ...lowercasing</span></div><div class='output co'>#&gt; <span class='message'> ...found 10 documents, 3,261 features</span></div><div class='output co'>#&gt; <span class='message'> ...</span></div><div class='output co'>#&gt; <span class='message'>removed 131 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'> ...stemming types (English)</span></div><div class='output co'>#&gt; <span class='message'> ...complete, elapsed time: 0.072 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished constructing a 10 x 2,304 sparse dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,304 features (75.1% sparse) and 4 docvars.
 #&gt;               features
 #&gt; docs           senat hatfield   , mr   . chief justic presid vice bush
 #&gt;   1981-Reagan      2        1 174  3 130     1      1      6    2    1
@@ -469,7 +472,7 @@ combining and refactoring the documents of the dfm according to the groups.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

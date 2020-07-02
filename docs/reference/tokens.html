@@ -92,7 +92,7 @@ tokenizer." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -116,6 +116,9 @@ tokenizer." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -249,7 +252,7 @@ a (uniquely) named <strong>list</strong> of characters; a tokens object; or a
       <td><p>character; which tokenizer to use.  The default <code>what = "word"</code>
 is the version 2 <span class="pkg">quanteda</span> tokenizer.  Legacy tokenizers (version &lt; 2)
 are also supported, including the default <code>what = "word1"</code>.
-See the Details and quanteda Tokenizer below.</p></td>
+See the Details and quanteda Tokenizers below.</p></td>
     </tr>
     <tr>
       <th>remove_punct</th>
@@ -338,7 +341,7 @@ tokens removed at the external tokenization stage.</p>
 <p>Recommended tokenizers are those from the <span class="pkg">tokenizers</span> package, which
 are generally faster than the default (built-in) tokenizer but always
 splits infix hyphens, or <span class="pkg">spacyr</span>.</p>
-    <h2 class="hasAnchor" id="quanteda-tokenizer"><a class="anchor" href="#quanteda-tokenizer"></a>quanteda tokenizer</h2>
+    <h2 class="hasAnchor" id="quanteda-tokenizers"><a class="anchor" href="#quanteda-tokenizers"></a>quanteda Tokenizers</h2>
 
     
 
@@ -351,25 +354,32 @@ addresses.  The rules defining a valid "tag" can be found
 for hashtags and
 <a href='https://help.twitter.com/en/managing-your-account/twitter-username-rules'>here</a>
 for usernames.</p>
-<p>For backward compatibility, the following older tokenizers are also supported
-through <code>what</code>:</p><dl'>
+<p>In versions &lt; 2, the argument <code>remove_twitter</code> controlled whether social
+media tags were preserved or removed, even when <code>remove_punct = TRUE</code>.
+This argument is not longer functional in versions &gt;= 2.  If greater
+control over social media tags is desired, you should user an alternative
+tokenizer, including non-<span class="pkg">quanteda</span> options.</p>
+<p>For backward compatibility, the following older tokenizers are also
+supported through <code>what</code>:</p><dl'>
 <dt><code>"word1"</code></dt><dd><p>(legacy) implements similar behaviour to the version of
-<code>what = "word"</code> found in pre-version 2.  (It preserves social media tags and
-infix hyphens, but splits URLs.)  "word1" is also slower than "word".</p></dd>
-<dt><code>"fasterword"</code></dt><dd><p>(legacy) splits on whitespace and control characters, using
-<code><a href='https://rdrr.io/pkg/stringi/man/stri_split.html'>stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")</a></code></p></dd>
+<code>what = "word"</code> found in pre-version 2.  (It preserves social media tags
+and infix hyphens, but splits URLs.)  "word1" is also slower than "word".</p></dd>
+<dt><code>"fasterword"</code></dt><dd><p>(legacy) splits on whitespace and control characters,
+using <code><a href='https://rdrr.io/pkg/stringi/man/stri_split.html'>stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")</a></code></p></dd>
 <dt><code>"fastestword"</code></dt><dd><p>(legacy) splits on the space character, using
 <code><a href='https://rdrr.io/pkg/stringi/man/stri_split.html'>stringi::stri_split_fixed(x, " ")</a></code></p></dd>
 <dt><code>"character"</code></dt><dd><p>tokenization into individual characters</p></dd>
-<dt><code>"sentence"</code></dt><dd><p>sentence segmenter based on <a href='https://rdrr.io/pkg/stringi/man/stri_split_boundaries.html'>stri_split_boundaries</a>,
-but with additional rules to avoid splits on words like "Mr." that would otherwise
-incorrectly be detected as sentence boundaries.  For better sentence tokenization,
-consider using <span class="pkg">spacyr</span>.</p></dd> 
+<dt><code>"sentence"</code></dt><dd><p>sentence segmenter based on
+<a href='https://rdrr.io/pkg/stringi/man/stri_split_boundaries.html'>stri_split_boundaries</a>, but with
+additional rules to avoid splits on words like "Mr." that would otherwise
+incorrectly be detected as sentence boundaries.  For better sentence
+tokenization, consider using <span class="pkg">spacyr</span>.</p></dd> 
 </dl>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='tokens_ngrams.html'>tokens_ngrams()</a></code>, <code><a href='tokens_ngrams.html'>tokens_skipgrams()</a></code>, <code><a href='as.tokens.html'>as.list.tokens()</a></code>, <code><a href='as.tokens.html'>as.tokens()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='tokens_ngrams.html'>tokens_ngrams()</a></code>, <code><a href='tokens_ngrams.html'>tokens_skipgrams()</a></code>, <code><a href='as.tokens.html'>as.list.tokens()</a></code>,
+<code><a href='as.tokens.html'>as.tokens()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"A sentence, showing how tokens() works."</span>,
@@ -441,8 +451,8 @@ consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; [1] "for"   "is"    "gr8"   "4ever"
 #&gt; </div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) <span class='co'># using other tokenizers</span>
-<span class='fu'>tokens</span>(<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>[<span class='fl'>4</span>]), <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>, <span class='kw'>lowercase</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strip_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>tokens</span>(<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>[<span class='fl'>4</span>]), <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>, <span class='kw'>lowercase</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strip_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>tokens</span>(<span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 4 documents.
 #&gt; doc1 :
 #&gt;  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
@@ -460,12 +470,12 @@ consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; 
 #&gt; doc4 :
 #&gt; [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    
-#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span>(<span class='no'>txt</span>[<span class='fl'>3</span>], <span class='kw'>strip_non_alphanum</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span>(<span class='no'>txt</span>[<span class='fl'>3</span>], <span class='kw'>strip_non_alphanum</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>tokens</span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; doc3 :
 #&gt;  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"
 #&gt; [ ... and 7 more ]
-#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span>(
+#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span>(
     <span class='st'>"The quick brown fox.  It jumped over the lazy dog."</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>tokens</span>()</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
@@ -488,7 +498,7 @@ consider using <span class="pkg">spacyr</span>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
