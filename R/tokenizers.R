@@ -190,6 +190,7 @@ tokenize_character <- function(x, ...) {
 tokenize_sentence <- function(x, ..., verbose = FALSE) {
     if (verbose) catm(" ...segmenting into sentences.\n")
     m <- names(x)
+    x <- stri_replace_all_fixed(x, "\n", " ") # TODO consider removing
     x <- stri_split_boundaries(x, type = "sentence", locale = quanteda_options("tokens_locale"))
     x <- lapply(x, function(y) if (length(y)) stri_trim_right(y) else "")
     names(x) <- m
