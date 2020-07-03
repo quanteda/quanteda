@@ -53,7 +53,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         if (field_object(attrs, "unit") %in% c("sentences", "paragraphs", "segments")) {
             docnum <- as.integer(droplevels(attrs$docvars[["docid_"]]))
             temp <- list("text" = split(unclass(x), docnum))
-            if (field_object(attrs, "unit") %in% c("sentences", "segments")) {
+            if (field_object(attrs, "unit") %in% c("sentences", "segments", "segments")) {
                 temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "  "))
             } else {
                 temp[["text"]] <- unlist(lapply(temp[["text"]], paste0, collapse = "\n\n"))
@@ -61,7 +61,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], !duplicated(docnum))
             unit <- "documents"
         } else {
-            stop("reshape to documents only goes from sentences or paragraphs")
+            stop("reshape to documents only goes from sentences, paragraphs or segments")
         }
     } else if (to %in% c("sentences", "paragraphs")) {
         if (field_object(attrs, "unit") %in% "documents") {
