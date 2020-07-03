@@ -71,3 +71,13 @@ test_that("corpus_reshape works with segmented corpus", {
                    texttwo = "Premiere phrase  Deuxieme phrase"))
 })
 
+test_that("corpus_reshape preserve empty documents (#1978)", {
+    corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+                     texttwo = "Premiere phrase.  Deuxieme phrase.",
+                     textthree = ""))
+    corp_reshaped <- corpus_reshape(corp, to = "sentences")
+    expect_identical(
+        docnames(corp),
+        docnames(corpus_reshape(corp_reshaped, to = "documents"))
+    )
+})
