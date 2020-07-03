@@ -32,9 +32,9 @@
 #' these in the default internal "word" tokenizer}
 #' \item{`tokens_block_size`}{integer; specifies the
 #'   number of documents to be tokenized at a time in blocked tokenization.
-#'   When the number is large, tokenization becomes faster but also memory-intensive.}}
+#'   When the number is large, tokenization becomes faster but also memory-intensive.}
 #' \item{`tokens_locale`}{character; specify locale in stringi boundary detection in 
-#'   tokenization and corpus reshaping. See [stringi::stri_opts_brkiter()].}
+#'   tokenization and corpus reshaping. See [stringi::stri_opts_brkiter()].}}
 #' @return When called using a `key = value` pair (where `key` can be
 #' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
