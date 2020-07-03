@@ -223,7 +223,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
 
     if (is.null(pattern)) {
         if (what == "sentences")
-            x <- as.list(tokens(x, what = "sentence", ...))
+            x <- as.list(tokenize_sentence(x, ...))
     } else {
 
         if (valuetype == "glob") {
