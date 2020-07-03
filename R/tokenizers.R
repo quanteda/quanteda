@@ -146,7 +146,8 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
     if (verbose) catm(" ...segmenting into words\n")
-    structure(stri_split_boundaries(x, type = "word"), names = m)
+    x <- stri_split_boundaries(x, type = "word", locale = quanteda_options("tokens_locale"))
+    structure(x, names = m)
 }
 
 # substitutions to preserve hyphens and tags
@@ -193,8 +194,7 @@ tokenize_sentence <- function(x, ..., verbose = FALSE) {
     x <- stri_replace_all_fixed(x, "\n", " ") # TODO consider removing
     x <- stri_split_boundaries(x, type = "sentence", locale = quanteda_options("tokens_locale"))
     x <- lapply(x, function(y) if (length(y)) stri_trim_right(y) else "")
-    names(x) <- m
-    return(x)
+    structure(x, names = m)
 }
 
 #' @rdname tokenize_internal
