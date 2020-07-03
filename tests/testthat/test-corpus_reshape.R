@@ -28,6 +28,10 @@ test_that("corpus_reshape works to sentences and back", {
                      texttwo = "Premiere phrase.  Deuxieme phrase."), 
                      docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)))
     corp_reshaped <- corpus_reshape(corp, to = "sentences")
+    expect_error(
+        corpus_reshape(corp_reshaped, to = "paragraphs"),
+        "reshape to paragraphs only goes from documents or segments"
+    )
     corp_unshaped <- corpus_reshape(corp_reshaped, to = "documents")
     expect_equal(texts(corp),
                  texts(corp_unshaped))
@@ -47,7 +51,7 @@ test_that("corpus_reshape works to paragraphs and back", {
                  docvars(corp_unshaped))
 })
 
-test_that("corpus_reshape works with empty documents, issue #670", {
+test_that("corpus_reshape works with empty documents (#670)", {
     corp <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
                          texttwo = "Premiere phrase.\n\nDeuxieme phrase.",
                          textthree = ""), 
