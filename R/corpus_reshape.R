@@ -64,13 +64,13 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             stop("reshape to documents only goes from sentences, paragraphs or segments")
         }
     } else if (to %in% c("sentences", "paragraphs")) {
-        if (field_object(attrs, "unit") %in% "documents") {
+        if (field_object(attrs, "unit") %in% c("segments", "documents")) {
             temp <- segment_texts(x,  pattern = NULL, extract_pattern = FALSE,
                                   omit_empty = FALSE, what = to, ...)
             attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], temp[["docnum"]])
             unit <- to
         } else {
-            stop("reshape to sentences or paragraphs only goes from documents")
+            stop("reshape to sentences or paragraphs only goes from segments or documents")
         }
     }
     build_corpus(
