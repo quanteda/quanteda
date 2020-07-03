@@ -1,7 +1,7 @@
 context("test nfunctions")
 
 test_that("test nsentence", {
-    txt <- c(doc1 = "This is Mr. Smith.  He is married to Dr. Jones.",
+    txt <- c(doc1 = "This is Mr. Smith.  He is married to Mrs. Jones.",
              doc2 = "Never, before: a colon!  Gimme a break.")
     expect_identical(nsentence(txt), c(doc1 = 2L, doc2 = 2L))
     expect_identical(nsentence(corpus(txt)), c(doc1 = 2L, doc2 = 2L))
