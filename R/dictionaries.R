@@ -26,7 +26,7 @@ setValidity("dictionary2", function(object) {
     validate_dictionary(object)
 })
 
-# Internal function to chekc if dictionary eintries are all chracters
+# Internal function to check if dictionary entries are all characters
 validate_dictionary <- function(dict) {
     attrs <- attributes(dict)
     dict <- unclass(dict)
@@ -501,14 +501,14 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' Converts a hierarchical dictionary (a named list of named lists, ending in
 #' character vectors at the lowest level) into a flat list of character
-#' vectors. Works like `unlist(dictionary, recursive=TRUE)` except that
+#' vectors. Works like `unlist(dictionary, recursive = TRUE)` except that
 #' the recursion does not go to the bottom level.  Called by [dfm()].
 #'
-#' @param tree list to be flattened
+#' @param dict list to be flattened
 #' @param levels integer vector indicating levels in the dictionary
 #' @param level internal argument to pass current levels
-#' @param key_tree internal argument to pass for parent keys
-#' @param dict internal argument to pass flattened dictionary
+#' @param key_parent internal argument to pass for parent keys
+#' @param dict_flat internal argument to pass flattened dictionary
 #' @return A dictionary flattened to variable levels
 #' @keywords internal dictionary
 #' @author Kohei Watanabe
@@ -522,8 +522,8 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' flatten_dictionary(dict1)
 #'
 #' dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
-#'                             level1a2 = c("l1a21", "l1a22")),
-#'              level1b = list(level1b1 = c("l1b11", "l1b12"),
+#'                              level1a2 = c("l1a21", "l1a22")),
+#'               level1b = list(level1b1 = c("l1b11", "l1b12"),
 #'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
 #'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
 #'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
