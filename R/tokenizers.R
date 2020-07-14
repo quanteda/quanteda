@@ -146,7 +146,8 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
     if (verbose) catm(" ...segmenting into words\n")
-    structure(stri_split_boundaries(x, type = "word"), names = m)
+    x <- stri_split_boundaries(x, type = "word", locale = quanteda_options("tokens_locale"))
+    structure(x, names = m)
 }
 
 # substitutions to preserve hyphens and tags
@@ -189,28 +190,11 @@ tokenize_character <- function(x, ...) {
 #' @export
 tokenize_sentence <- function(x, ..., verbose = FALSE) {
     if (verbose) catm(" ...segmenting into sentences.\n")
-    named <- names(x)
-
-    # Replace . delimiter from common title abbreviations, with _pd_
-    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
-    findregex <- paste0("\\b(", exceptions, ")\\.")
-    x <- stri_replace_all_regex(x, findregex, "$1_pd_", vectorize_all = FALSE)
-
-    ## Remove newline chars
-    x <- lapply(x, stri_replace_all_fixed, "\n", " ")
-
-    ## Perform the tokenization
-    tok <- stri_split_boundaries(x, type = "sentence")
-
-    ## Cleaning
-    tok <- lapply(tok, function(x) {
-        x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
-        x <- stri_trim_right(x) # trim trailing spaces
-        x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
-        return(x)
-    })
-    names(tok) <- named
-    return(tok)
+    m <- names(x)
+    x <- stri_replace_all_fixed(x, "\n", " ") # TODO consider removing
+    x <- stri_split_boundaries(x, type = "sentence", locale = quanteda_options("tokens_locale"))
+    x <- lapply(x, function(y) if (length(y)) stri_trim_right(y) else "")
+    structure(x, names = m)
 }
 
 #' @rdname tokenize_internal

@@ -1,3 +1,11 @@
+# quanteda > 2.0.0
+
+## Changes
+
+## Bug fixes and stability enhancements
+
+* `corpus_reshape()` now allows reshaping back to documents even when segmented texts were of zero length. (#1978)
+
 # quanteda 2.1.0
 
 ## Changes

@@ -25,14 +25,16 @@
 #' through an operation that adds features}
 #' \item{`base_compname`}{character; stem name for components that are
 #' created by matrix factorization} 
-#' \item{`language_stemmer`}{character; language option for [char_wordstem], 
-#' [tokens_wordstem], and [dfm_wordstem]} 
+#' \item{`language_stemmer`}{character; language option for [char_wordstem()], 
+#' [tokens_wordstem()], and [dfm_wordstem()]} 
 #' \item{`pattern_hashtag`, `pattern_username`}{character; regex patterns for
 #' (social media) hashtags and usernames respectively, used to avoid segmenting
 #' these in the default internal "word" tokenizer}
 #' \item{`tokens_block_size`}{integer; specifies the
 #'   number of documents to be tokenized at a time in blocked tokenization.
-#'   When the number is large, tokenization becomes faster but also memory-intensive.}}
+#'   When the number is large, tokenization becomes faster but also memory-intensive.}
+#' \item{`tokens_locale`}{character; specify locale in stringi boundary detection in 
+#'   tokenization and corpus reshaping. See [stringi::stri_opts_brkiter()].}}
 #' @return When called using a `key = value` pair (where `key` can be
 #' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
@@ -157,6 +159,7 @@ get_options_default <- function(){
                  language_stemmer = "english",
                  pattern_hashtag = "#\\w+#?",
                  pattern_username = "@[a-zA-Z0-9_]+",
-                 tokens_block_size = 10000L)
+                 tokens_block_size = 10000L,
+                 tokens_locale = "en_US@ss=standard")
     return(opts)
 }

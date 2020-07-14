@@ -212,8 +212,8 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           omit_empty = TRUE, what = "other", ...) {
 
     # normalize EOL
-    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
+    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
 
     # use preset regex pattern
     if (what == "paragraphs") {
@@ -223,22 +223,22 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
 
     if (is.null(pattern)) {
         if (what == "sentences")
-            x <- as.list(tokens(x, what = "sentence", ...))
+            x <- tokenize_sentence(x, ...)
     } else {
 
         if (valuetype == "glob") {
             # treat as fixed if no glob character is detected
-            if (!any(stringi::stri_detect_charclass(pattern, c("[*?]")))) {
+            if (!any(stri_detect_charclass(pattern, c("[*?]")))) {
                 valuetype <- "fixed"
             } else {
                 pattern <- escape_regex(pattern)
-                pattern <- stringi::stri_replace_all_fixed(pattern, '*', '(\\S*)')
-                pattern <- stringi::stri_replace_all_fixed(pattern, '?', '(\\S)')
+                pattern <- stri_replace_all_fixed(pattern, '*', '(\\S*)')
+                pattern <- stri_replace_all_fixed(pattern, '?', '(\\S)')
                 valuetype <- "regex"
             }
         }
         
-        x <- stringi::stri_trim_both(x)
+        x <- stri_trim_both(x)
         
         if (valuetype == "fixed") {
             if (pattern_position == "after") {
