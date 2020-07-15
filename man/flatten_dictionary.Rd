@@ -13,15 +13,15 @@ flatten_dictionary(
 )
 }
 \arguments{
-\item{dict}{internal argument to pass flattened dictionary}
+\item{dict}{list to be flattened}
 
 \item{levels}{integer vector indicating levels in the dictionary}
 
 \item{level}{internal argument to pass current levels}
 
-\item{tree}{list to be flattened}
+\item{key_parent}{internal argument to pass for parent keys}
 
-\item{key_tree}{internal argument to pass for parent keys}
+\item{dict_flat}{internal argument to pass flattened dictionary}
 }
 \value{
 A dictionary flattened to variable levels
@@ -29,7 +29,7 @@ A dictionary flattened to variable levels
 \description{
 Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
-vectors. Works like \code{unlist(dictionary, recursive=TRUE)} except that
+vectors. Works like \code{unlist(dictionary, recursive = TRUE)} except that
 the recursion does not go to the bottom level.  Called by \code{\link[=dfm]{dfm()}}.
 }
 \examples{
@@ -41,8 +41,8 @@ dict1 <-
 flatten_dictionary(dict1)
 
 dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
-                            level1a2 = c("l1a21", "l1a22")),
-             level1b = list(level1b1 = c("l1b11", "l1b12"),
+                             level1a2 = c("l1a21", "l1a22")),
+              level1b = list(level1b1 = c("l1b11", "l1b12"),
                              level1b2 = c("l1b21", "l1b22", "l1b23")),
               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
                              level1c1b = list(level1c1b1 = c("lowestalone"))))
