@@ -357,7 +357,7 @@ setMethod("print", signature(x = "dictionary2"),
                   if (lev != "") cat(" and ", depth, " nested levels", sep = "")
                   cat(".\n")
               }
-              print_dictionary(x, 1, max_nkey, max_nval, ...)
+              invisible(print_dictionary(x, 1, max_nkey, max_nval, ...))
           })
 
 #' @rdname print-quanteda
