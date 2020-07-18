@@ -206,6 +206,12 @@ test_that("dictionary printing works", {
       ),
       fixed = TRUE
     )
+    
+    expect_output(
+      print(dict, 0, 0),
+      "Dictionary object with 2 key entries.",
+      fixed = TRUE
+    )
 })
 
 
