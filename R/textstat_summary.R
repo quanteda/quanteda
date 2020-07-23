@@ -57,12 +57,14 @@ textstat_summary.dfm <- function(x, cache = TRUE, ...) {
 }
 
 summarize <- function(x, cache = TRUE, ...) {
-    if (cache) {
-        result <- get_cache(x, "summary", ...)
-        if (!is.null(result))
-            return(result)
-    } else {
-        clear_cache(x, "summary")
+    if (Sys.info()["sysname"] != "SunOS") {
+        if (cache) {
+            result <- get_cache(x, "summary", ...)
+            if (!is.null(result))
+                return(result)
+        } else {
+            clear_cache(x, "summary")
+        }
     }
     
     patterns <- removals_regex(punct = TRUE, symbols = TRUE, 
@@ -99,7 +101,7 @@ summarize <- function(x, cache = TRUE, ...) {
         result$sents <- ntoken(tokens(x, what = "sentence"))
     }
 
-    if (cache)
+    if (cache && Sys.info()["sysname"] != "SunOS")
         set_cache(x, "summary", result, ...)
     return(result)
 }

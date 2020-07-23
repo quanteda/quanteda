@@ -1,13 +1,12 @@
 test_that("textstat_summary method works", {
-    
     corp <- data_corpus_inaugural[10:15]
     toks <- tokens_tolower(tokens(corp))
     dfmt <- dfm(toks)
-    
+
     col_summ <- c("document", "chars", "sents", "tokens", "types",
                   "puncts", "numbers", "symbols", "urls",
                   "tags", "emojis")
-    
+
     # corpus
     summ_corp <- textstat_summary(corp, cache = FALSE)
     expect_equal(
@@ -18,17 +17,17 @@ test_that("textstat_summary method works", {
         names(summ_corp),
         col_summ
     )
-    
+
     # tokens
     summ_toks <- textstat_summary(toks, cache = FALSE)
     expect_equal(
         summ_toks$puncts,
-        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(punct = TRUE)[[1]], 
+        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(punct = TRUE)[[1]],
                                     valuetype = "regex")))
     )
     expect_equal(
         summ_toks$numbers,
-        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(numbers = TRUE)[[1]], 
+        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(numbers = TRUE)[[1]],
                                     valuetype = "regex")))
     )
     expect_equal(
@@ -47,17 +46,17 @@ test_that("textstat_summary method works", {
         names(summ_toks),
         col_summ
     )
-    
+
     # dfm
     summ_dfm <- textstat_summary(dfmt, cache = FALSE)
     expect_equal(
         summ_dfm$puncts,
-        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(punct = TRUE)[[1]], 
+        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(punct = TRUE)[[1]],
                                  valuetype = "regex")))
     )
     expect_equal(
         summ_dfm$numbers,
-        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(numbers = TRUE)[[1]], 
+        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(numbers = TRUE)[[1]],
                                  valuetype = "regex")))
     )
     expect_equal(
@@ -79,6 +78,7 @@ test_that("textstat_summary method works", {
 })
 
 test_that("summary chache counts hashtag and emoji correctly", {
+    skip_on_os("solaris")
     txt <- c("£ € 👏 Rock on❗ 💪️🎸",
              "Hi @qi #quanteda https://quanteda.io")
     toks <- tokens(txt)
@@ -90,7 +90,7 @@ test_that("summary chache counts hashtag and emoji correctly", {
 })
 
 test_that("textstat_summary chaching is working", {
-    
+    skip_on_os("solaris")
     corp <- data_corpus_inaugural[10:15]
     summ_corp <- textstat_summary(corp, cache = TRUE)
     expect_identical(meta(corp, type = "object")$summary$data, summ_corp)
@@ -98,14 +98,14 @@ test_that("textstat_summary chaching is working", {
     quanteda:::clear_cache(corp, "summary")
     expect_identical(meta(corp, type = "object")$summary, list())
     expect_equal(nrow(textstat_summary(head(corp, 3), cache = TRUE)), 3)
-    
+
     toks <- tokens(corp)
     summ_toks <- textstat_summary(toks, cache = TRUE)
     expect_identical(meta(toks, type = "object")$summary$data, summ_toks)
     summ_toks <- textstat_summary(toks, cache = FALSE)
     expect_identical(meta(toks, type = "object")$summary, list())
     expect_equal(nrow(textstat_summary(head(toks, 3), cache = TRUE)), 3)
-    
+
     dfmt <- dfm(toks)
     summ_dfm <- textstat_summary(dfmt, cache = TRUE)
     expect_identical(meta(dfmt, type = "object")$summary$data, summ_dfm)
@@ -116,14 +116,14 @@ test_that("textstat_summary chaching is working", {
 
 
 test_that("summary chache is updated", {
-    
+    skip_on_os("solaris")
     corp <- data_corpus_inaugural[10:15]
     summ_corp1 <- textstat_summary(corp, cache = TRUE, tolower = FALSE, remove_punct = FALSE)
     summ_corp2 <- textstat_summary(corp, cache = TRUE, tolower = TRUE, remove_punct = FALSE)
     summ_corp3 <- textstat_summary(corp, cache = TRUE, tolower = TRUE, remove_punct = TRUE)
     expect_true(all(summ_corp1$types > summ_corp2$types))
     expect_true(all(summ_corp2$types > summ_corp3$types))
-    
+
     toks <- tokens(corp)
     expect_identical(attr(toks, "meta")$object$summary$data, summ_corp3)
     summ_toks1 <- textstat_summary(toks, cache = TRUE, tolower = FALSE, remove_punct = FALSE)
@@ -134,7 +134,7 @@ test_that("summary chache is updated", {
     toks <- tokens_remove(toks, stopwords("en"))
     summ_toks4 <- textstat_summary(toks, cache = TRUE)
     expect_true(all(summ_toks3$types > summ_toks4$types))
-    
+
     dfmt <- dfm(toks, tolower = FALSE)
     expect_identical(dfmt@meta$object$summary$data, summ_toks4)
     summ_dfm1 <- textstat_summary(dfmt, cache = TRUE, tolower = FALSE, stem = FALSE)
