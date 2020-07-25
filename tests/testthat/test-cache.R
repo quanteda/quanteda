@@ -1,6 +1,8 @@
 context("test caching")
 
 test_that("test caching is working", {
+    skip_on_os("solaris")
+    
     corp <- corpus(c("a b c d"))
     toks <- tokens(corp)
     dfmt <- dfm(toks)
@@ -23,7 +25,8 @@ test_that("test caching is working", {
 })
 
 test_that("test caching is passed to downstream objects", {
-    
+    skip_on_os("solaris")
+
     cache <- data.frame(number = sample(1:100, 10))
     corp <- corpus(c("a b c d"))
     quanteda:::set_cache(corp, "summary", cache)
