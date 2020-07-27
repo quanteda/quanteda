@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -236,7 +236,7 @@
 ##        LibDem   251    483        14
 ##            PC    77    114         5
 ##           SNP    88    134         4
-##          UKIP   346    722        27</code></pre>
+##          UKIP   346    722        26</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<em>docvar</em>).</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/docvars.html">docvars</a></span>(<span class="no">corp_uk</span>, <span class="st">"Party"</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">data_char_ukimmig2010</span>)
@@ -253,7 +253,7 @@
 ##        LibDem   251    483        14       LibDem 2010
 ##            PC    77    114         5           PC 2010
 ##           SNP    88    134         4          SNP 2010
-##          UKIP   346    722        27         UKIP 2010</code></pre>
+##          UKIP   346    722        26         UKIP 2010</code></pre>
 </div>
 <div id="loading-in-files-using-the-readtext-package" class="section level3">
 <h3 class="hasAnchor">
@@ -750,14 +750,16 @@
 ## 2009-Obama        1.000      0.682
 ## 2013-Obama        0.682      1.000
 ## 2017-Trump        0.519      0.516</code></pre>
-<div class="sourceCode" id="cb81"><html><body><pre class="r"># dotchart(as.list(tstat_obama)$'2009-Obama', xlab = 'Cosine similarity')</pre></body></html></div>
-<p>We can use these distances to plot a dendrogram, clustering presidents:</p>
+<div class="sourceCode" id="cb81"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/dotchart.html">dotchart</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">tstat_obama</span>)$<span class="st">"2013-Obama"</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Cosine similarity"</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">19</span>)</pre></body></html></div>
+<p><img src="quickstart_files/figure-html/unnamed-chunk-35-1.png" width="576"></p>
+<p>We can use these distances to plot a dendrogram, clustering presidents.<br>
+First, load some data.</p>
 <div class="sourceCode" id="cb82"><html><body><pre class="r"><span class="no">data_corpus_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span>(<span class="st">"https://quanteda.org/data/data_corpus_sotu.rds"</span>))
 <span class="no">dfmat_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">data_corpus_sotu</span>, <span class="no">Date</span> <span class="kw">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="st">"1980-01-01"</span>)),
     <span class="kw">stem</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
-<span class="no">dfmat_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(<span class="no">dfmat_sotu</span>, <span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">min_docfreq</span> <span class="kw">=</span> <span class="fl">3</span>)
-
-<span class="co"># hierarchical clustering - get distances on normalized dfm</span>
+<span class="no">dfmat_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(<span class="no">dfmat_sotu</span>, <span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">min_docfreq</span> <span class="kw">=</span> <span class="fl">3</span>)</pre></body></html></div>
+<p>Now we compute clusters and plot the dendrogram:</p>
+<div class="sourceCode" id="cb83"><html><body><pre class="r"><span class="co"># hierarchical clustering - get distances on normalized dfm</span>
 <span class="no">tstat_dist</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/textstat_simil.html">textstat_dist</a></span>(<span class="fu"><a href="../reference/dfm_weight.html">dfm_weight</a></span>(<span class="no">dfmat_sotu</span>, <span class="kw">scheme</span> <span class="kw">=</span> <span class="st">"prop"</span>))
 <span class="co"># hiarchical clustering the distance object</span>
 <span class="no">pres_cluster</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/dist.html">as.dist</a></span>(<span class="no">tstat_dist</span>))
@@ -765,34 +767,34 @@
 <span class="no">pres_cluster</span>$<span class="no">labels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/docnames.html">docnames</a></span>(<span class="no">dfmat_sotu</span>)
 <span class="co"># plot as a dendrogram</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pres_cluster</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">sub</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</pre></body></html></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-36-1.png" width="768"></p>
+<p><img src="quickstart_files/figure-html/unnamed-chunk-38-1.png" width="768"></p>
 <p>We can also look at term similarities:</p>
-<div class="sourceCode" id="cb83"><html><body><pre class="r"><span class="no">tstat_sim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/textstat_simil.html">textstat_simil</a></span>(<span class="no">dfmat_sotu</span>, <span class="no">dfmat_sotu</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>)],
+<div class="sourceCode" id="cb84"><html><body><pre class="r"><span class="no">tstat_sim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/textstat_simil.html">textstat_simil</a></span>(<span class="no">dfmat_sotu</span>, <span class="no">dfmat_sotu</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>)],
     <span class="kw">method</span> <span class="kw">=</span> <span class="st">"cosine"</span>, <span class="kw">margin</span> <span class="kw">=</span> <span class="st">"features"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">tstat_sim</span>), <span class="no">head</span>, <span class="fl">10</span>)</pre></body></html></div>
 <pre><code>## $fair
-##      time    better       far  strategi        us     lower      long       one 
-## 0.8266617 0.8135324 0.8036487 0.8002557 0.8000581 0.7995066 0.7977770 0.7949795 
-##   practic  american 
-## 0.7944127 0.7892432 
+##   economi       tax      much   continu     might      best      lead      well 
+## 0.8426587 0.7888467 0.7770360 0.7608859 0.7431505 0.7401957 0.7395740 0.7382537 
+##      done  determin 
+## 0.7366444 0.7201415 
 ## 
 ## $health
-##    system      issu    privat      need    expand   support    reform      hous 
-## 0.9232094 0.9229859 0.9175231 0.9143293 0.9118901 0.9072374 0.9057456 0.9054303 
-##    dramat      mani 
-## 0.9051588 0.9045851 
+##     delay  profound     adapt    advanc    extend      judg     whole     ideal 
+## 0.8295614 0.7680246 0.7581425 0.7454135 0.7392493 0.7383504 0.7265214 0.7258662 
+##    servic    danger 
+## 0.7238483 0.7184212 
 ## 
 ## $terror
-## terrorist    coalit    cheney      evil  homeland      11th    sudden     regim 
-## 0.8539894 0.8179609 0.8175618 0.7949619 0.7878223 0.7603221 0.7556575 0.7533021 
-##   septemb   tyranni 
-## 0.7502925 0.7383253</code></pre>
+## adversari   loyalti   potenti    around      side        go      told       end 
+## 0.7500000 0.7349684 0.6614378 0.6481812 0.6396021 0.6271815 0.6240377 0.6197507 
+##      land     grate 
+## 0.6197117 0.6123724</code></pre>
 </div>
 <div id="scaling-document-positions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scaling-document-positions" class="anchor"></a>Scaling document positions</h2>
 <p>Here is a demonstration of unsupervised document scaling comparing the “Wordfish” model:</p>
-<div class="sourceCode" id="cb85"><html><body><pre class="r"><span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"quanteda.textmodels"</span>)) {
+<div class="sourceCode" id="cb86"><html><body><pre class="r"><span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"quanteda.textmodels"</span>)) {
     <span class="no">dfmat_ire</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>)
     <span class="no">tmod_wf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="no">dfmat_ire</span>, <span class="kw">dir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>))
 
@@ -805,13 +807,13 @@
 <pre><code>## The following object is masked from 'package:quanteda':
 ## 
 ##     data_dfm_lbgexample</code></pre>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
+<p><img src="quickstart_files/figure-html/unnamed-chunk-40-1.png" width="672"></p>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>Topic models</h2>
 <p><strong>quanteda</strong> makes it very easy to fit topic models as well, e.g.:</p>
-<div class="sourceCode" id="cb89"><html><body><pre class="r"><span class="no">quant_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
+<div class="sourceCode" id="cb90"><html><body><pre class="r"><span class="no">quant_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
     <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
 <span class="no">quant_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(<span class="no">quant_dfm</span>, <span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">max_docfreq</span> <span class="kw">=</span> <span class="fl">10</span>)
 <span class="no">quant_dfm</span></pre></body></html></div>
@@ -834,7 +836,7 @@
 ##   Kenny, Enda (FG)                0      2    5
 ## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</code></pre>
 <p>Now we can fit the topic model and plot it:</p>
-<div class="sourceCode" id="cb91"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
+<div class="sourceCode" id="cb92"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
 <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"stm"</span>)) {
     <span class="no">my_lda_fit20</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html">stm</a></span>(<span class="no">quant_dfm</span>, <span class="kw">K</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
     <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my_lda_fit20</span>)
@@ -842,7 +844,7 @@
 <pre><code>## Loading required package: stm</code></pre>
 <pre><code>## stm v1.3.5 successfully loaded. See ?stm for help. 
 ##  Papers, resources, and other materials at structuraltopicmodel.com</code></pre>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-40-1.png" width="672"></p>
+<p><img src="quickstart_files/figure-html/unnamed-chunk-42-1.png" width="672"></p>
 </div>
 </div>
   </div>

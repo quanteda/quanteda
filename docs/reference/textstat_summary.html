@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -230,7 +230,8 @@
     </tr>
     <tr>
       <th>cache</th>
-      <td><p>if <code>TRUE</code>, use internal cache from the second time</p></td>
+      <td><p>if <code>TRUE</code>, use internal cache from the second time. Not
+available on Solaris.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -240,19 +241,24 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Count the total number of characters, tokens and sentences as well as
-special tokens such as numbers, punctuation marks, symbols, tags and emojis.</p><ul>
+    <p>Count the total number of characters, tokens and sentences as well as special
+tokens such as numbers, punctuation marks, symbols, tags and emojis.</p><ul>
 <li><p>chars = number of characters; equal to <code><a href='https://rdrr.io/r/base/nchar.html'>nchar()</a></code></p></li>
-<li><p>sents = number of sentences; equal <code><a href='ntoken.html'>ntoken(tokens(x), what = "sentence")</a></code></p></li>
+<li><p>sents
+= number of sentences; equal <code><a href='ntoken.html'>ntoken(tokens(x), what = "sentence")</a></code></p></li>
 <li><p>tokens = number of tokens; equal to <code><a href='ntoken.html'>ntoken()</a></code></p></li>
-<li><p>types = number of unique tokens; equal to <code><a href='ntoken.html'>ntype()</a></code></p></li>
-<li><p>puncts = number of punctuation marks (<code>^\p{P}+$</code>)</p></li>
+<li><p>types = number of unique
+tokens; equal to <code><a href='ntoken.html'>ntype()</a></code></p></li>
+<li><p>puncts = number of punctuation marks
+(<code>^\p{P}+$</code>)</p></li>
 <li><p>numbers = number of numeric tokens
 (<code>^\p{Sc}{0,1}\p{N}+([.,]*\p{N})*\p{Sc}{0,1}$</code>)</p></li>
-<li><p>symbols = number of symbols (<code>^\p{S}$</code>)</p></li>
-<li><p>tags = number of tags; sum of
-<code>pattern_username</code> and <code>pattern_hashtag</code> in <code><a href='quanteda_options.html'>quanteda_options()</a></code></p></li>
-<li><p>emojis = number of emojis (<code>^\p{Emoji_Presentation}+$</code>)</p></li>
+<li><p>symbols = number of
+symbols (<code>^\p{S}$</code>)</p></li>
+<li><p>tags = number of tags; sum of <code>pattern_username</code>
+and <code>pattern_hashtag</code> in <code><a href='quanteda_options.html'>quanteda_options()</a></code></p></li>
+<li><p>emojis = number of emojis
+(<code>^\p{Emoji_Presentation}+$</code>)</p></li>
 </ul>
 
 
@@ -267,7 +273,7 @@ special tokens such as numbers, punctuation marks, symbols, tags and emojis.</p>
 #&gt; 6     1809-Madison  7002    21   1261   524     86       0       0    0    0
 #&gt; 7     1813-Madison  7156    33   1302   523     92       0       0    0    0
 #&gt; 8      1817-Monroe 19889   121   3677   986    307       0       0    0    0
-#&gt; 9      1821-Monroe 26325   129   4886  1207    414      11       2    0    0
+#&gt; 9      1821-Monroe 26325   131   4886  1207    414      11       2    0    0
 #&gt; 10      1825-Adams 17745    74   3147   968    232       0       0    0    0
 #&gt; 11    1829-Jackson  6818    25   1208   504     80       0       0    0    0
 #&gt; 12    1833-Jackson  7059    29   1267   479     91       0       0    0    0
@@ -289,7 +295,7 @@ special tokens such as numbers, punctuation marks, symbols, tags and emojis.</p>
 #&gt; 28   1897-McKinley 23666   130   4353  1193    388       5       0    0    0
 #&gt; 29   1901-McKinley 13407   100   2437   822    224       8       1    0    0
 #&gt; 30  1905-Roosevelt  5567    33   1079   387     95       0       0    0    0
-#&gt; 31       1909-Taft 32164   159   5821  1383    391       2       1    0    0
+#&gt; 31       1909-Taft 32164   158   5821  1383    391       2       1    0    0
 #&gt; 32     1913-Wilson  9562    68   1882   634    183       0       0    0    0
 #&gt; 33     1917-Wilson  8398    59   1652   529    123       0       0    0    0
 #&gt; 34    1921-Harding 20299   148   3719  1127    392       0       0    0    0
@@ -298,7 +304,7 @@ special tokens such as numbers, punctuation marks, symbols, tags and emojis.</p>
 #&gt; 37  1933-Roosevelt 10907    85   2057   712    177       0       0    0    0
 #&gt; 38  1937-Roosevelt 10614    96   1989   691    181       2       0    0    0
 #&gt; 39  1941-Roosevelt  7595    68   1519   501    178       4       0    0    0
-#&gt; 40  1945-Roosevelt  3052    26    633   265     76       2       0    0    0
+#&gt; 40  1945-Roosevelt  3052    27    633   265     76       2       0    0    0
 #&gt; 41     1949-Truman 13687   116   2504   745    232       1       0    0    0
 #&gt; 42 1953-Eisenhower 13968   119   2743   865    289       9       0    0    0
 #&gt; 43 1957-Eisenhower  9213    92   1907   591    248       0       0    0    0
@@ -307,7 +313,7 @@ special tokens such as numbers, punctuation marks, symbols, tags and emojis.</p>
 #&gt; 46      1969-Nixon 11644   103   2416   714    292       0       0    0    0
 #&gt; 47      1973-Nixon 10007    68   1995   515    193       1       0    0    0
 #&gt; 48     1977-Carter  6878    52   1369   501    145       3       0    0    0
-#&gt; 49     1981-Reagan 13743   128   2780   850    348       1       0    0    0
+#&gt; 49     1981-Reagan 13743   129   2780   850    348       1       0    0    0
 #&gt; 50     1985-Reagan 14572   123   2909   876    345      11       0    0    0
 #&gt; 51       1989-Bush 12529   141   2673   756    356       2       0    0    0
 #&gt; 52    1993-Clinton  9113    81   1833   605    235       0       0    0    0

@@ -1,10 +1,12 @@
-# quanteda > 2.0.0
+# quanteda 2.1.1
 
 ## Changes
 
 ## Bug fixes and stability enhancements
 
 * `corpus_reshape()` now allows reshaping back to documents even when segmented texts were of zero length. (#1978)
+* Special handling applied for Solaris to some issues breaking on that build, relating to the cacheing in `summary.corpus()`/`textstat_summary()`.
+
 
 # quanteda 2.1.0
 

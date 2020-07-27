@@ -50,7 +50,7 @@
 <meta property="og:title" content="Flatten a hierarchical dictionary into a list of character vectors — flatten_dictionary" />
 <meta property="og:description" content="Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
-vectors. Works like unlist(dictionary, recursive=TRUE) except that
+vectors. Works like unlist(dictionary, recursive = TRUE) except that
 the recursion does not go to the bottom level.  Called by dfm()." />
 
 
@@ -93,7 +93,7 @@ the recursion does not go to the bottom level.  Called by dfm()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ the recursion does not go to the bottom level.  Called by dfm()." />
     <div class="ref-description">
     <p>Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
-vectors. Works like <code><a href='https://rdrr.io/r/base/unlist.html'>unlist(dictionary, recursive=TRUE)</a></code> except that
+vectors. Works like <code><a href='https://rdrr.io/r/base/unlist.html'>unlist(dictionary, recursive = TRUE)</a></code> except that
 the recursion does not go to the bottom level.  Called by <code><a href='dfm.html'>dfm()</a></code>.</p>
     </div>
 
@@ -238,7 +238,7 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dict</th>
-      <td><p>internal argument to pass flattened dictionary</p></td>
+      <td><p>list to be flattened</p></td>
     </tr>
     <tr>
       <th>levels</th>
@@ -249,12 +249,12 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
       <td><p>internal argument to pass current levels</p></td>
     </tr>
     <tr>
-      <th>tree</th>
-      <td><p>list to be flattened</p></td>
+      <th>key_parent</th>
+      <td><p>internal argument to pass for parent keys</p></td>
     </tr>
     <tr>
-      <th>key_tree</th>
-      <td><p>internal argument to pass for parent keys</p></td>
+      <th>dict_flat</th>
+      <td><p>internal argument to pass flattened dictionary</p></td>
     </tr>
     </table>
 
@@ -277,7 +277,7 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.0’
+#&gt; [1] ‘2.1.1’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
 #&gt; [1] ‘4.0.2’
@@ -290,7 +290,7 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-07-02"
+#&gt; [1] "2020-07-27"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -305,8 +305,8 @@ the recursion does not go to the bottom level.  Called by <code><a href='dfm.htm
 #&gt; list()
 #&gt; </div><div class='input'>
 <span class='no'>dict2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1a1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1a11"</span>, <span class='st'>"l1a12"</span>),
-                            <span class='kw'>level1a2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1a21"</span>, <span class='st'>"l1a22"</span>)),
-             <span class='kw'>level1b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1b1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1b11"</span>, <span class='st'>"l1b12"</span>),
+                             <span class='kw'>level1a2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1a21"</span>, <span class='st'>"l1a22"</span>)),
+              <span class='kw'>level1b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1b1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1b11"</span>, <span class='st'>"l1b12"</span>),
                              <span class='kw'>level1b2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l1b21"</span>, <span class='st'>"l1b22"</span>, <span class='st'>"l1b23"</span>)),
               <span class='kw'>level1c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1c1a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1c1a1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lowest1"</span>, <span class='st'>"lowest2"</span>)),
                              <span class='kw'>level1c1b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>level1c1b1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lowestalone"</span>))))

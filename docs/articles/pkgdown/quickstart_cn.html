@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -239,7 +239,7 @@
 ##        LibDem   251    483        14
 ##            PC    77    114         5
 ##           SNP    88    134         4
-##          UKIP   346    722        27</code></pre>
+##          UKIP   346    722        26</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code><a href="https://rdrr.io/r/base/names.html">names()</a></code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">corp_uk</span>, <span class="st">"Party"</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">data_char_ukimmig2010</span>)
@@ -256,7 +256,7 @@
 ##        LibDem   251    483        14       LibDem 2010
 ##            PC    77    114         5           PC 2010
 ##           SNP    88    134         4          SNP 2010
-##          UKIP   346    722        27         UKIP 2010</code></pre>
+##          UKIP   346    722        26         UKIP 2010</code></pre>
 </div>
 <div id="loading-in-files-using-the-readtext-package" class="section level3">
 <h3 class="hasAnchor">
@@ -313,12 +313,12 @@
 ##                       Text Types Tokens Sentences year debate number      foren
 ##        Lenihan, Brian (FF)  1953   8641       374 2010 BUDGET     01      Brian
 ##       Bruton, Richard (FG)  1040   4446       217 2010 BUDGET     02    Richard
-##         Burton, Joan (LAB)  1624   6393       307 2010 BUDGET     03       Joan
-##        Morgan, Arthur (SF)  1595   7107       343 2010 BUDGET     04     Arthur
-##          Cowen, Brian (FF)  1629   6599       250 2010 BUDGET     05      Brian
-##           Kenny, Enda (FG)  1148   4232       153 2010 BUDGET     06       Enda
+##         Burton, Joan (LAB)  1624   6393       309 2010 BUDGET     03       Joan
+##        Morgan, Arthur (SF)  1595   7107       344 2010 BUDGET     04     Arthur
+##          Cowen, Brian (FF)  1629   6599       251 2010 BUDGET     05      Brian
+##           Kenny, Enda (FG)  1148   4232       155 2010 BUDGET     06       Enda
 ##      ODonnell, Kieran (FG)   678   2297       133 2010 BUDGET     07     Kieran
-##       Gilmore, Eamon (LAB)  1181   4176       201 2010 BUDGET     08      Eamon
+##       Gilmore, Eamon (LAB)  1181   4176       203 2010 BUDGET     08      Eamon
 ##     Higgins, Michael (LAB)   488   1286        44 2010 BUDGET     09    Michael
 ##        Quinn, Ruairi (LAB)   439   1284        59 2010 BUDGET     10     Ruairi
 ##      Gormley, John (Green)   401   1030        49 2010 BUDGET     11       John
@@ -852,30 +852,30 @@
     <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(<span class="no">my_lda_fit20</span>, <span class="fl">5</span>)
 }</pre></body></html></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1  Topic 2     Topic 3  Topic 4    Topic 5    Topic 6      
-## [1,] "fianna" "care"      "create" "per"      "system"   "kind"       
-## [2,] "fáil"   "allowance" "system" "welfare"  "taxation" "imagination"
-## [3,] "side"   "system"    "keep"   "million"  "fáil"     "policies"   
-## [4,] "level"  "policies"  "built"  "families" "worst"    "wit"        
-## [5,] "third"  "back"      "sure"   "family"   "high"     "create"     
-##      Topic 7    Topic 8   Topic 9      Topic 10    Topic 11    Topic 12   
-## [1,] "fianna"   "child"   "support"    "scheme"    "taoiseach" "taoiseach"
-## [2,] "fáil"     "benefit" "hospital"   "measures"  "fine"      "employees"
-## [3,] "national" "day"     "real"       "reduction" "gael"      "rate"     
-## [4,] "irish"    "today"   "needs"      "recent"    "may"       "referred" 
-## [5,] "support"  "bank"    "adjustment" "welfare"   "irish"     "debate"   
-##      Topic 13  Topic 14    Topic 15     Topic 16   Topic 17      Topic 18      
-## [1,] "levy"    "failed"    "welfare"    "million"  "alternative" "enterprising"
-## [2,] "million" "strategy"  "recovery"   "scheme"   "citizenship" "equal"       
-## [3,] "carbon"  "needed"    "child"      "level"    "wealth"      "sense"       
-## [4,] "change"  "ministers" "fianna"     "measures" "adjustment"  "society"     
-## [5,] "welfare" "system"    "employment" "recent"   "breaks"      "going"       
-##      Topic 19   Topic 20     
-## [1,] "spending" "welfare"    
-## [2,] "review"   "support"    
-## [3,] "million"  "investment" 
-## [4,] "measures" "confidence" 
-## [5,] "changes"  "development"</code></pre>
+<pre><code>##      Topic 1     Topic 2    Topic 3    Topic 4     Topic 5        Topic 6   
+## [1,] "care"      "million"  "fianna"   "taoiseach" "equal"        "welfare" 
+## [2,] "welfare"   "pension"  "fáil"     "employees" "society"      "system"  
+## [3,] "per"       "recent"   "national" "debate"    "enterprising" "taxation"
+## [4,] "allowance" "reduce"   "irish"    "rate"      "nation"       "fianna"  
+## [5,] "hit"       "spending" "support"  "proper"    "sense"        "fáil"    
+##      Topic 7   Topic 8     Topic 9       Topic 10    Topic 11  Topic 12   
+## [1,] "child"   "real"      "kind"        "failed"    "child"   "taoiseach"
+## [2,] "benefit" "benefit"   "imagination" "strategy"  "hope"    "fine"     
+## [3,] "fianna"  "full-time" "policies"    "ministers" "million" "gael"     
+## [4,] "bank"    "able"      "wit"         "needed"    "poverty" "may"      
+## [5,] "fáil"    "system"    "create"      "vision"    "bank"    "irish"    
+##      Topic 13   Topic 14      Topic 15     Topic 16      Topic 17    Topic 18 
+## [1,] "measures" "alternative" "reform"     "million"     "taoiseach" "day"    
+## [2,] "review"   "citizenship" "employment" "support"     "referred"  "welfare"
+## [3,] "spending" "wealth"      "interest"   "welfare"     "terms"     "benefit"
+## [4,] "welfare"  "adjustment"  "per"        "investment"  "three"     "banks"  
+## [5,] "details"  "breaks"      "today"      "development" "consider"  "let"    
+##      Topic 19  Topic 20    
+## [1,] "levy"    "rate"      
+## [2,] "million" "welfare"   
+## [3,] "carbon"  "increased" 
+## [4,] "change"  "scheme"    
+## [5,] "welfare" "increasing"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>

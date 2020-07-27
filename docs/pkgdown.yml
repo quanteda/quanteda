@@ -19,7 +19,7 @@ articles:
   qss: pkgdown/replication/qss.html
   text2vec: pkgdown/replication/text2vec.html
   quickstart: quickstart.html
-last_built: 2020-07-02T10:51Z
+last_built: 2020-07-27T12:27Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

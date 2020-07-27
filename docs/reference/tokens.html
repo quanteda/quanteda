@@ -92,7 +92,7 @@ tokenizer." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -451,8 +451,8 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; [1] "for"   "is"    "gr8"   "4ever"
 #&gt; </div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) <span class='co'># using other tokenizers</span>
-<span class='fu'>tokens</span>(<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>[<span class='fl'>4</span>]), <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>, <span class='kw'>lowercase</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strip_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>tokens</span>(<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>[<span class='fl'>4</span>]), <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span>(<span class='no'>txt</span>, <span class='kw'>lowercase</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strip_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>tokens</span>(<span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 4 documents.
 #&gt; doc1 :
 #&gt;  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
@@ -470,12 +470,12 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; 
 #&gt; doc4 :
 #&gt; [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    
-#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span>(<span class='no'>txt</span>[<span class='fl'>3</span>], <span class='kw'>strip_non_alphanum</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span>(<span class='no'>txt</span>[<span class='fl'>3</span>], <span class='kw'>strip_non_alphanum</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>tokens</span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; doc3 :
 #&gt;  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"
 #&gt; [ ... and 7 more ]
-#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span>(
+#&gt; </div><div class='input'><span class='kw pkg'>tokenizers</span><span class='kw ns'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span>(
     <span class='st'>"The quick brown fox.  It jumped over the lazy dog."</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>tokens</span>()</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :

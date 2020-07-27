@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -239,7 +239,7 @@
 ##        LibDem   251    483        14
 ##            PC    77    114         5
 ##           SNP    88    134         4
-##          UKIP   346    722        27</code></pre>
+##          UKIP   346    722        26</code></pre>
 <p>हम कुछ डॉक्युमेंट लेवल वेरीअबल्ज़ - जिसे क्वांटेडा में <em>docvars</em> कहा गया है - इस कार्पस के साथ जोड़ सकते हैं</p>
 <p>हम इसे ऐसे कर सकते हैं: R के <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> फ़ंक्शन का उपयोग करके, हम <code>data_char_ukimmig2010</code> के कैरक्टर वेक्टर के नामों को पा सकते हैं और उन नामों को डॉक्युमेंट वेरीअबल (<em>docvar</em>) में रख सकते हैं।</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">corp_uk</span>, <span class="st">"Party"</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">data_char_ukimmig2010</span>)
@@ -256,7 +256,7 @@
 ##        LibDem   251    483        14       LibDem 2010
 ##            PC    77    114         5           PC 2010
 ##           SNP    88    134         4          SNP 2010
-##          UKIP   346    722        27         UKIP 2010</code></pre>
+##          UKIP   346    722        26         UKIP 2010</code></pre>
 <p>यदि हम प्रत्येक डॉक्युमेंट को अतिरिक्त मेटा-डेटा के साथ टैग करना चाहते हैं जो विश्लेषण के लिए ज़रूरी नहीं है, बल्कि कुछ ऐसा है जिसे हमें डॉक्युमेंट की विशेषता के रूप में जानने की आवश्यकता है, हम उन्हें भी अपने कार्पस में जोड़ सकते हैं।</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../../reference/metadoc.html">metadoc</a></span>(<span class="no">corp_uk</span>, <span class="st">"language"</span>) <span class="kw">&lt;-</span> <span class="st">"english"</span></pre></body></html></div>
 <pre><code>## Warning: metadoc is deprecated</code></pre>
@@ -274,7 +274,7 @@
 ##        LibDem   251    483        14       LibDem 2010   english
 ##            PC    77    114         5           PC 2010   english
 ##           SNP    88    134         4          SNP 2010   english
-##          UKIP   346    722        27         UKIP 2010   english
+##          UKIP   346    722        26         UKIP 2010   english
 ##               _docsource
 ##  data_char_ukimmig2010_1
 ##  data_char_ukimmig2010_2

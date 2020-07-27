@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -271,14 +271,16 @@ features that are unnamed when they are added, for whatever reason, to a dfm
 through an operation that adds features</p></dd>
 <dt><code>base_compname</code></dt><dd><p>character; stem name for components that are
 created by matrix factorization</p></dd>
-<dt><code>language_stemmer</code></dt><dd><p>character; language option for <a href='tokens_wordstem.html'>char_wordstem</a>,
-<a href='tokens_wordstem.html'>tokens_wordstem</a>, and <a href='tokens_wordstem.html'>dfm_wordstem</a></p></dd>
+<dt><code>language_stemmer</code></dt><dd><p>character; language option for <code><a href='tokens_wordstem.html'>char_wordstem()</a></code>,
+<code><a href='tokens_wordstem.html'>tokens_wordstem()</a></code>, and <code><a href='tokens_wordstem.html'>dfm_wordstem()</a></code></p></dd>
 <dt><code>pattern_hashtag</code>, <code>pattern_username</code></dt><dd><p>character; regex patterns for
 (social media) hashtags and usernames respectively, used to avoid segmenting
 these in the default internal "word" tokenizer</p></dd>
 <dt><code>tokens_block_size</code></dt><dd><p>integer; specifies the
 number of documents to be tokenized at a time in blocked tokenization.
 When the number is large, tokenization becomes faster but also memory-intensive.</p></dd>
+<dt><code>tokens_locale</code></dt><dd><p>character; specify locale in stringi boundary detection in
+tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/stringi/man/stri_opts_brkiter.html'>stringi::stri_opts_brkiter()</a></code>.</p></dd>
 </dl>
 
 
@@ -345,6 +347,9 @@ When the number is large, tokenization becomes faster but also memory-intensive.
 #&gt; 
 #&gt; $tokens_block_size
 #&gt; [1] 10000
+#&gt; 
+#&gt; $tokens_locale
+#&gt; [1] "en_US@ss=standard"
 #&gt; </div><div class='input'><span class='co'># \donttest{</span>
 <span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)

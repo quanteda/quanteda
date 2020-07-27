@@ -115,6 +115,7 @@ reference:
     - char_toupper
     - char_segment
     - char_ngrams
+    - char_select
     - char_trim
     - char_wordstem
 - title: Text matrix functions
@@ -166,6 +167,7 @@ reference:
     - textstat_frequency
     - textstat_keyness
     - textstat_readability
+    - textstat_summary
     - sparsity
     - topfeatures
 - title: Text models
@@ -176,6 +178,7 @@ reference:
   desc: Constructor and utility functions for working with dictionaries.
   contents:
     - dictionary
+    - dictionary_edit
     - is.dictionary
     - as.yaml
 - title: Phrase discovery functions

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -220,7 +220,7 @@
 <pre><code>## Creating a dfm from a corpus input...</code></pre>
 <pre><code>##  ...lowercasing</code></pre>
 <pre><code>##  ...found 85 documents, 8,631 features</code></pre>
-<pre><code>##  ...complete, elapsed time: 0.267 seconds.</code></pre>
+<pre><code>##  ...complete, elapsed time: 0.578 seconds.</code></pre>
 <pre><code>## Finished constructing a 85 x 8,631 sparse dfm.</code></pre>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># remove stop words and stem words</span>
 <span class="no">dfm_papers</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="no">dfm_prep</span>, <span class="kw">stem</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))

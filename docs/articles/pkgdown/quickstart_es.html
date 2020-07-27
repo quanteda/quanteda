@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -235,7 +235,7 @@
 ##        LibDem   251    483        14
 ##            PC    77    114         5
 ##           SNP    88    134         4
-##          UKIP   346    722        27</code></pre>
+##          UKIP   346    722        26</code></pre>
 <p>Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento – lo que quanteda llama <em>docvars</em>.</p>
 <p>Esto lo hacemos utilizando la función de R llamada <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> para obtener los nombres del vector de tipo character de <code>data_char_ukimmig2010</code> y asignárselos a una variable de documento (<code>docvar</code>).</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">corp_uk</span>, <span class="st">"Party"</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">data_char_ukimmig2010</span>)
@@ -252,7 +252,7 @@
 ##        LibDem   251    483        14       LibDem 2010
 ##            PC    77    114         5           PC 2010
 ##           SNP    88    134         4          SNP 2010
-##          UKIP   346    722        27         UKIP 2010</code></pre>
+##          UKIP   346    722        26         UKIP 2010</code></pre>
 </div>
 <div id="cargando-archivos-usando-el-paquete-readtext" class="section level3">
 <h3 class="hasAnchor">
@@ -310,12 +310,12 @@
 ##                       Text Types Tokens Sentences year debate number      foren
 ##        Lenihan, Brian (FF)  1953   8641       374 2010 BUDGET     01      Brian
 ##       Bruton, Richard (FG)  1040   4446       217 2010 BUDGET     02    Richard
-##         Burton, Joan (LAB)  1624   6393       307 2010 BUDGET     03       Joan
-##        Morgan, Arthur (SF)  1595   7107       343 2010 BUDGET     04     Arthur
-##          Cowen, Brian (FF)  1629   6599       250 2010 BUDGET     05      Brian
-##           Kenny, Enda (FG)  1148   4232       153 2010 BUDGET     06       Enda
+##         Burton, Joan (LAB)  1624   6393       309 2010 BUDGET     03       Joan
+##        Morgan, Arthur (SF)  1595   7107       344 2010 BUDGET     04     Arthur
+##          Cowen, Brian (FF)  1629   6599       251 2010 BUDGET     05      Brian
+##           Kenny, Enda (FG)  1148   4232       155 2010 BUDGET     06       Enda
 ##      ODonnell, Kieran (FG)   678   2297       133 2010 BUDGET     07     Kieran
-##       Gilmore, Eamon (LAB)  1181   4176       201 2010 BUDGET     08      Eamon
+##       Gilmore, Eamon (LAB)  1181   4176       203 2010 BUDGET     08      Eamon
 ##     Higgins, Michael (LAB)   488   1286        44 2010 BUDGET     09    Michael
 ##        Quinn, Ruairi (LAB)   439   1284        59 2010 BUDGET     10     Ruairi
 ##      Gormley, John (Green)   401   1030        49 2010 BUDGET     11       John
@@ -845,30 +845,30 @@
     <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(<span class="no">my_lda_fit20</span>, <span class="fl">5</span>)
 }</pre></body></html></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1    Topic 2    Topic 3       Topic 4     Topic 5       
-## [1,] "million"  "review"   "banks"       "taoiseach" "equal"       
-## [2,] "change"   "scheme"   "system"      "gael"      "society"     
-## [3,] "spending" "measures" "opportunity" "fine"      "enterprising"
-## [4,] "reduced"  "spending" "irish"       "day"       "nation"      
-## [5,] "per"      "welfare"  "may"         "may"       "sense"       
-##      Topic 6       Topic 7    Topic 8    Topic 9     Topic 10    Topic 11     
-## [1,] "alternative" "system"   "million"  "failed"    "taoiseach" "kind"       
-## [2,] "citizenship" "fianna"   "details"  "strategy"  "employees" "carbon"     
-## [3,] "wealth"      "taxation" "pension"  "needed"    "rate"      "imagination"
-## [4,] "adjustment"  "fáil"     "measures" "ministers" "referred"  "change"     
-## [5,] "breaks"      "stimulus" "reduce"   "system"    "debate"    "levy"       
-##      Topic 12   Topic 13  Topic 14  Topic 15     Topic 16   Topic 17    
-## [1,] "fáil"     "welfare" "child"   "support"    "fianna"   "million"   
-## [2,] "fianna"   "parties" "day"     "welfare"    "fáil"     "recent"    
-## [3,] "support"  "job"     "benefit" "million"    "child"    "recovery"  
-## [4,] "national" "banks"   "bank"    "investment" "national" "energy"    
-## [5,] "irish"    "earners" "today"   "back"       "strategy" "reductions"
-##      Topic 18  Topic 19  Topic 20   
-## [1,] "welfare" "benefit" "per"      
-## [2,] "workers" "child"   "hospital" 
-## [3,] "family"  "just"    "care"     
-## [4,] "hit"     "welfare" "allowance"
-## [5,] "still"   "hear"    "system"</code></pre>
+<pre><code>##      Topic 1   Topic 2    Topic 3       Topic 4   Topic 5      Topic 6   
+## [1,] "welfare" "fianna"   "alternative" "fianna"  "million"    "welfare" 
+## [2,] "system"  "fáil"     "citizenship" "benefit" "support"    "system"  
+## [3,] "gael"    "national" "wealth"      "child"   "investment" "taxation"
+## [4,] "taxes"   "irish"    "adjustment"  "fáil"    "reductions" "fianna"  
+## [5,] "worse"   "support"  "breaks"      "society" "level"      "fáil"    
+##      Topic 7     Topic 8     Topic 9  Topic 10      Topic 11   Topic 12      
+## [1,] "taoiseach" "taoiseach" "fianna" "kind"        "measures" "society"     
+## [2,] "stimulus"  "employees" "fáil"   "imagination" "spending" "enterprising"
+## [3,] "gael"      "rate"      "side"   "policies"    "scheme"   "sense"       
+## [4,] "case"      "referred"  "level"  "wit"         "welfare"  "equal"       
+## [5,] "may"       "debate"    "third"  "create"      "review"   "nation"      
+##      Topic 13     Topic 14      Topic 15    Topic 16  Topic 17  Topic 18       
+## [1,] "still"      "fine"        "failed"    "levy"    "child"   "million"      
+## [2,] "already"    "irish"       "strategy"  "million" "day"     "international"
+## [3,] "million"    "taoiseach"   "needed"    "carbon"  "benefit" "rate"         
+## [4,] "pre-budget" "day"         "ministers" "change"  "know"    "commitment"   
+## [5,] "measures"   "opportunity" "system"    "welfare" "today"   "per"          
+##      Topic 19    Topic 20  
+## [1,] "care"      "welfare" 
+## [2,] "welfare"   "even"    
+## [3,] "per"       "scheme"  
+## [4,] "allowance" "create"  
+## [5,] "hit"       "national"</code></pre>
 </div>
 </div>
   </div>
