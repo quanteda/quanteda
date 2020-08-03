@@ -77,12 +77,12 @@ test_that("test tm package converter", {
 
 test_that("test lda package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "topicmodels"), quanteda:::dfm2dtm(d))
+    expect_identical(convert(d, to = "topicmodels"), quanteda.core:::dfm2dtm(d))
 })
 
 test_that("test topicmodels package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "lda"), quanteda:::dfm2lda(d))
+    expect_identical(convert(d, to = "lda"), quanteda.core:::dfm2lda(d))
 })
 
 test_that("test austin package converter", {
@@ -287,7 +287,7 @@ test_that("omit_empty works as expected (#1600", {
     expect_equal(length(convert(dfmat, to = "lda", omit_empty = FALSE)$documents), 4)
 
     expect_error(
-        quanteda:::dfm2stm(dfmat, omit_empty = FALSE),
+        quanteda.core:::dfm2stm(dfmat, omit_empty = FALSE),
         "omit_empty = FALSE not implemented for STM format"
     )
 

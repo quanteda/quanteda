@@ -89,53 +89,53 @@ test_that("meta_system", {
     corp <- corpus(c("one", "two"))
 
     expect_error(
-        quanteda:::meta_system(corp) <- "needs to be a list",
+        quanteda.core:::meta_system(corp) <- "needs to be a list",
         "value must be a named list"
     )
     expect_error(
-        quanteda:::meta_system(corp) <- list("needs to be named"),
+        quanteda.core:::meta_system(corp) <- list("needs to be named"),
         "every element of the meta list must be named"
     )
     
     namlist <- c("package-version", "r-version", "system", 
-                 "directory", "created") %in% names(quanteda:::meta_system(corp))
+                 "directory", "created") %in% names(quanteda.core:::meta_system(corp))
     expect_true(all(namlist))
     
     expect_identical(
         meta(corp, type = "system"),
-        quanteda:::meta_system(corp)
+        quanteda.core:::meta_system(corp)
     )
 })
 
 test_that("meta_system<-", {
     corp <- corpus(c("one", "two"))
-    corp2 <- quanteda:::"meta_system<-.corpus"(corp, "source", "test-meta.R")
-    expect_identical(quanteda:::meta_system(corp2, "source"), "test-meta.R")
+    corp2 <- quanteda.core:::"meta_system<-.corpus"(corp, "source", "test-meta.R")
+    expect_identical(quanteda.core:::meta_system(corp2, "source"), "test-meta.R")
     
     toks <- tokens(corp)
-    toks2 <- quanteda:::"meta_system<-.tokens"(toks, "source", "test-meta.R")
-    expect_identical(quanteda:::meta_system(toks2, "source"), "test-meta.R")
+    toks2 <- quanteda.core:::"meta_system<-.tokens"(toks, "source", "test-meta.R")
+    expect_identical(quanteda.core:::meta_system(toks2, "source"), "test-meta.R")
     
     dfmat <- dfm(toks)
-    dfmat2 <- quanteda:::"meta_system<-.dfm"(dfmat, "source", "dfm test")
-    expect_identical(quanteda:::meta_system(dfmat2, "source"), "dfm test")
+    dfmat2 <- quanteda.core:::"meta_system<-.dfm"(dfmat, "source", "dfm test")
+    expect_identical(quanteda.core:::meta_system(dfmat2, "source"), "dfm test")
 })
 
 test_that("adding summary info works", {
     corp <- corpus(data_char_ukimmig2010)
-    corp <- quanteda:::add_summary_metadata(corp)
+    corp <- quanteda.core:::add_summary_metadata(corp)
     expect_identical(
         summary(corp),
-        quanteda:::get_summary_metadata(corp)
+        quanteda.core:::get_summary_metadata(corp)
     )
 
     # for over 100 documents
     set.seed(10)
     corp <- corpus(sample(LETTERS, size = 110, replace = TRUE)) %>%
-        quanteda:::add_summary_metadata()
+        quanteda.core:::add_summary_metadata()
     expect_identical(
         summary(corp, n = ndoc(corp)),
-        quanteda:::get_summary_metadata(corp)
+        quanteda.core:::get_summary_metadata(corp)
     )
 
     # expect_warning(
@@ -143,34 +143,34 @@ test_that("adding summary info works", {
     #     "^documents have changed; computing summary$"
     # )
     expect_identical(
-        suppressWarnings(quanteda:::get_summary_metadata(corp[1:10])),
+        suppressWarnings(quanteda.core:::get_summary_metadata(corp[1:10])),
         summary(corp[1:10])
     )
 
     # test when tokens options are passed
     corp1 <- corpus(c(d1 = "One. Two!", d2 = "One 2"))
-    corp2 <- quanteda:::add_summary_metadata(corp1,
+    corp2 <- quanteda.core:::add_summary_metadata(corp1,
                                              remove_punct = TRUE,
                                              remove_numbers = TRUE)
     expect_identical(
         summary(corp1, remove_punct = TRUE, remove_numbers = TRUE),
-        quanteda:::get_summary_metadata(corp2)
+        quanteda.core:::get_summary_metadata(corp2)
     )
     expect_identical(
         summary(corp2[1], remove_punct = TRUE, remove_numbers = TRUE),
-        quanteda:::get_summary_metadata(corp2[1], remove_punct = TRUE, remove_numbers = TRUE)
+        quanteda.core:::get_summary_metadata(corp2[1], remove_punct = TRUE, remove_numbers = TRUE)
     )
 
     # test errors when non-tokens ... are passed
     expect_warning(
-        quanteda:::add_summary_metadata(corp1, not_arg = TRUE),
+        quanteda.core:::add_summary_metadata(corp1, not_arg = TRUE),
         "^not_arg argument is not used"
     )
 })
 
 test_that("adding extended summary information works", {
     corp <- corpus(c("One, two ®, 3. ", "😚 Yeah!!"))
-    extsumm <- quanteda:::summarize_texts_extended(corp)
+    extsumm <- quanteda.core:::summarize_texts_extended(corp)
     expect_true(all(
         c("total_tokens", "all_tokens", "total_punctuation", "total_symbols",
           "total_numbers", "total_words", "total_stopwords", "top_dfm") %in%
@@ -178,7 +178,7 @@ test_that("adding extended summary information works", {
     ))
     expect_is(extsumm$top_dfm, "dfm")
 
-    corp <- quanteda:::add_summary_metadata(corp, extended = TRUE)
+    corp <- quanteda.core:::add_summary_metadata(corp, extended = TRUE)
     expect_equivalent(
         meta(corp, "summary_extended", type = "system"),
         extsumm
@@ -189,7 +189,7 @@ test_that("adding extended summary information works", {
 test_that("object meta information is handled properly", {
     
     # make object meta for corpus
-    meta_corp1 <- quanteda:::make_meta("corpus")
+    meta_corp1 <- quanteda.core:::make_meta("corpus")
     expect_identical(
         names(meta_corp1),
         c("system", "object", "user")
@@ -201,7 +201,7 @@ test_that("object meta information is handled properly", {
     meta_inherit$object$ngram <- 10L
     
     # make object meta for tokens
-    meta_toks1 <- quanteda:::make_meta("tokens", 
+    meta_toks1 <- quanteda.core:::make_meta("tokens", 
                                        inherit = meta_inherit,
                                        unit = "sentences")
     expect_identical(
@@ -215,26 +215,26 @@ test_that("object meta information is handled properly", {
     # add unused field
     meta_inherit$object$xxx <- 999
     expect_warning(
-        quanteda:::make_meta("tokens", "corpus", inherit = meta_inherit),
+        quanteda.core:::make_meta("tokens", "corpus", inherit = meta_inherit),
         "xxx is ignored.", fixed = TRUE
     )
     meta_inherit$object$xxx <- NULL # correct
     expect_warning(
-        quanteda:::make_meta("tokens", xxx = 999),
+        quanteda.core:::make_meta("tokens", xxx = 999),
         "xxx is ignored.", fixed = TRUE
     )
 
     # assign invalid values to used field
     meta_inherit$object$skip <- FALSE
     expect_error(
-        quanteda:::make_meta("tokens", inherit = meta_inherit)
+        quanteda.core:::make_meta("tokens", inherit = meta_inherit)
     )
     meta_inherit$object$skip <- 0L # correct
     expect_error(
-        quanteda:::make_meta("tokens", skip = FALSE)
+        quanteda.core:::make_meta("tokens", skip = FALSE)
     )
     # make object meta for dfm
-    meta_dfm1 <- quanteda:::make_meta("dfm", 
+    meta_dfm1 <- quanteda.core:::make_meta("dfm", 
                                       inherit = meta_inherit,
                                       unit = "paragraphs")
     expect_identical(

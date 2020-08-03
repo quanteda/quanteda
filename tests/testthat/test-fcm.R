@@ -318,7 +318,7 @@ test_that("as.igraph.fcm works with window", {
 
 test_that("test empty object is handled properly", {
 
-    mat <- quanteda:::make_null_dfm()
+    mat <- quanteda.core:::make_null_dfm()
     expect_equal(dim(fcm(mat)), c(0, 0))
     expect_true(is.fcm(fcm(mat)))
 
@@ -387,10 +387,10 @@ test_that("dimnames are always character vectors", {
 test_that("fcm_setnames works", {
     x <- fcm(c("a b c", "a b c"), "window", window = 1)
 
-    quanteda:::set_fcm_featnames(x) <- paste0("feature", 1:3)
+    quanteda.core:::set_fcm_featnames(x) <- paste0("feature", 1:3)
     expect_identical(featnames(x), c("feature1", "feature2", "feature3"))
 
-    quanteda:::set_fcm_dimnames(x) <- list(paste0("feature", 1:3), paste0("ALTFEAT", 1:3))
+    quanteda.core:::set_fcm_dimnames(x) <- list(paste0("feature", 1:3), paste0("ALTFEAT", 1:3))
 })
 
 

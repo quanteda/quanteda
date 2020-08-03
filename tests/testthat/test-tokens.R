@@ -37,7 +37,7 @@ test_that("tokens_recompile combine duplicates is working", {
     expect_equivalent(attr(tokens_tolower(toksh), "types"),
                       c("a", "b", "c", "d"))
     attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
-    expect_equivalent(attr(quanteda:::tokens_recompile(toksh), "types"),
+    expect_equivalent(attr(quanteda.core:::tokens_recompile(toksh), "types"),
                       c("a", "b", "c", "d"))
 
 })
@@ -694,7 +694,7 @@ test_that("tokens verbose = TRUE produces expected messages", {
 test_that("types<- with wrong value generates error", {
     toks <- tokens(c("one two three", "four five."))
     expect_error(
-        quanteda:::`types<-.tokens`(toks, value = 1:6),
+        quanteda.core:::`types<-.tokens`(toks, value = 1:6),
         "replacement value must be character"
     )
 })
@@ -1047,25 +1047,25 @@ test_that("tokens.tokens(x, padding = TRUE) works", {
 
 test_that("special1 functions are working", {
     expect_identical(
-        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
+        quanteda.core:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
                                      split_hyphens = TRUE, split_tags = FALSE),
         "_ht_quanteda _ht_q-x _ht_q_y _ht_q100 _ht_q"
     )
     expect_identical(
-        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
+        quanteda.core:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
                                      split_hyphens = FALSE, split_tags = FALSE),
         "_ht_quanteda _ht_q_hy_x _ht_q_y _ht_q100 _ht_q"
     )
     toks1 <- list(1:5)
     attr(toks1, "types") <- c("_ht_quanteda", "_ht_q-x", "_ht_q_y", "_ht_q100", "_ht_q")
     expect_identical(
-        attr(quanteda:::restore_special1(toks1, split_hyphens = TRUE, split_tags = FALSE), "types"),
+        attr(quanteda.core:::restore_special1(toks1, split_hyphens = TRUE, split_tags = FALSE), "types"),
         c("#quanteda", "#q-x", "#q_y", "#q100", "#q")
     )
     toks2 <- list(1:5)
     attr(toks2, "types") <- c("_ht_quanteda", "_ht_q_hy_x", "_ht_q_y", "_ht_q100", "_ht_q")
     expect_identical(
-        attr(quanteda:::restore_special1(toks2, split_hyphens = FALSE, split_tags = FALSE), "types"),
+        attr(quanteda.core:::restore_special1(toks2, split_hyphens = FALSE, split_tags = FALSE), "types"),
         c("#quanteda", "#q-x", "#q_y", "#q100", "#q")
     )
 })
@@ -1140,11 +1140,11 @@ test_that("tags are preserved", {
 test_that("old preserve_special works", {
     txt <- "This @username used this #hashtag."
     expect_identical(
-        quanteda:::preserve_special1(txt, split_tags = FALSE),
+        quanteda.core:::preserve_special1(txt, split_tags = FALSE),
         "This _as_username used this _ht_hashtag."
     )
     expect_identical(
-        quanteda:::preserve_special1(txt, split_tags = TRUE),
+        quanteda.core:::preserve_special1(txt, split_tags = TRUE),
         txt
     )
 })

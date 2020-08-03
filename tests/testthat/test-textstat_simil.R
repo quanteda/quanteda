@@ -457,30 +457,30 @@ test_that("diag2na is working", {
 
     mat1 <- Matrix::Matrix(1:9, nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("b", "c", "d")))
-    expect_equal(as.matrix(quanteda:::diag2na(as(mat1, "dgTMatrix"))),
+    expect_equal(as.matrix(quanteda.core:::diag2na(as(mat1, "dgTMatrix"))),
                  matrix(c(1, NA, 3, 4, 5, NA, 7, 8, 9), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
 
     mat2 <- Matrix::Matrix(1:9, nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("d", "c", "b")))
-    expect_equal(as.matrix(quanteda:::diag2na(as(mat2, "dgTMatrix"))),
+    expect_equal(as.matrix(quanteda.core:::diag2na(as(mat2, "dgTMatrix"))),
                  matrix(c(1, 2, 3, 4, 5, NA, 7, NA, 9), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("d", "c", "b"))))
 
     mat3 <- Matrix::Matrix(1:6, nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("c", "b")))
-    expect_equal(as.matrix(quanteda:::diag2na(as(mat3, "dgTMatrix"))),
+    expect_equal(as.matrix(quanteda.core:::diag2na(as(mat3, "dgTMatrix"))),
                  matrix(c(1, 2, NA, 4, NA, 6), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("c", "b"))))
 
     mat4 <- Matrix::forceSymmetric(mat1)
-    expect_equal(as.matrix(quanteda:::diag2na(as(mat4, "dsTMatrix"))),
+    expect_equal(as.matrix(quanteda.core:::diag2na(as(mat4, "dsTMatrix"))),
                  matrix(c(NA, 4, 7, 4, NA, 8, 7, 8, NA), nrow = 3,
                         dimnames = list(c("b", "c", "d"), c("b", "c", "d"))))
 
     mat5 <- Matrix::Matrix(rep(0, 9), nrow = 3,
                            dimnames = list(c("a", "b", "c"), c("b", "c", "d")))
-    expect_equal(as.matrix(quanteda:::diag2na(as(mat5, "dgTMatrix"))),
+    expect_equal(as.matrix(quanteda.core:::diag2na(as(mat5, "dgTMatrix"))),
                  matrix(c(0, NA, 0, 0, 0, NA, 0, 0, 0), nrow = 3,
                         dimnames = list(c("a", "b", "c"), c("b", "c", "d"))))
 
@@ -489,7 +489,7 @@ test_that("diag2na is working", {
 test_that("make_na_matrix is working", {
 
     expect_equal(
-        as.matrix(quanteda:::make_na_matrix(c(5, 4), row = 2L:3L)),
+        as.matrix(quanteda.core:::make_na_matrix(c(5, 4), row = 2L:3L)),
         matrix(c(c(0, NA, NA, 0, 0),
                  c(0, NA, NA, 0, 0),
                  c(0, NA, NA, 0, 0),
@@ -497,7 +497,7 @@ test_that("make_na_matrix is working", {
     )
 
     expect_equal(
-        as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 3L)),
+        as.matrix(quanteda.core:::make_na_matrix(c(5, 4), col = 3L)),
         matrix(c(c(0, 0, 0, 0, 0),
                  c(0, 0, 0, 0, 0),
                  rep(NA, 5),
@@ -505,21 +505,21 @@ test_that("make_na_matrix is working", {
     )
 
     expect_equal(
-        as.matrix(quanteda:::make_na_matrix(c(5, 4), col = 1L:2L, row = 2L:3L)),
+        as.matrix(quanteda.core:::make_na_matrix(c(5, 4), col = 1L:2L, row = 2L:3L)),
         matrix(c(rep(NA, 5), rep(NA, 5),
                  c(0, NA, NA, 0, 0),
                  c(0, NA, NA, 0, 0)), nrow = 5)
     )
 
     expect_equal(
-        as.matrix(quanteda:::make_na_matrix(c(5, 4), 2L:3L, c(1L:2L))),
+        as.matrix(quanteda.core:::make_na_matrix(c(5, 4), 2L:3L, c(1L:2L))),
         matrix(c(rep(NA, 5), rep(NA, 5),
                c(0, NA, NA, 0, 0),
                c(0, NA, NA, 0, 0)), nrow = 5)
     )
 
     expect_equal(
-        as.matrix(quanteda:::make_na_matrix(c(5, 4), 1L, 3L)),
+        as.matrix(quanteda.core:::make_na_matrix(c(5, 4), 1L, 3L)),
         matrix(c(c(NA, 0, 0, 0, 0),
                  c(NA, 0, 0, 0, 0),
                  rep(NA, 5),

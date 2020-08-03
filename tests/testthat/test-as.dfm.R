@@ -131,16 +131,16 @@ test_that("dfm2dataframe same as as.data.frame.dfm", {
                    row.names = docnames(d))
     )
     expect_equal(
-        quanteda:::dfm2dataframe(d, document = NULL),
+        quanteda.core:::dfm2dataframe(d, document = NULL),
         data.frame(as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
     )
     expect_equal(
-        quanteda:::dfm2dataframe(d, row.names = docnames(d)),
+        quanteda.core:::dfm2dataframe(d, row.names = docnames(d)),
         data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, 
                    row.names = docnames(d))
     )
     expect_error(
-        quanteda:::dfm2dataframe(d, document = TRUE),
+        quanteda.core:::dfm2dataframe(d, document = TRUE),
         "document must be character or NULL"
     )
 })
@@ -161,11 +161,11 @@ test_that("as.data.frame.dfm handles irregular feature names correctly", {
         c("document", "字", "spe.cial", "飛機", "spec.ial")
     )
     expect_equal(
-        names(quanteda:::dfm2dataframe(mydfm, docid_field = "document")),
+        names(quanteda.core:::dfm2dataframe(mydfm, docid_field = "document")),
         c("document", "字", "spe cial", "飛機", "spec+ial")
     )
     expect_equal(
-        names(quanteda:::dfm2dataframe(mydfm, check.names = TRUE, 
+        names(quanteda.core:::dfm2dataframe(mydfm, check.names = TRUE, 
                                        docid_field = "document")),
         c("document", "字", "spe.cial", "飛機", "spec.ial")
     )
@@ -202,7 +202,7 @@ test_that("as.dfm to and from a matrix works with docvars", {
 # test_that("as.dfm works on old objects", {
 #     load("../data/pre_v2_objects/data_dfm_pre2.rda")
 #     expect_is(as.dfm(data_dfm_pre2), "dfm")
-#     expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
+#     expect_false(quanteda.core:::is_pre2(as.dfm(data_dfm_pre2)))
 #     expect_identical(
 #         names(as.dfm(data_dfm_pre2)@meta),
 #         c("user", "system")

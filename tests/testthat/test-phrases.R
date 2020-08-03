@@ -58,7 +58,7 @@ test_that("test phrase for tokens", {
 test_that("helper functions for phrase() work", {
     p <- phrase(c("capital gains tax", "one two", "three"))
     expect_identical(
-        quanteda:::as.list.phrases(p),
+        quanteda.core:::as.list.phrases(p),
         list(c("capital", "gains", "tax"), c("one", "two"), "three")
     )
     expect_output(

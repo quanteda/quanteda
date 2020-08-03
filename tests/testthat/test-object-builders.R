@@ -44,39 +44,39 @@ test_that("tokens object builder retains class", {
 test_that("object builder is robust agains different input", {
     
     # user-difined class is given
-    corp <- quanteda:::build_corpus("a b c", 
-                                    docvars = quanteda:::make_docvars(1L),
+    corp <- quanteda.core:::build_corpus("a b c", 
+                                    docvars = quanteda.core:::make_docvars(1L),
                                     class = "myclass")
     expect_equal(
         class(corp), c("myclass", "corpus", "character")
     )
     class(corp) <- "myclass2"
-    corp2 <- quanteda:::rebuild_corpus(corp, attributes(corp))
+    corp2 <- quanteda.core:::rebuild_corpus(corp, attributes(corp))
     expect_equal(
         class(corp2), c("myclass2", "corpus", "character")
     )
     
-    toks <- quanteda:::build_tokens(list(1:3), 
+    toks <- quanteda.core:::build_tokens(list(1:3), 
                                     types = c("a", "b", "c"), 
-                                    docvars = quanteda:::make_docvars(1L),
+                                    docvars = quanteda.core:::make_docvars(1L),
                                     class = "myclass")
     expect_equal(
         class(toks), c("myclass", "tokens")
     )
     class(toks) <- "myclass2"
-    toks2 <- quanteda:::rebuild_tokens(toks, attributes(toks))
+    toks2 <- quanteda.core:::rebuild_tokens(toks, attributes(toks))
     expect_equal(
         class(toks2), c("myclass2", "tokens")
     )
     
     # docvars has worng number of rows
     expect_error({
-        quanteda:::build_corpus("a b c", 
-                                docvars = quanteda:::make_docvars(2L))
+        quanteda.core:::build_corpus("a b c", 
+                                docvars = quanteda.core:::make_docvars(2L))
     })
     expect_error({
-        quanteda:::build_tokens(list(1:3), 
+        quanteda.core:::build_tokens(list(1:3), 
                                 types = c("a", "b", "c"), 
-                                docvars = quanteda:::make_docvars(2L))
+                                docvars = quanteda.core:::make_docvars(2L))
     })
 })

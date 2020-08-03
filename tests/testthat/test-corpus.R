@@ -451,13 +451,13 @@ test_that("handle data.frame variable renaming when one already exists", {
 
 test_that("upgrade_corpus is working", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")
-    corp1 <- quanteda:::upgrade_corpus(data_corpus_pre2)
+    corp1 <- quanteda.core:::upgrade_corpus(data_corpus_pre2)
     expect_true(is.character(corp1))
     expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp1, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp1, "docvars"))))
     expect_true(is.factor(attr(corp1, "docvars")[["docid_"]]))
 
-    corp2 <- quanteda:::upgrade_corpus(as.corpus(data_corpus_inaugural))
+    corp2 <- quanteda.core:::upgrade_corpus(as.corpus(data_corpus_inaugural))
     expect_true(is.character(corp2))
     expect_true(all(c("docname_", "docid_", "segid_") %in% names(attr(corp2, "docvars"))))
     expect_true(all(!c("_document", "texts") %in% names(attr(corp2, "docvars"))))
@@ -467,11 +467,11 @@ test_that("upgrade_corpus is working", {
 test_that("raise error when docnames or docvars are invalid", {
     expect_error(
         corpus(c("a b c", "b c d"), docnames = "onedoc"),
-        quanteda:::message_error("docnames_mismatch")
+        quanteda.core:::message_error("docnames_mismatch")
     )
     expect_error(
         corpus(c("a b c", "b c d"), docvars = data.frame(docid_ = c("s1", "s2"))),
-        quanteda:::message_error("docvars_invalid")
+        quanteda.core:::message_error("docvars_invalid")
     )
 })
 

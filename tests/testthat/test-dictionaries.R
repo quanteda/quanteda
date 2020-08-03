@@ -217,12 +217,12 @@ test_that("dictionary printing works", {
 
 test_that("dictionary_depth works correctly", {
     dict1 <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
-    expect_equal(quanteda:::dictionary_depth(dict1), 1)
+    expect_equal(quanteda.core:::dictionary_depth(dict1), 1)
 
     dict2 <- dictionary(list(one = c("a", "b"),
                         two = list(sub1 = c("c", "d"),
                                    sub2 = c("e", "f"))))
-    expect_equal(quanteda:::dictionary_depth(dict2), 2)
+    expect_equal(quanteda.core:::dictionary_depth(dict2), 2)
 
     expect_output(
         print(dict2),
@@ -356,8 +356,8 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
         c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
     ))
 
-    # dict1 <- quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
-    # dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
+    # dict1 <- quanteda.core:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
+    # dict2 <- quanteda.core:::list2dictionary(quanteda.core:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
     # expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
 })
 
@@ -479,16 +479,16 @@ test_that("pattern2list() preserves the order of keys and values", {
   dict3 <- dictionary(list(ng = "not *", wh = "wh* is", th = c("tho*", "the")))
   dict4 <- dictionary(list(ng = "not *", th = c("tho*", "the"), wh = "wh* is"))
 
-  ids1 <- quanteda:::pattern2list(dict1, type, "glob", FALSE)
+  ids1 <- quanteda.core:::pattern2list(dict1, type, "glob", FALSE)
   expect_identical(unique(names(ids1)), names(dict1))
 
-  ids2 <- quanteda:::pattern2list(dict2, type, "glob", FALSE)
+  ids2 <- quanteda.core:::pattern2list(dict2, type, "glob", FALSE)
   expect_identical(unique(names(ids2)), names(dict2))
 
-  ids3 <- quanteda:::pattern2list(dict3, type, "glob", FALSE)
+  ids3 <- quanteda.core:::pattern2list(dict3, type, "glob", FALSE)
   expect_identical(unique(names(ids3)), names(dict3))
 
-  ids4 <- quanteda:::pattern2list(dict4, type, "glob", FALSE)
+  ids4 <- quanteda.core:::pattern2list(dict4, type, "glob", FALSE)
   expect_identical(unique(names(ids4)), names(dict4))
 })
 
@@ -496,19 +496,19 @@ test_that("pattern2list() preserves the order of keys and values", {
 test_that("split_values() handle concatenators correctly", {
 
     expect_identical(
-        quanteda:::split_values(list(A = "a_a", "b_b"), "_", " "),
+        quanteda.core:::split_values(list(A = "a_a", "b_b"), "_", " "),
         list(A = c("a", "a"), A = "a a", c("b", "b"), "b b")
     )
     expect_identical(
-        quanteda:::split_values(list(A = "a_a", B = "b_b"), "_", " "),
+        quanteda.core:::split_values(list(A = "a_a", B = "b_b"), "_", " "),
         list(A = c("a", "a"), A = "a a", B = c("b", "b"), B = "b b")
     )
     expect_identical(
-        quanteda:::split_values(list(A = "a_a", "A_A"), "_", "-"),
+        quanteda.core:::split_values(list(A = "a_a", "A_A"), "_", "-"),
         list(A = c("a", "a"), A = "a-a", c("A", "A"), "A-A")
     )
     expect_identical(
-        quanteda:::split_values(list(A = "a_a", "A_A"), " ", " "),
+        quanteda.core:::split_values(list(A = "a_a", "A_A"), " ", " "),
         list(A = "a_a", "A_A")
     )
 

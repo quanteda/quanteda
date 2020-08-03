@@ -744,7 +744,7 @@ test_that("test sparsity", {
 
 test_that("test null dfm is handled properly", {
 
-    mx <- quanteda:::make_null_dfm()
+    mx <- quanteda.core:::make_null_dfm()
 
     # constructor
     expect_equal(dfm(mx), mx)
@@ -914,40 +914,40 @@ test_that("rbind and cbind wokrs with empty dfm", {
 
     mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
 
-    expect_identical(docnames(rbind(mt, quanteda:::make_null_dfm())),
+    expect_identical(docnames(rbind(mt, quanteda.core:::make_null_dfm())),
                      docnames(mt))
     expect_identical(docnames(mt),
-                     docnames(rbind(mt, quanteda:::make_null_dfm())))
+                     docnames(rbind(mt, quanteda.core:::make_null_dfm())))
 
-    expect_identical(docnames(cbind(mt, quanteda:::make_null_dfm())),
+    expect_identical(docnames(cbind(mt, quanteda.core:::make_null_dfm())),
                      docnames(mt))
     expect_identical(docnames(mt),
-                     docnames(cbind(mt, quanteda:::make_null_dfm())))
+                     docnames(cbind(mt, quanteda.core:::make_null_dfm())))
 })
 
 test_that("format_sparsity works correctly", {
     expect_error(
-        quanteda:::format_sparsity(-1),
+        quanteda.core:::format_sparsity(-1),
         "illegal sparsity value; must be 0 <= x <= 1.0"
     )
     expect_identical(
-        quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.5)))),
+        quanteda.core:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.5)))),
         " (50.0% sparse)"
     )
     expect_identical(
-        quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.1)))),
+        quanteda.core:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.1)))),
         " (90.0% sparse)"
     )
     expect_identical(
-        quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.99)))),
+        quanteda.core:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.99)))),
         " (1.0% sparse)"
     )
-    expect_identical(quanteda:::format_sparsity(.9999), " (99.99% sparse)")
-    expect_identical(quanteda:::format_sparsity(.99991), " (>99.99% sparse)")
-    expect_identical(quanteda:::format_sparsity(.0001), " (0.01% sparse)")
-    expect_identical(quanteda:::format_sparsity(.00001), " (<0.01% sparse)")
-    expect_identical(quanteda:::format_sparsity(.00011), " (0.011% sparse)")
-    expect_identical(quanteda:::format_sparsity(.00011, digits = 3), " (0.011% sparse)")
+    expect_identical(quanteda.core:::format_sparsity(.9999), " (99.99% sparse)")
+    expect_identical(quanteda.core:::format_sparsity(.99991), " (>99.99% sparse)")
+    expect_identical(quanteda.core:::format_sparsity(.0001), " (0.01% sparse)")
+    expect_identical(quanteda.core:::format_sparsity(.00001), " (<0.01% sparse)")
+    expect_identical(quanteda.core:::format_sparsity(.00011), " (0.011% sparse)")
+    expect_identical(quanteda.core:::format_sparsity(.00011, digits = 3), " (0.011% sparse)")
 })
 
 test_that("unused argument warning only happens only once (#1509)", {
@@ -993,13 +993,13 @@ test_that("dimnames are always character vectors", {
 test_that("set_dfm_dimnames etc functions work", {
     x <- dfm(c("a a b b c", "b b b c"))
 
-    quanteda:::set_dfm_featnames(x) <- paste0("feature", 1:3)
+    quanteda.core:::set_dfm_featnames(x) <- paste0("feature", 1:3)
     expect_identical(featnames(x), c("feature1", "feature2", "feature3"))
 
-    quanteda:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
+    quanteda.core:::set_dfm_docnames(x) <- paste0("DOC", 1:2)
     expect_identical(docnames(x), c("DOC1", "DOC2"))
 
-    quanteda:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
+    quanteda.core:::set_dfm_dimnames(x) <- list(c("docA", "docB"), LETTERS[1:3])
     expect_identical(docnames(x), c("docA", "docB"))
     expect_identical(featnames(x), c("A", "B", "C"))
 })

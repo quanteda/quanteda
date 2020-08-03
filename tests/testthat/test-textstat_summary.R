@@ -22,12 +22,12 @@ test_that("textstat_summary method works", {
     summ_toks <- textstat_summary(toks, cache = FALSE)
     expect_equal(
         summ_toks$puncts,
-        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(punct = TRUE)[[1]],
+        unname(ntoken(tokens_select(toks, quanteda.core:::removals_regex(punct = TRUE)[[1]],
                                     valuetype = "regex")))
     )
     expect_equal(
         summ_toks$numbers,
-        unname(ntoken(tokens_select(toks, quanteda:::removals_regex(numbers = TRUE)[[1]],
+        unname(ntoken(tokens_select(toks, quanteda.core:::removals_regex(numbers = TRUE)[[1]],
                                     valuetype = "regex")))
     )
     expect_equal(
@@ -51,12 +51,12 @@ test_that("textstat_summary method works", {
     summ_dfm <- textstat_summary(dfmt, cache = FALSE)
     expect_equal(
         summ_dfm$puncts,
-        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(punct = TRUE)[[1]],
+        unname(ntoken(dfm_select(dfmt, quanteda.core:::removals_regex(punct = TRUE)[[1]],
                                  valuetype = "regex")))
     )
     expect_equal(
         summ_dfm$numbers,
-        unname(ntoken(dfm_select(dfmt, quanteda:::removals_regex(numbers = TRUE)[[1]],
+        unname(ntoken(dfm_select(dfmt, quanteda.core:::removals_regex(numbers = TRUE)[[1]],
                                  valuetype = "regex")))
     )
     expect_equal(
@@ -95,7 +95,7 @@ test_that("textstat_summary chaching is working", {
     summ_corp <- textstat_summary(corp, cache = TRUE)
     expect_identical(meta(corp, type = "object")$summary$data, summ_corp)
     summ_corp <- textstat_summary(corp, cache = FALSE)
-    quanteda:::clear_cache(corp, "summary")
+    quanteda.core:::clear_cache(corp, "summary")
     expect_identical(meta(corp, type = "object")$summary, list())
     expect_equal(nrow(textstat_summary(head(corp, 3), cache = TRUE)), 3)
 

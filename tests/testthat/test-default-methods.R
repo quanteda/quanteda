@@ -159,17 +159,17 @@ test_that("types defaults work", {
         "types\\(\\) only works on tokens objects"
     )
     # expect_error(
-    #     quanteda:::types(data_char_sampletext) <- c("a", "b"),
+    #     quanteda.core:::types(data_char_sampletext) <- c("a", "b"),
     #     "types<-\\(\\) only works on tokens objects"
     # )
 })
 
-test_that("test new bootstrap_dfm methods", {
-    expect_error(
-        bootstrap_dfm(TRUE),
-        "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
-    )
-})
+# test_that("test new bootstrap_dfm methods", {
+#     expect_error(
+#         bootstrap_dfm(TRUE),
+#         "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
+#     )
+# })
 
 test_that("test new convert methods", {
     expect_error(

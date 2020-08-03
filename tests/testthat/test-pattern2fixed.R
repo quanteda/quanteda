@@ -145,14 +145,14 @@ test_that("regex2fixed and regex2id still work", {
     glob <- list(c('a', 'b*'), c('*c*'), c('*d*'), c('*b'))
     type <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     
-    expect_identical(quanteda:::regex2fixed(regex, type, 'regex', TRUE),
+    expect_identical(quanteda.core:::regex2fixed(regex, type, 'regex', TRUE),
                      pattern2fixed(regex, type, 'regex', TRUE))
-    expect_identical(quanteda:::regex2id(regex, type, 'regex', TRUE),
+    expect_identical(quanteda.core:::regex2id(regex, type, 'regex', TRUE),
                      pattern2id(regex, type, 'regex', TRUE))
     
-    expect_identical(quanteda:::regex2fixed(glob, type, 'glob', TRUE),
+    expect_identical(quanteda.core:::regex2fixed(glob, type, 'glob', TRUE),
                      pattern2fixed(glob, type, 'glob', TRUE))
-    expect_identical(quanteda:::regex2id(glob, type, 'glob', TRUE),
+    expect_identical(quanteda.core:::regex2id(glob, type, 'glob', TRUE),
                      pattern2id(glob, type, 'glob', TRUE))
 })
 
@@ -170,49 +170,49 @@ test_that("add value check for types (#1463)", {
 test_that("keep_unmatched is working", {
   pattern <- list(c("a", "b"), c("a", "z"), "x")
   type <- c("a", "b", "c")
-  expect_identical(quanteda:::regex2id(pattern, type, "fixed", keep_nomatch = FALSE),
+  expect_identical(quanteda.core:::regex2id(pattern, type, "fixed", keep_nomatch = FALSE),
                    list(c(1L, 2L)))
-  expect_identical(quanteda:::regex2id(pattern, type, "fixed", keep_nomatch = TRUE),
+  expect_identical(quanteda.core:::regex2id(pattern, type, "fixed", keep_nomatch = TRUE),
                    list(c(1L, 2L), integer(), integer()))
 })
 
 test_that("unlist_integer() is working", {
   
-  expect_error(quanteda:::unlist_integer(list(c(1, 6), 6, 0)))
-  expect_error(quanteda:::unlist_integer(list(c("a", "d"), "d", "e", "")))
-  expect_equal(quanteda:::unlist_integer(list(c(1L, 6L), 6L, 0L)),
+  expect_error(quanteda.core:::unlist_integer(list(c(1, 6), 6, 0)))
+  expect_error(quanteda.core:::unlist_integer(list(c("a", "d"), "d", "e", "")))
+  expect_equal(quanteda.core:::unlist_integer(list(c(1L, 6L), 6L, 0L)),
                c(1L, 6L, 6L, 0L))
-  expect_equal(quanteda:::unlist_integer(list(c(1L, 6L), 6L, 0L), unique = TRUE),
+  expect_equal(quanteda.core:::unlist_integer(list(c(1L, 6L), 6L, 0L), unique = TRUE),
                c(1L, 6L, 0L))
-  expect_equal(quanteda:::unlist_integer(list()),
+  expect_equal(quanteda.core:::unlist_integer(list()),
                integer())
   
 })
 
 test_that("unlist_character() is working", {
   
-  expect_error(quanteda:::unlist_character(list(c(1, 6), 6, 0)))
-  expect_error(quanteda:::unlist_character(list(c(1L, 6L), 6L, 0L)))
-  expect_equal(quanteda:::unlist_character(list(c("a", "d"), "d", "e", "")),
+  expect_error(quanteda.core:::unlist_character(list(c(1, 6), 6, 0)))
+  expect_error(quanteda.core:::unlist_character(list(c(1L, 6L), 6L, 0L)))
+  expect_equal(quanteda.core:::unlist_character(list(c("a", "d"), "d", "e", "")),
                c("a", "d", "d", "e", ""))
-  expect_equal(quanteda:::unlist_character(list(c("a", "d"), "d", "e", ""), unique = TRUE),
+  expect_equal(quanteda.core:::unlist_character(list(c("a", "d"), "d", "e", ""), unique = TRUE),
                c("a", "d", "e", ""))
-  expect_equal(quanteda:::unlist_character(list()),
+  expect_equal(quanteda.core:::unlist_character(list()),
                character())
   
 })
 
 # test_that("flatten_id() is working", {
 #   expect_identical(
-#     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
+#     quanteda.core:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
 #     list(c(1, 2), 3, 4)
 #   )
 #   expect_identical(
-#     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list())),
+#     quanteda.core:::flatten_id(list(list(c(1, 2)), list(3), list(4), list())),
 #     list(c(1, 2), 3, 4)
 #   )
 #   expect_identical(
-#     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4), list()), TRUE),
+#     quanteda.core:::flatten_id(list(list(c(1, 2)), list(3), list(4), list()), TRUE),
 #     list(c(1, 2), 3, 4, integer())
 #   )
 # })

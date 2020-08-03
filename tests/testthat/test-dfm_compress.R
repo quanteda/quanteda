@@ -90,13 +90,13 @@ test_that("add test for group_dfm with features and fill = TRUE", {
     x <- dfm(c("a a b c d", "b c d e"))
     colnames(x)[4] <- "e"
     expect_identical(
-        as.matrix(quanteda:::group_dfm(x, fill = TRUE,
+        as.matrix(quanteda.core:::group_dfm(x, fill = TRUE,
                                        features = factor(featnames(x), levels = letters[1:5]))),
         matrix(c(2, 0, 1, 1, 1, 1, 0, 0, 1, 2), nrow = 2,
                dimnames = list(docs = paste0("text", 1:2), features = c("a", "b", "c", "d", "e")))
     )
     expect_identical(
-        as.matrix(quanteda:::group_dfm(x, fill = FALSE,
+        as.matrix(quanteda.core:::group_dfm(x, fill = FALSE,
                                        features = factor(featnames(x), levels = letters[1:5]))),
         matrix(c(2, 0, 1, 1, 1, 1, 1, 2), nrow = 2,
                dimnames = list(docs = paste0("text", 1:2), features = c("a", "b", "c", "e")))
