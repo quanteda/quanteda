@@ -96,18 +96,6 @@ test_that("pattern2list is working with empty patterns", {
     expect_silent(quanteda.core:::pattern2list(pat, types(toks), "fixed", TRUE))
 })
 
-test_that("check_font is working", {
-    # skip_on_os("windows")
-    # skip_on_os("mac")
-    skip_on_cran()
-    expect_error(quanteda.core:::check_font("XXXXX"), "XXXXX is not found on your system") 
-    # expect_equal(quanteda.core:::check_font("Ubuntu"), "Ubuntu")
-    expect_equal(quanteda.core:::check_font("sans"), "sans")
-    expect_equal(quanteda.core:::check_font("serif"), "serif")
-    expect_equal(quanteda.core:::check_font("mono"), "mono")
-})
-
-
 test_that("get_package_version works", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")
     expect_true(quanteda.core:::get_object_version(data_corpus_pre2) == "1.4.0")
