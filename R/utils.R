@@ -383,6 +383,6 @@ clear_cache <- function(x, field) {
 
 hash_object <- function(x, ...) {
     attr(x, "meta") <- NULL
-    digest::digest(list(x, utils::packageVersion("quanteda"), ...),
+    digest::digest(list(x, utils::packageVersion("quanteda.core"), ...),
                    algo = "sha256")
 }
