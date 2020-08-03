@@ -29,7 +29,9 @@ Imports:
     xml2,
     yaml,
     proxyC (>= 0.1.4),
-    digest
+    digest,
+    stopwords,
+    data.table  
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     e1071,
@@ -42,7 +44,9 @@ Suggests:
     formatR,
     tm (>= 0.6),
     tokenizers,
-    knitr
+    knitr,
+    network,
+    igraph
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
@@ -102,6 +106,7 @@ Collate:
     'pattern2fixed.R'
     'phrases.R'
     'quanteda_options.R'
+    'stopwords.R'
     'summary.R'
     'textmodel.R'
     'textstat-methods.R'
