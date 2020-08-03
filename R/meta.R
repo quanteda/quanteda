@@ -202,7 +202,7 @@ meta_system <- function(x, field = NULL)
 #'   values, with the user setting the "source" value.  This should be used
 #'   to set initial system meta information.
 meta_system_defaults <- function() {
-   list("package-version" = utils::packageVersion("quanteda"),
+   list("package-version" = utils::packageVersion("quanteda.core"),
         "r-version" = getRversion(),
         "system" = Sys.info()[c("sysname", "machine", "user")],
         "directory" = getwd(),
@@ -252,7 +252,7 @@ make_meta_system <- function(inherit = NULL) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
-        "package-version" = utils::packageVersion("quanteda"),
+        "package-version" = utils::packageVersion("quanteda.core"),
         "r-version" = getRversion(),
         "system" = Sys.info()[c("sysname", "machine", "user")],
         "directory" = getwd(),

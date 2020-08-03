@@ -348,8 +348,8 @@ rbind_fill <- function(x, y) {
 
 
 get_cache <- function(x, field, ...) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return(NULL)
+    #if (Sys.info()[["sysname"]] == "SunOS") 
+    #    return(NULL)
     meta <- meta(x, type = "all")
     hash <- hash_object(x, ...)
     #print(hash)
@@ -362,8 +362,8 @@ get_cache <- function(x, field, ...) {
 }
 
 set_cache <- function(x, field, object, ...) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return()
+    #if (Sys.info()[["sysname"]] == "SunOS") 
+    #    return()
     meta <- meta(x, type = "all")
     hash <- hash_object(x, ...)
     #print(hash)
@@ -372,8 +372,8 @@ set_cache <- function(x, field, object, ...) {
 }
 
 clear_cache <- function(x, field) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return()
+    #if (Sys.info()[["sysname"]] == "SunOS") 
+    #    return()
     meta <- meta(x, type = "all")
     if (field %in% names(meta$object)) {
         meta$object[[field]] <- list()

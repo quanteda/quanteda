@@ -63,8 +63,6 @@ Additional features of \pkg{quanteda} include:
 \item the ability to identify \link[=textstat_keyness]{keywords} associated with
 documents or groups of documents;
 \item the ability to explore texts using \link[=kwic]{key-words-in-context};
-\item fast computation of a variety of \link[=textstat_readability]{readability indexes};
-\item fast computation of a variety of \link[=textstat_lexdiv]{lexical diversity measures};
 \item quick computation of word or document \link[=textstat_simil]{similarities}, for
 clustering or to compute distances for other purposes;
 \item a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text}

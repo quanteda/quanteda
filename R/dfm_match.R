@@ -8,8 +8,7 @@
 #'
 #' Selecting on another [dfm]'s [featnames()] is useful when you
 #' have trained a model on one dfm, and need to project this onto a test set
-#' whose features must be identical. It is also used in
-#' [bootstrap_dfm()].
+#' whose features must be identical. 
 #' @param x a [dfm]
 #' @param features character; the feature names to be matched in the output dfm
 #' @return 

@@ -1,7 +1,7 @@
 .onAttach <- function(...) {
     # startup message
     #packageStartupMessage("Initializing package: ", sQuote('quanteda'))
-    packageStartupMessage("Package version: ", as.character(utils::packageVersion("quanteda")))
+    packageStartupMessage("Package version: ", as.character(utils::packageVersion("quanteda.core")))
     
     # initialize options
     quanteda_options(initialize = TRUE)
@@ -19,5 +19,5 @@
 }
 
 .onUnload <- function (libpath) {
-    library.dynam.unload("quanteda", libpath)
+    library.dynam.unload("quanteda.core", libpath)
 }

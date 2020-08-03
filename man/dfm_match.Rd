@@ -25,8 +25,7 @@ not \code{features} will be discarded, and any feature names specified in
 \details{
 Selecting on another \link{dfm}'s \code{\link[=featnames]{featnames()}} is useful when you
 have trained a model on one dfm, and need to project this onto a test set
-whose features must be identical. It is also used in
-\code{\link[=bootstrap_dfm]{bootstrap_dfm()}}.
+whose features must be identical.
 }
 \note{
 Unlike \code{\link[=dfm_select]{dfm_select()}}, this function will add feature names

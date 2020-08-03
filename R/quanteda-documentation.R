@@ -56,10 +56,6 @@
 #' * the ability to identify [keywords][textstat_keyness] associated with
 #'   documents or groups of documents;
 #' * the ability to explore texts using [key-words-in-context][kwic];
-#' * fast computation of a variety of [readability
-#'   indexes][textstat_readability];
-#' * fast computation of a variety of [lexical diversity
-#'   measures][textstat_lexdiv];
 #' * quick computation of word or document [similarities][textstat_simil], for
 #'   clustering or to compute distances for other purposes;
 #' * a comprehensive suite of [descriptive statistics on text][summary.corpus]
@@ -73,7 +69,7 @@
 #' <http://github.com/quanteda/quanteda>
 #' @import methods Matrix
 #' @importFrom Rcpp evalCpp
-#' @useDynLib quanteda, .registration = TRUE
+#' @useDynLib quanteda.core, .registration = TRUE
 "_PACKAGE"
 
 #' Pattern matching using valuetype
