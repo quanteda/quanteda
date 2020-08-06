@@ -35,7 +35,7 @@ inline KeynessFun chisq_lambda(const arma::sp_mat& mt, const std::string& cor) {
     return [&](const double& a, const double& b) -> double {
         double c = tN - a, d = rN - b, N = a + b + c + d, E = (a + b) * (a + c) / N;
         double delta = (cor == "default" || cor == "yates") ? yates_correction(a, b, c, d) : 0.0;
-        double q     = (cor == "williams") ? williams_correction(a, b, c, d) : 1.0;
+        double q = (cor == "williams") ? williams_correction(a, b, c, d) : 1.0;
         double num = N * std::pow(std::abs((a * d) - (b * c)) - (N * delta), 2.0);
         double den = (a + b) * (c + d) * (a + c) * (b + d) * (a > E ? 1.0 : -1.0) / q;
         return num / den;

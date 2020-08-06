@@ -132,7 +132,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     grouping <- factor(target, levels = c(TRUE, FALSE), labels = label)
     temp <- dfm_group(x, groups = grouping)
     
-    if(old) {
+    if (old) {
         if (measure == "chi2") {
             result <- keyness_chi2_dt(temp, correction)
         } else if (measure == "lr") {
@@ -149,7 +149,10 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
             stop(measure, " not yet implemented for textstat_keyness")
         } 
     } else {
-        if( measure != "exact" ) {
+        if (measure == "exact") {
+            warning("No exact test MT implementation: defaulting to single threaded R code")
+            result <- keyness_exact(temp)
+        } else {
             result <- data.frame(
                 feature = featnames(temp), 
                 stat = qatd_cpp_keyness(temp, measure, correction),
@@ -159,19 +162,14 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
                 stringsAsFactors = FALSE
             )
             result$p <- 1 - stats::pchisq(abs(result$stat), 1) # abs() for pmi
-        } else {
-            warning( "No exact test MT implementation: defaulting to single threaded R code" )
-            result <- keyness_exact(temp)
         }  
     }
     names(result)[2] <- switch(measure, chi2 = 'chi2', exact = 'exact', lr = "G2", pmi = "pmi")
-    
     if (sort) 
         result <- result[order(result[, 2], decreasing = TRUE), ]
-    
+    rownames(result) <- NULL    
     attr(result, "groups") <- docnames(temp)
     class(result) <- c("keyness", "textstat", "data.frame")
-    rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
 
