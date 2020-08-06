@@ -145,7 +145,8 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
 test_that("non-exclusive lookup is working",{
     
     toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
-                     d2 = "Let freedom ring in the United States!"),
+                     d2 = "Let freedom ring in the United States!",
+                     d3 = "Aliens are invading Mars"),
                    remove_punct = TRUE)
     dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
                             "law words" = c('law*', 'constitution'), 
@@ -153,8 +154,16 @@ test_that("non-exclusive lookup is working",{
                             overlap = "United"))
     
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
-                 list(d1=c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
-                      d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP")))
+                 list(d1 = c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
+                      d2 = c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
+    
+    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = TRUE)),
+                 list(d1 = c("COUNTRY", "signed", "", "new", "FREEDOM", "LAW WORDS", "", "COUNTRY"),
+                      d2 = c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP"),
+                      d3 = c("Aliens", "", "invading", "Mars")))
+    
 })
 
 test_that("tokens_lookup preserves case on keys", {
@@ -436,4 +445,75 @@ test_that("tokens_lookup with nomatch works with key that do not appear in the t
     expect_equivalent(unclass(toks_dict), 
                       list(c(4, 4, 1, 1, 4), c(4, 4, 2, 4, 4, 4), c(4, 4, 4), c(4, 4, 4)))
     expect_identical(types(toks_dict), c("CR", "CB", "CA", "NONE"))
+})
+
+test_that("nested_scope function is working", { 
+    dict <- dictionary(list(
+        'AS' = c("American Samoa", "American Samoan*", "Pago Pago"),
+        'WS' = c("Samoa", "Samoan*", "Apia"),
+        'VG' = c("British Virgin Islands", "Virgin Island*", "Road Town"),
+        'GB' = c("UK", "United Kingdom", "Britain", "British", "Briton*", "Brit*", "London"),
+        'US' = c("United States", "US", "American*", "Washington", "New York")
+    ))
+    txt <- c(
+        'British Virgin Islands is a British overseas territory',
+        'Samoa is an independent state',
+        'American Samoa is in the South Pacific'
+    )
+    toks <- tokens(txt)
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, nested_scope = "key")),
+        list(text1 = c("VG", "GB", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS", "US", "WS"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, nested_scope = "dictionary")),
+        list(text1 = c("VG", "GB"), 
+             text2 = c("WS"), 
+             text3 = c("AS"))
+    )
+})
+
+test_that("dictionary nested_scope is independent of orders", {
+    toks1 <- tokens("Virgin Islands are near Dominica and the Dominican Republic")
+    dict1 <- dictionary(list("VG" = "Virgin Islands",
+                            "VI" = "Virgin Islands",
+                            "DM" = "Dominica*",
+                            "DO" = "Dominican Republic"))
+    expect_equal(
+        as.list(tokens_lookup(toks1, dict1, nested_scope = "dictionary")),
+        list(text1 = c("VG", "VI", "DM", "DO"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks1, rev(dict1), nested_scope = "dictionary")),
+        list(text1 = c("VI", "VG", "DM", "DO"))
+    )
+    
+    toks2 <- tokens("Congolese are people in Republic of Congo or Democratic Republic of Congo")
+    dict2 <- dictionary(list("CD" = c("Democratic Republic of Congo", "Congolese"),
+                             "CG" = c("Republic of Congo", "Congolese")))
+    expect_equal(
+        as.list(tokens_lookup(toks2, dict2, nested_scope = "dictionary")),
+        list(text1 = c("CD", "CG", "CG", "CD"))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks2, rev(dict2), nested_scope = "dictionary")),
+        list(text1 = c("CG", "CD", "CG", "CD"))
+    )
+})
+
+test_that("tokens_lookup return tokens even if no matches", {
+    dict <- dictionary(list("en" = list("foreign policy" = "aaaaa", 
+                                        "domestic politics" = "bbbbb")))
+    toks <- tokens(data_corpus_inaugural[1:5])
+    expect_identical(
+        types(tokens_lookup(toks, dict)),
+        c("en.foreign policy", "en.domestic politics")
+    )
+    expect_identical(
+        lengths(tokens_lookup(toks, dict)),
+        c("1789-Washington" = 0L, "1793-Washington" = 0L, "1797-Adams" = 0L,
+          "1801-Jefferson"  = 0L, "1805-Jefferson" = 0L)
+    )
 })

@@ -5,9 +5,16 @@
 \alias{is.fcm}
 \title{Create a feature co-occurrence matrix}
 \usage{
-fcm(x, context = c("document", "window"), count = c("frequency",
-  "boolean", "weighted"), window = 5L, weights = 1L, ordered = FALSE,
-  span_sentence = TRUE, tri = TRUE, ...)
+fcm(
+  x,
+  context = c("document", "window"),
+  count = c("frequency", "boolean", "weighted"),
+  window = 5L,
+  weights = NULL,
+  ordered = FALSE,
+  tri = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object from
@@ -36,14 +43,11 @@ target feature}
 
 \item{weights}{a vector of weights applied to each distance from
 \code{1:window}, strictly decreasing by default; can be a custom-defined
-vector of the same length as \code{length(weights)}}
+vector of the same length as \code{window}}
 
 \item{ordered}{if \code{TRUE} the number of times that a term appears before
 or after the target feature are counted separately. Only makes sense for
 context = "window".}
-
-\item{span_sentence}{if \code{FALSE}, then word windows will not span
-sentences}
 
 \item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
 Ignored if \code{ordered = TRUE}}
@@ -57,37 +61,37 @@ document or a window within a collection of documents, with an optional
 vector of weights applied to the co-occurrence counts.
 }
 \details{
-The function \code{\link{fcm}} provides a very general
-  implementation of a "context-feature" matrix, consisting of a count of
-  feature co-occurrence within a defined context.  This context, following
-  Momtazi et. al. (2010), can be defined as the \emph{document},
-  \emph{sentences} within documents, \emph{syntactic relationships} between
-  features (nouns within a sentence, for instance), or according to a
-  \emph{window}.  When the context is a window, a weighting function is
-  typically applied that is a function of distance from the target word (see
-  Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
-  features is considered (see Church & Hanks 1990).
-  
-  \link{fcm} provides all of this functionality, returning a \eqn{V * V}
-  matrix (where \eqn{V} is the vocabulary size, returned by
-  \code{\link{nfeat}}). The \code{tri = TRUE} option will only return the
-  upper part of the matrix.
-  
-  Unlike some implementations of co-occurrences, \link{fcm} counts feature
-  co-occurrences with themselves, meaning that the diagonal will not be zero.
-  
-  \link{fcm} also provides "boolean" counting within the context of "window",
-  which differs from the counting within "document".
-  
-  \code{is.fcm(x)} returns \code{TRUE} if and only if its x is an object of 
-  type \link{fcm}.
+The function \code{\link[=fcm]{fcm()}} provides a very general
+implementation of a "context-feature" matrix, consisting of a count of
+feature co-occurrence within a defined context.  This context, following
+Momtazi et. al. (2010), can be defined as the \emph{document},
+\emph{sentences} within documents, \emph{syntactic relationships} between
+features (nouns within a sentence, for instance), or according to a
+\emph{window}.  When the context is a window, a weighting function is
+typically applied that is a function of distance from the target word (see
+Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
+features is considered (see Church & Hanks 1990).
+
+\link{fcm} provides all of this functionality, returning a \eqn{V * V}
+matrix (where \eqn{V} is the vocabulary size, returned by
+\code{\link[=nfeat]{nfeat()}}). The \code{tri = TRUE} option will only return the
+upper part of the matrix.
+
+Unlike some implementations of co-occurrences, \link{fcm} counts feature
+co-occurrences with themselves, meaning that the diagonal will not be zero.
+
+\link{fcm} also provides "boolean" counting within the context of "window",
+which differs from the counting within "document".
+
+\code{is.fcm(x)} returns \code{TRUE} if and only if its x is an object of
+type \link{fcm}.
 }
 \examples{
 # see http://bit.ly/29b2zOA
 txt1 <- "A D A C E A D F E B A C E D"
 fcm(txt1, context = "window", window = 2)
 fcm(txt1, context = "window", count = "weighted", window = 3)
-fcm(txt1, context = "window", count = "weighted", window = 3, 
+fcm(txt1, context = "window", count = "weighted", window = 3,
              weights = c(3, 2, 1), ordered = TRUE, tri = FALSE)
 
 # with multiple documents
@@ -105,22 +109,17 @@ fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
 }
 \references{
-Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
-  "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
-   comparative study of word co-occurrence for term clustering in language 
-  model-based sentence retrieval.}" \emph{Human Language Technologies: The 
-  2010 Annual Conference of the North American Chapter of the ACL}, Los 
-  Angeles, California, June 2010, 325-328.
-  
-  Jurafsky, D. & Martin, J.H. (2018).
-  From \emph{Speech and Language Processing: An Introduction to Natural Language Processing, 
-  Computational Linguistics, and Speech Recognition}. Draft of September 23, 2018 
-  (Chapter 6, Vector Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
-  
-  Church, K. W. & P. Hanks (1990) .
- \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
-  mutual information, and lexicography}. \emph{Computational Linguistics},
-  16(1), 22–29.
+Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "\href{https://www.aclweb.org/anthology/N10-1046}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language
+Technologies: The 2010 Annual Conference of the North American Chapter of
+the ACL}, Los Angeles, California, June 2010, 325-328.
+
+Jurafsky, D. & Martin, J.H. (2018). From \emph{Speech and Language Processing:
+An Introduction to Natural Language Processing, Computational Linguistics,
+and Speech Recognition}. Draft of September 23, 2018 (Chapter 6, Vector
+Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
+
+Church, K. W. & P. Hanks (1990). \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms, mutual information, and lexicography}.
+\emph{Computational Linguistics}, 16(1), 22-29.
 }
 \author{
 Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)

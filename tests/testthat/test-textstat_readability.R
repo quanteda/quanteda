@@ -23,7 +23,7 @@ test_that("readability works with sentence length filtering", {
     expect_equal(rdb$meanSentenceLength, c(3, 1.67, 5.50), tolerance = 0.01)
     
     rdb2 <- textstat_readability(txt, measure = "all", min_sentence_length = 3)
-    expect_equal(rdb2$meanSentenceLength, c(4, 9))
+    expect_equal(rdb2$meanSentenceLength, c(4, NA, 9))
 })
 
 # test_that("readability works as koRpus", {
@@ -150,4 +150,40 @@ test_that("textstat_readability works for renamed Bormuth.MC and Coleman.Liau.EC
 test_that("textstat_readability raises error for non-included measures",{
     expect_error(textstat_readability(data_char_sampletext, measure = "Gibberish"),
                  "Invalid measure(s): Gibberish", fixed = TRUE)
+})
+
+test_that("textstat_readability computes all measures (#1701)",{
+    expect_true(
+        all(!is.na(textstat_readability(data_char_sampletext, measure = "all")))
+    )
+})
+
+test_that("textstat_readability has a default measure (#1715)",{
+    expect_identical(
+        names(textstat_readability(data_char_sampletext)),
+        c("document", "Flesch")
+    )
+})
+
+test_that("man/textstat_readability returns NA for empty documents", {
+    txt <- c(d1 = "The cat in the hat at green ham and eggs.", 
+             d2 = "", 
+             d3 = "Once upon a time.")
+    corp <- corpus(txt)
+    
+    expect_equivalent(
+        textstat_readability(txt, "Flesch"),
+        data.frame(document = paste0("d", 1:3), 
+                   Flesch = c(112.085, NA, 97.025),
+                   row.names = NULL, stringsAsFactors = FALSE)
+    )
+    expect_equivalent(
+        textstat_readability(txt, "Flesch", min_sentence_length = 5),
+        data.frame(document = paste0("d", 1:3), 
+                   Flesch = c(112.085, NA, NA),
+                   row.names = NULL, stringsAsFactors = FALSE)
+    )
+    
+    allstat <- textstat_readability(txt, "all")
+    expect_true(all(is.na(allstat["d2", -1])))
 })

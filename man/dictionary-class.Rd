@@ -4,16 +4,13 @@
 \name{dictionary2-class}
 \alias{dictionary2-class}
 \alias{as.list,dictionary2-method}
-\alias{show,dictionary2-method}
 \alias{[,dictionary2,index,ANY,ANY-method}
 \alias{[[,dictionary2,index-method}
 \alias{$.dictionary2}
 \alias{c,dictionary2-method}
-\title{Coerce a dictionary object into a list}
+\title{dictionary class objects and functions}
 \usage{
-\S4method{as.list}{dictionary2}(x)
-
-\S4method{show}{dictionary2}(object)
+\S4method{as.list}{dictionary2}(x, flatten = FALSE, levels = 1:100)
 
 \S4method{[}{dictionary2,index,ANY,ANY}(x, i)
 
@@ -24,7 +21,10 @@
 \S4method{c}{dictionary2}(x, ...)
 }
 \arguments{
-\item{object}{the dictionary to be coerced}
+\item{flatten}{flatten the nested structure if \code{TRUE}}
+
+\item{levels}{integer vector indicating levels in the dictionary. Used only
+when \code{flatten = TRUE}.}
 
 \item{i}{index for entries}
 
@@ -32,16 +32,11 @@
 
 \item{...}{\link{dictionary} objects to be concatenated}
 
-\item{object}{the dictionary to be printed}
-
 \item{object}{the dictionary to be extracted}
-
-\item{object}{the dictionary to be extracted}
-
-\item{i}{index for entries}
 }
 \description{
-Print/show method for dictionary objects.
+The \code{dictionary2} class constructed by \code{\link[=dictionary]{dictionary()}}, and associated core
+class functions.
 }
 \section{Slots}{
 
@@ -50,8 +45,7 @@ Print/show method for dictionary objects.
 dictionary "key" and each element is one or more dictionary entry "values"
 consisting of a pattern match}
 
-\item{\code{concatenator}}{character object specifying space between multi-word
-values}
+\item{\code{meta}}{list of object metadata}
 }}
 
 \keyword{dictionary}

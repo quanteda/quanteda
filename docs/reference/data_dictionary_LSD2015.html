@@ -8,21 +8,29 @@
 
 <title>Lexicoder Sentiment Dictionary (2015) — data_dictionary_LSD2015 • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,18 +39,18 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Lexicoder Sentiment Dictionary (2015) — data_dictionary_LSD2015" />
 
+<meta property="og:title" content="Lexicoder Sentiment Dictionary (2015) — data_dictionary_LSD2015" />
 <meta property="og:description" content="The 2015 Lexicoder Sentiment Dictionary in quanteda dictionary
 format." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,9 +74,10 @@ format." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -82,7 +91,7 @@ format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -106,6 +115,9 @@ format." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -173,7 +185,6 @@ format." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -183,7 +194,7 @@ format." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -194,34 +205,35 @@ format." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Lexicoder Sentiment Dictionary (2015)</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/data-documentation.R'><code>R/data-documentation.R</code></a></small>
     <div class="hidden name"><code>data_dictionary_LSD2015.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>The 2015 Lexicoder Sentiment Dictionary in <span class="pkg">quanteda</span> <a href='dictionary.html'>dictionary</a>
 format.</p>
-    
     </div>
 
     <pre class="usage"><span class='no'>data_dictionary_LSD2015</span></pre>
-        
+
+
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A <a href='dictionary.html'>dictionary</a> of four keys containing glob-style <a href='valuetype.html'>pattern matches</a>.</p><dl class='dl-horizontal'>
+    <p>A <a href='dictionary.html'>dictionary</a> of four keys containing glob-style <a href='valuetype.html'>pattern matches</a>.</p><dl'>
 <dt><code>negative</code></dt><dd><p>2,858 word patterns indicating negative sentiment</p></dd>
 <dt><code>positive</code></dt><dd><p>1,709 word patterns indicating positive sentiment</p></dd>
 <dt><code>neg_positive</code></dt><dd><p>1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)</p></dd>
 <dt><code>neg_negative</code></dt><dd><p>2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)</p></dd>
+
 </dl>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The dictionary consists of 2,858 "negative" sentiment words and 1,709
@@ -237,148 +249,81 @@ words from the negative count.</p>
 remove specific cases of some words (i.e., "good bye", or "nobody better",
 which should not be counted as positive). Pre-processing scripts are
 available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
-    
     <h2 class="hasAnchor" id="license-and-conditions"><a class="anchor" href="#license-and-conditions"></a>License and Conditions</h2>
 
     
-    <p>The LSD is available for non-commercial academic purposes only. By using
-  <code>data_dictionary_LSD2015</code>, you accept these terms.</p>  
+
+<p>The LSD is available for non-commercial academic purposes only. By using
+<code>data_dictionary_LSD2015</code>, you accept these terms.</p>
 <p>Please cite the references below when using the dictionary.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>The objectives, development and reliability of the dictionary are discussed
-  in detail in Young and Soroka (2012). Please cite this article when using the
-  Lexicoder Sentiment Dictionary and related resources.
-  Young, L. &amp; Soroka, S. (2012). <em>Lexicoder Sentiment
-  Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>  
-<p>Young, L. &amp; Soroka, S. (2012). 
-  <a href='https://doi.org/10.1080/10584609.2012.671234'>Affective News: 
-  The Automated Coding of Sentiment in Political Texts</a>. 
-  <em>Political Communication</em>, 29(2), 205--231.</p>
-    
+in detail in Young and Soroka (2012). Please cite this article when using the
+Lexicoder Sentiment Dictionary and related resources.
+Young, L. &amp; Soroka, S. (2012). <em>Lexicoder Sentiment
+Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
+<p>Young, L. &amp; Soroka, S. (2012).
+<a href='https://doi.org/10.1080/10584609.2012.671234'>Affective News: The Automated Coding of Sentiment in Political Texts</a>.
+<em>Political Communication</em>, 29(2), 205--231.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"This aggressive policy will not win friends."</span>
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
 #&gt; [6] "POSITIVE"     "POSITIVE"     "."           
 #&gt; </div><div class='input'><span class='co'>## tokens from 1 document.</span>
 <span class='co'>## text1 :</span>
-<span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE" "."</span>
+<span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE"   "POSITIVE"   "POSITIVE" "."</span>
+
+<span class='co'># notice that double-counting of negated and non-negated terms is avoided </span>
+<span class='co'># when using nested_scope = "dictionary"</span>
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>,
+              <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>nested_scope</span> <span class='kw'>=</span> <span class='st'>"dictionary"</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+#&gt; text1 :
+#&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
+#&gt; [6] "POSITIVE"     "."           
+#&gt; </div><div class='input'><span class='co'>## tokens from 1 document.</span>
+<span class='co'>## text1 :</span>
+<span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   </span>
 
 <span class='co'># on larger examples - notice that few negations are used</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_ukimmig2010</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 9 documents, 4 features (47.2% sparse).
-#&gt; 9 x 4 sparse Matrix of class "dfm"
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 4 features (45.0% sparse).
 #&gt;               features
 #&gt; docs           negative positive neg_positive neg_negative
 #&gt;   BNP               146      107            0            0
 #&gt;   Coalition           6       15            0            0
 #&gt;   Conservative       11       31            0            0
 #&gt;   Greens             23       37            2            0
-#&gt;   Labour             14       31            0            0
-#&gt;   LibDem             22       26            0            0
-#&gt;   PC                  9        8            0            0
-#&gt;   SNP                 4       13            0            0
-#&gt;   UKIP               18       29            0            0</div><div class='input'><span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_char_ukimmig2010</span>, <span class='st'>"not"</span>)</div><div class='output co'>#&gt;                                                                       
-#&gt;           [BNP, 434]        resident population of Britain was | not |
-#&gt;           [BNP, 480]                 in England and Wales were | not |
-#&gt;           [BNP, 523]               2005 birth rate figure does | not |
-#&gt;           [BNP, 690]                     ' new immigrants' are | not |
-#&gt;           [BNP, 979]                  fractured society. We do | not |
-#&gt;          [BNP, 1431]             racially motivated crime, and | not |
-#&gt;          [BNP, 1787]                      to ensure that we do | not |
-#&gt;          [BNP, 2020]              aspect of national security, | not |
-#&gt;          [BNP, 3182]                       in other words, are | not |
-#&gt;   [Conservative, 54]                         be reduced. We do | not |
-#&gt;  [Conservative, 101]                      of thousands a year, | not |
-#&gt;  [Conservative, 313] foreign students or existing institutions | not |
-#&gt;         [Greens, 67]                     thousand years. It is | not |
-#&gt;        [Greens, 384]                     be a positive choice, | not |
-#&gt;        [Greens, 465]                     manifesto.- We should | not |
-#&gt;        [Greens, 479]        people whose immigration status is | not |
-#&gt;        [Greens, 537]              provided for people who have | not |
-#&gt;        [Greens, 626]           who have been trafficked should | not |
-#&gt;        [Greens, 661]          - Those seeking sanctuary should | not |
-#&gt;         [Labour, 61]                  of employment and wages, | not |
-#&gt;        [Labour, 151]              rising employment and wages, | not |
-#&gt;        [Labour, 427]                  of employment and wages, | not |
-#&gt;        [Labour, 575]                Britain is a privilege and | not |
-#&gt;        [LibDem, 277]            This route to citizenship will | not |
-#&gt;        [LibDem, 469]           individuals for whom removal is | not |
-#&gt;          [UKIP, 124]      ensuring any future immigration does | not |
-#&gt;          [UKIP, 367]           deportation. Such citizens will | not |
-#&gt;          [UKIP, 386]                have completed a period of | not |
-#&gt;          [UKIP, 626]            future the British courts will | not |
-#&gt;          [UKIP, 689]          admitting officer that marriage, | not |
-#&gt;                                        
-#&gt;  born in this country(                 
-#&gt;  " white British"(                     
-#&gt;  include births to second and          
-#&gt;  from Eastern Europe, as               
-#&gt;  share the Orwellian knee-jerk response
-#&gt;  the perpetrators, as often            
-#&gt;  become a dispossessed minority in     
-#&gt;  merely an issue of social             
-#&gt;  products of' false consciousness      
-#&gt;  need to attract people to             
-#&gt;  hundreds of thousands. To             
-#&gt;  registered with Companies house.      
-#&gt;  just a matter of immigration          
-#&gt;  the outcome of desperation.           
-#&gt;  tolerate the long-term presence of    
-#&gt;  defined. Such immigrants are          
-#&gt;  succeeded in their claim for          
-#&gt;  be subject to summary deportation     
-#&gt;  be detained, and in                   
-#&gt;  rising immigration, and requiring     
-#&gt;  rising immigration- but we            
-#&gt;  rising immigration. We recognise      
-#&gt;  a right, we will                      
-#&gt;  apply to people arriving after        
-#&gt;  possible or imminent, except          
-#&gt;  exceed 50,000 people p.a.             
-#&gt;  be eligible for benefits.             
-#&gt;  less then five years as               
-#&gt;  be allowed to appeal to               
-#&gt;  residence, is their primary           </div><div class='input'>
+#&gt;   Labour             14       31            0            0</div><div class='input'>
 <span class='co'># compound neg_negative and neg_positive tokens before creating a dfm object</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='no'>data_dictionary_LSD2015</span>)
 
 <span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks</span>), <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.0% sparse).
-#&gt; 1 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    negative positive neg_positive neg_negative
 #&gt;   text1        2        1            1            0</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#license-and-conditions">License and Conditions</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -401,6 +346,8 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 </script>
 
 
+
   </body>
 </html>
+
 

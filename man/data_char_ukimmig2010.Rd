@@ -4,7 +4,9 @@
 \name{data_char_ukimmig2010}
 \alias{data_char_ukimmig2010}
 \title{Immigration-related sections of 2010 UK party manifestos}
-\format{A named character vector of plain ASCII texts}
+\format{
+A named character vector of plain ASCII texts
+}
 \usage{
 data_char_ukimmig2010
 }
@@ -16,7 +18,6 @@ to immigration or asylum-seekers.
 data_corpus_ukimmig2010 <- 
     corpus(data_char_ukimmig2010, 
            docvars = data.frame(party = names(data_char_ukimmig2010)))
-metadoc(data_corpus_ukimmig2010, "language") <- "english"
 summary(data_corpus_ukimmig2010, showmeta = TRUE)
 }
 \keyword{data}

@@ -1,43 +1,49 @@
 #' Plot features as a wordcloud
 #'
-#' Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted
-#' with their sizes proportional to their numerical values in the dfm.  When
-#' \code{comparison = TRUE}, it plots comparison word clouds by document.
+#' Plot a [dfm] or [textstat_keyness] object as a wordcloud, where the feature
+#' labels are plotted with their sizes proportional to their numerical values in
+#' the dfm.  When `comparison = TRUE`, it plots comparison word clouds by
+#' document (or by target and reference categories in the case of a keyness
+#' object).
 #' @details The default is to plot the word cloud of all features, summed across
 #'   documents.  To produce word cloud plots for specific document or set of
 #'   documents, you need to slice out the document(s) from the dfm object.
 #'   
-#'   Comparison wordcloud plots may be plotted by setting \code{comparison =
-#'   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+#'   Comparison wordcloud plots may be plotted by setting `comparison =
+#'   TRUE`, which plots a separate grouping for *each document* in the dfm.
 #'   This means that you will need to slice out just a few documents from the
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
 #'   
-#' @param x a dfm object
+#' @param x a [dfm] or [textstat_keyness] object
 #' @param min_size size of the smallest word
 #' @param max_size size of the largest word
 #' @param min_count words with frequency below min_count will not be plotted
-#' @param max_words maximum number of words to be plotted. least frequent terms
-#'   dropped.
+#' @param max_words maximum number of words to be plotted. The least frequent
+#'   terms dropped.  The maximum frequency will be split evenly across
+#'   categories when `comparison = TRUE`.
 #' @param color color of words from least to most frequent
-#' @param font font-family of words and labels. Use default font if \code{NULL}.
+#' @param font font-family of words and labels. Use default font if `NULL`.
 #' @param adjust adjust sizes of words by a constant. Useful for non-English
 #'   words for which R fails to obtain correct sizes.
 #' @param rotation proportion of words with 90 degree rotation
-#' @param random_order plot words in random order. If \code{FALSE}, they will be
+#' @param random_order plot words in random order. If `FALSE`, they will be
 #'   plotted in decreasing frequency.
-#' @param random_color choose colors randomly from the colors. If \code{FALSE},
+#' @param random_color choose colors randomly from the colors. If `FALSE`,
 #'   the color is chosen based on the frequency
-#' @param ordered_color if \code{TRUE}, then colors are assigned to words in
+#' @param ordered_color if `TRUE`, then colors are assigned to words in
 #'   order.
-#' @param labelcolor color of group labels. Only used when \code{compariosn=TRUE}.
-#' @param labelsize size of group labels. Only used when \code{compariosn=TRUE}.
+#' @param labelcolor color of group labels. Only used when `comparison = TRUE`.
+#' @param labelsize size of group labels. Only used when `comparison = TRUE`.
 #' @param labeloffset  position of group labels. Only used when
-#'   \code{comparison=TRUE}.
-#' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable
+#'   `comparison = TRUE`.
+#' @param fixed_aspect logical; if `TRUE`, the aspect ratio is fixed. Variable
 #'   aspect ratio only supported if rotation = 0.
-#' @param comparison if \code{TRUE}, plot a wordcloud that compares documents in
-#'   the same way as \code{\link[wordcloud]{comparison.cloud}}
+#' @param comparison logical; if `TRUE`, plot a wordcloud that compares
+#'   documents in the same way as [wordcloud::comparison.cloud()].  If `x` is a 
+#'   [textstat_keyness] object, then only the target category's key terms are
+#'   plotted when `comparison = FALSE`, otherwise the top `max_words / 2` terms
+#'   are plotted from the target and reference categories. 
 #' @param ... additional parameters. Only used to make it compatible with
 #'   \pkg{wordcloud}
 #' @examples
@@ -66,6 +72,13 @@
 #' 
 #' textplot_wordcloud(dfmat2, comparison = TRUE, max_words = 300,
 #'                    color = c("blue", "red"))
+#'                    
+#' # for keyness
+#' tstat <- tail(data_corpus_inaugural, 2) %>%
+#'     dfm(remove_punct = TRUE, remove = stopwords("en")) %>%
+#'     textstat_keyness(target = 2)
+#' textplot_wordcloud(tstat, max_words = 100)
+#' textplot_wordcloud(tstat, comparison = FALSE, max_words = 100)
 #' @export
 #' @keywords textplot
 #' @author Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud}
@@ -134,12 +147,31 @@ textplot_wordcloud.dfm <- function(x,
     }
 }
 
+#' @export
+textplot_wordcloud.keyness <- function(x, ..., max_words = 100, 
+                                       comparison = TRUE) {
+    n <- if (!comparison) max_words else floor(max_words / 2)
+    # transform into a dfm
+    mat <- as.matrix(x[, c("n_target", "n_reference")])
+    dimnames(mat) <- list(x$feature, attr(x, "groups"))
+    mat <- utils::head(mat, n)
+    if (comparison) mat <- rbind(utils::tail(mat, n))
+    mat <- as.dfm(t(mat))
+    
+    # slice out the target only if comparison is not wanted
+    if (!comparison) {
+        mat <- dfm_trim(mat[1, ], min_termfreq = 1)
+    }
+    
+    textplot_wordcloud(mat, ..., max_words = max_words, comparison = comparison)
+}
 
+# internal ----------
 
 #' Internal function for textplot_wordcloud
 #'
 #' This function implements wordcloud without dependencies. Code is adopted from 
-#' \code{\link[wordcloud]{wordcloud}}.
+#' [wordcloud::wordcloud()].
 #' @inheritParams textplot_wordcloud
 #' @param scale deprecated argument
 #' @param min.freq deprecated argument
@@ -150,6 +182,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @param ordered.colors deprecated argument
 #' @param use.r.layout deprecated argument
 #' @param fixed.asp deprecated argument
+#' @importFrom graphics text
 #' @keywords internal
 #' @author Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud} package.
 wordcloud <- function(x, min_size, max_size, min_count, max_words, 
@@ -212,6 +245,8 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
     
     font <- check_font(font)
     x <- dfm_trim(x, min_termfreq = min_count)
+    # check to see that dfm is not empty
+    if (!sum(x)) stop("No features left after trimming with min_count = ", min_count)
     freq <- Matrix::colSums(x)
     word <- names(freq)
     freq <- unname(freq)
@@ -308,7 +343,7 @@ wordcloud <- function(x, min_size, max_size, min_count, max_words,
 #' Internal function for textplot_wordcloud
 #'
 #' This function implements wordcloud that compares documents. Code is adopted
-#' from \code{\link[wordcloud]{comparison.cloud}}.
+#' from [wordcloud::comparison.cloud()].
 #' @inheritParams textplot_wordcloud
 #' @param scale deprecated argument
 #' @param min.freq deprecated argument
@@ -474,15 +509,3 @@ wordcloud_comparison <- function(x, min_size, max_size, min_count, max_words,
     #abline(v=c(0, 0.25, 0.75, 1), h=c(0, 0.25, 0.75, 1))
     graphics::par(op)
 }
-
-# textplot_wordcloudold.dfm <- function(x, comparison = FALSE, ...) {
-#     
-#     x <- as.dfm(x)
-#     if (comparison) {
-#         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
-#         wordcloud::comparison.cloud(t(as.matrix(x)), ...)
-#     } else {
-#         wordcloud::wordcloud(featnames(x), colSums(x), ...)
-#     }
-# }
-

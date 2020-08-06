@@ -12,7 +12,7 @@ friendly_class_undefined_message(object_class, function_name)
 \item{function_name}{character which is the function name}
 }
 \description{
-Checks valid methods and issues a friendlier error message in case the method is 
+Checks valid methods and issues a friendlier error message in case the method is
 undefined for the supplied object type.
 }
 \examples{

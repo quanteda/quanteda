@@ -16,17 +16,17 @@
 object: number of first/last documents for the dfm. If negative, all but
 the n last/first number of documents of x.}
 
-\item{nf}{the number of features to return, where the resulting object 
+\item{nf}{the number of features to return, where the resulting object
 will contain the first \code{ncol} features; default is all features}
 
 \item{...}{additional arguments passed to other functions}
 }
 \value{
-A \link{dfm} class object corresponding to the subset defined 
-  by \code{n} and \code{nfeat}.
+A \link{dfm} class object corresponding to the subset defined
+by \code{n} and \code{nfeat}.
 }
 \description{
-For a \link{dfm} object, returns the first or last \code{n} documents 
+For a \link{dfm} object, returns the first or last \code{n} documents
 and first \code{nfeat} features.
 }
 \examples{

@@ -18,10 +18,10 @@ View(x, title)
 \arguments{
 \item{x}{an R object which can be coerced to a data frame with non-zero numbers of rows and columns}
 
-\item{title}{for viewer window. Defaults to name of x prefixed by \code{Data:}}
+\item{title}{for viewer window. Defaults to name of x prefixed by \verb{Data:}}
 }
 \description{
-Redefines utils::View() as a generic, so that we can define methods for 
+Redefines utils::View() as a generic, so that we can define methods for
 kwic to produce a nice viewer.
 }
 \examples{
@@ -34,7 +34,7 @@ View(dfm(data_char_ukimmig2010))
 }
 }
 \seealso{
-\link[utils]{View}
+\link[utils:View]{View}
 }
 \keyword{View}
 \keyword{internal}

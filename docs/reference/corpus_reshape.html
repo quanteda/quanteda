@@ -8,21 +8,29 @@
 
 <title>Recast the document units of a corpus — corpus_reshape • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,21 +39,21 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Recast the document units of a corpus — corpus_reshape" />
 
-<meta property="og:description" content="For a corpus, reshape (or recast) the documents to a different level of aggregation.  
+<meta property="og:title" content="Recast the document units of a corpus — corpus_reshape" />
+<meta property="og:description" content="For a corpus, reshape (or recast) the documents to a different level of aggregation.
 Units of aggregation can be defined as documents, paragraphs, or sentences.
 Because the corpus object records its current &quot;units&quot; status, it is possible
 to move from recast units back to original units, for example from documents,
 to sentences, and then back to documents (possibly after modifying the sentences)." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,9 +77,10 @@ to sentences, and then back to documents (possibly after modifying the sentences
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -85,7 +94,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -109,6 +118,9 @@ to sentences, and then back to documents (possibly after modifying the sentences
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -176,7 +188,6 @@ to sentences, and then back to documents (possibly after modifying the sentences
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -186,7 +197,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -197,29 +208,32 @@ to sentences, and then back to documents (possibly after modifying the sentences
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Recast the document units of a corpus</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus_reshape.R'><code>R/corpus_reshape.R</code></a></small>
     <div class="hidden name"><code>corpus_reshape.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>For a corpus, reshape (or recast) the documents to a different level of aggregation.  
+    <p>For a corpus, reshape (or recast) the documents to a different level of aggregation.
 Units of aggregation can be defined as documents, paragraphs, or sentences.
 Because the corpus object records its current "units" status, it is possible
 to move from recast units back to original units, for example from documents,
 to sentences, and then back to documents (possibly after modifying the sentences).</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>corpus_reshape</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
-  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>corpus_reshape</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -233,184 +247,149 @@ to sentences, and then back to documents (possibly after modifying the sentences
     </tr>
     <tr>
       <th>use_docvars</th>
-      <td><p>if <code>TRUE</code>, repeat the docvar values for each 
-segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus. 
+      <td><p>if <code>TRUE</code>, repeat the docvar values for each
+segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens</a></code>, since the
+      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens()</a></code>, since the
 syntactic segmenter uses this function)</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A corpus object with the documents defined as the new units,
-  including document-level meta-data identifying the original documents.</p>
-    
+including document-level meta-data identifying the original documents.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
-<span class='no'>corp1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>textone</span> <span class='kw'>=</span> <span class='st'>"This is a sentence.  Another sentence.  Yet another."</span>,
+<span class='no'>corp1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>textone</span> <span class='kw'>=</span> <span class='st'>"This is a sentence.  Another sentence.  Yet another."</span>,
                  <span class='kw'>textwo</span> <span class='kw'>=</span> <span class='st'>"Premiere phrase.  Deuxieme phrase."</span>),
-                 <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>country</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"UK"</span>, <span class='st'>"USA"</span>), <span class='kw'>year</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1990</span>, <span class='fl'>2000</span>)),
-                 <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>notes</span> <span class='kw'>=</span> <span class='st'>"Example showing how corpus_reshape() works."</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>corp1</span>)</div><div class='output co'>#&gt; Corpus consisting of 2 documents:
+                 <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>country</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"UK"</span>, <span class='st'>"USA"</span>), <span class='kw'>year</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1990</span>, <span class='fl'>2000</span>)))
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>corp1</span>)</div><div class='output co'>#&gt; Corpus consisting of 2 documents, showing 2 documents:
 #&gt; 
 #&gt;     Text Types Tokens Sentences country year
 #&gt;  textone     8     11         3      UK 1990
 #&gt;   textwo     4      6         2     USA 2000
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>))</div><div class='output co'>#&gt; Corpus consisting of 5 documents, showing 5 documents:
 #&gt; 
-#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Sat Feb  2 14:11:47 2019
-#&gt; Notes: Example showing how corpus_reshape() works.</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
-#&gt; 
-#&gt;       Text Types Tokens Sentences _document _docid _segid country year
-#&gt;  textone.1     5      5         1   textone      1      1      UK 1990
-#&gt;  textone.2     3      3         1   textone      1      2      UK 1990
-#&gt;  textone.3     3      3         1   textone      1      3      UK 1990
-#&gt;   textwo.1     3      3         1    textwo      2      1     USA 2000
-#&gt;   textwo.2     3      3         1    textwo      2      2     USA 2000
-#&gt; 
-#&gt; Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Sat Feb  2 14:11:47 2019
-#&gt; Notes: corpus_reshape.corpus(corp1, to = "sentences")</div><div class='input'>
+#&gt;       Text Types Tokens Sentences country year
+#&gt;  textone.1     5      5         1      UK 1990
+#&gt;  textone.2     3      3         1      UK 1990
+#&gt;  textone.3     3      3         1      UK 1990
+#&gt;   textwo.1     3      3         1     USA 2000
+#&gt;   textwo.2     3      3         1     USA 2000
+#&gt; </div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
-(<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>corp2para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"paragraphs"</span>)
-<span class='no'>corp2para</span></div><div class='output co'>#&gt; Corpus consisting of 138 documents and 3 docvars.</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>corp2para</span>, <span class='fl'>50</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 138 documents, showing 50 documents:
+(<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 4 docvars.
+#&gt; 2005-Bush :
+#&gt; "Vice President Cheney, Mr. Chief Justice, President Carter, ..."
 #&gt; 
-#&gt;           Text Types Tokens Sentences  _document _docid _segid Year President
-#&gt;    2005-Bush.1   773   2319       100  2005-Bush      1      1 2005      Bush
-#&gt;   2009-Obama.1     4      4         1 2009-Obama      2      1 2009     Obama
-#&gt;   2009-Obama.2    42     53         2 2009-Obama      2      2 2009     Obama
-#&gt;   2009-Obama.3    62     86         4 2009-Obama      2      3 2009     Obama
-#&gt;   2009-Obama.4    12     15         2 2009-Obama      2      4 2009     Obama
-#&gt;   2009-Obama.5    76    108         5 2009-Obama      2      5 2009     Obama
-#&gt;   2009-Obama.6    39     47         2 2009-Obama      2      6 2009     Obama
-#&gt;   2009-Obama.7    36     47         4 2009-Obama      2      7 2009     Obama
-#&gt;   2009-Obama.8    19     22         1 2009-Obama      2      8 2009     Obama
-#&gt;   2009-Obama.9    29     33         1 2009-Obama      2      9 2009     Obama
-#&gt;  2009-Obama.10    56     82         2 2009-Obama      2     10 2009     Obama
-#&gt;  2009-Obama.11    71    106         5 2009-Obama      2     11 2009     Obama
-#&gt;  2009-Obama.12    21     21         1 2009-Obama      2     12 2009     Obama
-#&gt;  2009-Obama.13    20     24         1 2009-Obama      2     13 2009     Obama
-#&gt;  2009-Obama.14    17     20         1 2009-Obama      2     14 2009     Obama
-#&gt;  2009-Obama.15    43     51         2 2009-Obama      2     15 2009     Obama
-#&gt;  2009-Obama.16    73    108         7 2009-Obama      2     16 2009     Obama
-#&gt;  2009-Obama.17    85    144         8 2009-Obama      2     17 2009     Obama
-#&gt;  2009-Obama.18    52     62         3 2009-Obama      2     18 2009     Obama
-#&gt;  2009-Obama.19    97    150         5 2009-Obama      2     19 2009     Obama
-#&gt;  2009-Obama.20    76    117         3 2009-Obama      2     20 2009     Obama
-#&gt;  2009-Obama.21    90    137         4 2009-Obama      2     21 2009     Obama
-#&gt;  2009-Obama.22    60     83         3 2009-Obama      2     22 2009     Obama
-#&gt;  2009-Obama.23    92    142         5 2009-Obama      2     23 2009     Obama
-#&gt;  2009-Obama.24    82    126         3 2009-Obama      2     24 2009     Obama
-#&gt;  2009-Obama.25    65    103         3 2009-Obama      2     25 2009     Obama
-#&gt;  2009-Obama.26    63     84         3 2009-Obama      2     26 2009     Obama
-#&gt;  2009-Obama.27    81    115         4 2009-Obama      2     27 2009     Obama
-#&gt;  2009-Obama.28    69     96         3 2009-Obama      2     28 2009     Obama
-#&gt;  2009-Obama.29    95    158         7 2009-Obama      2     29 2009     Obama
-#&gt;  2009-Obama.30     9     10         1 2009-Obama      2     30 2009     Obama
-#&gt;  2009-Obama.31    20     22         1 2009-Obama      2     31 2009     Obama
-#&gt;  2009-Obama.32    53     65         1 2009-Obama      2     32 2009     Obama
-#&gt;  2009-Obama.33    67     95         6 2009-Obama      2     33 2009     Obama
-#&gt;  2009-Obama.34    34     53         1 2009-Obama      2     34 2009     Obama
-#&gt;  2009-Obama.35    75    106         4 2009-Obama      2     35 2009     Obama
-#&gt;  2009-Obama.36    11     16         3 2009-Obama      2     36 2009     Obama
-#&gt;   2013-Obama.1    20     23         1 2013-Obama      3      1 2013     Obama
-#&gt;   2013-Obama.2    56     82         4 2013-Obama      3      2 2013     Obama
-#&gt;   2013-Obama.3    33     41         1 2013-Obama      3      3 2013     Obama
-#&gt;   2013-Obama.4    76    111         4 2013-Obama      3      4 2013     Obama
-#&gt;   2013-Obama.5    10     10         1 2013-Obama      3      5 2013     Obama
-#&gt;   2013-Obama.6    34     42         2 2013-Obama      3      6 2013     Obama
-#&gt;   2013-Obama.7    22     26         1 2013-Obama      3      7 2013     Obama
-#&gt;   2013-Obama.8    21     21         1 2013-Obama      3      8 2013     Obama
-#&gt;   2013-Obama.9    23     24         1 2013-Obama      3      9 2013     Obama
-#&gt;  2013-Obama.10    44     54         2 2013-Obama      3     10 2013     Obama
-#&gt;  2013-Obama.11    89    130         4 2013-Obama      3     11 2013     Obama
-#&gt;  2013-Obama.12    68     93         5 2013-Obama      3     12 2013     Obama
-#&gt;  2013-Obama.13    90    131         4 2013-Obama      3     13 2013     Obama
-#&gt;  FirstName
-#&gt;  George W.
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
-#&gt;     Barack
+#&gt; 2009-Obama :
+#&gt; "My fellow citizens: I stand here today humbled by the task b..."
 #&gt; 
-#&gt; Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
-#&gt; Created: Sat Feb  2 14:11:47 2019
-#&gt; Notes: corpus_reshape.corpus(corp2, to = "paragraphs")</div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text 
+#&gt; 2013-Obama :
+#&gt; "Vice President Biden, Mr. Chief Justice, Members of the Unit..."
+#&gt; 
+#&gt; 2017-Trump :
+#&gt; "Chief Justice Roberts, President Carter, President Clinton, ..."
+#&gt; </div><div class='input'><span class='no'>corp2para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"paragraphs"</span>)
+<span class='no'>corp2para</span></div><div class='output co'>#&gt; Corpus consisting of 164 documents and 4 docvars.
+#&gt; 2005-Bush.1 :
+#&gt; "Vice President Cheney, Mr. Chief Justice, President Carter, ..."
+#&gt; 
+#&gt; 2005-Bush.2 :
+#&gt; "At this second gathering, our duties are defined not by the ..."
+#&gt; 
+#&gt; 2005-Bush.3 :
+#&gt; "We have seen our vulnerability, and we have seen its deepest..."
+#&gt; 
+#&gt; 2005-Bush.4 :
+#&gt; "We are led, by events and common sense, to one conclusion: T..."
+#&gt; 
+#&gt; 2005-Bush.5 :
+#&gt; "America's vital interests and our deepest beliefs are now on..."
+#&gt; 
+#&gt; 2005-Bush.6 :
+#&gt; "So it is the policy of the United States to seek and support..."
+#&gt; 
+#&gt; [ reached max_ndoc ... 158 more documents ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>corp2para</span>, <span class='fl'>50</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 164 documents, showing 50 documents:
+#&gt; 
+#&gt;           Text Types Tokens Sentences Year President FirstName      Party
+#&gt;    2005-Bush.1    66    100         2 2005      Bush George W. Republican
+#&gt;    2005-Bush.2    50     70         3 2005      Bush George W. Republican
+#&gt;    2005-Bush.3    64    100         3 2005      Bush George W. Republican
+#&gt;    2005-Bush.4    37     50         2 2005      Bush George W. Republican
+#&gt;    2005-Bush.5    69    118         6 2005      Bush George W. Republican
+#&gt;    2005-Bush.6    89    148         6 2005      Bush George W. Republican
+#&gt;    2005-Bush.7    36     51         3 2005      Bush George W. Republican
+#&gt;    2005-Bush.8    48     65         3 2005      Bush George W. Republican
+#&gt;    2005-Bush.9    78    113         6 2005      Bush George W. Republican
+#&gt;   2005-Bush.10    67     98         5 2005      Bush George W. Republican
+#&gt;   2005-Bush.11    39     48         3 2005      Bush George W. Republican
+#&gt;   2005-Bush.12    25     28         1 2005      Bush George W. Republican
+#&gt;   2005-Bush.13    40     44         1 2005      Bush George W. Republican
+#&gt;   2005-Bush.14    35     42         2 2005      Bush George W. Republican
+#&gt;   2005-Bush.15    43     59         3 2005      Bush George W. Republican
+#&gt;   2005-Bush.16    90    138         9 2005      Bush George W. Republican
+#&gt;   2005-Bush.17    47     68         2 2005      Bush George W. Republican
+#&gt;   2005-Bush.18    61     92         5 2005      Bush George W. Republican
+#&gt;   2005-Bush.19    32     41         2 2005      Bush George W. Republican
+#&gt;   2005-Bush.20   102    164         6 2005      Bush George W. Republican
+#&gt;   2005-Bush.21    72    125         4 2005      Bush George W. Republican
+#&gt;   2005-Bush.22    73    107         5 2005      Bush George W. Republican
+#&gt;   2005-Bush.23    40     60         3 2005      Bush George W. Republican
+#&gt;   2005-Bush.24    88    131         5 2005      Bush George W. Republican
+#&gt;   2005-Bush.25    99    151         4 2005      Bush George W. Republican
+#&gt;   2005-Bush.26    59     85         4 2005      Bush George W. Republican
+#&gt;   2005-Bush.27    16     16         1 2005      Bush George W. Republican
+#&gt;   2009-Obama.1     4      4         1 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.2    42     53         2 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.3    62     86         4 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.4    12     15         2 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.5    76    108         5 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.6    39     46         2 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.7    36     46         4 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.8    19     22         1 2009     Obama    Barack Democratic
+#&gt;   2009-Obama.9    29     33         1 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.10    56     82         2 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.11    71    105         5 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.12    21     21         1 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.13    20     24         1 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.14    17     20         1 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.15    43     51         2 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.16    73    107         7 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.17    85    143         8 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.18    52     61         3 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.19    97    146         5 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.20    76    115         3 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.21    90    137         4 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.22    60     83         3 2009     Obama    Barack Democratic
+#&gt;  2009-Obama.23    92    141         5 2009     Obama    Barack Democratic
+#&gt; </div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text
 ## used a single \n to mark the end of a paragraph.
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -433,6 +412,8 @@ syntactic segmenter uses this function)</p></td>
 </script>
 
 
+
   </body>
 </html>
+
 

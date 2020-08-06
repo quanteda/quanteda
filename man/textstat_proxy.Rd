@@ -4,14 +4,22 @@
 \alias{textstat_proxy}
 \title{[Experimental] Compute document/feature proximity}
 \usage{
-textstat_proxy(x, y = NULL, margin = c("documents", "features"),
-  method = c("cosine", "correlation", "jaccard", "ejaccard", "dice",
-  "edice", "hamman", "simple matching", "faith", "euclidean", "chisquared",
-  "hamming", "kullback", "manhattan", "maximum", "canberra", "minkowski"),
-  p = 2, min_proxy = NULL, rank = NULL, use_na = FALSE)
+textstat_proxy(
+  x,
+  y = NULL,
+  margin = c("documents", "features"),
+  method = c("cosine", "correlation", "jaccard", "ejaccard", "dice", "edice", "hamman",
+    "simple matching", "euclidean", "chisquared", "hamming", "kullback", "manhattan",
+    "maximum", "canberra", "minkowski"),
+  p = 2,
+  min_proxy = NULL,
+  rank = NULL,
+  use_na = FALSE
+)
 }
 \arguments{
-\item{x}{a \link{dfm} object}
+\item{x}{a \link{dfm} objects; \code{y} is an optional target matrix matching
+\code{x} in the margin on which the similarity or distance will be computed.}
 
 \item{y}{if a \link{dfm} object is provided, proximity between documents or
 features in \code{x} and \code{y} is computed.}
@@ -20,8 +28,8 @@ features in \code{x} and \code{y} is computed.}
 difference will be computed:  \code{"documents"} for documents or
 \code{"features"} for word/term features.}
 
-\item{method}{method the similarity or distance measure to be used; see
-Details.}
+\item{method}{character; the method identifying the similarity or distance
+measure to be used; see Details.}
 
 \item{p}{The power of the Minkowski distance.}
 
@@ -38,6 +46,6 @@ This is an underlying function for \code{textstat_dist} and
 \code{textstat_simil} but returns \code{TsparseMatrix}.
 }
 \seealso{
-\code{\link{textstat_dist}}, \code{\link{textstat_simil}}
+\code{\link[=textstat_dist]{textstat_dist()}}, \code{\link[=textstat_simil]{textstat_simil()}}
 }
 \keyword{internal}

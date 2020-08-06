@@ -7,7 +7,11 @@
 \alias{data_int_syllables}
 \alias{data_char_wordlists}
 \title{Internal data sets}
-\format{An object of class \code{integer} of length 133245.}
+\format{
+An object of class \code{integer} of length 133245.
+
+An object of class \code{list} of length 2.
+}
 \usage{
 data_int_syllables
 
@@ -53,7 +57,7 @@ Lesbarkeitsformeln für die deutsche Sprache. \emph{Zeitschrift für
 Entwicklungspsychologie und Pädagogische Psychologie}, 16(3), 231--244.
 
 Wheeler, L.R. & Smith, E.H. (1954). A Practical Readability Formula for the
-Classroom Teacher in the Primary Grades. \emph{Elementary English}, 31, 
+Classroom Teacher in the Primary Grades. \emph{Elementary English}, 31,
 397--399.
 }
 \keyword{data}

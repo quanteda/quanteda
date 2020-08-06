@@ -4,23 +4,30 @@
 \alias{textstat_select}
 \title{Select rows of textstat objects by glob, regex or fixed patterns}
 \usage{
-textstat_select(x, pattern = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE)
+textstat_select(
+  x,
+  pattern = NULL,
+  selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE
+)
 }
 \arguments{
 \item{x}{a \code{textstat} object}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the rows that
 match the pattern}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 }
 \description{
 Users can subset output object of \code{textstat_collocations},

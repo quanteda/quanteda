@@ -4,7 +4,7 @@
 \alias{dfm_subset}
 \title{Extract a subset of a dfm}
 \usage{
-dfm_subset(x, subset, select, ...)
+dfm_subset(x, subset, ...)
 }
 \arguments{
 \item{x}{\link{dfm} object to be subsetted}
@@ -12,49 +12,39 @@ dfm_subset(x, subset, select, ...)
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
 
-\item{select}{expression, indicating the docvars to select from the dfm; or a
-\link{dfm} object, in which case the returned dfm will contain the same
-documents as the original dfm, even if these are empty.  See Details.}
-
 \item{...}{not used}
 }
 \value{
 \link{dfm} object, with a subset of documents (and docvars) selected
-  according to arguments
+according to arguments
 }
 \description{
 Returns document subsets of a dfm that meet certain conditions,
-including direct logical operations on docvars (document-level variables). 
-\code{dfm_subset} functions identically to \code{\link{subset.data.frame}},
+including direct logical operations on docvars (document-level variables).
+\code{dfm_subset} functions identically to \code{\link[=subset.data.frame]{subset.data.frame()}},
 using non-standard evaluation to evaluate conditions based on the
 \link{docvars} in the dfm.
 }
 \details{
-To select or subset \emph{features}, see \code{\link{dfm_select}} instead.
+To select or subset \emph{features}, see \code{\link[=dfm_select]{dfm_select()}} instead.
 
 When \code{select} is a dfm, then the returned dfm will be equal in
-  document dimension and order to the dfm used for selection.  This is the
-  document-level version of using \code{\link{dfm_select}} where
-  \code{pattern} is a dfm: that function matches features, while
-  \code{dfm_subset} will match documents.
+document dimension and order to the dfm used for selection.  This is the
+document-level version of using \code{\link[=dfm_select]{dfm_select()}} where
+\code{pattern} is a dfm: that function matches features, while
+\code{dfm_subset} will match documents.
 }
 \examples{
 corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
-                     d3 = "b b c e", d4 = "e e f a b"),
-                   docvars = data.frame(grp = c(1, 1, 2, 3)))
+                 d3 = "b b c e", d4 = "e e f a b"),
+               docvars = data.frame(grp = c(1, 1, 2, 3)))
 dfmat <- dfm(corp)
 # selecting on a docvars condition
 dfm_subset(dfmat, grp > 1)
 # selecting on a supplied vector
 dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
-
-# selecting on a dfm
-dfmat1 <- dfm(c(d1 = "a b b c", d2 = "b b c d"))
-dfmat2 <- dfm(c(d1 = "x y z", d2 = "a b c c d", d3 = "x x x"))
-dfm_subset(dfmat1, subset = dfmat2)
-dfm_subset(dfmat1, subset = dfmat2[c(3,1,2), ])
 }
 \seealso{
-\code{\link{subset.data.frame}}
+\code{\link[=subset.data.frame]{subset.data.frame()}}
 }
 \keyword{dfm}

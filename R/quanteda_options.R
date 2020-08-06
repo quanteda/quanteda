@@ -2,41 +2,48 @@
 #'
 #' Get or set global options affecting functions across \pkg{quanteda}.
 #' @param ... options to be set, as key-value pair, same as
-#'   \code{\link{options}}. This may be a list of valid key-value pairs, useful
+#'   [options()]. This may be a list of valid key-value pairs, useful
 #'   for setting a group of options at once (see examples).
-#' @param reset logical; if \code{TRUE}, reset all \pkg{quanteda} options to
+#' @param reset logical; if `TRUE`, reset all \pkg{quanteda} options to
 #'   their default values
-#' @param initialize logical; if \code{TRUE}, reset only the \pkg{quanteda}
+#' @param initialize logical; if `TRUE`, reset only the \pkg{quanteda}
 #'   options that are not already defined.  Used for setting initial values when
 #'   some have been defined previously, such as in `.Rprofile`.
 #' @details Currently available options are: \describe{
-#' \item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
-#' for all functions with a \code{verbose} argument}
-#' \item{\code{threads}}{integer; specifies the number of threads to use in
+#' \item{`verbose`}{logical; if `TRUE` then use this as the default
+#' for all functions with a `verbose` argument}
+#' \item{`threads`}{integer; specifies the number of threads to use in
 #' parallelized functions}
-#' \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
+#' \item{`print_dfm_max_ndoc`}{integer; specifies the number of documents
 #' to display when using the defaults for printing a dfm}
-#' \item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
+#' \item{`print_dfm_max_nfeat`}{integer; specifies the number of
 #' features to display when using the defaults for printing a dfm}
-#' \item{\code{base_docname}}{character; stem name for documents that are
+#' \item{`base_docname`}{character; stem name for documents that are
 #' unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
-#' from another object} \item{\code{base_featname}}{character; stem name for
+#' from another object} \item{`base_featname`}{character; stem name for
 #' features that are unnamed when they are added, for whatever reason, to a dfm
 #' through an operation that adds features}
-#' \item{\code{base_compname}}{character; stem name for components that are
+#' \item{`base_compname`}{character; stem name for components that are
 #' created by matrix factorization} 
-#' \item{\code{language_stemmer}}{character; language option for \link{char_wordstem}, 
-#' \link{tokens_wordstem}, and \link{dfm_wordstem}} 
-#' }
-#' @return When called using a \code{key = value} pair (where \code{key} can be
-#' a label or quoted character name)), the option is set and \code{TRUE} is
+#' \item{`language_stemmer`}{character; language option for [char_wordstem()], 
+#' [tokens_wordstem()], and [dfm_wordstem()]} 
+#' \item{`pattern_hashtag`, `pattern_username`}{character; regex patterns for
+#' (social media) hashtags and usernames respectively, used to avoid segmenting
+#' these in the default internal "word" tokenizer}
+#' \item{`tokens_block_size`}{integer; specifies the
+#'   number of documents to be tokenized at a time in blocked tokenization.
+#'   When the number is large, tokenization becomes faster but also memory-intensive.}
+#' \item{`tokens_locale`}{character; specify locale in stringi boundary detection in 
+#'   tokenization and corpus reshaping. See [stringi::stri_opts_brkiter()].}}
+#' @return When called using a `key = value` pair (where `key` can be
+#' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
 #'
 #' When called with no arguments, a named list of the package options is
 #' returned.
 #'
-#' When called with \code{reset = TRUE} as an argument, all arguments are
-#' options are reset to their default values, and \code{TRUE} is returned
+#' When called with `reset = TRUE` as an argument, all arguments are
+#' options are reset to their default values, and `TRUE` is returned
 #' invisibly.
 #' @export
 #' @importFrom RcppParallel setThreadOptions
@@ -60,15 +67,13 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
         args <- args[[1]]
     
     # initialize automatically it not yet done so
-    if (is.null(options('quanteda_initialized')) || !"package:quanteda" %in% search())
+    if (is.null(getOption('quanteda_initialized')) || !"package:quanteda" %in% search())
         quanteda_initialize()
         
     if (initialize) {
-        quanteda_initialize()
-        return(invisible(TRUE))
+        return(invisible(quanteda_initialize()))
     } else if (reset) {
-        quanteda_reset()
-        return(invisible(TRUE))
+        return(invisible(quanteda_reset()))
     } else if (!length(args)) {
         # return all option values with names
         opts_names <- names(get_options_default())
@@ -93,7 +98,7 @@ quanteda_initialize <- function() {
         if (is.null(getOption(paste0("quanteda_", key))))
             set_option_value(key, opts[[key]])
     }
-    options('quanteda_initialized' = TRUE)
+    unlist(options('quanteda_initialized' = TRUE), use.names = FALSE)
 }
 
 quanteda_reset <- function() {
@@ -101,7 +106,7 @@ quanteda_reset <- function() {
     for (key in names(opts)) {
         set_option_value(key, opts[[key]])
     }
-    options('quanteda_initialized' = TRUE)
+    unlist(options('quanteda_initialized' = TRUE), use.names = FALSE)
 }
 
 set_option_value <- function(key, value) {
@@ -136,11 +141,25 @@ set_option_value <- function(key, value) {
 get_options_default <- function(){
     opts <- list(threads = min(RcppParallel::defaultNumThreads(), 2),
                  verbose = FALSE,
-                 print_dfm_max_ndoc = 20L,
-                 print_dfm_max_nfeat = 20L,
+                 print_dfm_max_ndoc = 6L,
+                 print_dfm_max_nfeat = 10L,
+                 print_dfm_summary = TRUE,
+                 print_corpus_max_ndoc = 6L,
+                 print_corpus_max_nchar = 60L,
+                 print_corpus_summary = TRUE,
+                 print_tokens_max_ndoc = 6L,
+                 print_tokens_max_ntoken = 12L,
+                 print_tokens_summary = TRUE,
+                 print_dictionary_max_nkey = 6L,
+                 print_dictionary_max_nval = 20L,
+                 print_dictionary_summary = TRUE,
                  base_docname = "text",
                  base_featname = "feat",
                  base_compname = "comp",
-                 language_stemmer = "english")
+                 language_stemmer = "english",
+                 pattern_hashtag = "#\\w+#?",
+                 pattern_username = "@[a-zA-Z0-9_]+",
+                 tokens_block_size = 10000L,
+                 tokens_locale = "en_US@ss=standard")
     return(opts)
 }

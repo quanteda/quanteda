@@ -8,21 +8,29 @@
 
 <title>Get or set document-level variables — docvars • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,18 +39,18 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Get or set document-level variables — docvars" />
 
+<meta property="og:title" content="Get or set document-level variables — docvars" />
 <meta property="og:description" content="Get or set variables associated with a document in a corpus,
 tokens or dfm object." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,9 +74,10 @@ tokens or dfm object." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -82,7 +91,7 @@ tokens or dfm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -106,6 +115,9 @@ tokens or dfm object." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -173,7 +185,6 @@ tokens or dfm object." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -183,7 +194,7 @@ tokens or dfm object." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -194,33 +205,50 @@ tokens or dfm object." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get or set document-level variables</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/docvars.R'><code>R/docvars.R</code></a></small>
     <div class="hidden name"><code>docvars.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Get or set variables associated with a document in a <a href='corpus.html'>corpus</a>,
 <a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> object.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>docvars</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage">docvars(x, field = NULL)
 
-<span class='fu'>docvars</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
-    
+docvars(x, field = NULL) &lt;- value
+
+# S3 method for corpus
+$(x, name)
+
+# S3 method for corpus
+$(x, name) &lt;- value
+
+# S3 method for tokens
+$(x, name)
+
+# S3 method for tokens
+$(x, name) &lt;- value
+
+# S3 method for dfm
+$(x, name)
+
+# S3 method for dfm
+$(x, name) &lt;- value</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object whose 
+      <td><p><a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object whose
 document-level variables will be read or set</p></td>
     </tr>
     <tr>
@@ -229,17 +257,20 @@ document-level variables will be read or set</p></td>
     </tr>
     <tr>
       <th>value</th>
-      <td><p>the new values of the document-level variable</p></td>
+      <td><p>a vector of document variable values to be assigned to <code>name</code></p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>a literal character string specifying a single docvars name</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>docvars</code> returns a data.frame of the document-level variables, 
-  dropping the second dimension to form a vector if a single docvar is 
-  returned.</p>
+    <p><code>docvars</code> returns a data.frame of the document-level variables,
+dropping the second dimension to form a vector if a single docvar is
+returned.</p>
 <p><code>docvars&lt;-</code> assigns <code>value</code> to the named <code>field</code></p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Reassigning document variables for a <a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> object
@@ -249,75 +280,84 @@ to be attached "downstream" after tokenization and forming a document-feature
 matrix.  Recognizing that in some cases, you may need to modify or add
 document variables to downstream objects, the assignment operator is defined
 for <a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> objects as well.  Use with caution.</p>
-    
-    <h2 class="hasAnchor" id="index-access-to-docvars-in-a-corpus"><a class="anchor" href="#index-access-to-docvars-in-a-corpus"></a>Index access to docvars in a corpus</h2>
+    <h2 class="hasAnchor" id="accessing-or-assigning-docvars-using-the-operator"><a class="anchor" href="#accessing-or-assigning-docvars-using-the-operator"></a>Accessing or assigning docvars using the <code>$</code> operator</h2>
 
     
-    <p>Another way to access and set docvars is through indexing of the corpus 
-<code>j</code> element, such as <code>data_corpus_irishbudget2010[, c("foren", 
-"name"]</code>; or, for a single docvar, 
-<code>data_corpus_irishbudget2010[["name"]]</code>.  The latter also permits 
-assignment, including the easy creation of new document variables, e.g. 
-<code>data_corpus_irishbudget2010[["newvar"]] &lt;- 
-1:ndoc(data_corpus_irishbudget2010)</code>. See <code><a href='corpus-class.html'>[.corpus</a></code> for details.</p>
-    
+
+<p>As of <span class="pkg">quanteda</span> v2, it is possible to access and assign a docvar using
+the <code>$</code> operator.  See Examples.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># retrieving docvars from a corpus</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt;                 Year  President FirstName
-#&gt; 1789-Washington 1789 Washington    George
-#&gt; 1793-Washington 1793 Washington    George
-#&gt; 1797-Adams      1797      Adams      John
-#&gt; 1801-Jefferson  1801  Jefferson    Thomas
-#&gt; 1805-Jefferson  1805  Jefferson    Thomas
-#&gt; 1809-Madison    1809    Madison     James</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>tail</a></span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"President"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] "Reagan"  "Reagan"  "Bush"    "Clinton" "Clinton" "Bush"    "Bush"   
-#&gt;  [8] "Obama"   "Obama"   "Trump"  </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt;   Year  President FirstName                 Party
+#&gt; 1 1789 Washington    George                  none
+#&gt; 2 1793 Washington    George                  none
+#&gt; 3 1797      Adams      John            Federalist
+#&gt; 4 1801  Jefferson    Thomas Democratic-Republican
+#&gt; 5 1805  Jefferson    Thomas Democratic-Republican
+#&gt; 6 1809    Madison     James Democratic-Republican</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"President"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] "Reagan"  "Reagan"  "Bush"    "Clinton" "Clinton" "Bush"    "Bush"   
+#&gt;  [8] "Obama"   "Obama"   "Trump"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>data_corpus_inaugural</span>$<span class='no'>President</span>)</div><div class='output co'>#&gt; [1] "Washington" "Washington" "Adams"      "Jefferson"  "Jefferson" 
+#&gt; [6] "Madison"   </div><div class='input'>
 <span class='co'># assigning document variables to a corpus</span>
 <span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>
-<span class='fu'>docvars</span>(<span class='no'>corp</span>, <span class='st'>"President"</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='st'>"prez"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>corp</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'>docvars</span>(<span class='no'>corp</span>))</div><div class='output co'>#&gt;                 Year President FirstName
-#&gt; 1789-Washington 1789     prez1    George
-#&gt; 1793-Washington 1793     prez2    George
-#&gt; 1797-Adams      1797     prez3      John
-#&gt; 1801-Jefferson  1801     prez4    Thomas
-#&gt; 1805-Jefferson  1805     prez5    Thomas
-#&gt; 1809-Madison    1809     prez6     James</div><div class='input'>
-<span class='co'># alternative using indexing</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>corp</span>[, <span class='st'>"Year"</span>])</div><div class='output co'>#&gt; [1] 1789 1793 1797 1801 1805 1809</div><div class='input'><span class='no'>corp</span><span class='kw'>[[</span><span class='st'>"President2"</span>]] <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='st'>"prezTwo"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>corp</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='fu'>docvars</span>(<span class='no'>corp</span>))</div><div class='output co'>#&gt;                 Year President FirstName President2
-#&gt; 1789-Washington 1789     prez1    George   prezTwo1
-#&gt; 1793-Washington 1793     prez2    George   prezTwo2
-#&gt; 1797-Adams      1797     prez3      John   prezTwo3
-#&gt; 1801-Jefferson  1801     prez4    Thomas   prezTwo4
-#&gt; 1805-Jefferson  1805     prez5    Thomas   prezTwo5
-#&gt; 1809-Madison    1809     prez6     James   prezTwo6</div><div class='input'>
-</div></pre>
+<span class='fu'>docvars</span>(<span class='no'>corp</span>, <span class='st'>"President"</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"prez"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>corp</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>docvars</span>(<span class='no'>corp</span>))</div><div class='output co'>#&gt;   Year President FirstName                 Party
+#&gt; 1 1789     prez1    George                  none
+#&gt; 2 1793     prez2    George                  none
+#&gt; 3 1797     prez3      John            Federalist
+#&gt; 4 1801     prez4    Thomas Democratic-Republican
+#&gt; 5 1805     prez5    Thomas Democratic-Republican
+#&gt; 6 1809     prez6     James Democratic-Republican</div><div class='input'><span class='no'>corp</span>$<span class='no'>fullname</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>data_corpus_inaugural</span>$<span class='no'>FirstName</span>,
+                       <span class='no'>data_corpus_inaugural</span>$<span class='no'>President</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>corp</span>$<span class='no'>fullname</span>)</div><div class='output co'>#&gt; [1] "Bill Clinton"    "George W. Bush"  "George W. Bush"  "Barack Obama"   
+#&gt; [5] "Barack Obama"    "Donald J. Trump"</div><div class='input'>
+
+<span class='co'># accessing or assigning docvars for a corpus using "$"</span>
+<span class='no'>data_corpus_inaugural</span>$<span class='no'>Year</span></div><div class='output co'>#&gt;  [1] 1789 1793 1797 1801 1805 1809 1813 1817 1821 1825 1829 1833 1837 1841 1845
+#&gt; [16] 1849 1853 1857 1861 1865 1869 1873 1877 1881 1885 1889 1893 1897 1901 1905
+#&gt; [31] 1909 1913 1917 1921 1925 1929 1933 1937 1941 1945 1949 1953 1957 1961 1965
+#&gt; [46] 1969 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017</div><div class='input'><span class='no'>data_corpus_inaugural</span>$<span class='no'>century</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='no'>data_corpus_inaugural</span>$<span class='no'>Year</span> / <span class='fl'>100</span>)
+<span class='no'>data_corpus_inaugural</span>$<span class='no'>century</span></div><div class='output co'>#&gt;  [1] 17 17 17 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18
+#&gt; [26] 18 18 18 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19
+#&gt; [51] 19 19 19 20 20 20 20 20</div><div class='input'>
+<span class='co'># accessing or assigning docvars for tokens using "$"</span>
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&lt;=</span> <span class='fl'>1805</span>))
+<span class='no'>toks</span>$<span class='no'>Year</span></div><div class='output co'>#&gt; [1] 1789 1793 1797 1801 1805</div><div class='input'><span class='no'>toks</span>$<span class='no'>Year</span> <span class='kw'>&lt;-</span> <span class='fl'>1991</span>:<span class='fl'>1995</span>
+<span class='no'>toks</span>$<span class='no'>Year</span></div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='no'>toks</span>$<span class='no'>nonexistent</span> <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
+<span class='fu'>docvars</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt;   Year  President FirstName                 Party century nonexistent
+#&gt; 1 1991 Washington    George                  none      17        TRUE
+#&gt; 2 1992 Washington    George                  none      17        TRUE
+#&gt; 3 1993      Adams      John            Federalist      17        TRUE
+#&gt; 4 1994  Jefferson    Thomas Democratic-Republican      18        TRUE
+#&gt; 5 1995  Jefferson    Thomas Democratic-Republican      18        TRUE</div><div class='input'>
+<span class='co'># accessing or assigning docvars for a dfm using "$"</span>
+<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks</span>)
+<span class='no'>dfmat</span>$<span class='no'>Year</span></div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='no'>dfmat</span>$<span class='no'>Year</span> <span class='kw'>&lt;-</span> <span class='fl'>1991</span>:<span class='fl'>1995</span>
+<span class='no'>dfmat</span>$<span class='no'>Year</span></div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='no'>dfmat</span>$<span class='no'>nonexistent</span> <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
+<span class='fu'>docvars</span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;   Year  President FirstName                 Party century nonexistent
+#&gt; 1 1991 Washington    George                  none      17        TRUE
+#&gt; 2 1992 Washington    George                  none      17        TRUE
+#&gt; 3 1993      Adams      John            Federalist      17        TRUE
+#&gt; 4 1994  Jefferson    Thomas Democratic-Republican      18        TRUE
+#&gt; 5 1995  Jefferson    Thomas Democratic-Republican      18        TRUE</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#index-access-to-docvars-in-a-corpus">Index access to docvars in a corpus</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -340,6 +380,8 @@ assignment, including the easy creation of new document variables, e.g.
 </script>
 
 
+
   </body>
 </html>
+
 

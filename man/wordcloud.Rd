@@ -4,14 +4,38 @@
 \alias{wordcloud}
 \title{Internal function for textplot_wordcloud}
 \usage{
-wordcloud(x, min_size, max_size, min_count, max_words, color, font, adjust,
-  rotation, random_order, random_color, ordered_color, labelcolor,
-  labelsize, labeloffset, fixed_aspect, colors, scale, min.freq, max.words,
-  random.order, random.color, rot.per, ordered.colors, use.r.layout,
-  fixed.asp, ...)
+wordcloud(
+  x,
+  min_size,
+  max_size,
+  min_count,
+  max_words,
+  color,
+  font,
+  adjust,
+  rotation,
+  random_order,
+  random_color,
+  ordered_color,
+  labelcolor,
+  labelsize,
+  labeloffset,
+  fixed_aspect,
+  colors,
+  scale,
+  min.freq,
+  max.words,
+  random.order,
+  random.color,
+  rot.per,
+  ordered.colors,
+  use.r.layout,
+  fixed.asp,
+  ...
+)
 }
 \arguments{
-\item{x}{a dfm object}
+\item{x}{a \link{dfm} or \link{textstat_keyness} object}
 
 \item{min_size}{size of the smallest word}
 
@@ -19,8 +43,9 @@ wordcloud(x, min_size, max_size, min_count, max_words, color, font, adjust,
 
 \item{min_count}{words with frequency below min_count will not be plotted}
 
-\item{max_words}{maximum number of words to be plotted. least frequent terms
-dropped.}
+\item{max_words}{maximum number of words to be plotted. The least frequent
+terms dropped.  The maximum frequency will be split evenly across
+categories when \code{comparison = TRUE}.}
 
 \item{color}{color of words from least to most frequent}
 
@@ -40,14 +65,14 @@ the color is chosen based on the frequency}
 \item{ordered_color}{if \code{TRUE}, then colors are assigned to words in
 order.}
 
-\item{labelcolor}{color of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labelcolor}{color of group labels. Only used when \code{comparison = TRUE}.}
 
-\item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labelsize}{size of group labels. Only used when \code{comparison = TRUE}.}
 
 \item{labeloffset}{position of group labels. Only used when
-\code{comparison=TRUE}.}
+\code{comparison = TRUE}.}
 
-\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
+\item{fixed_aspect}{logical; if \code{TRUE}, the aspect ratio is fixed. Variable
 aspect ratio only supported if rotation = 0.}
 
 \item{scale}{deprecated argument}
@@ -72,8 +97,8 @@ aspect ratio only supported if rotation = 0.}
 \pkg{wordcloud}}
 }
 \description{
-This function implements wordcloud without dependencies. Code is adopted from 
-\code{\link[wordcloud]{wordcloud}}.
+This function implements wordcloud without dependencies. Code is adopted from
+\code{\link[wordcloud:wordcloud]{wordcloud::wordcloud()}}.
 }
 \author{
 Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud} package.

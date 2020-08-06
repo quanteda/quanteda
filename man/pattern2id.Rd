@@ -6,25 +6,37 @@
 \alias{index_types}
 \title{Convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
-pattern2id(pattern, types, valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE, keep_nomatch = FALSE)
+pattern2id(
+  pattern,
+  types,
+  valuetype = c("glob", "fixed", "regex"),
+  case_insensitive = TRUE,
+  keep_nomatch = FALSE
+)
 
-pattern2fixed(pattern, types, valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE, keep_nomatch = FALSE)
+pattern2fixed(
+  pattern,
+  types,
+  valuetype = c("glob", "fixed", "regex"),
+  case_insensitive = TRUE,
+  keep_nomatch = FALSE
+)
 
 index_types(types, valuetype, case_insensitive, max_len = NULL)
 }
 \arguments{
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
-\item{types}{unique types of tokens obtained by \code{\link{types}}}
+\item{types}{unique types of tokens obtained by \code{\link[=types]{types()}}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{if \code{TRUE}, ignores case when matching}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{keep_nomatch}{keep patterns not found}
 
@@ -32,20 +44,20 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 }
 \value{
 \code{pattern2id} returns a list of integer vectors containing type
-  IDs
+IDs
 
 \code{pattern2fixed} returns a list of character vectors containing
-  types
+types
 
 \code{index_types} returns a list of integer vectors containing type
-  IDs with index keys as an attribute
+IDs with index keys as an attribute
 }
 \description{
 \code{pattern2id} converts regex or glob to type IDs to allow
-  C++ function to perform fast searches in tokens object. C++ functions use a
-  list of type IDs to construct a hash table, against which sub-vectors of
-  tokens object are matched. This function constructs an index of glob
-  patterns for faster matching.
+C++ function to perform fast searches in tokens object. C++ functions use a
+list of type IDs to construct a hash table, against which sub-vectors of
+tokens object are matched. This function constructs an index of glob
+patterns for faster matching.
 
 \code{pattern2fixed} converts regex and glob patterns to fixed patterns.
 

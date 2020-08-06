@@ -396,6 +396,7 @@ lapply(as.list(sim), head, 10)
 **quanteda**には多数のテキスト分析のためのモデルが含まれている．ここでは，ワードフィッシュ（`textmodel_wordfish()`）による教師なしの文書のスケーリングを2010年のアイルランドの予算討論の分析に用いている．
 
 ```{r}
+library("quanteda.textmodels")
 ie_dfm <- dfm(data_corpus_irishbudget2010)
 textmodel_wordfish(ie_dfm, dir = c(2, 1))
 ```

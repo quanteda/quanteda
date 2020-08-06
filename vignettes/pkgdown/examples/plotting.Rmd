@@ -211,7 +211,10 @@ You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling mod
 Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents ("virgin texts"). You can plot the position of words (features) against the logged term frequency, or the position of the documents.
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
+library("quanteda.textmodels")
+
 # Transform corpus to dfm
+data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
 ie_dfm <- dfm(data_corpus_irishbudget2010)
 
 # Set reference scores
@@ -246,6 +249,7 @@ Wordfish is a Poisson scaling model that estimates one-dimension document positi
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Estimate Wordfish model
+library("quanteda.textmodels")
 wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
 
 # Plot estimated word positions

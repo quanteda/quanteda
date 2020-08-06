@@ -12,22 +12,21 @@ format_sparsity(x, threshold = 0.01, digits = 3, nsmall = 1)
 \item{threshold}{value below which the decimal places will be rounded and
 printed with an inequality}
 
-\item{digits}{\code{digits} input to \code{\link{format}}}
+\item{digits}{\code{digits} input to \code{\link[=format]{format()}}}
 
-\item{nsmall}{\code{nsmall} input to \code{\link{format}}}
+\item{nsmall}{\code{nsmall} input to \code{\link[=format]{format()}}}
 }
 \value{
 \code{character} value for inserting into the dfm print output
 }
 \description{
-Inputs a dfm sparsity value from \code{\link{sparsity}} and formats it for
-printing in \code{\link{print.dfm}}.
+Inputs a dfm sparsity value from \code{\link[=sparsity]{sparsity()}} and formats it for
+printing in \code{print.dfm()}.
 }
 \examples{
 s <- c(.9, .99, .999, .9999, .99999, 
        .1, .01, .001, .0001, .000001, .0000001, .00000001, .000000000001, 
        sparsity(dfm(data_corpus_inaugural)),
-       sparsity(dfm(data_corpus_irishbudget2010)),
        .12312431242134)
 for (i in s) 
     print(paste0(format(i, width = 10),  ":  ", quanteda:::format_sparsity(i)))

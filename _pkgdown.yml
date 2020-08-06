@@ -22,6 +22,8 @@ navbar:
           href: articles/pkgdown/quickstart_cn.html
         - text: "クイック・スタートガイド"
           href: articles/pkgdown/quickstart_ja.html
+        - text: "त्वरित आरंभ "
+          href: articles/pkgdown/quickstart_hi.html
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
@@ -80,7 +82,6 @@ reference:
     - metadoc
     - texts
     - as.character.corpus
-    - as.corpus.corpuszip
 - title: Tokens functions
   desc: Functions for constructing and manipulating tokens class objects.
   contents:
@@ -114,6 +115,7 @@ reference:
     - char_toupper
     - char_segment
     - char_ngrams
+    - char_select
     - char_trim
     - char_wordstem
 - title: Text matrix functions
@@ -138,6 +140,7 @@ reference:
     - dfm_weight
     - dfm_wordstem
     - docfreq
+    - featfreq
     - head.dfm
     - tail.dfm
     - as.dfm
@@ -151,6 +154,7 @@ reference:
     - fcm_tolower
     - fcm_toupper
     - fcm_sort
+    - as.fcm
     - is.fcm
 - title: Text statistics
   desc: Functions for computing statistics from texts and dfm objects.
@@ -163,12 +167,18 @@ reference:
     - textstat_frequency
     - textstat_keyness
     - textstat_readability
+    - textstat_summary
     - sparsity
     - topfeatures
+- title: Text models
+  desc: Functions for fitting models to textual data.
+  contents:
+    - textmodels
 - title: Dictionary functions
   desc: Constructor and utility functions for working with dictionaries.
   contents:
     - dictionary
+    - dictionary_edit
     - is.dictionary
     - as.yaml
 - title: Phrase discovery functions
@@ -178,10 +188,6 @@ reference:
     - is.collocations
     - is.kwic
     - kwic
-- title: Text model functions
-  desc: Fitting analytic models from text matrixes.
-  contents:
-    - starts_with("textmodel_")
 - title: Text plot functions
   desc: Plot functions for representing text and the analysis of texts.
   contents:
@@ -190,18 +196,18 @@ reference:
   desc: R-like functions to return counts and object information.
   contents:
     - ndoc
-    - nfeature
+    - nfeat
     - nscrabble
     - nsentence
     - nsyllable
     - ntoken
     - ntype
+    - print-quanteda
     - starts_with("docnames")
     - featnames
 - title: Miscellaneous functions
   contents:
     - phrase
-    - as.list.dist
     - convert
     - bootstrap_dfm
     - spacyr-methods

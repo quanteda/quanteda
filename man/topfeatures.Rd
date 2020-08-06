@@ -4,8 +4,13 @@
 \alias{topfeatures}
 \title{Identify the most frequent features in a dfm}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, scheme = c("count",
-  "docfreq"), groups = NULL)
+topfeatures(
+  x,
+  n = 10,
+  decreasing = TRUE,
+  scheme = c("count", "docfreq"),
+  groups = NULL
+)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
@@ -19,14 +24,15 @@ otherwise return the \code{n} least frequent features}
 \code{group} if applicable), or \code{docfreq} for the document frequencies
 of features}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
+\code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
 }
 \value{
-A named numeric vector of feature counts, where the names are the 
-  feature labels, or a list of these if \code{groups} is given.
+A named numeric vector of feature counts, where the names are the
+feature labels, or a list of these if \code{groups} is given.
 }
 \description{
 List the most (or least) frequently occurring features in a \link{dfm}, either
@@ -44,7 +50,7 @@ topfeatures(dfmat2)
 # least frequent features
 topfeatures(dfmat2, decreasing = FALSE)
 
-# top features of individual documents  
+# top features of individual documents
 topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 
 # grouping by president last name

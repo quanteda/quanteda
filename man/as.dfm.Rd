@@ -14,19 +14,19 @@ is.dfm(x)
 }
 \value{
 \code{as.dfm} converts an input object into a \link{dfm}.  Row names
-  are used for docnames, and column names for featnames, of the resulting
-  dfm.
+are used for docnames, and column names for featnames, of the resulting
+dfm.
 
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 }
 \description{
 Convert an eligible input object into a dfm, or check whether an object is a
 dfm.  Current eligible inputs for coercion to a dfm are: \link{matrix},
-(sparse) \link[Matrix]{Matrix}, \link[tm]{TermDocumentMatrix},
-\link[tm]{DocumentTermMatrix}, \link{data.frame}, and other \link{dfm}
-objects.
+(sparse) \link[Matrix:Matrix]{Matrix},
+\link[tm:matrix]{TermDocumentMatrix} and \link[tm:matrix]{DocumentTermMatrix}
+(from the \pkg{tm} package), \link{data.frame}, and other \link{dfm} objects.
 }
 \seealso{
-\code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}},
-  \code{\link{convert}}
+\code{\link[=as.data.frame.dfm]{as.data.frame.dfm()}}, \code{\link[=as.matrix.dfm]{as.matrix.dfm()}},
+\code{\link[=convert]{convert()}}
 }

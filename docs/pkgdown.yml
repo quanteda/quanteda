@@ -1,5 +1,5 @@
-pandoc: '2.5'
-pkgdown: 1.3.0
+pandoc: 2.9.2.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   comparison: pkgdown/comparison.html
@@ -13,11 +13,13 @@ articles:
   twitter: pkgdown/examples/twitter.html
   quickstart_cn: pkgdown/quickstart_cn.html
   quickstart_es: pkgdown/quickstart_es.html
+  quickstart_hi: pkgdown/quickstart_hi.html
   quickstart_ja: pkgdown/quickstart_ja.html
   digital-humanities: pkgdown/replication/digital-humanities.html
   qss: pkgdown/replication/qss.html
   text2vec: pkgdown/replication/text2vec.html
   quickstart: quickstart.html
+last_built: 2020-07-27T12:27Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

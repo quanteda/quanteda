@@ -4,14 +4,29 @@
 \alias{textplot_wordcloud}
 \title{Plot features as a wordcloud}
 \usage{
-textplot_wordcloud(x, min_size = 0.5, max_size = 4, min_count = 3,
-  max_words = 500, color = "darkblue", font = NULL, adjust = 0,
-  rotation = 0.1, random_order = FALSE, random_color = FALSE,
-  ordered_color = FALSE, labelcolor = "gray20", labelsize = 1.5,
-  labeloffset = 0, fixed_aspect = TRUE, ..., comparison = FALSE)
+textplot_wordcloud(
+  x,
+  min_size = 0.5,
+  max_size = 4,
+  min_count = 3,
+  max_words = 500,
+  color = "darkblue",
+  font = NULL,
+  adjust = 0,
+  rotation = 0.1,
+  random_order = FALSE,
+  random_color = FALSE,
+  ordered_color = FALSE,
+  labelcolor = "gray20",
+  labelsize = 1.5,
+  labeloffset = 0,
+  fixed_aspect = TRUE,
+  ...,
+  comparison = FALSE
+)
 }
 \arguments{
-\item{x}{a dfm object}
+\item{x}{a \link{dfm} or \link{textstat_keyness} object}
 
 \item{min_size}{size of the smallest word}
 
@@ -19,8 +34,9 @@ textplot_wordcloud(x, min_size = 0.5, max_size = 4, min_count = 3,
 
 \item{min_count}{words with frequency below min_count will not be plotted}
 
-\item{max_words}{maximum number of words to be plotted. least frequent terms
-dropped.}
+\item{max_words}{maximum number of words to be plotted. The least frequent
+terms dropped.  The maximum frequency will be split evenly across
+categories when \code{comparison = TRUE}.}
 
 \item{color}{color of words from least to most frequent}
 
@@ -40,37 +56,41 @@ the color is chosen based on the frequency}
 \item{ordered_color}{if \code{TRUE}, then colors are assigned to words in
 order.}
 
-\item{labelcolor}{color of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labelcolor}{color of group labels. Only used when \code{comparison = TRUE}.}
 
-\item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labelsize}{size of group labels. Only used when \code{comparison = TRUE}.}
 
 \item{labeloffset}{position of group labels. Only used when
-\code{comparison=TRUE}.}
+\code{comparison = TRUE}.}
 
-\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
+\item{fixed_aspect}{logical; if \code{TRUE}, the aspect ratio is fixed. Variable
 aspect ratio only supported if rotation = 0.}
 
 \item{...}{additional parameters. Only used to make it compatible with
 \pkg{wordcloud}}
 
-\item{comparison}{if \code{TRUE}, plot a wordcloud that compares documents in
-the same way as \code{\link[wordcloud]{comparison.cloud}}}
+\item{comparison}{logical; if \code{TRUE}, plot a wordcloud that compares
+documents in the same way as \code{\link[wordcloud:comparison.cloud]{wordcloud::comparison.cloud()}}.  If \code{x} is a
+\link{textstat_keyness} object, then only the target category's key terms are
+plotted when \code{comparison = FALSE}, otherwise the top \code{max_words / 2} terms
+are plotted from the target and reference categories.}
 }
 \description{
-Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted
-with their sizes proportional to their numerical values in the dfm.  When
-\code{comparison = TRUE}, it plots comparison word clouds by document.
+Plot a \link{dfm} or \link{textstat_keyness} object as a wordcloud, where the feature
+labels are plotted with their sizes proportional to their numerical values in
+the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by
+document (or by target and reference categories in the case of a keyness
+object).
 }
 \details{
 The default is to plot the word cloud of all features, summed across
-  documents.  To produce word cloud plots for specific document or set of
-  documents, you need to slice out the document(s) from the dfm object.
-  
-  Comparison wordcloud plots may be plotted by setting \code{comparison =
-  TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
-  This means that you will need to slice out just a few documents from the
-  dfm, or to create a dfm where the "documents" represent a subset or a
-  grouping of documents by some document variable.
+documents.  To produce word cloud plots for specific document or set of
+documents, you need to slice out the document(s) from the dfm object.
+
+Comparison wordcloud plots may be plotted by setting \code{comparison = TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+This means that you will need to slice out just a few documents from the
+dfm, or to create a dfm where the "documents" represent a subset or a
+grouping of documents by some document variable.
 }
 \examples{
 # plot the features (without stopwords) from Obama's inaugural addresses
@@ -98,9 +118,16 @@ dfmat2 <- dfm(corpus_subset(data_corpus_inaugural, President \%in\% c("Obama", "
 
 textplot_wordcloud(dfmat2, comparison = TRUE, max_words = 300,
                    color = c("blue", "red"))
+                   
+# for keyness
+tstat <- tail(data_corpus_inaugural, 2) \%>\%
+    dfm(remove_punct = TRUE, remove = stopwords("en")) \%>\%
+    textstat_keyness(target = 2)
+textplot_wordcloud(tstat, max_words = 100)
+textplot_wordcloud(tstat, comparison = FALSE, max_words = 100)
 }
 \author{
 Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud}
-  package.
+package.
 }
 \keyword{textplot}

@@ -4,8 +4,14 @@
 \alias{as.data.frame.dfm}
 \title{Convert a dfm to a data.frame}
 \usage{
-\method{as.data.frame}{dfm}(x, row.names = NULL, ...,
-  document = docnames(x), check.names = FALSE)
+\method{as.data.frame}{dfm}(
+  x,
+  row.names = NULL,
+  ...,
+  document = docnames(x),
+  docid_field = "doc_id",
+  check.names = FALSE
+)
 }
 \arguments{
 \item{x}{any \R object.}
@@ -18,10 +24,13 @@
 \item{document}{optional first column of mode \code{character} in the
 data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
 
+\item{docid_field}{character; the name of the column containing document
+names used when \code{to = "data.frame"}.  Unused for other conversions.}
+
 \item{check.names}{logical.  If \code{TRUE} then the names of the
     variables in the data frame are checked to ensure that they are
     syntactically valid variable names and are not duplicated.
-    If necessary they are adjusted (by \code{\link{make.names}})
+    If necessary they are adjusted (by \code{\link[base]{make.names}})
     so that they are.}
 }
 \description{
@@ -29,7 +38,7 @@ Deprecated function to convert a dfm into a data.frame.
 Recommended that you use \code{convert(x, to = "data.frame")} instead.
 }
 \seealso{
-\code{\link{convert}}
+\code{\link[=convert]{convert()}}
 }
 \keyword{dfm}
 \keyword{internal}

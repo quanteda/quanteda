@@ -4,9 +4,11 @@
 \name{data_char_sampletext}
 \alias{data_char_sampletext}
 \title{A paragraph of text for testing various text-based functions}
-\format{character vector with one element}
+\format{
+character vector with one element
+}
 \source{
-Dáil Éireann Debate, 
+Dáil Éireann Debate,
 \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2011120700006?opendocument}{Financial Resolution No. 13: General (Resumed).}
 7 December 2011.  vol. 749, no. 1.
 }

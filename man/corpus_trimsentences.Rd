@@ -5,16 +5,25 @@
 \alias{char_trimsentences}
 \title{Remove sentences based on their token lengths or a pattern match}
 \usage{
-corpus_trimsentences(x, min_length = 1, max_length = 10000,
-  exclude_pattern = NULL, return_tokens = FALSE)
+corpus_trimsentences(
+  x,
+  min_length = 1,
+  max_length = 10000,
+  exclude_pattern = NULL,
+  return_tokens = FALSE
+)
 
-char_trimsentences(x, min_length = 1, max_length = 10000,
-  exclude_pattern = NULL)
+char_trimsentences(
+  x,
+  min_length = 1,
+  max_length = 10000,
+  exclude_pattern = NULL
+)
 }
 \arguments{
 \item{x}{\link{corpus} or character object whose sentences will be selected.}
 
-\item{min_length, max_length}{minimum and maximum lengths in word tokens 
+\item{min_length, max_length}{minimum and maximum lengths in word tokens
 (excluding punctuation)}
 
 \item{exclude_pattern}{a \pkg{stringi} regular expression whose match (at the
@@ -26,17 +35,17 @@ removed.}
 }
 \value{
 a \link{corpus} or character vector equal in length to the input, or
-  a tokenized set of sentences if .  If the input was a corpus, then the all
-  docvars and metadata are preserved.  For documents whose sentences have
-  been removed entirely, a null string (\code{""}) will be returned.
+a tokenized set of sentences if .  If the input was a corpus, then the all
+docvars and metadata are preserved.  For documents whose sentences have
+been removed entirely, a null string (\code{""}) will be returned.
 }
 \description{
-Removes sentences from a corpus or a character vector shorter than a 
+Removes sentences from a corpus or a character vector shorter than a
 specified length.
 }
 \note{
-This function has been superseded by \code{\link{corpus_trim}}; use
-  that function instead.
+This function has been superseded by \code{\link[=corpus_trim]{corpus_trim()}}; use
+that function instead.
 }
 \examples{
 txt <- c("PAGE 1. A single sentence.  Short sentence. Three word sentence.",

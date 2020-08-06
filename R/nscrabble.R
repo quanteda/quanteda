@@ -4,19 +4,19 @@
 #' as the sum (default) or mean of the character values.
 #' @param x a character vector
 #' @param FUN function to be applied to the character values in the text; 
-#'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
+#'   default is `sum`, but could also be `mean` or a user-supplied 
 #'   function
 #' @author Kenneth Benoit
 #' @return a (named) integer vector of Scrabble letter values, computed using 
-#'   \code{FUN}, corresponding to the input text(s)
+#'   `FUN`, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.
 #'   
-#'   We would be happy to add more languages to this \emph{extremely useful
-#'   function} if you send us the values for your language!
+#'   We would be happy to add more languages to this *extremely useful
+#'   function* if you send us the values for your language!
 #' @examples
 #' nscrabble(c("muzjiks", "excellency"))
-#' nscrabble(data_corpus_inaugural[1:5], mean)
+#' nscrabble(texts(data_corpus_inaugural)[1:5], mean)
 #' @export
 nscrabble <- function(x, FUN = sum) {
     UseMethod("nscrabble")
@@ -28,6 +28,7 @@ nscrabble.default <- function(x, FUN = sum) {
 }
 
 #' @rdname nscrabble
+#' @importFrom data.table setkey
 #' @noRd
 #' @export
 nscrabble.character <- function(x, FUN = sum) {
@@ -38,26 +39,19 @@ nscrabble.character <- function(x, FUN = sum) {
                              values = as.integer(rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2)))
     setkey(letterVals, letter)
     
-    textChars <- as.list(tokens(x, what = "character", remove_punct = TRUE))
+    textChars <- tokens(x, what = "character", remove_separators = TRUE,
+                        remove_punct = TRUE, remove_symbols = TRUE, remove_numbers = TRUE) %>%
+        tokens_tolower()
     textDT <- data.table(docIndex = rep(seq_along(textChars), lengths(textChars)),
                          Char = unlist(textChars, use.names = FALSE))
     setkey(textDT, Char)
     
     textDT <- letterVals[textDT]
     textDT <- textDT[order(docIndex), FUN(values, na.rm = TRUE), by = docIndex]
-    result <- textDT[, V1]
-    if (!is.null(names(x))) names(result) <- names(x)
+    
+    result <- structure(rep(NA, length(x)), names = names(x))
+    result[textDT[, docIndex]] <- textDT[, V1]
     result
-}
-
-#' Deprecated name for nscrabble
-#' 
-#' Use \code{\link{nscrabble}} instead.
-#' @export
-#' @keywords internal deprecated
-scrabble <- function(x, ...) {
-    .Deprecated("nscrabble")
-    nscrabble(x, ...)
 }
 
 #### English scrabble values ----- 

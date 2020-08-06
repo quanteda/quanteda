@@ -11,20 +11,35 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
-  docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x),
-  compress = FALSE, ...)
+\method{corpus}{corpus}(
+  x,
+  docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x),
+  meta = quanteda::meta(x),
+  ...
+)
 
-\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
-  metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{character}(
+  x,
+  docnames = NULL,
+  docvars = NULL,
+  meta = list(),
+  unique_docnames = TRUE,
+  ...
+)
 
-\method{corpus}{data.frame}(x, docid_field = "doc_id",
-  text_field = "text", metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{data.frame}(
+  x,
+  docid_field = "doc_id",
+  text_field = "text",
+  meta = list(),
+  unique_docnames = TRUE,
+  ...
+)
 
-\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE,
-  ...)
+\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...)
 
-\method{corpus}{Corpus}(x, metacorpus = NULL, compress = FALSE, ...)
+\method{corpus}{Corpus}(x, ...)
 }
 \arguments{
 \item{x}{a valid corpus source object}
@@ -37,28 +52,21 @@ names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in
 length to the number of documents.  If none of these are round, then
 "text1", "text2", etc. are assigned automatically.}
 
-\item{docvars}{a data.frame of document-level variables associated with each text}
+\item{docvars}{a data.frame of document-level variables associated with each
+text}
 
-\item{metacorpus}{a named list containing additional (character) information
-  to be added to the corpus as corpus-level metadata.  Special fields
-  recognized in the \code{\link{summary.corpus}} are:
-\itemize{
-\item{\code{source }}{a description of the source of the texts, used for
-  referencing;}
-\item{\code{citation }}{information on how to cite the corpus; and}
-\item{\code{notes }}{any additional information about who created the text, warnings,
-  to do lists, etc.}
-}}
+\item{meta}{a named list that will be added to the corpus as corpus-level,
+user meta-data.  This can later be accessed or updated using
+\code{\link[=meta]{meta()}}.}
 
-\item{compress}{logical; if \code{TRUE}, compress the texts in memory using
-gzip compression. This significantly reduces the size of the corpus in
-memory, but will slow down operations that require the texts to be
-extracted.}
+\item{unique_docnames}{logical; if \code{TRUE}, enforce strict uniqueness in
+\code{docnames}; otherwise, rename duplicated docnames using an added serial
+number, and treat them as segments of the same document.}
 
 \item{docid_field}{optional column index of a document identifier; defaults
 to "doc_id", but if this is not found, then will use the rownames of the
 data.frame; if the rownames are not set, it will use the default sequence
-based on \code{(\link{quanteda_options}("base_docname")}.}
+based on \verb{([quanteda_options]("base_docname")}.}
 
 \item{text_field}{the character name or numeric index of the source
 \code{data.frame} indicating the variable to be read in as text, which must
@@ -75,55 +83,43 @@ therefore being twice the number of rows in the kwic.}
 \code{pattern} as a new docvar \code{keyword}}
 }
 \value{
-A \link{corpus-class} class object containing the original texts,
-  document-level variables, document-level metadata, corpus-level metadata,
-  and default settings for subsequent processing of the corpus.
+A \linkS4class{corpus} class object containing the original texts,
+document-level variables, document-level metadata, corpus-level metadata,
+and default settings for subsequent processing of the corpus.
+
+For \pkg{quanteda} >= 2.0, this is a specially classed character vector. It
+has many additional attributes but \strong{you should not access these
+attributes directly}, especially if you are another package author. Use the
+extractor and replacement functions instead, or else your code is not only
+going to be uglier, but also likely to break should the internal structure
+of a corpus object change.  Using the accessor and replacement functions
+ensures that future code to manipulate corpus objects will continue to work.
 }
 \description{
 Creates a corpus object from available sources.  The currently available
 sources are:
 \itemize{
-\item a \link{character} vector, consisting of one document per element; if
-  the elements are named, these names will be used as document names.
+\item a \link{character} vector, consisting of one document per
+element; if the elements are named, these names will be used as document
+names.
 \item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}), whose default
 document id is a variable identified by \code{docid_field}; the text of the
-document is a variable identified by \code{textid_field}; and other variables
+document is a variable identified by \code{text_field}; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the \pkg{readtext} package.
-\item a \link{kwic} object constructed by \code{\link{kwic}}.
-\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
-  with the fixed metadata
-  fields imported as \link{docvars} and corpus-level metadata imported
-  as \link{metacorpus} information.
+\item a \link{kwic} object constructed by \code{\link[=kwic]{kwic()}}.
+\item a \pkg{tm} \link[tm:VCorpus]{VCorpus} or \link[tm:SimpleCorpus]{SimpleCorpus} class  object,
+with the fixed metadata
+fields imported as \link{docvars} and corpus-level metadata imported
+as \link{metacorpus} information.
 \item a \link{corpus} object.
 }
 }
 \details{
 The texts and document variables of corpus objects can also be
-  accessed using index notation. Indexing a corpus object as a vector will
-  return its text, equivalent to \code{texts(x)}.  Note that this is not the
-  same as subsetting the entire corpus -- this should be done using the
-  \code{\link{subset}} method for a corpus.
-
-  Indexing a corpus using two indexes (integers or column names) will return
-  the document variables, equivalent to \code{docvars(x)}.  It is also
-  possible to access, create, or replace docvars using list notation, e.g.
-
-  \code{myCorpus[["newSerialDocvar"]] <-
-  paste0("tag", 1:ndoc(myCorpus))}.
-
-  For details, see \link{corpus-class}.
+accessed using index notation and the \code{$} operator for accessing or assigning
+docvars.  For details, see \code{\link[=corpus-class]{[.corpus()}}.
 }
-\section{A warning on accessing corpus elements}{
- A corpus currently consists
-  of an S3 specially classed list of elements, but \strong{you should not
-  access these elements directly}. Use the extractor and replacement
-  functions instead, or else your code is not only going to be uglier, but
-  also likely to break should the internal structure of a corpus object
-  change (as it inevitably will as we continue to develop the package,
-  including moving corpus objects to the S4 class system).
-}
-
 \examples{
 # create a corpus from texts
 corpus(data_char_ukimmig2010)
@@ -132,20 +128,18 @@ corpus(data_char_ukimmig2010)
 summary(corpus(data_char_ukimmig2010,
                docvars = data.frame(party = names(data_char_ukimmig2010))), 5)
 
-corpus(texts(data_corpus_irishbudget2010))
-
 # import a tm VCorpus
 if (requireNamespace("tm", quietly = TRUE)) {
     data(crude, package = "tm")    # load in a tm example VCorpus
-    mytmCorpus <- corpus(crude)
-    summary(mytmCorpus, showmeta=TRUE)
+    vcorp <- corpus(crude)
+    summary(vcorp)
 
     data(acq, package = "tm")
-    summary(corpus(acq), 5, showmeta=TRUE)
+    summary(corpus(acq), 5)
 
-    tmCorp <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
-    quantCorp <- corpus(tmCorp)
-    summary(quantCorp)
+    vcorp2 <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
+    corp <- corpus(vcorp2)
+    summary(corp)
 }
 
 # construct a corpus from a data.frame
@@ -156,25 +150,22 @@ dat <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                   row.names = paste0("fromDf_", 1:6))
 dat
 summary(corpus(dat, text_field = "some_text",
-               metacorpus = list(source = "From a data.frame called mydf.")))
+               meta = list(source = "From a data.frame called mydf.")))
 
 # construct a corpus from a kwic object
-mykwic <- kwic(data_corpus_inaugural, "southern")
-summary(corpus(mykwic))
+kw <- kwic(data_corpus_inaugural, "southern")
+summary(corpus(kw))
 # from a kwic
-kw <- kwic(data_char_sampletext, "econom*")
+kw <- kwic(data_char_sampletext, "econom*", separator = "",
+           remove_separators = FALSE) # keep original separators
 summary(corpus(kw))
 summary(corpus(kw, split_context = FALSE))
 texts(corpus(kw, split_context = FALSE))
 
 }
 \seealso{
-\link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}},
-  \code{\link{metacorpus}},
-  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
-  \code{\link{docnames}}
-}
-\author{
-Kenneth Benoit and Paul Nulty
+\linkS4class{corpus}, \code{\link[=docvars]{docvars()}},
+\code{\link[=meta]{meta()}}, \code{\link[=texts]{texts()}}, \code{\link[=ndoc]{ndoc()}},
+\code{\link[=docnames]{docnames()}}
 }
 \keyword{corpus}

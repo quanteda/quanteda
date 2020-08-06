@@ -12,7 +12,7 @@ dfm_split_hyphenated_features(x)
 \description{
 Takes a dfm that contains features with hyphenated words, such as
 "split-second" and turns them into features that split the elements
-in the same was as `tokens(x, remove_hyphens = TRUE)` would have done.
+in the same was as \code{tokens(x, remove_hyphens = TRUE)} would have done.
 }
 \examples{
 (dfmat <- dfm("One-two one two three."))

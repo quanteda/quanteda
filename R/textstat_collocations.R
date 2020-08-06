@@ -3,42 +3,42 @@
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
 #' 
 #' Documents are grouped for the purposes of scoring, but collocations will not span sentences.
-#' If \code{x} is a \link{tokens} object and some tokens have been removed, this should be done
-#' using \code{\link{tokens_remove}(x, pattern, padding = TRUE)} so that counts will still be
+#' If `x` is a [tokens] object and some tokens have been removed, this should be done
+#' using `[tokens_remove](x, pattern, padding = TRUE)` so that counts will still be
 #' accurate, but the pads will prevent those collocations from being scored.
-#' @param x a character, \link{corpus}, or \link{tokens} object whose
+#' @param x a character, [corpus], or [tokens] object whose
 #'   collocations will be scored.  The tokens object should include punctuation,
 #'   and if any words have been removed, these should have been removed with
-#'   \code{padding = TRUE}.  While identifying collocations for tokens objects is 
+#'   `padding = TRUE`.  While identifying collocations for tokens objects is 
 #'   supported, you will get better results with character or corpus objects due
 #'   to relatively imperfect detection of sentence boundaries from texts already 
 #'   tokenized.
 #' @param method association measure for detecting collocations. Currently this 
-#' is limited to \code{"lambda"}.  See Details.
+#' is limited to `"lambda"`.  See Details.
 #' @param size integer; the length of the collocations
 #'   to be scored
 #' @param min_count numeric; minimum frequency of collocations that will be scored
 #' @param smoothing numeric; a smoothing parameter added to the observed counts
 #'   (default is 0.5)
-#' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
-#' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
-#'   is not a \link{tokens} object already
+#' @param tolower logical; if `TRUE`, form collocations as lower-cased combinations
+#' @param ... additional arguments passed to [tokens()], if `x`
+#'   is not a [tokens] object already
 #' @references Blaheta, D. & Johnson, M. (2001). 
-#'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
-#'   learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
+#'   [Unsupervised
+#'   learning of multi-word verbs](http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf). Presented at the ACLEACL Workshop on the 
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
 #' @note 
 #' This function is under active development, with more measures to be added in the 
 #' the next release of \pkg{quanteda}.
 #' @details 
-#' The \code{lambda} computed for a size = \eqn{K}-word target multi-word
+#' The `lambda` computed for a size = \eqn{K}-word target multi-word
 #' expression the coefficient for the  \eqn{K}-way interaction parameter in the
 #' saturated log-linear model fitted to the counts of the terms forming the set
 #' of eligible multi-word expressions. This is the same as the "lambda" computed
 #' in Blaheta and Johnson's (2001), where all multi-word expressions are
-#' considered (rather than just verbs, as in that paper). The \code{z} is the 
-#' Wald \eqn{z}-statistic computed as the quotient of \code{lambda} and the Wald
-#' statistic for \code{lambda} as described below.
+#' considered (rather than just verbs, as in that paper). The `z` is the 
+#' Wald \eqn{z}-statistic computed as the quotient of `lambda` and the Wald
+#' statistic for `lambda` as described below.
 #' 
 #' In detail:
 #' 
@@ -51,7 +51,7 @@
 #' \dots, 1)}. Consider the set of \eqn{c(x,z_{r})} across all expressions
 #' \eqn{z_{r}} in a corpus of text, and let \eqn{n_{i}}, for \eqn{i=1,\dots,M},
 #' denote the number of the \eqn{c(x,z_{r})} which equal \eqn{c_{i}}, plus the
-#' smoothing constant \code{smoothing}. The \eqn{n_{i}} are the counts in a
+#' smoothing constant `smoothing`. The \eqn{n_{i}} are the counts in a
 #' \eqn{2^{K}} contingency table whose dimensions are defined by the
 #' \eqn{c_{i}}.
 #' 
@@ -67,10 +67,10 @@
 #' 
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 #'
-#' @return \code{textstat_collocations} returns a data.frame of collocations and
+#' @return `textstat_collocations` returns a data.frame of collocations and
 #'   their scores and statistics. This consists of the collocations, their
-#'   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
-#'   is a vector, then \code{count_nested} counts the lower-order collocations
+#'   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When `size`
+#'   is a vector, then `count_nested` counts the lower-order collocations
 #'   that occur within a higher-order collocation (but this does not affect the
 #'   statistics).
 #' @export
@@ -85,7 +85,7 @@
 #' # extracting multi-part proper nouns (capitalized terms)
 #' toks1 <- tokens(data_corpus_inaugural)
 #' toks2 <- tokens_remove(toks1, pattern = stopwords("english"), padding = TRUE)
-#' toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\-]{2,})", valuetype = "regex", 
+#' toks3 <- tokens_select(toks2, pattern = "^([A-Z][a-z\\-]{2,})", valuetype = "regex",
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' tstat <- textstat_collocations(toks3, size = 3, tolower = FALSE)
 #' head(tstat, 10)
@@ -124,8 +124,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          ...) {
-    check_dots(list(...), NULL)
-    
+    x <- as.tokens(x)
     method <- match.arg(method, c("lambda"))
     
     if (any(size == 1))
@@ -167,6 +166,7 @@ textstat_collocations.corpus <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          recursive = TRUE, ...) {
+    x <- as.corpus(x)
     textstat_collocations(tokens(x, ...), method = method, size = size, 
                           min_count = min_count, 
                           smoothing = smoothing, tolower = tolower)
@@ -187,8 +187,8 @@ textstat_collocations.character <- function(x, method = "lambda",
 
 #' @rdname textstat_collocations
 #' @export
-#' @return \code{is.collocation} returns \code{TRUE} if the object is of class
-#'   \code{collocations}, \code{FALSE} otherwise.
+#' @return `is.collocation` returns `TRUE` if the object is of class
+#'   `collocations`, `FALSE` otherwise.
 is.collocations <- function(x) {
     "collocations" %in% class(x)
 }

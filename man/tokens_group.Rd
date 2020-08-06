@@ -4,14 +4,15 @@
 \alias{tokens_group}
 \title{Recombine documents tokens by groups}
 \usage{
-tokens_group(x, groups = NULL)
+tokens_group(x, groups = NULL, fill = FALSE)
 }
 \arguments{
 \item{x}{\link{tokens} object}
 
-\item{groups}{either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
+\code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
 }
 \description{
@@ -19,7 +20,7 @@ Recombine documents tokens by groups
 }
 \examples{
 # dfm_group examples
-corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"), 
+corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 toks <- tokens(corp)
 quanteda:::tokens_group(toks, groups = "grp")

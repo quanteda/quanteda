@@ -12,17 +12,15 @@ fcm_compress(x)
 \arguments{
 \item{x}{input object, a \link{dfm} or \link{fcm}}
 
-\item{margin}{character indicating on which margin to compress a dfm, either 
+\item{margin}{character indicating on which margin to compress a dfm, either
 \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 objects, \code{"documents"} has no effect.}
-
-\item{...}{additional arguments passed from generic to specific methods}
 }
 \value{
 \code{dfm_compress} returns a \link{dfm} whose dimensions have been
-  recombined by summing the cells across identical dimension names
-  (\link{docnames} or \link{featnames}).  The \link{docvars} will be
-  preserved for combining by features but not when documents are combined.
+recombined by summing the cells across identical dimension names
+(\link{docnames} or \link{featnames}).  The \link{docvars} will be
+preserved for combining by features but not when documents are combined.
 
 \code{fcm_compress} returns an \link{fcm} whose features have been
 recombined by combining counts of identical features, summing their counts.
@@ -30,10 +28,10 @@ recombined by combining counts of identical features, summing their counts.
 \description{
 "Compresses" or groups a \link{dfm} or \link{fcm} whose dimension names are
 the same, for either documents or features.  This may happen, for instance,
-if features are made equivalent through application of a thesaurus.  It could also be needed after a 
-\code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.  In most cases, you will not
-need to call `dfm_compress`, since it is called automatically by functions that change the 
-dimensions of the dfm, e.g. \code{\link{dfm_tolower}}.
+if features are made equivalent through application of a thesaurus.  It could also be needed after a
+\code{\link[=cbind.dfm]{cbind.dfm()}} or \code{\link[=rbind.dfm]{rbind.dfm()}} operation.  In most cases, you will not
+need to call \code{dfm_compress}, since it is called automatically by functions that change the
+dimensions of the dfm, e.g. \code{\link[=dfm_tolower]{dfm_tolower()}}.
 }
 \note{
 \code{fcm_compress} works only when the \link{fcm} was created with a

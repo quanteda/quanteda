@@ -8,21 +8,29 @@
 
 <title>Version 0.9 • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,14 +39,16 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+
 <meta property="og:title" content="Version 0.9" />
+
 
 
 
@@ -62,9 +72,10 @@
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -78,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -102,6 +113,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -169,7 +183,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -179,7 +192,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -190,17 +203,18 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small>0.9</small></h1>
+      <h1 data-toc-skip>Changelog <small>0.9</small></h1>
       
     </div>
 
     <div id="quanteda-090" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.0">
 <a href="#quanteda-090" class="anchor"></a>quanteda 0.9.0<small> Unreleased </small>
 </h1>
 <ul>
@@ -211,13 +225,13 @@
 <li><p>Added new measures from readability for mean syllables per word and mean words per sentence directly.</p></li>
 <li><p>wordstem now works on ngrams (tokenizedTexts and dfm objects).</p></li>
 <li><p>Enhanced operation of kwic(), including the definition of a kwic class object, and a plot method for this object (produces a dispersion plot).</p></li>
-<li><p>Lots more error checking of arguments passed to … (and potentially misspecified or misspelled). Addresses Issue #62.</p></li>
+<li><p>Lots more error checking of arguments passed to … (and potentially misspecified or misspelled). Addresses Issue <a href='https://github.com/quanteda/quanteda/issues/62'>#62</a>.</p></li>
 <li><p>Almost all methods are now methods defined for objects, from a generic.</p></li>
 <li><p>texts(x, groups = ) now allows groups to be factors, not just document variable labels. There is a new method for texts.character(x, groups = ) which is useful for supplying a factor to concatenate character objects by group.</p></li>
 </ul>
-<div id="bug-fixes-8" class="section level2">
+<div id="bug-fixes-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-9" class="anchor"></a>Bug Fixes</h2>
 <ul>
 <li><p>corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm(). (Did not affect functionality.)</p></li>
 <li><p>fixed broken quanteda.R demo, expanded demonstration code.</p></li>
@@ -225,7 +239,7 @@
 </div>
 </div>
     <div id="quanteda-092" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.2">
 <a href="#quanteda-092" class="anchor"></a>quanteda 0.9.2<small> Unreleased </small>
 </h1>
 <ul>
@@ -237,9 +251,9 @@
 <li><p>removeFeatures() and selectFeatures.collocations() now all use a consistent interface and same underlying code, with removeFeatures() acting as a wrapper to selectFeatures().</p></li>
 <li><p>convert(x, to = “stm”) now about 3-4x faster because it uses index positions from the dgCMatrix to convert to the sparse matrix format expected by stm.</p></li>
 </ul>
-<div id="bug-fixes-7" class="section level2">
+<div id="bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Fixed a bug in textfile() preventing encodingFrom and encodingTo from working properly.</p></li>
 <li><p>Fixed a nasty bug problem in <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> that mixed up the word indexes. Thanks Felix Haass for spotting this!</p></li>
@@ -251,7 +265,7 @@
 </div>
 </div>
     <div id="quanteda-094" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.4">
 <a href="#quanteda-094" class="anchor"></a>quanteda 0.9.4<small> 2016-02-21 </small>
 </h1>
 <ul>
@@ -260,13 +274,13 @@
 <li><p>Improved documentation.</p></li>
 <li><p>Added <code><a href="../reference/corpus-class.html">c.corpus()</a></code> method for concatenating arbitrarily large sets of corpus objects.</p></li>
 <li><p>Default for <code>similarity()</code> is now <code>margin = "documents"</code> – prevents overly massive results if <code>selection = NULL</code>.</p></li>
-<li><p>Defined <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowMeans()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/colSums">colMeans()</a></code> methods for dfm objects.</p></li>
+<li><p>Defined <code><a href="https://rdrr.io/r/base/colSums.html">rowMeans()</a></code> and <code><a href="https://rdrr.io/r/base/colSums.html">colMeans()</a></code> methods for dfm objects.</p></li>
 <li><p>Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.</p></li>
 <li><p>Enhancements to corpus object indexing, including [[ and [[&lt;-.</p></li>
 </ul>
-<div id="bug-fixes-6" class="section level2">
+<div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Fixed a bug preventing <code>smoother()</code> from working.</p></li>
 <li><p>Fixed a bug in segment.corpus(x, what = “tag”) that was failing to recover the tag values after the first text.</p></li>
@@ -274,11 +288,11 @@
 <li><p>Fixed an issue for <code>mfdict &lt;- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")</code> causing it to fail because of the irregular combination of tabs and spaces in the dictionary file.</p></li>
 <li><p>Fixed an exception thrown by wordstem.character(x) if one element of x was NA.</p></li>
 <li><p>dfm() on a text or tokenized text containing an NA element now returns a row with 0 feature counts. Previously it returned a count of 1 for an NA feature.</p></li>
-<li><p>Fix issue #91 removeHyphens = FALSE not working in tokenise for some multiple intra-word hyphens, such as “one-of-a-kind”</p></li>
+<li><p>Fix issue <a href='https://github.com/quanteda/quanteda/issues/91'>#91</a> removeHyphens = FALSE not working in tokenise for some multiple intra-word hyphens, such as “one-of-a-kind”</p></li>
 <li><p>Fixed a bug in <code>as.matrix.similMatrix()</code> that caused scrambled conversion when feature sets compared were unequal, which normally occurs when setting <code>similarity(x, n = &lt;something&gt;)</code> when n &lt; nfeature(x)</p></li>
 <li><p>Fixed a bug in which a corpusSource object (from <code>textfile()</code>) with empty docvars prevented this argument from being supplied to <code><a href="../reference/corpus.html">corpus(corpusSourceObject, docvars = something)</a></code>.</p></li>
 <li><p>Fixed inaccurate documentation for <code>weight()</code>, which previously listed unavailable options.</p></li>
-<li><p>More accurate and complete documentation for <code>tokenize()</code>.</p></li>
+<li><p>More accurate and complete documentation for <code><a href="../reference/tokenize_internal.html">tokenize()</a></code>.</p></li>
 <li><p>traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.</p></li>
 <li><p>Fixed a bug in <code>textfile()</code> that prevented passthrough arguments in …, such as <code>fileEncoding =</code> or <code>encoding =</code></p></li>
 <li><p>Fixed a bug in <code>textfile()</code> that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)</p></li>
@@ -286,7 +300,7 @@
 </div>
 </div>
     <div id="quanteda-096" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.6">
 <a href="#quanteda-096" class="anchor"></a>quanteda 0.9.6<small> Unreleased </small>
 </h1>
 <ul>
@@ -309,11 +323,11 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p><code>selectFeatures(x, anyDfm)</code> (where the second argument is a dfm) now works with a selection = “remove” option.</p></li>
 <li><p>tokenize.character adds a removeURL option.</p></li>
 <li><p>added a corpus method for data.frame objects, so that a corpus can be constructed directly from a data.frame. Requires the addition of a <code>textField</code> argument (similar to textfile).</p></li>
-<li><p>added <code>compress.dfm()</code> to combine identically named columns or rows. #123</p></li>
+<li><p>added <code>compress.dfm()</code> to combine identically named columns or rows. <a href='https://github.com/quanteda/quanteda/issues/123'>#123</a></p></li>
 <li><p>Much better <code>phrasetotoken()</code>, with additional methods for all combinations of corpus/character v. dictionary/character/collocations.</p></li>
-<li><p>Added a<code>weight(x, type, ...</code>) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight. Thanks <a href="http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475" class="uri">http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475</a>.</p></li>
+<li><p>Added a<code>weight(x, type, ...</code>) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight. Thanks <a href="http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475<a href='https://github.com/quanteda/quanteda/issues/36823475'>#36823475</a>" class="uri">http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475<a href='https://github.com/quanteda/quanteda/issues/36823475'>#36823475</a></a>.</p></li>
 <li><p><code>as.data.frame</code> for dfms now passes <code>...</code> to <code>as.data.frame.matrix</code>.</p></li>
-<li><p>Fixed bug in <code>predict.fitted_textmodel_NB()</code> that caused a failure with k &gt; 2 classes (#129)</p></li>
+<li><p>Fixed bug in <code>predict.fitted_textmodel_NB()</code> that caused a failure with k &gt; 2 classes (<a href='https://github.com/quanteda/quanteda/issues/129'>#129</a>)</p></li>
 <li><p>Improved <code>dfm.tokenizedTexts()</code> performance by taking care of zero-token documents more efficiently.</p></li>
 <li><p><code><a href="../reference/dictionary.html">dictionary(file = "liwc_formatted_dict.dic", format = "LIWC")</a></code> now handles poorly formatted dictionary files better, such as the Moral Foundations Dictionary in the examples for <code><a href="../reference/dictionary.html">?dictionary</a></code>.</p></li>
 <li><p>added <code>as.tokenizedTexts</code> to coerce any list of characters to a tokenizedTexts object.</p></li>
@@ -323,55 +337,55 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <a href="#bug-fixes--096-3" class="anchor"></a>Bug fixes &gt;= 0.9.6-3</h2>
 <ul>
 <li><p>Fix bug in phrasetotoken, signature ‘corpus,ANY’ that was causing an infinite loop.</p></li>
-<li><p>Fixed bug introduced in commit b88287f (0.9.5-26) that caused a failure in dfm() with empty (zero-token) documents. Also fixes Issue #168.</p></li>
+<li><p>Fixed bug introduced in commit b88287f (0.9.5-26) that caused a failure in dfm() with empty (zero-token) documents. Also fixes Issue <a href='https://github.com/quanteda/quanteda/issues/168'>#168</a>.</p></li>
 <li><p>Fixed bug that caused dfm() to break if no features or only one feature was found.</p></li>
-<li><p>Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k &gt; 2 classes (#129)</p></li>
+<li><p>Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k &gt; 2 classes (<a href='https://github.com/quanteda/quanteda/issues/129'>#129</a>)</p></li>
 </ul>
 </div>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Fixed a false-alarm warning message in textmodel_wordfish()</p></li>
-<li><p>Argument defaults for readability.corpus() now same as readability.character(). Fixes #107.</p></li>
+<li><p>Argument defaults for readability.corpus() now same as readability.character(). Fixes <a href='https://github.com/quanteda/quanteda/issues/107'>#107</a>.</p></li>
 <li><p>Fixed a bug causing LIWC format dictionary imports to fail if extra characters followed the closing % in the file header.</p></li>
-<li><p>Fixed a bug in applyDictionary(x, dictionary, exclusive = FALSE) when the dictionary produced no matches at all, caused by an attempt to negative index a NULL. #115</p></li>
-<li><p>Fixed #117, a bug where wordstem.tokenizedTexts() removed attributes from the object, causing a failure of dfm.tokenizedTexts().</p></li>
-<li><p>Fixed #119, a bug in selectFeatures.tokenizedTexts(x, features, selection = “remove”) that returned a NULL for a document’s tokens when no matching pattern for removal was found.</p></li>
-<li><p>Improved the behaviour of the <code>removeHyphens</code> option to <code>tokenize()</code> when <code>what = "fasterword"</code> or <code>what "fastestword"</code>.</p></li>
+<li><p>Fixed a bug in applyDictionary(x, dictionary, exclusive = FALSE) when the dictionary produced no matches at all, caused by an attempt to negative index a NULL. <a href='https://github.com/quanteda/quanteda/issues/115'>#115</a></p></li>
+<li><p>Fixed <a href='https://github.com/quanteda/quanteda/issues/117'>#117</a>, a bug where wordstem.tokenizedTexts() removed attributes from the object, causing a failure of dfm.tokenizedTexts().</p></li>
+<li><p>Fixed <a href='https://github.com/quanteda/quanteda/issues/119'>#119</a>, a bug in selectFeatures.tokenizedTexts(x, features, selection = “remove”) that returned a NULL for a document’s tokens when no matching pattern for removal was found.</p></li>
+<li><p>Improved the behaviour of the <code>removeHyphens</code> option to <code><a href="../reference/tokenize_internal.html">tokenize()</a></code> when <code>what = "fasterword"</code> or <code>what "fastestword"</code>.</p></li>
 <li><p>readability() now returns measures in order called, not function definition order.</p></li>
 <li><p>textmodel(x, model = “wordfish”) now removes zero-frequency documents and words prior to calling Rcpp.</p></li>
-<li><p>Fixed a bug in sample.corpus() that caused an error when no docvars existed. #128</p></li>
+<li><p>Fixed a bug in sample.corpus() that caused an error when no docvars existed. <a href='https://github.com/quanteda/quanteda/issues/128'>#128</a></p></li>
 </ul>
 </div>
 </div>
     <div id="quanteda-098" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.8">
 <a href="#quanteda-098" class="anchor"></a>quanteda 0.9.8<small> 2016-07-28 </small>
 </h1>
-<div id="new-features-16" class="section level2">
+<div id="new-features-20" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-16" class="anchor"></a>New Features</h2>
+<a href="#new-features-20" class="anchor"></a>New Features</h2>
 <ul>
 <li>Improved the performance of <code>selectFeatures.tokenizedTexts()</code>.<br>
 </li>
 <li>Improved the performance of <code><a href="../reference/cbind.dfm.html">rbind.dfm()</a></code>.<br>
 </li>
-<li>Added support for different docvars when importing multiple files using <code>textfile()</code>. (#147)<br>
+<li>Added support for different docvars when importing multiple files using <code>textfile()</code>. (<a href='https://github.com/quanteda/quanteda/issues/147'>#147</a>)<br>
 </li>
-<li>Added support for comparison dispersion plots in <code>plot.kwic()</code>. (#146)<br>
+<li>Added support for comparison dispersion plots in <code>plot.kwic()</code>. (<a href='https://github.com/quanteda/quanteda/issues/146'>#146</a>)<br>
 </li>
 <li>Added a corpus constructor method for kwic objects.<br>
 </li>
-<li>Substantially improved the performance of <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)<br>
+<li>Substantially improved the performance of <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (<a href='https://github.com/quanteda/quanteda/issues/209'>#209</a>)<br>
 </li>
 <li>Internal rewrite of <code>textfile()</code>, now supports more file types, more wildcard patterns, and is far more robust generally.<br>
 </li>
 <li>Add support for loading external dictionary formats:</li>
 <li>Yoshikoder,</li>
-<li>Lexicoder v2 and v3 (#228)</li>
-<li>Autodetect dictionary file format from file extension, so no longer require <code>format</code> keyword for loading dictionaries (#227)</li>
-<li>Improved compatibility with rOpenSci guidelines (#218):
+<li>Lexicoder v2 and v3 (<a href='https://github.com/quanteda/quanteda/issues/228'>#228</a>)</li>
+<li>Autodetect dictionary file format from file extension, so no longer require <code>format</code> keyword for loading dictionaries (<a href='https://github.com/quanteda/quanteda/issues/227'>#227</a>)</li>
+<li>Improved compatibility with rOpenSci guidelines (<a href='https://github.com/quanteda/quanteda/issues/218'>#218</a>):
 <ul>
 <li>Use httr to get remote files</li>
 <li>Use <code>messages()</code> to display messages rather than <code>print</code> or <code>cat</code>
@@ -380,75 +394,70 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 </li>
 </ul>
 </li>
-<li>Added new <code>punctuation</code> argument to <code><a href="../reference/textstat_collocations.html">collocations()</a></code> to provide new options for handling collocations separated by punctuation characters (#220).</li>
+<li>Added new <code>punctuation</code> argument to <code><a href="../reference/textstat_collocations.html">collocations()</a></code> to provide new options for handling collocations separated by punctuation characters (<a href='https://github.com/quanteda/quanteda/issues/220'>#220</a>).</li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>(0.9.8.7) Solved #267 in which <code><a href="../reference/fcm.html">fcm(x, tri = TRUE)</a></code> temporarily created a dense logical matrix.</li>
+<li>(0.9.8.7) Solved <a href='https://github.com/quanteda/quanteda/issues/267'>#267</a> in which <code><a href="../reference/fcm.html">fcm(x, tri = TRUE)</a></code> temporarily created a dense logical matrix.</li>
 <li>(0.9.8.7) Added feature co-occurrence matrix functions (<code>fcm</code>).</li>
-<li>(0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)</li>
-<li>(0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)</li>
-<li>(0.9.8.4) Fix a bug in <code>selectFeatures.dfm()</code> that ignored <code>case_insensitive = TRUE</code> settings (#251) correct the documentation for this function.</li>
-<li>(0.9.8.3) Fix a bug in <code><a href="../reference/tf.html">tf(x, scheme = "propmax")</a></code> that returned a wrong computation; correct the documentation for this function.</li>
+<li>(0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (<a href='https://github.com/quanteda/quanteda/issues/257'>#257</a>)</li>
+<li>(0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (<a href='https://github.com/quanteda/quanteda/issues/250'>#250</a>)</li>
+<li>(0.9.8.4) Fix a bug in <code>selectFeatures.dfm()</code> that ignored <code>case_insensitive = TRUE</code> settings (<a href='https://github.com/quanteda/quanteda/issues/251'>#251</a>) correct the documentation for this function.</li>
+<li>(0.9.8.3) Fix a bug in <code>tf(x, scheme = "propmax")</code> that returned a wrong computation; correct the documentation for this function.</li>
 <li>(0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the “textField” argument (a single file containing multiple documents).<br>
 </li>
-<li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code>+</code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. #239<br>
+<li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. <a href='https://github.com/quanteda/quanteda/issues/239'>#239</a><br>
 </li>
-<li>Fixed bug in <code>textfile()</code> where source is a remote .zip set. (#172)<br>
+<li>Fixed bug in <code>textfile()</code> where source is a remote .zip set. (<a href='https://github.com/quanteda/quanteda/issues/172'>#172</a>)<br>
 </li>
-<li>Fixed bug in <code>wordstem.dfm()</code> that caused an error if supplied a dfm with a feature whose total frequency count was zero, or with a feature whose total docfreq was zero. Fixes #181.<br>
+<li>Fixed bug in <code>wordstem.dfm()</code> that caused an error if supplied a dfm with a feature whose total frequency count was zero, or with a feature whose total docfreq was zero. Fixes <a href='https://github.com/quanteda/quanteda/issues/181'>#181</a>.<br>
 </li>
-<li>Fix #214 “mysterious stemmed token” bug in <code>wordstem.dfm()</code>, introduced in fixing #181.<br>
+<li>Fix <a href='https://github.com/quanteda/quanteda/issues/214'>#214</a> “mysterious stemmed token” bug in <code>wordstem.dfm()</code>, introduced in fixing <a href='https://github.com/quanteda/quanteda/issues/181'>#181</a>.<br>
 </li>
 <li>Fixed previously non-functional <code>toLower =</code> argument in <code>dfm.tokenizedTexts()</code>.</li>
-<li>Fixed some errors in the computation of a few readability formulas (#215).</li>
-<li>Added filenames names to text vectors returned by <code>textfile</code> (#221).</li>
+<li>Fixed some errors in the computation of a few readability formulas (<a href='https://github.com/quanteda/quanteda/issues/215'>#215</a>).</li>
+<li>Added filenames names to text vectors returned by <code>textfile</code> (<a href='https://github.com/quanteda/quanteda/issues/221'>#221</a>).</li>
 <li>
-<code><a href="../reference/dictionary.html">dictionary()</a></code> now works correctly when reading LIWC dictionaries where all terms belong to one key (#229).</li>
-<li>`convert(x, to = “stm”) now indexes the dfm components from 1, not 0 (#222).</li>
-<li>Remove temporary stemmed token (#214).</li>
-<li>Fixed bug in textmodel_NB() for non-“uniform” priors (#241)</li>
+<code><a href="../reference/dictionary.html">dictionary()</a></code> now works correctly when reading LIWC dictionaries where all terms belong to one key (<a href='https://github.com/quanteda/quanteda/issues/229'>#229</a>).</li>
+<li>`convert(x, to = “stm”) now indexes the dfm components from 1, not 0 (<a href='https://github.com/quanteda/quanteda/issues/222'>#222</a>).</li>
+<li>Remove temporary stemmed token (<a href='https://github.com/quanteda/quanteda/issues/214'>#214</a>).</li>
+<li>Fixed bug in textmodel_NB() for non-“uniform” priors (<a href='https://github.com/quanteda/quanteda/issues/241'>#241</a>)</li>
 </ul>
 </div>
-<div id="changes" class="section level2">
+<div id="changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes" class="anchor"></a>Changes</h2>
+<a href="#changes-4" class="anchor"></a>Changes</h2>
 <ul>
-<li>Added <code>warn = FALSE</code> to the <code><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines()</a></code> calls in <code>textfile()</code>, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.</li>
+<li>Added <code>warn = FALSE</code> to the <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> calls in <code>textfile()</code>, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.</li>
 <li>
-<code>trim()</code> now prints an output message even when no features are removed (#223)</li>
+<code>trim()</code> now prints an output message even when no features are removed (<a href='https://github.com/quanteda/quanteda/issues/223'>#223</a>)</li>
 <li>We now skip some platform-dependent tests on CRAN, travis-ci and Windows.</li>
 </ul>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#quanteda-090">0.9.0</a></li>
-        <li><a href="#quanteda-092">0.9.2</a></li>
-        <li><a href="#quanteda-094">0.9.4</a></li>
-        <li><a href="#quanteda-096">0.9.6</a></li>
-        <li><a href="#quanteda-098">0.9.8</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -471,6 +480,8 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 </script>
 
 
+
   </body>
 </html>
+
 

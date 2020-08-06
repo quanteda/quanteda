@@ -3,26 +3,46 @@
 \name{docvars}
 \alias{docvars}
 \alias{docvars<-}
+\alias{$.corpus}
+\alias{$<-.corpus}
+\alias{$.tokens}
+\alias{$<-.tokens}
+\alias{$.dfm}
+\alias{$<-.dfm}
 \title{Get or set document-level variables}
 \usage{
 docvars(x, field = NULL)
 
 docvars(x, field = NULL) <- value
+
+\method{$}{corpus}(x, name)
+
+\method{$}{corpus}(x, name) <- value
+
+\method{$}{tokens}(x, name)
+
+\method{$}{tokens}(x, name) <- value
+
+\method{$}{dfm}(x, name)
+
+\method{$}{dfm}(x, name) <- value
 }
 \arguments{
-\item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose 
+\item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
 document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
 
-\item{value}{the new values of the document-level variable}
+\item{value}{a vector of document variable values to be assigned to \code{name}}
+
+\item{name}{a literal character string specifying a single \link{docvars} name}
 }
 \value{
-\code{docvars} returns a data.frame of the document-level variables, 
-  dropping the second dimension to form a vector if a single docvar is 
-  returned.
+\code{docvars} returns a data.frame of the document-level variables,
+dropping the second dimension to form a vector if a single docvar is
+returned.
 
-\code{docvars<-} assigns \code{value} to the named \code{field}
+\verb{docvars<-} assigns \code{value} to the named \code{field}
 }
 \description{
 Get or set variables associated with a document in a \link{corpus},
@@ -37,31 +57,46 @@ matrix.  Recognizing that in some cases, you may need to modify or add
 document variables to downstream objects, the assignment operator is defined
 for \link{tokens} or \link{dfm} objects as well.  Use with caution.
 }
-\section{Index access to docvars in a corpus}{
+\section{Accessing or assigning docvars using the \code{$} operator}{
 
-Another way to access and set docvars is through indexing of the corpus 
-\code{j} element, such as \code{data_corpus_irishbudget2010[, c("foren", 
-"name"]}; or, for a single docvar, 
-\code{data_corpus_irishbudget2010[["name"]]}.  The latter also permits 
-assignment, including the easy creation of new document variables, e.g. 
-\code{data_corpus_irishbudget2010[["newvar"]] <- 
-1:ndoc(data_corpus_irishbudget2010)}. See \code{\link{[.corpus}} for details.
+As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
+the \code{$} operator.  See Examples.
 }
 
 \examples{
 # retrieving docvars from a corpus
 head(docvars(data_corpus_inaugural))
 tail(docvars(data_corpus_inaugural, "President"), 10)
+head(data_corpus_inaugural$President)
 
 # assigning document variables to a corpus
 corp <- data_corpus_inaugural
 docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
 head(docvars(corp))
+corp$fullname <- paste(data_corpus_inaugural$FirstName,
+                       data_corpus_inaugural$President)
+tail(corp$fullname)
 
-# alternative using indexing
-head(corp[, "Year"])
-corp[["President2"]] <- paste("prezTwo", 1:ndoc(corp), sep = "")
-head(docvars(corp))
 
+# accessing or assigning docvars for a corpus using "$"
+data_corpus_inaugural$Year
+data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
+data_corpus_inaugural$century
+
+# accessing or assigning docvars for tokens using "$"
+toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
+toks$Year
+toks$Year <- 1991:1995
+toks$Year
+toks$nonexistent <- TRUE
+docvars(toks)
+
+# accessing or assigning docvars for a dfm using "$"
+dfmat <- dfm(toks)
+dfmat$Year
+dfmat$Year <- 1991:1995
+dfmat$Year
+dfmat$nonexistent <- TRUE
+docvars(dfmat)
 }
 \keyword{corpus}

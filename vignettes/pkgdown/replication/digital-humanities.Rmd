@@ -52,7 +52,7 @@ The Gutenburg edition of the text contains some metadata before and after the te
 (end_v <- stri_locate_last_fixed(data_char_mobydick, "orphan.")[1])
 ```
 
-Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar.  If we want to verify that "orpan." is the end of the novel, we can use the `kwic()` function:
+Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar.  If we want to verify that "orphan." is the end of the novel, we can use the `kwic()` function:
 ```{r out.width="\\textwidth"}
 # verify that "orphan" is the end of the novel
 kwic(data_char_mobydick, "orphan")
@@ -396,7 +396,7 @@ sort(mean_word_use_m, decreasing = TRUE) %>% head()
 
 ## 6.5 Calculating the TTR 
 
-Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculcated for each document of the `dfm`.
+Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculated for each document of the `dfm`.
 
 ```{r}
 dfm(chapters_corp) %>% 
@@ -467,7 +467,8 @@ pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"),
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- dfm_weight(pres_dfm, scheme = "prop") %>%
-    textstat_dist(method = "euclidean")
+    textstat_dist(method = "euclidean") %>% 
+    as.dist()
 
 # hiarchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
@@ -483,11 +484,12 @@ plot(pres_cluster, xlab = "", sub = "",
 # 12 Classification
 
 
-# 13 Topic Modeling
+# 13 Topic Modelling
 
-Finally, Jockers' book introduces topic modeling of a corpus and the visualisation through wordclouds. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 (`data_corpus_irishbudget2010`) and classify 20 topics using Latent Dirichlet Allocation.
+Finally, Jockers' book introduces topic modelling of a corpus and the visualisation through wordclouds. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 (`data_corpus_irishbudget2010`) and classify 20 topics using Latent Dirichlet Allocation.
 
 ```{r}
+data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
 dfm_speeches <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, 
                 remove = stopwords("english")) %>% 

@@ -4,8 +4,13 @@
 \alias{dfm_replace}
 \title{Replace features in dfm}
 \usage{
-dfm_replace(x, pattern, replacement, case_insensitive = TRUE,
-  verbose = quanteda_options("verbose"))
+dfm_replace(
+  x,
+  pattern,
+  replacement,
+  case_insensitive = TRUE,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{\link{dfm} whose features will be replaced}
@@ -17,7 +22,8 @@ for more details.}
 \code{replacement} must be character vector of equal length, for a 1:1
 match.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
@@ -26,13 +32,14 @@ Substitute features based on vectorized one-to-one matching for lemmatization
 or user-defined stemming.
 }
 \examples{
-dfmat1 <- dfm(data_corpus_irishbudget2010)
+dfmat1 <- dfm(data_corpus_inaugural)
 
 # lemmatization
-lis <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
-lemma <- rep("focus", length(lis))
-dfmat2 <- dfm_replace(dfmat1, pattern = lis, replacement = lemma)
-featnames(dfm_select(dfmat2, pattern = lis))
+taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
+lemma <- rep("TAX", length(taxwords))
+featnames(dfm_select(dfmat1, pattern = taxwords))
+dfmat2 <- dfm_replace(dfmat1, pattern = taxwords, replacement = lemma)
+featnames(dfm_select(dfmat2, pattern = taxwords))
 
 # stemming
 feat <- featnames(dfmat1)

@@ -8,21 +8,29 @@
 
 <title>Create ngrams and skipgrams from tokens — tokens_ngrams • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,20 +39,20 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Create ngrams and skipgrams from tokens — tokens_ngrams" />
 
+<meta property="og:title" content="Create ngrams and skipgrams from tokens — tokens_ngrams" />
 <meta property="og:description" content="Create a set of ngrams (tokens in sequence) from already tokenized text
 objects, with an optional skip argument to form skipgrams. Both the ngram
 length and the skip lengths take vectors of arguments to form multiple
 lengths or skips in one pass.  Implemented in C++ for efficiency." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -68,9 +76,10 @@ lengths or skips in one pass.  Implemented in C++ for efficiency." />
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -84,7 +93,7 @@ lengths or skips in one pass.  Implemented in C++ for efficiency." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -108,6 +117,9 @@ lengths or skips in one pass.  Implemented in C++ for efficiency." />
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -175,7 +187,6 @@ lengths or skips in one pass.  Implemented in C++ for efficiency." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -185,7 +196,7 @@ lengths or skips in one pass.  Implemented in C++ for efficiency." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -196,23 +207,22 @@ lengths or skips in one pass.  Implemented in C++ for efficiency." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create ngrams and skipgrams from tokens</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens_ngrams.R'><code>R/tokens_ngrams.R</code></a></small>
     <div class="hidden name"><code>tokens_ngrams.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Create a set of ngrams (tokens in sequence) from already tokenized text
 objects, with an optional skip argument to form skipgrams. Both the ngram
 length and the skip lengths take vectors of arguments to form multiple
 lengths or skips in one pass.  Implemented in C++ for efficiency.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>tokens_ngrams</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)
@@ -220,7 +230,7 @@ lengths or skips in one pass.  Implemented in C++ for efficiency.</p>
 <span class='fu'>char_ngrams</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)
 
 <span class='fu'>tokens_skipgrams</span>(<span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>skip</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -230,87 +240,79 @@ lengths or skips in one pass.  Implemented in C++ for efficiency.</p>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>integer vector specifying the number of elements to be concatenated 
-in each ngram.  Each element of this vector will define a \(n\) in the 
+      <td><p>integer vector specifying the number of elements to be concatenated
+in each ngram.  Each element of this vector will define a \(n\) in the
 \(n\)-gram(s) that are produced.</p></td>
     </tr>
     <tr>
       <th>skip</th>
-      <td><p>integer vector specifying the adjacency skip size for tokens 
-forming the ngrams, default is 0 for only immediately neighbouring words. 
-For <code>skipgrams</code>, <code>skip</code> can be a vector of integers, as the 
-"classic" approach to forming skip-grams is to set skip = \(k\) where 
-\(k\) is the distance for which \(k\) or fewer skips are used to 
-construct the \(n\)-gram.  Thus a "4-skip-n-gram" defined as <code>skip =
-0:4</code> produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
-skips (where 0 skips are typical n-grams formed from adjacent words).  See 
+      <td><p>integer vector specifying the adjacency skip size for tokens
+forming the ngrams, default is 0 for only immediately neighbouring words.
+For <code>skipgrams</code>, <code>skip</code> can be a vector of integers, as the
+"classic" approach to forming skip-grams is to set skip = \(k\) where
+\(k\) is the distance for which \(k\) or fewer skips are used to
+construct the \(n\)-gram.  Thus a "4-skip-n-gram" defined as <code>skip = 0:4</code> produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
+skips (where 0 skips are typical n-grams formed from adjacent words).  See
 Guthrie et al (2006).</p></td>
     </tr>
     <tr>
       <th>concatenator</th>
-      <td><p>character for combining words, default is <code>_</code> 
+      <td><p>character for combining words, default is <code>_</code>
 (underscore) character</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a tokens object consisting a list of character vectors of ngrams, one
-  list element per text, or a character vector if called on a simple
-  character vector</p>
-    
+list element per text, or a character vector if called on a simple
+character vector</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Normally, these functions will be called through 
-  <code><a href='tokens.html'>tokens</a>(x, ngrams = , ...)</code>, but these functions are provided 
-  in case a user wants to perform lower-level ngram construction on tokenized
-  texts.</p>
-<p><code>tokens_skipgrams</code> is a wrapper to <code>tokens_ngrams</code>
-  that requires arguments to be supplied for both <code>n</code> and <code>skip</code>.
-  For \(k\)-skip skipgrams, set <code>skip</code> to <code>0:</code>\(k\), in order
-  to conform to the definition of skip-grams found in Guthrie et al (2006): A
-  \(k\) skip-gram is an ngram which is a superset of all ngrams and each
-  \((k-i)\) skipgram until \((k-i)==0\) (which includes 0 skip-grams).</p>
-    
+    <p>Normally, these functions will be called through
+<code>[tokens](x, ngrams = , ...)</code>, but these functions are provided
+in case a user wants to perform lower-level ngram construction on tokenized
+texts.</p>
+<p><code>tokens_skipgrams()</code> is a wrapper to <code>tokens_ngrams()</code>
+that requires arguments to be supplied for both <code>n</code> and <code>skip</code>.
+For \(k\)-skip skipgrams, set <code>skip</code> to <code>0:</code>\(k\), in order
+to conform to the definition of skip-grams found in Guthrie et al (2006): A
+\(k\) skip-gram is an ngram which is a superset of all ngrams and each
+\((k-i)\) skipgram until \((k-i)==0\) (which includes 0 skip-grams).</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>char_ngrams</code> is a convenience wrapper for a (non-list) 
-  vector of characters, so named to be consistent with <span class="pkg">quanteda</span>'s naming
-  scheme.</p>
-    
+    <p><code>char_ngrams</code> is a convenience wrapper for a (non-list)
+vector of characters, so named to be consistent with <span class="pkg">quanteda</span>'s naming
+scheme.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006. 
-"<a href='http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf'>A Closer 
-Look at Skip-Gram Modelling</a>."</p>
-    
+    <p>Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.
+"<a href='https://aclweb.org/anthology/papers/L/L06/L06-1210/'>A Closer Look at Skip-Gram Modelling</a>."</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># ngrams</span>
-<span class='fu'>tokens_ngrams</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"a b c d e"</span>, <span class='st'>"c d e f g"</span>)), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_ngrams</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a b c d e"</span>, <span class='st'>"c d e f g"</span>)), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "a_b"   "b_c"   "c_d"   "d_e"   "a_b_c" "b_c_d" "c_d_e"
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "c_d"   "d_e"   "e_f"   "f_g"   "c_d_e" "d_e_f" "e_f_g"
 #&gt; </div><div class='input'>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"the quick brown fox jumped over the lazy dog"</span>))
-<span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"the quick brown fox jumped over the lazy dog"</span>))
+<span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
-#&gt;  [1] "the"              "quick"            "brown"            "fox"             
-#&gt;  [5] "jumped"           "over"             "the"              "lazy"            
-#&gt;  [9] "dog"              "the_quick"        "quick_brown"      "brown_fox"       
-#&gt; [13] "fox_jumped"       "jumped_over"      "over_the"         "the_lazy"        
-#&gt; [17] "lazy_dog"         "the_quick_brown"  "quick_brown_fox"  "brown_fox_jumped"
-#&gt; [21] "fox_jumped_over"  "jumped_over_the"  "over_the_lazy"    "the_lazy_dog"    
-#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt;  [1] "the"         "quick"       "brown"       "fox"         "jumped"     
+#&gt;  [6] "over"        "the"         "lazy"        "dog"         "the_quick"  
+#&gt; [11] "quick_brown" "brown_fox"  
+#&gt; [ ... and 12 more ]
+#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt;  [1] "the quick"              "quick brown"            "brown fox"             
 #&gt;  [4] "fox jumped"             "jumped over"            "over the"              
 #&gt;  [7] "the lazy"               "lazy dog"               "the quick brown fox"   
 #&gt; [10] "quick brown fox jumped" "brown fox jumped over"  "fox jumped over the"   
-#&gt; [13] "jumped over the lazy"   "over the lazy dog"     
-#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; [ ... and 2 more ]
+#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt;  [1] "the brown"            "quick fox"            "brown jumped"        
 #&gt;  [4] "fox over"             "jumped the"           "over lazy"           
@@ -320,17 +322,17 @@ Look at Skip-Gram Modelling</a>."</p>
 <span class='fu'>char_ngrams</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "a"     "b"     "c"     "a_b"   "b_c"   "a_b_c"</div><div class='input'>
 <span class='co'># skipgrams</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"insurgents killed in ongoing fighting"</span>)
-<span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "insurgents killed" "insurgents in"     "killed in"        
 #&gt; [4] "killed ongoing"    "in ongoing"        "in fighting"      
 #&gt; [7] "ongoing fighting" 
-#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "insurgents killed"  "insurgents in"      "insurgents ongoing"
 #&gt; [4] "killed in"          "killed ongoing"     "killed fighting"   
 #&gt; [7] "in ongoing"         "in fighting"        "ongoing fighting"  
-#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt;  [1] "insurgents killed in"        "insurgents killed ongoing"  
 #&gt;  [3] "insurgents killed fighting"  "insurgents in ongoing"      
@@ -339,35 +341,23 @@ Look at Skip-Gram Modelling</a>."</p>
 #&gt;  [9] "killed ongoing fighting"     "in ongoing fighting"        
 #&gt; </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Kohei Watanabe (C++) and Ken Benoit (R)</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -390,6 +380,8 @@ Look at Skip-Gram Modelling</a>."</p>
 </script>
 
 
+
   </body>
 </html>
+
 

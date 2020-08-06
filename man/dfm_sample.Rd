@@ -4,13 +4,20 @@
 \alias{dfm_sample}
 \title{Randomly sample documents or features from a dfm}
 \usage{
-dfm_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
-  margin = c("documents", "features"))
+dfm_sample(
+  x,
+  size = ifelse(margin == "documents", ndoc(x), nfeat(x)),
+  replace = FALSE,
+  prob = NULL,
+  margin = c("documents", "features")
+)
 }
 \arguments{
 \item{x}{the \link{dfm} object whose documents or features will be sampled}
 
-\item{size}{a positive number, the number of documents or features to select}
+\item{size}{a positive number, the number of documents or features to select.
+The default is the number of documents or the number of features, for
+\code{margin = "documents"} and \code{margin = "features"} respectively.}
 
 \item{replace}{logical; should sampling be with replacement?}
 
@@ -21,19 +28,20 @@ vector being sampled.}
 \code{features}}
 }
 \value{
-A dfm object with number of documents or features equal to \code{size}, drawn 
-  from the dfm \code{x}.
+A dfm object with number of documents or features equal to \code{size}, drawn
+from the dfm \code{x}.
 }
 \description{
 Sample randomly from a dfm object, from documents or features.
 }
 \examples{
 set.seed(10)
-dfmat <- dfm(data_corpus_inaugural[1:10])
+dfmat <- dfm(c("a b c c d", "a a c c d d d"))
 head(dfmat)
 head(dfm_sample(dfmat))
 head(dfm_sample(dfmat, replace = TRUE))
 head(dfm_sample(dfmat, margin = "features"))
+head(dfm_sample(dfmat, margin = "features", replace = TRUE))
 }
 \seealso{
 \link{sample}

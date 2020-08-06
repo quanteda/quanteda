@@ -18,11 +18,11 @@ vector being sampled.}
 }
 \value{
 A \link{tokens} object with number of documents or features equal to
-  \code{size}, drawn from the tokens \code{x}.
+\code{size}, drawn from the tokens \code{x}.
 }
 \description{
 Sample tokenized documents randomly from a tokens object, with or without
-replacement. Works just as \code{\link{sample}} works, for document-level
+replacement. Works just as \code{\link[=sample]{sample()}} works, for document-level
 units (and their associated document-level variables).
 }
 \examples{

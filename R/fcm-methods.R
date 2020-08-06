@@ -1,7 +1,7 @@
 #' @rdname dfm_compress
-#' @note \code{fcm_compress} works only when the \link{fcm} was created with a
+#' @note `fcm_compress` works only when the [fcm] was created with a
 #' document context.
-#' @return \code{fcm_compress} returns an \link{fcm} whose features have been
+#' @return `fcm_compress` returns an [fcm] whose features have been
 #' recombined by combining counts of identical features, summing their counts.
 #' @export
 #' @examples
@@ -30,20 +30,19 @@ fcm_compress.default <- function(x) {
 
 #' @export
 fcm_compress.fcm <- function(x) {
-    if (!is.fcm(x))
-        stop("compress_fcm only works on a fcm object")
     if (x@context != "document")
-        stop("compress_fcm invalid if fcm was created with a window context")
-    matrix2fcm(dfm_compress(x, margin = "both"), attributes(x))
-} 
+        stop(message_error("fcm_context"))
+    matrix2fcm(group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE), 
+               attributes(x))
+}
 
 #' Sort an fcm in alphabetical order of the features
 #' 
-#' Sorts an \link{fcm} in alphabetical order of the features.
+#' Sorts an [fcm] in alphabetical order of the features.
 #' 
-#' @param x \link{fcm} object
-#' @return A \link{fcm} object whose features have been alphabetically sorted. 
-#'   Differs from \code{\link{fcm_sort}} in that this function sorts the fcm by
+#' @param x [fcm] object
+#' @return A [fcm] object whose features have been alphabetically sorted. 
+#'   Differs from [fcm_sort()] in that this function sorts the fcm by
 #'   the feature labels, not the counts of the features.
 #' @export
 #' @author Kenneth Benoit
@@ -70,99 +69,57 @@ fcm_sort.default <- function(x) {
 
 #' @export
 fcm_sort.fcm <- function(x) {
-    attrs <- attributes(x)
-    x <- as(x, "dgTMatrix") # make a triplet
+    slots <- get_fcm_slots(x)
+    x <- as(x, "dgTMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
-    if (attrs$tri) {
-        swap <- which(x@i > x@j)
+    if (slots$tri) {
+        swap <- x@i > x@j
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
-        x <- matrix2fcm(x, attrs)
     }
-    return(x)
+    matrix2fcm(x, slots)
 }
 
-#' @rdname dfm_select
+#' Coercion and checking functions for fcm objects
+#' 
+#' Convert an eligible input object into a fcm, or check whether an object is a
+#' fcm.  Current eligible inputs for coercion to a dfm are: [matrix],
+#' (sparse) [Matrix][Matrix::Matrix] and other [fcm] objects.
+#' @param x a candidate object for checking or coercion to [dfm]
+#' @return `as.fcm` converts an input object into a [fcm].
 #' @export
-#' @examples 
-#' toks <- tokens(c("this contains lots of stopwords",
-#'                  "no if, and, or but about it: lots"),
-#'                remove_punct = TRUE)
-#' fcmat <- fcm(toks)
-#' fcmat
-#' fcm_remove(fcmat, stopwords("english"))
-fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"), 
-                       valuetype = c("glob", "regex", "fixed"),
-                       case_insensitive = TRUE,
-                       verbose = quanteda_options("verbose"), ...) {
-    UseMethod("fcm_select")
+as.fcm <- function(x) {
+    UseMethod("as.fcm")
 }
 
 #' @export
-fcm_select.default <- function(x, pattern = NULL, 
-                               selection = c("keep", "remove"), 
-                               valuetype = c("glob", "regex", "fixed"),
-                               case_insensitive = TRUE,
-                               verbose = quanteda_options("verbose"), ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm_select"))
-}
-
-#' @export
-fcm_select.fcm <- function(x, pattern = NULL, 
-                           selection = c("keep", "remove"), 
-                           valuetype = c("glob", "regex", "fixed"),
-                           case_insensitive = TRUE,
-                           verbose = quanteda_options("verbose"), ...) {
-    
-    attrs <- attributes(x)
-    x <- t(dfm_select(x, pattern, selection, valuetype, 
-                      case_insensitive, verbose = verbose, ...))
-    x <- t(dfm_select(x, pattern, selection, valuetype, 
-                      case_insensitive, verbose = FALSE, ...))
-    matrix2fcm(x, attrs)
-}
-
-
-#' @rdname dfm_select
-#' @export
-fcm_remove <- function(x, pattern = NULL, ...) {
-    UseMethod("fcm_remove")
-}
-
-#' @export
-fcm_remove.default <- function(x, pattern = NULL, ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm_remove"))
-}
-
-#' @export
-fcm_remove.fcm <- function(x, pattern = NULL, ...) {
-    fcm_select(x, pattern, selection = "remove", ...)
-}
-
-#' @rdname dfm_select
-#' @export
-fcm_keep <- function(x, pattern = NULL, ...) {
-    UseMethod("fcm_keep")
-}
-
-#' @export
-fcm_keep.default <- function(x, pattern = NULL, ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm_keep"))
+as.fcm.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "as.fcm"))
 }
 
 #' @noRd
+#' @method as.fcm fcm
 #' @export
-fcm_keep.fcm <- function(x, pattern = NULL, ...) {
-    fcm_select(x, pattern, selection = "keep", ...)
+as.fcm.fcm <- function(x) {
+    return(x)
 }
 
+#' @noRd
+#' @method as.fcm matrix
+#' @export
+as.fcm.matrix <- function(x) {
+    if (!identical(rownames(x), colnames(x)))
+        stop(message_error("matrix_mismatch"))
+    matrix2fcm(x)
+}
 
-#' Coercion functions for fcm objects
-#' @param x an object coerced to \link{fcm}. Currently only support
-#'   \link{Matrix} objects.
-#' @keywords internal
-as.fcm <- function(x) {
+#' @noRd
+#' @method as.fcm Matrix
+#' @export
+as.fcm.Matrix <- function(x) {
+    if (!identical(rownames(x), colnames(x)))
+        stop(message_error("matrix_mismatch"))
     matrix2fcm(x)
 }
 
@@ -182,23 +139,29 @@ matrix2fcm <- function(x, slots = NULL) {
     
     x <- Matrix(x, sparse = TRUE)
     x <- new("fcm", as(x, 'dgCMatrix'))
+    set_fcm_slots(x) <- slots
     set_fcm_dimnames(x) <- list(rowname, colname)
-    set_fcm_slots(x, slots)
+    return(x)
 }
 
 #' Set values to a fcm's S4 slots
 #' @param x a fcm 
-#' @param slots a list of values extracted using \code{attributes} and to be assigned to slots 
 #' @param exceptions names of slots to be ignored
+#' @param value a list of values extracted using `attributes` and to be assigned to slots 
 #' @keywords internal
-set_fcm_slots <- function(x, slots = NULL, exceptions = NULL) {
-    if (is.null(slots)) return(x)
-    sname <- slotNames("fcm")
-    sname <- setdiff(sname, c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions))
+"set_fcm_slots<-" <- function(x, exceptions = NULL, value) {
+    if (is.null(value)) return(x)
+    sname <- setdiff(slotNames("fcm"), c(slotNames("dgCMatrix"), exceptions))
     for (s in sname) {
         try({
-            slot(x, s) <- slots[[s]]
+            slot(x, s) <- value[[s]]
         }, silent = TRUE)
     }
     return(x)
+}
+
+#' @rdname set_fcm_slots-set
+get_fcm_slots <- function(x) {
+    sname <- setdiff(slotNames("fcm"), c(slotNames("dgCMatrix")))
+    attributes(x)[sname]
 }

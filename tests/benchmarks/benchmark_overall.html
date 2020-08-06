@@ -414,55 +414,55 @@ sessionInfo()</code></pre>
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.0         pillar_1.3.0       compiler_3.4.4    
 ##  [4] plyr_1.8.4         bindr_0.1.1        tools_3.4.4       
-##  [7] stopwords_0.9.0    digest_0.6.18      lubridate_1.7.4   
-## [10] evaluate_0.12      tibble_1.4.2       gtable_0.2.0      
-## [13] lattice_0.20-35    pkgconfig_2.0.2    rlang_0.3.0.1     
-## [16] fastmatch_1.1-0    Matrix_1.2-12      yaml_2.2.0        
-## [19] xfun_0.4           bindrcpp_0.2.2     stringr_1.3.1     
-## [22] dplyr_0.7.8        knitr_1.21         grid_3.4.4        
-## [25] tidyselect_0.2.5   glue_1.3.0         data.table_1.11.8 
-## [28] R6_2.3.0           rmarkdown_1.11     spacyr_0.9.91     
-## [31] ggplot2_3.1.0      purrr_0.2.5        magrittr_1.5      
-## [34] scales_1.0.0       htmltools_0.3.6    assertthat_0.2.0  
-## [37] colorspace_1.3-2   stringi_1.2.4      lazyeval_0.2.1    
-## [40] RcppParallel_4.4.2 munsell_0.5.0      crayon_1.3.4</code></pre>
+##  [7] stopwords_0.9.0    digest_0.6.18      evaluate_0.12     
+## [10] tibble_1.4.2       gtable_0.2.0       lattice_0.20-35   
+## [13] pkgconfig_2.0.2    rlang_0.3.0.1      fastmatch_1.1-0   
+## [16] Matrix_1.2-12      yaml_2.2.0         xfun_0.4          
+## [19] bindrcpp_0.2.2     stringr_1.3.1      dplyr_0.7.8       
+## [22] knitr_1.21         grid_3.4.4         tidyselect_0.2.5  
+## [25] glue_1.3.0         data.table_1.11.8  R6_2.3.0          
+## [28] rmarkdown_1.11     spacyr_0.9.91      ggplot2_3.1.0     
+## [31] purrr_0.2.5        magrittr_1.5       scales_1.0.0      
+## [34] htmltools_0.3.6    assertthat_0.2.0   colorspace_1.3-2  
+## [37] stringi_1.2.4      lazyeval_0.2.1     RcppParallel_4.4.2
+## [40] munsell_0.5.0      crayon_1.3.4</code></pre>
 <pre class="r"><code>corp &lt;- readRDS(&quot;/home/kohei/Documents/Brexit/Data/data_corpus_guardian.RDS&quot;)
 
 system.time(
     corp2 &lt;- corpus_sample(corp, 5000)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.01    0.00    0.01</code></pre>
+##  10.126   0.539  10.669</code></pre>
 <pre class="r"><code>system.time(
     toks &lt;- tokens(corp)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-## 214.611   6.907 198.440</code></pre>
+## 219.813   4.588 202.292</code></pre>
 <pre class="r"><code>system.time(
     toks2 &lt;- tokens_sample(toks, 5000)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.880   0.019   0.882</code></pre>
+##   1.028   0.001   1.009</code></pre>
 <pre class="r"><code>system.time(
     toks3 &lt;- tokens_remove(toks, stopwords(&quot;en&quot;))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  25.145   0.491   9.432</code></pre>
+##  25.548   0.573   9.560</code></pre>
 <pre class="r"><code>system.time(
     mt &lt;- dfm(toks)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  23.147   3.014  25.301</code></pre>
+##  24.539   2.472  26.250</code></pre>
 <pre class="r"><code>system.time(
     mt2 &lt;- dfm_group(mt, &quot;date&quot;)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   9.426   1.753  11.183</code></pre>
+##   8.049   1.599   9.669</code></pre>
 <pre class="r"><code>system.time(
     mt3 &lt;- dfm_remove(mt, stopwords(&quot;en&quot;))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.360   0.223   2.586</code></pre>
+##   2.244   0.232   2.477</code></pre>
 
 
 

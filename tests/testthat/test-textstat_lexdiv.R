@@ -1,4 +1,4 @@
-context("test textstat_lexdiv.dfm")
+context("test textstat_lexdiv")
 
 test_that("textstat_lexdiv computation is correct", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
@@ -10,18 +10,18 @@ test_that("textstat_lexdiv computation is correct", {
         )
 })
 
-test_that("textstat_lexdiv CTTR works correct", {
+test_that("textstat_lexdiv CTTR works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
     expect_equivalent(
         textstat_lexdiv(mydfm, "CTTR")$CTTR,
-        c(2 / sqrt(2 * 8), 2 / sqrt( 2 * 4)),
+        c(2 / sqrt(2 * 8), 2 / sqrt(2 * 4)),
         tolerance = 0.01
     )
 })
 
-test_that("textstat_lexdiv R works correct", {
+test_that("textstat_lexdiv R works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
@@ -32,7 +32,7 @@ test_that("textstat_lexdiv R works correct", {
     )
 })
 
-test_that("textstat_lexdiv C works correct", {
+test_that("textstat_lexdiv C works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
@@ -43,14 +43,25 @@ test_that("textstat_lexdiv C works correct", {
     )
 })
 
-test_that("textstat_lexdiv Maas works correct", {
+test_that("textstat_lexdiv Maas works correctly", {
     mydfm <- dfm(c(d1 = "b a b a b a b a",
                    d2 = "a a b b"))
 
     expect_equivalent(
         textstat_lexdiv(mydfm, "Maas")$Maas[1],
-        sqrt( (log10(8) - log10(2)) / log10(8) ^ 2),
+        sqrt((log10(8) - log10(2)) / log10(8) ^ 2),
         tolerance = 0.01
+    )
+})
+
+test_that("textstat_lexdiv Yule's I works correctly", {
+    mydfm <- dfm(c(d1 = "a b c",
+                   d2 = "a a b b c"))
+    expect_equivalent(
+        textstat_lexdiv(mydfm, "I")$I[1], 0, tolerance = 0.01
+    )
+    expect_equivalent(
+        textstat_lexdiv(mydfm, "I")$I[2], (3^2) / ((1 + 2 * 2^2) - 3), tolerance = 0.01
     )
 })
 
@@ -159,15 +170,15 @@ test_that("textstat_lexdiv works similarly for corpus and tokens", {
 test_that("textstat_lexdiv supports removal of punctuation, numbers and symbols", {
     txt <- c(d1 = "a a  b b  c c",
              d2 = "a a , b b . c c / & ^ *** ### 1 2 3 4")
-    mydfm <- dfm(txt)
-    mytokens <- tokens(txt)
+    mt <- dfm(txt)
+    toks <- tokens(txt)
     expect_identical(
-        textstat_lexdiv(mydfm["d1", ], measure = static_measures)[, -1],
-        textstat_lexdiv(mydfm["d2", ], measure = static_measures)[, -1]
+        textstat_lexdiv(mt["d1", ], measure = static_measures)[, -1],
+        textstat_lexdiv(mt["d2", ], measure = static_measures)[, -1]
     )
     expect_identical(
-        textstat_lexdiv(mytokens["d1", ], measure = static_measures)[, -1],
-        textstat_lexdiv(mytokens["d2", ], measure = static_measures)[, -1]
+        textstat_lexdiv(toks["d1"], measure = static_measures)[, -1],
+        textstat_lexdiv(toks["d2"], measure = static_measures)[, -1]
     )
 })
 
@@ -175,7 +186,7 @@ test_that("textstat_lexdiv supports removal of hyphenation", {
     y <- dfm(c(d1 = "apple-pear orange-fruit elephant-ferrari",
                d2 = "alpha-beta charlie-delta echo-foxtrot"))
     z <- dfm(c(d1 = "apple pear orange fruit elephant ferrari",
-               d2 = "alpha beta charlie delta echo foxtrot" ))
+               d2 = "alpha beta charlie delta echo foxtrot"))
     expect_identical(
         textstat_lexdiv(y, measure = static_measures, remove_hyphens = TRUE),
         textstat_lexdiv(z, measure = static_measures, remove_hyphens = TRUE)
@@ -201,7 +212,7 @@ test_that("textstat_lexdiv.dfm and .tokens work same with remove_* options", {
              "A shrimp-kabob costs $0.50, shrimp costs $0.25.")
     expect_identical(
         textstat_lexdiv(tokens(txt), measure = "TTR", remove_hyphens = TRUE),
-        textstat_lexdiv(dfm(txt), measure = "TTR", remove_hyphens = TRUE)
+        textstat_lexdiv(dfm(txt, tolower = FALSE), measure = "TTR", remove_hyphens = TRUE)
     )
     expect_identical(
         textstat_lexdiv(tokens(txt), measure = "TTR",
@@ -258,7 +269,7 @@ test_that("textstat_lexdiv.tokens raises errors if parameters for moving measure
     # )
 })
 
-test_that("textstat_lexdiv.tokens MATTR works correct on its own", {
+test_that("textstat_lexdiv.tokens MATTR works correctly on its own", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
     wsize2_MATTR <- (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6
@@ -279,7 +290,7 @@ test_that("textstat_lexdiv.tokens MATTR works correct on its own", {
     )
 })
 
-test_that("textstat_lexdiv.tokens MATTR works correct in conjunction with static measures", {
+test_that("textstat_lexdiv.tokens MATTR works correctly in conjunction with static measures", {
     mytxt <- "one one two one one two one"
     mytoken <- tokens(mytxt)
     wsize2_MATTR <- (1/2 + 1 + 1 + 1/2 + 1 + 1) / 6
@@ -290,7 +301,7 @@ test_that("textstat_lexdiv.tokens MATTR works correct in conjunction with static
     )
 })
 
-test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
+test_that("textstat_lexdiv.tokens MSTTR works correctly on its own", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4
@@ -314,11 +325,11 @@ test_that("textstat_lexdiv.tokens MSTTR works correct on its own", {
                       wsize4_MSTTR)
 
     # Test segment size = ntoken
-    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = length(mytoken$text1))[[2]],
+    expect_equivalent(textstat_lexdiv(mytoken, measure = "MSTTR", MSTTR_segment = length(mytoken[["text1"]]))[[2]],
                       textstat_lexdiv(mytoken, measure = "TTR")[[2]])
 })
 
-test_that("textstat_lexdiv.tokens MSTTR works correct in conjunction with static measures", {
+test_that("textstat_lexdiv.tokens MSTTR works correctly in conjunction with static measures", {
     mytxt <- "apple orange apple orange pear pear apple orange"
     mytoken <- tokens(mytxt)
     wsize2_MSTTR <- (2/2 + 2/2 + 1/2 + 2/2) / 4

@@ -2,13 +2,13 @@
 #' 
 #' Declares that a whitespace-separated expression consists of multiple 
 #' patterns, separated by whitespace.  This is typically used as a wrapper 
-#' around \code{\link{pattern}} to make it explicit that the pattern elements 
+#' around [pattern()] to make it explicit that the pattern elements 
 #' are to be used for matches to multi-word sequences, rather than individual,
 #' unordered matches to single words.
-#' @param x the sequence, as a \code{character} object containing whitespace 
+#' @param x the sequence, as a `character` object containing whitespace 
 #'   separating the patterns
-#' @return \code{phrase} returns a specially classed list whose white-spaced 
-#'   elements have been parsed into separate \code{character} elements.
+#' @return `phrase` returns a specially classed list whose white-spaced 
+#'   elements have been parsed into separate `character` elements.
 #' @export
 #' @examples 
 #' # make phrases from characters
@@ -30,6 +30,7 @@ phrase.default <- function(x) {
 }
 
 #' @noRd
+#' @importFrom stringi stri_split_charclass
 #' @export
 phrase.character <- function(x) {
     phrase(stri_split_charclass(x, "\\p{Z}"))
@@ -64,8 +65,8 @@ phrase.tokens <- function(x) {
 
 
 #' @rdname phrase
-#' @return \code{is.phrase} returns \code{TRUE} if the object was created by 
-#'   \code{\link{phrase}}; \code{FALSE} otherwise.
+#' @return `is.phrase` returns `TRUE` if the object was created by 
+#'   [phrase()]; `FALSE` otherwise.
 #' @export
 is.phrase <- function(x) {
     "phrases" %in% class(x)
@@ -76,7 +77,7 @@ is.phrase <- function(x) {
 #' prints a phrase object in a way that looks like a standard list.
 #' @keywords internal
 #' @method print phrases
-#' @param x a phrases (constructed by \code{\link{phrase}} object to be printed
+#' @param x a phrases (constructed by [phrase()] object to be printed
 #' @param ... further arguments passed to or from other methods
 #' @export
 print.phrases <- function(x, ...) {

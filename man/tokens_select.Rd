@@ -6,10 +6,20 @@
 \alias{tokens_keep}
 \title{Select or remove tokens from a tokens object}
 \usage{
-tokens_select(x, pattern, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 79L,
-  verbose = quanteda_options("verbose"))
+tokens_select(
+  x,
+  pattern,
+  selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  padding = FALSE,
+  window = 0,
+  min_nchar = NULL,
+  max_nchar = NULL,
+  startpos = 1L,
+  endpos = -1L,
+  verbose = quanteda_options("verbose")
+)
 
 tokens_remove(x, ...)
 
@@ -18,44 +28,52 @@ tokens_keep(x, ...)
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{pattern}{a character vector, list of character vectors,
+\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
+details.}
 
-\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens 
-matching \code{pattern}}
+\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens matching
+\code{pattern}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
 previously existed.  This is useful if a positional match is needed between
-the pre- and post-selected tokens, for instance if a window of adjacency 
+the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.}
 
 \item{window}{integer of length 1 or 2; the size of the window of tokens
-  adjacent to \code{pattern} that will be selected. The window is symmetric
-  unless a vector of two elements is supplied, in which case the first
-  element will be the token length of the window before \code{pattern}, and
-  the second will be the token length of the window after \code{pattern}.
-  The default is \code{0}, meaning that only the pattern matched token(s) are
-  selected, with no adjacent terms.
+adjacent to \code{pattern} that will be selected. The window is symmetric unless
+a vector of two elements is supplied, in which case the first element will
+be the token length of the window before \code{pattern}, and the second will be
+the token length of the window after \code{pattern}. The default is \code{0}, meaning
+that only the pattern matched token(s) are selected, with no adjacent
+terms.
 
-  Terms from overlapping windows are never double-counted, but simply
-  returned in the pattern match. This is because \code{tokens_select} never
-  redefines the document units; for this, see \code{\link{kwic}}.}
+Terms from overlapping windows are never double-counted, but simply
+returned in the pattern match. This is because \code{tokens_select} never
+redefines the document units; for this, see \code{\link[=kwic]{kwic()}}.}
 
-\item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
-in characters for tokens to be removed or kept; defaults are 1 and 
-\href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
- (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
-applied after (and hence, in addition to) any selection based on pattern 
-matches.}
+\item{min_nchar, max_nchar}{optional numerics specifying the minimum and
+maximum length in characters for tokens to be removed or kept; defaults are
+\code{NULL} for no limits.  These are applied after (and hence, in addition to)
+any selection based on pattern matches.}
 
-\item{verbose}{if \code{TRUE} print messages about how many tokens were 
-selected or removed}
+\item{startpos, endpos}{integer; position of tokens in documents where pattern
+matching starts and ends, where 1 is the first token in a document.  For
+negative indexes, counting starts at the ending token of the document, so
+that -1 denotes the last token in the document, -2 the second to last, etc.
+When the length of the vector is equal to \code{ndoc}, tokens in corresponding
+positions will be selected. Otherwise, only the first element in the vector
+is used.}
+
+\item{verbose}{if \code{TRUE} print messages about how many tokens were selected
+or removed}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
 \code{tokens_keep} to \code{tokens_select}. Cannot include
@@ -63,43 +81,47 @@ selected or removed}
 }
 \value{
 a \link{tokens} object with tokens selected or removed based on their
-  match to \code{pattern}
+match to \code{pattern}
 }
 \description{
-These function select or discard tokens from a \link{tokens} objects.  For 
-convenience, the functions \code{tokens_remove} and \code{tokens_keep} 
-are defined as shortcuts for 
-\code{tokens_select(x, pattern, selection = "remove")} and \code{tokens_select(x, pattern, selection = "keep")}, 
-respectively.  The most common 
-usage for \code{tokens_remove} will be to eliminate stop words from a text or
-text-based object, while the most common use of \code{tokens_select} will be 
-to select tokens with only positive pattern matches from a list of regular 
-expressions, including a dictionary.
+These function select or discard tokens from a \link{tokens} object.  For
+convenience, the functions \code{tokens_remove} and \code{tokens_keep} are defined as
+shortcuts for \code{tokens_select(x, pattern, selection = "remove")} and
+\code{tokens_select(x, pattern, selection = "keep")}, respectively.  The most
+common usage for \code{tokens_remove} will be to eliminate stop words from a text
+or text-based object, while the most common use of \code{tokens_select} will be to
+select tokens with only positive pattern matches from a list of regular
+expressions, including a dictionary. \code{startpos} and \code{endpos} determine the
+positions of tokens searched for \code{pattern} and areas affected are
+expanded by \code{window}.
 }
 \examples{
 ## tokens_select with simple examples
-toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
-                 remove_punct = TRUE)
-tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
-tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
-tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
-tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = TRUE)
+toks <- as.tokens(list(letters, LETTERS))
+tokens_select(toks, c("b", "e", "f"), selection = "keep", padding = FALSE)
+tokens_select(toks, c("b", "e", "f"), selection = "keep", padding = TRUE)
+tokens_select(toks, c("b", "e", "f"), selection = "remove", padding = FALSE)
+tokens_select(toks, c("b", "e", "f"), selection = "remove", padding = TRUE)
 
 # how case_insensitive works
-tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
-tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
+tokens_select(toks, c("b", "e", "f"), selection = "remove", case_insensitive = TRUE)
+tokens_select(toks, c("b", "e", "f"), selection = "remove", case_insensitive = FALSE)
 
 # use window
-tokens_select(toks, "second", selection = "keep", window = 1)
-tokens_select(toks, "second", selection = "remove", window = 1)
-tokens_remove(toks, "is", window = c(0, 1))
+tokens_select(toks, c("b", "f"), selection = "keep", window = 1)
+tokens_select(toks, c("b", "f"), selection = "remove", window = 1)
+tokens_remove(toks, c("b", "f"), window = c(0, 1))
+tokens_select(toks, pattern = c("e", "g"), window = c(1, 2))
+
 # tokens_remove example: remove stopwords
-txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
-                   execute the functions of its Chief Magistrate.",
-         wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
-                   the high sense I entertain of this distinguished honor.")
+txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my
+                   country to execute the functions of its Chief Magistrate.",
+         wash2 <- "When the occasion proper for it shall arrive, I shall
+                   endeavor to express the high sense I entertain of this
+                   distinguished honor.")
 tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 
 # token_keep example: keep two-letter words
 tokens_keep(tokens(txt, remove_punct = TRUE), "??")
+
 }

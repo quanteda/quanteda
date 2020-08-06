@@ -1,20 +1,200 @@
-# docvars ------
+# internal methods -------
+
+# internal function to modify docvars while protecting system-level variables
+"set_docvars<-" <- function(x, field = NULL, value) {
+    stopifnot(is.data.frame(x))
+    flag <- is_system(names(x))
+    if (is.dfm(value))
+        value <- convert(value, to = "data.frame")[-1]
+    if (is.null(field)) {
+        if (is.null(value)) {
+            x <- x[flag]
+        } else {
+            if (is.matrix(value))
+                value <- as.data.frame(value, stringsAsFactors = FALSE)
+            if (is.data.frame(value)) {
+                if (nrow(value) != nrow(x))
+                    stop(message_error("docvar_mismatch"))
+                if (!is.character(names(value)) || length(names(value)) != ncol(value) ||
+                    any(is.na(names(value)))) {
+                    stop(message_error("docvar_nocolname"), call. = FALSE)
+                }
+                x <- cbind(x[flag], value)
+            } else {
+                stop(message_error("docvar_nofield"), call. = FALSE)
+            }
+        }
+    } else {
+        if (any(is_system(field)))
+            stop(message_error("docvars_invalid"))
+        x[field] <- value
+    }
+    rownames(x) <- NULL
+    return(x)
+}
+
+#' Internal function to extract docvars
+#' @param x an object from which docvars are extracted
+#' @param field name of docvar fields
+#' @param user if `TRUE`, return user variables
+#' @param system if `TRUE`, return system variables
+#' @param drop if `TRUE`, convert data.frame with one variable to a vector
+#' @keywords internal
+get_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    UseMethod("get_docvars")
+}
+
+#' @method get_docvars corpus
+get_docvars.corpus <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(attr(x, "docvars"), field, user, system, drop)
+}
+
+#' @method get_docvars tokens
+get_docvars.tokens <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(attr(x, "docvars"), field, user, system, drop)
+}
+
+#' @method get_docvars dfm
+get_docvars.dfm <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(x@docvars, field, user, system, drop)
+}
+
+# Internal function to select columns of docvars
+select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    x <- x[user * !is_system(names(x)) | system * is_system(names(x))]
+    if (is.null(field)) {
+        return(x)
+    } else {
+        error <- !field %in% names(x)
+        if (any(error))
+            stop("field(s) ", paste(field[error], collapse = ", "), " not found")
+        if (length(field) == 1 && drop) {
+            return(x[[field]])
+        } else {
+            return(x[field])
+        }
+    }
+}
+
+# internal function to make new system-level docvars
+make_docvars <- function(n, docname = NULL, unique = TRUE) {
+    
+    stopifnot(is.integer(n))
+    if (is.null(docname)) {
+        docname <- paste0(quanteda_options("base_docname"), seq_len(n))
+    } else {
+        stopifnot(n == length(docname))
+        docname <- stri_trans_nfc(as.character(docname))
+    }
+    if (n == 0) {
+        result <- data.frame("docname_" = character(),
+                             "docid_" = factor(),
+                             "segid_" = integer(),
+                              stringsAsFactors = FALSE)
+    } else {
+        if (unique) {
+            if (any(duplicated(docname))) {
+                segid <- stats::ave(docname == docname, docname, FUN = cumsum)
+                docid <- paste0(docname, ".", segid)
+            } else {
+                segid <- rep(1L, n)
+                docid <- docname
+            }
+        } else {
+            segid <- rep(1L, n)
+            docid <- docname
+        }
+        result <- data.frame("docname_" = docid,
+                             "docid_" = factor(docname, levels = unique(docname)),
+                             "segid_" = segid,
+                             stringsAsFactors = FALSE)
+    }
+    rownames(result) <- NULL
+    return(result)
+}
+
+#' Internal function to subset or duplicate docvar rows
+#' @param x docvar data.frame
+#' @param i numeric or logical vector for subsetting/duplicating rows
+#' @keywords internal
+reshape_docvars <- function(x, i = NULL) {
+    if (is.null(i)) return(x)
+    x <- x[i, , drop = FALSE]
+    temp <- make_docvars(nrow(x), x[["docid_"]], TRUE)
+    x[c("docname_", "docid_", "segid_")] <- temp
+    rownames(x) <- NULL
+    return(x)
+}
+
+# Reshape docvars keeping variables that have the same values within groups
+group_docvars <- function(x, group = NULL) {
+    if (is.null(group))
+        return(x)
+    l <- rep(FALSE, length(x))
+    for (i in seq_along(l)) {
+        if (is_system(names(x)[i]) || is_grouped(x[[i]], group)) {
+            l[i] <- TRUE
+        }
+    }
+    temp <- make_docvars(length(levels(group)), levels(group), TRUE)
+    result <- x[match(levels(group), group), l, drop = FALSE]
+    result[c("docname_", "docid_", "segid_")] <- temp
+    rownames(result) <- NULL
+    return(result)
+}
+
+
+# internal function to upgrade docvars to modern format
+upgrade_docvars <- function(x, docname = NULL) {
+    if (sum(is_system(colnames(x))) == 3)
+        return(x)
+    if (is.null(docname))
+        docname <- rownames(x)
+    if (is.null(x) || length(x) == 0) {
+        result <- make_docvars(length(docname), docname, FALSE)
+    } else {
+        result <- cbind(make_docvars(nrow(x), docname, FALSE),
+                        x[!is_system(names(x)) & !is_system_old(names(x))])
+        if ("_document" %in% names(x))
+            result[["docid_"]] <- factor(x[["_document"]], levels = unique(x[["_document"]]))
+        if ("_segid" %in% names(x))
+            result[["segid_"]] <- as.integer(x[["_segid"]])
+    }
+    rownames(result) <- NULL
+    return(result)
+}
+
+# internal function to check if variables are internal-only
+is_system <- function(x) {
+    x %in% c("docname_", "docid_", "segid_")
+}
+
+# internal function to check if old variables are internal-only
+is_system_old <- function(x) {
+    x %in% c("texts", "_document", "_docid", "_segid")
+}
+
+# core docvars methods -------
 
 #' Get or set document-level variables
-#' 
-#' Get or set variables associated with a document in a \link{corpus},
-#' \link{tokens} or \link{dfm} object.
-#' @param x \link{corpus}, \link{tokens}, or \link{dfm} object whose 
+#'
+#' Get or set variables associated with a document in a [corpus],
+#' [tokens] or [dfm] object.
+#' @param x [corpus], [tokens], or [dfm] object whose
 #'   document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @return \code{docvars} returns a data.frame of the document-level variables, 
-#'   dropping the second dimension to form a vector if a single docvar is 
+#' @return `docvars` returns a data.frame of the document-level variables,
+#'   dropping the second dimension to form a vector if a single docvar is
 #'   returned.
-#' @examples 
+#' @section Accessing or assigning docvars using the `$` operator:
+#' As of \pkg{quanteda} v2, it is possible to access and assign a docvar using
+#' the `$` operator.  See Examples.
+#' @examples
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
 #' tail(docvars(data_corpus_inaugural, "President"), 10)
-#' 
+#' head(data_corpus_inaugural$President)
+#'
 #' @export
 #' @keywords corpus
 docvars <- function(x, field = NULL) {
@@ -28,79 +208,51 @@ docvars.default <- function(x, field = NULL) {
 
 #' @noRd
 #' @export
-docvars.corpus <- function(x, field = NULL) {
-    check_fields(x, field)
-    dvars <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
-    if (is.null(field))
-        dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)
+    docvars.corpus <- function(x, field = NULL) {
+    x <- as.corpus(x)
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.tokens <- function(x, field = NULL) {
-    check_fields(x, field)
-    dvars <- attr(x, "docvars")
-    if (is.null(field))
-        dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)  
+    x <- as.tokens(x)
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
 docvars.dfm <- function(x, field = NULL) {
-    check_fields(x, field)
-    dvars <- x@docvars
-    if (is.null(field))
-        dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
-    get_docvars(dvars, field)  
+    x <- as.dfm(x)
+    select_docvars(x@docvars, field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @keywords internal
 docvars.kwic <- function(x) {
-    dvars <- attr(x, "docvars")
-    if (is.null(dvars))
-        dvars <- data.frame()
-    dvars <- structure(dvars[attr(x, "docid"), ],
-                       class = "data.frame",
-                       row.names = paste(x$docname, attr(x, "segid"), sep = "."))
-    select_fields(dvars)
+    select_docvars(attr(x, "docvars"), NULL)
 }
-
-# docvars<- ------
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable
-#' @note Reassigning document variables for a \link{tokens} or \link{dfm} object
+#' @note Reassigning document variables for a [tokens] or [dfm] object
 #' is allowed, but discouraged.  A better, more reproducible workflow is to
-#' create your docvars as desired in the \link{corpus}, and let these continue
+#' create your docvars as desired in the [corpus], and let these continue
 #' to be attached "downstream" after tokenization and forming a document-feature
 #' matrix.  Recognizing that in some cases, you may need to modify or add
 #' document variables to downstream objects, the assignment operator is defined
-#' for \link{tokens} or \link{dfm} objects as well.  Use with caution.
-#' 
-#' @section Index access to docvars in a corpus:
-#' Another way to access and set docvars is through indexing of the corpus 
-#' \code{j} element, such as \code{data_corpus_irishbudget2010[, c("foren", 
-#' "name"]}; or, for a single docvar, 
-#' \code{data_corpus_irishbudget2010[["name"]]}.  The latter also permits 
-#' assignment, including the easy creation of new document variables, e.g. 
-#' \code{data_corpus_irishbudget2010[["newvar"]] <- 
-#' 1:ndoc(data_corpus_irishbudget2010)}. See \code{\link{[.corpus}} for details.
-#' 
-#' @return \code{docvars<-} assigns \code{value} to the named \code{field}
-#' @examples 
+#' for [tokens] or [dfm] objects as well.  Use with caution.
+#'
+#' @return `docvars<-` assigns `value` to the named `field`
+#' @examples
 #' # assigning document variables to a corpus
 #' corp <- data_corpus_inaugural
 #' docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
 #' head(docvars(corp))
-#' 
-#' # alternative using indexing
-#' head(corp[, "Year"])
-#' corp[["President2"]] <- paste("prezTwo", 1:ndoc(corp), sep = "")
-#' head(docvars(corp))
-#' 
+#' corp$fullname <- paste(data_corpus_inaugural$FirstName,
+#'                        data_corpus_inaugural$President)
+#' tail(corp$fullname)
+#'
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
     UseMethod("docvars<-")
@@ -113,246 +265,107 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if ("texts" %in% field)
-        stop("You should use texts() instead to replace the corpus texts.")
-    if (is.null(field)) {
-        if (is.null(value)) {
-            cat("ISNULLVALUE")
-            newdv <- data.frame(row.names = docnames(x))
-        } else {
-            newdv <- data.frame(value, stringsAsFactors = FALSE, check.names = FALSE)
-            # uses the V1, V2 etc scheme
-            names(newdv) <- names(as.data.frame(as.matrix(value)))
-        }
-    } else {
-        newdv <- docvars(x)
-        newdv[field] <- value
-    }
-    meta_names_not_in_newdv <- setdiff(grep("^_.+", names(documents(x)), value = TRUE), names(newdv))
-    documents(x) <- cbind(documents(x)[, c("texts", meta_names_not_in_newdv), drop = FALSE], newdv)
+    x <- as.corpus(x)
+    set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if (is.null(value)) {
-        attr(x, "docvars") <- attr(x, "docvars")[, seq(ncol(attr(x, "docvars"))) * -1, drop = FALSE]
-    } else if (is.null(field) && (is.data.frame(value))) {
-        if (nrow(value) != ndoc(x))
-            stop(message_error("docvar_mismatch"))
-        attr(x, "docvars") <- value
-    } else {
-        if (!is.data.frame(attr(x, "docvars")) || !nrow(attr(x, "docvars"))) {
-            meta <- data.frame(value, stringsAsFactors = FALSE)
-            colnames(meta) <- field
-            attr(x, "docvars") <- meta
-        } else {
-            attr(x, "docvars")[[field]] <- value
-        }
-    }
-    # row.names(attr(x, "docvars")) <- docnames(x)
+    set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
 
 #' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
-    if (is.dfm(value))
-        value <- convert(value, to = "data.frame")[, -1, drop = FALSE]
-    if (is.null(value)) {
-        x@docvars <- x@docvars[, seq(ncol(x@docvars)) * -1, drop = FALSE]
-    } else if (is.null(field) && (is.data.frame(value))) {
-        if (nrow(value) != ndoc(x))
-            stop(message_error("docvar_mismatch"))
-        x@docvars <- value
-    } else {
-        if (!is.data.frame(x@docvars) || !nrow(x@docvars)) {
-            meta <- data.frame(value, stringsAsFactors = FALSE)
-            colnames(meta) <- field
-            x@docvars <- meta
-        } else {
-            x@docvars[[field]] <- value
-        }
-    }
-    # row.names(attr(x, "docvars")) <- docnames(x)
+    x <- as.dfm(x)
+    set_docvars(x@docvars, field) <- value
     return(x)
 }
 
-# metadoc -------
+# $ methods -----------
 
-#' Get or set document-level meta-data
-#' 
-#' @description
-#' Get or set document-level meta-data.  Document-level meta-data are a special 
-#' type of \link{docvars}, meant to contain information about documents that 
-#' would not be used as a "variable" for analysis. An example could be the 
-#' source of the document, or notes pertaining to its transformation, copyright 
-#' information, etc.
-#' 
-#' Document-level meta-data differs from corpus-level meta-data in that the 
-#' latter pertains to the collection of texts as a whole, whereas the 
-#' document-level version can differ with each document.
-#' @param x a \link{corpus} object
-#' @param field character, the name of the metadata field(s) to be queried or 
-#'   set
-#' @return For \code{texts}, a character vector of the texts in the corpus.
-#'   
-#'   For \code{texts <-}, the corpus with the updated texts.
-#' @note Document-level meta-data names are preceded by an underscore character,
-#'   such as \code{_language}, but when named in in the \code{field} argument, 
-#'   do \emph{not} need the underscore character.
-#' @examples 
-#' mycorp <- corpus_subset(data_corpus_inaugural, Year > 1990)
-#' summary(mycorp, showmeta = TRUE)
-#' metadoc(mycorp, "encoding") <- "UTF-8"
-#' metadoc(mycorp)
-#' metadoc(mycorp, "language") <- "english"
-#' summary(mycorp, showmeta = TRUE)
-#' @seealso \code{\link{metacorpus}}
-#' @export
-#' @keywords corpus
-metadoc <- function(x, field = NULL)
-    UseMethod("metadoc")
-
-#' @export
-metadoc.default <- function(x, field = NULL) {
-    stop(friendly_class_undefined_message(class(x), "metadoc"))
-}
-
-#' @noRd
-#' @export
-metadoc.corpus <- function(x, field = NULL) {
-    if (!is.null(field)) {
-        field <- paste0("_", field)
-        check_fields(x, field)
-    }
-    dvars <- documents(x)[, which(substring(names(documents(x)), 1, 1) == "_"),
-                          drop = FALSE]
-    get_docvars(dvars, field)
-}
-
-#' @noRd
-#' @export
-metadoc.tokens <- function(x, field = NULL) {
-    if (!is.null(field)) {
-        field <- paste0("_", field)
-        check_fields(x, field)
-    }
-    dvars <- attr(x, "docvars")[, which(substring(names(attr(x, "docvars")), 1, 1) == "_"), drop = FALSE]
-    get_docvars(dvars, field)
-}
-
-#' @noRd
-#' @export
-metadoc.dfm <- function(x, field = NULL) {
-    if (!is.null(field)) {
-        field <- paste0("_", field)
-        check_fields(x, field)
-    }
-    dvars <- x@docvars[, which(substring(names(x@docvars), 1, 1) == "_"), drop = FALSE]
-    get_docvars(dvars, field)
-}
-
-#' @rdname metadoc
-#' @param value the new value of the new meta-data field
-#' @export
-"metadoc<-" <- function(x, field = NULL, value)
-    UseMethod("metadoc<-")
-
-#' @export
-"metadoc<-.default" <- function(x, field = NULL, value) {
-    stop(friendly_class_undefined_message(class(x), "metadoc<-"))
-}
-
-#' @noRd
-#' @export
-"metadoc<-.corpus" <- function(x, field = NULL, value) {
-    # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
-    # (this check not yet implemented)
-    if (is.null(field)) {
-        field <- paste("_", names(value), sep = "")
-        if (is.null(field))
-            field <- paste("_metadoc", seq_len(ncol(as.data.frame(value))), sep = "")
-    } else {
-        field <- paste("_", field, sep = "")
-    }
-    documents(x)[field] <- value
-    x
-}
-
-# Internal functions -----
-
-## internal function to return the docvars for all docvars functions
-get_docvars <- function(dvars, field = NULL) {
-    if (is.null(field)) {
-        if (is.null(dvars)) {
-            return(data.frame())
-        } else {
-            return(dvars)
-        }
-    } else {
-        return(dvars[, field, drop = TRUE])
-    }
-}
-
-## helper function to check fields and report error message if
-## a field is not a valid docvar name
-check_fields <- function(x, field = NULL) {
-    if (!is.null(field)) {
-        if (length(notin <- which(!field %in% c(names(docvars(x)), names(metadoc(x))))))
-            stop("field(s) ", field[notin], " not found", call. = FALSE)
-    }
-}
-
-# new docvar functions
-
-## helper function to get all docvars
-docvars_internal <- function(x) {
-    if (is.corpus(x)) {
-        return(documents(x))
-    } else if (is.tokens(x)) {
-        return(attr(x, "docvars"))
-    } else if (is.dfm(x)) {
-        return(x@docvars)
-    }
-}
-
-get_docvars2 <- function(x, fields) {
-    is_field <- check_docvars(x, fields)
-    if (any(is_field)) {
-        return(docvars_internal(x)[, is_field, drop = FALSE])
-    } else {
+access_dvs <- function(x, name) {
+    if (!name %in% names(docvars(x)))
         return(NULL)
-    }
+    else
+        return(docvars(x, name))
 }
 
-## helper function to check fields
-check_docvars <- function(x, fields) {
-    dvars <- docvars_internal(x)
-    if (is.null(dvars))
-        return(rep(FALSE, length(fields)))
-    return(fields %in% names(dvars))
+assign_dvs <- function(x, name, value) {
+    docvars(x, name) <- value
+    return(x)
 }
 
-## internal function to select docvar fields
-select_fields <- function(x, types = c("user", "system")) {
+#' @rdname docvars
+#' @method $ corpus
+#' @param name a literal character string specifying a single [docvars] name
+#' @export
+#' @examples
+#' 
+#' # accessing or assigning docvars for a corpus using "$"
+#' data_corpus_inaugural$Year
+"$.corpus" <- access_dvs
 
-    names <- names(x)
-    is_system <- stri_startswith_fixed(names, "_")
-    is_text <- stri_detect_fixed(names, "texts") | stri_detect_fixed(names, "_texts")
+#' @rdname docvars
+#' @method $<- corpus
+#' @param value a vector of document variable values to be assigned to `name`
+#' @export
+#' @examples
+#' data_corpus_inaugural$century <- floor(data_corpus_inaugural$Year / 100)
+#' data_corpus_inaugural$century
+"$<-.corpus" <- assign_dvs
 
-    result <- data.frame(row.names = row.names(x))
-    if ("text" %in% types) {
-        result <- cbind(result, x[is_text])
-    }
-    if ("system" %in% types) {
-        result <- cbind(result, x[is_system & !is_text])
-    }
-    if ("user" %in% types) {
-        result <- cbind(result, x[!is_system & !is_text])
-    }
-    return(result)
+#' @rdname docvars
+#' @method $ tokens
+#' @export
+#' @examples
+#'
+#' # accessing or assigning docvars for tokens using "$"
+#' toks <- tokens(corpus_subset(data_corpus_inaugural, Year <= 1805))
+#' toks$Year
+"$.tokens" <- access_dvs
+
+#' @rdname docvars
+#' @method $<- tokens
+#' @export
+#' @examples
+#' toks$Year <- 1991:1995
+#' toks$Year
+#' toks$nonexistent <- TRUE
+#' docvars(toks)
+"$<-.tokens" <- assign_dvs
+
+#' @rdname docvars
+#' @method $ dfm
+#' @export
+#' @examples
+#'
+#' # accessing or assigning docvars for a dfm using "$"
+#' dfmat <- dfm(toks)
+#' dfmat$Year
+"$.dfm" <- access_dvs
+
+#' @rdname docvars
+#' @method $<- dfm
+#' @export
+#' @examples
+#' dfmat$Year <- 1991:1995
+#' dfmat$Year
+#' dfmat$nonexistent <- TRUE
+#' docvars(dfmat)
+"$<-.dfm" <- assign_dvs
+
+#' @noRd
+#' @method $ fcm
+#' @export
+"$.fcm" <- function(x, name) {
+    stop("$ not defined for an fcm object", call. = FALSE)
+}
+
+#' @noRd
+#' @method $<- fcm
+#' @export
+"$<-.fcm" <- function(x, name, value) {
+    stop("$<- not defined for an fcm object", call. = FALSE)
 }

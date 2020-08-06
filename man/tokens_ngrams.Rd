@@ -15,27 +15,26 @@ tokens_skipgrams(x, n, skip, concatenator = "_")
 \arguments{
 \item{x}{a tokens object, or a character vector, or a list of characters}
 
-\item{n}{integer vector specifying the number of elements to be concatenated 
-in each ngram.  Each element of this vector will define a \eqn{n} in the 
+\item{n}{integer vector specifying the number of elements to be concatenated
+in each ngram.  Each element of this vector will define a \eqn{n} in the
 \eqn{n}-gram(s) that are produced.}
 
-\item{skip}{integer vector specifying the adjacency skip size for tokens 
-forming the ngrams, default is 0 for only immediately neighbouring words. 
-For \code{skipgrams}, \code{skip} can be a vector of integers, as the 
-"classic" approach to forming skip-grams is to set skip = \eqn{k} where 
-\eqn{k} is the distance for which \eqn{k} or fewer skips are used to 
-construct the \eqn{n}-gram.  Thus a "4-skip-n-gram" defined as \code{skip =
-0:4} produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
-skips (where 0 skips are typical n-grams formed from adjacent words).  See 
+\item{skip}{integer vector specifying the adjacency skip size for tokens
+forming the ngrams, default is 0 for only immediately neighbouring words.
+For \code{skipgrams}, \code{skip} can be a vector of integers, as the
+"classic" approach to forming skip-grams is to set skip = \eqn{k} where
+\eqn{k} is the distance for which \eqn{k} or fewer skips are used to
+construct the \eqn{n}-gram.  Thus a "4-skip-n-gram" defined as \code{skip = 0:4} produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
+skips (where 0 skips are typical n-grams formed from adjacent words).  See
 Guthrie et al (2006).}
 
-\item{concatenator}{character for combining words, default is \code{_} 
+\item{concatenator}{character for combining words, default is \verb{_}
 (underscore) character}
 }
 \value{
 a tokens object consisting a list of character vectors of ngrams, one
-  list element per text, or a character vector if called on a simple
-  character vector
+list element per text, or a character vector if called on a simple
+character vector
 }
 \description{
 Create a set of ngrams (tokens in sequence) from already tokenized text
@@ -44,22 +43,22 @@ length and the skip lengths take vectors of arguments to form multiple
 lengths or skips in one pass.  Implemented in C++ for efficiency.
 }
 \details{
-Normally, these functions will be called through 
-  \code{\link{tokens}(x, ngrams = , ...)}, but these functions are provided 
-  in case a user wants to perform lower-level ngram construction on tokenized
-  texts.
+Normally, these functions will be called through
+\verb{[tokens](x, ngrams = , ...)}, but these functions are provided
+in case a user wants to perform lower-level ngram construction on tokenized
+texts.
 
-\code{\link{tokens_skipgrams}} is a wrapper to \code{\link{tokens_ngrams}}
-  that requires arguments to be supplied for both \code{n} and \code{skip}.
-  For \eqn{k}-skip skipgrams, set \code{skip} to \code{0:}\eqn{k}, in order
-  to conform to the definition of skip-grams found in Guthrie et al (2006): A
-  \eqn{k} skip-gram is an ngram which is a superset of all ngrams and each
-  \eqn{(k-i)} skipgram until \eqn{(k-i)==0} (which includes 0 skip-grams).
+\code{\link[=tokens_skipgrams]{tokens_skipgrams()}} is a wrapper to \code{\link[=tokens_ngrams]{tokens_ngrams()}}
+that requires arguments to be supplied for both \code{n} and \code{skip}.
+For \eqn{k}-skip skipgrams, set \code{skip} to \verb{0:}\eqn{k}, in order
+to conform to the definition of skip-grams found in Guthrie et al (2006): A
+\eqn{k} skip-gram is an ngram which is a superset of all ngrams and each
+\eqn{(k-i)} skipgram until \eqn{(k-i)==0} (which includes 0 skip-grams).
 }
 \note{
-\code{char_ngrams} is a convenience wrapper for a (non-list) 
-  vector of characters, so named to be consistent with \pkg{quanteda}'s naming
-  scheme.
+\code{char_ngrams} is a convenience wrapper for a (non-list)
+vector of characters, so named to be consistent with \pkg{quanteda}'s naming
+scheme.
 }
 \examples{
 # ngrams
@@ -74,14 +73,13 @@ char_ngrams(letters[1:3], n = 1:3)
 
 # skipgrams
 toks <- tokens("insurgents killed in ongoing fighting")
-tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
-tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
-tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
+tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ")
+tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
+tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
 }
 \references{
-Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006. 
-"\href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{A Closer 
-Look at Skip-Gram Modelling}."
+Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.
+"\href{https://aclweb.org/anthology/papers/L/L06/L06-1210/}{A Closer Look at Skip-Gram Modelling}."
 }
 \author{
 Kohei Watanabe (C++) and Ken Benoit (R)

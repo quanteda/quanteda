@@ -5,30 +5,29 @@
 #' the source text and the word index number within the source text.  (Not the
 #' line number, since the text may or may not be segmented using end-of-line
 #' delimiters.)
-#' @param x a character, \link{corpus}, or \link{tokens} object
+#' @param x a character, [corpus], or [tokens] object
 #' @inheritParams pattern
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
-#' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param separator character to separate words in the output
-#' @param ... additional arguments passed to \link{tokens}, for applicable
+#' @param ... additional arguments passed to [tokens], for applicable
 #'   object types
-#' @return A \code{kwic} classed data.frame, with the document name
-#'   (\code{docname}), the token index positions (\code{from} and \code{to},
+#' @return A `kwic` classed data.frame, with the document name
+#'   (`docname`), the token index positions (`from` and `to`,
 #'   which will be the same for single-word patterns, or a sequence equal in
 #'   length to the number of elements for multi-word phrases), the context
-#'   before (\code{pre}), the keyword in its original format (\code{keyword},
+#'   before (`pre`), the keyword in its original format (`keyword`,
 #'   preserving case and attached punctuation), and the context after
-#'   (\code{post}).  The return object has its own \code{print} method, plus
+#'   (`post`).  The return object has its own `print` method, plus
 #'   some special attributes that are hidden in the print view.  If you want to
 #'   turn this into a simple data.frame, simply wrap the result in
-#'   \code{data.frame}.
+#'   `data.frame`.
 #'
-#' @note \code{pattern} will be a keyword pattern or phrase, possibly multiple
+#' @note `pattern` will be a keyword pattern or phrase, possibly multiple
 #'   patterns, that may include punctuation.  If a pattern contains whitespace,
-#'   it is best to wrap it in \code{\link{phrase}} to make this explicit.
-#'   However if \code{pattern} is a \link[=textstat_collocations]{collocations}
-#'   or \link{dictionary} object, then the collocations or multi-word dictionary
+#'   it is best to wrap it in [phrase()] to make this explicit.
+#'   However if `pattern` is a [collocations][textstat_collocations]
+#'   or [dictionary] object, then the collocations or multi-word dictionary
 #'   keys will automatically be considered phrases where each
 #'   whitespace-separated element matches a token in sequence.
 #' @export
@@ -70,10 +69,8 @@ kwic.corpus <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-
-    if (is.collocations(pattern) || is.dictionary(pattern))
-        pattern <- phrase(pattern)
-    kwic(tokens(x, ...),
+    x <- as.corpus(x)
+    kwic(tokens(x, what = "word", ...),
          pattern, window, valuetype, separator, case_insensitive)
 }
 
@@ -100,32 +97,28 @@ kwic.tokens <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-
+    
+    x <- as.tokens(x)
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern
 
     valuetype <- match.arg(valuetype)
-    type <- types(x)
-    
-    # add document names if none (TODO: should be removed after corpus upgrade)
-    if (is.null(names(x)))
-        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
-    
-    ids <- pattern2list(pattern, type,
-                        valuetype, case_insensitive, attr(x, "concatenator"))
-    result <- data.frame()
-    for (m in unique(names(ids))) {
-        temp <- qatd_cpp_kwic(x, type, ids[names(ids) == m], window, separator)
-        temp[["pattern"]] <- rep(m, nrow(temp))
-        result <- rbind(result, temp)
-    }
-    result[["pattern"]] <- factor(result[["pattern"]], levels = unique(names(ids)))
+    window <- as.integer(window)
+    attrs <- attributes(x)
+    ids <- pattern2list(pattern, attrs[["types"]], valuetype,
+                        case_insensitive, field_object(attrs, "concatenator"))
+
+    result <- qatd_cpp_kwic(x, attrs[["types"]], ids, seq_along(ids), window, separator)
+    result[["pattern"]] <- factor(result[["pattern"]], levels = seq_along(ids),
+                                  labels = names(ids))
     if (nrow(result))
-        result <- result[order(match(result[["docname"]], docnames(x)), 
-                               result[["from"]], result[["to"]]),]
+        result <- result[order(match(result[["docname"]], docnames(x)),
+                               result[["from"]],
+                               result[["to"]],
+                               result[["pattern"]]), ]
     rownames(result) <- NULL
     attr(result, "ntoken") <- ntoken(x)
-    class(result) = c("kwic", "data.frame")
+    class(result) <- c("kwic", "data.frame")
     attributes(result, FALSE)  <- attributes(x)
     return(result)
 }
@@ -136,14 +129,20 @@ kwic.tokens <- function(x, pattern, window = 5,
 #' kw <- kwic(data_corpus_inaugural, "provident*")
 #' is.kwic(kw)
 #' is.kwic("Not a kwic")
-is.kwic <- function(x) "kwic" %in% class(x)
+#' is.kwic(kw[, c("pre", "post")])
+is.kwic <- function(x) {
+    inherits(x, "kwic")
+}
 
 #' @method print kwic
+#' @importFrom stringi stri_c
 #' @noRd
 #' @export
 print.kwic <- function(x, ...) {
     if (!nrow(x)) {
         cat("kwic object with 0 rows")
+    } else if (!is.kwic(x)) {
+        NextMethod()
     } else {
         if (all(x$from == x$to)) {
             labels <- stri_c("[", x$docname, ", ", x$from, "]")
@@ -161,4 +160,13 @@ print.kwic <- function(x, ...) {
         colnames(kwic) <- NULL
         print(kwic, row.names = FALSE)
     }
+}
+
+#' @method "[" kwic
+#' @export
+#' @noRd
+"[.kwic" <- function(x, i, j, ...) {
+    if (!missing(j))
+        x <- as.data.frame(x)
+    NextMethod("[")
 }

@@ -2,22 +2,27 @@
 % Please edit documentation in R/utils.R
 \name{pattern2list}
 \alias{pattern2list}
-\title{Convert various input as pattern to a vector used in tokens_select, 
+\title{Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic.}
 \usage{
-pattern2list(pattern, types, valuetype, case_insensitive,
-  concatenator = "_", levels = 1, remove_unigram = FALSE,
-  keep_nomatch = FALSE)
+pattern2list(
+  x,
+  types,
+  valuetype,
+  case_insensitive,
+  concatenator = "_",
+  levels = 1,
+  remove_unigram = FALSE,
+  keep_nomatch = FALSE
+)
 }
 \arguments{
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link{collocations} object.  See \link{pattern} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
-
-\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{concatenator}{concatenator that join multi-word expression in tokens object}
 
@@ -26,10 +31,10 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
 }
 \description{
-Convert various input as pattern to a vector used in tokens_select, 
+Convert various input as pattern to a vector used in tokens_select,
 tokens_compound and kwic.
 }
 \seealso{
-\code{\link{pattern2id}}
+\code{\link[=pattern2id]{pattern2id()}}
 }
 \keyword{internal}

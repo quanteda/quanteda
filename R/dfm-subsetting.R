@@ -1,39 +1,50 @@
 subset_dfm <- function(x, i, j, ..., drop) {
-    
+
+    if (missing(i) && missing(j)) return(x)
+    x <- as.dfm(x)
     attrs <- attributes(x)
-    error <- FALSE
+    if (nargs() == 2)
+        stop("Subscript out of bounds")
     if (!missing(i)) {
-        if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
-        if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+        index_row <- seq_len(nrow(x))
+        names(index_row) <- rownames(x)
+        index_row <- index_row[i]
+        if (any(is.na(index_row)))
+            stop("Subscript out of bounds")
     }
     if (!missing(j)) {
-        if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
-        if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+        index_col <- seq_len(ncol(x))
+        names(index_col) <- colnames(x)
+        index_col <- index_col[j]
+        if (any(is.na(index_col)))
+            stop("Subscript out of bounds")
     }
-    if (error) stop("Subscript out of bounds")
-    
-    if (missing(i) && missing(j)) {
-        return(x)
-    } else if (!missing(i) && missing(j)) {
+
+    if (!missing(i) && missing(j)) {
         x <- "["(as(x, "Matrix"), i, , ..., drop = FALSE)
     } else if (missing(i) && !missing(j)) {
         x <- "["(as(x, "Matrix"), , j, ..., drop = FALSE)
     } else {
-        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
+        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
     }
-    
+
     if (!missing(i))
-        attrs$docvars <- attrs$docvars[i, , drop = FALSE]
-    matrix2dfm(x, attrs)
+        attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], index_row)
+
+    build_dfm(
+        x, colnames(x),
+        docvars = attrs[["docvars"]],
+        meta = attrs[["meta"]]
+    )
 }
 
 #' @param i index for documents
 #' @param j index for features
-#' @param drop always set to \code{FALSE}
+#' @param drop always set to `FALSE`
 #' @param ... additional arguments not used here
 #' @rdname dfm-class
 #' @export
-#' @examples 
+#' @examples
 #' # dfm subsetting
 #' dfmat <- dfm(tokens(c("this contains lots of stopwords",
 #'                   "no if, and, or but about it: lots",
@@ -71,3 +82,10 @@ setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "missing"
 #' @export
 setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "logical"), subset_dfm)
 
+#' @noRd
+#' @method "[[" dfm
+#' @inheritParams dfm-class
+#' @export
+"[[.dfm" <- function(x, i) {
+    stop("[[ not defined for a dfm/fcm object", call. = FALSE)
+}

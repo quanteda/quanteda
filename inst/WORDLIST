@@ -9,6 +9,7 @@ angewandte
 applyDictionary
 Appveyor
 arXiv
+arxiv
 Ausarbeitung
 austin
 Baayen
@@ -53,6 +54,7 @@ CTM
 cutoffs
 Dáil
 Datatables
+debian
 Deerwester
 des
 deutsche
@@ -76,6 +78,7 @@ DOCVAR
 docvars
 doi
 donttest
+DRP
 dtm
 DuBay
 Dugast
@@ -150,6 +153,7 @@ Klakow
 Klare
 koRpus
 Kreuzvalidierung
+kullback
 Kullback
 kwic
 Landauer
@@ -170,6 +174,7 @@ libicu
 libstemmer
 Linguistik
 Linsear
+linux
 Literaturwissenschaft
 LIWC
 Lix
@@ -230,6 +235,7 @@ Nwnotinspache
 Nwsy
 oauth
 Oecologia
+ORCID
 org
 overplot
 Pädagogische
@@ -246,6 +252,7 @@ Proksch
 Proksch's
 Prosastils
 Provalis
+proxyC
 Psychologie
 quantedaData
 QUANTESS
@@ -329,6 +336,7 @@ textField
 textfile
 textmatrix
 textmodel
+textmodels
 textplot
 textstat
 tf
@@ -342,6 +350,7 @@ tokenization
 tokenizedTexts
 tokenizeOnly
 tokenizer
+tokenizers
 toLower
 topicmodels
 TR
@@ -363,6 +372,7 @@ unescaped
 unigrams
 unsmoothed
 Unterschied
+unlist
 uXXXX
 valuetype
 Vanberg
@@ -375,6 +385,7 @@ vol
 Vol
 Volk
 Wei
+Weibo
 Werman
 Wien
 Wilks
@@ -388,8 +399,11 @@ Wordscoring
 wordshoal
 Wordshoal
 Wordstat
+WordStat
 wordstem
 wordStem
+wordv
+wordv1
 Wortschatzumfang
 ws
 YAML
@@ -399,3 +413,5 @@ Zeitschrift
 zipfiles
 Zusammenhang
 zwischen
+puncts
+sents

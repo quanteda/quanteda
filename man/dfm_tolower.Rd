@@ -7,45 +7,41 @@
 \alias{fcm_toupper}
 \title{Convert the case of the features of a dfm and combine}
 \usage{
-dfm_tolower(x, keep_acronyms = FALSE, ...)
+dfm_tolower(x, keep_acronyms = FALSE)
 
-dfm_toupper(x, ...)
+dfm_toupper(x)
 
-fcm_tolower(x, keep_acronyms = FALSE, ...)
+fcm_tolower(x, keep_acronyms = FALSE)
 
-fcm_toupper(x, ...)
+fcm_toupper(x)
 }
 \arguments{
-\item{x}{the input object whose character/tokens/feature elements will be 
+\item{x}{the input object whose character/tokens/feature elements will be
 case-converted}
 
-\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any 
-all-uppercase words (applies only to \code{*_tolower} functions)}
-
-\item{...}{additional arguments passed to \pkg{stringi} functions, (e.g. 
-\code{\link{stri_trans_tolower}}), such as \code{locale}}
+\item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
+all-uppercase words (applies only to \verb{*_tolower()} functions)}
 }
 \description{
-\code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
+\code{dfm_tolower()} and \code{dfm_toupper()} convert the features of the dfm or
 fcm to lower and upper case, respectively, and then recombine the counts.
 }
 \details{
-\code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of
-  the \link{fcm} to lower and upper case, respectively, and then recombine
-  the counts. This works only on fcm objects created with \code{context = 
-  "document"}.
+\code{fcm_tolower()} and \code{fcm_toupper()} convert both dimensions of
+the \link{fcm} to lower and upper case, respectively, and then recombine
+the counts. This works only on fcm objects created with \code{context = "document"}.
 }
 \examples{
 # for a document-feature matrix
 dfmat <- dfm(c("b A A", "C C a b B"), tolower = FALSE)
 dfmat
-dfm_tolower(dfmat) 
+dfm_tolower(dfmat)
 dfm_toupper(dfmat)
-   
+
 # for a feature co-occurrence matrix
-fcmat <- fcm(tokens(c("b A A d", "C C a b B e")), 
+fcmat <- fcm(tokens(c("b A A d", "C C a b B e")),
              context = "document")
 fcmat
-fcm_tolower(fcmat) 
-fcm_toupper(fcmat)   
+fcm_tolower(fcmat)
+fcm_toupper(fcmat)
 }

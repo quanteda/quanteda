@@ -6,15 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Structure of quanteda • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../pkgdown.js"></script><!-- docsearch --><script src="../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
+<script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<script src="../../pkgdown.js"></script><!-- docsearch --><script src="../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../extra.css" rel="stylesheet">
 <script src="../../extra.js"></script><meta property="og:title" content="The Structure of quanteda">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="quanteda">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,7 +27,7 @@
   gtag('config', 'UA-144616-24');
 </script>
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -63,6 +64,9 @@
     </li>
     <li>
       <a href="../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -138,7 +142,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -152,14 +156,15 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+
+      </header><script src="design_files/header-attrs-2.3/header-attrs.js"></script><script src="design_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>The Structure of quanteda</h1>
+      <h1 data-toc-skip>The Structure of quanteda</h1>
                         <h4 class="author">Kenneth Benoit</h4>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/design.Rmd"><code>vignettes/pkgdown/design.Rmd</code></a></small>
       <div class="hidden name"><code>design.Rmd</code></div>
 
     </div>
@@ -183,8 +188,8 @@
 <li><p><em>object</em><code>_</code><em>verb</em>: a function that inputs an object of class <em>object</em>, and returns a a modified <em>object</em> class object. There are no exceptions to this naming rule, so that even functions that operate on character objects following this convention, such as <code><a href="../../reference/char_tolower.html">char_tolower()</a></code>. (Ok, so there is a slight exception: we abbreviated <code>character</code> to <code>char</code>!)</p></li>
 <li><p><code>data_</code><em>class</em><code>_</code><em>descriptor</em>: data objects are named this way to clearly distinguish them and to make them easy to identify in the index. The first part identifies them as data, the second names their object class, and the third component is a descriptor. Example: <code>data_corpus_inaugural</code> is the <strong>quanteda</strong> <code><a href="../../reference/corpus.html">corpus()</a></code> class object consisting of the US presidents’ inaugural addresses.</p></li>
 <li><p><code>text</code><em>general</em><code>_</code><em>specific</em>: functions that input a <strong>quanteda</strong> object and return the result of an analysis, as a new type of object. Only the underscored functions that begin with <code>text</code> break the previous rule about the first part of the name identifying the object class that is input and output. Examples: <code><a href="../../reference/textstat_readability.html">textstat_readability()</a></code> takes a character or corpus as input, and returns a data.frame; <code><a href="../../reference/textplot_xray.html">textplot_xray()</a></code> takes a <code>kwic</code> object as input, and generates a dispersion plot (named “x-ray” because of its similarity to the plot produced by Kindle).</p></li>
-<li><p>Extensions of R functions: These are commonly used R functions, such as <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">head()</a></code>, that are also defined for <strong>quanteda</strong> objects. Examples: <code><a href="../../reference/head.dfm.html">head.dfm()</a></code>, coercion functions such as <code>as.list.tokens</code>, and Boolean class type checking functions such as <code><a href="../../reference/as.dfm.html">is.dfm()</a></code>. Many post-estimation methods defined for <code>lm</code> objects, for instance <code><a href="https://www.rdocumentation.org/packages/stats/topics/predict">predict()</a></code>, are also defined for most <code>textmodel</code> objects</p></li>
-<li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">base::nrow()</a></code>. Note that like <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow()</a></code>, <code><a href="../../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> – similar to <code><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames()</a></code>.</p></li>
+<li><p>Extensions of R functions: These are commonly used R functions, such as <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, that are also defined for <strong>quanteda</strong> objects. Examples: <code><a href="../../reference/head.dfm.html">head.dfm()</a></code>, coercion functions such as <code>as.list.tokens</code>, and Boolean class type checking functions such as <code><a href="../../reference/as.dfm.html">is.dfm()</a></code>. Many post-estimation methods defined for <code>lm</code> objects, for instance <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>, are also defined for most <code>textmodel</code> objects</p></li>
+<li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code><a href="https://rdrr.io/r/base/nrow.html">base::nrow()</a></code>. Note that like <code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code>, <code><a href="../../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> – similar to <code><a href="https://rdrr.io/r/base/colnames.html">rownames()</a></code> and <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>.</p></li>
 <li>
 <p>Grammatical exceptions: Every language has these, usually due to path dependency from historical development, and <strong>quanteda</strong> is no exception. The list, however, is short:</p>
 <ul>
@@ -203,7 +208,7 @@
 <div id="constructors-for-core-data-types" class="section level2">
 <h2 class="hasAnchor">
 <a href="#constructors-for-core-data-types" class="anchor"></a>Constructors for core data types</h2>
-<p>The <strong>quanteda</strong> package consists of a few core data types, created by calling constructors with identical names. These are all “nouns” in the sense of declaring what they construct. This follows very similar R behaviour in many of the core R objects, such as <code><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame()</a></code>, <code><a href="https://www.rdocumentation.org/packages/base/topics/list">list()</a></code>, etc.</p>
+<p>The <strong>quanteda</strong> package consists of a few core data types, created by calling constructors with identical names. These are all “nouns” in the sense of declaring what they construct. This follows very similar R behaviour in many of the core R objects, such as <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, <code><a href="https://rdrr.io/r/base/list.html">list()</a></code>, etc.</p>
 <p>Core object types and their constructor functions:</p>
 <ul>
 <li>
@@ -231,7 +236,7 @@
 <div id="advantages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#advantages" class="anchor"></a>Advantages</h3>
-<p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code><a href="../../reference/corpus_sample.html">corpus_sample()</a></code>, <code><a href="../../reference/tokens_sample.html">tokens_sample()</a></code>, and <code><a href="../../reference/dfm_sample.html">dfm_sample()</a></code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample()</a></code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample()</a></code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
+<p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code><a href="../../reference/corpus_sample.html">corpus_sample()</a></code>, <code><a href="../../reference/tokens_sample.html">tokens_sample()</a></code>, and <code><a href="../../reference/dfm_sample.html">dfm_sample()</a></code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
 </div>
 <div id="why-are-some-operations-unavailable-for-specific-object-types" class="section level3">
 <h3 class="hasAnchor">
@@ -243,12 +248,12 @@
 <div id="extensions-of-core-r-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extensions-of-core-r-functions" class="anchor"></a>Extensions of core R functions</h2>
-<p>Many simple base R functions – simpler at least than the example of <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample()</a></code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code> combining two dfm objects by joining columns. Similar functions extended in this way include <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">head()</a></code>, <code><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail()</a></code>, and <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
+<p>Many simple base R functions – simpler at least than the example of <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code><a href="https://rdrr.io/r/base/cbind.html">cbind()</a></code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code><a href="https://rdrr.io/r/base/cbind.html">cbind()</a></code> combining two dfm objects by joining columns. Similar functions extended in this way include <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>, and <code><a href="https://rdrr.io/r/base/t.html">t()</a></code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
 </div>
 <div id="additions-to-core-r-like-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additions-to-core-r-like-functions" class="anchor"></a>Additions to core R(-like) functions</h2>
-<p>Additional functions have been defined for <strong>quanteda</strong> objects that are <a href="#r-like-functions">very similar to simple base R functions</a>, but are not named using the <code>class_action</code> format because they do not return a modified object of the same class. These follow as closely as possible the naming conventions found in the base R functions that are similar. For instance, <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> return the document names of various <strong>quanteda</strong> objects, in the same way that <code><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames()</a></code> does for matrix-like objects (a matrix, data.frame, data.table, etc.). The abbreviation of <code><a href="../../reference/featnames.html">featnames()</a></code> is intentionally modeled on <code><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames()</a></code>. Likewise, <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents, using the singular form similar to <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol()</a></code>.</p>
+<p>Additional functions have been defined for <strong>quanteda</strong> objects that are <a href="#r-like-functions">very similar to simple base R functions</a>, but are not named using the <code>class_action</code> format because they do not return a modified object of the same class. These follow as closely as possible the naming conventions found in the base R functions that are similar. For instance, <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> return the document names of various <strong>quanteda</strong> objects, in the same way that <code><a href="https://rdrr.io/r/base/colnames.html">rownames()</a></code> does for matrix-like objects (a matrix, data.frame, data.table, etc.). The abbreviation of <code><a href="../../reference/featnames.html">featnames()</a></code> is intentionally modeled on <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code>. Likewise, <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents, using the singular form similar to <code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code> and <code><a href="https://rdrr.io/r/base/nrow.html">ncol()</a></code>.</p>
 </div>
 </div>
 <div id="workflow-principles" class="section level1">
@@ -280,14 +285,14 @@
 </li>
 <li>
 <p><strong>Defining and delimiting textual features</strong></p>
-This step involves defining and extracting the relevant features from each document, using <code><a href="../../reference/tokens.html">tokens()</a></code>, the main function for this step, involves identifying instances of defined features (“tokens”) and extracting them as vectors. Usually these will consist of words, but may also consist of:
+<p>This step involves defining and extracting the relevant features from each document, using <code><a href="../../reference/tokens.html">tokens()</a></code>, the main function for this step, involves identifying instances of defined features (“tokens”) and extracting them as vectors. Usually these will consist of words, but may also consist of:</p>
 <ul>
 <li>
 <code>ngrams</code>: adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including</li>
 <li>multi-word expressions, through <code><a href="../../reference/tokens_compound.html">tokens_compound()</a></code>, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.</li>
 </ul>
 <p><code><a href="../../reference/tokens.html">tokens()</a></code> returns a new object class of tokenized texts, a hashed list of index types, with each element in the list corresponding to a document, and each hash vector representing the tokens in that document.</p>
-By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLs, Twitter tags, or currency-prefixed digits. This will involve adding the following options to <code>tokens</code>:
+<p>By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLs, Twitter tags, or currency-prefixed digits. This will involve adding the following options to <code>tokens</code>:</p>
 <ul>
 <li><code>remove_numbers</code></li>
 <li><code>remove_punct</code></li>
@@ -302,7 +307,7 @@ By defining the broad class of tokens we wish to extract, in this step we also a
 </li>
 <li>
 <p><strong>Further feature selection</strong></p>
-Once features have been identified and separated from the texts in the tokenization step, features may be removed from token lists, or handled as part of <code>dfm</code> construction. Features may be:
+<p>Once features have been identified and separated from the texts in the tokenization step, features may be removed from token lists, or handled as part of <code>dfm</code> construction. Features may be:</p>
 <ul>
 <li>
 <em>eliminated</em> through use of predefined lists or patterns of <em>stop words</em>, using <code><a href="../../reference/dfm.html">dfm(x, remove = )</a></code> or <code><a href="../../reference/tokens_select.html">tokens_remove()</a></code>
@@ -328,11 +333,11 @@ Once features have been identified and separated from the texts in the tokenizat
 <ol style="list-style-type: decimal">
 <li>
 <p>From a corpus.</p>
-These steps don’t necessarily require the processing steps above.
+<p>These steps don’t necessarily require the processing steps above.</p>
 <ul>
 <li><code><a href="../../reference/kwic.html">kwic()</a></code></li>
 <li><code><a href="../../reference/textstat_readability.html">textstat_readability()</a></code></li>
-<li><code><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary()</a></code></li>
+<li><code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code></li>
 </ul>
 </li>
 <li><p>From a <code>dfm</code> – after <code><a href="../../reference/dfm.html">dfm()</a></code> on the processed document and features.</p></li>
@@ -344,54 +349,36 @@ These steps don’t necessarily require the processing steps above.
 <h2 class="hasAnchor">
 <a href="#dfm-the-swiss-army-knife" class="anchor"></a>dfm, the Swiss Army knife</h2>
 <p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code><a href="../../reference/dfm.html">dfm()</a></code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available in <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
-<p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code>%&gt;%</code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(mycorpus, <span class="dt">group =</span> <span class="st">"party"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="st">    </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="st">    </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>()</a></code></pre></div>
+<p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code><a href="../../reference/pipe.html">%&gt;%</a></code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">mydfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/texts.html">texts</a></span>(<span class="no">mycorpus</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"party"</span>) <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../reference/char_tolower.html">char_tolower</a></span>() <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span>() <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span>() <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>()</pre></body></html></div>
 <p>We recognize however that not all sequences will make sense, for instance <code><a href="../../reference/tokens_wordstem.html">tokens_wordstem()</a></code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#introduction">Introduction</a></li>
-      <li>
-<a href="#the-logic-of-quantedas-design">The logic of Quanteda’s design</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#grammatical-rules">Grammatical rules</a></li>
-      <li><a href="#constructors-for-core-data-types">Constructors for core data types</a></li>
-      <li><a href="#functions-for-manipulating-core-data-types">Functions for manipulating core data types</a></li>
-      <li><a href="#extensions-of-core-r-functions">Extensions of core R functions</a></li>
-      <li><a href="#additions-to-core-r-like-functions">Additions to core R(-like) functions</a></li>
-      </ul>
-</li>
-      <li><a href="#workflow-principles">Workflow principles</a></li>
-      <li>
-<a href="#basic-text-analysis-workflow">Basic text analysis workflow</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#working-with-a-corpus-documents-and-features">Working with a corpus, documents, and features</a></li>
-      <li><a href="#dfm-the-swiss-army-knife">dfm, the Swiss Army knife</a></li>
-      </ul>
-</li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
 </div>
 

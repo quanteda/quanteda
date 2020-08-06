@@ -8,7 +8,7 @@ quanteda_options(..., reset = FALSE, initialize = FALSE)
 }
 \arguments{
 \item{...}{options to be set, as key-value pair, same as
-\code{\link{options}}. This may be a list of valid key-value pairs, useful
+\code{\link[=options]{options()}}. This may be a list of valid key-value pairs, useful
 for setting a group of options at once (see examples).}
 
 \item{reset}{logical; if \code{TRUE}, reset all \pkg{quanteda} options to
@@ -16,7 +16,7 @@ their default values}
 
 \item{initialize}{logical; if \code{TRUE}, reset only the \pkg{quanteda}
 options that are not already defined.  Used for setting initial values when
-some have been defined previously, such as in `.Rprofile`.}
+some have been defined previously, such as in \code{.Rprofile}.}
 }
 \value{
 When called using a \code{key = value} pair (where \code{key} can be
@@ -49,10 +49,17 @@ from another object} \item{\code{base_featname}}{character; stem name for
 features that are unnamed when they are added, for whatever reason, to a dfm
 through an operation that adds features}
 \item{\code{base_compname}}{character; stem name for components that are
-created by matrix factorization} 
-\item{\code{language_stemmer}}{character; language option for \link{char_wordstem}, 
-\link{tokens_wordstem}, and \link{dfm_wordstem}} 
-}
+created by matrix factorization}
+\item{\code{language_stemmer}}{character; language option for \code{\link[=char_wordstem]{char_wordstem()}},
+\code{\link[=tokens_wordstem]{tokens_wordstem()}}, and \code{\link[=dfm_wordstem]{dfm_wordstem()}}}
+\item{\code{pattern_hashtag}, \code{pattern_username}}{character; regex patterns for
+(social media) hashtags and usernames respectively, used to avoid segmenting
+these in the default internal "word" tokenizer}
+\item{\code{tokens_block_size}}{integer; specifies the
+number of documents to be tokenized at a time in blocked tokenization.
+When the number is large, tokenization becomes faster but also memory-intensive.}
+\item{\code{tokens_locale}}{character; specify locale in stringi boundary detection in
+tokenization and corpus reshaping. See \code{\link[stringi:stri_opts_brkiter]{stringi::stri_opts_brkiter()}}.}}
 }
 \examples{
 (opt <- quanteda_options())

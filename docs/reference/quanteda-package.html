@@ -8,21 +8,29 @@
 
 <title>An R package for the quantitative analysis of textual data — quanteda-package • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,75 +39,19 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="An R package for the quantitative analysis of textual data — quanteda-package" />
 
+<meta property="og:title" content="An R package for the quantitative analysis of textual data — quanteda-package" />
 <meta property="og:description" content="A set of functions for creating and managing text corpora, extracting
 features from text corpora, and analyzing those features using quantitative
-methods.  
-quanteda makes it easy to manage texts in the form of a corpus,
-  defined as a collection of texts that includes document-level variables
-  specific to each text, as well as meta-data for documents and for the
-  collection as a whole. quanteda includes tools to make it easy and
-  fast to manipulate the texts in a corpus, by performing the most common
-  natural language processing tasks simply and quickly, such as tokenizing,
-  stemming, or forming ngrams. quanteda's functions for tokenizing
-  texts and forming multiple tokenized documents into a document-feature
-  matrix are both extremely fast and extremely simple to use.
-  quanteda can segment texts easily by words, paragraphs, sentences,
-  or even user-supplied delimiters and tags.  
-Built on the text processing functions in the stringi package, which
-  is in turn built on C++ implementation of the ICU libraries for Unicode
-  text handling, quanteda pays special attention to fast and correct
-  implementation of Unicode and the handling of text in any character set.  
-quanteda is built for efficiency and speed, through its design
-  around three infrastructures: the stringi package for text
-  processing, the data.table package for indexing large documents
-  efficiently, and the Matrix package for sparse matrix objects. If you
-  can fit it into memory, quanteda will handle it quickly. (And
-  eventually, we will make it possible to process objects even larger than
-  available memory.)  
-quanteda is principally designed to allow users a fast and
-  convenient method to go from a corpus of texts to a selected matrix of
-  documents by features, after defining what the documents and features. The
-  package makes it easy to redefine documents, for instance by splitting them
-  into sentences or paragraphs, or by tags, as well as to group them into
-  larger documents by document variables, or to subset them based on logical
-  conditions or combinations of document variables. The package also
-  implements common NLP feature selection functions, such as removing
-  stopwords and stemming in numerous languages, selecting words found in
-  dictionaries, treating words as equivalent based on a user-defined
-  &quot;thesaurus&quot;, and trimming and weighting features based on document
-  frequency, feature frequency, and related measures such as tf-idf.  
-Once constructed, a quanteda document-feature matrix (&quot;dfm&quot;) 
-  can be easily analyzed using
-  either quanteda's built-in tools for scaling document positions,
-  or used with a number of other text analytic tools, such as: topic models
-  (including converters for direct use with the topicmodels, LDA, and stm
-  packages) document scaling (using quanteda's own functions for the
-  &quot;wordfish&quot; and &quot;Wordscores&quot; models, direct use with the ca 
-  package for
-  correspondence analysis, or scaling with the austin package) machine
-  learning through a variety of other packages that take matrix or
-  matrix-like inputs.  
-Additional features of quanteda include:
-powerful, flexible tools for working with dictionaries;
-the ability to identify keywords associated with documents or groups of documents;
-the ability to explore texts using key-words-in-context;
-fast computation of a variety of readability indexes;
-fast computation of a variety of lexical diversity measures;
-quick computation of word or document similarities, for clustering or to compute distances for other purposes;
-a comprehensive suite of descriptive statistics on text such as the number of sentences, words, characters, or
-  syllables per document; and
-flexible, easy to use graphical tools to portray many of the analyses available in the package.
-" />
-<meta name="twitter:card" content="summary" />
+methods." />
+
 
 
 
@@ -123,9 +75,10 @@ flexible, easy to use graphical tools to portray many of the analyses available 
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -139,7 +92,7 @@ flexible, easy to use graphical tools to portray many of the analyses available 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -163,6 +116,9 @@ flexible, easy to use graphical tools to portray many of the analyses available 
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -230,7 +186,6 @@ flexible, easy to use graphical tools to portray many of the analyses available 
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -240,7 +195,7 @@ flexible, easy to use graphical tools to portray many of the analyses available 
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -251,140 +206,117 @@ flexible, easy to use graphical tools to portray many of the analyses available 
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>An R package for the quantitative analysis of textual data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/quanteda-documentation.R'><code>R/quanteda-documentation.R</code></a></small>
     <div class="hidden name"><code>quanteda-package.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>A set of functions for creating and managing text corpora, extracting
 features from text corpora, and analyzing those features using quantitative
-methods.</p>  
-<p><span class="pkg">quanteda</span> makes it easy to manage texts in the form of a corpus,
-  defined as a collection of texts that includes document-level variables
-  specific to each text, as well as meta-data for documents and for the
-  collection as a whole. <span class="pkg">quanteda</span> includes tools to make it easy and
-  fast to manipulate the texts in a corpus, by performing the most common
-  natural language processing tasks simply and quickly, such as tokenizing,
-  stemming, or forming ngrams. <span class="pkg">quanteda</span>'s functions for tokenizing
-  texts and forming multiple tokenized documents into a document-feature
-  matrix are both extremely fast and extremely simple to use.
-  <span class="pkg">quanteda</span> can segment texts easily by words, paragraphs, sentences,
-  or even user-supplied delimiters and tags.</p>  
-<p>Built on the text processing functions in the <span class="pkg">stringi</span> package, which
-  is in turn built on C++ implementation of the ICU libraries for Unicode
-  text handling, <span class="pkg">quanteda</span> pays special attention to fast and correct
-  implementation of Unicode and the handling of text in any character set.</p>  
-<p><span class="pkg">quanteda</span> is built for efficiency and speed, through its design
-  around three infrastructures: the <span class="pkg">stringi</span> package for text
-  processing, the <span class="pkg">data.table</span> package for indexing large documents
-  efficiently, and the <span class="pkg">Matrix</span> package for sparse matrix objects. If you
-  can fit it into memory, <span class="pkg">quanteda</span> will handle it quickly. (And
-  eventually, we will make it possible to process objects even larger than
-  available memory.)</p>  
-<p><span class="pkg">quanteda</span> is principally designed to allow users a fast and
-  convenient method to go from a corpus of texts to a selected matrix of
-  documents by features, after defining what the documents and features. The
-  package makes it easy to redefine documents, for instance by splitting them
-  into sentences or paragraphs, or by tags, as well as to group them into
-  larger documents by document variables, or to subset them based on logical
-  conditions or combinations of document variables. The package also
-  implements common NLP feature selection functions, such as removing
-  stopwords and stemming in numerous languages, selecting words found in
-  dictionaries, treating words as equivalent based on a user-defined
-  "thesaurus", and trimming and weighting features based on document
-  frequency, feature frequency, and related measures such as tf-idf.</p>  
-<p>Once constructed, a <span class="pkg">quanteda</span> document-feature matrix ("<a href='dfm.html'>dfm</a>") 
-  can be easily analyzed using
-  either <span class="pkg">quanteda</span>'s built-in tools for scaling document positions,
-  or used with a number of other text analytic tools, such as: topic models
-  (including converters for direct use with the topicmodels, LDA, and stm
-  packages) document scaling (using <span class="pkg">quanteda</span>'s own functions for the
-  "wordfish" and "Wordscores" models, direct use with the <strong>ca</strong> 
-  package for
-  correspondence analysis, or scaling with the austin package) machine
-  learning through a variety of other packages that take matrix or
-  matrix-like inputs.</p>  
+methods.</p>
+    </div>
+
+
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><span class="pkg">quanteda</span> makes it easy to manage texts in the form of a corpus, defined
+as a collection of texts that includes document-level variables specific to
+each text, as well as meta-data for documents and for the collection as a
+whole. <span class="pkg">quanteda</span> includes tools to make it easy and fast to manipulate
+the texts in a corpus, by performing the most common natural language
+processing tasks simply and quickly, such as tokenizing, stemming, or forming
+ngrams. <span class="pkg">quanteda</span>'s functions for tokenizing texts and forming multiple
+tokenized documents into a document-feature matrix are both extremely fast
+and extremely simple to use. <span class="pkg">quanteda</span> can segment texts easily by
+words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
+<p>Built on the text processing functions in the <span class="pkg">stringi</span> package, which is
+in turn built on C++ implementation of the ICU libraries for Unicode text
+handling, <span class="pkg">quanteda</span> pays special attention to fast and correct
+implementation of Unicode and the handling of text in any character set.</p>
+<p><span class="pkg">quanteda</span> is built for efficiency and speed, through its design around
+three infrastructures: the <span class="pkg">stringi</span> package for text processing, the
+<span class="pkg">data.table</span> package for indexing large documents efficiently, and the
+<span class="pkg">Matrix</span> package for sparse matrix objects. If you can fit it into
+memory, <span class="pkg">quanteda</span> will handle it quickly. (And eventually, we will make
+it possible to process objects even larger than available memory.)</p>
+<p><span class="pkg">quanteda</span> is principally designed to allow users a fast and convenient
+method to go from a corpus of texts to a selected matrix of documents by
+features, after defining what the documents and features. The package makes
+it easy to redefine documents, for instance by splitting them into sentences
+or paragraphs, or by tags, as well as to group them into larger documents by
+document variables, or to subset them based on logical conditions or
+combinations of document variables. The package also implements common NLP
+feature selection functions, such as removing stopwords and stemming in
+numerous languages, selecting words found in dictionaries, treating words as
+equivalent based on a user-defined "thesaurus", and trimming and weighting
+features based on document frequency, feature frequency, and related measures
+such as tf-idf.</p>
+<p>Once constructed, a <span class="pkg">quanteda</span> document-feature matrix ("<a href='dfm.html'>dfm</a>") can be
+easily analyzed using either <span class="pkg">quanteda</span>'s built-in tools for scaling
+document positions, or used with a number of other text analytic tools, such
+as: topic models (including converters for direct use with the topicmodels,
+LDA, and stm packages) document scaling (using <span class="pkg">quanteda</span>'s own functions
+for the "wordfish" and "Wordscores" models, direct use with the <strong>ca</strong>
+package for correspondence analysis, or scaling with the austin package)
+machine learning through a variety of other packages that take matrix or
+matrix-like inputs.</p>
 <p>Additional features of <span class="pkg">quanteda</span> include:</p><ul>
 <li><p>powerful, flexible tools for working with <a href='dictionary.html'>dictionaries</a>;</p></li>
-<li><p>the ability to identify <a href='textstat_keyness.html'>keywords</a> associated with documents or groups of documents;</p></li>
+<li><p>the ability to identify <a href='textstat_keyness.html'>keywords</a> associated with
+documents or groups of documents;</p></li>
 <li><p>the ability to explore texts using <a href='kwic.html'>key-words-in-context</a>;</p></li>
 <li><p>fast computation of a variety of <a href='textstat_readability.html'>readability indexes</a>;</p></li>
 <li><p>fast computation of a variety of <a href='textstat_lexdiv.html'>lexical diversity measures</a>;</p></li>
-<li><p>quick computation of word or document <a href='textstat_simil.html'>similarities</a>, for clustering or to compute distances for other purposes;</p></li>
-<li><p>a comprehensive suite of <a href='summary.corpus.html'>descriptive statistics on text</a> such as the number of sentences, words, characters, or
-  syllables per document; and</p></li>
-<li><p>flexible, easy to use graphical tools to portray many of the analyses available in the package.</p></li>
+<li><p>quick computation of word or document <a href='textstat_simil.html'>similarities</a>, for
+clustering or to compute distances for other purposes;</p></li>
+<li><p>a comprehensive suite of <a href='summary.corpus.html'>descriptive statistics on text</a>
+such as the number of sentences, words, characters, or syllables per
+document; and</p></li>
+<li><p>flexible, easy to use graphical tools to portray many of the analyses
+available in the package.</p></li>
 </ul>
-    
-    </div>
 
-        
     <h2 class="hasAnchor" id="source-code-and-additional-information"><a class="anchor" href="#source-code-and-additional-information"></a>Source code and additional information</h2>
 
     
-    <p><a href='http://github.com/quanteda/quanteda'>http://github.com/quanteda/quanteda</a></p>
-    
+
+
+<p><a href='http://github.com/quanteda/quanteda'>http://github.com/quanteda/quanteda</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Useful links:</p><ul>
 <li><p><a href='https://quanteda.io'>https://quanteda.io</a></p></li>
 <li><p>Report bugs at <a href='https://github.com/quanteda/quanteda/issues'>https://github.com/quanteda/quanteda/issues</a></p></li>
-</ul></div>
-    
+</ul>
+
+</div>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#source-code-and-additional-information">Source code and additional information</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    <p><strong>Maintainer</strong>: Kenneth Benoit <a href='mailto:kbenoit@lse.ac.uk'>kbenoit@lse.ac.uk</a> (0000-0002-0797-564X) [copyright holder]</p>
-<p>Authors:</p><ul>
-<li><p>Kohei Watanabe <a href='mailto:watanabe.kohei@gmail.com'>watanabe.kohei@gmail.com</a> (0000-0001-6519-5265)</p></li>
-<li><p>Haiyan Wang <a href='mailto:whyinsa@yahoo.com'>whyinsa@yahoo.com</a> (0000-0003-4992-4311)</p></li>
-<li><p>Paul Nulty <a href='mailto:paul.nulty@gmail.com'>paul.nulty@gmail.com</a> (0000-0002-7214-4666)</p></li>
-<li><p>Adam Obeng <a href='mailto:quanteda@binaryeagle.com'>quanteda@binaryeagle.com</a> (0000-0002-2906-4775)</p></li>
-<li><p>Stefan Müller <a href='mailto:mullers@tcd.ie'>mullers@tcd.ie</a> (0000-0002-6315-4125)</p></li>
-<li><p>Akitaka Matsuo <a href='mailto:a.matsuo@lse.ac.uk'>a.matsuo@lse.ac.uk</a> (0000-0002-3323-6330)</p></li>
-<li><p>Jiong Wei Lua <a href='mailto:J.W.Lua@lse.ac.uk'>J.W.Lua@lse.ac.uk</a></p></li>
-<li><p>Patrick O. Perry <a href='mailto:patperry@gmail.com'>patperry@gmail.com</a> (0000-0001-7460-127X)</p></li>
-<li><p>Jouni Kuha <a href='mailto:j.kuha@lse.ac.uk'>j.kuha@lse.ac.uk</a> (0000-0002-1156-8465)</p></li>
-<li><p>Benjamin Lauderdale <a href='mailto:b.e.lauderdale@lse.ac.uk'>b.e.lauderdale@lse.ac.uk</a> (0000-0003-3090-0969)</p></li>
-<li><p>William Lowe <a href='mailto:wlowe@princeton.edu'>wlowe@princeton.edu</a> (0000-0002-1549-6163)</p></li>
-</ul>
-
-<p>Other contributors:</p><ul>
-<li><p>Christian Müller <a href='mailto:C.Mueller@lse.ac.uk'>C.Mueller@lse.ac.uk</a> [contributor]</p></li>
-<li><p>Lori Young (Lexicoder Sentiment Dictionary 2015) [data contributor]</p></li>
-<li><p>Stuart Soroka (Lexicoder Sentiment Dictionary 2015) [data contributor]</p></li>
-<li><p>Ian Fellows <a href='mailto:ian@fellstat.com'>ian@fellstat.com</a> (authored wordcloud C source code (modified)) [copyright holder]</p></li>
-<li><p>European Research Council (ERC-2011-StG 283794-QUANTESS) [funder]</p></li>
-</ul>
-
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -407,6 +339,8 @@ methods.</p>
 </script>
 
 
+
   </body>
 </html>
+
 

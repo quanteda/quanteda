@@ -16,15 +16,14 @@
 
 #' Select rows of textstat objects by glob, regex or fixed patterns
 #'
-#' Users can subset output object of \code{textstat_collocations},
-#' \code{textstat_keyness} or \code{textstat_frequency} based on
-#' \code{"glob"}, \code{"regex"} or \code{"fixed"} patterns using this method.
-#' @param x a \code{textstat} object
+#' Users can subset output object of `textstat_collocations`,
+#' `textstat_keyness` or `textstat_frequency` based on
+#' `"glob"`, `"regex"` or `"fixed"` patterns using this method.
+#' @param x a `textstat` object
 #' @inheritParams pattern
-#' @param selection whether to \code{"keep"} or \code{"remove"} the rows that
+#' @param selection whether to `"keep"` or `"remove"` the rows that
 #'   match the pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @keywords textstat internal
 #' @export
 #' @examples

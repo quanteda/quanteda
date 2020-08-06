@@ -4,12 +4,12 @@
 \alias{matrix2dfm}
 \title{Converts a Matrix to a dfm}
 \usage{
-matrix2dfm(x, slots = NULL)
+matrix2dfm(x, docvars = NULL, meta = NULL)
 }
 \arguments{
 \item{x}{a Matrix}
 
-\item{slots}{slots a list of values to be assigned to slots}
+\item{meta}{a list of values to be assigned to slots}
 }
 \description{
 Converts a Matrix to a dfm

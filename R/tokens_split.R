@@ -2,11 +2,11 @@
 #' 
 #' Replaces tokens by multiple replacements consisting of elements split by a
 #' separator pattern, with the option of retaining the separator.  This function
-#' effectively reverses the operation of \code{\link{tokens_compound}}.
-#' @param x a \link{tokens} object
+#' effectively reverses the operation of [tokens_compound()].
+#' @param x a [tokens] object
 #' @param separator a single-character pattern match by which tokens are separated
 #' @inheritParams valuetype
-#' @param remove_separator if \code{TRUE}, remove separator from new tokens
+#' @param remove_separator if `TRUE`, remove separator from new tokens
 #' @examples
 #' # undo tokens_compound()
 #' toks1 <- tokens("pork barrel is an idiomatic multi-word expression")
@@ -33,7 +33,8 @@ tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "reg
 #' @export
 tokens_split.tokens <- function(x, separator = " ", valuetype = c("fixed", "regex"),
                                 remove_separator = TRUE) {
-
+    
+    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     if (length(separator) != 1)
         stop("separator must be a character")

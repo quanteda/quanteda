@@ -147,6 +147,7 @@ texts(data_corpus_inaugural)[2]
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
 
 ```{r}
+data(data_corpus_irishbudget2010, package = "quanteda.corpora")
 summary(data_corpus_irishbudget2010)
 ```
 
@@ -236,14 +237,13 @@ tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
 tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
 tokens(txt, remove_numbers = TRUE,  remove_punct = FALSE)
 tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
-tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 ```
 
 We also have the option to tokenize characters:
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
-tokens("Great website: http://textasdata.com?page=123.", what = "character", 
-         remove_separators = FALSE)
+tokens("Great website: http://textasdata.com?page=123.", what = "character",
+        remove_separators = FALSE)
 ```
 
 and sentences:
@@ -362,7 +362,7 @@ liwcdfm[, 1:10]
 ```{r fig.width = 6}
 pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
-obama_simil <- textstat_simil(pres_dfm, c("2009-Obama" , "2013-Obama"), 
+obama_simil <- textstat_simil(pres_dfm, pres_dfm[c("2009-Obama" , "2013-Obama"),], 
                              margin = "documents", method = "cosine")
 obama_simil
 # dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
@@ -372,23 +372,25 @@ We can use these distances to plot a dendrogram, clustering presidents:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_sotu, package = "quanteda.corpora")
 pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")), 
-               stem = TRUE, remove_punct = TRUE,
-               remove = stopwords("english"))
+                stem = TRUE, remove_punct = TRUE,
+                remove = stopwords("english"))
 pres_dfm <- dfm_trim(pres_dfm, min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "prop"))
-# hiarchical clustering the distance object
+# hierchical clustering the distance object
 pres_cluster <- hclust(pres_dist_mat)
 # label with document names
 pres_cluster$labels <- docnames(pres_dfm)
 # plot as a dendrogram
-plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+plot(pres_cluster, xlab = "", sub = "", 
+     main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 We can also look at term similarities:
 ```{r}
-sim <- textstat_simil(pres_dfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+sim <- textstat_simil(pres_dfm, pres_dfm[, c("fair", "health", "terror")], 
+                      method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
@@ -396,6 +398,7 @@ lapply(as.list(sim), head, 10)
 
 Here is a demonstration of unsupervised document scaling comparing the "wordfish" model: 
 ```{r}
+library("quanteda.textmodels")
 # make prettier document names
 ie_dfm <- dfm(data_corpus_irishbudget2010)
 textmodel_wordfish(ie_dfm, dir = c(2, 1))
@@ -407,13 +410,14 @@ textmodel_wordfish(ie_dfm, dir = c(2, 1))
 
 ```{r}
 quant_dfm <- dfm(data_corpus_irishbudget2010, 
-                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+                 remove_punct = TRUE, remove_numbers = TRUE, 
+                 remove = stopwords("english"))
 quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
 
 set.seed(100)
-if (require(topicmodels)) {
-    my_lda_fit20 <- LDA(convert(quant_dfm, to = "topicmodels"), k = 20)
-    get_terms(my_lda_fit20, 5)
+if (require("stm")) {
+    my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)
+    plot(my_lda_fit20)    
 }
 ```

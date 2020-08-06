@@ -19,15 +19,17 @@ all but the n last/first number of documents of x.}
 \item{...}{additional arguments passed to other functions}
 }
 \value{
-A \link{corpus} class object corresponding to the subset defined 
-  by \code{n}.
+A \link{corpus} class object corresponding to the subset defined
+by \code{n}.
 }
 \description{
 For a \link{corpus} object, returns the first or last \code{n} documents.
 }
 \examples{
-head(data_corpus_irishbudget2010, 3) \%>\% summary()
+head(data_corpus_inaugural, 3) \%>\% 
+   summary()
 
-tail(data_corpus_irishbudget2010, 3) \%>\% summary()
+tail(data_corpus_inaugural, 3) \%>\% 
+    summary()
 }
 \keyword{corpus}

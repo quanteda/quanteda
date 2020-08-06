@@ -204,7 +204,8 @@ test_that("test the correctness of significant", {
 test_that("collocation is counted correctly in racing conditions, issue #381", {
 
     n <- 100 # NOTE: n must be large number to create racing conditionc
-    toks <- tokens(rep(texts(data_corpus_inaugural)[1], n)) 
+    txt <- unname(rep(texts(data_corpus_inaugural)[1], n))
+    toks <- tokens(txt) 
     out1 <- textstat_collocations(toks[1], size = 2, min_count = 1)
     out100 <- textstat_collocations(toks, size = 2, min_count = 1)
     out1 <- out1[order(out1$collocation),]
@@ -256,21 +257,6 @@ test_that("lambda & [ function",{
     expect_equal(class(a_seq), c("collocations", "textstat", "data.frame"))
 })
 
-# test_that("deprecated collocations function works", {
-#     txts <- data_corpus_inaugural[1:2]
-#     expect_equal(
-#         suppressWarnings(collocations(txts, size = 2, min_count = 2)),
-#         textstat_collocations(txts, size = 2, min_count = 2)
-#     )
-#     expect_warning(
-#         collocations(txts, size = 2, min_count = 2),
-#         "'collocations' is deprecated"
-#     )
-#     expect_warning(
-#         sequences(txts, size = 2, min_count = 2),
-#         "'sequences' is deprecated"
-#     )
-# })
 
 test_that("textstat_collocations.tokens works ok with zero-length documents (#940)", {
     txt <- c('I like good ice cream.', 'Me too!  I like good ice cream.', '')

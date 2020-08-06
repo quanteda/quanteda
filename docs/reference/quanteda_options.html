@@ -8,21 +8,29 @@
 
 <title>Get or set package options for quanteda — quanteda_options • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,17 +39,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Get or set package options for quanteda — quanteda_options" />
 
+<meta property="og:title" content="Get or set package options for quanteda — quanteda_options" />
 <meta property="og:description" content="Get or set global options affecting functions across quanteda." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -65,9 +73,10 @@
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -81,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -105,6 +114,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -172,7 +184,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -182,7 +193,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -193,31 +204,30 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get or set package options for quanteda</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/quanteda_options.R'><code>R/quanteda_options.R</code></a></small>
     <div class="hidden name"><code>quanteda_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Get or set global options affecting functions across <span class="pkg">quanteda</span>.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='no'>...</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>initialize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
       <td><p>options to be set, as key-value pair, same as
-<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></code>. This may be a list of valid key-value pairs, useful
+<code><a href='https://rdrr.io/r/base/options.html'>options()</a></code>. This may be a list of valid key-value pairs, useful
 for setting a group of options at once (see examples).</p></td>
     </tr>
     <tr>
@@ -229,10 +239,10 @@ their default values</p></td>
       <th>initialize</th>
       <td><p>logical; if <code>TRUE</code>, reset only the <span class="pkg">quanteda</span>
 options that are not already defined.  Used for setting initial values when
-some have been defined previously, such as in `.Rprofile`.</p></td>
+some have been defined previously, such as in <code>.Rprofile</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>When called using a <code>key = value</code> pair (where <code>key</code> can be
@@ -243,10 +253,9 @@ returned.</p>
 <p>When called with <code>reset = TRUE</code> as an argument, all arguments are
 options are reset to their default values, and <code>TRUE</code> is returned
 invisibly.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Currently available options are:</p><dl class='dl-horizontal'>
+    <p>Currently available options are:</p><dl'>
 <dt><code>verbose</code></dt><dd><p>logical; if <code>TRUE</code> then use this as the default
 for all functions with a <code>verbose</code> argument</p></dd>
 <dt><code>threads</code></dt><dd><p>integer; specifies the number of threads to use in
@@ -261,11 +270,19 @@ from another object</p></dd> <dt><code>base_featname</code></dt><dd><p>character
 features that are unnamed when they are added, for whatever reason, to a dfm
 through an operation that adds features</p></dd>
 <dt><code>base_compname</code></dt><dd><p>character; stem name for components that are
-created by matrix factorization</p></dd> 
-<dt><code>language_stemmer</code></dt><dd><p>character; language option for <a href='tokens_wordstem.html'>char_wordstem</a>, 
-<a href='tokens_wordstem.html'>tokens_wordstem</a>, and <a href='tokens_wordstem.html'>dfm_wordstem</a></p></dd> 
+created by matrix factorization</p></dd>
+<dt><code>language_stemmer</code></dt><dd><p>character; language option for <code><a href='tokens_wordstem.html'>char_wordstem()</a></code>,
+<code><a href='tokens_wordstem.html'>tokens_wordstem()</a></code>, and <code><a href='tokens_wordstem.html'>dfm_wordstem()</a></code></p></dd>
+<dt><code>pattern_hashtag</code>, <code>pattern_username</code></dt><dd><p>character; regex patterns for
+(social media) hashtags and usernames respectively, used to avoid segmenting
+these in the default internal "word" tokenizer</p></dd>
+<dt><code>tokens_block_size</code></dt><dd><p>integer; specifies the
+number of documents to be tokenized at a time in blocked tokenization.
+When the number is large, tokenization becomes faster but also memory-intensive.</p></dd>
+<dt><code>tokens_locale</code></dt><dd><p>character; specify locale in stringi boundary detection in
+tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/stringi/man/stri_opts_brkiter.html'>stringi::stri_opts_brkiter()</a></code>.</p></dd>
 </dl>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='no'>opt</span> <span class='kw'>&lt;-</span> <span class='fu'>quanteda_options</span>())</div><div class='output co'>#&gt; $threads
@@ -275,10 +292,40 @@ created by matrix factorization</p></dd>
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $print_dfm_max_ndoc
-#&gt; [1] 20
+#&gt; [1] 6
 #&gt; 
 #&gt; $print_dfm_max_nfeat
+#&gt; [1] 10
+#&gt; 
+#&gt; $print_dfm_summary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $print_corpus_max_ndoc
+#&gt; [1] 6
+#&gt; 
+#&gt; $print_corpus_max_nchar
+#&gt; [1] 60
+#&gt; 
+#&gt; $print_corpus_summary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $print_tokens_max_ndoc
+#&gt; [1] 6
+#&gt; 
+#&gt; $print_tokens_max_ntoken
+#&gt; [1] 12
+#&gt; 
+#&gt; $print_tokens_summary
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $print_dictionary_max_nkey
+#&gt; [1] 6
+#&gt; 
+#&gt; $print_dictionary_max_nval
 #&gt; [1] 20
+#&gt; 
+#&gt; $print_dictionary_summary
+#&gt; [1] TRUE
 #&gt; 
 #&gt; $base_docname
 #&gt; [1] "text"
@@ -291,37 +338,45 @@ created by matrix factorization</p></dd>
 #&gt; 
 #&gt; $language_stemmer
 #&gt; [1] "english"
-#&gt; </div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+#&gt; 
+#&gt; $pattern_hashtag
+#&gt; [1] "#\\w+#?"
+#&gt; 
+#&gt; $pattern_username
+#&gt; [1] "@[a-zA-Z0-9_]+"
+#&gt; 
+#&gt; $tokens_block_size
+#&gt; [1] 10000
+#&gt; 
+#&gt; $tokens_locale
+#&gt; [1] "en_US@ss=standard"
+#&gt; </div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>print_dfm_max_ndoc</span> <span class='kw'>=</span> <span class='fl'>50L</span>)
 <span class='co'># reset to defaults</span>
 <span class='fu'>quanteda_options</span>(<span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># reset to saved options</span>
-<span class='fu'>quanteda_options</span>(<span class='no'>opt</span>)</div></pre>
+<span class='fu'>quanteda_options</span>(<span class='no'>opt</span>)
+<span class='co'># }</span></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -344,6 +399,8 @@ created by matrix factorization</p></dd>
 </script>
 
 
+
   </body>
 </html>
+
 

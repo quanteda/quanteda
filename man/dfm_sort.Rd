@@ -4,11 +4,10 @@
 \alias{dfm_sort}
 \title{Sort a dfm by frequency of one or more margins}
 \usage{
-dfm_sort(x, decreasing = TRUE, margin = c("features", "documents",
-  "both"))
+dfm_sort(x, decreasing = TRUE, margin = c("features", "documents", "both"))
 }
 \arguments{
-\item{x}{Document-feature matrix created by \code{\link{dfm}}}
+\item{x}{Document-feature matrix created by \code{\link[=dfm]{dfm()}}}
 
 \item{decreasing}{logical; if \code{TRUE}, the sort will be in descending
 order, otherwise sort in increasing order}

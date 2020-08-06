@@ -1,14 +1,14 @@
 context("test default methods for nice error messages")
 
-test_that("test detault corpus* methods", {
+test_that("test default corpus* methods", {
     expect_error(
         corpus(TRUE),
         "corpus\\(\\) only works on.*character.*corpus.*objects"
-    )   
+    )
     expect_error(
         as.corpus(c(1, 2, 3)),
         "as.corpus\\(\\) only works on.*corpuszip"
-    )   
+    )
     expect_error(
         corpus_reshape(1),
         "corpus_reshape\\(\\) only works on corpus objects"
@@ -16,7 +16,7 @@ test_that("test detault corpus* methods", {
     expect_error(
         corpus_sample(1),
         "corpus_sample\\(\\) only works on corpus objects"
-    )    
+    )
     expect_error(
         corpus_segment(1),
         "corpus_segment\\(\\) only works on corpus objects"
@@ -35,7 +35,7 @@ test_that("test detault n-methods", {
     expect_error(
         nfeat(TRUE),
         "nfeat\\(\\) only works on dfm.*objects"
-    )    
+    )
     expect_error(
         nscrabble(TRUE),
         "nscrabble\\(\\) only works on character.*objects"
@@ -66,7 +66,7 @@ test_that("test detault char_* methods", {
     expect_error(
         char_segment(1),
         "char_segment\\(\\) only works on character objects"
-    )    
+    )
     expect_error(
         char_tolower(1),
         "char_tolower\\(\\) only works on character objects"
@@ -85,7 +85,7 @@ test_that("test detault fcm* methods", {
     expect_error(
         fcm(0),
         "fcm\\(\\) only works on character.*tokens objects"
-    )   
+    )
     expect_error(
         fcm_compress(1),
         "fcm_compress\\(\\) only works on fcm objects"
@@ -93,7 +93,7 @@ test_that("test detault fcm* methods", {
     expect_error(
         fcm_keep(1),
         "fcm_keep\\(\\) only works on fcm objects"
-    )    
+    )
     expect_error(
         fcm_remove(1),
         "fcm_remove\\(\\) only works on fcm objects"
@@ -120,7 +120,7 @@ test_that("test default docvars methods", {
     expect_error(
         docvars(0),
         "docvars\\(\\) only works on.*corpus.*tokens objects"
-    )   
+    )
     expect_error(
         docvars(data_char_sampletext) <- "X",
         "docvars<-\\(\\) only works on.*corpus.*tokens objects"
@@ -131,21 +131,11 @@ test_that("test default metadoc methods", {
     expect_error(
         metadoc(0),
         "metadoc\\(\\) only works on.*corpus.*tokens objects"
-    )   
+    )
     expect_error(
         metadoc(data_char_sampletext) <- "X",
-        "metadoc<-\\(\\) only works on corpus objects"
-    )
-})
-
-test_that("test default metacorpus method", {
-    expect_error(
-        metacorpus(0),
-        "metacorpus\\(\\) only works on corpus objects"
-    )   
-    expect_error(
-        metacorpus(data_char_sampletext) <- "X",
-        "metacorpus<-\\(\\) only works on corpus objects"
+        "metadoc<-() only works on corpus, dfm, tokens objects.",
+        fixed = TRUE
     )
 })
 
@@ -178,14 +168,14 @@ test_that("test new bootstrap_dfm methods", {
     expect_error(
         bootstrap_dfm(TRUE),
         "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
-    )   
+    )
 })
 
 test_that("test new convert methods", {
     expect_error(
         convert(TRUE),
         "convert\\(\\) only works on .*dfm.*objects"
-    )   
+    )
 })
 
 test_that("test new dfm methods", {
@@ -257,10 +247,6 @@ test_that("test new dfm methods", {
         dfm_tfidf(TRUE),
         "dfm_tfidf\\(\\) only works on dfm objects"
     )
-    # expect_error(
-    #     tf(TRUE),
-    #     "tf\\(\\) only works on dfm objects"
-    # )
     expect_error(
         docfreq(TRUE),
         "docfreq\\(\\) only works on dfm objects"
@@ -271,11 +257,11 @@ test_that("test token default methods", {
     expect_error(
         as.tokens(c(1, 2, 3)),
         "as.tokens\\(\\) only works on.*list"
-    )   
+    )
     expect_error(
         tokens(TRUE),
-        "tokens\\(\\) only works on character, corpus, tokens objects"
-    )   
+        "tokens\\(\\) only works on character, corpus, list, tokens objects"
+    )
     expect_error(
         tokens_compound(TRUE),
         "tokens_compound\\(\\) only works on tokens objects"
@@ -326,27 +312,27 @@ test_that("test new as.dfm methods", {
     expect_error(
         as.dfm(TRUE),
         "as\\.dfm\\(\\) only works on.*data\\.frame.*dfm.*matrix.*objects"
-    )   
+    )
 })
 
 test_that("test sparsity default", {
     expect_error(
         sparsity(TRUE),
         "sparsity\\(\\) only works on dfm objects"
-    )   
+    )
 })
 
 test_that("test topfeatures default", {
     expect_error(
         topfeatures(TRUE),
         "topfeatures\\(\\) only works on dfm objects"
-    )   
+    )
 })
 
 test_that("test new as.dictionary methods", {
     expect_error(
         as.dictionary(TRUE),
-        "as\\.dictionary\\(\\) only works on data\\.frame objects"
+        "as\\.dictionary\\(\\) only works on data\\.frame, dictionary2 objects"
     )   
 })
 
@@ -354,36 +340,13 @@ test_that("test new docnames methods", {
     expect_error(
         docnames(0),
         "docnames\\(\\) only works on.*corpus.*tokens objects"
-    )   
+    )
 })
 
 test_that("test new docnames<- methods", {
     expect_error(
         docnames(data_char_sampletext) <- "X",
         "docnames<-\\(\\) only works on.*corpus.*tokens objects"
-    )   
-})
-
-test_that("test default textmodel methods", {
-    expect_error(
-        textmodel_affinity(TRUE, FALSE),
-        "textmodel_affinity\\(\\) only works on dfm.*objects"
-    )   
-    expect_error(
-        textmodel_ca(TRUE),
-        "textmodel_ca\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_nb(TRUE),
-        "textmodel_nb\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_wordfish(TRUE),
-        "textmodel_wordfish\\(\\) only works on dfm.*objects"
-    )
-    expect_error(
-        textmodel_wordscores(TRUE),
-        "textmodel_wordscores\\(\\) only works on dfm.*objects"
     )
 })
 
@@ -391,52 +354,86 @@ test_that("test default textstat methods", {
     expect_error(
         textstat_dist(TRUE),
         "textstat_dist\\(\\) only works on dfm objects"
-    )   
+    )
     expect_error(
         textstat_frequency(TRUE),
         "textstat_frequency\\(\\) only works on dfm objects"
-    )   
+    )
     expect_error(
         textstat_keyness(TRUE),
         "textstat_keyness\\(\\) only works on dfm objects"
-    )   
+    )
     expect_error(
         textstat_lexdiv(TRUE),
         "textstat_lexdiv\\(\\) only works on dfm, tokens objects"
-    )   
+    )
     expect_error(
         textstat_readability(TRUE),
         "textstat_readability\\(\\) only works on character, corpus objects"
-    )   
+    )
     expect_error(
         textstat_simil(TRUE),
         "textstat_simil\\(\\) only works on dfm objects"
-    )   
+    )
     expect_error(
         textstat_collocations(TRUE),
         "textstat_collocations\\(\\) only works on.*tokens objects"
+    )
+    expect_error(
+        textstat_entropy(tokens(data_char_sampletext)),
+        "textstat_entropy() only works on dfm objects.", fixed = TRUE
     )
 })
 
 test_that("test default textplot methods", {
     expect_error(
-        textplot_influence(TRUE),
-        "textplot_influence\\(\\) only works on influence\\..*textmodel_affinity objects"
-    )   
-    expect_error(
         textplot_keyness(TRUE),
         "textplot_keyness\\(\\) only works on keyness objects"
-    )   
-    expect_error(
-        textplot_scale1d(TRUE),
-        "textplot_scale1d\\(\\) only works on predict\\.textmodel.*objects"
-    )   
+    )
     expect_error(
         textplot_wordcloud(TRUE),
-        "textplot_wordcloud\\(\\) only works on dfm objects"
-    )   
+        "textplot_wordcloud\\(\\) only works on dfm, keyness objects"
+    )
     expect_error(
         textplot_xray(TRUE),
         "textplot_xray\\(\\) only works on kwic objects"
-    )   
+    )
 })
+
+test_that("friendly_class_undefined_message for tokens_tortl()", {
+    expect_error(
+        tokens_tortl(data_dfm_lbgexample),
+        "tokens_tortl\\(\\) only works on.*tokens.*objects"
+    )
+})
+
+test_that("friendly_class_undefined_message for char_tortl()", {
+    expect_error(
+        char_tortl(data_dfm_lbgexample),
+        "char_tortl\\(\\) only works on.*character.*objects"
+    )
+})
+
+test_that("friendly_class_undefined_message for featfreq()", {
+    expect_error(
+        featfreq(tokens(data_char_sampletext)),
+        "featfreq\\(\\) only works on dfm objects"
+    )
+})
+
+test_that("friendly_class_undefined_message for char_select()", {
+    expect_error(
+        char_select(tokens(data_char_sampletext)),
+        "char_select() only works on character objects",
+        fixed = TRUE
+    )
+})
+
+test_that("friendly_class_undefined_message for textstat_summary()", {
+    expect_error(
+        textstat_summary(data_char_sampletext),
+        "textstat_summary() only works on corpus, dfm, tokens objects",
+        fixed = TRUE
+    )
+})
+

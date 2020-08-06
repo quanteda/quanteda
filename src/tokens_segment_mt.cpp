@@ -1,4 +1,4 @@
-#include "quanteda.h"
+#include "lib.h"
 #include "recompile.h"
 //#include "dev.h"
 using namespace quanteda;
@@ -24,14 +24,14 @@ Segments segment(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
-                targets.push_back(make_pair(i, i + span - 1));
+                targets.push_back(std::make_pair(i, i + span - 1));
             }
         }
     }
     
     Segments segments;
     if (targets.size() == 0) {
-        segments.push_back(make_tuple(0, tokens.size() - 1, -1, -1));
+        segments.push_back(std::make_tuple(0, tokens.size() - 1, -1, -1));
         return segments;
     }
     
@@ -43,7 +43,7 @@ Segments segment(Text tokens,
     if (position == 1) {
         // preceeded by delimiter
         if (0 < targets.front().first) {
-            segments.push_back(make_tuple(0, targets.front().first - 1, -1, -1));
+            segments.push_back(std::make_tuple(0, targets.front().first - 1, -1, -1));
         }
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first;
@@ -54,7 +54,7 @@ Segments segment(Text tokens,
             if (i < targets.size() - 1) {
                 to = targets[i + 1].first - 1;
             }
-            segments.push_back(make_tuple(from, to, targets[i].first, targets[i].second));
+            segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         
@@ -70,11 +70,11 @@ Segments segment(Text tokens,
             if (remove) {
                 to = targets[i].first - 1;
             }
-            segments.push_back(make_tuple(from, to, targets[i].first, targets[i].second));
+            segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         if (targets.back().second < tokens.size() - 1) {
-            segments.push_back(make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
+            segments.push_back(std::make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
         }
     }
     
@@ -152,8 +152,9 @@ List qatd_cpp_tokens_segment(const List &texts_,
     }
     
     Texts segments(len);
-    IntegerVector ids_document_(len), ids_segment_(len);
-    CharacterVector names_document_(len), matches_(len);
+    IntegerVector ids_document_(len);
+    //CharacterVector names_document_(len), matches_(len);
+    CharacterVector matches_(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -180,18 +181,15 @@ List qatd_cpp_tokens_segment(const List &texts_,
             }
             
             ids_document_[j] = (int)h + 1;
-            ids_segment_[j] = (int)i + 1;
-            names_document_[j] = names_[h];
+            //names_document_[j] = names_[h];
             j++;
         }
     }
     
     Tokens segments_ = recompile(segments, types, remove, false, is_encoded(types_));
     segments_.attr("pattern") = matches_;
-    segments_.attr("document") = names_document_;
-    segments_.attr("docid") = ids_document_;
-    segments_.attr("segid") = ids_segment_;
-    
+    //segments_.attr("docid") = names_document_;
+    segments_.attr("docnum") = ids_document_;
     return(segments_);
 }
 

@@ -3,7 +3,6 @@
 \docType{class}
 \name{dfm-class}
 \alias{dfm-class}
-\alias{dfmSparse-class}
 \alias{t,dfm-method}
 \alias{colSums,dfm-method}
 \alias{rowSums,dfm-method}
@@ -72,7 +71,7 @@ the calculations}
 \item{drop}{always set to \code{FALSE}}
 }
 \description{
-The dfm class of object is a type of \link[Matrix]{Matrix-class} object with
+The dfm class of object is a type of \link[Matrix:Matrix-class]{Matrix-class} object with
 additional slots, described below.  \pkg{quanteda} uses two subclasses of the
 \code{dfm} class, depending on whether the object can be represented by a
 sparse matrix, in which case it is a \code{dfm} class object, or if dense,
@@ -80,24 +79,23 @@ then a \code{dfmDense} object.  See Details.
 }
 \details{
 The \code{dfm} class is a virtual class that will contain
-  \link[Matrix]{dgCMatrix-class}.
+\link[Matrix:dgCMatrix-class]{dgCMatrix-class}.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{settings}}{settings that govern corpus handling and subsequent downstream
-operations, including the settings used to clean and tokenize the texts,
-and to create the dfm.  See \code{\link{settings}}.}
-
-\item{\code{weighting}}{the feature weighting applied to the dfm.  Default is
+\item{\code{weightTf}}{the type of term frequency weighting applied to the dfm.  Default is
 \code{"frequency"}, indicating that the values in the cells of the dfm are
-simple feature counts. To change this, use the \code{\link{dfm_weight}}
+simple feature counts. To change this, use the \code{\link[=dfm_weight]{dfm_weight()}}
 method.}
 
-\item{\code{smooth}}{a smoothing parameter, defaults to zero.  Can be changed using
-the \code{\link{dfm_smooth}} method.}
+\item{\code{weightFf}}{the type of document frequency weighting applied to the dfm. See
+\code{\link[=docfreq]{docfreq()}}.}
 
-\item{\code{Dimnames}}{These are inherited from \link[Matrix]{Matrix-class} but are
+\item{\code{smooth}}{a smoothing parameter, defaults to zero.  Can be changed using
+the \code{\link[=dfm_smooth]{dfm_smooth()}} method.}
+
+\item{\code{Dimnames}}{These are inherited from \link[Matrix:Matrix-class]{Matrix-class} but are
 named \code{docs} and \code{features} respectively.}
 }}
 

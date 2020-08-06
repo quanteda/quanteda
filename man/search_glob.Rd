@@ -31,8 +31,8 @@ not used in glob and fixed matching as types are in the index.}
 
 \item{patterns}{a list of "glob", "fixed" or "regex" patterns}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}, but not
-used in glob and fixed matching as types are lowercased in the index.}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 }
 \description{
 This is an internal function for \code{pattern2id} that select types using

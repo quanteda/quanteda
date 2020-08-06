@@ -4,9 +4,14 @@
 \alias{docfreq}
 \title{Compute the (weighted) document frequency of a feature}
 \usage{
-docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
-  "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,
-  use.names = TRUE)
+docfreq(
+  x,
+  scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
+  base = 10,
+  smoothing = 0,
+  k = 0,
+  threshold = 0
+)
 }
 \arguments{
 \item{x}{a \link{dfm}}
@@ -22,24 +27,19 @@ follows, where \eqn{N} is defined as the number of documents in the dfm and
 \item{\code{unary}}{1 for each feature}
 }}
 
+\item{base}{the base with respect to which logarithms in the inverse document
+frequency weightings are computed; default is 10 (see Manning, Raghavan,
+and Schütze 2008, p123).}
+
 \item{smoothing}{added to the quotient before taking the logarithm}
 
-\item{k}{added to the denominator in the "inverse" weighting types, to 
+\item{k}{added to the denominator in the "inverse" weighting types, to
 prevent a zero document count for a term}
 
-\item{base}{the base with respect to which logarithms in the inverse document
-frequency weightings are computed; default is 10 (see Manning, 
-  Raghavan, and Schütze 2008, p123).}
-
-\item{threshold}{numeric value of the threshold \emph{above which} a feature 
-will considered in the computation of document frequency.  The default is 
-0, meaning that a feature's document frequency will be the number of 
+\item{threshold}{numeric value of the threshold \emph{above which} a feature
+will considered in the computation of document frequency.  The default is
+0, meaning that a feature's document frequency will be the number of
 documents in which it occurs greater than zero times.}
-
-\item{use.names}{logical; if \code{TRUE} attach feature labels as names of 
-the resulting numeric vector}
-
-\item{...}{not used}
 }
 \value{
 a numeric vector of document frequencies for each feature
@@ -57,7 +57,7 @@ docfreq(dfmat1[, 1:20])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-dfmat2 <- 
+dfmat2 <-
     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
            byrow = TRUE, nrow = 2,
            dimnames = list(docs = c("document1", "document2"),
@@ -73,9 +73,9 @@ docfreq(dfmat2, scheme = "inversemax")
 docfreq(dfmat2, scheme = "inverseprob")
 }
 \references{
-Manning, C. D., Raghavan, P., & Schütze, H. (2008). 
-  \emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
-  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+Manning, C. D., Raghavan, P., & Schütze, H. (2008).
+\emph{Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+\url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \keyword{dfm}
 \keyword{weighting}

@@ -1,6 +1,7 @@
 context("test textplot_network.R")
 
 test_that("test textplot_network", {
+    #skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
@@ -16,6 +17,7 @@ test_that("test textplot_network", {
 
 
 test_that("test textplot_network works with vectorlized argument", {
+    #skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
@@ -26,12 +28,13 @@ test_that("test textplot_network works with vectorlized argument", {
 })
 
 test_that("textplot_network error when fcm is too large", {
-    testdfm <- dfm(data_corpus_irishbudget2010)
+    testdfm <- fcm(data_corpus_inaugural[1:5])
     expect_error(textplot_network(testdfm, min_freq = 1, offset = 0, omit_isolated = FALSE),
                  'fcm is too large for a network plot')
 })
 
 test_that("test textplot_network font-selection", {
+    skip_on_os("linux")
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)

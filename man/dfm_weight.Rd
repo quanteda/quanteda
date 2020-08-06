@@ -5,9 +5,16 @@
 \alias{dfm_smooth}
 \title{Weight the feature frequencies in a dfm}
 \usage{
-dfm_weight(x, scheme = c("count", "prop", "propmax", "logcount",
-  "boolean", "augmented", "logave"), weights = NULL, base = 10,
-  K = 0.5)
+dfm_weight(
+  x,
+  scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave",
+    "logsmooth"),
+  weights = NULL,
+  base = 10,
+  k = 0.5,
+  smoothing = 0.5,
+  force = FALSE
+)
 
 dfm_smooth(x, smoothing = 1)
 }
@@ -16,18 +23,21 @@ dfm_smooth(x, smoothing = 1)
 
 \item{scheme}{a label of the weight type:
 \describe{
-  \item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
-  \item{\code{prop}}{the proportion of the feature counts of total feature
-  counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
-  \item{\code{propmax}}{the proportion of the feature counts of the highest
-  feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
-  \item{\code{logcount}}{take the logarithm of 1 + each count, for the given
-  base: \eqn{\textrm{log}_{base}(1 + tf_{ij})}}
-  \item{\code{boolean}}{recode all non-zero counts as 1}
-  \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
-  "propmax")}}
-  \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-  \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+\item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm
+is created)}
+\item{\code{prop}}{the proportion of the feature counts of total feature counts
+(aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+\item{\code{propmax}}{the proportion of the feature counts of the highest
+feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
+\item{\code{logcount}}{take the 1 + the logarithm of each count, for the
+given base, or 0 if the count was zero: \eqn{1 +
+  \textrm{log}_{base}(tf_{ij})} if \eqn{tf_{ij} > 0}, or 0 otherwise.}
+\item{\code{boolean}}{recode all non-zero counts as 1}
+\item{\code{augmented}}{equivalent to \eqn{k + (1 - k) *} \code{dfm_weight(x, "propmax")}}
+\item{\code{logave}}{(1 + the log of the counts) / (1 + log of the average count
+within document), or \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 +
+  \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
+\item{\code{logsmooth}}{log of the counts + \code{smooth}, or \eqn{tf_{ij} + s}}
 }}
 
 \item{weights}{if \code{scheme} is unused, then \code{weights} can be a named
@@ -37,24 +47,30 @@ applied as multipliers to the existing feature counts for the corresponding
 named features.  Any features not named will be assigned a weight of 1.0
 (meaning they will be unchanged).}
 
-\item{base}{base for the logarithm when \code{scheme} is \code{"logcount"} or 
+\item{base}{base for the logarithm when \code{scheme} is \code{"logcount"} or
 \code{logave}}
 
-\item{K}{the K for the augmentation when \code{scheme = "augmented"}}
+\item{k}{the k for the augmentation when \code{scheme = "augmented"}}
 
-\item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
+\item{smoothing}{constant added to the dfm cells for smoothing, default is 1
+for \code{dfm_smooth()} and 0.5 for \code{dfm_weight()}}
+
+\item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
+has been weighted before.  This can result in invalid weights, such as as
+weighting by \code{"prop"} after applying \code{"logcount"}, or after
+having grouped a dfm using \code{\link[=dfm_group]{dfm_group()}}.}
 }
 \value{
 \code{dfm_weight} returns the dfm with weighted values.  Note the
-  because the default weighting scheme is \code{"count"}, simply calling this
-  function on an unweighted dfm will return the same object.  Many users will
-  want the normalized dfm consisting of the proportions of the feature counts
-  within each document, which requires setting \code{scheme = "prop"}.
+because the default weighting scheme is \code{"count"}, simply calling this
+function on an unweighted dfm will return the same object.  Many users will
+want the normalized dfm consisting of the proportions of the feature counts
+within each document, which requires setting \code{scheme = "prop"}.
 
 \code{dfm_smooth} returns a dfm whose values have been smoothed by
-  adding the \code{smoothing} amount. Note that this effectively converts a
-  matrix from sparse to dense format, so may exceed memory requirements
-  depending on the size of your input matrix.
+adding the \code{smoothing} amount. Note that this effectively converts a
+matrix from sparse to dense format, so may exceed memory requirements
+depending on the size of your input matrix.
 }
 \description{
 Weight the feature frequencies in a dfm
@@ -62,8 +78,6 @@ Weight the feature frequencies in a dfm
 \examples{
 dfmat1 <- dfm(data_corpus_inaugural)
 
-x <- apply(dfmat1, 1, function(tf) tf/max(tf))
-topfeatures(dfmat1)
 dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
 topfeatures(dfmat2)
 dfmat3 <- dfm_weight(dfmat1)
@@ -82,23 +96,16 @@ str <- c("apple is better than banana", "banana banana apple much better")
 (dfmat6 <- dfm(str, remove = stopwords("english")))
 dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 
-\dontshow{
-dfmat7 <- dfm(data_corpus_inaugural[1:5])
-for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave")) {
-    dfmat8 <- dfm_weight(dfmat7, w)
-    cat("\\n\\n=== weight() TEST for:", w, "; class:", class(dfmat8), "\\n")
-    head(dfmat8)
-}}
 # smooth the dfm
 dfmat <- dfm(data_corpus_inaugural)
 dfm_smooth(dfmat, 0.5)
 }
 \references{
 Manning, C.D., Raghavan, P., & Schütze, H. (2008).
-  \emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press. 
-  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+\emph{An Introduction to Information Retrieval}. Cambridge: Cambridge University Press.
+\url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \seealso{
-\code{\link{dfm_tfidf}}, \code{\link{docfreq}}
+\code{\link[=docfreq]{docfreq()}}
 }
 \keyword{dfm}

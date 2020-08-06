@@ -1,40 +1,39 @@
 #' Segment tokens object by patterns
-#' 
+#'
 #' Segment tokens by splitting on a pattern match. This is useful for breaking
 #' the tokenized texts into smaller document units, based on a regular pattern
 #' or a user-supplied annotation. While it normally makes more sense to do this
-#' at the corpus level (see \code{\link{corpus_segment}}), \code{tokens_segment}
+#' at the corpus level (see [corpus_segment()]), `tokens_segment`
 #' provides the option to perform this operation on tokens.
-#' @param x \link{tokens} object whose token elements will be segmented
+#' @param x [tokens] object whose token elements will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param extract_pattern remove matched patterns from the texts and save in
-#'   \link{docvars}, if \code{TRUE}
-#' @param pattern_position either \code{"before"} or \code{"after"}, depending 
-#'   on whether the pattern precedes the text (as with a tag) or follows the 
+#'   [docvars], if `TRUE`
+#' @param pattern_position either `"before"` or `"after"`, depending
+#'   on whether the pattern precedes the text (as with a tag) or follows the
 #'   text (as with punctuation delimiters)
-#' @param use_docvars if \code{TRUE}, repeat the docvar values for each 
-#'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+#' @param use_docvars if `TRUE`, repeat the docvar values for each
+#'   segmented text; if `FALSE`, drop the docvars in the segmented corpus.
 #'   Dropping the docvars might be useful in order to conserve space or if these
 #'   are not desired for the segmented corpus.
-#' @return \code{tokens_segment} returns a \link{tokens} object whose documents 
+#' @return `tokens_segment` returns a [tokens] object whose documents
 #'   have been split by patterns
 #' @keywords tokens internal
 #' @export
-#' @examples 
+#' @examples
 #' txts <- "Fellow citizens, I am again called upon by the voice of my country to
 #' execute the functions of its Chief Magistrate. When the occasion proper for
 #' it shall arrive, I shall endeavor to express the high sense I entertain of
 #' this distinguished honor."
 #' toks <- tokens(txts)
-#' 
+#'
 #' # split by any punctuation
-#' tokens_segment(toks, "^\\p{Sterm}$", valuetype = "regex", 
-#'                extract_pattern = TRUE, 
+#' tokens_segment(toks, "^\\p{Sterm}$", valuetype = "regex",
+#'                extract_pattern = TRUE,
 #'                pattern_position = "after")
-#' tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed", 
-#'                extract_pattern = TRUE, 
+#' tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed",
+#'                extract_pattern = TRUE,
 #'                pattern_position = "after")
 tokens_segment <- function(x, pattern,
                            valuetype = c("glob", "regex", "fixed"),
@@ -57,43 +56,26 @@ tokens_segment.tokens <- function(x, pattern,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
 
+    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
-
+    if (!use_docvars)
+        docvars(x) <- NULL
     attrs <- attributes(x)
-    types <- types(x)
-    vars <- docvars(x)
+    type <- types(x)
 
-    ids <- pattern2list(pattern, types, valuetype, case_insensitive, attr(x, "concatenator"))
+    ids <- pattern2list(pattern, type, valuetype, case_insensitive,
+                        field_object(attrs, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
 
     if (pattern_position == "before") {
-        x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 1)
+        result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 1)
     } else {
-        x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 2)
+        result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 2)
     }
-    docname <- paste(attr(x, "document"), as.character(attr(x, "segid")), sep = ".")
-
-    # add repeated versions of remaining docvars
-    if (use_docvars && !is.null(vars)) {
-        vars <- vars[attr(x, "docid"), , drop = FALSE] # repeat rows
-        rownames(vars) <- docname
-    } else {
-        attrs$docvars <- NULL
-        vars <- NULL
-    }
-    result <- create(x, what = "tokens",
-                     attrs = attrs,
-                     docvars = vars,
-                     names = docname,
-                     document = NULL,
-                     docid = NULL,
-                     segid = NULL)
-
-    docvars(result, "_document") <- attr(x, "document")
-    docvars(result, "_docid") <- attr(x, "docid")
-    docvars(result, "_segid") <- attr(x, "segid")
-    if (extract_pattern) docvars(result, "pattern") <- attr(x, "pattern")
-
-    result
+    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "docnum"))
+    field_object(attrs, "unit") <- "segments"
+    if (extract_pattern)
+        attrs[["docvars"]][["pattern"]] <- attr(result, "pattern")
+    rebuild_tokens(result, attrs)
 }

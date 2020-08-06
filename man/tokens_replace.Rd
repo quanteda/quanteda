@@ -4,8 +4,14 @@
 \alias{tokens_replace}
 \title{Replace tokens in a tokens object}
 \usage{
-tokens_replace(x, pattern, replacement, valuetype = "glob",
-  case_insensitive = TRUE, verbose = quanteda_options("verbose"))
+tokens_replace(
+  x,
+  pattern,
+  replacement,
+  valuetype = "glob",
+  case_insensitive = TRUE,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be replaced}
@@ -16,11 +22,12 @@ tokens_replace(x, pattern, replacement, valuetype = "glob",
 \item{replacement}{a character vector or (if \code{pattern} is a list) list
 of character vectors of the same length as \code{pattern}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
@@ -30,17 +37,18 @@ function is created for lemmatization or user-defined stemming. It support
 substitution of multi-word features by multi-word features, but substitution
 is fastest when \code{pattern} and \code{replacement} are character vectors
 and \code{valuetype = "fixed"} as the function only substitute types of
-tokens. Please use \code{\link{tokens_lookup}} with \code{exclusive = FALSE}
+tokens. Please use \code{\link[=tokens_lookup]{tokens_lookup()}} with \code{exclusive = FALSE}
 to replace \link{dictionary} values.
 }
 \examples{
-toks1 <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE)
+toks1 <- tokens(data_corpus_inaugural, remove_punct = TRUE)
 
 # lemmatization
-infle <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
-lemma <- rep("focus", length(infle))
-toks2 <- tokens_replace(toks1, infle, lemma, valuetype = "fixed")
-kwic(toks2, "focus*")
+taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
+lemma <- rep("TAX", length(taxwords))
+toks2 <- tokens_replace(toks1, taxwords, lemma, valuetype = "fixed")
+kwic(toks2, "TAX") \%>\% 
+    tail(10)
 
 # stemming
 type <- types(toks1)
@@ -49,9 +57,9 @@ toks3 <- tokens_replace(toks1, type, stem, valuetype = "fixed", case_insensitive
 identical(toks3, tokens_wordstem(toks1, "porter"))
 
 # multi-multi substitution
-toks4 <- tokens_replace(toks1, phrase(c("Minister Deputy Lenihan")), 
-                              phrase(c("Minister Deputy Conor Lenihan")))
-kwic(toks4, phrase(c("Minister Deputy Conor Lenihan")))
+toks4 <- tokens_replace(toks1, phrase(c("Supreme Court")),
+                        phrase(c("Supreme Court of the United States")))
+kwic(toks4, phrase(c("Supreme Court of the United States")))
 }
 \seealso{
 tokens_lookup

@@ -80,18 +80,19 @@ test_that("is.dfm works as expected", {
 test_that("as.dfm for tm matrix objects", {
     txt <- c(docA = "a a a b c c f",
              docB = "a b b b c d",
-             docC = "c c c f f")
+             docC = "c c c f f",
+             docD = "")
     skip_if_not_installed("tm")
     dtm <- tm::DocumentTermMatrix(tm::Corpus(tm::VectorSource(txt)),
                                   control = list(wordLengths = c(1, Inf)))
-    expect_equal(
+    expect_equivalent(
         as.dfm(dtm),
         dfm(txt)
     )
     
     tdm <- tm::TermDocumentMatrix(tm::Corpus(tm::VectorSource(txt)),
                                   control = list(wordLengths = c(1, Inf)))
-    expect_equal(
+    expect_equivalent(
         as.dfm(tdm),
         dfm(txt)
     )
@@ -101,7 +102,7 @@ test_that("as.data.frame for dfm objects", {
     d <- data_dfm_lbgexample[, 1:5]
     expect_equal(
         suppressWarnings(as.data.frame(d)),
-        data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
+        data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
     )
     expect_equal(
         suppressWarnings(as.data.frame(d, document = NULL)),
@@ -109,7 +110,7 @@ test_that("as.data.frame for dfm objects", {
     )
     expect_equal(
         suppressWarnings(as.data.frame(d, row.names = docnames(d))),
-        data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
+        data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
     )
     expect_error(
         suppressWarnings(as.data.frame(d, document = TRUE)),
@@ -123,13 +124,20 @@ test_that("dfm2dataframe same as as.data.frame.dfm", {
         suppressWarnings(as.data.frame(d)),
         convert(d, to = "data.frame")
     )
+    expect_identical(
+        suppressWarnings(as.data.frame(d, document = NULL, 
+                                       row.names = docnames(d))),
+        data.frame(as.matrix(d), stringsAsFactors = FALSE, 
+                   row.names = docnames(d))
+    )
     expect_equal(
         quanteda:::dfm2dataframe(d, document = NULL),
         data.frame(as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
     )
     expect_equal(
         quanteda:::dfm2dataframe(d, row.names = docnames(d)),
-        data.frame(document = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
+        data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, 
+                   row.names = docnames(d))
     )
     expect_error(
         quanteda:::dfm2dataframe(d, document = TRUE),
@@ -139,24 +147,26 @@ test_that("dfm2dataframe same as as.data.frame.dfm", {
 
 test_that("as.data.frame.dfm handles irregular feature names correctly", {
     skip_on_os("windows")
-    skip_on_appveyor()
+    skip_on_cran()
     mydfm <- dfm(data_char_sampletext, 
                  dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
                                               "飛機" = "if", "spec+ial" = "of")))
     expect_equal(
-        names(convert(mydfm, to = "data.frame")),
+        names(convert(mydfm, to = "data.frame", docid_field = "document")),
         c("document", "字", "spe cial", "飛機", "spec+ial")
     )
     expect_equal(
-        suppressWarnings(names(as.data.frame(mydfm, check.names = TRUE))),
+        suppressWarnings(names(as.data.frame(mydfm, check.names = TRUE, 
+                                             docid_field = "document"))),
         c("document", "字", "spe.cial", "飛機", "spec.ial")
     )
     expect_equal(
-        names(quanteda:::dfm2dataframe(mydfm)),
+        names(quanteda:::dfm2dataframe(mydfm, docid_field = "document")),
         c("document", "字", "spe cial", "飛機", "spec+ial")
     )
     expect_equal(
-        names(quanteda:::dfm2dataframe(mydfm, check.names = TRUE)),
+        names(quanteda:::dfm2dataframe(mydfm, check.names = TRUE, 
+                                       docid_field = "document")),
         c("document", "字", "spe.cial", "飛機", "spec.ial")
     )
 })
@@ -183,58 +193,18 @@ test_that("as.dfm to and from a matrix works with docvars", {
         attributes(dfm(txt)@docvars)$row.names,
         attributes(as.dfm(as.matrix(dfm(txt)))@docvars)$row.names
     )
-    expect_equal(
+    expect_equivalent(
         dfm(txt),
         as.dfm(as.matrix(dfm(txt)))
     )
 })
 
-test_that("repeat row index for dfm makes unique row.names for @docvars", {
-    txt <- c(docA = "a a a b c c f",
-             docB = "a b b b c d",
-             docC = "c c c f f")
-    crp <- corpus(txt, 
-                  docvars = data.frame(y = 1:3))
-    d <- dfm(crp)
-    expect_identical(
-        row.names(docvars(d[c(1,2,2), ])),
-        c("docA", "docB", "docB.1")
-    )
-    expect_identical(
-        attributes(d[c(1,2,2), ]@docvars)$row.names,
-        c("docA", "docB", "docB.1")
-    )
-})
-
-# test_that("rbind duplicates docvars", {
-#     txt <- c(docA = "a a a b c c f",
-#              docB = "a b b b c d",
-#              docC = "c c c f f")
-#     crp <- corpus(txt, 
-#                   docvars = data.frame(y = 1:3))
-#     d <- dfm(crp)
+# test_that("as.dfm works on old objects", {
+#     load("../data/pre_v2_objects/data_dfm_pre2.rda")
+#     expect_is(as.dfm(data_dfm_pre2), "dfm")
+#     expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
 #     expect_identical(
-#         attributes(rbind(d, d)@docvars)$row.names,
-#         c("docA", "docB", "docC",
-#           "docA.1", "docB.1", "docC.1")
+#         names(as.dfm(data_dfm_pre2)@meta),
+#         c("user", "system")
 #     )
-#     expect_identical(
-#         attributes(d[c(1:3, 1:3)]@docvars)$row.names,
-#         c("docA", "docB", "docC",
-#           "docA.1", "docB.1", "docC.1")
-#     )
-#     expect_identical(
-#         attributes(d[c(1:3, 1:3)]@docvars)$row.names,
-#         attributes(rbind(d, d)@docvars)$row.names
-#     )
-# })
-# 
-# test_that("cbind correctly handles docvars", {
-#     txt <- c(docA = "a a a b c c f",
-#              docB = "a b b b c d",
-#              docC = "c c c f f")
-#     crp <- corpus(txt, 
-#                   docvars = data.frame(y = 1:3))
-#     d <- dfm(crp)
-#     # ADD TESTS
 # })

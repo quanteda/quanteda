@@ -4,24 +4,28 @@
 \alias{tokens_split}
 \title{Split tokens by a separator pattern}
 \usage{
-tokens_split(x, separator = " ", valuetype = c("fixed", "regex"),
-  remove_separator = TRUE)
+tokens_split(
+  x,
+  separator = " ",
+  valuetype = c("fixed", "regex"),
+  remove_separator = TRUE
+)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
 
 \item{separator}{a single-character pattern match by which tokens are separated}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
 
 \item{remove_separator}{if \code{TRUE}, remove separator from new tokens}
 }
 \description{
 Replaces tokens by multiple replacements consisting of elements split by a
 separator pattern, with the option of retaining the separator.  This function
-effectively reverses the operation of \code{\link{tokens_compound}}.
+effectively reverses the operation of \code{\link[=tokens_compound]{tokens_compound()}}.
 }
 \examples{
 # undo tokens_compound()

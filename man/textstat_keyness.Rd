@@ -4,48 +4,55 @@
 \alias{textstat_keyness}
 \title{Calculate keyness statistics}
 \usage{
-textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr",
-  "pmi"), sort = TRUE, correction = c("default", "yates", "williams",
-  "none"), ...)
+textstat_keyness(
+  x,
+  target = 1L,
+  measure = c("chi2", "exact", "lr", "pmi"),
+  sort = TRUE,
+  correction = c("default", "yates", "williams", "none"),
+  old = FALSE
+)
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
 
-\item{target}{the document index (numeric, character or logical) identifying 
-the document forming the "target" for computing keyness; all other 
+\item{target}{the document index (numeric, character or logical) identifying
+the document forming the "target" for computing keyness; all other
 documents' feature frequencies will be combined for use as a reference}
 
 \item{measure}{(signed) association measure to be used for computing keyness.
-Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
-\code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual 
+Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test);
+\code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual
 information.}
 
-\item{sort}{logical; if \code{TRUE} sort features scored in descending order 
+\item{sort}{logical; if \code{TRUE} sort features scored in descending order
 of the measure, otherwise leave in original feature order}
 
-\item{correction}{if \code{"default"}, Yates correction is applied to 
-\code{"chi2"}; William's correction is applied to \code{"lr"}; and no 
-correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
-Specifying a value other than the default can be used to override the 
-defaults, for instance to apply the Williams correction to the chi2 
-measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
+\item{correction}{if \code{"default"}, Yates correction is applied to
+\code{"chi2"}; William's correction is applied to \code{"lr"}; and no
+correction is applied for the \code{"exact"} and \code{"pmi"} measures.
+Specifying a value other than the default can be used to override the
+defaults, for instance to apply the Williams correction to the chi2
+measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"}
 measures has no effect and produces a warning.}
+
+\item{old}{if \code{TRUE} use old R code}
 }
 \value{
-a data.frame of computed statistics and associated p-values, where 
-  the features scored name each row, and the number of occurrences for both 
-  the target and reference groups. For \code{measure = "chi2"} this is the 
-  chi-squared value, signed positively if the observed value in the target 
-  exceeds its expected value; for \code{measure = "exact"} this is the 
-  estimate of the odds ratio; for \code{measure = "lr"} this is the 
-  likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
-  mutual information statistics.
+a data.frame of computed statistics and associated p-values, where
+the features scored name each row, and the number of occurrences for both
+the target and reference groups. For \code{measure = "chi2"} this is the
+chi-squared value, signed positively if the observed value in the target
+exceeds its expected value; for \code{measure = "exact"} this is the
+estimate of the odds ratio; for \code{measure = "lr"} this is the
+likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
+mutual information statistics.
 
 \code{textstat_keyness} returns a data.frame of features and
-  their keyness scores and frequency counts.
+their keyness scores and frequency counts.
 }
 \description{
-Calculate "keyness", a score for features that occur differentially across 
+Calculate "keyness", a score for features that occur differentially across
 different categories.  Here, the categories are defined by reference to a
 "target" document index in the \link{dfm}, with the reference group
 consisting of all other documents.
@@ -70,17 +77,17 @@ head(textstat_keyness(dfmat3, target = "2017-Trump"), 10)
 head(textstat_keyness(dfm_smooth(dfmat3), measure = "lr", target = "2017-Trump"), 10)
 }
 \references{
-Bondi, M. & Scott, M. (eds) (2010). \emph{Keyness in 
-  Texts}. Amsterdam, Philadelphia: John Benjamins.
-  
-  Stubbs, M. (2010). Three Concepts of Keywords. In \emph{Keyness in 
-  Texts}, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
-  John Benjamins.
-  
-  Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus 
-  Analysis in Language Education}. Amsterdam: Benjamins: 55.
-  
-  Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods 
-  for the Statistics of Surprise and Coincidence}. \emph{Computational Linguistics}, 19(1): 61--74.
+Bondi, M. & Scott, M. (eds) (2010). \emph{Keyness in
+Texts}. Amsterdam, Philadelphia: John Benjamins.
+
+Stubbs, M. (2010). Three Concepts of Keywords. In \emph{Keyness in
+Texts}, Bondi, M. & Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
+John Benjamins.
+
+Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus
+Analysis in Language Education}. Amsterdam: Benjamins: 55.
+
+Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods for the Statistics of Surprise and Coincidence}. \emph{Computational
+Linguistics}, 19(1): 61--74.
 }
 \keyword{textstat}

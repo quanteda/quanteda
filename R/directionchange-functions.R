@@ -1,4 +1,4 @@
-#' [Experimental] Change direction of words in tokens
+#' \[Experimental\] Change direction of words in tokens
 #' 
 #' This function adds a Unicode direction mark to tokens types for punctuations
 #' and symbols to correct how right-to-left languages (e.g. Arabic, Hebrew,

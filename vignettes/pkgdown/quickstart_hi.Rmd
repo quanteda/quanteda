@@ -1,0 +1,437 @@
+---
+title: "क्विक आरंभ गाइड"
+output: 
+  html_document:
+    toc: true
+---
+    
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "##")
+```
+
+# पैकेज इंस्टॉल करने के निर्देश
+
+क्यूँकि  **quanteda** [CRAN](https://CRAN.R-project.org/package=quanteda)
+पर उपलब्ध है, आप अपने GUI के R package installer से सीधा इंस्टॉल कर सकते हैं, या इसे इस तरह से भी इंस्टॉल कर सकते है:
+    
+```{r, eval = FALSE}
+install.packages("quanteda")
+```
+GitHub का वर्ज़न इंस्टॉल करने के लिए https://github.com/quanteda/quanteda पर निर्देश देखें, 
+
+## और आवश्यक पैकिजेज़! 
+
+निम्नलिखित पैकिजेज़ **quanteda** के साथ अच्छी तरह से काम करते हैं आप उन्हें भी इंस्टॉल करलीजिए 
+
+*  [**readtext**](https://github.com/quanteda/readtext):  लगभग किसी भी इनपुट टाइप में , आर के अन्दर टेक्स्ट डेटा को पढ़ने के लिए एक आसान तरीका।
+*  [**spacyr**](https://github.com/quanteda/spacyr):[spaCy](http://spacy.io) लाइब्रेरी का उपयोग करते हुए NLP, जिसमें पार्ट-ऑफ-स्पीच टैगिंग, इकाई पहचान और निर्भरता पार्सिंग शामिल है।
+*  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): **quanteda** के साथ उपयोग करने के लिए अतिरिक्त टेक्स्ट डेटा।
+
+```{r eval = FALSE}
+devtools::install_github("quanteda/quanteda.corpora")
+```
+
+*  [**quanteda.dictionaries**](https://github.com/kbenoit/quanteda.dictionaries): **quanteda** के साथ उपयोग करने के लिए विभिन्न शब्दकोश, `liwcalike()`- पाठ विश्लेषण के लिए [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) दृष्टिकोण के एक कार्यान्वयन - के सहित।
+
+```{r eval = FALSE}
+devtools::install_github("kbenoit/quanteda.dictionaries")
+```
+
+# कॉर्पस बनाने के निर्देश
+
+आप पैकेज को लोड करने के बाद, फ़ंक्शन और डेटा पैकेज का उपयोग कर सकते हैं।
+
+```{r, message = FALSE}
+library(quanteda)
+```
+
+## वर्तमान में उपलब्ध कॉर्पस स्रोतें
+
+**quanteda**  में टेक्स्ट को लोड करने के लिए एक सरल और शक्तिशाली साथी पैकेज है: [**readtext**](https://github.com/quanteda/readtext) इस पैकेज में मुख्य फ़ंक्शन, `readtext()`, डिस्क या URL से एक फ़ाइल या फाइलसेट लेकर, एक प्रकार का डेटाफ्रेम लौटाता है जिसका उपयोग सीधे `corpus()` कंस्ट्रक्टर फ़ंक्शन के साथ किया जा सकता है, ताकि एक **quanteda** कॉर्पस ऑब्जेक्ट बनाया जा सके।
+
+`readtext()` निम्नलिखित में से सभी पर काम करता है:
+    
+* टेक्स्ट (`.txt`) फ़ाइल;
+* कॉमा-सेपरेटेड-वैल्यू (`.csv`) फ़ाइल;
+* XML फॉर्मटेड डेटा;
+* JSON टाइप में Facebook API से लिया हुआ डेटा;
+* JSON टाइप में Twitter API से लिया हुआ डेटा; और
+* सामान्य JSON डेटा
+
+कॉर्पस कंस्ट्रक्टर कमांड `corpus()` निम्नलिखित में से सभी पर सीधा काम करता है:
+    
+* करैक्टर ऑब्जेक्ट्स का एक वेक्टर जिसे आप, उदाहरण के लिए, पहले से ही अन्य सधनों का उपयोग करके कार्यक्षेत्र में लोड कर चुके हैं।
+* **tm** पैकेज से एक `VCorpus` कॉर्पस ऑब्जेक्ट।
+* एक डेटाफ़्रेम जिसमें एक टेक्स्ट कॉलम और कोई अन्य डॉक्युमेंटेड मेटाडेटा है।
+
+### एक करैक्टर वेक्टर से एक कार्पस का निर्माण करने के निर्देश 
+
+सबसे सरल है आर की मेमरी में रखे हुए टेक्स्ट के वेक्टर से कॉर्पस बनाना। यह R के उन्नत उपयोगकर्ता को टेक्स्ट इनपुट्स चुनाव करने की पूरी आज़ादी देता है, क्योंकि इसमें टेक्स्ट के वेक्टर को प्राप्त करने के लगभग अंतहीन तरीके हैं।
+
+यदि हमारे पास पहले से ही इस रूप में टेक्स्ट हैं, तो हम सीधे कॉरपस कंस्ट्रक्टर फ़ंक्शन को कॉल कर सकते हैं। हम ब्रिटेन के राजनीतिक दलों के 2010 के चुनाव के घोषणापत्रं (`data_char_ukimmig2010`) से निकाला किया गया आव्रजन नीति के बारे में टेक्स्ट के बिल्ट इन करैक्टर ऑब्जेक्ट पर इसका प्रदर्शन कर सकते है।
+```{r}
+corp_uk <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
+summary(corp_uk)
+```
+
+हम कुछ डॉक्युमेंट लेवल वेरीअबल्ज़ - जिसे क्वांटेडा में *docvars* कहा गया है - इस कार्पस के साथ जोड़ सकते हैं 
+
+हम इसे ऐसे कर सकते हैं: R के `names()` फ़ंक्शन का उपयोग करके, हम `data_char_ukimmig2010` के कैरक्टर वेक्टर के नामों को पा सकते हैं और उन नामों को डॉक्युमेंट वेरीअबल (*docvar*) में रख सकते हैं। 
+
+```{r}
+docvars(corp_uk, "Party") <- names(data_char_ukimmig2010)
+docvars(corp_uk, "Year") <- 2010
+summary(corp_uk)
+```
+
+यदि हम प्रत्येक डॉक्युमेंट को अतिरिक्त मेटा-डेटा के साथ टैग करना चाहते हैं जो विश्लेषण के लिए ज़रूरी नहीं है, बल्कि कुछ ऐसा है जिसे हमें डॉक्युमेंट की विशेषता के रूप में जानने की आवश्यकता है, हम उन्हें भी अपने कार्पस में जोड़ सकते हैं।
+```{r}
+metadoc(corp_uk, "language") <- "english"
+metadoc(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
+summary(corp_uk, showmeta = TRUE)
+```
+
+अंतिम कमांड `metadoc`, आपको अपने डॉक्युमेंट के मेटा-डेटा फ़ील्ड को परिभाषित करने की सुविधा देता है। ध्यान दें कि `"english"` की सिंगल वैल्यू को असाइन करने के लिए, आर ने वैल्यू को तब तक रीसायकल किया है जब तक कि यह कॉर्पस में डॉक्युमेंट की संख्या से मेल नहीं खाता। हमारे कस्टम मेटाडॉक फ़ील्ड`docsource` के लिए एक सरल टैग बनाने में, हमने अपने कॉर्पस में डॉक्युमेंट की संख्या को प्राप्त करने के लिए क्वांटेडा फ़ंक्शन `ndoc()` का उपयोग किया है। इस फ़ंक्शन को उन कार्यों के समान काम करने के लिए डिज़ाइन किया गया है जो आप पहले से ही आर में उपयोग कर सकते हैं, जैसे कि `nrow()` और `ncol()`।
+
+### रीडटेक्सट पैकेज का उपयोग करके फ़ाइलों को लोड करने के लिए निर्देश
+
+```{r, eval=FALSE}
+require(readtext)
+
+# Twitter json
+dat_json <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+corp_twitter <- corpus(dat_json)
+summary(corp_twitter, 5)
+# generic json - needs a textfield specifier
+dat_sotu <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+                     textfield = "text")
+summary(corpus(dat_sotu), 5)
+# text file
+dat_txtone <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+summary(corpus(dat_txtone), 5)
+# multiple text files
+dat_txtmultiple1 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+summary(corpus(dat_txtmultiple1), 5)
+# multiple text files with docvars from filenames
+dat_txtmultiple2 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
+                             docvarsfrom = "filenames", sep = "-",
+                             docvarnames = c("Year", "President"))
+summary(corpus(dat_txtmultiple2), 5)
+# XML data
+dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
+                    textfield = "COMMON")
+summary(corpus(dat_xml), 5)
+# csv file
+write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural),
+                     docvars(data_corpus_inaugural)),
+          file = "/tmp/inaug_texts.csv", row.names = FALSE)
+dat_csv <- readtext("/tmp/inaug_texts.csv", textfield = "inaug_speech")
+summary(corpus(dat_csv), 5)
+```
+
+## क्वांटेड़ा कॉर्पस कैसे काम करता है :
+
+### कॉर्पस के नियम 
+
+एक कॉर्पस को ओरिज़िनल डॉक्युमेंट्स का "पुस्तकालय" बनाया गया है जिसे सादे, UTF-8 एन्कोडेड पाठ में बदल दिया गया है, और इसे कॉर्पस स्तर पर और डॉक्युमेंट लेवल पर मेटा-डेटा के साथ संग्रहीत किया गया है। हमारे पास डॉक्युमेंट लेवल मेटा-डेटा के लिए एक विशेष नाम है: *docvars*। ये वेरीअबल या फ़ीचर्ज़ हैं जो प्रत्येक डॉक्युमेंट की विशेषताओं का वर्णन करते हैं।
+
+कॉर्पस टेक्स्ट का लगभग स्थिर कंटेनर है, प्रॉसेसिंग और विश्लेषण के संबंध में। इस कंटेनर में टेक्स्ट को आंतरिक रूप से बदला नहीं जा सकता किसी पूर्व प्रॉसेसिंग के लिए जैसे की `,` जैसे चिन्हों को हटाने के लिए। बल्कि, टेक्स्ट को कॉर्पस से निकाला जा सकता है प्रॉसेसिंग के लिए और नए ऑब्जेक्ट में रखा जा सकता है। कॉर्पस के टेक्स्ट पे , बिना बदलाव किए, विश्लेषण किए सकते हैं - जैसे की वो पढ़ने में कितना आसान है। 
+
+एक कार्पस से टेक्स्ट को निकालने के लिए, हम `texts()` का उपयोग करते हैं।
+
+```{r}
+texts(data_corpus_inaugural)[2]
+```
+
+एक कार्पस से टेक्स्ट को संक्षेप में प्रस्तुत करने के लिए, हम एक कार्पस के लिए परिभाषित `summary()` मेथड का प्रयोग कर सकते हैं।
+
+```{r}
+summary(data_corpus_inaugural, n = 5)
+```
+
+हम समरी कमांड से डेटा फ्रेम के रूप में आउटपुट को सेव कर सकते हैं, और इस सूचना के साथ कुछ बुनियादी वर्णनात्मक आँकड़े प्लॉट कर सकते हैं:
+    
+```{r, fig.width = 8}
+tokeninfo <- summary(data_corpus_inaugural)
+if (require(ggplot2))
+    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
+    geom_line() +
+    geom_point() +
+    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
+    theme_bw()
+
+# Longest inaugural address: William Henry Harrison
+tokeninfo[which.max(tokeninfo$Tokens), ]
+```
+
+## कॉर्पस के ऑब्जेक्ट्स को हैंडल करने के तरीक़े
+
+### दो कॉर्पस ऑब्जेक्ट्स को योग करने के लिए निर्देश
+
+`+` ऑपरेटर दो कॉर्पस ऑब्जेक्ट्स को सरलता से जोड़ सकता है। यदि उन कॉर्पस आब्जेक्ट के पास डॉक्युमेंट-लेवल वेरिएबल के अलग-अलग सेट हैं, तो उन्हें एक साथ इस तरह से जोड़ जाएगा कि कोई भी जानकारी ना खो जाए। कॉर्पस-स्तर मेटा-डेटा भी जोड़ा जाता है।
+
+```{r}
+corp1 <- corpus(data_corpus_inaugural[1:5])
+corp2 <- corpus(data_corpus_inaugural[53:58])
+corp3 <- corp1 + corp2
+summary(corp3)
+```
+
+### कॉर्पस ऑब्जेक्ट का सबसेट करना
+
+कॉर्पस ऑब्जेक्ट के लिए परिभाषित `corpus_subset()` फ़ंक्शन में एक विधि है, जिससे एक नए कॉर्पस को *docvars* पर तार्किक स्थितियों को लागू करके निकाला जा सकता है:
+    
+    ```{r}
+summary(corpus_subset(data_corpus_inaugural, Year > 1990))
+summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
+```
+
+
+## कॉर्पस टेक्स्ट का अन्वेषण करना
+
+`kwic` फ़ंक्शन (कीवर्ड-इन-कॉन्टेक्स्ट) शब्दों को ढूँडता है और उन्हें उनके उचित संदर्भों में दिखाता है।  
+
+```{r, tidy=TRUE}
+kwic(data_corpus_inaugural, pattern = "terror")
+```
+
+```{r}
+kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
+```
+
+```{r}
+kwic(data_corpus_inaugural, pattern = "communist*")
+```
+
+`phrase()` का उपयोग करके हम बहु-शब्द इक्स्प्रेशन भी देख सकते हैं।
+
+```{r}
+kwic(data_corpus_inaugural, pattern = phrase("United States")) %>%
+    head() # show context of the first six occurrences of "United States"
+```
+
+
+उपरोक्त सारांश में,`Year` और `President` प्रत्येक डॉक्युमेंट में हैं। हम `docvars()` फंक्शन के साथ ऐसे वेरिएबल को एक्सेस कर सकते हैं।
+
+```{r}
+# inspect the document-level variables
+head(docvars(data_corpus_inaugural))
+
+# inspect the corpus-level metadata
+metacorpus(data_corpus_inaugural)
+```
+
+अधिक कॉर्पोरा [quanteda.corpora](http://github.com/quanteda/quanteda.corpora) पैकेज से उपलब्ध हैं।
+
+# कॉर्पस से फ़ीचर्ज़ निकालना
+
+डॉक्युमेंट स्केलिंग जैसे सांख्यिकीय विश्लेषण करने के लिए, हमें प्रत्येक डॉक्युमेंट के साथ कुछ विशेषताओं के लिए एक मैट्रिक्स से जुड़ी हुई वैल्यूज़ को निकालना होगा। क्वांटेडा में, हम ऐसे मैट्रिक्स का उत्पादन करने के लिए `dfm()` फ़ंक्शन का उपयोग करते हैं। "dfm" *document-feature matrix* के संक्षिप्त रूप है, और यह हमेशा डॉक्युमेंट को पंक्तियों के रूप में और "फ़ीचर्ज़" को कॉलम के रूप में संदर्भित करता है। हम इस आयामी अभिविन्यास को ठीक करते हैं क्योंकि यह डेटा विश्लेषण में मानक है कि विश्लेषण एक सिंगल रो के रूप में हो और प्रत्येक इकाई से संबंधित फ़ीचर्ज़ या वेरीअबल्ज़ कॉलम के रूप में हो। हम उन्हें टर्म्स के बजाय "फीचर्स" कहते हैं, क्योंकि फीचर्स टर्म्स की तुलना में अधिक व्यापक हैं: उन्हें रॉ वर्ड्स के रूप में परिभाषित किया जा सकता है, स्टेम वर्ड्स, स्पीच ऑफ़ टर्म्स के कुछ हिस्सों, स्टॉपवोर्ड्स को हटाने के बाद की टर्म्स, या टर्म्स जो शब्दकोश वर्ग से संबंधित है। फीचर्स पूरी तरह से व्यापक हो सकते हैं, जैसे कि एनग्राम या सिंटैक्टिक डिपेंडेन्सीज़ और हम इसे खुले-अंत से छोड़ देते हैं।
+
+## टेक्स्ट का टोकनैसेशन
+
+केवल एक टेक्स्ट को टोकनैस करने के लिए, क्वांटेडा एक शक्तिशाली कमांड प्रदान करता है जिसे `tokens()` कहा जाता है। यह एक मध्यवर्ती वस्तु का उत्पादन करता है, जिसमें करैक्टर वैक्टर के रूप में टोकन की एक सूची शामिल है, जहां सूची का प्रत्येक तत्व एक इनपुट दस्तावेज़ से मेल खाता है।
+
+`tokens()` टेक्स्ट से कुछ भी नहीं हटाता है जब तक ऐसा करने के लिए कहा नहीं जाता है।
+
+```{r}
+txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!",
+         text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
+tokens(txt)
+tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
+tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
+tokens(txt, remove_numbers = TRUE,  remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
+```
+
+हमारे पास करैक्टरों को tokenize करने का विकल्प भी है:
+    ```{r}
+tokens("Great website: http://textasdata.com?page=123.", what = "character")
+tokens("Great website: http://textasdata.com?page=123.", what = "character",
+       remove_separators = FALSE)
+```
+
+और वाक्यों का भी:
+    ```{r}
+# sentence level         
+tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
+         "Today is Thursday in Canberra:  It is yesterday in London.",
+         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"),
+       what = "sentence")
+```
+
+`tokens_compound()` के साथ, हम कई शब्दों से बने हुए इक्स्प्रेशन या वाक्य को सिंगल फ़ीचर के रूप में रख सकते हैं बाद के विश्लेषण के लिए।
+
+```{r}
+tokens("New York City is located in the United States.") %>%
+    tokens_compound(pattern = phrase(c("New York City", "United States")))
+```
+
+## डॉक्युमेंट-फ़ीचर मेट्रिक्स का निर्माण करना :
+
+टेक्स्ट को tokenize करना एक मध्यवर्ती स्टेप है , और ज़्यादातर users सीधे एक डॉक्युमेंट-फ़ीचर मेट्रिक्स का निर्माण करना चाहेंगे। इसके लिए हमारे पास एक फ़ंक्शन है - `dfm()`। यह फ़ंक्शन टेक्स्ट का tokenization करता है और उसमें से मिले हुए फ़ीचर्ज़ को डॉक्युमेंट्स के मेट्रिक्स में पंक्तियों और कॉलम में डाल देता है । `tokens()` फ़ंक्शन के तुलना में `dfm()` फ़ंक्शन कुछ विकल्प पहले से ही लागू कर देता है, जैसे की `tolower()` फ़ंक्शन, जो बड़े अंग्रेज़ी अक्षरों को छोटे अक्षरों में परिवर्तित कर देता है। `tokens()` फ़ंक्शन के सभी विकल्पों को `dfm()` फ़ंक्शन में पारित किया जा सकता है।
+
+```{r}
+corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
+
+# make a dfm
+dfmat_inaug_post1990 <- dfm(corp_inaug_post1990)
+dfmat_inaug_post1990[, 1:5]
+```
+
+`dfm()` के अन्य विकल्पों में स्टॉपवर्ड्स को हटाना और टोकन को स्टेम करना शामिल है।
+```{r}
+# make a dfm, removing stopwords and applying stemming
+dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990,
+                            remove = stopwords("english"),
+                            stem = TRUE, remove_punct = TRUE)
+dfmat_inaug_post1990[, 1:5]
+```
+
+`remove` नामक विकल्प, ऐसे टोकंज़ की सूची प्रदान करता है जिन्हें अनदेखा किया जा सकता है। काफ़ी users पूर्व-परिभाषित"स्टॉप वर्ड्स" की एक सूची देंगे, जो कई भाषाओं मे परिभाषित होंगे, और इन्हे हम `stopwords()` फ़ंक्शन के माध्यम से अभिगम कर सकते है:
+    ```{r}
+head(stopwords("en"), 20)
+head(stopwords("ru"), 10)
+head(stopwords("ar", source = "misc"), 10)
+```
+
+### डॉक्युमेंट-फ़ीचर मेट्रिक्स (dfm) को देखने के लिए: 
+
+Dfm को RStudio के एनवायरनमेंट पेन में या R के `View()` फ़ंक्शन को कॉल करके निरीक्षण किया जा सकता है। Dfm पर `textplot_wordcloud()` को कॉल करने से वर्डक्लाउड प्रदर्शित होगा।
+
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
+dfmat_uk <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+dfmat_uk
+```
+
+अक्सर आने वाले फीचर्स की एक सूची को ऐक्सेस करने के लिए, हम `topfeatures()` का उपयोग कर सकते हैं:
+    ```{r}
+topfeatures(dfmat_uk, 20) # 20 most frequent words
+```
+
+`dfm` क्लास ऑब्जेक्ट के लिए `textplot_wordcloud()` का उपयोग करके एक शब्द क्लाउड को प्लॉट किया जा सकता है। यह फ़ंक्शन **wordcloud ** पैकेज से `wordcloud()` में अरग्यूमेंट्स पास करता है और उन्ही अरग्यूमेंट्स का उपयोग करके प्लॉट को सँवारता भी है।
+
+```{r warning=FALSE, fig.width = 7, fig.height = 7}
+set.seed(100)
+textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
+                   rotation = .25,
+                   color = RColorBrewer::brewer.pal(8, "Dark2"))
+```
+
+### डॉक्युमेंट्स को ग्रूप करना डॉक्युमेंट वेरीअबल द्वारा 
+
+अक्सर, हम सिर्फ दस्तावेज़ फ़ाइलों की बौंडरीस के बजाय यह विश्लेषण करने में रुचि रखते हैं कि टेक्स्ट्स सब्सटांटिव कारकों - जो दस्तावेज़ चर में एन्कोड किया हुआ सकता है - के अनुसार कैसे अलग हो सकता है। dfm बनाते समय हम जिन दस्तावेज़ को समूह कर सकते है जो दस्तावेज़ चर के लिए समान मूल्य साझा करते हैं:
+    
+```{r}
+dfmat_pres <- dfm(tail(data_corpus_inaugural, 20), groups = "Party",
+                  remove = stopwords("english"), remove_punct = TRUE)
+```
+
+हम इस dfm को सॉर्ट कर सकते हैं, और इसका निरीक्षण कर सकते हैं:
+```{r}
+dfm_sort(dfmat_pres)
+```
+
+### शब्दों का समूहन शब्दकोश या समतुल्य क्लास द्वारा 
+
+कुछ ऐप्लिकेशनों के लिए हमारे पास उन शब्दों के सेट का पूर्व ज्ञान होता है जो हमें ऐसी विशेषताएँ को जानने में मदद करते हैं जिनको हम मापना चाहते हैं अपने टेक्स्ट में। उदाहरण के लिए, सकारात्मक शब्दों की एक सामान्य सूची एक फिल्म समीक्षा में सकारात्मक भावना का संकेत दे सकती है, या हमारे पास राजनीतिक शब्दों का एक शब्दकोष हो सकता है जो एक विशेष वैचारिक रुख से जुड़े हों। इन मामलों में, कभी-कभी विश्लेषण के लिए शब्दों के इन समूहो कोे समान समझना उपयोगी होता है, और इसलिए यहाँ क्लासेस में ऐसे शब्दों की गिनती को जोड़ दें।
+
+उदाहरण के लिए आइए देखें कि उद्घाटन भाषण कॉर्पस में, आतंकवाद से जुड़े शब्द और अर्थव्यवस्था से जुड़े शब्द, अलग अलग  राष्ट्रपति द्वारा भाषणों में कैसे भिन्न हैं। मूल कॉर्पस से, हमने क्लिंटन और उनके बाद हुए राष्ट्रपतियों का ही चयन किया है।
+
+```{r}
+corp_inaug_post1991 <- corpus_subset(data_corpus_inaugural, Year > 1991)
+```
+
+अब हम एक डेमोंस्ट्रेशन शब्दकोश को बनाते हैं :
+```{r}
+dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
+                        economy = c("jobs", "business", "grow", "work")))
+```
+
+
+
+हम dfm बनाते समय शब्दकोश का उपयोग कर सकते हैं:
+```{r}
+dfmat_inaug_post1991_dict <- dfm(corp_inaug_post1991, dictionary = dict)
+dfmat_inaug_post1991_dict
+```
+
+कंस्ट्रक्टर फ़ंक्शन `dictionary()` भी दो सामान्य "विदेशी" शब्दकोश प्रारूपों के साथ काम करता है: LIWC और प्रोवलिस रिसर्च वर्डस्टेट फॉर्मेट। उदाहरण के लिए, हम LIWC को लोड कर सकते हैं और इसे राष्ट्रपति के उद्घाटन भाषण पर लागू कर सकते हैं:
+    
+```{r, eval = FALSE}
+dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
+                       format = "LIWC")
+dfmat_inaug_subset <- dfm(data_corpus_inaugural[52:58], dictionary = dictliwc)
+dfmat_inaug_subset[, 1:10]
+```
+
+# अन्य उदाहरण
+
+## टेक्स्ट के बीच समानताएं
+
+```{r fig.width = 6}
+dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
+                            remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+tstat_obama <- textstat_simil(dfmat_inaug_post1980, 
+                              dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ], 
+                              margin = "documents", method = "cosine")
+tstat_obama
+# dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")
+```
+
+हम इन दूरियों का उपयोग करके एक डेंड्रोग्राम की प्लाटिंग कर सकते हैं, और राष्ट्रपतियों का क्लस्टर बना सकते हैं:
+```{r, fig.width = 10, fig.height = 7, eval = TRUE}
+data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
+                  stem = TRUE, remove_punct = TRUE,
+                  remove = stopwords("english"))
+dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
+
+# hierarchical clustering - get distances on normalized dfm
+tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
+# hiarchical clustering the distance object
+pres_cluster <- hclust(as.dist(tstat_dist))
+# label with document names
+pres_cluster$labels <- docnames(dfmat_sotu)
+# plot as a dendrogram
+plot(pres_cluster, xlab = "", sub = "",
+     main = "Euclidean Distance on Normalized Token Frequency")
+```
+
+हम टर्म समानताओं को भी देख सकते हैं:
+```{r}
+tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
+                            method = "cosine", margin = "features")
+lapply(as.list(tstat_sim), head, 10)
+```
+
+##डॉक्युमेंट पोज़िशन को स्केल करना 
+
+यहाँ 'अन्सूपर्वायज़्ड डॉक्युमेंट स्केलिंग' की तुलना की गयी है "वोर्डफ़िश" मॉडल से:
+```{r fig.width = 7, fig.height = 5}
+if (require("quanteda.textmodels")) {
+    dfmat_ire <- dfm(data_corpus_irishbudget2010)
+    tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
+    
+    # plot the Wordfish estimates by party
+    textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
+}
+```
+
+## टॉपिक मॉडल्स
+
+**quanteda** विषय मॉडल को भी फिट करना बहुत आसान बनाता है, e.g.:
+    
+```{r}
+quant_dfm <- dfm(data_corpus_irishbudget2010, 
+                 remove_punct = TRUE, remove_numbers = TRUE, 
+                 remove = stopwords("english"))
+quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
+quant_dfm
+
+set.seed(100)
+if (require("stm")) {
+    my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)
+    plot(my_lda_fit20)    
+}
+```

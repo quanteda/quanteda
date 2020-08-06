@@ -106,6 +106,14 @@ test_that("test textplot_wordcloud works for dfm objects", {
     expect_silent(textplot_wordcloud(mt))
 })
 
+test_that("test textplot_wordcloud works for keyness objects", {
+    tstat <- head(data_corpus_inaugural, 2) %>%
+        dfm(remove_punct = TRUE, remove = stopwords("en")) %>%
+        textstat_keyness(target = 1)
+    expect_silent(textplot_wordcloud(tstat, max_words = 50))
+    expect_silent(textplot_wordcloud(tstat, comparison = FALSE, max_words = 50))
+})
+
 test_that("test textplot_wordcloud comparison works", {
     skip_on_travis()
     skip_on_cran()
@@ -127,6 +135,28 @@ test_that("test textplot_wordcloud comparison works", {
     expect_silent(
         textplot_wordcloud(testdfm_grouped, ordered_color = FALSE)
     )
+    expect_error(
+        textplot_wordcloud(dfm(data_corpus_inaugural[1:9]), comparison = TRUE),
+        "Too many documents to plot comparison, use 8 or fewer documents"
+    )
+    
+    dfmsmall <- dfm(data_corpus_inaugural[1:9], groups = "President", remove = stopwords("en"), remove_punct = TRUE) %>%
+        dfm_trim(min_termfreq = 20)
+    expect_silent(textplot_wordcloud(dfmsmall, comparison = TRUE))
+    expect_silent(textplot_wordcloud(dfmsmall, color = 1:5))
+    expect_warning(
+        textplot_wordcloud(dfmsmall, scale = 1:4),
+        "scale is deprecated"
+    )
+    expect_warning(
+        textplot_wordcloud(dfmsmall, random.order = TRUE),
+        "random.order is deprecated; use random_order instead"
+    )
+    expect_warning(
+        textplot_wordcloud(dfmsmall, max.words = 10),
+        "max.words is deprecated; use max_words instead"
+    )
+    
     dev.off()
     expect_error(
         textplot_wordcloud(testdfm, comparison = TRUE),
@@ -144,70 +174,6 @@ test_that("test textplot_wordcloud raise deprecation message", {
 })
 
 
-test_that("test textplot_scale1d wordfish in the most basic way", {
-    wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6, 5))
-    expect_false(identical(textplot_scale1d(wf, sort = TRUE),
-                           textplot_scale1d(wf, sort = FALSE)))
-    expect_silent(textplot_scale1d(wf, sort = TRUE,
-                                   groups = docvars(data_corpus_irishbudget2010, "party")))
-    expect_silent(textplot_scale1d(wf, sort = FALSE,
-                                   groups = docvars(data_corpus_irishbudget2010, "party")))
-
-    expect_silent(
-        textplot_scale1d(wf, doclabels = apply(docvars(data_corpus_irishbudget2010,
-                                                       c("name", "party")),
-                                               1, paste, collapse = " "))
-    )
-
-    p1 <- textplot_scale1d(wf, margin = "features", sort = TRUE)
-    p2 <- textplot_scale1d(wf, margin = "features", sort = FALSE)
-    p1$plot_env <- NULL
-    p2$plot_env <- NULL
-    expect_equivalent(p1, p2)
-})
-
-test_that("test textplot_scale1d wordscores in the most basic way", {
-    mt <- dfm(data_corpus_irishbudget2010)
-    ws <- textmodel_wordscores(mt, c(rep(NA, 4), -1, 1, rep(NA, 8)))
-    pr <- suppressWarnings(predict(ws, mt, force = TRUE))
-
-    expect_false(identical(textplot_scale1d(pr, sort = TRUE),
-                           textplot_scale1d(pr, sort = FALSE)))
-    expect_silent(textplot_scale1d(pr, sort = TRUE,
-                                   groups = docvars(data_corpus_irishbudget2010, "party")))
-    expect_silent(textplot_scale1d(pr, sort = FALSE,
-                                   groups = docvars(data_corpus_irishbudget2010, "party")))
-
-    expect_silent(textplot_scale1d(pr, doclabels = apply(docvars(data_corpus_irishbudget2010,
-                                                                 c("name", "party")),
-                                                         1, paste, collapse = " ")))
-
-    p1 <- textplot_scale1d(ws, margin = "features", sort = TRUE)
-    p2 <- textplot_scale1d(ws, margin = "features", sort = FALSE)
-    p1$plot_env <- NULL
-    p2$plot_env <- NULL
-    expect_equivalent(p1, p2)
-
-    expect_error(
-        textplot_scale1d(ws, margin = "documents"),
-        "This margin can only be run on a predicted wordscores object"
-    )
-    expect_error(
-        suppressWarnings(textplot_scale1d(predict(ws), margin = "features")),
-        "This margin can only be run on a fitted wordscores object"
-    )
-})
-
-# test_that("test textplot_keyness ", {
-#     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
-#     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-#                    remove_punct = TRUE)
-#     result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
-#     
-#     # shows the correct statistic measure 
-#     p3 <- textplot_keyness(result, show_reference = TRUE)
-#     expect_equal(p3$labels$y, colnames(result)[2])
-# })
 
 test_that("test textplot_keyness: show_reference works correctly ", {
     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
@@ -237,13 +203,6 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     expect_silent(textplot_keyness(result, show_reference = TRUE,
                                    color = RColorBrewer::brewer.pal(6, "Dark2")))
 
-})
-
-test_that("test textplot_affinity", {
-    af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
-    afpred <- predict(af)
-    expect_silent(textplot_influence(influence(afpred)))
-    expect_silent(textplot_influence(summary(influence(afpred))))
 })
 
 test_that("multiple patterns display correctly in textplot_kwic", {
@@ -317,3 +276,11 @@ test_that("phrasal patterns display correctly in textplot_kwic", {
 })
 
 dev.off()
+
+test_that("plotting empty dfms after trimming is caught (#1755)", {
+    dfmat <- dfm(c("Azymuth", "Compass", "GPS", "Zenith"))
+    expect_error(
+        textplot_wordcloud(dfmat, min_count = 2),
+        "No features left after trimming with min_count = 2"
+    )
+})

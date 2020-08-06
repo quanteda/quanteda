@@ -4,12 +4,21 @@
 \alias{textplot_keyness}
 \title{Plot word keyness}
 \usage{
-textplot_keyness(x, show_reference = TRUE, show_legend = TRUE,
-  n = 20L, min_count = 2L, margin = 0.05, color = c("darkblue",
-  "gray"), labelcolor = "gray30", labelsize = 4, font = NULL)
+textplot_keyness(
+  x,
+  show_reference = TRUE,
+  show_legend = TRUE,
+  n = 20L,
+  min_count = 2L,
+  margin = 0.05,
+  color = c("darkblue", "gray"),
+  labelcolor = "gray30",
+  labelsize = 4,
+  font = NULL
+)
 }
 \arguments{
-\item{x}{a return object from \code{\link{textstat_keyness}}}
+\item{x}{a return object from \code{\link[=textstat_keyness]{textstat_keyness()}}}
 
 \item{show_reference}{logical; if \code{TRUE}, show key reference features in
 addition to key target features}
@@ -25,12 +34,12 @@ and reference categories, for a feature to be included in the plot}
 
 \item{color}{character or integer; colors of bars for target and reference documents.
 \code{color} must have two elements when \code{show_reference = TRUE}.  See
-\link[ggplot2]{color}.}
+\link[ggplot2:aes_colour_fill_alpha]{ggplot2::color}.}
 
 \item{labelcolor}{character; color of feature labels.}
 
 \item{labelsize}{numeric; size of feature labels and bars.  See
-\link[ggplot2]{size}.}
+\link[ggplot2:aes_linetype_size_shape]{ggplot2::size}.}
 
 \item{font}{character; font-family of texts. Use default font if \code{NULL}.}
 }
@@ -40,7 +49,7 @@ a \pkg{ggplot2} object
 \description{
 Plot the results of a "keyword" of features comparing their differential
 associations with a target and a reference group, after calculating keyness
-using \code{\link{textstat_keyness}}.
+using \code{\link[=textstat_keyness]{textstat_keyness()}}.
 }
 \examples{
 # compare Trump speeches to other Presidents by chi^2
@@ -63,7 +72,7 @@ textplot_keyness(tstat2, color = c("blue", "red"), n = 10)
 
 }
 \seealso{
-\code{\link{textstat_keyness}}
+\code{\link[=textstat_keyness]{textstat_keyness()}}
 }
 \author{
 Haiyan Wang and Kohei Watanabe

@@ -8,21 +8,29 @@
 
 <title>Identify and score multi-word expressions — textstat_collocations • quanteda</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,17 +39,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Identify and score multi-word expressions — textstat_collocations" />
 
+<meta property="og:title" content="Identify and score multi-word expressions — textstat_collocations" />
 <meta property="og:description" content="Identify and score multi-word expressions, or adjacent fixed-length collocations, from text." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -65,9 +73,10 @@
   gtag('config', 'UA-144616-24');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -81,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -105,6 +114,9 @@
     </li>
     <li>
       <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
     </li>
   </ul>
 </li>
@@ -172,7 +184,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
@@ -182,7 +193,7 @@
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -193,27 +204,33 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Identify and score multi-word expressions</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/textstat_collocations.R'><code>R/textstat_collocations.R</code></a></small>
     <div class="hidden name"><code>textstat_collocations.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>textstat_collocations</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)
 
 <span class='fu'>is.collocations</span>(<span class='no'>x</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -222,14 +239,14 @@
       <td><p>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object whose
 collocations will be scored.  The tokens object should include punctuation,
 and if any words have been removed, these should have been removed with
-<code>padding = TRUE</code>.  While identifying collocations for tokens objects is 
+<code>padding = TRUE</code>.  While identifying collocations for tokens objects is
 supported, you will get better results with character or corpus objects due
-to relatively imperfect detection of sentence boundaries from texts already 
+to relatively imperfect detection of sentence boundaries from texts already
 tokenized.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>association measure for detecting collocations. Currently this 
+      <td><p>association measure for detecting collocations. Currently this
 is limited to <code>"lambda"</code>.  See Details.</p></td>
     </tr>
     <tr>
@@ -252,34 +269,33 @@ to be scored</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens</a></code>, if <code>x</code>
+      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens()</a></code>, if <code>x</code>
 is not a <a href='tokens.html'>tokens</a> object already</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>textstat_collocations</code> returns a data.frame of collocations and
-  their scores and statistics. This consists of the collocations, their
-  counts, length, and \(\lambda\) and \(z\) statistics.  When <code>size</code>
-  is a vector, then <code>count_nested</code> counts the lower-order collocations
-  that occur within a higher-order collocation (but this does not affect the
-  statistics).</p>
+their scores and statistics. This consists of the collocations, their
+counts, length, and \(\lambda\) and \(z\) statistics.  When <code>size</code>
+is a vector, then <code>count_nested</code> counts the lower-order collocations
+that occur within a higher-order collocation (but this does not affect the
+statistics).</p>
 <p><code>is.collocation</code> returns <code>TRUE</code> if the object is of class
-  <code>collocations</code>, <code>FALSE</code> otherwise.</p>
-    
+<code>collocations</code>, <code>FALSE</code> otherwise.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Documents are grouped for the purposes of scoring, but collocations will not span sentences.
 If <code>x</code> is a <a href='tokens.html'>tokens</a> object and some tokens have been removed, this should be done
-using <code><a href='tokens_select.html'>tokens_remove</a>(x, pattern, padding = TRUE)</code> so that counts will still be
+using <code>[tokens_remove](x, pattern, padding = TRUE)</code> so that counts will still be
 accurate, but the pads will prevent those collocations from being scored.</p>
-    <p>The <code>lambda</code> computed for a size = \(K\)-word target multi-word
+<p>The <code>lambda</code> computed for a size = \(K\)-word target multi-word
 expression the coefficient for the  \(K\)-way interaction parameter in the
 saturated log-linear model fitted to the counts of the terms forming the set
 of eligible multi-word expressions. This is the same as the "lambda" computed
 in Blaheta and Johnson's (2001), where all multi-word expressions are
-considered (rather than just verbs, as in that paper). The <code>z</code> is the 
+considered (rather than just verbs, as in that paper). The <code>z</code> is the
 Wald \(z\)-statistic computed as the quotient of <code>lambda</code> and the Wald
 statistic for <code>lambda</code> as described below.</p>
 <p>In detail:</p>
@@ -302,23 +318,19 @@ loglinear model fitted to the \(n_{i}\). It can be calculated as</p>
 equal to 1.</p>
 <p>Wald test \(z\)-statistic \(z\) is calculated as:</p>
 <p>$$z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}$$</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This function is under active development, with more measures to be added in the 
+    <p>This function is under active development, with more measures to be added in the
 the next release of <span class="pkg">quanteda</span>.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Blaheta, D. &amp; Johnson, M. (2001). 
-  <a href='http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf'>Unsupervised
-  learning of multi-word verbs</a>. Presented at the ACLEACL Workshop on the 
-  Computational Extraction, Analysis and Exploitation of Collocations.</p>
-    
+    <p>Blaheta, D. &amp; Johnson, M. (2001).
+<a href='http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf'>Unsupervised learning of multi-word verbs</a>. Presented at the ACLEACL Workshop on the
+Computational Extraction, Analysis and Exploitation of Collocations.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>corp</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    collocation count count_nested length   lambda        z
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>corp</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    collocation count count_nested length   lambda        z
 #&gt; 1    have been     5            0      2 5.704259 7.354588
 #&gt; 2     has been     3            0      2 5.565217 6.409333
 #&gt; 3       of the    24            0      2 1.673501 6.382475
@@ -328,7 +340,7 @@ the next release of <span class="pkg">quanteda</span>.</p>
 #&gt; 7    less than     2            0      2 6.279494 5.529680
 #&gt; 8  public good     2            0      2 6.279494 5.529680
 #&gt; 9     you will     2            0      2 4.917893 5.431752
-#&gt; 10      may be     3            0      2 4.190711 5.328038</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>corp</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count count_nested length    lambda         z
+#&gt; 10      may be     3            0      2 4.190711 5.328038</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>corp</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count count_nested length    lambda         z
 #&gt; 1       of which the     2            0      3 6.1259648 2.8317522
 #&gt; 2         in which i     3            0      3 2.1689288 1.1741918
 #&gt; 3          i have in     2            0      3 2.3809129 1.0618774
@@ -341,15 +353,15 @@ the next release of <span class="pkg">quanteda</span>.</p>
 #&gt; 10 the united states     2            0      3 1.2597834 0.4272349</div><div class='input'>
 <span class='co'># extracting multi-part proper nouns (capitalized terms)</span>
 <span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks1</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks2</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
                        <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>tstat</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>toks3</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>tstat</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              collocation count count_nested length     lambda         z
-#&gt; 1 United States Congress     2            0      3  -2.152404 -1.014623
-#&gt; 2    Vice President Bush     2            0      3 -11.582818 -4.471125</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>tstat</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              collocation count count_nested length     lambda         z
+#&gt; 1 United States Congress     2            0      3  -2.149876 -1.013431
+#&gt; 2    Vice President Bush     2            0      3 -11.580297 -4.470152</div><div class='input'>
 <span class='co'># vectorized size</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>". . . . a b c . . a b c . . . c d e"</span>,
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>". . . . a b c . . a b c . . . c d e"</span>,
          <span class='st'>"a b . . a b . . a b . . a b . a b"</span>,
          <span class='st'>"b c d . . b c . b c . . . b c"</span>)
 <span class='fu'>textstat_collocations</span>(<span class='no'>txt</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt;   collocation count count_nested length        lambda             z
@@ -359,35 +371,23 @@ the next release of <span class="pkg">quanteda</span>.</p>
 #&gt; 4       a b c     2            0      3 -1.110223e-16 -3.103168e-17</div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Patrick O. Perry, Jouni Kuha, Benjamin Lauderdale, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
@@ -410,6 +410,8 @@ the next release of <span class="pkg">quanteda</span>.</p>
 </script>
 
 
+
   </body>
 </html>
+
 
