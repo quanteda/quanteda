@@ -21,7 +21,7 @@
 #'   defaults, for instance to apply the Williams correction to the chi2
 #'   measure.  Specifying a correction for the `"exact"` and `"pmi"`
 #'   measures has no effect and produces a warning.
-#' @param old if `TRUE` use old R code
+#' @param ... not used
 #' @references Bondi, M. & Scott, M. (eds) (2010). *Keyness in
 #'   Texts*. Amsterdam, Philadelphia: John Benjamins.
 #'
@@ -70,7 +70,7 @@ textstat_keyness <- function(x, target = 1L,
                              measure = c("chi2", "exact", "lr", "pmi"),
                              sort = TRUE,
                              correction = c("default", "yates", "williams", "none"),
-                             old = FALSE) {
+                             ...) {
     UseMethod("textstat_keyness")
 }
 
@@ -79,7 +79,7 @@ textstat_keyness.default <- function(x, target = 1L,
                                      measure = c("chi2", "exact", "lr", "pmi"),
                                      sort = TRUE,
                                      correction = c("default", "yates", "williams", "none"),
-                                     old = FALSE) {
+                                     ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_keyness"))
 }
 
@@ -139,20 +139,21 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
             result <- keyness_lr(temp, correction)
         } else if (measure == "exact") {
             if (!correction %in% c("default", "none"))
-                warning("correction is always none for measure exact")
+                warning("correction is always none for exact")
             result <- keyness_exact(temp)
         } else if (measure == "pmi") {
             if (!correction %in% c("default", "none"))
-                warning("correction is always none for measure pmi")
+                warning("correction is always none for pmi")
             result <- keyness_pmi(temp)
-        } else {
-            stop(measure, " not yet implemented for textstat_keyness")
-        } 
+        }
     } else {
         if (measure == "exact") {
-            warning("No exact test MT implementation: defaulting to single threaded R code")
+            if (measure == "exact" && !correction %in% c("default", "none"))
+                warning("correction is always none for exact")
             result <- keyness_exact(temp)
         } else {
+            if (measure == "pmi" && !correction %in% c("default", "none"))
+                warning("correction is always none for pmi")
             result <- data.frame(
                 feature = featnames(temp), 
                 stat = qatd_cpp_keyness(temp, measure, correction),
