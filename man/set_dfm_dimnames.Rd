@@ -31,8 +31,8 @@ methods to set the dimnames of a dfm or fcm object.
 }
 \examples{
 dfmat <- dfm(c("a a b b c", "b b b c"))
-quanteda:::set_dfm_featnames(dfmat) <- paste0("feature", 1:3)
-quanteda:::set_dfm_docnames(dfmat) <- paste0("DOC", 1:2)
-quanteda:::set_dfm_dimnames(dfmat) <- list(c("docA", "docB"), LETTERS[1:3])
+quanteda.core:::set_dfm_featnames(dfmat) <- paste0("feature", 1:3)
+quanteda.core:::set_dfm_docnames(dfmat) <- paste0("DOC", 1:2)
+quanteda.core:::set_dfm_dimnames(dfmat) <- list(c("docA", "docB"), LETTERS[1:3])
 }
 \keyword{internal}

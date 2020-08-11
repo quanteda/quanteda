@@ -19,7 +19,7 @@ dict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
                           SUBKEY4 = c("G", "F", "I")),
               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-quanteda:::lowercase_dictionary_values(dict)
+quanteda.core:::lowercase_dictionary_values(dict)
 }
 \keyword{dictionary}
 \keyword{internal}

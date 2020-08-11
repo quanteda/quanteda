@@ -183,7 +183,7 @@ escape_regex <- function(x) {
 #' @keywords internal
 #' @examples
 #' # as.tokens.default <- function(x, concatenator = "", ...) {
-#' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
+#' #     stop(quanteda.core:::friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
 friendly_class_undefined_message <- function(object_class, function_name) {
     valid_object_types <-
@@ -281,10 +281,10 @@ message_error <- function(key = NULL) {
 #' @examples
 #' set.seed(100)
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
+#' quanteda.core:::sample_bygroup(1:10, group = grvec, replace = FALSE)
+#' quanteda.core:::sample_bygroup(1:10, group = grvec, replace = TRUE)
+#' quanteda.core:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
+#' quanteda.core:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
 sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
     if (length(x) != length(group))
         stop("group not equal in length of x")

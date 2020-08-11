@@ -17,6 +17,6 @@ dict <- list("A" = list(AA = list("aaaaa"), "a"),
              "B" = list("b"),
              "C" = list("c"),
              "A" = list("aa"))
-quanteda:::merge_dictionary_values(dict)
+quanteda.core:::merge_dictionary_values(dict)
 }
 \keyword{internal}

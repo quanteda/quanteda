@@ -190,7 +190,7 @@ search_fixed_multi <- function(patterns, types_search, index) {
 #' @export
 #' @examples
 #' index <- index_types(c("xxx", "yyyy", "ZZZ"), "glob", FALSE, 3)
-#' quanteda:::search_glob("yy*", attr(index, "type_search"), index)
+#' quanteda.core:::search_glob("yy*", attr(index, "type_search"), index)
 index_types <- function(types, valuetype, case_insensitive, max_len = NULL) {
 
     if (is.null(types)) stop("types cannot be NULL")
@@ -286,7 +286,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL) {
 #' @param elem list of elements to be combined
 #' @keywords internal
 #' @examples
-#' quanteda:::expand(list(c("a", "b", "c"), c("x", "y")))
+#' quanteda.core:::expand(list(c("a", "b", "c"), c("x", "y")))
 expand <- function(elem){
     m <- prod(lengths(elem))
     comb <- vector("list", m)

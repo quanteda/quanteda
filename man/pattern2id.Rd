@@ -79,6 +79,6 @@ pattern <- list(c("^a$", "^b"), c("c"), c("d"))
 types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
 pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
 index <- index_types(c("xxx", "yyyy", "ZZZ"), "glob", FALSE, 3)
-quanteda:::search_glob("yy*", attr(index, "type_search"), index)
+quanteda.core:::search_glob("yy*", attr(index, "type_search"), index)
 }
 \keyword{internal}

@@ -105,9 +105,9 @@ corpus.default <- function(x, ...) {
 
 #' @rdname corpus
 #' @export
-corpus.corpus <- function(x, docnames = quanteda::docnames(x),
-                          docvars = quanteda::docvars(x),
-                          meta = quanteda::meta(x), ...) {
+corpus.corpus <- function(x, docnames = quanteda.core::docnames(x),
+                          docvars = quanteda.core::docvars(x),
+                          meta = quanteda.core::meta(x), ...) {
     x <- as.corpus(x)
     result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, ...)
     meta_system(result, "source") <- "corpus"

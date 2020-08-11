@@ -13,9 +13,9 @@ corpus(x, ...)
 
 \method{corpus}{corpus}(
   x,
-  docnames = quanteda::docnames(x),
-  docvars = quanteda::docvars(x),
-  meta = quanteda::meta(x),
+  docnames = quanteda.core::docnames(x),
+  docvars = quanteda.core::docvars(x),
+  meta = quanteda.core::meta(x),
   ...
 )
 

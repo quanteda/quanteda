@@ -16,9 +16,9 @@ Utility function to generate a nested list
 }
 \examples{
 lis <- list("A" = c("a", "aa", "aaa"), "B" = c("b", "bb"), "C" = c("c", "cc"), "D" = c("ddd"))
-dict <- quanteda:::list2dictionary(lis)
-quanteda:::nest_dictionary(dict, c(1, 1, 2, 2))
-quanteda:::nest_dictionary(dict, c(1, 2, 1, 2))
+dict <- quanteda.core:::list2dictionary(lis)
+quanteda.core:::nest_dictionary(dict, c(1, 1, 2, 2))
+quanteda.core:::nest_dictionary(dict, c(1, 2, 1, 2))
 
 }
 \keyword{internal}

@@ -570,7 +570,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
 #'                           SUBKEY4 = c("G", "F", "I")),
 #'               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #'                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-#' quanteda:::lowercase_dictionary_values(dict)
+#' quanteda.core:::lowercase_dictionary_values(dict)
 lowercase_dictionary_values <- function(dict) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
@@ -595,7 +595,7 @@ lowercase_dictionary_values <- function(dict) {
 #'                           SUBKEY4 = list("G_F_I")),
 #'               KEY3 = list(SUBKEY5 = list(SUBKEY7 = list("J_K")),
 #'                           SUBKEY6 = list(SUBKEY8 = list("L"))))
-#' quanteda:::replace_dictionary_values(dict, "_", " ")
+#' quanteda.core:::replace_dictionary_values(dict, "_", " ")
 replace_dictionary_values <- function(dict, from, to) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
@@ -618,7 +618,7 @@ replace_dictionary_values <- function(dict, from, to) {
 #'              "B" = list("b"),
 #'              "C" = list("c"),
 #'              "A" = list("aa"))
-#' quanteda:::merge_dictionary_values(dict)
+#' quanteda.core:::merge_dictionary_values(dict)
 merge_dictionary_values <- function(dict) {
     name <- names(dict)
     if (is.null(name)) return(dict)
@@ -681,7 +681,7 @@ NULL
 #' @importFrom stringi stri_read_lines stri_trim_both
 #' @keywords dictionary internal
 #' @examples
-#' dict <- quanteda:::read_dict_lexicoder(
+#' dict <- quanteda.core:::read_dict_lexicoder(
 #'     system.file("extdata", "LSD2015.lc3", package = "quanteda")
 #' )
 #'
@@ -705,7 +705,7 @@ read_dict_lexicoder <- function(path) {
 #' @examples
 #'
 #' \dontrun{
-#' dict <- quanteda:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
+#' dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
@@ -771,9 +771,9 @@ remove_empty_keys <- function(dict) {
 #' @keywords internal
 #' @examples
 #' lis <- list("A" = c("a", "aa", "aaa"), "B" = c("b", "bb"), "C" = c("c", "cc"), "D" = c("ddd"))
-#' dict <- quanteda:::list2dictionary(lis)
-#' quanteda:::nest_dictionary(dict, c(1, 1, 2, 2))
-#' quanteda:::nest_dictionary(dict, c(1, 2, 1, 2))
+#' dict <- quanteda.core:::list2dictionary(lis)
+#' quanteda.core:::nest_dictionary(dict, c(1, 1, 2, 2))
+#' quanteda.core:::nest_dictionary(dict, c(1, 2, 1, 2))
 #'
 nest_dictionary <- function(dict, depth) {
     if (length(dict) != length(depth))
@@ -803,7 +803,7 @@ nest_dictionary <- function(dict, depth) {
 #' stri_read_lines stri_extract_first_regex
 #' @examples
 #'
-#' dict <- quanteda:::read_dict_liwc(
+#' dict <- quanteda.core:::read_dict_liwc(
 #'     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
 #' )
 read_dict_liwc <- function(path, encoding = "auto") {
@@ -884,7 +884,7 @@ read_dict_liwc <- function(path, encoding = "auto") {
 #'   `.ykd` format.
 #' @examples
 #'
-#' dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
+#' dict <- quanteda.core:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
 #'                                                     package = "quanteda"))
 read_dict_yoshikoder <- function(path) {
     xml <- xml2::read_xml(path)

@@ -83,7 +83,7 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
 #'        sparsity(dfm(data_corpus_inaugural)),
 #'        .12312431242134)
 #' for (i in s) 
-#'     print(paste0(format(i, width = 10),  ":  ", quanteda:::format_sparsity(i)))
+#'     print(paste0(format(i, width = 10),  ":  ", quanteda.core:::format_sparsity(i)))
 #' print(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.9999)))
 #' print(as.dfm(Matrix::rsparsematrix(10000, 10000, density = 0.00001)))
 #' @keywords internal

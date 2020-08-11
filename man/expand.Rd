@@ -13,6 +13,6 @@ expand(elem)
 Simpler and faster version of expand.grid() in base package
 }
 \examples{
-quanteda:::expand(list(c("a", "b", "c"), c("x", "y")))
+quanteda.core:::expand(list(c("a", "b", "c"), c("x", "y")))
 }
 \keyword{internal}

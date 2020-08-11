@@ -60,11 +60,11 @@ using vectorized computation
 \examples{
 dfmat <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                d2 = "a a b c c d d d d e f h"))
-quanteda:::keyness_chi2_dt(dfmat)
-quanteda:::keyness_chi2_stats(dfmat)
-quanteda:::keyness_exact(dfmat)
-quanteda:::keyness_lr(dfmat)
-quanteda:::keyness_pmi(dfmat)
+quanteda.core:::keyness_chi2_dt(dfmat)
+quanteda.core:::keyness_chi2_stats(dfmat)
+quanteda.core:::keyness_exact(dfmat)
+quanteda.core:::keyness_lr(dfmat)
+quanteda.core:::keyness_pmi(dfmat)
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}

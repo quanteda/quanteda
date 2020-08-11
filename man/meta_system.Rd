@@ -50,7 +50,7 @@ Sets or initializes system metadata for new objects.
 }
 \examples{
 corp <- corpus(c(d1 = "one two three", d2 = "two three four"))
-# quanteda:::`meta_system<-`(corp, value = quanteda:::meta_system_defaults("example"))
-quanteda:::meta_system(corp)
+# quanteda.core:::`meta_system<-`(corp, value = quanteda.core:::meta_system_defaults("example"))
+quanteda.core:::meta_system(corp)
 }
 \keyword{internal}

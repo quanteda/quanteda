@@ -39,24 +39,24 @@ Internal functions to import dictionary files in a variety of formats
 \code{.ykd} format.
 }
 \examples{
-dict <- quanteda:::read_dict_lexicoder(
+dict <- quanteda.core:::read_dict_lexicoder(
     system.file("extdata", "LSD2015.lc3", package = "quanteda")
 )
 
 
 \dontrun{
-dict <- quanteda:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
+dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
 #                            encoding = "iso-8859-1")
 }
 
-dict <- quanteda:::read_dict_liwc(
+dict <- quanteda.core:::read_dict_liwc(
     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
 )
 
-dict <- quanteda:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
+dict <- quanteda.core:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
                                                     package = "quanteda"))
 }
 \keyword{dictionary}

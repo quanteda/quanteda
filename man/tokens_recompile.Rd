@@ -31,12 +31,12 @@ toks1 <- tokens(c(one = "a b c d A B C D",
                  two = "A B C d"))
 attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
 unclass(toks1)
-unclass(quanteda:::tokens_recompile(toks1))
+unclass(quanteda.core:::tokens_recompile(toks1))
 
 # stemming
 toks2 <- tokens("Stemming stemmed many word stems.")
 unclass(toks2)
-unclass(quanteda:::tokens_recompile(tokens_wordstem(toks2)))
+unclass(quanteda.core:::tokens_recompile(tokens_wordstem(toks2)))
 
 # compounding
 toks3 <- tokens("One two three four.")

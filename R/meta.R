@@ -147,8 +147,8 @@ metacorpus <- meta
 #' @keywords internal
 #' @examples
 #' corp <- corpus(c(d1 = "one two three", d2 = "two three four"))
-#' # quanteda:::`meta_system<-`(corp, value = quanteda:::meta_system_defaults("example"))
-#' quanteda:::meta_system(corp)
+#' # quanteda.core:::`meta_system<-`(corp, value = quanteda.core:::meta_system_defaults("example"))
+#' quanteda.core:::meta_system(corp)
 meta_system <- function(x, field = NULL)
     meta(x, field = field, type = "system")
 

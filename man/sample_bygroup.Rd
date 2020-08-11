@@ -27,9 +27,9 @@ Return a sample from a vector within a grouping variable.
 \examples{
 set.seed(100)
 grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
-quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
-quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
-quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
+quanteda.core:::sample_bygroup(1:10, group = grvec, replace = FALSE)
+quanteda.core:::sample_bygroup(1:10, group = grvec, replace = TRUE)
+quanteda.core:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
+quanteda.core:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
 }
 \keyword{internal}
