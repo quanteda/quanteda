@@ -10,7 +10,7 @@ textstat_keyness(
   measure = c("chi2", "exact", "lr", "pmi"),
   sort = TRUE,
   correction = c("default", "yates", "williams", "none"),
-  old = FALSE
+  ...
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ defaults, for instance to apply the Williams correction to the chi2
 measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"}
 measures has no effect and produces a warning.}
 
-\item{old}{if \code{TRUE} use old R code}
+\item{...}{not used}
 }
 \value{
 a data.frame of computed statistics and associated p-values, where
