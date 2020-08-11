@@ -63,7 +63,7 @@ test_that("read a dictionary with NA as a key", {
 })
 
 test_that("as.yaml is working", {
-    expect_equivalent(quanteda::as.yaml(marydict),
+    expect_equivalent(quanteda.core::as.yaml(marydict),
                       "A CATEGORY:\n  - more\n  - lamb\n  - little\nANOTHER CATEGORY:\n  - had\n  - mary\n")
 })
 

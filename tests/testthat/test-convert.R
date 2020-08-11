@@ -72,7 +72,7 @@ test_that("test tm package converter", {
     # expect_equivalent(dtmq, dfmtm)
     expect_equivalent(as.matrix(dtmq), as.matrix(dtmtm))
 
-    expect_identical(convert(d, to = "tm"), quanteda::as.DocumentTermMatrix(d))
+    expect_identical(convert(d, to = "tm"), quanteda.core::as.DocumentTermMatrix(d))
 })
 
 test_that("test lda package converter", {
@@ -86,7 +86,7 @@ test_that("test topicmodels package converter", {
 })
 
 test_that("test austin package converter", {
-    expect_identical(convert(d, to = "austin"), quanteda::as.wfm(d))
+    expect_identical(convert(d, to = "austin"), quanteda.core::as.wfm(d))
 })
 
 test_that("test lsa converter", {
