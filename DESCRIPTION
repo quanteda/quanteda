@@ -19,7 +19,6 @@ Depends:
     methods
 Imports:
     fastmatch,
-    jsonlite,
     magrittr,
     Matrix (>= 1.2),
     Rcpp (>= 0.12.12),
@@ -31,9 +30,7 @@ Imports:
     proxyC (>= 0.1.4),
     digest,
     stopwords,
-    data.table,
-    lsa,
-    slam
+    data.table
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     e1071,
@@ -48,7 +45,20 @@ Suggests:
     tokenizers,
     knitr,
     network,
-    igraph
+    igraph,
+    dplyr,
+    purrr,
+    stm,
+    svs,
+    lda,
+    lsa,
+    slam,
+    jsonlite,
+    quanteda,
+    text2vec,
+    topicmodels,
+    tibble,
+    tidytext
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
@@ -111,7 +121,6 @@ Collate:
     'stopwords.R'
     'summary.R'
     'textmodel.R'
-    'textstat-methods.R'
     'textstat_collocations.R'
     'textstat_entropy.R'
     'textstat_keyness.R'
