@@ -96,22 +96,22 @@ test_that("pattern2list is working with empty patterns", {
     expect_silent(quanteda.core:::pattern2list(pat, types(toks), "fixed", TRUE))
 })
 
-test_that("get_package_version works", {
-    load("../data/pre_v2_objects/data_corpus_pre2.rda")
-    expect_true(quanteda.core:::get_object_version(data_corpus_pre2) == "1.4.0")
-    expect_true(quanteda.core:::is_pre2(data_corpus_pre2))
-    expect_true(quanteda.core:::get_object_version(corpus("one")) > "1.4.9")
-    
-    load("../data/pre_v2_objects/data_tokens_pre2.rda")
-    expect_true(quanteda.core:::get_object_version(data_tokens_pre2) == "1.4.0")
-    expect_true(quanteda.core:::is_pre2(data_tokens_pre2))
-    expect_true(quanteda.core:::get_object_version(tokens("one")) > "1.4.9")
-    
-    load("../data/pre_v2_objects/data_dfm_pre2.rda")
-    expect_true(quanteda.core:::get_object_version(data_dfm_pre2) == "1.4.0")
-    expect_true(quanteda.core:::is_pre2(data_dfm_pre2))
-    expect_true(quanteda.core:::get_object_version(dfm("one")) > "1.4.9")
-})
+# test_that("get_package_version works", {
+#     load("../data/pre_v2_objects/data_corpus_pre2.rda")
+#     expect_true(quanteda.core:::get_object_version(data_corpus_pre2) == "1.4.0")
+#     expect_true(quanteda.core:::is_pre2(data_corpus_pre2))
+#     expect_true(quanteda.core:::get_object_version(corpus("one")) > "1.4.9")
+#     
+#     load("../data/pre_v2_objects/data_tokens_pre2.rda")
+#     expect_true(quanteda.core:::get_object_version(data_tokens_pre2) == "1.4.0")
+#     expect_true(quanteda.core:::is_pre2(data_tokens_pre2))
+#     expect_true(quanteda.core:::get_object_version(tokens("one")) > "1.4.9")
+#     
+#     load("../data/pre_v2_objects/data_dfm_pre2.rda")
+#     expect_true(quanteda.core:::get_object_version(data_dfm_pre2) == "1.4.0")
+#     expect_true(quanteda.core:::is_pre2(data_dfm_pre2))
+#     expect_true(quanteda.core:::get_object_version(dfm("one")) > "1.4.9")
+# })
 
 test_that("sample_bygroup works with sizes", {
     grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))

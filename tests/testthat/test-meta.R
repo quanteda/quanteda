@@ -55,17 +55,17 @@ test_that("meta.default produces expected error", {
     )
 })
 
-test_that("meta works correctly on pre-v2 objects", {
-    load("../data/pre_v2_objects/data_corpus_pre2.rda")
-    load("../data/pre_v2_objects/data_tokens_pre2.rda")
-    load("../data/pre_v2_objects/data_dfm_pre2.rda")
-    expect_identical(
-        names(meta(data_corpus_pre2)),
-        c("source", "notes", "created")
-    )
-    expect_null(meta(data_tokens_pre2))
-    expect_null(meta(data_dfm_pre2))
-})
+# test_that("meta works correctly on pre-v2 objects", {
+#     load("../data/pre_v2_objects/data_corpus_pre2.rda")
+#     load("../data/pre_v2_objects/data_tokens_pre2.rda")
+#     load("../data/pre_v2_objects/data_dfm_pre2.rda")
+#     expect_identical(
+#         names(meta(data_corpus_pre2)),
+#         c("source", "notes", "created")
+#     )
+#     expect_null(meta(data_tokens_pre2))
+#     expect_null(meta(data_dfm_pre2))
+# })
 
 test_that("meta<- works", {
     corp <- corpus(c("one", "two"))
