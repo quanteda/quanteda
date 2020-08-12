@@ -40,12 +40,12 @@ Internal functions to import dictionary files in a variety of formats
 }
 \examples{
 dict <- quanteda.core:::read_dict_lexicoder(
-    system.file("extdata", "LSD2015.lc3", package = "quanteda")
+    system.file("extdata", "LSD2015.lc3", package = "quanteda.core")
 )
 
 
 \dontrun{
-dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
+dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda.core"))
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
@@ -53,11 +53,11 @@ dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", pac
 }
 
 dict <- quanteda.core:::read_dict_liwc(
-    system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
+    system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda.core")
 )
 
 dict <- quanteda.core:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
-                                                    package = "quanteda"))
+                                                    package = "quanteda.core"))
 }
 \keyword{dictionary}
 \keyword{internal}

@@ -705,7 +705,7 @@ read_dict_lexicoder <- function(path) {
 #' @examples
 #'
 #' \dontrun{
-#' dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda"))
+#' dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda.core"))
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
@@ -804,7 +804,7 @@ nest_dictionary <- function(dict, depth) {
 #' @examples
 #'
 #' dict <- quanteda.core:::read_dict_liwc(
-#'     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda")
+#'     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda.core")
 #' )
 read_dict_liwc <- function(path, encoding = "auto") {
 
@@ -885,7 +885,7 @@ read_dict_liwc <- function(path, encoding = "auto") {
 #' @examples
 #'
 #' dict <- quanteda.core:::read_dict_yoshikoder(system.file("extdata", "laver_garry.ykd",
-#'                                                     package = "quanteda"))
+#'                                                     package = "quanteda.core"))
 read_dict_yoshikoder <- function(path) {
     xml <- xml2::read_xml(path)
     root <- xml2::xml_find_first(xml, paste0("/", "dictionary"))
