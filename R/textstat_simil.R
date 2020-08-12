@@ -433,7 +433,7 @@ as.data.frame.textstat_proxy <- function(x, row.names = NULL, optional = FALSE,
                          y = factor(colnames(x)[x@j + 1L], levels = all),
                          stat = x@x,
                          stringsAsFactors = FALSE)
-    result <- subset(result, !is.na(stat))
+    result <- result[!is.na(result$stat),]
 
     # replace x and y with margin names
     names(result)[1:2] <- paste0(stri_sub(margin, 1, -2), 1:2)
