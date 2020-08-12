@@ -31,7 +31,9 @@ Imports:
     proxyC (>= 0.1.4),
     digest,
     stopwords,
-    data.table  
+    data.table,
+    lsa,
+    slam
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     e1071,
