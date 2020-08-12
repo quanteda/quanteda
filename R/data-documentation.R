@@ -46,7 +46,7 @@
 #' 
 #' US presidential inaugural address texts, and metadata (for the corpus), from
 #' 1789 to present.
-#' @details `data_corpus_inaugural` is the [quanteda-package] corpus 
+#' @details `data_corpus_inaugural` is the corpus 
 #'   object of US presidents' inaugural addresses since 1789. Document variables
 #'   contain the year of the address and the last name of the president.
 #' @format a [corpus] object with the following docvars:
