@@ -682,7 +682,7 @@ NULL
 #' @keywords dictionary internal
 #' @examples
 #' dict <- quanteda.core:::read_dict_lexicoder(
-#'     system.file("extdata", "LSD2015.lc3", package = "quanteda")
+#'     system.file("extdata", "LSD2015.lc3", package = "quanteda.core")
 #' )
 #'
 read_dict_lexicoder <- function(path) {
