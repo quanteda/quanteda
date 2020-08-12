@@ -10,7 +10,8 @@
 #'   dictionary "key" and each element is one or more dictionary entry "values"
 #'   consisting of a pattern match
 #' @slot meta list of object metadata
-setClass("dictionary2", contains = "list",
+setClass("dictionary2", 
+         contains = "list",
          slots = c(
              meta = "list"
          ),
@@ -289,7 +290,6 @@ as.dictionary <- function(x, format = c("tidytext"), separator = " ", tolower = 
 
 #' @export
 as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
-    format <- match.arg(format)
     stop(friendly_class_undefined_message(class(x), "as.dictionary"))
 }
 
