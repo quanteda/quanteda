@@ -37,16 +37,8 @@ test_that("test detault n-methods", {
         "nfeat\\(\\) only works on dfm.*objects"
     )
     expect_error(
-        nscrabble(TRUE),
-        "nscrabble\\(\\) only works on character.*objects"
-    )
-    expect_error(
         nsentence(TRUE),
         "nsentence\\(\\) only works on.*corpus.*tokens objects"
-    )
-    expect_error(
-        nsyllable(TRUE),
-        "nsyllable\\(\\) only works on character, tokens objects"
     )
     expect_error(
         ntoken(TRUE),
@@ -315,13 +307,6 @@ test_that("test new as.dfm methods", {
     )
 })
 
-test_that("test sparsity default", {
-    expect_error(
-        sparsity(TRUE),
-        "sparsity\\(\\) only works on dfm objects"
-    )
-})
-
 test_that("test topfeatures default", {
     expect_error(
         topfeatures(TRUE),
@@ -356,20 +341,8 @@ test_that("test default textstat methods", {
         "textstat_dist\\(\\) only works on dfm objects"
     )
     expect_error(
-        textstat_frequency(TRUE),
-        "textstat_frequency\\(\\) only works on dfm objects"
-    )
-    expect_error(
         textstat_keyness(TRUE),
         "textstat_keyness\\(\\) only works on dfm objects"
-    )
-    expect_error(
-        textstat_lexdiv(TRUE),
-        "textstat_lexdiv\\(\\) only works on dfm, tokens objects"
-    )
-    expect_error(
-        textstat_readability(TRUE),
-        "textstat_readability\\(\\) only works on character, corpus objects"
     )
     expect_error(
         textstat_simil(TRUE),

@@ -111,22 +111,22 @@ test_that("fcm core operators work for v2", {
     )
 })
 
-test_that("dictionary core operators work for v2", {
-    dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-                            opposition = c("Opposition", "reject", "notincorpus")),
-                       tolower = FALSE)
-    
-    expect_identical(
-        dict$opposition,
-        c("Opposition", "reject", "notincorpus")
-    )
-    expect_identical(
-        dict[["opposition"]],
-        dict$opposition
-    )
-    expect_identical(
-        dict["opposition"],
-        dictionary(list(opposition = c("Opposition", "reject", "notincorpus")),
-                       tolower = FALSE)
-    )
-})
+# test_that("dictionary core operators work for v2", {
+#     dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+#                             opposition = c("Opposition", "reject", "notincorpus")),
+#                        tolower = FALSE)
+#     
+#     expect_identical(
+#         dict$opposition,
+#         c("Opposition", "reject", "notincorpus")
+#     )
+#     expect_identical(
+#         dict[["opposition"]],
+#         dict$opposition
+#     )
+#     expect_identical(
+#         dict["opposition"],
+#         dictionary(list(opposition = c("Opposition", "reject", "notincorpus")),
+#                        tolower = FALSE)
+#     )
+# })
