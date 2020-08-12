@@ -78,7 +78,7 @@ test_that("textstat_summary method works", {
 })
 
 test_that("summary chache counts hashtag and emoji correctly", {
-    skip_on_os("solaris")
+    #skip_on_os("solaris")
     txt <- c("£ € 👏 Rock on❗ 💪️🎸",
              "Hi @qi #quanteda https://quanteda.io")
     toks <- tokens(txt)
@@ -90,7 +90,7 @@ test_that("summary chache counts hashtag and emoji correctly", {
 })
 
 test_that("textstat_summary chaching is working", {
-    skip_on_os("solaris")
+    #skip_on_os("solaris")
     corp <- data_corpus_inaugural[10:15]
     summ_corp <- textstat_summary(corp, cache = TRUE)
     expect_identical(meta(corp, type = "object")$summary$data, summ_corp)
@@ -116,7 +116,7 @@ test_that("textstat_summary chaching is working", {
 
 
 test_that("summary chache is updated", {
-    skip_on_os("solaris")
+    #skip_on_os("solaris")
     corp <- data_corpus_inaugural[10:15]
     summ_corp1 <- textstat_summary(corp, cache = TRUE, tolower = FALSE, remove_punct = FALSE)
     summ_corp2 <- textstat_summary(corp, cache = TRUE, tolower = TRUE, remove_punct = FALSE)
