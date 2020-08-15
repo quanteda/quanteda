@@ -326,12 +326,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_set_meta
-void qatd_cpp_set_meta(RObject object_, List meta_);
+void qatd_cpp_set_meta(RObject object_, RObject meta_);
 RcppExport SEXP _quanteda_core_qatd_cpp_set_meta(SEXP object_SEXP, SEXP meta_SEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< RObject >::type object_(object_SEXP);
-    Rcpp::traits::input_parameter< List >::type meta_(meta_SEXP);
+    Rcpp::traits::input_parameter< RObject >::type meta_(meta_SEXP);
     qatd_cpp_set_meta(object_, meta_);
     return R_NilValue;
 END_RCPP

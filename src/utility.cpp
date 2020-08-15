@@ -123,7 +123,7 @@ List qatd_cpp_get_load_factor() {
 }
 
 // [[Rcpp::export]]
-void qatd_cpp_set_meta(RObject object_, List meta_) {
+void qatd_cpp_set_meta(RObject object_, RObject meta_) {
     object_.attr("meta") = meta_;
 }
 
