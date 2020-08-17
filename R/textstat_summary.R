@@ -4,18 +4,23 @@
 #'
 #' Count the total number of characters, tokens and sentences as well as special
 #' tokens such as numbers, punctuation marks, symbols, tags and emojis.
-#' \itemize{ \item chars = number of characters; equal to [nchar()] \item sents
-#' = number of sentences; equal `ntoken(tokens(x), what = "sentence")` \item
-#' tokens = number of tokens; equal to [ntoken()] \item types = number of unique
-#' tokens; equal to [ntype()] \item puncts = number of punctuation marks
-#' (`^\p{P}+$`) \item numbers = number of numeric tokens
-#' (`^\p{Sc}{0,1}\p{N}+([.,]*\p{N})*\p{Sc}{0,1}$`) \item symbols = number of
-#' symbols (`^\p{S}$`) \item tags = number of tags; sum of `pattern_username`
-#' and `pattern_hashtag` in [quanteda_options()] \item emojis = number of emojis
-#' (`^\p{Emoji_Presentation}+$`) }
+#' \itemize{ 
+#' \item chars = number of characters; equal to [nchar()] 
+#' \item sents
+#' = number of sentences; equal `ntoken(tokens(x), what = "sentence")` 
+#' \item
+#' tokens = number of tokens; equal to [ntoken()] 
+#' \item types = number of unique tokens; equal to [ntype()] 
+#' \item puncts = number of punctuation marks (`^\p{P}+$`) 
+#' \item numbers = number of numeric tokens
+#' (`^\p{Sc}{0,1}\p{N}+([.,]*\p{N})*\p{Sc}{0,1}$`) 
+#' \item symbols = number of symbols (`^\p{S}$`) 
+#' \item tags = number of tags; sum of `pattern_username` and `pattern_hashtag` 
+#' in [quanteda_options()] 
+#' \item emojis = number of emojis (`^\p{Emoji_Presentation}+$`) 
+#' }
 #' @param x corpus to be summarized
-#' @param cache if `TRUE`, use internal cache from the second time. Not
-#'   available on Solaris.
+#' @param cache if `TRUE`, use internal cache from the second time.
 #' @param ... additional arguments passed through to [dfm()]
 #' @export
 #' @keywords textstat
