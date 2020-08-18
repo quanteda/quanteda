@@ -42,13 +42,6 @@ inline KeynessFun chisq_lambda(const arma::sp_mat& mt, const std::string& cor) {
     };
 }
 
-inline KeynessFun exact_lambda(const arma::sp_mat& mt, const std::string& cor) {
-    Rcpp::warning("Exact keyness not supported yet");
-    return [&](const double& t, const double& r) -> double {
-        return -99.0;
-    };
-}
-
 inline KeynessFun lr_lambda(const arma::sp_mat& mt, const std::string& cor) {
     arma::colvec mrg(arma::sum(mt, 1));
     const double tN = mrg(0);
@@ -94,8 +87,6 @@ inline KeynessFun pmi_lambda(const arma::sp_mat& mt, const std::string& cor, boo
 inline KeynessFun get_keyness_func(const arma::sp_mat& mt, const std::string& msr, const std::string& cor) {
     if (msr == "chi2") {
         return chisq_lambda(mt, cor);
-    } else if (msr == "exact") {
-        return exact_lambda(mt, cor);
     } else if (msr == "lr") {
         return lr_lambda(mt, cor);
     } else if (msr == "pmi") {
