@@ -121,16 +121,21 @@ struct KeynessWorker : public Worker {
     }
 };
 
-//' @export
 // [[Rcpp::export]]
 Rcpp::NumericVector qatd_cpp_keyness(
     arma::sp_mat& mt, const std::string measure, const std::string correction
 ) {
     DoubleParams stats(mt.n_cols);
     KeynessFun fun = get_keyness_func(mt, measure, correction);
-
+    
+#if QUANTEDA_USE_TBB
     KeynessWorker keyness_worker(mt, fun, stats);
-    RcppParallel::parallelFor(0, mt.n_cols, keyness_worker);
+    parallelFor(0, mt.n_cols, keyness_worker);
+#else
+    for (std::size_t i = 0; i < mt.n_cols; i++) {
+        stats[i] = fun(mt(0, i), mt(1, i));
+    }
+#endif
 
     return Rcpp::wrap(stats);
 }

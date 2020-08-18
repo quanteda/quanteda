@@ -41,7 +41,6 @@ qatd_cpp_fcm <- function(texts_, n_types, weights_, boolean, ordered) {
     .Call(`_quanteda_qatd_cpp_fcm`, texts_, n_types, weights_, boolean, ordered)
 }
 
-#' @export
 qatd_cpp_keyness <- function(mt, measure, correction) {
     .Call(`_quanteda_qatd_cpp_keyness`, mt, measure, correction)
 }
