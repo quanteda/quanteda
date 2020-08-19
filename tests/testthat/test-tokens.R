@@ -1115,10 +1115,13 @@ test_that("Weibo-style hashtags are preserved", {
 
 test_that("emails address is preserved", {
     # prevents test failing on Ubuntu 20.04 on GitHub Actions
-    skip_if(
-        as.numeric(stringi::stri_info()$Unicode.version) > 10 &&
-            as.numeric(stringi::stri_info()$ICU.version) > 61.1
-    )
+    # commented out since we should fix this more fundamentally
+    # GitHub Actions as of 2020-08-19 is reconfigured to use Ubuntu 18.04  
+    #
+    # skip_if(
+    #     as.numeric(stringi::stri_info()$Unicode.version) > 10 &&
+    #         as.numeric(stringi::stri_info()$ICU.version) > 61.1
+    # )
     txt <- c(d1 = "support@quanteda.io K.Watanabe@qi1234.co.jp")
     expect_identical(
         as.list(tokens(txt, what = "word")),
