@@ -21,9 +21,10 @@ the document forming the "target" for computing keyness; all other
 documents' feature frequencies will be combined for use as a reference}
 
 \item{measure}{(signed) association measure to be used for computing keyness.
-Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test);
-\code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual
-information.}
+Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); \code{"lr"} for
+the likelihood ratio; \code{"pmi"} for pointwise mutual information.  Note that
+the "exact" test is very computationally intensive and therefore much
+slower than the other methods.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order
 of the measure, otherwise leave in original feature order}
