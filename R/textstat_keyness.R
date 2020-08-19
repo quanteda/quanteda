@@ -87,7 +87,7 @@ textstat_keyness.default <- function(x, target = 1L,
 textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
                                  sort = TRUE, 
                                  correction = c("default", "yates", "williams", "none"),
-                                 old = FALSE) {
+                                 ..., old = FALSE) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
 
