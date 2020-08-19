@@ -141,15 +141,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_keyness
-Rcpp::NumericVector qatd_cpp_keyness(arma::sp_mat& mt, const std::string measure, const std::string correction);
-RcppExport SEXP _quanteda_qatd_cpp_keyness(SEXP mtSEXP, SEXP measureSEXP, SEXP correctionSEXP) {
+Rcpp::NumericVector qatd_cpp_keyness(arma::sp_mat& mt, const std::string measure, const std::string correct);
+RcppExport SEXP _quanteda_qatd_cpp_keyness(SEXP mtSEXP, SEXP measureSEXP, SEXP correctSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::sp_mat& >::type mt(mtSEXP);
     Rcpp::traits::input_parameter< const std::string >::type measure(measureSEXP);
-    Rcpp::traits::input_parameter< const std::string >::type correction(correctionSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_keyness(mt, measure, correction));
+    Rcpp::traits::input_parameter< const std::string >::type correct(correctSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_keyness(mt, measure, correct));
     return rcpp_result_gen;
 END_RCPP
 }
