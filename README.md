@@ -2,19 +2,20 @@
 [![quanteda: quantitative analysis of textual
 data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
+<!-- badges: start -->
+
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![](https://img.shields.io/badge/devel%20version-2.1.1-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
-[![Travis-CI Build
-Status](https://travis-ci.org/quanteda/quanteda.svg?branch=master)](https://travis-ci.org/quanteda/quanteda)
-[![Appveyor Build
-status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master)
+[![R build
+status](https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg)](https://github.com/quanteda/quanteda/actions)
 [![codecov](https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg)](https://codecov.io/gh/quanteda/quanteda)
 [![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00774/status.svg)](https://doi.org/10.21105/joss.00774)
+<!-- badges: end -->
 
 ## About
 
