@@ -1,3 +1,12 @@
+# quanteda 2.1.2
+
+## Changes
+
+* `textstat_keyness()` performance is now improved through implementation in (multi-threaded) C++.
+
+## Bug fixes and stability enhancements
+
+
 # quanteda 2.1.1
 
 ## Changes

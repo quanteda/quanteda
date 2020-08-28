@@ -39,9 +39,7 @@ test_that("test as.tokens works for spacy_parsed objects", {
 })
 
 test_that("spacy_parse/tokenize work", {
-    skip_on_cran()
-    skip_on_travis()
-    skip_on_appveyor()
+    skip("requires spacyr installation to work")
     skip_if_not_installed("spacyr")
     
     library("spacyr")
