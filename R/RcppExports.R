@@ -41,6 +41,10 @@ qatd_cpp_fcm <- function(texts_, n_types, weights_, boolean, ordered) {
     .Call(`_quanteda_qatd_cpp_fcm`, texts_, n_types, weights_, boolean, ordered)
 }
 
+qatd_cpp_keyness <- function(mt, measure, correct) {
+    .Call(`_quanteda_qatd_cpp_keyness`, mt, measure, correct)
+}
+
 qatd_cpp_kwic <- function(texts_, types_, words_, pats_, window, delim_) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, pats_, window, delim_)
 }

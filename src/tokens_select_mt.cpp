@@ -15,7 +15,7 @@ Text keep_token(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    unsigned int filler = UINT_MAX; // use upper limit as a filler
+    const unsigned int filler = UINT_MAX; // use upper limit as a filler
     
     bool match = false;
     std::size_t start, end;
