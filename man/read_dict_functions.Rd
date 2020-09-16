@@ -10,9 +10,9 @@
 \usage{
 read_dict_lexicoder(path)
 
-read_dict_wordstat(path, encoding = "auto")
+read_dict_wordstat(path, encoding = "utf-8")
 
-read_dict_liwc(path, encoding = "auto")
+read_dict_liwc(path, encoding = "utf-8")
 
 read_dict_yoshikoder(path)
 }
