@@ -74,7 +74,8 @@ test_that("dictionary works with different encoding", {
     # works without specifying encoding
     expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-1.cat", tolower = FALSE),
                       dictionary(list("LATIN" = c("B", "C", "D"), "NON-LATIN" = c("Bh", "Ch", "Dh")), tolower = FALSE))
-    expect_equivalent(dictionary(file = "../data/dictionaries/windows-1252.cat", tolower = FALSE),
+    expect_equivalent(dictionary(file = "../data/dictionaries/windows-1252.cat", tolower = FALSE,
+                                 encoding = "windows-1252"),
                       dictionary(list("LATIN" = c("S", "Z", "Y"), "NON-LATIN" = c("Š", "Ž", "Ÿ")), tolower = FALSE))
 
     # works if encoding is specified

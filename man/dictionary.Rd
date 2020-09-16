@@ -10,7 +10,7 @@ dictionary(
   format = NULL,
   separator = " ",
   tolower = TRUE,
-  encoding = "auto"
+  encoding = "utf-8"
 )
 }
 \arguments{
