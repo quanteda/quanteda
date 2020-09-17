@@ -134,7 +134,8 @@ test_that("tokens_recompile: selecting all tokens to produce and empty document"
     
 })
 
-test_that("tokens_recompile: corrupt tokens object does not crash R", {
+test_that("corrupt tokens object does not crash R", {
+    skip_on_os("solaris")
     
     toks <- list(1:10)
     attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 10
