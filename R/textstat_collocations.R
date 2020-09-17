@@ -147,7 +147,8 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     result$z <- result$lambda / result$sigma
     result$sigma <- NULL
     # result$p <- 1 - stats::pnorm(result$z)
-    result <- result[order(result$z, decreasing = TRUE), ]
+    result <- result[order(result$z, result$collocation, 
+                           decreasing = c(TRUE, FALSE), method = "radix"), ]
 
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]

@@ -166,9 +166,10 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
             result$p <- 1 - stats::pchisq(abs(result$stat), 1) # abs() for pmi
         }  
     }
-    names(result)[2] <- switch(measure, chi2 = 'chi2', exact = 'exact', lr = "G2", pmi = "pmi")
     if (sort) 
-        result <- result[order(result[, 2], decreasing = TRUE), ]
+        result <- result[order(result$stat, result$feature, 
+                               decreasing = c(TRUE, FALSE), method = "radix"), ]
+    names(result)[2] <- switch(measure, chi2 = 'chi2', exact = 'exact', lr = "G2", pmi = "pmi")
     rownames(result) <- NULL    
     attr(result, "groups") <- docnames(temp)
     class(result) <- c("keyness", "textstat", "data.frame")
@@ -289,7 +290,7 @@ keyness <- function(t, f, sum_t, sum_f) {
 #' quanteda:::keyness_exact(dfmat)
 keyness_exact <- function(x) {
     sums <- rowSums(x)
-    result <- as.data.frame(
+    temp <- as.data.frame(
         do.call(rbind,
                 apply(x, 2, function(y) {
                     et <- stats::fisher.test(matrix(c(as.numeric(y),
@@ -300,8 +301,8 @@ keyness_exact <- function(x) {
     )
 
     data.frame(feature = colnames(x),
-               or = result$or,
-               p = result$p,
+               stat = temp$or,
+               p = temp$p,
                n_target = as.vector(x[1, ]),
                n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
