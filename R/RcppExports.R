@@ -5,38 +5,6 @@ qatd_cpp_collocations <- function(texts_, types_, words_ignore_, count_min, size
     .Call(`_quanteda_core_qatd_cpp_collocations`, texts_, types_, words_ignore_, count_min, sizes_, method, smoothing)
 }
 
-qatd_cpp_manhattan <- function(A, margin = 1L) {
-    .Call(`_quanteda_core_qatd_cpp_manhattan`, A, margin)
-}
-
-qatd_cpp_manhattan2 <- function(A, B, margin = 1L) {
-    .Call(`_quanteda_core_qatd_cpp_manhattan2`, A, B, margin)
-}
-
-qatd_cpp_maximum <- function(A, margin = 1L) {
-    .Call(`_quanteda_core_qatd_cpp_maximum`, A, margin)
-}
-
-qatd_cpp_maximum2 <- function(A, B, margin = 1L) {
-    .Call(`_quanteda_core_qatd_cpp_maximum2`, A, B, margin)
-}
-
-qatd_cpp_canberra <- function(A, margin = 1L) {
-    .Call(`_quanteda_core_qatd_cpp_canberra`, A, margin)
-}
-
-qatd_cpp_canberra2 <- function(A, B, margin = 1L) {
-    .Call(`_quanteda_core_qatd_cpp_canberra2`, A, B, margin)
-}
-
-qatd_cpp_minkowski <- function(A, margin = 1L, p = 2) {
-    .Call(`_quanteda_core_qatd_cpp_minkowski`, A, margin, p)
-}
-
-qatd_cpp_minkowski2 <- function(A, B, margin = 1L, p = 2) {
-    .Call(`_quanteda_core_qatd_cpp_minkowski2`, A, B, margin, p)
-}
-
 qatd_cpp_fcm <- function(texts_, n_types, weights_, boolean, ordered) {
     .Call(`_quanteda_core_qatd_cpp_fcm`, texts_, n_types, weights_, boolean, ordered)
 }
@@ -99,9 +67,5 @@ qatd_cpp_set_meta <- function(object_, meta_) {
 
 qatd_cpp_tbb_enabled <- function() {
     .Call(`_quanteda_core_qatd_cpp_tbb_enabled`)
-}
-
-qatd_cpp_is_overlap <- function(x1_, y1_, w1_, h1_, boxe_) {
-    .Call(`_quanteda_core_qatd_cpp_is_overlap`, x1_, y1_, w1_, h1_, boxe_)
 }
 

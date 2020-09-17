@@ -149,7 +149,7 @@ check_entries <- function(dict) {
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
                        separator = " ",
-                       tolower = TRUE, encoding = "auto") {
+                       tolower = TRUE, encoding = "utf-8") {
     UseMethod("dictionary")
 }
 
@@ -158,7 +158,7 @@ dictionary <- function(x, file = NULL, format = NULL,
 #' @export
 dictionary.default <- function(x, file = NULL, format = NULL,
                                separator = " ",
-                               tolower = TRUE, encoding = "auto") {
+                               tolower = TRUE, encoding = "utf-8") {
     if (!missing(x) & is.null(file))
         stop("x must be a list if file is not specified")
 
@@ -204,8 +204,8 @@ dictionary.default <- function(x, file = NULL, format = NULL,
 #' @export
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
-                            tolower = TRUE, encoding = "auto") {
-    if (!is.null(file) | !is.null(format) | encoding != "auto")
+                            tolower = TRUE, encoding = "utf-8") {
+    if (!is.null(file) | !is.null(format) | encoding != "utf-8")
         stop("cannot specify file, format, or encoding when x is a list")
     if (!is.character(separator) || stri_length(separator) == 0)
         stop("separator must be a non-empty character")
@@ -219,7 +219,7 @@ dictionary.list <- function(x, file = NULL, format = NULL,
 #' @export
 dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                                    separator = " ",
-                                   tolower = TRUE, encoding = "auto") {
+                                   tolower = TRUE, encoding = "utf-8") {
     x <- as.dictionary(x)
     dictionary(as.list(x), separator = separator, tolower = tolower,
                encoding = encoding)
@@ -711,8 +711,8 @@ read_dict_lexicoder <- function(path) {
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
 #' #                            encoding = "iso-8859-1")
 #' }
-read_dict_wordstat <- function(path, encoding = "auto") {
-    lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = "windows-1252")
+read_dict_wordstat <- function(path, encoding = "utf-8") {
+    lines <- stri_read_lines(path, encoding = encoding)
     lines <- stri_trim_right(lines)
     lines_yaml <- ifelse(stri_detect_regex(lines, " \\(\\d\\)$"),
                          stri_replace_all_regex(lines, "^(\\t*)(.+) \\(\\d\\)$", '$1- "$2"'),
@@ -806,9 +806,9 @@ nest_dictionary <- function(dict, depth) {
 #' dict <- quanteda.core:::read_dict_liwc(
 #'     system.file("extdata", "moral_foundations_dictionary.dic", package = "quanteda.core")
 #' )
-read_dict_liwc <- function(path, encoding = "auto") {
+read_dict_liwc <- function(path, encoding = "utf-8") {
 
-    line <- stri_read_lines(path, encoding = encoding, fallback_encoding = "windows-1252")
+    line <- stri_read_lines(path, encoding = encoding)
     tab <- stri_extract_first_regex(line, "^\t+")
     line <- stri_trim_both(line)
     line <- line[line != ""]
