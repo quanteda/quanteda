@@ -75,7 +75,7 @@
 #'   Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
 #'   
 #'  Church, K. W. & P. Hanks (1990). [Word association norms, mutual
-#'  information, and lexicography](http://dl.acm.org/citation.cfm?id=89095).
+#'  information, and lexicography](https://dl.acm.org/doi/10.5555/89086.89095).
 #'  *Computational Linguistics*, 16(1), 22-29.
 #' @examples
 #' # see http://bit.ly/29b2zOA

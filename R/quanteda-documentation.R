@@ -70,7 +70,7 @@
 #'
 #' @section Source code and additional information:
 #'
-#' <http://github.com/quanteda/quanteda>
+#' <https://github.com/quanteda/quanteda>
 #' @import methods Matrix
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda, .registration = TRUE

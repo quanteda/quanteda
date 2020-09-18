@@ -77,7 +77,7 @@ available in the package.
 \section{Source code and additional information}{
 
 
-\url{http://github.com/quanteda/quanteda}
+\url{https://github.com/quanteda/quanteda}
 }
 
 \seealso{

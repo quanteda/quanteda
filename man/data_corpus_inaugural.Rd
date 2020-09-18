@@ -14,7 +14,7 @@ a \link{corpus} object with the following docvars:
 }
 \source{
 \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and
-\url{http://www.presidency.ucsb.edu/inaugurals.php}.
+\url{https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/inaugural-addresses}.
 }
 \usage{
 data_corpus_inaugural

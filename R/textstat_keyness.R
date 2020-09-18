@@ -315,7 +315,7 @@ keyness_exact <- function(x) {
 #' @examples
 #' quanteda:::keyness_lr(dfmat)
 #' @references
-#' <http://influentialpoints.com/Training/g-likelihood_ratio_test.htm>
+#' <https://influentialpoints.com/Training/g-likelihood_ratio_test.htm>
 keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")) {
 
     correction <- match.arg(correction)

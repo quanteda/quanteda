@@ -555,7 +555,7 @@ test_that("as.corpus correctly sets metadata on pre-v2 corpus", {
     expect_identical(
         meta(as.corpus(data_corpus_pre2), type = "user"),
         list(source = "Gerhard Peters and John T. Woolley. The American Presidency Project.",
-             notes = "http://www.presidency.ucsb.edu/inaugurals.php",
+             notes = "https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/inaugural-addresses",
              created = "Tue Jun 13 14:51:47 2017")
     )
     expect_true(

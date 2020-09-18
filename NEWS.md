@@ -6,6 +6,7 @@
 
 ## Bug fixes and stability enhancements
 
+* Fixes breaking tests and examples on Solaris platform as well as other changes introduced by changes to the stringi package.
 
 # quanteda 2.1.1
 
@@ -690,10 +691,10 @@ new function | description | output class
 
 new name | reason
 :--------|:-------------
-`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
+`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/quanteda/readtext) package
 `describeTexts` | deprecated several versions ago for `summary.character`
-`textfile` | moved to package [**readtext**](http://github.com/kbenoit/readtext)
-`encodedTexts` | moved to package [**readtext**](http://github.com/kbenoit/readtext), as `data_char_encodedtexts`
+`textfile` | moved to package [**readtext**](http://github.com/quanteda/readtext)
+`encodedTexts` | moved to package [**readtext**](http://github.com/quanteda/readtext), as `data_char_encodedtexts`
 `findSequences` | replaced by `sequences`
 
 

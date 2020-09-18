@@ -59,7 +59,7 @@
 #' head(docvars(data_corpus_inaugural), 10)
 #' @source 
 #' <https://archive.org/details/Inaugural-Address-Corpus-1789-2009> and 
-#' <http://www.presidency.ucsb.edu/inaugurals.php>.
+#' <https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/inaugural-addresses>.
 #' @keywords data
 "data_corpus_inaugural"
 
@@ -82,7 +82,7 @@
 #' Young and Soroka (2012) also suggest the use of a pre-processing script to
 #' remove specific cases of some words (i.e., "good bye", or "nobody better",
 #' which should not be counted as positive). Pre-processing scripts are
-#' available at <http://lexicoder.com>.
+#' available at <http://www.snsoroka.com/data-lexicoder/>.
 #' @section License and Conditions: 
 #'   The LSD is available for non-commercial academic purposes only. By using
 #'   `data_dictionary_LSD2015`, you accept these terms.
@@ -102,7 +102,7 @@
 #'   Lexicoder Sentiment Dictionary and related resources.
 #
 #'   Young, L. & Soroka, S. (2012). *Lexicoder Sentiment
-#'   Dictionary*. Available at <http://lexicoder.com>.
+#'   Dictionary*. Available at <http://www.snsoroka.com/data-lexicoder/>.
 #'   
 #'   Young, L. & Soroka, S. (2012). 
 #'   [Affective News: 

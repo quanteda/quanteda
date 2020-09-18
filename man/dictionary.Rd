@@ -103,7 +103,7 @@ Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 manual]. Austin, TX (\url{http://www.liwc.net}).
 
 Yoshikoder page, from Will Lowe
-\url{http://conjugateprior.org/software/yoshikoder/}.
+\url{https://conjugateprior.org/software/yoshikoder/}.
 
 Lexicoder format, \url{http://www.lexicoder.com}
 }

@@ -107,7 +107,7 @@ check_entries <- function(dict) {
 #'   manual\]. Austin, TX (<http://www.liwc.net>).
 #'
 #'   Yoshikoder page, from Will Lowe
-#'   <http://conjugateprior.org/software/yoshikoder/>.
+#'   <https://conjugateprior.org/software/yoshikoder/>.
 #'
 #'   Lexicoder format, <http://www.lexicoder.com>
 #'
