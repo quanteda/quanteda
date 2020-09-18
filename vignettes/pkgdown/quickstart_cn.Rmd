@@ -204,7 +204,7 @@ kwic(data_corpus_inaugural, pattern = "communist*")
 head(docvars(data_corpus_inaugural))
 ```
 
-[**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)软件包提供更多语料库资源。
+[**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora)软件包提供更多语料库资源。
 
 # 从语料库中提取特征 {#extracting-features-from-a-corpus}
 

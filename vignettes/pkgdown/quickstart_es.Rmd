@@ -198,7 +198,7 @@ En el summary de arriba, las variables `Year` (año) y `President` (presidente) 
 head(docvars(data_corpus_inaugural))
 ```
 
-Más corpora están disponibles en el repositorio [quanteda.corpora](http://github.com/quanteda/quanteda.corpora).
+Más corpora están disponibles en el repositorio [quanteda.corpora](https://github.com/quanteda/quanteda.corpora).
 
 # Extrayendo atributos de un corpus
 

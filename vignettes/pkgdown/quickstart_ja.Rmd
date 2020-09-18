@@ -205,7 +205,7 @@ kwic(data_corpus_inaugural, pattern = "communist*")
 head(docvars(data_corpus_inaugural))
 ```
 
-[**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)をインストールすることで，より多くのコーパスを試すことができる．
+[**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora)をインストールすることで，より多くのコーパスを試すことができる．
 
 
 # コーパスから特長を抽出 {#extracting-features-from-a-corpus}

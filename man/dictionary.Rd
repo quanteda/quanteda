@@ -105,7 +105,7 @@ manual]. Austin, TX (\url{http://www.liwc.net}).
 Yoshikoder page, from Will Lowe
 \url{https://conjugateprior.org/software/yoshikoder/}.
 
-Lexicoder format, \url{http://www.lexicoder.com}
+Lexicoder format, \url{http://www.snsoroka.com/data-lexicoder/}
 }
 \seealso{
 \link{dfm}, \code{\link[=as.dictionary]{as.dictionary()}},

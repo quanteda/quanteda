@@ -221,7 +221,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-अधिक कॉर्पोरा [quanteda.corpora](http://github.com/quanteda/quanteda.corpora) पैकेज से उपलब्ध हैं।
+अधिक कॉर्पोरा [quanteda.corpora](https://github.com/quanteda/quanteda.corpora) पैकेज से उपलब्ध हैं।
 
 # कॉर्पस से फ़ीचर्ज़ निकालना
 
