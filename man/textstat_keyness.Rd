@@ -88,7 +88,7 @@ John Benjamins.
 Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus
 Analysis in Language Education}. Amsterdam: Benjamins: 55.
 
-Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods for the Statistics of Surprise and Coincidence}. \emph{Computational
+Dunning, T. (1993). \href{https://dl.acm.org/doi/10.5555/972450.972454}{Accurate Methods for the Statistics of Surprise and Coincidence}. \emph{Computational
 Linguistics}, 19(1): 61--74.
 }
 \keyword{textstat}

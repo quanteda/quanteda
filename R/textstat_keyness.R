@@ -34,7 +34,7 @@
 #'   Analysis in Language Education*. Amsterdam: Benjamins: 55.
 #'
 #'   Dunning, T. (1993). [Accurate Methods for the Statistics of Surprise and
-#'   Coincidence](https://dl.acm.org/citation.cfm?id=972454). *Computational
+#'   Coincidence](https://dl.acm.org/doi/10.5555/972450.972454). *Computational
 #'   Linguistics*, 19(1): 61--74.
 #' @return a data.frame of computed statistics and associated p-values, where
 #'   the features scored name each row, and the number of occurrences for both

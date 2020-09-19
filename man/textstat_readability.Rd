@@ -369,8 +369,9 @@ textstat_readability(data_corpus_inaugural[48:58],
                      measure = c("Flesch.Kincaid", "Dale.Chall.old"))
 }
 \references{
-Anderson, J. (1983). \href{https://www.jstor.org/stable/40031755}{Lix and rix: Variations on a little-known readability index}. \emph{Journal of Reading}, 26(6),
-490--496.
+Anderson, J. (1983). Lix and rix: Variations on a little-known readability
+index. \emph{Journal of Reading}, 26(6),
+490--496.  \verb{https://www.jstor.org/stable/40031755}
 
 Bamberger, R. & Vanecek, E. (1984). \emph{Lesen-Verstehen-Lernen-Schreiben}.
 Wien: Jugend und Volk.
@@ -379,12 +380,16 @@ Björnsson, C. H. (1968). \emph{Läsbarhet}. Stockholm: Liber.
 
 Bormuth, J.R. (1969). \href{https://files.eric.ed.gov/fulltext/ED029166.pdf}{Development of Readability Analysis}.
 
-Bormuth, J.R. (1968). \href{https://www.jstor.org/stable/1433978}{Cloze test readability: Criterion reference scores}. \emph{Journal of educational
-measurement}, 5(3), 189--196.
+Bormuth, J.R. (1968). Cloze test readability: Criterion reference
+scores. \emph{Journal of educational
+measurement}, 5(3), 189--196. \verb{https://www.jstor.org/stable/1433978}
 
-Caylor, J.S. (1973). \href{https://eric.ed.gov/?id=ED074343}{Methodologies for Determining Reading Requirements of Military Occupational Specialities}.
+Caylor, J.S. (1973). Methodologies for Determining Reading Requirements of
+Military Occupational Specialities.  \verb{https://eric.ed.gov/?id=ED074343}
 
-Caylor, J.S. & Sticht, T.G. (1973). \href{https://archive.org/details/ERIC_ED076707}{\emph{Development of a Simple Readability Index for Job Reading Material}}.
+Caylor, J.S. & Sticht, T.G. (1973). \emph{Development of a Simple Readability
+Index for Job Reading Material}
+\verb{https://archive.org/details/ERIC_ED076707}
 
 Coleman, E.B. (1971). Developing a technology of written instruction: Some
 determiners of the complexity of prose. \emph{Verbal learning research and the
@@ -393,8 +398,9 @@ technology of written instruction}, 155--204.
 Coleman, M. & Liau, T.L. (1975). \href{https://psycnet.apa.org/record/1975-22007-001}{A Computer Readability Formula Designed for Machine Scoring}.
 \emph{Journal of Applied Psychology}, 60(2), 283.
 
-Dale, E. and Chall, J.S. (1948). \href{https://www.jstor.org/stable/1473169}{A Formula for Predicting Readability: Instructions}. \emph{Educational Research
-Bulletin}, 37-54.
+Dale, E. and Chall, J.S. (1948). A Formula for Predicting Readability:
+Instructions.  \emph{Educational Research
+Bulletin}, 37-54.  \verb{https://www.jstor.org/stable/1473169}
 
 Chall, J.S. and Dale, E. (1995). \emph{Readability Revisited: The New Dale-Chall
 Readability Formula}. Brookline Books.
@@ -423,8 +429,9 @@ Schriftstellern. \emph{Sprachforum}, 1, 233-244.
 Gunning, R. (1952). \emph{The Technique of Clear Writing}.  New York:
 McGraw-Hill.
 
-Klare, G.R. (1975). \href{https://www.jstor.org/stable/747086}{Assessing Readability}. \emph{Reading Research
-Quarterly}, 10(1), 62-102.
+Klare, G.R. (1975). Assessing
+Readability.  \emph{Reading Research
+Quarterly}, 10(1), 62-102.  \verb{https://www.jstor.org/stable/747086}
 
 Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., & Chissom, B.S. (1975).
 \href{https://stars.library.ucf.edu/istlibrary/56/}{Derivation of New Readability Formulas (Automated Readability Index, FOG count and Flesch Reading Ease Formula) for Navy Enlisted Personnel}.
@@ -440,15 +447,17 @@ Wright-Patterson Air Force Base. Report No. AMRL-TR-6620.
 
 *Solomon, N. W. (2006). \emph{Qualitative Analysis of Media Language}. India.
 
-Spache, G. (1953). \href{https://www.jstor.org/stable/998915}{"A new readability formula for primary-grade reading materials."} \emph{The Elementary School
-Journal}, 53, 410--413.
+Spache, G. (1953). "A new readability formula for primary-grade reading
+materials." \emph{The Elementary School Journal}, 53, 410--413.
+\verb{https://www.jstor.org/stable/998915}
 
 Tränkle, U. & Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
 Lesbarkeitsformeln für die deutsche Sprache. \emph{Zeitschrift für
 Entwicklungspsychologie und Pädagogische Psychologie}, 16(3), 231--244.
 
-Wheeler, L.R. & Smith, E.H. (1954). \href{https://www.jstor.org/stable/41384251}{A Practical Readability Formula for the Classroom Teacher in the Primary Grades}. \emph{Elementary English}, 31,
-397--399.
+Wheeler, L.R. & Smith, E.H. (1954). A Practical Readability Formula for the
+Classroom Teacher in the Primary Grades. \emph{Elementary English}, 31,
+397--399.  \verb{https://www.jstor.org/stable/41384251}
 
 *Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
 Journalism, School of Media Studies, SRM University, India.
