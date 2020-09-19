@@ -20,7 +20,7 @@ status](https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg)](h
 ## About
 
 An R package for managing and analyzing text, created by [Kenneth
-Benoit](http://kenbenoit.net). Supported by the European Research
+Benoit](https://kenbenoit.net). Supported by the European Research
 Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see <https://quanteda.io>.

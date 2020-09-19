@@ -104,7 +104,7 @@ check_entries <- function(dict) {
 #'
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 #'   (2007). The development and psychometric properties of LIWC2007. \[Software
-#'   manual\]. Austin, TX (<http://www.liwc.net>).
+#'   manual\]. Austin, TX (<https://liwc.net>).
 #'
 #'   Yoshikoder page, from Will Lowe
 #'   <https://conjugateprior.org/software/yoshikoder/>.

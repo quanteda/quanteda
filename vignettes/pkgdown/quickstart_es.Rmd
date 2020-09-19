@@ -24,7 +24,7 @@ Ver instrucciones (en inglés) en https://github.com/quanteda/quanteda para inst
 Los siguientes paquetes funcionan bien con con **quanteda** o lo complementan y por eso recomendamos que también los instaleis:
 
 *  [**readtext**](https://github.com/quanteda/readtext):  una manera sencilla de leer data de texto casi con cualquier formato con R,.
-*  [**spacyr**](https://github.com/kbenoit/spacyr): NLP usando la librería [spaCy](http://spacy.io), incluyendo etiquetado part-of-speech, entity recognition y dependency parsing.
+*  [**spacyr**](https://github.com/kbenoit/spacyr): NLP usando la librería [spaCy](https://spacy.io), incluyendo etiquetado part-of-speech, entity recognition y dependency parsing.
 *  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): data textual adicional para uso con **quanteda**.
     ```{r, eval = FALSE}
     devtools::install_github("quanteda/quanteda.corpora")
